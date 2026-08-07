@@ -14,7 +14,7 @@
 | [comprehensive-library-audit-2026-04-04.md](comprehensive-library-audit-2026-04-04.md) |  | | Workstream | Agent | Score | Key Finding | |-----------|-- | 1069 |
 | [evidence-bundle-template.md](evidence-bundle-template.md) |  | | Field | Value | |-------|-------| | 214 |
 | [git-workflow-audit-pr436.md](git-workflow-audit-pr436.md) |  | Living audit of the git workflow. Originally based on PR #43 | 260 |
-| [maintenance-recovery-audit-2026-08-07.md](maintenance-recovery-audit-2026-08-07.md) |  | The repository and product source survived the Mac laptop →  | 144 |
+| [maintenance-recovery-audit-2026-08-07.md](maintenance-recovery-audit-2026-08-07.md) |  | The repository and product source survived the Mac laptop →  | 159 |
 | [onboarding-audit-session93.md](onboarding-audit-session93.md) |  | Fresh-agent onboarding test: followed all documented steps e | 146 |
 
 ## Subfolders

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-03-29T23:39:45.799972",
-  "total_docs": 244,
+  "generated": "2026-08-07T16:05:15.061096",
+  "total_docs": 282,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -10,18 +10,18 @@
       "folder": "root",
       "tags": [],
       "sections": [
+        "2026-08-07 \u2014 Maintenance Recovery Session",
+        "2026-04-07 \u2014 Session \u2014 CI Fixes & v0.21.6 Release",
+        "Session \u2014 2026-04-06 \u2014 Response Envelope Fix",
+        "2026-04-05 \u2014 External PyPI Audit Resolution",
+        "2026-04-05 \u2014 Session",
+        "2026-04-04 \u2014 Session",
+        "2026-03-31 \u2014 Session 106",
         "2026-03-28 \u2014 Session 105",
         "2026-03-28 \u2014 Session 104",
-        "2026-03-27 \u2014 Session 103 (Mac Mini sync + IPv6 fix)",
-        "2026-03-25 \u2014 Session",
-        "2026-03-24 \u2014 Session",
-        "2026-03-23 \u2014 Session (gap: no summary recorded)",
-        "2026-03-21 \u2014 Session (gap: no summary recorded)",
-        "2026-02-10 \u2014 Session (gap: no summary recorded)",
-        "2026-01-29 \u2014 Session 87: 3D Viewport Critical Bug Fixes",
-        "2026-01-28 \u2014 Session 86: 3D Visualization Improvements"
+        "2026-03-27 \u2014 Session 103 (Mac Mini sync + IPv6 fix)"
       ],
-      "size_bytes": 413737
+      "size_bytes": 25292
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -41,7 +41,7 @@
         "DXF Rendering (optional)",
         "For Beginners (more explanation, slower pace)"
       ],
-      "size_bytes": 11782
+      "size_bytes": 11809
     },
     "docs/TASKS.md": {
       "title": "Task Board",
@@ -51,26 +51,29 @@
       "tags": [],
       "sections": [
         "Rules (read first)",
+        "Maintenance Recovery Dashboard",
         "Current Release",
         "Active",
         "Up Next",
         "Backlog",
         "Recently Done",
-        "Archive"
+        "Archive",
+        "Completed (Archived)",
+        "External Audit Remediation \u2014 v0.21.6 \u2705 DONE"
       ],
-      "size_bytes": 10550
+      "size_bytes": 44768
     },
     "docs/WORKLOG.md": {
       "title": "Work Log",
       "type": "documentation",
-      "complexity": "intermediate",
+      "complexity": "advanced",
       "folder": "root",
       "tags": [],
       "sections": [
         "Rules",
         "Log"
       ],
-      "size_bytes": 6242
+      "size_bytes": 34759
     },
     "docs/index.md": {
       "title": "Docs",
@@ -83,47 +86,75 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 2789
+      "size_bytes": 3035
     },
-    "docs/_archive/2026-03/scripts-consolidation-plan.md": {
-      "title": "Scripts Consolidation Plan",
+    "docs/_active/maintenance-plan-v0-21-sprint.md": {
+      "title": "Maintenance Plan \u2014 Post v0.20.0 Sprint",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "_active",
+      "tags": [
+        "maintenance",
+        "planning"
+      ],
+      "sections": [
+        "Executive Summary",
+        "Workstream 1: Stale Reference Cleanup (Priority: HIGH)",
+        "Workstream 2: Test Health & Coverage (Priority: HIGH)",
+        "Workstream 3: FastAPI Version & API Hygiene (Priority: HIGH)",
+        "Workstream 4: Security Hardening (Priority: MEDIUM)",
+        "Workstream 5: Documentation & Session Infrastructure (Priority: MEDIUM)",
+        "Workstream 6: Code Cleanup (Priority: LOW)",
+        "Workstream 7: Phase 1 Continuation (Priority: MEDIUM)",
+        "Execution Priority Matrix",
+        "Success Criteria"
+      ],
+      "size_bytes": 16776
+    },
+    "docs/_active/git-workflow-hardening-plan.md": {
+      "title": "Git Workflow Hardening Plan v1.0",
       "type": "documentation",
       "complexity": "advanced",
       "folder": "_active",
       "tags": [],
       "sections": [
         "Executive Summary",
-        "Group 1: CHECK Scripts (42 \u2192 18)",
-        "Group 2: VALIDATE Scripts (11 \u2192 7)",
-        "Group 3: GENERATE Scripts (9 \u2192 5)",
-        "Group 4: TEST Scripts (10 \u2192 5)",
-        "Group 5: MIGRATE Scripts (3 \u2192 2)",
-        "Group 6: GIT/CI Scripts (17 \u2192 9)",
-        "Group 7: ARCHIVE Scripts (4 \u2192 1)",
-        "Group 8: BENCHMARK Scripts (2 \u2192 1)",
-        "Group 9: Remaining One-Off / Migration Scripts \u2192 ARCHIVE"
+        "Root Cause Analysis: TASK-640 Incident",
+        "Gap Inventory (19 Gaps, Prioritized)",
+        "Agent Review Summary",
+        "Implementation Plan",
+        "Governance Metrics (New)",
+        "Agent Instruction Updates Required",
+        "Implementation Notes",
+        "Related Documents"
       ],
-      "size_bytes": 25589
+      "size_bytes": 16422
     },
-    "docs/_archive/2026-03/import-pipeline-issues.md": {
-      "title": "Import Pipeline \u2014 Issues & Solutions",
+    "docs/_active/agent-evolver-plan.md": {
+      "title": "Agent-Evolver: Self-Evolving Meta-Agent \u2014 v2.0",
       "type": "documentation",
-      "complexity": "intermediate",
+      "complexity": "advanced",
       "folder": "_active",
-      "tags": [],
-      "sections": [
-        "Summary",
-        "Issue 1: CRITICAL \u2014 Dual CSV Import UI Gets \"Stuck\"",
-        "Issue 2: MODERATE \u2014 CSVImportResponse TS Type Mismatch",
-        "Issue 3: MODERATE \u2014 BatchDesignResponse TS Type Mismatches",
-        "Issue 4: LOW \u2014 Duplicate useBatchDesign Hooks \u2014 RESOLVED",
-        "Verification",
-        "Issue 5: CRITICAL \u2014 Single CSV Import Crashes (BeamGeometry.length_mm)",
-        "Issue 6: MODERATE \u2014 Auto-Detection Picks Wrong Adapter",
-        "Issue 7: NO ISSUE \u2014 Sample Building Path Verified Working",
-        "Test Coverage"
+      "tags": [
+        "agent-evolver",
+        "meta-agent",
+        "metrics",
+        "paper-data",
+        "self-improvement"
       ],
-      "size_bytes": 7326
+      "sections": [
+        "Table of Contents",
+        "1. Executive Summary",
+        "2. Research Foundation",
+        "3. Operational Philosophy",
+        "4. Infrastructure Audit",
+        "5. Agent Design",
+        "6. Three-Phase Rollout",
+        "7. Helper Scripts (Agent Toolkit)",
+        "8. Performance Scoring Framework (11 Dimensions)",
+        "9. Scoring Rubric (Anchored Examples)"
+      ],
+      "size_bytes": 56521
     },
     "docs/_active/README.md": {
       "title": "Active Work Directory",
@@ -137,43 +168,145 @@
         "\ud83d\udcc1 Current Active Work",
         "\ud83d\udcda Related Documentation"
       ],
-      "size_bytes": 1195
+      "size_bytes": 1771
     },
-    "docs/_archive/planning-completed-2026-03/unified-cli-upgrade-plan.md": {
-      "title": "Unified CLI Upgrade Plan",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "_active",
-      "tags": [],
-      "sections": [
-        "Problem",
-        "1. Full Script Inventory (85 active)",
-        "2. Overlaps & Consolidation Opportunities",
-        "3. Vision: Unified CLI",
-        "4. Architecture",
-        "5. `run.sh` Script Mapping (Complete)",
-        "6. Implementation Plan",
-        "7. Migration Path",
-        "8. Agent Instruction Update (What CLAUDE.md Should Say)",
-        "Commands"
+    "docs/research/innovation-structural-design-companion.md": {
+      "title": "Innovation: The Structural Design Companion",
+      "type": "research",
+      "complexity": "intermediate",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
       ],
-      "size_bytes": 31685
+      "sections": [
+        "Problem Statement",
+        "Current State",
+        "Proposed Approach: The Design Companion",
+        "IS 456 Clause Map",
+        "Data Requirements",
+        "Implementation",
+        "Validation Plan",
+        "Feasibility Assessment",
+        "Impact Assessment",
+        "Next Steps (Delegation Plan)"
+      ],
+      "size_bytes": 7867
     },
-    "docs/audit/agent-testing-audit-2026-03-28.md": {
-      "title": "Agent System Testing & Audit Report",
-      "type": "documentation",
+    "docs/research/claw-code-harness-ideas.md": {
+      "title": "Claw-Code Harness Architecture \u2014 Comprehensive Ideas for Our Project",
+      "type": "research",
       "complexity": "advanced",
-      "folder": "_active",
-      "tags": [],
-      "sections": [
-        "Overview",
-        "Pre-Test Fixes Applied (5 Audit Fixes)",
-        "Agent Test Results",
-        "Score Summary",
-        "All Issues Discovered (Consolidated by Priority)",
-        "Resolution Log"
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
       ],
-      "size_bytes": 11939
+      "sections": [
+        "Executive Summary",
+        "Current State: What We Already Have vs. What's Missing",
+        "1. Tool & Command Architecture (from Rust `tools` + Python `tools.py`)",
+        "2. Prompt Routing & Discovery (from `runtime.py` + `execution_registry.py`)",
+        "3. Session & Runtime Architecture (from `query_engine.py` + `session_store.py` + Rust `runtime`)",
+        "4. Security & Permissions (from `permissions.py` + Rust `tools` + `plugins`)",
+        "5. Prompt Construction & Context (from Rust `runtime` prompt.rs)",
+        "6. Hooks, Plugins & Extensibility (from Rust `plugins` + Python `costHook.py`)",
+        "7. Workflow Orchestration (from `$team`/`$ralph` modes + `coordinator/`)",
+        "8. Testing & Quality Patterns (from `tests/` + parity audit)"
+      ],
+      "size_bytes": 68119
+    },
+    "docs/research/innovation-sustainability-scoring.md": {
+      "title": "Innovation: Sustainability Scoring \u2014 Embodied Carbon per Beam Design",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Problem Statement",
+        "Current State",
+        "Proposed Approach",
+        "Data Requirements",
+        "Implementation Sketch",
+        "Validation Plan",
+        "IS 456 Clause Map",
+        "Impact Assessment",
+        "Next Steps \u2014 Delegation Plan",
+        "References"
+      ],
+      "size_bytes": 8705
+    },
+    "docs/research/2026-state-of-the-art-report.md": {
+      "title": "2026 State-of-the-Art: What a Cutting-Edge Structural Engineering Python Library Must Be",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "1. Engineer Persona Analysis",
+        "2. Pain Points with Current Tools",
+        "3. Proof & Verification Framework",
+        "4. Innovative 2026 Features",
+        "5. Report & Output Requirements",
+        "6. Multi-Code UX Design",
+        "7. Firm Adoption Strategy",
+        "8. Professional Standards",
+        "9. Top 10 Features That Would Make This the BEST Structural Engineering Library in the World",
+        "10. Action Items by Priority"
+      ],
+      "size_bytes": 27667
+    },
+    "docs/research/innovation-generative-design-intelligence.md": {
+      "title": "Innovation: Generative Design Intelligence \u2014 Pareto-Optimal Beam Explorer with Engineering Narratives",
+      "type": "research",
+      "complexity": "intermediate",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "Problem Statement",
+        "Current State",
+        "Proposed Approach",
+        "Data Requirements",
+        "Implementation Sketch",
+        "Validation Plan",
+        "IS 456 Clause Map",
+        "Impact Assessment",
+        "Feasibility Score",
+        "Next Steps"
+      ],
+      "size_bytes": 6702
+    },
+    "docs/research/2026-python-toolchain-report.md": {
+      "title": "2026 Python Toolchain Report \u2014 Best-in-Class Tools for a Structural Engineering Library",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "research",
+      "tags": [
+        "investigation",
+        "planning"
+      ],
+      "sections": [
+        "1. Build & Package \u2014 Best Stack for April 2026",
+        "2. Type Checking \u2014 Recommended Type Checker Combination",
+        "3. Testing \u2014 Best Testing Stack and Innovations",
+        "4. Documentation \u2014 Best Docs Stack",
+        "5. CI/CD \u2014 Latest Patterns and Tools",
+        "6. Architecture Enforcement \u2014 Best Boundary Checking Tools",
+        "7. Numerical Computing \u2014 Algorithms and Precision",
+        "8. Code Quality \u2014 Full Tool List with Versions",
+        "9. Key Recommendations \u2014 Top 10 Tools/Practices We MUST Adopt",
+        "10. What to AVOID \u2014 Tools That Are Dying or Overhyped"
+      ],
+      "size_bytes": 25595
     },
     "docs/research/index.md": {
       "title": "Research",
@@ -205,7 +338,7 @@
         "Real Benchmarks: The Results",
         "Conclusion & Key Takeaways"
       ],
-      "size_bytes": 4958
+      "size_bytes": 5076
     },
     "docs/blog-drafts/type-safety-engineering-software.md": {
       "title": "Type Safety in Engineering Software: The 10 Lakh Rupee Mistake",
@@ -222,7 +355,7 @@
         "ROI: Is It Worth It?",
         "Conclusion"
       ],
-      "size_bytes": 5575
+      "size_bytes": 5693
     },
     "docs/blog-drafts/README.md": {
       "title": "Blog Drafts Index",
@@ -264,12 +397,12 @@
         "Safety & Auditability (The \"White Box\" Promise)",
         "Conclusion"
       ],
-      "size_bytes": 9703
+      "size_bytes": 9821
     },
     "docs/blog-drafts/is456-compliance-automation.md": {
       "title": "IS 456 Compliance Automation: How the Library Checks Your Beam Designs",
       "type": "documentation",
-      "complexity": "intermediate",
+      "complexity": "advanced",
       "folder": "blog-drafts",
       "tags": [],
       "sections": [
@@ -281,7 +414,7 @@
         "Performance: 31 Hours Saved",
         "Conclusion"
       ],
-      "size_bytes": 7930
+      "size_bytes": 8048
     },
     "docs/adr/0001-three-layer-architecture.md": {
       "title": "ADR 0001: 3-Layer Architecture",
@@ -294,11 +427,10 @@
         "Decision",
         "Options Considered",
         "Consequences",
-        "Parity Impact (Python \u2194 VBA)",
         "Test Plan",
         "Links"
       ],
-      "size_bytes": 2236
+      "size_bytes": 2201
     },
     "docs/adr/README.md": {
       "title": "ADRs (Architecture Decision Records)",
@@ -346,7 +478,7 @@
         "Test Plan",
         "Links"
       ],
-      "size_bytes": 2824
+      "size_bytes": 2941
     },
     "docs/adr/0002-pydantic-models-for-api.md": {
       "title": "ADR 0002: Pydantic Models for API Contracts",
@@ -363,7 +495,296 @@
         "Test Plan",
         "Links"
       ],
-      "size_bytes": 2474
+      "size_bytes": 2591
+    },
+    "docs/learning-foundations/02-architecture.md": {
+      "title": "Module 2: Architecture \u2014 How Software Gets Organized",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "learning-foundations",
+      "tags": [
+        "foundations",
+        "learning"
+      ],
+      "sections": [
+        "The Big Idea",
+        "Part 1: What Architecture Actually Means",
+        "Part 2: Why Architecture Matters",
+        "Part 3: Layers \u2014 The Most Common Architecture Pattern",
+        "Part 4: Modules \u2014 Splitting Code Into Pieces",
+        "Part 5: Dependencies \u2014 What Uses What",
+        "Part 6: Common Architecture Patterns",
+        "Part 7: Boundaries \u2014 The Most Important Concept",
+        "Part 8: Real Example \u2014 Four-Layer Architecture",
+        "Part 9: Architecture Decisions to Make Early"
+      ],
+      "size_bytes": 17102
+    },
+    "docs/learning-foundations/12-starting-from-scratch.md": {
+      "title": "Module 12: Starting a Project From Scratch \u2014 The Complete Guide",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "learning-foundations",
+      "tags": [
+        "foundations",
+        "learning"
+      ],
+      "sections": [
+        "The Big Idea",
+        "Part 1: Before You Write Any Code \u2014 The 10 Questions",
+        "Part 2: The Project Lifecycle \u2014 Seven Stages",
+        "Part 3: Folder Structure \u2014 Your First Architecture Decision",
+        "Part 4: Setting Up the Project \u2014 Step by Step",
+        "Part 5: Key Documents to Create",
+        "Installation",
+        "Quick Start",
+        "Features",
+        "In Progress"
+      ],
+      "size_bytes": 19947
+    },
+    "docs/learning-foundations/07-frontend.md": {
+      "title": "Module 7: Frontend \u2014 UI, Components, and State",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "learning-foundations",
+      "tags": [
+        "foundations",
+        "learning"
+      ],
+      "sections": [
+        "The Big Idea",
+        "Part 1: What Is a Frontend?",
+        "Part 2: React \u2014 Components as Building Blocks",
+        "Part 3: Props \u2014 Passing Data Down",
+        "Part 4: State \u2014 Data That Changes",
+        "Part 5: Hooks \u2014 Reusable Logic",
+        "Part 6: State Management \u2014 Sharing Data Between Components",
+        "Part 7: Tailwind CSS \u2014 Styling With Utility Classes",
+        "Part 8: Vite \u2014 The Build Tool",
+        "Part 9: 3D Visualization with React Three Fiber (R3F)"
+      ],
+      "size_bytes": 14347
+    },
+    "docs/learning-foundations/11-errors-and-debugging.md": {
+      "title": "Module 11: Errors, Debugging, and Logging",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "learning-foundations",
+      "tags": [
+        "foundations",
+        "learning"
+      ],
+      "sections": [
+        "The Big Idea",
+        "Part 1: Types of Errors",
+        "Part 2: Error Handling in Python",
+        "Part 3: Error Handling in TypeScript",
+        "Part 4: HTTP Error Codes \u2014 Errors Across the Network",
+        "Part 5: Logging \u2014 Recording What Happened",
+        "Part 6: Debugging \u2014 Finding the Bug",
+        "Part 7: Error Propagation Across Layers",
+        "Part 8: Common Debugging Scenarios",
+        "Part 9: Error Handling Patterns"
+      ],
+      "size_bytes": 14728
+    },
+    "docs/learning-foundations/01-what-is-a-project.md": {
+      "title": "Module 1: What Is a Real Software Project",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "learning-foundations",
+      "tags": [
+        "foundations",
+        "learning"
+      ],
+      "sections": [
+        "The Big Idea",
+        "Part 1: The 5 Core Questions",
+        "Part 2: The 7 Stages of a Project",
+        "Part 3: What Is Scope?",
+        "Part 4: What Is an MVP?",
+        "Part 5: Success Criteria",
+        "Part 6: Roles in a Project",
+        "Part 7: Key Project Documents",
+        "Part 8: The 10 Biggest Mistakes",
+        "Part 9: Time Planning"
+      ],
+      "size_bytes": 11507
+    },
+    "docs/learning-foundations/05-types-and-schemas.md": {
+      "title": "Module 5: Types, Schemas, and Data Validation",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "learning-foundations",
+      "tags": [
+        "foundations",
+        "learning"
+      ],
+      "sections": [
+        "The Big Idea",
+        "Part 1: Why Types Matter",
+        "Part 2: Python Type Hints",
+        "Part 3: TypeScript Types",
+        "Part 4: Pydantic \u2014 Validation at the Boundary",
+        "Part 5: Validation at Every Boundary",
+        "Part 6: Dataclasses \u2014 Structured Data Without Validation",
+        "Part 7: Enums \u2014 Restricted Choices",
+        "Part 8: Units in Types \u2014 The Engineering Pattern",
+        "Part 9: The Type Gap Problem"
+      ],
+      "size_bytes": 12107
+    },
+    "docs/learning-foundations/README.md": {
+      "title": "Learning Foundations \u2014 Software Engineering from Zero",
+      "type": "index",
+      "complexity": "intermediate",
+      "folder": "learning-foundations",
+      "tags": [],
+      "sections": [
+        "Who This Is For",
+        "Module Map",
+        "How to Read"
+      ],
+      "size_bytes": 2337
+    },
+    "docs/learning-foundations/09-git.md": {
+      "title": "Module 9: Git and Version Control",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "learning-foundations",
+      "tags": [
+        "foundations",
+        "learning"
+      ],
+      "sections": [
+        "The Big Idea",
+        "Part 1: What Is Version Control?",
+        "Part 2: Git Concepts",
+        "Part 3: Basic Git Commands",
+        "Part 4: Conventional Commits \u2014 Meaningful Messages",
+        "Part 5: Branches \u2014 Working in Parallel",
+        "Part 6: Pull Requests \u2014 Code Review Gateway",
+        "Part 7: Git Hooks \u2014 Automatic Checks",
+        "Part 8: Git Automation \u2014 ai_commit.sh",
+        "Part 9: .gitignore \u2014 What NOT to Track"
+      ],
+      "size_bytes": 12219
+    },
+    "docs/learning-foundations/03-tech-stack.md": {
+      "title": "Module 3: The Tech Stack \u2014 Languages, Tools, and Why",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "learning-foundations",
+      "tags": [
+        "foundations",
+        "learning"
+      ],
+      "sections": [
+        "The Big Idea",
+        "Part 1: What Is a Tech Stack?",
+        "Part 2: Programming Languages \u2014 Python vs JavaScript/TypeScript",
+        "Part 3: Frameworks \u2014 Don't Reinvent the Wheel",
+        "Part 4: Package Managers \u2014 Installing Other People's Code",
+        "Part 5: Virtual Environments \u2014 Isolated Workspaces",
+        "Part 6: Build Tools \u2014 From Source Code to Something Usable",
+        "Part 7: Docker \u2014 Run Anywhere",
+        "Part 8: Development Workflow Tools",
+        "Part 9: This Project's Complete Tech Stack"
+      ],
+      "size_bytes": 15385
+    },
+    "docs/learning-foundations/06-testing.md": {
+      "title": "Module 6: Testing \u2014 How You Know It Works",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "learning-foundations",
+      "tags": [
+        "foundations",
+        "learning"
+      ],
+      "sections": [
+        "The Big Idea",
+        "Part 1: Why Test?",
+        "Part 2: Types of Tests",
+        "Part 3: pytest \u2014 Python's Test Framework",
+        "Part 4: Arrange-Act-Assert \u2014 The Test Pattern",
+        "Part 5: What to Test (and What Not To)",
+        "Part 6: Fixtures \u2014 Reusable Test Setup",
+        "Part 7: Test Coverage \u2014 How Much Is Tested?",
+        "Part 8: Benchmark Tests \u2014 Engineering Verification",
+        "Part 9: Test-Driven Development (TDD)"
+      ],
+      "size_bytes": 13850
+    },
+    "docs/learning-foundations/08-backend.md": {
+      "title": "Module 8: Backend \u2014 Servers, APIs, and Business Logic",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "learning-foundations",
+      "tags": [
+        "foundations",
+        "learning"
+      ],
+      "sections": [
+        "The Big Idea",
+        "Part 1: What Does a Backend Do?",
+        "Part 2: FastAPI \u2014 The Framework",
+        "Part 3: Routes \u2014 Mapping URLs to Functions",
+        "Part 4: Request \u2192 Processing \u2192 Response",
+        "Part 5: Middleware \u2014 Code That Runs on Every Request",
+        "Part 6: Pydantic Models \u2014 Input/Output Contracts",
+        "Part 7: Environment Configuration",
+        "Part 8: Docker \u2014 Running the Backend Anywhere",
+        "Part 9: Backend vs Library \u2014 Who Does What?"
+      ],
+      "size_bytes": 14432
+    },
+    "docs/learning-foundations/10-ci-cd.md": {
+      "title": "Module 10: CI/CD \u2014 Automated Quality and Deployment",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "learning-foundations",
+      "tags": [
+        "foundations",
+        "learning"
+      ],
+      "sections": [
+        "The Big Idea",
+        "Part 1: What Is CI/CD?",
+        "Part 2: GitHub Actions \u2014 The CI/CD Platform",
+        "Part 3: Common Workflow Patterns",
+        "Part 4: Quality Gates \u2014 What Gets Checked",
+        "Part 5: The check_all.py Script",
+        "Part 6: Workflow Files in This Project",
+        "Part 7: Reading CI Results",
+        "Part 8: Release Pipeline",
+        "Part 9: CI/CD Best Practices"
+      ],
+      "size_bytes": 12951
+    },
+    "docs/learning-foundations/04-apis.md": {
+      "title": "Module 4: APIs \u2014 How Software Talks to Software",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "learning-foundations",
+      "tags": [
+        "foundations",
+        "learning"
+      ],
+      "sections": [
+        "The Big Idea",
+        "Part 1: What Is an API?",
+        "Part 2: HTTP \u2014 The Language of the Web",
+        "Part 3: REST \u2014 A Design Pattern for APIs",
+        "Part 4: JSON \u2014 The Data Format",
+        "Part 5: Request \u2192 Response Cycle",
+        "Part 6: FastAPI \u2014 Building APIs in Python",
+        "Part 7: API Communication Patterns",
+        "Part 8: API Errors \u2014 What Goes Wrong",
+        "Part 9: Testing APIs"
+      ],
+      "size_bytes": 14306
     },
     "docs/images/README.md": {
       "title": "Documentation Images",
@@ -398,7 +819,7 @@
         "References",
         "Changelog"
       ],
-      "size_bytes": 8979
+      "size_bytes": 9123
     },
     "docs/specs/v0.9-job-schema.md": {
       "title": "v0.9 \u2014 Job Schema (Draft)",
@@ -416,7 +837,7 @@
         "4) CLI (v1)",
         "5) ACI Future-Proofing"
       ],
-      "size_bytes": 3153
+      "size_bytes": 3270
     },
     "docs/specs/README.md": {
       "title": "Specifications",
@@ -452,7 +873,7 @@
         "8. Example Data Flow",
         "9. Sign-Off"
       ],
-      "size_bytes": 10133
+      "size_bytes": 10249
     },
     "docs/specs/index.md": {
       "title": "Specs",
@@ -489,7 +910,7 @@
         "Documentation Updates",
         "Behavioral Verification (CRITICAL)"
       ],
-      "size_bytes": 8951
+      "size_bytes": 9068
     },
     "docs/contributing/workflow-professional-review.md": {
       "title": "Git Workflow Professional Review & Recommendations",
@@ -512,7 +933,7 @@
         "Final Verdict",
         "Cost-Benefit Analysis"
       ],
-      "size_bytes": 11561
+      "size_bytes": 11678
     },
     "docs/contributing/quickstart-checklist.md": {
       "title": "Quick-Start Checklist (Solution 4 - Developer Guides)",
@@ -533,7 +954,7 @@
         "\ud83d\udcda Reference Links",
         "\u26a1 Quick Commands"
       ],
-      "size_bytes": 11387
+      "size_bytes": 11504
     },
     "docs/contributing/development-guide.md": {
       "title": "IS 456 RC Beam Design Library \u2014 Development Guide",
@@ -556,7 +977,7 @@
         "8. Error Handling",
         "9. Documentation Standards"
       ],
-      "size_bytes": 42326
+      "size_bytes": 42443
     },
     "docs/contributing/naming-conventions.md": {
       "title": "Naming Conventions",
@@ -573,12 +994,12 @@
         "3. Document Headers",
         "4. Notes"
       ],
-      "size_bytes": 1467
+      "size_bytes": 1584
     },
     "docs/contributing/doc-template.md": {
       "title": "Documentation Template",
       "type": "documentation",
-      "complexity": "beginner",
+      "complexity": "intermediate",
       "folder": "contributing",
       "tags": [
         "development",
@@ -592,7 +1013,7 @@
         "Content",
         "See Also"
       ],
-      "size_bytes": 1940
+      "size_bytes": 2057
     },
     "docs/contributing/README.md": {
       "title": "Contributing",
@@ -636,7 +1057,7 @@
         "7. Testing",
         "8. Import Order"
       ],
-      "size_bytes": 21462
+      "size_bytes": 21579
     },
     "docs/contributing/commit-message-conventions.md": {
       "title": "Git Commit Message Conventions",
@@ -659,7 +1080,7 @@
         "Enforcement",
         "Common Patterns"
       ],
-      "size_bytes": 5158
+      "size_bytes": 5275
     },
     "docs/contributing/learning-paths.md": {
       "title": "Learning Paths for Contributors",
@@ -677,7 +1098,7 @@
         "Path C: Advanced (refactor, API, or release)",
         "Scenario map (examples)"
       ],
-      "size_bytes": 3050
+      "size_bytes": 3167
     },
     "docs/contributing/git-workflow-testing.md": {
       "title": "Git Workflow Testing Strategy",
@@ -700,7 +1121,7 @@
         "\ud83c\udf93 Learning Resources",
         "\ud83d\udd04 Continuous Improvement"
       ],
-      "size_bytes": 8584
+      "size_bytes": 8696
     },
     "docs/contributing/solo-maintainer-operating-system.md": {
       "title": "Solo Maintainer Operating System (Public)",
@@ -723,7 +1144,7 @@
         "External Trust Signals",
         "Stop List (Scope Control)"
       ],
-      "size_bytes": 2891
+      "size_bytes": 3008
     },
     "docs/contributing/github-workflow.md": {
       "title": "GitHub Workflow Guide",
@@ -746,7 +1167,7 @@
         "\ud83c\udf93 Best Practices",
         "\ud83d\udd27 Troubleshooting"
       ],
-      "size_bytes": 7789
+      "size_bytes": 7906
     },
     "docs/contributing/index.md": {
       "title": "Contributing",
@@ -760,7 +1181,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 3909
+      "size_bytes": 3190
     },
     "docs/contributing/repo-professionalism.md": {
       "title": "Repo Professionalism Playbook",
@@ -783,7 +1204,7 @@
         "8) Confidence loop (minimal but effective)",
         "9) Quick links"
       ],
-      "size_bytes": 7168
+      "size_bytes": 7339
     },
     "docs/contributing/docstring-style-guide.md": {
       "title": "Docstring Style Guide",
@@ -806,7 +1227,7 @@
         "Tools",
         "References"
       ],
-      "size_bytes": 9091
+      "size_bytes": 9208
     },
     "docs/contributing/end-of-session-workflow.md": {
       "title": "End-of-Session Workflow",
@@ -829,7 +1250,7 @@
         "\ud83d\udca1 Pro Tips",
         "\ud83d\udcdd Templates"
       ],
-      "size_bytes": 13343
+      "size_bytes": 13460
     },
     "docs/contributing/session-issues.md": {
       "title": "Session Issues and Fixes",
@@ -845,7 +1266,7 @@
         "2025-12-29 (v0.11.0 release)",
         "2025-12-30 (Main Branch Guard)"
       ],
-      "size_bytes": 3144
+      "size_bytes": 3261
     },
     "docs/contributing/agent-onboarding-message.md": {
       "title": "First Message for New Agents",
@@ -861,7 +1282,7 @@
         "Why This Works",
         "For Different AI Tools"
       ],
-      "size_bytes": 1420
+      "size_bytes": 1537
     },
     "docs/contributing/background-agent-guide.md": {
       "title": "Background Agent Parallel Work Guide",
@@ -884,7 +1305,7 @@
         "Question: [ROLE] \u2192 MAIN",
         "Parallel Coordination Rules (Strict)"
       ],
-      "size_bytes": 16371
+      "size_bytes": 16488
     },
     "docs/contributing/agent-collaboration-framework.md": {
       "title": "Agent Collaboration Framework",
@@ -907,7 +1328,7 @@
         "6. Troubleshooting",
         "References"
       ],
-      "size_bytes": 16141
+      "size_bytes": 16885
     },
     "docs/contributing/git-workflow-ai-agents.md": {
       "title": "Git Workflow for AI Agents (Canonical)",
@@ -926,7 +1347,7 @@
         "Formatting Policy",
         "FAQ"
       ],
-      "size_bytes": 2439
+      "size_bytes": 2556
     },
     "docs/contributing/handoff.md": {
       "title": "Handoff Quick Start",
@@ -943,7 +1364,7 @@
         "Debug Snapshot Checklist",
         "Common Traps (fast fixes)"
       ],
-      "size_bytes": 2980
+      "size_bytes": 3097
     },
     "docs/contributing/testing-strategy.md": {
       "title": "Testing Strategy & Setup (Python-first, VBA parity aware)",
@@ -964,7 +1385,7 @@
         "7) Property-Based Testing (Hypothesis)",
         "8) Definition of \"good\" (target state)"
       ],
-      "size_bytes": 9061
+      "size_bytes": 9178
     },
     "docs/contributing/changelog-deprecation-template.md": {
       "title": "CHANGELOG Template for Deprecations",
@@ -986,7 +1407,7 @@
         "Checklist",
         "References"
       ],
-      "size_bytes": 4306
+      "size_bytes": 4423
     },
     "docs/learning/exercises.md": {
       "title": "Exercises (Hands-On, Beginner Friendly)",
@@ -1007,7 +1428,7 @@
         "Exercise 7: Read one test",
         "Exercise 8: Tiny code change (safe)"
       ],
-      "size_bytes": 1469
+      "size_bytes": 1586
     },
     "docs/learning/glossary.md": {
       "title": "Glossary (Plain Language)",
@@ -1019,7 +1440,7 @@
         "training"
       ],
       "sections": [],
-      "size_bytes": 1036
+      "size_bytes": 1153
     },
     "docs/learning/README.md": {
       "title": "Learning Hub (Beginner-Friendly)",
@@ -1056,7 +1477,7 @@
         "How to trust your outputs",
         "How to use AI safely"
       ],
-      "size_bytes": 1041
+      "size_bytes": 1158
     },
     "docs/learning/concepts-map.md": {
       "title": "Concepts Map (Concept -> Code -> Tests -> Docs)",
@@ -1074,7 +1495,7 @@
         "VBA parity",
         "Automation and release"
       ],
-      "size_bytes": 2179
+      "size_bytes": 2296
     },
     "docs/learning/learning-plan.md": {
       "title": "Learning Plan (Beginner Friendly)",
@@ -1095,7 +1516,27 @@
         "Phase 6: Release and Maintenance (ongoing)",
         "Suggested weekly schedule (6 weeks)"
       ],
-      "size_bytes": 3027
+      "size_bytes": 3171
+    },
+    "docs/publications/research-paper-git-infrastructure.md": {
+      "title": "Self-Evolving Multi-Agent Git Infrastructure for AI-Assisted Structural Engineering Software Development: Architecture, Automation, and Lessons Learned",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "publications",
+      "tags": [],
+      "sections": [
+        "Abstract",
+        "1. Introduction",
+        "2. Related Work",
+        "3. System Architecture",
+        "4. Multi-Agent Orchestration System",
+        "5. Session Continuity Mechanism",
+        "6. Self-Evolving Infrastructure",
+        "7. Safety Mechanisms",
+        "8. Documentation Infrastructure",
+        "9. Metrics and Results"
+      ],
+      "size_bytes": 52422
     },
     "docs/publications/README.md": {
       "title": "Publications & Blog Posts",
@@ -1134,7 +1575,7 @@
         "Metrics Dashboard (Track Monthly)",
         "Content Team (Solo Maintainer + AI Assist)"
       ],
-      "size_bytes": 13033
+      "size_bytes": 13150
     },
     "docs/publications/blog-posts/03-sensitivity-analysis/outline.md": {
       "title": "Blog Post 03: Sensitivity Analysis for Reinforced Concrete Beam Design",
@@ -1154,7 +1595,7 @@
         "Section 7: Practical Workflow (250 words)",
         "Section 8: Key Takeaways (200 words)"
       ],
-      "size_bytes": 19931
+      "size_bytes": 20048
     },
     "docs/publications/blog-posts/03-sensitivity-analysis/draft.md": {
       "title": "Sensitivity Analysis for Reinforced Concrete Beam Design: A Practical Guide",
@@ -1174,7 +1615,7 @@
         "Validation Against IS 456 Worked Examples",
         "Implementation Best Practices"
       ],
-      "size_bytes": 33817
+      "size_bytes": 33934
     },
     "docs/publications/blog-posts/01-smart-library/outline.md": {
       "title": "Blog Post 01: Making Structural Design Intelligent (Without Machine Learning)",
@@ -1194,7 +1635,7 @@
         "Section 7: Architecture Decision \u2014 Stability First (350 words)",
         "Section 8: Key Takeaways (200 words)"
       ],
-      "size_bytes": 18370
+      "size_bytes": 18487
     },
     "docs/publications/blog-posts/01-smart-library/draft.md": {
       "title": "Making Structural Design Intelligent (Without Machine Learning)",
@@ -1214,7 +1655,7 @@
         "Try It Yourself",
         "References"
       ],
-      "size_bytes": 31386
+      "size_bytes": 31503
     },
     "docs/publications/blog-posts/02-deterministic-ml/outline.md": {
       "title": "Blog Post 02: Deterministic ML \u2014 When Classical Methods Beat Neural Networks",
@@ -1234,7 +1675,7 @@
         "Section 7: The Validation Story (200 words)",
         "Section 8: Key Takeaways (200 words)"
       ],
-      "size_bytes": 16846
+      "size_bytes": 16963
     },
     "docs/publications/blog-posts/02-deterministic-ml/draft.md": {
       "title": "Why We Chose Classical Methods Over Machine Learning for Structural Design",
@@ -1254,7 +1695,7 @@
         "Lessons for Software Engineers",
         "Conclusion"
       ],
-      "size_bytes": 25004
+      "size_bytes": 25121
     },
     "docs/publications/findings/00-research-summary-final.md": {
       "title": "Research Summary \u2014 FINAL VERSION (Evidence-Based)",
@@ -1273,7 +1714,7 @@
         "Attribution Corrections Summary",
         "Final Evidence Audit"
       ],
-      "size_bytes": 21896
+      "size_bytes": 22013
     },
     "docs/publications/findings/evidence-framework.md": {
       "title": "Evidence Credibility Framework",
@@ -1289,7 +1730,7 @@
         "Citation Format (APA Style)",
         "Evidence Audit Checklist"
       ],
-      "size_bytes": 15189
+      "size_bytes": 15306
     },
     "docs/git-automation/git-workflow-single-source.md": {
       "title": "Git Workflow \u2014 Single Source of Truth",
@@ -1309,7 +1750,7 @@
         "8. Environment Variables",
         "9. PR Workflow"
       ],
-      "size_bytes": 30521
+      "size_bytes": 30627
     },
     "docs/git-automation/README.md": {
       "title": "Git Automation for AI Agents",
@@ -1326,28 +1767,21 @@
       ],
       "size_bytes": 1718
     },
-    "docs/_archive/planning-completed-2026-03/automation-platform-vision.md": {
-      "title": "Automation Platform Vision - Structural Engineering + AI",
+    "docs/api-reference/index.md": {
+      "title": "API Reference",
       "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
+      "complexity": "intermediate",
+      "folder": "api-reference",
+      "tags": [],
       "sections": [
-        "1) Core Idea (Refined)",
-        "2) Why This Matters (Problem + Opportunity)",
-        "3) The Product at a Glance",
-        "4) Target Users (Primary Personas)",
-        "5) Platform Primitives (Building Blocks)",
-        "6) What Makes This Professional (Non-Negotiables)",
-        "7) Automation as a First-Class Asset",
-        "8) AI + Automation + 3D (Unified Flow)",
-        "9) Free-First Product Direction",
-        "10) Risks + Mitigation"
+        "Core API",
+        "IS 456 Code Modules",
+        "Services",
+        "Insights",
+        "Visualization",
+        "Core Types"
       ],
-      "size_bytes": 14176
+      "size_bytes": 2046
     },
     "docs/planning/next-session-brief.md": {
       "title": "Next Session Briefing",
@@ -1360,212 +1794,17 @@
       ],
       "sections": [
         "Latest Handoff (auto)",
-        "Session 108 Summary",
-        "Session 107 Summary",
-        "Session 106 Summary",
-        "Session 105 Summary",
-        "Session 104 Summary",
-        "Required Reading",
-        "Next Priorities",
-        "Quick Commands",
-        "Key Files"
+        "Start Here",
+        "Current Evidence",
+        "Maintenance Sequence",
+        "Previous Handoff (2026-04-07)",
+        "What Was Completed (v0.21.7 Session 1)",
+        "Current Version State",
+        "Priorities \u2014 v0.21.7 Remaining",
+        "Infrastructure Notes",
+        "Required Reading"
       ],
-      "size_bytes": 8212
-    },
-    "docs/_archive/planning-completed-2026-03/data-model-compatibility-checklist.md": {
-      "title": "Data Model Compatibility Checklist (BeamGeometry/RebarLayout)",
-      "type": "documentation",
-      "complexity": "intermediate",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Checklist (Use Before Adding/Updating Fields)",
-        "Notes"
-      ],
-      "size_bytes": 2263
-    },
-    "docs/_archive/planning-completed-2026-03/icloud-to-local-move-analysis.md": {
-      "title": "iCloud to Local Move Analysis",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Executive Summary",
-        "Migration Results",
-        "Post-Migration Cleanup",
-        "Original Analysis",
-        "Options Analysis",
-        "Recommendation Decision Matrix",
-        "Migration Plan (If Approved)",
-        "Risks and Mitigations",
-        "Conclusion",
-        "Post-Migration Issues Found (2026-01-23 Deep Review)"
-      ],
-      "size_bytes": 12933
-    },
-    "docs/_archive/planning-completed-2026-03/3d-visualization-strategic-decision.md": {
-      "title": "3D Visualization Strategic Decision - Long-Term Excellence",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "\ud83c\udfaf Executive Summary",
-        "\ud83d\udcca Strategic Analysis: Long-Term Thinking",
-        "\ud83e\udd16 AI-First Product Vision (Chat + 3D)",
-        "\ud83d\udd2c Technology Deep Dive",
-        "\ud83e\udde0 AI-Readiness Criteria (Non-Negotiable)",
-        "\ud83c\udfc6 The Winning Strategy: Layered Renderer Stack",
-        "\ud83e\udde9 LLM-Ready Architecture (Required for Chat Layer)",
-        "\ud83d\uddfa\ufe0f AI Integration Roadmap (Parallel Track)",
-        "\ud83c\udfa8 WOW Factors We'll Build",
-        "\ud83d\udcc8 Performance Targets"
-      ],
-      "size_bytes": 24879
-    },
-    "docs/_archive/planning-completed-2026-03/folder-migration-progress.md": {
-      "title": "Folder Structure Migration - Progress Tracker",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "\ud83c\udfaf Executive Summary",
-        "\ud83d\udcca Session Progress",
-        "\ud83d\udd0d Remaining Work",
-        "\ud83d\udcc8 Metrics History",
-        "\u2705 Completed Migrations",
-        "\ud83d\udee0\ufe0f Automation Status",
-        "\ud83d\udccb External Review Claims",
-        "\ud83c\udfaf Definition of Done",
-        "\ud83d\udcc6 Timeline"
-      ],
-      "size_bytes": 8044
-    },
-    "docs/_archive/planning-completed-2026-03/automation-platform-phase-0-research.md": {
-      "title": "Automation Platform Phase 0 - Research & Mapping",
-      "type": "research",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Summary & Innovation Vision",
-        "Reality Checks (Issues Found) + Fixes",
-        "Step 1 - User Journeys & Workflow Map",
-        "Step 2 - Excel Dominance & The \"Platform Schema\"",
-        "Step 3 - Innovation & Differentiation Strategy",
-        "Step 4 - Candidate \"Flagship\" Targets (The Top 5)",
-        "Phase 0 Acceptance Criteria (Go/No-Go)",
-        "Execution Plan & Next Steps"
-      ],
-      "size_bytes": 12284
-    },
-    "docs/_archive/planning-completed-2026-03/industry-usability-plan.md": {
-      "title": "Industry Usability Plan",
-      "type": "documentation",
-      "complexity": "intermediate",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Executive Summary",
-        "1. Current State Assessment",
-        "2. Priority Roadmap",
-        "3. Technical Improvements",
-        "4. User Experience Improvements",
-        "5. Competitive Positioning",
-        "6. Success Metrics",
-        "7. Next Steps",
-        "References"
-      ],
-      "size_bytes": 7286
-    },
-    "docs/_archive/planning-completed-2026-03/multi-code-architecture.md": {
-      "title": "Multi-Code Architecture Design",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Overview",
-        "Design Principles",
-        "Directory Structure",
-        "Abstract Base Class",
-        "Code Registry",
-        "IS 456 Implementation",
-        "ACI 318 Implementation Plan",
-        "EC2 Implementation Plan (Future)",
-        "Engine Integration",
-        "Testing Strategy"
-      ],
-      "size_bytes": 19608
-    },
-    "docs/_archive/planning-completed-2026-03/ai-chat-redesign-plan.md": {
-      "title": "AI Chat Page Redesign Plan",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Executive Summary",
-        "Current Problems",
-        "Proposed Design: Single Dynamic Workspace",
-        "Implementation Plan",
-        "New Dependencies",
-        "Sample Data (Built-in)",
-        "Migration Path",
-        "Success Metrics",
-        "Files to Modify",
-        "Timeline"
-      ],
-      "size_bytes": 19349
-    },
-    "docs/_archive/planning-completed-2026-03/api-improvement-research-specs.md": {
-      "title": "API Improvement Research Specifications",
-      "type": "research",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Overview",
-        "TASK-200: Professional Python Library API Patterns Research",
-        "TASK-201: User Experience Patterns for Technical APIs",
-        "TASK-202: Function Signature Design Standards",
-        "TASK-203: Result Object Design Patterns",
-        "TASK-204: Error Handling & Exception Design",
-        "TASK-205: Engineering Domain API Research",
-        "TASK-206: API Documentation & Discoverability",
-        "TASK-207: API Evolution & Migration Strategies",
-        "Research Coordination"
-      ],
-      "size_bytes": 19847
+      "size_bytes": 9463
     },
     "docs/planning/next-phase-improvements-plan.md": {
       "title": "Next Phase: What to Build and Why",
@@ -1588,10 +1827,10 @@
         "TASK-514: PDF Export",
         "TASK-515: Load Calculator"
       ],
-      "size_bytes": 54339
+      "size_bytes": 54456
     },
-    "docs/_archive/planning-completed-2026-03/documentation-structure.md": {
-      "title": "Professional Documentation Structure",
+    "docs/planning/library-expansion-blueprint-v5.md": {
+      "title": "Library Expansion Blueprint v5.0 \u2014 Multi-Code, Multi-Element",
       "type": "documentation",
       "complexity": "advanced",
       "folder": "planning",
@@ -1600,228 +1839,33 @@
         "tasks"
       ],
       "sections": [
-        "Overview",
-        "Documentation Goals",
-        "Target Structure",
-        "Page Templates",
-        "Prerequisites",
-        "Steps",
-        "Next Steps",
-        "Signature",
-        "Parameters",
-        "Returns"
-      ],
-      "size_bytes": 11464
-    },
-    "docs/_archive/planning-completed-2026-03/mac-mini-migration-issues.md": {
-      "title": "Mac Mini Migration \u2014 Issues & Solutions",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Issues Found & Fixed",
-        "Quick Reference \u2014 Startup Sequence",
-        "Validation Results (Session 101)",
-        "Lessons Learned"
-      ],
-      "size_bytes": 11688
-    },
-    "docs/_archive/planning-completed-2026-03/post-cleanup-issues.md": {
-      "title": "Post-Cleanup Issues & Fixes",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Summary",
-        "Issue 1: React Build Fails",
-        "Issue 2: Sample Building 404 on Fresh Clone",
-        "Issue 3: Ghost Python Packages Still Installed",
-        "Issue 4: excel_bridge.py Hard-Imports xlwings",
-        "Issue 5: 46 Broken Python Imports (Test/Script Files)",
-        "Issue 6: 66 Broken Documentation Links",
-        "Issue 7: run.sh / check_all.py Still Reference Streamlit",
-        "Issue 8: 15+ Scripts Reference streamlit_app/",
-        "Issue 9: dxf_export.py Docstring References Streamlit"
-      ],
-      "size_bytes": 13348
-    },
-    "docs/_archive/planning-completed-2026-03/ui-layout-implementation-plan.md": {
-      "title": "UI Layout Redesign - Final Decision & Implementation Plan",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Executive Summary",
         "Table of Contents",
-        "Current State Analysis",
-        "Chosen Solution",
-        "Implementation Plan",
-        "Error Prevention Strategy",
-        "Testing Strategy",
-        "Layout Tests",
-        "Preview Tests",
-        "Status Dashboard Tests"
+        "1. Executive Summary",
+        "2. Architecture Decisions",
+        "3. Current State",
+        "4. Phase 0 \u2014 IS 456 Restructure",
+        "5. Phase 1 \u2014 IS 456 Multi-Element",
+        "6. Phase 2 \u2014 Multi-Code Infrastructure",
+        "7. Phase 3 \u2014 ACI 318-19",
+        "8. Phase 4 \u2014 EC2 (EN 1992-1-1)",
+        "9. Phase 5 \u2014 Fill the Matrix"
       ],
-      "size_bytes": 46468
+      "size_bytes": 48215
     },
-    "docs/_archive/planning-completed-2026-03/library-api-expansion.md": {
-      "title": "Library API Expansion Plan (Beam-Only)",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Scope (v1.x)",
-        "Non-Goals (v1.x)",
-        "Proposed Public API (Stable Surface)",
-        "Future Required Functions (v0.17+)",
-        "Milestones, Owners, and Tests (Future API List)",
-        "Draft Data Models (Proposed, v0.17+)",
-        "CLI Additions (Thin Wrappers)",
-        "Work Bundles (one focused pass each)",
-        "Suggested Order"
-      ],
-      "size_bytes": 8492
-    },
-    "docs/_archive/planning-completed-2026-03/folder-audit.md": {
-      "title": "Folder Audit \u2014 Repository Health & Documentation",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Purpose",
-        "Scope",
-        "Audit Batches",
-        "Audit Template (per folder)",
-        "Completed Audits",
-        "Full Audit Complete \u2014 Summary",
-        "Workflow Status (for context)"
-      ],
-      "size_bytes": 80538
-    },
-    "docs/_archive/planning-completed-2026-03/library-expansion-blueprint.md": {
-      "title": "Library Expansion Master Blueprint v2.0",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "1. Vision",
-        "2. Current State Assessment",
-        "3. Architecture & Code Patterns",
-        "4. Phased Implementation Plan",
-        "5. IS 456 Clause Coverage Matrix",
-        "6. IS 13920 Seismic Provisions",
-        "7. Module Pattern (template for every new element)",
-        "8. Units Convention (non-negotiable)",
-        "9. Error Code Convention",
-        "10. Test Requirements Per Element"
-      ],
-      "size_bytes": 63088
-    },
-    "docs/_archive/planning-completed-2026-03/github-fix-plan.md": {
-      "title": "GitHub Fix Plan \u2014 Post-Cleanup Issues",
-      "type": "documentation",
-      "complexity": "intermediate",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Mac Mini Post-Sync Fix (2026-03-27)",
-        "Summary",
-        "What Was Done (TASK-102 PR)",
-        "Verification Results",
-        "Backup",
-        "Mac Mini Agent Instructions"
-      ],
-      "size_bytes": 6700
-    },
-    "docs/_archive/planning-completed-2026-03/pre-release-checklist.md": {
+    "docs/planning/pre-release-checklist.md": {
       "title": "Pre-Release Checklist",
       "type": "documentation",
-      "complexity": "intermediate",
+      "complexity": "beginner",
       "folder": "planning",
       "tags": [
         "roadmap",
         "tasks"
       ],
       "sections": [
-        "Current State (last verified 2026-01-21)",
-        "Versioning & Release Rules (from now on)",
-        "Beta Readiness Checklist",
-        "Validation Template",
-        "Status Log"
+        "Current State",
+        "Beta Readiness Checklist"
       ],
-      "size_bytes": 3593
-    },
-    "docs/_archive/planning-completed-2026-03/brainstorming-platform-pivot.md": {
-      "title": "Brainstorming: Structural Automation Platform",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "The Core Problem We're Solving",
-        "The Big Question: How Will Engineers Actually Use This?",
-        "Model A: Web Platform (Streamlit Cloud / Hosted)",
-        "Model B: Excel Add-in (PyXLL / xlwings Powered)",
-        "Model C: Drag-and-Drop Automation Builder (No-Code)",
-        "Model D: Python SDK (Pro-Code for Power Users)",
-        "Model E: Chat-First Interface (LLM-Powered)",
-        "Model F: Hybrid Desktop App (Electron/Tauri)",
-        "Recommendation: Start with a Hybrid Approach",
-        "Competitive Landscape Analysis"
-      ],
-      "size_bytes": 17141
-    },
-    "docs/_archive/planning-completed-2026-03/weak-points-audit.md": {
-      "title": "Weak Points Audit \u2014 Deep Analysis",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Summary",
-        "WP-1: React Has Zero Tests (CRITICAL)",
-        "WP-2: DesignView Has No HTTP Fallback (HIGH)",
-        "WP-3: Architecture Violations in Streamlit (293 flagged) (MODERATE)",
-        "WP-4: `ai_workspace.py` is 5,103 Lines (HIGH)",
-        "WP-5: React Bundle \u2014 No Lazy Loading (LOW)",
-        "WP-6: Type Annotation Gaps in Streamlit (LOW)",
-        "Priority Matrix",
-        "Next Steps"
-      ],
-      "size_bytes": 11110
+      "size_bytes": 1402
     },
     "docs/planning/README.md": {
       "title": "Planning",
@@ -1841,53 +1885,7 @@
         "Templates & Workflow",
         "Rules"
       ],
-      "size_bytes": 6257
-    },
-    "docs/_archive/planning-completed-2026-03/project-status-deep-dive.md": {
-      "title": "IS 456 RC Beam Design Library \u2014 Deep Dive",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Table of Contents",
-        "1. Audience",
-        "2. Source of Truth References",
-        "3. Feature Inventory",
-        "4. Architecture and Layering",
-        "5. Python Module Map",
-        "6. VBA Module Map",
-        "7. Data Contracts",
-        "8. Output Contracts",
-        "9. Quality and Verification"
-      ],
-      "size_bytes": 8239
-    },
-    "docs/_archive/planning-completed-2026-03/research-detailing.md": {
-      "title": "IS Code Detailing Research \u2014 RESEARCHER Agent",
-      "type": "research",
-      "complexity": "intermediate",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "1. Cover Requirements (IS 456 Cl 26.4)",
-        "2. Minimum Bar Spacing (IS 456 Cl 26.3)",
-        "3. Development Length (IS 456 Cl 26.2.1)",
-        "4. Lap/Splice Length (IS 456 Cl 26.2.5)",
-        "5. Stirrup/Shear Reinforcement (IS 456 Cl 26.5.1.6)",
-        "6. Ductile Detailing \u2014 IS 13920:2016",
-        "7. Drawing Conventions (SP 34:1987)",
-        "8. Key Formulas Summary",
-        "9. Implementation Recommendations",
-        "10. References"
-      ],
-      "size_bytes": 7397
+      "size_bytes": 6437
     },
     "docs/planning/memory.md": {
       "title": "Project Memory - Persistent Context",
@@ -1899,7 +1897,8 @@
         "tasks"
       ],
       "sections": [
-        "Current State (2026-01-07)",
+        "Current Maintenance State (2026-08-07)",
+        "Historical State (2026-01-07)",
         "Active Goals",
         "Architecture Decisions",
         "Technology Stack",
@@ -1907,28 +1906,12 @@
         "Dependencies & Constraints",
         "Recent Lessons Learned",
         "Roadmap Snapshot",
-        "Contact & Escalation",
-        "Quick Reference"
+        "Contact & Escalation"
       ],
-      "size_bytes": 8554
+      "size_bytes": 16927
     },
-    "docs/planning/index.md": {
-      "title": "Planning",
-      "type": "documentation",
-      "complexity": "intermediate",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Documentation Files",
-        "Subfolders"
-      ],
-      "size_bytes": 7936
-    },
-    "docs/_archive/planning-completed-2026-03/copilot-agent-master-plan.md": {
-      "title": "Copilot Agent Master Plan \u2014 structural_engineering_lib",
+    "docs/planning/etabs-killer-masterplan.md": {
+      "title": "Project BHEEM: Open-Source Structural Design Software Masterplan",
       "type": "documentation",
       "complexity": "advanced",
       "folder": "planning",
@@ -1939,80 +1922,30 @@
       "sections": [
         "Table of Contents",
         "1. Executive Summary",
-        "2. Current State Audit",
-        "3. VS Code Copilot Agent System \u2014 How It Works",
-        "4. Agent Roster \u2014 9 Agents We Need",
-        "5. Agent Implementation Plan",
-        "6. Document Maintenance & File Structure Strategy",
-        "7. Daily Work Log & Archive System",
-        "8. Handoff Workflow Between Agents",
-        "9. Best Practices, Tips & Mistakes to Avoid"
+        "2. Why This Is Possible Now",
+        "3. Competitive Analysis",
+        "4. Our Unfair Advantages",
+        "5. Architecture Vision",
+        "6. Phase Roadmap (Library-First Strategy)",
+        "7. AI-Native Development Methodology",
+        "8. Technical Deep Dives",
+        "9. Hard Technical Problems & Solutions"
       ],
-      "size_bytes": 31416
+      "size_bytes": 137348
     },
-    "docs/_archive/planning-completed-2026-03/etabs-automation-bridge-plan.md": {
-      "title": "ETABS Automation Bridge \u2014 Implementation Plan",
+    "docs/planning/index.md": {
+      "title": "Planning",
       "type": "documentation",
-      "complexity": "intermediate",
+      "complexity": "beginner",
       "folder": "planning",
       "tags": [
         "roadmap",
         "tasks"
       ],
       "sections": [
-        "Goal",
-        "Phase 1 \u2014 Local Bridge MVP (2 weeks)",
-        "Phase 2 \u2014 UX Polish + Installer (2 weeks)",
-        "Phase 3 \u2014 Optional ETABS Add-In (Parallel Track)",
-        "Phase 4 \u2014 Hosted Streamlit Support (Future)",
-        "Phase 4 \u2014 Hosted Streamlit Support (Future)",
-        "Open Risks",
-        "Suggested Tasks (Backlog)"
+        "Documentation Files"
       ],
-      "size_bytes": 4944
-    },
-    "docs/_archive/planning-completed-2026-03/8-week-development-plan.md": {
-      "title": "V3 React Migration Roadmap (7-Week Plan)",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "\ud83d\ude80 Executive Summary",
-        "\ud83c\udfaf The Bigger Picture",
-        "\ud83d\udcca Current Status (Session 81, Jan 27, 2026)",
-        "\ud83d\udcd0 V3 Architecture Overview",
-        "\ud83d\uddd3\ufe0f 7-Week V3 Migration Roadmap",
-        "Strategic Context",
-        "Success Metrics (7-Week Targets)",
-        "Delayed to V3.1 (Post-Beta Launch)",
-        "Archived: Streamlit v0.19.0 Milestones",
-        "Archived: Streamlit v0.19.0 Milestones"
-      ],
-      "size_bytes": 35128
-    },
-    "docs/_archive/planning-completed-2026-03/v020-stabilization-checklist.md": {
-      "title": "v0.20.0 Stabilization Checklist",
-      "type": "documentation",
-      "complexity": "intermediate",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "\ud83d\udd34 Critical (Must Complete Before v0.20.0)",
-        "\ud83d\udfe1 High Priority (Should Complete)",
-        "\ud83d\udfe2 Nice to Have (Post-v0.20.0)",
-        "Verification Commands",
-        "Sign-Off Requirements",
-        "Progress Tracker",
-        "Notes"
-      ],
-      "size_bytes": 5029
+      "size_bytes": 1556
     },
     "docs/planning/react-ux-improvement-plan.md": {
       "title": "React App \u2014 UX & Visual Improvement Plan",
@@ -2035,116 +1968,10 @@
         "Visual System",
         "Implementation Priority"
       ],
-      "size_bytes": 38152
+      "size_bytes": 38269
     },
-    "docs/_archive/planning-completed-2026-03/structural-automation-platform-phase-0-research-plan.md": {
-      "title": "Structural Automation Platform \u2014 Phase 0 Research Plan",
-      "type": "research",
-      "complexity": "intermediate",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Summary",
-        "Research Questions (What must be true?)",
-        "Practical Outputs (Phase 0 must produce these)",
-        "Plan (Small Steps)",
-        "Next Steps (Do next, one step only)"
-      ],
-      "size_bytes": 6341
-    },
-    "docs/_archive/planning-completed-2026-03/research-ai-enhancements.md": {
-      "title": "Research Log \u2014 AI/High-Value Enhancements",
-      "type": "research",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Mindset & Goals",
-        "Quick Online Scan (Dec 15, 2025)",
-        "Candidate Initiatives",
-        "Prioritized Shortlist (High Impact / Moderate Effort)",
-        "Proposed Next Steps (v0.9-v0.10)",
-        "Research Update (Pass 6 - Adoption and Positioning Insights, Dec 25, 2025)",
-        "Research Update (Pass 7 \u2014 Rebar Optimizer Spec: Min Steel Weight + Longitudinal Only, Dec 26, 2025)",
-        "Research Update (Pass 5 \u2014 Repo Status + Plan Ahead, Dec 20, 2025)",
-        "Notes",
-        "Research Update (Pass 2 \u2014 Repo-Aware Design Notes, Dec 15, 2025)"
-      ],
-      "size_bytes": 30680
-    },
-    "docs/_archive/planning-completed-2026-03/agent-workflow-improvements.md": {
-      "title": "Agent Workflow Improvements \u2014 Roadmap",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Problem Statement",
-        "Implemented Solutions",
-        "Recommended Agent Workflow (Updated)",
-        "Future Improvement Ideas",
-        "Design Principles",
-        "Scripts Inventory & Consolidation Plan"
-      ],
-      "size_bytes": 19450
-    },
-    "docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md": {
-      "title": "Repository Hygiene Audit Report - 2026-01-07",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Executive Summary",
-        "Verification Update (2026-01-07)",
-        "Implementation Status (2026-01-08)",
-        "P0 (Critical) - Fix Immediately",
-        "P1 (High) - Fix Within Sprint",
-        "P2 (Medium) - Nice to Have",
-        "File Naming",
-        "Branch Naming",
-        "Summary of Recommendations",
-        "Verification Commands"
-      ],
-      "size_bytes": 27747
-    },
-    "docs/_archive/planning-completed-2026-03/session-30-fragment-crisis-resolution.md": {
-      "title": "Session 30 Fragment Crisis Resolution - Complete Analysis",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Executive Summary",
-        "Technical Analysis",
-        "Streamlit Fragment API Rules (Definitive)",
-        "Solution: Specialized Fragment Validator",
-        "Fixes Applied",
-        "Commits Delivered (6 Total)",
-        "Metrics & Impact",
-        "Lessons Learned",
-        "Recommendations for Future Work",
-        "Process Improvements Implemented"
-      ],
-      "size_bytes": 24023
-    },
-    "docs/_archive/planning-completed-2026-03/bbs-dxf-improvement-plan.md": {
-      "title": "BBS + DXF Improvement Plan (Beam-Only)",
+    "docs/planning/dependency-security-baseline.md": {
+      "title": "Dependency and Security Baseline",
       "type": "documentation",
       "complexity": "intermediate",
       "folder": "planning",
@@ -2153,34 +1980,12 @@
         "tasks"
       ],
       "sections": [
-        "Scope (v1.x)",
-        "Non-Goals (v1.x)",
-        "Current Gaps (Summary)",
-        "Contracts to Freeze (v1.x)",
-        "Work Bundles (each can be done in one focused pass)",
-        "Suggested Order"
+        "Baseline (2026-08-07)",
+        "Temporary npm Exception",
+        "Reproduction",
+        "Automation"
       ],
-      "size_bytes": 4560
-    },
-    "docs/_archive/planning-completed-2026-03/ai-agent-efficiency-and-git-workflow-plan.md": {
-      "title": "AI Agent Efficiency & Git Workflow Improvement Plan",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Executive Summary",
-        "Part A: AI Agent Efficiency Improvements",
-        "Part B: Git Workflow Improvements",
-        "Implementation Priority Matrix",
-        "Quick Wins (Can Do Now) \u2014 IMPLEMENTED",
-        "Metrics to Track",
-        "References"
-      ],
-      "size_bytes": 14414
+      "size_bytes": 3426
     },
     "docs/planning/democratization-vision.md": {
       "title": "Democratizing Structural Engineering",
@@ -2201,134 +2006,7 @@
         "Next Steps",
         "References"
       ],
-      "size_bytes": 8949
-    },
-    "docs/_archive/planning-completed-2026-03/library-improvement-master-plan.md": {
-      "title": "Library Improvement Master Plan \u2014 v1.0",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Executive Summary",
-        "Current State Assessment",
-        "Phase 0: Foundation (Week 1-2)",
-        "Phase 1: 3D Visualization Production (Week 2-4)",
-        "Phase 2: Multi-Code Support (Week 4-8)",
-        "Phase 3: UI for Daily Testing (Week 2-6)",
-        "Phase 4: Documentation Upgrade (Week 3-6)",
-        "Phase 5: Testing Infrastructure (Ongoing)",
-        "Timeline Summary",
-        "Success Metrics"
-      ],
-      "size_bytes": 22061
-    },
-    "docs/_archive/planning-completed-2026-03/task-3d-002-implementation-plan.md": {
-      "title": "TASK-3D-002: ETABS 3D Visualization Implementation Plan",
-      "type": "tracking",
-      "complexity": "intermediate",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "Objective",
-        "Current Status",
-        "Implementation Steps",
-        "Technical Decisions",
-        "Success Criteria",
-        "Next Session Tasks",
-        "Related Files",
-        "Risks & Mitigation"
-      ],
-      "size_bytes": 7848
-    },
-    "docs/_archive/planning-completed-2026-03/project-needs-assessment-2026-01-09.md": {
-      "title": "Project Needs Assessment & Strategic Action Plan",
-      "type": "documentation",
-      "complexity": "advanced",
-      "folder": "planning",
-      "tags": [
-        "roadmap",
-        "tasks"
-      ],
-      "sections": [
-        "\ud83c\udfaf Executive Summary",
-        "\ud83d\udcca Current Situation Deep Dive",
-        "\ud83d\udd25 Critical Blockers (Fix First)",
-        "FIX-002: Repair Streamlit Test Suite",
-        "\ud83d\ude80 Prioritized Action Plan",
-        "\ud83d\udccb Resource Allocation Matrix",
-        "\ud83d\udcc8 Success Metrics & Validation",
-        "\u26a0\ufe0f Risk Assessment & Mitigation",
-        "\ud83d\udca1 Strategic Recommendations",
-        "\ud83d\udcca Priority Matrix (Eisenhower)"
-      ],
-      "size_bytes": 38777
-    },
-    "docs/_archive/planning-completed-2026-03/research-visual-design-README.md": {
-      "title": "Research: Visual Layer for Beam Design",
-      "type": "index",
-      "complexity": "advanced",
-      "folder": "research-visual-design",
-      "tags": [],
-      "sections": [
-        "Problem Statement",
-        "Context",
-        "Review Rounds",
-        "Constraints (Non-Negotiables)",
-        "Success Criteria",
-        "Workflow Summary",
-        "Executive Summary",
-        "Vision (What \"visual factor\" means)",
-        "Part 0: Problem-First Analysis (Added R4)",
-        "Part 1: Market Analysis \u2014 What Engineers Actually Use"
-      ],
-      "size_bytes": 60096
-    },
-    "docs/_archive/planning-completed-2026-03/research-findings-validation-README.md": {
-      "title": "Research: Findings Validation & Evidence Strengthening",
-      "type": "index",
-      "complexity": "intermediate",
-      "folder": "research-findings-validation",
-      "tags": [],
-      "sections": [
-        "Problem Statement",
-        "Context",
-        "Users & Personas",
-        "Constraints (Non-Negotiables)",
-        "Success Criteria",
-        "Options Explored",
-        "Scoring Rubric",
-        "Decision",
-        "Parking Lot",
-        "Next Steps"
-      ],
-      "size_bytes": 4075
-    },
-    "docs/_archive/planning-completed-2026-03/research-platform-README.md": {
-      "title": "Research: Platform Access",
-      "type": "index",
-      "complexity": "advanced",
-      "folder": "research-platform",
-      "tags": [],
-      "sections": [
-        "Problem Statement",
-        "Context",
-        "Users & Personas",
-        "Constraints (Non-Negotiables)",
-        "Success Criteria",
-        "Stage 1 Summary (for next agent)",
-        "Options Explored",
-        "Constraints Verification",
-        "Stage 2 Summary (for next agent)",
-        "Scoring"
-      ],
-      "size_bytes": 13564
+      "size_bytes": 9719
     },
     "docs/agents/README.md": {
       "title": "Agent Documentation Hub",
@@ -2360,7 +2038,7 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 537
+      "size_bytes": 533
     },
     "docs/agents/sessions/2026-01/agent-8-week1-completion-summary.md": {
       "title": "Agent 8 Week 1 Completion Summary",
@@ -2379,7 +2057,7 @@
         "\ud83c\udf89 Success Criteria (Met!)",
         "\ud83d\udcdd References"
       ],
-      "size_bytes": 19217
+      "size_bytes": 19334
     },
     "docs/agents/sessions/2026-01/README.md": {
       "title": "Agent Sessions - January 2026",
@@ -2415,7 +2093,7 @@
         "\ud83c\udf93 Learning Objectives",
         "\ud83d\udd17 References"
       ],
-      "size_bytes": 21822
+      "size_bytes": 21939
     },
     "docs/agents/guides/agent-6-quick-start.md": {
       "title": "Agent 6 Quick Start (Streamlit UI Specialist)",
@@ -2432,7 +2110,7 @@
         "Common Patterns",
         "Next Step"
       ],
-      "size_bytes": 1760
+      "size_bytes": 1877
     },
     "docs/agents/guides/agent-9-quick-start.md": {
       "title": "Agent 9 Quick Start - Governance & Documentation Structure",
@@ -2452,7 +2130,7 @@
         "Common Mistakes to Avoid",
         "Emergency Recovery"
       ],
-      "size_bytes": 7546
+      "size_bytes": 7663
     },
     "docs/agents/guides/agent-8-git-ops.md": {
       "title": "Agent 8: GIT OPERATIONS SPECIALIST",
@@ -2472,7 +2150,7 @@
         "Full Test Matrix Performance",
         "Handoff: [AGENT] \u2192 GIT OPERATIONS"
       ],
-      "size_bytes": 36453
+      "size_bytes": 36570
     },
     "docs/agents/guides/agent-6-comprehensive-onboarding.md": {
       "title": "Agent 6 Comprehensive Onboarding Guide",
@@ -2492,7 +2170,7 @@
         "\ud83d\udccb Current Tasks (v0.17.5)",
         "\ud83d\udd17 Quick Links"
       ],
-      "size_bytes": 12681
+      "size_bytes": 12798
     },
     "docs/agents/guides/agent-8-operations-log-spec.md": {
       "title": "Agent 8 Operations Log Spec",
@@ -2503,7 +2181,7 @@
       "sections": [
         "2026-01-08 19:30 UTC \u2014 Agent 6 Research Commit"
       ],
-      "size_bytes": 1227
+      "size_bytes": 1343
     },
     "docs/agents/guides/agent-bootstrap-complete-review.md": {
       "title": "Agent Bootstrap - Complete Review & Link Analysis",
@@ -2521,7 +2199,7 @@
         "Startup Flow Notes",
         "Suggested Reading Path"
       ],
-      "size_bytes": 4337
+      "size_bytes": 4508
     },
     "docs/agents/guides/agent-quick-reference.md": {
       "title": "Agent Workflow Quick Reference Card",
@@ -2541,7 +2219,7 @@
         "\u2705 API Touchpoints (Public API Changes)",
         "\ud83d\udd0e Scanner & Validation (Streamlit)"
       ],
-      "size_bytes": 9945
+      "size_bytes": 10066
     },
     "docs/agents/guides/README.md": {
       "title": "Agent Guides",
@@ -2559,13 +2237,13 @@
     "docs/agents/guides/index.md": {
       "title": "Guides",
       "type": "documentation",
-      "complexity": "intermediate",
+      "complexity": "beginner",
       "folder": "guides",
       "tags": [],
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 2414
+      "size_bytes": 1992
     },
     "docs/agents/guides/agent-workflow-master-guide.md": {
       "title": "Agent Workflow Master Guide",
@@ -2585,7 +2263,7 @@
         "\ud83c\udfad Agent Role Patterns",
         "\ud83d\udcca Quality Gates"
       ],
-      "size_bytes": 20054
+      "size_bytes": 19713
     },
     "docs/agents/guides/agent-8-automation.md": {
       "title": "Agent 8 Automation - Scripts & Tools Index",
@@ -2605,7 +2283,7 @@
         "Related Infrastructure",
         "Script Dependencies"
       ],
-      "size_bytes": 8394
+      "size_bytes": 8511
     },
     "docs/agents/guides/agent-9-governance-hub.md": {
       "title": "Agent 9 Governance Hub",
@@ -2623,7 +2301,7 @@
         "Common Workflows",
         "Need Help?"
       ],
-      "size_bytes": 3836
+      "size_bytes": 4007
     },
     "docs/agents/guides/agent-8-mistakes-prevention-guide.md": {
       "title": "Agent 8: Mistakes Prevention Guide (Lessons Learned)",
@@ -2641,7 +2319,7 @@
         "\ud83d\udea8 Emergency: If Mistake Happens Anyway",
         "\ud83c\udfaf Agent 8 Mission: Zero Mistakes"
       ],
-      "size_bytes": 29882
+      "size_bytes": 29999
     },
     "docs/agents/guides/agent-automation-system.md": {
       "title": "Agent Automation System v1.1.0",
@@ -2661,7 +2339,7 @@
         "Troubleshooting",
         "Maintenance"
       ],
-      "size_bytes": 8617
+      "size_bytes": 8734
     },
     "docs/agents/guides/agent-8-multi-agent-coordination.md": {
       "title": "Agent 8 Multi-Agent Coordination",
@@ -2681,7 +2359,7 @@
         "Implementation Status",
         "Testing"
       ],
-      "size_bytes": 7691
+      "size_bytes": 7808
     },
     "docs/cookbook/README.md": {
       "title": "Cookbook",
@@ -2732,7 +2410,7 @@
         "Exit Codes",
         "Related"
       ],
-      "size_bytes": 13394
+      "size_bytes": 13515
     },
     "docs/cookbook/python-recipes.md": {
       "title": "Python Recipes",
@@ -2755,7 +2433,7 @@
         "8. DXF Export",
         "9. Load from CSV/JSON"
       ],
-      "size_bytes": 8201
+      "size_bytes": 8318
     },
     "docs/verification/examples.md": {
       "title": "Verification Examples Pack",
@@ -2778,12 +2456,12 @@
         "9. Tolerances and Rounding",
         "10. Adding New Verification Cases"
       ],
-      "size_bytes": 43393
+      "size_bytes": 43513
     },
     "docs/verification/validation-pack.md": {
-      "title": "Validation Pack \u2014 Benchmark Beams",
+      "title": "Validation Pack \u2014 Benchmark Beams & Columns",
       "type": "documentation",
-      "complexity": "intermediate",
+      "complexity": "advanced",
       "folder": "verification",
       "tags": [
         "testing",
@@ -2792,10 +2470,11 @@
       "sections": [
         "Quick Validation (5 minutes)",
         "Benchmark Beams Reference",
+        "Column Design Benchmarks",
         "Additional Verification",
         "Tolerance Policy"
       ],
-      "size_bytes": 5521
+      "size_bytes": 11920
     },
     "docs/verification/README.md": {
       "title": "Verification",
@@ -2829,7 +2508,7 @@
         "What Happened (Notes)",
         "Verdict"
       ],
-      "size_bytes": 2086
+      "size_bytes": 2203
     },
     "docs/verification/index.md": {
       "title": "Verification",
@@ -2860,7 +2539,7 @@
         "Updating expectations",
         "Notes"
       ],
-      "size_bytes": 1718
+      "size_bytes": 1835
     },
     "docs/verification/insights-verification-pack.md": {
       "title": "Insights Module Verification Pack",
@@ -2879,7 +2558,30 @@
         "Verification Philosophy",
         "For Contributors"
       ],
-      "size_bytes": 3457
+      "size_bytes": 3574
+    },
+    "docs/architecture/unified-architecture-v1.md": {
+      "title": "Unified Architecture \u2014 structural_engineering_lib v1.0",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "architecture",
+      "tags": [
+        "design",
+        "structure"
+      ],
+      "sections": [
+        "1. Mission",
+        "2. Architecture Layers (4-Layer \u2014 STRICT)",
+        "3. Quality Assurance Framework",
+        "4. Code Organization",
+        "5. Schema & Data Model",
+        "6. Safety Guarantees",
+        "7. File Ownership & Responsibilities",
+        "8. Development Workflow",
+        "9. Version Roadmap",
+        "10. API Design Principles (Inspired by NumPy/pandas/scikit-learn)"
+      ],
+      "size_bytes": 75936
     },
     "docs/architecture/architecture-review-2025-12-27.md": {
       "title": "Architecture Review \u2014 2025-12-27",
@@ -2896,7 +2598,7 @@
         "Main Agent Decision",
         "Final Actions (this pass)"
       ],
-      "size_bytes": 3100
+      "size_bytes": 3217
     },
     "docs/architecture/self-evolving-system.md": {
       "title": "Self-Evolving System Architecture",
@@ -2915,7 +2617,7 @@
         "Review Schedule",
         "Measuring Success"
       ],
-      "size_bytes": 7759
+      "size_bytes": 7876
     },
     "docs/architecture/deep-project-map.md": {
       "title": "Deep Project Map (Python + VBA parity)",
@@ -2938,7 +2640,7 @@
         "9) Where v0.8 serviceability plugs in (deflection + crack width)",
         "10) How to validate changes (quick checklist)"
       ],
-      "size_bytes": 8912
+      "size_bytes": 9029
     },
     "docs/architecture/data-flow-diagrams.md": {
       "title": "Pipeline Data Flow Diagrams",
@@ -2953,7 +2655,7 @@
         "1) Job Runner (job.json -> outputs)",
         "2) Smart Designer (design -> insights dashboard)"
       ],
-      "size_bytes": 3269
+      "size_bytes": 3386
     },
     "docs/architecture/visual-architecture.md": {
       "title": "Visual Architecture Diagrams",
@@ -2969,7 +2671,7 @@
         "2) Module Groups (Logical Dependencies)",
         "3) Data Flow (Excel + Python)"
       ],
-      "size_bytes": 2691
+      "size_bytes": 2808
     },
     "docs/architecture/dependencies.md": {
       "title": "Python Module Dependency Graph",
@@ -2984,7 +2686,7 @@
         "Notes",
         "Regenerate"
       ],
-      "size_bytes": 691
+      "size_bytes": 808
     },
     "docs/architecture/README.md": {
       "title": "Architecture",
@@ -3003,6 +2705,26 @@
       ],
       "size_bytes": 3059
     },
+    "docs/architecture/config-precedence.md": {
+      "title": "Configuration Precedence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "architecture",
+      "tags": [
+        "design",
+        "structure"
+      ],
+      "sections": [
+        "3-Tier Precedence (Highest \u2192 Lowest)",
+        "How Conflicts Resolve",
+        "Additional Context Layers",
+        "File-Type Scoping (`applyTo`)",
+        "Agent-Specific Overrides",
+        "Validation",
+        "Quick Reference"
+      ],
+      "size_bytes": 3336
+    },
     "docs/architecture/index.md": {
       "title": "Architecture",
       "type": "documentation",
@@ -3016,7 +2738,7 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 1887
+      "size_bytes": 1928
     },
     "docs/architecture/mission-and-principles.md": {
       "title": "StructEng Automation \u2013 Mission, Vision & Principles",
@@ -3038,7 +2760,7 @@
         "8. How we measure success (beyond money)",
         "9. How AI tools (like VS Code AI) should support this mission"
       ],
-      "size_bytes": 10433
+      "size_bytes": 10550
     },
     "docs/architecture/project-overview.md": {
       "title": "IS 456 RC Beam Design Library \u2014 Project Overview",
@@ -3061,7 +2783,7 @@
         "9. Choosing Agent Roles (VS Code AI)",
         "Agent Workflow (Cheat Sheet)"
       ],
-      "size_bytes": 8535
+      "size_bytes": 9055
     },
     "docs/architecture/canonical-data-format.md": {
       "title": "Canonical Data Format Architecture",
@@ -3083,7 +2805,7 @@
         "Related Files",
         "Decision Record"
       ],
-      "size_bytes": 16464
+      "size_bytes": 16608
     },
     "docs/audit/onboarding-audit-session93.md": {
       "title": "Agent Onboarding Audit \u2014 Session 93",
@@ -3100,7 +2822,29 @@
         "Remaining Issues (Not Fixed \u2014 Separate PRs)",
         "Systemic Recommendation"
       ],
-      "size_bytes": 7280
+      "size_bytes": 7397
+    },
+    "docs/audit/maintenance-recovery-audit-2026-08-07.md": {
+      "title": "Maintenance Recovery Audit \u2014 2026-08-07",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "audit",
+      "tags": [
+        "audit",
+        "mac-mini",
+        "maintenance",
+        "recovery",
+        "v0.21.7"
+      ],
+      "sections": [
+        "Outcome",
+        "Audit scope",
+        "Completed maintenance",
+        "Open findings",
+        "Maintenance sequence",
+        "Guardrails retained"
+      ],
+      "size_bytes": 9010
     },
     "docs/audit/audit-readiness.md": {
       "title": "Audit Readiness Checklist",
@@ -3116,7 +2860,7 @@
         "Per-Release Checklist",
         "Related Files"
       ],
-      "size_bytes": 5046
+      "size_bytes": 5163
     },
     "docs/audit/README.md": {
       "title": "Audit Evidence & Readiness",
@@ -3135,6 +2879,26 @@
       ],
       "size_bytes": 2580
     },
+    "docs/audit/comprehensive-library-audit-2026-04-04.md": {
+      "title": "Comprehensive Library Audit \u2014 v0.21.2 / v0.21.3 / v0.21.4",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "audit",
+      "tags": [],
+      "sections": [
+        "Executive Summary",
+        "1. Library Usability Audit (Score: 3.9/5)",
+        "2. IS 456 Compliance Audit (Score: 8/10)",
+        "3. Security Audit (Score: 5/10)",
+        "4. Architecture Audit (Score: 7/10)",
+        "5. Test Coverage Audit (Score: 6.5/10)",
+        "6. API/Endpoint Quality Audit (Score: 7/10)",
+        "7. Frontend UX Audit (Score: 5/10)",
+        "8. Project Health Audit (Score: 7.5/10)",
+        "9. Structural Math Audit (@structural-math)"
+      ],
+      "size_bytes": 65991
+    },
     "docs/audit/index.md": {
       "title": "Audit",
       "type": "documentation",
@@ -3145,7 +2909,7 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 710
+      "size_bytes": 1391
     },
     "docs/audit/evidence-bundle-template.md": {
       "title": "Evidence Bundle Template \u2014 Release vX.Y.Z",
@@ -3164,7 +2928,23 @@
         "7. Sign-Off",
         "Appendix: File Manifest"
       ],
-      "size_bytes": 4502
+      "size_bytes": 4619
+    },
+    "docs/audit/agent-testing-audit-2026-03-28.md": {
+      "title": "Agent System Testing & Audit Report",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "audit",
+      "tags": [],
+      "sections": [
+        "Overview",
+        "Pre-Test Fixes Applied (5 Audit Fixes)",
+        "Agent Test Results",
+        "Score Summary",
+        "All Issues Discovered (Consolidated by Priority)",
+        "Resolution Log"
+      ],
+      "size_bytes": 12323
     },
     "docs/audit/git-workflow-audit-pr436.md": {
       "title": "Git Workflow Audit",
@@ -3183,7 +2963,7 @@
         "Validation Results (post-fix)",
         "Summary"
       ],
-      "size_bytes": 11175
+      "size_bytes": 11292
     },
     "docs/getting-started/installation-notes.md": {
       "title": "Installation & Setup Guide",
@@ -3203,7 +2983,7 @@
         "\ud83d\udccb Environment Details",
         "\ud83c\udfaf Next Steps"
       ],
-      "size_bytes": 2106
+      "size_bytes": 2217
     },
     "docs/getting-started/copilot-quick-start.md": {
       "title": "GitHub Copilot Agent Quick Start",
@@ -3225,7 +3005,7 @@
         "Useful Aliases (Created by Setup Script)",
         "Additional Resources"
       ],
-      "size_bytes": 4874
+      "size_bytes": 4991
     },
     "docs/getting-started/fix-copilot-terminal.md": {
       "title": "Fix Copilot Terminal Lockup - Manual Steps",
@@ -3247,7 +3027,7 @@
         "Prevention",
         "Quick Reference"
       ],
-      "size_bytes": 2993
+      "size_bytes": 3110
     },
     "docs/getting-started/releases.md": {
       "title": "Release Ledger",
@@ -3260,17 +3040,17 @@
       ],
       "sections": [
         "Release Process",
+        "v0.21.6 \u2014 API Quality & Introspection (2026-04-07)",
+        "v0.21.5",
+        "v0.21.4",
+        "v0.21.3",
+        "v0.21.2",
+        "v0.21.1",
+        "v0.21.0",
         "v0.17.0",
-        "v0.16.6",
-        "v0.17.5",
-        "v0.16.5",
-        "v0.16.0",
-        "v0.15.0",
-        "v0.14.0",
-        "v0.13.0",
-        "v0.12.0"
+        "v0.16.6"
       ],
-      "size_bytes": 37362
+      "size_bytes": 46424
     },
     "docs/getting-started/cost-optimization-guide.md": {
       "title": "Cost Optimization Guide",
@@ -3288,7 +3068,7 @@
         "Interpretation",
         "References"
       ],
-      "size_bytes": 1263
+      "size_bytes": 1380
     },
     "docs/getting-started/README.md": {
       "title": "Getting Started",
@@ -3331,7 +3111,7 @@
         "8. Units Reference",
         "9. Getting Help"
       ],
-      "size_bytes": 4633
+      "size_bytes": 4750
     },
     "docs/getting-started/mac-mini-setup.md": {
       "title": "Mac Mini Setup Guide",
@@ -3354,7 +3134,7 @@
         "Daily Workflow Commands",
         "Architecture Overview"
       ],
-      "size_bytes": 9395
+      "size_bytes": 9651
     },
     "docs/getting-started/agent-bootstrap.md": {
       "title": "Agent Bootstrap \u2014 structural_engineering_lib",
@@ -3377,7 +3157,7 @@
         "8. Key Scripts",
         "9. Golden Rules"
       ],
-      "size_bytes": 32361
+      "size_bytes": 38044
     },
     "docs/getting-started/python-quickstart.md": {
       "title": "Python Quickstart (Beginner-Friendly)",
@@ -3397,10 +3177,10 @@
         "4) No CSV? Generate synthetic inputs (batch + full pipeline)",
         "5) Use the CLI (CSV -> JSON -> BBS/DXF)",
         "6) Minimal \u201cone-liner\u201d example (no files)",
-        "7) Packaging notes (contributors only)",
-        "8) Troubleshooting"
+        "7) Column Design (IS 456)",
+        "8) Packaging notes (contributors only)"
       ],
-      "size_bytes": 5712
+      "size_bytes": 6492
     },
     "docs/getting-started/index.md": {
       "title": "Getting Started",
@@ -3414,7 +3194,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 2753
+      "size_bytes": 2296
     },
     "docs/getting-started/agent-essentials.md": {
       "title": "Agent Essentials",
@@ -3426,7 +3206,7 @@
         "tutorial"
       ],
       "sections": [],
-      "size_bytes": 223
+      "size_bytes": 340
     },
     "docs/getting-started/beginners-guide.md": {
       "title": "Beginner's Guide (No Coding Required)",
@@ -3443,7 +3223,7 @@
         "Common fixes",
         "Next steps"
       ],
-      "size_bytes": 3986
+      "size_bytes": 4103
     },
     "docs/getting-started/ai-context-pack.md": {
       "title": "AI Context Pack",
@@ -3455,7 +3235,7 @@
         "tutorial"
       ],
       "sections": [],
-      "size_bytes": 222
+      "size_bytes": 339
     },
     "docs/getting-started/design-suggestions-guide.md": {
       "title": "Design Suggestions Guide",
@@ -3478,7 +3258,7 @@
         "Limitations",
         "Rule Reference"
       ],
-      "size_bytes": 12599
+      "size_bytes": 12716
     },
     "docs/getting-started/colab-workflow.md": {
       "title": "Colab Workflow (End-to-End, No ETABS Needed)",
@@ -3501,7 +3281,7 @@
         "Step 6: Job Runner (JSON Spec)",
         "Step 7: \ud83c\udd95 Critical Set Export (V03)"
       ],
-      "size_bytes": 13030
+      "size_bytes": 13147
     },
     "docs/getting-started/NEW-DEVELOPER-ONBOARDING.md": {
       "title": "Onboarding Guide for New Developers",
@@ -3524,7 +3304,7 @@
         "Today's Homework (Optional)",
         "Questions to Ask Yourself"
       ],
-      "size_bytes": 12072
+      "size_bytes": 12189
     },
     "docs/getting-started/insights-guide.md": {
       "title": "Advisory Insights Guide",
@@ -3547,7 +3327,7 @@
         "Troubleshooting",
         "API Reference"
       ],
-      "size_bytes": 13903
+      "size_bytes": 14020
     },
     "docs/guides/ai-agent-coding-guide.md": {
       "title": "AI Agent Coding Guide",
@@ -3567,7 +3347,7 @@
         "6. Error Handling",
         "7. Documentation Standards"
       ],
-      "size_bytes": 24665
+      "size_bytes": 24836
     },
     "docs/guides/code-reuse-and-library-structure.md": {
       "title": "Code Reuse and Library Structure",
@@ -3587,7 +3367,7 @@
         "8. Testing Reusable Code",
         "9. Dependency Management"
       ],
-      "size_bytes": 17648
+      "size_bytes": 17765
     },
     "docs/guides/testing-and-cicd-strategy.md": {
       "title": "Testing and CI/CD Strategy",
@@ -3603,7 +3383,7 @@
         "4. Implementation Checklist",
         "Summary"
       ],
-      "size_bytes": 6135
+      "size_bytes": 6252
     },
     "docs/guides/fastapi-deployment-guide.md": {
       "title": "FastAPI Deployment Guide",
@@ -3641,7 +3421,7 @@
         "Related Documentation",
         "Changelog"
       ],
-      "size_bytes": 31911
+      "size_bytes": 32082
     },
     "docs/guides/maintenance-checklist.md": {
       "title": "Maintenance Checklist",
@@ -3659,7 +3439,7 @@
         "Maintenance Pipeline (Who Does What)",
         "Tracking"
       ],
-      "size_bytes": 5359
+      "size_bytes": 5476
     },
     "docs/guides/README.md": {
       "title": "User Guides",
@@ -3690,7 +3470,7 @@
         "Client Examples",
         "Best Practices"
       ],
-      "size_bytes": 12091
+      "size_bytes": 12208
     },
     "docs/guides/index.md": {
       "title": "Guides",
@@ -3701,7 +3481,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 1642
+      "size_bytes": 1432
     },
     "docs/guides/copilot-agents-usage-guide.md": {
       "title": "How to Use Copilot Agents \u2014 Practical Guide",
@@ -3711,9 +3491,9 @@
       "tags": [],
       "sections": [
         "Quick Overview",
-        "The 9 Agents \u2014 When to Use Each",
-        "The 4 Skills \u2014 Quick Actions",
-        "The 9 Prompt Files \u2014 Workflow Templates",
+        "The 16 Agents \u2014 When to Use Each",
+        "The 10 Skills \u2014 Quick Actions",
+        "The 16 Prompt Files \u2014 Workflow Templates",
         "Common Workflows \u2014 Step by Step",
         "Agent Handoff \u2014 How It Works",
         "Tips & Common Mistakes",
@@ -3721,7 +3501,27 @@
         "Context Management \u2014 Working Through Long Sessions",
         "Efficiency Patterns"
       ],
-      "size_bytes": 12714
+      "size_bytes": 18243
+    },
+    "docs/governance/maintenance-playbook.md": {
+      "title": "Governance & Maintenance Playbook",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "governance",
+      "tags": [],
+      "sections": [
+        "1. Per-Session Checklist",
+        "2. Weekly Maintenance (~1 hour)",
+        "3. Monthly Review (~2 hours)",
+        "4. Quality Gate Enforcement (Per PR)",
+        "5. Quarterly Benchmarks (Structural Engineering)",
+        "6. Error Handling Standards",
+        "7. Governance Limits",
+        "8. Documentation Sync",
+        "9. Release Checklist",
+        "10. Incident Response"
+      ],
+      "size_bytes": 6713
     },
     "docs/guidelines/documentation-standard.md": {
       "title": "API Documentation & Discoverability Standard",
@@ -3741,7 +3541,7 @@
         "7. API Reference Generation",
         "8. Error Documentation"
       ],
-      "size_bytes": 43921
+      "size_bytes": 44038
     },
     "docs/guidelines/doc-naming-conventions.md": {
       "title": "Document Naming Conventions",
@@ -3759,7 +3559,7 @@
         "Examples (Good)",
         "Examples (Bad)"
       ],
-      "size_bytes": 2465
+      "size_bytes": 2582
     },
     "docs/guidelines/file-operations-safety-guide.md": {
       "title": "File Operations Safety Guide",
@@ -3776,7 +3576,7 @@
         "\ud83d\udcc1 Special Folder Rules",
         "\ud83e\udd16 For AI Agents"
       ],
-      "size_bytes": 8615
+      "size_bytes": 8581
     },
     "docs/guidelines/folder-cleanup-workflow.md": {
       "title": "Folder Cleanup Workflow",
@@ -3796,7 +3596,7 @@
         "Phase 3: Plan (Prepare Operations)",
         "Phase 4: Execute (Apply Changes)"
       ],
-      "size_bytes": 6584
+      "size_bytes": 6701
     },
     "docs/guidelines/migration-workflow-guide.md": {
       "title": "IS 456 Module Migration Workflow",
@@ -3816,7 +3616,27 @@
         "Phase 6: Migrate compliance.py",
         "Phase 7: Migrate ductile.py"
       ],
-      "size_bytes": 9732
+      "size_bytes": 9849
+    },
+    "docs/guidelines/ai-token-efficiency.md": {
+      "title": "AI Token-Efficiency Policy",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "guidelines",
+      "tags": [],
+      "sections": [
+        "Defaults",
+        "Model and Reasoning Matrix",
+        "Task-Aware Picker",
+        "Orchestrator Contract",
+        "Delegation Budget",
+        "Context Budget",
+        "Verification Ladder",
+        "Monitoring",
+        "Reusable Task Preamble",
+        "Official References"
+      ],
+      "size_bytes": 10247
     },
     "docs/guidelines/result-object-standard.md": {
       "title": "Result Object Design Standard",
@@ -3836,7 +3656,7 @@
         "7. Error Handling in Results",
         "8. Serialization & Persistence"
       ],
-      "size_bytes": 38838
+      "size_bytes": 38955
     },
     "docs/guidelines/README.md": {
       "title": "Guidelines Index",
@@ -3871,7 +3691,7 @@
         "Next Steps",
         "6. Documentation Standard"
       ],
-      "size_bytes": 79796
+      "size_bytes": 79913
     },
     "docs/guidelines/api-evolution-standard.md": {
       "title": "API Evolution & Migration Standard",
@@ -3891,7 +3711,7 @@
         "5. Breaking Changes",
         "6. Version Communication"
       ],
-      "size_bytes": 44783
+      "size_bytes": 44900
     },
     "docs/guidelines/index.md": {
       "title": "Guidelines",
@@ -3903,7 +3723,7 @@
         "Config Files",
         "Documentation Files"
       ],
-      "size_bytes": 2514
+      "size_bytes": 2227
     },
     "docs/guidelines/folder-structure-governance.md": {
       "title": "Folder Structure Governance",
@@ -3923,7 +3743,7 @@
         "IX. Validation Checklist",
         "X. Rule Updates & Governance"
       ],
-      "size_bytes": 21400
+      "size_bytes": 21517
     },
     "docs/guidelines/migration-preflight-checklist.md": {
       "title": "IS 456 Migration Pre-Flight Checklist",
@@ -3943,7 +3763,7 @@
         "\ud83d\udea8 Stop Conditions",
         "\ud83d\udccb Summary Checklist"
       ],
-      "size_bytes": 6600
+      "size_bytes": 6717
     },
     "docs/guidelines/blog-writing-guide.md": {
       "title": "Blog Writing Guidelines for Structural Engineering Library",
@@ -3963,7 +3783,7 @@
         "Style Reference Quick Reference",
         "Review & Feedback Process"
       ],
-      "size_bytes": 29392
+      "size_bytes": 29527
     },
     "docs/guidelines/function-signature-standard.md": {
       "title": "Function Signature Design Standard",
@@ -3983,7 +3803,7 @@
         "7. Validation Parameters",
         "8. Special Cases"
       ],
-      "size_bytes": 38063
+      "size_bytes": 38181
     },
     "docs/guidelines/error-handling-standard.md": {
       "title": "Error Handling & Exception Design Standard",
@@ -4003,7 +3823,7 @@
         "7. Anti-patterns to Avoid",
         "8. Testing Exception Behavior"
       ],
-      "size_bytes": 56770
+      "size_bytes": 56887
     },
     "docs/legal/usage-guidelines.md": {
       "title": "Professional Use Guidelines",
@@ -4019,7 +3839,7 @@
         "5. Reporting & Documentation",
         "6. Disclaimer"
       ],
-      "size_bytes": 1646
+      "size_bytes": 1763
     },
     "docs/legal/certification-template.md": {
       "title": "Professional Certification Template",
@@ -4035,7 +3855,7 @@
         "Version Tracking",
         "Related Documents"
       ],
-      "size_bytes": 3581
+      "size_bytes": 3698
     },
     "docs/legal/README.md": {
       "title": "Legal",
@@ -4073,7 +3893,940 @@
         "Part D: Summary",
         "Related Documents"
       ],
-      "size_bytes": 3449
+      "size_bytes": 3566
+    },
+    "docs/migration/09-standards-and-rules.md": {
+      "title": "Standards, Rules & Knowledge",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "migration",
+      "tags": [],
+      "sections": [
+        "Coding Standards",
+        "Testing Standards",
+        "Historical Mistakes to Avoid",
+        "IS 456:2000 Coverage",
+        "Python Version Support",
+        "Dependency Policy",
+        "Architecture Rules (40+ Numbered Rules)",
+        "Rule Quick Reference (All 38 Rules)"
+      ],
+      "size_bytes": 16582
+    },
+    "docs/migration/08-naming-and-accounts.md": {
+      "title": "Naming, Accounts & Setup",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "migration",
+      "tags": [],
+      "sections": [
+        "Library Name Options",
+        "Decision: PENDING \u2014 New Name Required",
+        "PyPI Availability Verification",
+        "PyPI Naming Best Practices",
+        "Account Setup (Step by Step)",
+        "Domain / Organization (Optional)",
+        "Name Availability Checklist"
+      ],
+      "size_bytes": 10357
+    },
+    "docs/migration/README.md": {
+      "title": "Migration Planning \u2014 Multi-Code Library Split",
+      "type": "index",
+      "complexity": "intermediate",
+      "folder": "migration",
+      "tags": [],
+      "sections": [
+        "Documents",
+        "Summary",
+        "Key Decisions (Finalized)",
+        "Open Items (Need User Decision)",
+        "Research Documents",
+        "Quick Navigation"
+      ],
+      "size_bytes": 6622
+    },
+    "docs/migration/02-library-research.md": {
+      "title": "Library Research \u2014 20 Top Python Libraries Analyzed",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "migration",
+      "tags": [],
+      "sections": [
+        "Purpose",
+        "1. NumPy",
+        "2. Pandas",
+        "3. SciPy",
+        "4. FastAPI",
+        "5. Pydantic",
+        "6. Polars",
+        "7. HTTPX",
+        "8. Rich",
+        "9. Ruff"
+      ],
+      "size_bytes": 30335
+    },
+    "docs/migration/11-complete-function-enumeration.md": {
+      "title": "Complete Function Enumeration \u2014 Multi-Code RC Design Library",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "migration",
+      "tags": [],
+      "sections": [
+        "Summary",
+        "0. PROTOCOL INTERFACES",
+        "1. BEAM Functions",
+        "2. COLUMN Functions",
+        "3. SLAB Functions",
+        "4. FOOTING Functions",
+        "5. STAIRCASE Functions",
+        "6. COMMON INFRASTRUCTURE Functions",
+        "7. REFERENCE TABLES",
+        "8. IMPLEMENTATION PRIORITY"
+      ],
+      "size_bytes": 79865
+    },
+    "docs/migration/05-agents-and-automation.md": {
+      "title": "GitHub Copilot Agents & Automation",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "migration",
+      "tags": [],
+      "sections": [
+        "Current State (Monorepo)",
+        "Library Repo Agents (4 agents)",
+        "Git",
+        "Architecture",
+        "Before Coding",
+        "Testing",
+        "Key Rules",
+        "Library Repo Skills (2 skills)",
+        "Library Repo Prompts (4 prompts)",
+        "Library Repo Instructions (3 files)"
+      ],
+      "size_bytes": 16554
+    },
+    "docs/migration/01-adr-library-separation.md": {
+      "title": "ADR 0004: Library Separation & Professional Packaging Strategy",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "migration",
+      "tags": [
+        "aci318",
+        "architecture",
+        "ec2",
+        "is456",
+        "library",
+        "multi-code",
+        "packaging",
+        "professional",
+        "pypi",
+        "separation"
+      ],
+      "sections": [
+        "Version History",
+        "Table of Contents",
+        "1. Problem Statement",
+        "2. Decision: Two-Repository Split",
+        "3. Naming Strategy",
+        "4. Library Repository \u2014 Complete Structure",
+        "5. Application Repository",
+        "6. Complete Classification Table \u2014 123 Exports Audited (564 Target)",
+        "7. BBS Split Decision",
+        "8. Audit Trail Split Decision"
+      ],
+      "size_bytes": 72476
+    },
+    "docs/migration/12-innovation-ideas-new.md": {
+      "title": "12 \u2014 Ten Development Infrastructure Innovations",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "migration",
+      "tags": [],
+      "sections": [
+        "Research Sources",
+        "Comparison Matrix",
+        "Idea 1: Symbolic-Numerical Crosscheck Engine",
+        "Idea 2: Metamorphic Test Amplifier",
+        "Idea 3: Formula Provenance Chain (DO-178C for Python)",
+        "Idea 4: Agent Conflict Resolution Protocol",
+        "Idea 5: Living Formula Documentation",
+        "Idea 6: Semantic API Breakage Detector",
+        "Idea 7: Self-Healing CI Pipeline",
+        "Idea 8: Golden Vector Factory"
+      ],
+      "size_bytes": 64277
+    },
+    "docs/migration/06-ci-cd-and-tooling.md": {
+      "title": "CI/CD and Tooling Setup",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "migration",
+      "tags": [],
+      "sections": [
+        "GitHub Actions Workflows",
+        "Pre-commit Configuration",
+        "Tooling Stack (2026)",
+        "Superseded Tools (AVOID)",
+        "Architecture Enforcement",
+        "Mutation Testing (Safety-Critical)",
+        "Supply Chain Security (NEW)",
+        "Zizmor \u2014 GitHub Actions Security Linter",
+        "Dependabot Configuration",
+        ".editorconfig"
+      ],
+      "size_bytes": 14849
+    },
+    "docs/migration/12-innovation-ideas.md": {
+      "title": "12 \u2014 Ten Development Infrastructure Innovations",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "migration",
+      "tags": [],
+      "sections": [
+        "Research Sources",
+        "Comparison Matrix",
+        "3-Agent Review Summary",
+        "Idea 1: Symbolic-Numerical Crosscheck Engine",
+        "Idea 2: Metamorphic Test Amplifier",
+        "Idea 3: Formula Provenance Chain (DO-178C for Python)",
+        "Idea 4: Agent Conflict Resolution Protocol",
+        "Idea 5: Living Formula Documentation",
+        "Idea 6: Semantic API Breakage Detector",
+        "Idea 7: Self-Healing CI Pipeline"
+      ],
+      "size_bytes": 73551
+    },
+    "docs/migration/07-migration-steps.md": {
+      "title": "Step-by-Step Migration Checklist",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "migration",
+      "tags": [],
+      "sections": [
+        "Version History",
+        "Overview",
+        "Phase 0 \u2014 Pre-Migration (Week 0)",
+        "Phase 1 \u2014 Extract IS 456 Core (Weeks 1\u20132)",
+        "Phase 2 \u2014 Validate & Test (Weeks 3\u20134)",
+        "Phase 3 \u2014 Release IS 456 v1.0 (Week 5)",
+        "Phase 4 \u2014 Multi-Code Expansion (Weeks 6+)",
+        "Backward Compatibility"
+      ],
+      "size_bytes": 13602
+    },
+    "docs/migration/10-function-classification.md": {
+      "title": "Function Classification \u2014 Complete Audit",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "migration",
+      "tags": [],
+      "sections": [
+        "CORE Functions (73) \u2014 Stay in Library",
+        "ORCHESTRATION Functions (35) \u2014 Stay in Library",
+        "APP Functions (30) \u2014 Move to App Repo",
+        "Functions to Remove (Deprecated)",
+        "Classification Criteria",
+        "Multi-Code Expansion Summary"
+      ],
+      "size_bytes": 13853
+    },
+    "docs/migration/03-library-repo-blueprint.md": {
+      "title": "Library Repository Blueprint",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "migration",
+      "tags": [],
+      "sections": [
+        "Repository Name Options",
+        "Folder Structure (5-Layer Multi-Code Architecture)",
+        "Layer Decision Matrix",
+        "Dependency Rules (STRICT)",
+        "Architecture Enforcement",
+        "pyproject.toml (Complete Template)",
+        ".editorconfig Template",
+        "API Design Philosophy",
+        "Success Criteria"
+      ],
+      "size_bytes": 18056
+    },
+    "docs/migration/04-app-repo-blueprint.md": {
+      "title": "App Repository Blueprint",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "migration",
+      "tags": [],
+      "sections": [
+        "Repository Name",
+        "Folder Structure",
+        "Key Dependency",
+        "What Moves from Current Monorepo to App Repo",
+        "App \u2194 Library Import Pattern",
+        "Multi-Code Frontend Needs (v2.0)",
+        "Multi-Code API Endpoints (v2.0)"
+      ],
+      "size_bytes": 11483
+    },
+    "docs/migration/learning/day-21-docker-deployment.md": {
+      "title": "Day 21: Docker & Deployment \u2014 Containerizing Safety-Critical Calculations",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: Why Docker for Structural Engineering?",
+        "Part 2: Colima \u2014 Our Docker Runtime on macOS",
+        "Part 3: Two Audiences, Two Deployment Models",
+        "Part 4: The Dockerfile \u2014 Layer by Layer",
+        "Part 5: docker-compose.yml \u2014 Production",
+        "Part 6: docker-compose.dev.yml \u2014 Development with Hot Reload",
+        "Part 7: The Dev Stack Launcher \u2014 `./run.sh dev`",
+        "Part 8: Exercises",
+        "Part 9: Self-Check Q&A"
+      ],
+      "size_bytes": 20405
+    },
+    "docs/migration/learning/day-13-exports-reports.md": {
+      "title": "Day 13: Exports & Reports (Deep Dive)",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: Why Exports Matter",
+        "Part 2: Bar Bending Schedule (BBS)",
+        "Part 3: DXF Export",
+        "Part 4: Design Reports",
+        "Part 5: The Export Pipeline in the API",
+        "Part 6: Library Examples",
+        "Part 7: Exercises",
+        "Part 8: Can You Explain? (Self-Check)",
+        "Part 9: Things to Know (Critical Knowledge)"
+      ],
+      "size_bytes": 18825
+    },
+    "docs/migration/learning/day-09-type-system.md": {
+      "title": "Day 9: Type System \u2014 Dataclasses, Pydantic, and TypedDicts (Deep Dive)",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: Why Strong Types in Python? (The Problem)",
+        "Part 2: Frozen Dataclasses \u2014 Immutable Results",
+        "Part 3: Pydantic v2 Models \u2014 Input Validation",
+        "Part 4: TypedDicts \u2014 Lightweight Dict Hints",
+        "Part 5: DictCompatMixin \u2014 The Bridge Pattern",
+        "Part 6: Parameter Naming Convention \u2014 Units in Names",
+        "Part 7: The Canonical Data Flow (End-to-End)",
+        "Part 8: Numeric Safety \u2014 Floating-Point Gotchas",
+        "Part 9: Enums \u2014 Type-Safe Constants"
+      ],
+      "size_bytes": 56573
+    },
+    "docs/migration/learning/day-10-error-handling.md": {
+      "title": "Day 10: Error Handling & Validation (Deep Dive)",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: Two Error Systems \u2014 Why Both?",
+        "Part 2: The Exception Hierarchy",
+        "Part 3: The DesignError Dataclass \u2014 Collected Errors",
+        "Part 4: Validation at Boundaries \u2014 The Gate Philosophy",
+        "Part 5: Error Message Quality",
+        "Part 6: The `@clause` Decorator \u2014 Traceability",
+        "Part 7: Exercises",
+        "Part 8: Can You Explain? (Self-Check)",
+        "Part 9: Things to Know (Critical Knowledge)"
+      ],
+      "size_bytes": 33998
+    },
+    "docs/migration/learning/day-04-beam-detailing.md": {
+      "title": "Day 4: Beam Detailing & Serviceability",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "\ud83d\udcd6 Theory",
+        "\ud83c\udfd7\ufe0f Library Examples",
+        "\ud83c\udfaf Simple Examples (Hand Calculations)",
+        "\ud83d\udd27 Exercise",
+        "\ud83d\udcac Can You Explain?",
+        "\ud83d\udcce References",
+        "What's Next?"
+      ],
+      "size_bytes": 19247
+    },
+    "docs/migration/learning/day-26-pypi-packaging.md": {
+      "title": "Day 26: PyPI Packaging",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "\ud83d\udcd6 Theory",
+        "\ud83c\udfd7\ufe0f Library Examples",
+        "\ud83c\udfaf Simple Examples",
+        "\ud83d\udd27 Exercise",
+        "\ud83d\udcac Can You Explain?",
+        "\ud83d\udcce References"
+      ],
+      "size_bytes": 14759
+    },
+    "docs/migration/learning/day-20-data-flow-e2e.md": {
+      "title": "Day 20: End-to-End Data Flow \u2014 Tracing a Beam from CSV Upload to 3D Render",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: The Four-Layer Architecture",
+        "Part 2: Journey 1 \u2014 CSV Upload",
+        "Part 3: Journey 2 \u2014 Batch Design (SSE Streaming)",
+        "Part 4: Journey 3 \u2014 3D Visualization",
+        "Part 5: Journey 4 \u2014 Export BBS",
+        "Part 6: Tracing a Single Value Through All Layers",
+        "Part 7: Where Unit Conversion Actually Happens",
+        "Part 8: Error Propagation",
+        "Part 9: Exercises"
+      ],
+      "size_bytes": 20348
+    },
+    "docs/migration/learning/day-29-performance-scale.md": {
+      "title": "Day 29: Performance & Scale",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "\ud83d\udcd6 Theory",
+        "\ud83c\udfd7\ufe0f Library Examples",
+        "\ud83c\udfaf Simple Examples",
+        "\ud83d\udd27 Exercise",
+        "\ud83d\udcac Can You Explain?",
+        "\ud83d\udcce References"
+      ],
+      "size_bytes": 14029
+    },
+    "docs/migration/learning/day-12-testing-patterns.md": {
+      "title": "Day 12: Testing Patterns for Structural Code (Deep Dive)",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: Why Testing Matters MORE Here",
+        "Part 2: The 6 Test Types",
+        "Part 3: conftest.py \u2014 Shared Fixtures",
+        "Part 4: Test Organization",
+        "Part 5: Running Tests",
+        "Part 6: Exercises",
+        "Part 7: Can You Explain? (Self-Check)",
+        "Part 8: Things to Know (Critical Knowledge)",
+        "Part 9: What Can Be Done Better"
+      ],
+      "size_bytes": 20071
+    },
+    "docs/migration/learning/day-30-mastery-review.md": {
+      "title": "Day 30: Mastery Review",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "\ud83d\udcd6 Theory",
+        "\ud83c\udfd7\ufe0f Library Examples",
+        "\ud83c\udfaf Key Discussion Topics",
+        "\ud83d\udd27 Self-Assessment Checklist",
+        "\ud83d\udcac Frequently Asked Questions",
+        "\ud83d\udcce Next Learning Paths",
+        "\ud83d\udcd6 Final Perspective",
+        "\ud83d\udcce References"
+      ],
+      "size_bytes": 21641
+    },
+    "docs/migration/learning/day-22-git-automation.md": {
+      "title": "Day 22: Git Automation \u2014 Why Every Commit Goes Through ONE Script",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: The ONE RULE",
+        "Part 2: Conventional Commit Format",
+        "Part 3: The Flags",
+        "Part 4: Git Hooks Framework",
+        "Part 5: PR Workflow",
+        "Part 6: Safe File Operations",
+        "Part 7: FORBIDDEN Commands",
+        "Part 8: Exercises",
+        "Part 9: Self-Check Q&A"
+      ],
+      "size_bytes": 15802
+    },
+    "docs/migration/learning/day-19-3d-visualization.md": {
+      "title": "Day 19: 3D Visualization \u2014 Rendering Concrete, Rebar & Stirrups with React Three Fiber",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: What is React Three Fiber?",
+        "Part 2: Why 3D for Structural Engineering?",
+        "Part 3: The Three Building Blocks",
+        "Part 4: Coordinate System Conversion",
+        "Part 5: The Complete Data Flow",
+        "Part 6: Viewport3D \u2014 The Canvas Setup",
+        "Part 7: Rendering the Concrete Beam",
+        "Part 8: Rendering Rebars",
+        "Part 9: Performance \u2014 InstancedMesh for Stirrups"
+      ],
+      "size_bytes": 19986
+    },
+    "docs/migration/learning/day-06-footings.md": {
+      "title": "Day 6: Footing Design (IS 456 Cl 34, Cl 31.6)",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You\u2019ll Learn Today",
+        "\ud83d\udcd6 Theory",
+        "\ud83c\udfd7\ufe0f Library Examples",
+        "\ud83c\udfaf Simple Example: Complete Footing Design",
+        "\ud83d\udd27 Exercise",
+        "\ud83d\udcac Can You Explain?",
+        "Summary \u2014 What You Now Know",
+        "\ud83d\udcce References",
+        "What\u2019s Next?"
+      ],
+      "size_bytes": 16116
+    },
+    "docs/migration/learning/README.md": {
+      "title": "Learning Curriculum \u2014 Structural Engineering Library",
+      "type": "index",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "Why This Exists",
+        "Curriculum Overview",
+        "How to Use This Curriculum",
+        "Progress Tracker",
+        "Legend"
+      ],
+      "size_bytes": 8385
+    },
+    "docs/migration/learning/day-23-ci-cd.md": {
+      "title": "Day 23: CI/CD Pipeline",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "\ud83d\udcd6 Theory",
+        "\ud83c\udfd7\ufe0f Library Examples",
+        "\ud83c\udfaf Simple Examples",
+        "\ud83d\udd27 Exercise",
+        "\ud83d\udcac Can You Explain?",
+        "\ud83d\udcce References"
+      ],
+      "size_bytes": 14189
+    },
+    "docs/migration/learning/day-01-concrete-basics.md": {
+      "title": "Day 1: Concrete & Steel Basics",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You\u2019ll Learn Today",
+        "\ud83d\udcd6 Theory",
+        "\ud83c\udfd7\ufe0f Library Examples",
+        "\ud83c\udfaf Simple Examples (Hand Calculations)",
+        "\ud83d\udd27 Exercises",
+        "\ud83d\udcac Can You Explain?",
+        "Summary \u2014 What You Now Know",
+        "\ud83d\udcce References",
+        "What\u2019s Next?"
+      ],
+      "size_bytes": 28610
+    },
+    "docs/migration/learning/day-05-columns.md": {
+      "title": "Day 5: Column Design",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "\ud83d\udcd6 Theory",
+        "\ud83c\udfd7\ufe0f Library Examples",
+        "\ud83c\udfaf Simple Hand Calculation Practice",
+        "\ud83d\udd27 Exercise: Design-Check a Real Column",
+        "\ud83d\udcac Can You Explain?",
+        "Summary",
+        "\ud83d\udcce References",
+        "What's Next?"
+      ],
+      "size_bytes": 27953
+    },
+    "docs/migration/learning/day-08-architecture-layers.md": {
+      "title": "Day 8: The 4-Layer Architecture \u2014 A Deep Dive",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: Why Layers Exist (The Big Picture)",
+        "Part 2: The 4 Layers \u2014 A Complete Tour",
+        "Part 3: The Import Rule \u2014 The One Law",
+        "Part 4: Data Flow \u2014 Following a Request End-to-End",
+        "Part 5: Why This Design Will Help Your Next Repo",
+        "Part 6: Real Violations and How to Fix Them",
+        "Part 7: Comparisons with Other Architectures",
+        "Part 8: Hands-On Exercises",
+        "Part 9: Quick Reference Cards"
+      ],
+      "size_bytes": 50853
+    },
+    "docs/migration/learning/day-07-is456-big-picture.md": {
+      "title": "Day 7: IS 456 Big Picture & Clause Navigation",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You\u2019ll Learn Today",
+        "\ud83d\udcd6 Theory"
+      ],
+      "size_bytes": 9914
+    },
+    "docs/migration/learning/day-03-beam-shear-torsion.md": {
+      "title": "Day 3: Shear & Torsion Design (IS 456 Cl 40-41)",
+      "type": "tutorial",
+      "complexity": "intermediate",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "1. What is Shear in a Beam?",
+        "2. Concrete Shear Capacity ($\\tau_c$)"
+      ],
+      "size_bytes": 3713
+    },
+    "docs/migration/learning/day-25-code-quality.md": {
+      "title": "Day 25: Code Quality Tools",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "\ud83d\udcd6 Theory",
+        "\ud83c\udfd7\ufe0f Library Examples",
+        "\ud83c\udfaf Simple Examples",
+        "\ud83d\udd27 Exercise",
+        "\ud83d\udcac Can You Explain?",
+        "\ud83d\udcce References"
+      ],
+      "size_bytes": 12832
+    },
+    "docs/migration/learning/day-02-beam-flexure.md": {
+      "title": "Day 2: Beam Flexure Design",
+      "type": "tutorial",
+      "complexity": "intermediate",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn",
+        "\ud83d\udcd6 Theory"
+      ],
+      "size_bytes": 2181
+    },
+    "docs/migration/learning/day-27-multi-code-design.md": {
+      "title": "Day 27: Multi-Code Design \u2014 IS 456 vs ACI 318 vs Eurocode 2",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "\ud83d\udcd6 Theory",
+        "\ud83c\udfd7\ufe0f Library Architecture \u2014 How We Support Multiple Codes",
+        "\ud83c\udfaf Worked Example \u2014 Same Beam, Three Codes",
+        "\ud83d\udd27 Exercise",
+        "\ud83d\udcac Can You Explain?",
+        "\ud83d\udcce References",
+        "\ud83e\udded Navigation"
+      ],
+      "size_bytes": 22530
+    },
+    "docs/migration/learning/day-17-react-architecture.md": {
+      "title": "Day 17: React Architecture & Stack \u2014 Building the Frontend for a Math Library",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: Why This Stack?",
+        "Part 2: Feature-First Folder Structure",
+        "Part 3: Tailwind CSS Only \u2014 Zero Custom CSS",
+        "Part 4: Zustand Stores \u2014 Global State Management",
+        "Part 5: TypeScript Strict Mode",
+        "Part 6: App.tsx \u2014 Routing and Providers",
+        "Part 7: The Complete Data Flow",
+        "Part 8: Exercises",
+        "Part 9: Self-Check Q&A"
+      ],
+      "size_bytes": 20949
+    },
+    "docs/migration/learning/day-18-react-hooks-deep.md": {
+      "title": "Day 18: React Hooks Deep Dive \u2014 The Data Pipeline Between UI and Math",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: What Are Custom Hooks?",
+        "Part 2: Our 21-Hook Library",
+        "Part 3: React Query \u2014 The Foundation Under Every Hook",
+        "Part 4: The Data Flow Pattern",
+        "Part 5: Hook Deep Dive \u2014 `useCSVFileImport`",
+        "Part 6: Hook Deep Dive \u2014 `useLiveDesign`",
+        "Part 7: Hook Deep Dive \u2014 `useBeamGeometry`",
+        "Part 8: Hook Deep Dive \u2014 `useExport`",
+        "Part 9: Error Handling Patterns"
+      ],
+      "size_bytes": 25415
+    },
+    "docs/migration/learning/day-16-fastapi-advanced.md": {
+      "title": "Day 16: FastAPI Advanced \u2014 WebSocket, SSE, Batch Processing & File I/O",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: Three Protocols \u2014 When to Use Which",
+        "Part 2: WebSocket Architecture \u2014 The Connection Manager",
+        "Part 3: WebSocket Message Loop \u2014 The Event Dispatcher",
+        "Part 4: SSE Batch Design \u2014 Streaming Progress",
+        "Part 5: The Complete Import \u2192 Design \u2192 Export Pipeline",
+        "Part 6: Error Handling Across All Three Protocols",
+        "Part 7: Health, Auth, and Rate Limiting",
+        "Part 8: Testing API Protocols",
+        "Part 9: Hands-On Examples"
+      ],
+      "size_bytes": 27465
+    },
+    "docs/migration/learning/day-15-fastapi-basics.md": {
+      "title": "Day 15: FastAPI Basics \u2014 Turning Pure Math into a Live API",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: Why FastAPI? \u2014 The Right Tool for a Math Library",
+        "Part 2: Our API Structure \u2014 13 Routers, 60+ Endpoints",
+        "Part 3: `main.py` \u2014 The Application Factory",
+        "Part 4: The Waiter Pattern \u2014 Why Routers Never Do Math",
+        "Part 5: Beam Design Endpoint \u2014 Full Walkthrough",
+        "Part 6: Pydantic Request Models \u2014 Validation at the Gate",
+        "Part 7: Standardized Responses and Error Sanitization",
+        "Part 8: CORS \u2014 Why Two Ports Need Permission to Talk",
+        "Part 9: OpenAPI Docs \u2014 Self-Documenting API"
+      ],
+      "size_bytes": 33069
+    },
+    "docs/migration/learning/day-24-ai-agents.md": {
+      "title": "Day 24: AI Agent System",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "\ud83d\udcd6 Theory",
+        "\ud83c\udfd7\ufe0f Library Examples",
+        "\ud83c\udfaf Simple Examples",
+        "\ud83d\udd27 Exercise",
+        "\ud83d\udcac Can You Explain?",
+        "\ud83d\udcce References"
+      ],
+      "size_bytes": 15483
+    },
+    "docs/migration/learning/day-28-innovation-tools.md": {
+      "title": "Day 28: Innovation & Development Infrastructure",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "\ud83d\udcd6 Theory",
+        "\ud83c\udfd7\ufe0f Library Examples \u2014 What Already Exists",
+        "\ud83c\udfaf Idea 1: Symbolic-Numerical Crosscheck (SymPy)",
+        "\ud83c\udfaf Idea 2: Metamorphic Testing",
+        "\ud83c\udfaf Idea 3: Formula Provenance",
+        "\ud83c\udfaf Idea 4: API Documentation from Code (griffe)",
+        "\ud83c\udfaf Idea 5: Hypothesis Property Testing",
+        "\ud83c\udfaf Idea 6: Semantic API Breakage Detection",
+        "\ud83d\udd27 Exercise"
+      ],
+      "size_bytes": 14141
+    },
+    "docs/migration/learning/day-14-optimization.md": {
+      "title": "Day 14: Optimization (Deep Dive)",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: Why Optimize?",
+        "Part 2: Single-Objective Cost Optimization",
+        "Part 3: Multi-Objective Optimization (Pareto)",
+        "Part 4: Rebar Optimization",
+        "Part 5: Pareto in the Frontend",
+        "Part 6: Library Examples",
+        "Part 7: Hand-Calculated Cost Comparison",
+        "Part 8: Exercises",
+        "Part 9: Can You Explain? (Self-Check)"
+      ],
+      "size_bytes": 19227
+    },
+    "docs/migration/learning/day-11-services-api.md": {
+      "title": "Day 11: Services Layer \u2014 API, Adapters & Pipeline (Deep Dive)",
+      "type": "tutorial",
+      "complexity": "advanced",
+      "folder": "learning",
+      "tags": [
+        "education",
+        "training"
+      ],
+      "sections": [
+        "What You'll Learn Today",
+        "Part 1: What the Services Layer Does",
+        "Part 2: The `api.py` Re-Export Hub (Barrel Pattern)",
+        "Part 3: Anatomy of `design_beam_is456()`",
+        "Part 4: The Adapter Pattern \u2014 Taming Real-World Data",
+        "Part 5: The Beam Pipeline \u2014 Batch Design",
+        "Part 6: Exercises",
+        "Part 7: Can You Explain? (Self-Check)",
+        "Part 8: Things to Know (Critical Knowledge)",
+        "Part 9: What Can Be Done Better"
+      ],
+      "size_bytes": 27835
     },
     "docs/reference/tech-stack-rationale.md": {
       "title": "Tech Stack Rationale",
@@ -4090,7 +4843,7 @@
         "Is it safe?",
         "Future improvements to consider"
       ],
-      "size_bytes": 4709
+      "size_bytes": 4830
     },
     "docs/reference/api.md": {
       "title": "IS 456 RC Beam Design Library \u2014 API Reference",
@@ -4105,15 +4858,38 @@
         "API Manifest (Public Signatures)",
         "0. Unified CLI (v0.9.4+)",
         "1. Conventions",
+        "1A-pre. Diagnostics & Code Quality",
         "1A. Public Entry Points (Python) (`api.py`)",
         "1B. Load Analysis (BMD/SFD)",
         "1C. Beam Pipeline (`beam_pipeline.py`)",
         "Appendix: Data Model Glossary (Planned Types)",
         "2. Flexure Module (`M06_Flexure` / `flexure.py`)",
-        "3. Shear Module (`M07_Shear` / `shear.py`)",
-        "3A. Torsion Module (`torsion.py`) \u2014 IS 456 Clause 41"
+        "3. Shear Module (`M07_Shear` / `shear.py`)"
       ],
-      "size_bytes": 89203
+      "size_bytes": 124735
+    },
+    "docs/reference/clause-map.md": {
+      "title": "IS 456 Clause-to-Function Mapping",
+      "type": "reference",
+      "complexity": "advanced",
+      "folder": "reference",
+      "tags": [
+        "api",
+        "technical"
+      ],
+      "sections": [
+        "Beam \u2014 Flexure (`codes/is456/beam/flexure.py`)",
+        "Beam \u2014 Shear (`codes/is456/beam/shear.py`)",
+        "Beam \u2014 Torsion (`codes/is456/beam/torsion.py`)",
+        "Beam \u2014 Detailing (`codes/is456/beam/detailing.py`)",
+        "Beam \u2014 Serviceability (`codes/is456/beam/serviceability.py`)",
+        "Common (`codes/is456/common/`)",
+        "Column \u2014 Axial (`codes/is456/column/axial.py`)",
+        "Column \u2014 Uniaxial (`codes/is456/column/uniaxial.py`)",
+        "Column \u2014 Biaxial (`codes/is456/column/biaxial.py`)",
+        "Column \u2014 Slenderness (`codes/is456/column/slenderness.py`)"
+      ],
+      "size_bytes": 11043
     },
     "docs/reference/known-pitfalls.md": {
       "title": "IS 456 RC Beam Design Library \u2014 Known Pitfalls and Traps",
@@ -4136,7 +4912,7 @@
         "Naming and Units",
         "Serviceability (v0.8+)"
       ],
-      "size_bytes": 7164
+      "size_bytes": 7285
     },
     "docs/reference/sdk-api-contract-v1.md": {
       "title": "Structural SDK API Contract \u2014 v1.0",
@@ -4159,7 +4935,7 @@
         "Error Handling",
         "Backward Compatibility"
       ],
-      "size_bytes": 23546
+      "size_bytes": 23668
     },
     "docs/reference/troubleshooting.md": {
       "title": "Troubleshooting Guide",
@@ -4180,7 +4956,7 @@
         "Mac VBA Debugging Log (Dec 2025)",
         "Retrospective & Best Practices (Mac VBA)"
       ],
-      "size_bytes": 14438
+      "size_bytes": 14559
     },
     "docs/reference/api-stability.md": {
       "title": "API Stability",
@@ -4203,7 +4979,7 @@
         "Output Schema Stability",
         "How to Report Breaking Changes"
       ],
-      "size_bytes": 14158
+      "size_bytes": 18236
     },
     "docs/reference/dxf-layer-standards.md": {
       "title": "DXF Layer Standards & Drawing Conventions",
@@ -4226,7 +5002,7 @@
         "Layer Management Best Practices",
         "Drawing Standards Compliance"
       ],
-      "size_bytes": 15382
+      "size_bytes": 15503
     },
     "docs/reference/deprecation-policy.md": {
       "title": "Deprecation Policy",
@@ -4249,7 +5025,7 @@
         "Removal Process",
         "Examples"
       ],
-      "size_bytes": 9019
+      "size_bytes": 9140
     },
     "docs/reference/repo-health-baseline-2026-01-07.md": {
       "title": "Repository Health Baseline (2026-01-07)",
@@ -4264,7 +5040,7 @@
         "Notes",
         "Report Output"
       ],
-      "size_bytes": 1155
+      "size_bytes": 1276
     },
     "docs/reference/error-schema.md": {
       "title": "Error Schema v1",
@@ -4284,7 +5060,7 @@
         "Implementation Plan",
         "Migration Notes"
       ],
-      "size_bytes": 8640
+      "size_bytes": 9329
     },
     "docs/reference/fastapi-rest-api.md": {
       "title": "FastAPI REST API Reference",
@@ -4305,7 +5081,7 @@
         "OpenAPI Specification",
         "Related Documents"
       ],
-      "size_bytes": 10180
+      "size_bytes": 10301
     },
     "docs/reference/README.md": {
       "title": "Reference Documentation",
@@ -4345,7 +5121,7 @@
         "Future Optimizations (V1.1)",
         "Related Documentation"
       ],
-      "size_bytes": 4359
+      "size_bytes": 4510
     },
     "docs/reference/is456-formulas.md": {
       "title": "IS 456:2000 Quick Reference \u2014 RC Beam Design Formulas",
@@ -4368,7 +5144,7 @@
         "9. Shear Reinforcement (Clause 40.4)",
         "10. Shear Design Flowchart"
       ],
-      "size_bytes": 6015
+      "size_bytes": 6136
     },
     "docs/reference/deferred-integrations.md": {
       "title": "Deferred Integrations Tracker",
@@ -4385,7 +5161,7 @@
         "How to Update This Document",
         "See Also"
       ],
-      "size_bytes": 4249
+      "size_bytes": 4370
     },
     "docs/reference/index.md": {
       "title": "Reference",
@@ -4401,7 +5177,7 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 3757
+      "size_bytes": 3446
     },
     "docs/reference/bbs-dxf-contract.md": {
       "title": "BBS + DXF Contract (v1.x)",
@@ -4419,7 +5195,7 @@
         "4) Consistency Rules",
         "5) Change Policy"
       ],
-      "size_bytes": 2741
+      "size_bytes": 2862
     },
     "docs/reference/library-contract.md": {
       "title": "Library Contract (v1) - Beam-Only IS 456",
@@ -4437,7 +5213,7 @@
         "4) Versioning and Compatibility",
         "5) Guidance for Integrators"
       ],
-      "size_bytes": 3061
+      "size_bytes": 3182
     },
     "docs/reference/3d-json-contract.md": {
       "title": "3D JSON Contract \u2014 Beam Geometry Data Format",
@@ -4481,7 +5257,26 @@
         "Testing Automation Scripts",
         "Additional Resources"
       ],
-      "size_bytes": 14929
+      "size_bytes": 15050
+    },
+    "docs/reference/api-levels.md": {
+      "title": "Which API Should I Use?",
+      "type": "reference",
+      "complexity": "intermediate",
+      "folder": "reference",
+      "tags": [
+        "api",
+        "reference",
+        "technical"
+      ],
+      "sections": [
+        "Level 1: High-Level Service API (recommended)",
+        "Level 2: Module-Level Functions (custom workflows)",
+        "Level 3: FastAPI REST API (web/mobile apps)",
+        "Decision Tree",
+        "See Also"
+      ],
+      "size_bytes": 3377
     },
     "docs/reference/error-codes.md": {
       "title": "Error Code Reference",
@@ -4500,7 +5295,7 @@
         "SHEAR",
         "TORSION"
       ],
-      "size_bytes": 4126
+      "size_bytes": 4247
     },
     "docs/reference/third-party-licenses.md": {
       "title": "Third-Party Licenses",
@@ -4517,7 +5312,7 @@
         "Development Dependencies",
         "How to Refresh This File"
       ],
-      "size_bytes": 879
+      "size_bytes": 1000
     },
     "docs/reference/automation-catalog.md": {
       "title": "Automation Script Catalog",
@@ -4540,7 +5335,7 @@
         "Code Quality",
         "Streamlit QA"
       ],
-      "size_bytes": 70367
+      "size_bytes": 70500
     },
     "docs/reference/insights-api.md": {
       "title": "Insights API Reference",
@@ -4563,7 +5358,7 @@
         "Rule Categories",
         "Performance Characteristics"
       ],
-      "size_bytes": 24037
+      "size_bytes": 24159
     },
     "docs/reference/vendor/etabs/README.md": {
       "title": "CSI API ETABS v1 (Extracted CHM)",
@@ -4577,7 +5372,7 @@
         "Suggested workflow for the add-in",
         "Next steps"
       ],
-      "size_bytes": 4688
+      "size_bytes": 4715
     },
     "docs/developers/extension-guide.md": {
       "title": "Extension Guide: Adding Features Without Modifying Core",
@@ -4592,7 +5387,7 @@
         "Common Extension Scenarios",
         "Next Steps"
       ],
-      "size_bytes": 17508
+      "size_bytes": 17625
     },
     "docs/developers/platform-guide.md": {
       "title": "Platform Guide: Build Structural Automations",
@@ -4610,7 +5405,7 @@
         "Best Practices",
         "Next Steps"
       ],
-      "size_bytes": 27241
+      "size_bytes": 25837
     },
     "docs/developers/README.md": {
       "title": "Developer Documentation",
@@ -4627,7 +5422,7 @@
         "\ud83e\udd1d Community & Support",
         "\ud83d\udcdd Documentation Status"
       ],
-      "size_bytes": 4365
+      "size_bytes": 4272
     },
     "docs/developers/index.md": {
       "title": "Developers",
@@ -4653,38 +5448,43 @@
         "Example 2: ETABS CSV Batch Processing",
         "Example 3: REST API Microservice"
       ],
-      "size_bytes": 14880
+      "size_bytes": 14912
     }
   },
   "navigation": {
     "by_role": {
       "ai_agent": [
+        "docs/_active/maintenance-plan-v0-21-sprint.md",
+        "docs/research/innovation-sustainability-scoring.md",
+        "docs/research/2026-python-toolchain-report.md",
         "docs/contributing/solo-maintainer-operating-system.md",
         "docs/contributing/git-workflow-ai-agents.md",
         "docs/learning/glossary.md",
+        "docs/publications/research-paper-git-infrastructure.md",
         "docs/git-automation/README.md",
-        "docs/_archive/planning-completed-2026-03/automation-platform-vision.md",
-        "docs/_archive/planning-completed-2026-03/ai-chat-redesign-plan.md",
-        "docs/_archive/planning-completed-2026-03/brainstorming-platform-pivot.md",
-        "docs/_archive/planning-completed-2026-03/research-detailing.md",
-        "docs/_archive/planning-completed-2026-03/research-ai-enhancements.md",
-        "docs/_archive/planning-completed-2026-03/ai-agent-efficiency-and-git-workflow-plan.md",
         "docs/agents/README.md",
         "docs/agents/index.md",
+        "docs/audit/maintenance-recovery-audit-2026-08-07.md",
         "docs/getting-started/ai-context-pack.md",
         "docs/guides/ai-agent-coding-guide.md",
-        "docs/guides/maintenance-checklist.md"
+        "docs/guides/maintenance-checklist.md",
+        "docs/governance/maintenance-playbook.md",
+        "docs/guidelines/ai-token-efficiency.md",
+        "docs/migration/learning/day-21-docker-deployment.md",
+        "docs/migration/learning/day-04-beam-detailing.md",
+        "docs/migration/learning/day-24-ai-agents.md"
       ],
       "python_dev": [
+        "docs/research/2026-state-of-the-art-report.md",
+        "docs/research/2026-python-toolchain-report.md",
         "docs/contributing/testing-strategy.md",
         "docs/cookbook/python-recipes.md",
         "docs/architecture/deep-project-map.md",
         "docs/architecture/dependencies.md",
-        "docs/getting-started/python-quickstart.md"
+        "docs/getting-started/python-quickstart.md",
+        "docs/migration/02-library-research.md"
       ],
-      "excel_user": [
-        "docs/_archive/planning-completed-2026-03/3d-visualization-strategic-decision.md"
-      ],
+      "excel_user": [],
       "contributor": [
         "docs/contributing/lesson-incomplete-implementation.md",
         "docs/contributing/workflow-professional-review.md",
@@ -4710,15 +5510,79 @@
         "docs/contributing/git-workflow-ai-agents.md",
         "docs/contributing/handoff.md",
         "docs/contributing/testing-strategy.md",
-        "docs/contributing/changelog-deprecation-template.md"
+        "docs/contributing/changelog-deprecation-template.md",
+        "docs/publications/research-paper-git-infrastructure.md",
+        "docs/migration/12-innovation-ideas-new.md",
+        "docs/migration/12-innovation-ideas.md",
+        "docs/migration/learning/day-28-innovation-tools.md"
       ]
     },
     "by_topic": {
-      "investigation": [
-        "docs/research/index.md"
+      "maintenance": [
+        "docs/_active/maintenance-plan-v0-21-sprint.md",
+        "docs/audit/maintenance-recovery-audit-2026-08-07.md"
       ],
       "planning": [
+        "docs/_active/maintenance-plan-v0-21-sprint.md",
+        "docs/research/innovation-structural-design-companion.md",
+        "docs/research/claw-code-harness-ideas.md",
+        "docs/research/innovation-sustainability-scoring.md",
+        "docs/research/2026-state-of-the-art-report.md",
+        "docs/research/innovation-generative-design-intelligence.md",
+        "docs/research/2026-python-toolchain-report.md",
         "docs/research/index.md"
+      ],
+      "agent-evolver": [
+        "docs/_active/agent-evolver-plan.md"
+      ],
+      "meta-agent": [
+        "docs/_active/agent-evolver-plan.md"
+      ],
+      "metrics": [
+        "docs/_active/agent-evolver-plan.md"
+      ],
+      "paper-data": [
+        "docs/_active/agent-evolver-plan.md"
+      ],
+      "self-improvement": [
+        "docs/_active/agent-evolver-plan.md"
+      ],
+      "investigation": [
+        "docs/research/innovation-structural-design-companion.md",
+        "docs/research/claw-code-harness-ideas.md",
+        "docs/research/innovation-sustainability-scoring.md",
+        "docs/research/2026-state-of-the-art-report.md",
+        "docs/research/innovation-generative-design-intelligence.md",
+        "docs/research/2026-python-toolchain-report.md",
+        "docs/research/index.md"
+      ],
+      "foundations": [
+        "docs/learning-foundations/02-architecture.md",
+        "docs/learning-foundations/12-starting-from-scratch.md",
+        "docs/learning-foundations/07-frontend.md",
+        "docs/learning-foundations/11-errors-and-debugging.md",
+        "docs/learning-foundations/01-what-is-a-project.md",
+        "docs/learning-foundations/05-types-and-schemas.md",
+        "docs/learning-foundations/09-git.md",
+        "docs/learning-foundations/03-tech-stack.md",
+        "docs/learning-foundations/06-testing.md",
+        "docs/learning-foundations/08-backend.md",
+        "docs/learning-foundations/10-ci-cd.md",
+        "docs/learning-foundations/04-apis.md"
+      ],
+      "learning": [
+        "docs/learning-foundations/02-architecture.md",
+        "docs/learning-foundations/12-starting-from-scratch.md",
+        "docs/learning-foundations/07-frontend.md",
+        "docs/learning-foundations/11-errors-and-debugging.md",
+        "docs/learning-foundations/01-what-is-a-project.md",
+        "docs/learning-foundations/05-types-and-schemas.md",
+        "docs/learning-foundations/09-git.md",
+        "docs/learning-foundations/03-tech-stack.md",
+        "docs/learning-foundations/06-testing.md",
+        "docs/learning-foundations/08-backend.md",
+        "docs/learning-foundations/10-ci-cd.md",
+        "docs/learning-foundations/04-apis.md"
       ],
       "design": [
         "docs/specs/csv-import-schema.md",
@@ -4726,6 +5590,7 @@
         "docs/specs/README.md",
         "docs/specs/v0.7-data-mapping.md",
         "docs/specs/index.md",
+        "docs/architecture/unified-architecture-v1.md",
         "docs/architecture/architecture-review-2025-12-27.md",
         "docs/architecture/self-evolving-system.md",
         "docs/architecture/deep-project-map.md",
@@ -4733,6 +5598,7 @@
         "docs/architecture/visual-architecture.md",
         "docs/architecture/dependencies.md",
         "docs/architecture/README.md",
+        "docs/architecture/config-precedence.md",
         "docs/architecture/index.md",
         "docs/architecture/mission-and-principles.md",
         "docs/architecture/project-overview.md",
@@ -4805,7 +5671,38 @@
         "docs/learning/README.md",
         "docs/learning/guides.md",
         "docs/learning/concepts-map.md",
-        "docs/learning/learning-plan.md"
+        "docs/learning/learning-plan.md",
+        "docs/migration/learning/day-21-docker-deployment.md",
+        "docs/migration/learning/day-13-exports-reports.md",
+        "docs/migration/learning/day-09-type-system.md",
+        "docs/migration/learning/day-10-error-handling.md",
+        "docs/migration/learning/day-04-beam-detailing.md",
+        "docs/migration/learning/day-26-pypi-packaging.md",
+        "docs/migration/learning/day-20-data-flow-e2e.md",
+        "docs/migration/learning/day-29-performance-scale.md",
+        "docs/migration/learning/day-12-testing-patterns.md",
+        "docs/migration/learning/day-30-mastery-review.md",
+        "docs/migration/learning/day-22-git-automation.md",
+        "docs/migration/learning/day-19-3d-visualization.md",
+        "docs/migration/learning/day-06-footings.md",
+        "docs/migration/learning/README.md",
+        "docs/migration/learning/day-23-ci-cd.md",
+        "docs/migration/learning/day-01-concrete-basics.md",
+        "docs/migration/learning/day-05-columns.md",
+        "docs/migration/learning/day-08-architecture-layers.md",
+        "docs/migration/learning/day-07-is456-big-picture.md",
+        "docs/migration/learning/day-03-beam-shear-torsion.md",
+        "docs/migration/learning/day-25-code-quality.md",
+        "docs/migration/learning/day-02-beam-flexure.md",
+        "docs/migration/learning/day-27-multi-code-design.md",
+        "docs/migration/learning/day-17-react-architecture.md",
+        "docs/migration/learning/day-18-react-hooks-deep.md",
+        "docs/migration/learning/day-16-fastapi-advanced.md",
+        "docs/migration/learning/day-15-fastapi-basics.md",
+        "docs/migration/learning/day-24-ai-agents.md",
+        "docs/migration/learning/day-28-innovation-tools.md",
+        "docs/migration/learning/day-14-optimization.md",
+        "docs/migration/learning/day-11-services-api.md"
       ],
       "training": [
         "docs/learning/exercises.md",
@@ -4813,99 +5710,64 @@
         "docs/learning/README.md",
         "docs/learning/guides.md",
         "docs/learning/concepts-map.md",
-        "docs/learning/learning-plan.md"
+        "docs/learning/learning-plan.md",
+        "docs/migration/learning/day-21-docker-deployment.md",
+        "docs/migration/learning/day-13-exports-reports.md",
+        "docs/migration/learning/day-09-type-system.md",
+        "docs/migration/learning/day-10-error-handling.md",
+        "docs/migration/learning/day-04-beam-detailing.md",
+        "docs/migration/learning/day-26-pypi-packaging.md",
+        "docs/migration/learning/day-20-data-flow-e2e.md",
+        "docs/migration/learning/day-29-performance-scale.md",
+        "docs/migration/learning/day-12-testing-patterns.md",
+        "docs/migration/learning/day-30-mastery-review.md",
+        "docs/migration/learning/day-22-git-automation.md",
+        "docs/migration/learning/day-19-3d-visualization.md",
+        "docs/migration/learning/day-06-footings.md",
+        "docs/migration/learning/README.md",
+        "docs/migration/learning/day-23-ci-cd.md",
+        "docs/migration/learning/day-01-concrete-basics.md",
+        "docs/migration/learning/day-05-columns.md",
+        "docs/migration/learning/day-08-architecture-layers.md",
+        "docs/migration/learning/day-07-is456-big-picture.md",
+        "docs/migration/learning/day-03-beam-shear-torsion.md",
+        "docs/migration/learning/day-25-code-quality.md",
+        "docs/migration/learning/day-02-beam-flexure.md",
+        "docs/migration/learning/day-27-multi-code-design.md",
+        "docs/migration/learning/day-17-react-architecture.md",
+        "docs/migration/learning/day-18-react-hooks-deep.md",
+        "docs/migration/learning/day-16-fastapi-advanced.md",
+        "docs/migration/learning/day-15-fastapi-basics.md",
+        "docs/migration/learning/day-24-ai-agents.md",
+        "docs/migration/learning/day-28-innovation-tools.md",
+        "docs/migration/learning/day-14-optimization.md",
+        "docs/migration/learning/day-11-services-api.md"
       ],
       "roadmap": [
-        "docs/_archive/planning-completed-2026-03/automation-platform-vision.md",
         "docs/planning/next-session-brief.md",
-        "docs/_archive/planning-completed-2026-03/data-model-compatibility-checklist.md",
-        "docs/_archive/planning-completed-2026-03/icloud-to-local-move-analysis.md",
-        "docs/_archive/planning-completed-2026-03/3d-visualization-strategic-decision.md",
-        "docs/_archive/planning-completed-2026-03/folder-migration-progress.md",
-        "docs/_archive/planning-completed-2026-03/automation-platform-phase-0-research.md",
-        "docs/_archive/planning-completed-2026-03/industry-usability-plan.md",
-        "docs/_archive/planning-completed-2026-03/multi-code-architecture.md",
-        "docs/_archive/planning-completed-2026-03/ai-chat-redesign-plan.md",
-        "docs/_archive/planning-completed-2026-03/api-improvement-research-specs.md",
         "docs/planning/next-phase-improvements-plan.md",
-        "docs/_archive/planning-completed-2026-03/documentation-structure.md",
-        "docs/_archive/planning-completed-2026-03/mac-mini-migration-issues.md",
-        "docs/_archive/planning-completed-2026-03/post-cleanup-issues.md",
-        "docs/_archive/planning-completed-2026-03/ui-layout-implementation-plan.md",
-        "docs/_archive/planning-completed-2026-03/library-api-expansion.md",
-        "docs/_archive/planning-completed-2026-03/folder-audit.md",
-        "docs/_archive/planning-completed-2026-03/library-expansion-blueprint.md",
-        "docs/_archive/planning-completed-2026-03/github-fix-plan.md",
-        "docs/_archive/planning-completed-2026-03/pre-release-checklist.md",
-        "docs/_archive/planning-completed-2026-03/brainstorming-platform-pivot.md",
-        "docs/_archive/planning-completed-2026-03/weak-points-audit.md",
+        "docs/planning/library-expansion-blueprint-v5.md",
+        "docs/planning/pre-release-checklist.md",
         "docs/planning/README.md",
-        "docs/_archive/planning-completed-2026-03/project-status-deep-dive.md",
-        "docs/_archive/planning-completed-2026-03/research-detailing.md",
         "docs/planning/memory.md",
+        "docs/planning/etabs-killer-masterplan.md",
         "docs/planning/index.md",
-        "docs/_archive/planning-completed-2026-03/copilot-agent-master-plan.md",
-        "docs/_archive/planning-completed-2026-03/etabs-automation-bridge-plan.md",
-        "docs/_archive/planning-completed-2026-03/8-week-development-plan.md",
-        "docs/_archive/planning-completed-2026-03/v020-stabilization-checklist.md",
         "docs/planning/react-ux-improvement-plan.md",
-        "docs/_archive/planning-completed-2026-03/structural-automation-platform-phase-0-research-plan.md",
-        "docs/_archive/planning-completed-2026-03/research-ai-enhancements.md",
-        "docs/_archive/planning-completed-2026-03/agent-workflow-improvements.md",
-        "docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md",
-        "docs/_archive/planning-completed-2026-03/session-30-fragment-crisis-resolution.md",
-        "docs/_archive/planning-completed-2026-03/bbs-dxf-improvement-plan.md",
-        "docs/_archive/planning-completed-2026-03/ai-agent-efficiency-and-git-workflow-plan.md",
-        "docs/planning/democratization-vision.md",
-        "docs/_archive/planning-completed-2026-03/library-improvement-master-plan.md",
-        "docs/_archive/planning-completed-2026-03/task-3d-002-implementation-plan.md",
-        "docs/_archive/planning-completed-2026-03/project-needs-assessment-2026-01-09.md"
+        "docs/planning/dependency-security-baseline.md",
+        "docs/planning/democratization-vision.md"
       ],
       "tasks": [
-        "docs/_archive/planning-completed-2026-03/automation-platform-vision.md",
         "docs/planning/next-session-brief.md",
-        "docs/_archive/planning-completed-2026-03/data-model-compatibility-checklist.md",
-        "docs/_archive/planning-completed-2026-03/icloud-to-local-move-analysis.md",
-        "docs/_archive/planning-completed-2026-03/3d-visualization-strategic-decision.md",
-        "docs/_archive/planning-completed-2026-03/folder-migration-progress.md",
-        "docs/_archive/planning-completed-2026-03/automation-platform-phase-0-research.md",
-        "docs/_archive/planning-completed-2026-03/industry-usability-plan.md",
-        "docs/_archive/planning-completed-2026-03/multi-code-architecture.md",
-        "docs/_archive/planning-completed-2026-03/ai-chat-redesign-plan.md",
-        "docs/_archive/planning-completed-2026-03/api-improvement-research-specs.md",
         "docs/planning/next-phase-improvements-plan.md",
-        "docs/_archive/planning-completed-2026-03/documentation-structure.md",
-        "docs/_archive/planning-completed-2026-03/mac-mini-migration-issues.md",
-        "docs/_archive/planning-completed-2026-03/post-cleanup-issues.md",
-        "docs/_archive/planning-completed-2026-03/ui-layout-implementation-plan.md",
-        "docs/_archive/planning-completed-2026-03/library-api-expansion.md",
-        "docs/_archive/planning-completed-2026-03/folder-audit.md",
-        "docs/_archive/planning-completed-2026-03/library-expansion-blueprint.md",
-        "docs/_archive/planning-completed-2026-03/github-fix-plan.md",
-        "docs/_archive/planning-completed-2026-03/pre-release-checklist.md",
-        "docs/_archive/planning-completed-2026-03/brainstorming-platform-pivot.md",
-        "docs/_archive/planning-completed-2026-03/weak-points-audit.md",
+        "docs/planning/library-expansion-blueprint-v5.md",
+        "docs/planning/pre-release-checklist.md",
         "docs/planning/README.md",
-        "docs/_archive/planning-completed-2026-03/project-status-deep-dive.md",
-        "docs/_archive/planning-completed-2026-03/research-detailing.md",
         "docs/planning/memory.md",
+        "docs/planning/etabs-killer-masterplan.md",
         "docs/planning/index.md",
-        "docs/_archive/planning-completed-2026-03/copilot-agent-master-plan.md",
-        "docs/_archive/planning-completed-2026-03/etabs-automation-bridge-plan.md",
-        "docs/_archive/planning-completed-2026-03/8-week-development-plan.md",
-        "docs/_archive/planning-completed-2026-03/v020-stabilization-checklist.md",
         "docs/planning/react-ux-improvement-plan.md",
-        "docs/_archive/planning-completed-2026-03/structural-automation-platform-phase-0-research-plan.md",
-        "docs/_archive/planning-completed-2026-03/research-ai-enhancements.md",
-        "docs/_archive/planning-completed-2026-03/agent-workflow-improvements.md",
-        "docs/_archive/planning-completed-2026-03/hygiene-suggestions-2026-01-07.md",
-        "docs/_archive/planning-completed-2026-03/session-30-fragment-crisis-resolution.md",
-        "docs/_archive/planning-completed-2026-03/bbs-dxf-improvement-plan.md",
-        "docs/_archive/planning-completed-2026-03/ai-agent-efficiency-and-git-workflow-plan.md",
-        "docs/planning/democratization-vision.md",
-        "docs/_archive/planning-completed-2026-03/library-improvement-master-plan.md",
-        "docs/_archive/planning-completed-2026-03/task-3d-002-implementation-plan.md",
-        "docs/_archive/planning-completed-2026-03/project-needs-assessment-2026-01-09.md"
+        "docs/planning/dependency-security-baseline.md",
+        "docs/planning/democratization-vision.md"
       ],
       "ai": [
         "docs/agents/README.md",
@@ -4946,6 +5808,7 @@
         "docs/verification/insights-verification-pack.md"
       ],
       "structure": [
+        "docs/architecture/unified-architecture-v1.md",
         "docs/architecture/architecture-review-2025-12-27.md",
         "docs/architecture/self-evolving-system.md",
         "docs/architecture/deep-project-map.md",
@@ -4953,10 +5816,23 @@
         "docs/architecture/visual-architecture.md",
         "docs/architecture/dependencies.md",
         "docs/architecture/README.md",
+        "docs/architecture/config-precedence.md",
         "docs/architecture/index.md",
         "docs/architecture/mission-and-principles.md",
         "docs/architecture/project-overview.md",
         "docs/architecture/canonical-data-format.md"
+      ],
+      "audit": [
+        "docs/audit/maintenance-recovery-audit-2026-08-07.md"
+      ],
+      "mac-mini": [
+        "docs/audit/maintenance-recovery-audit-2026-08-07.md"
+      ],
+      "recovery": [
+        "docs/audit/maintenance-recovery-audit-2026-08-07.md"
+      ],
+      "v0.21.7": [
+        "docs/audit/maintenance-recovery-audit-2026-08-07.md"
       ],
       "beginner": [
         "docs/getting-started/installation-notes.md",
@@ -4998,9 +5874,40 @@
         "docs/getting-started/NEW-DEVELOPER-ONBOARDING.md",
         "docs/getting-started/insights-guide.md"
       ],
+      "aci318": [
+        "docs/migration/01-adr-library-separation.md"
+      ],
+      "architecture": [
+        "docs/migration/01-adr-library-separation.md"
+      ],
+      "ec2": [
+        "docs/migration/01-adr-library-separation.md"
+      ],
+      "is456": [
+        "docs/migration/01-adr-library-separation.md"
+      ],
+      "library": [
+        "docs/migration/01-adr-library-separation.md"
+      ],
+      "multi-code": [
+        "docs/migration/01-adr-library-separation.md"
+      ],
+      "packaging": [
+        "docs/migration/01-adr-library-separation.md"
+      ],
+      "professional": [
+        "docs/migration/01-adr-library-separation.md"
+      ],
+      "pypi": [
+        "docs/migration/01-adr-library-separation.md"
+      ],
+      "separation": [
+        "docs/migration/01-adr-library-separation.md"
+      ],
       "api": [
         "docs/reference/tech-stack-rationale.md",
         "docs/reference/api.md",
+        "docs/reference/clause-map.md",
         "docs/reference/known-pitfalls.md",
         "docs/reference/sdk-api-contract-v1.md",
         "docs/reference/troubleshooting.md",
@@ -5019,6 +5926,7 @@
         "docs/reference/library-contract.md",
         "docs/reference/3d-json-contract.md",
         "docs/reference/agent-automation-pitfalls.md",
+        "docs/reference/api-levels.md",
         "docs/reference/error-codes.md",
         "docs/reference/third-party-licenses.md",
         "docs/reference/automation-catalog.md",
@@ -5027,6 +5935,7 @@
       "technical": [
         "docs/reference/tech-stack-rationale.md",
         "docs/reference/api.md",
+        "docs/reference/clause-map.md",
         "docs/reference/known-pitfalls.md",
         "docs/reference/sdk-api-contract-v1.md",
         "docs/reference/troubleshooting.md",
@@ -5045,10 +5954,14 @@
         "docs/reference/library-contract.md",
         "docs/reference/3d-json-contract.md",
         "docs/reference/agent-automation-pitfalls.md",
+        "docs/reference/api-levels.md",
         "docs/reference/error-codes.md",
         "docs/reference/third-party-licenses.md",
         "docs/reference/automation-catalog.md",
         "docs/reference/insights-api.md"
+      ],
+      "reference": [
+        "docs/reference/api-levels.md"
       ]
     }
   }

@@ -68,7 +68,7 @@ Key patterns: CSV → `useCSVFileImport` | 3D geometry → `useBeamGeometry` | a
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
 ./run.sh commit "type: message"     # Commit safely (THE ONE RULE)
-./run.sh check                      # Validate everything (28 checks, parallel)
+./run.sh check                      # Validate everything (29 checks, parallel)
 ./run.sh check --quick              # Fast validation (<30s)
 ./run.sh pr create TASK-XXX "desc"  # Start a PR
 ./run.sh pr finish                  # Ship the PR
@@ -96,7 +96,8 @@ Key patterns: CSV → `useCSVFileImport` | 3D geometry → `useBeamGeometry` | a
 ./run.sh parity                     # IS 456 clause/endpoint/test coverage dashboard
 ./run.sh pipeline status TASK-XXX   # Check pipeline step for a task
 ./run.sh session compact            # Archive old SESSION_LOG entries (<50KB)
-./run.sh session costs --summary    # Agent cost/efficiency tracking
+./run.sh session costs --summary    # Legacy Git-activity proxy (not tokens/cost)
+./run.sh session usage --summary    # Model/reasoning/agent checkpoints
 ./run.sh session trust              # Check session trust state
 ```
 

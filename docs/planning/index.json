@@ -51,10 +51,10 @@
     {
       "name": "memory.md",
       "type": "documentation",
-      "size_lines": 350,
+      "size_lines": 375,
       "last_updated": "2026-08-07",
       "description": "- Development resumed after a four-month pause and a Mac laptop → Mac Mini transfer. - Git history, reachable objects, sample data, package source, and ARM64 Python environment transferred intact.",
-      "content_hash": "8eb7a5bab91b"
+      "content_hash": "8464025c44d3"
     },
     {
       "name": "next-phase-improvements-plan.md",
@@ -67,11 +67,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 126,
+      "size_lines": 136,
       "last_updated": "2026-08-07",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-07",
-      "content_hash": "2e28dec3c097"
+      "content_hash": "bd71b50b686a"
     },
     {
       "name": "pre-release-checklist.md",
@@ -92,5 +92,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "893afe2006b03792"
+  "content_hash": "ab3d026efaf13f74"
 }

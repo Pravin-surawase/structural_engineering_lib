@@ -82,7 +82,7 @@ grep "^def " Python/structural_lib/services/api.py | head -30
 
 Runs 8 fast checks including architecture boundaries.
 
-## Full Check (28 checks)
+## Full Check (29 checks)
 
 ```bash
 ./run.sh check

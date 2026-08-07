@@ -41,7 +41,7 @@ Before wrapping or calling any function from `api.py`:
 ```
 NEVER guess parameter names. It's `b_mm` not `width`, `fck` not `concrete_grade`.
 
-The public API has 37 public functions + 7 private helpers (104 exports in `__all__`). Key entry points:
+The services API currently has 68 public functions and 15 internal helpers. Key entry points:
 - `design_beam_is456()` — Main beam design
 - `detail_beam_is456()` — Detailing
 - `beam_to_3d_geometry()` — 3D geometry (in `visualization/geometry_3d.py`)
@@ -51,7 +51,7 @@ The public API has 37 public functions + 7 private helpers (104 exports in `__al
 
 ## Key files to check BEFORE coding
 
-- `api.py` — 37 public functions + 7 private helpers, the main entry point
+- `services/api.py` — 68 public functions and 15 internal helpers, the real entry point
 - `codes/is456/` — all IS 456 math lives here
 - `core/` — base types, sections, materials
 - Before wrapping API functions: `.venv/bin/python scripts/discover_api_signatures.py <func>`
@@ -66,3 +66,18 @@ The public API has 37 public functions + 7 private helpers (104 exports in `__al
 
 - Tests: `.venv/bin/pytest Python/tests/ -v` (85% branch coverage required)
 - Production code always requires PR: `./scripts/create_task_pr.sh TASK-XXX "desc"`
+
+## Cross-Platform File I/O
+
+Always use `encoding="utf-8"` with `Path.read_text()` and `Path.write_text()`.
+Windows defaults to cp1252, causing `UnicodeDecodeError` in CI.
+
+```python
+# WRONG — fails on Windows CI
+content = filepath.read_text()
+filepath.write_text(content)
+
+# RIGHT — works everywhere
+content = filepath.read_text(encoding="utf-8")
+filepath.write_text(content, encoding="utf-8")
+```

@@ -35,6 +35,8 @@ Full evidence and accepted risks are in
 - The analytics-calibrated model picker is in `agents/model_policy.json` and `./run.sh model`; it recommends Luna-first for repeatable work and never auto-selects approval-gated Sol.
 - Model-routing checkpoint `fe55d130` is pushed on PR #676. Focused Ruff/tests pass; the full gate's 22 non-doc checks passed and the corrected Docs category passes 7/7.
 - Sol High orchestrator checkpoint `ff6d525d` is pushed. Project defaults, picker, role instructions, worker-packet contract, and verification tests agree.
+- MAINT-007 makes PR status terminal-only by default, corrects stale bootstrap/tool counts and active-task briefs, discovers all 14 Copilot skills, and adds honest local model/agent checkpoints through `./run.sh session usage`.
+- MAINT-007 verification is green: 32 focused tests, quick 9/9, full 29/29, audit 22/22, and health 100/100. The first local usage ledger records Sol High, one parent, zero subagents, and no fabricated billing values.
 - Current gate: PR #676 has two diagnosed CI failures awaiting approval—three empty template links and Ruff 0.16.1 dependency drift. React coverage remains an accepted follow-up risk.
 - Recovery checkpoint: `b28ee4e3` pushed on `task/MAINT-001`.
 - MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.
@@ -57,6 +59,7 @@ Full evidence and accepted risks are in
 | 4 | MAINT-004 canonical automation/docs | One trustworthy project status signal |
 | 5 | MAINT-005 frontend/release scope | Credible v0.21.7 stabilization exit criteria |
 | 6 | MAINT-006 token/model policy | Analytics-calibrated low-token routing with enforced safety limits |
+| 7 | MAINT-007 docs/tool refresh | Current onboarding, complete discovery, local usage evidence, and no surprise PR tabs |
 
 ## Previous Handoff (2026-04-07)
 

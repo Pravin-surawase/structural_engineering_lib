@@ -73,7 +73,7 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
 ./run.sh commit "type: message"     # Commit safely (THE ONE RULE)
-./run.sh check                      # Validate everything (28 checks, parallel)
+./run.sh check                      # Validate everything (29 checks, parallel)
 ./run.sh check --quick              # Fast validation (<30s)
 ./run.sh pr create TASK-XXX "desc"  # Start a PR
 ./run.sh pr finish                  # Ship the PR
@@ -103,6 +103,7 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ./run.sh pipeline status TASK-XXX   # Check pipeline step for a task
 ./run.sh session compact            # Archive old SESSION_LOG entries (<50KB)
 ./run.sh efficiency check           # Validate low-token project controls
+./run.sh session usage --summary    # Model/reasoning/agent checkpoints
 ./run.sh session trust              # Check session trust state
 ```
 

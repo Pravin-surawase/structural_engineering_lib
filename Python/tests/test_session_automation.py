@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -118,3 +119,71 @@ def test_launcher_port_discovery_is_listener_only():
 
     assert 'lsof -nP -tiTCP:"$port" -sTCP:LISTEN' in commands
     assert "lsof -ti :" not in commands
+
+
+def test_pr_status_is_terminal_first_and_browser_is_explicit():
+    run_sh = (REPO_ROOT / "run.sh").read_text(encoding="utf-8")
+    status_body = run_sh.split("        status)", 1)[1].split("        *)", 1)[0]
+
+    assert 'if [[ "${1:-}" == "--web" ]]' in status_body
+    assert status_body.count("gh pr view --web") == 1
+    assert "--json number,title,state,url" in status_body
+
+
+def test_usage_checkpoint_records_observable_fields_only(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    usage_log = tmp_path / "model_usage.jsonl"
+    monkeypatch.setattr(session, "MODEL_USAGE_LOG", usage_log)
+    monkeypatch.setattr(
+        session,
+        "_git_checkpoint_state",
+        lambda: {"branch": "task/TEST", "head": "abc1234", "working_tree_files": 2},
+    )
+    args = session.build_parser().parse_args(
+        [
+            "usage",
+            "--checkpoint",
+            "milestone",
+            "--task-id",
+            "MAINT-001",
+            "--model",
+            "gpt-5.6-sol",
+            "--reasoning",
+            "high",
+            "--elapsed-min",
+            "45",
+            "--verification",
+            "targeted tests pass",
+        ]
+    )
+
+    assert session.cmd_usage(args) == 0
+    entry = json.loads(usage_log.read_text(encoding="utf-8"))
+    assert entry["task_id"] == "MAINT-001"
+    assert entry["model"] == "gpt-5.6-sol"
+    assert entry["elapsed_min"] == 45
+    assert entry["billing_tokens"] is None
+    assert entry["billing_cost"] is None
+    assert entry["verification"] == ["targeted tests pass"]
+
+
+def test_tool_registry_discovers_all_copilot_skills():
+    tool_registry = importlib.import_module("scripts.tool_registry")
+    registry = tool_registry.load_registry()
+    skill_names = {name for name in registry if name.startswith("skill:")}
+
+    assert len(skill_names) == 14
+    assert "skill:quality-gate" in skill_names
+    assert "skill:release-preflight" in skill_names
+    assert "skill:user-acceptance-test" in skill_names
+    assert "check streamlit code" not in registry
+
+
+def test_generated_indexes_do_not_emit_trailing_space_hard_breaks():
+    generator = (REPO_ROOT / "scripts" / "generate_enhanced_index.py").read_text(
+        encoding="utf-8"
+    )
+
+    assert 'f"**Type:** {type_label}  "' not in generator
+    assert "f\"**Last Updated:** {index['last_updated']}  \"" not in generator

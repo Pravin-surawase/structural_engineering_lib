@@ -57,10 +57,10 @@
     {
       "name": "maintenance-recovery-audit-2026-08-07.md",
       "type": "documentation",
-      "size_lines": 144,
+      "size_lines": 159,
       "last_updated": "2026-08-07",
       "description": "The repository and product source survived the Mac laptop → Mac Mini transfer. The main risk was not missing source code; it was a mixture of inherited",
-      "content_hash": "2f9feeb020cb"
+      "content_hash": "3aa00c6ab469"
     },
     {
       "name": "onboarding-audit-session93.md",
@@ -78,5 +78,5 @@
       "file_count": 1
     }
   ],
-  "content_hash": "1d1928062e811758"
+  "content_hash": "e0b2fefef21b1982"
 }

@@ -101,7 +101,7 @@ ls react_app/src/hooks/                                         # Existing React
 grep -r "@router" fastapi_app/routers/ | head -30               # Existing API routes
 ./run.sh find --api <func>                                   # Public API exact signature (68 functions)
 .venv/bin/python scripts/discover_api_signatures.py <func>      # Exact param names (b_mm not width)
-.venv/bin/python scripts/find_automation.py "task"              # Find existing scripts (83 mapped)
+.venv/bin/python scripts/find_automation.py "task"              # Find existing scripts (113 mapped)
 ```
 
 ## Essential Commands (`./run.sh` — preferred entry point)
@@ -109,8 +109,8 @@ grep -r "@router" fastapi_app/routers/ | head -30               # Existing API r
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
 ./run.sh commit "type: message"     # Safe commit + push (THE ONE RULE)
-./run.sh check --quick              # Fast validation (<30s, 8 checks)
-./run.sh check                      # Full validation (28 checks, parallel)
+./run.sh check --quick              # Fast validation (<30s, 9 checks)
+./run.sh check                      # Full validation (29 checks, parallel)
 ./run.sh test                       # Run pytest suite
 ./run.sh pr create TASK-XXX "desc"  # Start a PR
 ./run.sh pr finish                  # Ship the PR
@@ -137,6 +137,7 @@ grep -r "@router" fastapi_app/routers/ | head -30               # Existing API r
 ./run.sh pipeline status TASK-XXX   # Check pipeline step for a task
 ./run.sh session compact            # Archive old SESSION_LOG entries (<50KB)
 ./run.sh efficiency check           # Validate low-token project controls
+./run.sh session usage --summary    # Model/reasoning/agent checkpoints
 ./run.sh session trust              # Check session trust state
 ```
 

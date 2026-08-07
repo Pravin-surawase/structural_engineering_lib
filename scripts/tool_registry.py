@@ -4,7 +4,7 @@ Unified tool registry — connects agents, skills, scripts, and operations.
 
 Loads from:
 - agents/agent_registry.json (16 agents)
-- scripts/automation-map.json (88+ scripts)
+- scripts/automation-map.json (113 mapped scripts)
 
 Usage:
     python scripts/tool_registry.py --list
@@ -190,6 +190,40 @@ def load_registry() -> dict[str, ToolEntry]:
                         aliases=[],
                     )
 
+    # The registry only lists skills assigned directly to agents. Discover the
+    # complete Copilot skill catalog as well so unassigned specialist gates are
+    # not invisible to tool search.
+    skill_agents = {
+        "quality-gate": "reviewer",
+        "release-preflight": "ops",
+        "user-acceptance-test": "tester",
+        "development-rules": "reviewer",
+    }
+    for skill_file in sorted((REPO_ROOT / ".github" / "skills").glob("*/SKILL.md")):
+        skill = skill_file.parent.name
+        tool_name = f"skill:{skill}"
+        content = skill_file.read_text(encoding="utf-8")
+        description_match = re.search(
+            r'^description:\s*["\']?(.*?)["\']?\s*$', content, re.MULTILINE
+        )
+        description = (
+            description_match.group(1) if description_match else f"Skill: {skill}"
+        )
+        if tool_name in registry:
+            registry[tool_name].description = description
+            continue
+        registry[tool_name] = ToolEntry(
+            name=tool_name,
+            description=description,
+            agent=skill_agents.get(skill, "orchestrator"),
+            category="Skill",
+            script=None,
+            permission="ReadOnly",
+            keywords=[skill.replace("-", " ")],
+            skill=skill,
+            aliases=[],
+        )
+
     # Load automation map
     automation_map_path = REPO_ROOT / "scripts" / "automation-map.json"
     if automation_map_path.exists():
@@ -198,18 +232,24 @@ def load_registry() -> dict[str, ToolEntry]:
 
         # Add script tasks
         for task_name, task_info in automation_data.get("tasks", {}).items():
+            if task_info.get("deprecated", False):
+                continue
             script = task_info.get("script", "")
             description = task_info.get("description", "")
             group = task_info.get("group", "Uncategorized")
 
             # Classify permission
-            permission = classify_permission(script, task_name, description)
+            permission = task_info.get("permission") or classify_permission(
+                script, task_name, description
+            )
 
             # Extract keywords
             keywords = extract_keywords(task_name, description)
 
             # Determine primary agent based on task characteristics
-            agent = infer_agent_from_task(task_name, description, group)
+            agent = task_info.get("agent") or infer_agent_from_task(
+                task_name, description, group
+            )
 
             registry[task_name] = ToolEntry(
                 name=task_name,
@@ -406,7 +446,7 @@ def show_stats(registry: dict[str, ToolEntry]):
 
     StatusLine.info("Tool Registry Statistics")
     print(f"\n📊 Total tools: {total}")
-    print(f"   - Scripts: {has_script}")
+    print(f"   - Script-backed operations: {has_script}")
     print(f"   - Skills: {has_skill}")
     print(f"   - Agents: {is_agent}")
     print(f"   - Aliases: {len(TOOL_ALIASES)}")

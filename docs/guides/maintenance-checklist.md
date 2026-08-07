@@ -64,7 +64,7 @@ Run every 5th session or weekly:
 # 2. Full health scan
 ./run.sh health
 
-# 3. Full validation (28 checks)
+# 3. Full validation (29 checks)
 ./run.sh check
 
 # 4. Run test suite

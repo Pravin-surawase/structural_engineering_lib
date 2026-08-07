@@ -14,6 +14,7 @@ USAGE:
     python scripts/session.py check
     python scripts/session.py summary [--write]
     python scripts/session.py sync [--fix] [--json]
+    python scripts/session.py usage [--checkpoint start|milestone|closeout] [...]
     python scripts/session.py compact [--keep-last N] [--dry-run]
 """
 
@@ -24,7 +25,7 @@ import json
 import re
 import subprocess
 import sys
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Optional
 
@@ -463,6 +464,7 @@ def cmd_start(args: argparse.Namespace) -> int:
 # ─── Cost / Token Logging ────────────────────────────────────────────────────
 
 COST_LOG = REPO_ROOT / "logs" / "agent_costs.jsonl"
+MODEL_USAGE_LOG = REPO_ROOT / "logs" / "model_usage.jsonl"
 
 
 def _log_session_cost(agent: str = "unknown") -> None:
@@ -536,9 +538,9 @@ def _log_session_cost(agent: str = "unknown") -> None:
 
 
 def cmd_costs(args: argparse.Namespace) -> int:
-    """Show cost/session entries from logs/agent_costs.jsonl."""
+    """Show legacy Git-activity proxies from logs/agent_costs.jsonl."""
     if not COST_LOG.exists() or COST_LOG.stat().st_size == 0:
-        print("No cost entries yet. Run 'session.py end --agent <name>' to record.")
+        print("No activity entries yet. Run 'session.py end --agent <name>' to record.")
         return 0
 
     entries = []
@@ -576,7 +578,7 @@ def cmd_costs(args: argparse.Namespace) -> int:
 
         print()
         print("=" * 60)
-        print("📊 SESSION COST SUMMARY")
+        print("📊 SESSION ACTIVITY SUMMARY (NOT BILLING OR TOKENS)")
         print("=" * 60)
         print(f"  Total sessions:   {total}")
         print(f"  Agents:           {', '.join(agents)}")
@@ -608,6 +610,168 @@ def cmd_costs(args: argparse.Namespace) -> int:
             f"{ts:<20} {agent:<12} {sid:<8} {files:>5} {commits:>7} {added:>7} {removed:>7}"
         )
     print()
+    return 0
+
+
+def _read_jsonl(path: Path) -> list[dict]:
+    """Read valid JSON objects from an append-only JSONL file."""
+    if not path.exists():
+        return []
+
+    entries: list[dict] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        try:
+            value = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(value, dict):
+            entries.append(value)
+    return entries
+
+
+def _git_checkpoint_state() -> dict[str, object]:
+    """Return cheap, observable repository state for a usage checkpoint."""
+
+    def capture(*command: str) -> str:
+        result = subprocess.run(
+            list(command),
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        return result.stdout.strip()
+
+    status = capture("git", "status", "--porcelain")
+    return {
+        "branch": capture("git", "branch", "--show-current") or "unknown",
+        "head": capture("git", "rev-parse", "--short", "HEAD") or "unknown",
+        "working_tree_files": len(status.splitlines()) if status else 0,
+    }
+
+
+def _usage_profile(entry: dict) -> str:
+    model = entry.get("model", "unknown")
+    reasoning = entry.get("reasoning", "unknown")
+    return f"{model}/{reasoning}"
+
+
+def _record_usage_checkpoint(args: argparse.Namespace) -> dict:
+    """Append an observable model/agent checkpoint without estimating billing."""
+    entry = {
+        "schema_version": 1,
+        "timestamp": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "checkpoint": args.checkpoint,
+        "task_id": args.task_id or "",
+        "task": args.task or "",
+        "model": args.model,
+        "reasoning": args.reasoning,
+        "parent_agents": args.parent_agents,
+        "subagents": args.subagents,
+        "worker_models": args.worker_model or [],
+        "elapsed_min": args.elapsed_min,
+        "dashboard": {
+            "weekly_remaining_pct": args.weekly_remaining,
+            "turns": args.turns,
+        },
+        "verification": args.verification or [],
+        "git": _git_checkpoint_state(),
+        "notes": args.notes or "",
+        "billing_tokens": None,
+        "billing_cost": None,
+        "measurement_note": (
+            "Repository-observable checkpoint; dashboard values are manual. "
+            "No token or billing estimate is inferred."
+        ),
+    }
+    MODEL_USAGE_LOG.parent.mkdir(parents=True, exist_ok=True)
+    with MODEL_USAGE_LOG.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(entry, sort_keys=True) + "\n")
+    return entry
+
+
+def cmd_usage(args: argparse.Namespace) -> int:
+    """Record or summarize model, agent, elapsed-time, and usage checkpoints."""
+    if args.checkpoint:
+        entry = _record_usage_checkpoint(args)
+        if args.json_output:
+            print(json.dumps(entry, indent=2))
+        else:
+            print(
+                "Usage checkpoint recorded: "
+                f"{entry['checkpoint']} | {_usage_profile(entry)} | "
+                f"agents {entry['parent_agents']}+{entry['subagents']}"
+            )
+            print(
+                "Token/cost fields remain empty unless an authoritative source is added."
+            )
+        return 0
+
+    entries = _read_jsonl(MODEL_USAGE_LOG)
+    if args.hours is not None:
+        cutoff = datetime.now().astimezone() - timedelta(hours=args.hours)
+        entries = [
+            entry
+            for entry in entries
+            if datetime.fromisoformat(entry["timestamp"]) >= cutoff
+        ]
+
+    if args.summary:
+        profiles: dict[str, int] = {}
+        for entry in entries:
+            profile = _usage_profile(entry)
+            profiles[profile] = profiles.get(profile, 0) + 1
+        summary = {
+            "checkpoints": len(entries),
+            "profiles": profiles,
+            "max_subagents": max(
+                (entry.get("subagents", 0) for entry in entries), default=0
+            ),
+            "latest_weekly_remaining_pct": next(
+                (
+                    entry.get("dashboard", {}).get("weekly_remaining_pct")
+                    for entry in reversed(entries)
+                    if entry.get("dashboard", {}).get("weekly_remaining_pct")
+                    is not None
+                ),
+                None,
+            ),
+            "billing_tokens": None,
+            "billing_cost": None,
+        }
+        if args.json_output:
+            print(json.dumps(summary, indent=2))
+        else:
+            print("MODEL / AGENT USAGE CHECKPOINT SUMMARY")
+            print(f"  Checkpoints: {summary['checkpoints']}")
+            for profile, count in sorted(profiles.items()):
+                print(f"  {profile}: {count}")
+            print(f"  Peak subagents: {summary['max_subagents']}")
+            if summary["latest_weekly_remaining_pct"] is not None:
+                print(
+                    "  Latest weekly remaining: "
+                    f"{summary['latest_weekly_remaining_pct']}%"
+                )
+            print("  Billing tokens/cost: unavailable (not estimated)")
+        return 0
+
+    selected = entries[-args.last :]
+    if args.json_output:
+        print(json.dumps(selected, indent=2))
+        return 0
+    if not selected:
+        print("No model/usage checkpoints yet. Use --checkpoint start to record one.")
+        return 0
+
+    print("MODEL / AGENT USAGE CHECKPOINTS")
+    for entry in selected:
+        total_agents = entry.get("parent_agents", 1) + entry.get("subagents", 0)
+        print(
+            f"  {entry.get('timestamp', '')[:19]} | {entry.get('checkpoint', '?'):<9} | "
+            f"{_usage_profile(entry)} | agents {total_agents} | "
+            f"elapsed {entry.get('elapsed_min', '?')}m"
+        )
+    print("  Token/cost values are not estimated by repository tooling.")
     return 0
 
 
@@ -1994,6 +2158,34 @@ def build_parser() -> argparse.ArgumentParser:
     p_costs.add_argument("--agent", type=str, default=None, help="Filter by agent name")
     p_costs.add_argument("--summary", action="store_true", help="Show aggregate stats")
 
+    # usage checkpoints
+    p_usage = sub.add_parser(
+        "usage", help="Record/show observable model and agent usage checkpoints"
+    )
+    p_usage.add_argument("--checkpoint", choices=("start", "milestone", "closeout"))
+    p_usage.add_argument("--task-id", default="", help="Task identifier")
+    p_usage.add_argument("--task", default="", help="Short task description")
+    p_usage.add_argument("--model", default="gpt-5.6-sol", help="Parent model")
+    p_usage.add_argument("--reasoning", default="high", help="Reasoning effort")
+    p_usage.add_argument("--parent-agents", type=int, default=1)
+    p_usage.add_argument("--subagents", type=int, default=0)
+    p_usage.add_argument(
+        "--worker-model", action="append", help="Worker model/profile; repeatable"
+    )
+    p_usage.add_argument("--elapsed-min", type=float, default=0)
+    p_usage.add_argument(
+        "--weekly-remaining", type=float, help="Manual dashboard percentage"
+    )
+    p_usage.add_argument("--turns", type=int, help="Manual dashboard turn count")
+    p_usage.add_argument(
+        "--verification", action="append", help="Check/test evidence; repeatable"
+    )
+    p_usage.add_argument("--notes", default="")
+    p_usage.add_argument("--last", type=int, default=10)
+    p_usage.add_argument("--hours", type=float, help="Limit display/summary window")
+    p_usage.add_argument("--summary", action="store_true")
+    p_usage.add_argument("--json", dest="json_output", action="store_true")
+
     # context
     sub.add_parser("context", help="Dump compact session context for quick orientation")
 
@@ -2036,6 +2228,7 @@ def main() -> int:
         "summary": cmd_summary,
         "sync": cmd_sync,
         "costs": cmd_costs,
+        "usage": cmd_usage,
         "context": cmd_context,
         "compact": cmd_compact,
         "trust": cmd_trust,

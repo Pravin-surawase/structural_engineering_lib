@@ -30,9 +30,9 @@
     "run all checks": {
       "group": "Quality",
       "script": ".venv/bin/python scripts/check_all.py",
-      "description": "Run all 28 validation checks across 9 categories in parallel (also: ./run.sh check)",
+      "description": "Run all 29 validation checks across 8 categories in parallel (also: ./run.sh check)",
       "options": {
-        "--quick": "Run 8 quick checks only (<30s)",
+        "--quick": "Run 9 quick checks only (<30s)",
         "--category X": "Run checks for specific category",
         "--changed": "Auto-detect categories from git diff",
         "--fix": "Auto-fix where possible",
@@ -111,7 +111,8 @@
     "check streamlit code": {
       "group": "Infrastructure",
       "script": ".venv/bin/python scripts/check_fastapi_issues.py",
-      "description": "(REMOVED) check_streamlit.py was removed. Use check_fastapi_issues.py for backend checks."
+      "description": "(REMOVED) check_streamlit.py was removed. Use check_fastapi_issues.py for backend checks.",
+      "deprecated": true
     },
     "run tests": {
       "group": "Testing",
@@ -125,7 +126,7 @@
     },
     "format code": {
       "group": "Infrastructure",
-      "script": "cd Python && .venv/bin/python -m black . && .venv/bin/python -m ruff check --fix .",
+      "script": "cd Python && ../.venv/bin/python -m black . && ../.venv/bin/python -m ruff check --fix .",
       "description": "Auto-format Python code with black + ruff"
     },
     "check folder structure": {
@@ -327,7 +328,8 @@
     "validate streamlit session state": {
       "group": "Quality",
       "script": ".venv/bin/python scripts/check_fastapi_issues.py",
-      "description": "(REMOVED) check_streamlit.py was removed. Streamlit validation deprecated."
+      "description": "(REMOVED) check_streamlit.py was removed. Streamlit validation deprecated.",
+      "deprecated": true
     },
     "check docker config": {
       "group": "Infrastructure",
@@ -618,6 +620,19 @@
         "--json": "Machine-readable policy check output"
       }
     },
+    "model usage checkpoint": {
+      "group": "Session",
+      "script": "./run.sh session usage",
+      "description": "Record or summarize model, reasoning, elapsed time, agents, manual dashboard usage, verification, and Git state without estimating billing tokens",
+      "agent": "doc-master",
+      "permission": "WorkspaceWrite",
+      "options": {
+        "--checkpoint start|milestone|closeout": "Append a local checkpoint",
+        "--summary": "Aggregate checkpoints by model/reasoning profile",
+        "--hours N": "Limit display or summary to a recent time window",
+        "--json": "Machine-readable output"
+      }
+    },
     "agent context": {
       "group": "Session",
       "script": ".venv/bin/python scripts/agent_context.py <agent_name>",
@@ -793,7 +808,8 @@
       "session summary",
       "session handoff",
       "session check",
-      "sync doc numbers"
+      "sync doc numbers",
+      "model usage checkpoint"
     ],
     "code_validation": [
       "check architecture boundaries",

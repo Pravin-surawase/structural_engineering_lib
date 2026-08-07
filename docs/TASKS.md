@@ -27,6 +27,7 @@
 | MAINT-004 | Make `run.sh check` the canonical truth source and repair stale indexes/scanners | P1 | ✅ DONE | Canonical check, audit, health, API manifest, schemas, hooks, and registries agree |
 | MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | ✅ DONE | Live import→design→3D→dashboard→export flow and byte-level artifacts pass; v0.21.7 preflight is ready |
 | MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | Sol High main orchestrator, Luna/Terra workers, mandatory delegation packets and verification, two-subagent cap, task-aware picker, and quick-gate check pass |
+| MAINT-007 | Refresh onboarding, agents, tools, and usage telemetry | P1 | ✅ DONE | Terminal-only PR status, current bootstrap/counts, complete 14-skill discovery, honest usage checkpoints, and focused regressions pass |
 
 ### Maintenance evidence captured 2026-08-07
 
@@ -43,6 +44,8 @@
 - Docker release preflight passes with 5,158 Python tests, 8 skips, 6 deselections, and a Node 24 React production build. PR #676 is open on `task/MAINT-001`.
 - Low-token policy checkpoint `6e8e4a31` defaults Codex to Terra/medium, disables Fast mode, caps subagents at two, replaces full-history handoffs, and adds a ninth canonical quick check.
 - Authenticated analytics showed 1,858 turns in the one-month view: 1,065 GPT-5.5, 635 Sol, 96 Luna, 43 Terra, and 19 older models. The checked-in picker now favors Luna for clear/repeatable work, Terra for normal/high-risk implementation, and approval-gates Sol.
+- MAINT-007 removed the default `gh pr view --web` side effect from `./run.sh pr status`; browser opening now requires `--web`. Session checkpoints record model, reasoning, elapsed time, parent/subagent counts, optional dashboard values, verification, and Git state without estimating tokens or cost.
+- MAINT-007 closeout: 32 focused regressions, Ruff/Black, quick 9/9, full 29/29, audit 22/22, and health 100/100 pass; folder indexes and the 282-document global index are current.
 
 ### Recovery progress
 
@@ -132,6 +135,7 @@ feature work until PR #676 is green and the v0.21.7 release decision is handled.
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
 | MAINT-006 | Add enforceable low-token defaults, context rules, analytics-calibrated model routing, and automation | Main Agent | ✅ DONE |
+| MAINT-007 | Re-audit and modernize onboarding, agent/tool discovery, usage telemetry, and PR browser behavior | Main Agent | ✅ DONE |
 | MAINT-005 | Verify the full live browser/export workflow and establish the evidence-based v0.21.7 finish line | Main Agent | ✅ DONE |
 | MAINT-004 | Reconcile canonical checks, manifests, indexes, health, parity, active docs, and feedback | Main Agent | ✅ DONE |
 | MAINT-002 | Repair nightly QA, maintained import E2E contracts, and documentation links | Main Agent | ✅ DONE |

@@ -17,7 +17,7 @@
   security, documentation, agent-infrastructure, and live-browser audit.
 - Preserved inherited work in `b28ee4e3` and completed 19 maintenance commits
   through `fe55d130`, touching 222 files across recovery and stabilization.
-- Completed MAINT-002 through MAINT-006. The repository/product maintenance,
+- Completed MAINT-002 through MAINT-007. The repository/product maintenance,
   Mac control plane, Docker preflight, and low-token model policy are green; no
   release was executed.
 - MAINT-001 now remains open only for the two diagnosed PR #676 CI failures and
@@ -62,6 +62,10 @@
 - Model-routing checkpoint `fe55d130` is pushed. Thirteen focused tests and Ruff pass; the full gate passed all 22 non-doc checks, then the two introduced doc/index findings were corrected and the Docs category passed 7/7.
 - The owner made Sol High mandatory for the main orchestrator's intake, planning, delegation, integration, and final review. Luna/Terra remain execution workers. The orchestrator must provide exact scope, non-goals, pitfalls, acceptance criteria, tests, and return format, then independently verify returned work.
 - Orchestrator-policy checkpoint `ff6d525d` is pushed; 17 focused tests, Ruff, the 9/9 quick gate, and Docs 7/7 pass.
+- MAINT-007 re-audited onboarding, bootstrap steps, 16 agent definitions, 14 skills, 113 mapped scripts, folder governance, and tool permissions. The fast brief now reads the current Active table and labels its fast grep metric as test functions.
+- `./run.sh session usage` now records local start/milestone/closeout evidence: model, reasoning, elapsed time, parent/subagent counts, optional dashboard values, verification, and Git state. Billing token/cost fields remain explicitly empty.
+- `./run.sh pr status` no longer calls `gh pr view --web` by default. It prints PR details in the terminal; `./run.sh pr status --web` is the explicit browser action.
+- MAINT-007 verification passes 32 focused tests, Ruff/Black, instruction and bootstrap drift checks, the 9/9 quick gate, the 29/29 full gate, audit readiness 22/22, and health 100/100. The authoritative Python collection is 5,193 tests.
 
 ### Notes
 - Inherited pre-session tree: 73 modified tracked files plus 47 untracked files; 70 Python diffs are AST-equivalent formatting changes.
@@ -92,6 +96,7 @@
 - ⚠️ TERMINAL ISSUE: `./run.sh pr create` required execution from `main` even though the task branch already existed → the documented direct `gh pr create` fallback opened PR #676.
 - ⚠️ TERMINAL ISSUE: `./run.sh pr status` and `bash run.sh pr status` returned no visible output → `./scripts/ai_commit.sh --status` provided the required branch/PR state without bypassing safeguards.
 - ⚠️ TERMINAL ISSUE: the documented direct `scripts/generate_folder_index.py` path did not exist → `./run.sh generate indexes` used the maintained generator; unrelated generated churn was then narrowed to affected indexes only.
+- ⚠️ TERMINAL ISSUE: every enforced `./run.sh pr status` call opened another Chrome PR tab because `run.sh` unconditionally used `gh pr view --web` → status is now terminal-only and browser opening requires the explicit `--web` flag.
 
 
 

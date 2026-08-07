@@ -230,7 +230,7 @@ Run these commands to confirm everything works:
 # 1. Environment check
 ./run.sh session start
 
-# 2. Quick validation (8 checks, <30 seconds)
+# 2. Quick validation (9 checks, <30 seconds)
 ./run.sh check --quick
 
 # 3. Full test suite

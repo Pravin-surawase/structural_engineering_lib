@@ -347,3 +347,28 @@ python -m mypy
 ---
 
 **Last Major Update:** 2026-01-07 (Agent collaboration framework v2.0, v0.16-v0.17 roadmap)
+
+---
+
+## 2026-08-07 — Maintenance and Agent Operations Update
+
+- The active stack is React 19 → FastAPI → `Python/structural_lib`; Streamlit is
+  legacy only. Current work remains on `task/MAINT-001` / PR #676.
+- Mac Mini recovery is complete: GitHub CLI plus SSH pass, and Colima/Docker are
+  healthy on the preserved transferred disk.
+- The main Codex orchestrator uses GPT-5.6 Sol High. Luna handles clear,
+  repetitive work; Terra handles normal implementation and focused review.
+  Keep zero subagents by default and never exceed two.
+- Use `./run.sh model` for task-aware recommendations and
+  `./run.sh session usage` at start, 2–3 hour milestones, and closeout. The
+  usage ledger records observable model/agent/time/check data but does not
+  estimate billing tokens or cost.
+- `./run.sh pr status` is terminal-only. Browser opening requires
+  `./run.sh pr status --web`; GitHub device login may still open a browser as
+  part of explicit authentication.
+- Current automation inventory: 16 Copilot roles, 14 Copilot skills, 113 mapped
+  scripts, 29 full validation checks, and 9 quick checks. Copilot's Claude
+  model fields are separate from Codex Luna/Terra/Sol routing.
+- Do not apply the two focused PR #676 CI fixes, merge, or release without owner
+  approval. The pending fixes are three empty evidence-template links and Ruff
+  0.15.8/0.16.1 toolchain drift.

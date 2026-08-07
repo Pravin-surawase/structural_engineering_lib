@@ -31,7 +31,7 @@ _priorities() {
     if [[ -f "$BRIEF" ]]; then
         # Extract last session summary: "Completed:" line and known issues
         local completed known_issues focus
-        focus=$(grep -m1 'Focus:' "$BRIEF" 2>/dev/null | sed 's/.*Focus:\*\*//' | sed 's/\*\*//' | head -c 120)
+        focus=$(grep -m1 'Focus:' "$BRIEF" 2>/dev/null | sed -E 's/^[- ]*\*\*?Focus:\*\*?[[:space:]]*//; s/^[- ]*Focus:[[:space:]]*//' | head -c 120)
         completed=$(grep -A1 '^\*\*Completed:\*\*' "$BRIEF" 2>/dev/null | tail -1 | head -c 120)
         known_issues=$(grep -A3 '^\*\*Known Issues:\*\*' "$BRIEF" 2>/dev/null | grep '^-' | head -3 | sed 's/^/    /')
 
@@ -49,13 +49,21 @@ _priorities() {
 # ── Active tasks ───────────────────────────────────────────────────────
 _active_tasks() {
     if [[ -f "$TASKS" ]]; then
-        # Get active release line (e.g., "v0.21 | React UX + Library Expansion")
-        local active_line todo_items
-        active_line=$(grep '🔄 ACTIVE' "$TASKS" 2>/dev/null | head -1 | awk -F'|' '{gsub(/^[ *]+|[ *]+$/, "", $2); gsub(/^[ *]+|[ *]+$/, "", $3); print $2 " — " $3}') || true
-        [[ -n "$active_line" ]] && echo "  Release: $active_line"
-        # Show pending feature tasks (📋 = not started)
-        todo_items=$(grep '📋' "$TASKS" 2>/dev/null | grep 'TASK-' | head -3 | awk -F'|' '{gsub(/^[ ]+|[ ]+$/, "", $3); gsub(/^[ ]+|[ ]+$/, "", $4); print "  TODO: " $3 " — " $4}') || true
-        [[ -n "$todo_items" ]] && echo "$todo_items"
+        local active_items
+        active_items=$(awk '
+            /^## Active$/ { in_active=1; next }
+            /^## / && in_active { exit }
+            in_active && /^\|/ && $0 !~ /^\|[- ]+\|/ && $0 !~ /\| ID \|/ {
+                split($0, fields, "|")
+                id=fields[2]; task=fields[3]; status=fields[5]
+                gsub(/^[[:space:]]+|[[:space:]]+$/, "", id)
+                gsub(/^[[:space:]]+|[[:space:]]+$/, "", task)
+                gsub(/^[[:space:]]+|[[:space:]]+$/, "", status)
+                if (id != "") print "  " id ": " task " [" status "]"
+            }
+        ' "$TASKS" | head -3) || true
+        [[ -n "$active_items" ]] && echo "$active_items"
+        [[ -z "$active_items" ]] && echo "  (no active tasks)"
     else
         echo "  (no TASKS.md)"
     fi
@@ -101,7 +109,7 @@ _live_counts() {
     tests=$(find "$REPO_ROOT/Python/tests" -name "test_*.py" -exec grep -c "def test_" {} + 2>/dev/null | awk -F: '{sum+=$NF} END{print sum}')
     endpoints=$(grep -r "@router\.\(get\|post\|put\|delete\|patch\|websocket\)" "$REPO_ROOT/fastapi_app/routers/" 2>/dev/null | wc -l | tr -d ' ')
     hooks=$(grep -r "^export.*function\|^export.*const.*use" "$REPO_ROOT/react_app/src/hooks/" 2>/dev/null | wc -l | tr -d ' ')
-    echo "Tests: $tests | Endpoints: $endpoints | Hooks: $hooks"
+    echo "Test functions: $tests | Endpoints: $endpoints | Hooks: $hooks"
 }
 
 # ── Handoff context (what the last agent left) ────────────────────────

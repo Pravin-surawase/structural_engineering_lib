@@ -157,7 +157,26 @@ _cmd_pr() {
             ;;
         status)
             if command -v gh &>/dev/null; then
-                gh pr view --web 2>/dev/null || gh pr list
+                if [[ "${1:-}" == "--web" ]]; then
+                    gh pr view --web
+                    return
+                fi
+
+                local branch
+                branch=$(git branch --show-current 2>/dev/null)
+                if gh pr view \
+                    --json number,title,state,url,headRefName,baseRefName,mergeStateStatus \
+                    --jq '"PR #\(.number) [\(.state)] \(.title)\nBranch: \(.headRefName) -> \(.baseRefName)\nMerge state: \(.mergeStateStatus)\nURL: \(.url)"' \
+                    2>/dev/null; then
+                    return
+                fi
+
+                echo "No pull request is associated with branch: ${branch:-unknown}"
+                if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
+                    "$SCRIPTS/ai_commit.sh" --pr-check
+                else
+                    echo "Working tree clean; no PR decision is needed."
+                fi
             else
                 _error "GitHub CLI (gh) not installed"
                 echo "  Install: brew install gh"
@@ -181,12 +200,14 @@ Manage pull requests.
 Subcommands:
   create TASK-XXX "description"    Create a task PR branch
   finish [args]                    Push, create/merge PR
-  status                           View current PR status
+  status                           Print current PR status in the terminal
+  status --web                     Open the current PR in a browser
 
 Examples:
   ./run.sh pr create TASK-501 "Add shear wall support"
   ./run.sh pr finish
   ./run.sh pr status
+  ./run.sh pr status --web
 EOF
 }
 
@@ -223,6 +244,10 @@ _cmd_session() {
         brief)
             bash "$SCRIPTS/agent_brief.sh" "$@"
             ;;
+        costs|usage|compact|trust)
+            _require_venv
+            "$VENV" "$SCRIPTS/session.py" "$subcmd" "$@"
+            ;;
         *)
             _help_session
             [[ -n "$subcmd" ]] && _error "Unknown session subcommand: $subcmd"
@@ -245,10 +270,15 @@ Subcommands:
   check      Check session docs for issues
   context    Dump compact orientation context (tasks, brief, git status)
   brief      Fast 20-line agent brief (--agent <name> | --handoff)
+  usage      Record/show model, reasoning, agent, and usage checkpoints
+  costs      Show legacy Git-activity proxies (not billing or tokens)
+  compact    Archive old SESSION_LOG entries
+  trust      Show or reset session trust state
 
 Examples:
   ./run.sh session start      # First thing every session
   ./run.sh session context    # Quick orientation mid-session
+  ./run.sh session usage --help
   ./run.sh session end        # Last thing every session
   ./run.sh session sync       # Fix stale numbers mid-session
 EOF
@@ -890,7 +920,7 @@ _run_sh() {
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
     local -a pr_subs=('create' 'finish' 'status')
-    local -a session_subs=('start' 'end' 'summary' 'sync' 'check')
+    local -a session_subs=('start' 'end' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'costs' 'compact' 'trust')
     local -a generate_subs=('indexes' 'sdk' 'manifest' 'docs-index' 'scaffold')
     local -a health_opts=('--fix' '--score' '--quick' '--category' '--json')
     local -a feedback_subs=('log' 'summary' 'pending' 'resolve' 'stats')

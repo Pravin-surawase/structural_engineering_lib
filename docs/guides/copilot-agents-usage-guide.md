@@ -20,7 +20,7 @@ tags: []
 
 ## Quick Overview
 
-You have **16 agents**, **10 skills**, and **16 prompt files** configured in VS Code Copilot. This guide shows you when and how to use each one.
+You have **16 agents**, **14 skills**, and **16 prompt files** configured in VS Code Copilot. This guide shows you when and how to use each one.
 
 ### How to invoke
 

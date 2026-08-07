@@ -2,7 +2,7 @@
   "folder": "docs",
   "type": "documentation",
   "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly.",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-07",
   "file_count": 6,
   "files": [
     {
@@ -17,28 +17,28 @@
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 269,
-      "last_updated": "2026-04-06",
+      "size_lines": 394,
+      "last_updated": "2026-08-07",
       "title": "Session Log",
       "description": "> Append-only decision log for AI agent sessions. > Earlier sessions (1-100): SESSION_LOG_through_session_100.md",
-      "content_hash": "2bfff9402519"
+      "content_hash": "aa0e2becee21"
     },
     {
       "name": "TASKS.md",
       "type": "documentation",
-      "size_lines": 383,
-      "last_updated": "2026-04-07",
+      "size_lines": 645,
+      "last_updated": "2026-08-07",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "5d0b56419814"
+      "content_hash": "e9883492835c"
     },
     {
       "name": "WORKLOG.md",
       "type": "documentation",
-      "size_lines": 279,
-      "last_updated": "2026-04-07",
+      "size_lines": 325,
+      "last_updated": "2026-08-07",
       "description": "> **One line per item. Compact. Append-only.** > Format: DATE | TASK-ID | what changed | commit",
-      "content_hash": "ccb439de32a7"
+      "content_hash": "8450d829e842"
     },
     {
       "name": "docs-canonical.json",
@@ -57,7 +57,7 @@
     {
       "name": "docs-index.json",
       "type": "config",
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-08-07",
       "top_level_keys": [
         "version",
         "generated",
@@ -65,7 +65,7 @@
         "docs",
         "navigation"
       ],
-      "content_hash": "8eab3a588f60"
+      "content_hash": "d840947c7197"
     }
   ],
   "subfolders": [
@@ -95,7 +95,7 @@
     {
       "name": "audit",
       "path": "audit/",
-      "file_count": 9
+      "file_count": 11
     },
     {
       "name": "blog-drafts",
@@ -140,7 +140,7 @@
     {
       "name": "guidelines",
       "path": "guidelines/",
-      "file_count": 17
+      "file_count": 18
     },
     {
       "name": "guides",
@@ -161,15 +161,26 @@
       "description": "A guided learning path for engineers new to this codebase. Written for those who want to understand both the structural engineering concepts and the P"
     },
     {
+      "name": "learning-foundations",
+      "path": "learning-foundations/",
+      "file_count": 14,
+      "description": "These are NOT specific to this repo. They are universal concepts every developer needs."
+    },
+    {
       "name": "legal",
       "path": "legal/",
       "file_count": 6,
       "description": "Engineering certification templates and usage guidelines."
     },
     {
+      "name": "migration",
+      "path": "migration/",
+      "file_count": 46
+    },
+    {
       "name": "planning",
       "path": "planning/",
-      "file_count": 10
+      "file_count": 12
     },
     {
       "name": "publications",
@@ -185,7 +196,7 @@
     {
       "name": "research",
       "path": "research/",
-      "file_count": 6
+      "file_count": 8
     },
     {
       "name": "specs",
@@ -200,5 +211,5 @@
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "3c9cd43e816c4968"
+  "content_hash": "468de4020ead5c6b"
 }

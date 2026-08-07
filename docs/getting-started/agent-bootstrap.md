@@ -408,7 +408,7 @@ curl http://localhost:8000/health           # Should return {"status":"ok"}
 
 ```bash
 pip install -e Python/                               # Install in dev mode
-python -c "from structural_lib import design_beam_is456; print('OK')"
+.venv/bin/python -c "from structural_lib import design_beam_is456; print('OK')"
 ```
 
 ### Port Map
@@ -424,10 +424,9 @@ python -c "from structural_lib import design_beam_is456; print('OK')"
 | Problem | Fix |
 |---------|-----|
 | `docker ps` permission denied | Colima not running → `colima start --cpu 4 --memory 4` |
-| Colima download fails | Network issue → `colima delete -f && colima start` (retries download) |
-| Colima won't start | `colima delete && colima start` (fresh VM) |
-| Port 8000 already in use | `lsof -ti :8000 \| xargs kill -9` |
-| Port 5173 already in use | `lsof -ti :5173 \| xargs kill -9` |
+| Colima download/start fails | Run `colima status`, then inspect `~/.colima/_lima/colima/ha.stderr.log`; do not delete the transferred VM without approval |
+| Port 8000 already in use | Inspect the listener: `lsof -nP -iTCP:8000 -sTCP:LISTEN` |
+| Port 5173 already in use | Inspect the listener: `lsof -nP -iTCP:5173 -sTCP:LISTEN` |
 | `uvicorn: command not found` | Venv not activated → `source .venv/bin/activate` or use `.venv/bin/uvicorn` |
 | `ModuleNotFoundError: structural_lib` | Venv not active or re-install → `source .venv/bin/activate && pip install -e Python/` |
 | React shows blank / "cannot connect" | FastAPI not running — start it first on :8000 |
@@ -443,10 +442,11 @@ python -c "from structural_lib import design_beam_is456; print('OK')"
 ```bash
 # Session start
 ./run.sh session start                               # Verify env, read priorities
+./run.sh session usage --checkpoint start --task-id TASK-XXX --task "short scope"
 
 # Validate codebase
-./run.sh check --quick                               # Fast validation (8 checks, <30s)
-./run.sh check                                       # Full validation (28 checks, parallel)
+./run.sh check --quick                               # Fast validation (9 checks, <30s)
+./run.sh check                                       # Full validation (29 checks, parallel)
 ./run.sh check --category api                        # One category only
 
 # Run tests
@@ -523,9 +523,11 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 ```
 START:  □ ./run.sh session context              ← quick orientation (brief + tasks + git)
         □ ./run.sh session start
+        □ ./run.sh session usage --checkpoint start --task-id TASK-XXX --task "scope"
         □ ./run.sh preflight                     ← check branch, venv, ports, conflicts
 
 END:    □ ./run.sh commit "type: message"        ← commit all work
+        □ ./run.sh session usage --checkpoint closeout --elapsed-min N --verification "gate"
         □ ./run.sh session summary               ← auto-log to SESSION_LOG.md
         □ ./run.sh session sync                  ← fix stale doc numbers
         □ ./run.sh evolve --status              # P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
@@ -553,6 +555,7 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
 | Test changed | `./run.sh test --changed` | `.venv/bin/python scripts/test_changed.py` |
 | Pre-flight | `./run.sh preflight` | `.venv/bin/python scripts/preflight.py` |
 | Session context | `./run.sh session context` | `.venv/bin/python scripts/session.py context` |
+| Usage checkpoint | `./run.sh session usage ...` | `.venv/bin/python scripts/session.py usage ...` |
 | PR decision | `./run.sh pr status` | `./scripts/should_use_pr.sh --explain` |
 | Find script | `./run.sh find "task"` | `.venv/bin/python scripts/find_automation.py "task"` |
 | API signatures | `./run.sh find --api <func>` | `.venv/bin/python scripts/discover_api_signatures.py <func>` |

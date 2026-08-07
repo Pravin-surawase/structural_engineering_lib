@@ -14,7 +14,7 @@
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [README.md](README.md) | Scripts | > **Purpose:** Automation scripts for development, CI/CD, an | 165 |
+| [README.md](README.md) | Scripts | > **Purpose:** Automation scripts for development, CI/CD, an | 167 |
 
 ## Python Files
 
@@ -93,7 +93,7 @@
 | [release.py](release.py) | Unified release management CLI. | 0 | 7 | 1043 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 355 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 505 |
-| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2049 |
+| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2242 |
 | [session_store.py](session_store.py) | JSON-based session state persistence for AI agent sessions. | 1 | 14 | 372 |
 | [skill_tiers.py](skill_tiers.py) | Skill tier classification and management for AI agents. | 1 | 8 | 516 |
 | [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 502 |
@@ -103,7 +103,7 @@
 | [test_import_pipeline.py](test_import_pipeline.py) | End-to-end test of all import paths. | 0 | 20 | 406 |
 | [test_sample_endpoint.py](test_sample_endpoint.py) | Quick test of the sample data endpoint. | 0 | 1 | 72 |
 | [tool_permissions.py](tool_permissions.py) | Tool permission enforcement for agent operations. | 1 | 4 | 346 |
-| [tool_registry.py](tool_registry.py) | Unified tool registry — connects agents, skills, scripts, an | 1 | 13 | 535 |
+| [tool_registry.py](tool_registry.py) | Unified tool registry — connects agents, skills, scripts, an | 1 | 13 | 575 |
 | [update_test_stats.py](update_test_stats.py) | Update Test Stats — Dynamic test count updater. | 0 | 5 | 211 |
 | [validate_api_contracts.py](validate_api_contracts.py) | API Contract Validator. | 2 | 9 | 620 |
 | [validate_imports.py](validate_imports.py) | Validate Python imports across the project after migration. | 0 | 6 | 380 |

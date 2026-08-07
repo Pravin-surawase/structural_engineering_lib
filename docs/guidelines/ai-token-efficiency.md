@@ -160,6 +160,25 @@ IS 456 quality gate.
 - Run `./run.sh efficiency prompt` to print a reusable task preamble.
 - Run `./run.sh model --table` to compare profiles, or pass a task description
   to receive a deterministic recommendation and explicit escalation trigger.
+- Record start, milestone (roughly every 2–3 hours), and closeout checkpoints
+  with `./run.sh session usage`. The local JSONL ledger records model,
+  reasoning, elapsed time, parent/subagent counts, optional manually copied
+  dashboard values, verification, and Git state. It deliberately leaves token
+  and billing fields empty because the repository cannot measure them.
+
+```bash
+./run.sh session usage --checkpoint start --task-id TASK-XXX --task "bounded scope"
+./run.sh session usage --checkpoint milestone --elapsed-min 120 \
+  --verification "targeted tests pass" --notes "no subagents"
+./run.sh session usage --checkpoint closeout --elapsed-min 210 \
+  --verification "quick gate 9/9"
+./run.sh session usage --summary --hours 24
+```
+
+The Claude model labels in `.github/agents/*.agent.md` and
+`agents/agent_registry.json` are VS Code Copilot configuration. They are not
+Codex routing inputs; Codex Luna/Terra/Sol choices live only in
+`agents/model_policy.json` and project `.codex/config.toml`.
 
 ## Reusable Task Preamble
 

@@ -19,8 +19,9 @@ credentials, dependency drift, and governance scanners that disagreed.
 The inherited work is preserved on `task/MAINT-001`. Local application,
 package, test, documentation, browser, export, and maintenance gates are green.
 MAINT-005 is complete and v0.21.7 is ready for its controlled release workflow.
-Two external control-plane blockers remain: GitHub CLI authentication and
-Colima's transferred VZ disk state.
+GitHub CLI/SSH and Colima/Docker have since been recovered without deleting the
+transferred VM. The remaining closeout is PR #676's two diagnosed CI failures;
+their focused fixes still require owner approval.
 
 ## Audit scope
 
@@ -40,7 +41,7 @@ objects, symlinks, and migration records relevant to the current architecture.
 | Browser flow | Sample import → auto-design → R3F editor → dashboard → exports passes; 153/153 beams and zero new browser warnings |
 | Export artifacts | Valid BBS CSV, DXF, single HTML/PDF report, building HTML/PDF/CSV summary, and BOQ CSV; byte-level API validation completed |
 | Documentation | 1,059 internal links checked after archival; zero broken |
-| Canonical maintenance | `run.sh check` 28/28; audit 22/22; health 100/100 |
+| Canonical maintenance | `run.sh check` 29/29; quick gate 9/9; audit 22/22; health 100/100 |
 | Parity | 15/17 curated clause areas; 60/60 direct route tests; 13/13 connected hooks; actionable score 96% |
 
 ## Completed maintenance
@@ -57,7 +58,7 @@ objects, symlinks, and migration records relevant to the current architecture.
 - Removed the unsupported nightly link-checker flag.
 - Updated maintained E2E scripts for the standard `{success, data}` envelope.
 - Archived the removed Streamlit import pipeline and repaired active references.
-- Restored the quick gate to 8/8 and import validation to 3,248/3,248 imports.
+- Restored the quick gate and import validation to 3,248/3,248 imports; the later token-policy check expanded the quick gate to 9/9.
 
 ### MAINT-003 — dependency and security baseline
 
@@ -112,12 +113,26 @@ objects, symlinks, and migration records relevant to the current architecture.
   package's `[dev]` test dependencies. v0.21.7 preflight is READY TO RELEASE
   with zero warnings.
 
+### MAINT-006 and MAINT-007 — efficient agent operations
+
+- Added Sol High orchestration, Luna/Terra worker routing, a two-subagent cap,
+  compact worker packets, and a deterministic model picker.
+- Re-audited 16 agents, 14 skills, 113 mapped scripts, folder governance,
+  permissions, instruction drift, bootstrap freshness, and tool discovery.
+- Added honest local model/agent checkpoints. The ledger captures observable
+  execution metadata and optional manual dashboard values but never invents
+  billing tokens or cost.
+- Replaced the unconditional `gh pr view --web` status path with terminal PR
+  output. Browser opening is now an explicit `./run.sh pr status --web` action.
+- Closeout evidence: 32 focused regressions, quick gate 9/9, full gate 29/29,
+  audit readiness 22/22, health 100/100, and a 5,193-test collection.
+
 ## Open findings
 
 | Priority | Finding | Decision / next action |
 |----------|---------|------------------------|
-| P0 external | GitHub CLI credentials expired | Rerun `gh auth login` and complete browser authorization; SSH push already works |
-| P0 external | Colima VZ disk reports “in use” after orphan cleanup | Restart macOS, retry non-destructively, then back up VM data before considering recreation |
+| P0 CI | PR #676 link check has three empty template links | Apply only after the owner approves the focused content fix |
+| P0 CI | PR #676 installs unbounded Ruff 0.16.1 while the proven local lock uses 0.15.8 | Pin consistently only after owner approval, then rerun the affected check |
 | P2 frontend | React statement coverage is 17.74% | Critical live flow is verified; add focused automated flow tests before broad percentage chasing |
 | P2 security | React Router RSC-only advisory remains | Keep exact CI exception only while the Vite browser app has no RSC; remove on patched release |
 | P2 product | Slab design and Annex D remain planned | Keep outside stabilization unless the owner explicitly changes scope |
@@ -127,10 +142,10 @@ objects, symlinks, and migration records relevant to the current architecture.
 
 1. Preserve the current green local baseline and commit through
    `scripts/ai_commit.sh`.
-2. Recover GitHub authentication and create/validate the PR without bypassing checks.
+2. Obtain approval for the two focused PR #676 CI fixes and validate only the
+   affected checks before the final gate.
 3. Run the approved v0.21.7 release workflow after required CI passes.
-4. Restart the Mac Mini and retry Colima; do not delete the transferred disk.
-5. Resume feature planning only after these external control-plane steps are recorded.
+4. Resume feature planning only after the release decision is recorded.
 
 ## Guardrails retained
 

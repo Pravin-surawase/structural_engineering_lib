@@ -17,10 +17,10 @@
     {
       "name": "ai-token-efficiency.md",
       "type": "documentation",
-      "size_lines": 187,
+      "size_lines": 206,
       "last_updated": "2026-08-07",
       "description": "This is the canonical low-token operating policy for AI-assisted work in this repository. It controls avoidable context and agent fan-out without weakening",
-      "content_hash": "0008d6cbfc62"
+      "content_hash": "5d45072a3764"
     },
     {
       "name": "api-design-guidelines.md",
@@ -140,5 +140,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "20717de375627818"
+  "content_hash": "ee2ca6cc7bb777cd"
 }

@@ -8,11 +8,11 @@
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 165,
-      "last_updated": "2026-03-26",
+      "size_lines": 167,
+      "last_updated": "2026-08-07",
       "title": "Scripts",
       "description": "> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks > **Owner:** All contributors",
-      "content_hash": "9a4b16b64794"
+      "content_hash": "ff1ffa261279"
     },
     {
       "name": "_tmp_add_groups.py",
@@ -28,10 +28,10 @@
     {
       "name": "agent_brief.sh",
       "type": "shell-script",
-      "size_lines": 217,
-      "last_updated": "2026-03-28",
+      "size_lines": 225,
+      "last_updated": "2026-08-07",
       "description": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
-      "content_hash": "20ab2f7458b4"
+      "content_hash": "332363c86e13"
     },
     {
       "name": "agent_compliance_checker.py",
@@ -912,7 +912,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "65c759c4c257"
+      "content_hash": "ea7cdaf1427f"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -3258,7 +3258,7 @@
       "name": "generate_enhanced_index.py",
       "type": "python",
       "size_lines": 816,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-07",
       "description": "Generate enhanced index.json + index.md for ANY folder type.",
       "functions": [
         {
@@ -3335,7 +3335,7 @@
         "SKIP_DIRS",
         "KEY_FOLDERS"
       ],
-      "content_hash": "9f29e62813cb"
+      "content_hash": "7f886eca3c51"
     },
     {
       "name": "generate_error_docs.py",
@@ -4191,7 +4191,7 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 2049,
+      "size_lines": 2242,
       "last_updated": "2026-08-07",
       "description": "Unified session management CLI.",
       "functions": [
@@ -4251,7 +4251,14 @@
         },
         {
           "name": "cmd_costs",
-          "description": "Show cost/session entries from logs/agent_costs.jsonl.",
+          "description": "Show legacy Git-activity proxies from logs/agent_costs.jsonl.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_usage",
+          "description": "Record or summarize model, agent, elapsed-time, and usage checkpoints.",
           "params": [
             "args"
           ]
@@ -4274,9 +4281,6 @@
             "folders",
             "fix"
           ]
-        },
-        {
-          "name": "get_today_prs"
         }
       ],
       "constants": [
@@ -4291,7 +4295,7 @@
         "HANDOFF_DATE_RE",
         "COMMIT_HASH_RE"
       ],
-      "content_hash": "bb6a06d5b556"
+      "content_hash": "0375150a16c6"
     },
     {
       "name": "session_store.py",
@@ -4881,8 +4885,8 @@
     {
       "name": "tool_registry.py",
       "type": "python",
-      "size_lines": 535,
-      "last_updated": "2026-04-03",
+      "size_lines": 575,
+      "last_updated": "2026-08-07",
       "description": "Unified tool registry — connects agents, skills, scripts, and operations.",
       "classes": [
         {
@@ -4992,7 +4996,7 @@
         "TOOL_ALIASES",
         "STOPWORDS"
       ],
-      "content_hash": "1b5bf5e27e7d"
+      "content_hash": "c416c0197a3f"
     },
     {
       "name": "update_test_stats.py",
@@ -5297,5 +5301,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "812d73d8c7e3b5d2"
+  "content_hash": "91d433dfe7d36ba5"
 }
