@@ -235,14 +235,10 @@ Code           Type errors, import validation          Type mismatches
 
 ```
 .github/workflows/
-├── fast-checks.yml          ← Quick checks on every push (<2 min)
-├── python-tests.yml         ← Full pytest suite
-├── react-build.yml          ← React build + type-check
-├── publish.yml              ← Publish to PyPI on release
-├── docker-build.yml         ← Build and test Docker image
-├── security-scan.yml        ← Dependency vulnerability scan
-├── docs-deploy.yml          ← Deploy documentation site
-└── weekly-audit.yml         ← Scheduled maintenance checks
+├── fast-checks.yml          ← Path-aware PR validation and required PR Gate
+├── nightly.yml              ← Weekly/manual full verification
+├── publish.yml              ← Verified TestPyPI/PyPI/GitHub release lane
+└── deploy-docs.yml          ← Deploy documentation site
 ```
 
 ### How they connect:
@@ -252,13 +248,18 @@ Developer pushes to feature branch:
   fast-checks.yml runs immediately (quick validation)
 
 Developer opens PR:
-  python-tests.yml + react-build.yml + security-scan.yml all run
-  All must pass before merge is allowed
+  fast-checks.yml runs applicable component checks plus repository validation
+  PR Gate must pass before merge is allowed
 
 PR merged to main:
-  publish.yml runs (if version was bumped)
-  docs-deploy.yml runs (update docs site)
-  docker-build.yml runs (update Docker image)
+  fast-checks.yml provides short merge verification
+  deploy-docs.yml runs only for relevant documentation changes
+
+Weekly or explicit manual dispatch:
+  nightly.yml runs full tests, audits, wheel/CLI, and Docker verification
+
+Approved release tag or manual TestPyPI dispatch:
+  publish.yml verifies and publishes through the appropriate environment
 ```
 
 ---

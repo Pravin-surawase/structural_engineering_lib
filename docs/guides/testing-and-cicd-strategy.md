@@ -56,17 +56,14 @@ markers =
     slow: Tests >1 second
 ```
 
-### 1.3 GitHub Actions Workflows (14 workflows)
+### 1.3 GitHub Actions Workflows (4 workflows)
 
 | Workflow | Purpose | Trigger |
 |----------|---------|---------|
-| `python-tests.yml` | Full test matrix (3 OS × 2 Python) | Push to main |
-| `fast-checks.yml` | Quick PR validation (5 min) | PR |
-| `security.yml` | Vulnerability scanning | Daily + PR |
-| `codeql.yml` | CodeQL SAST | Push |
-| `nightly.yml` | Extended tests (30 min) | Nightly |
-| `publish.yml` | PyPI publishing | Tag v* |
-| `streamlit-validation.yml` | Streamlit checks | PR |
+| `fast-checks.yml` | Path-aware validation and required `PR Gate` | PR + short main verification |
+| `nightly.yml` | Full tests, coverage, dependency audits, Docker, optional cross-platform smoke | Weekly + manual |
+| `publish.yml` | Verified TestPyPI/PyPI/GitHub release publication and release SBOM | Manual TestPyPI or tag |
+| `deploy-docs.yml` | MkDocs publication | Relevant main changes + manual |
 
 ### 1.4 Pre-Commit Hooks (25+ hooks)
 

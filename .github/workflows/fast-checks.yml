@@ -70,7 +70,8 @@ jobs:
           python -m ruff check Python
 
       - name: Type check
-        run: python -m mypy Python/structural_lib
+        working-directory: Python
+        run: python -m mypy
 
       - name: Contract and core tests
         run: |

@@ -6307,7 +6307,7 @@
     },
     "/api/v1/import/sample": {
       "get": {
-        "description": "Load 154 real beams from ETABS export with 3D positions for visualization.",
+        "description": "Load the bundled ETABS sample building with 3D positions for visualization.",
         "operationId": "get_sample_data_api_v1_import_sample_get",
         "responses": {
           "200": {

@@ -648,7 +648,7 @@ git diff --shortstat HEAD@{30.days.ago}
 ### GitHub Actions Review
 
 ```bash
-gh run list --workflow=git-workflow-tests.yml --limit 10
+gh run list --workflow=fast-checks.yml --limit 10
 ```
 
 **Success Rate:** XX%

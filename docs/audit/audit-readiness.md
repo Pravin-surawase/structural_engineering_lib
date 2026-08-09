@@ -30,8 +30,8 @@ This checklist defines the minimum evidence requirements for audit readiness. Ea
 
 | Requirement | Status | Evidence Location | Required |
 |-------------|--------|-------------------|----------|
-| Unit tests pass | ⬜ | CI: `python-tests.yml` | ✅ Yes |
-| Integration tests pass | ⬜ | CI: `python-tests.yml` | ✅ Yes |
+| Unit tests pass | ⬜ | CI: `nightly.yml` | ✅ Yes |
+| Integration tests pass | ⬜ | CI: `nightly.yml` | ✅ Yes |
 | Contract tests pass | ⬜ | CI: `fast-checks.yml` | ✅ Yes |
 | Branch coverage ≥85% | ⬜ | CI artifact: `coverage.xml` | ✅ Yes |
 | AppTest smoke tests pass | ⬜ | CI: `streamlit-validation.yml` | ✅ Yes |
@@ -73,9 +73,9 @@ This checklist defines the minimum evidence requirements for audit readiness. Ea
 
 | Requirement | Status | Evidence Location | Required |
 |-------------|--------|-------------------|----------|
-| No high/critical vulnerabilities | ⬜ | CI: `codeql.yml`, `security.yml` | ✅ Yes |
+| No dependency-audit findings | ⬜ | CI: `nightly.yml` | ✅ Yes |
 | Dependencies pinned | ⬜ | `Python/pyproject.toml` | ✅ Yes |
-| SBOM generated (CycloneDX) | ⬜ | CI artifact: `sbom.json` | ⚠️ Recommended |
+| SBOM generated (CycloneDX) | ⬜ | Release artifact from `publish.yml` | ⚠️ Recommended |
 | Build provenance recorded | ⬜ | CI/release workflow | ⬜ Future |
 | OpenSSF Scorecard ≥6 | ⬜ | GitHub Security tab | ⬜ Future |
 

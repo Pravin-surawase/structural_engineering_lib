@@ -401,7 +401,8 @@ Test your understanding — try to answer these without looking back:
 - [check_all.py](../../../scripts/check_all.py) — The 28-check orchestrator
 - [diagnose_ci.py](../../../scripts/diagnose_ci.py) — CI failure diagnosis + auto-fix
 - [fast-checks.yml](../../../.github/workflows/fast-checks.yml) — PR/push CI workflow
-- [python-tests.yml](../../../.github/workflows/python-tests.yml) — Full test matrix
+- `python-tests.yml` — historical full-test workflow, consolidated into
+  [`nightly.yml`](../../../.github/workflows/nightly.yml) by MAINT-008
 - [publish.yml](../../../.github/workflows/publish.yml) — PyPI release workflow
 - [check_architecture_boundaries.py](../../../scripts/check_architecture_boundaries.py) — 4-layer enforcement
 - [validate_imports.py](../../../scripts/validate_imports.py) — Import resolution checker

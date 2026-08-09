@@ -1,166 +1,329 @@
-name: Nightly QA
+name: Weekly Verification
 
 on:
   schedule:
-    # ~11:30pm India (UTC+5:30). Adjust as needed.
-    - cron: "0 18 * * *"
+    - cron: '17 2 * * 1'
   workflow_dispatch:
+    inputs:
+      cross_platform:
+        description: 'Also run the macOS and Windows Python smoke matrix'
+        required: false
+        default: false
+        type: boolean
 
-# Default to least-privilege for the workflow. Jobs can widen if needed.
 permissions:
-  contents: write
-  issues: write
+  contents: read
+
+concurrency:
+  group: weekly-verification-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  nightly:
+  full-verification:
+    name: Full Python, FastAPI, and React verification
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-
+    timeout-minutes: 40
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Set up Python
+      - name: Set up Python 3.12
         uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            Python/pyproject.toml
+            requirements*.txt
 
-      - name: Install package (dev + dxf)
-        working-directory: Python
+      - name: Install Python and FastAPI dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[dev,dxf]"
+          python -m pip install -e 'Python/[dev,dxf,report]'
+          python -m pip install -r requirements.txt
 
-      - name: Run tests
+      - name: Python format, lint, and types
         working-directory: Python
         run: |
-          python -m pytest -q --hypothesis-profile=ci
+          python -m black --check .
+          python -m ruff check .
+          python -m mypy
 
-      # ================================================================
-      # TASK-503: Performance Regression Tracking
-      # ================================================================
-      - name: Run performance benchmarks
+      - name: FastAPI format and lint
+        run: |
+          python -m black --check fastapi_app
+          python -m ruff check fastapi_app
+
+      - name: Full Python suite with coverage
         working-directory: Python
         run: |
-          python -m pytest tests/performance/test_benchmarks.py \
-            --benchmark-only \
-            --benchmark-json=../benchmark-results.json \
-            -v
+          python -m pytest tests -q --hypothesis-profile=ci \
+            --cov=structural_lib --cov-branch --cov-report=term-missing \
+            --cov-fail-under=85
 
-      - name: Store benchmark results
-        uses: benchmark-action/github-action-benchmark@v1
-        with:
-          name: IS 456 Performance Benchmarks
-          tool: 'pytest'
-          output-file-path: benchmark-results.json
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-push: true
-          alert-threshold: '150%'
-          comment-on-alert: true
-          fail-on-alert: false
-          alert-comment-cc-users: '@Pravin-surawase'
-          benchmark-data-dir-path: 'dev/benchmark-data'
-        continue-on-error: true
-
-      - name: Upload benchmark artifacts
-        uses: actions/upload-artifact@v7
-        with:
-          name: benchmark-results
-          path: benchmark-results.json
-          retention-days: 90
-          if-no-files-found: warn
-        if: always()
-
-      - name: Check documentation links
+      - name: FastAPI suite and contracts
         run: |
+          python -m pytest fastapi_app/tests -q --tb=short
+          python scripts/validate_api_contracts.py
+          python scripts/check_openapi_drift.py
+
+      - name: Documentation and repository drift
+        run: |
+          python scripts/check_doc_versions.py --ci
+          python scripts/check_docs.py --index
+          python scripts/check_docs.py --index-links
           python scripts/check_links.py
+          python scripts/check_api.py --sync
+          python scripts/check_api.py --docs
+          python scripts/generate_api_manifest.py --check
+          python scripts/check_architecture_boundaries.py
+          python scripts/release.py check-docs
+          python scripts/release.py checklist
+          python scripts/session.py check
+          python scripts/check_next_session_brief_length.py
+          python scripts/check_cli_reference.py
 
-      - name: Smoke test CLI pipeline
-        working-directory: Python
-        continue-on-error: true
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: react_app/package-lock.json
+
+      - name: React lint, build, and tests
+        working-directory: react_app
         run: |
-          mkdir -p ../artifacts
-          python -m structural_lib design examples/sample_beam_design.csv -o ../artifacts/results.json
-          python -m structural_lib bbs ../artifacts/results.json -o ../artifacts/schedule.csv
-          python -m structural_lib dxf ../artifacts/results.json -o ../artifacts/drawings.dxf
-          python -m structural_lib job examples/sample_job_is456.json -o ../artifacts/job_out
-          python -m structural_lib critical ../artifacts/job_out --top 5 --format csv -o ../artifacts/critical.csv
-          python -m structural_lib report ../artifacts/job_out --format html -o ../artifacts/report.html
-          python -m structural_lib report ../artifacts/results.json --format html -o ../artifacts/report_design --batch-threshold 1
+          npm ci
+          npm run lint
+          npm run build
+          npx vitest run
 
-      - name: Build wheel for release verification
-        working-directory: Python
+  package-verification:
+    name: Clean wheel and CLI verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: Python/pyproject.toml
+
+      - name: Build wheel
         run: |
-          python -m pip install --upgrade build
-          python -m build --wheel --outdir dist
+          python -m pip install --upgrade pip build
+          python -m build --wheel --outdir Python/dist Python
 
-      - name: Verify wheel install in clean venv
+      - name: Verify exact wheel in an isolated environment
         run: |
-          python scripts/release.py verify --source wheel --wheel-dir Python/dist
+          package_version=$(python -c "import tomllib; print(tomllib.load(open('Python/pyproject.toml','rb'))['project']['version'])")
+          python scripts/release.py verify \
+            --source wheel \
+            --wheel-dir Python/dist \
+            --version "$package_version"
 
-      - name: Summarize results
-        if: always()
+      - name: Upload verified wheel
+        uses: actions/upload-artifact@v7
+        with:
+          name: weekly-verified-wheel
+          path: Python/dist/*.whl
+          retention-days: 30
+
+  dependency-audit:
+    name: Locked dependency audits
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-lock.txt
+
+      - name: Audit locked Python dependencies
         run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
+          python -m pip install 'pip-audit>=2.9,<3'
+          pip-audit --strict --no-deps --requirement requirements-lock.txt \
+            --format json --output pip-audit-report.json
 
-          results_path = Path("artifacts/results.json")
-          if not results_path.exists():
-              raise SystemExit("Missing artifacts/results.json")
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: react_app/package-lock.json
 
-          data = json.loads(results_path.read_text(encoding="utf-8"))
-          summary = data.get("summary", {})
-          beams = data.get("beams", [])
-          max_util = max((b.get("governing_utilization", 0.0) for b in beams), default=0.0)
+      - name: Audit production npm dependencies
+        working-directory: react_app
+        run: |
+          npm ci
+          set +e
+          npm audit --omit=dev --json > npm-audit-report.json
+          audit_status=$?
+          set -e
 
-          print("Nightly summary")
-          print(f"- beams: {summary.get('total_beams')}")
-          print(f"- passed: {summary.get('passed')}")
-          print(f"- failed: {summary.get('failed')}")
-          print(f"- max governing utilization: {max_util:.3f}")
-          PY
+          total=$(jq -r '.metadata.vulnerabilities.total // 0' npm-audit-report.json)
+          unexpected_packages=$(jq -r \
+            '[.vulnerabilities | keys[]? | select(. != "react-router" and . != "react-router-dom")] | join(",")' \
+            npm-audit-report.json)
+          unexpected_advisories=$(jq -r \
+            '[.vulnerabilities[]?.via[]? | select(type == "object") | .url | select(. != "https://github.com/advisories/GHSA-qwww-vcr4-c8h2")] | unique | join(",")' \
+            npm-audit-report.json)
+          advisory_count=$(jq -r \
+            '[.vulnerabilities[]?.via[]? | select(type == "object") | .url] | unique | length' \
+            npm-audit-report.json)
 
-      - name: Upload artifacts
+          if [[ -n "$unexpected_packages" || -n "$unexpected_advisories" ]]; then
+            echo "Unexpected npm vulnerability: packages=$unexpected_packages advisories=$unexpected_advisories"
+            exit 1
+          fi
+          if [[ "$total" -gt 0 && "$advisory_count" -eq 0 ]]; then
+            echo 'npm reported vulnerabilities without an auditable advisory URL'
+            exit 1
+          fi
+          if [[ "$audit_status" -ne 0 && "$total" -eq 0 ]]; then
+            echo 'npm audit failed without reporting a vulnerability'
+            exit 1
+          fi
+
+      - name: Upload dependency evidence
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: nightly-artifacts
+          name: weekly-dependency-audits
           path: |
-            artifacts/results.json
-            artifacts/schedule.csv
-            artifacts/drawings.dxf
-            artifacts/critical.csv
-            artifacts/report.html
-            artifacts/report_design
-            artifacts/job_out
-          if-no-files-found: warn
+            pip-audit-report.json
+            react_app/npm-audit-report.json
+          retention-days: 30
 
-      - name: Create issue on failure
-        if: failure()
-        uses: actions/github-script@v8
+  docker-verification:
+    name: Docker build and health verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build image
+        uses: docker/build-push-action@v7
         with:
-          script: |
-            const title = `Nightly QA failed (${new Date().toISOString().slice(0, 10)})`;
-            const body = [
-              "Nightly QA failed.",
-              "",
-              `Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-            ].join("\n");
+          context: .
+          file: Dockerfile.fastapi
+          push: false
+          load: true
+          tags: structural-lib-weekly:${{ github.run_id }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-            const { data: issues } = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: "open",
-            });
+      - name: Verify health and readiness
+        run: |
+          container_name="structural-lib-weekly-${GITHUB_RUN_ID}"
+          cleanup() {
+            docker rm -f "$container_name" >/dev/null 2>&1 || true
+          }
+          trap cleanup EXIT
+          docker run -d --name "$container_name" -p 8000:8000 \
+            "structural-lib-weekly:${GITHUB_RUN_ID}"
 
-            if (issues.some((issue) => issue.title === title)) {
-              return;
-            }
+          healthy=false
+          for attempt in {1..20}; do
+            if curl -fsS http://localhost:8000/health >/dev/null && \
+               curl -fsS http://localhost:8000/health/ready >/dev/null; then
+              healthy=true
+              break
+            fi
+            sleep 2
+          done
+          if [[ "$healthy" != 'true' ]]; then
+            docker logs "$container_name"
+            exit 1
+          fi
 
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title,
-              body,
-            });
+      - name: Validate Compose configuration
+        env:
+          JWT_SECRET_KEY: weekly-verification-secret
+        run: |
+          docker compose -f docker-compose.yml config --quiet
+          docker compose -f docker-compose.dev.yml config --quiet
+
+  cross-platform:
+    name: ${{ matrix.os }} Python 3.12 smoke
+    if: github.event_name == 'workflow_dispatch' && inputs.cross_platform
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: Python/pyproject.toml
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e "Python/[dev,dxf]"
+
+      - name: Run cross-platform suite
+        run: python -m pytest Python/tests -q -m "not slow and not performance"
+
+  summary:
+    name: Weekly Verification Summary
+    if: always()
+    needs:
+      - full-verification
+      - package-verification
+      - dependency-audit
+      - docker-verification
+      - cross-platform
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report and enforce job conclusions
+        env:
+          FULL_RESULT: ${{ needs.full-verification.result }}
+          PACKAGE_RESULT: ${{ needs.package-verification.result }}
+          DEPENDENCY_RESULT: ${{ needs.dependency-audit.result }}
+          DOCKER_RESULT: ${{ needs.docker-verification.result }}
+          CROSS_RESULT: ${{ needs.cross-platform.result }}
+          CROSS_REQUESTED: ${{ github.event_name == 'workflow_dispatch' && inputs.cross_platform }}
+        run: |
+          {
+            echo '## Weekly verification results'
+            echo "- Full Python/FastAPI/React: $FULL_RESULT"
+            echo "- Clean wheel and CLI: $PACKAGE_RESULT"
+            echo "- Dependency audits: $DEPENDENCY_RESULT"
+            echo "- Docker build and health: $DOCKER_RESULT"
+            echo "- Optional cross-platform: $CROSS_RESULT"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          failed=0
+          for result in "$FULL_RESULT" "$PACKAGE_RESULT" "$DEPENDENCY_RESULT" "$DOCKER_RESULT"; do
+            if [[ "$result" != 'success' ]]; then
+              failed=1
+            fi
+          done
+          if [[ "$CROSS_REQUESTED" == 'true' && "$CROSS_RESULT" != 'success' ]]; then
+            failed=1
+          fi
+          if [[ "$CROSS_REQUESTED" != 'true' && "$CROSS_RESULT" != 'skipped' ]]; then
+            failed=1
+          fi
+          exit "$failed"

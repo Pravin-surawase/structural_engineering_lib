@@ -8,8 +8,7 @@ TASK-453: Ensure all Python version references are consistent across the codebas
 
 Checks:
 - pyproject.toml (requires-python, ruff target-version, mypy python_version)
-- setup.cfg (python_requires)
-- CI workflows (python-version in matrix and setup)
+- PR workflow minimum Python version
 - Documentation references
 
 Usage:
@@ -43,15 +42,8 @@ CHECK_FILES = {
         (r'target-version\s*=\s*"py(\d+)"', "ruff-target", lambda m: f"{m[0]}.{m[1:]}"),
         (r'python_version\s*=\s*"(\d+\.\d+)"', "mypy-version"),
     ],
-    "Python/setup.cfg": [
-        (r"python_requires\s*=\s*>=(\d+\.\d+)", "python_requires"),
-    ],
     ".github/workflows/fast-checks.yml": [
-        (r'python-version:\s*"(\d+\.\d+)"', "fast-checks-version"),
-        (r"Python (\d+\.\d+) only", "fast-checks-name"),
-    ],
-    ".github/workflows/python-tests.yml": [
-        (r'python-version:\s*\["([^"]+)"', "pytest-matrix-min"),
+        (r"python-version:\s*['\"](\d+\.\d+)['\"]", "fast-checks-version"),
     ],
 }
 

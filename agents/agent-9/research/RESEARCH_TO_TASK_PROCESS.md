@@ -270,7 +270,7 @@ minimal root to reduce cognitive load during onboarding.
 1. Create archive directory: `mkdir -p docs/_archive/2026-01/`
 2. Run archival script: `./scripts/archive_old_sessions.sh --older-than=7days`
 3. Verify files moved: `find . -maxdepth 1 -name "*.md" | wc -l` (should be ≤10)
-4. Add CI check: `.github/workflows/root-file-limit.yml`
+4. Add the root-file check to the local/Codex quick gate
 5. Update root README.md with archive note
 
 ### Acceptance Tests

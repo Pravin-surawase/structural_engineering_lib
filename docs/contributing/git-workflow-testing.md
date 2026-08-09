@@ -124,12 +124,12 @@ chmod +x .git/hooks/pre-push
 
 **Interactive:** Prompts user on warnings (allows override)
 
-### 4. CI Workflow: git-workflow-tests.yml
+### 4. CI Integration: fast-checks.yml
 
-Automated testing in GitHub Actions.
+Maintenance-script syntax and migration tests run in the `Repository Validation`
+job of the consolidated PR workflow.
 
 **Triggers:**
-- Push to main (workflow script changes)
 - Pull requests (workflow script changes)
 
 **Steps:**

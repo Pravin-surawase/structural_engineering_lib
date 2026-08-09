@@ -349,7 +349,7 @@ tags: [agents, governance]
   - [ ] `./scripts/check_version_consistency.sh`
   - [ ] `./scripts/generate_health_report.sh --weekly`
 - [ ] Check GitHub Actions health:
-  - [ ] `gh run list --workflow=git-workflow-tests.yml --limit 10`
+  - [ ] `gh run list --workflow=fast-checks.yml --limit 10`
   - [ ] Identify any failures
   - [ ] Check error logs: `gh run view <run_id> --log`
 - [ ] Review automation logs:

@@ -48,12 +48,11 @@ This guide ensures consistent, high-quality code from all AI agents working on t
 | Root tests | 17 | `Python/tests/` |
 | Streamlit | 43 | `streamlit_app/tests/` |
 
-### CI/CD (13 GitHub workflows)
+### CI/CD (4 GitHub workflows)
 
-`python-tests.yml`, `fast-checks.yml`, `nightly.yml`, `security.yml`, `codeql.yml`,
-`streamlit-validation.yml`, `publish.yml`, `governance-health.yml`,
-`leading-indicator-alerts.yml`, `auto-format.yml`, `root-file-limit.yml`,
-`git-workflow-tests.yml`, `cost-optimizer-analysis.yml`
+`fast-checks.yml` (required PR Gate), `nightly.yml` (weekly/manual full
+verification), `publish.yml` (controlled releases), and `deploy-docs.yml`
+(documentation publication).
 
 ### Pre-commit hooks
 

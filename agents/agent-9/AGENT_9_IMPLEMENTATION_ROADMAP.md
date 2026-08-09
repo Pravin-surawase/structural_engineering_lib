@@ -182,9 +182,9 @@ Prevent future documentation sprawl by enforcing <10 root file limit in CI. Rese
 - Evidence: Our own history (41 files in 10 days)
 
 **Success Criteria:**
-- [ ] CI workflow created: `.github/workflows/root-file-limit.yml`
-- [ ] Build fails if >10 .md files in root
-- [ ] Check runs on every PR and push to main
+- [ ] Root-file hygiene is enforced by the local/Codex quick gate
+- [ ] Validation fails if >10 .md files in root
+- [ ] Check runs before commits that change repository structure
 - [ ] Clear error message guides developer to archive process
 - [ ] Exemptions documented (canonical files list)
 

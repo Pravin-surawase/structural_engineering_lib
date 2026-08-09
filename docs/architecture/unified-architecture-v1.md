@@ -187,7 +187,7 @@ def design_singly_reinforced(
 | RBAC / scope enforcement | require_scope() dependency checked against User.scopes | 🔲 Planned |
 | Design audit trail | Structured audit log for all design calculations | 🔲 Planned |
 | Cross-field plausibility | Reject physically impossible parameter combinations | 🔲 Planned |
-| Dependency CVE scanning | pip-audit in CI (`security.yml`) | ✅ Active |
+| Dependency CVE scanning | pip-audit in weekly/manual CI (`nightly.yml`) | ✅ Active |
 | OpenAPI docs disabled in production | /docs, /redoc only in dev/debug | 🔲 Planned |
 
 ---
@@ -518,7 +518,7 @@ We use **patch releases** for focused, testable increments. Each v0.21.x release
 - 🔲 JSON body size limit (FastAPI middleware, 1MB default)
 - 🔲 Cross-field plausibility guards (e.g., `d_mm > b_mm` raises warning)
 - 🔲 Input validation audit completion (`scripts/audit_input_validation.py` exists)
-- ✅ Dependency CVE scanning in CI (`pip-audit` — active in `security.yml`)
+- ✅ Dependency CVE scanning in CI (`pip-audit` — active in `nightly.yml`)
 
 **Quality Gate:** `audit_input_validation.py` reports 0 unresolved findings. `pip-audit` clean.
 
@@ -1157,7 +1157,7 @@ warnings=["Default: Moderate exposure assumed (IS 456 Table 3)"]
 
 | Measure | Tool | Status |
 |---------|------|--------|
-| CVE scanning | pip-audit in CI (`security.yml`) | ✅ Active |
+| CVE scanning | pip-audit in weekly/manual CI (`nightly.yml`) | ✅ Active |
 | Hash verification | `requirements-lock.txt` with hashes | 🔶 Partial (lock exists, no hashes) |
 | Automated updates | Dependabot/Renovate for dependency PRs | 🔲 Planned |
 | Docker build | Uses lock file (not unpinned requirements.txt) | ✅ Implemented |
@@ -1480,7 +1480,7 @@ This loop has prevented 70+ recurring issues since v0.21.0. All violations are l
 | JSON body size limit (FastAPI middleware, 1MB default) | 🔲 | @api-developer |
 | Cross-field plausibility guards (API boundary validation) | 🔲 | @api-developer |
 | Input validation audit completion (`audit_input_validation.py`) | 🔲 | @security |
-| Dependency CVE scanning in CI (`pip-audit`) | ✅ Active (`security.yml`) | @ops |
+| Dependency CVE scanning in CI (`pip-audit`) | ✅ Active (`nightly.yml`) | @ops |
 | WebSocket message rate limit (5 msg/s per session) | 🔲 | @api-developer |
 | Computation timeout (prevent pathological inputs) | 🔲 | @api-developer |
 
