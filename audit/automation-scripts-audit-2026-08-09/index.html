@@ -1503,6 +1503,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#p0-batch-2-implementation-update-2026-08-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P0 Batch 2 implementation update — 2026-08-09
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#p1-batch-3-implementation-update-2026-08-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1 Batch 3 implementation update — 2026-08-09
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terminalworktree-runtime-repair-2026-08-09" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terminal/worktree runtime repair — 2026-08-09
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#snapshot-and-scope" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1576,10 +1609,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#p0-five-active-control-paths-point-to-missing-scripts" class="md-nav__link">
+  <a href="#p0-five-active-control-paths-point-to-missing-scripts-resolved" class="md-nav__link">
     <span class="md-ellipsis">
       
-        P0 — Five active control paths point to missing scripts
+        P0 — Five active control paths point to missing scripts — RESOLVED
       
     </span>
   </a>
@@ -1609,10 +1642,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#p1-permission-labels-do-not-match-operation-behavior" class="md-nav__link">
+  <a href="#p1-permission-labels-do-not-match-operation-behavior-resolved-for-declared-operations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        P1 — Permission labels do not match operation behavior
+        P1 — Permission labels do not match operation behavior — RESOLVED FOR DECLARED OPERATIONS
       
     </span>
   </a>
@@ -1620,10 +1653,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#p1-agent-governance-automation-can-be-false-green-or-unexpectedly-write" class="md-nav__link">
+  <a href="#p1-agent-governance-automation-can-be-false-green-or-unexpectedly-write-resolved" class="md-nav__link">
     <span class="md-ellipsis">
       
-        P1 — Agent governance automation can be false-green or unexpectedly write
+        P1 — Agent governance automation can be false-green or unexpectedly write — RESOLVED
       
     </span>
   </a>
@@ -1925,9 +1958,11 @@
 <h1 id="automation-script-audit-2026-08-09">Automation Script Audit — 2026-08-09<a class="headerlink" href="#automation-script-audit-2026-08-09" title="Permanent link">&para;</a></h1>
 <h2 id="outcome">Outcome<a class="headerlink" href="#outcome" title="Permanent link">&para;</a></h2>
 <p>The active automation surface was audited one item at a time. The baseline
-inventory contained <strong>113 top-level scripts</strong>. After the first P0 implementation
-pass, the active surface contains <strong>106 top-level scripts</strong>: <strong>89 Python</strong> and
-<strong>17 shell</strong>, totaling <strong>39,811 lines</strong>. The extended control surface also
+inventory contained <strong>113 top-level scripts</strong>. After two P0 implementation
+batches, the five-script P1 governance batch, and the worktree-runtime repair,
+the active surface contains <strong>107 top-level scripts</strong>: <strong>89 Python</strong> and <strong>18
+shell</strong>, totaling <strong>40,284
+lines</strong>. The extended control surface also
 contains the root <code>run.sh</code> dispatcher, four GitHub Actions workflows, zero
 repository-enforcement Git hook entrypoints, three non-Git Python hook-framework
 modules, and seven shared Python support modules.</p>
@@ -1944,17 +1979,17 @@ disposition is:</p>
 <tbody>
 <tr>
 <td>Keep</td>
-<td style="text-align: right;">53</td>
-<td>Supported role, including the repaired API contract checker and new Codex workflow guard</td>
+<td style="text-align: right;">62</td>
+<td>Supported role, including the repaired API/reference, agent-governance, permission, and runtime controls</td>
 </tr>
 <tr>
 <td>Update</td>
-<td style="text-align: right;">37</td>
-<td>Active or useful, but a confirmed defect, stale contract, unsafe behavior, or metadata problem still needs repair</td>
+<td style="text-align: right;">30</td>
+<td>Active or useful, but a confirmed non-P0 defect, stale contract, or metadata problem still needs repair</td>
 </tr>
 <tr>
 <td>Review</td>
-<td style="text-align: right;">13</td>
+<td style="text-align: right;">12</td>
 <td>Low-use, overlapping, or specialized; prove a current consumer before keeping or archiving</td>
 </tr>
 <tr>
@@ -1964,16 +1999,20 @@ disposition is:</p>
 </tr>
 <tr>
 <td><strong>Total active</strong></td>
-<td style="text-align: right;"><strong>106</strong></td>
-<td>Current top-level script inventory after seven wrapper retirements</td>
+<td style="text-align: right;"><strong>107</strong></td>
+<td>Current inventory after eight retirements and two additions: the Codex workflow guard and Python worktree resolver</td>
 </tr>
 </tbody>
 </table>
 <p>The original audit was read-only. The user then authorized a P0 implementation
 pass over five named scripts and directed that Git/GitHub work move to Codex.
+The second authorized P0 batch removed five missing-script control targets and
+closed the remaining P0 finding. The third authorized batch repaired five P1
+agent-governance and permission scripts plus their direct shared controls.
 No independent commit, push, PR mutation, merge, issue action, release, or
-publication was performed during the bounded P0 implementation; its changes
-were integrated into the parent <code>LIB-IS456-V1</code> branch for native Git closeout.</p>
+publication was performed during the bounded implementation passes themselves.
+The follow-up closeout isolated their still-uncommitted changes from concurrent
+product work before using the Codex-native Git/GitHub lifecycle.</p>
 <h2 id="p0-implementation-update-2026-08-09">P0 implementation update — 2026-08-09<a class="headerlink" href="#p0-implementation-update-2026-08-09" title="Permanent link">&para;</a></h2>
 <p>The five requested priority scripts were handled as follows:</p>
 <table>
@@ -2024,6 +2063,105 @@ absent and that current authoritative instructions preserve the Codex-native
 boundary. During verification, the repaired API checker found and enabled the
 fix of a real production contract defect: the React SSE batch client used
 <code>/api/v1/stream/batch-design</code>, while FastAPI exposes <code>/stream/batch-design</code>.</p>
+<h2 id="p0-batch-2-implementation-update-2026-08-09">P0 Batch 2 implementation update — 2026-08-09<a class="headerlink" href="#p0-batch-2-implementation-update-2026-08-09" title="Permanent link">&para;</a></h2>
+<p>The second batch addressed the five missing script targets individually:</p>
+<table>
+<thead>
+<tr>
+<th>Missing target</th>
+<th>Result</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scripts/run_vba_smoke_tests.py</code></td>
+<td>Dead entrypoint removed</td>
+<td><code>run.sh</code> no longer exposes an unsupported <code>test --vba</code> lane.</td>
+</tr>
+<tr>
+<td><code>scripts/test_vba_adapter.py</code></td>
+<td>Dead entrypoint removed</td>
+<td>The second failing command behind <code>test --vba</code> is no longer reachable.</td>
+</tr>
+<tr>
+<td><code>scripts/check_cost_optimizer_issues.py</code></td>
+<td>Dead hook removed</td>
+<td>The archived cost-optimizer scanner is no longer an active pre-commit target.</td>
+</tr>
+<tr>
+<td><code>scripts/check_streamlit.py</code></td>
+<td>Two dead hooks removed</td>
+<td>Both Streamlit AST/fragment hook entrypoints were removed.</td>
+</tr>
+<tr>
+<td><code>scripts/check_performance_issues.py</code></td>
+<td>Dead hook removed</td>
+<td>The archived Streamlit performance scanner is no longer an active target.</td>
+</tr>
+</tbody>
+</table>
+<p>The missing files were already absent, so Batch 2 deleted no additional files.
+<code>validate_script_refs.py</code> now scans <code>run.sh</code>, pre-commit, GitHub workflows, and
+active top-level scripts for missing runtime targets, including <code>$SCRIPTS/...</code>
+dispatcher calls. It fails on executable missing references while preserving
+historical comments and consolidation docstrings as informational evidence.</p>
+<h2 id="p1-batch-3-implementation-update-2026-08-09">P1 Batch 3 implementation update — 2026-08-09<a class="headerlink" href="#p1-batch-3-implementation-update-2026-08-09" title="Permanent link">&para;</a></h2>
+<p>The next five individual scripts were repaired as an agent-governance and
+permission-truth batch:</p>
+<table>
+<thead>
+<tr>
+<th>Requested script</th>
+<th>Result</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scripts/agent_compliance_checker.py</code></td>
+<td>Repaired</td>
+<td>Defaults to current-session evidence and returns failure when the session, agent attribution, or evidence set is absent. Historical selection remains explicit.</td>
+</tr>
+<tr>
+<td><code>scripts/agent_context.py</code></td>
+<td>Repaired</td>
+<td>Loads the canonical 16-agent registry, validates its metadata, accepts every registered agent, and prints root-stable commands.</td>
+</tr>
+<tr>
+<td><code>scripts/agent_drift_detector.py</code></td>
+<td>Repaired</td>
+<td>Current-session/no-evidence cases fail closed; the default is read-only and files are written only with <code>--write</code> or <code>--output</code>.</td>
+</tr>
+<tr>
+<td><code>scripts/agent_trends.py</code></td>
+<td>Repaired</td>
+<td>Historical trend analysis is read-only by default, missing agents fail instead of receiving synthetic zero-score results, and writes are explicit.</td>
+</tr>
+<tr>
+<td><code>scripts/tool_permissions.py</code></td>
+<td>Repaired</td>
+<td>Resolves explicit task and mode permissions, respects agent ceilings and file scope, and fails closed for unknown tasks or modes.</td>
+</tr>
+</tbody>
+</table>
+<p>Direct support changes made the five fixes enforceable: the shared agent-data
+helper now identifies current dated sessions; the tool registry stopped
+guessing permissions from keywords; automation-map entries declare the repaired
+operations and mutating modes; and the permission/governance audits validate
+that metadata. Two bounded read-only reviewers inspected the independent
+evidence-selection and permission designs. Both used Terra; no Sol agent was
+used.</p>
+<h2 id="terminalworktree-runtime-repair-2026-08-09">Terminal/worktree runtime repair — 2026-08-09<a class="headerlink" href="#terminalworktree-runtime-repair-2026-08-09" title="Permanent link">&para;</a></h2>
+<p><code>run.sh</code>, <code>check_all.py</code>, <code>test_cli_smoke.py</code>, and 23 active pre-commit entries
+assumed that every linked Git worktree contained its own <code>.venv</code>. That made the
+first clean-worktree gate and commit hooks fail before their Python checks ran.</p>
+<p><code>scripts/python_runtime.sh</code> is now the single internal resolver. It uses, in
+order, an explicit <code>STRUCTURAL_LIB_PYTHON</code>, the current checkout's <code>.venv</code>, the
+primary Git worktree's <code>.venv</code>, or an active <code>VIRTUAL_ENV</code>; otherwise it exits
+with an actionable error. The dispatcher, check orchestrator, smoke suite, and
+pre-commit entries call this resolver. A linked worktree with no local <code>.venv</code>
+now runs repository checks without a temporary link.</p>
 <h2 id="snapshot-and-scope">Snapshot and scope<a class="headerlink" href="#snapshot-and-scope" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2038,8 +2176,8 @@ fix of a real production contract defect: the React SSE batch client used
 <td><code>structural_engineering_lib</code></td>
 </tr>
 <tr>
-<td>Branch</td>
-<td><code>task/LIB-IS456-V1</code></td>
+<td>Branch at Batch 3 closeout</td>
+<td><code>codex/automation-governance-batches-2-3</code></td>
 </tr>
 <tr>
 <td>Baseline commit</td>
@@ -2059,7 +2197,7 @@ fix of a real production contract defect: the React SSE batch client used
 </tr>
 <tr>
 <td>Current active top-level scripts</td>
-<td>106</td>
+<td>107</td>
 </tr>
 <tr>
 <td>Existing archived scripts</td>
@@ -2087,14 +2225,14 @@ fix of a real production contract defect: the React SSE batch client used
 </tr>
 <tr>
 <td>Subagents used</td>
-<td>0</td>
+<td>2 read-only Terra reviewers in Batch 3; 0 in the earlier audit/P0 batches</td>
 </tr>
 </tbody>
 </table>
 <p>The 101 files already under <code>scripts/_archive/</code> were not re-reviewed as active
 automation. Their boundary was checked instead: <code>validate_script_refs.py</code>
-found no active runtime call to an archived-only script. Its 13 results were
-informational consolidation comments/docstrings only.</p>
+found no active runtime call to an archived-only or otherwise missing script.
+Its 25 results were informational consolidation comments/docstrings only.</p>
 <h2 id="method">Method<a class="headerlink" href="#method" title="Permanent link">&para;</a></h2>
 <p>Every top-level <code>.py</code> and <code>.sh</code> file was individually included in the inventory
 and received at least these checks:</p>
@@ -2141,7 +2279,15 @@ was then verified separately:</p>
 </tr>
 <tr>
 <td>Focused Python automation tests</td>
-<td>21/21 pass</td>
+<td>23/23 pass</td>
+</tr>
+<tr>
+<td>Active script target validation</td>
+<td>0 runtime breaks; 25 informational historical references at P0</td>
+</tr>
+<tr>
+<td>Pre-commit configuration validation</td>
+<td>pass</td>
 </tr>
 <tr>
 <td>Focused React batch-design tests</td>
@@ -2153,7 +2299,7 @@ was then verified separately:</p>
 </tr>
 <tr>
 <td>Link validation</td>
-<td>1,048 links checked; 0 broken</td>
+<td>1,050 links checked; 0 broken</td>
 </tr>
 <tr>
 <td>Quick gate</td>
@@ -2167,12 +2313,112 @@ was then verified separately:</p>
 </table>
 <p>The earlier generated-manifest and OpenAPI drift was resolved by the owning
 library-first work before the final integrated gate.</p>
+<p>Batch 3 verification was performed after the five-script P1 implementation:</p>
+<table>
+<thead>
+<tr>
+<th>P1 Batch 3 check</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Canonical agent registry</td>
+<td>16/16 agents listed; <code>structural-math</code> focused context returned rc 0</td>
+</tr>
+<tr>
+<td>Current evidence defaults</td>
+<td>compliance and drift returned expected rc 1 because only stale historical sessions were available</td>
+</tr>
+<tr>
+<td>Read/write permission modes</td>
+<td>reviewer read-only health allowed; <code>--fix</code> denied; undeclared operation denied</td>
+</tr>
+<tr>
+<td>Focused governance/evolver tests</td>
+<td>106/106 pass</td>
+</tr>
+<tr>
+<td>Formatting, lint, and compile</td>
+<td>pass for all changed Python implementation/test files</td>
+</tr>
+<tr>
+<td>Permission declaration audit</td>
+<td>pass; no anomalies</td>
+</tr>
+<tr>
+<td>Governance compliance</td>
+<td>pass; explicit permission metadata check included</td>
+</tr>
+<tr>
+<td>Script index</td>
+<td>106/106 pass</td>
+</tr>
+<tr>
+<td>Active script target validation</td>
+<td>0 runtime breaks; 24 informational historical references</td>
+</tr>
+<tr>
+<td>CLI smoke</td>
+<td>12/13 at initial Batch 3 verification; resolved to 13/13 in the worktree follow-up below</td>
+</tr>
+<tr>
+<td>Quick gate</td>
+<td>9/9 pass</td>
+</tr>
+<tr>
+<td>Full gate in isolated worktree</td>
+<td>29/29 pass</td>
+</tr>
+</tbody>
+</table>
+<p>The clean Codex worktree removed the unrelated API-manifest/OpenAPI drift seen
+in the shared release worktree. The complete gate then passed without
+regenerating or overwriting those concurrent owner-controlled artifacts.</p>
+<p>The runtime follow-up was then verified in the same linked worktree after
+removing its temporary <code>.venv</code> link:</p>
+<table>
+<thead>
+<tr>
+<th>Worktree runtime check</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runtime resolution</td>
+<td>primary-worktree Python 3.11.15 selected without local <code>.venv</code></td>
+</tr>
+<tr>
+<td>Focused governance/runtime tests</td>
+<td>108/108 pass</td>
+</tr>
+<tr>
+<td>Script index and automation map</td>
+<td>107/107 pass</td>
+</tr>
+<tr>
+<td>CLI smoke</td>
+<td>13/13 pass using a guaranteed registered automation task</td>
+</tr>
+<tr>
+<td>Quick gate without local <code>.venv</code></td>
+<td>9/9 pass</td>
+</tr>
+<tr>
+<td>Full gate without local <code>.venv</code></td>
+<td>29/29 pass</td>
+</tr>
+</tbody>
+</table>
 <h3 id="terminal-issues-encountered">Terminal issues encountered<a class="headerlink" href="#terminal-issues-encountered" title="Permanent link">&para;</a></h3>
 <ul>
 <li>⚠️ TERMINAL ISSUE: Homebrew Node 25 could not load <code>libsimdjson.29.dylib</code> → the bundled Codex Node runtime ran the focused Vitest lane successfully.</li>
 <li>⚠️ TERMINAL ISSUE: <code>generate_enhanced_index.py</code> rejected multiple folder arguments → each affected folder was regenerated in a separate supported invocation.</li>
 <li>⚠️ TERMINAL ISSUE: Vitest launched from the repository root missed the React jsdom configuration (<code>window is not defined</code>) → rerunning from <code>react_app/</code> passed 10/10 tests.</li>
 <li>⚠️ TERMINAL ISSUE: a diagnostic zsh loop used the reserved <code>path</code> variable and temporarily hid <code>git</code> inside that one process → the verification was rerun in a clean shell with non-reserved names.</li>
+<li>⚠️ TERMINAL ISSUE: an <code>rg</code> command placed <code>--glob</code> filters after the <code>--</code> pattern terminator, so ripgrep treated them as paths → the search was rerun with filters before <code>--</code>.</li>
+<li>⚠️ TERMINAL ISSUE: the first Black check reported that <code>validate_script_refs.py</code> needed formatting → Black was applied and the final format check passed.</li>
 </ul>
 <table>
 <thead>
@@ -2208,11 +2454,11 @@ library-first work before the final integrated gate.</p>
 </tr>
 <tr>
 <td>Script index coverage</td>
-<td>113/113 pass at baseline; 106/106 after P0 retirement</td>
+<td>113/113 pass at baseline; 107/107 current</td>
 </tr>
 <tr>
 <td>Automation-map physical coverage</td>
-<td>113/113 pass at baseline; 106/106 after P0 retirement</td>
+<td>113/113 pass at baseline; 107/107 current</td>
 </tr>
 <tr>
 <td>Canonical full gate</td>
@@ -2224,7 +2470,7 @@ library-first work before the final integrated gate.</p>
 </tr>
 <tr>
 <td>CLI smoke suite</td>
-<td>12/13 pass; <code>find_automation.py beam</code> fails</td>
+<td>13/13 pass</td>
 </tr>
 <tr>
 <td>Token-efficiency policy</td>
@@ -2256,10 +2502,10 @@ library-first work before the final integrated gate.</p>
 </tr>
 </tbody>
 </table>
-<p>The green 29/29 gate is useful but incomplete. It does not currently detect
-missing <code>run.sh</code>/pre-commit targets, automation-map category drift, vacuous API
-signature scanning, behavior-inaccurate permission metadata, or the failing CLI
-smoke case.</p>
+<p>The green 29/29 gate is useful but incomplete. It now detects missing active
+script targets, vacuous API signature scanning, and malformed declared
+permission metadata, but it does not yet detect automation-map category drift,
+undeclared-operation coverage, or require the standalone CLI smoke suite.</p>
 <h2 id="highest-priority-confirmed-issues">Highest-priority confirmed issues<a class="headerlink" href="#highest-priority-confirmed-issues" title="Permanent link">&para;</a></h2>
 <h3 id="p0-git-safety-automation-conflicts-with-the-written-safety-policy-resolved">P0 — Git safety automation conflicts with the written safety policy — RESOLVED<a class="headerlink" href="#p0-git-safety-automation-conflicts-with-the-written-safety-policy-resolved" title="Permanent link">&para;</a></h3>
 <p>The scripts described as the safest path contain behavior that can change or
@@ -2285,47 +2531,47 @@ The wrapper and enforcement layer was retired rather than repaired. Current
 instructions assign normal Git/GitHub closeout to Codex, preserve standard
 validation, fail closed on unclear repository state, and keep destructive
 actions behind explicit user confirmation.</p>
-<h3 id="p0-five-active-control-paths-point-to-missing-scripts">P0 — Five active control paths point to missing scripts<a class="headerlink" href="#p0-five-active-control-paths-point-to-missing-scripts" title="Permanent link">&para;</a></h3>
+<h3 id="p0-five-active-control-paths-point-to-missing-scripts-resolved">P0 — Five active control paths point to missing scripts — RESOLVED<a class="headerlink" href="#p0-five-active-control-paths-point-to-missing-scripts-resolved" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
 <th>Surface</th>
 <th>Missing target</th>
-<th>Current behavior</th>
+<th>Resolution</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>run.sh</code></td>
 <td><code>scripts/run_vba_smoke_tests.py</code></td>
-<td><code>./run.sh test --vba</code> fails</td>
+<td>Removed the unsupported <code>test --vba</code> dispatch branch.</td>
 </tr>
 <tr>
 <td><code>run.sh</code></td>
 <td><code>scripts/test_vba_adapter.py</code></td>
-<td><code>./run.sh test --vba</code> fails</td>
+<td>Removed with the same unsupported dispatch lane.</td>
 </tr>
 <tr>
 <td><code>.pre-commit-config.yaml</code></td>
 <td><code>scripts/check_cost_optimizer_issues.py</code></td>
-<td>Dead hook filtered to removed Streamlit path</td>
+<td>Removed the dead archived-product hook.</td>
 </tr>
 <tr>
 <td><code>.pre-commit-config.yaml</code></td>
 <td><code>scripts/check_streamlit.py</code></td>
-<td>Two dead hooks filtered to removed Streamlit path</td>
+<td>Removed both dead Streamlit hooks.</td>
 </tr>
 <tr>
 <td><code>.pre-commit-config.yaml</code></td>
 <td><code>scripts/check_performance_issues.py</code></td>
-<td>Dead hook filtered to removed Streamlit path</td>
+<td>Removed the dead archived-product hook.</td>
 </tr>
 </tbody>
 </table>
 <p><code>streamlit_app/</code>, <code>VBA/</code>, <code>Excel/</code>, <code>tests/apptest/</code>, and
-<code>.pylintrc-streamlit</code> are also absent. Remove these dead entrypoints rather than
-restoring removed product trees. The existing <code>validate_script_refs.py</code> did not
-find them because it only compares active scripts against names present in
+<code>.pylintrc-streamlit</code> remain absent; no removed product tree was restored.
+<code>validate_script_refs.py</code> now guards active control surfaces generically, so a
+future missing target fails even when its name is not present in
 <code>scripts/_archive/</code>.</p>
 <h3 id="p0-check_apipy-signatures-passes-without-checking-the-react-calls-resolved">P0 — <code>check_api.py --signatures</code> passes without checking the React calls — RESOLVED<a class="headerlink" href="#p0-check_apipy-signatures-passes-without-checking-the-react-calls-resolved" title="Permanent link">&para;</a></h3>
 <p>The signature lane defaults to <code>react_app/src</code> but scans only top-level
@@ -2339,56 +2585,55 @@ fails if the source tree or internal call-site count is zero. The pre-commit
 trigger now covers React and FastAPI files. Current evidence is 24 call sites
 across nine production files matched against 62 OpenAPI paths.</p>
 <h3 id="p1-automation-discovery-is-physically-complete-but-semantically-stale">P1 — Automation discovery is physically complete but semantically stale<a class="headerlink" href="#p1-automation-discovery-is-physically-complete-but-semantically-stale" title="Permanent link">&para;</a></h3>
-<p><code>automation-map.json</code> has 125 task entries and 17 legacy categories. The file
-maps all 113 physical scripts, but its semantic integrity has drifted:</p>
+<p><code>automation-map.json</code> currently has 119 task entries and 17 legacy categories.
+It maps all 107 physical scripts, but its semantic integrity has drifted:</p>
 <ul>
-<li>seven category members do not exist as tasks;</li>
-<li>14 task entries are not present in any legacy category;</li>
-<li>three duplicate-command groups represent compatibility aliases;</li>
+<li>13 category members still name retired or otherwise absent tasks;</li>
+<li>15 task entries are not present in any legacy category;</li>
 <li><code>test vba adapter</code> says its target was removed but is not marked deprecated;</li>
 <li>Streamlit and VBA categories still produce removed-product results;</li>
-<li><code>_tmp_add_groups.py</code> is exposed as a supported WorkspaceWrite tool; and</li>
+<li><code>_tmp_add_groups.py</code> is still exposed as a supported tool; and</li>
 <li><code>find_automation.py</code> still claims 87 tasks/16 categories.</li>
 </ul>
-<p>The CLI smoke test fails because <code>find_automation.py beam</code> returns no result.
-Either change the smoke query to a guaranteed automation task or add a truthful
-beam-workflow mapping. Do not keep a failing test merely to prove the runner can
-fail.</p>
-<h3 id="p1-permission-labels-do-not-match-operation-behavior">P1 — Permission labels do not match operation behavior<a class="headerlink" href="#p1-permission-labels-do-not-match-operation-behavior" title="Permanent link">&para;</a></h3>
-<p><code>audit_permissions.py --check</code> reports no anomalies, but it checks registry
-consistency, not the script's real side effects. Examples:</p>
+<p>The CLI smoke false failure is resolved: <code>find_automation.py</code> is an
+automation-task finder, so its smoke case now queries the guaranteed registered
+task <code>run tests</code>; product-domain beam routing remains covered separately by
+<code>prompt_router.py</code>. The finder still needs truthful task/category counts and
+stale-category cleanup.</p>
+<h3 id="p1-permission-labels-do-not-match-operation-behavior-resolved-for-declared-operations">P1 — Permission labels do not match operation behavior — RESOLVED FOR DECLARED OPERATIONS<a class="headerlink" href="#p1-permission-labels-do-not-match-operation-behavior-resolved-for-declared-operations" title="Permanent link">&para;</a></h3>
+<p>The keyword-based classifier was removed. The resolver now uses explicit task
+and mode metadata, applies the registered agent ceiling and file scope, and
+denies unknown task/mode combinations even when an agent has
+<code>DangerFullAccess</code>. The permission audit and canonical governance gate reject
+malformed declarations.</p>
+<p>Fourteen high-value operations now have explicit defaults and ten declare
+mutating modes. Examples verified in this batch include read-only <code>project
+health</code> versus WorkspaceWrite <code>--fix</code>, and read-only drift/trends versus
+WorkspaceWrite <code>--write</code>/<code>--output</code>. Undeclared task aliases are reported as
+<code>Unspecified</code> instead of receiving invented labels; permission enforcement
+rejects an undeclared operation or mode until metadata is added.</p>
+<p>This resolves the misleading-label root cause. Future script batches should add
+explicit metadata when an undeclared operation becomes an enforced entrypoint;
+the audit does not claim that static inspection can prove every runtime side
+effect.</p>
+<h3 id="p1-agent-governance-automation-can-be-false-green-or-unexpectedly-write-resolved">P1 — Agent governance automation can be false-green or unexpectedly write — RESOLVED<a class="headerlink" href="#p1-agent-governance-automation-can-be-false-green-or-unexpectedly-write-resolved" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>generate_enhanced_index.py</code>, <code>pipeline_state.py</code>, and <code>session_store.py</code> are
-  labeled ReadOnly even though normal subcommands write files/state;</li>
-<li><code>prompt_router.py</code> and <code>config_precedence.py</code> are labeled WorkspaceWrite even
-  though their normal route/audit modes are read-only;</li>
-<li>check-only utilities inherit DangerFullAccess from the assigned agent; and</li>
-<li>one script with both read-only and mutating modes receives only one permission
-  label.</li>
+<li><code>agent_context.py --list</code> now exposes and accepts all 16 canonical agents,
+  validates the registry count/names, and emits root-stable commands.</li>
+<li>default compliance/drift checks require a current dated session and return
+  nonzero for missing sessions, absent agent attribution, or empty evidence;
+  historical sessions remain available only through explicit selectors.</li>
+<li>drift and trend reports are read-only by default; managed or custom output
+  requires <code>--write</code> or <code>--output</code>.</li>
+<li>trend lookup for an absent agent returns failure instead of manufacturing a
+  zero-score record.</li>
 </ul>
-<p>Model permissions per operation/subcommand, or conservatively use the maximum
-side effect while documenting a safe read-only invocation. Extend the
-permission audit to compare declared metadata with observed/static behavior.</p>
-<h3 id="p1-agent-governance-automation-can-be-false-green-or-unexpectedly-write">P1 — Agent governance automation can be false-green or unexpectedly write<a class="headerlink" href="#p1-agent-governance-automation-can-be-false-green-or-unexpectedly-write" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>agent_context.py --list</code> exposes only 11 of the current 16 agents. It rejects
-  <code>structural-math</code>, <code>security</code>, <code>library-expert</code>, <code>innovator</code>, and
-  <code>agent-evolver</code>, even though <code>AGENTS.md</code> claims all 16 are supported.</li>
-<li>four commands printed by <code>agent_context.py</code> use
-  <code>cd Python &amp;&amp; .venv/bin/python ...</code>, which points to a nonexistent venv.</li>
-<li><code>agent_compliance_checker.py --agent orchestrator</code> selected a stale
-  2026-04-07 session, produced an empty result set, returned zero, and then
-  printed “All compliance checks passed.”</li>
-<li><code>agent_drift_detector.py</code> and <code>agent_trends.py</code> wrote ignored local report
-  files during their default analysis invocations. Their output was based on
-  stale April session data rather than the current task.</li>
-</ul>
-<p>Prefer the dynamic registry-backed <code>agent_brief.sh</code>, which successfully handled
-all five newer agents in focused checks. Make no-evidence cases fail closed and
-make report-only/no-write behavior explicit.</p>
+<p>Focused tests cover evidence availability, current-session selection, all 16
+agents, root-stable commands, no-write defaults, explicit writes, and missing
+agent behavior.</p>
 <h3 id="p1-check_scripts_indexpy-protects-counts-not-supported-behavior">P1 — <code>check_scripts_index.py</code> protects counts, not supported behavior<a class="headerlink" href="#p1-check_scripts_indexpy-protects-counts-not-supported-behavior" title="Permanent link">&para;</a></h3>
-<p>The index checker passes 113/113 while all P0 findings above remain. Expand it
-or add a narrow control-surface validator that checks:</p>
+<p>The index checker passes 107/107 while the semantic discovery P1 finding above
+remains. Expand it or add a narrow control-surface validator that checks:</p>
 <ol>
 <li>every active <code>run.sh</code>, pre-commit, workflow, and hook script target exists;</li>
 <li>every automation category member resolves to a task;</li>
@@ -2402,13 +2647,13 @@ or add a narrow control-surface validator that checks:</p>
 <p>These are lower priority than the P0/P1 items and should be handled in a compact
 documentation/CLI-contract pass, not as 60 separate rewrites:</p>
 <ul>
-<li>35 of 89 Python scripts lack the catalog's required “When to use” contract.</li>
+<li>36 of 89 Python scripts lack the catalog's required “When to use” contract.</li>
 <li>31 of the baseline 113 top-level scripts had no safely recognized <code>--help</code> path, despite
   the scripts README saying all scripts should support help.</li>
 <li>60 scripts contain 309 bare <code>python scripts/...</code> command examples instead of
   the root-stable <code>.venv/bin/python</code> or <code>./run.sh</code> entrypoint.</li>
-<li><code>agent_context.py</code> contains four specifically broken
-  <code>cd Python &amp;&amp; .venv/bin/python</code> commands.</li>
+<li>agent-governance command examples are now root-stable; continue repairing the
+  remaining 309 bare <code>python scripts/...</code> examples in later bounded batches.</li>
 <li><code>check_root_file_count.sh</code> recommends raw <code>git mv</code> instead of
   <code>safe_file_move.py</code>.</li>
 <li><code>check_circular_imports.py</code> and <code>check_type_annotations.py</code> now scan the
@@ -2452,20 +2697,20 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>agent_compliance_checker.py</code></td>
 <td>Governance</td>
-<td>UPDATE</td>
-<td>Empty compliance set returned rc 0 and “all passed”; fail closed on no evidence.</td>
+<td>KEEP (UPDATED)</td>
+<td>Current-session selection and explicit historical selectors now fail closed on missing session, attribution, or evidence.</td>
 </tr>
 <tr>
 <td><code>agent_context.py</code></td>
 <td>Session</td>
-<td>UPDATE</td>
-<td>Only 11/16 agents; four broken <code>cd Python/.venv</code> commands; consolidate with dynamic registry.</td>
+<td>KEEP (UPDATED)</td>
+<td>Canonical registry validation exposes all 16 agents and emits root-stable commands.</td>
 </tr>
 <tr>
 <td><code>agent_drift_detector.py</code></td>
 <td>Governance</td>
-<td>UPDATE</td>
-<td>Default run writes ignored reports and selected stale session; add no-write/current selection.</td>
+<td>KEEP (UPDATED)</td>
+<td>Current evidence fails closed; default analysis is read-only and writes require <code>--write</code>/<code>--output</code>.</td>
 </tr>
 <tr>
 <td><code>agent_evolve_instructions.py</code></td>
@@ -2500,14 +2745,14 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>agent_start.sh</code></td>
 <td>Session</td>
-<td>UPDATE</td>
-<td>Depends on incomplete <code>agent_context.py</code> for named-agent deep context.</td>
+<td>KEEP (UPDATED)</td>
+<td>Its named-agent deep-context dependency now uses the complete canonical registry.</td>
 </tr>
 <tr>
 <td><code>agent_trends.py</code></td>
 <td>Evolution</td>
-<td>REVIEW</td>
-<td>Writes output by default and selected stale April data during audit.</td>
+<td>KEEP (UPDATED)</td>
+<td>Historical analysis is read-only by default; absent agents fail and output writes are explicit.</td>
 </tr>
 <tr>
 <td><code>ai_commit.sh</code></td>
@@ -2536,8 +2781,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>audit_permissions.py</code></td>
 <td>Infrastructure</td>
-<td>KEEP</td>
-<td>Retain registry-consistency audit, but do not treat it as behavior validation.</td>
+<td>KEEP (UPDATED)</td>
+<td>Validates explicit automation permission levels and mode declarations; static metadata is not runtime side-effect proof.</td>
 </tr>
 <tr>
 <td><code>audit_readiness_report.py</code></td>
@@ -2573,7 +2818,7 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <td><code>check_api.py</code></td>
 <td>Discovery</td>
 <td>KEEP (UPDATED)</td>
-<td>Validates 24 production React call sites against 60 live OpenAPI paths and fails closed on zero coverage.</td>
+<td>Validates 24 production React call sites against 62 live OpenAPI paths and fails closed on zero coverage.</td>
 </tr>
 <tr>
 <td><code>check_api_compat.py</code></td>
@@ -2962,14 +3207,20 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>project_health.py</code></td>
 <td>Governance</td>
-<td>UPDATE</td>
-<td>Preserve canonical role; make no-write versus <code>--fix</code> permissions explicit.</td>
+<td>KEEP (UPDATED)</td>
+<td>Canonical role retained; automation metadata now declares read-only default versus WorkspaceWrite <code>--fix</code>.</td>
 </tr>
 <tr>
 <td><code>prompt_router.py</code></td>
 <td>Infrastructure</td>
 <td>UPDATE</td>
 <td>Registry labels normal read-only routing as WorkspaceWrite.</td>
+</tr>
+<tr>
+<td><code>python_runtime.sh</code></td>
+<td>Infrastructure</td>
+<td>KEEP (NEW)</td>
+<td>Resolves an approved Python interpreter across primary and linked Git worktrees without creating or copying environments.</td>
 </tr>
 <tr>
 <td><code>recover_git_state.sh</code></td>
@@ -3053,7 +3304,7 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <td><code>test_cli_smoke.py</code></td>
 <td>Testing</td>
 <td>UPDATE</td>
-<td>12/13 pass; beam lookup fails and suite is absent from canonical gates.</td>
+<td>13/13 pass after using a registered automation query; decide whether to add the standalone suite to a canonical gate.</td>
 </tr>
 <tr>
 <td><code>test_import_pipeline.py</code></td>
@@ -3070,14 +3321,14 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>tool_permissions.py</code></td>
 <td>Infrastructure</td>
-<td>UPDATE</td>
-<td>Audit does not compare permissions with actual script side effects.</td>
+<td>KEEP (UPDATED)</td>
+<td>Explicit operation/mode resolver applies agent ceilings and file scope and fails closed on undeclared input.</td>
 </tr>
 <tr>
 <td><code>tool_registry.py</code></td>
 <td>Infrastructure</td>
 <td>UPDATE</td>
-<td>Exposes temp/stale aliases and behavior-inaccurate permissions.</td>
+<td>Keyword permission inference is gone, but temp/stale discovery aliases still need cleanup.</td>
 </tr>
 <tr>
 <td><code>update_test_stats.py</code></td>
@@ -3112,8 +3363,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>validate_script_refs.py</code></td>
 <td>Quality</td>
-<td>UPDATE</td>
-<td>Only checks archived names; misses five active references to nonexistent scripts.</td>
+<td>KEEP (UPDATED)</td>
+<td>Scans active CLI, pre-commit, workflow, and script surfaces and fails on any executable missing target.</td>
 </tr>
 <tr>
 <td><code>watch_tests.sh</code></td>
@@ -3136,18 +3387,18 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tbody>
 <tr>
 <td><code>run.sh</code></td>
-<td>UPDATE</td>
-<td>Remove broken <code>test --vba</code> branch, keep help aligned, and add target-existence validation.</td>
+<td>KEEP (UPDATED)</td>
+<td>Broken <code>test --vba</code> dispatch/help/completion entries removed; supported test lanes retained.</td>
 </tr>
 <tr>
 <td><code>.pre-commit-config.yaml</code></td>
-<td>UPDATE</td>
-<td>Remove dead Streamlit hooks and their missing targets; retain current React/FastAPI/Python hooks.</td>
+<td>KEEP (UPDATED)</td>
+<td>Missing-target Streamlit hooks removed; current React/FastAPI/Python hooks retained.</td>
 </tr>
 <tr>
 <td><code>scripts/automation-map.json</code></td>
 <td>UPDATE</td>
-<td>Remove stale categories/aliases/temp tool and align permissions/deprecation metadata.</td>
+<td>Operation/mode permissions are explicit for the repaired controls; remove remaining stale categories/aliases/temp tool and align deprecation metadata.</td>
 </tr>
 <tr>
 <td><code>scripts/index.json</code> / <code>index.md</code></td>
@@ -3238,7 +3489,7 @@ parts of agent data, registry, and scoring behavior.</p>
 </tr>
 <tr>
 <td><code>scripts/_lib/agent_data.py</code></td>
-<td>UPDATE with agent evidence/no-write fixes</td>
+<td>KEEP (UPDATED); shared current-session selection is covered by focused tests</td>
 </tr>
 <tr>
 <td><code>scripts/_lib/agent_registry.py</code></td>
@@ -3302,10 +3553,10 @@ parts of agent data, registry, and scoring behavior.</p>
 <h2 id="recommended-next-maintenance-sequence">Recommended next maintenance sequence<a class="headerlink" href="#recommended-next-maintenance-sequence" title="Permanent link">&para;</a></h2>
 <h3 id="packet-c1-fail-closed-control-paths">Packet C1 — Fail-closed control paths<a class="headerlink" href="#packet-c1-fail-closed-control-paths" title="Permanent link">&para;</a></h3>
 <ol>
-<li>Remove the five missing-script entrypoints from <code>run.sh</code> and pre-commit.</li>
+<li><strong>Completed:</strong> remove the five missing-script entrypoints from <code>run.sh</code> and pre-commit.</li>
 <li><strong>Completed:</strong> replace the vacuous API lane with the live React/OpenAPI contract check.</li>
-<li>Extend target/category/smoke validation so the remaining defects cannot return.</li>
-<li>Run focused checks, <code>./run.sh check --quick</code>, and inspect the live <code>PR Gate</code>.</li>
+<li><strong>Completed for P0:</strong> active-target validation now fails closed; category and CLI-smoke improvements remain P1.</li>
+<li><strong>Completed locally:</strong> focused checks and <code>./run.sh check --quick</code>; connected CI review belongs to Codex closeout.</li>
 </ol>
 <h3 id="packet-c2-git-data-preservation-repair">Packet C2 — Git data-preservation repair<a class="headerlink" href="#packet-c2-git-data-preservation-repair" title="Permanent link">&para;</a></h3>
 <p><strong>Completed by retirement:</strong> the wrapper scripts, their direct dependencies,
@@ -3314,12 +3565,15 @@ Codex now owns ordinary scoped Git/GitHub work, while merge, branch deletion,
 issue closure, release, and history rewriting retain explicit approval gates.</p>
 <h3 id="packet-c3-registry-and-agent-truth">Packet C3 — Registry and agent truth<a class="headerlink" href="#packet-c3-registry-and-agent-truth" title="Permanent link">&para;</a></h3>
 <ol>
-<li>Make the dynamic 16-agent registry the source for context and permission
-   discovery.</li>
-<li>Fail closed on missing/stale agent evidence.</li>
-<li>Add explicit no-write modes to drift/trend/report commands.</li>
-<li>Normalize operation-level permissions and remove temp/removed aliases.</li>
-<li>Repair the CLI smoke case and make it part of repository validation.</li>
+<li><strong>Completed:</strong> the canonical 16-agent registry now drives agent context.</li>
+<li><strong>Completed:</strong> compliance and drift fail closed on missing/current evidence.</li>
+<li><strong>Completed:</strong> drift and trend analysis is read-only unless writing is
+   explicitly requested.</li>
+<li><strong>Completed for permission truth:</strong> declared operation/mode permissions are
+   enforced without keyword guessing. Temp/removed discovery aliases remain in
+   the automation-discovery P1 item.</li>
+<li><strong>Partially completed:</strong> the CLI smoke case is repaired at 13/13; canonical
+   gate integration remains pending.</li>
 </ol>
 <h3 id="packet-c4-archiveconsolidate-the-proven-candidates">Packet C4 — Archive/consolidate the proven candidates<a class="headerlink" href="#packet-c4-archiveconsolidate-the-proven-candidates" title="Permanent link">&para;</a></h3>
 <p>Start with only these three:</p>
@@ -3393,25 +3647,51 @@ is not sufficient evidence.</p>
   audit did not start/alter the development stack.</li>
 <li>Migration, Git, file-operation, release, auto-fix, and archive modes were not
   executed.</li>
-<li><code>agent_drift_detector.py</code> and <code>agent_trends.py</code> unexpectedly wrote ignored
-  local evidence files during their default analysis modes. They did not change
-  the tracked worktree; the side effect is retained as a finding rather than
-  deleted.</li>
-<li><code>./run.sh session end --agent orchestrator</code> completed its read-only checks but
-  returned exit 1 because three documentation paths were uncommitted: this audit
-  report plus two out-of-scope planning changes. Its handoff, link, session-log,
-  task-archive, and governance checks all passed. No <code>--fix</code> mode was run.</li>
+<li>The baseline audit observed default writes from drift/trends. Batch 3 removed
+  that behavior and focused tests prove no output directory is created by the
+  default commands.</li>
+<li>The original <code>./run.sh session end --agent orchestrator</code> returned exit 1 for
+  three uncommitted documentation paths. The later Git closeout used a clean,
+  isolated worktree so concurrent project changes were not staged. No <code>--fix</code>
+  mode was run.</li>
 <li><strong>TERMINAL ISSUE:</strong> an early <code>awk</code> inventory expression failed with a quoting
   error -&gt; simpler <code>git ls-files</code>, Perl, and Python path-based counts produced
   the reconciled 113-script inventory.</li>
+<li>⚠️ TERMINAL ISSUE: Ruff caught <code>required_level</code> inserted into the wrong
+  permission helper during the first patch -&gt; it was moved into
+  <code>check_permission</code>, then formatting, lint, compile, and focused tests passed.</li>
+<li>⚠️ TERMINAL ISSUE: <code>tool_registry.py</code> uses mutually exclusive query flags, so
+  a combined <code>--permission Unspecified --stats</code> probe was rejected -&gt; the two
+  read-only queries were rerun separately and passed.</li>
+<li>✅ RESOLVED TERMINAL ISSUE: the first clean-worktree gate and commit hooks
+  could not find a local <code>.venv</code> and stopped before running Python checks -&gt;
+  <code>python_runtime.sh</code> now resolves the primary worktree environment, and the
+  same linked worktree runs without a temporary link.</li>
+<li>⚠️ TERMINAL ISSUE: a repository-wide <code>pre-commit --all-files</code> probe exposed
+  pre-existing YAML/JSONC/Bandit/EOF debt and reformatted unrelated legacy and
+  vendor files -&gt; the exact hook-only edits were reversed, the intended 12-file
+  scope was preserved, and pre-commit was rerun only against that scope.</li>
+<li>⚠️ TERMINAL ISSUE: the first audit-index refresh used the absent pluralized
+  <code>generate_folder_indexes.py</code> name -&gt; the active
+  <code>generate_enhanced_index.py docs/audit</code> command regenerated both indexes.</li>
+<li>⚠️ TERMINAL ISSUE: a focused pytest command guessed two split test filenames
+  that do not exist -&gt; the repository's combined
+  <code>test_agent_governance_automation.py</code> suite was run directly.</li>
+<li>⚠️ TERMINAL ISSUE: the first automated transfer used standard Git range hunk
+  headers that the patch tool did not accept -&gt; the same exact-file patch was
+  reapplied with supported hunk headers and verified with formatting, tests,
+  and <code>git diff --check</code>.</li>
 </ul>
 <h2 id="handoff">Handoff<a class="headerlink" href="#handoff" title="Permanent link">&para;</a></h2>
-<p>The next session should start at Packet C1, not with archiving. Preserve this
-report as the decision ledger, refresh caller/live-run evidence immediately
-before edits, and update each row only when a focused change has been verified.
-Do not merge PR #691, publish v0.21.7, close historical issues, or delete remote
-branches as part of the script-maintenance packets without separate owner
-approval.</p>
+<p>Both confirmed P0 automation batches and the five-script P1 agent-governance
+batch are complete. The next batch should address the remaining P1
+automation-discovery/control-validation scripts, beginning with stale
+categories and advertised task counts, not bulk archiving.
+Preserve this report as the decision ledger and refresh caller/live-run evidence
+immediately before edits. Do not merge a PR, publish a release, close
+historical issues, or delete remote branches without separate owner approval.
+The batch is isolated on its own Codex branch; preserve that separation during
+review and do not pull concurrent release/product changes into its PR.</p>
 
 
 
