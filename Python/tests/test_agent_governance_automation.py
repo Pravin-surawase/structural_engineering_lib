@@ -31,6 +31,7 @@ cli_smoke = importlib.import_module("test_cli_smoke")
 evolve = importlib.import_module("evolve")
 external_cli = importlib.import_module("external_cli_test")
 find_automation = importlib.import_module("find_automation")
+project_health = importlib.import_module("project_health")
 tool_permissions = importlib.import_module("tool_permissions")
 tool_registry = importlib.import_module("tool_registry")
 
@@ -61,6 +62,7 @@ def test_control_paths_use_python_runtime_launcher():
 
     assert check_all.VENV_PYTHON == launcher
     assert cli_smoke.VENV == launcher
+    assert str(project_health.PYTHON_RUNTIME) == launcher
     assert 'VENV="$SCRIPTS/python_runtime.sh"' in run_sh
     assert all(".venv/bin/python" not in line for line in entry_lines)
 

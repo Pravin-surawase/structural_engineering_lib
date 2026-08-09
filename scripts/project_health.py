@@ -40,7 +40,7 @@ SKILLS_DIR = REPO_ROOT / ".github" / "skills"
 PROMPTS_DIR = REPO_ROOT / ".github" / "prompts"
 FEEDBACK_DIR = REPO_ROOT / "logs" / "feedback"
 EVOLUTION_DIR = REPO_ROOT / "logs" / "evolution"
-VENV_PYTHON = REPO_ROOT / ".venv" / "bin" / "python"
+PYTHON_RUNTIME = SCRIPTS_DIR / "python_runtime.sh"
 
 # Category weights for health score
 WEIGHTS = {
@@ -103,7 +103,7 @@ def _run_check_script(
     script_name: str, args: list[str] | None = None
 ) -> tuple[int, str]:
     """Run a check script and return (exit_code, output)."""
-    cmd = [str(VENV_PYTHON), str(SCRIPTS_DIR / script_name)]
+    cmd = [str(PYTHON_RUNTIME), str(SCRIPTS_DIR / script_name)]
     if args:
         cmd.extend(args)
     try:
@@ -539,15 +539,20 @@ def scan_infra(fix: bool = False) -> CategoryResult:
             )
         )
 
-    # Check 2: Python venv active and has key deps
+    # Check 2: Project Python runtime resolves and has key deps
     result.checks_run += 1
-    if VENV_PYTHON.exists():
+    if PYTHON_RUNTIME.exists():
         code, output = (
             subprocess.run(
-                [str(VENV_PYTHON), "-c", "import pydantic, pandas, numpy; print('ok')"],
+                [
+                    str(PYTHON_RUNTIME),
+                    "-c",
+                    "import pydantic, pandas, numpy; print('ok')",
+                ],
                 capture_output=True,
                 text=True,
                 timeout=15,
+                cwd=str(REPO_ROOT),
             ).returncode,
             "",
         )
@@ -566,7 +571,7 @@ def scan_infra(fix: bool = False) -> CategoryResult:
             Issue(
                 category="infra",
                 severity="error",
-                message="Python venv not found at .venv/",
+                message="Project Python runtime launcher not found",
             )
         )
 
