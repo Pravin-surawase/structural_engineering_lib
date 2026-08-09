@@ -4,7 +4,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-09
-**Files:** 108
+**Files:** 109
 
 ## Config Files
 
@@ -126,6 +126,7 @@
 - [generate_all_indexes.sh](generate_all_indexes.sh) — Generate index.json + index.md for all research-relevant folders
 - [launch_stack.sh](launch_stack.sh) — launch_stack.sh — Full-stack development launcher for structural_engineering_lib
 - [pre_commit_check.sh](pre_commit_check.sh) — Pre-flight checks before committing
+- [python_runtime.sh](python_runtime.sh) — Resolve the repository Python interpreter across primary and linked worktrees.
 - [repo_health_check.sh](repo_health_check.sh)
 - [validate_git_state.sh](validate_git_state.sh) — Read-only Git workflow validator for Codex
 - [watch_tests.sh](watch_tests.sh) — Watch Mode (Solution 5 - Dev Automation)

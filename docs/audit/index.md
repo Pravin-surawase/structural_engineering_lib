@@ -11,7 +11,7 @@
 | [README.md](README.md) | Audit Evidence & Readiness | This folder contains audit evidence templates, checklists, a | 83 |
 | [agent-testing-audit-2026-03-28.md](agent-testing-audit-2026-03-28.md) |  | > Archived from docs/_active/ on 2026-08-07. Counts and open | 292 |
 | [audit-readiness.md](audit-readiness.md) |  | This checklist defines the minimum evidence requirements for | 144 |
-| [automation-scripts-audit-2026-08-09.md](automation-scripts-audit-2026-08-09.md) |  | The active automation surface was audited one item at a time | 714 |
+| [automation-scripts-audit-2026-08-09.md](automation-scripts-audit-2026-08-09.md) |  | The active automation surface was audited one item at a time | 752 |
 | [comprehensive-library-audit-2026-04-04.md](comprehensive-library-audit-2026-04-04.md) |  | | Workstream | Agent | Score | Key Finding | |-----------|-- | 1069 |
 | [evidence-bundle-template.md](evidence-bundle-template.md) |  | | Field | Value | |-------|-------| | 214 |
 | [git-workflow-audit-pr436.md](git-workflow-audit-pr436.md) |  | Living audit of the git workflow. Originally based on PR #43 | 260 |

@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import importlib
 import json
+import os
+import subprocess
 import sys
 from datetime import date
 from pathlib import Path
@@ -23,8 +25,40 @@ agent_data = importlib.import_module("_lib.agent_data")
 agent_drift = importlib.import_module("agent_drift_detector")
 agent_trends = importlib.import_module("agent_trends")
 audit_permissions = importlib.import_module("audit_permissions")
+check_all = importlib.import_module("check_all")
+cli_smoke = importlib.import_module("test_cli_smoke")
 tool_permissions = importlib.import_module("tool_permissions")
 tool_registry = importlib.import_module("tool_registry")
+
+
+def test_python_runtime_launcher_uses_explicit_interpreter():
+    launcher = SCRIPTS_DIR / "python_runtime.sh"
+    env = os.environ.copy()
+    env["STRUCTURAL_LIB_PYTHON"] = sys.executable
+
+    result = subprocess.run(
+        [str(launcher), "-c", "import sys; print(sys.executable)"],
+        cwd=REPO_ROOT,
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert Path(result.stdout.strip()).resolve() == Path(sys.executable).resolve()
+
+
+def test_control_paths_use_python_runtime_launcher():
+    launcher = str(SCRIPTS_DIR / "python_runtime.sh")
+    run_sh = (REPO_ROOT / "run.sh").read_text(encoding="utf-8")
+    pre_commit = (REPO_ROOT / ".pre-commit-config.yaml").read_text(encoding="utf-8")
+    entry_lines = [line for line in pre_commit.splitlines() if "entry:" in line]
+
+    assert check_all.VENV_PYTHON == launcher
+    assert cli_smoke.VENV == launcher
+    assert 'VENV="$SCRIPTS/python_runtime.sh"' in run_sh
+    assert all(".venv/bin/python" not in line for line in entry_lines)
 
 
 def test_current_session_ids_uses_injected_date_and_ignores_malformed_ids():

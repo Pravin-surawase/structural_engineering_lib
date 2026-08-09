@@ -33,10 +33,10 @@
     {
       "name": "automation-scripts-audit-2026-08-09.md",
       "type": "documentation",
-      "size_lines": 714,
+      "size_lines": 752,
       "last_updated": "2026-08-09",
       "description": "The active automation surface was audited one item at a time. The baseline inventory contained **113 top-level scripts**. After two P0 implementation",
-      "content_hash": "217addb4d034"
+      "content_hash": "0da99be84fc5"
     },
     {
       "name": "comprehensive-library-audit-2026-04-04.md",
@@ -86,5 +86,5 @@
       "file_count": 1
     }
   ],
-  "content_hash": "cc5284ec2b735a09"
+  "content_hash": "a902d102bd4940f1"
 }

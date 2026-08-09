@@ -13,8 +13,9 @@ tags: [automation, scripts, audit, maintenance, archive, maint-008]
 
 The active automation surface was audited one item at a time. The baseline
 inventory contained **113 top-level scripts**. After two P0 implementation
-batches and the five-script P1 governance batch, the active surface contains
-**106 top-level scripts**: **89 Python** and **17 shell**, totaling **40,239
+batches, the five-script P1 governance batch, and the worktree-runtime repair,
+the active surface contains **107 top-level scripts**: **89 Python** and **18
+shell**, totaling **40,284
 lines**. The extended control surface also
 contains the root `run.sh` dispatcher, four GitHub Actions workflows, zero
 repository-enforcement Git hook entrypoints, three non-Git Python hook-framework
@@ -25,11 +26,11 @@ disposition is:
 
 | Disposition | Count | Meaning |
 |---|---:|---|
-| Keep | 61 | Supported role, including the repaired API/reference, agent-governance, permission, and runtime controls |
+| Keep | 62 | Supported role, including the repaired API/reference, agent-governance, permission, and runtime controls |
 | Update | 30 | Active or useful, but a confirmed non-P0 defect, stale contract, or metadata problem still needs repair |
 | Review | 12 | Low-use, overlapping, or specialized; prove a current consumer before keeping or archiving |
 | Archive candidate | 3 | Strong evidence of replacement or one-time use; still requires safe-delete preview and owner acceptance |
-| **Total active** | **106** | Current inventory after eight retirements and one addition: the Codex workflow guard |
+| **Total active** | **107** | Current inventory after eight retirements and two additions: the Codex workflow guard and Python worktree resolver |
 
 The original audit was read-only. The user then authorized a P0 implementation
 pass over five named scripts and directed that Git/GitHub work move to Codex.
@@ -106,6 +107,19 @@ that metadata. Two bounded read-only reviewers inspected the independent
 evidence-selection and permission designs. Both used Terra; no Sol agent was
 used.
 
+## Terminal/worktree runtime repair — 2026-08-09
+
+`run.sh`, `check_all.py`, `test_cli_smoke.py`, and 23 active pre-commit entries
+assumed that every linked Git worktree contained its own `.venv`. That made the
+first clean-worktree gate and commit hooks fail before their Python checks ran.
+
+`scripts/python_runtime.sh` is now the single internal resolver. It uses, in
+order, an explicit `STRUCTURAL_LIB_PYTHON`, the current checkout's `.venv`, the
+primary Git worktree's `.venv`, or an active `VIRTUAL_ENV`; otherwise it exits
+with an actionable error. The dispatcher, check orchestrator, smoke suite, and
+pre-commit entries call this resolver. A linked worktree with no local `.venv`
+now runs repository checks without a temporary link.
+
 ## Snapshot and scope
 
 | Field | Value |
@@ -116,7 +130,7 @@ used.
 | Baseline subject | `ci(maint-008): consolidate GitHub workflow lanes` |
 | Audit date | 2026-08-09 |
 | Baseline active top-level scripts | 113 |
-| Current active top-level scripts | 106 |
+| Current active top-level scripts | 107 |
 | Existing archived scripts | 101: 68 Python and 33 shell |
 | Shared support modules | 7 under `scripts/_lib/` |
 | Hook framework modules | 3 non-Git modules under `scripts/hooks/` |
@@ -185,13 +199,25 @@ Batch 3 verification was performed after the five-script P1 implementation:
 | Governance compliance | pass; explicit permission metadata check included |
 | Script index | 106/106 pass |
 | Active script target validation | 0 runtime breaks; 24 informational historical references |
-| CLI smoke | 12/13 pass; known `find_automation.py beam` P1 remains |
+| CLI smoke | 12/13 at initial Batch 3 verification; resolved to 13/13 in the worktree follow-up below |
 | Quick gate | 9/9 pass |
 | Full gate in isolated worktree | 29/29 pass |
 
 The clean Codex worktree removed the unrelated API-manifest/OpenAPI drift seen
 in the shared release worktree. The complete gate then passed without
 regenerating or overwriting those concurrent owner-controlled artifacts.
+
+The runtime follow-up was then verified in the same linked worktree after
+removing its temporary `.venv` link:
+
+| Worktree runtime check | Result |
+|---|---|
+| Runtime resolution | primary-worktree Python 3.11.15 selected without local `.venv` |
+| Focused governance/runtime tests | 108/108 pass |
+| Script index and automation map | 107/107 pass |
+| CLI smoke | 13/13 pass using a guaranteed registered automation task |
+| Quick gate without local `.venv` | 9/9 pass |
+| Full gate without local `.venv` | 29/29 pass |
 
 ### Terminal issues encountered
 
@@ -210,11 +236,11 @@ regenerating or overwriting those concurrent owner-controlled artifacts.
 | Installed Git hook shell syntax | 3/3 pass |
 | Safe help probes | 82/82 pass |
 | Static-only scripts without recognized safe help path | 31 |
-| Script index coverage | 113/113 pass at baseline; 106/106 current |
-| Automation-map physical coverage | 113/113 pass at baseline; 106/106 current |
+| Script index coverage | 113/113 pass at baseline; 107/107 current |
+| Automation-map physical coverage | 113/113 pass at baseline; 107/107 current |
 | Canonical full gate | 29/29 pass |
 | Focused script/infrastructure tests | 218/218 pass |
-| CLI smoke suite | 12/13 pass; `find_automation.py beam` fails |
+| CLI smoke suite | 13/13 pass |
 | Token-efficiency policy | pass |
 | Skill assignment validation | pass |
 | Workflow YAML parse | 4/4 pass |
@@ -226,7 +252,7 @@ regenerating or overwriting those concurrent owner-controlled artifacts.
 The green 29/29 gate is useful but incomplete. It now detects missing active
 script targets, vacuous API signature scanning, and malformed declared
 permission metadata, but it does not yet detect automation-map category drift,
-undeclared-operation coverage, or the failing CLI smoke case.
+undeclared-operation coverage, or require the standalone CLI smoke suite.
 
 ## Highest-priority confirmed issues
 
@@ -288,20 +314,21 @@ across nine production files matched against 62 OpenAPI paths.
 
 ### P1 — Automation discovery is physically complete but semantically stale
 
-`automation-map.json` currently has 118 task entries and 17 legacy categories.
-It maps all 106 physical scripts, but its semantic integrity has drifted:
+`automation-map.json` currently has 119 task entries and 17 legacy categories.
+It maps all 107 physical scripts, but its semantic integrity has drifted:
 
 - 13 category members still name retired or otherwise absent tasks;
-- 14 task entries are not present in any legacy category;
+- 15 task entries are not present in any legacy category;
 - `test vba adapter` says its target was removed but is not marked deprecated;
 - Streamlit and VBA categories still produce removed-product results;
 - `_tmp_add_groups.py` is still exposed as a supported tool; and
 - `find_automation.py` still claims 87 tasks/16 categories.
 
-The CLI smoke test fails because `find_automation.py beam` returns no result.
-Either change the smoke query to a guaranteed automation task or add a truthful
-beam-workflow mapping. Do not keep a failing test merely to prove the runner can
-fail.
+The CLI smoke false failure is resolved: `find_automation.py` is an
+automation-task finder, so its smoke case now queries the guaranteed registered
+task `run tests`; product-domain beam routing remains covered separately by
+`prompt_router.py`. The finder still needs truthful task/category counts and
+stale-category cleanup.
 
 ### P1 — Permission labels do not match operation behavior — RESOLVED FOR DECLARED OPERATIONS
 
@@ -341,7 +368,7 @@ agent behavior.
 
 ### P1 — `check_scripts_index.py` protects counts, not supported behavior
 
-The index checker passes 106/106 while the semantic discovery P1 finding above
+The index checker passes 107/107 while the semantic discovery P1 finding above
 remains. Expand it or add a narrow control-surface validator that checks:
 
 1. every active `run.sh`, pre-commit, workflow, and hook script target exists;
@@ -475,6 +502,7 @@ not a certification of every branch or an instruction to skip normal tests.
 | `preflight.py` | Session | UPDATE | Add `--help` and “When to use” contract. |
 | `project_health.py` | Governance | KEEP (UPDATED) | Canonical role retained; automation metadata now declares read-only default versus WorkspaceWrite `--fix`. |
 | `prompt_router.py` | Infrastructure | UPDATE | Registry labels normal read-only routing as WorkspaceWrite. |
+| `python_runtime.sh` | Infrastructure | KEEP (NEW) | Resolves an approved Python interpreter across primary and linked Git worktrees without creating or copying environments. |
 | `recover_git_state.sh` | Git | RETIRED | Unclear Git state now stops for Codex inspection; no automated destructive recovery. |
 | `release.py` | Release | KEEP | Canonical release CLI and focused tests passed; publishing still requires approval. |
 | `repo_health_check.sh` | Governance | REVIEW | Manual disk/file diagnostic overlaps health and diagnostics tools. |
@@ -488,7 +516,7 @@ not a certification of every branch or an instruction to skip normal tests.
 | `sync_numbers.py` | Session | KEEP | Preview versus `--fix` is explicit; retain. |
 | `test_api_parity.py` | Testing | UPDATE | Current parity is useful; remove stale Streamlit/VBA framing and alias. |
 | `test_changed.py` | Testing | UPDATE | Add help/“When to use” contract and keep root-stable pytest paths. |
-| `test_cli_smoke.py` | Testing | UPDATE | 12/13 pass; beam lookup fails and suite is absent from canonical gates. |
+| `test_cli_smoke.py` | Testing | UPDATE | 13/13 pass after using a registered automation query; decide whether to add the standalone suite to a canonical gate. |
 | `test_import_pipeline.py` | Testing | UPDATE | Add help and explicit live-server prerequisite; retain as maintained E2E path. |
 | `test_sample_endpoint.py` | Testing | ARCHIVE CANDIDATE | Standalone subset of `test_import_pipeline.py`; no active caller/help. |
 | `tool_permissions.py` | Infrastructure | KEEP (UPDATED) | Explicit operation/mode resolver applies agent ceilings and file scope and fails closed on undeclared input. |
@@ -583,8 +611,8 @@ issue closure, release, and history rewriting retain explicit approval gates.
 4. **Completed for permission truth:** declared operation/mode permissions are
    enforced without keyword guessing. Temp/removed discovery aliases remain in
    the automation-discovery P1 item.
-5. **Pending:** repair the CLI smoke case and make it part of repository
-   validation.
+5. **Partially completed:** the CLI smoke case is repaired at 13/13; canonical
+   gate integration remains pending.
 
 ### Packet C4 — Archive/consolidate the proven candidates
 
@@ -691,10 +719,20 @@ No release or publication workflow was triggered.
 - ⚠️ TERMINAL ISSUE: `tool_registry.py` uses mutually exclusive query flags, so
   a combined `--permission Unspecified --stats` probe was rejected -> the two
   read-only queries were rerun separately and passed.
-- ⚠️ TERMINAL ISSUE: the first clean-worktree gate could not find a local
-  `.venv` and stopped before running most checks -> a validated temporary link
-  to the existing project environment produced 9/9 and 29/29 passes, then the
-  link was removed before staging.
+- ✅ RESOLVED TERMINAL ISSUE: the first clean-worktree gate and commit hooks
+  could not find a local `.venv` and stopped before running Python checks ->
+  `python_runtime.sh` now resolves the primary worktree environment, and the
+  same linked worktree runs without a temporary link.
+- ⚠️ TERMINAL ISSUE: a repository-wide `pre-commit --all-files` probe exposed
+  pre-existing YAML/JSONC/Bandit/EOF debt and reformatted unrelated legacy and
+  vendor files -> the exact hook-only edits were reversed, the intended 12-file
+  scope was preserved, and pre-commit was rerun only against that scope.
+- ⚠️ TERMINAL ISSUE: the first audit-index refresh used the absent pluralized
+  `generate_folder_indexes.py` name -> the active
+  `generate_enhanced_index.py docs/audit` command regenerated both indexes.
+- ⚠️ TERMINAL ISSUE: a focused pytest command guessed two split test filenames
+  that do not exist -> the repository's combined
+  `test_agent_governance_automation.py` suite was run directly.
 - ⚠️ TERMINAL ISSUE: the first automated transfer used standard Git range hunk
   headers that the patch tool did not accept -> the same exact-file patch was
   reapplied with supported hunk headers and verified with formatting, tests,
@@ -704,8 +742,8 @@ No release or publication workflow was triggered.
 
 Both confirmed P0 automation batches and the five-script P1 agent-governance
 batch are complete. The next batch should address the remaining P1
-automation-discovery/control-validation scripts, beginning with the failing
-`find_automation.py` CLI smoke path and stale categories, not bulk archiving.
+automation-discovery/control-validation scripts, beginning with stale
+categories and advertised task counts, not bulk archiving.
 Preserve this report as the decision ledger and refresh caller/live-run evidence
 immediately before edits. Do not merge a PR, publish a release, close
 historical issues, or delete remote branches without separate owner approval.
