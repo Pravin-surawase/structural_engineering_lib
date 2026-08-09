@@ -11,16 +11,6 @@ on:
       - 'scripts/validate_git_state.sh'
       - 'scripts/recover_git_state.sh'
       - '.github/workflows/git-workflow-tests.yml'
-  pull_request:
-    paths:
-      - 'scripts/safe_push.sh'
-      - 'scripts/ai_commit.sh'
-      - 'scripts/create_task_pr.sh'
-      - 'scripts/finish_task_pr.sh'
-      - 'scripts/validate_git_state.sh'
-      - 'scripts/recover_git_state.sh'
-      - '.github/workflows/git-workflow-tests.yml'
-
 jobs:
   test-git-workflow:
     runs-on: ubuntu-latest

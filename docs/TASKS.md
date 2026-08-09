@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-09 — PR #676 is merged; the isolated MAINT-008 skills control-plane lane is in closeout
+**Updated:** 2026-08-09 — PR #689 is merged; Packet A is live on draft PR #690 and awaits the separate required-check decision
 
 ---
 
@@ -28,7 +28,7 @@
 | MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | ✅ DONE | Live import→design→3D→dashboard→export flow and byte-level artifacts pass; v0.21.7 preflight is ready |
 | MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | User-selected parent model is preserved; Luna/Terra advisory routing, bounded worker packets, two-subagent cap, and quick-gate check pass |
 | MAINT-007 | Refresh onboarding, agents, tools, and usage telemetry | P1 | ✅ DONE | Terminal-only PR status, current bootstrap/counts, complete 14-skill discovery, honest usage checkpoints, and focused regressions pass |
-| MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | 🔄 IN PROGRESS | Isolated skills repair passes; later CI packets complete the [implementation plan](planning/compact-modernization-plan.md) with one truthful PR gate and unchanged main-process evidence |
+| MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | 🔄 IN PROGRESS | Skills repair is merged; draft PR #690 has one passing truthful PR gate, with the ruleset decision and later packets still approval-gated |
 
 ### Maintenance evidence captured 2026-08-07
 
@@ -49,6 +49,7 @@
 - MAINT-007 closeout: 32 focused regressions, Ruff/Black, quick 9/9, full 29/29, audit 22/22, and health 100/100 pass; folder indexes and the 282-document global index are current.
 - PR #676 was safely squash-merged and synchronized; clean MAINT-008 baseline commit is `755ac9fb`.
 - MAINT-008 skills lane: all 14 skills have valid frontmatter and current commands, `skill_tiers.json` is the single catalog, registry routing/counts validate, the four-layer architecture checker is green, missing API discovery fails closed, release verification selects exact artifacts, and evolution proposals stop below 15 collected sessions.
+- PR #689 was safely squash-merged at `b611f6b3`; Packet A draft PR #690 now emits one passing `PR Gate`, and only `fast-checks.yml` retains a pull-request trigger. Ruleset `11390214` is unchanged and still requires `Quick Validation (Python 3.11 only)` pending explicit owner approval.
 
 ### Recovery progress
 
@@ -120,13 +121,13 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| MAINT-008 | Execute the [compact modernization plan](planning/compact-modernization-plan.md) | Main Agent | 🔄 Skills lane in closeout on `task/MAINT-008-SKILLS`; CI packets not started |
+| MAINT-008 | Execute the [compact modernization plan](planning/compact-modernization-plan.md) | Main Agent | 🔄 Packet A implemented on draft PR #690; required-check switch awaits owner approval |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-008 | Review the isolated skills PR; after separate owner merge approval, start truthful PR Gate packet A from a clean baseline | ops + owner | bounded packets | P0 | ⏳ AFTER SKILLS PR |
+| MAINT-008 | Review draft PR #690; separately approve the ruleset switch from `Quick Validation (Python 3.11 only)` to `PR Gate` before Packet B | ops + owner | bounded packets | P0 | ⏳ OWNER DECISION |
 | v0.21.7 | Re-run release preflight and obtain a separate release approval after MAINT-008 | ops + owner | <1 session | P1 | ⏸ AFTER MAINT-008 |
 
 ## Backlog

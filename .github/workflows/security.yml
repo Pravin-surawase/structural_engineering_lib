@@ -10,14 +10,6 @@ on:
       - "react_app/package-lock.json"
       - "requirements*.txt"
       - ".github/workflows/security.yml"
-  pull_request:
-    paths:
-      - "Python/**"
-      - "fastapi_app/**"
-      - "react_app/package.json"
-      - "react_app/package-lock.json"
-      - "requirements*.txt"
-      - ".github/workflows/security.yml"
   schedule:
     # Run daily at 6 AM UTC (11:30 AM IST)
     - cron: "0 6 * * *"

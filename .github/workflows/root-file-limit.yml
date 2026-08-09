@@ -12,12 +12,6 @@ on:
       - '*.md'
       - '*.txt'
       - '*.sh'
-  pull_request:
-    branches: [ main ]
-    paths:
-      - '*.md'
-      - '*.txt'
-      - '*.sh'
   # Allow manual trigger for testing
   workflow_dispatch:
 

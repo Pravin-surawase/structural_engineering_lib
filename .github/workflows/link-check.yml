@@ -7,10 +7,6 @@ on:
       - 'docs/**'
       - '*.md'
       - '.github/workflows/link-check.yml'
-  pull_request:
-    paths:
-      - 'docs/**'
-      - '*.md'
   schedule:
     - cron: '0 6 * * 1'  # Weekly on Monday 6am UTC
 

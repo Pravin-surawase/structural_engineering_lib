@@ -254,7 +254,7 @@ Next packet authorized: yes/no
 
 **Branch:** `task/MAINT-008-SKILLS`
 
-**Status:** implemented; local and CI gates green on draft PR #689, pending owner approval
+**Status:** completed; approved PR #689 was squash-merged and synchronized at `b611f6b3`
 
 **Files in scope:** the 14 `.github/skills/*/SKILL.md` entrypoints, `.github/skills/skill_tiers.json`, cross-agent session instructions, agent skill assignments/metadata, and only the supporting session/discovery/architecture/release/evolution scripts needed to make those instructions truthful.
 
@@ -279,6 +279,8 @@ Make the skill surface safe for lower-cost agents: one canonical catalog, bounde
 Run targeted script validation, `./run.sh check --quick`, and one `./run.sh check` closeout. Commit and push through the safe wrapper, then open an isolated PR. The worker does not merge it. Packet A begins only after explicit owner approval and synchronization to the merged skills baseline.
 
 ## 11. Packet A — Truthful PR gate
+
+**Status:** implemented on draft PR #690; the live `PR Gate` passes, superseded pull-request triggers are removed, and ruleset `11390214` remains unchanged pending explicit owner approval
 
 **Suggested worker:** Terra, normal implementation reasoning
 

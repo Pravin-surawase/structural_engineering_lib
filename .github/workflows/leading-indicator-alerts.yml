@@ -7,8 +7,6 @@ name: Leading Indicator Alerts
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
   schedule:
     # Run daily at 9 AM UTC (checks overnight activity)
     - cron: '0 9 * * *'

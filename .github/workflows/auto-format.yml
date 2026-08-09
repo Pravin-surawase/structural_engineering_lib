@@ -1,9 +1,7 @@
 name: Format Check
 
 on:
-  pull_request:
-    paths:
-      - 'Python/**/*.py'
+  workflow_dispatch:
 
 permissions:
   contents: read
