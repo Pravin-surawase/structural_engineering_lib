@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.version }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
     defaults:
       run:
         working-directory: Python
@@ -62,7 +63,20 @@ jobs:
             echo "Requested version $requested_version does not match package version $package_version"
             exit 1
           fi
+          prerelease=$(python - <<'PY'
+          import tomllib
+
+          with open("pyproject.toml", "rb") as stream:
+              classifiers = tomllib.load(stream)["project"].get("classifiers", [])
+
+          development_statuses = tuple(
+              f"Development Status :: {level}" for level in range(1, 5)
+          )
+          print(str(any(item.startswith(development_statuses) for item in classifiers)).lower())
+          PY
+          )
           echo "version=$package_version" >> "$GITHUB_OUTPUT"
+          echo "prerelease=$prerelease" >> "$GITHUB_OUTPUT"
 
       - name: Run release tests
         run: python -m pytest tests -q --tb=short
@@ -376,3 +390,4 @@ jobs:
             release-assets/*
           generate_release_notes: true
           draft: false
+          prerelease: ${{ needs.validate.outputs.prerelease }}

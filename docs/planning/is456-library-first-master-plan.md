@@ -9,12 +9,12 @@ doc_type: spec
 baseline_commit: d4eb9e9dda4a
 release_decision: v0.21.7 deferred
 target_version: v0.23.0
-current_blocker: Exact CI publication-artifact evidence
+current_blocker: Qualified review before stable or engineering-use approval
 ---
 
 **Type:** Plan
 **Audience:** All Agents
-**Status:** C0-C4 Bounded Closeout Complete — Alpha Release Authorized
+**Status:** C0-C4 Complete — v0.23.0 Alpha Released
 **Importance:** Critical
 **Created:** 2026-08-09
 **Last Updated:** 2026-08-10
@@ -57,11 +57,10 @@ owner changes scope through a separate decision.
 ## 2. Relationship to current repository plans
 
 This document is the execution authority and frozen evidence boundary for the
-library-first IS 456 lane activated by the owner. C0-C4 are complete; the
-remaining release gates are exact CI publication-artifact evidence and
-owner-authorized release work. Qualified structural-engineering review is a
-cumulative final gate before stable/engineering-use approval, not a blocker for
-each development packet or Alpha release.
+library-first IS 456 lane activated by the owner. C0-C4 and the v0.23.0 Alpha
+release are complete. Qualified structural-engineering review is a cumulative
+final gate before stable/engineering-use approval, not a blocker for each
+development packet or Alpha release.
 
 It narrows the immediate IS 456 execution order in
 `docs/planning/library-expansion-blueprint-v5.md`. It does not reverse that
@@ -125,10 +124,10 @@ approved or usable for engineering decisions.
 | C3 — Frozen artifact | Complete at `9be6eb35` | Build clean wheel/sdist, inspect contents, record hashes, clean-install supported workflows and CLI | Exact local artifact evidence is reproducible and bound to the frozen source commit |
 | C4 — Evidence freeze | Complete on draft PR #696 | Assemble source IDs, units, benchmarks, limitations, unsafe cases, and unresolved holds without requesting sign-off | The owner's request to finish this bounded plan freezes the intended review scope without authorizing release or professional-use claims |
 
-C0-C4 are complete, so the frozen packet is ready for final qualified-
-engineering review. That review has not been performed. Merge, tag,
-TestPyPI/PyPI, GitHub Release, issue closure, and branch deletion remain
-separate owner-only actions.
+C0-C4 are complete and v0.23.0 was published as an Alpha development preview.
+The cumulative qualified-engineering review has not been performed and remains
+required before any stable or engineering-use approval. Issue closure and
+branch deletion remain separate owner-only actions.
 
 ## 3. Why this plan exists
 
@@ -1325,6 +1324,8 @@ Use existing canonical records. Do not create one log per agent.
 | 2026-08-10 | C3 | Main Agent | COMPLETE | `codex/release-v0.23.0` at `9be6eb35`; draft PR #696 | Package manifest boundary, release skill, optional-DXF test, exact local wheel/sdist | Twine and candidate checks; 181/206 members; zero forbidden/protected content; exact-wheel 5,404 passed; candidate preflight 5,452 passed plus React build | Focused + quick + current-commit PR Gate | Local evidence is not CI publication identity; no upload authorized | C4 |
 | 2026-08-10 | C4 | Main Agent + owner scope instruction | COMPLETE / FROZEN | Draft PR #696; artifact source `9be6eb35` | Master plan, task/session/handoff records, evidence crosswalk and release checklist | Controlled source IDs, units/claims, unsafe cases, limitations, local artifact hashes/SBOM, and held gates reconciled | Documentation/session checks; final PR Gate required on evidence commit | Qualified review and every merge/tag/publish action remain held | Qualified review / owner release decision |
 | 2026-08-10 | REL-0 | Repository owner + Main Agent | APPROVED | Draft PR #696 | Release policy, maintained skills and current release records | Per-packet qualified-review gates removed; technical evidence retained; v0.23.0 remains an Alpha development preview | Documentation + quick + PR Gate | Qualified review remains required before stable/engineering-use approval | P13 release execution |
+| 2026-08-10 | REL-1 | Main Agent | COMPLETE | PR #696 merged at `71e74a7e`; CI fix PR #697 merged at `3f880d5b` | Release metadata, validator state machine, CI interpreter contract | Current-candidate preflight passed 5,454 tests; TestPyPI run `31332187566` published exact clean artifacts and passed installed-wheel UAT | Focused + quick + both PR Gates | Production publication remained conditioned on exact TestPyPI evidence | REL-2 |
+| 2026-08-10 | REL-2 | Repository owner + Main Agent | RELEASED ALPHA | Tag `v0.23.0` at `3f880d5b`; production run `31332420554` | PyPI package, GitHub prerelease, production manifest/SBOM | Production wheel/sdist hashes and inventories match PyPI and GitHub assets; public PyPI verification passed 5,406 tests plus installed CLI workflows | Protected publish workflow green | Qualified review remains the final stable/engineering-use gate | Close release; do not activate v0.24 without owner decision |
 
 ### Required handoff content
 
@@ -1427,7 +1428,7 @@ The first implementation session begins only after the owner clears Phase 0.
 ### Current execution checkpoint
 
 P0-P12, FAPI-1, and remediation packets T0/R1-R8 are implemented. The latest
-source preflight passes 5,452 Python tests (3 skipped, 6 deselected), 349
+source preflight passes 5,454 Python tests (3 skipped, 6 deselected), 349
 FastAPI tests, 147 React tests, frontend lint/build, quick 9/9, full 29/29,
 audit 19/19, and health 100/100. A clean-source v0.23.0 wheel passed package
 version and CLI checks with excluded namespaces absent. Exact-wheel UAT passed
@@ -1442,10 +1443,12 @@ worktree is clean and both Node and Python runtime selectors are retained.
 C2 final product UAT found and repaired the missing local Vite `/stream` proxy;
 source-tree and live safe/unsafe outcomes now agree. C3 froze the exact local
 wheel/sdist at source commit `9be6eb35`, and C4 froze the final bounded evidence
-and limitations on draft PR #696. Do not begin new calculation, multi-code, or
-excluded structural-system work. The owner authorized the v0.23.0 Alpha release
-sequence on 2026-08-10. Exact CI publication-artifact evidence remains required;
-qualified review is deferred to the final stable/engineering-use gate.
+and limitations on PR #696. The owner-authorized v0.23.0 Alpha release was
+published from tag/source `v0.23.0`/`3f880d5b` by production run `31332420554`.
+The exact public package passed 5,406 tests plus installed CLI workflows. Do not
+begin new calculation, multi-code, or excluded structural-system work without a
+separate owner decision. Qualified review is deferred to the final stable/
+engineering-use gate.
 
 ## 21. Final program acceptance checklist
 
@@ -1471,12 +1474,12 @@ qualified review is deferred to the final stable/engineering-use gate.
 - [x] Canonical current-candidate release preflight is green.
 - [x] Local prepublication filenames, sizes, SHA-256 values and inventories are
       recorded against source commit `9be6eb35`.
-- [ ] CI publication-artifact filenames/SHA-256 values are separately recorded.
+- [x] CI publication-artifact filenames/SHA-256 values are separately recorded.
 - [x] Local rehearsal clean-install/CLI UAT is green on the exact wheel.
-- [ ] CI publication-artifact clean-install/CLI UAT is green.
+- [x] CI publication-artifact clean-install/CLI UAT is green.
 - [x] Owner approved the PR #696 merge, TestPyPI rehearsal, v0.23.0 tag, PyPI
       upload, and GitHub Release sequence on 2026-08-10.
-- [ ] Exact published PyPI version passes post-publication UAT.
+- [x] Exact published PyPI version passes post-publication UAT.
 - [ ] Qualified structural-engineering review is recorded before any stable or
       engineering-use approval; this is not an Alpha publication gate.
 - [x] Handoff and execution ledger identify remaining limitations and review

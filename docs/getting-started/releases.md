@@ -80,7 +80,7 @@ Use workflow_dispatch with `testpypi` target:
 
 ## v0.23.0 — Supported IS 456 RC Core (2026-08-10)
 
-**Status:** 🚀 Alpha release authorized on 2026-08-10; publication evidence pending
+**Status:** ✅ Alpha development preview published to PyPI and GitHub Releases on 2026-08-10
 **Source basis:** IS 456:2000 consolidated through Amendment 5, reaffirmed
 2021, with Amendment 6 (June 2024) reviewed by route
 **Scope:** Case-qualified beam, rectangular-column, isolated-footing, and solid
@@ -103,8 +103,10 @@ development preview without a professional-approval claim.
 - Native Codex Git/GitHub workflow with unsafe custom lifecycle wrappers and
   enforcement hooks retired.
 
-**Verification:** 5,452 release-preflight tests passed, 3 skipped, 6 deselected;
-React 147 tests/lint/build passed; canonical gate 29/29; PR #693 gate passed.
+**Verification:** Production run `31332420554` built from tag `v0.23.0` at
+`3f880d5b`; public PyPI UAT passed 5,406 tests, 51 skipped, 6 deselected plus
+installed CLI workflows. React 147 tests/lint/build and canonical gate 29/29
+passed before release.
 
 **Full changelog:** See [CHANGELOG.md](../../CHANGELOG.md#0230--2026-08-10)
 

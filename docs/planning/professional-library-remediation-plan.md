@@ -547,3 +547,15 @@ does not block the v0.23.0 Alpha release. The local hashes are not CI
 publication identities, so exact CI artifact generation and UAT still precede
 tagged production publication. The owner authorized that conditioned release
 sequence on 2026-08-10.
+
+## 11. Alpha release checkpoint — 2026-08-10
+
+PR #696 and the CI portability fix in PR #697 passed their required gates and
+were merged. The exact TestPyPI rehearsal passed before tag creation. Tag
+`v0.23.0` points to `3f880d5b`; protected production run `31332420554`
+published the Alpha package and GitHub prerelease, and exact public PyPI UAT
+passed 5,406 tests plus installed CLI workflows.
+
+This closes the v0.23.0 software/release lane. It does not close the cumulative
+qualified structural-engineering review required before stable or engineering-
+use approval, and it does not activate v0.24 or another feature lane.
