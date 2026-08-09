@@ -1,10 +1,14 @@
 ---
-description: "Code review checklist — architecture, units, tests, security"
+description: "Essential-only code review — main-process outcome, architecture, and units"
 ---
 
 # Code Review Checklist
 
 Use this checklist when reviewing changes to this repository.
+
+## Essential-Only Gate
+
+Before applying the checklist, define the main process changed by the work. For every potential finding, answer: **Would fixing this change the outcome of the main process?** If not, ignore it. Do not report comment-only concerns, edge cases, test-coverage or falsification gaps, generic hardening, adjacent improvements, or security/concurrency observations that are merely hardening. Do not add or request tests during review. File a follow-up bead/task only when a non-essential concern truly needs preservation. Within the scoped main process, trace confirmed defects to their root cause and verify the corrected outcome completely.
 
 ## Architecture Boundaries
 

@@ -200,6 +200,6 @@ development and the full gate once at closeout. Close subagents and stop when do
 - [Codex models](https://learn.chatgpt.com/docs/models)
 - [Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents)
 - [Codex Speed and Fast mode](https://learn.chatgpt.com/docs/agent-configuration/speed)
-- [Codex pricing and usage](https://help.openai.com/en/articles/20001106)
+- [Codex pricing and usage](https://developers.openai.com/codex/pricing/)
 - [Codex slash commands](https://learn.chatgpt.com/docs/reference/slash-commands)
 - [Codex project configuration](https://learn.chatgpt.com/docs/config-file/config-basic)

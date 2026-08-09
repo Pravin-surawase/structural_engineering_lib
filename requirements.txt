@@ -31,7 +31,7 @@ pytest-benchmark>=5.0
 black>=26.0
 mypy>=1.19
 pre-commit>=4.5
-ruff>=0.14
+ruff==0.15.8
 bandit>=1.9
 isort>=7.0
 hypothesis>=6.0

@@ -43,7 +43,7 @@ dev = [
   "black",
   "mypy",
   "pre-commit",
-  "ruff",
+  "ruff==0.15.8",
   "bandit",
   "isort",
   "hypothesis>=6.0",

@@ -3,6 +3,13 @@
 Open-source IS 456 RC beam design library. V3 stack: React 19 + R3F + Tailwind → FastAPI → Python structural_lib.
 Current focus: See [TASKS.md](../docs/TASKS.md) for active work and priorities.
 
+## Surgical Work and Essential-Only Review (MANDATORY)
+
+- Keep work surgical, evidence-driven, and complete within the agreed scope. Inspect enough of the main process to find confirmed defects, then finish the scoped work to a good standard without adjacent improvements.
+- Always trace a confirmed defect to its root cause and fix that cause. Do not stop at a workaround, suppress the symptom, or apply a superficial patch; verify that the main-process outcome is corrected.
+- For every review finding, ask: **Would fixing this change the outcome of the main process?** If not, ignore it. If a non-essential concern needs preservation, file a follow-up bead/task only when necessary; do not expand the current scope.
+- Review only essential main-process behavior. Do not report issues about comments, edge cases, test-coverage or falsification gaps, generic hardening, or adjacent improvements. Do not add tests during review. Reject security or concurrency observations that are merely hardening and do not change the main-process outcome.
+
 ## IMPORTANT: Git
 
 ALWAYS use `./scripts/ai_commit.sh "type: message"` for commits. NEVER use manual git add/commit/push/pull.
