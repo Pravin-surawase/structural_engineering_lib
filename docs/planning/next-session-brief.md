@@ -39,6 +39,7 @@ Full evidence and accepted risks are in
 - MAINT-007 checkpoint `4d5b9eb5` is pushed to PR #676.
 - PR #676 closeout: its required checks were green before the safe squash merge. React coverage remains an accepted follow-up risk.
 - MAINT-008 skills branch: all 14 skill entrypoints were reviewed and repaired; one JSON catalog now drives tier validation, agent routes and metadata agree, and supporting API/architecture/release/evolution commands fail closed on ambiguous or insufficient evidence.
+- Skills commits: `5ac70ac1` repairs the compact control plane; `fc4d0249` removes hidden session writes. Draft PR #689 is open, clean, and has all applicable GitHub checks passing.
 - Skills targeted evidence: tier assignment validation, four-layer architecture scan (119 files, zero violations), API discovery success/missing-function behavior, Python compilation, frontmatter/stale-command scan, and evolution 9/15 burn-in gate pass.
 - Recovery checkpoint: `b28ee4e3` pushed on `task/MAINT-001`.
 - MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.
@@ -50,6 +51,14 @@ Full evidence and accepted risks are in
 - Mac launcher evidence: `.nvmrc` Node 24 is selected even when a stale unversioned Node is first on `PATH`; port cleanup targets listeners only and no longer kills connected browser/client helpers.
 - Live-design evidence: WebSocket payloads now retain the complete REST response contract, including real capacities and governing utilization; current and legacy payload shapes are normalized in the frontend.
 - Release evidence: macOS reclaimable-memory and Node-runtime detection are repaired; `./run.sh release preflight 0.21.7` reports READY TO RELEASE with zero warnings.
+
+## Lessons and Repeat Prevention
+
+- Treat `.github/skills/skill_tiers.json` as canonical; validate its projections instead of copying counts or assignments among prose and registries.
+- Session summary, sync, and end are read-only; add `--write`, `--fix`, or `--log-cost` only when the task intentionally owns that mutation.
+- Evidence commands must reject missing, ambiguous, or insufficient proof; never accept a convenient first match.
+- Run from the workspace root. Find docs through indexes or `rg --files`; the compact log is `docs/WORKLOG.md`.
+- Do not extend draft PR #689. After an owner-approved merge, synchronize and start packet A on a clean branch; ruleset, later merge, and release decisions remain separate.
 
 ## Maintenance Sequence
 

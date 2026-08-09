@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-04-07
+last_updated: 2026-08-09
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -17,7 +17,7 @@ tags: []
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-03-25
-**Last Updated:** 2026-08-07
+**Last Updated:** 2026-08-09
 
 ---
 
@@ -34,6 +34,8 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-08-09 | MAINT-008 | Removed hidden session mutations so summary, sync, and end are read-only unless an explicit write flag is supplied | fc4d0249 |
+| 2026-08-09 | MAINT-008 | Repaired all 14 skill entrypoints, canonicalized tier/route validation, and made supporting evidence commands fail closed | 5ac70ac1 |
 | 2026-08-09 | MAINT-001 | Closed PR #676 CI root causes, added essential-only/root-cause review policy, and verified all local and GitHub gates | 242ba8ce |
 | 2026-08-07 | MAINT-007 | Refreshed onboarding/agent/tool indexes, added model-agent usage checkpoints, and made PR status terminal-only unless `--web` is explicit | 4d5b9eb5 |
 | 2026-04-06 | TASK-720 | Golden vector baselines: 42+ tests (9 beam + 20 column + 13 footing) with `@pytest.mark.golden` | — |

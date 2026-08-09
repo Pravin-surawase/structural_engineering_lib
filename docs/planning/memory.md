@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-07
+last_updated: 2026-08-09
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Active
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-08-07
+**Last Updated:** 2026-08-09
 
 ---
 
@@ -353,12 +353,14 @@ python -m mypy
 ## 2026-08-07 — Maintenance and Agent Operations Update
 
 - The active stack is React 19 → FastAPI → `Python/structural_lib`; Streamlit is
-  legacy only. Current work remains on `task/MAINT-001` / PR #676.
+  legacy only. PR #676 is merged; current work is the isolated MAINT-008 skills
+  lane on `task/MAINT-008-SKILLS` / draft PR #689.
 - Mac Mini recovery is complete: GitHub CLI plus SSH pass, and Colima/Docker are
   healthy on the preserved transferred disk.
-- The main Codex orchestrator uses GPT-5.6 Sol High. Luna handles clear,
-  repetitive work; Terra handles normal implementation and focused review.
-  Keep zero subagents by default and never exceed two.
+- Preserve the user's active parent model and reasoning selection. The advisory
+  picker recommends Luna for clear repeatable work, Terra for normal
+  implementation, and Sol only after explicit approval. Keep zero subagents by
+  default and never exceed two.
 - Use `./run.sh model` for task-aware recommendations and
   `./run.sh session usage` at start, 2–3 hour milestones, and closeout. The
   usage ledger records observable model/agent/time/check data but does not
@@ -371,6 +373,17 @@ python -m mypy
   model fields are separate from Codex Luna/Terra/Sol routing.
 - On 2026-08-09 the owner authorized maintenance closeout. Commit `242ba8ce`
   removed three empty evidence-template links, replaced one crawler-blocked
-  OpenAI URL, and pinned Ruff 0.15.8 across active install surfaces. PR #676 is
-  clean and mergeable with every required check passing. Merge and release still
-  require separate explicit owner approval.
+  OpenAI URL, and pinned Ruff 0.15.8 across active install surfaces. PR #676
+  passed every required check and was safely squash-merged as `755ac9fb`.
+- MAINT-008 skills commits `5ac70ac1` and `fc4d0249` repair all 14 entrypoints,
+  make `skill_tiers.json` the canonical catalog, validate registry routing, and
+  make API/architecture/release/evolution evidence fail closed. Session
+  summary, sync, and end are read-only unless an explicit mutation flag is
+  supplied. Draft PR #689 is clean and green, but its merge remains an explicit
+  owner decision; packet A, the required-check change, later MAINT-008 merge,
+  and v0.21.7 release remain separate operations.
+- Repeat-prevention rule: shared control-plane facts need one catalog plus
+  validation, observational commands must not hide writes, and evidence tools
+  must reject missing or ambiguous proof. Locate current documentation through
+  folder indexes or `rg --files`; the canonical compact log is
+  `docs/WORKLOG.md`.
