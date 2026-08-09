@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-09 — Maintenance complete; PR #676 is green and awaits the owner merge/release decision
+**Updated:** 2026-08-09 — PR #676 is green; MAINT-008 compact modernization is planned and waits for the owner merge decision
 
 ---
 
@@ -26,8 +26,9 @@
 | MAINT-003 | Rebuild dependency and security baseline | P0 | ✅ DONE | Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted |
 | MAINT-004 | Make `run.sh check` the canonical truth source and repair stale indexes/scanners | P1 | ✅ DONE | Canonical check, audit, health, API manifest, schemas, hooks, and registries agree |
 | MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | ✅ DONE | Live import→design→3D→dashboard→export flow and byte-level artifacts pass; v0.21.7 preflight is ready |
-| MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | Sol High main orchestrator, Luna/Terra workers, mandatory delegation packets and verification, two-subagent cap, task-aware picker, and quick-gate check pass |
+| MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | User-selected parent model is preserved; Luna/Terra advisory routing, bounded worker packets, two-subagent cap, and quick-gate check pass |
 | MAINT-007 | Refresh onboarding, agents, tools, and usage telemetry | P1 | ✅ DONE | Terminal-only PR status, current bootstrap/counts, complete 14-skill discovery, honest usage checkpoints, and focused regressions pass |
+| MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | 📋 READY AFTER #676 | [Implementation plan](planning/compact-modernization-plan.md) completes with one truthful PR gate, four or fewer justified workflows, supported commands only, and unchanged main-process evidence |
 
 ### Maintenance evidence captured 2026-08-07
 
@@ -117,17 +118,20 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
+| MAINT-008 | Execute the [compact modernization plan](planning/compact-modernization-plan.md) | Main Agent | ⏸ BLOCKED — merge PR #676 first with owner approval |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| v0.21.7 | Obtain explicit owner approval to merge PR #676 and run the release workflow | ops + owner | <1 session | P1 | ⏳ WAITING APPROVAL |
+| MAINT-008 | Obtain explicit owner approval to merge PR #676, then create a separate modernization PR | ops + owner | 3–5 bounded packets | P0 | ⏳ WAITING APPROVAL |
+| v0.21.7 | Re-run release preflight and obtain a separate release approval after MAINT-008 | ops + owner | <1 session | P1 | ⏸ AFTER MAINT-008 |
 
 ## Backlog
 
 The version roadmap and detailed v0.21.7+ backlog remain below. Do not start
-feature work until PR #676 is green and the v0.21.7 release decision is handled.
+feature work until PR #676 is merged, MAINT-008 is complete, and the v0.21.7
+release decision is handled.
 
 ## Recently Done
 

@@ -2,17 +2,25 @@
   "folder": "docs/planning",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-07",
-  "file_count": 10,
+  "last_updated": "2026-08-09",
+  "file_count": 11,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 143,
-      "last_updated": "2026-03-30",
+      "size_lines": 145,
+      "last_updated": "2026-08-09",
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
-      "content_hash": "e84cd1b14767"
+      "content_hash": "ea88a9130306"
+    },
+    {
+      "name": "compact-modernization-plan.md",
+      "type": "documentation",
+      "size_lines": 754,
+      "last_updated": "2026-08-09",
+      "description": "Modernize the repository's CI, maintenance controls, and agent-facing workflow without changing the structural-engineering product outcome. The finished repository must have:",
+      "content_hash": "7ae2b0d7735e"
     },
     {
       "name": "democratization-vision.md",
@@ -51,10 +59,10 @@
     {
       "name": "memory.md",
       "type": "documentation",
-      "size_lines": 375,
-      "last_updated": "2026-08-07",
+      "size_lines": 377,
+      "last_updated": "2026-08-09",
       "description": "- Development resumed after a four-month pause and a Mac laptop → Mac Mini transfer. - Git history, reachable objects, sample data, package source, and ARM64 Python environment transferred intact.",
-      "content_hash": "8464025c44d3"
+      "content_hash": "050ff60413e0"
     },
     {
       "name": "next-phase-improvements-plan.md",
@@ -68,10 +76,10 @@
       "name": "next-session-brief.md",
       "type": "documentation",
       "size_lines": 137,
-      "last_updated": "2026-08-07",
+      "last_updated": "2026-08-09",
       "title": "Next Session Briefing",
-      "description": "<!-- HANDOFF:START --> - Date: 2026-08-07",
-      "content_hash": "74bdfe2baae4"
+      "description": "<!-- HANDOFF:START --> - Date: 2026-08-09",
+      "content_hash": "c6dabf22c848"
     },
     {
       "name": "pre-release-checklist.md",
@@ -92,5 +100,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "e4ca7e52b5c0db50"
+  "content_hash": "813220b3a6587b92"
 }

@@ -8,13 +8,14 @@
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-08-09
-**Current Session:** Maintenance complete — PR #676 is green and awaits the owner merge/release decision
+**Current Session:** MAINT-008 is fully planned; execution waits for the owner decision on green PR #676
 
 ## Start Here
 
 1. Obtain explicit owner approval before merging green PR #676.
-2. Obtain a separate explicit owner decision before running the v0.21.7 release workflow.
-3. Preserve the recovered Mac baseline and accepted risks; do not reopen maintenance or begin feature work unless the owner changes scope.
+2. After merge, follow [MAINT-008 — Compact Project Modernization Plan](compact-modernization-plan.md) in dependency order; do not mix it into PR #676.
+3. Obtain separate explicit decisions for the GitHub required-check change, the MAINT-008 merge, and the v0.21.7 release.
+4. Preserve the recovered Mac baseline and accepted main-process results; do not start adjacent feature work.
 
 Full evidence and accepted risks are in
 [maintenance-recovery-audit-2026-08-07.md](../audit/maintenance-recovery-audit-2026-08-07.md).
@@ -32,7 +33,7 @@ Full evidence and accepted risks are in
 - Low-token policy checkpoint `6e8e4a31` adds project Codex defaults, a two-subagent cap, focused handoffs, `./run.sh efficiency`, and a 9/9 quick gate.
 - The analytics-calibrated model picker is in `agents/model_policy.json` and `./run.sh model`; it recommends Luna-first for repeatable work and never auto-selects approval-gated Sol.
 - Model-routing checkpoint `fe55d130` is pushed on PR #676. Focused Ruff/tests pass; the full gate's 22 non-doc checks passed and the corrected Docs category passes 7/7.
-- Sol High orchestrator checkpoint `ff6d525d` is pushed. Project defaults, picker, role instructions, worker-packet contract, and verification tests agree.
+- Historical orchestrator checkpoint `ff6d525d` aligned role instructions and worker packets; checkpoint `79771b12` removes forced parent model/reasoning settings so the user's current selection remains authoritative.
 - MAINT-007 makes PR status terminal-only by default, corrects stale bootstrap/tool counts and active-task briefs, discovers all 14 Copilot skills, and adds honest local model/agent checkpoints through `./run.sh session usage`.
 - MAINT-007 verification is green: 32 focused tests, quick 9/9, full 29/29, audit 22/22, and health 100/100. The first local usage ledger records Sol High, one parent, zero subagents, and no fabricated billing values.
 - MAINT-007 checkpoint `4d5b9eb5` is pushed to PR #676.
@@ -59,6 +60,7 @@ Full evidence and accepted risks are in
 | 5 | MAINT-005 frontend/release scope | Credible v0.21.7 stabilization exit criteria |
 | 6 | MAINT-006 token/model policy | Analytics-calibrated low-token routing with enforced safety limits |
 | 7 | MAINT-007 docs/tool refresh | Current onboarding, complete discovery, local usage evidence, and no surprise PR tabs |
+| 8 | [MAINT-008 compact modernization](compact-modernization-plan.md) | One truthful PR gate, minimal workflow lanes, supported commands, and unchanged product evidence |
 
 ## Previous Handoff (2026-04-07)
 

@@ -5,7 +5,7 @@
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-03-24
+**Last Updated:** 2026-08-09
 
 ---
 
@@ -19,6 +19,7 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
+| [MAINT-008 Compact Modernization Plan](compact-modernization-plan.md) | Dependency-ordered implementation packets for CI and maintenance modernization |
 | [Folder Audit](../_archive/planning-completed-2026-03/folder-audit.md) | Complete repo audit (Session 91) |
 | [AI Agent Efficiency Plan](../_archive/planning-completed-2026-03/ai-agent-efficiency-and-git-workflow-plan.md) | Agent infra improvements (Session 92) |
 
@@ -27,7 +28,8 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `next-session-brief.md` | 2026-03-24 | ✅ Current handoff |
+| `next-session-brief.md` | 2026-08-09 | ✅ Current handoff |
+| `compact-modernization-plan.md` | 2026-08-09 | 📋 Ready after PR #676 |
 | `folder-audit.md` | 2026-03-24 | ✅ Complete (11 batches) |
 | `ai-agent-efficiency-and-git-workflow-plan.md` | 2026-03-24 | ✅ Partially implemented |
 | `agent-workflow-improvements.md` | 2026-03-23 | ✅ Active |
