@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — v0.23.0 Alpha released; public artifact UAT green
+**Updated:** 2026-08-10 — v0.23.0 Alpha released; post-release maintenance closed
 
 ---
 
@@ -126,29 +126,28 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| LIB-IS456-V1 | Finish the bounded [IS 456 product milestone](planning/is456-library-first-master-plan.md) without expanding to multi-code or excluded structural systems | Main Agent + owner | ✅ C0-C4 software/evidence closeout complete; release and engineering-use holds remain |
+| DEPS-MAINT-001 | Triage the nine remaining Dependabot PRs in bounded Python and React compatibility batches | Main Agent | ⏸ NEXT SESSION |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-IS456-C1 | Create reviewable scoped checkpoints, preserve automation commit `f812eb3f`, and synchronize `origin/main` without history rewriting | Main Agent | 1 packet | P0 | ✅ DONE `d4eb9e9d` |
-| LIB-IS456-C2 | Run final source/live product UAT for supported Python, FastAPI, React batch/report, footing/slab, and export paths | Main Agent | 1 packet | P0 | ✅ DONE |
-| LIB-IS456-C3 | Freeze exact local wheel/sdist evidence and clean-install/CLI UAT for the frozen candidate | Main Agent | 1 packet | P0 | ✅ DONE `9be6eb35` |
-| LIB-IS456-C4 | Assemble the final bounded-scope evidence packet and freeze limitations/review boundaries | Main Agent + owner | 1 packet | P0 | ✅ DONE on PR #696 |
-| LIB-IS456-FINAL-REVIEW | Review only after C4 and owner scope freeze; no engineering-usability claim before it | qualified structural engineer | final gate | P0 | ⏸ READY FOR QUALIFIED REVIEW |
+| DEPS-MAINT-PY | Rebase and evaluate Python PRs #679 and #686-#688; keep lock/install surfaces consistent | Main Agent | 1 packet | P1 | ⏸ QUEUED |
+| DEPS-MAINT-REACT | Rebase and evaluate React group PR #680 against individual majors #681-#684; retain one coherent upgrade path | Main Agent | 1 packet | P1 | ⏸ QUEUED |
+| LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL STABLE GATE |
 
 ## Backlog
 
-The version roadmap and historical backlog remain below. Planned development
-may continue under LIB-PRO-001, but publication and every engineering-usability
-claim remain prohibited until the final frozen-scope review and separate owner
-release decision.
+The version roadmap and historical backlog remain below. The v0.23.0 Alpha is
+published. No new product milestone is active. Stable-release and
+engineering-use approval remain held for the cumulative qualified review.
 
 ## Recently Done
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| LIB-IS456-V1 | Completed C0-C4, bounded evidence, exact artifacts, public Alpha UAT, and v0.23.0 publication | Main Agent + owner | ✅ DONE |
+| MAINT-009 | Integrated automation and Actions updates, repaired Weekly Verification compatibility, and cleared obsolete GitHub/session state | Main Agent | ✅ DONE |
 | MAINT-001 | Preserve the inherited worktree, recover the Mac baseline, and close PR #676 required checks | Main Agent | ✅ DONE |
 | MAINT-006 | Add enforceable low-token defaults, context rules, analytics-calibrated model routing, and automation | Main Agent | ✅ DONE |
 | MAINT-007 | Re-audit and modernize onboarding, agent/tool discovery, usage telemetry, and PR browser behavior | Main Agent | ✅ DONE |

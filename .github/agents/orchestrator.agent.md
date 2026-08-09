@@ -336,26 +336,12 @@ When preparing a Codex Git/GitHub closeout:
 
 ## Structured Handoff (Session End)
 
-When a durable cross-session handoff is required, write `logs/handoff_latest.md` with this format:
-
-```markdown
-## Last Agent: [agent name]
-## Timestamp: YYYY-MM-DD HH:MM
-
-## What Was Done
-- [specific completed items]
-
-## What's Next
-- [most important next action — be specific: file, function, change]
-
-## Blockers
-- [anything that prevented completion]
-
-## Files Changed
-- [list with one-line description]
-```
-
-This file is read by `agent_brief.sh --handoff` for the next agent's context.
+When durable cross-session state changed, update
+`docs/planning/next-session-brief.md`. Preserve its Latest Handoff block,
+Required Reading section, literal `Current` and `Next` rows, completed outcome,
+next action, and any terminal issues. Update `docs/TASKS.md` only when task state
+changed. `agent_brief.sh --handoff` reads the versioned next-session brief;
+runtime files under `logs/` are not handoff sources of truth.
 
 ## Rules
 
