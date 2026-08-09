@@ -46,7 +46,7 @@ tags: []
 
 | Workflow | Run ID | Status | Link |
 |----------|--------|--------|------|
-| python-tests.yml | #XXXX | ⬜ | CI run URL |
+| nightly.yml | #XXXX | ⬜ | Full verification run URL |
 | fast-checks.yml | #XXXX | ⬜ | CI run URL |
 | streamlit-validation.yml | #XXXX | ⬜ | CI run URL |
 

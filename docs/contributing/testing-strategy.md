@@ -48,20 +48,18 @@ tags: []
 
 ### CI (GitHub Actions)
 
-Workflow: `.github/workflows/python-tests.yml`
+Workflows: `.github/workflows/fast-checks.yml` and
+`.github/workflows/nightly.yml`
 
-- Lint/typecheck job:
-  - `black --check .`
-  - `mypy`
-- Test job:
-  - Python matrix: 3.9, 3.10, 3.11, 3.12
-  - Installs: `pip install -e ".[dev,dxf]"`
-  - Runs: pytest with coverage + uploads `coverage.xml`
-  - Coverage gate: `--cov-fail-under=85` (branch coverage)
-  - Packaging smoke: `python -m build`
+- Pull requests receive path-aware format, lint, type, contract, focused test,
+  frontend, API, and repository checks under the required `PR Gate`.
+- Weekly/manual verification runs the full Ubuntu Python/FastAPI/React suite,
+  branch coverage gate, clean-wheel/CLI verification, dependency audits, and
+  Docker health checks.
+- macOS and Windows smoke checks are available as an explicit manual option.
 
 **What this gives us:**
-- Cross-version confidence (3.9–3.12)
+- Minimum-version PR confidence plus optional cross-platform smoke evidence
 - Static formatting check
 - Basic typecheck
 - Coverage visibility (artifact)

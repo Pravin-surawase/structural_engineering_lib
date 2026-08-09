@@ -67,7 +67,8 @@ These tests run automatically on every pull request as part of the pytest suite.
 - **Sensitivity analysis** - Parameter impact classification, robustness scoring
 - **Constructability scoring** - Construction ease factors (spacing, layers, bar sizes)
 
-See `.github/workflows/python-tests.yml` for CI configuration.
+See `.github/workflows/fast-checks.yml` for PR coverage and
+`.github/workflows/nightly.yml` for full verification configuration.
 
 ---
 

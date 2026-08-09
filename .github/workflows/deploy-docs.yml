@@ -10,12 +10,18 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: deploy-docs
+  cancel-in-progress: true
 
 jobs:
   deploy:
     name: Deploy MkDocs
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v6
         with:

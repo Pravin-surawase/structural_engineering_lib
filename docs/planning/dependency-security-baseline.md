@@ -62,7 +62,7 @@ npm audit --omit=dev
 
 ## Automation
 
-- `.github/workflows/security.yml` audits the exact Python lock and the production
-  npm graph. New findings fail the job.
+- `.github/workflows/nightly.yml` audits the exact Python lock and the production
+  npm graph every week and on manual dispatch. New findings fail the job.
 - `.github/dependabot.yml` monitors root Python requirements, the distributable
   Python package, npm dependencies, and GitHub Actions every week.

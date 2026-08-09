@@ -1245,8 +1245,9 @@ twine upload dist/*
 ### 13.5 Build/Test Automation
 - **VBA:** Use Rubberduck test explorer or a VBA script to run `RunAllTests`; export modules automatically on build (vba-blocks or custom PowerShell/VBScript).
 - **Python:** Provide `make test` or `nox/tox` sessions for lint + tests (`pytest -q`).
-- **CI (active):** GitHub Actions runs on PRs and pushes to `main`.
-    - Workflows: `.github/workflows/python-tests.yml` and `.github/workflows/codeql.yml`
+- **CI (active):** GitHub Actions provides PR, weekly/manual, release, and docs lanes.
+    - Workflows: `.github/workflows/fast-checks.yml`, `.github/workflows/nightly.yml`,
+      `.github/workflows/publish.yml`, and `.github/workflows/deploy-docs.yml`
     - Policy: keep workflow `GITHUB_TOKEN` permissions least-privilege (jobs can widen only when needed).
     - If branch ruleset requires “up to date with main”, update PR branches before merge.
 - Keep scripts in `scripts/` or `Makefile` to ensure repeatability.

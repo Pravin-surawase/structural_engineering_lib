@@ -73,7 +73,10 @@ These are the only starting problems authorized by this plan:
 1. The repository has 17 GitHub Actions workflow files and a single PR push can create roughly 10 workflows and 21 checks.
 2. The active main-branch ruleset requires `Quick Validation (Python 3.11 only)`, but that check can skip when files that affect the main process change. A skipped required check is not truthful protection.
 3. Nightly QA has created 129 open failure issues. Automated issue creation is producing noise rather than an actionable verification signal.
-4. `governance-health.yml` calls `.venv/bin/python` in GitHub Actions even though that environment does not create a repository `.venv`.
+4. The intake brief reported a `.venv/bin/python` call in `governance-health.yml`,
+   but the Packet B audit found no such call in the current 17 workflows. Treat
+   that warning as stale; the workflow remains nonessential because its signal
+   does not change the main verification outcome.
 5. Active pre-commit and command surfaces still contain references to removed Streamlit and VBA paths.
 6. The repository contains a large agent, script, and documentation surface. It must be made easier to enter and navigate, but historical evidence and ETABS reference material must not be deleted merely to reduce file count.
 7. The repository-level Codex configuration previously forced a parent model. That override has been removed; user-selected model and reasoning settings are now authoritative.

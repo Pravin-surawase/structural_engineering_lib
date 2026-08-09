@@ -500,7 +500,8 @@ Safe for direct commit using safe_push.sh.
 
 **Why This Exists:** Prevents regression of the git hash divergence bug (pre-commit hooks modifying files during commit, causing different SHA-1 hashes).
 
-**CI Integration:** Runs in `.github/workflows/git-workflow-tests.yml` on every push.
+**CI Integration:** Shell syntax and migration-script checks run in the
+`Repository Validation` job of `.github/workflows/fast-checks.yml`.
 
 **Related:** [safe_push.sh](#7-safe_pushsh-mandatory), [test_should_use_pr.sh](#8-test_should_use_prsh)
 
@@ -616,7 +617,8 @@ Tests failed: 0
 ✅ ALL TESTS PASSED!
 ```
 
-**CI Integration:** Runs in `.github/workflows/git-workflow-tests.yml`.
+**CI Integration:** Covered by the maintenance-script checks in
+`.github/workflows/fast-checks.yml`.
 
 **Related:** [should_use_pr.sh](#8-should_use_prsh), [verify_git_fix.sh](#10-verify_git_fixsh)
 

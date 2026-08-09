@@ -202,7 +202,7 @@ grep -r "allow_headers\|allow_origins" fastapi_app/ -n      # CORS config locati
 - `fastapi_app/main.py` — CORS header restriction
 - `fastapi_app/config.py` — CORS config
 - `requirements.lock` — New file (generated lockfile)
-- `.github/workflows/security.yml` — Add pip-audit step
+- `.github/workflows/nightly.yml` — Retain locked dependency audits in weekly/manual verification
 
 ### Estimated Effort: 4-5 hours
 

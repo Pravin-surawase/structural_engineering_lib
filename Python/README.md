@@ -3,7 +3,7 @@
 IS 456 RC Beam Design Library (Python package).
 
 **Version:** 0.21.6 (development preview)
-**Status:** [![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
+**Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
 

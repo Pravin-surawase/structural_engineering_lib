@@ -107,22 +107,21 @@ Solo default:
 
 **Rules Enabled:**
 - ✅ Required status checks must pass on `main`:
-  - `Quick Validation (Python 3.9 only)` — fast PR checks (lint, mypy, contracts, core tests)
+  - `PR Gate` — path-aware PR checks plus always-run repository validation
 - ✅ Force pushes disabled
 - ✅ Branch deletion disabled
 - ✅ PR-first: required for code/CI/deps; docs-only direct commits allowed
 
-Notes:
-- `CodeQL` runs on pushes and PRs, but is not currently configured as a required status check for `main`.
-
 **CI Workflows:**
 - `.github/workflows/fast-checks.yml` — runs on PRs and pushes to `main`
-- `.github/workflows/python-tests.yml` — full matrix runs after merge to `main`
+- `.github/workflows/nightly.yml` — weekly/manual full verification
+- `.github/workflows/publish.yml` — manual TestPyPI or tag-only production release
+- `.github/workflows/deploy-docs.yml` — relevant main-branch docs deployment
 - OS: ubuntu-latest
 
 **Workflow:**
 - Direct push allowed for docs/research-only changes (any size)
-- All commits trigger CI (fast checks + full tests after merge)
+- Pull requests receive the required `PR Gate`; weekly verification catches drift
 - Failed CI = immediate notification
 - PRs required for production code, CI changes, and dependencies
 
@@ -133,8 +132,8 @@ Notes:
 - Clean revert if CI fails
 - Tags can be created after direct push to `main` or after PR merge
 
-**Format Check Workflow:**
-- `.github/workflows/auto-format.yml` now runs **check-only** on PRs
+**Format Checks:**
+- `fast-checks.yml` and `nightly.yml` verify formatting
 - No auto-commits are pushed by CI
 
 **Best Practice:**

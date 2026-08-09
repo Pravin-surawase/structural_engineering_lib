@@ -110,10 +110,10 @@ Full CI on PRs takes 45-50 seconds and runs 4 Python versions. This slows down t
 
 ### Solution: Two-Tier CI
 
-#### 1. Fast Checks (PRs only) - ~20-30 seconds
+#### 1. PR Gate
 **File:** `.github/workflows/fast-checks.yml`
 
-Runs on Python 3.9 only:
+Runs the minimum supported Python 3.11 lane plus applicable API and React checks:
 - ✅ Format/lint (black, ruff, mypy)
 - ✅ Contract tests (breaking change detection)
 - ✅ Core tests (flexure, shear, detailing)
@@ -121,22 +121,23 @@ Runs on Python 3.9 only:
 
 **Result:** Quick feedback for PRs
 
-#### 2. Full Test Matrix (main branch only) - ~50 seconds
-**File:** `.github/workflows/python-tests.yml`
+#### 2. Weekly/manual full verification
+**File:** `.github/workflows/nightly.yml`
 
-Runs on Python 3.9, 3.10, 3.11, 3.12:
-- ✅ All 2200 tests
+Runs the supported Ubuntu/Python full lane, with an optional manual macOS/Windows smoke matrix:
+- ✅ Full Python, FastAPI, and React suites
 - ✅ Coverage reporting
 - ✅ All lint/doc checks
-- ✅ Packaging smoke test
+- ✅ Clean-wheel/CLI and Docker smoke tests
+- ✅ Locked dependency audits
 
-**Result:** Comprehensive validation after merge
+**Result:** Comprehensive drift detection without duplicating every PR
 
 ### Why This Works
 1. **Fast feedback**: PR checks complete in 20-30s vs 50s
 2. **Same safety**: Contract tests catch breaking changes
-3. **Full coverage**: After merge, all Python versions tested
-4. **Best practice**: Match Python 3.9 (project minimum version)
+3. **Full coverage**: Weekly/manual validation exercises the complete supported lane
+4. **Best practice**: PR checks use Python 3.11 (project minimum version)
 
 ---
 
@@ -266,13 +267,14 @@ vim Python/structural_lib/critical.py
 - If it's a flaky test, rerun the workflow
 - If it's real, fix before merging
 
-### "I need to test all Python versions before merge"
-- Push to your branch without creating PR
-- Manually trigger full tests: `gh workflow run python-tests.yml --ref your-branch`
+### "I need the full or cross-platform verification before merge"
+- Run the local full gate or release preflight first.
+- Manually dispatch the weekly lane with cross-platform smoke when necessary:
+  `gh workflow run nightly.yml --ref your-branch -f cross_platform=true`
 
 ### "CI is still too slow"
 - Fast checks: 20-30s is near-optimal (can't parallelize more)
-- Full tests: 50s is reasonable for 4 Python versions + 2200 tests
+- Weekly verification is intentionally heavier and does not duplicate every PR
 - If consistently slow, check GitHub Actions queue time
 
 ### "Merge conflict after using ai_commit.sh"

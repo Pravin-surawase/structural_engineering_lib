@@ -455,36 +455,20 @@ def collect_governance_evidence(report: AuditReport) -> None:
 def collect_security_evidence(report: AuditReport) -> None:
     """Collect security-related evidence."""
 
-    # Check if CodeQL workflow exists
-    codeql = Path(".github/workflows/codeql.yml")
+    weekly = Path(".github/workflows/nightly.yml")
+    weekly_text = weekly.read_text(encoding="utf-8") if weekly.exists() else ""
+    dependency_audits = "pip-audit" in weekly_text and "npm audit" in weekly_text
     report.add_evidence(
         EvidenceItem(
             category="Security",
-            name="CodeQL Analysis",
-            status="PASS" if codeql.exists() else "WARN",
+            name="Scheduled Dependency Audits",
+            status="PASS" if dependency_audits else "WARN",
             required=True,
-            source=str(codeql),
+            source=str(weekly),
             details=(
-                "CodeQL workflow configured"
-                if codeql.exists()
-                else "No CodeQL workflow"
-            ),
-        )
-    )
-
-    # Check security workflow
-    security = Path(".github/workflows/security.yml")
-    report.add_evidence(
-        EvidenceItem(
-            category="Security",
-            name="Security Workflow",
-            status="PASS" if security.exists() else "WARN",
-            required=True,
-            source=str(security),
-            details=(
-                "Security workflow configured"
-                if security.exists()
-                else "No security workflow"
+                "Weekly workflow audits locked Python and production npm dependencies"
+                if dependency_audits
+                else "Weekly dependency audits are not configured"
             ),
         )
     )

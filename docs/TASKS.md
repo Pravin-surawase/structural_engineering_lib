@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-09 — PR #689 is merged; Packet A is live on draft PR #690 and awaits the separate required-check decision
+**Updated:** 2026-08-09 — Packet A is merged with `PR Gate` required; Packet B reduces the workflow surface from 17 files to four on `task/MAINT-008-B`
 
 ---
 
@@ -28,7 +28,7 @@
 | MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | ✅ DONE | Live import→design→3D→dashboard→export flow and byte-level artifacts pass; v0.21.7 preflight is ready |
 | MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | User-selected parent model is preserved; Luna/Terra advisory routing, bounded worker packets, two-subagent cap, and quick-gate check pass |
 | MAINT-007 | Refresh onboarding, agents, tools, and usage telemetry | P1 | ✅ DONE | Terminal-only PR status, current bootstrap/counts, complete 14-skill discovery, honest usage checkpoints, and focused regressions pass |
-| MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | 🔄 IN PROGRESS | Skills repair is merged; draft PR #690 has one passing truthful PR gate, with the ruleset decision and later packets still approval-gated |
+| MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | 🔄 IN PROGRESS | Skills and Packet A are merged with `PR Gate` required; Packet B's four-lane workflow consolidation is implemented for review |
 
 ### Maintenance evidence captured 2026-08-07
 
@@ -49,7 +49,11 @@
 - MAINT-007 closeout: 32 focused regressions, Ruff/Black, quick 9/9, full 29/29, audit 22/22, and health 100/100 pass; folder indexes and the 282-document global index are current.
 - PR #676 was safely squash-merged and synchronized; clean MAINT-008 baseline commit is `755ac9fb`.
 - MAINT-008 skills lane: all 14 skills have valid frontmatter and current commands, `skill_tiers.json` is the single catalog, registry routing/counts validate, the four-layer architecture checker is green, missing API discovery fails closed, release verification selects exact artifacts, and evolution proposals stop below 15 collected sessions.
-- PR #689 was safely squash-merged at `b611f6b3`; Packet A draft PR #690 now emits one passing `PR Gate`, and only `fast-checks.yml` retains a pull-request trigger. Ruleset `11390214` is unchanged and still requires `Quick Validation (Python 3.11 only)` pending explicit owner approval.
+- PR #689 was safely squash-merged at `b611f6b3`; Packet A PR #690 was merged at
+  `ce3a2c5b`, and ruleset `11390214` now requires its passing `PR Gate`.
+- Packet B maps the 13 superseded workflow signals, removes those files, and
+  retains `fast-checks.yml`, weekly/manual `nightly.yml`, corrected `publish.yml`,
+  and `deploy-docs.yml`. No release or publication was run.
 
 ### Recovery progress
 
@@ -121,13 +125,13 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| MAINT-008 | Execute the [compact modernization plan](planning/compact-modernization-plan.md) | Main Agent | 🔄 Packet A implemented on draft PR #690; required-check switch awaits owner approval |
+| MAINT-008 | Execute the [compact modernization plan](planning/compact-modernization-plan.md) | Main Agent | 🔄 Packet B implemented on `task/MAINT-008-B`; four retained workflows await live PR review |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-008 | Review draft PR #690; separately approve the ruleset switch from `Quick Validation (Python 3.11 only)` to `PR Gate` before Packet B | ops + owner | bounded packets | P0 | ⏳ OWNER DECISION |
+| MAINT-008 | Review Packet B's live `PR Gate` and four-workflow disposition; keep release execution separate | ops + owner | bounded packet | P0 | 🔄 IN REVIEW |
 | v0.21.7 | Re-run release preflight and obtain a separate release approval after MAINT-008 | ops + owner | <1 session | P1 | ⏸ AFTER MAINT-008 |
 
 ## Backlog
@@ -292,7 +296,7 @@ These were NOT caught by the 14-agent audit. They come from comparing our setup 
 | OL-04 | Supply Chain | No artifact signing (sigstore) — PEP 740 digital attestations now standard | MEDIUM | v0.22.0 | PyPI attestations blog (Nov 2024) |
 | OL-05 | Docker | Base image `python:3.11-slim` not pinned to digest — reproducibility risk | MEDIUM | v0.21.7 | Container security best practices |
 | OL-06 | Docker | No multi-stage build — dev tools included in production image (~1GB) | LOW | v0.22.0 | Docker security hardening guide |
-| OL-07 | Docker | Container CVE scan exists but Trivy action unpinned (@master) | LOW | v0.21.7 | OWASP A03 + A06. Trivy scan already in docker-build.yml; pin action to SHA |
+| OL-07 | Docker | No retained container-image CVE scan in the compact workflow set | LOW | v0.21.7 | OWASP A03 + A06. Reintroduce only if outcome-changing, using a pinned action |
 | OL-08 | Security | OWASP 2025 A10 "Mishandling of Exceptional Conditions" — 2-4 HTTP-exposed ImportError leaks (38 total catch sites, all properly sanitized via sanitize_error()) | LOW | v0.21.7 | OWASP Top 10:2025 (NEW category) |
 | OL-09 | Security | No security logging / alerting — OWASP 2025 A09 has no implementation | MEDIUM | v0.22.0 | OWASP Top 10:2025 A09 |
 | OL-10 | Packaging | No TestPyPI dry-run before production release | LOW | v0.21.7 | PyPI publishing workflow guide. TestPyPI job exists but only on workflow_dispatch, not mandatory gate |
@@ -342,7 +346,7 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 
 | Prevention | Implemented? | Gap? |
 |------------|-------------|------|
-| Wheel smoke test in CI | ✅ Yes — python-tests.yml lines 147-158 | No gap |
+| Wheel smoke test in CI | ✅ Yes — weekly/manual clean-wheel verification | No gap |
 | Clean import test | ✅ Yes — TestImportSilence, TestImportStrictWarnings | No gap |
 | API stability test (105 functions) | ✅ Yes — TestAPIStability | No gap |
 | E2E pipeline test | ✅ Yes — test_full_pipeline_e2e.py (8 tests) | No gap |
@@ -355,7 +359,7 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 | OWASP 2025 A09 (Logging) | ❌ No — no security event logging | OL-09 |
 | OWASP 2025 A10 (Exceptions) | ⚠️ Partial — sanitize_error exists but not applied everywhere | OL-08 |
 | Structural eng verification methodology | ⚠️ Partial — V&V infrastructure exists (42+ golden vectors, verification-checklist.md, validation-pack.md) but fragmented across 6+ files | OL-14 |
-| Container security scanning | ✅ Yes — Trivy scan in docker-build.yml (action unpinned, needs SHA pin) | OL-07 above |
+| Container security scanning | ❌ Not retained in the compact workflow set | OL-07 above |
 
 ## v0.21.7 — Security Hardening (In Progress)
 
@@ -373,7 +377,7 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 | — | Computation timeout (prevent pathological inputs) | @api-developer | 📋 |
 | TASK-790 | `check-wheel-contents` + `twine check` in publish workflow (OL-01, OL-02) | @ops | 📋 |
 | TASK-791 | TestPyPI dry-run step before production PyPI publish (OL-10) | @ops | 📋 |
-| TASK-792 | Container image security scan with Trivy in CI (OL-07) — Already exists in docker-build.yml; verify coverage only | @ops | 📋 |
+| TASK-792 | Decide whether container-image scanning is outcome-changing; if retained, add a pinned scanner to weekly verification (OL-07) | @ops | 📋 |
 | TASK-793 | Optional dependency group tests: `.[dxf]`, `.[report]` (OL-12) | @tester | 📋 |
 | TASK-794 | Docker base image digest pinning (OL-05) | @ops | 📋 |
 | TASK-795 | OpenAPI drift check in publish workflow (OL-16) | @ops | 📋 |

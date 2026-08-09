@@ -6,11 +6,10 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/structural-lib-is456.svg)](https://pypi.org/project/structural-lib-is456/)
 [![Downloads](https://img.shields.io/pypi/dm/structural-lib-is456)](https://pypi.org/project/structural-lib-is456/)
-[![Python tests](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
-[![Fast PR Checks](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml)
-[![CodeQL](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/codeql.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/codeql.yml)
+[![PR Gate](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/fast-checks.yml)
+[![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-lightgrey)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/python-tests.yml)
+[![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-lightgrey)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Pravin-surawase/structural_engineering_lib/badge)](https://securityscorecards.dev/viewer/?uri=github.com/Pravin-surawase/structural_engineering_lib)
 

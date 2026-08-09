@@ -859,20 +859,20 @@ gh pr checks <PR_NUMBER> --watch --interval 10
 # If fails → Diagnose specific check failure
 ```
 
-### Full Test Matrix (main only - 50 seconds)
-**File:** `.github/workflows/python-tests.yml`
+### Full verification (weekly/manual)
+**File:** `.github/workflows/nightly.yml`
 
-**Runs on:** Push to main (after PR merge)
-**Matrix:**
-- Python 3.9, 3.10, 3.11, 3.12
-- 2,231 tests
+**Runs on:** Weekly schedule or explicit manual dispatch
+**Coverage:**
+- Full Python, FastAPI, and React verification
 - Coverage enforcement (85%+)
-- All lint/doc checks
+- Clean-wheel/CLI, dependency, and Docker checks
+- Optional manual macOS/Windows smoke matrix
 
 **GIT Agent Monitoring:**
 ```bash
-# After merge to main:
-gh run list -w "Python Tests" -L 1 --json status,conclusion
+# Inspect the latest full verification:
+gh run list -w "Weekly Verification" -L 1 --json status,conclusion
 
 # Expected: All matrix jobs pass
 # If any fail → CRITICAL alert to MAIN (main branch broken)

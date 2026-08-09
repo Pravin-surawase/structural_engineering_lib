@@ -536,10 +536,10 @@ EOF
 ./scripts/check_version_consistency.sh
 ./scripts/generate_health_report.sh --weekly
 
-# Step 14: Review GitHub Actions
-cat .github/workflows/git-workflow-tests.yml
-# Check for failures in recent runs:
-gh run list --workflow=git-workflow-tests.yml --limit 10
+# Step 14: Review the required GitHub PR gate
+sed -n '1,260p' .github/workflows/fast-checks.yml
+# Check recent conclusions:
+gh run list --workflow=fast-checks.yml --limit 10
 
 # Step 15: Identify automation gaps
 # Questions:
