@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from dataclasses import replace
+from dataclasses import asdict, replace
 
 import pytest
 
@@ -71,18 +71,64 @@ def test_result_retains_acceptance_provenance_explicit_torsion_state_and_p11_hol
     result = design_supported_interior_two_way_slab_flexure(_input())
 
     assert result.coefficient_source_is_approved is True
+    assert result.qualified_acceptance_recorded is True
     assert result.qualified_coefficient_acceptance_acknowledged is True
+    assert result.coefficient_review_status.value == "review_required"
+    assert result.coefficient_correctness_verified_by_library is False
+    assert result.complete_engineering_design_approved is False
     assert result.qualified_coefficient_acceptance_reference.startswith(
         "engineer-review:"
     )
     assert result.corner_torsion_status is (
         TwoWaySlabCornerTorsionStatus.NOT_REQUIRED_FOR_SUPPORTED_INTERIOR_PANEL
     )
+    assert result.status is (
+        TwoWaySlabFlexureStatus.EXTERNALLY_ACCEPTED_COEFFICIENT_FLEXURE_ONLY_SUPPORTED_CASE
+    )
+    assert (
+        result.status.value
+        == "externally accepted coefficient, flexure-only supported case"
+    )
     assert result.status is TwoWaySlabFlexureStatus.FLEXURE_ONLY_PENDING_P11
+    assert result.bounded_flexure_computation_supported is True
     assert result.is_supported is True
+    assert any(
+        "punching-shear" in item for item in result.incomplete_design_dependencies
+    )
+    assert any(
+        "Load combinations" in item for item in result.incomplete_design_dependencies
+    )
+    serialized = asdict(result)
+    assert "is_supported" not in serialized
+    assert "qualified_coefficient_acceptance_acknowledged" not in serialized
+    assert serialized["complete_engineering_design_approved"] is False
     assert "P11 dependency" in result.p11_dependency
     assert any("does not look up" in exclusion for exclusion in result.exclusions)
     assert ("factored_moment", "kN m") in result.units
+
+
+@pytest.mark.parametrize(
+    ("field_name", "value", "message"),
+    [
+        (
+            "coefficient_correctness_verified_by_library",
+            True,
+            "cannot be verified by this library",
+        ),
+        (
+            "complete_engineering_design_approved",
+            True,
+            "cannot approve a complete engineering slab design",
+        ),
+    ],
+)
+def test_result_contract_cannot_claim_coefficient_verification_or_complete_approval(
+    field_name: str, value: bool, message: str
+) -> None:
+    result = design_supported_interior_two_way_slab_flexure(_input())
+
+    with pytest.raises(SlabContractError, match=message):
+        replace(result, **{field_name: value})
 
 
 @pytest.mark.parametrize(

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 from structural_lib.codes.is456.footing._common import (
     net_upward_pressure_nmm2,
+    require_finite_real,
     validate_footing_inputs,
 )
 from structural_lib.codes.is456.tables import get_tc_value
@@ -124,6 +125,8 @@ def footing_one_way_shear(
           (Cl. 40.3); footing cantilever behaviour differs from beams.
     """
     validate_footing_inputs(L_mm, B_mm, d_mm, a_mm, b_mm)
+    require_finite_real("fck", fck)
+    require_finite_real("pt", pt)
 
     if fck <= 0:
         raise ValidationError(

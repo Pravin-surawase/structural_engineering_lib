@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import math
 
+from structural_lib.codes.is456.footing._common import require_finite_real
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import (
     BearingPressureCheckResult,
@@ -69,6 +70,12 @@ def size_footing(
           soil conditions are not modelled.
         - Dimensions are rounded up to nearest 50mm for constructability.
     """
+    require_finite_real("P_service_kN", P_service_kN)
+    require_finite_real("q_safe_kPa", q_safe_kPa)
+    require_finite_real("a_mm", a_mm, error_type=DimensionError)
+    require_finite_real("b_mm", b_mm, error_type=DimensionError)
+    require_finite_real("M_service_kNm", M_service_kNm)
+
     if P_service_kN <= 0:
         raise ValidationError(
             "Service load must be positive for footing sizing",
@@ -206,6 +213,10 @@ def bearing_stress_enhancement(
         SP 16:1980 §3.5 — Bearing stress on concrete
     """
     # --- Input validation ---
+    require_finite_real("fck", fck, clause_ref="Cl. 34.4")
+    require_finite_real("A1_mm2", A1_mm2, clause_ref="Cl. 34.4")
+    require_finite_real("A2_mm2", A2_mm2, clause_ref="Cl. 34.4")
+
     if fck <= 0:
         raise ValidationError(
             "Concrete strength fck must be positive",
@@ -296,6 +307,19 @@ def check_bearing_pressure(
           ``check_isolated_footing_load_transfer``.
     """
     # --- Input validation ---
+    require_finite_real("Pu_kN", Pu_kN, clause_ref="Cl. 34.4")
+    require_finite_real("fck", fck, clause_ref="Cl. 34.4")
+    require_finite_real("column_b_mm", column_b_mm, error_type=DimensionError)
+    require_finite_real("column_D_mm", column_D_mm, error_type=DimensionError)
+    require_finite_real("footing_B_mm", footing_B_mm, error_type=DimensionError)
+    require_finite_real("footing_L_mm", footing_L_mm, error_type=DimensionError)
+    if effective_supporting_area_A1_mm2 is not None:
+        require_finite_real(
+            "effective_supporting_area_A1_mm2",
+            effective_supporting_area_A1_mm2,
+            clause_ref="Cl. 34.4",
+        )
+
     if Pu_kN <= 0:
         raise ValidationError(
             "Factored axial load Pu must be positive",

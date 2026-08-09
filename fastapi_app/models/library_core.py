@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StrictInt
 
 
 class FootingLoadTransferRequest(BaseModel):
@@ -18,7 +18,7 @@ class FootingLoadTransferRequest(BaseModel):
     supporting_concrete_fck_nmm2: float = Field(gt=0)
     supported_concrete_fck_nmm2: float = Field(gt=0)
     steel_fy_nmm2: float = Field(gt=0)
-    dowel_count: int = Field(gt=0)
+    dowel_count: StrictInt = Field(gt=0)
     dowel_diameter_mm: float = Field(gt=0)
     column_longitudinal_bar_diameter_mm: float = Field(gt=0)
     available_dowel_development_length_into_footing_mm: float = Field(gt=0)

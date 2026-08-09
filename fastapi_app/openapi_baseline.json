@@ -3333,19 +3333,6 @@
         "title": "Geometry3DRequest",
         "type": "object"
       },
-      "HTTPValidationError": {
-        "properties": {
-          "detail": {
-            "items": {
-              "$ref": "#/components/schemas/ValidationError"
-            },
-            "title": "Detail",
-            "type": "array"
-          }
-        },
-        "title": "HTTPValidationError",
-        "type": "object"
-      },
       "HealthStatus": {
         "description": "Health check response model.",
         "properties": {
@@ -4279,6 +4266,58 @@
         "title": "RebarValidateRequest",
         "type": "object"
       },
+      "RequestValidationErrorPayload": {
+        "description": "Field-preserving Pydantic request validation error.",
+        "properties": {
+          "code": {
+            "const": "REQUEST_VALIDATION_ERROR",
+            "title": "Code",
+            "type": "string"
+          },
+          "details": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Details",
+            "type": "array"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "details"
+        ],
+        "title": "RequestValidationErrorPayload",
+        "type": "object"
+      },
+      "RequestValidationErrorResponse": {
+        "description": "Documented 422 form of the maintained response envelope.",
+        "properties": {
+          "data": {
+            "title": "Data",
+            "type": "null"
+          },
+          "error": {
+            "$ref": "#/components/schemas/RequestValidationErrorPayload"
+          },
+          "success": {
+            "const": false,
+            "default": false,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "title": "RequestValidationErrorResponse",
+        "type": "object"
+      },
       "SlendernessCheckRequest": {
         "description": "Request for beam slenderness / lateral stability check.",
         "properties": {
@@ -4583,46 +4622,6 @@
         "title": "TorsionDesignRequest",
         "type": "object"
       },
-      "ValidationError": {
-        "properties": {
-          "ctx": {
-            "title": "Context",
-            "type": "object"
-          },
-          "input": {
-            "title": "Input"
-          },
-          "loc": {
-            "items": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "title": "Location",
-            "type": "array"
-          },
-          "msg": {
-            "title": "Message",
-            "type": "string"
-          },
-          "type": {
-            "title": "Error Type",
-            "type": "string"
-          }
-        },
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ],
-        "title": "ValidationError",
-        "type": "object"
-      },
       "fastapi_app__routers__insights__BeamParams": {
         "description": "Beam parameters for code checks.",
         "properties": {
@@ -4753,6 +4752,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
           }
         },
         "summary": "Root",
@@ -4788,11 +4797,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Smart Beam Analysis",
@@ -4813,6 +4822,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
           }
         },
         "summary": "Get Code Clause References",
@@ -4848,11 +4867,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Simple Load Analysis (BMD/SFD)",
@@ -4888,11 +4907,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Design Beam Section",
@@ -4928,11 +4947,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Check Beam Adequacy",
@@ -4968,11 +4987,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Multi-case Compliance Report",
@@ -5008,11 +5027,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Crack Width Check (IS 456 Annex F)",
@@ -5048,11 +5067,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Deflection Span/Depth Check (IS 456 Cl 23.2)",
@@ -5088,11 +5107,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Beam Ductility Check (IS 13920)",
@@ -5128,11 +5147,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Enhanced Shear Strength Near Supports",
@@ -5168,11 +5187,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Beam Slenderness Check (IS 456 Cl 23.3)",
@@ -5208,11 +5227,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Design Beam for Torsion",
@@ -5248,11 +5267,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Unified Column Design per IS 456",
@@ -5288,11 +5307,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Additional Moment for Slender Columns per IS 456 Cl 39.7.1",
@@ -5328,11 +5347,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Short Column Axial Capacity",
@@ -5368,11 +5387,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Biaxial Bending Check per IS 456 Cl 39.6",
@@ -5408,11 +5427,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Classify Column (Short/Slender)",
@@ -5448,11 +5467,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Column Detailing per IS 456 Cl 26.5.3",
@@ -5488,11 +5507,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "IS 13920 Column Ductile Detailing Check",
@@ -5528,11 +5547,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Minimum Eccentricity",
@@ -5568,11 +5587,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Effective Length per IS 456 Table 28",
@@ -5608,11 +5627,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Helical Reinforcement Check per IS 456 Cl 39.4",
@@ -5648,11 +5667,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "P-M Interaction Curve",
@@ -5688,11 +5707,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Long (Slender) Column Design per IS 456 Cl 39.7",
@@ -5728,11 +5747,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Short Column Uniaxial Bending Design",
@@ -5768,11 +5787,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Check isolated-footing load transfer",
@@ -5794,6 +5813,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
           }
         },
         "summary": "Get Design Limits",
@@ -5829,11 +5858,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Design a simply supported one-way slab strip",
@@ -5870,11 +5899,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Anchorage Check at Simple Support (IS 456 Cl 26.2.3.3)",
@@ -5895,6 +5924,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
           }
         },
         "summary": "Get Standard Bar Areas",
@@ -5930,11 +5969,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Detail Beam Reinforcement",
@@ -6001,11 +6040,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Calculate Development Length",
@@ -6036,11 +6075,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Export Bar Bending Schedule (CSV)",
@@ -6071,11 +6110,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Export Building Summary Report",
@@ -6106,11 +6145,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Export DXF Drawing",
@@ -6141,11 +6180,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Export Design Report",
@@ -6181,11 +6220,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Generate 3D Beam Geometry",
@@ -6221,11 +6260,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Generate Full Beam 3D Geometry",
@@ -6261,11 +6300,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Generate Building 3D Geometry",
@@ -6301,11 +6340,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Generate 2D Cross-Section Geometry",
@@ -6326,6 +6365,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
           }
         },
         "summary": "Get Material Appearance",
@@ -6365,11 +6414,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Batch Design Beams",
@@ -6426,11 +6475,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Import CSV File",
@@ -6486,11 +6535,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Import CSV Text",
@@ -6547,11 +6596,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Import Dual CSV Files",
@@ -6572,6 +6621,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
           }
         },
         "summary": "Get Supported Formats",
@@ -6592,6 +6651,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
           }
         },
         "summary": "Get Sample Data with 3D Geometry",
@@ -6627,11 +6696,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Live IS 456 Code Checks",
@@ -6667,11 +6736,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Generate Dashboard Summary",
@@ -6707,11 +6776,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Project Bill of Quantities",
@@ -6747,11 +6816,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Suggest Rebar Optimizations",
@@ -6787,11 +6856,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Optimize Beam Cost",
@@ -6827,11 +6896,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Pareto Multi-Objective Beam Optimization",
@@ -6852,6 +6921,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
           }
         },
         "summary": "Get Default Cost Rates",
@@ -6887,11 +6966,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Apply Rebar Configuration",
@@ -6927,11 +7006,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Validate Rebar Configuration",
@@ -6954,6 +7033,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
           }
         },
         "summary": "Health Check",
@@ -6976,6 +7065,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
           }
         },
         "summary": "System Information",
@@ -6998,6 +7097,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
           }
         },
         "summary": "Readiness Check",
@@ -7036,11 +7145,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Stream Batch Design",
@@ -7084,11 +7193,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Request validation failed"
           }
         },
         "summary": "Get Job Status",

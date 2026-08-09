@@ -2,8 +2,8 @@
   "folder": "Python/structural_lib/services",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-03-29",
-  "file_count": 28,
+  "last_updated": "2026-08-09",
+  "file_count": 34,
   "files": [
     {
       "name": "__init__.py",
@@ -83,196 +83,24 @@
     {
       "name": "api.py",
       "type": "python",
-      "size_lines": 1985,
-      "last_updated": "2026-03-29",
+      "size_lines": 323,
+      "last_updated": "2026-08-09",
       "description": "Module:       api",
-      "functions": [
-        {
-          "name": "get_library_version",
-          "description": "Return the installed package version."
-        },
-        {
-          "name": "validate_job_spec",
-          "description": "Validate a job.json specification file.",
-          "params": [
-            "path"
-          ]
-        },
-        {
-          "name": "validate_design_results",
-          "description": "Validate a design results JSON file (single or multi-beam).",
-          "params": [
-            "path"
-          ]
-        },
-        {
-          "name": "compute_detailing",
-          "description": "Compute beam detailing results from design results JSON dict.",
-          "params": [
-            "design_results"
-          ]
-        },
-        {
-          "name": "compute_bbs",
-          "description": "Generate a bar bending schedule (BBS) document from detailing results.",
-          "params": [
-            "detailing_list"
-          ]
-        },
-        {
-          "name": "export_bbs",
-          "description": "Export a BBS document to CSV or JSON.",
-          "params": [
-            "bbs_doc",
-            "path"
-          ]
-        },
-        {
-          "name": "compute_dxf",
-          "description": "Generate DXF CAD drawings from detailing results.",
-          "params": [
-            "detailing_list",
-            "output"
-          ]
-        },
-        {
-          "name": "compute_report",
-          "description": "Generate design report from job outputs or design results.",
-          "params": [
-            "source"
-          ]
-        },
-        {
-          "name": "compute_critical",
-          "description": "Generate critical set export from job outputs.",
-          "params": [
-            "job_out"
-          ]
-        },
-        {
-          "name": "check_beam_ductility",
-          "description": "Run IS 13920 beam ductility checks for a single section.",
-          "params": [
-            "b",
-            "D",
-            "d",
-            "fck",
-            "fy",
-            "min_long_bar_dia"
-          ]
-        },
-        {
-          "name": "check_beam_slenderness",
-          "description": "Check beam slenderness for lateral stability per IS 456 Cl 23.3.",
-          "params": [
-            "b_mm",
-            "d_mm",
-            "l_eff_mm",
-            "beam_type",
-            "has_lateral_restraint"
-          ]
-        },
-        {
-          "name": "check_anchorage_at_simple_support",
-          "description": "Check anchorage of bottom bars at simple supports per IS 456 Cl 26.2.3.3.",
-          "params": [
-            "bar_dia_mm",
-            "fck",
-            "fy",
-            "vu_kn",
-            "support_width_mm",
-            "cover_mm",
-            "bar_type",
-            "has_standard_bend"
-          ]
-        },
-        {
-          "name": "check_deflection_span_depth",
-          "description": "Check deflection using span/depth ratio (Level A).",
-          "params": [
-            "span_mm",
-            "d_mm",
-            "support_condition",
-            "base_allowable_ld",
-            "mf_tension_steel",
-            "mf_compression_steel",
-            "mf_flanged"
-          ]
-        },
-        {
-          "name": "check_crack_width",
-          "description": "Check crack width using an Annex-F-style estimate.",
-          "params": [
-            "exposure_class",
-            "limit_mm",
-            "acr_mm",
-            "cmin_mm",
-            "h_mm",
-            "x_mm",
-            "epsilon_m",
-            "fs_service_nmm2"
-          ]
-        },
-        {
-          "name": "check_compliance_report",
-          "description": "Run a multi-case IS 456 compliance report.",
-          "params": [
-            "cases",
-            "b_mm",
-            "D_mm",
-            "d_mm",
-            "fck_nmm2",
-            "fy_nmm2",
-            "d_dash_mm",
-            "asv_mm2"
-          ]
-        },
-        {
-          "name": "design_beam_is456",
-          "description": "Design/check a single IS 456 beam case (strength + optional serviceability)."
-        },
-        {
-          "name": "check_beam_is456",
-          "description": "Run an IS 456 compliance report across multiple cases."
-        },
-        {
-          "name": "detail_beam_is456",
-          "description": "Create IS456/SP34 detailing outputs from design Ast/Asc and stirrups."
-        },
-        {
-          "name": "design_and_detail_beam_is456",
-          "description": "Design AND detail a beam in one call (IS 456:2000)."
-        },
-        {
-          "name": "optimize_beam_cost",
-          "description": "Find the most cost-effective beam design meeting IS 456:2000."
-        }
-      ],
-      "content_hash": "9bdab4c307fc"
+      "content_hash": "e9d756455de7"
     },
     {
-      "name": "api_manifest.json",
-      "type": "config",
-      "last_updated": "2026-03-29",
-      "top_level_keys": [
-        "beam_to_3d_geometry",
-        "calculate_equivalent_moment",
-        "calculate_equivalent_shear",
-        "calculate_longitudinal_torsion_steel",
-        "calculate_torsion_shear_stress",
-        "calculate_torsion_stirrup_area",
-        "check_anchorage_at_simple_support",
-        "check_beam_ductility",
-        "check_beam_is456",
-        "check_beam_slenderness"
-      ],
-      "content_hash": "6791967b2604"
+      "name": "api_hub.py",
+      "type": "python",
+      "size_lines": 238,
+      "last_updated": "2026-04-05",
+      "description": "Module:       api",
+      "content_hash": "0a5035a01f54"
     },
     {
       "name": "api_results.py",
       "type": "python",
       "size_lines": 439,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-03",
       "description": "Module:       api_results",
       "classes": [
         {
@@ -323,7 +151,7 @@
           ]
         }
       ],
-      "content_hash": "c0577435b384"
+      "content_hash": "99ef468a761b"
     },
     {
       "name": "audit.py",
@@ -399,8 +227,8 @@
     {
       "name": "batch.py",
       "type": "python",
-      "size_lines": 169,
-      "last_updated": "2026-03-26",
+      "size_lines": 195,
+      "last_updated": "2026-08-09",
       "description": "Batch design helpers for streaming and bulk execution.",
       "functions": [
         {
@@ -418,13 +246,13 @@
           ]
         }
       ],
-      "content_hash": "30ecd81fb4bc"
+      "content_hash": "8b683033f873"
     },
     {
       "name": "bbs.py",
       "type": "python",
-      "size_lines": 1135,
-      "last_updated": "2026-03-26",
+      "size_lines": 1134,
+      "last_updated": "2026-04-07",
       "description": "Bar Bending Schedule (BBS) Module — IS 2502:1999 / SP 34:1987",
       "classes": [
         {
@@ -607,13 +435,189 @@
         "UNIT_WEIGHTS_KG_M",
         "BAR_MARK_PATTERN"
       ],
-      "content_hash": "353ef834be1b"
+      "content_hash": "b6725047057a"
+    },
+    {
+      "name": "beam_api.py",
+      "type": "python",
+      "size_lines": 2026,
+      "last_updated": "2026-08-09",
+      "description": "Module:       beam_api",
+      "functions": [
+        {
+          "name": "calculate_development_length",
+          "description": "Return the beam-detailing development-length result for API consumers."
+        },
+        {
+          "name": "build_detailing_input",
+          "description": "Build the dict schema expected by compute_detailing() from a design result.",
+          "params": [
+            "result"
+          ]
+        },
+        {
+          "name": "compute_detailing",
+          "description": "Compute beam detailing results from design results JSON dict.",
+          "params": [
+            "design_results"
+          ]
+        },
+        {
+          "name": "compute_bbs",
+          "description": "Generate a bar bending schedule (BBS) document from detailing results.",
+          "params": [
+            "detailing_list"
+          ]
+        },
+        {
+          "name": "export_bbs",
+          "description": "Export a BBS document to CSV or JSON.",
+          "params": [
+            "bbs_doc",
+            "path"
+          ]
+        },
+        {
+          "name": "compute_dxf",
+          "description": "Generate DXF CAD drawings from detailing results.",
+          "params": [
+            "detailing_list",
+            "output"
+          ]
+        },
+        {
+          "name": "compute_report",
+          "description": "Generate design report from job outputs or design results.",
+          "params": [
+            "source"
+          ]
+        },
+        {
+          "name": "compute_critical",
+          "description": "Generate critical set export from job outputs.",
+          "params": [
+            "job_out"
+          ]
+        },
+        {
+          "name": "check_beam_ductility",
+          "description": "Run IS 13920 beam ductility checks for a single section.",
+          "params": [
+            "b_mm",
+            "D_mm",
+            "d_mm",
+            "fck_nmm2",
+            "fy_nmm2",
+            "min_long_bar_dia"
+          ]
+        },
+        {
+          "name": "check_beam_slenderness",
+          "description": "Check beam slenderness for lateral stability per IS 456 Cl 23.3.",
+          "params": [
+            "b_mm",
+            "d_mm",
+            "l_eff_mm",
+            "beam_type",
+            "has_lateral_restraint"
+          ]
+        },
+        {
+          "name": "check_anchorage_at_simple_support",
+          "description": "Check anchorage of bottom bars at simple supports per IS 456 Cl 26.2.3.3.",
+          "params": [
+            "bar_dia_mm",
+            "fck_nmm2",
+            "fy_nmm2",
+            "vu_kn",
+            "support_width_mm",
+            "cover_mm",
+            "bar_type",
+            "has_standard_bend"
+          ]
+        },
+        {
+          "name": "check_deflection_span_depth",
+          "description": "Check deflection using span/depth ratio (Level A).",
+          "params": [
+            "span_mm",
+            "d_mm",
+            "support_condition",
+            "base_allowable_ld",
+            "mf_tension_steel",
+            "mf_compression_steel",
+            "mf_flanged"
+          ]
+        },
+        {
+          "name": "check_crack_width",
+          "description": "Check crack width using an Annex-F-style estimate.",
+          "params": [
+            "exposure_class",
+            "limit_mm",
+            "acr_mm",
+            "cmin_mm",
+            "h_mm",
+            "x_mm",
+            "epsilon_m",
+            "fs_service_nmm2"
+          ]
+        },
+        {
+          "name": "check_compliance_report",
+          "description": "Run a multi-case IS 456 compliance report.",
+          "params": [
+            "cases",
+            "b_mm",
+            "D_mm",
+            "d_mm",
+            "fck_nmm2",
+            "fy_nmm2",
+            "d_dash_mm",
+            "asv_mm2"
+          ]
+        },
+        {
+          "name": "enhanced_shear_strength_is456",
+          "description": "Enhanced design shear strength for sections close to supports (IS 456 Cl 40.3).",
+          "params": [
+            "fck_nmm2",
+            "pt_percent",
+            "d_mm",
+            "av_mm"
+          ]
+        },
+        {
+          "name": "design_beam_is456",
+          "description": "Design/check a single IS 456 beam case (strength + optional serviceability)."
+        },
+        {
+          "name": "check_beam_is456",
+          "description": "Run an IS 456 compliance report across multiple cases."
+        },
+        {
+          "name": "detail_beam_is456",
+          "description": "Create IS456/SP34 detailing outputs from design Ast/Asc and stirrups."
+        },
+        {
+          "name": "design_and_detail_beam_is456",
+          "description": "Design AND detail a beam in one call (IS 456:2000)."
+        },
+        {
+          "name": "optimize_beam_cost",
+          "description": "Find the most cost-effective beam design meeting IS 456:2000."
+        }
+      ],
+      "constants": [
+        "_T"
+      ],
+      "content_hash": "696616f75966"
     },
     {
       "name": "beam_pipeline.py",
       "type": "python",
-      "size_lines": 586,
-      "last_updated": "2026-03-26",
+      "size_lines": 636,
+      "last_updated": "2026-04-03",
       "description": "beam_pipeline — Unified application-layer pipeline for beam design.",
       "classes": [
         {
@@ -685,13 +689,52 @@
         "IS456_UNITS",
         "_VALID_UNIT_NORMALIZED"
       ],
-      "content_hash": "44aab8d0c666"
+      "content_hash": "dd9d316df7f8"
+    },
+    {
+      "name": "boq.py",
+      "type": "python",
+      "size_lines": 209,
+      "last_updated": "2026-03-30",
+      "description": "Project Bill of Quantities (BOQ) — Aggregation Module",
+      "classes": [
+        {
+          "name": "SteelSummary",
+          "description": "Steel quantities for one grade."
+        },
+        {
+          "name": "ConcreteSummary",
+          "description": "Concrete quantities for one grade."
+        },
+        {
+          "name": "StorySummary",
+          "description": "Quantities for one story/floor."
+        },
+        {
+          "name": "ProjectBOQ",
+          "description": "Complete Bill of Quantities for a project."
+        }
+      ],
+      "functions": [
+        {
+          "name": "aggregate_project_boq",
+          "description": "Aggregate BBS data from multiple beams into a project-level BOQ.",
+          "params": [
+            "bbs_documents",
+            "beam_metadata",
+            "steel_cost_per_kg",
+            "concrete_costs",
+            "project_name"
+          ]
+        }
+      ],
+      "content_hash": "58d94c335273"
     },
     {
       "name": "calculation_report.py",
       "type": "python",
-      "size_lines": 681,
-      "last_updated": "2026-03-26",
+      "size_lines": 726,
+      "last_updated": "2026-08-09",
       "description": "Module:       calculation_report",
       "classes": [
         {
@@ -733,7 +776,262 @@
           ]
         }
       ],
-      "content_hash": "93073c34c1c9"
+      "content_hash": "070b9e02369e"
+    },
+    {
+      "name": "capabilities.py",
+      "type": "python",
+      "size_lines": 714,
+      "last_updated": "2026-08-09",
+      "description": "Discoverable supported-case registry for the IS 456 public library.",
+      "classes": [
+        {
+          "name": "IS456Capability",
+          "description": "One intentionally supported public workflow and its held boundary."
+        },
+        {
+          "name": "IS456FieldAlias",
+          "description": "An intentional compatibility spelling outside canonical serialization."
+        },
+        {
+          "name": "IS456FieldContract",
+          "description": "Units, domain, and compatibility semantics for one named quantity."
+        },
+        {
+          "name": "IS456StatusContract",
+          "description": "Meaning of a status field, including boundaries that it does not prove."
+        },
+        {
+          "name": "IS456WorkflowContract",
+          "description": "Semantic surface for one capability-listed public workflow only."
+        },
+        {
+          "name": "IS456AdapterContract",
+          "description": "A narrow transport/serialization boundary for the supported subset."
+        },
+        {
+          "name": "IS456SemanticContract",
+          "description": "Immutable, machine-readable semantics for the supported public subset."
+        }
+      ],
+      "functions": [
+        {
+          "name": "get_supported_is456_capabilities",
+          "description": "Return the immutable supported-case registry for this library version."
+        },
+        {
+          "name": "get_supported_is456_semantic_contract",
+          "description": "Return immutable units, aliases, statuses, and limits for supported routes."
+        }
+      ],
+      "constants": [
+        "_CAPABILITIES",
+        "_MM",
+        "_N_PER_MM2",
+        "_BOOLEAN",
+        "_REPORT_IS_SAFE_ALIAS",
+        "_SLAB_REVIEW_ALIAS",
+        "_SLAB_ACCEPTANCE_ALIAS",
+        "_SLAB_VERIFICATION_ALIAS",
+        "_SLAB_SUPPORT_ALIAS",
+        "_SEMANTIC_CONTRACT"
+      ],
+      "content_hash": "02d11b827435"
+    },
+    {
+      "name": "column_api.py",
+      "type": "python",
+      "size_lines": 1528,
+      "last_updated": "2026-08-09",
+      "description": "Module:       column_api",
+      "functions": [
+        {
+          "name": "calculate_effective_length_is456",
+          "description": "Calculate effective length per IS 456 Cl 25.2, Table 28.",
+          "params": [
+            "l_mm",
+            "end_condition",
+            "use_theoretical"
+          ]
+        },
+        {
+          "name": "classify_column_is456",
+          "description": "Classify column as SHORT or SLENDER based on slenderness ratio (IS 456 Cl 25.1.2).",
+          "params": [
+            "le_mm",
+            "D_mm"
+          ]
+        },
+        {
+          "name": "min_eccentricity_is456",
+          "description": "Calculate minimum design eccentricity for a column (IS 456 Cl 25.4).",
+          "params": [
+            "l_unsupported_mm",
+            "D_mm"
+          ]
+        },
+        {
+          "name": "design_column_axial_is456",
+          "description": "Calculate axial load capacity for a short column (IS 456 Cl 39.3).",
+          "params": [
+            "fck_nmm2",
+            "fy_nmm2",
+            "Ag_mm2",
+            "Asc_mm2"
+          ]
+        },
+        {
+          "name": "design_short_column_uniaxial_is456",
+          "description": "Design short column for uniaxial bending per IS 456 Cl 39.5.",
+          "params": [
+            "Pu_kN",
+            "Mu_kNm",
+            "b_mm",
+            "D_mm",
+            "le_mm",
+            "fck_nmm2",
+            "fy_nmm2",
+            "Asc_mm2"
+          ]
+        },
+        {
+          "name": "pm_interaction_curve_is456",
+          "description": "Produces the complete P-M interaction diagram for a rectangular column",
+          "params": [
+            "b_mm",
+            "D_mm",
+            "fck_nmm2",
+            "fy_nmm2",
+            "Asc_mm2",
+            "d_prime_mm",
+            "n_points"
+          ]
+        },
+        {
+          "name": "biaxial_bending_check_is456",
+          "description": "Check column under biaxial bending per IS 456 Cl 39.6.",
+          "params": [
+            "Pu_kN",
+            "Mux_kNm",
+            "Muy_kNm",
+            "b_mm",
+            "D_mm",
+            "le_mm",
+            "fck_nmm2",
+            "fy_nmm2"
+          ]
+        },
+        {
+          "name": "calculate_additional_moment_is456",
+          "description": "Calculate additional moment for slender columns per IS 456 Cl 39.7.1.",
+          "params": [
+            "Pu_kN",
+            "b_mm",
+            "D_mm",
+            "lex_mm",
+            "ley_mm",
+            "fck_nmm2",
+            "fy_nmm2",
+            "Asc_mm2"
+          ]
+        },
+        {
+          "name": "design_long_column_is456",
+          "description": "For slender columns (le/D >= 12), the design must account for additional",
+          "params": [
+            "Pu_kN",
+            "M1x_kNm",
+            "M2x_kNm",
+            "M1y_kNm",
+            "M2y_kNm",
+            "b_mm",
+            "D_mm",
+            "lex_mm"
+          ]
+        },
+        {
+          "name": "check_helical_reinforcement_is456",
+          "description": "Check a supplied circular helix and multiply an existing short-column",
+          "params": [
+            "D_mm",
+            "D_core_mm",
+            "fck_nmm2",
+            "fy_nmm2",
+            "d_helix_mm",
+            "pitch_mm",
+            "Pu_axial_kN"
+          ]
+        },
+        {
+          "name": "design_column_is456",
+          "description": "Design column per IS 456:2000 — unified orchestrator.",
+          "params": [
+            "Pu_kN",
+            "Mux_kNm",
+            "Muy_kNm",
+            "b_mm",
+            "D_mm",
+            "l_mm",
+            "end_condition",
+            "fck_nmm2"
+          ]
+        },
+        {
+          "name": "detail_column_is456",
+          "description": "Validates longitudinal reinforcement limits, bar spacing, tie diameter,"
+        },
+        {
+          "name": "check_column_ductility_is13920",
+          "description": "Check column ductile detailing per IS 13920:2016 Cl 7."
+        }
+      ],
+      "constants": [
+        "_T"
+      ],
+      "content_hash": "f690dc55ab23"
+    },
+    {
+      "name": "common_api.py",
+      "type": "python",
+      "size_lines": 723,
+      "last_updated": "2026-08-09",
+      "description": "Module:       common_api",
+      "functions": [
+        {
+          "name": "get_library_version",
+          "description": "Return the installed package version."
+        },
+        {
+          "name": "validate_job_spec",
+          "description": "Validate a job.json specification file.",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "validate_design_results",
+          "description": "Validate a design results JSON file (single or multi-beam).",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "check_code",
+          "description": "Validate that a design code implementation meets the API contract.",
+          "params": [
+            "code_id"
+          ]
+        },
+        {
+          "name": "show_versions",
+          "description": "Print library and environment version information."
+        }
+      ],
+      "constants": [
+        "_EXEMPT_PARAMS",
+        "_DIMENSIONAL_STEMS"
+      ],
+      "content_hash": "1980a16dc047"
     },
     {
       "name": "costing.py",
@@ -838,8 +1136,8 @@
     {
       "name": "dashboard.py",
       "type": "python",
-      "size_lines": 508,
-      "last_updated": "2026-03-26",
+      "size_lines": 512,
+      "last_updated": "2026-08-07",
       "description": "Insights module for dashboard aggregation and live code checks.",
       "classes": [
         {
@@ -896,13 +1194,17 @@
           ]
         }
       ],
-      "content_hash": "4e82af92e8d9"
+      "constants": [
+        "_CRITICAL_UTILIZATION_THRESHOLD",
+        "_PT_MIN_COEFF"
+      ],
+      "content_hash": "b93b595378a7"
     },
     {
       "name": "dxf_export.py",
       "type": "python",
-      "size_lines": 1817,
-      "last_updated": "2026-03-27",
+      "size_lines": 1833,
+      "last_updated": "2026-04-07",
       "description": "DXF Export Module — Beam Detail Drawing Generation",
       "functions": [
         {
@@ -1095,13 +1397,13 @@
         "DEFAULT_TITLE_BLOCK_HEIGHT",
         "REBAR_UNIT_WEIGHT"
       ],
-      "content_hash": "f7018c59fa14"
+      "content_hash": "6c46aee02b5d"
     },
     {
       "name": "etabs_import.py",
       "type": "python",
-      "size_lines": 1015,
-      "last_updated": "2026-03-26",
+      "size_lines": 1018,
+      "last_updated": "2026-04-07",
       "description": "ETABS CSV Import Module.",
       "classes": [
         {
@@ -1212,7 +1514,7 @@
           ]
         }
       ],
-      "content_hash": "e7b76ebf2308"
+      "content_hash": "1c41ffa82156"
     },
     {
       "name": "excel_bridge.py",
@@ -1292,7 +1594,7 @@
       "name": "excel_integration.py",
       "type": "python",
       "size_lines": 489,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-07",
       "description": "Excel Integration Module — Bridge between Excel data and Detailing/DXF",
       "classes": [
         {
@@ -1376,7 +1678,7 @@
           "description": "Command-line interface for batch DXF generation."
         }
       ],
-      "content_hash": "09c46219c841"
+      "content_hash": "846290659ccd"
     },
     {
       "name": "imports.py",
@@ -1476,8 +1778,8 @@
     {
       "name": "multi_objective_optimizer.py",
       "type": "python",
-      "size_lines": 638,
-      "last_updated": "2026-03-26",
+      "size_lines": 642,
+      "last_updated": "2026-04-07",
       "description": "Multi-Objective Optimization Module",
       "classes": [
         {
@@ -1519,15 +1821,18 @@
         }
       ],
       "constants": [
+        "_PT_MIN_COEFF",
+        "_MU_LIM_WARNING_RATIO",
+        "_HIGH_UTILIZATION_THRESHOLD",
         "GOVERNING_CLAUSES"
       ],
-      "content_hash": "89c4b6caca46"
+      "content_hash": "dbf586cd350a"
     },
     {
       "name": "optimization.py",
       "type": "python",
-      "size_lines": 309,
-      "last_updated": "2026-03-26",
+      "size_lines": 311,
+      "last_updated": "2026-04-07",
       "description": "Optimization algorithms for structural design.",
       "classes": [
         {
@@ -1552,13 +1857,16 @@
           ]
         }
       ],
-      "content_hash": "6d3d8505ae95"
+      "constants": [
+        "_PT_MIN_COEFF"
+      ],
+      "content_hash": "7ea4e3f836d1"
     },
     {
       "name": "rebar.py",
       "type": "python",
       "size_lines": 251,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-07",
       "description": "Rebar configuration validation and application helpers.",
       "functions": [
         {
@@ -1578,13 +1886,13 @@
           ]
         }
       ],
-      "content_hash": "2090bfd4781c"
+      "content_hash": "fc884fa95f6b"
     },
     {
       "name": "rebar_optimizer.py",
       "type": "python",
       "size_lines": 322,
-      "last_updated": "2026-03-27",
+      "last_updated": "2026-04-07",
       "description": "Rebar arrangement optimizer (deterministic).",
       "classes": [
         {
@@ -1597,13 +1905,13 @@
           "description": "Find a feasible bar arrangement."
         }
       ],
-      "content_hash": "61f776d5f96a"
+      "content_hash": "ab4bac77d73c"
     },
     {
       "name": "report.py",
       "type": "python",
-      "size_lines": 1755,
-      "last_updated": "2026-03-27",
+      "size_lines": 1758,
+      "last_updated": "2026-04-06",
       "description": "Report generation module for beam design results.",
       "classes": [
         {
@@ -1728,9 +2036,10 @@
         }
       ],
       "constants": [
+        "UTILIZATION_WARNING_THRESHOLD",
         "_REPORT_CSS"
       ],
-      "content_hash": "94546ad4635e"
+      "content_hash": "cee5d7e7699c"
     },
     {
       "name": "report_svg.py",
@@ -1855,10 +2164,37 @@
       "content_hash": "b4c2f663abd6"
     },
     {
+      "name": "slab_api.py",
+      "type": "python",
+      "size_lines": 162,
+      "last_updated": "2026-08-09",
+      "description": "Stable orchestration entry points for the bounded IS 456 slab workflows.",
+      "classes": [
+        {
+          "name": "OneWaySlabDesignResult",
+          "description": "Flexure and provided-bar checks for the supported one-way slab strip.",
+          "public_methods": [
+            "is_detailing_adequate"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "design_one_way_slab_is456",
+          "description": "Design the bounded simply supported one-way slab strip."
+        },
+        {
+          "name": "design_two_way_slab_is456",
+          "description": "Compute flexure for the sole externally accepted-coefficient case."
+        }
+      ],
+      "content_hash": "149e7febcee4"
+    },
+    {
       "name": "testing_strategies.py",
       "type": "python",
       "size_lines": 655,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-03",
       "description": "Module:       testing_strategies",
       "classes": [
         {
@@ -1952,10 +2288,10 @@
         "STRESS_TOLERANCE",
         "RATIO_TOLERANCE"
       ],
-      "content_hash": "884be28d2acc"
+      "content_hash": "c1fc0ca963cd"
     }
   ],
   "subfolders": [],
-  "content_hash": "c7176d99554506a8",
+  "content_hash": "285540bbc483ba34",
   "has_init": true
 }

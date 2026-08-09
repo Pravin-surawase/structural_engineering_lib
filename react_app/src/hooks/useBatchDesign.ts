@@ -19,20 +19,35 @@ export interface BatchProgress {
 
 export interface BatchResult {
   beam_id: string;
-  success: boolean;
+  design_succeeded: boolean;
+  is_safe: boolean;
+  status: 'PASS' | 'FAIL';
   flexure?: {
     ast_required: number;
-    moment_capacity: number;
-    is_under_reinforced: boolean;
+    asc_required: number;
+    mu_lim: number;
+    xu: number;
+    is_safe: boolean;
   };
   shear?: {
     tau_v: number;
     tau_c: number;
+    tau_c_max: number;
+    vus: number;
     stirrup_spacing: number;
+    is_safe: boolean;
   };
   utilization_ratio?: number;
+  utilizations?: Record<string, number>;
+  failed_checks?: string[];
+  remarks?: string;
   error?: string;
 }
+
+type ServerBatchResult = BatchResult & {
+  input?: { beam_id?: string };
+  message?: string;
+};
 
 export type BatchStatus = 'idle' | 'running' | 'complete' | 'error';
 
@@ -105,13 +120,20 @@ export function useBatchDesign() {
     });
 
     es.addEventListener('design_result', (e: MessageEvent) => {
-      const data = JSON.parse(e.data);
+      const data = JSON.parse(e.data) as ServerBatchResult;
       const result: BatchResult = {
         beam_id: data.beam_id ?? data.input?.beam_id ?? `beam-${Date.now()}`,
-        success: true,
+        // The server owns the engineering verdict.  Do not promote a completed
+        // calculation to PASS on the client.
+        design_succeeded: data.design_succeeded === true,
+        is_safe: data.is_safe === true,
+        status: data.status === 'PASS' ? 'PASS' : 'FAIL',
         flexure: data.flexure,
         shear: data.shear,
         utilization_ratio: data.utilization_ratio,
+        utilizations: data.utilizations,
+        failed_checks: data.failed_checks,
+        remarks: data.remarks,
       };
       setState(prev => ({
         ...prev,
@@ -122,10 +144,12 @@ export function useBatchDesign() {
     es.addEventListener('error', (e: MessageEvent) => {
       // SSE error events can be connection errors (no data) or beam errors (with data)
       if (e.data) {
-        const data = JSON.parse(e.data);
+        const data = JSON.parse(e.data) as ServerBatchResult;
         const result: BatchResult = {
           beam_id: data.beam_id ?? data.input?.beam_id ?? `error-${Date.now()}`,
-          success: false,
+          design_succeeded: false,
+          is_safe: false,
+          status: 'FAIL',
           error: data.message ?? 'Design failed',
         };
         setState(prev => ({

@@ -110,7 +110,7 @@ class TestFallbackHtml:
             "beam_id": "B1",
             "project_name": "Test Project",
             "is_ok": True,
-            "results": {"flexure": {"ast_mm2": 1000}},
+            "results": {"flexure": {"ast_mm2": 1000, "is_ok": True}},
         }
         html = _generate_fallback_html(context)
         assert "<!DOCTYPE html>" in html
@@ -124,6 +124,19 @@ class TestFallbackHtml:
         context = {"beam_id": "B2", "is_ok": False, "results": {}}
         html = _generate_fallback_html(context)
         assert "FAIL" in html
+
+    def test_fallback_missing_section_status_is_not_evaluated(self) -> None:
+        """Fallback rendering must not invent PASS for missing status."""
+        context = {
+            "beam_id": "B1",
+            "project_name": "Test Project",
+            "is_ok": True,
+            "results": {"shear": {"tau_v": 1.2}},
+        }
+
+        html = _generate_fallback_html(context)
+
+        assert "NOT EVALUATED" in html
         assert "#dc3545" in html
 
     def test_fallback_escapes_html(self) -> None:

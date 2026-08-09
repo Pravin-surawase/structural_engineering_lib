@@ -23,7 +23,7 @@ import json
 import logging
 import uuid
 from datetime import datetime, timezone
-from typing import Any, AsyncGenerator
+from typing import Any, AsyncGenerator, Mapping
 
 from fastapi import APIRouter, Depends, HTTPException, Path, Query, Request
 from sse_starlette.sse import EventSourceResponse
@@ -35,6 +35,18 @@ from fastapi_app.config import get_settings
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/stream", tags=["streaming"])
+
+
+def _job_engineering_status(job: Mapping[str, Any]) -> dict[str, bool | None | str]:
+    """Return a verdict only after every batch item has been evaluated."""
+    if job["completed"] < job["total"]:
+        return {"is_safe": None, "overall_status": "IN_PROGRESS"}
+
+    is_safe = job["failed"] == 0
+    return {
+        "is_safe": is_safe,
+        "overall_status": "PASS" if is_safe else "FAIL",
+    }
 
 
 # =============================================================================
@@ -60,6 +72,7 @@ class BatchJobManager:
             "status": "running",
             "total": total_items,
             "completed": 0,
+            "passed": 0,
             "failed": 0,
             "results": [],
             "errors": [],
@@ -71,7 +84,7 @@ class BatchJobManager:
     def update_progress(
         self,
         job_id: str,
-        success: bool,
+        design_succeeded: bool,
         result: dict | None = None,
         error: str | None = None,
     ) -> None:
@@ -82,8 +95,12 @@ class BatchJobManager:
         job = self.jobs[job_id]
         job["completed"] += 1
 
-        if success and result:
+        if design_succeeded and result:
             job["results"].append(result)
+            if result.get("is_safe", False):
+                job["passed"] += 1
+            else:
+                job["failed"] += 1
         elif error:
             job["failed"] += 1
             job["errors"].append(error)
@@ -218,25 +235,32 @@ async def stream_batch_design(
 
             if outcome.get("success"):
                 result_data = outcome["data"]
-                job_manager.update_progress(job_id, success=True, result=result_data)
+                job_manager.update_progress(
+                    job_id, design_succeeded=True, result=result_data
+                )
                 yield {"event": "design_result", "data": json.dumps(result_data)}
             else:
                 error_data = outcome["error"]
                 job_manager.update_progress(
-                    job_id, success=False, error=error_data.get("message")
+                    job_id,
+                    design_succeeded=False,
+                    error=error_data.get("message"),
                 )
                 yield {"event": "error", "data": json.dumps(error_data)}
 
             # Send progress update
             job = job_manager.get_job(job_id)
             if job is not None:
+                engineering_status = _job_engineering_status(job)
                 yield {
                     "event": "progress",
                     "data": json.dumps(
                         {
                             "completed": job["completed"],
                             "total": job["total"],
+                            "passed": job["passed"],
                             "failed": job["failed"],
+                            **engineering_status,
                             "percent": round(job["completed"] / job["total"] * 100, 1),
                         }
                     ),
@@ -247,6 +271,7 @@ async def stream_batch_design(
         # Send complete event
         job = job_manager.get_job(job_id)
         if job is not None:
+            engineering_status = _job_engineering_status(job)
             yield {
                 "event": "complete",
                 "data": json.dumps(
@@ -254,7 +279,9 @@ async def stream_batch_design(
                         "job_id": job_id,
                         "total": job["total"],
                         "completed": job["completed"],
+                        "passed": job["passed"],
                         "failed": job["failed"],
+                        **engineering_status,
                         "duration_seconds": (
                             (
                                 datetime.fromisoformat(
@@ -288,12 +315,15 @@ async def get_job_status(
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
 
+    engineering_status = _job_engineering_status(job)
+
     return {
         "job_id": job["id"],
         "status": job["status"],
         "progress": {
             "completed": job["completed"],
             "total": job["total"],
+            "passed": job["passed"],
             "failed": job["failed"],
             "percent": (
                 round(job["completed"] / job["total"] * 100, 1)
@@ -304,4 +334,5 @@ async def get_job_status(
         "started_at": job["started_at"],
         "completed_at": job["completed_at"],
         "error_count": len(job["errors"]),
+        **engineering_status,
     }

@@ -7,6 +7,7 @@ from __future__ import annotations
 import ast
 import inspect
 import math
+from dataclasses import asdict, replace
 
 import pytest
 
@@ -48,8 +49,20 @@ def test_exact_ratio_two_is_accepted_and_recorded_for_qualified_review() -> None
     assert (
         record.policy_status is ExternalCoefficientPolicyStatus.EXTERNAL_SOURCE_REQUIRED
     )
-    assert record.review_status is ExternalCoefficientReviewStatus.REVIEW_REQUIRED
-    assert record.coefficient_correctness_is_verified is False
+    assert (
+        record.coefficient_review_status
+        is ExternalCoefficientReviewStatus.REVIEW_REQUIRED
+    )
+    assert record.qualified_acceptance_recorded is False
+    assert record.coefficient_correctness_verified_by_library is False
+    assert record.review_status is record.coefficient_review_status
+    assert (
+        record.coefficient_correctness_is_verified
+        is record.coefficient_correctness_verified_by_library
+    )
+    serialized = asdict(record)
+    assert "review_status" not in serialized
+    assert "coefficient_correctness_is_verified" not in serialized
     assert any("P10" in limitation for limitation in record.limitations)
 
 
@@ -59,6 +72,30 @@ def test_ratio_below_two_is_accepted_with_exact_ratio_echoed() -> None:
     )
 
     assert record.span_ratio_ly_lx == 1.5
+
+
+@pytest.mark.parametrize(
+    ("field_name", "value", "message"),
+    [
+        (
+            "qualified_acceptance_recorded",
+            True,
+            "cannot record qualified acceptance",
+        ),
+        (
+            "coefficient_correctness_verified_by_library",
+            True,
+            "cannot be verified by this library",
+        ),
+    ],
+)
+def test_record_cannot_claim_qualified_acceptance_or_library_verification(
+    field_name: str, value: bool, message: str
+) -> None:
+    record = record_external_two_way_slab_coefficients(**_record_kwargs())
+
+    with pytest.raises(SlabContractError, match=message):
+        replace(record, **{field_name: value})
 
 
 def test_ratio_above_two_is_rejected() -> None:

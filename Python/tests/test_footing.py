@@ -16,6 +16,8 @@ References:
 
 from __future__ import annotations
 
+from decimal import Decimal
+
 import pytest
 
 from structural_lib.codes.is456.footing._common import (
@@ -42,6 +44,70 @@ from structural_lib.core.data_types import (
     FootingType,
 )
 from structural_lib.core.errors import DimensionError, ValidationError
+
+
+@pytest.mark.parametrize(
+    "invalid_value", [float("nan"), float("inf"), float("-inf"), True, "25"]
+)
+def test_public_footing_entrypoints_reject_invalid_numeric_inputs(
+    invalid_value: object,
+) -> None:
+    """No public footing result or safety flag is derived from invalid inputs."""
+    with pytest.raises(ValidationError, match="finite real"):
+        size_footing(
+            P_service_kN=invalid_value,  # type: ignore[arg-type]
+            q_safe_kPa=200,
+            a_mm=400,
+            b_mm=400,
+        )
+    with pytest.raises(ValidationError, match="finite real"):
+        bearing_stress_enhancement(
+            fck=invalid_value,  # type: ignore[arg-type]
+            A1_mm2=640_000,
+            A2_mm2=160_000,
+        )
+    with pytest.raises(ValidationError, match="finite real"):
+        check_bearing_pressure(
+            Pu_kN=500,
+            fck=invalid_value,  # type: ignore[arg-type]
+            column_b_mm=300,
+            column_D_mm=300,
+            footing_B_mm=1500,
+            footing_L_mm=1500,
+        )
+    with pytest.raises(ValidationError, match="finite real"):
+        footing_flexure(
+            Pu_kN=1200,
+            L_mm=2000,
+            B_mm=2000,
+            d_mm=400,
+            overall_thickness_mm=450,
+            a_mm=400,
+            b_mm=400,
+            fck=invalid_value,  # type: ignore[arg-type]
+            fy=415,
+        )
+    with pytest.raises(ValidationError, match="finite real"):
+        footing_one_way_shear(
+            Pu_kN=1200,
+            L_mm=2000,
+            B_mm=2000,
+            d_mm=400,
+            a_mm=400,
+            b_mm=400,
+            fck=invalid_value,  # type: ignore[arg-type]
+        )
+    with pytest.raises(ValidationError, match="finite real"):
+        footing_punching_shear(
+            Pu_kN=1200,
+            L_mm=2000,
+            B_mm=2000,
+            d_mm=400,
+            a_mm=400,
+            b_mm=400,
+            fck=invalid_value,  # type: ignore[arg-type]
+        )
+
 
 # ===========================================================================
 # 1. Bearing / Sizing Tests — size_footing (IS 456 Cl 34.1)
@@ -606,6 +672,7 @@ class TestFootingFlexure:
             L_mm=2000,
             B_mm=2000,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=400,
             b_mm=400,
             fck=25,
@@ -632,6 +699,7 @@ class TestFootingFlexure:
             L_mm=1500,
             B_mm=1500,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=300,
             b_mm=300,
             fck=25,
@@ -641,6 +709,42 @@ class TestFootingFlexure:
         assert result.pt_B_percent >= 0.12
         assert any("minimum" in w.lower() for w in result.warnings)
 
+    def test_minimum_steel_uses_explicit_overall_thickness(self):
+        """Cl. 26.5.2.1 minimum area uses gross, not effective, depth."""
+        common = {
+            "Pu_kN": 100,
+            "L_mm": 1500,
+            "B_mm": 1500,
+            "d_mm": 400,
+            "a_mm": 300,
+            "b_mm": 300,
+            "fck": 25,
+            "fy": 415,
+        }
+        thinner = footing_flexure(**common, overall_thickness_mm=450)
+        thicker = footing_flexure(**common, overall_thickness_mm=600)
+
+        assert thinner.Ast_L_mm2 == pytest.approx(0.0012 * 1500 * 450)
+        assert thicker.Ast_L_mm2 == pytest.approx(0.0012 * 1500 * 600)
+        assert thicker.Ast_L_mm2 > thinner.Ast_L_mm2
+
+    @pytest.mark.parametrize("overall_thickness_mm", [400, 350])
+    def test_effective_depth_must_be_less_than_overall_thickness(
+        self, overall_thickness_mm: float
+    ) -> None:
+        with pytest.raises(DimensionError, match="less than overall thickness"):
+            footing_flexure(
+                Pu_kN=100,
+                L_mm=1500,
+                B_mm=1500,
+                d_mm=400,
+                overall_thickness_mm=overall_thickness_mm,
+                a_mm=300,
+                b_mm=300,
+                fck=25,
+                fy=415,
+            )
+
     def test_symmetric_footing_equal_directions(self):
         """Square col on square footing → both directions give equal moment."""
         result = footing_flexure(
@@ -648,6 +752,7 @@ class TestFootingFlexure:
             L_mm=2000,
             B_mm=2000,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=400,
             b_mm=400,
             fck=25,
@@ -665,6 +770,7 @@ class TestFootingFlexure:
             L_mm=2400,
             B_mm=1800,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=500,
             b_mm=300,
             fck=25,
@@ -687,6 +793,7 @@ class TestFootingFlexure:
                 L_mm=2000,
                 B_mm=2000,
                 d_mm=400,
+                overall_thickness_mm=450,
                 a_mm=400,
                 b_mm=400,
                 fck=-25,
@@ -701,6 +808,7 @@ class TestFootingFlexure:
                 L_mm=400,
                 B_mm=400,
                 d_mm=300,
+                overall_thickness_mm=350,
                 a_mm=500,
                 b_mm=500,
                 fck=25,
@@ -714,6 +822,7 @@ class TestFootingFlexure:
             L_mm=2000,
             B_mm=2000,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=400,
             b_mm=400,
             fck=25,
@@ -729,6 +838,7 @@ class TestFootingFlexure:
             L_mm=2000,
             B_mm=2000,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=400,
             b_mm=400,
             fck=25,
@@ -758,6 +868,7 @@ class TestFootingFlexure:
             L_mm=2000,
             B_mm=2000,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=400,
             b_mm=400,
             fck=25,
@@ -1175,6 +1286,31 @@ class TestFootingCommon:
         """validate_footing_inputs: d == 150mm → no error."""
         validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=150, a_mm=400, b_mm=400)
 
+    @pytest.mark.parametrize(
+        "invalid_value", [float("nan"), float("inf"), float("-inf"), True, "400"]
+    )
+    @pytest.mark.parametrize("field", ["L_mm", "B_mm", "d_mm", "a_mm", "b_mm"])
+    def test_validate_footing_inputs_rejects_non_finite_or_non_real_geometry(
+        self, field: str, invalid_value: object
+    ) -> None:
+        kwargs: dict[str, object] = {
+            "L_mm": 2000.0,
+            "B_mm": 2000.0,
+            "d_mm": 400.0,
+            "a_mm": 400.0,
+            "b_mm": 400.0,
+        }
+        kwargs[field] = invalid_value
+
+        with pytest.raises(DimensionError, match=rf"{field} must be a finite real"):
+            validate_footing_inputs(**kwargs)  # type: ignore[arg-type]
+
+    def test_validate_footing_inputs_rejects_decimal_geometry(self):
+        with pytest.raises(DimensionError, match="L_mm must be a finite real"):
+            validate_footing_inputs(
+                L_mm=Decimal("2000"), B_mm=2000, d_mm=400, a_mm=400, b_mm=400
+            )
+
     # --- net_upward_pressure_nmm2 ---
 
     def test_net_pressure_benchmark(self):
@@ -1192,6 +1328,15 @@ class TestFootingCommon:
         """net_upward_pressure_nmm2: negative load → ValidationError."""
         with pytest.raises(ValidationError, match="positive"):
             net_upward_pressure_nmm2(Pu_kN=-100, L_mm=2000, B_mm=2000)
+
+    @pytest.mark.parametrize(
+        "invalid_value", [float("nan"), float("inf"), float("-inf"), True, "1200"]
+    )
+    def test_net_pressure_rejects_invalid_load_before_arithmetic(
+        self, invalid_value: object
+    ) -> None:
+        with pytest.raises(ValidationError, match="Pu_kN must be a finite real"):
+            net_upward_pressure_nmm2(Pu_kN=invalid_value, L_mm=2000, B_mm=2000)  # type: ignore[arg-type]
 
     # --- punching_perimeter_mm ---
 
@@ -1251,6 +1396,7 @@ class TestFootingTypes:
             L_mm=2000,
             B_mm=2000,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=400,
             b_mm=400,
             fck=25,
@@ -1295,6 +1441,7 @@ class TestFootingTypes:
             L_mm=2000,
             B_mm=2000,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=400,
             b_mm=400,
             fck=25,
@@ -1320,6 +1467,7 @@ class TestFootingTypes:
             L_mm=2000,
             B_mm=2000,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=400,
             b_mm=400,
             fck=25,
@@ -1359,6 +1507,7 @@ class TestFlexureBothDirections:
             L_mm=2000,
             B_mm=2400,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=500,
             b_mm=300,
             fck=25,
@@ -1385,6 +1534,7 @@ class TestFlexureBothDirections:
             L_mm=3000,
             B_mm=1500,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=400,
             b_mm=300,
             fck=25,
@@ -1404,6 +1554,7 @@ class TestFlexureBothDirections:
             L_mm=2000,
             B_mm=2000,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=400,
             b_mm=400,
             fck=25,
@@ -1420,6 +1571,7 @@ class TestFlexureBothDirections:
             L_mm=2250,
             B_mm=1500,
             d_mm=350,
+            overall_thickness_mm=400,
             a_mm=400,
             b_mm=300,
             fck=25,
@@ -1546,6 +1698,7 @@ class TestMinimumDepthEnforcement:
             L_mm=2000,
             B_mm=2000,
             d_mm=150,
+            overall_thickness_mm=200,
             a_mm=300,
             b_mm=300,
             fck=25,
@@ -1562,6 +1715,7 @@ class TestMinimumDepthEnforcement:
                 L_mm=2000,
                 B_mm=2000,
                 d_mm=149,
+                overall_thickness_mm=199,
                 a_mm=300,
                 b_mm=300,
                 fck=25,

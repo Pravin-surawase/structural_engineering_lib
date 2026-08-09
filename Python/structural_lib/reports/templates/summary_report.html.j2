@@ -141,32 +141,32 @@
                 {% if results.flexure %}
                 <tr>
                     <td>Flexure</td>
-                    <td class="status {% if results.flexure.get('is_ok', True) %}check-pass{% else %}check-fail{% endif %}">
-                        {{ '✓' if results.flexure.get('is_ok', True) else '✗' }}
+                    <td class="status {{ 'check-pass' if results.flexure.is_ok is sameas true else 'check-fail' }}">
+                        {{ results.flexure.status_symbol }} {{ results.flexure.status_text }}
                     </td>
                 </tr>
                 {% endif %}
                 {% if results.shear %}
                 <tr>
                     <td>Shear</td>
-                    <td class="status {% if results.shear.get('is_ok', True) %}check-pass{% else %}check-fail{% endif %}">
-                        {{ '✓' if results.shear.get('is_ok', True) else '✗' }}
+                    <td class="status {{ 'check-pass' if results.shear.is_ok is sameas true else 'check-fail' }}">
+                        {{ results.shear.status_symbol }} {{ results.shear.status_text }}
                     </td>
                 </tr>
                 {% endif %}
                 {% if results.deflection %}
                 <tr>
                     <td>Deflection</td>
-                    <td class="status {% if results.deflection.get('is_ok', True) %}check-pass{% else %}check-fail{% endif %}">
-                        {{ '✓' if results.deflection.get('is_ok', True) else '✗' }}
+                    <td class="status {{ 'check-pass' if results.deflection.is_ok is sameas true else 'check-fail' }}">
+                        {{ results.deflection.status_symbol }} {{ results.deflection.status_text }}
                     </td>
                 </tr>
                 {% endif %}
                 {% if results.crack_width %}
                 <tr>
                     <td>Crack Width</td>
-                    <td class="status {% if results.crack_width.get('is_ok', True) %}check-pass{% else %}check-fail{% endif %}">
-                        {{ '✓' if results.crack_width.get('is_ok', True) else '✗' }}
+                    <td class="status {{ 'check-pass' if results.crack_width.is_ok is sameas true else 'check-fail' }}">
+                        {{ results.crack_width.status_symbol }} {{ results.crack_width.status_text }}
                     </td>
                 </tr>
                 {% endif %}

@@ -167,6 +167,7 @@ def test_footing_flexure_golden(vector: dict):
         L_mm=inp["L_mm"],
         B_mm=inp["B_mm"],
         d_mm=inp["d_mm"],
+        overall_thickness_mm=inp["overall_thickness_mm"],
         a_mm=inp["a_mm"],
         b_mm=inp["b_mm"],
         fck=inp["fck"],
@@ -276,10 +277,26 @@ def test_footing_golden_vectors_are_deterministic():
     assert r1.utilization_ratio == r2.utilization_ratio
 
     r3 = footing_flexure(
-        Pu_kN=1200, L_mm=1500, B_mm=1500, d_mm=400, a_mm=400, b_mm=400, fck=25, fy=415
+        Pu_kN=1200,
+        L_mm=1500,
+        B_mm=1500,
+        d_mm=400,
+        overall_thickness_mm=450,
+        a_mm=400,
+        b_mm=400,
+        fck=25,
+        fy=415,
     )
     r4 = footing_flexure(
-        Pu_kN=1200, L_mm=1500, B_mm=1500, d_mm=400, a_mm=400, b_mm=400, fck=25, fy=415
+        Pu_kN=1200,
+        L_mm=1500,
+        B_mm=1500,
+        d_mm=400,
+        overall_thickness_mm=450,
+        a_mm=400,
+        b_mm=400,
+        fck=25,
+        fy=415,
     )
     assert r3.Ast_L_mm2 == r4.Ast_L_mm2
     assert r3.Mu_L_kNm == r4.Mu_L_kNm

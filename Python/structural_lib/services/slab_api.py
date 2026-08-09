@@ -115,14 +115,15 @@ def design_two_way_slab_is456(
     fy_n_per_mm2: float,
     strip_width_mm: float = 1000.0,
 ) -> TwoWaySlabFlexureResult:
-    """Design flexure for the sole supported two-way interior-panel case.
+    """Compute flexure for the sole externally accepted-coefficient case.
 
     Coefficients are caller supplied and must carry explicit source approval
     plus a separate qualified acceptance reference. The caller must also
     declare the exact interior, four-edge-continuous configuration; the core
     requires both declarations to be literal ``True``. This route does not
-    look up coefficients or perform reinforcement detailing/serviceability
-    checks.
+    look up coefficients or perform a complete two-way slab design. The result
+    explicitly records outstanding reinforcement detailing, serviceability,
+    shear/punching, load-patterning, and other-panel-case dependencies.
     """
     geometry = SolidRectangularSlabGeometry(
         span_a_effective_mm=short_effective_span_mm,

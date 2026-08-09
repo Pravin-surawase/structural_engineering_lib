@@ -3,16 +3,16 @@
   "type": "python-package",
   "description": "> Development, validation, discovery, release-preparation, and maintenance tools.",
   "last_updated": "2026-08-09",
-  "file_count": 108,
+  "file_count": 109,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 68,
+      "size_lines": 72,
       "last_updated": "2026-08-09",
       "title": "Scripts",
       "description": "> Development, validation, discovery, release-preparation, and maintenance tools. > Git/GitHub lifecycle wrappers were retired on 2026-08-09; Codex owns that",
-      "content_hash": "d6f9e725a121"
+      "content_hash": "d6054b200473"
     },
     {
       "name": "_tmp_add_groups.py",
@@ -36,7 +36,7 @@
     {
       "name": "agent_compliance_checker.py",
       "type": "python",
-      "size_lines": 514,
+      "size_lines": 541,
       "last_updated": "2026-08-09",
       "description": "Agent compliance checker — verify agents followed their .agent.md rules.",
       "functions": [
@@ -125,12 +125,12 @@
       "constants": [
         "COMPLIANCE_RULES"
       ],
-      "content_hash": "d4c42039968a"
+      "content_hash": "9f2469f15690"
     },
     {
       "name": "agent_context.py",
       "type": "python",
-      "size_lines": 577,
+      "size_lines": 644,
       "last_updated": "2026-08-09",
       "description": "Agent Context Loader — gives each agent its tailored startup context.",
       "functions": [
@@ -141,6 +141,10 @@
             "name",
             "description"
           ]
+        },
+        {
+          "name": "load_agent_registry",
+          "description": "Load the canonical agent registry and fail closed on invalid metadata."
         },
         {
           "name": "run",
@@ -210,18 +214,27 @@
           "name": "ctx_ui_designer"
         },
         {
+          "name": "print_registry_context",
+          "description": "Print useful context for a registered agent without a tailored function.",
+          "params": [
+            "agent_name",
+            "metadata"
+          ]
+        },
+        {
           "name": "main"
         }
       ],
       "constants": [
-        "ROOT"
+        "ROOT",
+        "AGENT_REGISTRY"
       ],
-      "content_hash": "caf69d529423"
+      "content_hash": "c84c694b88a5"
     },
     {
       "name": "agent_drift_detector.py",
       "type": "python",
-      "size_lines": 560,
+      "size_lines": 649,
       "last_updated": "2026-08-09",
       "description": "Agent drift detector — detect when agents deviate from prescribed behavior.",
       "functions": [
@@ -289,7 +302,7 @@
       "constants": [
         "DRIFT_RULES"
       ],
-      "content_hash": "7b5619351642"
+      "content_hash": "4f0b56092c88"
     },
     {
       "name": "agent_evolve_instructions.py",
@@ -584,8 +597,8 @@
     {
       "name": "agent_trends.py",
       "type": "python",
-      "size_lines": 375,
-      "last_updated": "2026-04-01",
+      "size_lines": 383,
+      "last_updated": "2026-08-09",
       "description": "Agent trends — time series analysis and degradation detection.",
       "functions": [
         {
@@ -638,7 +651,7 @@
           "description": "Main entry point."
         }
       ],
-      "content_hash": "6f27242e26dc"
+      "content_hash": "95cc0fd4d1f6"
     },
     {
       "name": "archive_old_files.sh",
@@ -762,8 +775,8 @@
     {
       "name": "audit_permissions.py",
       "type": "python",
-      "size_lines": 394,
-      "last_updated": "2026-04-02",
+      "size_lines": 468,
+      "last_updated": "2026-08-09",
       "description": "Permission audit report for all agents.",
       "classes": [
         {
@@ -781,6 +794,10 @@
       ],
       "functions": [
         {
+          "name": "audit_automation_permission_metadata",
+          "description": "Validate only explicitly declared automation permission metadata."
+        },
+        {
           "name": "audit_permissions",
           "description": "Run full permission audit across all agents."
         },
@@ -793,9 +810,11 @@
       ],
       "constants": [
         "_WRITE_TOOLS",
-        "_RUN_TOOLS"
+        "_RUN_TOOLS",
+        "_AUTOMATION_MAP",
+        "_KNOWN_LEVELS"
       ],
-      "content_hash": "56009c60f71f"
+      "content_hash": "eb0554d88a5b"
     },
     {
       "name": "audit_readiness_report.py",
@@ -905,7 +924,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "b44dd6a36da8"
+      "content_hash": "9f007cc3cbdc"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1043,8 +1062,8 @@
     {
       "name": "bump_version.py",
       "type": "python",
-      "size_lines": 451,
-      "last_updated": "2026-04-07",
+      "size_lines": 440,
+      "last_updated": "2026-08-09",
       "description": "Version Bump Script — Single Source of Truth",
       "functions": [
         {
@@ -1072,7 +1091,7 @@
         "DOC_DATE_FILES",
         "EVERGREEN_NOTES"
       ],
-      "content_hash": "986fdb4ceb01"
+      "content_hash": "430d3dd38db0"
     },
     {
       "name": "check_all.py",
@@ -1103,7 +1122,7 @@
         "VENV_PYTHON",
         "SCRIPTS_DIR"
       ],
-      "content_hash": "2e6ebf4e62a3"
+      "content_hash": "359bdcc4ab7f"
     },
     {
       "name": "check_api.py",
@@ -1150,31 +1169,20 @@
     {
       "name": "check_api_compat.py",
       "type": "python",
-      "size_lines": 152,
-      "last_updated": "2026-03-29",
-      "description": "Check API backward compatibility.",
+      "size_lines": 43,
+      "last_updated": "2026-08-09",
+      "description": "Compatibility wrapper for the canonical public API manifest check.",
       "functions": [
         {
-          "name": "get_current_api",
-          "description": "Introspect the current public API surface."
-        },
-        {
-          "name": "check_compat",
-          "description": "Compare saved manifest against current API. Return list of breaking changes.",
-          "params": [
-            "saved",
-            "current"
-          ]
-        },
-        {
-          "name": "main"
+          "name": "main",
+          "description": "Delegate legacy invocations to the canonical manifest generator."
         }
       ],
       "constants": [
         "PROJECT_ROOT",
-        "MANIFEST_PATH"
+        "GENERATOR"
       ],
-      "content_hash": "ff818dab6241"
+      "content_hash": "204e2d1b9d61"
     },
     {
       "name": "check_architecture_boundaries.py",
@@ -1469,7 +1477,7 @@
     {
       "name": "check_codex_git_workflow.py",
       "type": "python",
-      "size_lines": 89,
+      "size_lines": 97,
       "last_updated": "2026-08-09",
       "description": "Guard the Codex-native Git/GitHub workflow contract.",
       "functions": [
@@ -1483,7 +1491,7 @@
         "RETIRED_PATHS",
         "LIVE_FILES_WITHOUT_WRAPPER_CALLS"
       ],
-      "content_hash": "7c77e2eb783c"
+      "content_hash": "e6c08dc72756"
     },
     {
       "name": "check_doc_versions.py",
@@ -1759,8 +1767,8 @@
     {
       "name": "check_governance.py",
       "type": "python",
-      "size_lines": 1026,
-      "last_updated": "2026-04-04",
+      "size_lines": 1042,
+      "last_updated": "2026-08-09",
       "description": "Unified governance checker — folder structure + compliance validation.",
       "classes": [
         {
@@ -1870,6 +1878,13 @@
           ]
         },
         {
+          "name": "check_automation_permissions",
+          "description": "Fail when explicitly declared task/mode permissions are malformed.",
+          "params": [
+            "report"
+          ]
+        },
+        {
           "name": "run_structure",
           "description": "Run all structure checks.",
           "params": [
@@ -1907,7 +1922,7 @@
         "DEFAULT_RULES",
         "RULES"
       ],
-      "content_hash": "cab3464da4cb"
+      "content_hash": "451b50e738a1"
     },
     {
       "name": "check_instruction_drift.py",
@@ -3382,15 +3397,15 @@
     {
       "name": "launch_stack.sh",
       "type": "shell-script",
-      "size_lines": 885,
+      "size_lines": 863,
       "last_updated": "2026-08-09",
       "description": "launch_stack.sh — Full-stack development launcher for structural_engineering_lib",
-      "content_hash": "954547578d89"
+      "content_hash": "92a45299c7a7"
     },
     {
       "name": "migrate_python_module.py",
       "type": "python",
-      "size_lines": 517,
+      "size_lines": 516,
       "last_updated": "2026-08-09",
       "description": "Migrate a Python module to a new location with import updates.",
       "functions": [
@@ -3456,12 +3471,12 @@
         "SEARCH_DIRS",
         "SKIP_PATTERNS"
       ],
-      "content_hash": "53901c3c583f"
+      "content_hash": "9f1b4f49006e"
     },
     {
       "name": "migrate_react_component.py",
       "type": "python",
-      "size_lines": 478,
+      "size_lines": 475,
       "last_updated": "2026-08-09",
       "description": "Migrate a React component to a new feature-grouped folder.",
       "functions": [
@@ -3537,7 +3552,7 @@
         "SEARCH_EXTENSIONS",
         "SKIP_PATTERNS"
       ],
-      "content_hash": "72c75b894821"
+      "content_hash": "bb321cbd8ce2"
     },
     {
       "name": "model_picker.py",
@@ -3573,6 +3588,43 @@
         "HIGH_RISK"
       ],
       "content_hash": "f6b2d03eb763"
+    },
+    {
+      "name": "node_runtime.py",
+      "type": "python",
+      "size_lines": 205,
+      "last_updated": "2026-08-09",
+      "description": "Select and run the healthy Node.js major pinned by ``.nvmrc``.",
+      "functions": [
+        {
+          "name": "required_node_major",
+          "description": "Return the Node major pinned by ``.nvmrc``, if present.",
+          "params": [
+            "repo_root"
+          ]
+        },
+        {
+          "name": "node_bin_candidates",
+          "description": "Return plausible binary directories in deterministic preference order.",
+          "params": [
+            "required_major"
+          ]
+        },
+        {
+          "name": "node_runtime_env",
+          "description": "Return an environment using the pinned healthy Node/npm pair."
+        },
+        {
+          "name": "main",
+          "params": [
+            "argv"
+          ]
+        }
+      ],
+      "constants": [
+        "REPO_ROOT"
+      ],
+      "content_hash": "83b822a47279"
     },
     {
       "name": "parity_dashboard.py",
@@ -3978,10 +4030,17 @@
     {
       "name": "release.py",
       "type": "python",
-      "size_lines": 1054,
+      "size_lines": 1279,
       "last_updated": "2026-08-09",
       "description": "Unified release management CLI.",
       "functions": [
+        {
+          "name": "cmd_candidate_check",
+          "description": "Verify exact source, artifact, and clean-install version evidence.",
+          "params": [
+            "args"
+          ]
+        },
         {
           "name": "cmd_run",
           "params": [
@@ -4025,10 +4084,14 @@
         "CHANGELOG",
         "RELEASES",
         "CHECKLIST_PATH",
+        "PYPROJECT",
+        "FASTAPI_INIT",
+        "REACT_PACKAGE",
+        "CITATION",
         "VERSION_RE",
-        "REQUIRED_HEADINGS"
+        "_EXCLUDED_WHEEL_PREFIXES"
       ],
-      "content_hash": "50ad7d4c074e"
+      "content_hash": "cd803da374cc"
     },
     {
       "name": "repo_health_check.sh",
@@ -4040,7 +4103,7 @@
     {
       "name": "safe_file_delete.py",
       "type": "python",
-      "size_lines": 355,
+      "size_lines": 350,
       "last_updated": "2026-08-09",
       "description": "Safe file delete script with reference checking.",
       "functions": [
@@ -4079,12 +4142,12 @@
           "name": "main"
         }
       ],
-      "content_hash": "e87d642121c1"
+      "content_hash": "c2dea6869d7b"
     },
     {
       "name": "safe_file_move.py",
       "type": "python",
-      "size_lines": 505,
+      "size_lines": 500,
       "last_updated": "2026-08-09",
       "description": "Safe file move script with automatic link updates.",
       "functions": [
@@ -4133,7 +4196,7 @@
           "name": "main"
         }
       ],
-      "content_hash": "c72572fc8159"
+      "content_hash": "ec229eb024cf"
     },
     {
       "name": "session.py",
@@ -4796,8 +4859,8 @@
     {
       "name": "tool_permissions.py",
       "type": "python",
-      "size_lines": 346,
-      "last_updated": "2026-04-02",
+      "size_lines": 437,
+      "last_updated": "2026-08-09",
       "description": "Tool permission enforcement for agent operations.",
       "classes": [
         {
@@ -4806,6 +4869,13 @@
         }
       ],
       "functions": [
+        {
+          "name": "resolve_required_permission",
+          "description": "Resolve the required level for an abstract op or declared script mode.",
+          "params": [
+            "operation"
+          ]
+        },
         {
           "name": "check_terminal_command",
           "description": "Check if *command* is allowed for agent's terminal_allowlist.",
@@ -4840,14 +4910,15 @@
       ],
       "constants": [
         "_PERMISSION_LEVELS",
-        "_REGISTRY_PATH"
+        "_REGISTRY_PATH",
+        "_AUTOMATION_MAP_PATH"
       ],
-      "content_hash": "f2805fec9167"
+      "content_hash": "0642c1206c41"
     },
     {
       "name": "tool_registry.py",
       "type": "python",
-      "size_lines": 575,
+      "size_lines": 556,
       "last_updated": "2026-08-09",
       "description": "Unified tool registry — connects agents, skills, scripts, and operations.",
       "classes": [
@@ -4857,15 +4928,6 @@
         }
       ],
       "functions": [
-        {
-          "name": "classify_permission",
-          "description": "Classify tool permission level based on keywords.",
-          "params": [
-            "script",
-            "task_name",
-            "description"
-          ]
-        },
         {
           "name": "extract_keywords",
           "description": "Extract keywords from name and description.",
@@ -4958,7 +5020,7 @@
         "TOOL_ALIASES",
         "STOPWORDS"
       ],
-      "content_hash": "c416c0197a3f"
+      "content_hash": "f17589315903"
     },
     {
       "name": "update_test_stats.py",
@@ -5002,8 +5064,8 @@
     {
       "name": "validate_api_contracts.py",
       "type": "python",
-      "size_lines": 620,
-      "last_updated": "2026-04-05",
+      "size_lines": 647,
+      "last_updated": "2026-08-09",
       "description": "API Contract Validator.",
       "classes": [
         {
@@ -5037,14 +5099,14 @@
         },
         {
           "name": "save_baseline",
-          "description": "Save current schema as baseline.",
+          "description": "Save the canonical raw OpenAPI schema used by every snapshot tool.",
           "params": [
             "schema"
           ]
         },
         {
           "name": "load_baseline",
-          "description": "Load baseline schema if exists."
+          "description": "Load the raw baseline and derive this validator's compact signature."
         },
         {
           "name": "print_comparison",
@@ -5085,7 +5147,7 @@
         "PROJECT_ROOT",
         "PYTHON_DIR"
       ],
-      "content_hash": "b74403b34d0e"
+      "content_hash": "bb35448c3f43"
     },
     {
       "name": "validate_git_state.sh",
@@ -5204,9 +5266,9 @@
     {
       "name": "validate_script_refs.py",
       "type": "python",
-      "size_lines": 178,
+      "size_lines": 235,
       "last_updated": "2026-08-09",
-      "description": "Validate that active scripts don't reference archived scripts at runtime.",
+      "description": "Validate that active control paths reference existing scripts.",
       "functions": [
         {
           "name": "get_archived_names",
@@ -5221,11 +5283,22 @@
         },
         {
           "name": "check_file",
-          "description": "Check a single file for stale references to archived scripts.",
+          "description": "Check a single file for stale references to known archived scripts.",
           "params": [
             "filepath",
             "archived_names"
           ]
+        },
+        {
+          "name": "check_missing_targets",
+          "description": "Return references whose top-level ``scripts/`` target does not exist.",
+          "params": [
+            "filepath"
+          ]
+        },
+        {
+          "name": "scan_files",
+          "description": "Return executable repository surfaces that may invoke scripts."
         },
         {
           "name": "main"
@@ -5235,12 +5308,15 @@
         "REPO_ROOT",
         "SCRIPTS_DIR",
         "ARCHIVE_DIR",
+        "WORKFLOWS_DIR",
+        "CONTROL_FILES",
         "RETIRED_NAMES",
         "DOC_PATTERNS",
         "RUNTIME_PATTERNS_PY",
-        "RUNTIME_PATTERNS_SH"
+        "RUNTIME_PATTERNS_SH",
+        "SCRIPT_REFERENCE_RE"
       ],
-      "content_hash": "5908e0ccf849"
+      "content_hash": "37d7df67276e"
     },
     {
       "name": "watch_tests.sh",
@@ -5253,16 +5329,11 @@
   ],
   "subfolders": [
     {
-      "name": "git-hooks",
-      "path": "git-hooks/",
-      "file_count": 0
-    },
-    {
       "name": "hooks",
       "path": "hooks/",
       "file_count": 3,
       "is_package": true
     }
   ],
-  "content_hash": "c205108703232375"
+  "content_hash": "2f638c2e7a3acf12"
 }

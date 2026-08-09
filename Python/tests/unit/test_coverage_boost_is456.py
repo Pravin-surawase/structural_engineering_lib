@@ -2083,6 +2083,7 @@ class TestFootingBearingEdgeCases:
             L_mm=2000,
             B_mm=1500,
             d_mm=400,
+            overall_thickness_mm=450,
             a_mm=400,
             b_mm=300,
             fck=25,

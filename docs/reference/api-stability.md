@@ -536,9 +536,9 @@ These modules are implementation details. Do not depend on them directly.
 If you must use an internal module:
 
 ```python
-# Pin to exact version
+# Pin to an actually published exact version
 # requirements.txt
-structural-lib-is456==0.23.0
+structural-lib-is456==<published-version>
 
 # Or wrap with try/except
 try:
