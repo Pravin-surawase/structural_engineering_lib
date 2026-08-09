@@ -15,7 +15,6 @@ import httpx
 @dataclass
 class FlexureResult:
     """Flexure design calculation results."""
-
     ast_required: float
     ast_min: float
     ast_max: float
@@ -29,7 +28,6 @@ class FlexureResult:
 @dataclass
 class ShearResult:
     """Shear design calculation results."""
-
     tau_v: float
     tau_c: float
     tau_c_max: float
@@ -42,7 +40,6 @@ class ShearResult:
 @dataclass
 class BeamDesignResponse:
     """Complete beam design results."""
-
     success: bool
     message: str
     flexure: FlexureResult
@@ -114,7 +111,10 @@ class StructuralDesignClient:
 
         response = self._client.post("/api/v1/design/beam", json=payload)
         response.raise_for_status()
-        data = response.json()
+        envelope = response.json()
+        if envelope.get("success") is not True:
+            raise RuntimeError(f"Design failed: {envelope.get('error', 'unknown error')}")
+        data = envelope["data"]
 
         shear_data = data.get("shear")
         shear_result = (
@@ -158,7 +158,7 @@ class StructuralDesignClient:
         length: float,
     ) -> dict:
         """
-        Calculate beam geometry metrics.
+        Generate beam geometry through the maintained 3D route.
 
         Args:
             width: Beam width in mm
@@ -166,11 +166,16 @@ class StructuralDesignClient:
             length: Beam length in mm
 
         Returns:
-            Dictionary with volume, surface_area, weight
+            Dictionary containing typed geometry components and bounds
         """
-        response = self._client.get(
-            "/api/v1/geometry/beam",
-            params={"width": width, "depth": depth, "length": length},
+        response = self._client.post(
+            "/api/v1/geometry/beam/3d",
+            json={"width": width, "depth": depth, "length": length},
         )
         response.raise_for_status()
-        return response.json()
+        envelope = response.json()
+        if envelope.get("success") is not True:
+            raise RuntimeError(
+                f"Geometry generation failed: {envelope.get('error', 'unknown error')}"
+            )
+        return envelope["data"]

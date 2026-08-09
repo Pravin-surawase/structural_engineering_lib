@@ -20,7 +20,7 @@ from fastapi_app.models.boq import (
     StorySummaryResponse,
 )
 
-from fastapi_app.models.response import error_response, success_response
+from fastapi_app.models.response import APIResponse, error_response, success_response
 
 logger = logging.getLogger(__name__)
 
@@ -186,6 +186,7 @@ class RebarSuggestResponse(BaseModel):
 
 @router.post(
     "/dashboard",
+    response_model=APIResponse[DashboardResponse],
     summary="Generate Dashboard Summary",
     description="Generate aggregated statistics from multiple beam design results.",
 )
@@ -251,6 +252,7 @@ async def generate_dashboard(request: DashboardRequest):
 
 @router.post(
     "/code-checks",
+    response_model=APIResponse[CodeChecksResponse],
     summary="Live IS 456 Code Checks",
     description="Perform fast code checks for real-time UI updates during editing.",
 )
@@ -322,6 +324,7 @@ async def code_checks_live(request: CodeChecksRequest):
 
 @router.post(
     "/rebar-suggest",
+    response_model=APIResponse[RebarSuggestResponse],
     summary="Suggest Rebar Optimizations",
     description="Generate optimized rebar configuration suggestions for a beam.",
 )
@@ -393,6 +396,7 @@ async def suggest_rebar_options(request: RebarSuggestRequest):
 
 @router.post(
     "/project-boq",
+    response_model=APIResponse[ProjectBOQResponse],
     summary="Project Bill of Quantities",
     description="Aggregate project BOQ from beam metadata with steel/concrete costs.",
 )

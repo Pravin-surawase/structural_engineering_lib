@@ -14,7 +14,7 @@ from fastapi_app.error_utils import (
     sanitize_error_string,
     sanitize_float,
 )
-from fastapi_app.models.response import error_response, success_response
+from fastapi_app.models.response import APIResponse, error_response, success_response
 from fastapi_app.models.beam import (
     BeamDesignRequest,
     BeamDesignResponse,
@@ -40,6 +40,7 @@ from fastapi_app.models.compliance import (
     ComplianceReportResponse,
     ComplianceCaseOutput,
 )
+from fastapi_app.models.metadata import DesignLimitsResponse
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +62,7 @@ router = APIRouter(
 
 @router.post(
     "/beam",
+    response_model=APIResponse[BeamDesignResponse],
     summary="Design Beam Section",
     description="Calculate required reinforcement for a beam section under given loading.",
 )
@@ -190,6 +192,7 @@ async def design_beam(request: BeamDesignRequest):
 
 @router.post(
     "/beam/check",
+    response_model=APIResponse[BeamCheckResponse],
     summary="Check Beam Adequacy",
     description="Check if a beam with given reinforcement is adequate for the applied loads.",
 )
@@ -302,6 +305,7 @@ async def check_beam(request: BeamCheckRequest):
 
 @router.get(
     "/limits",
+    response_model=APIResponse[DesignLimitsResponse],
     summary="Get Design Limits",
     description="Get IS 456 design limits and constraints.",
 )
@@ -362,6 +366,7 @@ async def get_design_limits():
 
 @router.post(
     "/beam/torsion",
+    response_model=APIResponse[TorsionDesignResponse],
     summary="Design Beam for Torsion",
     description="Design a beam for combined torsion, shear, and bending per IS 456 Cl 41.",
 )
@@ -462,6 +467,7 @@ async def design_beam_torsion(
 
 @router.post(
     "/beam/enhanced-shear",
+    response_model=APIResponse[EnhancedShearResponse],
     summary="Enhanced Shear Strength Near Supports",
     description=(
         "Calculate enhanced design shear strength τc' for sections close to supports "
@@ -542,6 +548,7 @@ async def enhanced_shear(
 
 @router.post(
     "/beam/ductility-check",
+    response_model=APIResponse[DuctilityCheckResponse],
     summary="Beam Ductility Check (IS 13920)",
     description=(
         "Run IS 13920 beam ductility checks for a single section. "
@@ -609,6 +616,7 @@ async def check_ductility(
 
 @router.post(
     "/beam/slenderness-check",
+    response_model=APIResponse[SlendernessCheckResponse],
     summary="Beam Slenderness Check (IS 456 Cl 23.3)",
     description=(
         "Check beam slenderness for lateral stability per IS 456:2000 Cl 23.3. "
@@ -675,6 +683,7 @@ async def check_slenderness(
 
 @router.post(
     "/beam/deflection-check",
+    response_model=APIResponse[DeflectionCheckResponse],
     summary="Deflection Span/Depth Check (IS 456 Cl 23.2)",
     description=(
         "Check deflection using span/depth ratio (Level A) per IS 456:2000 Cl 23.2. "
@@ -739,6 +748,7 @@ async def check_deflection(
 
 @router.post(
     "/beam/crack-width-check",
+    response_model=APIResponse[CrackWidthCheckResponse],
     summary="Crack Width Check (IS 456 Annex F)",
     description=(
         "Check crack width using an Annex-F-style estimate per IS 456:2000. "
@@ -805,6 +815,7 @@ async def check_crack_width_endpoint(
 
 @router.post(
     "/beam/compliance",
+    response_model=APIResponse[ComplianceReportResponse],
     summary="Multi-case Compliance Report",
     description=(
         "Run a multi-case IS 456 compliance report. "

@@ -5,12 +5,11 @@ Shared models used across multiple API endpoints.
 All dimensions in mm, forces in kN, moments in kN·m, stresses in N/mm².
 """
 
-from typing import Any, Generic, TypeVar
+from typing import Any
 
 from pydantic import BaseModel, Field
 
-# Generic type for response data
-T = TypeVar("T")
+from fastapi_app.models.response import APIResponse as APIResponse
 
 
 # =============================================================================
@@ -123,19 +122,8 @@ class DesignBasis(BaseModel):
 
 
 # =============================================================================
-# Generic API Response Wrappers
+# Common error model and canonical API response re-export
 # =============================================================================
-
-
-class APIResponse(BaseModel, Generic[T]):
-    """Standard API response wrapper."""
-
-    success: bool = Field(description="Whether the request was successful")
-    data: T | None = Field(default=None, description="Response data if successful")
-    message: str | None = Field(default=None, description="Human-readable message")
-    errors: list[str] | None = Field(
-        default=None, description="List of error messages if unsuccessful"
-    )
 
 
 class ErrorResponse(BaseModel):

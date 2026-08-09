@@ -26,6 +26,7 @@ from datetime import datetime, timezone
 from typing import Any, AsyncGenerator, Mapping
 
 from fastapi import APIRouter, Depends, HTTPException, Path, Query, Request
+from pydantic import BaseModel
 from sse_starlette.sse import EventSourceResponse
 
 from structural_lib import batch
@@ -35,6 +36,29 @@ from fastapi_app.config import get_settings
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/stream", tags=["streaming"])
+
+
+class BatchJobProgress(BaseModel):
+    """Completed and total item counts for one batch job."""
+
+    completed: int
+    total: int
+    passed: int
+    failed: int
+    percent: float
+
+
+class BatchJobStatusResponse(BaseModel):
+    """Typed polling response for one streamed batch job."""
+
+    job_id: str
+    status: str
+    progress: BatchJobProgress
+    started_at: str
+    completed_at: str | None
+    error_count: int
+    is_safe: bool | None
+    overall_status: str
 
 
 def _job_engineering_status(job: Mapping[str, Any]) -> dict[str, bool | None | str]:
@@ -137,7 +161,7 @@ job_manager = BatchJobManager()
 # =============================================================================
 
 
-@router.get("/batch-design")
+@router.get("/batch-design", response_class=EventSourceResponse)
 async def stream_batch_design(
     request: Request,
     beams: str = Query(..., description="JSON array of beam parameters"),
@@ -301,7 +325,7 @@ async def stream_batch_design(
     return EventSourceResponse(event_generator())
 
 
-@router.get("/job/{job_id}")
+@router.get("/job/{job_id}", response_model=BatchJobStatusResponse)
 async def get_job_status(
     job_id: str = Path(..., pattern=r"^[a-f0-9]{8}$", description="Batch job ID"),
     _: None = Depends(check_rate_limit),

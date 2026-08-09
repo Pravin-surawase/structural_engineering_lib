@@ -227,7 +227,10 @@ class StructuralDesignClient:
 
         response = self._client.post("/api/v1/design/beam", json=payload)
         response.raise_for_status()
-        data = response.json()
+        envelope = response.json()
+        if envelope.get("success") is not True:
+            raise RuntimeError(f"Design failed: {envelope.get('error', 'unknown error')}")
+        data = envelope["data"]
 
         shear_data = data.get("shear")
         shear_result = (
@@ -271,7 +274,7 @@ class StructuralDesignClient:
         length: float,
     ) -> dict:
         """
-        Calculate beam geometry metrics.
+        Generate beam geometry through the maintained 3D route.
 
         Args:
             width: Beam width in mm
@@ -279,14 +282,19 @@ class StructuralDesignClient:
             length: Beam length in mm
 
         Returns:
-            Dictionary with volume, surface_area, weight
+            Dictionary containing typed geometry components and bounds
         """
-        response = self._client.get(
-            "/api/v1/geometry/beam",
-            params={"width": width, "depth": depth, "length": length},
+        response = self._client.post(
+            "/api/v1/geometry/beam/3d",
+            json={"width": width, "depth": depth, "length": length},
         )
         response.raise_for_status()
-        return response.json()
+        envelope = response.json()
+        if envelope.get("success") is not True:
+            raise RuntimeError(
+                f"Geometry generation failed: {envelope.get('error', 'unknown error')}"
+            )
+        return envelope["data"]
 ''')
 
     print(f"✅ Basic Python client generated: {client_dir}")
@@ -363,6 +371,13 @@ export interface BeamDesignRequest {
   fy: number;
 }
 
+export interface APIResponse<T> {
+  success: boolean;
+  data: T;
+  error?: string | Record<string, unknown>;
+  clause_refs?: Record<string, string>;
+}
+
 export interface FlexureResult {
   ast_required: number;
   ast_min: number;
@@ -402,9 +417,17 @@ export interface HealthResponse {
 }
 
 export interface GeometryResult {
-  volume: number;
-  surface_area: number;
-  weight: number;
+  success: boolean;
+  message: string;
+  components: Array<Record<string, unknown>>;
+  bounding_box: Record<string, number>;
+  center: number[];
+  suggested_camera_distance: number;
+  total_vertices: number;
+  total_faces: number;
+  stl_base64?: string | null;
+  gltf_json?: Record<string, unknown> | null;
+  warnings?: string[];
 }
 
 export class StructuralDesignClient {
@@ -437,10 +460,14 @@ export class StructuralDesignClient {
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(`Design failed: ${error.detail || response.status}`);
+      throw new Error(`Design failed: ${JSON.stringify(error.error) || response.status}`);
     }
 
-    return response.json();
+    const envelope = await response.json() as APIResponse<BeamDesignResponse>;
+    if (!envelope.success) {
+      throw new Error(`Design failed: ${JSON.stringify(envelope.error)}`);
+    }
+    return envelope.data;
   }
 
   /**
@@ -451,19 +478,21 @@ export class StructuralDesignClient {
     depth: number,
     length: number,
   ): Promise<GeometryResult> {
-    const params = new URLSearchParams({
-      width: String(width),
-      depth: String(depth),
-      length: String(length),
+    const response = await fetch(`${this.baseUrl}/api/v1/geometry/beam/3d`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ width, depth, length }),
     });
-
-    const response = await fetch(`${this.baseUrl}/api/v1/geometry/beam?${params}`);
 
     if (!response.ok) {
       throw new Error(`Geometry calculation failed: ${response.status}`);
     }
 
-    return response.json();
+    const envelope = await response.json() as APIResponse<GeometryResult>;
+    if (!envelope.success) {
+      throw new Error(`Geometry generation failed: ${JSON.stringify(envelope.error)}`);
+    }
+    return envelope.data;
   }
 }
 
@@ -497,7 +526,7 @@ def main():
     print("=" * 60)
 
     # Check OpenAPI spec
-    spec = check_openapi_spec()
+    check_openapi_spec()
 
     # Create output directory
     args.output_dir.mkdir(parents=True, exist_ok=True)

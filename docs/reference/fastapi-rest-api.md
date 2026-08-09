@@ -21,7 +21,7 @@ tags: [fastapi, rest, openapi, is456]
 ## Overview
 
 The FastAPI application exposes the maintained Python calculation services to
-the React workbench and external clients. The current v0.23.0 application has 62
+the React workbench and external clients. The current v0.23.0 application has 63
 HTTP operations plus streaming and WebSocket workflows.
 
 | Environment | Base URL |
@@ -231,12 +231,13 @@ names because unit conversion occurs at the service boundary.
 ## Client generation status
 
 Raw HTTP plus the live OpenAPI document is the supported integration path for
-v0.23.0 Alpha. The repository contains development client templates under
-`clients/`, but they are not published or declared stable while typed response
-schemas are being completed under `ADOPT-001` Packet C. Do not copy those
-templates into production integrations yet.
+v0.23.0 Alpha. Every maintained JSON 2xx operation now declares a response
+schema; binary downloads and SSE routes declare their non-JSON response class.
+The development clients under `clients/` have been regenerated from this
+snapshot and correctly unwrap `{success, data}`. They remain unpublished Alpha
+templates rather than a stable client-package promise.
 
-After the typed-schema packet, regeneration will use:
+Regenerate after an intentional OpenAPI change with:
 
 ```bash
 .venv/bin/python scripts/validate_api_contracts.py --diff

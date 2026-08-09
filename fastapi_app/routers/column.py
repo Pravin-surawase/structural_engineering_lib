@@ -26,6 +26,7 @@ from fastapi_app.models.column import (
     ColumnDetailingRequest,
     ColumnDetailingResponse,
     ColumnDuctileDetailingRequest,
+    ColumnDuctileDetailingResponse,
     ColumnEccentricityRequest,
     ColumnEccentricityResponse,
     ColumnUniaxialRequest,
@@ -40,7 +41,7 @@ from fastapi_app.models.column import (
     PMInteractionResponse,
     PMPoint,
 )
-from fastapi_app.models.response import error_response, success_response
+from fastapi_app.models.response import APIResponse, error_response, success_response
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +58,7 @@ router = APIRouter(
 
 @router.post(
     "/effective-length",
+    response_model=APIResponse[EffectiveLengthResponse],
     summary="Effective Length per IS 456 Table 28",
     description=(
         "Calculate the effective length of a column based on end restraint "
@@ -107,6 +109,7 @@ async def calculate_effective_length(
 
 @router.post(
     "/classify",
+    response_model=APIResponse[ColumnClassifyResponse],
     summary="Classify Column (Short/Slender)",
     description=(
         "Classify a column as SHORT or SLENDER based on its slenderness ratio "
@@ -153,6 +156,7 @@ async def classify_column(request: ColumnClassifyRequest):
 
 @router.post(
     "/eccentricity",
+    response_model=APIResponse[ColumnEccentricityResponse],
     summary="Minimum Eccentricity",
     description=(
         "Calculate the minimum eccentricity for a column per IS 456:2000 "
@@ -197,6 +201,7 @@ async def column_eccentricity(
 
 @router.post(
     "/axial",
+    response_model=APIResponse[ColumnAxialResponse],
     summary="Short Column Axial Capacity",
     description=(
         "Calculate the axial load capacity of a short column under pure axial "
@@ -258,6 +263,7 @@ async def column_axial_capacity(
 
 @router.post(
     "/uniaxial",
+    response_model=APIResponse[ColumnUniaxialResponse],
     summary="Short Column Uniaxial Bending Design",
     description=(
         "Design a short column for uniaxial bending per IS 456:2000 Cl. 39.5. "
@@ -330,6 +336,7 @@ async def design_column_uniaxial(
 
 @router.post(
     "/interaction-curve",
+    response_model=APIResponse[PMInteractionResponse],
     summary="P-M Interaction Curve",
     description=(
         "Generate the P-M interaction diagram for a rectangular column "
@@ -394,6 +401,7 @@ async def pm_interaction_curve(
 
 @router.post(
     "/biaxial-check",
+    response_model=APIResponse[BiaxialCheckResponse],
     summary="Biaxial Bending Check per IS 456 Cl 39.6",
     description=(
         "Check a column section under biaxial bending using the Bresler load "
@@ -463,6 +471,7 @@ async def biaxial_check(
 
 @router.post(
     "/additional-moment",
+    response_model=APIResponse[AdditionalMomentResponse],
     summary="Additional Moment for Slender Columns per IS 456 Cl 39.7.1",
     description=(
         "Calculate additional moment Ma = Pu × eadd for slender columns, "
@@ -505,6 +514,7 @@ async def additional_moment(request: AdditionalMomentRequest):
 
 @router.post(
     "/long-column",
+    response_model=APIResponse[LongColumnResponse],
     summary="Long (Slender) Column Design per IS 456 Cl 39.7",
     description=(
         "Design a slender column with augmented moments for P-delta effects. "
@@ -560,6 +570,7 @@ async def design_long_column(request: LongColumnRequest):
 
 @router.post(
     "/helical-check",
+    response_model=APIResponse[HelicalCheckResponse],
     summary="Helical Reinforcement Check per IS 456 Cl 39.4",
     description=(
         "Check helical reinforcement adequacy for circular columns. "
@@ -604,6 +615,7 @@ async def helical_check(request: HelicalCheckRequest):
 
 @router.post(
     "",
+    response_model=APIResponse[ColumnDesignResponse],
     summary="Unified Column Design per IS 456",
     description=(
         "Complete column design check — classifies the column, computes "
@@ -658,6 +670,7 @@ async def design_column(request: ColumnDesignRequest):
 
 @router.post(
     "/ductile-detailing",
+    response_model=APIResponse[ColumnDuctileDetailingResponse],
     summary="IS 13920 Column Ductile Detailing Check",
     description=(
         "Check column ductile detailing per IS 13920:2016 Cl 7. "
@@ -689,6 +702,7 @@ async def column_ductile_detailing(request: ColumnDuctileDetailingRequest):
 
 @router.post(
     "/detailing",
+    response_model=APIResponse[ColumnDetailingResponse],
     summary="Column Detailing per IS 456 Cl 26.5.3",
     description=(
         "Check longitudinal bar limits, tie sizing, spacing, and cross-tie "

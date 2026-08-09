@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any, Generic, Literal, Optional, TypeVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, model_serializer
 
 T = TypeVar("T")
 
@@ -20,6 +20,16 @@ class APIResponse(BaseModel, Generic[T]):
     data: T
     error: Optional[str | dict[str, Any]] = None
     clause_refs: Optional[dict[str, str]] = None
+
+    @model_serializer(mode="wrap")
+    def _serialize_envelope(self, handler):
+        """Omit absent envelope metadata without filtering nested payload nulls."""
+        serialized = handler(self)
+        if self.error is None:
+            serialized.pop("error", None)
+        if self.clause_refs is None:
+            serialized.pop("clause_refs", None)
+        return serialized
 
     class Config:
         json_schema_extra = {

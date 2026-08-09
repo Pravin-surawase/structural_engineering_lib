@@ -14,7 +14,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from fastapi_app.error_utils import sanitize_error, sanitize_error_string
-from fastapi_app.models.response import error_response, success_response
+from fastapi_app.models.response import APIResponse, error_response, success_response
 
 logger = logging.getLogger(__name__)
 
@@ -114,6 +114,7 @@ class RebarApplyResponse(BaseModel):
 
 @router.post(
     "/validate",
+    response_model=APIResponse[RebarValidateResponse],
     summary="Validate Rebar Configuration",
     description="""
 Validate a rebar configuration against IS 456 requirements.
@@ -190,6 +191,7 @@ async def validate_rebar(request: RebarValidateRequest):
 
 @router.post(
     "/apply",
+    response_model=APIResponse[RebarApplyResponse],
     summary="Apply Rebar Configuration",
     description="""
 Apply a rebar configuration and get geometry for visualization.

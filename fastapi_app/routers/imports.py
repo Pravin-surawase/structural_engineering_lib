@@ -19,7 +19,8 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from fastapi_app.config import get_settings
-from fastapi_app.models.response import error_response, success_response
+from fastapi_app.models.metadata import ImportFormatsResponse
+from fastapi_app.models.response import APIResponse, error_response, success_response
 
 router = APIRouter(
     prefix="/import",
@@ -139,6 +140,7 @@ class BatchDesignResponse(BaseModel):
 
 @router.post(
     "/csv",
+    response_model=APIResponse[CSVImportResponse],
     summary="Import CSV File",
     description="Import beam data from CSV using structural_lib adapters.",
 )
@@ -368,6 +370,7 @@ async def import_csv(
 
 @router.post(
     "/dual-csv",
+    response_model=APIResponse[DualCSVImportResponse],
     summary="Import Dual CSV Files",
     description="Import beam geometry + forces from separate CSV files.",
 )
@@ -563,6 +566,7 @@ async def import_dual_csv(
 
 @router.post(
     "/csv/text",
+    response_model=APIResponse[CSVImportResponse],
     summary="Import CSV Text",
     description="Import beam data from CSV text content.",
 )
@@ -617,6 +621,7 @@ async def import_csv_text(
 
 @router.post(
     "/batch-design",
+    response_model=APIResponse[BatchDesignResponse],
     summary="Batch Design Beams",
     description="Design multiple beams from imported data.",
 )
@@ -730,6 +735,8 @@ async def batch_design(
 
 @router.get(
     "/formats",
+    response_model=APIResponse[ImportFormatsResponse],
+    response_model_exclude_unset=True,
     summary="Get Supported Formats",
     description="Get list of supported CSV import formats.",
 )
@@ -785,6 +792,7 @@ async def get_supported_formats():
 
 @router.get(
     "/sample",
+    response_model=APIResponse[SampleDataResponse],
     summary="Get Sample Data with 3D Geometry",
     description="Load the bundled ETABS sample building with 3D positions for visualization.",
 )
