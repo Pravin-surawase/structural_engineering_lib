@@ -6,8 +6,9 @@ Handles reading/writing session data, trends, scorecards, and evolution logs.
 from __future__ import annotations
 
 import json
+from datetime import date
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 from .utils import REPO_ROOT
 
@@ -82,6 +83,27 @@ def list_sessions() -> list[str]:
 
     session_files = sorted(SESSIONS_DIR.glob("*.json"))
     return [f.stem for f in session_files]
+
+
+def current_session_ids(
+    session_ids: Sequence[str], *, today: date | None = None
+) -> list[str]:
+    """Return session IDs whose ISO date prefix matches the current date.
+
+    The helper is intentionally pure so callers can fail closed on stale
+    evidence without creating performance-data directories or files.
+    """
+    expected = today or date.today()
+    current: list[str] = []
+    for session_id in session_ids:
+        date_prefix = session_id.split("T", 1)[0]
+        try:
+            session_date = date.fromisoformat(date_prefix)
+        except ValueError:
+            continue
+        if session_date == expected:
+            current.append(session_id)
+    return current
 
 
 def save_scorecard_index(data: dict[str, Any]) -> Path:

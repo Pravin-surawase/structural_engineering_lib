@@ -237,10 +237,10 @@ After structural changes (file moves, renames, new modules):
 .venv/bin/python scripts/agent_scorer.py --agent backend
 
 # Drift detection
-.venv/bin/python scripts/agent_drift_detector.py --latest
+.venv/bin/python scripts/agent_drift_detector.py
 
 # Compliance check
-.venv/bin/python scripts/agent_compliance_checker.py --latest
+.venv/bin/python scripts/agent_compliance_checker.py
 
 # Route a task to best agent
 ./run.sh route "task description"

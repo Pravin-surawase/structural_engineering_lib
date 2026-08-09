@@ -625,13 +625,13 @@ class TestDriftDetector:
         assert drift_score(10, 5) == 0.0
 
     def test_detect_commit_drift_forbidden_ops(self):
-        """ops agent with 'git push' in commit -> violation."""
+        """ops agent with a verification bypass in commit -> violation."""
         from agent_drift_detector import detect_commit_drift
 
-        commits = [{"message": "git push origin main"}]
+        commits = [{"message": "used --no-verify for the push"}]
         violations = detect_commit_drift(commits, "ops")
         assert len(violations) > 0
-        assert any(v["rule_id"] == "OPS-004" for v in violations)
+        assert any(v["rule_id"] == "OPS-005" for v in violations)
 
     def test_detect_commit_drift_forbidden_force(self):
         """ops agent with '--force' -> violation."""
@@ -690,7 +690,7 @@ class TestDriftDetector:
         session_data = {
             "session_id": "2026-04-01T14-30",
             "agents_active": ["ops"],
-            "commits": [{"message": "git push origin main"}],
+            "commits": [{"message": "used --no-verify for the push"}],
             "files_changed": {},
         }
 

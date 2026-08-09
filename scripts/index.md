@@ -21,17 +21,17 @@
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
 | [_tmp_add_groups.py](_tmp_add_groups.py) | Temporary script to add group fields to automation-map.json. | 0 | 0 | 168 |
-| [agent_compliance_checker.py](agent_compliance_checker.py) | Agent compliance checker — verify agents followed their .age | 0 | 12 | 514 |
-| [agent_context.py](agent_context.py) | Agent Context Loader — gives each agent its tailored startup | 0 | 18 | 577 |
-| [agent_drift_detector.py](agent_drift_detector.py) | Agent drift detector — detect when agents deviate from presc | 0 | 9 | 560 |
+| [agent_compliance_checker.py](agent_compliance_checker.py) | Agent compliance checker — verify agents followed their .age | 0 | 12 | 541 |
+| [agent_context.py](agent_context.py) | Agent Context Loader — gives each agent its tailored startup | 0 | 20 | 644 |
+| [agent_drift_detector.py](agent_drift_detector.py) | Agent drift detector — detect when agents deviate from presc | 0 | 9 | 649 |
 | [agent_evolve_instructions.py](agent_evolve_instructions.py) | Agent instruction evolver — self-improving agent customizati | 0 | 12 | 550 |
 | [agent_feedback.py](agent_feedback.py) | Agent feedback collection and analysis. | 0 | 6 | 423 |
 | [agent_scorer.py](agent_scorer.py) | Agent scorer — score agents on 11 performance dimensions. | 0 | 9 | 548 |
 | [agent_session_collector.py](agent_session_collector.py) | Agent session collector — gather all session artifacts for s | 0 | 9 | 320 |
-| [agent_trends.py](agent_trends.py) | Agent trends — time series analysis and degradation detectio | 0 | 7 | 375 |
+| [agent_trends.py](agent_trends.py) | Agent trends — time series analysis and degradation detectio | 0 | 7 | 383 |
 | [audit_error_handling.py](audit_error_handling.py) | Audit error handling compliance across structural_lib module | 2 | 3 | 286 |
 | [audit_input_validation.py](audit_input_validation.py) | Audit Input Validation Coverage for structural_lib. | 2 | 5 | 393 |
-| [audit_permissions.py](audit_permissions.py) | Permission audit report for all agents. | 3 | 2 | 394 |
+| [audit_permissions.py](audit_permissions.py) | Permission audit report for all agents. | 3 | 3 | 468 |
 | [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 11 | 783 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 442 |
 | [benchmark_api.py](benchmark_api.py) | API Performance Benchmark Script. | 4 | 9 | 837 |
@@ -44,13 +44,13 @@
 | [check_circular_imports.py](check_circular_imports.py) | Circular Import Detector for Streamlit Application | 5 | 1 | 464 |
 | [check_clause_coverage.py](check_clause_coverage.py) | IS 456 clause coverage gap detection. | 0 | 8 | 486 |
 | [check_cli_reference.py](check_cli_reference.py) | Ensure CLI reference includes required commands. | 0 | 1 | 48 |
-| [check_codex_git_workflow.py](check_codex_git_workflow.py) | Guard the Codex-native Git/GitHub workflow contract. | 0 | 1 | 89 |
+| [check_codex_git_workflow.py](check_codex_git_workflow.py) | Guard the Codex-native Git/GitHub workflow contract. | 0 | 1 | 97 |
 | [check_doc_versions.py](check_doc_versions.py) | Doc Version Drift Check — Validate no stale *library* versio | 0 | 2 | 72 |
 | [check_docker_config.py](check_docker_config.py) | Docker Configuration Validator. | 0 | 6 | 295 |
 | [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 6 | 675 |
 | [check_fastapi_issues.py](check_fastapi_issues.py) | FastAPI Issues AST Scanner. | 3 | 4 | 450 |
 | [check_function_quality.py](check_function_quality.py) | 12-point quality checklist for IS 456 functions. | 3 | 6 | 668 |
-| [check_governance.py](check_governance.py) | Unified governance checker — folder structure + compliance v | 2 | 18 | 1026 |
+| [check_governance.py](check_governance.py) | Unified governance checker — folder structure + compliance v | 2 | 19 | 1042 |
 | [check_instruction_drift.py](check_instruction_drift.py) | Check for content drift between .github/instructions/ and .c | 0 | 2 | 219 |
 | [check_links.py](check_links.py) | Check and fix broken internal links in markdown files. | 0 | 2 | 351 |
 | [check_new_element_completeness.py](check_new_element_completeness.py) | Check structural element completeness across all 7 layers. | 0 | 14 | 622 |
@@ -82,8 +82,8 @@
 | [generate_enhanced_index.py](generate_enhanced_index.py) | Generate enhanced index.json + index.md for ANY folder type. | 0 | 10 | 816 |
 | [generate_error_docs.py](generate_error_docs.py) | Generate docs/reference/error-codes.md from core/errors.py. | 0 | 4 | 139 |
 | [governance_health_score.py](governance_health_score.py) | Governance Health Score - TASK-289 | 3 | 1 | 515 |
-| [migrate_python_module.py](migrate_python_module.py) | Migrate a Python module to a new location with import update | 0 | 8 | 517 |
-| [migrate_react_component.py](migrate_react_component.py) | Migrate a React component to a new feature-grouped folder. | 0 | 9 | 478 |
+| [migrate_python_module.py](migrate_python_module.py) | Migrate a Python module to a new location with import update | 0 | 8 | 516 |
+| [migrate_react_component.py](migrate_react_component.py) | Migrate a React component to a new feature-grouped folder. | 0 | 9 | 475 |
 | [model_picker.py](model_picker.py) | Recommend a GPT-5.6 model and reasoning effort for a reposit | 1 | 2 | 295 |
 | [parity_dashboard.py](parity_dashboard.py) | Parity Dashboard — coverage/parity across IS 456, API, endpo | 0 | 6 | 517 |
 | [pipeline_state.py](pipeline_state.py) | Pipeline state tracking for multi-step agent workflows. | 2 | 17 | 868 |
@@ -91,8 +91,8 @@
 | [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 903 |
 | [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 3 | 492 |
 | [release.py](release.py) | Unified release management CLI. | 0 | 7 | 1054 |
-| [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 355 |
-| [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 505 |
+| [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 350 |
+| [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
 | [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2259 |
 | [session_store.py](session_store.py) | JSON-based session state persistence for AI agent sessions. | 1 | 14 | 372 |
 | [skill_tiers.py](skill_tiers.py) | Skill tier classification and management for AI agents. | 1 | 11 | 485 |
@@ -102,13 +102,13 @@
 | [test_cli_smoke.py](test_cli_smoke.py) | CLI Smoke Tests — validate all key scripts work correctly. | 0 | 3 | 294 |
 | [test_import_pipeline.py](test_import_pipeline.py) | End-to-end test of all import paths. | 0 | 20 | 406 |
 | [test_sample_endpoint.py](test_sample_endpoint.py) | Quick test of the sample data endpoint. | 0 | 1 | 72 |
-| [tool_permissions.py](tool_permissions.py) | Tool permission enforcement for agent operations. | 1 | 4 | 346 |
-| [tool_registry.py](tool_registry.py) | Unified tool registry — connects agents, skills, scripts, an | 1 | 13 | 575 |
+| [tool_permissions.py](tool_permissions.py) | Tool permission enforcement for agent operations. | 1 | 5 | 437 |
+| [tool_registry.py](tool_registry.py) | Unified tool registry — connects agents, skills, scripts, an | 1 | 12 | 556 |
 | [update_test_stats.py](update_test_stats.py) | Update Test Stats — Dynamic test count updater. | 0 | 5 | 211 |
 | [validate_api_contracts.py](validate_api_contracts.py) | API Contract Validator. | 2 | 9 | 620 |
 | [validate_imports.py](validate_imports.py) | Validate Python imports across the project after migration. | 0 | 6 | 380 |
 | [validate_schema_snapshots.py](validate_schema_snapshots.py) | Schema Snapshot Validator. | 0 | 6 | 257 |
-| [validate_script_refs.py](validate_script_refs.py) | Validate that active scripts don't reference archived script | 0 | 4 | 178 |
+| [validate_script_refs.py](validate_script_refs.py) | Validate that active control paths reference existing script | 0 | 6 | 235 |
 
 ## Shell Script Files
 
@@ -134,5 +134,4 @@
 
 | Folder | Files | Description |
 |--------|-------|-------------|
-| [git-hooks/](git-hooks/) | 0 |  |
 | [hooks/](hooks/) 📦 | 3 |  |

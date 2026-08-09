@@ -204,27 +204,6 @@ repos:
         pass_filenames: false
         files: ^docs/.*\.md$
         verbose: true
-      - id: check-cost-optimizer-issues
-        name: Check cost optimizer code issues
-        entry: .venv/bin/python scripts/check_cost_optimizer_issues.py
-        language: system
-        pass_filenames: false
-        files: ^streamlit_app/pages/02_.*cost_optimizer\.py$
-        verbose: true
-      - id: check-streamlit-issues
-        name: Check Streamlit app issues (AST scanner)
-        entry: .venv/bin/python scripts/check_streamlit.py --all-pages --fail-on-critical
-        language: system
-        pass_filenames: false
-        files: ^streamlit_app/pages/.*\.py$
-        verbose: true
-      - id: check-fragment-violations
-        name: Check Streamlit fragment API violations
-        entry: .venv/bin/python scripts/check_streamlit.py --fragments
-        language: system
-        pass_filenames: false
-        files: ^streamlit_app/.*\.py$
-        verbose: true
       - id: apptest-smoke
         name: AppTest smoke tests (runtime validation)
         entry: bash -c '.venv/bin/python -m pytest tests/apptest/test_all_pages_smoke.py -v --tb=short -x'
@@ -252,13 +231,6 @@ repos:
         language: system
         pass_filenames: false
         files: ^streamlit_app/utils/.*\.py$
-        verbose: true
-      - id: check-performance-issues
-        name: Check Streamlit performance anti-patterns
-        entry: .venv/bin/python scripts/check_performance_issues.py --fail-threshold 1
-        language: system
-        pass_filenames: false
-        files: ^streamlit_app/.*\.py$
         verbose: true
       - id: check-doc-metadata
         name: Check doc metadata (warning mode)

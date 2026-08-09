@@ -315,11 +315,6 @@ _cmd_test() {
             _require_venv
             "$VENV" "$SCRIPTS/test_import_pipeline.py" "${@:2}"
             ;;
-        --vba)
-            _require_venv
-            "$VENV" "$SCRIPTS/run_vba_smoke_tests.py" "${@:2}"
-            "$VENV" "$SCRIPTS/test_vba_adapter.py" "${@:2}"
-            ;;
         --cli)
             _require_venv
             "$VENV" "$SCRIPTS/external_cli_test.py" "${@:2}"
@@ -368,7 +363,6 @@ Options:
   (no args)          Run full pytest suite (default)
   --parity           FastAPI ↔ library parity tests
   --pipeline         Import → Design → 3D integration test
-  --vba              VBA adapter + smoke tests (macOS only)
   --cli              CLI cold-start smoke test
   --benchmark        API endpoint benchmarks
   --ci               Full local CI (black, ruff, mypy, pytest, coverage)
@@ -810,7 +804,7 @@ _run_sh() {
     local -a health_opts=('--fix' '--score' '--quick' '--category' '--json')
     local -a feedback_subs=('log' 'summary' 'pending' 'resolve' 'stats')
     local -a evolve_opts=('--fix' '--review' '--status' '--report' '--json')
-    local -a test_opts=('--parity' '--pipeline' '--vba' '--cli' '--benchmark' '--ci' '--stats')
+    local -a test_opts=('--parity' '--pipeline' '--cli' '--benchmark' '--ci' '--stats')
     local -a audit_opts=('--score' '--errors' '--inputs' '--diagnostics')
     local -a release_subs=('preflight' 'run' 'verify' 'check-docs' 'checklist')
     local -a efficiency_subs=('check' 'prompt')
