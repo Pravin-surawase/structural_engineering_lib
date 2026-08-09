@@ -12,6 +12,7 @@
 Installed metadata version: 0.21.6
 
 - **Branch:** `task/LIB-IS456-V1`
+- **Draft PR:** #693; PR Gate run `31321772342` green for implementation commit `301ddec7`
 - **Release target:** provisional v0.23.0; final version is owner-only
 - **Publication state:** HOLD until CI artifact evidence and owner approval
 

@@ -9,7 +9,7 @@ doc_type: spec
 baseline_commit: 056bfad77987ce513f6289fd0fee5068667d6f5d
 release_decision: v0.21.7 deferred
 target_version: v0.23.0 provisional
-current_blocker: Open the owner-review PR and obtain exact CI artifact evidence
+current_blocker: Owner review and authorization for P13 exact CI artifact evidence
 ---
 
 **Type:** Plan
@@ -1260,7 +1260,7 @@ Use existing canonical records. Do not create one log per agent.
 | 2026-08-09 | P10 | structural-math + Main Agent | COMPLETE | Working tree | Two-way slab flexure/tests | Independent 12.8/9.6 kN m benchmark; 70 slab tests green | Focused | Edge/corner panels and detailing held | P11 |
 | 2026-08-09 | P11 | backend + Main Agent | COMPLETE | Working tree | Service facade, package exports, manifest, integration tests | 116-symbol manifest; canonical/compatibility identity; architecture/import green | Focused | Stable-version promise remains owner release decision | P12/FAPI-1 |
 | 2026-08-09 | FAPI-1 | api-developer + Main Agent | COMPLETE | Working tree | Development-length fix; footing/slab router/models/tests | Representative beam/column/footing/slab request-to-service evidence | Focused | No UI expansion | P12 |
-| 2026-08-09 | P12 | Main Agent | COMPLETE / READY | Working tree | Package allowlist, protected-source boundary, claims, publish workflow | Public clause data sanitized; private 130-page corpus ignored; clean local artifact UAT; quick gate 9/9; full gate 29/29 | Full | Exact CI artifact identity and owner release decision remain | P13 |
+| 2026-08-09 | P12 | Main Agent | COMPLETE / READY | `task/LIB-IS456-V1` at `301ddec7`; draft PR #693 | Package allowlist, protected-source boundary, claims, publish workflow | Public clause data sanitized; private 130-page corpus ignored; clean local artifact UAT; quick gate 9/9; full gate 29/29; PR run `31321772342` green | Full + PR | Exact CI publication-artifact identity and owner release decision remain | P13 |
 
 ### Required handoff content
 
@@ -1362,11 +1362,13 @@ The first implementation session begins only after the owner clears Phase 0.
 
 ### Current execution checkpoint
 
-P0-P12 and FAPI-1 are complete on `task/LIB-IS456-V1`. The protected-content
+P0-P12 and FAPI-1 are complete on `task/LIB-IS456-V1`; draft PR #693 is open
+and its PR Gate run `31321772342` is green. The protected-content
 design keeps the full 130-page source corpus private and Git-ignored while
 shipping metadata-only `clauses.json`. The clean local candidate UAT, quick
-gate (9/9), and integrated gate (29/29) pass. Open the owner-review PR and use
-its exact CI artifacts for P13 evidence; publication actions remain owner-only.
+gate (9/9), and integrated gate (29/29) pass. P13 must build and record its own
+exact publication artifacts after owner authorization; publication actions
+remain owner-only.
 
 ## 21. Final program acceptance checklist
 
@@ -1388,7 +1390,7 @@ its exact CI artifacts for P13 evidence; publication actions remain owner-only.
 - [x] Targeted checks and architecture/import checks are green per packet.
 - [x] Quick gate is green before each accepted commit.
 - [x] One integrated full gate is green for each stable milestone.
-- [ ] Current release-candidate PR Gate is green.
+- [x] Current release-candidate PR Gate is green.
 - [ ] Canonical release preflight is green.
 - [ ] Local prepublication and CI publication-artifact filenames/SHA-256 values
       are separately recorded.
