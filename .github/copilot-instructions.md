@@ -79,7 +79,7 @@ Key patterns: CSV → `useCSVFileImport` | 3D geometry → `useBeamGeometry` | a
 ./run.sh check --quick              # Fast validation (<30s)
 ./run.sh pr create TASK-XXX "desc"  # Start a PR
 ./run.sh pr finish                  # Ship the PR
-./run.sh session end                # Wrap up (logs, sync, handoff)
+./run.sh session end                # Validate closeout (read-only by default)
 ./run.sh find "topic"               # Find the right script
 ./run.sh find --api func_name       # Get API signatures
 ./run.sh test                       # Run test suite
@@ -87,11 +87,11 @@ Key patterns: CSV → `useCSVFileImport` | 3D geometry → `useBeamGeometry` | a
 ./run.sh generate indexes           # Regenerate folder indexes
 ./run.sh health                     # Project health scan (0-100 score)
 ./run.sh health --fix               # Auto-fix fixable issues
-./run.sh feedback log --agent X     # Log agent feedback (session end)
+./run.sh feedback log --agent X     # Log concrete feedback when found
 ./run.sh feedback summary           # Feedback trends & recurring issues
 ./run.sh evolve                     # Self-evolution cycle (dry-run)
 ./run.sh evolve --fix               # Apply fixes + commit
-./run.sh evolve --review weekly     # Weekly auto-maintenance
+./run.sh evolve --review weekly     # Weekly report-only review
 ./run.sh dev                        # Launch full dev stack (FastAPI + React)
 ./run.sh dev --docker               # Launch with Docker (needs Colima)
 ./run.sh dev --kill-only            # Kill all dev services
@@ -153,45 +153,40 @@ When you encounter terminal problems (commands failing, wrong directory, scripts
 `⚠️ TERMINAL ISSUE: [what happened] → [what worked instead]`
 This feeds the improvement loop — recurring issues get fixed in agent instructions.
 
-## Session End (auto-summary + sync)
+## Session Closeout
 
 ```bash
-./run.sh session summary            # Auto-generate summary from git log
-./run.sh session sync               # Sync stale doc numbers
-./run.sh session end                # Run end-of-session checks
-./run.sh commit "docs: session end" # Commit doc updates
+./run.sh check --quick
+./run.sh pr status
+./run.sh commit "type(scope): completed outcome"
+./run.sh session end --agent <role> # Validate; no hidden writes
 ```
 
-Or just scan numbers: `.venv/bin/python scripts/sync_numbers.py --fix`
+`session summary`, `session sync`, and `session end` are read-only by default. Use `--write` or `--fix` only when that mutation is explicitly required.
 
 ## IMPORTANT: Session Logging (MANDATORY)
 
-Every AI agent session MUST follow this workflow. Skipping these steps breaks continuity for the next agent/session.
+Every coding session uses the bounded workflow below.
 
 ### Session Start
-1. Read `docs/planning/next-session-brief.md` to understand current priorities
-2. Read `docs/TASKS.md` for active work items
-3. Run `./run.sh session start` to verify environment
+1. Run `./run.sh session brief --agent <role>` for bounded priorities.
+2. Run `./run.sh session start` once to verify the environment.
 
 ### During Session
-- Commit frequently with descriptive conventional messages via `./run.sh commit`
+- Use targeted checks while editing and one normal task commit via `./run.sh commit`.
 - Track what you changed, what you decided, and what's unfinished
 
 ### Session End (REQUIRED — do NOT skip)
-1. Run `./run.sh commit` for any uncommitted work
-2. Run `./run.sh feedback log --agent <name>` — log stale docs, missing info, issues found
-3. Run `./run.sh session summary` — auto-generates SESSION_LOG entry
-4. Run `./run.sh session sync` — fixes stale numbers in docs
-5. Run `./run.sh evolve --status` — Agent evolution check (MANDATORY every session)
-6. Update `docs/planning/next-session-brief.md` — what the NEXT agent should do first
-7. Update `docs/TASKS.md` — mark completed items, add new items discovered
-8. Run `./run.sh commit "docs: session end"` — commit all doc updates
+1. Update `docs/TASKS.md` and `docs/planning/next-session-brief.md` only when their state changed or a durable handoff is needed.
+2. Run `./run.sh check --quick` once before commit.
+3. Run `./run.sh pr status`, then commit through `./run.sh commit`.
+4. Run `./run.sh session end --agent <role>` to validate the clean handoff.
+5. Log feedback only when a concrete stale or missing control was found.
 
 ### Why This Matters
-- **SESSION_LOG.md** is the project memory — gaps mean lost context
-- **next-session-brief.md** is the handoff — without it, the next agent wastes time rediscovering state
-- **TASKS.md** tracks priorities — unupdated tasks get repeated or lost
-- Empty sessions (no log, no handoff) have caused 10+ hours of wasted rework historically
+- **next-session-brief.md** carries task-specific continuation state.
+- **TASKS.md** tracks real project-state changes.
+- Global logs, metrics, indexes, and evolution reviews are updated only by tasks that own them.
 
 ## Migration & Folder Structure Scripts
 
@@ -265,7 +260,7 @@ Always use `.venv/bin/python`, never bare `python`. Verify outdated info (AI mod
 | `architecture-check` | `/architecture-check` | 4-layer architecture & duplication validation |
 | `function-quality-pipeline` | `/function-quality-pipeline` | Mandatory 9-step quality pipeline for every new IS 456 function |
 | `innovation-research` | `/innovation-research` | Guided innovation research cycle |
-| `agent-evolution` | `/agent-evolution` | Agent scoring, drift detection, instruction evolution (MANDATORY every session) |
+| `agent-evolution` | `/agent-evolution` | Evidence-gated scoring, drift detection, and scheduled instruction evolution |
 | `development-rules` | `/development-rules` | 46 hard-learned rules by domain (Python, FastAPI, React, testing, security) |
 | `quality-gate` | `/quality-gate` | 3-level pre-merge quality checks (commit, PR, release) |
 | `release-preflight` | `/release-preflight` | 5-phase pre-release validation (packaging, UAT, security, API/doc, CI) |
@@ -285,7 +280,7 @@ Always use `.venv/bin/python`, never bare `python`. Verify outdated info (AI mod
 | `fix-test-failure` | Test failure diagnosis & fix |
 | `performance-optimization` | Profile, optimize, benchmark |
 | `session-start` | Session start checklist |
-| `session-end` | Session end (mandatory) |
+| `session-end` | Compact closeout validation |
 | `file-move` | Safe file migration |
 | `is456-verify` | IS 456 formula verification |
 | `context-recovery` | Resume after context overflow |
@@ -294,12 +289,16 @@ Always use `.venv/bin/python`, never bare `python`. Verify outdated info (AI mod
 
 ### Handoff Chains
 
+These labels describe quality concerns, not mandatory agent invocations. The
+active parent normally performs them; delegate only an independent bounded
+packet that materially benefits from another agent.
+
 - **New feature:** orchestrator → backend → api-developer → frontend → reviewer → tester → doc-master → ops
 - **IS 456 change:** orchestrator → structural-engineer → backend → api-developer → reviewer → tester → doc-master → ops
 - **New structural element:** orchestrator → structural-engineer (research) → structural-math (types + math) → tester → backend → api-developer → frontend → reviewer → doc-master → ops
 - **Bug fix:** orchestrator → backend/frontend → tester → reviewer → doc-master → ops
 - **Test failure:** orchestrator → tester → backend/frontend → reviewer → doc-master → ops
-- **Session end:** any agent → doc-master → ops
+- **Session closeout:** active parent validates; use doc-master or ops only when the task owns that work
 - **Maintenance:** orchestrator → governance → doc-master → ops
 - **Security review:** orchestrator → security → backend/frontend/api-developer → reviewer → doc-master → ops
 - **Library guidance:** orchestrator → library-expert → structural-engineer → backend → tester → doc-master → ops

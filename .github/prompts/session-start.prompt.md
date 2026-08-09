@@ -1,59 +1,20 @@
 ---
-description: "Session start workflow — read priorities, check environment, plan work"
+description: "Compact session start — bounded brief, environment check, then scoped work"
 ---
 
 # Session Start Workflow
 
-## 1. Read Priorities
-
-Check what the previous session left for you:
-```bash
-cat docs/planning/next-session-brief.md
-```
-
-## 2. Check Active Tasks
+## Start Once
 
 ```bash
-cat docs/TASKS.md | head -60
-```
-
-Look for items marked "In Progress" or "Priority: P0/P1".
-
-## 3. Verify Environment
-
-```bash
+./run.sh session brief --agent <role>
 ./run.sh session start
 ```
 
-This checks:
-- Python venv is active
-- Dependencies installed
-- Git state is clean
-- No stale locks
+The brief provides bounded priorities and handoff state. Session start verifies
+the environment, branch, and working tree. Use `./run.sh session context` only
+when the brief cannot answer a concrete question; do not separately reload the
+same task files and Git state.
 
-## 4. Orient Yourself
-
-```bash
-# Recent changes
-git --no-pager log --oneline -10
-
-# Current branch
-git branch --show-current
-
-# Any uncommitted work?
-git status --short
-```
-
-## 5. Plan Your Session
-
-Based on priorities from step 1-2:
-- Pick 1-3 tasks to focus on
-- Note any blockers or dependencies
-- If a task spans multiple agents, start with @orchestrator
-
-## Quick Start
-
-If you just want to jump into coding:
-```bash
-./run.sh session start && cat docs/planning/next-session-brief.md | head -30
-```
+Choose one active task, state its main-process outcome and non-goals, then inspect
+the exact implementation path before editing.

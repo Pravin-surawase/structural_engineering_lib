@@ -52,7 +52,7 @@ def head(filepath: str, n: int = 15) -> str:
     if not p.exists():
         return f"  (file not found: {filepath})"
     lines = p.read_text().splitlines()[:n]
-    return "\n".join(f"  {l}" for l in lines)
+    return "\n".join(f"  {line}" for line in lines)
 
 
 def section(title: str):
@@ -375,18 +375,18 @@ def ctx_doc_master():
     bullet("docs/planning/next-session-brief.md — handoff to next agent")
     bullet("docs/docs-canonical.json — canonical doc registry")
 
-    section("SESSION END WORKFLOW (MANDATORY)")
-    print("""  1. ./run.sh commit "type: message"     # Commit work
-  2. ./run.sh session summary              # Auto-log to SESSION_LOG
-  3. ./run.sh session sync                 # Fix stale numbers
-  4. Update docs/planning/next-session-brief.md
-  5. Update docs/TASKS.md
-  6. Append to docs/WORKLOG.md
-  7. ./run.sh commit "docs: session end"   # Commit doc updates""")
+    section("SESSION END WORKFLOW")
+    print("""  1. Update TASKS/brief only when project state changed
+  2. ./run.sh check --quick
+  3. ./run.sh pr status
+  4. ./run.sh commit "type(scope): completed outcome"
+  5. ./run.sh session end --agent doc-master""")
 
     section("COMMANDS")
     bullet("Safe move: .venv/bin/python scripts/safe_file_move.py a b --dry-run")
-    bullet("Safe delete: .venv/bin/python scripts/safe_file_delete.py f")
+    bullet(
+        "Safe delete preview: .venv/bin/python scripts/safe_file_delete.py f --dry-run"
+    )
     bullet("Create doc: .venv/bin/python scripts/create_doc.py path")
     bullet(
         "Generate indexes: .venv/bin/python scripts/generate_enhanced_index.py --all"

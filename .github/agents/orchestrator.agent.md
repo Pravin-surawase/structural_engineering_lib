@@ -124,7 +124,7 @@ When delegating, tell the specialist which skills to use:
 | `@governance` | `/safe-file-ops`, `/session-management`, `/quality-gate` |
 | `@security` | `/development-rules` (SE-1 through SE-5), `/quality-gate` |
 | `@library-expert` | Library domain expertise, IS 456 knowledge, professional standards |
-| `@agent-evolver` | `/agent-evolution` (MANDATORY every session) |
+| `@agent-evolver` | `/agent-evolution` for scheduled or evidence-triggered governance |
 
 ## Session Start
 
@@ -166,18 +166,19 @@ If starting fresh: read `next-session-brief.md`, `TASKS.md` (first 60 lines), `g
 | Security audit / OWASP / dependency scan | → **security** |
 | Library usage guidance / professional standards | → **library-expert** |
 
-## Mandatory Pipeline (EVERY task must follow this)
+## Required Task Stages
 
-Every task — no exceptions — flows through this pipeline:
+Every task covers these concerns. They are stages for the active parent, not a
+requirement to invoke one agent per line:
 
 ```
 1. PLAN      → Orchestrator scopes work, identifies files/functions
-2. RESEARCH  → @structural-engineer defines IS 456 clauses, formulas, benchmark values (for structural tasks)
-3. GATHER    → Specialist reads existing code BEFORE changing anything
-4. EXECUTE   → Specialist implements the change
-5. TEST      → @tester writes tests + benchmarks
-6. VERIFY    → @reviewer validates (architecture, tests, IS 456)
-7. DOCUMENT  → @doc-master updates WORKLOG, TASKS, next-session-brief
+2. RESEARCH  → establish authoritative clauses/formulas only for structural tasks
+3. GATHER    → read the exact existing process before changing it
+4. EXECUTE   → fix the confirmed root cause within scope
+5. TEST      → run the narrow existing checks for changed behavior
+6. VERIFY    → review essential main-process outcomes and architecture
+7. DOCUMENT  → update only task-owned records whose state changed
 8. COMMIT    → @ops commits via ai_commit.sh
 ```
 
@@ -266,22 +267,18 @@ If a specialist agent:
 
 ### Post-Session Review (Continuous Improvement)
 
-After each session, review what happened:
-1. Which agents needed extra guidance? → Add that guidance to their `.agent.md`
-2. Which patterns caused confusion? → Add warnings to the relevant agent files
-3. What was duplicated? → Add to the "DO NOT recreate" lists
-4. What worked well? → Document the pattern for future reference
+When concrete repeated failures appear, preserve the evidence and correct the
+smallest shared instruction or automation root cause. Do not edit agent files
+after every session or turn a one-off mistake into permanent policy.
 
-Update agent instructions based on observed issues — don't wait for problems to recur.
+## Scheduled Agent Evolution
 
-## Session End — Agent Evolution (MANDATORY CHECK)
-
-Before session end, run `./run.sh evolve --status` in the parent task. Spawn an
-agent-evolver only when the check finds a problem that needs a separate bounded
-analysis:
+Run `./run.sh evolve --status` on the governance cadence or when concrete repeated
+failures justify a check. Use agent-evolver only when an eligible review needs a
+separate bounded analysis:
 
 ```
-Task: Run session-end evolution check for this session.
+Task: Run the scheduled evidence-gated evolution review.
 Agents active this session: [list them]
 Issues observed: [any agent struggles, wrong approaches, missed checks]
 Report back: quality scores, drift violations, recurring patterns, proposed improvements.
@@ -289,14 +286,14 @@ Report back: quality scores, drift violations, recurring patterns, proposed impr
 
 **Why this matters:** Without evolution tracking, agent mistakes repeat indefinitely. v0.21.0-v0.21.3 had 70+ issues because nobody tracked which agents were making which mistakes.
 
-### Session End Pipeline (Updated)
+### Compact Session Closeout
 
 ```
 1. All code work complete
-2. Parent or required independent reviewer approves changes
-3. Parent runs evolution status check
-4. Parent updates required session docs
-5. Parent commits via ai_commit.sh
+2. Parent performs the required review and targeted verification
+3. Parent updates only task-owned state and handoff records
+4. Parent runs the quick gate once and commits via ai_commit.sh
+5. Parent validates with `./run.sh session end`
 ```
 
 ### Release Pipeline (for version releases)
@@ -315,10 +312,9 @@ Report back: quality scores, drift violations, recurring patterns, proposed impr
 
 ## Governance Cadence
 
-### Every Session
-- Review @ops commit reports for failures or warnings
-- Check if any specialist agents struggled with git workflow → update their agent.md
-- Verify pipeline was followed (all 6 steps completed for each task)
+### Per Active Task
+- Preserve concrete commit failures or instruction defects when they change future outcomes
+- Verify the bounded task completed its required quality roles
 
 ### Weekly (or every 5 sessions)
 - Review `logs/git_workflow.log` for recurring patterns
@@ -340,7 +336,7 @@ When handing off to @ops for commit:
 
 ## Structured Handoff (Session End)
 
-At session end, write `logs/handoff_latest.md` with this format:
+When a durable cross-session handoff is required, write `logs/handoff_latest.md` with this format:
 
 ```markdown
 ## Last Agent: [agent name]
@@ -367,15 +363,15 @@ This file is read by `agent_brief.sh --handoff` for the next agent's context.
 - Always check what exists before planning new work (search hooks, routes, API)
 - Keep plans actionable — specific files, specific changes
 - Use `./run.sh find "topic"` to discover existing scripts and automation
-- **EVERY task goes through the full pipeline** — plan → execute → review → document → commit
+- **EVERY task covers the required stages** — the active parent normally owns them end to end
 - **Track pipeline status** — know which step each task is on
 - **Intervene early** when agents are stuck — provide specific paths and context
 - **Track failure patterns** — when @ops reports a commit failure, document it in the governance log
 - **Don't bypass the pipeline under time pressure** — historical data shows `--force` PR bypasses cause 10+ hours of rework
 - **Hand off to @ops with specific commit type — ops executes autonomously** — e.g., "Commit as `feat: add xu_max check`" — ops proceeds immediately, no user approval needed for commits/PRs
-- **EVERY session MUST include agent-evolver check** — skip this and mistakes repeat forever
+- **Agent evolution is evidence-gated** — run it on schedule or for repeated concrete failures
 - **Reviewer MUST run quality gate** for PRs touching production code (Level 2 minimum)
 - **Releases MUST pass all 5 preflight phases** — packaging, UAT, security, API/doc consistency, CI
-- **Doc-master MUST verify all 6 docs** with the mandatory checklist — partial updates are not acceptable
+- **Doc-master updates task-owned records only** — do not manufacture global-log churn
 - **All agents read `/development-rules`** for their domain before writing code — these rules come from real failures
 - **Enforce focused context** — delegate the root safety policy plus exact relevant specialist sections, never an entire historical agent file by default.

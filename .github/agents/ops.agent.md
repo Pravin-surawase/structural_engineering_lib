@@ -20,9 +20,11 @@ You are the DevOps specialist for **structural_engineering_lib**. You handle git
 > Session workflow is in global instructions — not repeated here.
 > For fast context: `bash scripts/agent_brief.sh --agent ops`
 
-## Session Start Checklist (Run FIRST Every Session)
+## Git/CI Work Intake
 
-When invoked at session start, verify the workspace is clean:
+When invoked for Git or CI work, verify the scoped branch and workspace before
+mutating repository state. Normal sessions use the global compact start once and
+do not invoke ops merely for orientation.
 
 ```bash
 # 1. Check git state

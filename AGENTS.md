@@ -99,7 +99,7 @@ UI/IO        → react_app/, fastapi_app/
 - **Pipeline Resume:** `scripts/pipeline_state.py` — resumable 8-step task pipeline
 - **Hooks Framework:** `scripts/hooks/` — pre/post execution hooks (pre_commit, post_commit, pre_route)
 - **Parity Dashboard:** `scripts/parity_dashboard.py` — IS 456 clause/endpoint/test coverage
-- **Skill Tiers:** Core (always), Specialist (role-based), Experimental (explicit)
+- **Skill Tiers:** Core (task-eligible), Specialist (role-based), Experimental (explicit)
 
 ## Search Before Coding
 
@@ -127,11 +127,11 @@ grep -r "@router" fastapi_app/routers/ | head -30               # Existing API r
 ./run.sh generate indexes           # Regenerate folder indexes
 ./run.sh health                     # Project health scan (0-100 score)
 ./run.sh health --fix               # Auto-fix fixable issues
-./run.sh feedback log --agent X     # Log agent feedback (session end)
+./run.sh feedback log --agent X     # Log concrete feedback when found
 ./run.sh feedback summary           # Feedback trends & recurring issues
 ./run.sh evolve                     # Self-evolution cycle (dry-run)
 ./run.sh evolve --fix               # Apply fixes + commit
-./run.sh evolve --review weekly     # Weekly auto-maintenance
+./run.sh evolve --review weekly     # Weekly report-only review
 ./run.sh dev                        # Launch full dev stack (FastAPI + React)
 ./run.sh dev --docker               # Launch with Docker (needs Colima)
 ./run.sh dev --kill-only            # Kill all dev services
@@ -196,20 +196,18 @@ This feeds the improvement loop — recurring issues get fixed in agent instruct
 ## Session Workflow (MANDATORY)
 
 ```bash
-# START: Read priorities, verify environment
-docs/planning/next-session-brief.md             # What to work on
-docs/TASKS.md                                   # Task board
-./run.sh session start                          # Environment check
+# START: bounded orientation + environment check
+./run.sh session brief --agent <role>
+./run.sh session start
 
-# END: Commit, log, handoff (do NOT skip)
-./run.sh commit "type: message"                 # Commit work
-./run.sh feedback log --agent <name>             # Log stale docs, issues found
-./run.sh session summary                        # Auto-log to SESSION_LOG.md
-./run.sh session sync                           # Fix stale doc numbers
-./run.sh evolve --status              # P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
-# Update: docs/planning/next-session-brief.md + docs/TASKS.md
-./run.sh commit "docs: session end"             # Commit doc updates
+# END: update task/handoff only when state changed, then one normal commit
+./run.sh check --quick
+./run.sh pr status
+./run.sh commit "type(scope): completed outcome"
+./run.sh session end --agent <role>              # Read-only unless --fix is explicit
 ```
+
+Log feedback only when a concrete stale instruction or missing control was found. `session summary`, `session sync`, and `session end` are read-only by default; `--write` or `--fix` must be intentional. Agent evolution is scheduled governance work, not a mandatory session-end mutation.
 
 ## Key Patterns — Do NOT Reinvent
 
@@ -263,7 +261,7 @@ docs/TASKS.md                                   # Task board
 | `architecture-check` | `/architecture-check` | 4-layer architecture & duplication validation |
 | `function-quality-pipeline` | `/function-quality-pipeline` | Mandatory 9-step quality pipeline for every new IS 456 function |
 | `innovation-research` | `/innovation-research` | Guided innovation research cycle |
-| `agent-evolution` | `/agent-evolution` | Agent scoring, drift detection, instruction evolution (MANDATORY every session) |
+| `agent-evolution` | `/agent-evolution` | Evidence-gated scoring, drift detection, and scheduled instruction evolution |
 | `development-rules` | `/development-rules` | 46 hard-learned rules by domain (Python, FastAPI, React, testing, security) |
 | `quality-gate` | `/quality-gate` | 3-level pre-merge quality checks (commit, PR, release) |
 | `release-preflight` | `/release-preflight` | 5-phase pre-release validation (packaging, UAT, security, API/doc, CI) |
@@ -283,7 +281,7 @@ docs/TASKS.md                                   # Task board
 | `fix-test-failure` | Test failure diagnosis & fix |
 | `performance-optimization` | Profile, optimize, benchmark |
 | `session-start` | Session start checklist |
-| `session-end` | Session end (mandatory) |
+| `session-end` | Compact closeout validation |
 | `file-move` | Safe file migration |
 | `is456-verify` | IS 456 formula verification |
 | `context-recovery` | Resume after context overflow |
@@ -301,7 +299,7 @@ the token-efficiency policy justifies one or two bounded subagents.
 - **New structural element:** orchestrator → structural-engineer (research) → structural-math (types + math) → tester → backend → api-developer → frontend → reviewer → doc-master → ops
 - **Bug fix:** orchestrator → backend/frontend → tester → reviewer → doc-master → ops
 - **Test failure:** orchestrator → tester → backend/frontend → reviewer → doc-master → ops
-- **Session end:** any agent → doc-master → ops
+- **Session closeout:** active parent validates; use doc-master or ops only when the task owns that work
 - **Maintenance:** orchestrator → governance → doc-master → ops
 - **Security review:** orchestrator → security → backend/frontend/api-developer → reviewer → doc-master → ops
 - **Library guidance:** orchestrator → library-expert → structural-engineer → backend → tester → doc-master → ops

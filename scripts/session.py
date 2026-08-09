@@ -1078,15 +1078,16 @@ def cmd_end(args: argparse.Namespace) -> int:
         print("  (No commits today)")
     print()
 
-    # 10. Log session cost
-    print("💰 Session Cost Logging:")
-    agent_name = getattr(args, "agent", None) or "unknown"
-    try:
-        _log_session_cost(agent=agent_name)
-        print(f"  ✅ Cost entry logged (agent={agent_name})")
-    except Exception as exc:
-        print(f"  ⚠️  Could not log cost: {exc}")
-    print()
+    # 10. Optional legacy Git-activity proxy logging
+    if args.log_cost:
+        print("💰 Session Activity Proxy:")
+        agent_name = getattr(args, "agent", None) or "unknown"
+        try:
+            _log_session_cost(agent=agent_name)
+            print(f"  ✅ Activity entry logged (agent={agent_name})")
+        except Exception as exc:
+            print(f"  ⚠️  Could not log activity proxy: {exc}")
+        print()
 
     print("=" * 60)
     if all_passed:
@@ -2130,6 +2131,11 @@ def build_parser() -> argparse.ArgumentParser:
     p_end = sub.add_parser("end", help="End-of-session checks")
     p_end.add_argument(
         "--fix", action="store_true", help="Auto-fix issues where possible"
+    )
+    p_end.add_argument(
+        "--log-cost",
+        action="store_true",
+        help="Record the legacy Git-activity proxy (not billing or token usage)",
     )
     p_end.add_argument(
         "--quick", action="store_true", help="Skip test count verification"

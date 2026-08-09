@@ -223,15 +223,15 @@ _cmd_session() {
             ;;
         end)
             _require_venv
-            "$VENV" "$SCRIPTS/session.py" end --fix "$@"
+            "$VENV" "$SCRIPTS/session.py" end "$@"
             ;;
         summary)
             _require_venv
-            "$VENV" "$SCRIPTS/session.py" summary --write "$@"
+            "$VENV" "$SCRIPTS/session.py" summary "$@"
             ;;
         sync)
             _require_venv
-            "$VENV" "$SCRIPTS/session.py" sync --fix "$@"
+            "$VENV" "$SCRIPTS/session.py" sync "$@"
             ;;
         check)
             _require_venv
@@ -264,9 +264,9 @@ Manage agent work sessions.
 
 Subcommands:
   start      Begin session (verify env, read priorities)
-  end        End session (log, sync, handoff)
-  summary    Generate session summary from git log
-  sync       Sync stale doc numbers
+  end        Validate closeout; --fix updates handoff, --log-cost records a proxy
+  summary    Preview summary from git log; pass --write to update docs
+  sync       Check stale doc numbers; pass --fix to update them
   check      Check session docs for issues
   context    Dump compact orientation context (tasks, brief, git status)
   brief      Fast 20-line agent brief (--agent <name> | --handoff)
@@ -279,8 +279,8 @@ Examples:
   ./run.sh session start      # First thing every session
   ./run.sh session context    # Quick orientation mid-session
   ./run.sh session usage --help
-  ./run.sh session end        # Last thing every session
-  ./run.sh session sync       # Fix stale numbers mid-session
+  ./run.sh session end        # Validate closeout without hidden writes
+  ./run.sh session sync --fix # Explicitly fix stale numbers when required
 EOF
 }
 
@@ -630,7 +630,7 @@ Options:
 Examples:
   ./run.sh evolve                       # Full dry-run scan
   ./run.sh evolve --fix                  # Apply fixes + commit
-  ./run.sh evolve --review weekly --fix  # Weekly auto-maintenance
+  ./run.sh evolve --review weekly        # Weekly report-only review
   ./run.sh evolve --status               # When was last run?
 EOF
 }

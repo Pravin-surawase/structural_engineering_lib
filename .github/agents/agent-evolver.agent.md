@@ -36,25 +36,27 @@ You are the meta-agent for **structural_engineering_lib**'s self-evolving agent 
 
 | Frequency | Command | What It Does |
 |-----------|---------|-------------|
-| Every session end | `./run.sh evolve --status` | Quick state check |
-| Weekly | `./run.sh evolve --review weekly` | Score + drift + trends |
+| Weekly | `./run.sh evolve --review weekly` | Report-only score + drift + trends |
 | Monthly | `./run.sh evolve --review monthly` | Full audit + paper export |
-| On demand | `./run.sh evolve --fix` | Apply approved fixes |
+| On demand | `./run.sh evolve --status` | Inspect current evidence and eligibility |
+| Explicit approval | `./run.sh evolve --fix` | Apply an approved proposal |
 
-## Every Session Integration (MANDATORY)
+## Evidence-Gated Integration
 
-The agent-evolver is no longer just an on-demand tool. It must be invoked at the END of every session to capture feedback and track agent quality over time.
+Run evolution on its scheduled cadence or when concrete repeated failures justify
+it. Do not invoke it merely because a coding session ended. Instruction proposals
+require the minimum collected-session threshold enforced by the evolution scripts.
 
-### What Happens Every Session
+### What Happens During a Scheduled Review
 
-1. **Orchestrator invokes evolve at session end** (after all code work is done)
+1. **Check eligibility and current evidence** with `./run.sh evolve --status`
 2. **Collect session artifacts** — commits, files changed, terminal issues reported
 3. **Score the agents that worked this session** — based on observed behavior
 4. **Log feedback** — stale docs, wrong instructions, agent struggles
 5. **Detect drift** — did any agent violate their rules this session?
 6. **Propose improvements** — if patterns repeat 3+ times, draft `.agent.md` change
 
-### Session-End Evolve Workflow
+### Scheduled Review Workflow
 
 ```bash
 # Step 1: Collect artifacts from this session
@@ -73,12 +75,12 @@ The agent-evolver is no longer just an on-demand tool. It must be invoked at the
 ./run.sh evolve --status
 ```
 
-### What the Orchestrator Should Delegate
+### What the Orchestrator Should Request
 
-At session end, the orchestrator should invoke agent-evolver with:
+For an eligible scheduled review, the orchestrator may request:
 
 ```
-Task: Run session-end evolution check
+Task: Run the scheduled evidence-gated evolution review
 Report back:
 1. Which agents worked this session and their observed quality
 2. Any rule violations detected
@@ -89,7 +91,7 @@ Report back:
 
 ### Evolution History Tracking
 
-After every session, append to `logs/agent-performance/session-evolution.jsonl`:
+When a scheduled review produces a real result, append to `logs/agent-performance/session-evolution.jsonl`:
 ```json
 {
   "date": "YYYY-MM-DD",
@@ -123,7 +125,7 @@ This data feeds into weekly and monthly trend analysis.
 
 ### CI Health Dimension (#11) — NEW (Session 14)
 
-At session end, query CI status and factor into agent scoring:
+During a scheduled review, query CI status and factor it into agent scoring:
 
 ```bash
 gh run list --branch main --limit 5 --json conclusion,name | python3 -c "
@@ -203,4 +205,4 @@ Use `/agent-evolution` for guided evolution workflows.
 4. Propose changes with evidence (score data, drift events, feedback)
 5. Keep evolution log updated in `logs/agent-performance/evolution-log.json`
 6. Rate limits are non-negotiable: 3 edits/week, 1 self-mod/month
-7. **MUST be invoked every session** — orchestrator delegates evolve check at session end, before final commit
+7. Run only on schedule or concrete evidence; never create proposals below the enforced session threshold

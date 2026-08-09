@@ -254,9 +254,9 @@ Next packet authorized: yes/no
 
 **Branch:** `task/MAINT-008-SKILLS`
 
-**Status:** implemented; closeout and PR evidence pending
+**Status:** implemented; local and CI gates green on draft PR #689, pending owner approval
 
-**Files in scope:** the 14 `.github/skills/*/SKILL.md` entrypoints, `.github/skills/skill_tiers.json`, agent skill assignments/metadata, and only the supporting discovery/architecture/release/evolution scripts needed to make those instructions truthful.
+**Files in scope:** the 14 `.github/skills/*/SKILL.md` entrypoints, `.github/skills/skill_tiers.json`, cross-agent session instructions, agent skill assignments/metadata, and only the supporting session/discovery/architecture/release/evolution scripts needed to make those instructions truthful.
 
 ### Objective
 

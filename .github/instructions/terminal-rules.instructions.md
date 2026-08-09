@@ -40,7 +40,7 @@ If `./run.sh <cmd>` produces no output or fails:
 | `./run.sh test` | `.venv/bin/pytest Python/tests/ -v` | — |
 | `./run.sh check --quick` | `.venv/bin/python scripts/check_all.py --quick` | — |
 | `./run.sh find --api func` | `.venv/bin/python scripts/discover_api_signatures.py func` | — |
-| `./run.sh session summary` | `.venv/bin/python scripts/session_summary.py` | — |
+| `./run.sh session summary` | `.venv/bin/python scripts/session.py summary` | Add `--write` only intentionally |
 | `./run.sh generate indexes` | `.venv/bin/python scripts/generate_enhanced_index.py --all` | — |
 | `./run.sh dev` | `bash scripts/launch_stack.sh` | `colima start && docker compose up --build` |
 | `./run.sh dev --docker` | `bash scripts/launch_stack.sh --docker` | `colima start && docker compose up --build` |
