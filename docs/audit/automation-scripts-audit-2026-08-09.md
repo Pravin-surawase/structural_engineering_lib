@@ -264,6 +264,7 @@ Final remaining-batch verification:
 - ⚠️ TERMINAL ISSUE: the first regenerated index check treated `python_runtime.sh` as the only mapped script in wrapped commands → the checker now collects every script target token; final coverage is 104/104.
 - ⚠️ TERMINAL ISSUE: focused Ruff found an unused local in the touched type-annotation checker → the dead assignment was removed and the final lint passed.
 - ⚠️ TERMINAL ISSUE: the first commit attempt stopped when the standard end-of-file hook normalized generated `scripts/index.json` → the hook-only newline change was inspected, staged, and the commit checks were rerun normally.
+- ⚠️ TERMINAL ISSUE: the first PR Repository Validation run executed CLI smoke without installing the core package, so package-dependent `discover_api` failed while 12/13 controls passed → the job now installs editable `Python` before the full smoke suite, with a regression assertion on step order.
 
 Baseline audit evidence before the completed remaining batches:
 

@@ -171,10 +171,12 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
-          cache-dependency-path: requirements-lock.txt
+          cache-dependency-path: |
+            requirements-lock.txt
+            Python/pyproject.toml
 
       - name: Install validation dependencies
-        run: python -m pip install pytest PyYAML
+        run: python -m pip install -e Python pytest PyYAML
 
       - name: Validate YAML syntax
         run: |

@@ -75,6 +75,13 @@ def test_control_paths_use_python_runtime_launcher():
     assert "gh pr" not in agent_start_source
     assert "chmod +x" not in agent_start_source
 
+    workflow = (REPO_ROOT / ".github" / "workflows" / "fast-checks.yml").read_text(
+        encoding="utf-8"
+    )
+    install_offset = workflow.index("python -m pip install -e Python pytest PyYAML")
+    smoke_offset = workflow.index("python scripts/test_cli_smoke.py")
+    assert install_offset < smoke_offset
+
 
 def test_watch_help_does_not_require_fswatch():
     result = subprocess.run(
