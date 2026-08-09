@@ -67,7 +67,7 @@ stpyvista>=0.1.4
 # Data & Scientific (project-wide, not in pyproject.toml)
 # ===========================================
 pandas>=2.0
-numpy>=2.0
+numpy>=2.0,<2.5
 scipy>=1.14
 
 # ===========================================
