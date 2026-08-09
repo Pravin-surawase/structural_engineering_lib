@@ -7,7 +7,7 @@
 **Created:** 2026-08-09
 **Last Updated:** 2026-08-10
 **Date:** 2026-08-10
-**State:** C0-C4 bounded software/evidence scope frozen; v0.23.0 Alpha release authorized; exact CI publication evidence pending; qualified review deferred to final stable/engineering-use approval
+**State:** C0-C4 complete; v0.23.0 Alpha published with exact CI/public-package evidence; qualified review deferred to final stable/engineering-use approval
 
 ## Controlled sources
 
@@ -70,7 +70,30 @@ validated rather than inferred from HTTP success:
 
 These are source-tree/live-development artifacts, not C3 release identities.
 
-## Release evidence required from CI
+## Production release evidence
+
+The owner-authorized v0.23.0 Alpha release was built from tag `v0.23.0` at
+source commit `3f880d5bbc338baefc4aec8ed472cafe840a5c99` by protected production
+run `31332420554`. The publish workflow, exact-wheel UAT, PyPI upload, and
+GitHub prerelease creation all passed.
+
+| Artifact | Size | SHA-256 | Inventory |
+|---|---:|---|---:|
+| `structural_lib_is456-0.23.0-py3-none-any.whl` | 478,903 | `cd56a5301160fc7d62154e9d6e567ba8bf9bb8608827c9454b63161276c5408a` | 181 files |
+| `structural_lib_is456-0.23.0.tar.gz` | 395,422 | `fe03a86d6c518a5f293c874e825930bb79de984cb53bebaf63a7610c3f042a73` | 206 files |
+
+Both content allowlist and protected-content gates passed. The exact manifest
+SHA-256 is `efadd1e6b0b1e8c3c7e242a057ea83a3bbef19059462a5ccd5ccde5ac2ba9ab5`;
+the CycloneDX 1.6 SBOM SHA-256 is
+`8c76f919df65e913d0d507d0ac824bb2c077fbb530a53732bc65bed68f482686`.
+PyPI and GitHub Release assets match these filenames, byte sizes, and hashes.
+
+The exact public PyPI version passed 5,406 tests with 51 optional-dependency
+skips and 6 deselections, followed by installed `job`, `critical`, `report`,
+and CLI-help workflows. This proves the published artifact identity and
+software behavior; it is not professional design approval.
+
+## Release evidence contract
 
 The production decision must use the exact CI-built artifacts, not a local
 candidate. The `release-evidence` artifact must contain:
@@ -83,8 +106,8 @@ candidate. The `release-evidence` artifact must contain:
 - installed-site-packages UAT for beam, column, footing, slab, capability
   discovery and CLI help.
 
-TestPyPI, the final version, tag, GitHub release and production PyPI upload are
-owner-only actions.
+TestPyPI, version/tag selection, GitHub release and production PyPI upload
+remain owner-only actions for future releases.
 
 ## Local prepublication rehearsal
 

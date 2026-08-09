@@ -337,3 +337,5 @@ tags: []
 | 2026-08-10 | LIB-IS456-C4 | Froze the bounded evidence, limitations and review boundaries on draft PR #696; left qualified review, exact CI publication artifacts, merge, tag and publishing as explicit held gates | — |
 | 2026-08-10 | LIB-IS456-REL-0 | Owner moved qualified review to the final stable/engineering-use gate, retained technical and evidence controls, and authorized the conditioned v0.23.0 Alpha release sequence | — |
 | 2026-08-10 | LIB-IS456-REL-1 | Repaired the release validator state machine so exact-wheel, owner-authorized candidates carry truthful dated metadata while ordinary unpublished candidates still fail closed | — |
+| 2026-08-10 | LIB-IS456-REL-2 | Repaired the publish workflow's runner-local interpreter assumption, merged PRs #696/#697 through green gates, and completed exact TestPyPI rehearsal | 3f880d5b |
+| 2026-08-10 | LIB-IS456-REL-3 | Published v0.23.0 Alpha from tag `v0.23.0`, verified production hashes/SBOM/inventories against PyPI and GitHub assets, and passed exact public-package UAT | 3f880d5b |

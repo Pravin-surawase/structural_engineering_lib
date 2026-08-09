@@ -242,6 +242,19 @@ class TestReleaseVerifyDependencies:
         assert 'f"{wheel}[dev]"' in verify_block
 
 
+class TestPublishWorkflow:
+    """The release workflow must preserve package maturity on GitHub."""
+
+    def test_development_status_controls_github_prerelease(self):
+        workflow = (REPO_ROOT / ".github" / "workflows" / "publish.yml").read_text(
+            encoding="utf-8"
+        )
+
+        assert "prerelease: ${{ steps.version.outputs.prerelease }}" in workflow
+        assert "Development Status :: {level}" in workflow
+        assert "prerelease: ${{ needs.validate.outputs.prerelease }}" in workflow
+
+
 class TestReleasePreflight:
     """Tests for the preflight subcommand."""
 
