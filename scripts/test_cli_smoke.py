@@ -27,7 +27,7 @@ from typing import Any
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
-VENV = str(REPO_ROOT / ".venv" / "bin" / "python")
+VENV = str(SCRIPT_DIR / "python_runtime.sh")
 
 # ---------------------------------------------------------------------------
 # Test definitions
@@ -105,8 +105,9 @@ SMOKE_TESTS: list[dict[str, Any]] = [
     # Existing tools (regression)
     {
         "name": "find_automation",
-        "cmd": [VENV, "scripts/find_automation.py", "beam"],
+        "cmd": [VENV, "scripts/find_automation.py", "run tests"],
         "expect_rc": 0,
+        "expect_output": "run tests",
     },
     {
         "name": "discover_api",

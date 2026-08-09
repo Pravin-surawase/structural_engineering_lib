@@ -4,6 +4,12 @@
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
   "_coverage": "107/107 scripts mapped",
   "tasks": {
+    "resolve python runtime": {
+      "group": "Infrastructure",
+      "script": "./scripts/python_runtime.sh --version",
+      "description": "Resolve the approved Python interpreter across primary and linked Git worktrees",
+      "permission": "ReadOnly"
+    },
     "choose codex model": {
       "group": "Agent Infrastructure",
       "script": ".venv/bin/python scripts/model_picker.py \"task description\"",

@@ -4,7 +4,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-09
-**Files:** 109
+**Files:** 110
 
 ## Config Files
 
@@ -100,7 +100,7 @@
 | [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 502 |
 | [test_api_parity.py](test_api_parity.py) | API Parity Testing Script (V3 Preparation) | 2 | 10 | 457 |
 | [test_changed.py](test_changed.py) | Smart test runner — run only tests related to changed files. | 0 | 3 | 216 |
-| [test_cli_smoke.py](test_cli_smoke.py) | CLI Smoke Tests — validate all key scripts work correctly. | 0 | 3 | 294 |
+| [test_cli_smoke.py](test_cli_smoke.py) | CLI Smoke Tests — validate all key scripts work correctly. | 0 | 3 | 295 |
 | [test_import_pipeline.py](test_import_pipeline.py) | End-to-end test of all import paths. | 0 | 20 | 406 |
 | [test_sample_endpoint.py](test_sample_endpoint.py) | Quick test of the sample data endpoint. | 0 | 1 | 72 |
 | [tool_permissions.py](tool_permissions.py) | Tool permission enforcement for agent operations. | 1 | 5 | 437 |
@@ -127,6 +127,7 @@
 - [generate_all_indexes.sh](generate_all_indexes.sh) — Generate index.json + index.md for all research-relevant folders
 - [launch_stack.sh](launch_stack.sh) — launch_stack.sh — Full-stack development launcher for structural_engineering_lib
 - [pre_commit_check.sh](pre_commit_check.sh) — Pre-flight checks before committing
+- [python_runtime.sh](python_runtime.sh) — Resolve the repository Python interpreter across primary and linked worktrees.
 - [repo_health_check.sh](repo_health_check.sh)
 - [validate_git_state.sh](validate_git_state.sh) — Read-only Git workflow validator for Codex
 - [watch_tests.sh](watch_tests.sh) — Watch Mode (Solution 5 - Dev Automation)

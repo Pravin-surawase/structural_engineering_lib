@@ -4,7 +4,7 @@ Unified tool registry — connects agents, skills, scripts, and operations.
 
 Loads from:
 - agents/agent_registry.json (16 agents)
-- scripts/automation-map.json (113 mapped scripts)
+- scripts/automation-map.json (task and script operation metadata)
 
 Usage:
     python scripts/tool_registry.py --list
@@ -40,7 +40,8 @@ class ToolEntry:
     agent: str
     category: str
     script: str | None
-    permission: str
+    permission: str | None
+    permission_modes: dict[str, str] = field(default_factory=dict)
     keywords: list[str] = field(default_factory=list)
     skill: str | None = None
     aliases: list[str] = field(default_factory=list)
@@ -94,37 +95,6 @@ STOPWORDS = {
     "if",
     "any",
 }
-
-
-def classify_permission(script: str, task_name: str, description: str) -> str:
-    """Classify tool permission level based on keywords."""
-    danger_keywords = ["git", "push", "delete", "cleanup", "merge", "force", "rm"]
-    readonly_keywords = [
-        "check",
-        "validate",
-        "find",
-        "discover",
-        "audit",
-        "benchmark",
-        "context",
-        "list",
-        "show",
-    ]
-
-    text = f"{script} {task_name} {description}".lower()
-
-    # Danger zone
-    for keyword in danger_keywords:
-        if keyword in text:
-            return "DangerFullAccess"
-
-    # Read-only operations
-    for keyword in readonly_keywords:
-        if keyword in text:
-            return "ReadOnly"
-
-    # Default to workspace write
-    return "WorkspaceWrite"
 
 
 def extract_keywords(name: str, description: str) -> list[str]:
@@ -238,10 +208,8 @@ def load_registry() -> dict[str, ToolEntry]:
             description = task_info.get("description", "")
             group = task_info.get("group", "Uncategorized")
 
-            # Classify permission
-            permission = task_info.get("permission") or classify_permission(
-                script, task_name, description
-            )
+            permission = task_info.get("permission")
+            permission_modes = task_info.get("permission_modes", {})
 
             # Extract keywords
             keywords = extract_keywords(task_name, description)
@@ -258,6 +226,7 @@ def load_registry() -> dict[str, ToolEntry]:
                 category=group,
                 script=script,
                 permission=permission,
+                permission_modes=permission_modes,
                 keywords=keywords,
                 skill=None,
                 aliases=[],
@@ -363,7 +332,12 @@ def get_tools_by_permission(
     level: str, registry: dict[str, ToolEntry]
 ) -> list[ToolEntry]:
     """Get all tools with a specific permission level."""
-    return [tool for tool in registry.values() if tool.permission == level]
+    normalized_level = level.lower()
+    return [
+        tool
+        for tool in registry.values()
+        if (tool.permission or "Unspecified").lower() == normalized_level
+    ]
 
 
 def resolve_alias(alias: str) -> str | None:
@@ -375,11 +349,12 @@ def print_tool(tool: ToolEntry, show_score: bool = False, score: float = 0.0):
     """Print a tool entry."""
     agent_tag = f"[@{tool.agent}]" if tool.agent else ""
     category_tag = f"[{tool.category}]" if tool.category else ""
+    permission_label = tool.permission or "Unspecified"
     permission_icon = {
         "ReadOnly": "🔍",
         "WorkspaceWrite": "✏️",
         "DangerFullAccess": "⚠️",
-    }.get(tool.permission, "")
+    }.get(permission_label, "❓")
 
     score_tag = f" (score: {score:.1f})" if show_score and score > 0 else ""
 
@@ -388,6 +363,12 @@ def print_tool(tool: ToolEntry, show_score: bool = False, score: float = 0.0):
 
     if tool.script:
         print(f"     Script: {tool.script}")
+    print(f"     Permission: {permission_label}")
+    if tool.permission_modes:
+        modes = ", ".join(
+            f"{mode}={level}" for mode, level in tool.permission_modes.items()
+        )
+        print(f"     Modes: {modes}")
 
     if tool.aliases:
         aliases_str = ", ".join(tool.aliases)
@@ -436,7 +417,7 @@ def show_stats(registry: dict[str, ToolEntry]):
     # By permission
     by_permission: dict[str, int] = {}
     for tool in registry.values():
-        permission = tool.permission
+        permission = tool.permission or "Unspecified"
         by_permission[permission] = by_permission.get(permission, 0) + 1
 
     # Scripts vs skills vs agents

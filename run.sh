@@ -27,8 +27,8 @@ set -euo pipefail
 
 # Resolve repo root from this script's location
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VENV="$REPO_ROOT/.venv/bin/python"
 SCRIPTS="$REPO_ROOT/scripts"
+VENV="$SCRIPTS/python_runtime.sh"
 
 # ── Colors ─────────────────────────────────────────────────────────────────
 RED='\033[0;31m'
@@ -56,7 +56,7 @@ _hint() {
 
 _require_venv() {
     if [[ ! -x "$VENV" ]]; then
-        _error "Python venv not found at $VENV"
+        _error "Python runtime launcher not found at $VENV"
         echo "  Run: python3 -m venv .venv && .venv/bin/pip install -e Python/"
         exit 1
     fi

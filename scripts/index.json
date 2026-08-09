@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "> Development, validation, discovery, release-preparation, and maintenance tools.",
   "last_updated": "2026-08-09",
-  "file_count": 109,
+  "file_count": 110,
   "files": [
     {
       "name": "README.md",
@@ -924,7 +924,7 @@
         "tasks",
         "categories"
       ],
-      "content_hash": "9f007cc3cbdc"
+      "content_hash": "50ec89347e9c"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1119,10 +1119,10 @@
         }
       ],
       "constants": [
-        "VENV_PYTHON",
-        "SCRIPTS_DIR"
+        "SCRIPTS_DIR",
+        "VENV_PYTHON"
       ],
-      "content_hash": "359bdcc4ab7f"
+      "content_hash": "b6fb6466b69f"
     },
     {
       "name": "check_api.py",
@@ -4028,6 +4028,14 @@
       "content_hash": "cb3f2a21c85e"
     },
     {
+      "name": "python_runtime.sh",
+      "type": "shell-script",
+      "size_lines": 46,
+      "last_updated": "2026-08-09",
+      "description": "Resolve the repository Python interpreter across primary and linked worktrees.",
+      "content_hash": "e6f453bee035"
+    },
+    {
       "name": "release.py",
       "type": "python",
       "size_lines": 1279,
@@ -4708,8 +4716,8 @@
     {
       "name": "test_cli_smoke.py",
       "type": "python",
-      "size_lines": 294,
-      "last_updated": "2026-04-02",
+      "size_lines": 295,
+      "last_updated": "2026-08-09",
       "description": "CLI Smoke Tests — validate all key scripts work correctly.",
       "functions": [
         {
@@ -4735,7 +4743,7 @@
         "REPO_ROOT",
         "VENV"
       ],
-      "content_hash": "b68d1be5207b"
+      "content_hash": "d63b877684e1"
     },
     {
       "name": "test_import_pipeline.py",
@@ -5335,5 +5343,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "2f638c2e7a3acf12"
+  "content_hash": "fa714a927a956fca"
 }

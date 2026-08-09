@@ -5,9 +5,8 @@ Checks whether an agent is allowed to perform an operation based on
 agent_registry.json permission_level and file_scope.
 
 Usage as CLI:
-    python scripts/tool_permissions.py check --agent backend --op edit --path Python/structural_lib/api.py
-    python scripts/tool_permissions.py check --agent reviewer --op edit --path Python/structural_lib/api.py
-    python scripts/tool_permissions.py --agent ops --op delete --path scripts/old.py
+    .venv/bin/python scripts/tool_permissions.py check --agent backend --op edit --path Python/structural_lib/api.py
+    .venv/bin/python scripts/tool_permissions.py check --agent governance --op "project health" --mode=--fix
 
 Usage as module:
     from tool_permissions import check_permission, check_file_scope
@@ -103,6 +102,7 @@ def _level_rank(level: str) -> int:
 # ---------------------------------------------------------------------------
 
 _REGISTRY_PATH = REPO_ROOT / "agents" / "agent_registry.json"
+_AUTOMATION_MAP_PATH = REPO_ROOT / "scripts" / "automation-map.json"
 
 
 def _load_registry() -> list[dict]:
@@ -128,6 +128,63 @@ def _find_agent(agents: list[dict], name: str) -> dict | None:
     return None
 
 
+def _load_automation_tasks() -> dict[str, dict]:
+    """Load explicit operation metadata from the automation map."""
+    try:
+        data = json.loads(_AUTOMATION_MAP_PATH.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        return {}
+    tasks = data.get("tasks", {})
+    return tasks if isinstance(tasks, dict) else {}
+
+
+def resolve_required_permission(operation: str, *, mode: str | None = None) -> str:
+    """Resolve the required level for an abstract op or declared script mode.
+
+    Automation tasks must declare their default ``permission`` and any mutating
+    ``permission_modes`` explicitly. Unknown tasks and modes fail closed.
+    """
+    normalized = operation.lower().strip()
+    if mode is None and normalized in READ_OPS | WRITE_OPS | DANGER_OPS:
+        return _LEVEL_FOR_CATEGORY[_op_category(normalized)]
+
+    task = _load_automation_tasks().get(normalized)
+    if not isinstance(task, dict):
+        return "DangerFullAccess"
+
+    default_level = task.get("permission")
+    if default_level not in _PERMISSION_LEVELS:
+        return "DangerFullAccess"
+    if mode is None:
+        return default_level
+
+    modes = task.get("permission_modes", {})
+    if not isinstance(modes, dict):
+        return "DangerFullAccess"
+    required = modes.get(mode.strip())
+    return required if required in _PERMISSION_LEVELS else "DangerFullAccess"
+
+
+def _is_declared_operation(operation: str, *, mode: str | None = None) -> bool:
+    """Return whether an abstract operation or exact task/mode is declared."""
+    normalized = operation.lower().strip()
+    if mode is None and normalized in READ_OPS | WRITE_OPS | DANGER_OPS:
+        return True
+
+    task = _load_automation_tasks().get(normalized)
+    if not isinstance(task, dict) or task.get("permission") not in _PERMISSION_LEVELS:
+        return False
+    if mode is None:
+        return True
+
+    modes = task.get("permission_modes", {})
+    return (
+        isinstance(modes, dict)
+        and mode.strip() in modes
+        and modes[mode.strip()] in _PERMISSION_LEVELS
+    )
+
+
 # ---------------------------------------------------------------------------
 # Permission result
 # ---------------------------------------------------------------------------
@@ -141,8 +198,10 @@ class PermissionResult:
     reason: str
     agent: str
     operation: str
+    mode: str | None
     target_path: str | None
     permission_level: str
+    required_level: str
     file_scope: str | None
 
 
@@ -197,6 +256,8 @@ def check_permission(
     agent: str,
     operation: str,
     target_path: str | None = None,
+    *,
+    mode: str | None = None,
 ) -> PermissionResult:
     """Check whether *agent* may perform *operation* on *target_path*.
 
@@ -205,6 +266,7 @@ def check_permission(
     """
     agents = _load_registry()
     agent_data = _find_agent(agents, agent)
+    required_level = resolve_required_permission(operation, mode=mode)
 
     if agent_data is None:
         return PermissionResult(
@@ -212,16 +274,32 @@ def check_permission(
             reason=f"Agent '{agent}' not found in registry",
             agent=agent,
             operation=operation,
+            mode=mode,
             target_path=target_path,
             permission_level="unknown",
+            required_level=required_level,
             file_scope=None,
+        )
+
+    if not _is_declared_operation(operation, mode=mode):
+        return PermissionResult(
+            allowed=False,
+            reason=(
+                f"Operation '{operation}'"
+                + (f" mode '{mode}'" if mode else "")
+                + " has no explicit permission declaration"
+            ),
+            agent=agent,
+            operation=operation,
+            mode=mode,
+            target_path=target_path,
+            permission_level=agent_data.get("permission_level", "ReadOnly"),
+            required_level=required_level,
+            file_scope=agent_data.get("file_scope"),
         )
 
     perm_level: str = agent_data.get("permission_level", "ReadOnly")
     file_scope: str | None = agent_data.get("file_scope")
-
-    category = _op_category(operation)
-    required_level = _LEVEL_FOR_CATEGORY[category]
 
     # 1. Check permission level is sufficient
     if _level_rank(perm_level) < _level_rank(required_level):
@@ -233,14 +311,16 @@ def check_permission(
             ),
             agent=agent,
             operation=operation,
+            mode=mode,
             target_path=target_path,
             permission_level=perm_level,
+            required_level=required_level,
             file_scope=file_scope,
         )
 
-    # 2. For write/danger ops with a target path, check file scope
+    # 2. For write/danger requirements with a target path, check file scope
     if (
-        category in ("write", "danger")
+        _level_rank(required_level) >= _level_rank("WorkspaceWrite")
         and target_path is not None
         and file_scope is not None
     ):
@@ -254,8 +334,10 @@ def check_permission(
                 ),
                 agent=agent,
                 operation=operation,
+                mode=mode,
                 target_path=target_path,
                 permission_level=perm_level,
+                required_level=required_level,
                 file_scope=file_scope,
             )
 
@@ -264,8 +346,10 @@ def check_permission(
         reason="Permitted",
         agent=agent,
         operation=operation,
+        mode=mode,
         target_path=target_path,
         permission_level=perm_level,
+        required_level=required_level,
         file_scope=file_scope,
     )
 
@@ -285,6 +369,7 @@ def _build_parser() -> argparse.ArgumentParser:
     check_p = sub.add_parser("check", help="Check a single permission")
     check_p.add_argument("--agent", required=True, help="Agent name")
     check_p.add_argument("--op", required=True, help="Operation (read/edit/delete/...)")
+    check_p.add_argument("--mode", default=None, help="Exact declared task mode")
     check_p.add_argument("--path", default=None, help="Target file path")
     check_p.add_argument(
         "--json", action="store_true", dest="as_json", help="JSON output"
@@ -293,6 +378,7 @@ def _build_parser() -> argparse.ArgumentParser:
     # Allow top-level flags as shorthand (no subcommand)
     parser.add_argument("--agent", default=None, help="Agent name")
     parser.add_argument("--op", default=None, help="Operation")
+    parser.add_argument("--mode", default=None, help="Exact declared task mode")
     parser.add_argument("--path", default=None, help="Target file path")
     parser.add_argument(
         "--json", action="store_true", dest="as_json", help="JSON output"
@@ -308,6 +394,7 @@ def main(argv: list[str] | None = None) -> int:
     # Support both `check --agent ...` and `--agent ...` forms
     agent = args.agent
     op = args.op
+    mode = args.mode
     path = args.path
     as_json = args.as_json
 
@@ -315,7 +402,7 @@ def main(argv: list[str] | None = None) -> int:
         parser.print_help()
         return 1
 
-    result = check_permission(agent, op, path)
+    result = check_permission(agent, op, path, mode=mode)
 
     if as_json:
         print_json(
@@ -324,17 +411,21 @@ def main(argv: list[str] | None = None) -> int:
                 "reason": result.reason,
                 "agent": result.agent,
                 "operation": result.operation,
+                "mode": result.mode,
                 "target_path": result.target_path,
                 "permission_level": result.permission_level,
+                "required_level": result.required_level,
                 "file_scope": result.file_scope,
             }
         )
     else:
         icon = "✅" if result.allowed else "🚫"
         print(f"{icon} {result.agent} → {result.operation}", end="")
+        if result.mode:
+            print(f" {result.mode}", end="")
         if result.target_path:
             print(f" on {result.target_path}", end="")
-        print(f"  [{result.permission_level}]")
+        print(f"  [agent={result.permission_level}, required={result.required_level}]")
         if not result.allowed:
             print(f"   Reason: {result.reason}")
 

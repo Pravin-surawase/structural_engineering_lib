@@ -14,6 +14,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -65,6 +66,8 @@ class AuditReport:
 # Write-capable tool keywords
 _WRITE_TOOLS = {"editFiles", "edit", "write", "create"}
 _RUN_TOOLS = {"runInTerminal", "run", "terminal"}
+_AUTOMATION_MAP = Path(__file__).resolve().parent / "automation-map.json"
+_KNOWN_LEVELS = {"ReadOnly", "ReadOnlyTerminal", "WorkspaceWrite", "DangerFullAccess"}
 
 
 def _has_write_tools(tools: list[str]) -> bool:
@@ -75,6 +78,75 @@ def _has_write_tools(tools: list[str]) -> bool:
 def _has_run_tools(tools: list[str]) -> bool:
     """Check if tool list contains terminal/run tools."""
     return bool(set(tools) & _RUN_TOOLS)
+
+
+def audit_automation_permission_metadata() -> list[Anomaly]:
+    """Validate only explicitly declared automation permission metadata."""
+    try:
+        data = json.loads(_AUTOMATION_MAP.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError, OSError) as exc:
+        return [
+            Anomaly(
+                agent="automation-map",
+                severity="CONFLICT",
+                message=f"Cannot load automation permission metadata: {exc}",
+            )
+        ]
+
+    anomalies: list[Anomaly] = []
+    for task_name, task in data.get("tasks", {}).items():
+        if not isinstance(task, dict):
+            continue
+        default_level = task.get("permission")
+        modes = task.get("permission_modes")
+        subject = f"automation:{task_name}"
+
+        if default_level is not None and default_level not in _KNOWN_LEVELS:
+            anomalies.append(
+                Anomaly(
+                    agent=subject,
+                    severity="CONFLICT",
+                    message=f"Unknown default permission level: {default_level}",
+                )
+            )
+
+        if modes is None:
+            continue
+        if default_level is None:
+            anomalies.append(
+                Anomaly(
+                    agent=subject,
+                    severity="CONFLICT",
+                    message="permission_modes requires an explicit default permission",
+                )
+            )
+        if not isinstance(modes, dict):
+            anomalies.append(
+                Anomaly(
+                    agent=subject,
+                    severity="CONFLICT",
+                    message="permission_modes must be an object",
+                )
+            )
+            continue
+        for mode, level in modes.items():
+            if not isinstance(mode, str) or not mode.strip():
+                anomalies.append(
+                    Anomaly(
+                        agent=subject,
+                        severity="CONFLICT",
+                        message="permission mode names must be non-empty strings",
+                    )
+                )
+            if level not in _KNOWN_LEVELS:
+                anomalies.append(
+                    Anomaly(
+                        agent=subject,
+                        severity="CONFLICT",
+                        message=f"Mode '{mode}' has unknown permission level: {level}",
+                    )
+                )
+    return anomalies
 
 
 # ---------------------------------------------------------------------------
@@ -207,6 +279,8 @@ def audit_permissions() -> AuditReport:
                 anomalies=anomalies,
             )
         )
+
+    all_anomalies.extend(audit_automation_permission_metadata())
 
     return AuditReport(
         agents=agent_infos,

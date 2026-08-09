@@ -59,14 +59,16 @@ require the minimum collected-session threshold enforced by the evolution script
 ### Scheduled Review Workflow
 
 ```bash
+SESSION_ID="<session-id>"
+
 # Step 1: Collect artifacts from this session
-.venv/bin/python scripts/agent_session_collector.py
+.venv/bin/python scripts/agent_session_collector.py --session-id "$SESSION_ID"
 
 # Step 2: Quick score for agents active this session
-.venv/bin/python scripts/agent_scorer.py --session-latest
+.venv/bin/python scripts/agent_scorer.py --session "$SESSION_ID"
 
-# Step 3: Check for drift violations
-.venv/bin/python scripts/agent_drift_detector.py --session-latest
+# Step 3: Check for drift violations (read-only unless --write is explicit)
+.venv/bin/python scripts/agent_drift_detector.py --session "$SESSION_ID"
 
 # Step 4: Log findings
 ./run.sh feedback log --agent agent-evolver
