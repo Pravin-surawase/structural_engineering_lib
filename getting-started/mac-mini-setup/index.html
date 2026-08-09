@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -2445,7 +2445,7 @@
 <strong>Status:</strong> Approved
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-03-26
-<strong>Last Updated:</strong> 2026-03-29</p>
+<strong>Last Updated:</strong> 2026-08-07</p>
 <p>Complete instructions to clone and run the full stack on a fresh Mac Mini (Apple Silicon).
 This guide is designed so an AI agent or developer can follow it end-to-end without ambiguity.</p>
 <hr />
@@ -2481,8 +2481,8 @@ This guide is designed so an AI agent or developer can follow it end-to-end with
 </tr>
 <tr>
 <td>Node.js</td>
-<td>18+ (v20 LTS or newer)</td>
-<td><code>brew install node@20</code> or use <code>nvm</code></td>
+<td>24 LTS</td>
+<td>Use <code>nvm install</code> from the repository root (<code>.nvmrc</code> is authoritative)</td>
 </tr>
 <tr>
 <td>Docker + Colima</td>
@@ -2497,7 +2497,7 @@ This guide is designed so an AI agent or developer can follow it end-to-end with
 </tbody>
 </table>
 <blockquote>
-<p><strong>Note:</strong> Node v20+ and v25+ both work. The codebase requires Node 18 minimum.</p>
+<p><strong>Note:</strong> Node 20 and Node 25 are end-of-life. Local development and React CI use Node 24 LTS; run <code>nvm use</code> from the repository root.</p>
 <p><strong>Why Colima over Docker Desktop?</strong> Colima is lightweight, CLI-based, uses less RAM, and is faster for dev machines. Docker Desktop works too but runs a heavier background VM.</p>
 </blockquote>
 <h3 id="system-libraries-needed-for-pdf-reports-via-weasyprint">System libraries (needed for PDF reports via WeasyPrint)<a class="headerlink" href="#system-libraries-needed-for-pdf-reports-via-weasyprint" title="Permanent link">&para;</a></h3>
@@ -2505,7 +2505,7 @@ This guide is designed so an AI agent or developer can follow it end-to-end with
 </code></pre></div>
 <hr />
 <h2 id="step-1-clone-the-repository">Step 1: Clone the Repository<a class="headerlink" href="#step-1-clone-the-repository" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>~/Project_VS_code<span class="w">   </span><span class="c1"># or your preferred workspace</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>~/VS_code_project<span class="w">   </span><span class="c1"># current Mac Mini workspace, or your preferred workspace</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Pravin-surawase/structural_engineering_lib.git
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">cd</span><span class="w"> </span>structural_engineering_lib
 </code></pre></div>
@@ -2537,7 +2537,7 @@ This guide is designed so an AI agent or developer can follow it end-to-end with
 </code></pre></div>
 <h3 id="verify-python-setup">Verify Python setup<a class="headerlink" href="#verify-python-setup" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>.venv/bin/python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import structural_lib; print(structural_lib.__version__)&quot;</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># Should print: 0.20.0 (or current version)</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># Should print: 0.21.6 (or the current `Python/pyproject.toml` version)</span>
 </code></pre></div>
 <hr />
 <h2 id="step-3-run-python-tests">Step 3: Run Python Tests<a class="headerlink" href="#step-3-run-python-tests" title="Permanent link">&para;</a></h2>
@@ -2545,7 +2545,7 @@ This guide is designed so an AI agent or developer can follow it end-to-end with
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>../.venv/bin/pytest<span class="w"> </span>tests/<span class="w"> </span>-q<span class="w"> </span>--tb<span class="o">=</span>short<span class="w"> </span>--ignore<span class="o">=</span>tests/performance
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nb">cd</span><span class="w"> </span>..
 </code></pre></div>
-<p><strong>Expected:</strong> 3,100+ tests pass, 0 failures.</p>
+<p><strong>Expected:</strong> 5,100+ tests pass, 0 failures.</p>
 <hr />
 <h2 id="step-4-react-frontend">Step 4: React Frontend<a class="headerlink" href="#step-4-react-frontend" title="Permanent link">&para;</a></h2>
 <h3 id="install-node-dependencies">Install Node dependencies<a class="headerlink" href="#install-node-dependencies" title="Permanent link">&para;</a></h3>
@@ -2609,7 +2609,7 @@ This guide is designed so an AI agent or developer can follow it end-to-end with
 <div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># 1. Environment check</span>
 <a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>start
 <a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="c1"># 2. Quick validation (8 checks, &lt;30 seconds)</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="c1"># 2. Quick validation (9 checks, &lt;30 seconds)</span>
 <a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>./run.sh<span class="w"> </span>check<span class="w"> </span>--quick
 <a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
 <a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="c1"># 3. Full test suite</span>
@@ -2809,7 +2809,7 @@ A separate VBA-specific repository is planned for the future.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
       

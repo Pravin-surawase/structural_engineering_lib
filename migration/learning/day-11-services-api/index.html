@@ -1,0 +1,2997 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/migration/learning/day-11-services-api/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Day 11: Services Layer — API, Adapters & Pipeline (Deep Dive) - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-11-services-layer-api-adapters-pipeline-deep-dive" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 11: Services Layer — API, Adapters &amp; Pipeline (Deep Dive)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You'll Learn Today
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-what-the-services-layer-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1: What the Services Layer Does
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 1: What the Services Layer Does">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-the-role" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 The Role
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-what-services-does-not-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 What Services DOES NOT Do
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-the-apipy-re-export-hub-barrel-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2: The api.py Re-Export Hub (Barrel Pattern)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 2: The api.py Re-Export Hub (Barrel Pattern)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-two-files-named-apipy-the-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Two Files Named api.py — The Trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-why-the-barrel-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Why the Barrel Pattern?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-3-anatomy-of-design_beam_is456" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 3: Anatomy of design_beam_is456()
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 3: Anatomy of design_beam_is456()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-the-function-signature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 The Function Signature
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-internal-execution-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Internal Execution Flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-the-deprecated-parameter-trick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 The Deprecated Parameter Trick
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-the-build_detailing_input-helper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 The build_detailing_input() Helper
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-4-the-adapter-pattern-taming-real-world-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 4: The Adapter Pattern — Taming Real-World Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 4: The Adapter Pattern — Taming Real-World Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 The Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-the-adapter-abc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 The Adapter ABC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-genericcsvadapter-40-column-mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 GenericCSVAdapter — 40+ Column Mappings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-how-column-resolution-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 How Column Resolution Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-the-adapter-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 The Adapter Hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-5-the-beam-pipeline-batch-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 5: The Beam Pipeline — Batch Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 5: The Beam Pipeline — Batch Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-the-canonical-output-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 The Canonical Output Schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-pipeline-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Pipeline Steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-api-discovery-never-guess-parameter-names" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 API Discovery — Never Guess Parameter Names
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-6-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 6: Exercises
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 6: Exercises">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-1-api-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1: API Discovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-2-design-a-beam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2: Design a Beam
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-3-explore-the-re-export-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3: Explore the Re-export Hub
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-7-can-you-explain-self-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 7: Can You Explain? (Self-Check)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 7: Can You Explain? (Self-Check)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-why-barrelre-export-pattern-instead-of-one-big-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q1: Why barrel/re-export pattern instead of one big file?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-why-40-column-aliases-in-genericcsvadapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q2: Why 40+ column aliases in GenericCSVAdapter?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-why-keyword-only-arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q3: Why keyword-only arguments?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-whats-the-stub-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q4: What's the stub warning?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-8-things-to-know-critical-knowledge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 8: Things to Know (Critical Knowledge)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 8: Things to Know (Critical Knowledge)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-the-_extract_beam_params_from_schema-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 The _extract_beam_params_from_schema() Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-the-compliancecaseresult-return-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 The ComplianceCaseResult Return Type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-batch-processing-with-error-boundaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Batch Processing with Error Boundaries
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-9-what-can-be-done-better" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 9: What Can Be Done Better
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 9: What Can Be Done Better">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-current-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Current Issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-the-re-export-bloat-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 The Re-export Bloat Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-missing-adapter-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 Missing Adapter Validation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-10-innovation-directions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 10: Innovation Directions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 10: Innovation Directions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-async-pipeline-with-streaming-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Async Pipeline with Streaming Results
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-adapter-auto-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2 Adapter Auto-Detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-result-caching-by-input-hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3 Result Caching by Input Hash
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-innovation-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4 Innovation Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-11-next-repo-must-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 11: Next Repo Must-Add
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 11: Next Repo Must-Add">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-adapter-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1 Adapter Registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-pipeline-hooks-prepost" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2 Pipeline Hooks (Pre/Post)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-namespace-based-api-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3 Namespace-Based API Surface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-day-1-checklist-for-next-repo-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4 Day-1 Checklist for Next Repo Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-12-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 12: Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📎 References
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's Next?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="day-11-services-layer-api-adapters-pipeline-deep-dive">Day 11: Services Layer — API, Adapters &amp; Pipeline (Deep Dive)<a class="headerlink" href="#day-11-services-layer-api-adapters-pipeline-deep-dive" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Learning Module
+<strong>Audience:</strong> Solo developer (coder, not a civil engineer)
+<strong>Status:</strong> Active
+<strong>Importance:</strong> Critical
+<strong>Created:</strong> 2026-04-08
+<strong>Last Updated:</strong> 2026-04-09
+<strong>Prerequisites:</strong> Days 8-10 (architecture, type system, error handling)
+<strong>Library files:</strong> <code>Python/structural_lib/services/api.py</code>, <code>Python/structural_lib/services/beam_api.py</code>, <code>Python/structural_lib/services/adapters.py</code>, <code>Python/structural_lib/services/beam_pipeline.py</code>
+<strong>Key scripts:</strong> <code>scripts/discover_api_signatures.py</code></p>
+<hr />
+<h2 id="what-youll-learn-today">What You'll Learn Today<a class="headerlink" href="#what-youll-learn-today" title="Permanent link">&para;</a></h2>
+<p>By the end of this module you'll understand:
+- What the services layer does (and what it delegates)
+- How <code>design_beam_is456()</code> orchestrates a full beam design — step by step
+- Why <code>api.py</code> is a re-export hub (the "barrel" pattern)
+- How <code>GenericCSVAdapter</code> maps 40+ messy column names from ETABS/SAP2000/manual CSVs
+- How <code>beam_pipeline.py</code> runs multi-step batch designs with a canonical schema
+- How to discover any API function's exact parameters without guessing
+- The deprecated parameter resolution trick (<code>_resolve_deprecated_param</code>)
+- <strong>Things to know</strong> — the stub trap, parameter naming conventions, batch vs single design
+- <strong>What can be done better</strong> — adapter testing, pipeline error recovery, too many re-exports
+- <strong>Innovation</strong> — async pipelines, streaming results, adapter auto-detection
+- <strong>Next repo must-add</strong> — adapter registry, pipeline hooks, result caching</p>
+<hr />
+<h2 id="part-1-what-the-services-layer-does">Part 1: What the Services Layer Does<a class="headerlink" href="#part-1-what-the-services-layer-does" title="Permanent link">&para;</a></h2>
+<h3 id="11-the-role">1.1 The Role<a class="headerlink" href="#11-the-role" title="Permanent link">&para;</a></h3>
+<p>Remember the restaurant analogy from Day 8? Services is the waiter layer. Waiters don't cook food (that's <code>codes/</code>). They don't define what "medium rare" means (that's <code>core/</code>). They don't decorate the dining room (that's <code>react_app/</code>).</p>
+<p>Waiters do three things:
+1. <strong>Take orders</strong> — Accept inputs from the UI, validate them
+2. <strong>Relay to the kitchen</strong> — Call the right <code>codes/</code> functions with the right parameters
+3. <strong>Bring back food</strong> — Collect results, format them, return to the caller</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌───────────────────────────────────────────────────────────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                    SERVICES LAYER RESPONSIBILITIES                  │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│                                                                    │
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  ┌─────────────┐    ┌──────────────┐    ┌───────────────────┐      │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  │  VALIDATE    │───►│  ORCHESTRATE │───►│  FORMAT RESULTS   │      │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  │             │    │             │    │                   │      │
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│  │ • Units     │    │ • Flexure   │    │ • Frozen result   │      │
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│  │ • Plausible │    │ • Shear     │    │ • Dict-compat     │      │
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  │ • Cross-fld │    │ • Detailing │    │ • Errors attached  │      │
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│  └─────────────┘    └──────────────┘    └───────────────────┘      │
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│                                                                    │
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│  Also:                                                             │
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│  • ADAPT external data (CSV/Excel → canonical parameters)          │
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│  • PIPELINE batch designs (load → validate → design → report)      │
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│  • DEPRECATION backward compat for old parameter names              │
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>└───────────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<h3 id="12-what-services-does-not-do">1.2 What Services DOES NOT Do<a class="headerlink" href="#12-what-services-does-not-do" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>No IS 456 math</strong> — <code>0.36 * fck * b * xu...</code> lives in <code>codes/</code></li>
+<li><strong>No type definitions</strong> — <code>FlexureResult</code>, <code>Severity</code> live in <code>core/</code></li>
+<li><strong>No HTTP/JSON</strong> — That's <code>fastapi_app/</code></li>
+<li><strong>No React rendering</strong> — That's <code>react_app/</code></li>
+</ul>
+<p>Services is ONLY orchestration — calling the right functions in the right order with validated inputs.</p>
+<hr />
+<h2 id="part-2-the-apipy-re-export-hub-barrel-pattern">Part 2: The <code>api.py</code> Re-Export Hub (Barrel Pattern)<a class="headerlink" href="#part-2-the-apipy-re-export-hub-barrel-pattern" title="Permanent link">&para;</a></h2>
+<h3 id="21-two-files-named-apipy-the-trap">2.1 Two Files Named <code>api.py</code> — The Trap<a class="headerlink" href="#21-two-files-named-apipy-the-trap" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Python/structural_lib/
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── api.py                  ← ⚠️ STUB (backward compat) — NEVER EDIT
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>└── services/
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    └── api.py              ← ✅ Real re-export hub
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    └── beam_api.py         ← ✅ Actual beam functions
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    └── column_api.py       ← ✅ Actual column functions
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    └── common_api.py       ← ✅ Shared utilities
+</code></pre></div>
+<p><strong>The stub</strong> (<code>Python/structural_lib/api.py</code>) exists only so old code <code>from structural_lib.api import design_beam_is456</code> still works. It just re-imports from the real location.</p>
+<p><strong>The re-export hub</strong> (<code>services/api.py</code>) collects all public functions from domain-specific modules:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># services/api.py — the barrel file</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.services.beam_api</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">design_beam_is456</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">detail_beam_is456</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">optimize_beam_cost</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="c1"># ... 20+ more beam functions</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">)</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.services.column_api</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">design_column_is456</span><span class="p">,</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">classify_column_is456</span><span class="p">,</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="c1"># ... 12+ more column functions</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="p">)</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.services.common_api</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    <span class="n">get_library_version</span><span class="p">,</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    <span class="n">validate_design_results</span><span class="p">,</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>    <span class="n">check_code</span><span class="p">,</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="22-why-the-barrel-pattern">2.2 Why the Barrel Pattern?<a class="headerlink" href="#22-why-the-barrel-pattern" title="Permanent link">&para;</a></h3>
+<p>The public API grew to 37+ functions. All in one file = 3000+ lines. Unmanageable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a># BEFORE (one giant file):
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>services/api.py → 3000 lines, impossible to navigate
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a># AFTER (split + barrel):
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>services/beam_api.py    → ~800 lines (beam design, detailing, optimization)
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>services/column_api.py  → ~500 lines (column design, classification)
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>services/common_api.py  → ~200 lines (shared validation, versioning)
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>services/api.py         → ~50 lines (re-exports only)
+</code></pre></div>
+<p>Users import from the barrel: <code>from structural_lib.services.api import design_beam_is456</code>. They don't need to know the internal split.</p>
+<p>This is the same as TypeScript's <code>index.ts</code> barrel: <code>export { useAuth } from './auth'</code>.</p>
+<hr />
+<h2 id="part-3-anatomy-of-design_beam_is456">Part 3: Anatomy of <code>design_beam_is456()</code><a class="headerlink" href="#part-3-anatomy-of-design_beam_is456" title="Permanent link">&para;</a></h2>
+<h3 id="31-the-function-signature">3.1 The Function Signature<a class="headerlink" href="#31-the-function-signature" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># ACTUAL code from services/beam_api.py</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">design_beam_is456</span><span class="p">(</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="o">*</span><span class="p">,</span>                      <span class="c1"># ALL keyword-only — prevents positional mistakes</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">units</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>             <span class="c1"># &quot;IS456&quot; — validated at boundary</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>            <span class="c1"># Beam width (mm)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">D_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>            <span class="c1"># Overall depth (mm)</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">d_mm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>            <span class="c1"># Effective depth (mm)</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">fck_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>        <span class="c1"># Concrete grade (N/mm²)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="n">fy_nmm2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>         <span class="c1"># Steel yield strength (N/mm²)</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="n">mu_knm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>          <span class="c1"># Factored bending moment (kN·m)</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="n">vu_kn</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>           <span class="c1"># Factored shear force (kN)</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">d_dash_mm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># Compression steel depth (optional)</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="o">...</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ComplianceCaseResult</span><span class="p">:</span>
+</code></pre></div>
+<p><strong>Critical design decisions:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code> (keyword-only)</td>
+<td>Can't call <code>func(300, 500, ...)</code> — must name every arg</td>
+</tr>
+<tr>
+<td><code>_mm</code>, <code>_nmm2</code>, <code>_knm</code> suffixes</td>
+<td>Units are visible in the parameter name</td>
+</tr>
+<tr>
+<td><code>d_dash_mm</code> optional with <code>None</code></td>
+<td>Doubly reinforced design only when needed</td>
+</tr>
+<tr>
+<td>Returns <code>ComplianceCaseResult</code></td>
+<td>Frozen, dict-compatible, carries errors</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-internal-execution-flow">3.2 Internal Execution Flow<a class="headerlink" href="#32-internal-execution-flow" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># What happens inside design_beam_is456():</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># STEP 1: Boundary validation</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">_require_is456_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># → Raises ConfigurationError if units != &quot;IS456&quot;</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># STEP 2: Deprecated parameter resolution</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="n">b_mm</span> <span class="o">=</span> <span class="n">_resolve_deprecated_param</span><span class="p">(</span><span class="n">b_mm</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;width&quot;</span><span class="p">),</span> <span class="s2">&quot;b_mm&quot;</span><span class="p">,</span> <span class="s2">&quot;width&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># → Old code uses &quot;width=300&quot;, new code uses &quot;b_mm=300&quot;</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="c1"># → Both work, but deprecated param logs a FutureWarning</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="c1"># STEP 3: Plausibility check</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="n">_validate_plausibility</span><span class="p">(</span><span class="n">fck_nmm2</span><span class="p">,</span> <span class="n">fy_nmm2</span><span class="p">,</span> <span class="n">b_mm</span><span class="p">,</span> <span class="n">d_mm</span><span class="p">)</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="c1"># → Catches unit confusion: fck=3600 probably means psi, not MPa</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="c1"># STEP 4: Flexure design (delegates to codes/)</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="n">flexure_result</span> <span class="o">=</span> <span class="n">flexure</span><span class="o">.</span><span class="n">design_singly_reinforced</span><span class="p">(</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>    <span class="n">fck</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span> <span class="n">Mu_kNm</span><span class="o">=</span><span class="n">mu_knm</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="p">)</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="c1"># STEP 5: Shear design (delegates to codes/)</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="n">shear_result</span> <span class="o">=</span> <span class="n">shear</span><span class="o">.</span><span class="n">design_shear</span><span class="p">(</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>    <span class="n">fck</span><span class="o">=</span><span class="n">fck_nmm2</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="n">fy_nmm2</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="n">b_mm</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="n">d_mm</span><span class="p">,</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>    <span class="n">Vu_kN</span><span class="o">=</span><span class="n">vu_kn</span><span class="p">,</span> <span class="n">Ast_mm2</span><span class="o">=</span><span class="n">flexure_result</span><span class="o">.</span><span class="n">Ast_required</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="p">)</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="c1"># STEP 6: Assemble unified result</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="k">return</span> <span class="n">ComplianceCaseResult</span><span class="p">(</span>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>    <span class="n">flexure</span><span class="o">=</span><span class="n">flexure_result</span><span class="p">,</span>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>    <span class="n">shear</span><span class="o">=</span><span class="n">shear_result</span><span class="p">,</span>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>    <span class="n">is_safe</span><span class="o">=</span><span class="n">flexure_result</span><span class="o">.</span><span class="n">is_safe</span> <span class="ow">and</span> <span class="n">shear_result</span><span class="o">.</span><span class="n">is_safe</span><span class="p">,</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>    <span class="n">errors</span><span class="o">=</span><span class="p">[</span><span class="o">...</span><span class="p">],</span>  <span class="c1"># Collected from both steps</span>
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="33-the-deprecated-parameter-trick">3.3 The Deprecated Parameter Trick<a class="headerlink" href="#33-the-deprecated-parameter-trick" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># ACTUAL pattern from services/beam_api.py</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">_resolve_deprecated_param</span><span class="p">(</span><span class="n">new_val</span><span class="p">,</span> <span class="n">old_val</span><span class="p">,</span> <span class="n">new_name</span><span class="p">,</span> <span class="n">old_name</span><span class="p">):</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Support old parameter names with deprecation warning.&quot;&quot;&quot;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="k">if</span> <span class="n">old_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        <span class="k">if</span> <span class="n">new_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot provide both &#39;</span><span class="si">{</span><span class="n">new_name</span><span class="si">}</span><span class="s2">&#39; and &#39;</span><span class="si">{</span><span class="n">old_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>            <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">old_name</span><span class="si">}</span><span class="s2">&#39; is deprecated. Use &#39;</span><span class="si">{</span><span class="n">new_name</span><span class="si">}</span><span class="s2">&#39; instead.&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>            <span class="ne">FutureWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>        <span class="p">)</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>        <span class="k">return</span> <span class="n">old_val</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    <span class="k">return</span> <span class="n">new_val</span>
+</code></pre></div>
+<p>This allows gradual migration:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Old code still works (with deprecation warning):</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">design_beam_is456</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># FutureWarning: &#39;width&#39; is deprecated. Use &#39;b_mm&#39; instead.</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># New code (no warning):</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">design_beam_is456</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</code></pre></div></p>
+<h3 id="34-the-build_detailing_input-helper">3.4 The <code>build_detailing_input()</code> Helper<a class="headerlink" href="#34-the-build_detailing_input-helper" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># After design, services builds the input for detailing:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">build_detailing_input</span><span class="p">(</span><span class="n">design_result</span><span class="p">,</span> <span class="n">beam_params</span><span class="p">):</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform design output into detailing input format.&quot;&quot;&quot;</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>        <span class="s2">&quot;b_mm&quot;</span><span class="p">:</span> <span class="n">beam_params</span><span class="p">[</span><span class="s2">&quot;b_mm&quot;</span><span class="p">],</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>        <span class="s2">&quot;d_mm&quot;</span><span class="p">:</span> <span class="n">beam_params</span><span class="p">[</span><span class="s2">&quot;d_mm&quot;</span><span class="p">],</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>        <span class="s2">&quot;Ast_required_mm2&quot;</span><span class="p">:</span> <span class="n">design_result</span><span class="o">.</span><span class="n">flexure</span><span class="o">.</span><span class="n">Ast_required</span><span class="p">,</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>        <span class="s2">&quot;Asv_required_mm2&quot;</span><span class="p">:</span> <span class="n">design_result</span><span class="o">.</span><span class="n">shear</span><span class="o">.</span><span class="n">Asv_required</span><span class="p">,</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>        <span class="s2">&quot;fck&quot;</span><span class="p">:</span> <span class="n">beam_params</span><span class="p">[</span><span class="s2">&quot;fck_nmm2&quot;</span><span class="p">],</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>        <span class="s2">&quot;fy&quot;</span><span class="p">:</span> <span class="n">beam_params</span><span class="p">[</span><span class="s2">&quot;fy_nmm2&quot;</span><span class="p">],</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>    <span class="p">}</span>
+</code></pre></div>
+<p>Services transforms outputs from one step into inputs for the next — that's orchestration.</p>
+<hr />
+<h2 id="part-4-the-adapter-pattern-taming-real-world-data">Part 4: The Adapter Pattern — Taming Real-World Data<a class="headerlink" href="#part-4-the-adapter-pattern-taming-real-world-data" title="Permanent link">&para;</a></h2>
+<h3 id="41-the-problem">4.1 The Problem<a class="headerlink" href="#41-the-problem" title="Permanent link">&para;</a></h3>
+<p>In a perfect world, users send <code>{"b_mm": 300, "D_mm": 500, "fck_nmm2": 25}</code>. In reality, they import CSVs from ETABS, SAP2000, SAFE, STAAD Pro, or hand-made Excel templates. Each uses different column names.</p>
+<p>The same beam width might be:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Column Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ETABS</td>
+<td><code>b (mm)</code></td>
+</tr>
+<tr>
+<td>Our canonical format</td>
+<td><code>b_mm</code></td>
+</tr>
+<tr>
+<td>Manual CSV</td>
+<td><code>Width</code>, <code>Width (mm)</code>, <code>width_mm</code></td>
+</tr>
+<tr>
+<td>Shorthand</td>
+<td><code>b</code>, <code>B</code></td>
+</tr>
+<tr>
+<td>British English</td>
+<td><code>Breadth</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-the-adapter-abc">4.2 The Adapter ABC<a class="headerlink" href="#42-the-adapter-abc" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># ACTUAL library code — services/adapters.py</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">InputAdapter</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all data adapters.&quot;&quot;&quot;</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="nd">@abstractmethod</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">can_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Can this adapter process the given data source?&quot;&quot;&quot;</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>        <span class="o">...</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>    <span class="nd">@abstractmethod</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BeamGeometry</span><span class="p">]:</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the source and return canonical beam geometry objects.&quot;&quot;&quot;</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>        <span class="o">...</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>    <span class="nd">@abstractmethod</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">BeamForces</span><span class="p">]:</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the source and return canonical force objects.&quot;&quot;&quot;</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>        <span class="o">...</span>
+</code></pre></div>
+<h3 id="43-genericcsvadapter-40-column-mappings">4.3 GenericCSVAdapter — 40+ Column Mappings<a class="headerlink" href="#43-genericcsvadapter-40-column-mappings" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># ACTUAL library code — the column mapping dictionaries</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">GenericCSVAdapter</span><span class="p">(</span><span class="n">InputAdapter</span><span class="p">):</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">GEOMETRY_COLUMNS</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>        <span class="s2">&quot;width_mm&quot;</span><span class="p">:</span> <span class="p">[</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>            <span class="s2">&quot;b (mm)&quot;</span><span class="p">,</span> <span class="s2">&quot;b_mm&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;Width&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>            <span class="s2">&quot;Width (mm)&quot;</span><span class="p">,</span> <span class="s2">&quot;width_mm&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;Breadth&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>        <span class="p">],</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>        <span class="s2">&quot;depth_mm&quot;</span><span class="p">:</span> <span class="p">[</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>            <span class="s2">&quot;D (mm)&quot;</span><span class="p">,</span> <span class="s2">&quot;D_mm&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;Depth&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>            <span class="s2">&quot;Depth (mm)&quot;</span><span class="p">,</span> <span class="s2">&quot;depth_mm&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;Height&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>        <span class="p">],</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>        <span class="s2">&quot;fck_mpa&quot;</span><span class="p">:</span> <span class="p">[</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>            <span class="s2">&quot;fck&quot;</span><span class="p">,</span> <span class="s2">&quot;fck_nmm2&quot;</span><span class="p">,</span> <span class="s2">&quot;Fck&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>            <span class="s2">&quot;fck (N/mm2)&quot;</span><span class="p">,</span> <span class="s2">&quot;Concrete Grade&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>        <span class="p">],</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>        <span class="c1"># ... 40+ column mappings total</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>    <span class="p">}</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>    <span class="n">FORCES_COLUMNS</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>        <span class="s2">&quot;moment_knm&quot;</span><span class="p">:</span> <span class="p">[</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>            <span class="s2">&quot;Mu&quot;</span><span class="p">,</span> <span class="s2">&quot;Mu (kN-m)&quot;</span><span class="p">,</span> <span class="s2">&quot;mu_knm&quot;</span><span class="p">,</span> <span class="s2">&quot;Moment&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>            <span class="s2">&quot;Factored Moment&quot;</span><span class="p">,</span> <span class="s2">&quot;M_u&quot;</span><span class="p">,</span> <span class="s2">&quot;Mu(kNm)&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>        <span class="p">],</span>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>        <span class="s2">&quot;shear_kn&quot;</span><span class="p">:</span> <span class="p">[</span>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>            <span class="s2">&quot;Vu&quot;</span><span class="p">,</span> <span class="s2">&quot;Vu (kN)&quot;</span><span class="p">,</span> <span class="s2">&quot;vu_kn&quot;</span><span class="p">,</span> <span class="s2">&quot;Shear&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>            <span class="s2">&quot;Factored Shear&quot;</span><span class="p">,</span> <span class="s2">&quot;V_u&quot;</span><span class="p">,</span> <span class="s2">&quot;Vu(kN)&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>        <span class="p">],</span>
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>    <span class="p">}</span>
+</code></pre></div>
+<h3 id="44-how-column-resolution-works">4.4 How Column Resolution Works<a class="headerlink" href="#44-how-column-resolution-works" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>CSV Header: &quot;Width&quot;, &quot;Depth&quot;, &quot;Mu (kN-m)&quot;, &quot;Vu (kN)&quot;
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>                │         │         │              │
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>                ▼         ▼         ▼              ▼
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>Mapping:    width_mm  depth_mm  moment_knm    shear_kn
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>                │         │         │              │
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>                ▼         ▼         ▼              ▼
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>Canonical:  b_mm=300  D_mm=500  mu_knm=150    vu_kn=100
+</code></pre></div>
+<p>The adapter iterates through each canonical field, checks if any of its aliases appear in the CSV headers, and maps the first match. If no alias matches, the field is reported as missing.</p>
+<h3 id="45-the-adapter-hierarchy">4.5 The Adapter Hierarchy<a class="headerlink" href="#45-the-adapter-hierarchy" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>InputAdapter (ABC)
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>├── ETABSAdapter      — ETABS CSV (geometry, forces, properties files)
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>├── SAFEAdapter       — CSI SAFE floor design export
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>├── STAADAdapter      — Bentley STAAD Pro
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>├── GenericCSVAdapter — Manual CSVs, Excel exports, unknown formats
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>└── ManualInputAdapter — Programmatic input (no file parsing)
+</code></pre></div>
+<p>Each adapter implements <code>can_handle(source)</code> → bool. The system tries each adapter until one claims the file.</p>
+<hr />
+<h2 id="part-5-the-beam-pipeline-batch-design">Part 5: The Beam Pipeline — Batch Design<a class="headerlink" href="#part-5-the-beam-pipeline-batch-design" title="Permanent link">&para;</a></h2>
+<h3 id="51-the-canonical-output-schema">5.1 The Canonical Output Schema<a class="headerlink" href="#51-the-canonical-output-schema" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># ACTUAL code from services/beam_pipeline.py</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">SCHEMA_VERSION</span> <span class="o">=</span> <span class="mi">1</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="n">IS456_UNITS</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="s2">&quot;length&quot;</span><span class="p">:</span> <span class="s2">&quot;mm&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="s2">&quot;stress&quot;</span><span class="p">:</span> <span class="s2">&quot;N/mm²&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>    <span class="s2">&quot;force&quot;</span><span class="p">:</span> <span class="s2">&quot;kN&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    <span class="s2">&quot;moment&quot;</span><span class="p">:</span> <span class="s2">&quot;kN·m&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    <span class="s2">&quot;area&quot;</span><span class="p">:</span> <span class="s2">&quot;mm²&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="p">}</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="c1"># Canonical dataclasses for pipeline stages:</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="nd">@dataclass</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="k">class</span><span class="w"> </span><span class="nc">BeamGeometry</span><span class="p">:</span>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>    <span class="n">beam_id</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>    <span class="n">b_mm</span><span class="p">:</span> <span class="nb">float</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>    <span class="n">D_mm</span><span class="p">:</span> <span class="nb">float</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>    <span class="n">d_mm</span><span class="p">:</span> <span class="nb">float</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>    <span class="c1"># ...</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="nd">@dataclass</span>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a><span class="k">class</span><span class="w"> </span><span class="nc">BeamDesignOutput</span><span class="p">:</span>
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Full output for one beam in the pipeline.&quot;&quot;&quot;</span>
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>    <span class="n">beam_id</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a>    <span class="n">geometry</span><span class="p">:</span> <span class="n">BeamGeometry</span>
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a>    <span class="n">materials</span><span class="p">:</span> <span class="n">BeamMaterials</span>
+<a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a>    <span class="n">loads</span><span class="p">:</span> <span class="n">BeamLoads</span>
+<a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a>    <span class="n">flexure</span><span class="p">:</span> <span class="n">FlexureOutput</span>
+<a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a>    <span class="n">shear</span><span class="p">:</span> <span class="n">ShearOutput</span>
+<a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a>    <span class="n">serviceability</span><span class="p">:</span> <span class="n">ServiceabilityOutput</span> <span class="o">|</span> <span class="kc">None</span>
+<a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a>    <span class="n">detailing</span><span class="p">:</span> <span class="n">DetailingOutput</span> <span class="o">|</span> <span class="kc">None</span>
+<a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a>    <span class="n">errors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DesignError</span><span class="p">]</span>
+<a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a>    <span class="n">schema_version</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">SCHEMA_VERSION</span>
+</code></pre></div>
+<h3 id="52-pipeline-steps">5.2 Pipeline Steps<a class="headerlink" href="#52-pipeline-steps" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Step 1: LOAD      ──► Read CSV via adapter → list[BeamGeometry]
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>Step 2: VALIDATE  ──► validate_units(), check all inputs
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>Step 3: DESIGN    ──► design_beam_is456() for each beam
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>Step 4: DETAIL    ──► detail_beam_is456() for each result (optional)
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>Step 5: OPTIMIZE  ──► Cost optimization (optional)
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>Step 6: REPORT    ──► Generate calculation reports
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>Step 7: VISUALIZE ──► Generate 3D geometry for React viewer
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Pipeline units validation at the top:</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">validate_units</span><span class="p">(</span><span class="n">units</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate units string at application boundary.&quot;&quot;&quot;</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="k">if</span> <span class="n">units</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">units</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        <span class="k">raise</span> <span class="n">UnitsValidationError</span><span class="p">(</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>            <span class="s2">&quot;units is required. Use &#39;IS456&#39; for standard units.&quot;</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>        <span class="p">)</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    <span class="n">normalized</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    <span class="k">if</span> <span class="n">normalized</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_VALID_UNIT_NORMALIZED</span><span class="p">:</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>        <span class="k">raise</span> <span class="n">UnitsValidationError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid units &#39;</span><span class="si">{</span><span class="n">units</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>    <span class="k">return</span> <span class="s2">&quot;IS456&quot;</span>
+</code></pre></div>
+<p>Units validated once at the top → passed to every design call. No per-beam validation.</p>
+<h3 id="53-api-discovery-never-guess-parameter-names">5.3 API Discovery — Never Guess Parameter Names<a class="headerlink" href="#53-api-discovery-never-guess-parameter-names" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># The #1 mistake: guessing parameter names</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="c1"># WRONG: width=300, grade=25, moment=150</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1"># RIGHT: b_mm=300, fck_nmm2=25, mu_knm=150</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="c1"># Always run this BEFORE calling any API function:</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>.venv/bin/python<span class="w"> </span>scripts/discover_api_signatures.py<span class="w"> </span>design_beam_is456
+</code></pre></div>
+<p>Output:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>design_beam_is456(
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    *, units: str, b_mm: float, D_mm: float, d_mm: float,
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    fck_nmm2: float, fy_nmm2: float, mu_knm: float, vu_kn: float,
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    d_dash_mm: float | None = None, ...
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>) -&gt; ComplianceCaseResult
+</code></pre></div></p>
+<hr />
+<h2 id="part-6-exercises">Part 6: Exercises<a class="headerlink" href="#part-6-exercises" title="Permanent link">&para;</a></h2>
+<h3 id="exercise-1-api-discovery">Exercise 1: API Discovery<a class="headerlink" href="#exercise-1-api-discovery" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># From workspace root:</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>.venv/bin/python<span class="w"> </span>scripts/discover_api_signatures.py<span class="w"> </span>design_beam_is456
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>.venv/bin/python<span class="w"> </span>scripts/discover_api_signatures.py<span class="w"> </span>detail_beam_is456
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>.venv/bin/python<span class="w"> </span>scripts/discover_api_signatures.py<span class="w"> </span>design_column_is456
+</code></pre></div>
+<h3 id="exercise-2-design-a-beam">Exercise 2: Design a Beam<a class="headerlink" href="#exercise-2-design-a-beam" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.services.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_beam_is456</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="c1"># Standard beam — note the keyword-only parameters</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">design_beam_is456</span><span class="p">(</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="n">units</span><span class="o">=</span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="n">fck_nmm2</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy_nmm2</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>    <span class="n">mu_knm</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">vu_kn</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="p">)</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Safe: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">flexure</span><span class="o">.</span><span class="n">is_safe</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ast: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">flexure</span><span class="o">.</span><span class="n">Ast_required</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> mm²&quot;</span><span class="p">)</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Section: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">flexure</span><span class="o">.</span><span class="n">section_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="c1"># Heavy beam — higher moment forces more steel</span>
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="n">result2</span> <span class="o">=</span> <span class="n">design_beam_is456</span><span class="p">(</span>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>    <span class="n">units</span><span class="o">=</span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span>
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">d_mm</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>    <span class="n">fck_nmm2</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy_nmm2</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>    <span class="n">mu_knm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">vu_kn</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a><span class="p">)</span>
+<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Heavy beam Ast: </span><span class="si">{</span><span class="n">result2</span><span class="o">.</span><span class="n">flexure</span><span class="o">.</span><span class="n">Ast_required</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> mm²&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="exercise-3-explore-the-re-export-hub">Exercise 3: Explore the Re-export Hub<a class="headerlink" href="#exercise-3-explore-the-re-export-hub" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">structural_lib.services.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">api</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="n">public</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">api</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total public symbols: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">public</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="n">beam_funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">public</span> <span class="k">if</span> <span class="s1">&#39;beam&#39;</span> <span class="ow">in</span> <span class="n">n</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="n">column_funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">public</span> <span class="k">if</span> <span class="s1">&#39;column&#39;</span> <span class="ow">in</span> <span class="n">n</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Beam functions: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">beam_funcs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Column functions: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">column_funcs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">beam_funcs</span><span class="p">):</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="part-7-can-you-explain-self-check">Part 7: Can You Explain? (Self-Check)<a class="headerlink" href="#part-7-can-you-explain-self-check" title="Permanent link">&para;</a></h2>
+<h3 id="q1-why-barrelre-export-pattern-instead-of-one-big-file">Q1: Why barrel/re-export pattern instead of one big file?<a class="headerlink" href="#q1-why-barrelre-export-pattern-instead-of-one-big-file" title="Permanent link">&para;</a></h3>
+<details><summary>Answer</summary>
+
+37+ public functions all in one file = 3000+ lines. By splitting into `beam_api.py`, `column_api.py`, and `common_api.py`, each file is focused (~500-800 lines). The barrel (`services/api.py`) provides a single import point. Users write `from structural_lib.services.api import design_beam_is456` without knowing the internal split.
+</details>
+
+<h3 id="q2-why-40-column-aliases-in-genericcsvadapter">Q2: Why 40+ column aliases in <code>GenericCSVAdapter</code>?<a class="headerlink" href="#q2-why-40-column-aliases-in-genericcsvadapter" title="Permanent link">&para;</a></h3>
+<details><summary>Answer</summary>
+
+Real structural engineering data is messy. ETABS exports `b (mm)`, STAAD uses `Width`, manual CSVs use `B` or `Breadth`. Without mappings, every user would need to rename CSV columns to match our exact format. With 40+ aliases, the adapter handles most common formats automatically. Usability over purity.
+</details>
+
+<h3 id="q3-why-keyword-only-arguments">Q3: Why keyword-only arguments?<a class="headerlink" href="#q3-why-keyword-only-arguments" title="Permanent link">&para;</a></h3>
+<details><summary>Answer</summary>
+
+Safety. `design_beam_is456(300, 500, 450, 25, 500, 150, 100)` — is 300 the width or depth? A parameter swap produces valid but wrong results. With `b_mm=300, D_mm=500`, every value is unambiguous. The `*` in the signature enforces this — Python rejects positional calls.
+</details>
+
+<h3 id="q4-whats-the-stub-warning">Q4: What's the stub warning?<a class="headerlink" href="#q4-whats-the-stub-warning" title="Permanent link">&para;</a></h3>
+<details><summary>Answer</summary>
+
+Two files named `api.py`: the stub at `structural_lib/api.py` (backward compat, just re-imports) and the real hub at `services/api.py`. If you edit the stub, your changes do nothing. Never edit the stub. Always work in `services/`.
+</details>
+
+<hr />
+<h2 id="part-8-things-to-know-critical-knowledge">Part 8: Things to Know (Critical Knowledge)<a class="headerlink" href="#part-8-things-to-know-critical-knowledge" title="Permanent link">&para;</a></h2>
+<h3 id="81-the-_extract_beam_params_from_schema-pattern">8.1 The <code>_extract_beam_params_from_schema()</code> Pattern<a class="headerlink" href="#81-the-_extract_beam_params_from_schema-pattern" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># When FastAPI sends a Pydantic model, services extracts raw values:</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">_extract_beam_params_from_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">BeamDesignRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert Pydantic model to raw kwargs for design_beam_is456.&quot;&quot;&quot;</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>        <span class="s2">&quot;b_mm&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>        <span class="s2">&quot;D_mm&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>        <span class="s2">&quot;d_mm&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">effective_depth</span> <span class="ow">or</span> <span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">depth</span> <span class="o">-</span> <span class="mi">50</span><span class="p">),</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>        <span class="s2">&quot;fck_nmm2&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">fck</span><span class="p">,</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>        <span class="s2">&quot;fy_nmm2&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">fy</span><span class="p">,</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>        <span class="s2">&quot;mu_knm&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">moment</span><span class="p">,</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>        <span class="s2">&quot;vu_kn&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">shear</span><span class="p">,</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>    <span class="p">}</span>
+</code></pre></div>
+<p>This is the translation layer between FastAPI's Pydantic models (user-friendly names) and the library's IS 456 parameter names (canonical).</p>
+<h3 id="82-the-compliancecaseresult-return-type">8.2 The <code>ComplianceCaseResult</code> Return Type<a class="headerlink" href="#82-the-compliancecaseresult-return-type" title="Permanent link">&para;</a></h3>
+<p>Every services function returns a frozen, dict-compatible result:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">result</span> <span class="o">=</span> <span class="n">design_beam_is456</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="c1"># Access as attributes:</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="n">result</span><span class="o">.</span><span class="n">flexure</span><span class="o">.</span><span class="n">Ast_required</span>  <span class="c1"># 876.5 mm²</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="c1"># Convert to dict (for JSON serialization):</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="n">result_dict</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="c1"># Check safety:</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">is_safe</span><span class="p">:</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>    <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">severity</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">error</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="83-batch-processing-with-error-boundaries">8.3 Batch Processing with Error Boundaries<a class="headerlink" href="#83-batch-processing-with-error-boundaries" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># Pipeline processes ALL beams, collecting per-beam errors:</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="k">for</span> <span class="n">beam</span> <span class="ow">in</span> <span class="n">beams</span><span class="p">:</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>        <span class="n">result</span> <span class="o">=</span> <span class="n">design_beam_is456</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">beam</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>    <span class="k">except</span> <span class="n">StructuralLibError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FailedBeamResult</span><span class="p">(</span><span class="n">beam_id</span><span class="o">=</span><span class="n">beam</span><span class="o">.</span><span class="n">beam_id</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">e</span><span class="p">))</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="c1"># One failed beam doesn&#39;t stop the other 199</span>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="n">failed</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">FailedBeamResult</span><span class="p">)]</span>
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Designed: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">failed</span><span class="p">)</span><span class="si">}</span><span class="s2">, Failed: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">failed</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="part-9-what-can-be-done-better">Part 9: What Can Be Done Better<a class="headerlink" href="#part-9-what-can-be-done-better" title="Permanent link">&para;</a></h2>
+<h3 id="91-current-issues">9.1 Current Issues<a class="headerlink" href="#91-current-issues" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Current State</th>
+<th>Better Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Adapter testing gaps</strong></td>
+<td>GenericCSVAdapter has limited test coverage</td>
+<td>Fuzzy header matching tests</td>
+</tr>
+<tr>
+<td><strong>Pipeline error recovery</strong></td>
+<td>One bad beam fails silently</td>
+<td>Structured per-beam error reporting</td>
+</tr>
+<tr>
+<td><strong>Too many re-exports</strong></td>
+<td>100+ symbols in <code>__all__</code></td>
+<td>Group by namespace (<code>api.beam.</code>, <code>api.column.</code>)</td>
+</tr>
+<tr>
+<td><strong>No adapter auto-detection</strong></td>
+<td>Manual format specification</td>
+<td>Sniff file headers to choose adapter</td>
+</tr>
+<tr>
+<td><strong>No result caching</strong></td>
+<td>Same beam re-designed from scratch</td>
+<td>Cache by input hash</td>
+</tr>
+</tbody>
+</table>
+<h3 id="92-the-re-export-bloat-problem">9.2 The Re-export Bloat Problem<a class="headerlink" href="#92-the-re-export-bloat-problem" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># Current: services/api.py exports 100+ symbols</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="c1"># This makes IDE autocomplete noisy:</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.services.api</span><span class="w"> </span><span class="kn">import</span> <span class="o">...</span>  <span class="c1"># 100+ options</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="c1"># Better: namespace grouping</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.services.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">beam</span>   <span class="c1"># beam.design(), beam.detail()</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.services.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">column</span> <span class="c1"># column.design(), column.classify()</span>
+</code></pre></div>
+<h3 id="93-missing-adapter-validation">9.3 Missing Adapter Validation<a class="headerlink" href="#93-missing-adapter-validation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Current: If GenericCSVAdapter can&#39;t match a column, it silently skips:</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">beams</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">load_geometry</span><span class="p">(</span><span class="s2">&quot;weird.csv&quot;</span><span class="p">)</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="c1"># → silently ignores unmapped columns, might produce incomplete data</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="c1"># Better: Report unmapped columns explicitly:</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="n">result</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">load_geometry</span><span class="p">(</span><span class="s2">&quot;weird.csv&quot;</span><span class="p">)</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="c1"># → AdapterResult(beams=[...], unmapped_columns=[&quot;CustomWidth&quot;, &quot;Strange_Col&quot;])</span>
+</code></pre></div>
+<hr />
+<h2 id="part-10-innovation-directions">Part 10: Innovation Directions<a class="headerlink" href="#part-10-innovation-directions" title="Permanent link">&para;</a></h2>
+<h3 id="101-async-pipeline-with-streaming-results">10.1 Async Pipeline with Streaming Results<a class="headerlink" href="#101-async-pipeline-with-streaming-results" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># Current: Batch design blocks until all beams are done</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="n">results</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">design_all</span><span class="p">(</span><span class="n">beams</span><span class="p">)</span>  <span class="c1"># Blocks for 30 seconds on 1000 beams</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="c1"># Innovation: Stream results as they complete</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="k">async</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">design_stream</span><span class="p">(</span><span class="n">beams</span><span class="p">):</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>    <span class="k">yield</span> <span class="n">result</span>  <span class="c1"># Frontend updates in real-time</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>    <span class="c1"># Progress: 1/1000, 2/1000, ...</span>
+</code></pre></div>
+<p>The FastAPI backend already has <code>streaming.py</code> with <code>BatchJobManager</code> and SSE. The pipeline could feed directly into SSE streaming.</p>
+<h3 id="102-adapter-auto-detection">10.2 Adapter Auto-Detection<a class="headerlink" href="#102-adapter-auto-detection" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="c1"># Current: User specifies adapter type</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="n">adapter</span> <span class="o">=</span> <span class="n">GenericCSVAdapter</span><span class="p">()</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="n">beams</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">load_geometry</span><span class="p">(</span><span class="s2">&quot;file.csv&quot;</span><span class="p">)</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="c1"># Innovation: Sniff headers and auto-select adapter</span>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="n">adapter</span> <span class="o">=</span> <span class="n">detect_adapter</span><span class="p">(</span><span class="s2">&quot;file.csv&quot;</span><span class="p">)</span>
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="c1"># → Reads first row, matches against all adapter COLUMN dicts</span>
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="c1"># → Returns ETABSAdapter if &quot;Story&quot; and &quot;IntPtDist&quot; found</span>
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="c1"># → Returns GenericCSVAdapter otherwise</span>
+</code></pre></div>
+<h3 id="103-result-caching-by-input-hash">10.3 Result Caching by Input Hash<a class="headerlink" href="#103-result-caching-by-input-hash" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># Current: Re-designing same beam = full recomputation</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="c1"># After: Cache by input hash</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">_input_hash</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>    <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a><span class="n">_cache</span> <span class="o">=</span> <span class="p">{}</span>
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a>
+<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a><span class="k">def</span><span class="w"> </span><span class="nf">design_beam_cached</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>    <span class="n">h</span> <span class="o">=</span> <span class="n">_input_hash</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a>    <span class="k">if</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">_cache</span><span class="p">:</span>
+<a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a>        <span class="k">return</span> <span class="n">_cache</span><span class="p">[</span><span class="n">h</span><span class="p">]</span>
+<a id="__codelineno-28-15" name="__codelineno-28-15" href="#__codelineno-28-15"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">design_beam_is456</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<a id="__codelineno-28-16" name="__codelineno-28-16" href="#__codelineno-28-16"></a>    <span class="n">_cache</span><span class="p">[</span><span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+<a id="__codelineno-28-17" name="__codelineno-28-17" href="#__codelineno-28-17"></a>    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+<h3 id="104-innovation-comparison">10.4 Innovation Comparison<a class="headerlink" href="#104-innovation-comparison" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Current State</th>
+<th>Innovation</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Batch pipeline</td>
+<td>Synchronous, blocking</td>
+<td>Async streaming</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Adapter selection</td>
+<td>Manual</td>
+<td>Header auto-detection</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Result caching</td>
+<td>None</td>
+<td>Input hash cache</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Parameter validation</td>
+<td>Per-call</td>
+<td>Schema-level validation</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Multi-code support</td>
+<td>IS 456 only</td>
+<td>Plugin adapters for ACI/EC2</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="part-11-next-repo-must-add">Part 11: Next Repo Must-Add<a class="headerlink" href="#part-11-next-repo-must-add" title="Permanent link">&para;</a></h2>
+<h3 id="111-adapter-registry">11.1 Adapter Registry<a class="headerlink" href="#111-adapter-registry" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># Instead of manual adapter selection, register all adapters:</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">AdapterRegistry</span><span class="p">:</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>    <span class="n">_adapters</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">InputAdapter</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">adapter_class</span><span class="p">):</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>        <span class="bp">cls</span><span class="o">.</span><span class="n">_adapters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">adapter_class</span><span class="p">())</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>        <span class="k">return</span> <span class="n">adapter_class</span>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">detect</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputAdapter</span><span class="p">:</span>
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a>        <span class="k">for</span> <span class="n">adapter</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_adapters</span><span class="p">:</span>
+<a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a>            <span class="k">if</span> <span class="n">adapter</span><span class="o">.</span><span class="n">can_handle</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+<a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a>                <span class="k">return</span> <span class="n">adapter</span>
+<a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No adapter found for: </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-29-16" name="__codelineno-29-16" href="#__codelineno-29-16"></a>
+<a id="__codelineno-29-17" name="__codelineno-29-17" href="#__codelineno-29-17"></a><span class="nd">@AdapterRegistry</span><span class="o">.</span><span class="n">register</span>
+<a id="__codelineno-29-18" name="__codelineno-29-18" href="#__codelineno-29-18"></a><span class="k">class</span><span class="w"> </span><span class="nc">ETABSAdapter</span><span class="p">(</span><span class="n">InputAdapter</span><span class="p">):</span>
+<a id="__codelineno-29-19" name="__codelineno-29-19" href="#__codelineno-29-19"></a>    <span class="o">...</span>
+</code></pre></div>
+<h3 id="112-pipeline-hooks-prepost">11.2 Pipeline Hooks (Pre/Post)<a class="headerlink" href="#112-pipeline-hooks-prepost" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># Allow custom steps before/after each pipeline stage:</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">PipelineHook</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">before_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">beam</span><span class="p">:</span> <span class="n">BeamGeometry</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeamGeometry</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">after_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="n">BeamDesignOutput</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeamDesignOutput</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="c1"># Example: Log every design to database</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">AuditHook</span><span class="p">(</span><span class="n">PipelineHook</span><span class="p">):</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">after_design</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a>        <span class="n">db</span><span class="o">.</span><span class="n">log_design</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a>        <span class="k">return</span> <span class="n">result</span>
+<a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a>
+<a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">BeamPipeline</span><span class="p">(</span><span class="n">hooks</span><span class="o">=</span><span class="p">[</span><span class="n">AuditHook</span><span class="p">()])</span>
+</code></pre></div>
+<h3 id="113-namespace-based-api-surface">11.3 Namespace-Based API Surface<a class="headerlink" href="#113-namespace-based-api-surface" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="c1"># Instead of flat 100+ exports:</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="c1"># from structural_lib.api import design_beam_is456, detail_beam_is456, ...</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="c1"># Use namespaces:</span>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">beam</span><span class="p">,</span> <span class="n">column</span>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="n">result</span> <span class="o">=</span> <span class="n">beam</span><span class="o">.</span><span class="n">design</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="n">detail</span> <span class="o">=</span> <span class="n">beam</span><span class="o">.</span><span class="n">detail</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="n">column_result</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">design</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span> <span class="n">b_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="114-day-1-checklist-for-next-repo-services">11.4 Day-1 Checklist for Next Repo Services<a class="headerlink" href="#114-day-1-checklist-for-next-repo-services" title="Permanent link">&para;</a></h3>
+<ul>
+<li>[ ] Adapter registry with auto-detection (no manual adapter selection)</li>
+<li>[ ] Pipeline hooks (pre/post for each stage)</li>
+<li>[ ] Namespace-based API (<code>beam.design()</code> instead of <code>design_beam_is456()</code>)</li>
+<li>[ ] Result caching by input hash (skip redundant recomputation)</li>
+<li>[ ] Async pipeline with streaming support</li>
+<li>[ ] Structured per-beam error reporting in batch mode</li>
+<li>[ ] Adapter unmapped-column warnings (not silent)</li>
+<li>[ ] Deprecation policy: max 2 versions before removal</li>
+<li>[ ] API versioning from day 1 (<code>v1.design_beam()</code>, <code>v2.design_beam()</code>)</li>
+<li>[ ] Schema migration support (SCHEMA_VERSION auto-upgrade)</li>
+</ul>
+<hr />
+<h2 id="part-12-summary">Part 12: Summary<a class="headerlink" href="#part-12-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Purpose</th>
+<th>Key File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Services layer</strong></td>
+<td>Orchestrate, validate, adapt</td>
+<td><code>services/</code></td>
+</tr>
+<tr>
+<td><strong><code>services/api.py</code></strong></td>
+<td>Barrel re-export (37+ functions)</td>
+<td><code>services/api.py</code></td>
+</tr>
+<tr>
+<td><strong>Stub <code>api.py</code></strong></td>
+<td>Backward compat — never edit</td>
+<td><code>structural_lib/api.py</code></td>
+</tr>
+<tr>
+<td><strong><code>design_beam_is456()</code></strong></td>
+<td>Main entry: validate → flexure → shear → result</td>
+<td><code>services/beam_api.py</code></td>
+</tr>
+<tr>
+<td><strong>Keyword-only args</strong></td>
+<td>Prevent positional parameter mistakes</td>
+<td>All services functions</td>
+</tr>
+<tr>
+<td><strong><code>GenericCSVAdapter</code></strong></td>
+<td>Map 40+ column aliases to canonical</td>
+<td><code>services/adapters.py</code></td>
+</tr>
+<tr>
+<td><strong><code>beam_pipeline.py</code></strong></td>
+<td>Multi-step batch design</td>
+<td><code>services/beam_pipeline.py</code></td>
+</tr>
+<tr>
+<td><strong><code>_resolve_deprecated_param</code></strong></td>
+<td>Old parameter names still work</td>
+<td><code>services/beam_api.py</code></td>
+</tr>
+<tr>
+<td><strong><code>discover_api_signatures.py</code></strong></td>
+<td>Never guess parameter names</td>
+<td><code>scripts/</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="references">📎 References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Re-export hub:</strong> <code>Python/structural_lib/services/api.py</code></li>
+<li><strong>Beam API:</strong> <code>Python/structural_lib/services/beam_api.py</code></li>
+<li><strong>Column API:</strong> <code>Python/structural_lib/services/column_api.py</code></li>
+<li><strong>Common API:</strong> <code>Python/structural_lib/services/common_api.py</code></li>
+<li><strong>Adapters:</strong> <code>Python/structural_lib/services/adapters.py</code></li>
+<li><strong>Pipeline:</strong> <code>Python/structural_lib/services/beam_pipeline.py</code></li>
+<li><strong>API discovery:</strong> <code>scripts/discover_api_signatures.py</code></li>
+</ul>
+<hr />
+<h2 id="whats-next">What's Next?<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
+<p><strong>Day 12: Testing &amp; Quality</strong> — Now that you understand all four layers (core, codes, services, UI) and the types that flow between them, we'll explore how we test all of it. Golden vector tests from SP:16, Hypothesis property-based testing, contract tests for API responses, the 85% branch coverage requirement, and the 6 test types every IS 456 function must have. Testing is where the architecture pays off — pure math functions are trivially testable.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

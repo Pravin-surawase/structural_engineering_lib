@@ -1,0 +1,2565 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/migration/learning/day-05-columns/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Day 5: Column Design - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-5-column-design" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 5: Column Design
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You'll Learn Today
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Theory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📖 Theory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-what-is-a-column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What Is a Column?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-column-classification-short-vs-slender" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Column Classification: Short vs Slender
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Column Classification: Short vs Slender">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#effective-length-cl-252-table-28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Effective Length (Cl 25.2, Table 28)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-minimum-eccentricity-no-load-is-ever-truly-axial" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Minimum Eccentricity — No Load Is Ever Truly Axial
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-short-column-under-axial-load-cl-393" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Short Column Under Axial Load — Cl 39.3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-uniaxial-bending-the-p-m-interaction-curve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Uniaxial Bending — The P-M Interaction Curve
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-biaxial-bending-real-columns-bend-both-ways" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Biaxial Bending — Real Columns Bend Both Ways
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-slender-columns-the-p-delta-effect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Slender Columns — The P-Delta Effect
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-column-detailing-cl-2653" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Column Detailing — Cl 26.5.3
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#library-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏗️ Library Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🏗️ Library Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-full-axial-design-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 1: Full Axial Design Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-p-m-interaction-curve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 2: P-M Interaction Curve
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-biaxial-bending-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 3: Biaxial Bending Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-hand-calculation-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Simple Hand Calculation Practice
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Simple Hand Calculation Practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hand-calc-1-effective-length" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hand Calc 1: Effective Length
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hand-calc-2-minimum-eccentricity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hand Calc 2: Minimum Eccentricity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hand-calc-3-axial-capacity-of-short-column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hand Calc 3: Axial Capacity of Short Column
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hand-calc-4-biaxial-interaction-check-bresler-concept" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hand Calc 4: Biaxial Interaction Check (Bresler Concept)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise-design-check-a-real-column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔧 Exercise: Design-Check a Real Column
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-you-explain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💬 Can You Explain?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📎 References
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's Next?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="day-5-column-design">Day 5: Column Design<a class="headerlink" href="#day-5-column-design" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Learning Module
+<strong>Audience:</strong> Solo developer (coder, not a civil engineer)
+<strong>Status:</strong> Active
+<strong>Importance:</strong> Critical
+<strong>Created:</strong> 2026-04-08
+<strong>Last Updated:</strong> 2026-04-08
+<strong>Prerequisites:</strong> Day 1 (materials), Day 2 (flexure concepts — stress block, neutral axis)
+<strong>Library files:</strong> <code>Python/structural_lib/codes/is456/column/axial.py</code>, <code>Python/structural_lib/codes/is456/column/uniaxial.py</code>, <code>Python/structural_lib/codes/is456/column/biaxial.py</code>
+<strong>IS 456 Clauses:</strong> Cl 25.1.2, Cl 25.2, Cl 25.4, Cl 26.5.3, Cl 39.3, Cl 39.5, Cl 39.6, Cl 39.7, Table 28</p>
+<hr />
+<h2 id="what-youll-learn-today">What You'll Learn Today<a class="headerlink" href="#what-youll-learn-today" title="Permanent link">&para;</a></h2>
+<p>By the end of this module you'll understand:
+- What a column actually does and how it differs from a beam
+- Short vs slender columns — classification and effective length
+- Minimum eccentricity — why no load is ever truly "axial"
+- The axial capacity formula (Cl 39.3)
+- P-M interaction curves — <em>the</em> central concept in column design
+- Biaxial bending — real columns bend in two directions
+- Slender columns and the additional moment method
+- Column detailing rules</p>
+<hr />
+<h2 id="theory">📖 Theory<a class="headerlink" href="#theory" title="Permanent link">&para;</a></h2>
+<h3 id="1-what-is-a-column">1. What Is a Column?<a class="headerlink" href="#1-what-is-a-column" title="Permanent link">&para;</a></h3>
+<p>A beam lies horizontally and carries loads by bending. A column stands <strong>vertically</strong> and carries loads primarily by <strong>compression</strong> — the weight of all the floors above pressing straight down.</p>
+<blockquote>
+<p><strong>Think of it like...</strong> the legs of a table. The tabletop (slab) transfers load to the legs (columns), which push it down to the floor (foundation). If a leg buckles or crushes, the table collapses.</p>
+</blockquote>
+<p>But here's the key difference from a simple compression member: real columns almost always carry <strong>bending moments too</strong>. Beams frame into columns at joints, and the unbalanced moments from those beams get transferred into the column. So a column must resist:
+- <strong>Axial compression</strong> (<span class="arithmatex">\(P_u\)</span>) — the weight above
+- <strong>Bending moment</strong> (<span class="arithmatex">\(M_u\)</span>) — from connected beams, wind loads, seismic forces</p>
+<p>This combined loading is what makes column design fundamentally different from beam design. In a beam, you design for M and V separately. In a column, P and M interact — you can't design for one without considering the other.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>        Pu (axial compression)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>         ↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    ┌──────────────────────┐
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    │     ┌──────────┐     │  ← beam framing in
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    │     │  Column  │     │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    │     │  b × D   │→ Mu (moment from beam)
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    │     │          │     │
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    │     │  ● ● ● ● │     │  ← reinforcement bars
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    │     └──────────┘     │
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    │                      │
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    └──────────────────────┘
+</code></pre></div>
+<hr />
+<h3 id="2-column-classification-short-vs-slender">2. Column Classification: Short vs Slender<a class="headerlink" href="#2-column-classification-short-vs-slender" title="Permanent link">&para;</a></h3>
+<p>Not all columns behave the same way under load. A stocky column fails by <strong>crushing</strong> — the concrete and steel simply exceed their material strength. A slender column fails by <strong>buckling</strong> — it bows out sideways before the material is fully stressed.</p>
+<p><strong>IS 456 Cl 25.1.2</strong> defines the boundary:</p>
+<div class="arithmatex">\[\frac{l_e}{D} &lt; 12 \implies \text{Short column}$$
+$$\frac{l_e}{D} \geq 12 \implies \text{Slender column}\]</div>
+<p>Where:
+- <span class="arithmatex">\(l_e\)</span> = <strong>effective length</strong> (not the actual physical length between floors)
+- <span class="arithmatex">\(D\)</span> = column depth in the direction considered</p>
+<h4 id="effective-length-cl-252-table-28">Effective Length (Cl 25.2, Table 28)<a class="headerlink" href="#effective-length-cl-252-table-28" title="Permanent link">&para;</a></h4>
+<p>The effective length depends on how the column ends are restrained. This is exactly like Euler's buckling theory — a column fixed at both ends is much stronger (in buckling) than one that's free at the top.</p>
+<p><strong>IS 456 Table 28</strong> gives the ratio <span class="arithmatex">\(l_e / l\)</span> for seven standard cases:</p>
+<table>
+<thead>
+<tr>
+<th>End Condition</th>
+<th>Theoretical</th>
+<th>Recommended (Design)</th>
+<th>Real-World Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fixed–Fixed</td>
+<td>0.50</td>
+<td>0.65</td>
+<td>Column between rigid beams on both floors</td>
+</tr>
+<tr>
+<td>Fixed–Hinged</td>
+<td>0.70</td>
+<td>0.80</td>
+<td>Column with stiff beam at bottom, flexible at top</td>
+</tr>
+<tr>
+<td>Fixed–Fixed (sway)</td>
+<td>1.00</td>
+<td>1.20</td>
+<td>Braced frame with some sway</td>
+</tr>
+<tr>
+<td>Fixed–Free</td>
+<td>2.00</td>
+<td>2.00</td>
+<td>Cantilever column (flagpole)</td>
+</tr>
+<tr>
+<td>Hinged–Hinged</td>
+<td>1.00</td>
+<td>1.00</td>
+<td>Simply supported at both ends</td>
+</tr>
+<tr>
+<td>Fixed–Partial</td>
+<td>—</td>
+<td>1.50</td>
+<td>Partially restrained at one end</td>
+</tr>
+<tr>
+<td>Hinged–Partial</td>
+<td>—</td>
+<td>2.00</td>
+<td>One end hinged, other partially restrained</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Think of it like...</strong> a ruler standing on end. Hold both ends firmly (fixed-fixed) and it's hard to buckle — effective length is just 0.65× the actual length. Hold one end and leave the other free (cantilever) and it buckles easily — effective length is 2× the actual length.</p>
+</blockquote>
+<p><strong>Why "recommended" &gt; "theoretical"?</strong> Because real connections are never perfectly fixed or perfectly hinged. The recommended values add a safety margin for imperfect restraints.</p>
+<p>Our library implements this with <code>EndCondition</code> enums:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.column.axial</span><span class="w"> </span><span class="kn">import</span> <span class="n">effective_length</span><span class="p">,</span> <span class="n">classify_column</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.core.data_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EndCondition</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># A 3000mm column, fixed at both ends</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">le</span> <span class="o">=</span> <span class="n">effective_length</span><span class="p">(</span><span class="n">l_mm</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">end_condition</span><span class="o">=</span><span class="n">EndCondition</span><span class="o">.</span><span class="n">FIXED_FIXED</span><span class="p">)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Effective length: </span><span class="si">{</span><span class="n">le</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>  <span class="c1"># 3000 x 0.65 = 1950 mm</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># Classify: short or slender?</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># For a 400mm x 400mm column:</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="n">classification</span> <span class="o">=</span> <span class="n">classify_column</span><span class="p">(</span><span class="n">le_mm</span><span class="o">=</span><span class="mi">1950</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Classification: </span><span class="si">{</span><span class="n">classification</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># SHORT (1950/400 = 4.875 &lt; 12)</span>
+</code></pre></div>
+<hr />
+<h3 id="3-minimum-eccentricity-no-load-is-ever-truly-axial">3. Minimum Eccentricity — No Load Is Ever Truly Axial<a class="headerlink" href="#3-minimum-eccentricity-no-load-is-ever-truly-axial" title="Permanent link">&para;</a></h3>
+<p>Even when an architect draws a load arrow pointing straight down through the column center, the real-world load is never perfectly centered. Construction tolerances, unequal beam spans, lateral loads, and creep all introduce some eccentricity.</p>
+<p><strong>IS 456 Cl 25.4</strong> mandates a minimum eccentricity:</p>
+<div class="arithmatex">\[e_{min} = \max\left(\frac{l_{unsupported}}{500} + \frac{D}{30},\ 20\right) \text{ mm}\]</div>
+<p>Where:
+- <span class="arithmatex">\(l_{unsupported}\)</span> = actual clear height between floors (mm)
+- <span class="arithmatex">\(D\)</span> = lateral dimension of column (mm)
+- 20 mm = absolute minimum</p>
+<p><strong>Example:</strong> Column height 3000 mm, dimension 300 mm:</p>
+<div class="arithmatex">\[e_{min} = \max\left(\frac{3000}{500} + \frac{300}{30},\ 20\right) = \max(6 + 10,\ 20) = 20 \text{ mm}\]</div>
+<p>This means every column is really a <strong>column with bending</strong> — purely axial design is just a simplified special case for small eccentricities.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.column.axial</span><span class="w"> </span><span class="kn">import</span> <span class="n">min_eccentricity</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">e_min</span> <span class="o">=</span> <span class="n">min_eccentricity</span><span class="p">(</span><span class="n">l_unsupported_mm</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Minimum eccentricity: </span><span class="si">{</span><span class="n">e_min</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>  <span class="c1"># 20.0 mm</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># Larger column:</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">e_min_large</span> <span class="o">=</span> <span class="n">min_eccentricity</span><span class="p">(</span><span class="n">l_unsupported_mm</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Minimum eccentricity: </span><span class="si">{</span><span class="n">e_min_large</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>  <span class="c1"># max(10 + 20, 20) = 30.0 mm</span>
+</code></pre></div>
+<hr />
+<h3 id="4-short-column-under-axial-load-cl-393">4. Short Column Under Axial Load — Cl 39.3<a class="headerlink" href="#4-short-column-under-axial-load-cl-393" title="Permanent link">&para;</a></h3>
+<p>For a short column where the eccentricity is small (<span class="arithmatex">\(e_{min} \leq 0.05D\)</span>), IS 456 gives a simple formula:</p>
+<div class="arithmatex">\[P_u = 0.4 \times f_{ck} \times A_c + 0.67 \times f_y \times A_{sc}\]</div>
+<p>Where:
+- <span class="arithmatex">\(A_c = A_g - A_{sc}\)</span> = concrete area (gross area minus steel area)
+- <span class="arithmatex">\(A_{sc}\)</span> = area of longitudinal steel
+- <span class="arithmatex">\(A_g\)</span> = gross cross-sectional area (<span class="arithmatex">\(b \times D\)</span>)</p>
+<p><strong>Let's break down the coefficients:</strong></p>
+<p>The 0.4 for concrete comes from: <span class="arithmatex">\(\frac{0.446 \times f_{ck}}{1.0} \approx 0.4\)</span> (the stress block factor divided by partial safety factor considerations, already built-in).</p>
+<p>The 0.67 for steel comes from: <span class="arithmatex">\(\frac{f_y}{\gamma_s} \times \text{strain factor} \approx \frac{f_y}{1.15} \times 0.77 \approx 0.67 \times f_y\)</span></p>
+<p>These are IS 456 prescribed constants — they already include the material safety factors (<span class="arithmatex">\(\gamma_c = 1.5\)</span>, <span class="arithmatex">\(\gamma_s = 1.15\)</span>).</p>
+<blockquote>
+<p><strong>Think of it like...</strong> a box of mixed produce. The box's total capacity is the weight the cardboard (concrete) can hold plus the weight the reinforcing tape (steel) can support. Equation 39.3 adds: "concrete contribution + steel contribution = total capacity."</p>
+</blockquote>
+<p><strong>Example:</strong> 400 × 400 mm column, M25, Fe415, 4-20φ bars</p>
+<div class="arithmatex">\[A_g = 400 \times 400 = 160{,}000 \text{ mm}^2$$
+$$A_{sc} = 4 \times 314 = 1{,}256 \text{ mm}^2 \quad (0.79\%)$$
+$$A_c = 160{,}000 - 1{,}256 = 158{,}744 \text{ mm}^2$$
+$$P_u = 0.4 \times 25 \times 158{,}744 + 0.67 \times 415 \times 1{,}256$$
+$$P_u = 1{,}587{,}440 + 349{,}273 = 1{,}936{,}713 \text{ N} = 1{,}937 \text{ kN}\]</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.column.axial</span><span class="w"> </span><span class="kn">import</span> <span class="n">short_axial_capacity</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">short_axial_capacity</span><span class="p">(</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">Ag_mm2</span><span class="o">=</span><span class="mi">400</span> <span class="o">*</span> <span class="mi">400</span><span class="p">,</span>           <span class="c1"># 160,000 mm²</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">Asc_mm2</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">20</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">4</span><span class="p">,</span>  <span class="c1"># 4-20φ = 1257 mm²</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">)</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Axial capacity: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">Pu_kN</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Steel ratio: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">steel_ratio</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warnings: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">warnings</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Note the library also checks steel ratio limits: min 0.8%, max 4% (Cl 26.5.3.1). If your steel ratio is below 0.8%, you'll get a warning — the column doesn't have enough reinforcement for ductility.</p>
+<hr />
+<h3 id="5-uniaxial-bending-the-p-m-interaction-curve">5. Uniaxial Bending — The P-M Interaction Curve<a class="headerlink" href="#5-uniaxial-bending-the-p-m-interaction-curve" title="Permanent link">&para;</a></h3>
+<p>This is the <strong>most important concept in column design</strong>. When a column carries both axial load P and moment M, the capacity isn't a single number — it's a <strong>curve</strong> showing all valid (P, M) combinations.</p>
+<blockquote>
+<p><strong>Think of it like...</strong> a performance envelope for a car. At zero speed, you can carry maximum cargo (pure axial). At maximum speed, you can carry zero cargo (pure bending). Between those extremes, there's a curve showing valid speed-cargo combinations. For any (speed, cargo) point inside the curve, the car is safe. Outside = failure.</p>
+</blockquote>
+<p><strong>IS 456 Cl 39.5</strong> — The P-M interaction envelope has these key points:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>        Pu (kN)
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>        ↑
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>   Pu,0 ●━━━━━━━━━━━         ← Pure axial (M=0): Cl 39.3 formula
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        ┃           ╲
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        ┃            ╲
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        ┃             ╲       ← Compression-controlled zone
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>   Pb   ┃ · · · · · · ·●     ← Balanced point (both materials yield)
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>        ┃             ╱
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        ┃            ╱        ← Tension-controlled zone
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        ┃           ╱
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>     0  ●━━━━━━━━━●━━━━━→ Mu (kNm)
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>                  Mu,0        ← Pure bending (P=0): like beam flexure
+</code></pre></div>
+<p><strong>Key points on the curve:</strong></p>
+<ol>
+<li><strong>Pure axial</strong> (<span class="arithmatex">\(P_{u,0}\)</span>, <span class="arithmatex">\(M = 0\)</span>) — Maximum axial load, no bending. This is Cl 39.3.</li>
+<li><strong>Balanced point</strong> (<span class="arithmatex">\(P_b\)</span>, <span class="arithmatex">\(M_b\)</span>) — Both concrete and steel reach their limits simultaneously. Maximum moment capacity occurs near here.</li>
+<li><strong>Pure bending</strong> (<span class="arithmatex">\(P = 0\)</span>, <span class="arithmatex">\(M_{u,0}\)</span>) — No axial load, just bending. This is basically beam flexure.</li>
+</ol>
+<p>For any applied load combination (<span class="arithmatex">\(P_u\)</span>, <span class="arithmatex">\(M_u\)</span>):
+- <strong>Inside the curve</strong> → <strong>SAFE</strong> ✅
+- <strong>On the curve</strong> → At capacity (utilization = 1.0)
+- <strong>Outside the curve</strong> → <strong>UNSAFE</strong> ❌</p>
+<p>Our library generates the full interaction curve by sweeping the neutral axis position from 0 to infinity:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.column.uniaxial</span><span class="w"> </span><span class="kn">import</span> <span class="n">pm_interaction_curve</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">pm</span> <span class="o">=</span> <span class="n">pm_interaction_curve</span><span class="p">(</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">D_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">Asc_mm2</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="mi">314</span><span class="p">,</span>    <span class="c1"># 4-20φ = 1256 mm²</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="n">d_prime_mm</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>       <span class="c1"># cover to steel centroid</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="p">)</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pure axial capacity: </span><span class="si">{</span><span class="n">pm</span><span class="o">.</span><span class="n">Pu_0_kN</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pure moment capacity: </span><span class="si">{</span><span class="n">pm</span><span class="o">.</span><span class="n">Mu_0_kNm</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kNm&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Balanced point: P=</span><span class="si">{</span><span class="n">pm</span><span class="o">.</span><span class="n">Pb_kN</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN, M=</span><span class="si">{</span><span class="n">pm</span><span class="o">.</span><span class="n">Mb_kNm</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kNm&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Envelope has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">points</span><span class="p">)</span><span class="si">}</span><span class="s2"> points&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="c1"># Check a specific load combination:</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.column.uniaxial</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_short_column_uniaxial</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="n">result</span> <span class="o">=</span> <span class="n">design_short_column_uniaxial</span><span class="p">(</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    <span class="n">Pu_kN</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>    <span class="n">Mu_kNm</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>    <span class="n">D_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>    <span class="n">le_mm</span><span class="o">=</span><span class="mi">1950</span><span class="p">,</span>          <span class="c1"># effective length</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>    <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>    <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>    <span class="n">Asc_mm2</span><span class="o">=</span><span class="mi">1256</span><span class="p">,</span>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>    <span class="n">d_prime_mm</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="p">)</span>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Safe? </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">is_safe</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Utilization: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">utilization</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># &lt; 1.0 means safe</span>
+</code></pre></div>
+<p>The utilization ratio is the <strong>radial distance</strong> from the origin to the applied point, divided by the distance from the origin to the curve. Under 1.0 = inside the curve = safe.</p>
+<p>The library uses <strong>SP:16 Table I</strong> coefficients for the stress block when the neutral axis falls outside the section (<span class="arithmatex">\(x_u &gt; D\)</span>), which happens at high axial loads. This is a lookup + interpolation approach from the Design Aids handbook — the same approach practicing engineers use.</p>
+<hr />
+<h3 id="6-biaxial-bending-real-columns-bend-both-ways">6. Biaxial Bending — Real Columns Bend Both Ways<a class="headerlink" href="#6-biaxial-bending-real-columns-bend-both-ways" title="Permanent link">&para;</a></h3>
+<p>In a real building, a corner column gets moments from beams on <strong>two perpendicular</strong> axes — <span class="arithmatex">\(M_{ux}\)</span> about the x-axis and <span class="arithmatex">\(M_{uy}\)</span> about the y-axis. This is <strong>biaxial bending</strong>.</p>
+<p><strong>IS 456 Cl 39.6</strong> uses the <strong>Bresler load contour formula:</strong></p>
+<div class="arithmatex">\[\left(\frac{M_{ux}}{M_{ux1}}\right)^{\alpha_n} + \left(\frac{M_{uy}}{M_{uy1}}\right)^{\alpha_n} \leq 1.0\]</div>
+<p>Where:
+- <span class="arithmatex">\(M_{ux}\)</span>, <span class="arithmatex">\(M_{uy}\)</span> = applied moments about each axis
+- <span class="arithmatex">\(M_{ux1}\)</span> = uniaxial moment capacity about x-axis at the applied <span class="arithmatex">\(P_u\)</span> (from the P-M curve)
+- <span class="arithmatex">\(M_{uy1}\)</span> = uniaxial moment capacity about y-axis at the applied <span class="arithmatex">\(P_u\)</span> (from the P-M curve)
+- <span class="arithmatex">\(\alpha_n\)</span> = exponent that depends on <span class="arithmatex">\(P_u / P_{uz}\)</span></p>
+<p><strong>The <span class="arithmatex">\(\alpha_n\)</span> exponent</strong> (IS 456 Cl 39.6):</p>
+<div class="arithmatex">\[\alpha_n = \begin{cases} 1.0 &amp; \text{if } P_u/P_{uz} \leq 0.2 \\ 2.0 &amp; \text{if } P_u/P_{uz} \geq 0.8 \\ 1.0 + \frac{P_u/P_{uz} - 0.2}{0.6} &amp; \text{between} \end{cases}\]</div>
+<p>Where <span class="arithmatex">\(P_{uz}\)</span> = <strong>pure crush capacity</strong> = <span class="arithmatex">\(0.45 f_{ck} A_c + 0.75 f_y A_{sc}\)</span> (Cl 39.6a)</p>
+<blockquote>
+<p><strong>Think of it like...</strong> a health score with two dimensions. Imagine your CPU is at 60% (<span class="arithmatex">\(M_{ux}/M_{ux1}\)</span>) and your memory is at 70% (<span class="arithmatex">\(M_{uy}/M_{uy1}\)</span>). Independently, both are fine. But <em>combined</em>, the server might crash. Bresler's formula is the check: <span class="arithmatex">\((0.6)^{\alpha_n} + (0.7)^{\alpha_n} \leq 1.0\)</span>?</p>
+</blockquote>
+<p><strong>Why the exponent varies:</strong> When <span class="arithmatex">\(P_u\)</span> is small relative to <span class="arithmatex">\(P_{uz}\)</span>, the failure surface is more like a straight line (<span class="arithmatex">\(\alpha_n = 1\)</span>, conservative diamond shape). When <span class="arithmatex">\(P_u\)</span> is large, the surface is more like a circle (<span class="arithmatex">\(\alpha_n = 2\)</span>, less conservative).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.column.biaxial</span><span class="w"> </span><span class="kn">import</span> <span class="n">biaxial_bending_check</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">result</span> <span class="o">=</span> <span class="n">biaxial_bending_check</span><span class="p">(</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">Pu_kN</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">Mux_kNm</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>          <span class="c1"># moment about x-axis</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">Muy_kNm</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>          <span class="c1"># moment about y-axis</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>             <span class="c1"># width (perpendicular to x-axis bending)</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">D_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>             <span class="c1"># depth (in x-axis bending direction)</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">le_mm</span><span class="o">=</span><span class="mi">1950</span><span class="p">,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    <span class="n">Asc_mm2</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="mi">314</span><span class="p">,</span>     <span class="c1"># symmetric: half on each face</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    <span class="n">d_prime_mm</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>    <span class="n">l_unsupported_mm</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="p">)</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Safe? </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">is_safe</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Interaction ratio: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">interaction_ratio</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># must be &lt;= 1.0</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alpha_n: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">alpha_n</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mux1: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">Mux1_kNm</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kNm&quot;</span><span class="p">)</span>  <span class="c1"># uniaxial capacity about x</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Muy1: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">Muy1_kNm</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kNm&quot;</span><span class="p">)</span>  <span class="c1"># uniaxial capacity about y</span>
+</code></pre></div>
+<p>The library internally:
+1. Generates P-M curves for <strong>both</strong> axes (using <code>pm_interaction_curve</code>)
+2. Interpolates each curve at the applied <span class="arithmatex">\(P_u\)</span> to get <span class="arithmatex">\(M_{ux1}\)</span> and <span class="arithmatex">\(M_{uy1}\)</span>
+3. Calculates <span class="arithmatex">\(P_{uz}\)</span> and <span class="arithmatex">\(\alpha_n\)</span>
+4. Evaluates the Bresler formula</p>
+<p>This is a significant computation — the library does about 400 stress-block calculations (200 per axis) to generate the two envelopes.</p>
+<hr />
+<h3 id="7-slender-columns-the-p-delta-effect">7. Slender Columns — The P-Delta Effect<a class="headerlink" href="#7-slender-columns-the-p-delta-effect" title="Permanent link">&para;</a></h3>
+<p>When <span class="arithmatex">\(l_e/D \geq 12\)</span>, the column is <strong>slender</strong>. This matters because:</p>
+<p>As a slender column deflects under load, the axial load <span class="arithmatex">\(P\)</span> acts at an eccentricity equal to the lateral deflection <span class="arithmatex">\(\delta\)</span>. This creates an <strong>additional moment</strong> <span class="arithmatex">\(P \times \delta\)</span>, which causes more deflection, which causes more moment... This is the <strong>P-delta effect</strong>.</p>
+<p><strong>IS 456 Cl 39.7.1</strong> — Additional moment method:</p>
+<div class="arithmatex">\[M_{add} = P_u \times e_{add}\]</div>
+<p>Where the additional eccentricity:</p>
+<div class="arithmatex">\[e_{add} = \frac{D}{2000} \times \left(\frac{l_e}{D}\right)^2\]</div>
+<p><strong>Example:</strong> Slender column, <span class="arithmatex">\(P_u\)</span> = 1500 kN, <span class="arithmatex">\(l_e\)</span> = 6000 mm, <span class="arithmatex">\(D\)</span> = 400 mm:</p>
+<div class="arithmatex">\[\frac{l_e}{D} = \frac{6000}{400} = 15 \geq 12 \implies \text{Slender}\]</div>
+<div class="arithmatex">\[e_{add} = \frac{400}{2000} \times 15^2 = 0.2 \times 225 = 45 \text{ mm}\]</div>
+<div class="arithmatex">\[M_{add} = 1500 \times 0.045 = 67.5 \text{ kNm}\]</div>
+<p>This additional moment gets <strong>added</strong> to the primary moment from frame analysis. So if the frame analysis gives <span class="arithmatex">\(M_u = 100\)</span> kNm, the total design moment becomes <span class="arithmatex">\(100 + 67.5 = 167.5\)</span> kNm — a 67% increase! This is why slender columns are expensive and engineers try to avoid them.</p>
+<blockquote>
+<p><strong>Think of it like...</strong> compound interest on technical debt. A small deflection (initial "debt") generates additional moment ("interest"), which causes more deflection ("more debt"), in a feedback loop. The additional moment formula is IS 456's way of accounting for this without solving the nonlinear equation iteratively.</p>
+</blockquote>
+<hr />
+<h3 id="8-column-detailing-cl-2653">8. Column Detailing — Cl 26.5.3<a class="headerlink" href="#8-column-detailing-cl-2653" title="Permanent link">&para;</a></h3>
+<p>Like beams, columns have detailing rules that ensure the design is actually buildable and performs as intended.</p>
+<p><strong>Key rules (IS 456 Cl 26.5.3):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Requirement</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Min bars</td>
+<td>4 (rectangular), 6 (circular)</td>
+<td>Restrain ties at corners</td>
+</tr>
+<tr>
+<td>Min bar dia</td>
+<td>12 mm</td>
+<td>Practical minimum for handling</td>
+</tr>
+<tr>
+<td>Min steel</td>
+<td>0.8% of <span class="arithmatex">\(A_g\)</span></td>
+<td>Prevent brittle failure</td>
+</tr>
+<tr>
+<td>Max steel</td>
+<td>4% of <span class="arithmatex">\(A_g\)</span> (6% at lap)</td>
+<td>Constructability — bars must fit</td>
+</tr>
+<tr>
+<td>Tie spacing</td>
+<td>min(16φ, 300mm, least dimension)</td>
+<td>Prevent bar buckling</td>
+</tr>
+<tr>
+<td>Tie diameter</td>
+<td>≥ φ/4 or 6mm</td>
+<td>Strong enough to restrain main bars</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why 0.8% minimum?</strong> Without enough steel, a column can fail suddenly — the concrete crushes before the steel yields, giving no warning. The 0.8% minimum ensures some ductility.</p>
+<p><strong>Why 4% maximum?</strong> With more than 4% steel, the bars physically can't fit with proper spacing. At laps (where two bars overlap), the effective steel area doubles temporarily — hence the 6% allowance. But designing for &gt; 4% is a sign the column is too small.</p>
+<hr />
+<h2 id="library-examples">🏗️ Library Examples<a class="headerlink" href="#library-examples" title="Permanent link">&para;</a></h2>
+<h3 id="example-1-full-axial-design-workflow">Example 1: Full Axial Design Workflow<a class="headerlink" href="#example-1-full-axial-design-workflow" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.column.axial</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">effective_length</span><span class="p">,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">classify_column</span><span class="p">,</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">min_eccentricity</span><span class="p">,</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">short_axial_capacity</span><span class="p">,</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="p">)</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.core.data_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EndCondition</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="c1"># Step 1: Column geometry</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="n">b</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">400</span>          <span class="c1"># mm (square column)</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="n">l_unsup</span> <span class="o">=</span> <span class="mi">3200</span>           <span class="c1"># mm (clear height between floors)</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="c1"># Step 2: Effective length</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="n">le</span> <span class="o">=</span> <span class="n">effective_length</span><span class="p">(</span><span class="n">l_mm</span><span class="o">=</span><span class="n">l_unsup</span><span class="p">,</span> <span class="n">end_condition</span><span class="o">=</span><span class="n">EndCondition</span><span class="o">.</span><span class="n">FIXED_FIXED</span><span class="p">)</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Effective length: </span><span class="si">{</span><span class="n">le</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>  <span class="c1"># 3200 x 0.65 = 2080 mm</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="c1"># Step 3: Classify</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="bp">cls</span> <span class="o">=</span> <span class="n">classify_column</span><span class="p">(</span><span class="n">le_mm</span><span class="o">=</span><span class="n">le</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="n">D</span><span class="p">)</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Column type: </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># SHORT (2080/400 = 5.2 &lt; 12)</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="c1"># Step 4: Minimum eccentricity</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="n">e_min</span> <span class="o">=</span> <span class="n">min_eccentricity</span><span class="p">(</span><span class="n">l_unsupported_mm</span><span class="o">=</span><span class="n">l_unsup</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="n">D</span><span class="p">)</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Min eccentricity: </span><span class="si">{</span><span class="n">e_min</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="c1"># Step 5: Axial capacity</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="n">Ag</span> <span class="o">=</span> <span class="n">b</span> <span class="o">*</span> <span class="n">D</span>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="n">Asc</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">16</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">4</span>  <span class="c1"># 8-16φ = 1608 mm²</span>
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="n">result</span> <span class="o">=</span> <span class="n">short_axial_capacity</span><span class="p">(</span><span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span> <span class="n">Ag_mm2</span><span class="o">=</span><span class="n">Ag</span><span class="p">,</span> <span class="n">Asc_mm2</span><span class="o">=</span><span class="n">Asc</span><span class="p">)</span>
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Capacity: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">Pu_kN</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Steel ratio: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">steel_ratio</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="example-2-p-m-interaction-curve">Example 2: P-M Interaction Curve<a class="headerlink" href="#example-2-p-m-interaction-curve" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.column.uniaxial</span><span class="w"> </span><span class="kn">import</span> <span class="n">pm_interaction_curve</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">pm</span> <span class="o">=</span> <span class="n">pm_interaction_curve</span><span class="p">(</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">Asc_mm2</span><span class="o">=</span><span class="mi">6</span> <span class="o">*</span> <span class="mi">314</span><span class="p">,</span>      <span class="c1"># 6-20φ</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="n">d_prime_mm</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="p">)</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="c1"># The curve has ~200 points for smooth plotting</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Points on curve: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">points</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pure axial: Pu,0 = </span><span class="si">{</span><span class="n">pm</span><span class="o">.</span><span class="n">Pu_0_kN</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pure bending: Mu,0 = </span><span class="si">{</span><span class="n">pm</span><span class="o">.</span><span class="n">Mu_0_kNm</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kNm&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Balanced: Pb = </span><span class="si">{</span><span class="n">pm</span><span class="o">.</span><span class="n">Pb_kN</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN, Mb = </span><span class="si">{</span><span class="n">pm</span><span class="o">.</span><span class="n">Mb_kNm</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kNm&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="c1"># You can extract points for plotting:</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="n">P_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pm</span><span class="o">.</span><span class="n">points</span><span class="p">]</span>  <span class="c1"># kN</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="n">M_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pm</span><span class="o">.</span><span class="n">points</span><span class="p">]</span>  <span class="c1"># kNm</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="c1"># Plot with matplotlib, plotly, or pass to React frontend</span>
+</code></pre></div>
+<h3 id="example-3-biaxial-bending-check">Example 3: Biaxial Bending Check<a class="headerlink" href="#example-3-biaxial-bending-check" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.column.biaxial</span><span class="w"> </span><span class="kn">import</span> <span class="n">biaxial_bending_check</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># Corner column with moments from two perpendicular beams</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">biaxial_bending_check</span><span class="p">(</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">Pu_kN</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">Mux_kNm</span><span class="o">=</span><span class="mi">95</span><span class="p">,</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="n">Muy_kNm</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    <span class="n">le_mm</span><span class="o">=</span><span class="mi">2400</span><span class="p">,</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>    <span class="n">fck</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>    <span class="n">Asc_mm2</span><span class="o">=</span><span class="mi">8</span> <span class="o">*</span> <span class="mi">314</span><span class="p">,</span>     <span class="c1"># 8-20φ, symmetric</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>    <span class="n">d_prime_mm</span><span class="o">=</span><span class="mi">55</span><span class="p">,</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>    <span class="n">l_unsupported_mm</span><span class="o">=</span><span class="mi">3500</span><span class="p">,</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="p">)</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Interaction ratio: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">interaction_ratio</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Safe? </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">is_safe</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>   <span class="c1"># True if ratio &lt;= 1.0</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alpha_n = </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">alpha_n</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mux1 = </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">Mux1_kNm</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kNm (capacity about x at Pu)&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Muy1 = </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">Muy1_kNm</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> kNm (capacity about y at Pu)&quot;</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="simple-hand-calculation-practice">🎯 Simple Hand Calculation Practice<a class="headerlink" href="#simple-hand-calculation-practice" title="Permanent link">&para;</a></h2>
+<h3 id="hand-calc-1-effective-length">Hand Calc 1: Effective Length<a class="headerlink" href="#hand-calc-1-effective-length" title="Permanent link">&para;</a></h3>
+<p><strong>Given:</strong> Column 3.6 m clear height, both ends fixed in position but one end free to rotate.</p>
+<p>From IS 456 Table 28 (case: fixed-hinged):</p>
+<div class="arithmatex">\[l_e = 0.80 \times l = 0.80 \times 3600 = 2880 \text{ mm}\]</div>
+<h3 id="hand-calc-2-minimum-eccentricity">Hand Calc 2: Minimum Eccentricity<a class="headerlink" href="#hand-calc-2-minimum-eccentricity" title="Permanent link">&para;</a></h3>
+<p><strong>Given:</strong> Column 350 mm wide, 4200 mm unsupported length.</p>
+<div class="arithmatex">\[e_{\min} = \frac{l_{\text{unsup}}}{500} + \frac{D}{30}\]</div>
+<div class="arithmatex">\[e_{\min} = \frac{4200}{500} + \frac{350}{30} = 8.4 + 11.67 = 20.07 \text{ mm}\]</div>
+<p>Check floor: <span class="arithmatex">\(e_{\min} \geq 20\)</span> mm. Here 20.07 &gt; 20 mm ✔️, so <span class="arithmatex">\(e_{\min} = 20.07\)</span> mm.</p>
+<h3 id="hand-calc-3-axial-capacity-of-short-column">Hand Calc 3: Axial Capacity of Short Column<a class="headerlink" href="#hand-calc-3-axial-capacity-of-short-column" title="Permanent link">&para;</a></h3>
+<p><strong>Given:</strong> 350 × 350 mm column, M30 concrete, Fe415 steel, 4−16φ + 4−12φ bars.</p>
+<p>Steel area:</p>
+<div class="arithmatex">\[A_{sc} = 4 \times \frac{\pi \times 16^2}{4} + 4 \times \frac{\pi \times 12^2}{4} = 804.2 + 452.4 = 1256.6 \text{ mm}^2\]</div>
+<p>Gross area: <span class="arithmatex">\(A_g = 350 \times 350 = 122500\)</span> mm²</p>
+<p>Steel ratio check: <span class="arithmatex">\(p = 1256.6 / 122500 = 1.03\%\)</span> (OK: 0.8% &lt; 1.03% &lt; 6%)</p>
+<p>IS 456 Cl 39.3 capacity:</p>
+<div class="arithmatex">\[P_u = 0.4 \cdot f_{ck} \cdot (A_g - A_{sc}) + 0.67 \cdot f_y \cdot A_{sc}\]</div>
+<div class="arithmatex">\[P_u = 0.4 \times 30 \times (122500 - 1256.6) + 0.67 \times 415 \times 1256.6\]</div>
+<div class="arithmatex">\[P_u = 12 \times 121243.4 + 278.05 \times 1256.6\]</div>
+<div class="arithmatex">\[P_u = 1{,}454{,}921 + 349{,}397 = 1{,}804{,}318 \text{ N} = 1804.3 \text{ kN}\]</div>
+<h3 id="hand-calc-4-biaxial-interaction-check-bresler-concept">Hand Calc 4: Biaxial Interaction Check (Bresler Concept)<a class="headerlink" href="#hand-calc-4-biaxial-interaction-check-bresler-concept" title="Permanent link">&para;</a></h3>
+<p><strong>Given:</strong> From P-M analysis, at <span class="arithmatex">\(P_u = 1000\)</span> kN:
+- Uniaxial capacity about x: <span class="arithmatex">\(M_{ux1} = 180\)</span> kNm
+- Uniaxial capacity about y: <span class="arithmatex">\(M_{uy1} = 140\)</span> kNm
+- Applied: <span class="arithmatex">\(M_{ux} = 80\)</span> kNm, <span class="arithmatex">\(M_{uy} = 60\)</span> kNm
+- <span class="arithmatex">\(P_u / P_{uz} = 0.45\)</span>, so <span class="arithmatex">\(\alpha_n = 1.50\)</span> (interpolated)</p>
+<p>Check:</p>
+<div class="arithmatex">\[\left(\frac{M_{ux}}{M_{ux1}}\right)^{\alpha_n} + \left(\frac{M_{uy}}{M_{uy1}}\right)^{\alpha_n} \leq 1.0\]</div>
+<div class="arithmatex">\[\left(\frac{80}{180}\right)^{1.50} + \left(\frac{60}{140}\right)^{1.50}\]</div>
+<div class="arithmatex">\[= 0.444^{1.50} + 0.429^{1.50} = 0.296 + 0.281 = 0.577\]</div>
+<p>Since <span class="arithmatex">\(0.577 \leq 1.0\)</span> — the column is <strong>SAFE</strong> under biaxial bending.</p>
+<hr />
+<h2 id="exercise-design-check-a-real-column">🔧 Exercise: Design-Check a Real Column<a class="headerlink" href="#exercise-design-check-a-real-column" title="Permanent link">&para;</a></h2>
+<p><strong>Problem:</strong> A 450 × 450 mm interior column in a 5-storey building.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Width × Depth</td>
+<td>450 × 450 mm</td>
+</tr>
+<tr>
+<td>Unsupported length</td>
+<td>3600 mm</td>
+</tr>
+<tr>
+<td>Concrete</td>
+<td>M25 (fck = 25 N/mm²)</td>
+</tr>
+<tr>
+<td>Steel</td>
+<td>Fe415 (fy = 415 N/mm²)</td>
+</tr>
+<tr>
+<td>Reinforcement</td>
+<td>8−20φ bars (one at each corner + 1 midway each face)</td>
+</tr>
+<tr>
+<td>End condition</td>
+<td>Fixed–Fixed</td>
+</tr>
+<tr>
+<td>Factored axial load</td>
+<td>Pu = 2000 kN</td>
+</tr>
+<tr>
+<td>Moment about x</td>
+<td>Mux = 100 kNm</td>
+</tr>
+<tr>
+<td>Moment about y</td>
+<td>Muy = 75 kNm</td>
+</tr>
+<tr>
+<td>Cover</td>
+<td>40 mm + 8 mm ties + ½ bar = 58 mm</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tasks:</strong></p>
+<ol>
+<li>
+<p><strong>Calculate effective length.</strong> What is the slenderness ratio? Is the column short or slender?</p>
+</li>
+<li>
+<p><strong>Compute minimum eccentricity.</strong> Does the applied eccentricity exceed the minimum?</p>
+</li>
+<li>
+<p><strong>Find axial capacity.</strong> What is <span class="arithmatex">\(P_u\)</span> from Cl 39.3? Is axial load alone sufficient?</p>
+</li>
+<li>
+<p><strong>Check biaxial bending.</strong> Using Bresler, does the column pass the interaction check?</p>
+</li>
+<li>
+<p><strong>Verify with the library:</strong></p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.column.axial</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">effective_length</span><span class="p">,</span> <span class="n">classify_column</span><span class="p">,</span> <span class="n">min_eccentricity</span><span class="p">,</span> <span class="n">short_axial_capacity</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="p">)</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.column.biaxial</span><span class="w"> </span><span class="kn">import</span> <span class="n">biaxial_bending_check</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.core.data_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">EndCondition</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="c1"># Geometry</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="n">b</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">450</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="n">l_unsup</span> <span class="o">=</span> <span class="mi">3600</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="n">d_prime</span> <span class="o">=</span> <span class="mi">58</span>  <span class="c1"># cover + tie + half bar</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="c1"># Step 1: Effective length &amp; classification</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="n">le</span> <span class="o">=</span> <span class="n">effective_length</span><span class="p">(</span><span class="n">l_mm</span><span class="o">=</span><span class="n">l_unsup</span><span class="p">,</span> <span class="n">end_condition</span><span class="o">=</span><span class="n">EndCondition</span><span class="o">.</span><span class="n">FIXED_FIXED</span><span class="p">)</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a><span class="bp">cls</span> <span class="o">=</span> <span class="n">classify_column</span><span class="p">(</span><span class="n">le_mm</span><span class="o">=</span><span class="n">le</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="n">D</span><span class="p">)</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;le = </span><span class="si">{</span><span class="n">le</span><span class="si">}</span><span class="s2"> mm, le/D = </span><span class="si">{</span><span class="n">le</span><span class="o">/</span><span class="n">D</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, Type = </span><span class="si">{</span><span class="bp">cls</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a><span class="c1"># Step 2: Min eccentricity</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="n">e_min</span> <span class="o">=</span> <span class="n">min_eccentricity</span><span class="p">(</span><span class="n">l_unsupported_mm</span><span class="o">=</span><span class="n">l_unsup</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="n">D</span><span class="p">)</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;e_min = </span><span class="si">{</span><span class="n">e_min</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> mm&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="c1"># Step 3: Axial capacity</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="n">Ag</span> <span class="o">=</span> <span class="n">b</span> <span class="o">*</span> <span class="n">D</span>
+<a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="n">Asc</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">20</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">4</span>  <span class="c1"># 8-20phi = 2513 mm2</span>
+<a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a><span class="n">cap</span> <span class="o">=</span> <span class="n">short_axial_capacity</span><span class="p">(</span><span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span> <span class="n">Ag_mm2</span><span class="o">=</span><span class="n">Ag</span><span class="p">,</span> <span class="n">Asc_mm2</span><span class="o">=</span><span class="n">Asc</span><span class="p">)</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Axial capacity = </span><span class="si">{</span><span class="n">cap</span><span class="o">.</span><span class="n">Pu_kN</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> kN (demand = 2000 kN)&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>
+<a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a><span class="c1"># Step 4: Biaxial check</span>
+<a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a><span class="n">bi</span> <span class="o">=</span> <span class="n">biaxial_bending_check</span><span class="p">(</span>
+<a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>    <span class="n">Pu_kN</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">Mux_kNm</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">Muy_kNm</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span>
+<a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="n">D</span><span class="p">,</span> <span class="n">le_mm</span><span class="o">=</span><span class="n">le</span><span class="p">,</span>
+<a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a>    <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">,</span>
+<a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a>    <span class="n">Asc_mm2</span><span class="o">=</span><span class="n">Asc</span><span class="p">,</span> <span class="n">d_prime_mm</span><span class="o">=</span><span class="n">d_prime</span><span class="p">,</span>
+<a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a>    <span class="n">l_unsupported_mm</span><span class="o">=</span><span class="n">l_unsup</span><span class="p">,</span>
+<a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a><span class="p">)</span>
+<a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Interaction ratio = </span><span class="si">{</span><span class="n">bi</span><span class="o">.</span><span class="n">interaction_ratio</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Safe? </span><span class="si">{</span><span class="n">bi</span><span class="o">.</span><span class="n">is_safe</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Expected answers (approximate):</strong>
+- le = 2340 mm, le/D = 5.2 → <strong>SHORT</strong>
+- e_min ~ 22.2 mm
+- Axial capacity ~ 2800+ kN &gt; 2000 kN → OK for pure axial
+- Biaxial ratio &lt; 1.0 → <strong>SAFE</strong></p>
+<hr />
+<h2 id="can-you-explain">💬 Can You Explain?<a class="headerlink" href="#can-you-explain" title="Permanent link">&para;</a></h2>
+<p>Test your understanding. Try to answer in 2–3 sentences:</p>
+<ol>
+<li>
+<p><strong>Why is the effective length factor for "fixed-fixed" only 0.65, not 1.0?</strong>
+   A perfectly fixed end provides both translation <em>and</em> rotation restraint, so the buckled shape has inflection points within the member. The distance between inflection points is shorter than the physical length, reducing the effective length.</p>
+</li>
+<li>
+<p><strong>A column has le/D = 11.9. Your colleague says it's "short." Are they right?</strong>
+   Borderline! IS 456 Cl 25.1.2 defines short as le/D &lt; 12 for a braced column. 11.9 &lt; 12, so technically short, but this close to the limit you should check additional moment effects as a precaution. Good engineers don't rely on razor-thin margins.</p>
+</li>
+<li>
+<p><strong>Why does the P-M interaction curve bulge outward below the balance point?</strong>
+   Below the balance point, axial compression helps the moment capacity — the concrete compressive zone is larger and can resist more bending. Above the balance point, the compression zone is already large and adding more axial load causes crushing before the steel yields, so moment capacity decreases.</p>
+</li>
+<li>
+<p><strong>When is biaxial bending most critical — corner, edge, or interior columns?</strong>
+   Corner columns are worst because they receive beams from two perpendicular directions with no compensating span on the other side. Edge columns may have significant moment about one axis. Interior columns often have roughly balanced moments if spans are equal.</p>
+</li>
+<li>
+<p><strong>Why does IS 456 impose e_min &gt;= 20 mm even for short axially loaded columns?</strong>
+   Perfect axial loading doesn't exist in reality. Construction tolerances, non-uniform concrete placement, and load eccentricities from beam reactions always introduce some moment. The 20 mm floor ensures the design accounts for unavoidable real-world imperfections.</p>
+</li>
+</ol>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Concept</th>
+<th>Key Formula / Value</th>
+<th>Library Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Effective length</td>
+<td><span class="arithmatex">\(l_e = k \times l\)</span> (Table 28)</td>
+<td><code>effective_length()</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Short vs Slender</td>
+<td><span class="arithmatex">\(l_e/D &lt; 12\)</span> (braced)</td>
+<td><code>classify_column()</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Min eccentricity</td>
+<td><span class="arithmatex">\(l/500 + D/30 \geq 20\)</span> mm</td>
+<td><code>min_eccentricity()</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Axial capacity</td>
+<td><span class="arithmatex">\(0.4 f_{ck}(A_g - A_{sc}) + 0.67 f_y A_{sc}\)</span></td>
+<td><code>short_axial_capacity()</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>P-M interaction</td>
+<td>SP:16 envelope curve</td>
+<td><code>pm_interaction_curve()</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Uniaxial design</td>
+<td>Strain-compatibility method</td>
+<td><code>design_short_column_uniaxial()</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Biaxial check</td>
+<td><span class="arithmatex">\((M_{ux}/M_{ux1})^{\alpha_n} + (M_{uy}/M_{uy1})^{\alpha_n} \leq 1\)</span></td>
+<td><code>biaxial_bending_check()</code></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Slender columns</td>
+<td>Additional moment <span class="arithmatex">\(M_a = P_u \cdot e_a\)</span></td>
+<td>Cl 39.7.1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Ties spacing</td>
+<td><span class="arithmatex">\(\leq 16\phi, 48\phi_t, 300\)</span> mm</td>
+<td>Cl 26.5.3.2</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Steel ratio</td>
+<td><span class="arithmatex">\(0.8\% \leq p \leq 6\%\)</span></td>
+<td>Cl 26.5.3.1</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="references">📎 References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>IS 456:2000</strong> — Cl 25 (General Requirements), Cl 39 (Design), Cl 26.5.3 (Detailing)</li>
+<li><strong>SP:16 Design Aids</strong> — Interaction diagrams (Charts 27–62)</li>
+<li><strong>IS 13920:2016</strong> — Seismic ductile detailing of RC columns</li>
+<li><strong>Pillai &amp; Menon</strong> (8th Ed.) — Ch. 13–14: Column design with solved examples</li>
+<li><strong>N. Krishna Raju</strong> (4th Ed.) — Ch. 11: Short and slender column design</li>
+<li><strong>Paulay &amp; Priestley</strong> — Seismic design of RC structures, column ductility</li>
+</ul>
+<hr />
+<h2 id="whats-next">What's Next?<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
+<p><strong>Day 6: Footings</strong> moves from vertical members to the foundation system, covering sizing, bearing, flexure, one-way shear, and punching shear.</p>
+<p><a href="../day-04-beam-detailing/">&lt;&lt; Day 4: Beam Detailing &amp; Serviceability</a> | <a href="../day-06-footings/">Day 6: Footings &gt;&gt;</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2402 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/migration/learning/day-20-data-flow-e2e/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Day 20: End-to-End Data Flow — Tracing a Beam from CSV Upload to 3D Render - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-20-end-to-end-data-flow-tracing-a-beam-from-csv-upload-to-3d-render" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 20: End-to-End Data Flow — Tracing a Beam from CSV Upload to 3D Render
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You'll Learn Today
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-the-four-layer-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1: The Four-Layer Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-journey-1-csv-upload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2: Journey 1 — CSV Upload
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-3-journey-2-batch-design-sse-streaming" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 3: Journey 2 — Batch Design (SSE Streaming)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-4-journey-3-3d-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 4: Journey 3 — 3D Visualization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-5-journey-4-export-bbs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 5: Journey 4 — Export BBS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-6-tracing-a-single-value-through-all-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 6: Tracing a Single Value Through All Layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-7-where-unit-conversion-actually-happens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 7: Where Unit Conversion Actually Happens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-8-error-propagation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 8: Error Propagation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-9-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 9: Exercises
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 9: Exercises">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-1-trace-a-beam-through-the-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1: Trace a beam through the stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-2-full-stack-smoke-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2: Full stack smoke test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-3-debugging-exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3: Debugging exercise
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-10-self-check-qa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 10: Self-Check Q&amp;A
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-11-things-to-know-deep-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 11: Things to Know — Deep Insights
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 11: Things to Know — Deep Insights">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-the-b_mm-not-width-naming-convention-is-intentional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1: The "b_mm not width" naming convention is intentional
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-genericcsvadapter-handles-chaos-by-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2: GenericCSVAdapter handles chaos by design
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-sse-has-a-6-connection-browser-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3: SSE has a 6-connection browser limit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-the-service-layer-is-not-just-a-pass-through" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4: The service layer is NOT just a pass-through
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#115-react-three-fiber-and-react-dont-share-render-timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5: React Three Fiber and React don't share render timing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#116-the-pydantic-typescript-type-gap-is-manual" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.6: The Pydantic → TypeScript type gap is manual
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-12-what-can-be-done-better" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 12: What Can Be Done Better
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 12: What Can Be Done Better">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121-no-end-to-end-type-safety" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1: No end-to-end type safety
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122-no-requestresponse-logging-middleware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2: No request/response logging middleware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123-csv-adapter-doesnt-detect-unit-conflicts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3: CSV adapter doesn't detect unit conflicts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#124-no-data-lineage-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.4: No data lineage tracking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#125-sse-doesnt-support-resume-on-reconnect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.5: SSE doesn't support resume-on-reconnect
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-13-innovation-directions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 13: Innovation Directions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 13: Innovation Directions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#131-graphql-for-flexible-queries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1: GraphQL for flexible queries
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#132-event-sourcing-for-design-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2: Event sourcing for design history
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#133-webassembly-for-client-side-is-456-math" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3: WebAssembly for client-side IS 456 math
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#134-digital-twin-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4: Digital twin integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#135-ai-powered-csv-column-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.5: AI-powered CSV column detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-14-next-repo-must-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 14: Next Repo Must-Add
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 14: Next Repo Must-Add">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#concrete-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concrete items
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#day-1-checklist-for-a-new-layer-crossing-feature" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day-1 checklist for a new layer-crossing feature
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📎 References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="day-20-end-to-end-data-flow-tracing-a-beam-from-csv-upload-to-3d-render">Day 20: End-to-End Data Flow — Tracing a Beam from CSV Upload to 3D Render<a class="headerlink" href="#day-20-end-to-end-data-flow-tracing-a-beam-from-csv-upload-to-3d-render" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Learning Module
+<strong>Audience:</strong> Solo developer (coder, not a civil engineer)
+<strong>Status:</strong> Active
+<strong>Importance:</strong> Critical
+<strong>Created:</strong> 2026-04-08
+<strong>Last Updated:</strong> 2026-04-08
+<strong>Prerequisites:</strong> Days 1-19 (materials, flexure, shear, detailing, FastAPI, React, hooks, 3D)
+<strong>Library files:</strong> All layers — hooks, routers, services, IS 456 code, visualization
+<strong>IS 456 Clauses:</strong> All — this module traces data through every clause implementation</p>
+<hr />
+<h2 id="what-youll-learn-today">What You'll Learn Today<a class="headerlink" href="#what-youll-learn-today" title="Permanent link">&para;</a></h2>
+<p>By the end of this module you'll understand:
+- How data flows through ALL four architectural layers (React → FastAPI → Services → IS 456 Code)
+- The complete journey of a CSV file: upload → parse → design → visualize → export
+- Where units convert, where validation happens, and where math lives
+- How to trace ANY bug through the full stack
+- Why the layered architecture makes debugging possible</p>
+<hr />
+<h2 id="part-1-the-four-layer-architecture">Part 1: The Four-Layer Architecture<a class="headerlink" href="#part-1-the-four-layer-architecture" title="Permanent link">&para;</a></h2>
+<p>Every piece of data passes through exactly four layers. No shortcuts.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│  LAYER 1: UI / IO                                           │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  React 19 + R3F + Tailwind  |  FastAPI Routers              │
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  Components, hooks, stores  |  Pydantic models, endpoints   │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  Units: display (mm, kN)    |  Units: API (mm, kN)          │
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>├─────────────────────────────────────────────────────────────┤
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│  LAYER 2: Services                                          │
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│  services/api.py — orchestration (calls IS 456 functions)   │
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  services/adapters.py — CSV/Excel parsing (40+ mappings)    │
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│  services/beam_pipeline.py — multi-step workflows           │
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│  Units: explicit (mm, N/mm², kN, kNm)                      │
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>├─────────────────────────────────────────────────────────────┤
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│  LAYER 3: IS 456 Code                                       │
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│  codes/is456/flexure.py, shear.py, detailing.py             │
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│  Pure math — NO I/O, NO imports from layers above           │
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│  Units: internal (mm, N, N·mm)                              │
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>├─────────────────────────────────────────────────────────────┤
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>│  LAYER 4: Core Types                                        │
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│  core/data_types.py — FlexureResult, ShearResult            │
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│  core/sections.py — RectangularSection                      │
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│  core/materials.py — base material properties               │
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│  Units: stored as explicit fields (b_mm, d_mm, fck)         │
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>└─────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<p><strong>The import rule:</strong> Data flows DOWN. Each layer imports from layers below, NEVER above.
+- Core: imports nothing from the library
+- IS 456 Code: imports from Core only
+- Services: imports from IS 456 Code and Core
+- UI/IO: imports from Services (through API endpoints)</p>
+<p><strong>Why this matters for debugging:</strong> A CSS change in React can NEVER affect IS 456 math. A formula fix in flexure.py can NEVER break the CSV parser. Bugs are isolated to their layer.</p>
+<hr />
+<h2 id="part-2-journey-1-csv-upload">Part 2: Journey 1 — CSV Upload<a class="headerlink" href="#part-2-journey-1-csv-upload" title="Permanent link">&para;</a></h2>
+<p>The complete flow when a user drops a CSV file:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>User drops beams.csv
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    ↓
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>FileDropZone → useCSVFileImport → POST /api/v1/import/csv (FormData)
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    ↓
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>FastAPI router → GenericCSVAdapter.parse(text)
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    ↓
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>Adapter: matches 40+ column name variations → normalizes to standard names
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    ↓
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Returns: { beams: [{width_mm: 300, depth_mm: 500, mu_knm: 150, ...}], count: 42 }
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    ↓
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>React: onSuccess → setBeams(data.beams) → Zustand store updated
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    ↓
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>All components using beams re-render
+</code></pre></div>
+<p><strong>React side (useCSVFileImport):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">useCSVFileImport</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">setBeams</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useImportedBeamsStore</span><span class="p">();</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">useMutation</span><span class="p">({</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nx">mutationFn</span><span class="o">:</span><span class="w"> </span><span class="kt">async</span><span class="w"> </span><span class="p">(</span><span class="nx">file</span><span class="o">:</span><span class="w"> </span><span class="kt">File</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">formData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">FormData</span><span class="p">();</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="nx">formData</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">file</span><span class="p">);</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">API_BASE_URL</span><span class="si">}</span><span class="sb">/api/v1/import/csv`</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;POST&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="kt">formData</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="p">});</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nx">unwrapResponse</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="nx">onSuccess</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">      </span><span class="nx">setBeams</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">beams</span><span class="p">);</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">      </span><span class="nx">toast</span><span class="p">.</span><span class="nx">success</span><span class="p">(</span><span class="sb">`Imported </span><span class="si">${</span><span class="nx">data</span><span class="p">.</span><span class="nx">beams</span><span class="p">.</span><span class="nx">length</span><span class="si">}</span><span class="sb"> beams`</span><span class="p">);</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">  </span><span class="p">});</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>FastAPI router (imports.py):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nd">@router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/csv&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">CSVImportResponse</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">import_csv</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">UploadFile</span> <span class="o">=</span> <span class="n">File</span><span class="p">(</span><span class="o">...</span><span class="p">),</span> <span class="n">adapter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="s2">&quot;generic&quot;</span><span class="p">)):</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">content</span> <span class="o">=</span> <span class="k">await</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">text</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">adapters</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;generic&quot;</span><span class="p">:</span> <span class="n">GenericCSVAdapter</span><span class="p">(),</span> <span class="s2">&quot;etabs&quot;</span><span class="p">:</span> <span class="n">ETABSAdapter</span><span class="p">()}</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">chosen</span> <span class="o">=</span> <span class="n">adapters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">adapter</span><span class="p">,</span> <span class="n">adapters</span><span class="p">[</span><span class="s2">&quot;generic&quot;</span><span class="p">])</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">beams</span> <span class="o">=</span> <span class="n">chosen</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="k">return</span> <span class="n">success_response</span><span class="p">({</span><span class="s2">&quot;beams&quot;</span><span class="p">:</span> <span class="n">beams</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">beams</span><span class="p">)})</span>
+</code></pre></div></p>
+<p><strong>Services layer (adapters.py) — the column mapping magic:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">GenericCSVAdapter</span><span class="p">:</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">COLUMN_MAPPINGS</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>        <span class="s2">&quot;width_mm&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;Width&quot;</span><span class="p">,</span> <span class="s2">&quot;beam_width&quot;</span><span class="p">,</span> <span class="s2">&quot;BeamBreadth&quot;</span><span class="p">],</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="s2">&quot;depth_mm&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;h&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;Depth&quot;</span><span class="p">,</span> <span class="s2">&quot;beam_depth&quot;</span><span class="p">],</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        <span class="s2">&quot;mu_knm&quot;</span><span class="p">:</span>   <span class="p">[</span><span class="s2">&quot;Mu&quot;</span><span class="p">,</span> <span class="s2">&quot;moment&quot;</span><span class="p">,</span> <span class="s2">&quot;M_u&quot;</span><span class="p">,</span> <span class="s2">&quot;BendingMoment&quot;</span><span class="p">],</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        <span class="s2">&quot;vu_kn&quot;</span><span class="p">:</span>    <span class="p">[</span><span class="s2">&quot;Vu&quot;</span><span class="p">,</span> <span class="s2">&quot;shear&quot;</span><span class="p">,</span> <span class="s2">&quot;V_u&quot;</span><span class="p">,</span> <span class="s2">&quot;ShearForce&quot;</span><span class="p">],</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>        <span class="c1"># 40+ total mappings</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="p">}</span>
+</code></pre></div></p>
+<p>This is where the chaos of real-world CSV files (ETABS says "Width", STAAD says "b", SAP2000 says "BeamBreadth") gets normalized into clean, standard parameter names.</p>
+<hr />
+<h2 id="part-3-journey-2-batch-design-sse-streaming">Part 3: Journey 2 — Batch Design (SSE Streaming)<a class="headerlink" href="#part-3-journey-2-batch-design-sse-streaming" title="Permanent link">&para;</a></h2>
+<p>When the user clicks "Design All" on 100+ imported beams:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>User clicks &quot;Design All&quot;
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    ↓
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>useBatchDesign → EventSource connects to SSE endpoint
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    ↓
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>FastAPI: for each beam → design_beam_is456(b_mm, D_mm, fck, fy, mu_knm, vu_kn)
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    ↓
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>services/api.py orchestrates: flexure → shear → torsion → deflection
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    ↓
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>Each beam result streams back via SSE as it completes
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    ↓
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>React: updates progress bar (42/100), adds result to Zustand
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    ↓
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>User sees live progress, can cancel mid-batch
+</code></pre></div>
+<p><strong>Why SSE instead of a single POST?</strong>
+Designing 200 beams takes 30+ seconds. With a single POST the user sees nothing until ALL beams finish. With SSE:
+- Progress bar updates per beam
+- User can cancel mid-batch
+- If the connection drops at beam 199, you keep the 198 results</p>
+<p><strong>The IS 456 math pipeline for each beam:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># services/api.py — orchestration order</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">design_beam_is456</span><span class="p">(</span><span class="n">b_mm</span><span class="p">,</span> <span class="n">D_mm</span><span class="p">,</span> <span class="n">fck</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">mu_knm</span><span class="p">,</span> <span class="n">vu_kn</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="c1"># Step 1: Flexure (Cl 38.1)</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">flexure</span> <span class="o">=</span> <span class="n">calculate_ast_required</span><span class="p">(</span><span class="n">b_mm</span><span class="p">,</span> <span class="n">d_mm</span><span class="p">,</span> <span class="n">fck</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">mu_knm</span><span class="p">)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="c1"># Step 2: Shear (Cl 40)</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">shear</span> <span class="o">=</span> <span class="n">calculate_shear_reinforcement</span><span class="p">(</span><span class="n">b_mm</span><span class="p">,</span> <span class="n">d_mm</span><span class="p">,</span> <span class="n">fck</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">vu_kn</span><span class="p">,</span> <span class="n">flexure</span><span class="o">.</span><span class="n">Ast</span><span class="p">)</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="c1"># Step 3: Torsion (Cl 41) — if torsion provided</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="c1"># Step 4: Deflection (Cl 23.2)</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    <span class="c1"># Step 5: Detailing (Cl 26)</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    <span class="k">return</span> <span class="n">DesignResult</span><span class="p">(</span><span class="n">flexure</span><span class="o">=</span><span class="n">flexure</span><span class="p">,</span> <span class="n">shear</span><span class="o">=</span><span class="n">shear</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</code></pre></div></p>
+<hr />
+<h2 id="part-4-journey-3-3d-visualization">Part 4: Journey 3 — 3D Visualization<a class="headerlink" href="#part-4-journey-3-3d-visualization" title="Permanent link">&para;</a></h2>
+<p>When the user clicks a beam to see it in 3D:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>User clicks beam in table
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    ↓
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>useBeamGeometry → POST /api/v1/geometry/beam/full
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    ↓
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>FastAPI → beam_to_3d_geometry(width, depth, span, Ast, stirrup_dia, stirrup_spacing)
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    ↓
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>geometry_3d.py calculates:
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>  - Bottom rebar at y = cover + dia/2 = 40 + 12.5 = 52.5mm from bottom
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  - Top rebar at y = depth - cover - dia/2 = 450 - 40 - 12.5 = 397.5mm
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  - 26 stirrup loops, one every 150mm
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>    ↓
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>Returns: { rebars: [{segments: [{start, end, diameter}]}], stirrups: [...] }
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>    ↓
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>R3F renders: &lt;CylinderGeometry&gt; for each rebar segment, instancedMesh for stirrups
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>    ↓
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>User sees orange bars inside transparent gray concrete
+</code></pre></div>
+<hr />
+<h2 id="part-5-journey-4-export-bbs">Part 5: Journey 4 — Export BBS<a class="headerlink" href="#part-5-journey-4-export-bbs" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>User clicks &quot;Export BBS&quot;
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    ↓
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>useExportBBS → POST /api/v1/export/bbs with beam_ids
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    ↓
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>Python generates CSV: bar mark, type, diameter, cut length, number, weight
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    ↓
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>Returns: binary blob (CSV file)
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    ↓
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>React: URL.createObjectURL(blob) → invisible &lt;a&gt;.click() → browser download
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    ↓
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>User gets &quot;beam_bbs.csv&quot; in Downloads
+</code></pre></div>
+<hr />
+<h2 id="part-6-tracing-a-single-value-through-all-layers">Part 6: Tracing a Single Value Through All Layers<a class="headerlink" href="#part-6-tracing-a-single-value-through-all-layers" title="Permanent link">&para;</a></h2>
+<p>Let's trace <code>width = 300mm</code> from CSV to 3D:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>CSV file:       &quot;Width,Depth,Mu\n300,500,150&quot;
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>                   ↓
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Adapter:        COLUMN_MAPPINGS[&quot;width_mm&quot;] matches &quot;Width&quot; → 300.0
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>                   ↓
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>FastAPI:        BeamRow(width_mm=300, ...) [Pydantic validates: must be number]
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>                   ↓
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>React store:    beam.width_mm = 300 [Zustand]
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>                   ↓
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>Design API:     design_beam_is456(b_mm=300, ...)
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>                   ↓
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>Flexure:        calculate_ast_required(b_mm=300, d_mm=450, ...) [d = D - cover - φ/2]
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>                   ↓
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>3D Geometry:    beam_to_3d_geometry(width=300, ...)
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>                → concrete_box: [0, 0, 0] to [300, 500, 5000]
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>                   ↓
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>R3F render:     &lt;boxGeometry args={[0.3, 0.5, 5.0]} /&gt; [mm * 0.001 = meters]
+</code></pre></div>
+<p>The value <code>300</code> stays as millimeters through every layer. Only the 3D renderer applies SCALE (0.001) to convert to meters for Three.js camera framing.</p>
+<hr />
+<h2 id="part-7-where-unit-conversion-actually-happens">Part 7: Where Unit Conversion Actually Happens<a class="headerlink" href="#part-7-where-unit-conversion-actually-happens" title="Permanent link">&para;</a></h2>
+<p>Most values pass unchanged. But bending moment converts at the Layer 2/3 boundary:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>CSV:       &quot;Mu&quot; = 150 (meaning kNm)
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Adapter:   mu_knm = 150.0
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>Service:   Mu_knm = 150.0
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  ──────── BOUNDARY ────────
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>IS 456:    Mu = Mu_knm * 1e6 = 150,000,000 N·mm ← CONVERTS ON ENTRY
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>Math:      All calculations in N·mm
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>Result:    Mu_capacity = 165,300,000 N·mm
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>  ──────── BOUNDARY ────────
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>Service:   Mu_capacity_knm = 165,300,000 / 1e6 = 165.3 ← CONVERTS ON EXIT
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>FastAPI:   {&quot;moment_capacity_knm&quot;: 165.3}
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>React:     displays &quot;165.3 kNm&quot;
+</code></pre></div>
+<p>Unit conversions happen at exactly TWO places:
+1. <strong>Entering Layer 3:</strong> kNm → N·mm, kN → N
+2. <strong>Leaving Layer 3:</strong> N·mm → kNm, N → kN</p>
+<hr />
+<h2 id="part-8-error-propagation">Part 8: Error Propagation<a class="headerlink" href="#part-8-error-propagation" title="Permanent link">&para;</a></h2>
+<p>What happens when a CSV has invalid data?</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>CSV: &quot;Width,Depth,Mu\nabc,500,150&quot;
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>  ↓
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Adapter: float(&quot;abc&quot;) → ValueError  [caught, row skipped]
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  ↓
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>FastAPI: {&quot;beams&quot;: [...valid...], &quot;warnings&quot;: [&quot;Row 1: invalid width&quot;]}
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>  ↓
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>React: toast.warn(&quot;1 row skipped — see warnings&quot;)
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>  ↓
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>User: sees which rows failed and why
+</code></pre></div>
+<p>Errors propagate UPWARD, getting more user-friendly at each level:
+- Layer 3: <code>ValueError("b_mm must be positive")</code>
+- Layer 2: catches + adds context → <code>"Row 3: width must be positive"</code>
+- Layer 1 (FastAPI): wraps → <code>422 Unprocessable Entity</code>
+- Layer 1 (React): toast notification with specific message</p>
+<hr />
+<h2 id="part-9-exercises">Part 9: Exercises<a class="headerlink" href="#part-9-exercises" title="Permanent link">&para;</a></h2>
+<h3 id="exercise-1-trace-a-beam-through-the-stack">Exercise 1: Trace a beam through the stack<a class="headerlink" href="#exercise-1-trace-a-beam-through-the-stack" title="Permanent link">&para;</a></h3>
+<p>Open <code>Etabs_CSV/beam_forces.csv</code>, pick a beam. Write down every variable name its width takes through: CSV header → Adapter mapping → FastAPI model → Service parameter → IS 456 function → 3D geometry.</p>
+<h3 id="exercise-2-full-stack-smoke-test">Exercise 2: Full stack smoke test<a class="headerlink" href="#exercise-2-full-stack-smoke-test" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>./run.sh<span class="w"> </span>dev
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1"># Open http://localhost:5173</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="c1"># 1. Upload Etabs_CSV/beam_forces.csv</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># 2. Click &quot;Design All&quot; — watch SSE progress</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="c1"># 3. Click a beam — see 3D view</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="c1"># 4. Export BBS — check the downloaded file</span>
+</code></pre></div>
+At each step, check DevTools Network tab: what URL? what data? how long?</p>
+<h3 id="exercise-3-debugging-exercise">Exercise 3: Debugging exercise<a class="headerlink" href="#exercise-3-debugging-exercise" title="Permanent link">&para;</a></h3>
+<p>If a beam's shear capacity shows as 0 in the UI, what files do you check? (Answer: React display → FastAPI router → services/api.py → codes/is456/shear.py → core/data_types.py)</p>
+<hr />
+<h2 id="part-10-self-check-qa">Part 10: Self-Check Q&amp;A<a class="headerlink" href="#part-10-self-check-qa" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Name the four layers in order.</strong> UI/IO → Services → IS 456 Code → Core Types.</li>
+<li><strong>Can IS 456 code import from Services?</strong> No — imports only go downward.</li>
+<li><strong>Where does CSV column mapping happen?</strong> <code>services/adapters.py</code> (GenericCSVAdapter).</li>
+<li><strong>Why SSE for batch design?</strong> Live progress, cancellable, resilient to drops.</li>
+<li><strong>Where do kNm → N·mm unit conversions happen?</strong> At the Layer 2/3 boundary.</li>
+<li><strong>If the 3D shows rebar in the wrong position, which file likely has the bug?</strong> <code>visualization/geometry_3d.py</code>.</li>
+<li><strong>Why doesn't React parse CSV directly?</strong> Architecture rule: UI doesn't process data. Also, adapter handles 40+ column name variations.</li>
+<li><strong>What does the SCALE constant (0.001) do?</strong> Converts mm to meters for Three.js camera framing.</li>
+<li><strong>How many places does unit conversion happen for moment?</strong> Exactly 2: entering and leaving Layer 3.</li>
+<li><strong>How do errors propagate?</strong> Upward — Layer 3 ValueError → Layer 2 adds context → Layer 1 HTTP error → React toast.</li>
+</ol>
+<hr />
+<h2 id="part-11-things-to-know-deep-insights">Part 11: Things to Know — Deep Insights<a class="headerlink" href="#part-11-things-to-know-deep-insights" title="Permanent link">&para;</a></h2>
+<h3 id="111-the-b_mm-not-width-naming-convention-is-intentional">11.1: The "b_mm not width" naming convention is intentional<a class="headerlink" href="#111-the-b_mm-not-width-naming-convention-is-intentional" title="Permanent link">&para;</a></h3>
+<p>Every parameter name includes its unit: <code>b_mm</code>, <code>fck_nmm2</code>, <code>mu_knm</code>. This prevents the Mars Climate Orbiter class of bugs — where one function expects meters and another passes feet. When you see <code>b_mm</code>, you KNOW it's millimeters. If someone passes <code>b_m = 0.3</code> to a function expecting <code>b_mm</code>, the value (0.3mm) would flag as obviously wrong.</p>
+<h3 id="112-genericcsvadapter-handles-chaos-by-design">11.2: GenericCSVAdapter handles chaos by design<a class="headerlink" href="#112-genericcsvadapter-handles-chaos-by-design" title="Permanent link">&para;</a></h3>
+<p>Real ETABS exports have column names like "Mu3+" and "VMax-". Different versions use different names. The 40+ mapping dictionary is the result of testing with actual exports from 5+ structural analysis software packages. Adding a new mapping is a one-line change, not a code rewrite.</p>
+<h3 id="113-sse-has-a-6-connection-browser-limit">11.3: SSE has a 6-connection browser limit<a class="headerlink" href="#113-sse-has-a-6-connection-browser-limit" title="Permanent link">&para;</a></h3>
+<p>Browsers allow only 6 simultaneous connections per host (HTTP/1.1). If the user opens 7 tabs all connected to SSE endpoints, the 7th blocks. This is a browser limitation, not a code bug. HTTP/2 multiplexing solves this, but the backend must support it.</p>
+<h3 id="114-the-service-layer-is-not-just-a-pass-through">11.4: The service layer is NOT just a pass-through<a class="headerlink" href="#114-the-service-layer-is-not-just-a-pass-through" title="Permanent link">&para;</a></h3>
+<p><code>services/api.py</code> doesn't just call <code>calculate_flexure(params)</code> and return. It orchestrates: call flexure → use flexure result in shear calculation → use both in detailing → assemble the final result. The ORDER matters: shear needs to know Ast from flexure, detailing needs both.</p>
+<h3 id="115-react-three-fiber-and-react-dont-share-render-timing">11.5: React Three Fiber and React don't share render timing<a class="headerlink" href="#115-react-three-fiber-and-react-dont-share-render-timing" title="Permanent link">&para;</a></h3>
+<p>R3F renders at 60fps independently. React reconciles on state change. When you call <code>setResult()</code> in Zustand, React re-renders the results panel. But R3F only updates the 3D view when its props change (via the hook). They're two independent render loops sharing one DOM.</p>
+<h3 id="116-the-pydantic-typescript-type-gap-is-manual">11.6: The Pydantic → TypeScript type gap is manual<a class="headerlink" href="#116-the-pydantic-typescript-type-gap-is-manual" title="Permanent link">&para;</a></h3>
+<p><code>BeamDesignRequest</code> in Python and <code>BeamDesignRequest</code> in TypeScript are manually kept in sync. If Python adds a field, TypeScript won't know until someone updates <code>types/api.ts</code>. This is a known pain point (see Day 17: Innovation).</p>
+<hr />
+<h2 id="part-12-what-can-be-done-better">Part 12: What Can Be Done Better<a class="headerlink" href="#part-12-what-can-be-done-better" title="Permanent link">&para;</a></h2>
+<h3 id="121-no-end-to-end-type-safety">12.1: No end-to-end type safety<a class="headerlink" href="#121-no-end-to-end-type-safety" title="Permanent link">&para;</a></h3>
+<p>The TypeScript <code>BeamDesignRequest</code> and Python <code>BeamDesignRequest</code> are separate definitions. If they drift apart, the frontend silently sends wrong data. An auto-generated TypeScript SDK from <code>openapi.json</code> would eliminate this.</p>
+<h3 id="122-no-requestresponse-logging-middleware">12.2: No request/response logging middleware<a class="headerlink" href="#122-no-requestresponse-logging-middleware" title="Permanent link">&para;</a></h3>
+<p>When a design fails, there's no audit trail of what inputs were sent. A FastAPI middleware that logs request body + response status (without sensitive data) would make debugging faster.</p>
+<h3 id="123-csv-adapter-doesnt-detect-unit-conflicts">12.3: CSV adapter doesn't detect unit conflicts<a class="headerlink" href="#123-csv-adapter-doesnt-detect-unit-conflicts" title="Permanent link">&para;</a></h3>
+<p>If a CSV has "Width" in meters (0.3) and "Depth" in mm (500), the adapter doesn't detect the inconsistency. It would import <code>width_mm=0.3</code>, which is clearly wrong but passes validation. A sanity check (is width &lt; 50mm? probably wrong units) would catch this.</p>
+<h3 id="124-no-data-lineage-tracking">12.4: No data lineage tracking<a class="headerlink" href="#124-no-data-lineage-tracking" title="Permanent link">&para;</a></h3>
+<p>When a final design result says <code>Ast = 942 mm²</code>, there's no trace of which CSV row → which adapter mapping → which API call → which IS 456 clause produced it. A data lineage ID propagated through all layers would enable "click to explain" on any result.</p>
+<h3 id="125-sse-doesnt-support-resume-on-reconnect">12.5: SSE doesn't support resume-on-reconnect<a class="headerlink" href="#125-sse-doesnt-support-resume-on-reconnect" title="Permanent link">&para;</a></h3>
+<p>If the SSE connection drops at beam 50/200, the client must restart from beam 1. An offset parameter (<code>start_from=50</code>) would let the client resume where it left off.</p>
+<hr />
+<h2 id="part-13-innovation-directions">Part 13: Innovation Directions<a class="headerlink" href="#part-13-innovation-directions" title="Permanent link">&para;</a></h2>
+<h3 id="131-graphql-for-flexible-queries">13.1: GraphQL for flexible queries<a class="headerlink" href="#131-graphql-for-flexible-queries" title="Permanent link">&para;</a></h3>
+<p>Instead of separate REST endpoints for design, geometry, and export, a GraphQL API would let the client request exactly the data it needs in one query: <code>beam(id: "B1") { flexure { Ast xu } geometry { rebars } }</code>.</p>
+<h3 id="132-event-sourcing-for-design-history">13.2: Event sourcing for design history<a class="headerlink" href="#132-event-sourcing-for-design-history" title="Permanent link">&para;</a></h3>
+<p>Store every design input change as an event. Replay events to reconstruct any point in time. Engineers could see "at 2pm, I changed fck from 25 to 30, and Ast dropped from 1200 to 942."</p>
+<h3 id="133-webassembly-for-client-side-is-456-math">13.3: WebAssembly for client-side IS 456 math<a class="headerlink" href="#133-webassembly-for-client-side-is-456-math" title="Permanent link">&para;</a></h3>
+<p>Compile the IS 456 Python code to WASM (via Pyodide or Rust port). No API call needed — design results appear instantly. Works offline. The server becomes optional.</p>
+<h3 id="134-digital-twin-integration">13.4: Digital twin integration<a class="headerlink" href="#134-digital-twin-integration" title="Permanent link">&para;</a></h3>
+<p>Connect the design data to BIM (Building Information Modeling) tools. Upload an IFC file, the library designs all beams, and exports the results back to the BIM model with rebar positions.</p>
+<h3 id="135-ai-powered-csv-column-detection">13.5: AI-powered CSV column detection<a class="headerlink" href="#135-ai-powered-csv-column-detection" title="Permanent link">&para;</a></h3>
+<p>Instead of hardcoded mappings, use a small ML model to detect which CSV columns represent width, depth, moment, etc. based on column names AND sample values. Would handle any unknown software export.</p>
+<hr />
+<h2 id="part-14-next-repo-must-add">Part 14: Next Repo Must-Add<a class="headerlink" href="#part-14-next-repo-must-add" title="Permanent link">&para;</a></h2>
+<h3 id="concrete-items">Concrete items<a class="headerlink" href="#concrete-items" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Auto-generated TypeScript SDK</strong> — <code>openapi-typescript</code> in CI, zero manual type sync</li>
+<li><strong>Request/response logging middleware</strong> — Structured logs for all API calls</li>
+<li><strong>CSV unit sanity checker</strong> — Flag "width_mm=0.3" as likely wrong unit</li>
+<li><strong>SSE resume-on-reconnect</strong> — <code>start_from=N</code> parameter for batch design</li>
+<li><strong>Data lineage IDs</strong> — Trace any result back through all 4 layers</li>
+<li><strong>E2E integration tests</strong> — Selenium/Playwright test: upload CSV → design → export → verify file</li>
+<li><strong>Adapter test suite</strong> — Test with real exports from ETABS, STAAD, SAP2000, SAFE</li>
+</ol>
+<h3 id="day-1-checklist-for-a-new-layer-crossing-feature">Day-1 checklist for a new layer-crossing feature<a class="headerlink" href="#day-1-checklist-for-a-new-layer-crossing-feature" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>□ 1. Define the data shape at each layer (TypeScript interface, Pydantic model, Python type)
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>□ 2. Verify import direction — never import upward
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>□ 3. Add unit conversion at Layer 2/3 boundary if needed
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>□ 4. Add Pydantic validation for all inputs
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>□ 5. Handle errors at each layer boundary (catch, add context, re-raise)
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>□ 6. Write tests at each layer: unit test (L3), integration test (L2), API test (L1)
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>□ 7. Update GenericCSVAdapter if new columns needed
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>□ 8. Update TypeScript types to match new Pydantic models
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>□ 9. Test the full round-trip: React → API → Python → API → React
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>□ 10. Verify in browser: DevTools Network tab shows correct request/response
+</code></pre></div>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Data Journey</th>
+<th>React</th>
+<th>FastAPI</th>
+<th>Services</th>
+<th>IS 456 Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CSV Upload</td>
+<td>FileDropZone → useCSVFileImport</td>
+<td>POST /import/csv</td>
+<td>GenericCSVAdapter</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Batch Design</td>
+<td>useBatchDesign (SSE)</td>
+<td>/stream/batch-design</td>
+<td>design_beam_is456</td>
+<td>flexure + shear + detailing</td>
+</tr>
+<tr>
+<td>3D View</td>
+<td>useBeamGeometry → R3F Canvas</td>
+<td>POST /geometry/beam/full</td>
+<td>geometry_3d.py</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Export BBS</td>
+<td>useExportBBS → download</td>
+<td>POST /export/bbs</td>
+<td>generate_bbs()</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="references">📎 References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>react_app/src/hooks/</code> — useCSVImport.ts, useBatchDesign.ts, useBeamGeometry.ts, useExport.ts</li>
+<li><code>fastapi_app/routers/</code> — imports.py, design.py, geometry.py, export.py, streaming.py</li>
+<li><code>Python/structural_lib/services/api.py</code> — Orchestration hub</li>
+<li><code>Python/structural_lib/services/adapters.py</code> — CSV parser (40+ mappings)</li>
+<li><code>Python/structural_lib/codes/is456/</code> — Pure IS 456 math</li>
+<li><code>Python/structural_lib/visualization/geometry_3d.py</code> — 3D coordinate calculation</li>
+<li><strong>Previous:</strong> Day 19 covers 3D visualization with React Three Fiber</li>
+<li><strong>Next:</strong> Day 21 covers Docker containerization</li>
+</ul>
+<p><strong>Day 21: Docker &amp; Deployment</strong> — Now that you understand how data flows through the stack, we'll containerize the whole thing. You'll learn how Docker packages all four layers into a single deployable image, how <code>docker-compose</code> connects the services, and how <code>./run.sh dev</code> launches everything with one command.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

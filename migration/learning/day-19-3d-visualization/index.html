@@ -1,0 +1,2506 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/migration/learning/day-19-3d-visualization/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Day 19: 3D Visualization — Rendering Concrete, Rebar & Stirrups with React Three Fiber - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-19-3d-visualization-rendering-concrete-rebar-stirrups-with-react-three-fiber" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 19: 3D Visualization — Rendering Concrete, Rebar &amp; Stirrups with React Three Fiber
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You'll Learn Today
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-what-is-react-three-fiber" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1: What is React Three Fiber?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-why-3d-for-structural-engineering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2: Why 3D for Structural Engineering?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-3-the-three-building-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 3: The Three Building Blocks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 3: The Three Building Blocks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#canvas-the-root-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        &lt;Canvas&gt; — The Root Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mesh-a-renderable-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        &lt;mesh&gt; — A Renderable Object
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-container-for-grouping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        &lt;group&gt; — Container for Grouping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-4-coordinate-system-conversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 4: Coordinate System Conversion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-5-the-complete-data-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 5: The Complete Data Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-6-viewport3d-the-canvas-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 6: Viewport3D — The Canvas Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-7-rendering-the-concrete-beam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 7: Rendering the Concrete Beam
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-8-rendering-rebars" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 8: Rendering Rebars
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-9-performance-instancedmesh-for-stirrups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 9: Performance — InstancedMesh for Stirrups
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-10-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 10: Exercises
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 10: Exercises">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-1-run-the-3d-viewport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1: Run the 3D viewport
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-2-change-the-beam-color" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2: Change the beam color
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-3-add-a-floating-text-label" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3: Add a floating text label
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-11-self-check-qa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 11: Self-Check Q&amp;A
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-12-things-to-know-deep-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 12: Things to Know — Deep Insights
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 12: Things to Know — Deep Insights">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121-r3f-has-its-own-render-loop-separate-from-react" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1: R3F has its own render loop separate from React
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122-webgl-context-loss-is-a-real-production-issue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2: WebGL context loss is a real production issue
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123-memory-leaks-from-unmounted-3d-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3: Memory leaks from unmounted 3D objects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#124-suspense-fallbacknull-prevents-blank-canvas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.4: &lt;Suspense fallback={null}&gt; prevents blank canvas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#125-the-scale-factor-isnt-arbitrary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.5: The SCALE factor isn't arbitrary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#126-8-segments-for-cylinder-geometry-is-a-deliberate-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.6: 8 segments for cylinder geometry is a deliberate optimization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-13-what-can-be-done-better" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 13: What Can Be Done Better
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 13: What Can Be Done Better">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#131-no-error-boundary-around-canvas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.1: No error boundary around &lt;Canvas&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#132-no-level-of-detail-lod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.2: No level-of-detail (LOD)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#133-no-screenshotexport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.3: No screenshot/export
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#134-no-cross-section-view" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.4: No cross-section view
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#135-no-measurement-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13.5: No measurement tool
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-14-innovation-directions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 14: Innovation Directions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 14: Innovation Directions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#141-offscreencanvas-in-web-worker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.1: OffscreenCanvas in Web Worker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#142-arvr-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.2: AR/VR visualization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#143-animated-construction-sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.3: Animated construction sequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#144-clash-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.4: Clash detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#145-multi-element-building-visualization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14.5: Multi-element building visualization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-15-next-repo-must-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 15: Next Repo Must-Add
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 15: Next Repo Must-Add">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#concrete-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concrete items
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#day-1-checklist-for-a-new-3d-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day-1 checklist for a new 3D component
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📎 References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="day-19-3d-visualization-rendering-concrete-rebar-stirrups-with-react-three-fiber">Day 19: 3D Visualization — Rendering Concrete, Rebar &amp; Stirrups with React Three Fiber<a class="headerlink" href="#day-19-3d-visualization-rendering-concrete-rebar-stirrups-with-react-three-fiber" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Learning Module
+<strong>Audience:</strong> Solo developer (coder, not a civil engineer)
+<strong>Status:</strong> Active
+<strong>Importance:</strong> High
+<strong>Created:</strong> 2026-04-08
+<strong>Last Updated:</strong> 2026-04-08
+<strong>Prerequisites:</strong> Day 17 (React architecture), Day 18 (React hooks)
+<strong>Library files:</strong> <code>react_app/src/components/viewport/Viewport3D.tsx</code>, <code>react_app/src/hooks/useBeamGeometry.ts</code>, <code>Python/structural_lib/visualization/geometry_3d.py</code>
+<strong>Tech Stack:</strong> React Three Fiber (R3F), Three.js, @react-three/drei</p>
+<hr />
+<h2 id="what-youll-learn-today">What You'll Learn Today<a class="headerlink" href="#what-youll-learn-today" title="Permanent link">&para;</a></h2>
+<p>By the end of this module you'll understand:
+- What React Three Fiber is — 3D scenes as React components
+- Why 3D visualization matters for a structural engineering tool
+- The complete data flow: IS 456 design result → <code>geometry_3d.py</code> → 3D coordinates → R3F rendering
+- How concrete beams, rebars, and stirrups are rendered
+- Coordinate system conversion between Python library and Three.js
+- Performance optimization with instancedMesh
+- Camera, lighting, and interactive controls</p>
+<hr />
+<h2 id="part-1-what-is-react-three-fiber">Part 1: What is React Three Fiber?<a class="headerlink" href="#part-1-what-is-react-three-fiber" title="Permanent link">&para;</a></h2>
+<p><strong>React Three Fiber (R3F)</strong> is a React renderer for Three.js. Instead of writing imperative 3D code, you write 3D scenes as React components:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// IMPERATIVE Three.js (verbose, manual memory management)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">geometry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">THREE</span><span class="p">.</span><span class="nx">BoxGeometry</span><span class="p">(</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">);</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">material</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshStandardMaterial</span><span class="p">({</span><span class="w"> </span><span class="nx">color</span><span class="o">:</span><span class="w"> </span><span class="kt">0xff0000</span><span class="w"> </span><span class="p">});</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kd">const</span><span class="w"> </span><span class="nx">mesh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">THREE</span><span class="p">.</span><span class="nx">Mesh</span><span class="p">(</span><span class="nx">geometry</span><span class="p">,</span><span class="w"> </span><span class="nx">material</span><span class="p">);</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nx">scene</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">mesh</span><span class="p">);</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1">// Must manually: dispose geometry, dispose material, remove from scene</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1">// DECLARATIVE R3F (React manages lifecycle)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">&lt;</span><span class="nt">mesh</span><span class="p">&gt;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="p">&lt;</span><span class="nt">boxGeometry</span><span class="w"> </span><span class="na">args</span><span class="o">=</span><span class="p">{[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">]}</span><span class="w"> </span><span class="p">/&gt;</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="p">&lt;</span><span class="nt">meshStandardMaterial</span><span class="w"> </span><span class="na">color</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="w"> </span><span class="p">/&gt;</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">&lt;/</span><span class="nt">mesh</span><span class="p">&gt;</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1">// React auto-disposes when component unmounts</span>
+</code></pre></div>
+<p><strong>Why R3F instead of vanilla Three.js?</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Three.js</th>
+<th>R3F</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Style</td>
+<td>Imperative</td>
+<td>Declarative (React components)</td>
+</tr>
+<tr>
+<td>Memory cleanup</td>
+<td>Manual dispose() calls</td>
+<td>Automatic on unmount</td>
+</tr>
+<tr>
+<td>State updates</td>
+<td>Manual scene graph mutation</td>
+<td>React re-render = scene update</td>
+</tr>
+<tr>
+<td>Ecosystem</td>
+<td>Standalone</td>
+<td>Full React hooks, context, suspense</td>
+</tr>
+<tr>
+<td>Reusability</td>
+<td>Copy-paste classes</td>
+<td><code>&lt;BeamMesh&gt;</code> components</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="part-2-why-3d-for-structural-engineering">Part 2: Why 3D for Structural Engineering?<a class="headerlink" href="#part-2-why-3d-for-structural-engineering" title="Permanent link">&para;</a></h2>
+<p>2D drawings and tables are the standard. Here's what 3D adds:</p>
+<ol>
+<li><strong>Visual verification</strong> — See if rebar positions match reality. If a bar is outside the beam, you spot it instantly in 3D. In a table, "bar at y=460" looks fine until you realize depth is 450.</li>
+<li><strong>Communication</strong> — Show a contractor where bars go. "4-#25 @ 40mm cover" is abstract. A 3D view with orange bars inside a gray box is obvious.</li>
+<li><strong>Debugging</strong> — When the detailing code has a bug (bars overlapping, stirrups at wrong spacing), the 3D render makes it immediately visible.</li>
+<li><strong>Education</strong> — New engineers learn faster seeing theory → actual bar placement in real-time.</li>
+</ol>
+<p><strong>What we render:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>3D Shape</th>
+<th>Material</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Concrete beam</td>
+<td>Box (transparent)</td>
+<td>Gray, 70% opacity</td>
+<td>Shows overall dimensions</td>
+</tr>
+<tr>
+<td>Longitudinal rebar</td>
+<td>Cylinders</td>
+<td>Orange, metallic</td>
+<td>Tension/compression bars</td>
+</tr>
+<tr>
+<td>Stirrups</td>
+<td>Rectangular loops</td>
+<td>Orange, thin</td>
+<td>Shear reinforcement</td>
+</tr>
+<tr>
+<td>Grid</td>
+<td>Flat plane</td>
+<td>Gray lines</td>
+<td>Scale reference</td>
+</tr>
+<tr>
+<td>Dimensions</td>
+<td>Text labels</td>
+<td>White</td>
+<td>Width × Depth labels</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="part-3-the-three-building-blocks">Part 3: The Three Building Blocks<a class="headerlink" href="#part-3-the-three-building-blocks" title="Permanent link">&para;</a></h2>
+<p>Every R3F scene uses three fundamental components:</p>
+<h3 id="canvas-the-root-container"><code>&lt;Canvas&gt;</code> — The Root Container<a class="headerlink" href="#canvas-the-root-container" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">&lt;</span><span class="nt">Canvas</span><span class="w"> </span><span class="na">camera</span><span class="o">=</span><span class="p">{{</span><span class="w"> </span><span class="nx">position</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">6</span><span class="p">,</span><span class="w"> </span><span class="mf">4</span><span class="p">,</span><span class="w"> </span><span class="mf">6</span><span class="p">],</span><span class="w"> </span><span class="nx">fov</span><span class="o">:</span><span class="w"> </span><span class="kt">50</span><span class="w"> </span><span class="p">}}&gt;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="p">{</span><span class="cm">/* All 3D content goes inside Canvas */</span><span class="p">}</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p">&lt;/</span><span class="nt">Canvas</span><span class="p">&gt;</span>
+</code></pre></div>
+Like <code>&lt;div&gt;</code> in HTML, but creates a WebGL context and render loop (60fps).</p>
+<h3 id="mesh-a-renderable-object"><code>&lt;mesh&gt;</code> — A Renderable Object<a class="headerlink" href="#mesh-a-renderable-object" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">&lt;</span><span class="nt">mesh</span><span class="w"> </span><span class="na">position</span><span class="o">=</span><span class="p">{[</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">]}</span><span class="w"> </span><span class="na">rotation</span><span class="o">=</span><span class="p">{[</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">4</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">]}&gt;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="p">&lt;</span><span class="nt">boxGeometry</span><span class="w"> </span><span class="na">args</span><span class="o">=</span><span class="p">{[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">]}</span><span class="w"> </span><span class="p">/&gt;</span><span class="w">       </span><span class="p">{</span><span class="cm">/* Shape: width=1, height=2, depth=3 */</span><span class="p">}</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="p">&lt;</span><span class="nt">meshStandardMaterial</span><span class="w"> </span><span class="na">color</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="w"> </span><span class="p">/&gt;</span><span class="w">    </span><span class="p">{</span><span class="cm">/* Appearance: blue, realistic lighting */</span><span class="p">}</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">&lt;/</span><span class="nt">mesh</span><span class="p">&gt;</span>
+</code></pre></div>
+Every mesh = geometry (shape) + material (appearance).</p>
+<h3 id="group-container-for-grouping"><code>&lt;group&gt;</code> — Container for Grouping<a class="headerlink" href="#group-container-for-grouping" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">&lt;</span><span class="nt">group</span><span class="w"> </span><span class="na">position</span><span class="o">=</span><span class="p">{[</span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">]}&gt;</span><span class="w">  </span><span class="p">{</span><span class="cm">/* Offset everything inside by 10m right */</span><span class="p">}</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="p">&lt;</span><span class="nt">mesh</span><span class="p">&gt;...&lt;/</span><span class="nt">mesh</span><span class="p">&gt;</span><span class="w">   </span><span class="p">{</span><span class="cm">/* Inherits the group&#39;s position */</span><span class="p">}</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="p">&lt;</span><span class="nt">mesh</span><span class="p">&gt;...&lt;/</span><span class="nt">mesh</span><span class="p">&gt;</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">&lt;/</span><span class="nt">group</span><span class="p">&gt;</span>
+</code></pre></div>
+Like <code>&lt;div&gt;</code> — lets you transform (move, rotate, scale) multiple objects together.</p>
+<hr />
+<h2 id="part-4-coordinate-system-conversion">Part 4: Coordinate System Conversion<a class="headerlink" href="#part-4-coordinate-system-conversion" title="Permanent link">&para;</a></h2>
+<p><strong>Python library uses</strong> (structural engineering convention):
+- X → beam length (along span)
+- Y → beam width (cross-section horizontal)
+- Z → beam depth (cross-section vertical)</p>
+<p><strong>Three.js uses</strong> (game engine convention):
+- X → horizontal (left/right)
+- Y → vertical (up/down) ← THIS IS THE KEY DIFFERENCE
+- Z → depth (forward/backward)</p>
+<p><strong>The conversion:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// Library returns: { x: 2000, y: 150, z: 450 } (mm)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1">// Convert to Three.js:</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">SCALE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.001</span><span class="p">;</span><span class="w">  </span><span class="c1">// mm → meters (better camera framing)</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kd">const</span><span class="w"> </span><span class="nx">threejsPosition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nx">point</span><span class="p">.</span><span class="nx">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">,</span><span class="w">    </span><span class="c1">// X stays X (along beam)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nx">point</span><span class="p">.</span><span class="nx">z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">,</span><span class="w">    </span><span class="c1">// Z (library depth) → Y (Three.js up)</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nx">point</span><span class="p">.</span><span class="nx">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">,</span><span class="w">    </span><span class="c1">// Y (library width) → Z (Three.js depth)</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">];</span>
+</code></pre></div></p>
+<p>If you get this wrong, beams appear sideways or bars float above the concrete. This is the most common 3D bug.</p>
+<hr />
+<h2 id="part-5-the-complete-data-flow">Part 5: The Complete Data Flow<a class="headerlink" href="#part-5-the-complete-data-flow" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>1. User designs beam (width=300, depth=450, fck=25, fy=500)
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>       ↓
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>2. useLiveDesign → POST /api/v1/design/beam → IS 456 math
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>       ↓
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>3. Result: Ast_provided=942mm², stirrup_dia=8, stirrup_spacing=150
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>       ↓
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>4. useBeamGeometry → POST /api/v1/geometry/beam/full
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>       ↓
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>5. Python geometry_3d.beam_to_3d_geometry() calculates:
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>   - Bottom rebar at y = cover + dia/2 = 40 + 12.5 = 52.5mm from bottom
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>   - Top rebar at y = depth - cover - dia/2 = 450 - 40 - 12.5 = 397.5mm
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>   - Stirrup loops every 150mm along span
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>       ↓
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>6. Returns JSON: { rebars: [{segments: [start, end, dia]}], stirrups: [...] }
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>       ↓
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>7. R3F renders each segment as a &lt;mesh&gt; with &lt;cylinderGeometry&gt;
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>       ↓
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>8. User sees 3D beam with orange bars inside gray transparent concrete
+</code></pre></div>
+<hr />
+<h2 id="part-6-viewport3d-the-canvas-setup">Part 6: Viewport3D — The Canvas Setup<a class="headerlink" href="#part-6-viewport3d-the-canvas-setup" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// components/viewport/Viewport3D.tsx</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">Viewport3D</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">inputs</span><span class="p">,</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useDesignStore</span><span class="p">();</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="p">&lt;</span><span class="nt">div</span><span class="w"> </span><span class="na">className</span><span class="o">=</span><span class="s">&quot;h-full w-full bg-zinc-950&quot;</span><span class="p">&gt;</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">      </span><span class="p">&lt;</span><span class="nt">Canvas</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">        </span><span class="na">camera</span><span class="o">=</span><span class="p">{{</span><span class="w"> </span><span class="nx">position</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">6</span><span class="p">,</span><span class="w"> </span><span class="mf">4</span><span class="p">,</span><span class="w"> </span><span class="mf">6</span><span class="p">],</span><span class="w"> </span><span class="nx">fov</span><span class="o">:</span><span class="w"> </span><span class="kt">50</span><span class="w"> </span><span class="p">}}</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">        </span><span class="na">gl</span><span class="o">=</span><span class="p">{{</span><span class="w"> </span><span class="nx">antialias</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span><span class="w"> </span><span class="nx">alpha</span><span class="o">:</span><span class="w"> </span><span class="kt">false</span><span class="w"> </span><span class="p">}}</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">      </span><span class="p">&gt;</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">        </span><span class="p">{</span><span class="cm">/* Lighting */</span><span class="p">}</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">        </span><span class="p">&lt;</span><span class="nt">ambientLight</span><span class="w"> </span><span class="na">intensity</span><span class="o">=</span><span class="p">{</span><span class="mf">0.6</span><span class="p">}</span><span class="w"> </span><span class="p">/&gt;</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">        </span><span class="p">&lt;</span><span class="nt">directionalLight</span><span class="w"> </span><span class="na">position</span><span class="o">=</span><span class="p">{[</span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">]}</span><span class="w"> </span><span class="na">intensity</span><span class="o">=</span><span class="p">{</span><span class="mf">0.8</span><span class="p">}</span><span class="w"> </span><span class="p">/&gt;</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">        </span><span class="p">&lt;</span><span class="nt">Environment</span><span class="w"> </span><span class="na">preset</span><span class="o">=</span><span class="s">&quot;city&quot;</span><span class="w"> </span><span class="p">/&gt;</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">        </span><span class="p">{</span><span class="cm">/* Grid reference */</span><span class="p">}</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">        </span><span class="p">&lt;</span><span class="nt">Grid</span><span class="w"> </span><span class="na">args</span><span class="o">=</span><span class="p">{[</span><span class="mf">20</span><span class="p">,</span><span class="w"> </span><span class="mf">20</span><span class="p">]}</span><span class="w"> </span><span class="na">cellSize</span><span class="o">=</span><span class="p">{</span><span class="mf">1</span><span class="p">}</span><span class="w"> </span><span class="na">cellColor</span><span class="o">=</span><span class="s">&quot;#444&quot;</span><span class="w"> </span><span class="na">sectionColor</span><span class="o">=</span><span class="s">&quot;#666&quot;</span><span class="w"> </span><span class="p">/&gt;</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">        </span><span class="p">{</span><span class="cm">/* Camera controls — drag to rotate, scroll to zoom */</span><span class="p">}</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">        </span><span class="p">&lt;</span><span class="nt">OrbitControls</span><span class="w"> </span><span class="na">makeDefault</span><span class="w"> </span><span class="na">maxPolarAngle</span><span class="o">=</span><span class="p">{</span><span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2</span><span class="p">}</span><span class="w"> </span><span class="p">/&gt;</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">        </span><span class="p">{</span><span class="cm">/* 3D beam content */</span><span class="p">}</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">        </span><span class="p">&lt;</span><span class="nt">Suspense</span><span class="w"> </span><span class="na">fallback</span><span class="o">=</span><span class="p">{</span><span class="kc">null</span><span class="p">}&gt;</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">          </span><span class="p">&lt;</span><span class="nt">BeamVisualization</span><span class="w"> </span><span class="na">inputs</span><span class="o">=</span><span class="p">{</span><span class="nx">inputs</span><span class="p">}</span><span class="w"> </span><span class="na">result</span><span class="o">=</span><span class="p">{</span><span class="nx">result</span><span class="p">}</span><span class="w"> </span><span class="p">/&gt;</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">        </span><span class="p">&lt;/</span><span class="nt">Suspense</span><span class="p">&gt;</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="w">      </span><span class="p">&lt;/</span><span class="nt">Canvas</span><span class="p">&gt;</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="w">    </span><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="w">  </span><span class="p">);</span>
+<a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Lighting strategy:</strong>
+- <code>ambientLight</code> — Soft overall illumination (prevents pure black shadows)
+- <code>directionalLight</code> — Main light from upper-right (like the sun — creates depth perception)
+- <code>Environment preset="city"</code> — HDRI reflections (metallic rebar looks shiny and realistic)</p>
+<p><strong>Camera:</strong>
+- <code>position={[6, 4, 6]}</code> — Start at 6m right, 4m up, 6m forward — good initial view of a 4m beam
+- <code>fov={50}</code> — 50° field of view (natural perspective, not fisheye)
+- <code>OrbitControls</code> — Mouse drag rotates, scroll zooms, right-click pans</p>
+<hr />
+<h2 id="part-7-rendering-the-concrete-beam">Part 7: Rendering the Concrete Beam<a class="headerlink" href="#part-7-rendering-the-concrete-beam" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kd">function</span><span class="w"> </span><span class="nx">BeamMesh</span><span class="p">({</span><span class="w"> </span><span class="nx">width</span><span class="p">,</span><span class="w"> </span><span class="nx">depth</span><span class="p">,</span><span class="w"> </span><span class="nx">length</span><span class="p">,</span><span class="w"> </span><span class="nx">isDesigned</span><span class="w"> </span><span class="p">}</span><span class="o">:</span><span class="w"> </span><span class="nx">BeamMeshProps</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">SCALE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.001</span><span class="p">;</span><span class="w">  </span><span class="c1">// mm → meters</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">w</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">width</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">;</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">depth</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">;</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">;</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="p">&lt;</span><span class="nt">mesh</span><span class="w"> </span><span class="na">position</span><span class="o">=</span><span class="p">{[</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="nx">d</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">]}&gt;</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">      </span><span class="p">&lt;</span><span class="nt">boxGeometry</span><span class="w"> </span><span class="na">args</span><span class="o">=</span><span class="p">{[</span><span class="nx">l</span><span class="p">,</span><span class="w"> </span><span class="nx">d</span><span class="p">,</span><span class="w"> </span><span class="nx">w</span><span class="p">]}</span><span class="w"> </span><span class="p">/&gt;</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">      </span><span class="p">&lt;</span><span class="nt">meshStandardMaterial</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">        </span><span class="na">color</span><span class="o">=</span><span class="p">{</span><span class="nx">isDesigned</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s1">&#39;#b0b0b0&#39;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#909090&#39;</span><span class="p">}</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">        </span><span class="na">metalness</span><span class="o">=</span><span class="p">{</span><span class="mf">0.1</span><span class="p">}</span><span class="w">     </span><span class="err">//</span><span class="w"> </span><span class="na">Concrete</span><span class="w"> </span><span class="na">is</span><span class="w"> </span><span class="na">not</span><span class="w"> </span><span class="na">metallic</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">        </span><span class="na">roughness</span><span class="o">=</span><span class="p">{</span><span class="mf">0.85</span><span class="p">}</span><span class="w">    </span><span class="err">//</span><span class="w"> </span><span class="na">Concrete</span><span class="w"> </span><span class="na">is</span><span class="w"> </span><span class="na">rough</span><span class="err">/</span><span class="na">matte</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">        </span><span class="na">transparent</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">        </span><span class="na">opacity</span><span class="o">=</span><span class="p">{</span><span class="nx">isDesigned</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">0.7</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">0.9</span><span class="p">}</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="na">See</span><span class="err">-</span><span class="na">through</span><span class="w"> </span><span class="na">when</span><span class="w"> </span><span class="na">designed</span><span class="w"> </span><span class="err">(</span><span class="na">rebar</span><span class="w"> </span><span class="na">visible</span><span class="err">)</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">      </span><span class="p">/&gt;</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">    </span><span class="p">&lt;/</span><span class="nt">mesh</span><span class="p">&gt;</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">  </span><span class="p">);</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Why transparent?</strong> When <code>isDesigned=true</code>, the beam is 70% opaque so the rebar inside is visible. Before design, it's 90% opaque (just a gray box).</p>
+<hr />
+<h2 id="part-8-rendering-rebars">Part 8: Rendering Rebars<a class="headerlink" href="#part-8-rendering-rebars" title="Permanent link">&para;</a></h2>
+<p>Each rebar is a series of straight segments. Each segment becomes a <code>&lt;cylinderGeometry&gt;</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kd">function</span><span class="w"> </span><span class="nx">RebarVisualization</span><span class="p">({</span><span class="w"> </span><span class="nx">rebars</span><span class="w"> </span><span class="p">}</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">rebars</span><span class="o">:</span><span class="w"> </span><span class="kt">RebarPath</span><span class="p">[]</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="p">&lt;</span><span class="nt">group</span><span class="p">&gt;</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">      </span><span class="p">{</span><span class="nx">rebars</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">rebar</span><span class="p">,</span><span class="w"> </span><span class="nx">rIdx</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">        </span><span class="nx">rebar</span><span class="p">.</span><span class="nx">segments</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">segment</span><span class="p">,</span><span class="w"> </span><span class="nx">sIdx</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">          </span><span class="kd">const</span><span class="w"> </span><span class="nx">SCALE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.001</span><span class="p">;</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">          </span><span class="c1">// Convert library coordinates to Three.js</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">          </span><span class="kd">const</span><span class="w"> </span><span class="nx">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">            </span><span class="nx">segment</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">,</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">            </span><span class="nx">segment</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">,</span><span class="w">  </span><span class="c1">// Z → Y (depth → up)</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">            </span><span class="nx">segment</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">,</span><span class="w">  </span><span class="c1">// Y → Z (width → depth)</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">          </span><span class="p">];</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">          </span><span class="kd">const</span><span class="w"> </span><span class="nx">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">            </span><span class="nx">segment</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">,</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">            </span><span class="nx">segment</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">,</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="w">            </span><span class="nx">segment</span><span class="p">.</span><span class="nx">end</span><span class="p">.</span><span class="nx">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">,</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="w">          </span><span class="p">];</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="w">          </span><span class="kd">const</span><span class="w"> </span><span class="nx">midpoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="w">            </span><span class="p">(</span><span class="nx">start</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">end</span><span class="p">[</span><span class="mf">0</span><span class="p">])</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="w">            </span><span class="p">(</span><span class="nx">start</span><span class="p">[</span><span class="mf">1</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">end</span><span class="p">[</span><span class="mf">1</span><span class="p">])</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="w">            </span><span class="p">(</span><span class="nx">start</span><span class="p">[</span><span class="mf">2</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">end</span><span class="p">[</span><span class="mf">2</span><span class="p">])</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="w">          </span><span class="p">];</span>
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="w">          </span><span class="kd">const</span><span class="w"> </span><span class="nx">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">segment</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">;</span>
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="w">          </span><span class="kd">const</span><span class="w"> </span><span class="nx">radius</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">segment</span><span class="p">.</span><span class="nx">diameter</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">2</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">;</span>
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a><span class="w">          </span><span class="c1">// Align cylinder with bar direction using quaternion rotation</span>
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a><span class="w">          </span><span class="kd">const</span><span class="w"> </span><span class="nx">dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">THREE</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">(...</span><span class="nx">end</span><span class="p">).</span><span class="nx">sub</span><span class="p">(</span><span class="ow">new</span><span class="w"> </span><span class="nx">THREE</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">(...</span><span class="nx">start</span><span class="p">)).</span><span class="nx">normalize</span><span class="p">();</span>
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a><span class="w">          </span><span class="kd">const</span><span class="w"> </span><span class="nx">yAxis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">THREE</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span>
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a><span class="w">          </span><span class="kd">const</span><span class="w"> </span><span class="nx">quat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">THREE</span><span class="p">.</span><span class="nx">Quaternion</span><span class="p">().</span><span class="nx">setFromUnitVectors</span><span class="p">(</span><span class="nx">yAxis</span><span class="p">,</span><span class="w"> </span><span class="nx">dir</span><span class="p">);</span>
+<a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a>
+<a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a><span class="w">          </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a><span class="w">            </span><span class="p">&lt;</span><span class="nt">mesh</span><span class="w"> </span><span class="na">key</span><span class="o">=</span><span class="p">{</span><span class="sb">`</span><span class="si">${</span><span class="nx">rIdx</span><span class="si">}</span><span class="sb">-</span><span class="si">${</span><span class="nx">sIdx</span><span class="si">}</span><span class="sb">`</span><span class="p">}</span><span class="w"> </span><span class="na">position</span><span class="o">=</span><span class="p">{</span><span class="nx">midpoint</span><span class="p">}</span><span class="w"> </span><span class="na">quaternion</span><span class="o">=</span><span class="p">{</span><span class="nx">quat</span><span class="p">}&gt;</span>
+<a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a><span class="w">              </span><span class="p">&lt;</span><span class="nt">cylinderGeometry</span><span class="w"> </span><span class="na">args</span><span class="o">=</span><span class="p">{[</span><span class="nx">radius</span><span class="p">,</span><span class="w"> </span><span class="nx">radius</span><span class="p">,</span><span class="w"> </span><span class="nx">length</span><span class="p">,</span><span class="w"> </span><span class="mf">8</span><span class="p">]}</span><span class="w"> </span><span class="p">/&gt;</span>
+<a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a><span class="w">              </span><span class="p">&lt;</span><span class="nt">meshStandardMaterial</span><span class="w"> </span><span class="na">color</span><span class="o">=</span><span class="s">&quot;#d97706&quot;</span><span class="w"> </span><span class="na">metalness</span><span class="o">=</span><span class="p">{</span><span class="mf">0.6</span><span class="p">}</span><span class="w"> </span><span class="na">roughness</span><span class="o">=</span><span class="p">{</span><span class="mf">0.3</span><span class="p">}</span><span class="w"> </span><span class="p">/&gt;</span>
+<a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a><span class="w">            </span><span class="p">&lt;/</span><span class="nt">mesh</span><span class="p">&gt;</span>
+<a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a><span class="w">          </span><span class="p">);</span>
+<a id="__codelineno-8-40" name="__codelineno-8-40" href="#__codelineno-8-40"></a><span class="w">        </span><span class="p">})</span>
+<a id="__codelineno-8-41" name="__codelineno-8-41" href="#__codelineno-8-41"></a><span class="w">      </span><span class="p">)}</span>
+<a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a><span class="w">    </span><span class="p">&lt;/</span><span class="nt">group</span><span class="p">&gt;</span>
+<a id="__codelineno-8-43" name="__codelineno-8-43" href="#__codelineno-8-43"></a><span class="w">  </span><span class="p">);</span>
+<a id="__codelineno-8-44" name="__codelineno-8-44" href="#__codelineno-8-44"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Key details:</strong>
+- <code>cylinderGeometry args={[radius, radius, length, 8]}</code> — Top radius, bottom radius (same = uniform bar), height, 8-sided cross-section (octagon — fast enough, looks round)
+- <code>quaternion</code> — Rotates the cylinder to align with the bar direction. Quaternions avoid "gimbal lock" (a problem with Euler angles where certain rotations get stuck)
+- <code>color="#d97706"</code> — Orange/amber, representing steel rebar
+- <code>metalness={0.6}</code> — Rebar is metallic (steel)</p>
+<hr />
+<h2 id="part-9-performance-instancedmesh-for-stirrups">Part 9: Performance — InstancedMesh for Stirrups<a class="headerlink" href="#part-9-performance-instancedmesh-for-stirrups" title="Permanent link">&para;</a></h2>
+<p>A 4m beam with 150mm stirrup spacing = 26+ stirrups. Each stirrup has 4 sides = 100+ cylinders. Rendering each as a separate <code>&lt;mesh&gt;</code> means 100+ draw calls.</p>
+<p><strong>InstancedMesh renders ALL instances in ONE draw call:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kd">function</span><span class="w"> </span><span class="nx">StirrupVisualization</span><span class="p">({</span><span class="w"> </span><span class="nx">stirrups</span><span class="w"> </span><span class="p">}</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">stirrups</span><span class="o">:</span><span class="w"> </span><span class="kt">StirrupLoop</span><span class="p">[]</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">meshRef</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useRef</span><span class="p">&lt;</span><span class="nt">THREE</span><span class="p">.</span><span class="na">InstancedMesh</span><span class="p">&gt;(</span><span class="kc">null</span><span class="p">);</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nx">useEffect</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">meshRef</span><span class="p">.</span><span class="nx">current</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">THREE</span><span class="p">.</span><span class="nx">Matrix4</span><span class="p">();</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">    </span><span class="nx">stirrups</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">stirrup</span><span class="p">,</span><span class="w"> </span><span class="nx">i</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">      </span><span class="nx">matrix</span><span class="p">.</span><span class="nx">setPosition</span><span class="p">(</span><span class="nx">stirrup</span><span class="p">.</span><span class="nx">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">,</span><span class="w"> </span><span class="nx">stirrup</span><span class="p">.</span><span class="nx">z</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">,</span><span class="w"> </span><span class="nx">stirrup</span><span class="p">.</span><span class="nx">y</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">SCALE</span><span class="p">);</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">      </span><span class="nx">meshRef</span><span class="p">.</span><span class="nx">current</span><span class="o">!</span><span class="p">.</span><span class="nx">setMatrixAt</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="w"> </span><span class="nx">matrix</span><span class="p">);</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span><span class="p">});</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span><span class="nx">meshRef</span><span class="p">.</span><span class="nx">current</span><span class="p">.</span><span class="nx">instanceMatrix</span><span class="p">.</span><span class="nx">needsUpdate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="p">[</span><span class="nx">stirrups</span><span class="p">]);</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="w">    </span><span class="p">&lt;</span><span class="nt">instancedMesh</span><span class="w"> </span><span class="na">ref</span><span class="o">=</span><span class="p">{</span><span class="nx">meshRef</span><span class="p">}</span><span class="w"> </span><span class="na">args</span><span class="o">=</span><span class="p">{[</span><span class="kc">undefined</span><span class="p">,</span><span class="w"> </span><span class="kc">undefined</span><span class="p">,</span><span class="w"> </span><span class="nx">stirrups</span><span class="p">.</span><span class="nx">length</span><span class="p">]}&gt;</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">      </span><span class="p">&lt;</span><span class="nt">boxGeometry</span><span class="w"> </span><span class="na">args</span><span class="o">=</span><span class="p">{[</span><span class="mf">0.002</span><span class="p">,</span><span class="w"> </span><span class="mf">0.4</span><span class="p">,</span><span class="w"> </span><span class="mf">0.28</span><span class="p">]}</span><span class="w"> </span><span class="p">/&gt;</span><span class="w">  </span><span class="p">{</span><span class="cm">/* Thin rectangle */</span><span class="p">}</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="w">      </span><span class="p">&lt;</span><span class="nt">meshStandardMaterial</span><span class="w"> </span><span class="na">color</span><span class="o">=</span><span class="s">&quot;#d97706&quot;</span><span class="w"> </span><span class="na">metalness</span><span class="o">=</span><span class="p">{</span><span class="mf">0.5</span><span class="p">}</span><span class="w"> </span><span class="p">/&gt;</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="w">    </span><span class="p">&lt;/</span><span class="nt">instancedMesh</span><span class="p">&gt;</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="w">  </span><span class="p">);</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Performance impact:</strong>
+- 100 individual meshes = 100 draw calls → 30 FPS on mobile
+- 1 instancedMesh with 100 instances = 1 draw call → 60 FPS on mobile</p>
+<hr />
+<h2 id="part-10-exercises">Part 10: Exercises<a class="headerlink" href="#part-10-exercises" title="Permanent link">&para;</a></h2>
+<h3 id="exercise-1-run-the-3d-viewport">Exercise 1: Run the 3D viewport<a class="headerlink" href="#exercise-1-run-the-3d-viewport" title="Permanent link">&para;</a></h3>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">cd</span><span class="w"> </span>react_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>dev
+</code></pre></div>
+1. Navigate to <code>/design</code>, fill in beam dimensions, click "Design"
+2. Drag to rotate the 3D view, scroll to zoom
+3. Inspect the orange rebars inside the transparent concrete
+4. Change beam width from 300 to 500 — watch the 3D update</p>
+<h3 id="exercise-2-change-the-beam-color">Exercise 2: Change the beam color<a class="headerlink" href="#exercise-2-change-the-beam-color" title="Permanent link">&para;</a></h3>
+<p>In the BeamMesh code, change:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nx">color</span><span class="o">=</span><span class="p">{</span><span class="nx">isDesigned</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s1">&#39;#b0b0b0&#39;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#909090&#39;</span><span class="p">}</span>
+</code></pre></div>
+to:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nx">color</span><span class="o">=</span><span class="p">{</span><span class="nx">isDesigned</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s1">&#39;#3b82f6&#39;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;#909090&#39;</span><span class="p">}</span>
+</code></pre></div>
+Save — the designed beam turns blue instead of gray.</p>
+<h3 id="exercise-3-add-a-floating-text-label">Exercise 3: Add a floating text label<a class="headerlink" href="#exercise-3-add-a-floating-text-label" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Text</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;@react-three/drei&#39;</span><span class="p">;</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="p">&lt;</span><span class="nt">Text</span><span class="w"> </span><span class="na">position</span><span class="o">=</span><span class="p">{[</span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">]}</span><span class="w"> </span><span class="na">fontSize</span><span class="o">=</span><span class="p">{</span><span class="mf">0.3</span><span class="p">}</span><span class="w"> </span><span class="na">color</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">&gt;</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="nx">Beam</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">inputs</span><span class="p">.</span><span class="nx">width</span><span class="p">}</span><span class="err">×</span><span class="p">{</span><span class="nx">inputs</span><span class="p">.</span><span class="nx">depth</span><span class="p">}</span><span class="nx">mm</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="p">&lt;/</span><span class="nt">Text</span><span class="p">&gt;</span>
+</code></pre></div>
+<hr />
+<h2 id="part-11-self-check-qa">Part 11: Self-Check Q&amp;A<a class="headerlink" href="#part-11-self-check-qa" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>What is React Three Fiber?</strong> A React renderer for Three.js — write 3D as components.</li>
+<li><strong>Why 3D for structural engineering?</strong> Visual verification, debugging, communication, education.</li>
+<li><strong>What are the 3 building blocks?</strong> <code>&lt;Canvas&gt;</code>, <code>&lt;mesh&gt;</code>, <code>&lt;group&gt;</code>.</li>
+<li><strong>Why is the beam transparent?</strong> So rebar inside is visible.</li>
+<li><strong>What coordinate conversion happens?</strong> Library Z (depth) → Three.js Y (up), Library Y (width) → Three.js Z.</li>
+<li><strong>What is instancedMesh?</strong> Renders many identical shapes in 1 draw call. Used for stirrups.</li>
+<li><strong>Why quaternion instead of Euler rotation?</strong> Avoids gimbal lock.</li>
+<li><strong>What does <code>geometry_3d.py</code> return?</strong> RebarPath[] (segments with start/end/diameter) and StirrupLoop[] (3D loop coordinates).</li>
+<li><strong>What is <code>enabled</code> in <code>useBeamGeometry</code>?</strong> Prevents fetching when inputs are invalid (width=0).</li>
+<li><strong>Why <code>metalness={0.6}</code> for rebar but <code>metalness={0.1}</code> for concrete?</strong> Steel is metallic, concrete is not.</li>
+</ol>
+<hr />
+<h2 id="part-12-things-to-know-deep-insights">Part 12: Things to Know — Deep Insights<a class="headerlink" href="#part-12-things-to-know-deep-insights" title="Permanent link">&para;</a></h2>
+<h3 id="121-r3f-has-its-own-render-loop-separate-from-react">12.1: R3F has its own render loop separate from React<a class="headerlink" href="#121-r3f-has-its-own-render-loop-separate-from-react" title="Permanent link">&para;</a></h3>
+<p>React Three Fiber renders at 60fps using Three.js's native <code>requestAnimationFrame</code> loop. React's reconciler only runs when props/state change — it doesn't run every frame. This means the 3D scene stays smooth even when React is busy updating the form inputs. The <code>useFrame</code> hook taps into the 60fps loop for animations.</p>
+<h3 id="122-webgl-context-loss-is-a-real-production-issue">12.2: WebGL context loss is a real production issue<a class="headerlink" href="#122-webgl-context-loss-is-a-real-production-issue" title="Permanent link">&para;</a></h3>
+<p>On mobile devices and some laptops, the browser can "lose" the WebGL context (GPU gets reclaimed by the OS). When this happens, the 3D canvas goes blank. R3F doesn't auto-recover from this. You need an event listener on <code>webglcontextlost</code> to show a fallback message and <code>webglcontextrestored</code> to re-render.</p>
+<h3 id="123-memory-leaks-from-unmounted-3d-objects">12.3: Memory leaks from unmounted 3D objects<a class="headerlink" href="#123-memory-leaks-from-unmounted-3d-objects" title="Permanent link">&para;</a></h3>
+<p>In vanilla Three.js, you must call <code>geometry.dispose()</code> and <code>material.dispose()</code> manually. R3F handles this automatically on component unmount — but only for objects created via JSX. If you imperatively create <code>new THREE.BufferGeometry()</code> inside a <code>useEffect</code>, you must dispose it in the cleanup return.</p>
+<h3 id="124-suspense-fallbacknull-prevents-blank-canvas">12.4: <code>&lt;Suspense fallback={null}&gt;</code> prevents blank canvas<a class="headerlink" href="#124-suspense-fallbacknull-prevents-blank-canvas" title="Permanent link">&para;</a></h3>
+<p>Without Suspense, if <code>useBeamGeometry</code> is loading, the entire Canvas crashes because a child tries to access undefined geometry. <code>Suspense</code> catches the loading state and shows nothing (or a loading indicator) until data arrives. Always wrap data-dependent 3D content in Suspense.</p>
+<h3 id="125-the-scale-factor-isnt-arbitrary">12.5: The SCALE factor isn't arbitrary<a class="headerlink" href="#125-the-scale-factor-isnt-arbitrary" title="Permanent link">&para;</a></h3>
+<p><code>0.001</code> converts mm to meters. Three.js cameras work best with scene dimensions of 1-100 units. A beam of 4000mm = 4 units = good. A beam of 4000 units (without scaling) would break float precision at the camera's near/far clipping planes.</p>
+<h3 id="126-8-segments-for-cylinder-geometry-is-a-deliberate-optimization">12.6: 8 segments for cylinder geometry is a deliberate optimization<a class="headerlink" href="#126-8-segments-for-cylinder-geometry-is-a-deliberate-optimization" title="Permanent link">&para;</a></h3>
+<p><code>cylinderGeometry args={[r, r, length, 8]}</code> — the <code>8</code> makes each rebar bar an octagon cross-section, not a smooth circle. At the zoom levels users view beams, you can't tell the difference between 8 and 32 segments. But 8 segments = 4× fewer triangles = much faster rendering for 50+ bars.</p>
+<hr />
+<h2 id="part-13-what-can-be-done-better">Part 13: What Can Be Done Better<a class="headerlink" href="#part-13-what-can-be-done-better" title="Permanent link">&para;</a></h2>
+<h3 id="131-no-error-boundary-around-canvas">13.1: No error boundary around <code>&lt;Canvas&gt;</code><a class="headerlink" href="#131-no-error-boundary-around-canvas" title="Permanent link">&para;</a></h3>
+<p>If R3F crashes (bad geometry, WebGL context loss), the entire app goes blank. An error boundary wrapping <code>&lt;Canvas&gt;</code> would catch the crash and show "3D unavailable — here are your results as a table" instead.</p>
+<h3 id="132-no-level-of-detail-lod">13.2: No level-of-detail (LOD)<a class="headerlink" href="#132-no-level-of-detail-lod" title="Permanent link">&para;</a></h3>
+<p>When zoomed out, stirrups are tiny and still rendered with full geometry. A LOD system would simplify distant objects (fewer triangles) or hide them entirely, improving performance for large building models.</p>
+<h3 id="133-no-screenshotexport">13.3: No screenshot/export<a class="headerlink" href="#133-no-screenshotexport" title="Permanent link">&para;</a></h3>
+<p>Users can't save the 3D view as an image. Adding <code>canvas.toDataURL()</code> would let users download a PNG of the current view for reports or presentations.</p>
+<h3 id="134-no-cross-section-view">13.4: No cross-section view<a class="headerlink" href="#134-no-cross-section-view" title="Permanent link">&para;</a></h3>
+<p>The 3D view shows the full beam. A 2D cross-section view (looking along the beam axis) would clearly show bar arrangement — useful for comparing with traditional detailing drawings.</p>
+<h3 id="135-no-measurement-tool">13.5: No measurement tool<a class="headerlink" href="#135-no-measurement-tool" title="Permanent link">&para;</a></h3>
+<p>Users can't click two points and see the distance. A measurement tool would let engineers verify cover, spacing, or bar positions directly in the 3D view.</p>
+<hr />
+<h2 id="part-14-innovation-directions">Part 14: Innovation Directions<a class="headerlink" href="#part-14-innovation-directions" title="Permanent link">&para;</a></h2>
+<h3 id="141-offscreencanvas-in-web-worker">14.1: OffscreenCanvas in Web Worker<a class="headerlink" href="#141-offscreencanvas-in-web-worker" title="Permanent link">&para;</a></h3>
+<p>Move the entire Three.js render to a Web Worker via OffscreenCanvas. The 3D rendering won't block the main thread — form inputs stay responsive even during complex building visualization. R3F support is experimental but improving.</p>
+<h3 id="142-arvr-visualization">14.2: AR/VR visualization<a class="headerlink" href="#142-arvr-visualization" title="Permanent link">&para;</a></h3>
+<p>Three.js supports WebXR for augmented/virtual reality. An engineer could view the beam in AR on their phone — hold it up at the construction site and overlay the designed rebar arrangement on the actual beam. R3F has <code>&lt;XR&gt;</code> support.</p>
+<h3 id="143-animated-construction-sequence">14.3: Animated construction sequence<a class="headerlink" href="#143-animated-construction-sequence" title="Permanent link">&para;</a></h3>
+<p>Show rebars being placed step-by-step: first bottom bars, then stirrups, then top bars. This animated sequence helps contractors understand installation order and is excellent for training.</p>
+<h3 id="144-clash-detection">14.4: Clash detection<a class="headerlink" href="#144-clash-detection" title="Permanent link">&para;</a></h3>
+<p>Highlight when two rebars occupy the same space, or when a bar is too close to another (minimum spacing violation). This is a common issue in dense reinforcement zones and requires checking every bar pair for intersection.</p>
+<h3 id="145-multi-element-building-visualization">14.5: Multi-element building visualization<a class="headerlink" href="#145-multi-element-building-visualization" title="Permanent link">&para;</a></h3>
+<p>Instead of single beams, render an entire floor plan — beams, columns, slabs — in one 3D scene. The user clicks an element to inspect its design. Uses instancedMesh heavily for performance.</p>
+<hr />
+<h2 id="part-15-next-repo-must-add">Part 15: Next Repo Must-Add<a class="headerlink" href="#part-15-next-repo-must-add" title="Permanent link">&para;</a></h2>
+<h3 id="concrete-items">Concrete items<a class="headerlink" href="#concrete-items" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Error boundary for Canvas</strong> — Graceful fallback on WebGL crash</li>
+<li><strong>Screenshot/export button</strong> — <code>canvas.toDataURL('image/png')</code> → download</li>
+<li><strong>Cross-section 2D view</strong> — Looking along beam axis, showing bar arrangement</li>
+<li><strong>Level-of-detail</strong> — Simplify distant objects, hide tiny details when zoomed out</li>
+<li><strong>WebGL context recovery</strong> — Listen for <code>webglcontextlost</code>, show message, auto-recover</li>
+<li><strong>Measurement tool</strong> — Click two points, display distance</li>
+<li><strong>Loading skeleton</strong> — Show beam outline immediately, load rebar detail progressively</li>
+</ol>
+<h3 id="day-1-checklist-for-a-new-3d-component">Day-1 checklist for a new 3D component<a class="headerlink" href="#day-1-checklist-for-a-new-3d-component" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>□ 1. Place in components/viewport/ folder
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>□ 2. Apply SCALE (0.001) conversion — mm → meters
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>□ 3. Convert coordinates: Library Z → Three.js Y, Library Y → Three.js Z
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>□ 4. Use instancedMesh if rendering &gt;10 identical shapes
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>□ 5. Set appropriate metalness/roughness (steel: 0.5-0.7/0.2-0.4, concrete: 0.1/0.8)
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>□ 6. Wrap data-dependent content in &lt;Suspense&gt; inside Canvas
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>□ 7. Dispose any imperatively created geometry in useEffect cleanup
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>□ 8. Test with OrbitControls — does the object appear at a reasonable position?
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>□ 9. Check performance: aim for 60fps with 100 stirrups
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>□ 10. Verify the React build passes: cd react_app &amp;&amp; npm run build
+</code></pre></div>
+<hr />
+<h2 id="references">📎 References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://docs.pmnd.rs/react-three-fiber">React Three Fiber Docs</a></li>
+<li><a href="https://threejs.org/docs/">Three.js Docs</a></li>
+<li><a href="https://github.com/pmndrs/drei">@react-three/drei Helpers</a></li>
+<li><code>react_app/src/components/viewport/Viewport3D.tsx</code> — Main 3D canvas</li>
+<li><code>react_app/src/hooks/useBeamGeometry.ts</code> — Geometry data hook</li>
+<li><code>Python/structural_lib/visualization/geometry_3d.py</code> — 3D coordinate calculator</li>
+<li><strong>Previous:</strong> Day 18 covers React hooks (data flow, React Query, custom hooks)</li>
+<li><strong>Next:</strong> Day 20 covers end-to-end data flow (full pipeline: CSV → design → 3D → export)</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

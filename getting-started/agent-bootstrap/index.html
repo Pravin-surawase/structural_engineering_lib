@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -2740,9 +2740,39 @@
 <td><code>useDesignWebSocket.ts</code></td>
 </tr>
 <tr>
-<td><code>useBatchProgress</code></td>
-<td>SSE batch design progress tracking</td>
-<td><code>useBatchProgress.ts</code></td>
+<td><code>useSimpleBatchDesign</code></td>
+<td>Lightweight batch-design orchestration</td>
+<td><code>useSimpleBatchDesign.ts</code></td>
+</tr>
+<tr>
+<td><code>useLoadAnalysis</code></td>
+<td>Load-analysis API state</td>
+<td><code>useLoadAnalysis.ts</code></td>
+</tr>
+<tr>
+<td><code>useParetoDesign</code></td>
+<td>Pareto optimization request/state</td>
+<td><code>useParetoDesign.ts</code></td>
+</tr>
+<tr>
+<td><code>useProjectBOQ</code></td>
+<td>Project bill-of-quantities request/state</td>
+<td><code>useProjectBOQ.ts</code></td>
+</tr>
+<tr>
+<td><code>useExportBuildingSummary</code></td>
+<td>Building-summary export</td>
+<td><code>useExportBuildingSummary.ts</code></td>
+</tr>
+<tr>
+<td><code>useReducedMotion</code></td>
+<td>Accessibility motion preference</td>
+<td><code>useReducedMotion.ts</code></td>
+</tr>
+<tr>
+<td><code>useWebGLContextLoss</code></td>
+<td>WebGL context-loss recovery</td>
+<td><code>useWebGLContextLoss.ts</code></td>
 </tr>
 </tbody>
 </table>
@@ -2802,6 +2832,46 @@
 <tr>
 <td><code>BatchProgressBar</code></td>
 <td>SSE-driven batch design progress bar</td>
+</tr>
+<tr>
+<td><code>HomePage</code>, <code>HubPage</code>, <code>ModeSelectPage</code></td>
+<td>Entry, workflow hub, and mode-selection routes</td>
+</tr>
+<tr>
+<td><code>BatchDesignPage</code>, <code>BeamDetailPage</code></td>
+<td>Batch and individual beam workflow routes</td>
+</tr>
+<tr>
+<td><code>BeamForm</code>, <code>BeamTable</code>, <code>CSVImportPanel</code>, <code>ResultsPanel</code></td>
+<td>Core beam input/import/result surfaces</td>
+</tr>
+<tr>
+<td><code>ParetoPanel</code>, <code>ProjectBOQPanel</code>, <code>SettingsPanel</code></td>
+<td>Optimization, quantity, and application settings panels</td>
+</tr>
+<tr>
+<td><code>ModernAppLayout</code>, <code>WorkspaceLayout</code>, <code>TopBar</code></td>
+<td>Primary application shells and navigation</td>
+</tr>
+<tr>
+<td><code>WorkflowBreadcrumb</code>, <code>WorkflowHint</code>, <code>ConnectionStatus</code>, <code>ToastContainer</code></td>
+<td>Workflow guidance and system feedback</td>
+</tr>
+<tr>
+<td><code>BentoGrid</code>, <code>BentoCard</code>, <code>BentoCardHeader</code></td>
+<td>Dashboard layout primitives</td>
+</tr>
+<tr>
+<td><code>Skeleton</code>, <code>SkeletonCard</code>, <code>SkeletonForm</code>, <code>SkeletonTableRow</code></td>
+<td>Generic loading-state primitives</td>
+</tr>
+<tr>
+<td><code>SkeletonBeamTable</code>, <code>SkeletonResultsPanel</code>, <code>SkeletonViewport</code></td>
+<td>Domain loading states</td>
+</tr>
+<tr>
+<td><code>LandingView</code></td>
+<td>Legacy/alternate landing surface retained for compatibility</td>
 </tr>
 </tbody>
 </table>
@@ -3129,7 +3199,7 @@
 <tbody>
 <tr>
 <td><code>services/api.py</code></td>
-<td>44 functions (37 public + 7 private) — key entry points: <code>design_beam_is456()</code>, <code>detail_beam_is456()</code>, <code>optimize_beam_cost()</code>, <code>smart_analyze_design()</code></td>
+<td>68 public API functions; implementations split across <code>beam_api.py</code>, <code>column_api.py</code>, and <code>common_api.py</code> (15 private helpers)</td>
 </tr>
 <tr>
 <td><code>api.py</code></td>
@@ -3234,7 +3304,7 @@
 <p><strong>Quick check before coding:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>ls<span class="w"> </span>react_app/src/hooks/<span class="w">                                         </span><span class="c1"># React hooks</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>grep<span class="w"> </span>-r<span class="w"> </span><span class="s2">&quot;@router&quot;</span><span class="w"> </span>fastapi_app/routers/<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-30<span class="w">               </span><span class="c1"># FastAPI routes</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>grep<span class="w"> </span><span class="s2">&quot;^def &quot;</span><span class="w"> </span>Python/structural_lib/services/api.py<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-20<span class="w">   </span><span class="c1"># Library functions</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>./run.sh<span class="w"> </span>find<span class="w"> </span>--api<span class="w"> </span>&lt;func&gt;<span class="w">                                   </span><span class="c1"># Exact public API signature</span>
 </code></pre></div></p>
 <hr />
 <h2 id="5-launching-the-app">5. Launching the App<a class="headerlink" href="#5-launching-the-app" title="Permanent link">&para;</a></h2>
@@ -3363,7 +3433,7 @@
 </code></pre></div></p>
 <h3 id="option-c-python-library-only-no-ui">Option C: Python library only (no UI)<a class="headerlink" href="#option-c-python-library-only-no-ui" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>Python/<span class="w">                               </span><span class="c1"># Install in dev mode</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from structural_lib import design_beam_is456; print(&#39;OK&#39;)&quot;</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>.venv/bin/python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from structural_lib import design_beam_is456; print(&#39;OK&#39;)&quot;</span>
 </code></pre></div>
 <h3 id="port-map">Port Map<a class="headerlink" href="#port-map" title="Permanent link">&para;</a></h3>
 <table>
@@ -3406,20 +3476,16 @@
 <td>Colima not running → <code>colima start --cpu 4 --memory 4</code></td>
 </tr>
 <tr>
-<td>Colima download fails</td>
-<td>Network issue → <code>colima delete -f &amp;&amp; colima start</code> (retries download)</td>
-</tr>
-<tr>
-<td>Colima won't start</td>
-<td><code>colima delete &amp;&amp; colima start</code> (fresh VM)</td>
+<td>Colima download/start fails</td>
+<td>Run <code>colima status</code>, then inspect <code>~/.colima/_lima/colima/ha.stderr.log</code>; do not delete the transferred VM without approval</td>
 </tr>
 <tr>
 <td>Port 8000 already in use</td>
-<td><code>lsof -ti :8000 \| xargs kill -9</code></td>
+<td>Inspect the listener: <code>lsof -nP -iTCP:8000 -sTCP:LISTEN</code></td>
 </tr>
 <tr>
 <td>Port 5173 already in use</td>
-<td><code>lsof -ti :5173 \| xargs kill -9</code></td>
+<td>Inspect the listener: <code>lsof -nP -iTCP:5173 -sTCP:LISTEN</code></td>
 </tr>
 <tr>
 <td><code>uvicorn: command not found</code></td>
@@ -3455,28 +3521,29 @@
 <h2 id="6-quick-start-agent-workflow">6. Quick Start (Agent Workflow)<a class="headerlink" href="#6-quick-start-agent-workflow" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Session start</span>
 <a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>start<span class="w">                               </span><span class="c1"># Verify env, read priorities</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># Validate codebase</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>./run.sh<span class="w"> </span>check<span class="w"> </span>--quick<span class="w">                               </span><span class="c1"># Fast validation (8 checks, &lt;30s)</span>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>./run.sh<span class="w"> </span>check<span class="w">                                       </span><span class="c1"># Full validation (28 checks, parallel)</span>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>./run.sh<span class="w"> </span>check<span class="w"> </span>--category<span class="w"> </span>api<span class="w">                        </span><span class="c1"># One category only</span>
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>
-<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="c1"># Run tests</span>
-<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>./run.sh<span class="w"> </span><span class="nb">test</span><span class="w">                                        </span><span class="c1"># Full pytest suite</span>
-<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>./run.sh<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;test_flexure&quot;</span><span class="w"> </span>-v<span class="w">                   </span><span class="c1"># Specific tests</span>
-<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>./run.sh<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--ci<span class="w">                                   </span><span class="c1"># Full local CI</span>
-<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>
-<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="c1"># Build &amp; serve</span>
-<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build<span class="w">                            </span><span class="c1"># http://localhost:8000/docs</span>
-<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="nb">cd</span><span class="w"> </span>react_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>dev<span class="w">                          </span><span class="c1"># http://localhost:5173</span>
-<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="nb">cd</span><span class="w"> </span>react_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build<span class="w">                        </span><span class="c1"># Build check</span>
-<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>
-<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a><span class="c1"># Release preflight</span>
-<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>preflight<span class="w"> </span><span class="m">0</span>.X.Y<span class="w">                     </span><span class="c1"># Pre-release validation</span>
-<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>preflight<span class="w"> </span>--docker<span class="w">                  </span><span class="c1"># Run preflight in Docker (2GB memory limit)</span>
-<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a>
-<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a><span class="c1"># Session end</span>
-<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>end<span class="w">                                 </span><span class="c1"># Wrap up (logs, sync, handoff)</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>usage<span class="w"> </span>--checkpoint<span class="w"> </span>start<span class="w"> </span>--task-id<span class="w"> </span>TASK-XXX<span class="w"> </span>--task<span class="w"> </span><span class="s2">&quot;short scope&quot;</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="c1"># Validate codebase</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>./run.sh<span class="w"> </span>check<span class="w"> </span>--quick<span class="w">                               </span><span class="c1"># Fast validation (9 checks, &lt;30s)</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>./run.sh<span class="w"> </span>check<span class="w">                                       </span><span class="c1"># Full validation (29 checks, parallel)</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>./run.sh<span class="w"> </span>check<span class="w"> </span>--category<span class="w"> </span>api<span class="w">                        </span><span class="c1"># One category only</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="c1"># Run tests</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>./run.sh<span class="w"> </span><span class="nb">test</span><span class="w">                                        </span><span class="c1"># Full pytest suite</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>./run.sh<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;test_flexure&quot;</span><span class="w"> </span>-v<span class="w">                   </span><span class="c1"># Specific tests</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>./run.sh<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--ci<span class="w">                                   </span><span class="c1"># Full local CI</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="c1"># Build &amp; serve</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build<span class="w">                            </span><span class="c1"># http://localhost:8000/docs</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="nb">cd</span><span class="w"> </span>react_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>dev<span class="w">                          </span><span class="c1"># http://localhost:5173</span>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="nb">cd</span><span class="w"> </span>react_app<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>build<span class="w">                        </span><span class="c1"># Build check</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a><span class="c1"># Release preflight</span>
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>preflight<span class="w"> </span><span class="m">0</span>.X.Y<span class="w">                     </span><span class="c1"># Pre-release validation</span>
+<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>preflight<span class="w"> </span>--docker<span class="w">                  </span><span class="c1"># Run preflight in Docker (2GB memory limit)</span>
+<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>
+<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a><span class="c1"># Session end</span>
+<a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>end<span class="w">                                 </span><span class="c1"># Wrap up (logs, sync, handoff)</span>
 </code></pre></div>
 <p>Run <code>./run.sh --help</code> or <code>./run.sh &lt;command&gt; --help</code> for full usage.</p>
 <hr />
@@ -3543,16 +3610,18 @@ Types: <code>feat</code>, <code>fix</code>, <code>docs</code>, <code>style</code
 <h3 id="session-workflow-checklist-mandatory">Session Workflow Checklist (MANDATORY)<a class="headerlink" href="#session-workflow-checklist-mandatory" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>START:  □ ./run.sh session context              ← quick orientation (brief + tasks + git)
 <a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>        □ ./run.sh session start
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>        □ ./run.sh preflight                     ← check branch, venv, ports, conflicts
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>END:    □ ./run.sh commit &quot;type: message&quot;        ← commit all work
-<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>        □ ./run.sh session summary               ← auto-log to SESSION_LOG.md
-<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>        □ ./run.sh session sync                  ← fix stale doc numbers
-<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>        □ ./run.sh evolve --status              # P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
-<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>        □ Append to WORKLOG.md                   ← one line per change (MANDATORY)
-<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>        □ Update next-session-brief.md           ← what NEXT agent should do
-<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>        □ Update TASKS.md                        ← mark done, add new
-<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>        □ ./run.sh commit &quot;docs: session end&quot;    ← commit doc updates
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>        □ ./run.sh session usage --checkpoint start --task-id TASK-XXX --task &quot;scope&quot;
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>        □ ./run.sh preflight                     ← check branch, venv, ports, conflicts
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>END:    □ ./run.sh commit &quot;type: message&quot;        ← commit all work
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>        □ ./run.sh session usage --checkpoint closeout --elapsed-min N --verification &quot;gate&quot;
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>        □ ./run.sh session summary               ← auto-log to SESSION_LOG.md
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>        □ ./run.sh session sync                  ← fix stale doc numbers
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>        □ ./run.sh evolve --status              # P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>        □ Append to WORKLOG.md                   ← one line per change (MANDATORY)
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>        □ Update next-session-brief.md           ← what NEXT agent should do
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>        □ Update TASKS.md                        ← mark done, add new
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>        □ ./run.sh commit &quot;docs: session end&quot;    ← commit doc updates
 </code></pre></div>
 <blockquote>
 <p><strong>Why mandatory?</strong> Skipping session end has caused 10+ hours of wasted rework. SESSION_LOG.md is the project memory — gaps mean lost context.</p>
@@ -3608,6 +3677,11 @@ Types: <code>feat</code>, <code>fix</code>, <code>docs</code>, <code>style</code
 <td>Session context</td>
 <td><code>./run.sh session context</code></td>
 <td><code>.venv/bin/python scripts/session.py context</code></td>
+</tr>
+<tr>
+<td>Usage checkpoint</td>
+<td><code>./run.sh session usage ...</code></td>
+<td><code>.venv/bin/python scripts/session.py usage ...</code></td>
 </tr>
 <tr>
 <td>PR decision</td>
@@ -4193,7 +4267,7 @@ Types: <code>feat</code>, <code>fix</code>, <code>docs</code>, <code>style</code
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
       

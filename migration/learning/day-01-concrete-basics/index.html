@@ -1,0 +1,2719 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/migration/learning/day-01-concrete-basics/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Day 1: Concrete & Steel Basics - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-1-concrete-steel-basics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 1: Concrete &amp; Steel Basics
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You’ll Learn Today
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Theory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📖 Theory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-what-is-reinforced-concrete-rc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What is Reinforced Concrete (RC)?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-concrete-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Concrete Properties
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Concrete Properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#characteristic-strength-f_ck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Characteristic Strength — \(f_{ck}\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-strength-of-concrete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Strength of Concrete
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulus-of-elasticity-e_c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modulus of Elasticity — \(E_c\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flexural-cracking-strength-f_cr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flexural (Cracking) Strength — \(f_{cr}\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stress-strain-curve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stress-Strain Curve
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-steel-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Steel Properties
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Steel Properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#yield-strength-f_y" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Yield Strength — \(f_y\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#design-strength-of-steel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Strength of Steel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulus-of-elasticity-e_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modulus of Elasticity — \(E_s\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stress-strain-curve-for-steel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stress-Strain Curve for Steel
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-safety-factors-partial-safety-factors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Safety Factors (Partial Safety Factors)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Safety Factors (Partial Safety Factors)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-partial-safety-factors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why "Partial" Safety Factors?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-combinations-is-456-table-18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load Combinations (IS 456 Table 18)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-gamma_c-gamma_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why \(\gamma_c\) &gt; \(\gamma_s\)?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-stress-block-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Stress Block Parameters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Stress Block Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#x_umaxd-ratios-the-ductility-limiter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        \(x_{u,max}/d\) Ratios — The Ductility Limiter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-units-our-librarys-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Units — Our Library’s Convention
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#library-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏗️ Library Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🏗️ Library Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get_xu_max_dfy-the-ductility-gatekeeper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_xu_max_d(fy) — The Ductility Gatekeeper
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_ecfck-concrete-stiffness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_ec(fck) — Concrete Stiffness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_fcrfck-the-cracking-threshold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_fcr(fck) — The Cracking Threshold
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flexureresult-what-the-library-returns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FlexureResult — What the Library Returns
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-examples-hand-calculations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Simple Examples (Hand Calculations)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Simple Examples (Hand Calculations)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-design-strength-of-m25-concrete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 1: Design Strength of M25 Concrete
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-design-strength-of-fe415-steel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 2: Design Strength of Fe415 Steel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-what-does-e_c-5000sqrtf_ck-mean-physically" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 3: What Does \(E_c = 5000\sqrt{f_{ck}}\) Mean Physically?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔧 Exercises
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Exercises">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stretch-exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stretch Exercise
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-you-explain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💬 Can You Explain?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="💬 Can You Explain?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q1-why-partial-safety-factors-instead-of-one-factor-of-safety" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q1: Why partial safety factors instead of one "Factor of Safety"?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2-what-happens-if-x_ud-exceeds-x_umaxd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q2: What happens if \(x_u/d\) exceeds \(x_{u,max}/d\)?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3-why-is-e_s-constant-for-all-steel-grades-but-e_c-varies-with-f_ck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q3: Why is \(E_s\) constant for all steel grades but \(E_c\) varies with \(f_{ck}\)?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-if-someone-says-m25-fe415-beam-what-are-f_ck-and-f_y" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Q4: If someone says "M25 Fe415 beam", what are \(f_{ck}\) and \(f_y\)?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary-what-you-now-know" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary — What You Now Know
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📎 References
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What’s Next?
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="day-1-concrete-steel-basics">Day 1: Concrete &amp; Steel Basics<a class="headerlink" href="#day-1-concrete-steel-basics" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Learning Module
+<strong>Audience:</strong> Solo developer (coder, not a civil engineer)
+<strong>Status:</strong> Active
+<strong>Importance:</strong> Critical
+<strong>Created:</strong> 2026-04-08
+<strong>Last Updated:</strong> 2026-04-08
+<strong>Prerequisites:</strong> None — this is where we start
+<strong>Library files:</strong> <code>Python/structural_lib/codes/is456/materials.py</code>, <code>Python/structural_lib/core/data_types.py</code>
+<strong>IS 456 Clauses:</strong> Cl 6.1, Cl 6.2, Cl 38.1, Table 18, Annex G (Table J)</p>
+<hr />
+<h2 id="what-youll-learn-today">What You’ll Learn Today<a class="headerlink" href="#what-youll-learn-today" title="Permanent link">&para;</a></h2>
+<p>By the end of this module you’ll understand:
+- Why concrete needs steel (and vice versa)
+- The key numbers: <span class="arithmatex">\(f_{ck}\)</span>, <span class="arithmatex">\(f_y\)</span>, <span class="arithmatex">\(\gamma_c\)</span>, <span class="arithmatex">\(\gamma_s\)</span>
+- How IS 456 turns raw material strength into safe design values
+- What every field in our <code>materials.py</code> computes and why
+- How to read the library’s unit conventions without guessing</p>
+<hr />
+<h2 id="theory">📖 Theory<a class="headerlink" href="#theory" title="Permanent link">&para;</a></h2>
+<h3 id="1-what-is-reinforced-concrete-rc">1. What is Reinforced Concrete (RC)?<a class="headerlink" href="#1-what-is-reinforced-concrete-rc" title="Permanent link">&para;</a></h3>
+<p>Plain concrete is like a really strong brick wall — it can take enormous <em>compression</em> (squeezing forces), but the moment you try to pull it apart in <em>tension</em> it cracks and fails almost instantly. Concrete’s tensile strength is roughly <strong>1/10th</strong> of its compressive strength.</p>
+<p>Steel is the opposite: it’s excellent in tension. It stretches and yields gracefully before breaking. But a bare steel bar buckles easily under compression unless it’s braced.</p>
+<p><strong>Reinforced Concrete = concrete handles compression, steel handles tension.</strong></p>
+<blockquote>
+<p><strong>Think of it like...</strong> a zip file. Concrete is the outer archive — rigid, compact, protects everything. Steel rebar is the data inside — flexible and strong when stretched. Alone, neither is useful for structural work. Together, they form a composite that exploits the best of both materials.</p>
+</blockquote>
+<p>In a beam, this looks like:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>       ┌─────────────────────────────┐  ← Compression zone (concrete)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>       │          Concrete           │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>       │                             │
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>       │  ● ── ● ── ● ── ● ── ●    │  ← Tension steel (rebar at bottom)
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>       └─────────────────────────────┘
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>         ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                  Load pushes down
+</code></pre></div></p>
+<p>When load pushes the beam down, the top compresses and the bottom stretches. Concrete at the top resists the squeeze; steel bars at the bottom resist the stretch. That’s the fundamental idea behind every RC beam, column, slab, and footing you’ll ever encounter.</p>
+<hr />
+<h3 id="2-concrete-properties">2. Concrete Properties<a class="headerlink" href="#2-concrete-properties" title="Permanent link">&para;</a></h3>
+<h4 id="characteristic-strength-f_ck">Characteristic Strength — <span class="arithmatex">\(f_{ck}\)</span><a class="headerlink" href="#characteristic-strength-f_ck" title="Permanent link">&para;</a></h4>
+<p>When someone says “M25 concrete”, they mean: the <strong>characteristic compressive strength</strong> is 25 N/mm². But what does “characteristic” mean?</p>
+<p>Imagine casting 100 concrete cubes (150 mm each), curing them for 28 days, then crushing them in a testing machine. You’ll get a bell-curve of strengths — some cubes hit 30 N/mm², others only 18 N/mm².</p>
+<p><span class="arithmatex">\(f_{ck}\)</span> is the value below which <strong>no more than 5%</strong> of test cubes fall. It’s the 5th-percentile strength — a conservative baseline.</p>
+<blockquote>
+<p><strong>Think of it like...</strong> the <code>p95</code> latency of your API. If your p95 latency is 200ms, 95% of requests are faster. Similarly, if <span class="arithmatex">\(f_{ck} = 25\)</span>, 95% of your concrete cubes will crush at 25 N/mm² or higher.</p>
+</blockquote>
+<p><strong>Standard grades in IS 456:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Grade</th>
+<th><span class="arithmatex">\(f_{ck}\)</span> (N/mm²)</th>
+<th>Typical Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M15</td>
+<td>15</td>
+<td>Leveling, PCC, non-structural</td>
+</tr>
+<tr>
+<td>M20</td>
+<td>20</td>
+<td>Residential beams, slabs (mild exposure)</td>
+</tr>
+<tr>
+<td>M25</td>
+<td>25</td>
+<td>Most common structural grade</td>
+</tr>
+<tr>
+<td>M30</td>
+<td>30</td>
+<td>Required for severe exposure (Cl 8.2.2)</td>
+</tr>
+<tr>
+<td>M35</td>
+<td>35</td>
+<td>High-rise columns, prestressed</td>
+</tr>
+<tr>
+<td>M40</td>
+<td>40</td>
+<td>Bridges, precast</td>
+</tr>
+<tr>
+<td>M45</td>
+<td>45</td>
+<td>Special structures</td>
+</tr>
+<tr>
+<td>M50</td>
+<td>50</td>
+<td>Special structures</td>
+</tr>
+</tbody>
+</table>
+<p>The “M” stands for “Mix”. Not all grades are equal in practice — IS 456 Table 5 mandates minimum grades for different exposure conditions. You can’t use M15 for an RCC beam; M20 is the minimum for structural work.</p>
+<h4 id="design-strength-of-concrete">Design Strength of Concrete<a class="headerlink" href="#design-strength-of-concrete" title="Permanent link">&para;</a></h4>
+<p>Raw <span class="arithmatex">\(f_{ck}\)</span> isn’t used directly in calculations. Two reductions apply:</p>
+<ol>
+<li><strong>Lab vs. field factor = 0.67</strong> — Test cubes are made and cured perfectly. Real-world concrete in a beam is less ideal, so we multiply by 0.67.</li>
+<li><strong>Partial safety factor <span class="arithmatex">\(\gamma_c = 1.5\)</span></strong> — Extra safety margin for material uncertainty.</li>
+</ol>
+<div class="arithmatex">\[f_{cd} = \frac{0.67 \times f_{ck}}{\gamma_c} = \frac{0.67 \times f_{ck}}{1.5} = 0.446 \times f_{ck}\]</div>
+<p>For M25: <span class="arithmatex">\(f_{cd} = 0.446 \times 25 = 11.15\)</span> N/mm²</p>
+<p>This 0.446 factor appears everywhere in IS 456 flexure calculations. When you see <code>0.36 * fck</code> in stress-block formulas, that’s this same factor integrated over the parabolic compression zone.</p>
+<h4 id="modulus-of-elasticity-e_c">Modulus of Elasticity — <span class="arithmatex">\(E_c\)</span><a class="headerlink" href="#modulus-of-elasticity-e_c" title="Permanent link">&para;</a></h4>
+<div class="arithmatex">\[E_c = 5000\sqrt{f_{ck}} \quad \text{(IS 456 Cl 6.2.3.1)}\]</div>
+<p>This tells you how stiff the concrete is — how much it deforms under load.</p>
+<p>For M25: <span class="arithmatex">\(E_c = 5000 \times \sqrt{25} = 5000 \times 5 = 25{,}000\)</span> N/mm²</p>
+<p>Compare this to steel: <span class="arithmatex">\(E_s = 200{,}000\)</span> N/mm². Steel is <strong>8 times stiffer</strong> than M25 concrete. This is why steel carries disproportionately more stress for the same strain — a fact that drives the entire theory of RC design.</p>
+<blockquote>
+<p><strong>Think of it like...</strong> two springs in parallel. The stiffer spring (steel) takes more of the force. If you pull two ropes tied together — one rubber (concrete) and one steel wire — the steel wire takes most of the load because it deforms less per unit force.</p>
+</blockquote>
+<p>Our library computes this:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># From Python/structural_lib/codes/is456/materials.py</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_ec</span><span class="p">(</span><span class="n">fck</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Modulus of Elasticity of Concrete (IS 456 Cl. 6.2.3.1)&quot;&quot;&quot;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="k">return</span> <span class="mi">5000</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fck</span><span class="p">)</span>
+</code></pre></div></p>
+<h4 id="flexural-cracking-strength-f_cr">Flexural (Cracking) Strength — <span class="arithmatex">\(f_{cr}\)</span><a class="headerlink" href="#flexural-cracking-strength-f_cr" title="Permanent link">&para;</a></h4>
+<div class="arithmatex">\[f_{cr} = 0.7\sqrt{f_{ck}} \quad \text{(IS 456 Cl 6.2.2)}\]</div>
+<p>This is the tensile stress at which concrete <em>first cracks</em> in bending. It’s used to check serviceability (will the beam crack under working loads?).</p>
+<p>For M25: <span class="arithmatex">\(f_{cr} = 0.7 \times \sqrt{25} = 0.7 \times 5 = 3.5\)</span> N/mm²</p>
+<p>Notice how tiny this is compared to <span class="arithmatex">\(f_{ck} = 25\)</span>. Concrete’s tensile strength is about <strong>1/7th</strong> of its compressive strength. That’s exactly why we need steel.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_fcr</span><span class="p">(</span><span class="n">fck</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Flexural Strength of Concrete (IS 456 Cl. 6.2.2)&quot;&quot;&quot;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="k">return</span> <span class="mf">0.7</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">fck</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="stress-strain-curve">Stress-Strain Curve<a class="headerlink" href="#stress-strain-curve" title="Permanent link">&para;</a></h4>
+<p>IS 456 uses a <strong>parabolic-rectangular</strong> stress-strain curve for concrete (Figure 4.2 in the code). It’s <em>not</em> a simple straight line:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Stress ↑
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>       │       ┌────────────── 0.446 fck (design plateau)
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>       │      ╱│
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>       │    ╱  │  ← Parabolic rise
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>       │  ╱    │
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>       │╱      │
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>       └───────┼──────────→ Strain
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>       0    0.002    0.0035
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>             ↑          ↑
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>         Peak stress   Ultimate strain
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>                       (concrete crushes)
+</code></pre></div>
+<ul>
+<li>From 0 to 0.002 strain: stress rises parabolically</li>
+<li>From 0.002 to 0.0035: stress stays constant at <span class="arithmatex">\(0.446 f_{ck}\)</span></li>
+<li>At 0.0035: concrete crushes — this is the <strong>ultimate compressive strain</strong></li>
+</ul>
+<p>This curve is different from American practice (ACI 318 uses a Whitney rectangular block). IS 456’s parabolic-rectangular block gives slightly different results, which is why you can’t just copy ACI formulas.</p>
+<hr />
+<h3 id="3-steel-properties">3. Steel Properties<a class="headerlink" href="#3-steel-properties" title="Permanent link">&para;</a></h3>
+<h4 id="yield-strength-f_y">Yield Strength — <span class="arithmatex">\(f_y\)</span><a class="headerlink" href="#yield-strength-f_y" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Grade</th>
+<th><span class="arithmatex">\(f_y\)</span> (N/mm²)</th>
+<th>Type</th>
+<th>Common Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fe250</td>
+<td>250</td>
+<td>Mild steel (plain bars)</td>
+<td>Stirrups only, rare now</td>
+</tr>
+<tr>
+<td>Fe415</td>
+<td>415</td>
+<td>HYSD TMT bars</td>
+<td>Most common in India</td>
+</tr>
+<tr>
+<td>Fe500</td>
+<td>500</td>
+<td>HYSD TMT bars</td>
+<td>High-load designs, cost-efficient</td>
+</tr>
+</tbody>
+</table>
+<p><strong>HYSD</strong> = High Yield Strength Deformed bars. The ribs on the surface grip the concrete — that’s how stress transfers between the two materials.</p>
+<p><strong>TMT</strong> = Thermo-Mechanically Treated. The manufacturing process gives the bar a hard outer layer around a soft ductile core.</p>
+<h4 id="design-strength-of-steel">Design Strength of Steel<a class="headerlink" href="#design-strength-of-steel" title="Permanent link">&para;</a></h4>
+<div class="arithmatex">\[f_{yd} = \frac{f_y}{\gamma_s} = \frac{f_y}{1.15} = 0.87 \times f_y\]</div>
+<p>For Fe415: <span class="arithmatex">\(f_{yd} = 0.87 \times 415 = 361.05\)</span> N/mm²</p>
+<p>You’ll see <code>0.87 * fy</code> in every beam design formula. It’s the design yield strength after applying the partial safety factor for steel.</p>
+<h4 id="modulus-of-elasticity-e_s">Modulus of Elasticity — <span class="arithmatex">\(E_s\)</span><a class="headerlink" href="#modulus-of-elasticity-e_s" title="Permanent link">&para;</a></h4>
+<div class="arithmatex">\[E_s = 200{,}000 \text{ N/mm}^2 \quad \text{(constant for all grades)}\]</div>
+<p>Unlike concrete (where <span class="arithmatex">\(E_c\)</span> varies with <span class="arithmatex">\(f_{ck}\)</span>), steel’s stiffness is identical regardless of grade. Fe250, Fe415, Fe500 — all have the same <span class="arithmatex">\(E_s = 200{,}000\)</span> N/mm².</p>
+<p>Why? The modulus depends on the atomic bonding of iron, which doesn’t change between grades. The grades differ in <em>yield point</em> (how much stress before permanent deformation), not in <em>stiffness</em> (how much deformation per unit stress in the elastic range).</p>
+<h4 id="stress-strain-curve-for-steel">Stress-Strain Curve for Steel<a class="headerlink" href="#stress-strain-curve-for-steel" title="Permanent link">&para;</a></h4>
+<p>IS 456 defines two different curve shapes:</p>
+<p><strong>Fe250 (mild steel):</strong> Classic elasto-plastic — a straight line up to yield, then a flat plateau. Simple.</p>
+<p><strong>Fe415/Fe500 (HYSD bars):</strong> No sharp yield point! The curve gradually bends. IS 456 Figure 23 and SP:16 Table A define specific (strain, stress) points for interpolation.</p>
+<p>Our library implements this:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># From materials.py — simplified view</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_steel_stress</span><span class="p">(</span><span class="n">strain</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">fy</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;IS 456 Figure 23 curve for HYSD bars.&quot;&quot;&quot;</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">es</span> <span class="o">=</span> <span class="mf">200000.0</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">fy</span> <span class="o">-</span> <span class="mi">250</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>        <span class="c1"># Fe250: simple elasto-plastic</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>        <span class="n">yield_strain</span> <span class="o">=</span> <span class="mf">0.87</span> <span class="o">*</span> <span class="n">fy</span> <span class="o">/</span> <span class="n">es</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="k">return</span> <span class="mf">0.87</span> <span class="o">*</span> <span class="n">fy</span> <span class="k">if</span> <span class="n">strain</span> <span class="o">&gt;=</span> <span class="n">yield_strain</span> <span class="k">else</span> <span class="n">strain</span> <span class="o">*</span> <span class="n">es</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="c1"># Fe415/Fe500: interpolate from SP:16 Table A data points</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="c1"># (strain, stress) pairs define the inelastic transition</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="o">...</span>
+</code></pre></div></p>
+<p>The key insight: for HYSD bars, we can’t just say "stress = <span class="arithmatex">\(E_s \times\)</span> strain" up to yield and then "stress = <span class="arithmatex">\(0.87 f_y\)</span>". There’s a curved transition zone. The library handles this automatically.</p>
+<hr />
+<h3 id="4-safety-factors-partial-safety-factors">4. Safety Factors (Partial Safety Factors)<a class="headerlink" href="#4-safety-factors-partial-safety-factors" title="Permanent link">&para;</a></h3>
+<h4 id="why-partial-safety-factors">Why "Partial" Safety Factors?<a class="headerlink" href="#why-partial-safety-factors" title="Permanent link">&para;</a></h4>
+<p>In older engineering codes, you’d use a single "Factor of Safety" like 3.0 — meaning your structure can take 3x the expected load before failing. Simple, but crude.</p>
+<p>IS 456 (and most modern codes worldwide) use <strong>partial safety factors</strong> instead. The idea: different sources of uncertainty get different factors.</p>
+<table>
+<thead>
+<tr>
+<th>What</th>
+<th>Factor</th>
+<th>Value</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Concrete strength</td>
+<td><span class="arithmatex">\(\gamma_c\)</span></td>
+<td>1.5</td>
+<td>Material variability, placement quality</td>
+</tr>
+<tr>
+<td>Steel strength</td>
+<td><span class="arithmatex">\(\gamma_s\)</span></td>
+<td>1.15</td>
+<td>Factory-controlled, less variable</td>
+</tr>
+<tr>
+<td>Dead load</td>
+<td><span class="arithmatex">\(\gamma_{DL}\)</span></td>
+<td>1.5</td>
+<td>Weight of structure (fairly predictable)</td>
+</tr>
+<tr>
+<td>Live load</td>
+<td><span class="arithmatex">\(\gamma_{LL}\)</span></td>
+<td>1.5</td>
+<td>People, furniture (less predictable)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Think of it like...</strong> error budgets in SRE. Instead of one big reliability target, you assign separate error budgets to the database (material), the network (loads), and the application logic (design method). Each component has its own uncertainty budget.</p>
+</blockquote>
+<h4 id="load-combinations-is-456-table-18">Load Combinations (IS 456 Table 18)<a class="headerlink" href="#load-combinations-is-456-table-18" title="Permanent link">&para;</a></h4>
+<p>The basic ultimate load combination:</p>
+<div class="arithmatex">\[W_u = 1.5 \times DL + 1.5 \times LL\]</div>
+<p>Where DL = dead load (self-weight) and LL = live load (occupancy). Other combinations exist for wind, seismic, etc., but this is the starting point.</p>
+<p>The <strong>factored moment</strong> (<span class="arithmatex">\(M_u\)</span>) and <strong>factored shear</strong> (<span class="arithmatex">\(V_u\)</span>) that the library expects as inputs are already multiplied by these load factors. The library doesn’t apply load factors — that’s the structural analysis software’s job (like ETABS or STAAD).</p>
+<h4 id="why-gamma_c-gamma_s">Why <span class="arithmatex">\(\gamma_c\)</span> &gt; <span class="arithmatex">\(\gamma_s\)</span>?<a class="headerlink" href="#why-gamma_c-gamma_s" title="Permanent link">&para;</a></h4>
+<p>Concrete is mixed on-site, by hand or machine, poured into forms, vibrated, cured — lots of places for things to go wrong. Steel bars roll off a factory line with quality control. The higher <span class="arithmatex">\(\gamma_c = 1.5\)</span> reflects more uncertainty in concrete; the lower <span class="arithmatex">\(\gamma_s = 1.15\)</span> reflects more reliable steel production.</p>
+<p><strong>Critical rule in our library: safety factors are CONSTANTS, never parameters.</strong> You’ll never see <code>gamma_c</code> as a function argument. They’re hardcoded because allowing users to change them would create unsafe designs. IS 456 specifies them; we enforce them.</p>
+<hr />
+<h3 id="5-stress-block-parameters">5. Stress Block Parameters<a class="headerlink" href="#5-stress-block-parameters" title="Permanent link">&para;</a></h3>
+<p>This is where material properties turn into design formulas.</p>
+<p>When a beam bends, the top compresses and the bottom stretches. At failure, the concrete compression zone has a specific stress distribution. IS 456 simplifies this into what’s called the <strong>stress block</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>        ←── b ──→
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>       ┌─────────┐  ──┬──
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>       │0.446fck │    │ 0.42xu (centroid of stress block)
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>       │█████████│    │
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>       │█████████│    xu (neutral axis depth)
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>       │█████████│    │
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>       ├─────────┤  ──┴── ← Neutral axis
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>       │         │
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>       │         │    d - xu (tension zone)
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>       │  ● ● ●  │  ← Steel (Ast)
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>       └─────────┘
+</code></pre></div>
+<p>Key parameters:
+- <strong>Total compression</strong> = <span class="arithmatex">\(0.36 \times f_{ck} \times b \times x_u\)</span>
+- <strong>Lever arm</strong> from top = <span class="arithmatex">\(0.42 \times x_u\)</span>
+- <strong>Moment capacity</strong> = <span class="arithmatex">\(0.36 \times f_{ck} \times b \times x_u \times (d - 0.42 x_u)\)</span></p>
+<p>Where <span class="arithmatex">\(x_u\)</span> = depth of neutral axis, <span class="arithmatex">\(b\)</span> = width, <span class="arithmatex">\(d\)</span> = effective depth.</p>
+<p>The numbers 0.36 and 0.42 come from integrating the parabolic-rectangular stress curve. They are IS 456-specific constants — ACI 318 uses different values.</p>
+<h4 id="x_umaxd-ratios-the-ductility-limiter"><span class="arithmatex">\(x_{u,max}/d\)</span> Ratios — The Ductility Limiter<a class="headerlink" href="#x_umaxd-ratios-the-ductility-limiter" title="Permanent link">&para;</a></h4>
+<p>This is the single most important concept in IS 456 flexure design.</p>
+<table>
+<thead>
+<tr>
+<th>Steel Grade</th>
+<th><span class="arithmatex">\(x_{u,max}/d\)</span></th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fe250</td>
+<td>0.53</td>
+<td>IS 456 Annex G (Table J)</td>
+</tr>
+<tr>
+<td>Fe415</td>
+<td>0.48</td>
+<td>IS 456 Annex G (Table J)</td>
+</tr>
+<tr>
+<td>Fe500</td>
+<td>0.46</td>
+<td>IS 456 Annex G (Table J)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What this means:</strong> The neutral axis depth (<span class="arithmatex">\(x_u\)</span>) must not exceed <span class="arithmatex">\(x_{u,max}\)</span> for the beam to be "under-reinforced" — meaning the steel yields before the concrete crushes.</p>
+<ul>
+<li><strong>Under-reinforced</strong> (<span class="arithmatex">\(x_u \le x_{u,max}\)</span>): Steel yields first → beam deflects visibly → people evacuate → ductile failure. <strong>GOOD.</strong></li>
+<li><strong>Over-reinforced</strong> (<span class="arithmatex">\(x_u &gt; x_{u,max}\)</span>): Concrete crushes first → sudden, explosive failure with no warning. <strong>BAD.</strong> IS 456 prohibits this.</li>
+</ul>
+<blockquote>
+<p><strong>Think of it like...</strong> a circuit breaker. The <span class="arithmatex">\(x_{u,max}/d\)</span> ratio is the trip point. If the "current" (neutral axis depth) exceeds the "rating" (the max ratio), the design fails the check. The library enforces this limit so every design fails gracefully (ductile), never catastrophically (brittle).</p>
+</blockquote>
+<p>Why does <span class="arithmatex">\(x_{u,max}/d\)</span> <strong>decrease</strong> as <span class="arithmatex">\(f_y\)</span> increases? Higher-strength steel needs more strain to yield. If the neutral axis is deep, the concrete at the top reaches its crushing strain (0.0035) before the steel at the bottom has yielded. So for higher <span class="arithmatex">\(f_y\)</span>, we must push the neutral axis shallower (smaller ratio) to ensure steel yields first.</p>
+<p>Our library:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_xu_max_d</span><span class="p">(</span><span class="n">fy</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Xu,max/d ratio based on steel grade (IS 456 Cl. 38.1)&quot;&quot;&quot;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">fy</span> <span class="o">-</span> <span class="mi">250</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        <span class="k">return</span> <span class="mf">0.53</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">fy</span> <span class="o">-</span> <span class="mi">415</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>        <span class="k">return</span> <span class="mf">0.48</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">fy</span> <span class="o">-</span> <span class="mi">500</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        <span class="k">return</span> <span class="mf">0.46</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>        <span class="c1"># General formula for non-standard grades</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>        <span class="k">return</span> <span class="mi">700</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1100</span> <span class="o">+</span> <span class="mf">0.87</span> <span class="o">*</span> <span class="n">fy</span><span class="p">)</span>
+</code></pre></div></p>
+<p>Note the general formula <code>700 / (1100 + 0.87 * fy)</code> — derived from strain compatibility. At failure, concrete strain at top = 0.0035, steel strain at bottom = <span class="arithmatex">\(0.87 f_y / E_s + 0.002\)</span>. Solving for the ratio gives this formula.</p>
+<hr />
+<h3 id="6-units-our-librarys-convention">6. Units — Our Library’s Convention<a class="headerlink" href="#6-units-our-librarys-convention" title="Permanent link">&para;</a></h3>
+<p>Structural engineering in India uses a mix of units. Our library standardizes:</p>
+<table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Unit</th>
+<th>Example parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Length / dimension</td>
+<td>mm</td>
+<td><code>b_mm</code>, <code>d_mm</code>, <code>D_mm</code></td>
+</tr>
+<tr>
+<td>Stress / strength</td>
+<td>N/mm² (= MPa)</td>
+<td><code>fck</code>, <code>fy</code></td>
+</tr>
+<tr>
+<td>Force</td>
+<td>kN</td>
+<td><code>Vu_kN</code></td>
+</tr>
+<tr>
+<td>Moment</td>
+<td>kNm</td>
+<td><code>Mu_kNm</code></td>
+</tr>
+<tr>
+<td>Area</td>
+<td>mm²</td>
+<td><code>Ast_required</code></td>
+</tr>
+<tr>
+<td>Modulus</td>
+<td>N/mm²</td>
+<td><code>Es</code>, <code>Ec</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why explicit suffixes?</strong> Because a silent unit mismatch is a 1000x error. If someone passes force in N instead of kN, the result is off by a factor of 1000. By naming the parameter <code>Mu_kNm</code>, it’s self-documenting. You <em>can’t</em> accidentally pass N·m without noticing the name says kNm.</p>
+<p>IS 456 internally works in N and mm. We convert at the boundary:
+- <span class="arithmatex">\(1 \text{ kN} = 1000 \text{ N}\)</span>
+- <span class="arithmatex">\(1 \text{ kNm} = 10^6 \text{ N·mm}\)</span></p>
+<p>So when you see <code>Mu_kNm=150</code> in our API, the library internally works with <span class="arithmatex">\(150 \times 10^6 = 1.5 \times 10^8\)</span> N·mm for the stress-block calculation, then converts back to kNm for the output.</p>
+<hr />
+<h2 id="library-examples">🏗️ Library Examples<a class="headerlink" href="#library-examples" title="Permanent link">&para;</a></h2>
+<h3 id="get_xu_max_dfy-the-ductility-gatekeeper"><code>get_xu_max_d(fy)</code> — The Ductility Gatekeeper<a class="headerlink" href="#get_xu_max_dfy-the-ductility-gatekeeper" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.materials</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_xu_max_d</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">get_xu_max_d</span><span class="p">(</span><span class="n">fy</span><span class="o">=</span><span class="mi">415</span><span class="p">)</span>  <span class="c1"># returns 0.48</span>
+</code></pre></div>
+<p><strong>What it does:</strong> Returns the maximum neutral axis depth ratio for a given steel grade. This is the first thing checked in any flexural design — if the required <span class="arithmatex">\(x_u/d\)</span> exceeds this ratio, the section needs compression steel or a bigger cross-section.</p>
+<p><strong>Why it matters:</strong> Every flexure calculation in the library calls this function. The result flows into <code>FlexureResult.xu_max</code> and controls whether <code>FlexureResult.section_type</code> is <code>UNDER_REINFORCED</code> or <code>DOUBLY_REINFORCED</code>.</p>
+<h3 id="get_ecfck-concrete-stiffness"><code>get_ec(fck)</code> — Concrete Stiffness<a class="headerlink" href="#get_ecfck-concrete-stiffness" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.materials</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_ec</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">get_ec</span><span class="p">(</span><span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>  <span class="c1"># returns 25000.0  (N/mm²)</span>
+</code></pre></div>
+<p><strong>What it does:</strong> Computes <span class="arithmatex">\(E_c = 5000\sqrt{f_{ck}}\)</span>, the short-term static modulus of elasticity.</p>
+<p><strong>Why it matters:</strong> Used in deflection calculations (Cl 23.2), crack width checks, and modular ratio (<span class="arithmatex">\(m = E_s / E_c\)</span>) which determines how much of the cross-section’s load is carried by steel vs. concrete.</p>
+<h3 id="get_fcrfck-the-cracking-threshold"><code>get_fcr(fck)</code> — The Cracking Threshold<a class="headerlink" href="#get_fcrfck-the-cracking-threshold" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.materials</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_fcr</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">get_fcr</span><span class="p">(</span><span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>  <span class="c1"># returns 3.5  (N/mm²)</span>
+</code></pre></div>
+<p><strong>What it does:</strong> Returns <span class="arithmatex">\(f_{cr} = 0.7\sqrt{f_{ck}}\)</span>, the flexural tensile strength (modulus of rupture).</p>
+<p><strong>Why it matters:</strong> Used to check if a beam will crack under service loads (working loads, without safety factors). If the tensile stress exceeds <span class="arithmatex">\(f_{cr}\)</span>, the section is cracked — which affects deflection and durability calculations.</p>
+<h3 id="flexureresult-what-the-library-returns"><code>FlexureResult</code> — What the Library Returns<a class="headerlink" href="#flexureresult-what-the-library-returns" title="Permanent link">&para;</a></h3>
+<p>When you call <code>design_beam_is456()</code>, you get back a result that includes a <code>FlexureResult</code>. Here’s what each field means:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nd">@dataclass</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">FlexureResult</span><span class="p">:</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">Mu_lim</span><span class="p">:</span> <span class="nb">float</span>        <span class="c1"># Limiting moment capacity (kNm) — max the section can resist</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">Ast_required</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1"># Required tension steel area (mm²)</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">pt_provided</span><span class="p">:</span> <span class="nb">float</span>   <span class="c1"># Steel percentage = Ast/(b*d) x 100</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="n">section_type</span><span class="p">:</span> <span class="nb">str</span>    <span class="c1"># UNDER_REINFORCED or DOUBLY_REINFORCED</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="n">xu</span><span class="p">:</span> <span class="nb">float</span>            <span class="c1"># Calculated neutral axis depth (mm)</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="n">xu_max</span><span class="p">:</span> <span class="nb">float</span>        <span class="c1"># Maximum allowed neutral axis depth (mm)</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>    <span class="n">is_safe</span><span class="p">:</span> <span class="nb">bool</span>        <span class="c1"># True if Mu_lim &gt;= Mu_applied</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="n">Asc_required</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1"># Compression steel (mm²), only for doubly-reinforced</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>    <span class="n">errors</span><span class="p">:</span> <span class="nb">list</span>         <span class="c1"># Any design errors or warnings</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>    <span class="n">Ast_min</span><span class="p">:</span> <span class="nb">float</span>       <span class="c1"># Minimum steel per Cl 26.5.1.1 (mm²)</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>    <span class="n">Ast_max</span><span class="p">:</span> <span class="nb">float</span>       <span class="c1"># Maximum steel per Cl 26.5.1.2 (mm²)</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>    <span class="n">clause_refs</span><span class="p">:</span> <span class="nb">dict</span>    <span class="c1"># IS 456 clauses applied, for traceability</span>
+</code></pre></div>
+<p><strong>Reading the result like an engineer:</strong>
+1. Check <code>is_safe</code> first — if <code>False</code>, the beam can’t carry the load
+2. Check <code>section_type</code> — under-reinforced is normal; doubly-reinforced means you need compression steel too
+3. Check <code>xu</code> vs <code>xu_max</code> — if they’re equal, the section is at its limit
+4. Read <code>Ast_required</code> — this is the steel area you need to provide
+5. Verify <code>pt_provided</code> — should be between <code>Ast_min/(b*d)*100</code> and 4% for beams</p>
+<hr />
+<h2 id="simple-examples-hand-calculations">🎯 Simple Examples (Hand Calculations)<a class="headerlink" href="#simple-examples-hand-calculations" title="Permanent link">&para;</a></h2>
+<h3 id="example-1-design-strength-of-m25-concrete">Example 1: Design Strength of M25 Concrete<a class="headerlink" href="#example-1-design-strength-of-m25-concrete" title="Permanent link">&para;</a></h3>
+<p>Given: <span class="arithmatex">\(f_{ck} = 25\)</span> N/mm², <span class="arithmatex">\(\gamma_c = 1.5\)</span></p>
+<div class="arithmatex">\[f_{cd} = \frac{0.67 \times f_{ck}}{\gamma_c} = \frac{0.67 \times 25}{1.5} = \frac{16.75}{1.5} = 11.17 \text{ N/mm}^2\]</div>
+<p>Simplified (used in IS 456 stress block):
+$<span class="arithmatex">\(f_{cd} = 0.446 \times f_{ck} = 0.446 \times 25 = 11.15 \text{ N/mm}^2\)</span>$</p>
+<p>The small difference (11.17 vs 11.15) is rounding. IS 456 uses 0.446 as the standard factor, which equals <span class="arithmatex">\(0.67/1.5 = 0.4467 \approx 0.446\)</span>.</p>
+<h3 id="example-2-design-strength-of-fe415-steel">Example 2: Design Strength of Fe415 Steel<a class="headerlink" href="#example-2-design-strength-of-fe415-steel" title="Permanent link">&para;</a></h3>
+<p>Given: <span class="arithmatex">\(f_y = 415\)</span> N/mm², <span class="arithmatex">\(\gamma_s = 1.15\)</span></p>
+<div class="arithmatex">\[f_{yd} = \frac{f_y}{\gamma_s} = \frac{415}{1.15} = 361.05 \text{ N/mm}^2\]</div>
+<p>Or equivalently: <span class="arithmatex">\(0.87 \times 415 = 361.05\)</span> N/mm² (since <span class="arithmatex">\(1/1.15 = 0.8696 \approx 0.87\)</span>).</p>
+<p>This is the stress the steel is "allowed" to reach in design. In reality it <em>can</em> reach 415 N/mm², but we conservatively use 361 N/mm².</p>
+<h3 id="example-3-what-does-e_c-5000sqrtf_ck-mean-physically">Example 3: What Does <span class="arithmatex">\(E_c = 5000\sqrt{f_{ck}}\)</span> Mean Physically?<a class="headerlink" href="#example-3-what-does-e_c-5000sqrtf_ck-mean-physically" title="Permanent link">&para;</a></h3>
+<p>For M25: <span class="arithmatex">\(E_c = 5000 \times 5 = 25{,}000\)</span> N/mm²</p>
+<p>For M40: <span class="arithmatex">\(E_c = 5000 \times \sqrt{40} = 5000 \times 6.32 = 31{,}623\)</span> N/mm²</p>
+<p>Steel: <span class="arithmatex">\(E_s = 200{,}000\)</span> N/mm² (always)</p>
+<p><strong>Modular ratio</strong> for M25: <span class="arithmatex">\(m = E_s / E_c = 200{,}000 / 25{,}000 = 8\)</span></p>
+<p>This means: under the same strain, steel carries <strong>8 times</strong> the stress that M25 concrete carries. This is why a small area of steel can balance a large area of concrete — the steel is doing 8x the work per unit area.</p>
+<p>For M40: <span class="arithmatex">\(m = 200{,}000 / 31{,}623 = 6.3\)</span> — Higher grade concrete reduces the modular ratio, meaning concrete contributes relatively more. This is why high-strength concrete allows smaller sections.</p>
+<hr />
+<h2 id="exercises">🔧 Exercises<a class="headerlink" href="#exercises" title="Permanent link">&para;</a></h2>
+<p>Run these in Python (from the workspace root):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Start: .venv/bin/python</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.materials</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_xu_max_d</span><span class="p">,</span> <span class="n">get_ec</span><span class="p">,</span> <span class="n">get_fcr</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># ── Exercise 1: xu_max/d for all standard steel grades ──</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=== Exercise 1: xu_max/d ratios ===&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="k">for</span> <span class="n">fy</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span> <span class="mi">415</span><span class="p">,</span> <span class="mi">500</span><span class="p">]:</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="n">ratio</span> <span class="o">=</span> <span class="n">get_xu_max_d</span><span class="p">(</span><span class="n">fy</span><span class="p">)</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fe</span><span class="si">{</span><span class="n">fy</span><span class="si">}</span><span class="s2">: xu_max/d = </span><span class="si">{</span><span class="n">ratio</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="c1"># Expected output:</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="c1">#   Fe250: xu_max/d = 0.53</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="c1">#   Fe415: xu_max/d = 0.48</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="c1">#   Fe500: xu_max/d = 0.46</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="c1"># ── Exercise 2: Ec for standard concrete grades ──</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Exercise 2: Modulus of Elasticity ===&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="k">for</span> <span class="n">fck</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">]:</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>    <span class="n">ec</span> <span class="o">=</span> <span class="n">get_ec</span><span class="p">(</span><span class="n">fck</span><span class="p">)</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>    <span class="n">modular_ratio</span> <span class="o">=</span> <span class="mi">200000</span> <span class="o">/</span> <span class="n">ec</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M</span><span class="si">{</span><span class="n">fck</span><span class="si">}</span><span class="s2">: Ec = </span><span class="si">{</span><span class="n">ec</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> N/mm²,  modular ratio m = </span><span class="si">{</span><span class="n">modular_ratio</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="c1"># Notice how Ec increases with fck, and modular ratio decreases.</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="c1"># Higher-grade concrete is stiffer → carries more load relative to steel.</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="c1"># ── Exercise 3: Cracking strength ──</span>
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Exercise 3: Cracking Strength ===&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="k">for</span> <span class="n">fck</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]:</span>
+<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>    <span class="n">fcr</span> <span class="o">=</span> <span class="n">get_fcr</span><span class="p">(</span><span class="n">fck</span><span class="p">)</span>
+<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>    <span class="n">ratio_to_fck</span> <span class="o">=</span> <span class="n">fcr</span> <span class="o">/</span> <span class="n">fck</span> <span class="o">*</span> <span class="mi">100</span>
+<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;M</span><span class="si">{</span><span class="n">fck</span><span class="si">}</span><span class="s2">: fcr = </span><span class="si">{</span><span class="n">fcr</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> N/mm²  (</span><span class="si">{</span><span class="n">ratio_to_fck</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">% of fck)&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a><span class="c1"># Notice: fcr is always a tiny fraction of fck. This is WHY we need steel.</span>
+<a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a>
+<a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a><span class="c1"># ── Exercise 4: Verify the general xu_max/d formula ──</span>
+<a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Exercise 4: General formula check ===&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a><span class="k">for</span> <span class="n">fy</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span> <span class="mi">415</span><span class="p">,</span> <span class="mi">500</span><span class="p">]:</span>
+<a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a>    <span class="n">formula_result</span> <span class="o">=</span> <span class="mi">700</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1100</span> <span class="o">+</span> <span class="mf">0.87</span> <span class="o">*</span> <span class="n">fy</span><span class="p">)</span>
+<a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a>    <span class="n">table_result</span> <span class="o">=</span> <span class="n">get_xu_max_d</span><span class="p">(</span><span class="n">fy</span><span class="p">)</span>
+<a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fe</span><span class="si">{</span><span class="n">fy</span><span class="si">}</span><span class="s2">: formula = </span><span class="si">{</span><span class="n">formula_result</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, table = </span><span class="si">{</span><span class="n">table_result</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a><span class="c1"># The formula approximates the table values. Small differences are due to</span>
+<a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a><span class="c1"># IS 456 rounding the table values.</span>
+</code></pre></div>
+<h3 id="stretch-exercise">Stretch Exercise<a class="headerlink" href="#stretch-exercise" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Why does xu_max/d DECREASE as fy increases?</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1">#</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="c1"># At ultimate failure, concrete strain at the top = 0.0035 (fixed).</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Steel strain at bottom must reach (0.87*fy/Es + 0.002) for yield.</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="c1">#</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="c1"># By similar triangles in the strain diagram:</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1">#   xu / d = 0.0035 / (0.0035 + steel_yield_strain)</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="c1">#</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="c1"># Higher fy → higher steel yield strain → smaller xu/d ratio.</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="c1">#</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="c1"># Verify:</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">=== Stretch: Strain compatibility ===&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="k">for</span> <span class="n">fy</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">250</span><span class="p">,</span> <span class="mi">415</span><span class="p">,</span> <span class="mi">500</span><span class="p">]:</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>    <span class="n">ecu</span> <span class="o">=</span> <span class="mf">0.0035</span>  <span class="c1"># concrete ultimate strain</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>    <span class="n">esy</span> <span class="o">=</span> <span class="mf">0.87</span> <span class="o">*</span> <span class="n">fy</span> <span class="o">/</span> <span class="mi">200000</span> <span class="o">+</span> <span class="mf">0.002</span>  <span class="c1"># steel yield strain (IS 456)</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>    <span class="n">xu_d</span> <span class="o">=</span> <span class="n">ecu</span> <span class="o">/</span> <span class="p">(</span><span class="n">ecu</span> <span class="o">+</span> <span class="n">esy</span><span class="p">)</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fe</span><span class="si">{</span><span class="n">fy</span><span class="si">}</span><span class="s2">: steel yield strain = </span><span class="si">{</span><span class="n">esy</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2">, xu/d = </span><span class="si">{</span><span class="n">xu_d</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="can-you-explain">💬 Can You Explain?<a class="headerlink" href="#can-you-explain" title="Permanent link">&para;</a></h2>
+<p>Test your understanding — try answering before checking the answers below.</p>
+<h3 id="q1-why-partial-safety-factors-instead-of-one-factor-of-safety">Q1: Why partial safety factors instead of one "Factor of Safety"?<a class="headerlink" href="#q1-why-partial-safety-factors-instead-of-one-factor-of-safety" title="Permanent link">&para;</a></h3>
+<details>
+<summary>Answer</summary>
+
+A single FoS treats all uncertainty the same. But concrete quality varies more than steel quality (site-mixed vs factory-made). Dead loads are more predictable than live loads. Wind loads are more uncertain than both.
+
+Partial safety factors let us apply **proportional conservatism** — higher factors where uncertainty is greatest. This gives the same overall safety with less material waste. It’s like having different confidence intervals for different components of your system instead of one blanket 3x over-provisioning.
+
+</details>
+
+<h3 id="q2-what-happens-if-x_ud-exceeds-x_umaxd">Q2: What happens if <span class="arithmatex">\(x_u/d\)</span> exceeds <span class="arithmatex">\(x_{u,max}/d\)</span>?<a class="headerlink" href="#q2-what-happens-if-x_ud-exceeds-x_umaxd" title="Permanent link">&para;</a></h3>
+<details>
+<summary>Answer</summary>
+
+**Brittle failure.** The concrete at the compressive face crushes before the steel at the tension face yields. There’s no warning — no visible deflection, no cracking pattern — the beam just explodes. This is called "over-reinforced" failure and IS 456 prohibits it.
+
+In our library, if $x_u > x_{u,max}$, the design either:
+1. Switches to doubly-reinforced design (adds compression steel to push the neutral axis up), or
+2. Returns `is_safe=False` with an error explaining why
+
+The library **never** produces an over-reinforced design silently.
+
+</details>
+
+<h3 id="q3-why-is-e_s-constant-for-all-steel-grades-but-e_c-varies-with-f_ck">Q3: Why is <span class="arithmatex">\(E_s\)</span> constant for all steel grades but <span class="arithmatex">\(E_c\)</span> varies with <span class="arithmatex">\(f_{ck}\)</span>?<a class="headerlink" href="#q3-why-is-e_s-constant-for-all-steel-grades-but-e_c-varies-with-f_ck" title="Permanent link">&para;</a></h3>
+<details>
+<summary>Answer</summary>
+
+**Steel:** Modulus of elasticity depends on the crystal structure of iron atoms. All steel grades (Fe250, Fe415, Fe500) are the same iron alloy with different heat treatments. The heat treatment changes when the steel *yields* (starts deforming permanently) but doesn’t change how stiff it is in the elastic range. The atoms are the same; only the dislocation behavior differs.
+
+**Concrete:** Modulus depends on the density and bonding of the aggregate-cement matrix. Higher $f_{ck}$ means denser, better-bonded concrete — stiffer. The higher the grade, the tighter the microstructure, the more force it takes to deform it.
+
+Analogy: Different rubber bands (steel grades) all stretch the same amount per unit force (same $E_s$), but they snap at different tensions (different $f_y$). Different densities of foam (concrete grades) resist deformation differently (different $E_c$), and also crush at different stresses (different $f_{ck}$).
+
+</details>
+
+<h3 id="q4-if-someone-says-m25-fe415-beam-what-are-f_ck-and-f_y">Q4: If someone says "M25 Fe415 beam", what are <span class="arithmatex">\(f_{ck}\)</span> and <span class="arithmatex">\(f_y\)</span>?<a class="headerlink" href="#q4-if-someone-says-m25-fe415-beam-what-are-f_ck-and-f_y" title="Permanent link">&para;</a></h3>
+<details>
+<summary>Answer</summary>
+
+- $f_{ck} = 25$ N/mm² (the number after M)
+- $f_y = 415$ N/mm² (the number after Fe)
+- Design concrete strength: $0.446 \times 25 = 11.15$ N/mm²
+- Design steel strength: $0.87 \times 415 = 361.05$ N/mm²
+- $E_c = 5000\sqrt{25} = 25{,}000$ N/mm²
+- $E_s = 200{,}000$ N/mm²
+- $x_{u,max}/d = 0.48$
+
+These seven numbers fully characterize the materials for beam design. Everything in Days 2-4 builds on them.
+
+</details>
+
+<hr />
+<h2 id="summary-what-you-now-know">Summary — What You Now Know<a class="headerlink" href="#summary-what-you-now-know" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Value/Formula</th>
+<th>Library Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Concrete characteristic strength</td>
+<td><span class="arithmatex">\(f_{ck}\)</span> = grade number (M25 → 25)</td>
+<td>Input parameter <code>fck</code></td>
+</tr>
+<tr>
+<td>Concrete design strength</td>
+<td><span class="arithmatex">\(0.446 \times f_{ck}\)</span></td>
+<td>Built into stress block</td>
+</tr>
+<tr>
+<td>Concrete modulus</td>
+<td><span class="arithmatex">\(E_c = 5000\sqrt{f_{ck}}\)</span></td>
+<td><code>get_ec(fck)</code></td>
+</tr>
+<tr>
+<td>Concrete cracking strength</td>
+<td><span class="arithmatex">\(f_{cr} = 0.7\sqrt{f_{ck}}\)</span></td>
+<td><code>get_fcr(fck)</code></td>
+</tr>
+<tr>
+<td>Steel yield strength</td>
+<td><span class="arithmatex">\(f_y\)</span> = grade number (Fe415 → 415)</td>
+<td>Input parameter <code>fy</code></td>
+</tr>
+<tr>
+<td>Steel design strength</td>
+<td><span class="arithmatex">\(0.87 \times f_y\)</span></td>
+<td>Built into flexure formulas</td>
+</tr>
+<tr>
+<td>Steel modulus</td>
+<td><span class="arithmatex">\(E_s = 200{,}000\)</span> N/mm² (constant)</td>
+<td>Hardcoded</td>
+</tr>
+<tr>
+<td>Safety factor — concrete</td>
+<td><span class="arithmatex">\(\gamma_c = 1.5\)</span></td>
+<td>Hardcoded constant</td>
+</tr>
+<tr>
+<td>Safety factor — steel</td>
+<td><span class="arithmatex">\(\gamma_s = 1.15\)</span></td>
+<td>Hardcoded constant</td>
+</tr>
+<tr>
+<td>Max neutral axis ratio</td>
+<td><span class="arithmatex">\(x_{u,max}/d\)</span></td>
+<td><code>get_xu_max_d(fy)</code></td>
+</tr>
+<tr>
+<td>Stress block compression</td>
+<td><span class="arithmatex">\(0.36 \times f_{ck} \times b \times x_u\)</span></td>
+<td>Flexure module</td>
+</tr>
+<tr>
+<td>Stress block lever arm</td>
+<td><span class="arithmatex">\(0.42 \times x_u\)</span> from top</td>
+<td>Flexure module</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="references">📎 References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>IS 456:2000</strong> — Cl 6.1 (Concrete grades), Cl 6.2 (Material properties), Cl 38.1 (Stress block), Annex G Table J (<span class="arithmatex">\(x_{u,max}/d\)</span>), Table 18 (Load combinations)</li>
+<li><strong>SP:16</strong> — Tables 1-4 (Flexure coefficients), Table A (Steel stress-strain data)</li>
+<li><strong>Library source:</strong> <code>Python/structural_lib/codes/is456/materials.py</code></li>
+<li><strong>Data types:</strong> <code>Python/structural_lib/core/data_types.py</code> (FlexureResult, ShearResult)</li>
+</ul>
+<hr />
+<h2 id="whats-next">What’s Next?<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
+<p><strong>Day 2: Beam Flexure</strong> — We’ll use today’s material properties to actually design a beam. You’ll see how <span class="arithmatex">\(f_{ck}\)</span>, <span class="arithmatex">\(f_y\)</span>, and <span class="arithmatex">\(x_{u,max}/d\)</span> come together in the stress block to calculate how much steel a beam needs to resist a given bending moment. That’s where <code>calculate_mu_lim()</code> and <code>design_flexure()</code> live.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

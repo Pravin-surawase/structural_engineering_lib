@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1870,10 +1870,18 @@
 <p><strong>Version:</strong> 1.0
 <strong>Last Updated:</strong> 2026-03-29
 <strong>Status:</strong> ACTIVE
-<strong>Purpose:</strong> Enable professional multi-agent maintenance with parallel workflows</p>
+<strong>Purpose:</strong> Enable professional AI-assisted maintenance with bounded delegation</p>
 <hr />
 <h2 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
-<p>This project uses <strong>agent-driven maintenance</strong> where specialized AI agents (researcher, tester, devops, pm, dev) work in parallel on isolated tasks. This framework defines roles, workflows, and coordination protocols for up to <strong>5 concurrent agents</strong> working safely without conflicts.</p>
+<p>This project uses <strong>agent-assisted maintenance</strong> where specialist names describe
+quality roles. One parent task owns the outcome. It may use up to <strong>2 concurrent
+subagents</strong> for independent, bounded work; routine work stays single-agent. See
+<a href="../../guidelines/ai-token-efficiency/">AI Token-Efficiency Policy</a>.</p>
+<p>The MAIN orchestrator always respects the model and reasoning selected by the
+user. It decomposes work into compact packets that Luna or Terra can follow:
+objective, non-goals, exact files, constraints, pitfalls,
+acceptance criteria, tests, and return format. The MAIN agent independently
+checks each result before accepting or integrating it.</p>
 <p><strong>Key Principles:</strong>
 1. <strong>Specialization:</strong> Each agent has a defined role and expertise
 2. <strong>Isolation:</strong> Tasks have clear boundaries to prevent conflicts
@@ -1896,7 +1904,11 @@
 <p><strong>Primary Role:</strong> Project coordination, user interaction, high-level decisions</p>
 <p><strong>Responsibilities:</strong>
 - Communicate with user
-- Assign tasks to background agents
+- Plan on the user-selected parent model and assign bounded tasks to the
+  cheapest capable worker
+- Include exact scope, non-goals, pitfalls, acceptance criteria, tests, and a
+  return format in every worker packet
+- Independently review returned diffs, evidence, and integration assumptions
 - Review PRs and merge approved work
 - Maintain TASKS.md and SESSION_LOG.md
 - Resolve conflicts between agents
@@ -2477,7 +2489,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
       

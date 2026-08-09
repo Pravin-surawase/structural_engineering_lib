@@ -1,8 +1,8 @@
 {
-  "generated": "2026-03-24",
+  "generated": "2026-08-06",
   "module": "structural_lib.api",
-  "python": "3.11.14",
-  "count": 68,
+  "python": "3.11.15",
+  "count": 108,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -20,14 +20,29 @@
       "signature": "(beam_id: 'str', story: 'str', dimensions: 'dict[str, float]', concrete_outline: 'list[Point3D]', rebars: 'list[RebarPath]', stirrups: 'list[StirrupLoop]', metadata: 'dict' = <factory>) -> None"
     },
     {
+      "name": "BeamGeometry",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
+    },
+    {
       "name": "BeamGeometryInput",
       "kind": "class",
-      "signature": "(b_mm: 'float', D_mm: 'float', span_mm: 'float', d_mm: 'float | None' = None, cover_mm: 'float' = 40.0) -> None"
+      "signature": "(b_mm: 'float', D_mm: 'float', span_mm: 'float', d_mm: 'float | None' = None, cover_mm: 'float' = 40.0, stirrup_dia_mm: 'float' = 8.0, bar_dia_mm: 'float' = 20.0) -> None"
     },
     {
       "name": "BeamInput",
       "kind": "class",
       "signature": "(beam_id: 'str', story: 'str', geometry: 'BeamGeometryInput', materials: 'MaterialsInput', loads: 'LoadsInput | None' = None, load_cases: 'list[LoadCaseInput]' = <factory>, detailing_config: 'DetailingConfigInput' = <factory>, units: 'str' = 'IS456') -> None"
+    },
+    {
+      "name": "BearingPressureCheckResult",
+      "kind": "class",
+      "signature": "(actual_stress_mpa: 'float', permissible_stress_mpa: 'float', enhancement_factor: 'float', utilization_ratio: 'float', is_safe: 'bool', A1_mm2: 'float', A2_mm2: 'float', Pu_kN: 'float', clause_ref: 'str' = 'Cl. 34.4') -> None"
+    },
+    {
+      "name": "BearingStressEnhancementResult",
+      "kind": "class",
+      "signature": "(basic_stress_mpa: 'float', enhancement_factor: 'float', permissible_stress_mpa: 'float', A1_mm2: 'float', A2_mm2: 'float', clause_ref: 'str' = 'Cl. 34.4') -> None"
     },
     {
       "name": "CalculationHash",
@@ -40,9 +55,24 @@
       "signature": "(report_id: 'str', project_info: 'ProjectInfo', beam_id: 'str', story: 'str', inputs: 'InputSection', results: 'ResultSection', code_references: 'list[str]' = <factory>, notes: 'list[str]' = <factory>, verification_hash: 'str' = '', generated_at: 'str' = '') -> None"
     },
     {
+      "name": "CheckCodeReport",
+      "kind": "class",
+      "signature": "(code_id: 'str', all_importable: 'bool', all_decorated: 'bool', all_frozen: 'bool', all_results_valid: 'bool', all_params_named: 'bool', no_boundary_violations: 'bool', issues: 'tuple[str, ...]' = ()) -> None"
+    },
+    {
+      "name": "CostProfile",
+      "kind": "class",
+      "signature": "(currency: 'str' = 'INR', concrete_costs: 'dict[int, float]' = <factory>, steel_cost_per_kg: 'float' = 72.0, formwork_cost_per_m2: 'float' = 500.0, congestion_threshold_pt: 'float' = 2.5, congestion_multiplier: 'float' = 1.2, location_factor: 'float' = 1.0, wastage_factor: 'float' = 1.05, base_labor_rate_per_day: 'float' = 800.0, labor_productivity_m3_per_day: 'float' = 5.0) -> None"
+    },
+    {
       "name": "CriticalPoint",
       "kind": "class",
       "signature": "(position_mm: 'float', point_type: 'str', bm_knm: 'float', sf_kn: 'float') -> None"
+    },
+    {
+      "name": "DesignDefaults",
+      "kind": "class",
+      "signature": "(**data: 'Any') -> 'None'"
     },
     {
       "name": "DetailingConfigInput",
@@ -58,6 +88,31 @@
       "name": "ETABSForceRow",
       "kind": "class",
       "signature": "(story: 'str', beam_id: 'str', case_id: 'str', station: 'float', m3: 'float', v2: 'float', unique_name: 'str' = '', p: 'float' = 0.0) -> None"
+    },
+    {
+      "name": "FootingBearingResult",
+      "kind": "class",
+      "signature": "(L_mm: 'float', B_mm: 'float', q_max_kPa: 'float', q_min_kPa: 'float', q_safe_kPa: 'float', pressure_type: 'str', utilization_ratio: 'float', is_safe: 'bool', clause_ref: 'str' = 'Cl. 34.1', warnings: 'tuple[str, ...]' = ()) -> None"
+    },
+    {
+      "name": "FootingFlexureResult",
+      "kind": "class",
+      "signature": "(Mu_L_kNm: 'float', Ast_L_mm2: 'float', pt_L_percent: 'float', cantilever_L_mm: 'float', Mu_B_kNm: 'float', Ast_B_mm2: 'float', pt_B_percent: 'float', cantilever_B_mm: 'float', d_mm: 'float', is_safe: 'bool', central_band_fraction: 'float' = 1.0, clause_ref: 'str' = 'Cl. 34.2.3.1', warnings: 'tuple[str, ...]' = ()) -> None"
+    },
+    {
+      "name": "FootingOneWayShearResult",
+      "kind": "class",
+      "signature": "(tau_v_nmm2: 'float', tau_c_nmm2: 'float', Vu_kN: 'float', d_mm: 'float', critical_section_mm: 'float', utilization_ratio: 'float', is_safe: 'bool', governing_direction: 'str' = 'L', clause_ref: 'str' = 'Cl. 34.2.4.1(a)', warnings: 'tuple[str, ...]' = ()) -> None"
+    },
+    {
+      "name": "FootingPunchingResult",
+      "kind": "class",
+      "signature": "(tau_v_nmm2: 'float', tau_c_nmm2: 'float', perimeter_mm: 'float', Vu_punch_kN: 'float', d_mm: 'float', beta_c: 'float', ks: 'float', utilization_ratio: 'float', is_safe: 'bool', clause_ref: 'str' = 'Cl. 31.6.1', warnings: 'tuple[str, ...]' = ()) -> None"
+    },
+    {
+      "name": "FrameType",
+      "kind": "class",
+      "signature": "(*args, **kwds)"
     },
     {
       "name": "InputSection",
@@ -95,6 +150,16 @@
       "signature": "(fck_nmm2: 'float', fy_nmm2: 'float', es_nmm2: 'float' = 200000.0) -> None"
     },
     {
+      "name": "ParetoCandidate",
+      "kind": "class",
+      "signature": "(b_mm: 'int', D_mm: 'int', d_mm: 'int', fck_nmm2: 'int', fy_nmm2: 'int', ast_required: 'float', ast_provided: 'float', bar_config: 'str', cost: 'float', steel_weight_kg: 'float', utilization: 'float', is_safe: 'bool', governing_clauses: 'list[str]' = <factory>, rank: 'int' = 0, crowding_distance: 'float' = 0.0) -> None"
+    },
+    {
+      "name": "ParetoOptimizationResult",
+      "kind": "class",
+      "signature": "(pareto_front: 'list[ParetoCandidate]', all_candidates: 'list[ParetoCandidate]', objectives_used: 'list[str]', generations: 'int', computation_time_sec: 'float', best_by_cost: 'ParetoCandidate | None', best_by_utilization: 'ParetoCandidate | None', best_by_weight: 'ParetoCandidate | None') -> None"
+    },
+    {
       "name": "Point3D",
       "kind": "class",
       "signature": "(x: 'float', y: 'float', z: 'float') -> None"
@@ -127,7 +192,17 @@
     {
       "name": "TorsionResult",
       "kind": "class",
-      "signature": "(tu_knm: 'float', vu_kn: 'float', mu_knm: 'float', ve_kn: 'float', me_knm: 'float', tv_equiv: 'float', tc: 'float', tc_max: 'float', asv_torsion: 'float', asv_shear: 'float', asv_total: 'float', stirrup_spacing: 'float', al_torsion: 'float', is_safe: 'bool', requires_closed_stirrups: 'bool' = True, errors: 'list[DesignError]' = <factory>) -> None"
+      "signature": "(Tu_knm: 'float', Vu_kn: 'float', Mu_knm: 'float', Ve_kn: 'float', Me_knm: 'float', tau_ve: 'float', tau_c: 'float', tau_c_max: 'float', Asv_torsion: 'float', Asv_shear: 'float', Asv_total: 'float', stirrup_spacing: 'float', Al_torsion: 'float', is_safe: 'bool', requires_closed_stirrups: 'bool' = True, errors: 'list[DesignError]' = <factory>, clause_refs: 'dict[str, str]' = <factory>) -> None"
+    },
+    {
+      "name": "ValidationReport",
+      "kind": "class",
+      "signature": "(ok: 'bool', errors: 'list[str]' = <factory>, warnings: 'list[str]' = <factory>, details: 'dict[str, Any]' = <factory>) -> None"
+    },
+    {
+      "name": "VersionInfo",
+      "kind": "class",
+      "signature": "(library_version: 'str', python_version: 'str', platform: 'str', design_codes: 'tuple[str, ...]', dependencies: 'dict[str, str | None]') -> None"
     },
     {
       "name": "beam_to_3d_geometry",
@@ -135,9 +210,34 @@
       "signature": "(detailing: 'BeamDetailingResult', is_seismic: 'bool' = False) -> 'Beam3DGeometry'"
     },
     {
+      "name": "bearing_stress_enhancement",
+      "kind": "function",
+      "signature": "(fck: 'float', A1_mm2: 'float', A2_mm2: 'float') -> 'BearingStressEnhancementResult'"
+    },
+    {
+      "name": "biaxial_bending_check_is456",
+      "kind": "function",
+      "signature": "(Pu_kN: 'float', Mux_kNm: 'float', Muy_kNm: 'float', b_mm: 'float', D_mm: 'float', le_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, l_unsupported_mm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnBiaxialResult'"
+    },
+    {
+      "name": "build_detailing_input",
+      "kind": "function",
+      "signature": "(result: 'ComplianceCaseResult', *, beam_id: 'str' = 'B1', b_mm: 'float' = 300.0, D_mm: 'float' = 500.0, d_mm: 'float' = 450.0, span_mm: 'float' = 4000.0, cover_mm: 'float' = 40.0, fck_nmm2: 'float' = 25.0, fy_nmm2: 'float' = 500.0) -> 'dict[str, Any]'"
+    },
+    {
+      "name": "calculate_additional_moment_is456",
+      "kind": "function",
+      "signature": "(Pu_kN: 'float', b_mm: 'float', D_mm: 'float', lex_mm: 'float', ley_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'AdditionalMomentResult'"
+    },
+    {
+      "name": "calculate_effective_length_is456",
+      "kind": "function",
+      "signature": "(l_mm: 'float', end_condition: 'str', use_theoretical: 'bool' = False) -> 'dict[str, Any]'"
+    },
+    {
       "name": "calculate_equivalent_moment",
       "kind": "function",
-      "signature": "(mu_knm: 'float', tu_knm: 'float', d: 'float', b: 'float') -> 'float'"
+      "signature": "(mu_knm: 'float', tu_knm: 'float', d: 'float', b: 'float', D_mm: 'float | None' = None) -> 'float'"
     },
     {
       "name": "calculate_equivalent_shear",
@@ -160,9 +260,14 @@
       "signature": "(tu_knm: 'float', vu_kn: 'float', b: 'float', d: 'float', b1: 'float', d1: 'float', fy: 'float', tc: 'float') -> 'tuple[float, float, float]'"
     },
     {
+      "name": "check_anchorage_at_simple_support",
+      "kind": "function",
+      "signature": "(bar_dia_mm: 'float' = 0.0, fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, vu_kn: 'float' = 0.0, support_width_mm: 'float' = 0.0, cover_mm: 'float' = 40.0, bar_type: 'str' = 'deformed', has_standard_bend: 'bool' = True, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'detailing.AnchorageCheckResult'"
+    },
+    {
       "name": "check_beam_ductility",
       "kind": "function",
-      "signature": "(b: 'float', D: 'float', d: 'float', fck: 'float', fy: 'float', min_long_bar_dia: 'float') -> 'ductile.DuctileBeamResult'"
+      "signature": "(b_mm: 'float | None' = None, D_mm: 'float | None' = None, d_mm: 'float | None' = None, fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, min_long_bar_dia: 'float' = 0.0, *, b: 'float | None' = None, D: 'float | None' = None, d: 'float | None' = None, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ductile.DuctileBeamResult'"
     },
     {
       "name": "check_beam_is456",
@@ -173,6 +278,21 @@
       "name": "check_beam_slenderness",
       "kind": "function",
       "signature": "(b_mm: 'float', d_mm: 'float', l_eff_mm: 'float', beam_type: 'str' = 'simply_supported', has_lateral_restraint: 'bool' = False) -> 'slenderness.SlendernessResult'"
+    },
+    {
+      "name": "check_bearing_pressure",
+      "kind": "function",
+      "signature": "(Pu_kN: 'float', fck: 'float', column_b_mm: 'float', column_D_mm: 'float', footing_B_mm: 'float', footing_L_mm: 'float') -> 'BearingPressureCheckResult'"
+    },
+    {
+      "name": "check_code",
+      "kind": "function",
+      "signature": "(code_id: 'str') -> 'CheckCodeReport'"
+    },
+    {
+      "name": "check_column_ductility_is13920",
+      "kind": "function",
+      "signature": "(*, b_mm: 'float', D_mm: 'float', clear_height_mm: 'float', bar_dia_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Ag_mm2: 'float | None' = None, Ak_mm2: 'float | None' = None, fck: 'float | None' = None, fy: 'float | None' = None) -> 'dict'"
     },
     {
       "name": "check_compliance_report",
@@ -188,6 +308,16 @@
       "name": "check_deflection_span_depth",
       "kind": "function",
       "signature": "(span_mm: 'float', d_mm: 'float', support_condition: 'str' = 'simply_supported', base_allowable_ld: 'float | None' = None, mf_tension_steel: 'float | None' = None, mf_compression_steel: 'float | None' = None, mf_flanged: 'float | None' = None) -> 'serviceability.DeflectionResult'"
+    },
+    {
+      "name": "check_helical_reinforcement_is456",
+      "kind": "function",
+      "signature": "(D_mm: 'float', D_core_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, d_helix_mm: 'float' = 0.0, pitch_mm: 'float' = 0.0, Pu_axial_kN: 'float' = 0.0, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'HelicalReinforcementResult'"
+    },
+    {
+      "name": "classify_column_is456",
+      "kind": "function",
+      "signature": "(le_mm: 'float', D_mm: 'float') -> 'str'"
     },
     {
       "name": "compute_bbs",
@@ -270,9 +400,29 @@
       "signature": "(*, units: 'str', case_id: 'str' = 'CASE-1', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, deflection_params: 'DeflectionParams | None' = None, crack_width_params: 'CrackWidthParams | None' = None) -> 'ComplianceCaseResult'"
     },
     {
+      "name": "design_column_axial_is456",
+      "kind": "function",
+      "signature": "(fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Ag_mm2: 'float' = 0.0, Asc_mm2: 'float' = 0.0, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnAxialResult'"
+    },
+    {
+      "name": "design_column_is456",
+      "kind": "function",
+      "signature": "(Pu_kN: 'float', Mux_kNm: 'float' = 0.0, Muy_kNm: 'float' = 0.0, b_mm: 'float' = 0.0, D_mm: 'float' = 0.0, l_mm: 'float' = 0.0, end_condition: 'str' = 'FIXED_FIXED', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 50.0, l_unsupported_mm: 'float | None' = None, braced: 'bool' = True, M1x_kNm: 'float | None' = None, M2x_kNm: 'float | None' = None, M1y_kNm: 'float | None' = None, M2y_kNm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'dict[str, Any]'"
+    },
+    {
       "name": "design_from_input",
       "kind": "function",
       "signature": "(beam: 'BeamInput', *, include_detailing: 'bool' = True) -> 'DesignAndDetailResult | ComplianceReport'"
+    },
+    {
+      "name": "design_long_column_is456",
+      "kind": "function",
+      "signature": "(Pu_kN: 'float', M1x_kNm: 'float', M2x_kNm: 'float', M1y_kNm: 'float', M2y_kNm: 'float', b_mm: 'float', D_mm: 'float', lex_mm: 'float', ley_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, braced: 'bool' = True, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'LongColumnResult'"
+    },
+    {
+      "name": "design_short_column_uniaxial_is456",
+      "kind": "function",
+      "signature": "(Pu_kN: 'float', Mu_kNm: 'float', b_mm: 'float', D_mm: 'float', le_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, l_unsupported_mm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnUniaxialResult'"
     },
     {
       "name": "design_torsion",
@@ -285,9 +435,34 @@
       "signature": "(*, units: 'str', beam_id: 'str', story: 'str', b_mm: 'float', D_mm: 'float', span_mm: 'float', cover_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', ast_start_mm2: 'float', ast_mid_mm2: 'float', ast_end_mm2: 'float', asc_start_mm2: 'float' = 0.0, asc_mid_mm2: 'float' = 0.0, asc_end_mm2: 'float' = 0.0, stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_start_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, stirrup_spacing_end_mm: 'float' = 150.0, is_seismic: 'bool' = False) -> 'detailing.BeamDetailingResult'"
     },
     {
+      "name": "detail_column_is456",
+      "kind": "function",
+      "signature": "(*, b_mm: 'float', D_mm: 'float', cover_mm: 'float' = 40.0, fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, num_bars: 'int', bar_dia_mm: 'float', tie_dia_mm: 'float | None' = None, is_circular: 'bool' = False, at_lap_section: 'bool' = False, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnDetailingResult'"
+    },
+    {
+      "name": "enhanced_shear_strength_is456",
+      "kind": "function",
+      "signature": "(fck_nmm2: 'float', pt_percent: 'float', d_mm: 'float', av_mm: 'float') -> 'float'"
+    },
+    {
       "name": "export_bbs",
       "kind": "function",
       "signature": "(bbs_doc: 'bbs.BBSDocument', path: 'str | Path', *, fmt: 'str' = 'csv') -> 'Path'"
+    },
+    {
+      "name": "footing_flexure",
+      "kind": "function",
+      "signature": "(Pu_kN: 'float', L_mm: 'float', B_mm: 'float', d_mm: 'float', a_mm: 'float', b_mm: 'float', fck: 'float', fy: 'float') -> 'FootingFlexureResult'"
+    },
+    {
+      "name": "footing_one_way_shear",
+      "kind": "function",
+      "signature": "(Pu_kN: 'float', L_mm: 'float', B_mm: 'float', d_mm: 'float', a_mm: 'float', b_mm: 'float', fck: 'float', pt: 'float' = 0.15) -> 'FootingOneWayShearResult'"
+    },
+    {
+      "name": "footing_punching_shear",
+      "kind": "function",
+      "signature": "(Pu_kN: 'float', L_mm: 'float', B_mm: 'float', d_mm: 'float', a_mm: 'float', b_mm: 'float', fck: 'float') -> 'FootingPunchingResult'"
     },
     {
       "name": "generate_calculation_report",
@@ -305,6 +480,11 @@
       "signature": "(csv_path: 'str | Path', *, station_multiplier: 'float' = 1.0) -> 'list[ETABSForceRow]'"
     },
     {
+      "name": "min_eccentricity_is456",
+      "kind": "function",
+      "signature": "(l_unsupported_mm: 'float', D_mm: 'float') -> 'float'"
+    },
+    {
       "name": "normalize_etabs_forces",
       "kind": "function",
       "signature": "(csv_path: 'str | Path', output_path: 'str | Path | None' = None, *, station_multiplier: 'float' = 1.0) -> 'list[ETABSEnvelopeResult]'"
@@ -313,6 +493,26 @@
       "name": "optimize_beam_cost",
       "kind": "function",
       "signature": "(*, units: 'str', span_mm: 'float', mu_knm: 'float', vu_kn: 'float', cost_profile: 'CostProfile | None' = None, cover_mm: 'int' = 40) -> 'CostOptimizationResult'"
+    },
+    {
+      "name": "optimize_pareto_front",
+      "kind": "function",
+      "signature": "(span_mm: 'float', mu_knm: 'float', vu_kn: 'float', objectives: 'list[str] | None' = None, cost_profile: 'CostProfile | None' = None, cover_mm: 'int' = 40, max_candidates: 'int' = 50, random_seed: 'int | None' = None) -> 'ParetoOptimizationResult'"
+    },
+    {
+      "name": "pm_interaction_curve_is456",
+      "kind": "function",
+      "signature": "(b_mm: 'float', D_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, n_points: 'int' = 50, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'PMInteractionResult'"
+    },
+    {
+      "name": "show_versions",
+      "kind": "function",
+      "signature": "(*, as_dict: 'bool' = False) -> 'VersionInfo | None'"
+    },
+    {
+      "name": "size_footing",
+      "kind": "function",
+      "signature": "(P_service_kN: 'float', q_safe_kPa: 'float', a_mm: 'float', b_mm: 'float', M_service_kNm: 'float' = 0.0, footing_type: 'FootingType' = <FootingType.ISOLATED_SQUARE: 1>) -> 'FootingBearingResult'"
     },
     {
       "name": "smart_analyze_design",

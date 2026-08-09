@@ -2,7 +2,7 @@
   "folder": "docs/reference",
   "type": "mixed",
   "description": "",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-07",
   "file_count": 28,
   "files": [
     {
@@ -41,16 +41,15 @@
     {
       "name": "api-levels.md",
       "type": "documentation",
-      "size_lines": 89,
-      "last_updated": "2026-04-05",
-      "title": "Which API Should I Use?",
+      "size_lines": 99,
+      "last_updated": "2026-08-07",
       "description": "structural_lib exposes three API levels. Pick the one that matches your use case. python",
-      "content_hash": "8a668d9e2243"
+      "content_hash": "3ad1f8bec983"
     },
     {
       "name": "api-manifest.json",
       "type": "config",
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-07",
       "top_level_keys": [
         "generated",
         "module",
@@ -58,31 +57,31 @@
         "count",
         "symbols"
       ],
-      "content_hash": "974a4f9488ed"
+      "content_hash": "3a4cce223b3f"
     },
     {
       "name": "api-stability.md",
       "type": "documentation",
-      "size_lines": 525,
-      "last_updated": "2026-04-06",
+      "size_lines": 616,
+      "last_updated": "2026-04-07",
       "description": "> This document defines which parts of the library are safe to depend on and which may change. This library follows Semantic Versioning:",
-      "content_hash": "2b07b3adb9c2"
+      "content_hash": "3de533961b16"
     },
     {
       "name": "api.md",
       "type": "documentation",
-      "size_lines": 3776,
-      "last_updated": "2026-04-06",
+      "size_lines": 3916,
+      "last_updated": "2026-04-07",
       "description": "Machine-readable signatures live in docs/reference/api-manifest.json. bash",
-      "content_hash": "6ef199704595"
+      "content_hash": "4ce5e4952335"
     },
     {
       "name": "automation-catalog.md",
       "type": "documentation",
       "size_lines": 2847,
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-08-07",
       "description": "> **Purpose:** Complete reference of all automation scripts in this project. > **For AI Agents:** Use this to discover available automation before implementing manually.",
-      "content_hash": "2ecfb8194ae1"
+      "content_hash": "7b84ac17b6b6"
     },
     {
       "name": "bbs-dxf-contract.md",
@@ -156,9 +155,9 @@
       "name": "fastapi-rest-api.md",
       "type": "documentation",
       "size_lines": 585,
-      "last_updated": "2026-04-06",
+      "last_updated": "2026-04-07",
       "description": "The Structural Engineering Library provides a REST API via FastAPI for beam design, analysis, and detailing per IS 456:2000. | Environment | URL |",
-      "content_hash": "4dd1e969cdd6"
+      "content_hash": "30cc6149d1f7"
     },
     {
       "name": "insights-api.md",
@@ -240,5 +239,5 @@
       "file_count": 1762
     }
   ],
-  "content_hash": "0d6ef4767e340582"
+  "content_hash": "c935496488b8fa9f"
 }

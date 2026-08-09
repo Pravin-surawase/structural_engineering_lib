@@ -1,0 +1,2556 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/migration/learning/day-27-multi-code-design/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Day 27: Multi-Code Design — IS 456 vs ACI 318 vs Eurocode 2 - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-27-multi-code-design-is-456-vs-aci-318-vs-eurocode-2" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 27: Multi-Code Design — IS 456 vs ACI 318 vs Eurocode 2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You'll Learn Today
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Theory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📖 Theory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-one-physics-three-rulebooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. One Physics, Three Rulebooks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-safety-philosophy-the-big-divide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Safety Philosophy — The Big Divide
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Safety Philosophy — The Big Divide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#is-456-eurocode-2-partial-safety-factors-on-materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IS 456 &amp; Eurocode 2: Partial Safety Factors (on Materials)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aci-318-strength-reduction-factor-on-capacity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ACI 318: Strength Reduction Factor (on Capacity)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-the-difference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the Difference?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-the-stress-block-where-the-math-diverges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The Stress Block — Where the Math Diverges
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. The Stress Block — Where the Math Diverges">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#is-456-cl-381-annex-g" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IS 456 (Cl 38.1, Annex G)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aci-318-19-section-222" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ACI 318-19 (Section 22.2)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eurocode-2-section-317" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eurocode 2 (Section 3.1.7)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-the-comparison-table-side-by-side" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The Comparison Table — Side by Side
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-design-philosophy-deeper-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Design Philosophy — Deeper Dive
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Design Philosophy — Deeper Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load-combinations-also-differ" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load Combinations Also Differ
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ductility-requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ductility Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#library-architecture-how-we-support-multiple-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏗️ Library Architecture — How We Support Multiple Codes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🏗️ Library Architecture — How We Support Multiple Codes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-registry-pattern-coreregistrypy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Registry Pattern — core/registry.py
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-abstract-base-corebasepy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Abstract Base — core/base.py
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-result-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Result Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#worked-example-same-beam-three-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Worked Example — Same Beam, Three Codes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Worked Example — Same Beam, Three Codes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#is-456-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IS 456 Solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aci-318-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ACI 318 Solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eurocode-2-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eurocode 2 Solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#results-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Results Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔧 Exercise
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Exercise">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-1-trace-the-registry-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1: Trace the Registry Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-2-sketch-an-aci-318-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2: Sketch an ACI 318 Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-3-unit-conversion-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3: Unit Conversion Trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-4-why-separate-stress-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 4: Why Separate Stress Blocks?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-you-explain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💬 Can You Explain?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📎 References
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📎 References">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#design-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Design Codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#library-source-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Library Source Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#textbooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Textbooks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#migration-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Migration Roadmap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧭 Navigation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="day-27-multi-code-design-is-456-vs-aci-318-vs-eurocode-2">Day 27: Multi-Code Design — IS 456 vs ACI 318 vs Eurocode 2<a class="headerlink" href="#day-27-multi-code-design-is-456-vs-aci-318-vs-eurocode-2" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Learning Module
+<strong>Audience:</strong> Solo developer (coder, not a civil engineer)
+<strong>Status:</strong> Active
+<strong>Importance:</strong> High
+<strong>Created:</strong> 2026-04-09
+<strong>Last Updated:</strong> 2026-04-09
+<strong>Prerequisites:</strong> Day 2 (Beam Flexure), Day 7 (IS 456 Big Picture), Day 8 (Architecture)
+<strong>Library files:</strong> <code>Python/structural_lib/core/registry.py</code>, <code>Python/structural_lib/core/base.py</code>, migration docs
+<strong>IS 456 Clauses:</strong> Cl 38.1, Annex G</p>
+<hr />
+<h2 id="what-youll-learn-today">What You'll Learn Today<a class="headerlink" href="#what-youll-learn-today" title="Permanent link">&para;</a></h2>
+<p>By the end of this module you'll understand:
+- Why three major countries use three different design codes for the same physics
+- How IS 456, ACI 318, and Eurocode 2 each handle beam flexure differently
+- The <strong>safety philosophy</strong> difference: partial factors vs strength reduction factors
+- How our library's <code>CodeRegistry</code> + <code>DesignCode</code> pattern supports all codes with one API
+- Why this architecture matters for going from India-only to global reach
+- How the same 300x500mm beam produces different steel areas under each code</p>
+<hr />
+<h2 id="theory">📖 Theory<a class="headerlink" href="#theory" title="Permanent link">&para;</a></h2>
+<h3 id="1-one-physics-three-rulebooks">1. One Physics, Three Rulebooks<a class="headerlink" href="#1-one-physics-three-rulebooks" title="Permanent link">&para;</a></h3>
+<p>Concrete and steel behave the same way in Mumbai, Chicago, and Berlin. A steel bar yields at the same strain. Concrete crushes at the same mode of failure. Gravity doesn't change at the border.</p>
+<p>But the <strong>rules</strong> engineers follow — how much safety margin to add, what shape to assume for the concrete stress block, what tests to run — differ by country. These rules are called <strong>design codes</strong>.</p>
+<p>The three dominant codes worldwide:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Country/Region</th>
+<th>Current Version</th>
+<th>Governing Body</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IS 456</strong></td>
+<td>India</td>
+<td>2000 (reaffirmed 2021)</td>
+<td>Bureau of Indian Standards (BIS)</td>
+</tr>
+<tr>
+<td><strong>ACI 318</strong></td>
+<td>USA (and much of Americas, Middle East)</td>
+<td>2019</td>
+<td>American Concrete Institute</td>
+</tr>
+<tr>
+<td><strong>Eurocode 2 (EN 1992)</strong></td>
+<td>Europe (and many former colonies)</td>
+<td>2004 + national annexes</td>
+<td>CEN (European Committee for Standardization)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Why does this matter to us?</strong> Our library currently implements IS 456 only. To serve engineers in the USA or Europe, we need ACI 318 and EC2. But we don't want three completely separate libraries — we want ONE library with pluggable codes. That's what the registry pattern gives us.</p>
+</blockquote>
+<hr />
+<h3 id="2-safety-philosophy-the-big-divide">2. Safety Philosophy — The Big Divide<a class="headerlink" href="#2-safety-philosophy-the-big-divide" title="Permanent link">&para;</a></h3>
+<p>This is the most important conceptual difference. Both approaches target the same goal: probability of structural failure less than <span class="arithmatex">\(10^{-6}\)</span> (one in a million). But they get there differently.</p>
+<h4 id="is-456-eurocode-2-partial-safety-factors-on-materials">IS 456 &amp; Eurocode 2: Partial Safety Factors (on Materials)<a class="headerlink" href="#is-456-eurocode-2-partial-safety-factors-on-materials" title="Permanent link">&para;</a></h4>
+<p>The philosophy is: <strong>weaken the materials, then check if the weakened materials can still carry the load.</strong></p>
+<div class="arithmatex">\[f_{cd} = \frac{f_{ck}}{\gamma_c} = \frac{f_{ck}}{1.50}\]</div>
+<div class="arithmatex">\[f_{yd} = \frac{f_y}{\gamma_s} = \frac{f_y}{1.15}\]</div>
+<p>You divide the characteristic strength of concrete by <span class="arithmatex">\(\gamma_c = 1.50\)</span> and steel by <span class="arithmatex">\(\gamma_s = 1.15\)</span>. These factors account for material variability, construction quality, and model uncertainty.</p>
+<blockquote>
+<p><strong>Analogy:</strong> It's like testing whether your backpack can hold 20 kg — but you assume the backpack fabric is 33% weaker than the manufacturer says, and the stitching is 13% weaker. If it still holds, you're safe.</p>
+</blockquote>
+<h4 id="aci-318-strength-reduction-factor-on-capacity">ACI 318: Strength Reduction Factor (on Capacity)<a class="headerlink" href="#aci-318-strength-reduction-factor-on-capacity" title="Permanent link">&para;</a></h4>
+<p>The philosophy is: <strong>calculate the full capacity, then multiply it by a reduction factor <span class="arithmatex">\(\phi\)</span>.</strong></p>
+<div class="arithmatex">\[\phi M_n \geq M_u\]</div>
+<p>Where <span class="arithmatex">\(\phi\)</span> depends on the failure mode:
+- <span class="arithmatex">\(\phi = 0.90\)</span> for flexure (ductile failure — gives warning before collapse)
+- <span class="arithmatex">\(\phi = 0.75\)</span> for shear (brittle failure — no warning)
+- <span class="arithmatex">\(\phi = 0.65\)</span> for compression-controlled (column-like failure)</p>
+<blockquote>
+<p><strong>Analogy:</strong> You calculate that the backpack can genuinely hold 100 kg. But you only trust 90% of that for normal loads (90 kg) and 75% for sudden impacts (75 kg).</p>
+</blockquote>
+<h4 id="why-the-difference">Why the Difference?<a class="headerlink" href="#why-the-difference" title="Permanent link">&para;</a></h4>
+<p>Both calibrated to the same reliability index (<span class="arithmatex">\(\beta \approx 3.5\)</span>, i.e., <span class="arithmatex">\(P_f \approx 10^{-6}\)</span>). The partial factor method (IS 456/EC2) is more granular — you can separately account for concrete quality vs steel quality. The <span class="arithmatex">\(\phi\)</span>-factor method (ACI) is simpler — one number per failure mode.</p>
+<p>Neither is "better." They're different mathematical routes to the same safety destination.</p>
+<hr />
+<h3 id="3-the-stress-block-where-the-math-diverges">3. The Stress Block — Where the Math Diverges<a class="headerlink" href="#3-the-stress-block-where-the-math-diverges" title="Permanent link">&para;</a></h3>
+<p>When a beam bends, the concrete in compression follows a curved (parabolic) stress-strain curve. For design, we simplify this curve into a block shape. Each code simplifies differently.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>  Actual stress          IS 456 block         ACI 318 block          EC2 block
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  distribution           (rectangular)        (Whitney block)     (parabolic-rect)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  +------+              +----------+          +----------+         +---------+
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  | /--\ |              | 0.36 fck |          | 0.85 f&#39;c |         |/--------|
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  |/    \|              |          |          |          |         /|        |
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  /      |              |          |          |          |        / |        |
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  |      |              |          |          |          |       |  |        |
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  +------+              +----------+          +----------+       +--+--------+
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    ^                     depth=0.42xu         depth=a/2           combined
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  parabolic                                     a=B1*c              shape
+</code></pre></div>
+<h4 id="is-456-cl-381-annex-g">IS 456 (Cl 38.1, Annex G)<a class="headerlink" href="#is-456-cl-381-annex-g" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Stress block: 0.36 <span class="arithmatex">\(f_{ck}\)</span> across the compression zone</li>
+<li>Lever arm factor: <span class="arithmatex">\(z = d - 0.42 x_u\)</span></li>
+<li>Maximum neutral axis: <span class="arithmatex">\(x_{u,max}/d = 0.46\)</span> for Fe 415, <span class="arithmatex">\(0.48\)</span> for Fe 500</li>
+</ul>
+<p>The design moment capacity of a singly reinforced beam:</p>
+<div class="arithmatex">\[M_{u,lim} = 0.36 \cdot f_{ck} \cdot b \cdot x_u \left(d - 0.42 \cdot x_u\right)\]</div>
+<h4 id="aci-318-19-section-222">ACI 318-19 (Section 22.2)<a class="headerlink" href="#aci-318-19-section-222" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Whitney stress block: uniform <span class="arithmatex">\(0.85 f'_c\)</span> over depth <span class="arithmatex">\(a = \beta_1 \cdot c\)</span></li>
+<li><span class="arithmatex">\(\beta_1 = 0.85\)</span> for <span class="arithmatex">\(f'_c \leq 28\)</span> MPa, decreasing by 0.05 per 7 MPa above that</li>
+<li>Tension-controlled limit: net tensile strain <span class="arithmatex">\(\varepsilon_t \geq 0.005\)</span></li>
+</ul>
+<div class="arithmatex">\[M_n = A_s \cdot f_y \left(d - \frac{a}{2}\right), \quad a = \frac{A_s \cdot f_y}{0.85 \cdot f'_c \cdot b}\]</div>
+<h4 id="eurocode-2-section-317">Eurocode 2 (Section 3.1.7)<a class="headerlink" href="#eurocode-2-section-317" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Two options: parabolic-rectangular (more accurate) or simplified rectangular</li>
+<li>Simplified rectangular: <span class="arithmatex">\(\eta \cdot f_{cd}\)</span> over depth <span class="arithmatex">\(\lambda \cdot x\)</span></li>
+<li><span class="arithmatex">\(\eta = 1.0\)</span> and <span class="arithmatex">\(\lambda = 0.8\)</span> for <span class="arithmatex">\(f_{ck} \leq 50\)</span> MPa</li>
+<li>Recommended neutral axis limit: <span class="arithmatex">\(x_u/d \leq 0.45\)</span> to ensure ductility</li>
+</ul>
+<div class="arithmatex">\[M_{Rd} = \eta \cdot f_{cd} \cdot b \cdot \lambda x \left(d - \frac{\lambda x}{2}\right)\]</div>
+<hr />
+<h3 id="4-the-comparison-table-side-by-side">4. The Comparison Table — Side by Side<a class="headerlink" href="#4-the-comparison-table-side-by-side" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>IS 456:2000</th>
+<th>ACI 318-19</th>
+<th>Eurocode 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Concrete grade notation</td>
+<td><span class="arithmatex">\(f_{ck}\)</span> (characteristic cube strength)</td>
+<td><span class="arithmatex">\(f'_c\)</span> (cylinder strength)</td>
+<td><span class="arithmatex">\(f_{ck}\)</span> (characteristic cylinder strength)</td>
+</tr>
+<tr>
+<td>Typical steel yield</td>
+<td><span class="arithmatex">\(f_y = 500\)</span> MPa (Fe 500)</td>
+<td><span class="arithmatex">\(f_y = 60\)</span> ksi = 414 MPa (Grade 60)</td>
+<td><span class="arithmatex">\(f_{yk} = 500\)</span> MPa (B500)</td>
+</tr>
+<tr>
+<td>Safety: concrete</td>
+<td><span class="arithmatex">\(\gamma_c = 1.50\)</span></td>
+<td><span class="arithmatex">\(\phi\)</span> factor approach</td>
+<td><span class="arithmatex">\(\gamma_c = 1.50\)</span></td>
+</tr>
+<tr>
+<td>Safety: steel</td>
+<td><span class="arithmatex">\(\gamma_s = 1.15\)</span></td>
+<td><span class="arithmatex">\(\phi = 0.90\)</span> (flexure)</td>
+<td><span class="arithmatex">\(\gamma_s = 1.15\)</span></td>
+</tr>
+<tr>
+<td>Stress block shape</td>
+<td>Rectangular (0.36 <span class="arithmatex">\(f_{ck}\)</span>)</td>
+<td>Whitney block (0.85 <span class="arithmatex">\(f'_c\)</span>)</td>
+<td>Parabolic-rectangular or simplified</td>
+</tr>
+<tr>
+<td>Stress block depth factor</td>
+<td><span class="arithmatex">\(0.42 x_u\)</span> (centroid)</td>
+<td><span class="arithmatex">\(a = \beta_1 c\)</span></td>
+<td><span class="arithmatex">\(\lambda x\)</span> (<span class="arithmatex">\(\lambda = 0.8\)</span>)</td>
+</tr>
+<tr>
+<td>Max neutral axis (<span class="arithmatex">\(x_u/d\)</span>)</td>
+<td>0.46 (Fe 415), 0.48 (Fe 500)</td>
+<td>Limited by <span class="arithmatex">\(\varepsilon_t \geq 0.005\)</span></td>
+<td>0.45 (recommended)</td>
+</tr>
+<tr>
+<td>Min reinforcement</td>
+<td><span class="arithmatex">\(0.85 bd / f_y\)</span> (Cl 26.5.1.1)</td>
+<td><span class="arithmatex">\(\max(0.25\sqrt{f'_c},\; 1.4) \cdot bd / f_y\)</span></td>
+<td><span class="arithmatex">\(0.26 (f_{ctm}/f_{yk}) b_t d\)</span></td>
+</tr>
+<tr>
+<td>Concrete strength specimen</td>
+<td>150 mm cube</td>
+<td>150x300 mm cylinder</td>
+<td>150x300 mm cylinder</td>
+</tr>
+<tr>
+<td>Cube to cylinder relation</td>
+<td><span class="arithmatex">\(f'_c \approx 0.8 f_{ck,cube}\)</span></td>
+<td>Native cylinder</td>
+<td>Native cylinder</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Key subtlety:</strong> IS 456 uses <em>cube</em> strength while ACI and EC2 use <em>cylinder</em> strength. A cylinder is roughly 80% of the cube strength for the same concrete. When comparing M25 (IS 456) to <span class="arithmatex">\(f'_c = 20\)</span> MPa (ACI), they're approximately the same concrete — just tested differently.</p>
+</blockquote>
+<hr />
+<h3 id="5-design-philosophy-deeper-dive">5. Design Philosophy — Deeper Dive<a class="headerlink" href="#5-design-philosophy-deeper-dive" title="Permanent link">&para;</a></h3>
+<h4 id="load-combinations-also-differ">Load Combinations Also Differ<a class="headerlink" href="#load-combinations-also-differ" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Load Case</th>
+<th>IS 456 (IS 875)</th>
+<th>ACI 318</th>
+<th>Eurocode 0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dead + Live</td>
+<td><span class="arithmatex">\(1.5(DL + LL)\)</span></td>
+<td><span class="arithmatex">\(1.2DL + 1.6LL\)</span></td>
+<td><span class="arithmatex">\(1.35DL + 1.5LL\)</span></td>
+</tr>
+<tr>
+<td>Dead + Wind</td>
+<td><span class="arithmatex">\(1.5(DL + WL)\)</span> or <span class="arithmatex">\(0.9DL + 1.5WL\)</span></td>
+<td><span class="arithmatex">\(1.2DL + 1.0W\)</span></td>
+<td><span class="arithmatex">\(1.35DL + 1.5WL\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The factored moment <span class="arithmatex">\(M_u\)</span> you feed into the flexure formula already has these factors baked in. Different load factors x different material factors = calibrated to the same reliability target.</p>
+<h4 id="ductility-requirements">Ductility Requirements<a class="headerlink" href="#ductility-requirements" title="Permanent link">&para;</a></h4>
+<p>All three codes want beams to fail in a <strong>ductile</strong> manner — the steel yields before concrete crushes. This gives warning (cracks, deflection) before collapse. They enforce this differently:</p>
+<ul>
+<li><strong>IS 456:</strong> Caps <span class="arithmatex">\(x_u/d\)</span> at <span class="arithmatex">\(x_{u,max}/d\)</span> (explicit limit)</li>
+<li><strong>ACI 318:</strong> Requires net tensile strain <span class="arithmatex">\(\varepsilon_t \geq 0.005\)</span> (implicit limit via strain)</li>
+<li><strong>EC2:</strong> Recommends <span class="arithmatex">\(x_u/d \leq 0.45\)</span> and mandates minimum ductility class</li>
+</ul>
+<hr />
+<h2 id="library-architecture-how-we-support-multiple-codes">🏗️ Library Architecture — How We Support Multiple Codes<a class="headerlink" href="#library-architecture-how-we-support-multiple-codes" title="Permanent link">&para;</a></h2>
+<h3 id="the-registry-pattern-coreregistrypy">The Registry Pattern — <code>core/registry.py</code><a class="headerlink" href="#the-registry-pattern-coreregistrypy" title="Permanent link">&para;</a></h3>
+<p>Our library uses the <strong>Strategy Pattern</strong> combined with a <strong>Registry</strong>. Instead of <code>if code == "IS456": ...</code> scattered everywhere, each code registers itself and the application picks the right one at runtime.</p>
+<p>Here's the actual code from <code>core/registry.py</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">CodeRegistry</span><span class="p">:</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Registry for design code implementations.&quot;&quot;&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">_codes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">DesignCode</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">_instances</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DesignCode</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">register</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">code_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">code_class</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">DesignCode</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Register a design code implementation.&quot;&quot;&quot;</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        <span class="bp">cls</span><span class="o">.</span><span class="n">_codes</span><span class="p">[</span><span class="n">code_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">code_class</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">code_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DesignCode</span><span class="p">:</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get an instance of a design code (cached).&quot;&quot;&quot;</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        <span class="k">if</span> <span class="n">code_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instances</span><span class="p">:</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>            <span class="k">if</span> <span class="n">code_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_codes</span><span class="p">:</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>                <span class="n">available</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_codes</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="ow">or</span> <span class="s2">&quot;none&quot;</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>                    <span class="sa">f</span><span class="s2">&quot;Design code &#39;</span><span class="si">{</span><span class="n">code_id</span><span class="si">}</span><span class="s2">&#39; not found. &quot;</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>                    <span class="sa">f</span><span class="s2">&quot;Available codes: </span><span class="si">{</span><span class="n">available</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>                <span class="p">)</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>            <span class="bp">cls</span><span class="o">.</span><span class="n">_instances</span><span class="p">[</span><span class="n">code_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_codes</span><span class="p">[</span><span class="n">code_id</span><span class="p">]()</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_instances</span><span class="p">[</span><span class="n">code_id</span><span class="p">]</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>    <span class="nd">@classmethod</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">list_codes</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;List all registered code IDs.&quot;&quot;&quot;</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_codes</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</code></pre></div>
+<p>And the decorator that makes registration clean:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">register_code</span><span class="p">(</span><span class="n">code_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Decorator to register a design code class.&quot;&quot;&quot;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">DesignCode</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">[</span><span class="n">DesignCode</span><span class="p">]:</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>        <span class="n">CodeRegistry</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">code_id</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="k">return</span> <span class="bp">cls</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="k">return</span> <span class="n">decorator</span>
+</code></pre></div>
+<p>Usage looks like this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">CodeRegistry</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># List what&#39;s available</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">codes</span> <span class="o">=</span> <span class="n">CodeRegistry</span><span class="o">.</span><span class="n">list_codes</span><span class="p">()</span>   <span class="c1"># -&gt; [&quot;IS456&quot;]</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># Get IS 456 and compute</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">is456</span> <span class="o">=</span> <span class="n">CodeRegistry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;IS456&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">result</span> <span class="o">=</span> <span class="n">is456</span><span class="o">.</span><span class="n">flexure</span><span class="o">.</span><span class="n">required_steel_area</span><span class="p">(</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">Mu</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span> <span class="n">fck</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mi">500</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p><strong>Why is this good?</strong> Adding ACI 318 means writing a new class and decorating it with <code>@register_code("ACI318")</code>. Zero changes to existing IS 456 code. Zero changes to the application layer. The registry finds it automatically.</p>
+</blockquote>
+<hr />
+<h3 id="the-abstract-base-corebasepy">The Abstract Base — <code>core/base.py</code><a class="headerlink" href="#the-abstract-base-corebasepy" title="Permanent link">&para;</a></h3>
+<p>The <code>DesignCode</code> abstract base class defines what every code implementation must provide:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">DesignCode</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base class for design codes.&quot;&quot;&quot;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="nd">@property</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="nd">@abstractmethod</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">code_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Unique code identifier.&quot;&quot;&quot;</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="nd">@property</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="nd">@abstractmethod</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">code_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Human-readable code name.&quot;&quot;&quot;</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>    <span class="nd">@property</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>    <span class="nd">@abstractmethod</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">code_version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Code version or year.&quot;&quot;&quot;</span>
+</code></pre></div>
+<p>And the <code>FlexureDesigner</code> interface defines exactly what flexure calculations must accept:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">FlexureDesigner</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Abstract base for flexural design calculations.&quot;&quot;&quot;</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="nd">@abstractmethod</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">required_steel_area</span><span class="p">(</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        <span class="bp">self</span><span class="p">,</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        <span class="n">Mu</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>   <span class="c1"># Design moment (kN.m)</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>        <span class="n">b</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>    <span class="c1"># Width (mm)</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>        <span class="n">d</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>    <span class="c1"># Effective depth (mm)</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>        <span class="n">fck</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>  <span class="c1"># Concrete strength (N/mm2)</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>        <span class="n">fy</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>   <span class="c1"># Steel yield strength (N/mm2)</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DesignResult</span><span class="p">:</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate required area of tension steel.&quot;&quot;&quot;</span>
+</code></pre></div>
+<p>Every code — IS 456, ACI 318, Eurocode 2 — must implement the same method signature. The caller never needs to know which code is running behind the scenes.</p>
+<h3 id="the-result-container">The Result Container<a class="headerlink" href="#the-result-container" title="Permanent link">&para;</a></h3>
+<p>All codes return the same <code>DesignResult</code> structure:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nd">@dataclass</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">DesignResult</span><span class="p">:</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">success</span><span class="p">:</span> <span class="nb">bool</span>                          <span class="c1"># Did the design work?</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">value</span><span class="p">:</span> <span class="n">Any</span>                             <span class="c1"># The computed result (Ast, Mu, etc.)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">utilization_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># demand / capacity</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">warnings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>      <span class="c1"># Edge-case flags</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">code_reference</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>      <span class="c1"># &quot;IS 456 Cl 38.1&quot; or &quot;ACI 318 S22.2&quot;</span>
+</code></pre></div>
+<p>This means the FastAPI endpoint and React frontend don't care which code was used — they render the same fields. Only the <code>code_reference</code> changes.</p>
+<hr />
+<h2 id="worked-example-same-beam-three-codes">🎯 Worked Example — Same Beam, Three Codes<a class="headerlink" href="#worked-example-same-beam-three-codes" title="Permanent link">&para;</a></h2>
+<p><strong>Problem:</strong> Design a reinforced concrete beam for flexure.
+- Section: <span class="arithmatex">\(b = 300\)</span> mm, <span class="arithmatex">\(d = 450\)</span> mm (effective depth)
+- Concrete: M25 (<span class="arithmatex">\(f_{ck} = 25\)</span> N/mm2)
+- Steel: Fe 500 (<span class="arithmatex">\(f_y = 500\)</span> N/mm2)
+- Factored moment: <span class="arithmatex">\(M_u = 180\)</span> kN.m</p>
+<h3 id="is-456-solution">IS 456 Solution<a class="headerlink" href="#is-456-solution" title="Permanent link">&para;</a></h3>
+<p><strong>Step 1:</strong> Check if singly reinforced is sufficient.</p>
+<div class="arithmatex">\[M_{u,lim} = 0.133 \cdot f_{ck} \cdot b \cdot d^2\]</div>
+<div class="arithmatex">\[M_{u,lim} = 0.133 \times 25 \times 300 \times 450^2 = 201.9 \text{ kN.m}\]</div>
+<p>Since <span class="arithmatex">\(M_u = 180 &lt; 201.9 = M_{u,lim}\)</span>, singly reinforced is OK.</p>
+<p><strong>Step 2:</strong> Find neutral axis depth.</p>
+<div class="arithmatex">\[M_u = 0.36 \cdot f_{ck} \cdot b \cdot x_u (d - 0.42 \cdot x_u)\]</div>
+<div class="arithmatex">\[180 \times 10^6 = 0.36 \times 25 \times 300 \times x_u (450 - 0.42 x_u)\]</div>
+<p>Solving the quadratic: <span class="arithmatex">\(x_u \approx 175\)</span> mm, so <span class="arithmatex">\(x_u/d = 0.389 &lt; 0.48\)</span> (OK)</p>
+<p><strong>Step 3:</strong> Calculate steel area.</p>
+<div class="arithmatex">\[A_{st} = \frac{0.36 \cdot f_{ck} \cdot b \cdot x_u}{0.87 \cdot f_y} = \frac{0.36 \times 25 \times 300 \times 175}{0.87 \times 500}\]</div>
+<div class="arithmatex">\[\boxed{A_{st} \approx 1088 \text{ mm}^2}\]</div>
+<hr />
+<h3 id="aci-318-solution">ACI 318 Solution<a class="headerlink" href="#aci-318-solution" title="Permanent link">&para;</a></h3>
+<p><strong>Step 1:</strong> Convert concrete strength. IS 456 M25 (cube) is roughly <span class="arithmatex">\(f'_c = 20\)</span> MPa (cylinder).</p>
+<p><strong>Step 2:</strong> Calculate required steel using iteration.</p>
+<div class="arithmatex">\[A_s = \frac{M_u}{\phi \cdot f_y (d - a/2)}\]</div>
+<p>First estimate — assume <span class="arithmatex">\(a \approx 100\)</span> mm:</p>
+<div class="arithmatex">\[A_s \approx \frac{180 \times 10^6}{0.9 \times 414 \times (450 - 50)} = 1210 \text{ mm}^2\]</div>
+<p>Iterate: <span class="arithmatex">\(a = \frac{A_s \cdot f_y}{0.85 \cdot f'_c \cdot b} = \frac{1210 \times 414}{0.85 \times 20 \times 300} = 98\)</span> mm</p>
+<p>Re-calculate: <span class="arithmatex">\(A_s = \frac{180 \times 10^6}{0.9 \times 414 \times (450 - 49)} = 1205\)</span> mm2</p>
+<p>After convergence: <span class="arithmatex">\(\boxed{A_s \approx 1205 \text{ mm}^2}\)</span></p>
+<p><strong>Step 3:</strong> Check ductility — net tensile strain <span class="arithmatex">\(\varepsilon_t\)</span>:</p>
+<div class="arithmatex">\[c = \frac{a}{\beta_1} = \frac{98}{0.85} = 115 \text{ mm}\]</div>
+<div class="arithmatex">\[\varepsilon_t = 0.003 \times \frac{d - c}{c} = 0.003 \times \frac{450 - 115}{115} = 0.0087 &gt; 0.005 \; \checkmark\]</div>
+<hr />
+<h3 id="eurocode-2-solution">Eurocode 2 Solution<a class="headerlink" href="#eurocode-2-solution" title="Permanent link">&para;</a></h3>
+<p><strong>Step 1:</strong> Design strengths.</p>
+<div class="arithmatex">\[f_{cd} = \frac{f_{ck}}{\gamma_c} = \frac{25}{1.50} = 16.67 \text{ N/mm}^2\]</div>
+<div class="arithmatex">\[f_{yd} = \frac{f_{yk}}{\gamma_s} = \frac{500}{1.15} = 434.8 \text{ N/mm}^2\]</div>
+<p><strong>Step 2:</strong> Compute <span class="arithmatex">\(K\)</span> coefficient:</p>
+<div class="arithmatex">\[K = \frac{M_u}{b \cdot d^2 \cdot f_{ck}} = \frac{180 \times 10^6}{300 \times 450^2 \times 25} = 0.1185\]</div>
+<p>Check: <span class="arithmatex">\(K &lt; K_{max} = 0.167\)</span> (for <span class="arithmatex">\(x_u/d \leq 0.45\)</span>) — singly reinforced OK</p>
+<p><strong>Step 3:</strong> Lever arm from EC2 design table:</p>
+<div class="arithmatex">\[z = d \left[0.5 + \sqrt{0.25 - \frac{K}{1.134}}\right] = 450 \left[0.5 + \sqrt{0.25 - 0.1045}\right] = 400 \text{ mm}\]</div>
+<p><strong>Step 4:</strong> Steel area:</p>
+<div class="arithmatex">\[A_s = \frac{M_u}{f_{yd} \cdot z} = \frac{180 \times 10^6}{434.8 \times 400}\]</div>
+<div class="arithmatex">\[\boxed{A_s \approx 1035 \text{ mm}^2}\]</div>
+<hr />
+<h3 id="results-comparison">Results Comparison<a class="headerlink" href="#results-comparison" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>IS 456</th>
+<th>ACI 318</th>
+<th>Eurocode 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(A_{st}\)</span> required</td>
+<td><strong>1088 mm2</strong></td>
+<td><strong>~1205 mm2</strong></td>
+<td><strong>~1035 mm2</strong></td>
+</tr>
+<tr>
+<td>Safety mechanism</td>
+<td><span class="arithmatex">\(\gamma_c = 1.5\)</span>, <span class="arithmatex">\(\gamma_s = 1.15\)</span></td>
+<td><span class="arithmatex">\(\phi = 0.9\)</span></td>
+<td><span class="arithmatex">\(\gamma_c = 1.5\)</span>, <span class="arithmatex">\(\gamma_s = 1.15\)</span></td>
+</tr>
+<tr>
+<td>Steel design strength</td>
+<td><span class="arithmatex">\(0.87 \times 500 = 435\)</span> MPa</td>
+<td>414 MPa (Grade 60)</td>
+<td><span class="arithmatex">\(500/1.15 = 435\)</span> MPa</td>
+</tr>
+<tr>
+<td>Concrete input</td>
+<td>25 MPa (cube)</td>
+<td>20 MPa (cylinder)</td>
+<td>25 MPa (cylinder)</td>
+</tr>
+<tr>
+<td>Ductility check</td>
+<td><span class="arithmatex">\(x_u/d = 0.39 &lt; 0.48\)</span></td>
+<td><span class="arithmatex">\(\varepsilon_t = 0.0087 &gt; 0.005\)</span></td>
+<td><span class="arithmatex">\(K = 0.119 &lt; 0.167\)</span></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Key takeaway:</strong> ACI gives the highest steel area because Grade 60 rebar is only 414 MPa (vs 500 in IS 456 and EC2). EC2 gives the lowest because the EC2 rectangular stress block extracts slightly more lever arm from the section. IS 456 lands in the middle. All three are safe — they just distribute the safety margin differently.</p>
+</blockquote>
+<hr />
+<h2 id="exercise">🔧 Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<h3 id="exercise-1-trace-the-registry-pattern">Exercise 1: Trace the Registry Pattern<a class="headerlink" href="#exercise-1-trace-the-registry-pattern" title="Permanent link">&para;</a></h3>
+<p>Read <code>Python/structural_lib/core/registry.py</code> and answer:
+1. What happens if you call <code>CodeRegistry.get("ACI318")</code> before any ACI module is imported?
+2. Why does <code>_instances</code> cache the created object? What problem does this solve?
+3. Why is <code>clear()</code> marked as "for testing"? What would break if you called it in production?</p>
+<h3 id="exercise-2-sketch-an-aci-318-implementation">Exercise 2: Sketch an ACI 318 Implementation<a class="headerlink" href="#exercise-2-sketch-an-aci-318-implementation" title="Permanent link">&para;</a></h3>
+<p>Using <code>core/base.py</code> as the template, write pseudocode for an <code>ACI318FlexureDesigner</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">ACI318FlexureDesigner</span><span class="p">(</span><span class="n">FlexureDesigner</span><span class="p">):</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">required_steel_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mu</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">fck</span><span class="p">,</span> <span class="n">fy</span><span class="p">):</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>        <span class="c1"># Step 1: beta_1 = 0.85 if fck &lt;= 28, else decrease</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        <span class="c1"># Step 2: Assume &#39;a&#39;, compute As = Mu / (phi * fy * (d - a/2))</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>        <span class="c1"># Step 3: Recompute a = As * fy / (0.85 * fck * b)</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        <span class="c1"># Step 4: Iterate steps 2-3 until convergence</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        <span class="c1"># Step 5: Check epsilon_t = 0.003 * (d - c) / c &gt;= 0.005</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        <span class="c1"># Step 6: Return DesignResult(success=True, value=As, ...)</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>        <span class="k">pass</span>
+</code></pre></div>
+<h3 id="exercise-3-unit-conversion-trap">Exercise 3: Unit Conversion Trap<a class="headerlink" href="#exercise-3-unit-conversion-trap" title="Permanent link">&para;</a></h3>
+<p>An engineer in the US has <span class="arithmatex">\(f'_c = 4000\)</span> psi concrete and Grade 60 rebar (<span class="arithmatex">\(f_y = 60\)</span> ksi). Convert to our library's units (N/mm2, MPa) and call the flexure function. What are the values?</p>
+<blockquote>
+<p>Hint: 1 ksi = 6.895 MPa, 1 psi = 0.006895 MPa. So <span class="arithmatex">\(f'_c = 4000 \times 0.006895 = 27.58\)</span> MPa, <span class="arithmatex">\(f_y = 60 \times 6.895 = 413.7\)</span> MPa.</p>
+</blockquote>
+<h3 id="exercise-4-why-separate-stress-blocks">Exercise 4: Why Separate Stress Blocks?<a class="headerlink" href="#exercise-4-why-separate-stress-blocks" title="Permanent link">&para;</a></h3>
+<p>Explain in your own words: if all three codes approximate the same parabolic stress-strain curve, why don't they all use the same rectangular block parameters?</p>
+<blockquote>
+<p>Think about: when each code was written, what experimental data was available, what level of computational power engineers had, and how each country balances simplicity vs accuracy.</p>
+</blockquote>
+<hr />
+<h2 id="can-you-explain">💬 Can You Explain?<a class="headerlink" href="#can-you-explain" title="Permanent link">&para;</a></h2>
+<p>Test your understanding — try to answer each before reading the answer.</p>
+<p><strong>Q1: Why is <span class="arithmatex">\(\gamma_c\)</span> larger than <span class="arithmatex">\(\gamma_s\)</span> (1.50 vs 1.15)?</strong></p>
+<details>
+<summary>Answer</summary>
+
+Concrete is mixed and cured on-site — quality varies enormously depending on water content, curing temperature, vibration, and workmanship. Steel is factory-made under controlled conditions with mill certificates. The higher gamma for concrete reflects its greater variability and uncertainty in as-built strength.
+</details>
+
+<p><strong>Q2: If ACI uses phi on capacity and IS 456 uses gamma on materials, can you get the same answer?</strong></p>
+<details>
+<summary>Answer</summary>
+
+Yes, for specific cases. The ACI phi = 0.9 for flexure is roughly equivalent to IS 456's combined gamma_c = 1.5 and gamma_s = 1.15 when you work through the math. Both are calibrated to a target reliability index beta = 3.5. The numerical equivalence depends on the specific dead-to-live load ratio and reinforcement percentage.
+</details>
+
+<p><strong>Q3: Why does the registry cache instances in <code>_instances</code>?</strong></p>
+<details>
+<summary>Answer</summary>
+
+Creating a `DesignCode` object might involve loading material tables, initializing lookup data, or setting up interpolation functions. Caching ensures we only do this once per code. It's a Singleton-like pattern — every caller gets the same instance rather than potentially divergent copies with different state.
+</details>
+
+<p><strong>Q4: What's the practical consequence of IS 456 using cube strength and EC2 using cylinder strength?</strong></p>
+<details>
+<summary>Answer</summary>
+
+If you naively plug IS 456's fck = 25 (cube) into an EC2 formula expecting cylinder strength, you're overestimating concrete capacity by ~25%. This is a real-world error that happens when engineers switch between Indian and European projects. Our library must handle this conversion internally — the user specifies their concrete grade in the code's native convention, and the implementation converts as needed.
+</details>
+
+<p><strong>Q5: Why does <code>FlexureDesigner</code> use <code>fck</code> (not <code>fc_prime</code>) as the parameter name?</strong></p>
+<details>
+<summary>Answer</summary>
+
+Our library standardizes on one parameter name per physical quantity. `fck` means "characteristic concrete compressive strength" — and each code's implementation interprets it according to its own convention. For ACI 318, the implementation internally treats `fck` as f'c (cylinder strength). This is a deliberate abstraction: the interface is code-neutral, the implementation is code-specific.
+</details>
+
+<hr />
+<h2 id="references">📎 References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<h3 id="design-codes">Design Codes<a class="headerlink" href="#design-codes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>IS 456:2000</strong> — Indian Standard for Plain and Reinforced Concrete (4th revision), BIS</li>
+<li><strong>ACI 318-19</strong> — Building Code Requirements for Structural Concrete, ACI</li>
+<li><strong>EN 1992-1-1:2004</strong> (Eurocode 2) — Design of Concrete Structures: General Rules, CEN</li>
+</ul>
+<h3 id="library-source-files">Library Source Files<a class="headerlink" href="#library-source-files" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>Python/structural_lib/core/registry.py</code> — <code>CodeRegistry</code> with Strategy + Singleton pattern</li>
+<li><code>Python/structural_lib/core/base.py</code> — <code>DesignCode</code>, <code>FlexureDesigner</code>, <code>ShearDesigner</code> ABCs</li>
+<li><code>Python/structural_lib/codes/is456/</code> — Current IS 456 implementation (reference for future codes)</li>
+</ul>
+<h3 id="textbooks">Textbooks<a class="headerlink" href="#textbooks" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Pillai &amp; Menon, <em>Reinforced Concrete Design</em> 4th Ed. — IS 456 worked examples</li>
+<li>Wight &amp; MacGregor, <em>Reinforced Concrete: Mechanics and Design</em> 7th Ed. — ACI 318 reference</li>
+<li>Mosley, Bungey &amp; Hulse, <em>Reinforced Concrete Design to Eurocode 2</em> 7th Ed. — EC2 examples</li>
+</ul>
+<h3 id="migration-roadmap">Migration Roadmap<a class="headerlink" href="#migration-roadmap" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Phase 1 (DONE):</strong> IS 456 — complete beam design, shear, torsion, detailing, ductile design</li>
+<li><strong>Phase 2 (Planned):</strong> ACI 318 — flexure, shear, detailing (same <code>FlexureDesigner</code> interface)</li>
+<li><strong>Phase 3 (Planned):</strong> Eurocode 2 — flexure, shear, detailing (with national annex support)</li>
+<li><strong>Future:</strong> Shared math extraction — stress-block geometry, strain compatibility, and interpolation utilities that are code-independent move to <code>common/</code></li>
+</ul>
+<hr />
+<h2 id="navigation">🧭 Navigation<a class="headerlink" href="#navigation" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Previous</th>
+<th>Up</th>
+<th>Next</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Day 26</td>
+<td><a href="../learning/">Learning Path</a></td>
+<td>Day 28</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1481,15 +1481,87 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#current-state-2026-01-07" class="md-nav__link">
+  <a href="#current-maintenance-state-2026-08-07" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Current State (2026-01-07)
+        Current Maintenance State (2026-08-07)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Current State (2026-01-07)">
+    <nav class="md-nav" aria-label="Current Maintenance State (2026-08-07)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recovery-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recovery Context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#product-and-engineering-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Product and Engineering Baseline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#current-risks-and-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Risks and Decisions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recovery-progress-2026-08-07" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recovery Progress (2026-08-07)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#canonical-maintenance-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Canonical Maintenance Records
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historical-state-2026-01-07" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Historical State (2026-01-07)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Historical State (2026-01-07)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1958,6 +2030,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#2026-08-07-maintenance-and-agent-operations-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2026-08-07 — Maintenance and Agent Operations Update
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1984,12 +2067,75 @@
 <strong>Status:</strong> Active
 <strong>Importance:</strong> High
 <strong>Created:</strong> 2025-01-01
-<strong>Last Updated:</strong> 2026-01-13</p>
+<strong>Last Updated:</strong> 2026-08-07</p>
 <hr />
 <p><strong>Purpose:</strong> Maintain continuity across sessions and agents
 <strong>Update Frequency:</strong> After major milestones or architectural decisions</p>
 <hr />
-<h2 id="current-state-2026-01-07">Current State (2026-01-07)<a class="headerlink" href="#current-state-2026-01-07" title="Permanent link">&para;</a></h2>
+<h2 id="current-maintenance-state-2026-08-07">Current Maintenance State (2026-08-07)<a class="headerlink" href="#current-maintenance-state-2026-08-07" title="Permanent link">&para;</a></h2>
+<h3 id="recovery-context">Recovery Context<a class="headerlink" href="#recovery-context" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Development resumed after a four-month pause and a Mac laptop → Mac Mini transfer.</li>
+<li>Git history, reachable objects, sample data, package source, and ARM64 Python environment transferred intact.</li>
+<li>The inherited April worktree began with 73 tracked modifications and 47 untracked files and is preserved in pushed checkpoint <code>b28ee4e3</code>.</li>
+<li>Seventy modified Python files are AST-equivalent formatter output; untracked learning/migration/master-plan docs contain roughly 25,000 lines and require human/editorial triage.</li>
+<li>Do not reset or bulk-clean the preserved history; continue through the enforced Git workflow on <code>task/MAINT-001</code>.</li>
+</ul>
+<h3 id="product-and-engineering-baseline">Product and Engineering Baseline<a class="headerlink" href="#product-and-engineering-baseline" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Published:</strong> v0.21.6 on PyPI; post-tag repository commits are documentation-only.</li>
+<li><strong>Python:</strong> final preflight passes 5,159 tests (3 skipped, 6 deselected); core IS 456 calculation modules are generally 89–100% covered.</li>
+<li><strong>FastAPI:</strong> 336 tests pass; 60 endpoints across 13 routers; response contract is <code>{success, data}</code>.</li>
+<li><strong>React:</strong> 146 tests and production build pass; statement coverage is only 17.74%, but the critical live workstation flow is browser-verified through exports.</li>
+<li><strong>Package:</strong> a fresh built-wheel environment passes 5,120 tests (41 skipped, 6 deselected) and the packaged job → critical-case → HTML-report CLI workflow.</li>
+<li><strong>Elements:</strong> beam workflow is mature; column and footing mathematics/API exist; UI completeness and future slab/wall/stair scope must be decided separately.</li>
+</ul>
+<h3 id="current-risks-and-decisions">Current Risks and Decisions<a class="headerlink" href="#current-risks-and-decisions" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Preservation first:</strong> recovery branch/checkpoint before modifying inherited work.</li>
+<li><strong>Stabilization before features:</strong> v0.21.7 should restore CI, security, environment, tests, and documentation truth.</li>
+<li><strong>Nightly root cause:</strong> workflow calls <code>scripts/check_links.py --fail-fast</code>, but the script has no such argument.</li>
+<li><strong>Live import data is intact:</strong> <code>/api/v1/import/sample</code> returns 153 beams; standalone scripts fail because they expect the old flat response instead of the response envelope.</li>
+<li><strong>Environment drift repaired:</strong> source, editable metadata, and module report v0.21.6; Python 3.11 and Node 24 are recorded; the dependency locks come from clean installs.</li>
+<li><strong>Security baseline:</strong> the clean Python graph audits at zero known vulnerabilities. npm has one exact React Router RSC-only exception; the browser-only app does not use the affected mode, and CI rejects any additional advisory.</li>
+<li><strong>One source of truth restored:</strong> <code>run.sh check</code> passes 28/28, audit passes 22/22, health is 100/100, and parity clearly separates informational Python-only exports from actionable test gaps.</li>
+<li><strong>Documentation remains evidence:</strong> completed plans were removed from <code>_active</code>, counts and commands were reconciled, and future maintenance must keep these records synchronized.</li>
+<li><strong>Utilization contract:</strong> UI/API beam utilization must use <code>ComplianceCaseResult.governing_utilization</code>; <code>Mu_lim</code> is the singly reinforced limit and is not the final capacity of a valid doubly reinforced design.</li>
+<li><strong>Mac port safety:</strong> local cleanup may target only <code>LISTEN</code> processes. Plain <code>lsof -ti :PORT</code> also returns connected clients and is forbidden in the launcher.</li>
+<li><strong>Live design contract:</strong> WebSocket results must preserve the full REST <code>BeamDesignResponse</code>; frontend compatibility normalization may fill legacy shapes but must never overwrite live capacity or utilization data.</li>
+<li><strong>Release runtime truth:</strong> macOS preflight uses reclaimable memory and the Node major in <code>.nvmrc</code>; isolated wheel verification installs the package <code>[dev]</code> extra before running the source test suite.</li>
+</ol>
+<h3 id="recovery-progress-2026-08-07">Recovery Progress (2026-08-07)<a class="headerlink" href="#recovery-progress-2026-08-07" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>task/MAINT-001</code> and pushed checkpoint <code>b28ee4e3</code> preserve all inherited April work.</li>
+<li>Python editable metadata and module version now match v0.21.6.</li>
+<li>Node 24.19.0 LTS is installed keg-only; <code>.nvmrc</code>, React engines, lock metadata, CI, and setup docs target Node 24.</li>
+<li>React passes 146 tests, lint (one known hook warning), and production build on Node 24.</li>
+<li>Nightly no longer uses the unsupported link-checker flag; all 1,056 internal links pass.</li>
+<li>Maintained import E2E scripts understand the standard response envelope and pass 18/18 against a live API with all 153 sample beams.</li>
+<li>Import validation excludes archives, recognizes optional <code>xlwings</code>, and resolves all scanned imports; quick gate is 8/8.</li>
+<li>Colima's transferred VZ disk remains marked in use despite process cleanup. Preserve the disk; restart macOS before retrying, and require backup/approval before VM recreation.</li>
+<li>Root requirements now declare the previously implicit <code>pytest-asyncio</code> plugin and patched security floors. The final preflight passes 5,159 tests (3 skipped, 6 deselected) and all 336 FastAPI tests.</li>
+<li>The Python lock excludes editable/local Git references and retired <code>python-jose</code> residue; pip-audit reports zero known vulnerabilities across 147 installed dependencies.</li>
+<li>npm audit is reduced from 13 findings to one underlying React Router RSC-only advisory. Its exact scope, rationale, CI allowlist, and removal condition are recorded in <code>dependency-security-baseline.md</code>.</li>
+<li>MAINT-004 is complete: API manifest, schema snapshot, script indexes, bootstrap counts, hooks, import scanner, health scanner, audit scanner, and parity scanner now agree.</li>
+<li>Project health is 100/100 with 22 of 23 feedback records resolved. Only the tester-output watch at occurrence two of three remains pending.</li>
+<li>MAINT-005 checkpoint <code>6f119132</code> raises actionable parity to 96%: 15/17 curated clause areas, 60/60 direct route tests, and 13/13 connected hooks.</li>
+<li>The live 153-beam sample import, auto-design, R3F editor, dashboard, and export path passes. WebSocket designs preserve the full REST result; valid doubly reinforced beams report governing utilization and real capacities.</li>
+<li>BBS, DXF, single HTML/PDF report, building HTML/PDF/CSV summary, and BOQ CSV actions reach the live API; byte-level artifact checks confirm valid CSV structure, DXF sections/EOF, and PDF signatures. Final quantities are 2,663.4 kg steel and 114.8 m³ concrete.</li>
+<li>MAINT-005 is complete. <code>./run.sh release preflight 0.21.7</code> is green with zero warnings; v0.21.7 is ready but has not been released.</li>
+<li>MAINT-001 remains blocked only on GitHub CLI browser authorization and a macOS restart before non-destructive Colima recovery. SSH push works; do not delete the transferred VM disk.</li>
+</ul>
+<h3 id="canonical-maintenance-records">Canonical Maintenance Records<a class="headerlink" href="#canonical-maintenance-records" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>docs/TASKS.md</code> — active priorities and exit conditions.</li>
+<li><code>docs/WORKLOG.md</code> — completed changes only, one line per meaningful change.</li>
+<li><code>docs/SESSION_LOG.md</code> — decisions, evidence, and session outcomes.</li>
+<li><code>docs/planning/next-session-brief.md</code> — exact restart point and blockers.</li>
+<li>This file — durable project state and architectural decisions, not command-by-command history.</li>
+</ul>
+<hr />
+<h2 id="historical-state-2026-01-07">Historical State (2026-01-07)<a class="headerlink" href="#historical-state-2026-01-07" title="Permanent link">&para;</a></h2>
 <h3 id="recent-release">Recent Release<a class="headerlink" href="#recent-release" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>v0.15.0</strong> released (2026-01-07)</li>
@@ -2216,6 +2362,32 @@
 - ✅ Ready for parallel agent deployment</p>
 <hr />
 <p><strong>Last Major Update:</strong> 2026-01-07 (Agent collaboration framework v2.0, v0.16-v0.17 roadmap)</p>
+<hr />
+<h2 id="2026-08-07-maintenance-and-agent-operations-update">2026-08-07 — Maintenance and Agent Operations Update<a class="headerlink" href="#2026-08-07-maintenance-and-agent-operations-update" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The active stack is React 19 → FastAPI → <code>Python/structural_lib</code>; Streamlit is
+  legacy only. Current work remains on <code>task/MAINT-001</code> / PR #676.</li>
+<li>Mac Mini recovery is complete: GitHub CLI plus SSH pass, and Colima/Docker are
+  healthy on the preserved transferred disk.</li>
+<li>The main Codex orchestrator uses GPT-5.6 Sol High. Luna handles clear,
+  repetitive work; Terra handles normal implementation and focused review.
+  Keep zero subagents by default and never exceed two.</li>
+<li>Use <code>./run.sh model</code> for task-aware recommendations and
+  <code>./run.sh session usage</code> at start, 2–3 hour milestones, and closeout. The
+  usage ledger records observable model/agent/time/check data but does not
+  estimate billing tokens or cost.</li>
+<li><code>./run.sh pr status</code> is terminal-only. Browser opening requires
+  <code>./run.sh pr status --web</code>; GitHub device login may still open a browser as
+  part of explicit authentication.</li>
+<li>Current automation inventory: 16 Copilot roles, 14 Copilot skills, 113 mapped
+  scripts, 29 full validation checks, and 9 quick checks. Copilot's Claude
+  model fields are separate from Codex Luna/Terra/Sol routing.</li>
+<li>On 2026-08-09 the owner authorized maintenance closeout. Commit <code>242ba8ce</code>
+  removed three empty evidence-template links, replaced one crawler-blocked
+  OpenAI URL, and pinned Ruff 0.15.8 across active install surfaces. PR #676 is
+  clean and mergeable with every required check passing. Merge and release still
+  require separate explicit owner approval.</li>
+</ul>
 
 
 
@@ -2279,7 +2451,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
       

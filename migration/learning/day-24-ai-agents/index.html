@@ -1,0 +1,2201 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/migration/learning/day-24-ai-agents/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Day 24: AI Agent System - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-24-ai-agent-system" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 24: AI Agent System
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You'll Learn Today
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#theory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📖 Theory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📖 Theory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-what-is-an-ai-agent-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. What Is an AI Agent System?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-our-16-agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Our 16 Agents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-the-agent-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The Agent Registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-the-prompt-router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The Prompt Router
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-agent-skills" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Agent Skills
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-the-8-step-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. The 8-Step Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-permission-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Permission Enforcement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-agent-evolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Agent Evolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#library-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🏗️ Library Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🏗️ Library Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reading-the-agent-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading the Agent Registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#routing-a-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Routing a Task
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#checking-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checking Permissions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simple-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Simple Examples
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Simple Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-tracing-a-bug-fix-through-the-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 1: Tracing a Bug Fix Through the System
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-handoff-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 2: Handoff Chain
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exercise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔧 Exercise
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#can-you-explain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        💬 Can You Explain?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📎 References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="day-24-ai-agent-system">Day 24: AI Agent System<a class="headerlink" href="#day-24-ai-agent-system" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Learning Module
+<strong>Audience:</strong> Solo developer (coder, not a civil engineer)
+<strong>Status:</strong> Active
+<strong>Importance:</strong> High
+<strong>Created:</strong> 2026-04-08
+<strong>Last Updated:</strong> 2026-04-08
+<strong>Prerequisites:</strong> Day 23 (or general familiarity with the project structure)
+<strong>Library files:</strong> <code>agents/agent_registry.json</code>, <code>scripts/prompt_router.py</code>, <code>scripts/tool_permissions.py</code>, <code>scripts/pipeline_state.py</code>
+<strong>Related docs:</strong> <code>.github/agents/*.agent.md</code>, <code>.github/skills/*/SKILL.md</code></p>
+<hr />
+<h2 id="what-youll-learn-today">What You'll Learn Today<a class="headerlink" href="#what-youll-learn-today" title="Permanent link">&para;</a></h2>
+<p>By the end of this module you'll understand:
+- What an AI agent system is and why a structural engineering library needs one
+- How our 16 specialized agents divide responsibilities
+- How <code>agent_registry.json</code> defines permissions, skills, and keywords
+- How the prompt router turns natural language into agent assignments
+- What agent skills are and how they get reused across agents
+- How the 8-step pipeline ensures nothing gets skipped
+- How permission enforcement prevents agents from doing things they shouldn't
+- How the agent-evolver keeps the system improving over time</p>
+<hr />
+<h2 id="theory">📖 Theory<a class="headerlink" href="#theory" title="Permanent link">&para;</a></h2>
+<h3 id="1-what-is-an-ai-agent-system">1. What Is an AI Agent System?<a class="headerlink" href="#1-what-is-an-ai-agent-system" title="Permanent link">&para;</a></h3>
+<p>Imagine you're running a construction project. You wouldn't ask the electrician to pour the concrete foundation, or the architect to wire the circuit breakers. Each specialist has defined expertise and clear boundaries around what they should touch.</p>
+<p>An <strong>AI agent system</strong> works the same way. Instead of one general-purpose LLM doing everything (and making mistakes everywhere), you create <em>specialized assistants</em> — each with:</p>
+<ul>
+<li><strong>Knowledge</strong> — what files and concepts they understand best</li>
+<li><strong>Permissions</strong> — what they're allowed to read, write, or delete</li>
+<li><strong>Skills</strong> — reusable capabilities they can invoke</li>
+<li><strong>Handoff targets</strong> — who they pass work to next</li>
+</ul>
+<blockquote>
+<p><strong>Think of it like...</strong> a software team org chart. The orchestrator is the tech lead, the backend agent is the Python developer, the frontend agent is the React developer, and the reviewer is the senior engineer who checks everyone's work.</p>
+</blockquote>
+<p>Why does a structural engineering library need this? Because the codebase spans IS 456 pure math, FastAPI endpoints, React 3D visualization, Docker deployment, documentation, and testing. No single agent prompt can hold all that context without making mistakes. Specialization prevents the #1 agent failure mode: <strong>doing things outside your expertise</strong>.</p>
+<hr />
+<h3 id="2-our-16-agents">2. Our 16 Agents<a class="headerlink" href="#2-our-16-agents" title="Permanent link">&para;</a></h3>
+<p>The agents live in <code>.github/agents/</code>, one file per agent. Here's the team:</p>
+<p><strong>Planning &amp; Delegation:</strong>
+| Agent | Role | Permission |
+|-------|------|------------|
+| <code>orchestrator</code> | Plans, triages, delegates tasks | ReadOnly |</p>
+<p><strong>Full Edit Agents (write code):</strong>
+| Agent | Role | File Scope |
+|-------|------|------------|
+| <code>backend</code> | Python structural_lib core | <code>Python/structural_lib/**</code> |
+| <code>frontend</code> | React 19, R3F, Tailwind | <code>react_app/**</code> |
+| <code>api-developer</code> | FastAPI routers, endpoints | <code>fastapi_app/**</code> |
+| <code>structural-math</code> | IS 456 pure math, new elements | <code>Python/structural_lib/codes/**</code> |
+| <code>tester</code> | Tests, coverage, benchmarks | test files |
+| <code>doc-master</code> | Docs, session logs, archives | <code>docs/**</code> |
+| <code>ops</code> | Git, CI/CD, Docker | infrastructure |
+| <code>governance</code> | Health metrics, maintenance | project-wide |</p>
+<p><strong>Read + Terminal Agents (review, don't write):</strong>
+| Agent | Role |
+|-------|------|
+| <code>structural-engineer</code> | IS 456 compliance verification |
+| <code>reviewer</code> | Code review, architecture validation |
+| <code>library-expert</code> | Domain knowledge, professional standards |
+| <code>security</code> | OWASP auditing, dependency scanning |</p>
+<p><strong>Specialized Agents:</strong>
+| Agent | Role |
+|-------|------|
+| <code>ui-designer</code> | Visual design (design-only, no code) |
+| <code>agent-evolver</code> | Meta-agent: scores agents, detects drift |
+| <code>innovator</code> | Research &amp; innovation, discovers gaps |</p>
+<p>The key insight: <strong>not every agent can edit files</strong>. The structural-engineer can <em>verify</em> a shear formula but can't <em>change</em> flexure.py. The reviewer can <em>flag</em> a bug but can't <em>fix</em> it. This prevents accidental damage.</p>
+<hr />
+<h3 id="3-the-agent-registry">3. The Agent Registry<a class="headerlink" href="#3-the-agent-registry" title="Permanent link">&para;</a></h3>
+<p>All 16 agents are defined in <code>agents/agent_registry.json</code>. Each entry looks like this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;backend&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Python structural_lib core — IS 456 math, services, adapters.&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">&quot;tools&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;search&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;editFiles&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;runInTerminal&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;listFiles&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;readFile&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Claude Sonnet 4.5&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">&quot;permission_level&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;WorkspaceWrite&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">&quot;skills&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;api-discovery&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;is456-verification&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="nt">&quot;scripts&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="s2">&quot;discover_api_signatures.py&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="s2">&quot;validate_imports.py&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="s2">&quot;check_architecture_boundaries.py&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="s2">&quot;migrate_python_module.py&quot;</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="nt">&quot;keywords&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;python&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;structural&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;beam&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;flexure&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;shear&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="p">],</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="nt">&quot;handoff_targets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;api-developer&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;reviewer&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;structural-engineer&quot;</span><span class="p">],</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="nt">&quot;can_edit_files&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="nt">&quot;file_scope&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Python/structural_lib/**&quot;</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">}</span>
+</code></pre></div>
+<p>The important fields:</p>
+<ul>
+<li><strong><code>permission_level</code></strong> — One of <code>ReadOnly</code>, <code>ReadOnlyTerminal</code>, <code>WorkspaceWrite</code>, or <code>DangerFullAccess</code>. Controls what operations the agent can perform.</li>
+<li><strong><code>skills</code></strong> — Which reusable skills the agent can invoke (like <code>/api-discovery</code>).</li>
+<li><strong><code>keywords</code></strong> — Used by the prompt router to match tasks to agents.</li>
+<li><strong><code>file_scope</code></strong> — A glob pattern limiting which files the agent can modify. <code>null</code> means read-only.</li>
+<li><strong><code>handoff_targets</code></strong> — When this agent finishes its part, who does it hand off to?</li>
+</ul>
+<hr />
+<h3 id="4-the-prompt-router">4. The Prompt Router<a class="headerlink" href="#4-the-prompt-router" title="Permanent link">&para;</a></h3>
+<p>When you say "fix the shear calculation in flexure.py", something needs to figure out <em>which agent</em> should handle it. That's <code>scripts/prompt_router.py</code>.</p>
+<p>It works in three stages:</p>
+<p><strong>Stage 1 — Priority Rules (pattern matching):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">PRIORITY_RULES</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="c1"># (keywords_to_match, agent_name, weight_bonus)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="p">({</span><span class="s2">&quot;react&quot;</span><span class="p">,</span> <span class="s2">&quot;component&quot;</span><span class="p">,</span> <span class="s2">&quot;hook&quot;</span><span class="p">,</span> <span class="s2">&quot;tailwind&quot;</span><span class="p">},</span> <span class="s2">&quot;frontend&quot;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="p">({</span><span class="s2">&quot;fastapi&quot;</span><span class="p">,</span> <span class="s2">&quot;router&quot;</span><span class="p">,</span> <span class="s2">&quot;endpoint&quot;</span><span class="p">,</span> <span class="s2">&quot;pydantic&quot;</span><span class="p">},</span> <span class="s2">&quot;api-developer&quot;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="p">({</span><span class="s2">&quot;is456&quot;</span><span class="p">,</span> <span class="s2">&quot;clause&quot;</span><span class="p">,</span> <span class="s2">&quot;formula&quot;</span><span class="p">,</span> <span class="s2">&quot;flexure&quot;</span><span class="p">},</span> <span class="s2">&quot;structural-math&quot;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">),</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="p">({</span><span class="s2">&quot;beam&quot;</span><span class="p">,</span> <span class="s2">&quot;column&quot;</span><span class="p">,</span> <span class="s2">&quot;shear&quot;</span><span class="p">,</span> <span class="s2">&quot;design&quot;</span><span class="p">},</span> <span class="s2">&quot;structural-math&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="p">({</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="s2">&quot;coverage&quot;</span><span class="p">,</span> <span class="s2">&quot;benchmark&quot;</span><span class="p">,</span> <span class="s2">&quot;pytest&quot;</span><span class="p">},</span> <span class="s2">&quot;tester&quot;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="p">({</span><span class="s2">&quot;security&quot;</span><span class="p">,</span> <span class="s2">&quot;owasp&quot;</span><span class="p">,</span> <span class="s2">&quot;vulnerability&quot;</span><span class="p">},</span> <span class="s2">&quot;security&quot;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="p">({</span><span class="s2">&quot;git&quot;</span><span class="p">,</span> <span class="s2">&quot;commit&quot;</span><span class="p">,</span> <span class="s2">&quot;docker&quot;</span><span class="p">,</span> <span class="s2">&quot;deploy&quot;</span><span class="p">},</span> <span class="s2">&quot;ops&quot;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="o">...</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">]</span>
+</code></pre></div></p>
+<p><strong>Stage 2 — Combo Rules (multi-keyword boost):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">COMBO_RULES</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="p">({</span><span class="s2">&quot;is456&quot;</span><span class="p">,</span> <span class="s2">&quot;verify&quot;</span><span class="p">},</span> <span class="s2">&quot;structural-engineer&quot;</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">),</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="p">({</span><span class="s2">&quot;is456&quot;</span><span class="p">,</span> <span class="s2">&quot;implement&quot;</span><span class="p">},</span> <span class="s2">&quot;structural-math&quot;</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">),</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="p">({</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="s2">&quot;write&quot;</span><span class="p">},</span> <span class="s2">&quot;tester&quot;</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="p">({</span><span class="s2">&quot;verify&quot;</span><span class="p">,</span> <span class="s2">&quot;compliance&quot;</span><span class="p">},</span> <span class="s2">&quot;structural-engineer&quot;</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">),</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="o">...</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">]</span>
+</code></pre></div></p>
+<p><strong>Stage 3 — Suppression Rules (reduce false matches):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">SUPPRESSION_RULES</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="s2">&quot;ui-designer&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;beam&quot;</span><span class="p">,</span> <span class="s2">&quot;column&quot;</span><span class="p">,</span> <span class="s2">&quot;slab&quot;</span><span class="p">,</span> <span class="s2">&quot;structural&quot;</span><span class="p">},</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="s2">&quot;library-expert&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;implement&quot;</span><span class="p">,</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span> <span class="s2">&quot;write&quot;</span><span class="p">,</span> <span class="s2">&quot;create&quot;</span><span class="p">},</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">}</span>
+</code></pre></div></p>
+<p>Example: <em>"fix the shear calculation"</em> → tokenized to <code>{fix, shear, calculation}</code> → <code>shear</code> matches <code>structural-math</code> priority rule → result: <strong>@structural-math</strong> with confidence 0.85.</p>
+<hr />
+<h3 id="5-agent-skills">5. Agent Skills<a class="headerlink" href="#5-agent-skills" title="Permanent link">&para;</a></h3>
+<p>Skills are reusable capabilities — like plugins any agent can invoke. We have 14:</p>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>What It Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/session-management</code></td>
+<td>Start/end session automation</td>
+</tr>
+<tr>
+<td><code>/api-discovery</code></td>
+<td>Look up exact function signatures</td>
+</tr>
+<tr>
+<td><code>/is456-verification</code></td>
+<td>Run IS 456 compliance tests</td>
+</tr>
+<tr>
+<td><code>/new-structural-element</code></td>
+<td>Guided workflow for column, slab, footing</td>
+</tr>
+<tr>
+<td><code>/react-validation</code></td>
+<td>Build, lint, type-check React app</td>
+</tr>
+<tr>
+<td><code>/architecture-check</code></td>
+<td>Validate 4-layer import boundaries</td>
+</tr>
+<tr>
+<td><code>/function-quality-pipeline</code></td>
+<td>9-step quality gate for new functions</td>
+</tr>
+<tr>
+<td><code>/safe-file-ops</code></td>
+<td>Move/delete files preserving 870+ links</td>
+</tr>
+<tr>
+<td><code>/quality-gate</code></td>
+<td>Pre-merge quality checks</td>
+</tr>
+<tr>
+<td><code>/release-preflight</code></td>
+<td>Pre-release validation (5 phases)</td>
+</tr>
+<tr>
+<td><code>/agent-evolution</code></td>
+<td>Score agents, detect drift</td>
+</tr>
+<tr>
+<td><code>/development-rules</code></td>
+<td>46 hard-learned rules by domain</td>
+</tr>
+<tr>
+<td><code>/innovation-research</code></td>
+<td>Guided research cycle</td>
+</tr>
+<tr>
+<td><code>/user-acceptance-test</code></td>
+<td>End-user perspective testing</td>
+</tr>
+</tbody>
+</table>
+<p>The difference between a skill and a script: a skill is a <em>documented workflow</em> with instructions, while a script is a <em>standalone program</em> that does one thing. Skills invoke scripts.</p>
+<hr />
+<h3 id="6-the-8-step-pipeline">6. The 8-Step Pipeline<a class="headerlink" href="#6-the-8-step-pipeline" title="Permanent link">&para;</a></h3>
+<p>Every task in the project follows this pipeline:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>PLAN → RESEARCH → GATHER → EXECUTE → TEST → VERIFY → DOCUMENT → COMMIT
+</code></pre></div>
+<ul>
+<li><strong>PLAN</strong> — What needs to change? Which IS 456 clause? Which files?</li>
+<li><strong>RESEARCH</strong> — Read the code, check SP:16, understand the domain</li>
+<li><strong>GATHER</strong> — Find existing code, check for duplicates, get API signatures</li>
+<li><strong>EXECUTE</strong> — Write the code (only <em>now</em> do we touch files)</li>
+<li><strong>TEST</strong> — Unit tests, golden benchmarks, degenerate cases</li>
+<li><strong>VERIFY</strong> — Architecture boundaries, import validation, type check</li>
+<li><strong>DOCUMENT</strong> — Update docs, API reference, CHANGELOG</li>
+<li><strong>COMMIT</strong> — PR creation, CI, merge</li>
+</ul>
+<p>This is tracked by <code>scripts/pipeline_state.py</code>. If an agent crashes mid-pipeline, the next session can resume from where it left off.</p>
+<blockquote>
+<p><strong>Why not just... code?</strong> Because agents that skip PLAN and RESEARCH end up duplicating existing code, using wrong parameter names, and breaking architecture boundaries. The pipeline prevents that.</p>
+</blockquote>
+<hr />
+<h3 id="7-permission-enforcement">7. Permission Enforcement<a class="headerlink" href="#7-permission-enforcement" title="Permanent link">&para;</a></h3>
+<p><code>scripts/tool_permissions.py</code> is the bouncer at the door. It classifies every operation:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">READ_OPS</span>  <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;read&quot;</span><span class="p">,</span> <span class="s2">&quot;search&quot;</span><span class="p">,</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="s2">&quot;find&quot;</span><span class="p">,</span> <span class="s2">&quot;check&quot;</span><span class="p">,</span> <span class="s2">&quot;validate&quot;</span><span class="p">}</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">WRITE_OPS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;edit&quot;</span><span class="p">,</span> <span class="s2">&quot;create&quot;</span><span class="p">,</span> <span class="s2">&quot;modify&quot;</span><span class="p">,</span> <span class="s2">&quot;write&quot;</span><span class="p">,</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;update&quot;</span><span class="p">}</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">DANGER_OPS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;delete&quot;</span><span class="p">,</span> <span class="s2">&quot;push&quot;</span><span class="p">,</span> <span class="s2">&quot;merge&quot;</span><span class="p">,</span> <span class="s2">&quot;force&quot;</span><span class="p">,</span> <span class="s2">&quot;rm&quot;</span><span class="p">,</span> <span class="s2">&quot;deploy&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>Then checks the agent's permission level:</p>
+<table>
+<thead>
+<tr>
+<th>Permission Level</th>
+<th>Can Read?</th>
+<th>Can Write?</th>
+<th>Can Delete/Push?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ReadOnly</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><code>ReadOnlyTerminal</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><code>WorkspaceWrite</code></td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td><code>DangerFullAccess</code></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p>Example: If <code>reviewer</code> (ReadOnlyTerminal) tries to edit <code>flexure.py</code>, the check fails:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>❌ Agent &#39;reviewer&#39; (ReadOnlyTerminal) cannot perform &#39;edit&#39; — requires WorkspaceWrite
+</code></pre></div></p>
+<p>Unknown operations default to <code>danger</code> — <strong>fail-safe, not fail-open</strong>.</p>
+<hr />
+<h3 id="8-agent-evolution">8. Agent Evolution<a class="headerlink" href="#8-agent-evolution" title="Permanent link">&para;</a></h3>
+<p>Without feedback, agents repeat the same mistakes forever. The <code>agent-evolver</code> fixes this:</p>
+<ol>
+<li><strong>Scoring</strong> — <code>scripts/agent_scorer.py</code> rates each agent on task completion, error rate, and follow-through</li>
+<li><strong>Drift Detection</strong> — <code>scripts/agent_drift_detector.py</code> checks if agent instructions have drifted from actual behavior</li>
+<li><strong>Instruction Evolution</strong> — <code>scripts/agent_evolve_instructions.py</code> proposes updates to agent <code>.md</code> files</li>
+</ol>
+<p>This runs every session via <code>./run.sh evolve --status</code> and weekly via <code>./run.sh evolve --review weekly</code>.</p>
+<hr />
+<h2 id="library-examples">🏗️ Library Examples<a class="headerlink" href="#library-examples" title="Permanent link">&para;</a></h2>
+<h3 id="reading-the-agent-registry">Reading the Agent Registry<a class="headerlink" href="#reading-the-agent-registry" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># List all agents with their permissions</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>cat<span class="w"> </span>agents/agent_registry.json<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="s2">import json, sys</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="s2">data = json.load(sys.stdin)</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="s2">for a in data[&#39;agents&#39;]:</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="s2">    print(f\&quot;{a[&#39;name&#39;]:20s} {a[&#39;permission_level&#39;]:20s} scope={a.get(&#39;file_scope&#39;, &#39;none&#39;)}\&quot;)</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="s2">&quot;</span>
+</code></pre></div>
+<h3 id="routing-a-task">Routing a Task<a class="headerlink" href="#routing-a-task" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Route a natural language task to an agent</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>.venv/bin/python<span class="w"> </span>scripts/prompt_router.py<span class="w"> </span><span class="s2">&quot;fix the shear calculation in flexure.py&quot;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># → Agent: structural-math (confidence: 0.85)</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>.venv/bin/python<span class="w"> </span>scripts/prompt_router.py<span class="w"> </span><span class="s2">&quot;add a FastAPI endpoint for column design&quot;</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="c1"># → Agent: api-developer (confidence: 0.90)</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>.venv/bin/python<span class="w"> </span>scripts/prompt_router.py<span class="w"> </span><span class="s2">&quot;security audit of the authentication module&quot;</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="c1"># → Agent: security (confidence: 0.95)</span>
+</code></pre></div>
+<h3 id="checking-permissions">Checking Permissions<a class="headerlink" href="#checking-permissions" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Can the backend agent edit a core file?</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>.venv/bin/python<span class="w"> </span>scripts/tool_permissions.py<span class="w"> </span>check<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span>--agent<span class="w"> </span>backend<span class="w"> </span>--op<span class="w"> </span>edit<span class="w"> </span>--path<span class="w"> </span>Python/structural_lib/api.py
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># → ✅ Allowed</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># Can the reviewer edit the same file?</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>.venv/bin/python<span class="w"> </span>scripts/tool_permissions.py<span class="w"> </span>check<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">  </span>--agent<span class="w"> </span>reviewer<span class="w"> </span>--op<span class="w"> </span>edit<span class="w"> </span>--path<span class="w"> </span>Python/structural_lib/api.py
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="c1"># → ❌ Denied (ReadOnlyTerminal cannot edit)</span>
+</code></pre></div>
+<hr />
+<h2 id="simple-examples">🎯 Simple Examples<a class="headerlink" href="#simple-examples" title="Permanent link">&para;</a></h2>
+<h3 id="example-1-tracing-a-bug-fix-through-the-system">Example 1: Tracing a Bug Fix Through the System<a class="headerlink" href="#example-1-tracing-a-bug-fix-through-the-system" title="Permanent link">&para;</a></h3>
+<p>A user reports: <em>"The shear check returns wrong Vu for T-beams."</em></p>
+<ol>
+<li><strong>Prompt router</strong> → <code>structural-math</code> (keywords: shear, check)</li>
+<li><strong>Pipeline starts at PLAN</strong> → identify the clause (IS 456 Cl 40.1)</li>
+<li><strong>RESEARCH</strong> → read <code>codes/is456/shear.py</code>, find the function</li>
+<li><strong>GATHER</strong> → <code>discover_api_signatures.py check_shear_is456</code> to get exact params</li>
+<li><strong>EXECUTE</strong> → <code>structural-math</code> fixes the math</li>
+<li><strong>TEST</strong> → <code>tester</code> writes regression test</li>
+<li><strong>VERIFY</strong> → <code>reviewer</code> checks the fix</li>
+<li><strong>DOCUMENT</strong> → <code>doc-master</code> updates docs</li>
+<li><strong>COMMIT</strong> → <code>ops</code> creates PR and merges</li>
+</ol>
+<h3 id="example-2-handoff-chain">Example 2: Handoff Chain<a class="headerlink" href="#example-2-handoff-chain" title="Permanent link">&para;</a></h3>
+<p>A new feature request: <em>"Add column biaxial bending check per IS 456 Cl 39.6."</em></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>orchestrator → structural-engineer (verify clause interpretation)
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>            → structural-math (implement pure math)
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>            → tester (write tests + benchmarks)
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>            → backend (wire into services/api.py)
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>            → api-developer (create FastAPI endpoint)
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>            → frontend (add UI controls)
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>            → reviewer (code review)
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>            → doc-master (update docs)
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>            → ops (create PR, merge)
+</code></pre></div>
+<p>Each agent does <em>only</em> its part and hands off to the next.</p>
+<hr />
+<h2 id="exercise">🔧 Exercise<a class="headerlink" href="#exercise" title="Permanent link">&para;</a></h2>
+<p>Given these task descriptions, determine which agent should handle each one:</p>
+<ol>
+<li><em>"The deflection formula uses wrong coefficient for cantilever beams"</em></li>
+<li><em>"Add pagination to the beam list API endpoint"</em></li>
+<li><em>"The 3D viewport crashes when rendering beams with zero width"</em></li>
+<li><em>"Run security scan on all FastAPI endpoints"</em></li>
+<li><em>"Archive stale planning docs older than 30 days"</em></li>
+<li><em>"Write tests for the new column detailing function"</em></li>
+</ol>
+<p><strong>Bonus:</strong> For task #1, list the full 8-step pipeline and which agent handles each step.</p>
+<details>
+<summary>Answers</summary>
+
+1. **structural-math** — formula fix in IS 456 code layer
+2. **api-developer** — FastAPI endpoint modification
+3. **frontend** — React/R3F 3D visualization bug
+4. **security** — security audit task
+5. **governance** or **doc-master** — doc maintenance
+6. **tester** — test creation
+
+**Bonus (Task #1):**
+- PLAN: orchestrator identifies scope
+- RESEARCH: structural-engineer verifies the correct coefficient
+- GATHER: structural-math reads deflection.py, checks existing tests
+- EXECUTE: structural-math fixes the formula
+- TEST: tester writes regression tests
+- VERIFY: reviewer + structural-engineer check
+- DOCUMENT: doc-master updates reference
+- COMMIT: ops creates PR
+
+</details>
+
+<hr />
+<h2 id="can-you-explain">💬 Can You Explain?<a class="headerlink" href="#can-you-explain" title="Permanent link">&para;</a></h2>
+<p>Test yourself — can you answer these in one sentence each?</p>
+<ol>
+<li>Why does the reviewer agent have ReadOnly permission instead of WorkspaceWrite?</li>
+<li>What's the difference between a "skill" and a "script" in this system?</li>
+<li>Why does <code>tool_permissions.py</code> default unknown operations to "danger"?</li>
+<li>What problem does the 8-step pipeline solve that "just coding" doesn't?</li>
+<li>Why does the prompt router have suppression rules?</li>
+</ol>
+<hr />
+<h2 id="references">📎 References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../../agents/agent_registry.json">Agent registry</a> — all 16 agents defined</li>
+<li><a href="../../../scripts/prompt_router.py">Prompt router</a> — NLP-based task routing</li>
+<li><a href="../../../scripts/tool_permissions.py">Tool permissions</a> — programmatic access control</li>
+<li><a href="../../../scripts/pipeline_state.py">Pipeline state</a> — resumable task pipeline</li>
+<li><a href="../../../guides/copilot-agents-usage-guide/">Copilot agents guide</a> — how to use agents in VS Code</li>
+<li><a href="../../../getting-started/agent-bootstrap/">Agent bootstrap</a> — full setup guide</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

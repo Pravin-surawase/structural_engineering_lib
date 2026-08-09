@@ -1,0 +1,2467 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/migration/learning/day-21-docker-deployment/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Day 21: Docker & Deployment — Containerizing Safety-Critical Calculations - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-21-docker-deployment-containerizing-safety-critical-calculations" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 21: Docker &amp; Deployment — Containerizing Safety-Critical Calculations
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn-today" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You'll Learn Today
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-1-why-docker-for-structural-engineering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 1: Why Docker for Structural Engineering?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-2-colima-our-docker-runtime-on-macos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 2: Colima — Our Docker Runtime on macOS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-3-two-audiences-two-deployment-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 3: Two Audiences, Two Deployment Models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-4-the-dockerfile-layer-by-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 4: The Dockerfile — Layer by Layer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-5-docker-composeyml-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 5: docker-compose.yml — Production
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-6-docker-composedevyml-development-with-hot-reload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 6: docker-compose.dev.yml — Development with Hot Reload
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-7-the-dev-stack-launcher-runsh-dev" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 7: The Dev Stack Launcher — ./run.sh dev
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-8-exercises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 8: Exercises
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 8: Exercises">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-1-build-and-explore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 1: Build and Explore
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-2-development-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 2: Development Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-3-understand-layer-caching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exercise 3: Understand Layer Caching
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-9-self-check-qa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 9: Self-Check Q&amp;A
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-10-things-to-know-deep-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 10: Things to Know — Deep Insights
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 10: Things to Know — Deep Insights">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#101-the-slim-vs-alpine-choice-is-not-about-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1: The slim vs alpine choice is NOT about size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#102-docker-layer-caching-is-your-most-important-build-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.2: Docker layer caching is your most important build optimization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#103-volume-mounts-with-ro-prevent-accidental-corruption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.3: Volume mounts with :ro prevent accidental corruption
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#104-pythonunbuffered1-is-critical-for-containerized-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.4: PYTHONUNBUFFERED=1 is critical for containerized apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#105-the-healthcheck-is-not-just-monitoring-it-enables-auto-recovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.5: The HEALTHCHECK is not just monitoring — it enables auto-recovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#106-no-cache-dir-in-pip-install-reduces-image-size-by-30" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.6: --no-cache-dir in pip install reduces image size by 30%
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-11-what-can-be-done-better" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 11: What Can Be Done Better
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 11: What Can Be Done Better">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#111-no-multi-stage-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.1: No multi-stage build
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#112-no-dockerignore-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.2: No .dockerignore file
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#113-no-image-scanning-in-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.3: No image scanning in CI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#114-no-container-resource-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.4: No container resource limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#115-no-log-rotation-or-structured-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11.5: No log rotation or structured logging
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-12-innovation-directions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 12: Innovation Directions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 12: Innovation Directions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#121-multi-stage-build-with-distroless-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.1: Multi-stage build with distroless base
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#122-container-native-health-probes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.2: Container-native health probes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#123-buildkit-cache-mounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.3: BuildKit cache mounts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#124-serverless-deployment-aws-lambda-cloud-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.4: Serverless deployment (AWS Lambda / Cloud Run)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#125-dev-containers-for-vs-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12.5: Dev Containers for VS Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#part-13-next-repo-must-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part 13: Next Repo Must-Add
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Part 13: Next Repo Must-Add">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#concrete-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concrete items
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#day-1-checklist-for-containerizing-a-new-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day-1 checklist for containerizing a new service
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="day-21-docker-deployment-containerizing-safety-critical-calculations">Day 21: Docker &amp; Deployment — Containerizing Safety-Critical Calculations<a class="headerlink" href="#day-21-docker-deployment-containerizing-safety-critical-calculations" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Learning Module
+<strong>Audience:</strong> Solo developer (coder, not a civil engineer)
+<strong>Status:</strong> Active
+<strong>Importance:</strong> High
+<strong>Created:</strong> 2026-04-08
+<strong>Last Updated:</strong> 2026-04-08
+<strong>Prerequisites:</strong> Day 20 (End-to-End Data Flow), basic terminal skills
+<strong>Library files:</strong> <code>Dockerfile.fastapi</code>, <code>docker-compose.yml</code>, <code>docker-compose.dev.yml</code>, <code>scripts/launch_stack.sh</code>, <code>fastapi_app/main.py</code>, <code>fastapi_app/config.py</code>
+<strong>IS 456 Clauses:</strong> None — this is infrastructure</p>
+<hr />
+<h2 id="what-youll-learn-today">What You'll Learn Today<a class="headerlink" href="#what-youll-learn-today" title="Permanent link">&para;</a></h2>
+<p>By the end of this module you'll understand:
+- Why Docker matters for structural engineering software (reproducibility is safety)
+- How our Dockerfile builds the FastAPI + structural_lib image layer by layer
+- What <code>docker-compose.yml</code> and <code>docker-compose.dev.yml</code> do differently
+- How <code>./run.sh dev</code> launches the full stack locally
+- Container security hardening for an engineering API
+- The difference between "library user" (pip install) and "full-stack deployment" (Docker)</p>
+<hr />
+<h2 id="part-1-why-docker-for-structural-engineering">Part 1: Why Docker for Structural Engineering?<a class="headerlink" href="#part-1-why-docker-for-structural-engineering" title="Permanent link">&para;</a></h2>
+<p>Structural engineering calculations are <strong>safety-critical</strong>. When a function computes that a beam needs 1,200 mm² of steel, that number must be reproducible — same input, same output, every time, on every machine.</p>
+<p>Without Docker:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Developer A (macOS, Python 3.11):  Ast = 1,206.5 mm²
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Developer B (Ubuntu, Python 3.12): Ast = 1,206.5 mm²  ← same, good
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Server (Alpine, Python 3.10):      ImportError: numpy  ← BROKEN
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>CI runner (Debian, Python 3.11):   Ast = 1,206.5 mm²  ← fixed after debugging
+</code></pre></div></p>
+<p>With Docker:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Everyone, everywhere:              Ast = 1,206.5 mm²  ← identical environment
+</code></pre></div></p>
+<p><strong>Three guarantees Docker gives us:</strong>
+1. <strong>Reproducibility</strong> — Same Python version, same deps, same OS, same results
+2. <strong>Isolation</strong> — Container can't mess up your laptop's Python
+3. <strong>Portability</strong> — Works on macOS, Linux, Windows, AWS, GCP, any cloud</p>
+<hr />
+<h2 id="part-2-colima-our-docker-runtime-on-macos">Part 2: Colima — Our Docker Runtime on macOS<a class="headerlink" href="#part-2-colima-our-docker-runtime-on-macos" title="Permanent link">&para;</a></h2>
+<p>Docker needs a Linux kernel to run containers. On macOS, something must provide that Linux environment.</p>
+<table>
+<thead>
+<tr>
+<th>Runtime</th>
+<th>Cost</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docker Desktop</td>
+<td>Free for small teams, paid for enterprise</td>
+<td>Heavy, auto-updates</td>
+</tr>
+<tr>
+<td><strong>Colima</strong></td>
+<td><strong>Free, open-source</strong></td>
+<td><strong>Our choice — lightweight, CLI-only</strong></td>
+</tr>
+<tr>
+<td>Podman</td>
+<td>Free, open-source</td>
+<td>Different API, less ecosystem support</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Install once</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>brew<span class="w"> </span>install<span class="w"> </span>colima<span class="w"> </span>docker<span class="w"> </span>docker-compose
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Start the VM (allocate resources for structural calculations)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>colima<span class="w"> </span>start<span class="w"> </span>--cpu<span class="w"> </span><span class="m">4</span><span class="w"> </span>--memory<span class="w"> </span><span class="m">4</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Verify it works</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>docker<span class="w"> </span>ps<span class="w">    </span><span class="c1"># Should show empty table, not &quot;permission denied&quot;</span>
+</code></pre></div>
+<p>If <code>docker ps</code> gives "Cannot connect to the Docker daemon" — Colima isn't running.</p>
+<hr />
+<h2 id="part-3-two-audiences-two-deployment-models">Part 3: Two Audiences, Two Deployment Models<a class="headerlink" href="#part-3-two-audiences-two-deployment-models" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>┌────────────────────────────┐    ┌────────────────────────────────┐
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>│   LIBRARY USER             │    │   FULL-STACK DEPLOYER          │
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>│                            │    │                                │
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>│   pip install structural-  │    │   Docker image with:           │
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>│   lib-is456                │    │   - FastAPI backend (:8000)    │
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>│                            │    │   - React frontend (:5173)     │
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>│   Pure Python. No Docker.  │    │   - structural_lib inside      │
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>│   Import and call from     │    │   Web UI + REST API + 3D viz   │
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>│   your own code.           │    │                                │
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>│                            │    │   Needs Docker.                │
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>│   from structural_lib      │    │   docker compose up --build    │
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>│     import design_beam     │    │                                │
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>└────────────────────────────┘    └────────────────────────────────┘
+</code></pre></div>
+<p>Docker is for the <strong>full-stack deployment</strong>. Library users who just want <code>design_beam_is456()</code> in their Python code don't need Docker at all.</p>
+<hr />
+<h2 id="part-4-the-dockerfile-layer-by-layer">Part 4: The Dockerfile — Layer by Layer<a class="headerlink" href="#part-4-the-dockerfile-layer-by-layer" title="Permanent link">&para;</a></h2>
+<p>Our <code>Dockerfile.fastapi</code> builds the production image:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.11-slim</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c"># Base: Debian + Python 3.11, ~150MB</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c"># &quot;slim&quot; excludes gcc, make, docs — smaller attack surface</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="k">ENV</span><span class="w"> </span><span class="nv">PYTHONDONTWRITEBYTECODE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="nv">PYTHONUNBUFFERED</span><span class="o">=</span><span class="m">1</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c"># No .pyc files (smaller image), unbuffered output (better logging)</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c"># ── Layer 1: System Dependencies (changes rarely → cached 99%) ──</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="k">RUN</span><span class="w"> </span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>--no-install-recommends<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span>curl<span class="w"> </span>libpango-1.0-0<span class="w"> </span>libpangocairo-1.0-0<span class="w"> </span>libgdk-pixbuf-2.0-0<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span>libffi-dev<span class="w"> </span>libcairo2<span class="w"> </span>fonts-dejavu-core<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/var/lib/apt/lists/*
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="c"># ── Layer 2: Python Dependencies (changes weekly → cached often) ──</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="k">COPY</span><span class="w"> </span>requirements.txt<span class="w"> </span>./requirements.txt
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="c"># ── Layer 3: Install structural_lib (changes per release) ──</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="k">COPY</span><span class="w"> </span>Python/pyproject.toml<span class="w"> </span>Python/README.md<span class="w"> </span>./Python/
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="k">COPY</span><span class="w"> </span>Python/structural_lib<span class="w"> </span>./Python/structural_lib
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>./Python
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="c"># ── Layer 4: Application Code (changes most frequently) ──</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="k">COPY</span><span class="w"> </span>fastapi_app<span class="w"> </span>./fastapi_app
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="k">COPY</span><span class="w"> </span>Etabs_CSV<span class="w"> </span>./Etabs_CSV
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="c"># ── Layer 5: Security Hardening ──</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="k">RUN</span><span class="w"> </span>useradd<span class="w"> </span>--create-home<span class="w"> </span>--shell<span class="w"> </span>/bin/bash<span class="w"> </span>appuser<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="w">    </span>chown<span class="w"> </span>-R<span class="w"> </span>appuser:appuser<span class="w"> </span>/app
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a><span class="k">USER</span><span class="w"> </span><span class="s">appuser</span>
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a><span class="c"># CRITICAL: Never run as root in production</span>
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>
+<a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a><span class="c"># ── Layer 6: Runtime Configuration ──</span>
+<a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a><span class="k">HEALTHCHECK</span><span class="w"> </span>--interval<span class="o">=</span>30s<span class="w"> </span>--timeout<span class="o">=</span>10s<span class="w"> </span>--start-period<span class="o">=</span>5s<span class="w"> </span>--retries<span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a><span class="w">    </span>CMD<span class="w"> </span>curl<span class="w"> </span>-f<span class="w"> </span>http://localhost:8000/health<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a>
+<a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a><span class="k">EXPOSE</span><span class="w"> </span><span class="s">8000</span>
+<a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a><span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;uvicorn&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fastapi_app.main:app&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--host&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--port&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;8000&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p><strong>Key insight:</strong> Layer order matters for cache efficiency:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Layer 1: apt-get install         ← Changes rarely  (cached 99%)
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Layer 2: pip install deps        ← Changes weekly  (cached when deps don&#39;t change)
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Layer 3: install structural_lib  ← Changes often   (rebuilt when lib code changes)
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Layer 4: copy fastapi_app        ← Changes most    (rebuilt on every API change)
+</code></pre></div></p>
+<p>If you copy code BEFORE installing deps, Docker can't cache the pip install — it rebuilds everything on every code change.</p>
+<hr />
+<h2 id="part-5-docker-composeyml-production">Part 5: docker-compose.yml — Production<a class="headerlink" href="#part-5-docker-composeyml-production" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">fastapi</span><span class="p">:</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dockerfile.fastapi</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8000:8000&quot;</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">JWT_SECRET_KEY=${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set}</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RATE_LIMIT_REQUESTS=${RATE_LIMIT_REQUESTS:-100}</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RATE_LIMIT_WINDOW=${RATE_LIMIT_WINDOW:-60}</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">    </span><span class="nt">security_opt</span><span class="p">:</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no-new-privileges:true</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">    </span><span class="nt">cap_drop</span><span class="p">:</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ALL</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CMD&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;curl&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;-f&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;http://localhost:8000/health&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30s</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">      </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
+</code></pre></div>
+<p><strong>Security features:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What It Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>JWT_SECRET_KEY:?...</code></td>
+<td>Fails to start if secret not set — prevents insecure defaults</td>
+</tr>
+<tr>
+<td><code>no-new-privileges</code></td>
+<td>Process can't gain more permissions than it started with</td>
+</tr>
+<tr>
+<td><code>cap_drop: ALL</code></td>
+<td>Removes ALL Linux capabilities</td>
+</tr>
+<tr>
+<td><code>restart: unless-stopped</code></td>
+<td>Crashes auto-restart; manual stops stay stopped</td>
+</tr>
+<tr>
+<td>Non-root user</td>
+<td>Container runs as <code>appuser</code>, not root</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="part-6-docker-composedevyml-development-with-hot-reload">Part 6: docker-compose.dev.yml — Development with Hot Reload<a class="headerlink" href="#part-6-docker-composedevyml-development-with-hot-reload" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">fastapi</span><span class="p">:</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">build</span><span class="p">:</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">      </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">      </span><span class="nt">dockerfile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Dockerfile.fastapi</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;uvicorn&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;fastapi_app.main:app&quot;</span><span class="p p-Indicator">,</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">              </span><span class="s">&quot;--host&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;0.0.0.0&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--port&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;8000&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--reload&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8000:8000&quot;</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">JWT_SECRET_KEY=${JWT_SECRET_KEY:-dev-secret}</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./fastapi_app:/app/fastapi_app:ro</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./Python/structural_lib:/app/Python/structural_lib:ro</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./Etabs_CSV:/app/Etabs_CSV:ro</span>
+</code></pre></div>
+<p><strong>Key differences from production:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Production</th>
+<th>Development</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--reload</code> flag</td>
+<td>No</td>
+<td>Yes (auto-restart on changes)</td>
+</tr>
+<tr>
+<td>Volume mounts</td>
+<td>No (code baked in)</td>
+<td>Yes (<code>:ro</code> — read-only)</td>
+</tr>
+<tr>
+<td>JWT secret</td>
+<td>Must be set explicitly</td>
+<td>Default <code>dev-secret</code></td>
+</tr>
+<tr>
+<td>Code changes</td>
+<td>Rebuild image required</td>
+<td>Instant (mounted from host)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="part-7-the-dev-stack-launcher-runsh-dev">Part 7: The Dev Stack Launcher — <code>./run.sh dev</code><a class="headerlink" href="#part-7-the-dev-stack-launcher-runsh-dev" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>./run.sh<span class="w"> </span>dev<span class="w">                  </span><span class="c1"># Local: FastAPI (:8000) + React (:5173)</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>./run.sh<span class="w"> </span>dev<span class="w"> </span>--docker<span class="w">         </span><span class="c1"># Docker mode: uses docker-compose</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>./run.sh<span class="w"> </span>dev<span class="w"> </span>--docker-dev<span class="w">     </span><span class="c1"># Docker dev: hot reload</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>./run.sh<span class="w"> </span>dev<span class="w"> </span>--kill-only<span class="w">      </span><span class="c1"># Stop all dev services</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>./run.sh<span class="w"> </span>dev<span class="w"> </span>--no-react<span class="w">       </span><span class="c1"># FastAPI only</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>./run.sh<span class="w"> </span>dev<span class="w"> </span>--no-fastapi<span class="w">     </span><span class="c1"># React only</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>./run.sh<span class="w"> </span>dev<span class="w"> </span>--open<span class="w">           </span><span class="c1"># Launch + open browser</span>
+</code></pre></div>
+<p>In local mode, <code>launch_stack.sh</code> does:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>1. Kill any existing processes on :8000 and :5173
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>2. Start FastAPI:  uvicorn fastapi_app.main:app --reload --port 8000
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>3. Start React:    cd react_app &amp;&amp; npm run dev
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>4. Wait for health checks on both
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>5. Print status with URLs
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>┌──────────────────────────────────────────────────────┐
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>│                   Developer Machine                  │
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>│                                                      │
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>│  ┌──────────────┐        ┌──────────────────────┐    │
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>│  │ React Dev    │  HTTP  │ FastAPI Backend       │    │
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>│  │ Server       │───────→│                       │    │
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>│  │ :5173        │  API   │ :8000                 │    │
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>│  │              │  calls │ ┌──────────────────┐  │    │
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>│  │ Vite + HMR  │        │ │ structural_lib   │  │    │
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>│  │ TypeScript   │        │ │ (IS 456 math)    │  │    │
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>│  │ Tailwind     │        │ └──────────────────┘  │    │
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>│  └──────────────┘        └──────────────────────┘    │
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>│                                                      │
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>│  Browser: http://localhost:5173                       │
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>│  API docs: http://localhost:8000/docs                │
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>└──────────────────────────────────────────────────────┘
+</code></pre></div>
+<hr />
+<h2 id="part-8-exercises">Part 8: Exercises<a class="headerlink" href="#part-8-exercises" title="Permanent link">&para;</a></h2>
+<h3 id="exercise-1-build-and-explore">Exercise 1: Build and Explore<a class="headerlink" href="#exercise-1-build-and-explore" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>colima<span class="w"> </span>start<span class="w"> </span>--cpu<span class="w"> </span><span class="m">4</span><span class="w"> </span>--memory<span class="w"> </span><span class="m">4</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>build
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;JWT_SECRET_KEY=</span><span class="k">$(</span>openssl<span class="w"> </span>rand<span class="w"> </span>-hex<span class="w"> </span><span class="m">32</span><span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>.env
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>docker<span class="w"> </span>compose<span class="w"> </span>ps<span class="w">              </span><span class="c1"># Should show: fastapi ... Up (healthy)</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>curl<span class="w"> </span>http://localhost:8000/health
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>docker<span class="w"> </span>compose<span class="w"> </span>down
+</code></pre></div>
+<h3 id="exercise-2-development-workflow">Exercise 2: Development Workflow<a class="headerlink" href="#exercise-2-development-workflow" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>./run.sh<span class="w"> </span>dev
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1"># Open http://localhost:5173</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="c1"># Upload Etabs_CSV/beam_forces.csv → design a beam → export BBS</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Open http://localhost:8000/docs → try POST /api/v1/design/beam</span>
+</code></pre></div>
+<h3 id="exercise-3-understand-layer-caching">Exercise 3: Understand Layer Caching<a class="headerlink" href="#exercise-3-understand-layer-caching" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nb">time</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>build<span class="w">          </span><span class="c1"># ~2 min first time</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="c1"># Edit fastapi_app/main.py (add a comment)</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nb">time</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>build<span class="w">          </span><span class="c1"># ~15 sec (cached deps)</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># Edit requirements.txt (add blank line)</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="nb">time</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>build<span class="w">          </span><span class="c1"># ~1 min (pip install rebuilds)</span>
+</code></pre></div>
+<hr />
+<h2 id="part-9-self-check-qa">Part 9: Self-Check Q&amp;A<a class="headerlink" href="#part-9-self-check-qa" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Why <code>python:3.11-slim</code> not <code>alpine</code>?</strong> Alpine uses musl libc — NumPy/SciPy C extensions often fail. Slim is Debian with all C extensions working.</li>
+<li><strong>Why COPY requirements.txt before source code?</strong> Docker caches layers. Deps-first means code changes don't rebuild pip install.</li>
+<li><strong>What does <code>cap_drop: ALL</code> do?</strong> Removes ALL Linux capabilities — the container can only do basic I/O and compute.</li>
+<li><strong>What's the difference between <code>docker compose up</code> and <code>./run.sh dev</code>?</strong> Docker runs in a container; run.sh dev starts processes locally without Docker.</li>
+<li><strong>Why Colima instead of Docker Desktop?</strong> Free, open-source, lightweight, no paid license needed.</li>
+<li><strong>What happens if JWT_SECRET_KEY isn't set?</strong> Production compose fails to start — the <code>:?</code> syntax enforces it.</li>
+<li><strong>What's the <code>:ro</code> in volume mounts?</strong> Read-only — the container can see but not modify host files.</li>
+<li><strong>Why non-root user in Docker?</strong> If an attacker exploits a vulnerability, they can't install packages or modify the system.</li>
+<li><strong>How does the HEALTHCHECK work?</strong> Docker pings <code>/health</code> every 30 seconds. 3 consecutive failures → container marked unhealthy → orchestrator restarts.</li>
+<li><strong>Does a library user need Docker?</strong> No — <code>pip install structural-lib-is456</code> works without Docker. Docker is only for the full-stack web deployment.</li>
+</ol>
+<hr />
+<h2 id="part-10-things-to-know-deep-insights">Part 10: Things to Know — Deep Insights<a class="headerlink" href="#part-10-things-to-know-deep-insights" title="Permanent link">&para;</a></h2>
+<h3 id="101-the-slim-vs-alpine-choice-is-not-about-size">10.1: The slim vs alpine choice is NOT about size<a class="headerlink" href="#101-the-slim-vs-alpine-choice-is-not-about-size" title="Permanent link">&para;</a></h3>
+<p>Alpine saves ~100MB but uses musl libc instead of glibc. NumPy, SciPy, and other C extensions compile against glibc. On Alpine, you either get cryptic segfaults or need to compile from source (adding gcc, which eliminates the size advantage). For a scientific Python stack, always use slim.</p>
+<h3 id="102-docker-layer-caching-is-your-most-important-build-optimization">10.2: Docker layer caching is your most important build optimization<a class="headerlink" href="#102-docker-layer-caching-is-your-most-important-build-optimization" title="Permanent link">&para;</a></h3>
+<p>A typical pip install takes 90 seconds. If your Dockerfile puts <code>COPY . .</code> before <code>pip install</code>, every single code change triggers a 90-second rebuild. By putting requirements.txt first, code-only changes rebuild in under 10 seconds. Over a day of development (50+ builds), this saves hours.</p>
+<h3 id="103-volume-mounts-with-ro-prevent-accidental-corruption">10.3: Volume mounts with :ro prevent accidental corruption<a class="headerlink" href="#103-volume-mounts-with-ro-prevent-accidental-corruption" title="Permanent link">&para;</a></h3>
+<p>Without <code>:ro</code>, a bug in the container could write to your source code on the host. The read-only flag means the container can read your files but can never modify them — even if a process runs amok.</p>
+<h3 id="104-pythonunbuffered1-is-critical-for-containerized-apps">10.4: <code>PYTHONUNBUFFERED=1</code> is critical for containerized apps<a class="headerlink" href="#104-pythonunbuffered1-is-critical-for-containerized-apps" title="Permanent link">&para;</a></h3>
+<p>Without it, Python buffers stdout. If the container crashes, the last few log lines are in the buffer and never printed. In production, those lost lines are exactly the ones you need for debugging. Always set <code>PYTHONUNBUFFERED=1</code>.</p>
+<h3 id="105-the-healthcheck-is-not-just-monitoring-it-enables-auto-recovery">10.5: The HEALTHCHECK is not just monitoring — it enables auto-recovery<a class="headerlink" href="#105-the-healthcheck-is-not-just-monitoring-it-enables-auto-recovery" title="Permanent link">&para;</a></h3>
+<p>Docker Swarm, Kubernetes, and even basic <code>docker compose</code> use the healthcheck. When a container is marked unhealthy, the orchestrator can automatically restart it. Without a healthcheck, a process that hangs (but doesn't crash) stays broken forever.</p>
+<h3 id="106-no-cache-dir-in-pip-install-reduces-image-size-by-30">10.6: <code>--no-cache-dir</code> in pip install reduces image size by 30%<a class="headerlink" href="#106-no-cache-dir-in-pip-install-reduces-image-size-by-30" title="Permanent link">&para;</a></h3>
+<p>pip caches downloaded wheels in <code>~/.cache/pip/</code>. In a Docker image, this cache is useless (you'll never run pip install again). The <code>--no-cache-dir</code> flag skips writing the cache, saving 50-200MB depending on dependencies.</p>
+<hr />
+<h2 id="part-11-what-can-be-done-better">Part 11: What Can Be Done Better<a class="headerlink" href="#part-11-what-can-be-done-better" title="Permanent link">&para;</a></h2>
+<h3 id="111-no-multi-stage-build">11.1: No multi-stage build<a class="headerlink" href="#111-no-multi-stage-build" title="Permanent link">&para;</a></h3>
+<p>The current Dockerfile installs build tools (libffi-dev) that aren't needed at runtime. A multi-stage build would compile in a "builder" stage, then copy only the built artifacts to a clean "runtime" stage — reducing image size by ~200MB.</p>
+<h3 id="112-no-dockerignore-file">11.2: No .dockerignore file<a class="headerlink" href="#112-no-dockerignore-file" title="Permanent link">&para;</a></h3>
+<p>Without <code>.dockerignore</code>, <code>docker build</code> sends the ENTIRE context (node_modules, .git, docs, logs) to the Docker daemon. A proper <code>.dockerignore</code> would skip these, reducing build context from ~500MB to ~50MB and speeding up builds.</p>
+<h3 id="113-no-image-scanning-in-ci">11.3: No image scanning in CI<a class="headerlink" href="#113-no-image-scanning-in-ci" title="Permanent link">&para;</a></h3>
+<p>The built image should be scanned for known CVEs in system packages and Python dependencies. Tools like <code>trivy</code>, <code>grype</code>, or <code>docker scout</code> can flag vulnerabilities before deployment.</p>
+<h3 id="114-no-container-resource-limits">11.4: No container resource limits<a class="headerlink" href="#114-no-container-resource-limits" title="Permanent link">&para;</a></h3>
+<p>The compose file doesn't set <code>mem_limit</code> or <code>cpus</code>. A single runaway calculation could consume all available memory and crash the host. Resource limits prevent this.</p>
+<h3 id="115-no-log-rotation-or-structured-logging">11.5: No log rotation or structured logging<a class="headerlink" href="#115-no-log-rotation-or-structured-logging" title="Permanent link">&para;</a></h3>
+<p>Container logs grow unbounded. In production, they should use structured JSON logging and be forwarded to a log aggregator (ELK, Loki, CloudWatch) with rotation policies.</p>
+<hr />
+<h2 id="part-12-innovation-directions">Part 12: Innovation Directions<a class="headerlink" href="#part-12-innovation-directions" title="Permanent link">&para;</a></h2>
+<h3 id="121-multi-stage-build-with-distroless-base">12.1: Multi-stage build with distroless base<a class="headerlink" href="#121-multi-stage-build-with-distroless-base" title="Permanent link">&para;</a></h3>
+<p>Use <code>gcr.io/distroless/python3</code> as the final stage — no shell, no package manager, no attack surface. The image contains ONLY the Python runtime and your code. If an attacker gets in, there's no <code>bash</code>, <code>curl</code>, or <code>apt</code> to exploit.</p>
+<h3 id="122-container-native-health-probes">12.2: Container-native health probes<a class="headerlink" href="#122-container-native-health-probes" title="Permanent link">&para;</a></h3>
+<p>Beyond simple HTTP checks, add readiness probes (is the model loaded?) and liveness probes (is the event loop responsive?). Kubernetes uses these to route traffic only to healthy pods.</p>
+<h3 id="123-buildkit-cache-mounts">12.3: BuildKit cache mounts<a class="headerlink" href="#123-buildkit-cache-mounts" title="Permanent link">&para;</a></h3>
+<p>Docker BuildKit supports <code>--mount=type=cache,target=/root/.cache/pip</code> which caches pip downloads ACROSS builds without storing them in the image. Faster rebuilds AND smaller images.</p>
+<h3 id="124-serverless-deployment-aws-lambda-cloud-run">12.4: Serverless deployment (AWS Lambda / Cloud Run)<a class="headerlink" href="#124-serverless-deployment-aws-lambda-cloud-run" title="Permanent link">&para;</a></h3>
+<p>Package the FastAPI app as a serverless function. Pay only per request. Zero servers to manage. Google Cloud Run supports any Docker container as a service.</p>
+<h3 id="125-dev-containers-for-vs-code">12.5: Dev Containers for VS Code<a class="headerlink" href="#125-dev-containers-for-vs-code" title="Permanent link">&para;</a></h3>
+<p>A <code>.devcontainer/devcontainer.json</code> would let any developer open the repo in VS Code and instantly have the full environment — Python, Node, extensions, settings — running inside a container. Zero local setup.</p>
+<hr />
+<h2 id="part-13-next-repo-must-add">Part 13: Next Repo Must-Add<a class="headerlink" href="#part-13-next-repo-must-add" title="Permanent link">&para;</a></h2>
+<h3 id="concrete-items">Concrete items<a class="headerlink" href="#concrete-items" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong><code>.dockerignore</code> file</strong> — Exclude <code>.git/</code>, <code>node_modules/</code>, <code>docs/</code>, <code>logs/</code>, <code>*.pyc</code></li>
+<li><strong>Multi-stage Dockerfile</strong> — Builder stage for compilation, runtime stage for serving</li>
+<li><strong>Image CVE scanning in CI</strong> — <code>trivy image</code> in GitHub Actions pipeline</li>
+<li><strong>Container resource limits</strong> — <code>mem_limit: 2g</code> and <code>cpus: 2.0</code> in compose</li>
+<li><strong>Structured JSON logging</strong> — Replace print statements with structured loggers</li>
+<li><strong>Dev Container config</strong> — <code>.devcontainer/</code> for instant VS Code setup</li>
+<li><strong>Docker Compose profiles</strong> — Separate dev/staging/prod with <code>profiles:</code> instead of multiple files</li>
+</ol>
+<h3 id="day-1-checklist-for-containerizing-a-new-service">Day-1 checklist for containerizing a new service<a class="headerlink" href="#day-1-checklist-for-containerizing-a-new-service" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>□ 1. Write Dockerfile with deps-first layer ordering
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>□ 2. Use slim base image (not alpine for scientific Python)
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>□ 3. Create non-root user, switch to it before CMD
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>□ 4. Add HEALTHCHECK with reasonable intervals
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>□ 5. Set PYTHONDONTWRITEBYTECODE=1 and PYTHONUNBUFFERED=1
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>□ 6. Add .dockerignore (exclude .git, node_modules, docs, __pycache__)
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>□ 7. Use -no-cache-dir with pip install
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>□ 8. Set cap_drop: ALL and no-new-privileges in compose
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>□ 9. Use :ro on all volume mounts in dev compose
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>□ 10. Test: build, run, healthcheck, stop — all must work cleanly
+</code></pre></div>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Command / File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docker runtime (macOS)</td>
+<td><code>colima start --cpu 4 --memory 4</code></td>
+<td>Provides Linux kernel for containers</td>
+</tr>
+<tr>
+<td>Build image</td>
+<td><code>docker compose build</code></td>
+<td>Creates production image from Dockerfile</td>
+</tr>
+<tr>
+<td>Production deploy</td>
+<td><code>docker compose up</code></td>
+<td>Runs container with security hardening</td>
+</tr>
+<tr>
+<td>Dev with hot reload</td>
+<td><code>docker compose -f docker-compose.dev.yml up</code></td>
+<td>Volume mounts + <code>--reload</code></td>
+</tr>
+<tr>
+<td>Easiest dev start</td>
+<td><code>./run.sh dev</code></td>
+<td>Local FastAPI + React, no Docker needed</td>
+</tr>
+<tr>
+<td>Kill dev services</td>
+<td><code>./run.sh dev --kill-only</code></td>
+<td>Stops all running dev processes</td>
+</tr>
+<tr>
+<td>Health check</td>
+<td><code>curl localhost:8000/health</code></td>
+<td>Verifies API is running</td>
+</tr>
+<tr>
+<td>API docs</td>
+<td><code>localhost:8000/docs</code></td>
+<td>Swagger UI for all endpoints</td>
+</tr>
+<tr>
+<td>Container security</td>
+<td><code>cap_drop: ALL</code>, non-root user</td>
+<td>Minimal privileges</td>
+</tr>
+<tr>
+<td>Layer caching</td>
+<td>Deps before code in Dockerfile</td>
+<td>Fast rebuilds on code changes</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>Dockerfile.fastapi</code> — Production image definition</li>
+<li><code>docker-compose.yml</code> — Hardened deployment</li>
+<li><code>docker-compose.dev.yml</code> — Hot reload with volume mounts</li>
+<li><code>scripts/launch_stack.sh</code> — Full-stack startup script</li>
+<li><code>fastapi_app/main.py</code> — Application setup, middleware, routers</li>
+<li><code>fastapi_app/config.py</code> — Environment variable management</li>
+<li><strong>Previous:</strong> Day 20 covers end-to-end data flow through all layers</li>
+<li><strong>Next:</strong> Day 22 covers Git automation with ai_commit.sh</li>
+</ul>
+<p>You've now completed the full journey from raw materials (Day 1) through IS 456 math, API design, frontend integration, data flow, and deployment. The next modules will cover advanced topics like <strong>testing strategies</strong>, <strong>CI/CD pipelines</strong>, and <strong>contributing to the library</strong>. But with Days 1-21 under your belt, you can already read, understand, and modify any layer of this codebase.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1492,6 +1492,45 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#maintenance-recovery-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maintenance Recovery Dashboard
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Maintenance Recovery Dashboard">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#maintenance-evidence-captured-2026-08-07" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Maintenance evidence captured 2026-08-07
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recovery-progress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recovery progress
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#current-release" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1538,6 +1577,61 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#active" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Active
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#up-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Up Next
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backlog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backlog
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recently-done" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recently Done
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#archive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Archive
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1963,7 +2057,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#backlog" class="md-nav__link">
+  <a href="#backlog_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Backlog
@@ -1974,7 +2068,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#archive" class="md-nav__link">
+  <a href="#archive_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Archive
@@ -2008,7 +2102,7 @@
 <blockquote>
 <p><strong>Single source of truth for active work.</strong> Keep it short and current.</p>
 </blockquote>
-<p><strong>Updated:</strong> 2026-04-07 — v0.21.6 audit + online research root cause analysis; 16 new issues from OWASP 2025/PyPI best practices</p>
+<p><strong>Updated:</strong> 2026-08-09 — PR #676 is green; MAINT-008 compact modernization is planned and waits for the owner merge decision</p>
 <hr />
 <h2 id="rules-read-first">Rules (read first)<a class="headerlink" href="#rules-read-first" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2016,6 +2110,108 @@
 <li><strong>Done = tests pass + docs updated + scanner passes</strong></li>
 <li><strong>Archive rule:</strong> Move completed items to <a href="../_archive/tasks-history/">tasks-history.md</a> after 20+ items</li>
 <li><strong>No new Streamlit work</strong> — all new features go to React. Bug fixes only for Streamlit-only features.</li>
+</ul>
+<hr />
+<h2 id="maintenance-recovery-dashboard">Maintenance Recovery Dashboard<a class="headerlink" href="#maintenance-recovery-dashboard" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Maintenance baseline comes before feature work. Preserve the inherited April worktree before cleanup.
+Consolidated evidence: <a href="../audit/maintenance-recovery-audit-2026-08-07/">maintenance recovery audit</a>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Priority</th>
+<th>Status</th>
+<th>Exit condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MAINT-001</td>
+<td>Preserve April worktree and recover the Mac Mini development baseline</td>
+<td>P0</td>
+<td>✅ DONE</td>
+<td>GitHub/SSH, Python/Node, Colima/Docker, and release preflight pass; PR #676 required checks are green</td>
+</tr>
+<tr>
+<td>MAINT-002</td>
+<td>Repair nightly QA and stale import E2E response-envelope assertions</td>
+<td>P0</td>
+<td>✅ DONE</td>
+<td>Nightly command is valid; import/sample/dual/batch scripts pass against the live API</td>
+</tr>
+<tr>
+<td>MAINT-003</td>
+<td>Rebuild dependency and security baseline</td>
+<td>P0</td>
+<td>✅ DONE</td>
+<td>Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted</td>
+</tr>
+<tr>
+<td>MAINT-004</td>
+<td>Make <code>run.sh check</code> the canonical truth source and repair stale indexes/scanners</td>
+<td>P1</td>
+<td>✅ DONE</td>
+<td>Canonical check, audit, health, API manifest, schemas, hooks, and registries agree</td>
+</tr>
+<tr>
+<td>MAINT-005</td>
+<td>Restore frontend confidence and define the v0.21.7 finish line</td>
+<td>P1</td>
+<td>✅ DONE</td>
+<td>Live import→design→3D→dashboard→export flow and byte-level artifacts pass; v0.21.7 preflight is ready</td>
+</tr>
+<tr>
+<td>MAINT-006</td>
+<td>Enforce low-token Codex operation</td>
+<td>P1</td>
+<td>✅ DONE</td>
+<td>User-selected parent model is preserved; Luna/Terra advisory routing, bounded worker packets, two-subagent cap, and quick-gate check pass</td>
+</tr>
+<tr>
+<td>MAINT-007</td>
+<td>Refresh onboarding, agents, tools, and usage telemetry</td>
+<td>P1</td>
+<td>✅ DONE</td>
+<td>Terminal-only PR status, current bootstrap/counts, complete 14-skill discovery, honest usage checkpoints, and focused regressions pass</td>
+</tr>
+<tr>
+<td>MAINT-008</td>
+<td>Compact CI, maintenance controls, and agent entry paths</td>
+<td>P0</td>
+<td>📋 READY AFTER #676</td>
+<td><a href="../planning/compact-modernization-plan/">Implementation plan</a> completes with one truthful PR gate, four or fewer justified workflows, supported commands only, and unchanged main-process evidence</td>
+</tr>
+</tbody>
+</table>
+<h3 id="maintenance-evidence-captured-2026-08-07">Maintenance evidence captured 2026-08-07<a class="headerlink" href="#maintenance-evidence-captured-2026-08-07" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Git object database and transferred sample data are intact; local and remote <code>main</code> both point to <code>fa854e0f</code>.</li>
+<li>Inherited worktree: 73 modified tracked files plus 47 untracked files before session startup; 70 Python diffs are AST-equivalent formatting changes.</li>
+<li>Final release preflight: 5,159 Python tests passed, 3 skipped, 6 deselected; 336 FastAPI and 146 React tests pass. A clean built-wheel environment independently passes 5,120 tests, 41 skips, 6 deselections, and packaged CLI workflows.</li>
+<li>Repository release gates are green. GitHub CLI/SSH, Colima, and Docker are recovered; PR #676 is clean and mergeable. React's 17.74% statement coverage remains an accepted stabilization risk outside this maintenance scope.</li>
+<li>Canonical validation is 28/28 checks, 22/22 audit readiness, 100/100 health, and 96% parity. Feedback is 22/23 resolved; only the existing tester-output recurrence watch remains open.</li>
+<li>MAINT-005 checkpoint <code>6f119132</code>: direct tests now cover 60/60 routes; parity is 96%. The live 153-beam import → auto-design → 3D editor → dashboard path passes with no new browser warnings.</li>
+<li>Runtime/product repairs from the browser sweep: the launcher selects Node 24 from <code>.nvmrc</code> and kills listeners only; canonical compliance utilization replaces misleading <code>Mu/Mu_lim</code>; imported spans are rounded; dashboard and BOQ steel totals agree.</li>
+<li>MAINT-005 exit evidence: WebSocket designs now preserve the complete REST response contract; the live 153-beam flow passes 153/153 and exports valid BBS, DXF, HTML/PDF reports, building HTML/PDF/CSV summaries, and BOQ CSV. Current BOQ totals are 2,663.4 kg steel and 114.8 m³ concrete.</li>
+<li>Release automation now selects <code>.nvmrc</code> Node 24, evaluates reclaimable macOS memory, and installs wheel <code>[dev]</code> dependencies for isolated verification. <code>./run.sh release preflight 0.21.7</code> reports READY TO RELEASE with zero warnings.</li>
+<li>GitHub CLI API and SSH auth now pass end to end. Colima's stale transferred-disk lock was released only after Lima confirmed the VM was stopped; the existing VZ disk was preserved and Docker is healthy.</li>
+<li>Docker release preflight passes with 5,158 Python tests, 8 skips, 6 deselections, and a Node 24 React production build. PR #676 is open on <code>task/MAINT-001</code>.</li>
+<li>Low-token policy checkpoint <code>6e8e4a31</code> defaults Codex to Terra/medium, disables Fast mode, caps subagents at two, replaces full-history handoffs, and adds a ninth canonical quick check.</li>
+<li>Authenticated analytics showed 1,858 turns in the one-month view: 1,065 GPT-5.5, 635 Sol, 96 Luna, 43 Terra, and 19 older models. The checked-in picker now favors Luna for clear/repeatable work, Terra for normal/high-risk implementation, and approval-gates Sol.</li>
+<li>MAINT-007 removed the default <code>gh pr view --web</code> side effect from <code>./run.sh pr status</code>; browser opening now requires <code>--web</code>. Session checkpoints record model, reasoning, elapsed time, parent/subagent counts, optional dashboard values, verification, and Git state without estimating tokens or cost.</li>
+<li>MAINT-007 closeout: 32 focused regressions, Ruff/Black, quick 9/9, full 29/29, audit 22/22, and health 100/100 pass; folder indexes and the 282-document global index are current.</li>
+</ul>
+<h3 id="recovery-progress">Recovery progress<a class="headerlink" href="#recovery-progress" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Recovery checkpoint <code>b28ee4e3</code> is pushed on <code>task/MAINT-001</code>.</li>
+<li>Python editable metadata/module version repaired to v0.21.6; Node 24.19.0 installed keg-only and React passes 139 tests, lint, and build on it.</li>
+<li>Quick canonical gate is 8/8 green; import validation resolves all 3,248 scanned imports.</li>
+<li>MAINT-001 is complete. Commit <code>242ba8ce</code> removed the empty-link inputs, replaced the crawler-blocked pricing URL, and pinned Ruff 0.15.8 across active install surfaces; all PR #676 checks pass.</li>
+<li>MAINT-002 validation: 18/18 live import E2E checks, 153/153 sample beams, and 1,056/1,056 internal documentation links pass.</li>
+<li>MAINT-003 validation: a clean Python 3.11 environment has zero known vulnerabilities; npm dropped from 13 findings to one documented RSC-only advisory. The later final gates pass 5,159 Python, 336 FastAPI, and 146 React tests.</li>
 </ul>
 <hr />
 <h2 id="current-release">Current Release<a class="headerlink" href="#current-release" title="Permanent link">&para;</a></h2>
@@ -2075,7 +2271,7 @@
 <tr>
 <td><strong>v0.21.7</strong></td>
 <td>Security Hardening</td>
-<td>� IN PROGRESS</td>
+<td>✅ READY FOR RELEASE</td>
 <td>Input validation, error sanitization, packaging gates, CI hardening</td>
 </tr>
 <tr>
@@ -2237,6 +2433,118 @@
 Detailed specs: <a href="../planning/next-phase-improvements-plan/">next-phase-improvements-plan.md</a> Part 2.</p>
 </blockquote>
 <hr />
+<h2 id="active">Active<a class="headerlink" href="#active" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Owner</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MAINT-008</td>
+<td>Execute the <a href="../planning/compact-modernization-plan/">compact modernization plan</a></td>
+<td>Main Agent</td>
+<td>⏸ BLOCKED — merge PR #676 first with owner approval</td>
+</tr>
+</tbody>
+</table>
+<h2 id="up-next">Up Next<a class="headerlink" href="#up-next" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Agent</th>
+<th>Est</th>
+<th>Priority</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MAINT-008</td>
+<td>Obtain explicit owner approval to merge PR #676, then create a separate modernization PR</td>
+<td>ops + owner</td>
+<td>3–5 bounded packets</td>
+<td>P0</td>
+<td>⏳ WAITING APPROVAL</td>
+</tr>
+<tr>
+<td>v0.21.7</td>
+<td>Re-run release preflight and obtain a separate release approval after MAINT-008</td>
+<td>ops + owner</td>
+<td>&lt;1 session</td>
+<td>P1</td>
+<td>⏸ AFTER MAINT-008</td>
+</tr>
+</tbody>
+</table>
+<h2 id="backlog">Backlog<a class="headerlink" href="#backlog" title="Permanent link">&para;</a></h2>
+<p>The version roadmap and detailed v0.21.7+ backlog remain below. Do not start
+feature work until PR #676 is merged, MAINT-008 is complete, and the v0.21.7
+release decision is handled.</p>
+<h2 id="recently-done">Recently Done<a class="headerlink" href="#recently-done" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Task</th>
+<th>Agent</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MAINT-001</td>
+<td>Preserve the inherited worktree, recover the Mac baseline, and close PR #676 required checks</td>
+<td>Main Agent</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>MAINT-006</td>
+<td>Add enforceable low-token defaults, context rules, analytics-calibrated model routing, and automation</td>
+<td>Main Agent</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>MAINT-007</td>
+<td>Re-audit and modernize onboarding, agent/tool discovery, usage telemetry, and PR browser behavior</td>
+<td>Main Agent</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>MAINT-005</td>
+<td>Verify the full live browser/export workflow and establish the evidence-based v0.21.7 finish line</td>
+<td>Main Agent</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>MAINT-004</td>
+<td>Reconcile canonical checks, manifests, indexes, health, parity, active docs, and feedback</td>
+<td>Main Agent</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>MAINT-002</td>
+<td>Repair nightly QA, maintained import E2E contracts, and documentation links</td>
+<td>Main Agent</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>MAINT-003</td>
+<td>Rebuild clean Python/npm dependency locks and enforce security audits</td>
+<td>Main Agent</td>
+<td>✅ DONE</td>
+</tr>
+</tbody>
+</table>
+<h2 id="archive">Archive<a class="headerlink" href="#archive" title="Permanent link">&para;</a></h2>
+<p>Completed historical tasks live in <a href="../_archive/tasks-history/">tasks-history.md</a>
+(<code>docs/_archive/tasks-history.md</code>).</p>
 <h2 id="completed-archived">Completed (Archived)<a class="headerlink" href="#completed-archived" title="Permanent link">&para;</a></h2>
 <blockquote>
 <p>All completed items below have been archived. See <a href="../_archive/tasks-history/">tasks-history.md</a> for full details.</p>
@@ -4051,7 +4359,7 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 </tbody>
 </table>
 <hr />
-<h2 id="backlog">Backlog<a class="headerlink" href="#backlog" title="Permanent link">&para;</a></h2>
+<h2 id="backlog_1">Backlog<a class="headerlink" href="#backlog_1" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -4137,7 +4445,7 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 </tbody>
 </table>
 <hr />
-<h2 id="archive">Archive<a class="headerlink" href="#archive" title="Permanent link">&para;</a></h2>
+<h2 id="archive_1">Archive<a class="headerlink" href="#archive_1" title="Permanent link">&para;</a></h2>
 <p>Sessions 32–73 and legacy TASK items have been completed. See <a href="../_archive/tasks-history/">docs/_archive/tasks-history.md</a> for details.</p>
 <p>Key milestones from archived sessions:
 - <strong>Session 73</strong> (Jan 24): FastAPI skeleton (20 routes, 31 tests), WebSocket endpoint, <code>discover_api_signatures.py</code>
@@ -4208,7 +4516,7 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
       
