@@ -18,19 +18,18 @@ The repository is not ready to publish or describe v0.23.0 as released. The
 software baseline is broad and well tested, but the audit confirmed failures
 that can change a supported design outcome or misrepresent it to a user.
 
-The release hold remains until all P0/P1 packets below are complete, the
-contract/tooling packets are reconciled, an exact built wheel passes the
-release gate, the owner declares the complete intended development scope
-finished, and a qualified structural engineer then reviews the final affected
-formula and supported-case evidence. Passing software tests is evidence of
-software behavior; it is not formula certification or professional design
-approval.
+All P0/P1 remediation packets, the exact local artifact gate, and the owner's
+bounded C4 scope freeze are complete. The release hold now remains for the
+qualified structural-engineering review, exact CI publication-artifact
+identity/UAT, and separate owner authorization for each release action.
+Passing software tests is evidence of software behavior; it is not formula
+certification or professional design approval.
 
-No professional review is scheduled during ongoing development. Until the
-final review is recorded, this repository and every prepared artifact must be
-described as development software that is **not approved or usable for
-engineering decisions**. An AI review may improve software quality but cannot
-satisfy or replace the final qualified-engineer gate.
+The bounded development scope is now frozen and ready for qualified review.
+Until that final review is recorded, this repository and every prepared
+artifact must be described as development software that is **not approved or
+usable for engineering decisions**. An AI review may improve software quality
+but cannot satisfy or replace the final qualified-engineer gate.
 
 No tag, PyPI upload, GitHub Release, merge, issue closure, or branch deletion is
 authorized by this plan. Those remain owner-only actions requiring explicit
@@ -453,7 +452,7 @@ integrated; do not duplicate the full gate after every small edit.
 ./run.sh audit
 ./run.sh health
 ./run.sh parity
-./run.sh release preflight 0.23.0
+./run.sh release preflight --wheel Python/dist/structural_lib_is456-0.23.0-py3-none-any.whl
 ```
 
 The release preflight command is validation only. It does not authorize or
@@ -531,3 +530,19 @@ usability claim is permitted. After the owner declares the entire intended
 work scope complete, the final frozen scope must receive qualified structural-
 engineering review; merge and publication remain separate owner decisions.
 No release action was performed.
+
+## 10. Bounded closeout checkpoint — 2026-08-10
+
+C0-C4 are complete on draft PR #696. Source/live product UAT repaired the
+missing Vite `/stream` proxy and proved coherent PASS/FAIL behavior through
+React and exports. The exact local v0.23.0 artifact was built from source commit
+`9be6eb35`; its wheel/sdist contain 181/206 members and zero excluded or
+protected-content entries. Exact-wheel verification passed 5,404 tests plus
+installed CLI workflows, and current-candidate preflight passed 5,452 source
+tests plus the React build with zero preflight warnings.
+
+The owner request to finish the bounded master plan freezes the intended C4
+review scope. No qualified structural-engineering review has been recorded,
+and the local hashes are not CI publication identities. Merge, exact CI
+artifact generation, tag, TestPyPI/PyPI, GitHub Release and post-publication
+UAT remain separate held decisions. No release action was performed.

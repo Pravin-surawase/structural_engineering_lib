@@ -7,7 +7,7 @@
 **Created:** 2026-08-09
 **Last Updated:** 2026-08-10
 **Date:** 2026-08-10
-**State:** software evidence complete for the task branch; engineering review and publication approval remain separate
+**State:** C0-C4 bounded software/evidence scope frozen; engineering review, exact CI publication evidence and publication approval remain separate
 
 ## Controlled sources
 
@@ -88,15 +88,51 @@ owner-only actions.
 
 ## Local prepublication rehearsal
 
-This is local candidate evidence only; it is not the release identity:
+This is the C3 local candidate built from frozen source commit `9be6eb35` on
+draft PR #696. It is prepublication evidence only; it is not the CI release
+identity:
 
-| Artifact | SHA-256 | Inventory |
-|---|---|---:|
-| `structural_lib_is456-0.21.6-py3-none-any.whl` | `685118b6afc29d4ef49dad91c93ec25ae4c34a186e678636d40b174a016b7e04` | 181 files |
-| `structural_lib_is456-0.21.6.tar.gz` | `ef144405b47133a9f7324707e051762472002ab6586d33cf2bc91b8c864b9450` | 206 files |
+| Artifact | Size | SHA-256 | Inventory |
+|---|---:|---|---:|
+| `structural_lib_is456-0.23.0-py3-none-any.whl` | 478,970 | `08377c11fa63bc01ce1493cfaf0ea5115966c5c3c5f5405782bb85fb032d8875` | 181 files |
+| `structural_lib_is456-0.23.0.tar.gz` | 398,319 | `f3c6da86581c9dc06b2d69baf130095682d0dd09086321167036e466ea4cbac3` | 206 files |
 
-The clean wheel install passed beam, column, isolated-footing transfer,
-one-way/two-way slab, capability-discovery and CLI UAT. Package inventories
-contained no private sources, research modules, migration fixtures, or empty
-ACI/Eurocode placeholder namespaces. The final release record must replace
-these local hashes with the exact CI-built artifact hashes.
+Twine and the maintained candidate checker passed. Both inventories contained
+zero private-source, research, migration-fixture, ACI, Eurocode, test, example,
+script or docs entries. Packaged `clauses.json` records both protected-content
+flags as false and contains no protected `text` or `data` keys.
+
+Exact-wheel verification passed 5,404 tests with 51 optional-dependency skips
+and 6 deselections, then completed the installed `job`, `critical`, `report`
+and CLI-help workflows. The current-candidate preflight passed a clean install,
+5,452 source tests with 3 skips and 6 deselections, the Node 24 React build,
+version surfaces, release docs and release checks with zero preflight warnings.
+
+The local CycloneDX 1.6 environment SBOM contains 196 components, is 239,585
+bytes, and has SHA-256
+`810b1be2f09c34f28358e1c1815a213f8d1ddda8b9adc474be3689701a9f0eb7`.
+CI must regenerate its own SBOM and artifact manifest in the clean publish job;
+the final release record must not substitute these local hashes for exact
+CI-built artifact hashes.
+
+The first clean build attempt was rejected because stale ignored
+`structural_lib_is456.egg-info/SOURCES.txt` reintroduced excluded namespaces
+despite correct package-discovery excludes. C3 fixed the root cause by pruning
+those namespaces in `MANIFEST.in`, regression-checking the directives, and
+updating the release skill to remove generated build, dist and egg-info state
+before the exact build. An optional-DXF test was also corrected to follow the
+installed environment instead of assuming the extra was present.
+
+## C4 frozen review scope
+
+The owner's 2026-08-10 request to finish this named bounded plan is the scope-
+freeze instruction for C4. The frozen packet covers the controlled source IDs,
+documented beam/column/isolated-footing/solid-slab cases, explicit units,
+benchmarks, safe and unsafe outcomes, package boundaries, local artifact
+identities, public claim limits, and unresolved holds recorded here and in the
+master-plan ledger.
+
+No new capability, multi-code namespace, excluded structural system or
+protected source content is part of that scope. C4 does not record qualified
+structural-engineering approval and does not authorize merge, tag, TestPyPI,
+PyPI, GitHub Release, issue closure or branch deletion.

@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: LIB-IS456-C3 exact local artifact freeze for the bounded IS 456 product milestone
+- Focus: qualified engineering review and owner release decision after completed C0-C4 closeout
 <!-- HANDOFF:END -->
 
 **Current branch:** `codex/release-v0.23.0`
-**Integrated baseline:** `d4eb9e9d`
+**Frozen artifact source:** `9be6eb35`
 **Plan:** [is456-library-first-master-plan.md](is456-library-first-master-plan.md)
 
 ## Required Reading
@@ -20,7 +20,7 @@
 | Release state | Version | Decision |
 |---|---|---|
 | **Current** | v0.23.0 | Prepared development candidate on release hold; not published |
-| **Next** | v0.24.0 | Future roadmap only; inactive until C0-C4 closeout and owner activation |
+| **Next** | v0.24.0 | Future roadmap only; inactive pending separate owner activation |
 
 ## Outcome
 
@@ -31,12 +31,12 @@ is checkpointed at `2ff5a42a`, closeout truth at `fbd24350`, and automation
 commit `f812eb3f` is integrated at `d4eb9e9d` without history rewriting or
 lost work.
 
-C2 source/live product UAT is complete. Focused Python/FastAPI/React suites
-passed, and live Vite-to-FastAPI checks agreed with the source-tree outcomes.
-The UAT found one main-process defect: local development proxied `/api` and
-`/ws` but not the React batch EventSource `/stream` path. The Vite proxy now
-forwards `/stream` to FastAPI. A safe plus unsafe-shear batch then rendered one
-PASS/one FAIL, and applying results left the unsafe beam pending.
+C0-C4 are complete on draft PR #696. C2 source/live product UAT repaired the
+missing Vite `/stream` proxy and proved one PASS/one FAIL with the unsafe beam
+left unchanged. C3 froze the exact local v0.23.0 wheel/sdist from source commit
+`9be6eb35` after fixing stale egg-info package leakage at the manifest boundary.
+C4 froze the bounded source, unit, benchmark, limitation, unsafe-case, claim and
+artifact evidence requested by the owner.
 
 Until that final qualified review is recorded, the repository and every
 candidate artifact are development software: they are not approved or usable
@@ -65,19 +65,29 @@ development, but it does not satisfy the final professional gate.
 - Release checks bind source/docs, wheel filename/METADATA/content, clean
   installed version, and packaged CLI behavior. Published wording and
   nonexistent tag-install examples were removed.
+- `MANIFEST.in` now prunes every non-product namespace so stale generated
+  egg-info cannot override the package allowlist.
+- The release-preflight skill distinguishes a future-version positional check
+  from an already-bumped current candidate verified with `--wheel`.
 
 ## Verification evidence
 
-- Python: 5,445 passed, 3 skipped, 6 deselected.
+- Source candidate preflight: 5,452 passed, 3 skipped, 6 deselected.
 - FastAPI: 349 passed.
 - React: 147 passed; lint and production build passed on Node 24.
 - Quick gate: 9/9; full gate: 29/29.
 - Readiness audit: 19/19; health: 100/100; parity: 93%.
 - API manifest: 73/73 compatible functions.
 - OpenAPI: 62 endpoints, 65 schemas, no drift.
-- Exact clean-source wheel: 181 members, zero excluded namespaces, imported
-  `structural_lib.__version__ == 0.23.0`, CLI help passed, SHA-256
-  `1414a06acbac36f503c9e18c11461a10d02f722f87f78c95a530336f35063770`.
+- Exact local wheel: 478,970 bytes, 181 members, zero excluded namespaces,
+  clean import/CLI passed, SHA-256 `08377c11...2d8875`.
+- Exact local sdist: 398,319 bytes, 206 members, zero excluded namespaces,
+  SHA-256 `f3c6da86...4cbac3`.
+- Exact-wheel UAT: 5,404 passed, 51 skipped, 6 deselected plus job, critical
+  and report CLI workflows. Candidate preflight: 5,452 passed, 3 skipped,
+  6 deselected, clean install and React build green, zero preflight warnings.
+- Local CycloneDX 1.6 SBOM: 196 components, 239,585 bytes, SHA-256
+  `810b1be2...9f0eb7`; CI must regenerate its own release evidence.
 - C2 focused matrix: pure-library/service cases green; 58 FastAPI cases green;
   16 focused React cases green; Node 24 production build green.
 - C2 live evidence: safe/unsafe SSE `PASS`/`FAIL`, 1 passed/1 failed in React,
@@ -87,20 +97,18 @@ development, but it does not satisfy the final professional gate.
   (`037a879e...0134`), and unsafe HTML report 8,725 bytes
   (`1524c1ab...7f8a`).
 
-The wheel was disposable and removed after inspection. A stale source-tree
-`Python/build/lib` was proven to contaminate an ordinary build with excluded
-migration/research/ACI/EC2 files; the release gate now rejects that content.
+The exact local artifacts remain ignored under `Python/dist/` for owner review.
+They are prepublication evidence, not the CI publication identity.
 
 ## Next actions
 
-1. Run the canonical v0.23.0 release preflight once on the clean current
-   candidate.
-2. Remove only stale ignored `Python/build`/`Python/dist` artifacts through the
-   maintained safe-delete workflow, then build one exact wheel and sdist.
-3. Record local filenames, sizes, SHA-256 values, inventories, allowlist and
-   protected-content results, SBOM, and exact-wheel clean-install/CLI UAT.
-4. Continue only after C3 passes: C4 evidence freeze, then final qualified
-   review. Publication remains separately gated.
+1. Obtain and record qualified structural-engineering review of the frozen
+   supported-case/formula evidence; do not treat AI/software review as that gate.
+2. If the owner wants to proceed, separately approve merge and the protected
+   CI/TestPyPI release-candidate workflow. Capture the exact CI-built wheel,
+   sdist, inventories, hashes, SBOM and clean-install UAT.
+3. Ask again before tag, production PyPI or GitHub Release. After publication,
+   run exact-version PyPI UAT. No owner-only action is implied by C0-C4.
 
 ## Terminal issues recorded
 
@@ -124,3 +132,16 @@ migration/research/ACI/EC2 files; the release gate now rejects that content.
 - The first C2 commit attempt crossed the local date boundary and the session
   hook correctly rejected the missing 2026-08-10 durable entry; the session
   log and generated indexes were refreshed before retrying.
+- The positional `release preflight 0.23.0` form rejected the already-bumped
+  equal version; the corrected current-candidate form supplied the exact wheel
+  and passed with no warnings.
+- A fresh `Python/build`/`Python/dist` cleanup did not remove stale ignored egg-
+  info, which reintroduced excluded namespaces; generated metadata was moved to
+  Trash, explicit manifest prunes were added, and the final build passed.
+- The first archive inventory snippet used an illegal backslash inside an
+  f-string expression; an intermediate boolean produced the intended read-only
+  evidence on the retry.
+- The archived `check_doc_metadata.py` entrypoint no longer exists and a custom
+  front-matter status was outside the validated enum; `check_docs.py --metadata`
+  and `--frontmatter` were used, with machine status kept `active` while the
+  visible plan status records bounded closeout complete.

@@ -9,12 +9,12 @@ doc_type: spec
 baseline_commit: d4eb9e9dda4a
 release_decision: v0.21.7 deferred
 target_version: v0.23.0 provisional
-current_blocker: Freeze exact local artifact evidence and bounded review packet
+current_blocker: Qualified engineering review and exact CI publication-artifact evidence
 ---
 
 **Type:** Plan
 **Audience:** All Agents
-**Status:** In Progress
+**Status:** C0-C4 Bounded Closeout Complete — Release Hold
 **Importance:** Critical
 **Created:** 2026-08-09
 **Last Updated:** 2026-08-10
@@ -56,8 +56,9 @@ owner changes scope through a separate decision.
 
 ## 2. Relationship to current repository plans
 
-This document is the immediate execution authority for the library-first IS 456
-lane once activated by the owner.
+This document is the execution authority and frozen evidence boundary for the
+library-first IS 456 lane activated by the owner. C0-C4 are complete; the
+remaining gates are qualified review and separately authorized release work.
 
 It narrows the immediate IS 456 execution order in
 `docs/planning/library-expansion-blueprint-v5.md`. It does not reverse that
@@ -118,12 +119,13 @@ approved or usable for engineering decisions.
 | C0 — Plan truth | Complete | Reconcile active plans/tasks with the implemented bounded scope | One authority, no stale active v0.23 tasks, exact next packet |
 | C1 — Git integration | Complete at `d4eb9e9d` | Checkpoint intended remediation/product lanes, preserve automation commit `f812eb3f`, and synchronize `origin/main` without rebase/reset/stash | Reviewable commits, clean worktree, no automation work lost |
 | C2 — Final product UAT | Complete | Exercise supported Python, FastAPI, React batch/report, footing/slab, and export paths including unsafe negatives | Source-tree and live consumer outcomes agree; all canonical gates green |
-| C3 — Frozen artifact | Next | Build clean wheel/sdist, inspect contents, record hashes, clean-install supported workflows and CLI | Exact artifact evidence is reproducible and bound to the frozen commit |
-| C4 — Evidence freeze | After C3 | Assemble source IDs, units, benchmarks, limitations, unsafe cases, and unresolved holds without requesting sign-off | Owner declares all intended bounded work complete and freezes the review scope |
+| C3 — Frozen artifact | Complete at `9be6eb35` | Build clean wheel/sdist, inspect contents, record hashes, clean-install supported workflows and CLI | Exact local artifact evidence is reproducible and bound to the frozen source commit |
+| C4 — Evidence freeze | Complete on draft PR #696 | Assemble source IDs, units, benchmarks, limitations, unsafe cases, and unresolved holds without requesting sign-off | The owner's request to finish this bounded plan freezes the intended review scope without authorizing release or professional-use claims |
 
-Only after C0-C4 are complete does the final qualified-engineering review
-begin. Merge, tag, TestPyPI/PyPI, GitHub Release, issue closure, and branch
-deletion remain separate owner-only actions.
+C0-C4 are complete, so the frozen packet is ready for final qualified-
+engineering review. That review has not been performed. Merge, tag,
+TestPyPI/PyPI, GitHub Release, issue closure, and branch deletion remain
+separate owner-only actions.
 
 ## 3. Why this plan exists
 
@@ -501,10 +503,15 @@ establish the final green result.
 ### Release only
 
 ```bash
-./run.sh release preflight <target-version>
 .venv/bin/python -m build Python
+./run.sh release preflight --wheel Python/dist/structural_lib_is456-<target-version>-py3-none-any.whl
 ./run.sh release verify --version <target-version> --source wheel
 ```
+
+The positional `release preflight <target-version>` form is only for validating
+a future version before mutation. When the branch already reports the frozen
+target, use the exact-wheel form above; passing an equal positional version is
+correctly rejected as a non-upgrade.
 
 After owner-approved publication:
 
@@ -1312,6 +1319,8 @@ Use existing canonical records. Do not create one log per agent.
 | 2026-08-09 | FAPI-1 | api-developer + Main Agent | COMPLETE | Working tree | Development-length fix; footing/slab router/models/tests | Representative beam/column/footing/slab request-to-service evidence | Focused | No UI expansion | P12 |
 | 2026-08-09 | P12 | Main Agent | COMPLETE / READY | `task/LIB-IS456-V1` at `301ddec7`; draft PR #693 | Package allowlist, protected-source boundary, claims, publish workflow | Public clause data sanitized; private 130-page corpus ignored; clean local artifact UAT; quick gate 9/9; full gate 29/29; PR run `31321772342` green | Full + PR | Exact CI publication-artifact identity and owner release decision remain | P13 |
 | 2026-08-10 | C2 | Main Agent with two read-only audits | COMPLETE | `codex/release-v0.23.0`, working tree | Vite proxy, focused source/live product paths, existing evidence records | Focused Python/FastAPI/React green; live safe/unsafe SSE and apply behavior; live column/footing/slab/422/export bytes; frontend build green | Quick 9/9; full 29/29 | Release and professional-review holds remain | C3 |
+| 2026-08-10 | C3 | Main Agent | COMPLETE | `codex/release-v0.23.0` at `9be6eb35`; draft PR #696 | Package manifest boundary, release skill, optional-DXF test, exact local wheel/sdist | Twine and candidate checks; 181/206 members; zero forbidden/protected content; exact-wheel 5,404 passed; candidate preflight 5,452 passed plus React build | Focused + quick + current-commit PR Gate | Local evidence is not CI publication identity; no upload authorized | C4 |
+| 2026-08-10 | C4 | Main Agent + owner scope instruction | COMPLETE / FROZEN | Draft PR #696; artifact source `9be6eb35` | Master plan, task/session/handoff records, evidence crosswalk and release checklist | Controlled source IDs, units/claims, unsafe cases, limitations, local artifact hashes/SBOM, and held gates reconciled | Documentation/session checks; final PR Gate required on evidence commit | Qualified review and every merge/tag/publish action remain held | Qualified review / owner release decision |
 
 ### Required handoff content
 
@@ -1414,21 +1423,24 @@ The first implementation session begins only after the owner clears Phase 0.
 ### Current execution checkpoint
 
 P0-P12, FAPI-1, and remediation packets T0/R1-R8 are implemented. The latest
-software checkpoint passes 5,445 Python tests (3 skipped, 6 deselected), 349
+source preflight passes 5,452 Python tests (3 skipped, 6 deselected), 349
 FastAPI tests, 147 React tests, frontend lint/build, quick 9/9, full 29/29,
 audit 19/19, and health 100/100. A clean-source v0.23.0 wheel passed package
-version and CLI checks with excluded namespaces absent.
+version and CLI checks with excluded namespaces absent. Exact-wheel UAT passed
+5,404 tests (51 optional skips, 6 deselected) plus job, critical and report CLI
+workflows.
 
-C0-C2 are complete. Product remediation is checkpointed at `2ff5a42a`,
+C0-C4 are complete. Product remediation is checkpointed at `2ff5a42a`,
 bounded closeout truth at `fbd24350`, and the separately landed automation
 commit `f812eb3f` is integrated without history rewriting at `d4eb9e9d`. The
 worktree is clean and both Node and Python runtime selectors are retained.
 
 C2 final product UAT found and repaired the missing local Vite `/stream` proxy;
-source-tree and live safe/unsafe outcomes now agree. C3 exact artifact freeze
-is the next and only active packet, followed by C4 evidence freeze. Do not begin new calculation,
-multi-code, or excluded structural-system work. Professional review and
-publication actions remain deferred.
+source-tree and live safe/unsafe outcomes now agree. C3 froze the exact local
+wheel/sdist at source commit `9be6eb35`, and C4 froze the final bounded evidence
+and limitations on draft PR #696. Do not begin new calculation, multi-code, or
+excluded structural-system work. Qualified review, exact CI publication-
+artifact evidence, and every publication action remain deferred.
 
 ## 21. Final program acceptance checklist
 
@@ -1451,14 +1463,15 @@ publication actions remain deferred.
 - [x] Quick gate is green before each accepted commit.
 - [x] One integrated full gate is green for each stable milestone.
 - [x] Current release-candidate PR Gate is green.
-- [ ] Canonical release preflight is green.
-- [ ] Local prepublication and CI publication-artifact filenames/SHA-256 values
-      are separately recorded.
-- [ ] Local rehearsal UAT and CI publication-artifact clean-install/CLI UAT are
-      green.
+- [x] Canonical current-candidate release preflight is green.
+- [x] Local prepublication filenames, sizes, SHA-256 values and inventories are
+      recorded against source commit `9be6eb35`.
+- [ ] CI publication-artifact filenames/SHA-256 values are separately recorded.
+- [x] Local rehearsal clean-install/CLI UAT is green on the exact wheel.
+- [ ] CI publication-artifact clean-install/CLI UAT is green.
 - [ ] Owner has separately approved any TestPyPI/PyPI/tag/GitHub Release action.
 - [ ] Exact published PyPI version passes post-publication UAT.
-- [ ] Handoff and execution ledger identify remaining limitations and review
+- [x] Handoff and execution ledger identify remaining limitations and review
       boundaries.
 
 ## 22. Program closeout statement

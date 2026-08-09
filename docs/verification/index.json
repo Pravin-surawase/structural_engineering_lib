@@ -41,11 +41,11 @@
     {
       "name": "is456-library-first-evidence.md",
       "type": "documentation",
-      "size_lines": 103,
+      "size_lines": 139,
       "last_updated": "2026-08-10",
       "title": "IS 456 Library-First Evidence and Claim Crosswalk",
       "description": "| Source | SHA-256 | Pages | Use | |---|---|---:|---|",
-      "content_hash": "bedd3e578e9d"
+      "content_hash": "9588df319a51"
     },
     {
       "name": "pack.md",
@@ -74,5 +74,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "53cd60d269c75f16"
+  "content_hash": "530e5ebdc8a7b4c5"
 }

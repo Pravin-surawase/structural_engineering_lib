@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — bounded IS 456 closeout active; C0-C2 complete and C3 exact local artifact freeze next
+**Updated:** 2026-08-10 — bounded IS 456 C0-C4 closeout complete; qualified review and owner release decision remain held
 
 ---
 
@@ -126,7 +126,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| LIB-IS456-V1 | Finish the bounded [IS 456 product milestone](planning/is456-library-first-master-plan.md) without expanding to multi-code or excluded structural systems | Main Agent + owner | 🔄 C0-C2 complete; C3 exact local artifact freeze next; final review deferred until C4 |
+| LIB-IS456-V1 | Finish the bounded [IS 456 product milestone](planning/is456-library-first-master-plan.md) without expanding to multi-code or excluded structural systems | Main Agent + owner | ✅ C0-C4 software/evidence closeout complete; release and engineering-use holds remain |
 
 ## Up Next
 
@@ -134,9 +134,9 @@
 |----|------|-------|-----|----------|--------|
 | LIB-IS456-C1 | Create reviewable scoped checkpoints, preserve automation commit `f812eb3f`, and synchronize `origin/main` without history rewriting | Main Agent | 1 packet | P0 | ✅ DONE `d4eb9e9d` |
 | LIB-IS456-C2 | Run final source/live product UAT for supported Python, FastAPI, React batch/report, footing/slab, and export paths | Main Agent | 1 packet | P0 | ✅ DONE |
-| LIB-IS456-C3 | Freeze exact local wheel/sdist evidence and clean-install/CLI UAT for the frozen candidate | Main Agent | 1 packet | P0 | 📋 NEXT |
-| LIB-IS456-C4 | Assemble the final bounded-scope evidence packet and freeze limitations/review boundaries | Main Agent + owner | 1 packet | P0 | ⏸ AFTER C3 |
-| LIB-IS456-FINAL-REVIEW | Review only after C4 and owner scope freeze; no engineering-usability claim before it | qualified structural engineer | final gate | P0 | ⏸ DEFERRED |
+| LIB-IS456-C3 | Freeze exact local wheel/sdist evidence and clean-install/CLI UAT for the frozen candidate | Main Agent | 1 packet | P0 | ✅ DONE `9be6eb35` |
+| LIB-IS456-C4 | Assemble the final bounded-scope evidence packet and freeze limitations/review boundaries | Main Agent + owner | 1 packet | P0 | ✅ DONE on PR #696 |
+| LIB-IS456-FINAL-REVIEW | Review only after C4 and owner scope freeze; no engineering-usability claim before it | qualified structural engineer | final gate | P0 | ⏸ READY FOR QUALIFIED REVIEW |
 
 ## Backlog
 
