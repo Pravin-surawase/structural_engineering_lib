@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-07
+last_updated: 2026-08-09
 doc_type: guide
 ---
 
@@ -15,15 +15,14 @@ engineering, test, or Git safety gates.
 
 1. Keep one parent task active for this project. Finish, pause, or stop it
    before starting a separate parent task.
-2. The main orchestrator uses GPT-5.6 Sol High for task intake, planning,
-   delegation, integration, and final quality review. It shapes work so cheaper
-   worker profiles can execute safely.
+2. The main orchestrator respects the model and reasoning selected by the user.
+   Neither project configuration nor repository instructions may silently
+   switch the parent model.
 3. Use Luna, when the active client exposes it, for simple searches, status
    checks, extraction, formatting, and small mechanical edits. Use Terra for
    normal implementation, testing, documentation, and focused worker review.
-4. Sol High also has standing approval for genuinely important or complicated
-   execution work. Sol Medium, Extra High, Max, and Ultra still require
-   case-specific approval.
+4. Sol profiles require explicit user selection or case-specific approval.
+   Escalate only after a concrete quality gap on the active model.
 5. Keep Fast mode off. Enable it only when the user explicitly chooses speed
    over credit efficiency for a time-sensitive task.
 
@@ -46,8 +45,8 @@ that reliably completes the work.
 | Terra Medium | Normal implementation and maintenance | Architecture, safety, or multiple systems interact |
 | Terra High | Cross-layer debugging, architecture, security, release, IS 456 | A concrete unresolved quality gap justifies Sol |
 | Terra Extra High | Rare, critical but bounded work | Sol may materially improve a high-value decision |
-| Sol High | Main orchestration; important, complicated, or high-stakes execution | Decompose bounded execution for Luna/Terra when practical |
-| Sol Medium/Extra High | Exceptional alternate Sol profiles | Obtain case-specific user approval |
+| Sol High | Explicitly selected important, complicated, or high-stakes execution | Obtain case-specific user approval |
+| Sol Medium/Extra High | Exceptional Sol profiles | Obtain case-specific user approval |
 
 Max is a quality-first single-agent mode. Ultra may create subagents. Both are
 outside the routine project profiles and require case-specific approval. Fast mode
@@ -66,14 +65,15 @@ Use the deterministic picker before selecting a model for a new bounded task:
 ```
 
 The policy is stored in [`agents/model_policy.json`](../../agents/model_policy.json).
-The picker is advisory and does not silently switch the running task. It may
-recommend standing-approved Sol High for in-scope work; every other Sol profile
-remains approval-gated. Apply the recommendation with `/model` in Codex desktop.
-Use a fresh task when changing to a genuinely different issue.
+The picker is optional and advisory. Run it only when the user asks for a
+recommendation or has not selected a model. It never overrides the active
+parent model. Sol recommendations are approval-gated. Apply a recommendation
+with `/model` only after the user chooses it. Use a fresh task when changing to
+a genuinely different issue.
 
 ## Orchestrator Contract
 
-The Sol High orchestrator owns decomposition and acceptance, not just routing.
+The user-selected orchestrator owns decomposition and acceptance, not just routing.
 Before handing work to Luna or Terra, it provides a compact task packet with:
 
 - one objective and explicit non-goals;
@@ -89,8 +89,9 @@ or findings, checks the requested evidence, tests integration assumptions, and
 either accepts the result or returns a precise correction packet. It never
 equates a subagent's confident report with verified completion.
 
-Project-local defaults live in [`.codex/config.toml`](../../.codex/config.toml).
-An explicit model choice by the user still takes precedence.
+Project-local efficiency defaults live in
+[`.codex/config.toml`](../../.codex/config.toml). Parent `model` and
+`model_reasoning_effort` are deliberately unset so the user choice wins.
 
 ## Delegation Budget
 
@@ -185,10 +186,10 @@ Codex routing inputs; Codex Luna/Terra/Sol choices live only in
 ```text
 Work in low-token mode.
 
-Use one Sol High main orchestrator for intake, planning, delegation, integration,
-and final review. Keep Fast mode off. Use Luna for clear repetitive work and
-Terra for normal implementation. Ask before using Sol profiles other than Sol
-High. Default to no subagents; use no more than two only for independent,
+Respect the parent model and reasoning selected by the user; never override it
+from repository policy. Keep Fast mode off. Use Luna-low subagents only for
+clear repetitive work and ask before any Sol escalation. Default to no
+subagents; use no more than two only for independent,
 bounded work. Give each a concise packet with objective, exact files, non-goals,
 pitfalls, acceptance criteria, tests, and return format—never full conversation
 history. Verify every result before accepting it. Run targeted tests during

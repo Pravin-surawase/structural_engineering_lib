@@ -1,7 +1,5 @@
-# Project-local Codex defaults. Loaded only when this repository is trusted.
-# Keep this file small: it is an execution policy, not general documentation.
-model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
+# Project-local efficiency defaults. The parent model and reasoning are
+# deliberately unset so the user's active Codex selection always wins.
 model_verbosity = "low"
 
 [agents]

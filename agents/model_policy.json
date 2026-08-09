@@ -1,13 +1,13 @@
 {
   "_meta": {
     "version": "1.1",
-    "last_verified": "2026-08-07",
+    "last_verified": "2026-08-09",
     "source": "https://help.openai.com/en/articles/20001106",
     "note": "Relative rates assume the same input, cached-input, and output token mix. Reasoning effort changes token volume and has no fixed multiplier.",
-    "standing_user_approval": "The main orchestrator always uses Sol High for task intake, planning, delegation, integration, and final quality review. Sol High may also be used for genuinely important or complicated work. Other Sol profiles still require approval."
+    "standing_user_approval": "No repository model override. The parent respects the user's active model and reasoning selection. Sol profiles require explicit user selection or case-specific approval."
   },
   "defaults": {
-    "parent_profile": "sol-high",
+    "parent_profile": "user-selected",
     "subagent_profile": "luna-low",
     "fast_mode": false,
     "max_concurrent_subagents": 2
@@ -64,7 +64,7 @@
       "reasoning": "medium",
       "approval_required": false,
       "use_for": "Normal implementation, testing, maintenance, documentation, and review",
-      "tradeoff": "Project parent-task default and best general balance"
+      "tradeoff": "Efficient advisory fallback when the user has not selected a parent model"
     },
     {
       "id": "terra-high",
@@ -94,9 +94,9 @@
       "id": "sol-high",
       "model": "gpt-5.6-sol",
       "reasoning": "high",
-      "approval_required": false,
-      "use_for": "Main orchestration plus standing-approved important, complicated, or high-stakes execution work",
-      "tradeoff": "Orchestrator default, not worker default; decompose execution for Luna or Terra when practical"
+      "approval_required": true,
+      "use_for": "Explicitly selected important, complicated, or high-stakes execution work",
+      "tradeoff": "Use only when the user selects it or approves escalation; otherwise keep the active parent model"
     },
     {
       "id": "sol-xhigh",

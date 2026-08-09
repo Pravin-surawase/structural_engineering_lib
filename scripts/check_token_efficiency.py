@@ -37,10 +37,10 @@ FORBIDDEN_ACTIVE_TEXT = (
 
 TASK_PREAMBLE = """Work in low-token mode.
 
-Use one Sol High main orchestrator for intake, planning, delegation, integration,
-and final review. Keep Fast mode off. Use Luna for clear repetitive work and
-Terra for normal implementation. Ask before using Sol profiles other than Sol
-High. Default to no subagents; use no more than two only for independent,
+Respect the parent model and reasoning selected by the user; never override it
+from repository policy. Keep Fast mode off. Use Luna-low subagents only for
+clear repetitive work and ask before any Sol escalation. Default to no
+subagents; use no more than two only for independent,
 bounded work. Give each a concise packet with objective, exact files, non-goals,
 pitfalls, acceptance criteria, tests, and return format—never full conversation
 history. Verify every result before accepting it. Run targeted tests during
@@ -74,14 +74,13 @@ def validate() -> dict:
     agents = config.get("agents", {})
     features = config.get("features", {})
 
-    expected = {
-        "model": "gpt-5.6-sol",
-        "model_reasoning_effort": "high",
-        "model_verbosity": "low",
-    }
+    expected = {"model_verbosity": "low"}
     for key, value in expected.items():
         if config.get(key) != value:
             errors.append(f"{key} must be {value!r}")
+    for key in ("model", "model_reasoning_effort"):
+        if key in config:
+            errors.append(f"{key} must be unset so the user's active selection wins")
 
     if agents.get("max_concurrent_threads_per_session") != 2:
         errors.append("agents.max_concurrent_threads_per_session must be 2")
@@ -109,8 +108,8 @@ def validate() -> dict:
             errors.append("model policy must cap concurrent subagents at 2")
         if model_policy.get("defaults", {}).get("subagent_profile") != "luna-low":
             errors.append("model policy must default subagents to luna-low")
-        if model_policy.get("defaults", {}).get("parent_profile") != "sol-high":
-            errors.append("model policy must default the main orchestrator to sol-high")
+        if model_policy.get("defaults", {}).get("parent_profile") != "user-selected":
+            errors.append("model policy must preserve the user-selected parent profile")
         profile_ids = {
             profile.get("id") for profile in model_policy.get("profiles", [])
         }

@@ -66,10 +66,11 @@ grep -r "@router" fastapi_app/routers/ | head -20  # Check routes before assigni
 
 ## Your Role
 
-**Model policy:** Always run the main orchestrator on GPT-5.6 Sol at High
-reasoning for task intake, planning, delegation, integration, and final quality
-review. Use `./run.sh model "task" --orchestrator` to confirm the profile. Keep
-Fast mode off. Route bounded execution to Luna or Terra when appropriate.
+**Model policy:** Respect the parent model and reasoning selected by the user;
+never switch it from repository policy. Use `./run.sh model "task"
+--orchestrator` only when the user asks for a recommendation or has not selected
+a model. Keep Fast mode off unless the user explicitly prioritizes speed over
+usage, and require approval before any Sol escalation.
 
 - **Plan** work by reading priorities from `docs/TASKS.md` and `docs/planning/next-session-brief.md`
 - **Triage** tasks to the right specialist agent

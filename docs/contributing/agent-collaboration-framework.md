@@ -23,9 +23,9 @@ quality roles. One parent task owns the outcome. It may use up to **2 concurrent
 subagents** for independent, bounded work; routine work stays single-agent. See
 [AI Token-Efficiency Policy](../guidelines/ai-token-efficiency.md).
 
-The MAIN orchestrator always uses Sol High for intake, planning, delegation,
-integration, and final review. It decomposes work into compact packets that Luna
-or Terra can follow: objective, non-goals, exact files, constraints, pitfalls,
+The MAIN orchestrator always respects the model and reasoning selected by the
+user. It decomposes work into compact packets that Luna or Terra can follow:
+objective, non-goals, exact files, constraints, pitfalls,
 acceptance criteria, tests, and return format. The MAIN agent independently
 checks each result before accepting or integrating it.
 
@@ -57,7 +57,8 @@ checks each result before accepting or integrating it.
 
 **Responsibilities:**
 - Communicate with user
-- Plan on Sol High and assign bounded tasks to the cheapest capable worker
+- Plan on the user-selected parent model and assign bounded tasks to the
+  cheapest capable worker
 - Include exact scope, non-goals, pitfalls, acceptance criteria, tests, and a
   return format in every worker packet
 - Independently review returned diffs, evidence, and integration assumptions

@@ -140,21 +140,22 @@ def recommend(
     is_important = important or bool(tokens & IMPORTANT)
 
     if orchestrator:
-        selected, fallback = "sol-high", "sol-xhigh"
+        selected, fallback = "terra-medium", "terra-high"
         rationale = (
-            "The main orchestrator always uses Sol High for intake, planning, "
-            "delegation, integration, and final quality review."
+            "Terra Medium is the efficient advisory parent profile when the user has "
+            "not selected one; an active user selection always takes precedence."
         )
     elif risk == "critical" or is_important or ambiguous:
-        selected, fallback = "sol-high", "sol-xhigh"
+        selected, fallback = "terra-high", "sol-high"
         rationale = (
-            "Important or explicitly complicated work is covered by the standing "
-            "Sol High authorization; higher Sol profiles still need approval."
+            "Start important or explicitly complicated work on Terra High; request "
+            "approval before escalating to Sol High."
         )
     elif is_planning and not is_bounded and not is_repetitive:
-        selected, fallback = "sol-high", "sol-xhigh"
+        selected, fallback = "terra-medium", "terra-high"
         rationale = (
-            "Substantial planning is covered by the standing Sol High authorization."
+            "Substantial planning normally fits Terra Medium; use Terra High only "
+            "after a concrete quality gap."
         )
     elif is_high_risk or is_complex:
         selected, fallback = "terra-high", "sol-high"
@@ -212,10 +213,7 @@ def _print_recommendation(result: ModelRecommendation, query: str) -> None:
     print(f"  Relative per-token rate: {result.relative_token_rate}x Luna")
     print(f"  Approval required: {'yes' if result.approval_required else 'no'}")
     if result.profile == "sol-high":
-        print(
-            "  Authorization: standing approval for main orchestration and "
-            "important/complicated work"
-        )
+        print("  Authorization: explicit user selection or approval required")
     print(f"  Fallback: {result.fallback_profile}")
     if result.fallback_requires_approval:
         print("  Fallback approval: required")
@@ -259,7 +257,7 @@ def main() -> int:
     parser.add_argument(
         "--orchestrator",
         action="store_true",
-        help="apply the standing Sol High main-orchestrator policy",
+        help="show the efficient advisory parent profile without overriding the user's active model",
     )
     parser.add_argument(
         "--table", action="store_true", help="compare all supported profiles"
