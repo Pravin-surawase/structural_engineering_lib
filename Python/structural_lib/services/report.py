@@ -1212,7 +1212,8 @@ def _render_report_sections(data: ReportData) -> str:
         evidence_json = html.escape(
             json.dumps(data.evidence, indent=2, sort_keys=True, ensure_ascii=False)
         )
-        evidence_section = f"""<div class="section">
+        evidence_section = f"""
+<div class="section">
     <h2>Evidence Identity</h2>
     <pre>{evidence_json}</pre>
     <p><em>This metadata is software evidence, not professional design approval.</em></p>
@@ -1240,8 +1241,7 @@ def _render_report_sections(data: ReportData) -> str:
 <div class="section">
     <h2>Units Sentinel</h2>
     {units_table}
-</div>
-{evidence_section}"""
+</div>{evidence_section}"""
 
 
 def _render_beam_section(
