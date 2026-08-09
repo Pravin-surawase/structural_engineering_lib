@@ -430,3 +430,22 @@ class TestREADMESnippets:
 
         adapter = GenericCSVAdapter()
         assert adapter is not None
+
+    def test_api_levels_column_workflow_snippet(self):
+        """The public API-level guide's complete column workflow executes."""
+        from structural_lib import design_column_is456
+
+        result = design_column_is456(
+            Pu_kN=1000,
+            Mux_kNm=80,
+            Muy_kNm=40,
+            b_mm=400,
+            D_mm=400,
+            l_mm=3000,
+            fck_nmm2=25,
+            fy_nmm2=415,
+            Asc_mm2=2412,
+        )
+
+        assert result["is_safe"] is True
+        assert result["governing_check"] == "biaxial"
