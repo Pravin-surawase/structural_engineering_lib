@@ -41,7 +41,7 @@ dev = [
   "pytest-cov",
   "pytest-benchmark",
   "black",
-  "mypy",
+  "mypy>=1.19,<2",
   "pre-commit",
   "ruff==0.15.8",
   "bandit",
