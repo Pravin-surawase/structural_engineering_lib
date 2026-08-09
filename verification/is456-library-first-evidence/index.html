@@ -1514,10 +1514,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#release-evidence-required-from-ci" class="md-nav__link">
+  <a href="#production-release-evidence" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Release evidence required from CI
+        Production release evidence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-evidence-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release evidence contract
       
     </span>
   </a>
@@ -1574,7 +1585,7 @@
 <strong>Created:</strong> 2026-08-09
 <strong>Last Updated:</strong> 2026-08-10
 <strong>Date:</strong> 2026-08-10
-<strong>State:</strong> C0-C4 bounded software/evidence scope frozen; v0.23.0 Alpha release authorized; exact CI publication evidence pending; qualified review deferred to final stable/engineering-use approval</p>
+<strong>State:</strong> C0-C4 complete; v0.23.0 Alpha published with exact CI/public-package evidence; qualified review deferred to final stable/engineering-use approval</p>
 <h2 id="controlled-sources">Controlled sources<a class="headerlink" href="#controlled-sources" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1708,7 +1719,45 @@ validated rather than inferred from HTTP success:</p>
 </tbody>
 </table>
 <p>These are source-tree/live-development artifacts, not C3 release identities.</p>
-<h2 id="release-evidence-required-from-ci">Release evidence required from CI<a class="headerlink" href="#release-evidence-required-from-ci" title="Permanent link">&para;</a></h2>
+<h2 id="production-release-evidence">Production release evidence<a class="headerlink" href="#production-release-evidence" title="Permanent link">&para;</a></h2>
+<p>The owner-authorized v0.23.0 Alpha release was built from tag <code>v0.23.0</code> at
+source commit <code>3f880d5bbc338baefc4aec8ed472cafe840a5c99</code> by protected production
+run <code>31332420554</code>. The publish workflow, exact-wheel UAT, PyPI upload, and
+GitHub prerelease creation all passed.</p>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th style="text-align: right;">Size</th>
+<th>SHA-256</th>
+<th style="text-align: right;">Inventory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>structural_lib_is456-0.23.0-py3-none-any.whl</code></td>
+<td style="text-align: right;">478,903</td>
+<td><code>cd56a5301160fc7d62154e9d6e567ba8bf9bb8608827c9454b63161276c5408a</code></td>
+<td style="text-align: right;">181 files</td>
+</tr>
+<tr>
+<td><code>structural_lib_is456-0.23.0.tar.gz</code></td>
+<td style="text-align: right;">395,422</td>
+<td><code>fe03a86d6c518a5f293c874e825930bb79de984cb53bebaf63a7610c3f042a73</code></td>
+<td style="text-align: right;">206 files</td>
+</tr>
+</tbody>
+</table>
+<p>Both content allowlist and protected-content gates passed. The exact manifest
+SHA-256 is <code>efadd1e6b0b1e8c3c7e242a057ea83a3bbef19059462a5ccd5ccde5ac2ba9ab5</code>;
+the CycloneDX 1.6 SBOM SHA-256 is
+<code>8c76f919df65e913d0d507d0ac824bb2c077fbb530a53732bc65bed68f482686</code>.
+PyPI and GitHub Release assets match these filenames, byte sizes, and hashes.</p>
+<p>The exact public PyPI version passed 5,406 tests with 51 optional-dependency
+skips and 6 deselections, followed by installed <code>job</code>, <code>critical</code>, <code>report</code>,
+and CLI-help workflows. This proves the published artifact identity and
+software behavior; it is not professional design approval.</p>
+<h2 id="release-evidence-contract">Release evidence contract<a class="headerlink" href="#release-evidence-contract" title="Permanent link">&para;</a></h2>
 <p>The production decision must use the exact CI-built artifacts, not a local
 candidate. The <code>release-evidence</code> artifact must contain:</p>
 <ul>
@@ -1720,8 +1769,8 @@ candidate. The <code>release-evidence</code> artifact must contain:</p>
 <li>installed-site-packages UAT for beam, column, footing, slab, capability
   discovery and CLI help.</li>
 </ul>
-<p>TestPyPI, the final version, tag, GitHub release and production PyPI upload are
-owner-only actions.</p>
+<p>TestPyPI, version/tag selection, GitHub release and production PyPI upload
+remain owner-only actions for future releases.</p>
 <h2 id="local-prepublication-rehearsal">Local prepublication rehearsal<a class="headerlink" href="#local-prepublication-rehearsal" title="Permanent link">&para;</a></h2>
 <p>This is the C3 local candidate built from frozen source commit <code>9be6eb35</code> on
 draft PR #696. It is prepublication evidence only; it is not the CI release

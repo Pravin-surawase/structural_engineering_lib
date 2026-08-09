@@ -2382,7 +2382,7 @@
 
 <p><strong>Type:</strong> Plan
 <strong>Audience:</strong> All Agents
-<strong>Status:</strong> C0-C4 Bounded Closeout Complete — Alpha Release Authorized
+<strong>Status:</strong> C0-C4 Complete — v0.23.0 Alpha Released
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-08-09
 <strong>Last Updated:</strong> 2026-08-10</p>
@@ -2417,11 +2417,10 @@ structures, and other code families remain outside this program unless the
 owner changes scope through a separate decision.</p>
 <h2 id="2-relationship-to-current-repository-plans">2. Relationship to current repository plans<a class="headerlink" href="#2-relationship-to-current-repository-plans" title="Permanent link">&para;</a></h2>
 <p>This document is the execution authority and frozen evidence boundary for the
-library-first IS 456 lane activated by the owner. C0-C4 are complete; the
-remaining release gates are exact CI publication-artifact evidence and
-owner-authorized release work. Qualified structural-engineering review is a
-cumulative final gate before stable/engineering-use approval, not a blocker for
-each development packet or Alpha release.</p>
+library-first IS 456 lane activated by the owner. C0-C4 and the v0.23.0 Alpha
+release are complete. Qualified structural-engineering review is a cumulative
+final gate before stable/engineering-use approval, not a blocker for each
+development packet or Alpha release.</p>
 <p>It narrows the immediate IS 456 execution order in
 <code>docs/planning/library-expansion-blueprint-v5.md</code>. It does not reverse that
 document's code-first package architecture or decide later ACI/EC2 work.</p>
@@ -2512,10 +2511,10 @@ approved or usable for engineering decisions.</p>
 </tr>
 </tbody>
 </table>
-<p>C0-C4 are complete, so the frozen packet is ready for final qualified-
-engineering review. That review has not been performed. Merge, tag,
-TestPyPI/PyPI, GitHub Release, issue closure, and branch deletion remain
-separate owner-only actions.</p>
+<p>C0-C4 are complete and v0.23.0 was published as an Alpha development preview.
+The cumulative qualified-engineering review has not been performed and remains
+required before any stable or engineering-use approval. Issue closure and
+branch deletion remain separate owner-only actions.</p>
 <h2 id="3-why-this-plan-exists">3. Why this plan exists<a class="headerlink" href="#3-why-this-plan-exists" title="Permanent link">&para;</a></h2>
 <p>The original architecture direction was sound, but implementation and product
 layers grew at the same time. The project now has strong code and test assets,
@@ -3978,6 +3977,30 @@ not need this entire plan.</p>
 <td>Qualified review remains required before stable/engineering-use approval</td>
 <td>P13 release execution</td>
 </tr>
+<tr>
+<td>2026-08-10</td>
+<td>REL-1</td>
+<td>Main Agent</td>
+<td>COMPLETE</td>
+<td>PR #696 merged at <code>71e74a7e</code>; CI fix PR #697 merged at <code>3f880d5b</code></td>
+<td>Release metadata, validator state machine, CI interpreter contract</td>
+<td>Current-candidate preflight passed 5,454 tests; TestPyPI run <code>31332187566</code> published exact clean artifacts and passed installed-wheel UAT</td>
+<td>Focused + quick + both PR Gates</td>
+<td>Production publication remained conditioned on exact TestPyPI evidence</td>
+<td>REL-2</td>
+</tr>
+<tr>
+<td>2026-08-10</td>
+<td>REL-2</td>
+<td>Repository owner + Main Agent</td>
+<td>RELEASED ALPHA</td>
+<td>Tag <code>v0.23.0</code> at <code>3f880d5b</code>; production run <code>31332420554</code></td>
+<td>PyPI package, GitHub prerelease, production manifest/SBOM</td>
+<td>Production wheel/sdist hashes and inventories match PyPI and GitHub assets; public PyPI verification passed 5,406 tests plus installed CLI workflows</td>
+<td>Protected publish workflow green</td>
+<td>Qualified review remains the final stable/engineering-use gate</td>
+<td>Close release; do not activate v0.24 without owner decision</td>
+</tr>
 </tbody>
 </table>
 <h3 id="required-handoff-content">Required handoff content<a class="headerlink" href="#required-handoff-content" title="Permanent link">&para;</a></h3>
@@ -4135,7 +4158,7 @@ and a Trusted Publishing-style OIDC workflow. Preserve these foundations.</p>
 <p>The first implementation session begins only after the owner clears Phase 0.</p>
 <h3 id="current-execution-checkpoint">Current execution checkpoint<a class="headerlink" href="#current-execution-checkpoint" title="Permanent link">&para;</a></h3>
 <p>P0-P12, FAPI-1, and remediation packets T0/R1-R8 are implemented. The latest
-source preflight passes 5,452 Python tests (3 skipped, 6 deselected), 349
+source preflight passes 5,454 Python tests (3 skipped, 6 deselected), 349
 FastAPI tests, 147 React tests, frontend lint/build, quick 9/9, full 29/29,
 audit 19/19, and health 100/100. A clean-source v0.23.0 wheel passed package
 version and CLI checks with excluded namespaces absent. Exact-wheel UAT passed
@@ -4148,10 +4171,12 @@ worktree is clean and both Node and Python runtime selectors are retained.</p>
 <p>C2 final product UAT found and repaired the missing local Vite <code>/stream</code> proxy;
 source-tree and live safe/unsafe outcomes now agree. C3 froze the exact local
 wheel/sdist at source commit <code>9be6eb35</code>, and C4 froze the final bounded evidence
-and limitations on draft PR #696. Do not begin new calculation, multi-code, or
-excluded structural-system work. The owner authorized the v0.23.0 Alpha release
-sequence on 2026-08-10. Exact CI publication-artifact evidence remains required;
-qualified review is deferred to the final stable/engineering-use gate.</p>
+and limitations on PR #696. The owner-authorized v0.23.0 Alpha release was
+published from tag/source <code>v0.23.0</code>/<code>3f880d5b</code> by production run <code>31332420554</code>.
+The exact public package passed 5,406 tests plus installed CLI workflows. Do not
+begin new calculation, multi-code, or excluded structural-system work without a
+separate owner decision. Qualified review is deferred to the final stable/
+engineering-use gate.</p>
 <h2 id="21-final-program-acceptance-checklist">21. Final program acceptance checklist<a class="headerlink" href="#21-final-program-acceptance-checklist" title="Permanent link">&para;</a></h2>
 <ul>
 <li>[x] MAINT-008 is resolved without library scope contamination.</li>
@@ -4176,12 +4201,12 @@ qualified review is deferred to the final stable/engineering-use gate.</p>
 <li>[x] Canonical current-candidate release preflight is green.</li>
 <li>[x] Local prepublication filenames, sizes, SHA-256 values and inventories are
       recorded against source commit <code>9be6eb35</code>.</li>
-<li>[ ] CI publication-artifact filenames/SHA-256 values are separately recorded.</li>
+<li>[x] CI publication-artifact filenames/SHA-256 values are separately recorded.</li>
 <li>[x] Local rehearsal clean-install/CLI UAT is green on the exact wheel.</li>
-<li>[ ] CI publication-artifact clean-install/CLI UAT is green.</li>
+<li>[x] CI publication-artifact clean-install/CLI UAT is green.</li>
 <li>[x] Owner approved the PR #696 merge, TestPyPI rehearsal, v0.23.0 tag, PyPI
       upload, and GitHub Release sequence on 2026-08-10.</li>
-<li>[ ] Exact published PyPI version passes post-publication UAT.</li>
+<li>[x] Exact published PyPI version passes post-publication UAT.</li>
 <li>[ ] Qualified structural-engineering review is recorded before any stable or
       engineering-use approval; this is not an Alpha publication gate.</li>
 <li>[x] Handoff and execution ledger identify remaining limitations and review

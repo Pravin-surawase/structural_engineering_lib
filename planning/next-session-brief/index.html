@@ -1514,10 +1514,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#implemented-remediation" class="md-nav__link">
+  <a href="#release-identity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Implemented remediation
+        Release identity
       
     </span>
   </a>
@@ -1525,10 +1525,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#verification-evidence" class="md-nav__link">
+  <a href="#bounded-product-evidence-retained" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Verification evidence
+        Bounded product evidence retained
       
     </span>
   </a>
@@ -1536,10 +1536,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#next-actions" class="md-nav__link">
+  <a href="#next-action" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Next actions
+        Next action
       
     </span>
   </a>
@@ -1582,17 +1582,16 @@
 <!-- HANDOFF:START -->
 <ul>
 <li>Date: 2026-08-10</li>
-<li>Focus: execute the owner-authorized v0.23.0 Alpha release after completed C0-C4 closeout</li>
+<li>Focus: v0.23.0 Alpha release complete; later roadmap work remains inactive</li>
 </ul>
 <!-- HANDOFF:END -->
 
-<p><strong>Current branch:</strong> <code>codex/release-v0.23.0</code>
-<strong>Frozen artifact source:</strong> <code>9be6eb35</code>
+<p><strong>Current release:</strong> <code>v0.23.0</code> at <code>3f880d5b</code>
 <strong>Plan:</strong> <a href="../is456-library-first-master-plan/">is456-library-first-master-plan.md</a></p>
 <h2 id="required-reading">Required Reading<a class="headerlink" href="#required-reading" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../is456-library-first-master-plan/">IS 456 library-first master plan</a></li>
-<li><a href="../professional-library-remediation-plan/">Professional remediation evidence ledger</a></li>
+<li><a href="../../verification/is456-library-first-evidence/">Release evidence crosswalk</a></li>
 <li><a href="../../TASKS/">Current task board</a></li>
 </ul>
 <table>
@@ -1607,136 +1606,75 @@
 <tr>
 <td><strong>Current</strong></td>
 <td>v0.23.0</td>
-<td>Alpha release authorized; exact CI artifact and publication pending</td>
+<td>Alpha development preview released; exact public UAT green</td>
 </tr>
 <tr>
 <td><strong>Next</strong></td>
 <td>v0.24.0</td>
-<td>Future roadmap only; inactive pending separate owner activation</td>
+<td>Inactive until separately activated by the owner</td>
 </tr>
 </tbody>
 </table>
 <h2 id="outcome">Outcome<a class="headerlink" href="#outcome" title="Permanent link">&para;</a></h2>
-<p>T0 and R1-R8 are implemented; do not repeat them. The owner selected the
-bounded IS 456 product milestone, not the v0.24/v1.0 multi-code roadmap. C0
-plan reconciliation and C1 Git integration are complete. Product remediation
-is checkpointed at <code>2ff5a42a</code>, closeout truth at <code>fbd24350</code>, and automation
-commit <code>f812eb3f</code> is integrated at <code>d4eb9e9d</code> without history rewriting or
-lost work.</p>
-<p>C0-C4 are complete on draft PR #696. C2 source/live product UAT repaired the
-missing Vite <code>/stream</code> proxy and proved one PASS/one FAIL with the unsafe beam
-left unchanged. C3 froze the exact local v0.23.0 wheel/sdist from source commit
-<code>9be6eb35</code> after fixing stale egg-info package leakage at the manifest boundary.
-C4 froze the bounded source, unit, benchmark, limitation, unsafe-case, claim and
-artifact evidence requested by the owner.</p>
-<p>The owner moved qualified structural-engineering review to the final
-stable/engineering-use gate on 2026-08-10. Development packets and Alpha
-publication no longer require separate qualified sign-off. Every candidate
-remains development software and cannot claim professional approval; its
-source, benchmark, units, unsafe cases and limitations accumulate for the final
-review.</p>
-<h2 id="implemented-remediation">Implemented remediation<a class="headerlink" href="#implemented-remediation" title="Permanent link">&para;</a></h2>
+<p>C0-C4 and the owner-authorized v0.23.0 Alpha release are complete. PR #696
+merged the bounded product/evidence closeout at <code>71e74a7e</code>. PR #697 fixed the
+publish runner's interpreter contract and merged at <code>3f880d5b</code>.</p>
+<p>The release is available on PyPI and as a GitHub prerelease. It remains a
+case-qualified development preview, not a whole-standard or professional-
+approval claim. Qualified structural-engineering review is cumulative and is
+required only before stable or engineering-use approval, not per development
+packet or Alpha release.</p>
+<h2 id="release-identity">Release identity<a class="headerlink" href="#release-identity" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Supported beam and footing entry points reject booleans, non-real values,
-  NaN, and infinities before arithmetic.</li>
-<li>Batch completion is separate from engineering safety; unsafe shear is FAIL
-  across Python, SSE, React display/export, and apply-to-store behavior.</li>
-<li>Reports normalize legacy <code>is_safe</code> to canonical <code>is_ok</code>; missing status is
-  NOT EVALUATED and unsafe sections override stale overall PASS.</li>
-<li>Footing flexure requires total thickness for minimum steel, and dowel count
-  is a strict positive integer through Python and FastAPI.</li>
-<li>Two-way slab output explicitly distinguishes bounded flexure computation,
-  coefficient provenance, qualified acceptance, and complete design approval.</li>
-<li>A machine-readable semantic contract covers every supported capability,
-  unit, field, alias, status, limitation, and v0.24 report-alias removal.</li>
-<li><code>docs/reference/api-manifest.json</code> is the only Python API manifest. The stale
-  service manifest was safely removed and is recoverable from
-  <code>tmp/deleted_backups/api_manifest_20260809_222544.json</code>.</li>
-<li>Both API validators share the raw OpenAPI baseline; request-validation 422s
-  use the maintained <code>{success,data,error}</code> envelope with field detail.</li>
-<li>Release checks bind source/docs, wheel filename/METADATA/content, clean
-  installed version, and packaged CLI behavior. Published wording and
-  nonexistent tag-install examples were removed.</li>
-<li><code>MANIFEST.in</code> now prunes every non-product namespace so stale generated
-  egg-info cannot override the package allowlist.</li>
-<li>The release-preflight skill distinguishes a future-version positional check
-  from an already-bumped current candidate verified with <code>--wheel</code>.</li>
+<li>Tag/source: <code>v0.23.0</code> / <code>3f880d5bbc338baefc4aec8ed472cafe840a5c99</code></li>
+<li>TestPyPI run: <code>31332187566</code>, green before tag creation.</li>
+<li>Production run: <code>31332420554</code>, green for build, UAT, PyPI, and GitHub Release.</li>
+<li>Wheel: 478,903 bytes, 181 files, SHA-256
+  <code>cd56a5301160fc7d62154e9d6e567ba8bf9bb8608827c9454b63161276c5408a</code>.</li>
+<li>Sdist: 395,422 bytes, 206 files, SHA-256
+  <code>fe03a86d6c518a5f293c874e825930bb79de984cb53bebaf63a7610c3f042a73</code>.</li>
+<li>Manifest SHA-256:
+  <code>efadd1e6b0b1e8c3c7e242a057ea83a3bbef19059462a5ccd5ccde5ac2ba9ab5</code>.</li>
+<li>CycloneDX 1.6 SBOM SHA-256:
+  <code>8c76f919df65e913d0d507d0ac824bb2c077fbb530a53732bc65bed68f482686</code>.</li>
+<li>Both content allowlist and protected-content gates passed.</li>
+<li>Exact public PyPI UAT: 5,406 passed, 51 skipped, 6 deselected; installed
+  <code>job</code>, <code>critical</code>, <code>report</code>, and CLI-help workflows passed.</li>
 </ul>
-<h2 id="verification-evidence">Verification evidence<a class="headerlink" href="#verification-evidence" title="Permanent link">&para;</a></h2>
+<h2 id="bounded-product-evidence-retained">Bounded product evidence retained<a class="headerlink" href="#bounded-product-evidence-retained" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Source candidate preflight: 5,452 passed, 3 skipped, 6 deselected.</li>
-<li>FastAPI: 349 passed.</li>
-<li>React: 147 passed; lint and production build passed on Node 24.</li>
-<li>Quick gate: 9/9; full gate: 29/29.</li>
-<li>Readiness audit: 19/19; health: 100/100; parity: 93%.</li>
-<li>API manifest: 73/73 compatible functions.</li>
-<li>OpenAPI: 62 endpoints, 65 schemas, no drift.</li>
-<li>Exact local wheel: 478,970 bytes, 181 members, zero excluded namespaces,
-  clean import/CLI passed, SHA-256 <code>08377c11...2d8875</code>.</li>
-<li>Exact local sdist: 398,319 bytes, 206 members, zero excluded namespaces,
-  SHA-256 <code>f3c6da86...4cbac3</code>.</li>
-<li>Exact-wheel UAT: 5,404 passed, 51 skipped, 6 deselected plus job, critical
-  and report CLI workflows. Candidate preflight: 5,452 passed, 3 skipped,
-  6 deselected, clean install and React build green, zero preflight warnings.</li>
-<li>Local CycloneDX 1.6 SBOM: 196 components, 239,585 bytes, SHA-256
-  <code>810b1be2...9f0eb7</code>; CI must regenerate its own release evidence.</li>
-<li>C2 focused matrix: pure-library/service cases green; 58 FastAPI cases green;
-  16 focused React cases green; Node 24 production build green.</li>
-<li>C2 live evidence: safe/unsafe SSE <code>PASS</code>/<code>FAIL</code>, 1 passed/1 failed in React,
-  unsafe beam not applied, standard live 422 envelope, and successful live
-  column, footing and one-way-slab responses.</li>
-<li>C2 export bytes: BBS 959 bytes (<code>c34cb245...f8067</code>), DXF 48,522 bytes
-  (<code>037a879e...0134</code>), and unsafe HTML report 8,725 bytes
-  (<code>1524c1ab...7f8a</code>).</li>
+<li>Supported beam, rectangular-column, concentric isolated-footing, one-way
+  slab, and bounded two-way slab paths are recorded in the evidence crosswalk.</li>
+<li>Unsafe beam shear remains FAIL across Python, SSE, React, apply behavior,
+  and export output.</li>
+<li>Public package contents exclude protected standards and non-product
+  research/migration/code-family namespaces.</li>
+<li>Runtime, exact-artifact, status-truth, allowlist, protected-content, OIDC,
+  and post-publication verification gates remain mandatory.</li>
 </ul>
-<p>The exact local artifacts remain ignored under <code>Python/dist/</code> for owner review.
-They are prepublication evidence, not the CI publication identity.</p>
-<h2 id="next-actions">Next actions<a class="headerlink" href="#next-actions" title="Permanent link">&para;</a></h2>
-<ol>
-<li>Merge PR #696 after its current-commit PR Gate passes.</li>
-<li>Run the protected CI/TestPyPI rehearsal and capture the exact CI-built wheel,
-   sdist, inventories, hashes, SBOM and clean-install UAT.</li>
-<li>If that evidence is green, create v0.23.0 and let the tag-only workflow
-   publish to PyPI and GitHub Releases; then run exact-version PyPI UAT.</li>
-<li>Retain accumulated engineering evidence for qualified review before any
-   stable or engineering-use approval.</li>
-</ol>
+<h2 id="next-action">Next action<a class="headerlink" href="#next-action" title="Permanent link">&para;</a></h2>
+<p>No new product lane is active. The owner must separately choose the next
+milestone. Retain the accumulated source, benchmark, unit, unsafe-case,
+limitation, and artifact evidence for one final qualified review before any
+stable or engineering-use approval.</p>
 <h2 id="terminal-issues-recorded">Terminal issues recorded<a class="headerlink" href="#terminal-issues-recorded" title="Permanent link">&para;</a></h2>
 <ul>
-<li>A contract test initially depended on <code>PYTHONPATH=Python:.</code>; it is now
-  repository-root stable under <code>./run.sh test</code>.</li>
-<li><code>tool_registry.py --validate</code> is not a supported flag; the maintained
-  <code>check_scripts_index.py</code>, script-reference gate, and full check were used.</li>
-<li>An unmatched zsh release-doc glob failed before execution; explicit paths
-  and <code>git diff --name-only | rg</code> worked.</li>
-<li>zsh reserves <code>status</code>; the deliberate release-failure proof used <code>rc</code>.</li>
-<li>Assigning to zsh-reserved <code>path</code> removed command lookup during Git
-  classification; rerunning with <code>file_path</code> restored normal execution.</li>
-<li>The automation finder had no exact C2 mapping; the maintained UAT,
-  release-preflight and quality-gate skills plus exact test paths were used.</li>
-<li>An unmatched <code>scripts/dev.*</code> zsh glob failed before inspection; <code>rg --files
-  scripts | rg 'dev|server'</code> found the maintained launcher safely.</li>
-<li>A first hidden-input file chooser timed out; the visible labelled CSV drop
-  zone opened the documented chooser and imported the fixture successfully.</li>
-<li><code>rg</code> was given the nonexistent <code>react_app/src/pages</code> path; the live route
-  files under <code>react_app/src/components/pages</code> were used instead.</li>
-<li>The first C2 commit attempt crossed the local date boundary and the session
-  hook correctly rejected the missing 2026-08-10 durable entry; the session
-  log and generated indexes were refreshed before retrying.</li>
-<li>The positional <code>release preflight 0.23.0</code> form rejected the already-bumped
-  equal version; the corrected current-candidate form supplied the exact wheel
-  and passed with no warnings.</li>
-<li>A fresh <code>Python/build</code>/<code>Python/dist</code> cleanup did not remove stale ignored egg-
-  info, which reintroduced excluded namespaces; generated metadata was moved to
-  Trash, explicit manifest prunes were added, and the final build passed.</li>
-<li>The first archive inventory snippet used an illegal backslash inside an
-  f-string expression; an intermediate boolean produced the intended read-only
-  evidence on the retry.</li>
-<li>The archived <code>check_doc_metadata.py</code> entrypoint no longer exists and a custom
-  front-matter status was outside the validated enum; <code>check_docs.py --metadata</code>
-  and <code>--frontmatter</code> were used, with machine status kept <code>active</code> while the
-  visible plan status records bounded closeout complete.</li>
-<li>⚠️ TERMINAL ISSUE: unsupported link/candidate commands and broad index rewrites → maintained full-link/preflight commands passed and only generated cache diffs were reversed.</li>
+<li><code>check_links.py --modified</code> is unsupported; the maintained full link check
+  passed with zero broken links.</li>
+<li>Index generation rewrote unrelated generated caches; only those cache diffs
+  were surgically reversed.</li>
+<li>A referenced <code>check_release_candidate.py</code> entrypoint does not exist; the
+  maintained <code>./run.sh release candidate-check</code> command passed.</li>
+<li>One cleanup assumed <code>Python/build</code> existed; the missing directory produced a
+  harmless diagnostic and the fresh build completed. Future cleanup must test
+  each explicit generated path before moving it.</li>
+<li>The first TestPyPI run failed before upload because tests hard-coded the
+  repository <code>.venv</code>; PR #697 uses the active interpreter and the rerun passed.</li>
+<li>One artifact download retry found the file already present after the first
+  request completed; explicit hash and manifest inspection succeeded.</li>
+<li>The first evidence commits used descriptive release-row labels; the session
+  contract requires literal <code>Current</code> and <code>Next</code>, which were restored before
+  retrying.</li>
 </ul>
 
 
