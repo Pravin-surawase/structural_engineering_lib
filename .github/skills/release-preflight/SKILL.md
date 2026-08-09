@@ -39,6 +39,13 @@ step 3, then establish the final green current-candidate preflight with:
 ./run.sh release preflight --wheel <exact-wheel-path>
 ```
 
+An owner-authorized release may carry its final dated CHANGELOG/CITATION
+metadata before the tag so that the tagged artifact is truthful. Record the
+checked owner authorization in `docs/planning/pre-release-checklist.md` first.
+The exact-wheel form accepts that release-ready state; preflight without an
+exact wheel continues to require unpublished-candidate wording and fails
+closed.
+
 This is read-only. Run it once. If local resource checks fail and Docker is the intended fallback, start Colima and run the Docker variant instead of running both full paths:
 
 ```bash

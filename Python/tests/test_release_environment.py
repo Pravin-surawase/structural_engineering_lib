@@ -147,6 +147,60 @@ def test_source_surface_versions_match_prepared_candidate(
     assert release._source_surface_version_errors("0.23.0") == []
 
 
+def test_source_surface_versions_match_owner_authorized_release(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    paths = _write_release_surfaces(tmp_path)
+    paths["CITATION"].write_text(
+        "version: 0.23.0\ndate-released: 2026-08-10\n"
+        "message: Alpha development preview\n",
+        encoding="utf-8",
+    )
+    paths["CHANGELOG"].write_text("## [0.23.0] — 2026-08-10\n", encoding="utf-8")
+    paths["RELEASES"].write_text(
+        "## v0.23.0\n\nStatus: Alpha release authorized\n", encoding="utf-8"
+    )
+    checklist = tmp_path / "pre-release-checklist.md"
+    checklist.write_text(
+        "- [x] Owner authorizes the v0.23.0 tag, production PyPI publication, "
+        "and GitHub Release after exact CI evidence passes\n",
+        encoding="utf-8",
+    )
+    paths["CHECKLIST_PATH"] = checklist
+    for name, path in paths.items():
+        monkeypatch.setattr(release, name, path)
+
+    assert (
+        release._source_surface_version_errors("0.23.0", allow_authorized_release=True)
+        == []
+    )
+
+
+def test_release_ready_metadata_requires_recorded_owner_authorization(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    paths = _write_release_surfaces(tmp_path)
+    paths["CITATION"].write_text(
+        "version: 0.23.0\ndate-released: 2026-08-10\n",
+        encoding="utf-8",
+    )
+    checklist = tmp_path / "pre-release-checklist.md"
+    checklist.write_text(
+        "- [ ] Owner authorizes the v0.23.0 tag, production PyPI publication, "
+        "and GitHub Release after exact CI evidence passes\n",
+        encoding="utf-8",
+    )
+    paths["CHECKLIST_PATH"] = checklist
+    for name, path in paths.items():
+        monkeypatch.setattr(release, name, path)
+
+    errors = release._source_surface_version_errors(
+        "0.23.0", allow_authorized_release=True
+    )
+
+    assert "CITATION.cff declares date-released for an unpublished candidate" in errors
+
+
 def test_source_surface_versions_fail_on_deliberate_mismatch(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):

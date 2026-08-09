@@ -84,7 +84,9 @@ def _version_from_assignment(path: Path, variable: str = "__version__") -> str:
 
 def _version_from_cff(path: Path | None = None) -> str:
     path = path or CITATION
-    match = re.search(r"^version:\s*([^\s#]+)", path.read_text(encoding="utf-8"), re.MULTILINE)
+    match = re.search(
+        r"^version:\s*([^\s#]+)", path.read_text(encoding="utf-8"), re.MULTILINE
+    )
     if not match:
         raise ValueError("version is missing from CITATION.cff")
     return match.group(1)
@@ -97,7 +99,23 @@ def _latest_documented_version(path: Path) -> str:
     return max(versions, key=_semver_tuple)
 
 
-def _source_surface_version_errors(expected: str) -> list[str]:
+def _release_authorization_recorded(expected: str) -> bool:
+    """Return whether the owner-authorized publication sequence is recorded."""
+    try:
+        checklist_text = CHECKLIST_PATH.read_text(encoding="utf-8")
+    except OSError:
+        return False
+    normalized = " ".join(checklist_text.lower().split())
+    marker = (
+        f"[x] owner authorizes the v{expected} tag, production pypi publication, "
+        "and github release"
+    )
+    return marker in normalized
+
+
+def _source_surface_version_errors(
+    expected: str, *, allow_authorized_release: bool = False
+) -> list[str]:
     """Return exact source/doc version contradictions for a release candidate."""
     try:
         surfaces = {
@@ -120,18 +138,44 @@ def _source_surface_version_errors(expected: str) -> list[str]:
     ]
 
     citation_text = CITATION.read_text(encoding="utf-8")
-    if re.search(r"^date-released:", citation_text, re.MULTILINE):
-        errors.append("CITATION.cff declares date-released for an unpublished candidate")
+    changelog_text = CHANGELOG.read_text(encoding="utf-8")
+    release_text = RELEASES.read_text(encoding="utf-8")
+    has_release_date = bool(re.search(r"^date-released:", citation_text, re.MULTILINE))
+    authorization_recorded = _release_authorization_recorded(expected)
 
-    if expected == "0.23.0":
-        changelog_text = CHANGELOG.read_text(encoding="utf-8").lower()
-        release_text = RELEASES.read_text(encoding="utf-8").lower()
-        if "prepared candidate (unreleased; on hold)" not in changelog_text:
-            errors.append("CHANGELOG.md must label v0.23.0 as prepared/unreleased/on hold")
-        if "not tagged or published" not in release_text:
-            errors.append("release ledger must state v0.23.0 is not tagged or published")
+    if allow_authorized_release and authorization_recorded:
+        if not has_release_date:
+            errors.append(
+                "CITATION.cff must declare date-released for an authorized release"
+            )
+        dated_header = re.search(
+            rf"^##\s*\[{re.escape(expected)}\]\s*[—-]\s*\d{{4}}-\d{{2}}-\d{{2}}\s*$",
+            changelog_text,
+            re.MULTILINE,
+        )
+        if not dated_header:
+            errors.append(
+                f"CHANGELOG.md must give authorized v{expected} an ISO release date"
+            )
+        if "release authorized" not in release_text.lower():
+            errors.append("release ledger must record the authorized release state")
+    else:
+        if has_release_date:
+            errors.append(
+                "CITATION.cff declares date-released for an unpublished candidate"
+            )
+        changelog_lower = changelog_text.lower()
+        release_lower = release_text.lower()
+        if "prepared candidate (unreleased; on hold)" not in changelog_lower:
+            errors.append(
+                f"CHANGELOG.md must label v{expected} as prepared/unreleased/on hold"
+            )
+        if "not tagged or published" not in release_lower:
+            errors.append(
+                f"release ledger must state v{expected} is not tagged or published"
+            )
         if "not tagged or published" not in citation_text.lower():
-            errors.append("CITATION.cff must not imply v0.23.0 is published")
+            errors.append(f"CITATION.cff must not imply v{expected} is published")
 
     return errors
 
@@ -143,7 +187,9 @@ def _wheel_metadata_version(wheel: Path) -> str:
             name for name in archive.namelist() if name.endswith(".dist-info/METADATA")
         ]
         if len(metadata_paths) != 1:
-            raise ValueError(f"expected one wheel METADATA record, found {len(metadata_paths)}")
+            raise ValueError(
+                f"expected one wheel METADATA record, found {len(metadata_paths)}"
+            )
         metadata = archive.read(metadata_paths[0]).decode("utf-8")
     match = re.search(r"^Version:\s*(.+)$", metadata, re.MULTILINE)
     if not match:
@@ -152,7 +198,9 @@ def _wheel_metadata_version(wheel: Path) -> str:
 
 
 def _wheel_filename_version(wheel: Path) -> str:
-    match = re.match(r"^structural_lib_is456-([0-9]+\.[0-9]+\.[0-9]+)-.+\.whl$", wheel.name)
+    match = re.match(
+        r"^structural_lib_is456-([0-9]+\.[0-9]+\.[0-9]+)-.+\.whl$", wheel.name
+    )
     if not match:
         raise ValueError(f"unexpected wheel filename: {wheel.name}")
     return match.group(1)
@@ -201,7 +249,9 @@ def _clean_wheel_import_version(wheel: Path) -> str:
         pip = _bin_path(venv_dir, "pip")
         python = _bin_path(venv_dir, "python")
         _run_check([str(pip), "install", "--disable-pip-version-check", str(wheel)])
-        clean_env = {key: value for key, value in os.environ.items() if key != "PYTHONPATH"}
+        clean_env = {
+            key: value for key, value in os.environ.items() if key != "PYTHONPATH"
+        }
         result = subprocess.run(
             [
                 str(python),
@@ -238,7 +288,7 @@ def cmd_candidate_check(args: argparse.Namespace) -> int:
     wheel = Path(args.wheel).expanduser().resolve()
     print(f"Candidate version evidence: {expected}")
 
-    errors = _source_surface_version_errors(expected)
+    errors = _source_surface_version_errors(expected, allow_authorized_release=True)
     errors.extend(_wheel_version_errors(wheel, expected))
     if errors:
         _print_version_errors(errors)
@@ -250,7 +300,9 @@ def cmd_candidate_check(args: argparse.Namespace) -> int:
         print(f"  ✗ clean wheel import failed: {exc}")
         return 1
     if imported_version != expected:
-        print(f"  ✗ clean imported structural_lib={imported_version}, expected {expected}")
+        print(
+            f"  ✗ clean imported structural_lib={imported_version}, expected {expected}"
+        )
         return 1
 
     print(f"  ✓ wheel: {wheel.name}")
@@ -946,14 +998,16 @@ def cmd_preflight(args: argparse.Namespace) -> int:
     )
     print(f"  → Current: {current}")
 
-    source_version_errors = _source_surface_version_errors(current)
+    wheel_arg = getattr(args, "wheel", None)
+    source_version_errors = _source_surface_version_errors(
+        current, allow_authorized_release=bool(wheel_arg)
+    )
     if source_version_errors:
         _print_version_errors(source_version_errors)
         errors += len(source_version_errors)
     else:
         print("  ✓ Source, FastAPI, React, CITATION, and release docs agree")
 
-    wheel_arg = getattr(args, "wheel", None)
     if wheel_arg:
         wheel_errors = _wheel_version_errors(Path(wheel_arg).expanduser(), current)
         if wheel_errors:
@@ -965,7 +1019,11 @@ def cmd_preflight(args: argparse.Namespace) -> int:
                 imported_version = _clean_wheel_import_version(
                     Path(wheel_arg).expanduser().resolve()
                 )
-            except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+            except (
+                OSError,
+                subprocess.CalledProcessError,
+                subprocess.TimeoutExpired,
+            ) as exc:
                 print(f"  ✗ clean wheel install/library/CLI check failed: {exc}")
                 errors += 1
             else:
@@ -1246,7 +1304,9 @@ def build_parser() -> argparse.ArgumentParser:
         "candidate-check",
         help="Verify source, wheel METADATA, and clean installed package versions",
     )
-    p_candidate.add_argument("--wheel", required=True, help="Exact candidate wheel path")
+    p_candidate.add_argument(
+        "--wheel", required=True, help="Exact candidate wheel path"
+    )
     p_candidate.add_argument(
         "--version", help="Expected version (defaults to Python/pyproject.toml)"
     )

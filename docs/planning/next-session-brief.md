@@ -147,4 +147,4 @@ They are prepublication evidence, not the CI publication identity.
   front-matter status was outside the validated enum; `check_docs.py --metadata`
   and `--frontmatter` were used, with machine status kept `active` while the
   visible plan status records bounded closeout complete.
-- ⚠️ TERMINAL ISSUE: unsupported `check_links.py --modified` and broad index rewrites → the full link check passed and only generated cache diffs were reversed.
+- ⚠️ TERMINAL ISSUE: unsupported link/candidate commands and broad index rewrites → maintained full-link/preflight commands passed and only generated cache diffs were reversed.
