@@ -22,10 +22,21 @@ Use this only for an actual release candidate. The canonical automation owns res
 
 ## Release Candidate Flow
 
-### 1. Preflight before version mutation
+### 1. Select the preflight mode
+
+Before version mutation, validate that the proposed version is a real upgrade:
 
 ```bash
 ./run.sh release preflight <target-version>
+```
+
+If the source tree is already bumped to the frozen target version, do not pass
+that equal version as the positional argument; it is defined as the *next*
+version and will correctly fail the upgrade check. Build the exact artifact in
+step 3, then establish the final green current-candidate preflight with:
+
+```bash
+./run.sh release preflight --wheel <exact-wheel-path>
 ```
 
 This is read-only. Run it once. If local resource checks fail and Docker is the intended fallback, start Colima and run the Docker variant instead of running both full paths:
@@ -35,7 +46,9 @@ colima start --cpu 4 --memory 4
 ./run.sh release preflight <target-version> --docker
 ```
 
-Repair failures by rerunning only their narrow command, then establish one final green preflight.
+Repair failures by rerunning only their narrow command, then establish one
+final green preflight. Do not run both the pre-bump and current-candidate forms
+for an already-bumped branch.
 
 ### 2. Prepare the release changes
 
@@ -50,6 +63,12 @@ From the workspace root:
 ```bash
 .venv/bin/python -m build Python
 ```
+
+Before building, inspect and recoverably remove only the generated
+`Python/build`, `Python/dist`, and `Python/*.egg-info` targets that exist. The
+safe-file-ops scripts are for tracked source files, not generated output. Never
+use an unresolved glob or a recursive delete for this cleanup; prove every
+target is generated, ignored, inside `Python/`, and contains no links first.
 
 Confirm that `Python/dist/` contains the wheel for the exact target version. Do not verify an unversioned wildcard when several wheels exist.
 

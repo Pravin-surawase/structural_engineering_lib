@@ -10,3 +10,7 @@ global-exclude *.pyc
 prune tests
 prune examples
 prune scripts
+prune structural_lib/_migration_fixtures
+prune structural_lib/research
+prune structural_lib/codes/aci318
+prune structural_lib/codes/ec2
