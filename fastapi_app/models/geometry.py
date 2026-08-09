@@ -144,7 +144,7 @@ class BeamGeometryRequest(BaseModel):
         """Validate cover is less than depth."""
         if self.cover >= self.depth:
             raise ValueError(
-                f"cover ({self.cover}mm) must be less than " f"depth ({self.depth}mm)"
+                f"cover ({self.cover}mm) must be less than depth ({self.depth}mm)"
             )
         return self
 
@@ -232,8 +232,7 @@ class CrossSectionRequest(BaseModel):
         """Validate cover is less than half depth."""
         if self.cover >= self.depth / 2:
             raise ValueError(
-                f"cover ({self.cover}mm) must be less than "
-                f"depth/2 ({self.depth / 2}mm)"
+                f"cover ({self.cover}mm) must be less than depth/2 ({self.depth / 2}mm)"
             )
         return self
 

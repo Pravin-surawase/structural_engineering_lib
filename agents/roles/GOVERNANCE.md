@@ -1,3 +1,12 @@
+---
+owner: Governance Agent
+status: active
+last_updated: 2026-08-07
+doc_type: reference
+complexity: intermediate
+tags: [agents, roles]
+---
+
 # Agent 9: Governance & Sustainability Agent
 
 **Role:** Organizational health, sustainability, governance, and maintenance orchestration

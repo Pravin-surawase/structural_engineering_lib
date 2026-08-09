@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: archived
+last_updated: 2026-08-07
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -11,11 +11,15 @@ tags: []
 
 **Type:** Reference
 **Audience:** All Agents
-**Status:** Approved
+**Status:** Historical audit (superseded by current health and agent checks)
 **Importance:** Critical
 **Created:** 2026-03-28
 **Last Updated:** 2026-03-28
 **Resolution Status:** 11/25 resolved (44%)
+
+> Archived from `docs/_active/` on 2026-08-07. Counts and open findings below
+> describe the March 2026 snapshot; use `./run.sh health`, `./run.sh audit`, and
+> `./run.sh feedback pending` for current state.
 
 ---
 

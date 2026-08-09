@@ -2,35 +2,73 @@
   "folder": "docs/audit",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-03-24",
-  "file_count": 3,
+  "last_updated": "2026-08-07",
+  "file_count": 8,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 83,
-      "last_updated": "2026-02-11",
+      "last_updated": "2026-03-26",
       "title": "Audit Evidence & Readiness",
       "description": "This folder contains audit evidence templates, checklists, and generated reports for demonstrating software quality, security posture, and compliance readiness. - NIST SSDF (SP 800-218) — Secure Softw",
-      "content_hash": "b5078fb477ee"
+      "content_hash": "7910666b6c36"
+    },
+    {
+      "name": "agent-testing-audit-2026-03-28.md",
+      "type": "documentation",
+      "size_lines": 292,
+      "last_updated": "2026-08-07",
+      "description": "> Archived from docs/_active/ on 2026-08-07. Counts and open findings below > describe the March 2026 snapshot; use ./run.sh health, ./run.sh audit, and",
+      "content_hash": "7a8da06a3360"
     },
     {
       "name": "audit-readiness.md",
       "type": "documentation",
-      "size_lines": 135,
-      "last_updated": "2026-02-11",
-      "title": "Audit Readiness Checklist",
+      "size_lines": 144,
+      "last_updated": "2026-04-07",
       "description": "This checklist defines the minimum evidence requirements for audit readiness. Each release must satisfy all \"Required\" items before deployment to production. | Requirement | Status | Evidence Location",
-      "content_hash": "e9aa1e3d1555"
+      "content_hash": "cdb2670bf1ea"
+    },
+    {
+      "name": "comprehensive-library-audit-2026-04-04.md",
+      "type": "documentation",
+      "size_lines": 1069,
+      "last_updated": "2026-04-07",
+      "description": "| Workstream | Agent | Score | Key Finding | |-----------|-------|-------|-------------|",
+      "content_hash": "7fa83524aff8"
     },
     {
       "name": "evidence-bundle-template.md",
       "type": "documentation",
-      "size_lines": 205,
-      "last_updated": "2026-02-11",
-      "title": "Evidence Bundle Template — Release vX.Y.Z",
+      "size_lines": 214,
+      "last_updated": "2026-03-30",
       "description": "| Field | Value | |-------|-------|",
-      "content_hash": "7fe1d5a171aa"
+      "content_hash": "6985739ac86a"
+    },
+    {
+      "name": "git-workflow-audit-pr436.md",
+      "type": "documentation",
+      "size_lines": 260,
+      "last_updated": "2026-03-30",
+      "description": "Living audit of the git workflow. Originally based on PR #436 (TASK-500: Unified CLI + onboarding audit) which was deliberately used as a full workflow test. Now expanded with deep analysis of all 11 ",
+      "content_hash": "9ff9dd0e831d"
+    },
+    {
+      "name": "maintenance-recovery-audit-2026-08-07.md",
+      "type": "documentation",
+      "size_lines": 159,
+      "last_updated": "2026-08-07",
+      "description": "The repository and product source survived the Mac laptop → Mac Mini transfer. The main risk was not missing source code; it was a mixture of inherited",
+      "content_hash": "3aa00c6ab469"
+    },
+    {
+      "name": "onboarding-audit-session93.md",
+      "type": "documentation",
+      "size_lines": 146,
+      "last_updated": "2026-03-30",
+      "description": "Fresh-agent onboarding test: followed all documented steps exactly as a new AI agent would, and logged every friction point, error, and inconsistency encountered. Then conducted a deep audit of archiv",
+      "content_hash": "9277bbf0b154"
     }
   ],
   "subfolders": [
@@ -40,5 +78,5 @@
       "file_count": 1
     }
   ],
-  "content_hash": "b4629660051c6d3d"
+  "content_hash": "e0b2fefef21b1982"
 }

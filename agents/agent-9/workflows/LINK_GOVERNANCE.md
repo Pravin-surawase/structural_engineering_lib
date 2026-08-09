@@ -1,3 +1,12 @@
+---
+owner: Governance Agent
+status: active
+last_updated: 2026-08-07
+doc_type: guide
+complexity: advanced
+tags: [agents, governance]
+---
+
 # Link Governance Workflow
 
 **Owner:** Agent 9 (Governance)

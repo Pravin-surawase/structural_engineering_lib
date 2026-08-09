@@ -19,7 +19,29 @@ updates:
         patterns:
           - "*"
 
-  # Keep Python dependencies up to date
+  # Keep the root application/development environment up to date.
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "security"
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      root-python-dependencies:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Keep the distributable Python package dependencies up to date.
   - package-ecosystem: "pip"
     directory: "/Python"
     schedule:
@@ -52,6 +74,29 @@ updates:
         patterns:
           - "ezdxf"
           - "matplotlib"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Keep the React application dependencies up to date.
+  - package-ecosystem: "npm"
+    directory: "/react_app"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Kolkata"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "security"
+      - "frontend"
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      react-dependencies:
+        patterns:
+          - "*"
         update-types:
           - "minor"
           - "patch"

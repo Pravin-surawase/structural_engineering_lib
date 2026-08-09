@@ -128,7 +128,6 @@ class SessionStateVisitor(ast.NodeVisitor):
                 and node.value.value.id == "st"
                 and node.value.attr == "session_state"
             ):
-
                 key = node.attr
                 # Skip methods like .get, .keys, .values
                 if key not in (
@@ -166,7 +165,6 @@ class SessionStateVisitor(ast.NodeVisitor):
                 and node.func.value.value.id == "st"
                 and node.func.value.attr == "session_state"
             ):
-
                 if node.args and isinstance(node.args[0], ast.Constant):
                     key = node.args[0].value
                     self.usages.append(

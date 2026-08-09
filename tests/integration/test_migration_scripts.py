@@ -6,7 +6,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = REPO_ROOT / "tests" / "fixtures" / "migration"
 GOLDEN = FIXTURES / "golden"
@@ -66,7 +65,10 @@ def test_migrate_python_module_accepts_python_prefixed_paths() -> None:
         ],
     )
     destination = str(payload["destination"])
-    assert destination == "Python/structural_lib/_migration_fixtures/moved/sample_module.py"
+    assert (
+        destination
+        == "Python/structural_lib/_migration_fixtures/moved/sample_module.py"
+    )
     assert "Python/Python/" not in destination
 
 
@@ -244,4 +246,3 @@ def test_batch_runner_live_writes_per_file_rollback_manifest() -> None:
         assert destination_entry["size_bytes"] == 0
     finally:
         shutil.rmtree(runtime_dir, ignore_errors=True)
-

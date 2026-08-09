@@ -334,7 +334,7 @@ def cmd_analyze(args):
     print("📁 Current File Counts:")
     print(f"   Total docs:     {counts['total_docs']}")
     print(
-        f"   Research:       {counts['research']} ({counts['research']/counts['total_docs']*100:.1f}%)"
+        f"   Research:       {counts['research']} ({counts['research'] / counts['total_docs'] * 100:.1f}%)"
     )
     print(f"   Archived:       {counts['archived']}")
     print(f"   Contributing:   {counts['contributing']}")

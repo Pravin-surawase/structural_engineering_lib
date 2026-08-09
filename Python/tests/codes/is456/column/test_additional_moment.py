@@ -489,7 +489,7 @@ class TestAdditionalMomentProperties:
         )
         assert r2.Max_kNm >= r1.Max_kNm, (
             f"Max should increase with le: le={le} -> Max={r1.Max_kNm}, "
-            f"le={le+500} -> Max={r2.Max_kNm}"
+            f"le={le + 500} -> Max={r2.Max_kNm}"
         )
 
     @given(
@@ -516,7 +516,7 @@ class TestAdditionalMomentProperties:
         )
         assert r2.Max_kNm >= r1.Max_kNm, (
             f"Max should increase with Pu: Pu={Pu} -> Max={r1.Max_kNm}, "
-            f"Pu={Pu+100} -> Max={r2.Max_kNm}"
+            f"Pu={Pu + 100} -> Max={r2.Max_kNm}"
         )
 
     @given(
@@ -546,7 +546,7 @@ class TestAdditionalMomentProperties:
         )
         assert r2.Max_kNm == pytest.approx(2 * r1.Max_kNm, rel=1e-9), (
             f"Max should be linear in Pu: Ma({Pu})={r1.Max_kNm}, "
-            f"Ma({2*Pu})={r2.Max_kNm}, expected {2*r1.Max_kNm}"
+            f"Ma({2 * Pu})={r2.Max_kNm}, expected {2 * r1.Max_kNm}"
         )
 
     @given(

@@ -73,7 +73,7 @@ jobs:
 
       - name: Check documentation links
         run: |
-          python scripts/check_links.py --fail-fast
+          python scripts/check_links.py
 
       - name: Smoke test CLI pipeline
         working-directory: Python

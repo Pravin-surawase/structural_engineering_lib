@@ -70,15 +70,15 @@ def _validate_plausibility(
         )
     if b_mm is not None and b_mm > 5000:
         raise ValueError(
-            f"b_mm={b_mm} seems too large. " "Expected mm (e.g., 300), not μm or m."
+            f"b_mm={b_mm} seems too large. Expected mm (e.g., 300), not μm or m."
         )
     if d_mm is not None and d_mm > 5000:
         raise ValueError(
-            f"d_mm={d_mm} seems too large. " "Expected mm (e.g., 450), not μm or m."
+            f"d_mm={d_mm} seems too large. Expected mm (e.g., 450), not μm or m."
         )
     if D_mm is not None and D_mm > 5000:
         raise ValueError(
-            f"D_mm={D_mm} seems too large. " "Expected mm (e.g., 500), not μm or m."
+            f"D_mm={D_mm} seems too large. Expected mm (e.g., 500), not μm or m."
         )
     if d_mm is not None and D_mm is not None and d_mm >= D_mm:
         raise ValueError(
@@ -541,7 +541,7 @@ def _check_boundary_violations(code_id: str) -> tuple[bool, list[str]]:
                 for alias in node.names:
                     if any(alias.name.startswith(f) for f in forbidden_imports):
                         issues.append(
-                            f"Boundary violation in {rel_path}: " f"import {alias.name}"
+                            f"Boundary violation in {rel_path}: import {alias.name}"
                         )
             elif isinstance(node, ast.ImportFrom):
                 if node.module and any(

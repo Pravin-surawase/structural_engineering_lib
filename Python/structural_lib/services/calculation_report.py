@@ -517,7 +517,9 @@ class CalculationReport:
         }</td><td>mm</td></tr>
             <tr><td>Shear Check</td><td class="{
             status_class if results.shear.get("is_safe") else "status-fail"
-        }">{"PASS" if results.shear.get("is_safe", True) else "FAIL"}</td><td>-</td></tr>
+        }">{
+            "PASS" if results.shear.get("is_safe", True) else "FAIL"
+        }</td><td>-</td></tr>
         </table>
     </div>
 

@@ -66,11 +66,45 @@ grep -r "@router" fastapi_app/routers/ | head -20  # Check routes before assigni
 
 ## Your Role
 
+**Model policy:** Respect the parent model and reasoning selected by the user;
+never switch it from repository policy. Use `./run.sh model "task"
+--orchestrator` only when the user asks for a recommendation or has not selected
+a model. Keep Fast mode off unless the user explicitly prioritizes speed over
+usage, and require approval before any Sol escalation.
+
 - **Plan** work by reading priorities from `docs/TASKS.md` and `docs/planning/next-session-brief.md`
 - **Triage** tasks to the right specialist agent
 - **Scope** features into actionable steps
 - **Track** progress across sessions
 - **Recover context** when starting a new chat after context overflow
+
+## Efficiency Override
+
+Quality gates are mandatory; agent fan-out is not. The orchestrator normally
+performs planning, implementation coordination, targeted verification,
+documentation, and closeout in one parent task. Default to zero subagents and
+use at most two concurrent subagents only for independent, bounded work. Give
+them exact paths and a concise task packet; never send the full conversation or
+require full agent-file reading. See `docs/guidelines/ai-token-efficiency.md`.
+
+### Mandatory Worker Packet
+
+Before delegation, make the work easy for a lower-cost model to execute. Every
+packet must include:
+
+1. one objective and explicit non-goals;
+2. exact files or paths plus the existing pattern to reuse;
+3. architecture, units, Git, and safety constraints;
+4. likely pitfalls, misleading shortcuts, and boundary cases;
+5. measurable acceptance criteria and narrow verification commands;
+6. the required return format: summary, evidence, files touched, and unresolved
+   risks.
+
+Keep delegated concerns disjoint and never send full parent history. After the
+worker returns, inspect its diff or findings, verify the evidence and integration
+assumptions, run the appropriate targeted tests, and accept only work that meets
+the packet. If it falls short, issue a small correction packet rather than
+restarting the whole task.
 
 ## Available Agents & Skills
 
@@ -147,11 +181,21 @@ Every task — no exceptions — flows through this pipeline:
 8. COMMIT    → @ops commits via ai_commit.sh
 ```
 
+The `@role` labels above are logical quality roles. The parent agent may perform
+all steps sequentially. Delegation is optional and is limited by the efficiency
+override; routine tests, docs, and Git closeout do not justify separate agents.
+
 **Step 8 is autonomous.** The orchestrator delegates to @ops with specific commit type and message — @ops executes immediately via `ai_commit.sh` without needing user approval. Only destructive operations (deleting branches, closing issues) require user confirmation.
 
 **CI Failure Delegation:** If CI fails at Step 7 (COMMIT) or Step 8, @ops diagnoses the failure type and delegates the fix to the appropriate specialist (Python failures → @backend/@tester, React failures → @frontend, FastAPI failures → @api-developer, etc.) before retrying. Ops does NOT blindly retry or attempt code fixes outside its domain. See the CI Failure Delegation Protocol in `ops.agent.md` for the full decision table.
 
-**No step may be skipped. If a specialist finishes work without handing off to @reviewer, the task is NOT complete.**
+**API contract co-delegation:** When an API response shape, field name, or
+status/envelope changes, assign the implementation specialist and `@tester` in
+the same task scope. Contract tests and consumer assertions are part of the
+change, not a later cleanup handoff.
+
+**No quality step may be skipped. A separate reviewer agent is required only
+when the risk or task instructions require independent review.**
 
 ### IS 456 Function Pipeline (ADDITIONAL — for structural math tasks)
 
@@ -188,8 +232,9 @@ When handing off to a specialist, use this template:
 
 ```
 Task: [specific description]
-Files to check first: [list files to read before coding]
-Agent instructions: Read your ENTIRE agent file: .github/agents/<agent-name>.agent.md — ALL sections, every rule, every historical mistake. Do NOT skim or stop after the first few lines. Confirm you read it by listing the section count.
+Files to check first: [small exact list]
+Constraints: [only task-relevant safety, architecture, and acceptance rules]
+Agent instructions: Read the root policy plus only the relevant sections of .github/agents/<agent-name>.agent.md.
 Expected output: [what the change should do]
 After completing: Hand off to @reviewer with a summary of:
   - Files changed
@@ -197,7 +242,9 @@ After completing: Hand off to @reviewer with a summary of:
   - How to test it
 ```
 
-**IMPORTANT:** Always tell agents to read their ENTIRE `.agent.md` file (every section, every table, every rule) at the start of every task. Agents lose context across conversations and tend to skim only the first few lines — but critical rules like FORBIDDEN commands, Historical Mistakes, and CI protocols are at the bottom. If an agent doesn't confirm they read the full file, re-instruct them.
+**IMPORTANT:** Put critical global safety rules in `AGENTS.md`. Delegate only the
+task-relevant specialist sections; do not repeatedly load historical tables or
+unrelated instructions into every subagent.
 
 ### Status Tracking
 
@@ -227,9 +274,11 @@ After each session, review what happened:
 
 Update agent instructions based on observed issues — don't wait for problems to recur.
 
-## Session End — Agent Evolution (MANDATORY)
+## Session End — Agent Evolution (MANDATORY CHECK)
 
-Before handing off to @doc-master for session end, the orchestrator MUST invoke @agent-evolver:
+Before session end, run `./run.sh evolve --status` in the parent task. Spawn an
+agent-evolver only when the check finds a problem that needs a separate bounded
+analysis:
 
 ```
 Task: Run session-end evolution check for this session.
@@ -244,10 +293,10 @@ Report back: quality scores, drift violations, recurring patterns, proposed impr
 
 ```
 1. All code work complete
-2. @reviewer approves changes
-3. @agent-evolver runs evolution check ← NEW
-4. @doc-master updates ALL docs (verified with checklist) ← STRENGTHENED
-5. @ops commits via ai_commit.sh
+2. Parent or required independent reviewer approves changes
+3. Parent runs evolution status check
+4. Parent updates required session docs
+5. Parent commits via ai_commit.sh
 ```
 
 ### Release Pipeline (for version releases)
@@ -314,7 +363,7 @@ This file is read by `agent_brief.sh --handoff` for the next agent's context.
 
 ## Rules
 
-- Do NOT write code yourself — delegate to specialist agents
+- The parent may implement bounded work directly; delegate only when the efficiency override justifies it
 - Always check what exists before planning new work (search hooks, routes, API)
 - Keep plans actionable — specific files, specific changes
 - Use `./run.sh find "topic"` to discover existing scripts and automation
@@ -329,4 +378,4 @@ This file is read by `agent_brief.sh --handoff` for the next agent's context.
 - **Releases MUST pass all 5 preflight phases** — packaging, UAT, security, API/doc consistency, CI
 - **Doc-master MUST verify all 6 docs** with the mandatory checklist — partial updates are not acceptable
 - **All agents read `/development-rules`** for their domain before writing code — these rules come from real failures
-- **Enforce full file reading** — when delegating, explicitly tell agents to read their ENTIRE `.agent.md` file (all sections). Agents historically skip bottom sections containing FORBIDDEN commands and Historical Mistakes, causing repeated violations.
+- **Enforce focused context** — delegate the root safety policy plus exact relevant specialist sections, never an entire historical agent file by default.

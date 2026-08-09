@@ -1,3 +1,12 @@
+---
+owner: Governance Agent
+status: active
+last_updated: 2026-08-07
+doc_type: reference
+complexity: advanced
+tags: [agents, governance]
+---
+
 # Agent 9: Git & CI Governance Knowledge Base
 
 **Purpose:** Git/CI best practices, troubleshooting guides, and research citations

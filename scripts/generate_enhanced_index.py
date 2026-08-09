@@ -569,8 +569,8 @@ def generate_markdown(index: dict, output_path: Path) -> None:
     type_label = index.get("type", "mixed").replace("-", " ").title()
     lines.extend(
         [
-            f"**Type:** {type_label}  ",
-            f"**Last Updated:** {index['last_updated']}  ",
+            f"**Type:** {type_label}",
+            f"**Last Updated:** {index['last_updated']}",
             f"**Files:** {index['file_count']}",
             "",
         ]

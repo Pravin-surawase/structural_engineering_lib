@@ -32,6 +32,7 @@ ARROW="→"
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 LOG_FILE="/tmp/structural_lib_launch.log"
+NODE_REQUIRED_MAJOR="$(sed -E 's/^v?([0-9]+).*/\1/' "$REPO_ROOT/.nvmrc")"
 FASTAPI_PID=""
 REACT_PID=""
 MODE="local"
@@ -161,7 +162,10 @@ trap cleanup SIGINT SIGTERM EXIT
 get_process_on_port() {
     local port=$1
     if [[ "$OS_TYPE" == "Darwin" ]]; then
-        lsof -ti ":$port" 2>/dev/null || true
+        # Restrict cleanup to the server listening on the port. Plain
+        # `lsof -ti :PORT` also returns connected browser/client processes and
+        # previously terminated a Codex browser helper during local startup.
+        lsof -nP -tiTCP:"$port" -sTCP:LISTEN 2>/dev/null || true
     else
         # Linux
         ss -lptn "sport = :$port" 2>/dev/null | awk '{print $6}' | grep -oE 'pid=[0-9]+' | grep -oE '[0-9]+' || true
@@ -261,6 +265,47 @@ check_python() {
     return 0
 }
 
+select_node_runtime() {
+    local brew_prefix=""
+    local candidate_bin=""
+    local candidate_version=""
+    local candidate_major=""
+
+    # Homebrew versioned Node formulae are keg-only, so transferred machines
+    # may still resolve a stale unversioned node first. Prefer the version
+    # declared by .nvmrc when Homebrew provides it.
+    if command -v brew &>/dev/null; then
+        brew_prefix=$(brew --prefix "node@$NODE_REQUIRED_MAJOR" 2>/dev/null || true)
+        if [[ -n "$brew_prefix" ]]; then
+            candidate_bin="$brew_prefix/bin"
+        fi
+    fi
+
+    if [[ -n "$candidate_bin" ]] && [[ -x "$candidate_bin/node" ]]; then
+        candidate_version=$("$candidate_bin/node" --version 2>/dev/null || true)
+        candidate_major=$(echo "$candidate_version" | grep -oE '[0-9]+' | head -1)
+        if [[ "$candidate_major" == "$NODE_REQUIRED_MAJOR" ]]; then
+            export PATH="$candidate_bin:$PATH"
+            hash -r
+            log_verbose "Selected Node runtime: $candidate_bin ($candidate_version)"
+            return 0
+        fi
+    fi
+
+    # nvm/asdf/Volta users normally already have the requested version on PATH.
+    if command -v node &>/dev/null; then
+        candidate_version=$(node --version 2>/dev/null || true)
+        candidate_major=$(echo "$candidate_version" | grep -oE '[0-9]+' | head -1)
+        if [[ "$candidate_major" == "$NODE_REQUIRED_MAJOR" ]]; then
+            return 0
+        fi
+    fi
+
+    error "Node.js $NODE_REQUIRED_MAJOR.x from .nvmrc is not available"
+    info "Run 'nvm install' from the repository root or install node@$NODE_REQUIRED_MAJOR"
+    return 1
+}
+
 check_node() {
     if ! command -v node &>/dev/null; then
         error "Node.js not found"
@@ -268,8 +313,8 @@ check_node() {
     fi
 
     local node_version=$(node --version | grep -oE '[0-9]+' | head -1)
-    if [[ $node_version -lt 18 ]]; then
-        error "Node.js v$node_version < v18 (required)"
+    if [[ "$node_version" != "$NODE_REQUIRED_MAJOR" ]]; then
+        error "Node.js v$node_version does not match .nvmrc ($NODE_REQUIRED_MAJOR.x)"
         return 1
     fi
 
@@ -418,6 +463,7 @@ run_preflight_checks() {
 
     # Check Node/npm for React
     if [[ $SKIP_REACT -eq 0 ]]; then
+        select_node_runtime || checks_passed=1
         check_node || checks_passed=1
         check_npm || checks_passed=1
         check_node_modules || true  # Non-fatal, we can fix

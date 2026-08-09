@@ -271,26 +271,67 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
     end_time = datetime.now(timezone.utc)
     latency_ms = (end_time - start_time).total_seconds() * 1000
 
-    # Send result with structure matching ComplianceCaseResult
+    flexure = result.flexure
+    shear = result.shear
+    warnings: list[str] = []
+    if flexure.Asc_required > 0:
+        warnings.append(
+            "Doubly reinforced design required because moment demand exceeds "
+            "the singly reinforced limit"
+        )
+    if flexure.xu > flexure.xu_max:
+        warnings.append("Section is over-reinforced - consider increasing depth")
+
+    # Keep the WebSocket payload aligned with the REST BeamDesignResponse.
+    # The frontend can then switch transports without silently losing fields.
     await manager.send_json(
         session_id,
         {
             "type": "design_result",
             "latency_ms": round(latency_ms, 2),
             "data": {
+                "success": result.is_ok,
+                "message": (
+                    f"Design complete: Ast = {flexure.Ast_required:.0f} mm²"
+                    if result.is_ok
+                    else f"Design failed: {result.remarks}"
+                ),
                 "flexure": {
-                    "ast_required": result.flexure.Ast_required,
-                    "mu_lim": result.flexure.Mu_lim,
-                    "xu": result.flexure.xu,
-                    "xu_max": result.flexure.xu_max,
-                    "is_safe": result.flexure.is_safe,
+                    "ast_required": flexure.Ast_required,
+                    "ast_min": flexure.Ast_min,
+                    "ast_max": flexure.Ast_max,
+                    "xu": flexure.xu,
+                    "xu_max": flexure.xu_max,
+                    "is_under_reinforced": flexure.xu <= flexure.xu_max,
+                    "moment_capacity": flexure.Mu_lim,
+                    "asc_required": flexure.Asc_required,
                 },
-                "shear": {
-                    "tv": result.shear.tau_v if result.shear else None,
-                    "tc": result.shear.tau_c if result.shear else None,
-                    "spacing": result.shear.spacing if result.shear else None,
-                    "is_safe": result.shear.is_safe if result.shear else None,
-                },
+                "shear": (
+                    {
+                        "tau_v": shear.tau_v,
+                        "tau_c": shear.tau_c,
+                        "tau_c_max": shear.tau_c_max,
+                        "asv_required": (
+                            shear.Vus / (0.87 * validated.fy) * 1000
+                            if shear.Vus > 0
+                            else 0.0
+                        ),
+                        "stirrup_spacing": shear.spacing,
+                        "sv_max": 300.0,
+                        "shear_capacity": (
+                            shear.tau_c * validated.width * d_mm / 1000 + shear.Vus
+                            if shear.Vus > 0
+                            else validated.shear
+                        ),
+                    }
+                    if shear
+                    else None
+                ),
+                "ast_total": flexure.Ast_required,
+                "asc_total": flexure.Asc_required,
+                "utilization_ratio": min(result.governing_utilization, 2.0),
+                "effective_depth_used": d_mm,
+                "warnings": warnings,
             },
         },
     )

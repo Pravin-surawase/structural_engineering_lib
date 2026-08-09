@@ -1,18 +1,21 @@
 # Planning
 
 **Type:** Documentation
-**Last Updated:** 2026-04-07
-**Files:** 8
+**Last Updated:** 2026-08-09
+**Files:** 11
 
 ## Documentation Files
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [README.md](README.md) | Planning | Internal planning documents and research notes. | Document | | 143 |
+| [README.md](README.md) | Planning | Internal planning documents and research notes. | Document | | 145 |
+| [compact-modernization-plan.md](compact-modernization-plan.md) |  | Modernize the repository's CI, maintenance controls, and age | 754 |
 | [democratization-vision.md](democratization-vision.md) |  | > **"What was not possible few years back, or only possible  | 273 |
+| [dependency-security-baseline.md](dependency-security-baseline.md) |  | This record makes MAINT-003 reproducible. It separates confi | 69 |
+| [etabs-killer-masterplan.md](etabs-killer-masterplan.md) | Project BHEEM: Open-Source Structural De | > **BHEEM** — **B**uilding **H**olistic **E**ngineering **E* | 2855 |
 | [library-expansion-blueprint-v5.md](library-expansion-blueprint-v5.md) | Library Expansion Blueprint v5.0 — Multi | > Master plan for expanding structural_engineering_lib from  | 1131 |
-| [memory.md](memory.md) |  | - **v0.15.0** released (2026-01-07) - Focus: Code Quality Ex | 285 |
+| [memory.md](memory.md) |  | - Development resumed after a four-month pause and a Mac lap | 377 |
 | [next-phase-improvements-plan.md](next-phase-improvements-plan.md) |  | > This document is a result of a full audit of the beam libr | 1445 |
-| [next-session-brief.md](next-session-brief.md) | Next Session Brief | <!-- HANDOFF:START --> - Date: 2026-04-06 | 47 |
-| [pre-release-checklist.md](pre-release-checklist.md) | Pre-Release Checklist | - **Version:** 0.21.5 - **Branch:** main | 43 |
+| [next-session-brief.md](next-session-brief.md) | Next Session Briefing | <!-- HANDOFF:START --> - Date: 2026-08-09 | 137 |
+| [pre-release-checklist.md](pre-release-checklist.md) | Pre-Release Checklist | Version: 0.21.6 - **Branch:** main | 44 |
 | [react-ux-improvement-plan.md](react-ux-improvement-plan.md) |  | > "A structural engineer shouldn't have to fill in a form to | 702 |

@@ -243,7 +243,7 @@ Packaging quality release addressing external audit findings. All design calcula
 **Stats:**
 - 3,401+ tests passing
 - 59 API endpoints across 13 routers
-- 36 public API functions + 7 private helpers
+- 68 public API functions + 15 internal helpers
 
 ---
 

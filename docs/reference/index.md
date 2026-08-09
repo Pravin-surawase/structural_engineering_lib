@@ -1,7 +1,7 @@
 # Reference
 
 **Type:** Mixed
-**Last Updated:** 2026-04-07
+**Last Updated:** 2026-08-07
 **Files:** 28
 
 ## Config Files
@@ -17,9 +17,9 @@
 | [3d-visualization-performance.md](3d-visualization-performance.md) |  | This document provides performance benchmarks for the 3D bea | 172 |
 | [README.md](README.md) | Reference Documentation | Comprehensive lookup documentation for APIs, formulas, contr | 80 |
 | [agent-automation-pitfalls.md](agent-automation-pitfalls.md) |  | <!-- lint-ignore-git --> > ⚠️ **Note:** This document includ | 633 |
-| [api-levels.md](api-levels.md) | Which API Should I Use? | structural_lib exposes three API levels. Pick the one that m | 89 |
-| [api-stability.md](api-stability.md) |  | > This document defines which parts of the library are safe  | 525 |
-| [api.md](api.md) |  | Machine-readable signatures live in docs/reference/api-manif | 3776 |
+| [api-levels.md](api-levels.md) |  | structural_lib exposes three API levels. Pick the one that m | 99 |
+| [api-stability.md](api-stability.md) |  | > This document defines which parts of the library are safe  | 616 |
+| [api.md](api.md) |  | Machine-readable signatures live in docs/reference/api-manif | 3916 |
 | [automation-catalog.md](automation-catalog.md) |  | > **Purpose:** Complete reference of all automation scripts  | 2847 |
 | [bbs-dxf-contract.md](bbs-dxf-contract.md) |  | This document defines the stable contracts for Bar Bending S | 116 |
 | [clause-map.md](clause-map.md) | IS 456 Clause-to-Function Mapping | Maps IS 456:2000 (and IS 13920:2016) clauses to their implem | 189 |

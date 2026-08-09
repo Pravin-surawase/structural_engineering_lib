@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-07
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Active
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-01-13
+**Last Updated:** 2026-08-07
 
 ---
 
@@ -23,7 +23,72 @@ tags: []
 
 ---
 
-## Current State (2026-01-07)
+## Current Maintenance State (2026-08-07)
+
+### Recovery Context
+
+- Development resumed after a four-month pause and a Mac laptop → Mac Mini transfer.
+- Git history, reachable objects, sample data, package source, and ARM64 Python environment transferred intact.
+- The inherited April worktree began with 73 tracked modifications and 47 untracked files and is preserved in pushed checkpoint `b28ee4e3`.
+- Seventy modified Python files are AST-equivalent formatter output; untracked learning/migration/master-plan docs contain roughly 25,000 lines and require human/editorial triage.
+- Do not reset or bulk-clean the preserved history; continue through the enforced Git workflow on `task/MAINT-001`.
+
+### Product and Engineering Baseline
+
+- **Published:** v0.21.6 on PyPI; post-tag repository commits are documentation-only.
+- **Python:** final preflight passes 5,159 tests (3 skipped, 6 deselected); core IS 456 calculation modules are generally 89–100% covered.
+- **FastAPI:** 336 tests pass; 60 endpoints across 13 routers; response contract is `{success, data}`.
+- **React:** 146 tests and production build pass; statement coverage is only 17.74%, but the critical live workstation flow is browser-verified through exports.
+- **Package:** a fresh built-wheel environment passes 5,120 tests (41 skipped, 6 deselected) and the packaged job → critical-case → HTML-report CLI workflow.
+- **Elements:** beam workflow is mature; column and footing mathematics/API exist; UI completeness and future slab/wall/stair scope must be decided separately.
+
+### Current Risks and Decisions
+
+1. **Preservation first:** recovery branch/checkpoint before modifying inherited work.
+2. **Stabilization before features:** v0.21.7 should restore CI, security, environment, tests, and documentation truth.
+3. **Nightly root cause:** workflow calls `scripts/check_links.py --fail-fast`, but the script has no such argument.
+4. **Live import data is intact:** `/api/v1/import/sample` returns 153 beams; standalone scripts fail because they expect the old flat response instead of the response envelope.
+5. **Environment drift repaired:** source, editable metadata, and module report v0.21.6; Python 3.11 and Node 24 are recorded; the dependency locks come from clean installs.
+6. **Security baseline:** the clean Python graph audits at zero known vulnerabilities. npm has one exact React Router RSC-only exception; the browser-only app does not use the affected mode, and CI rejects any additional advisory.
+7. **One source of truth restored:** `run.sh check` passes 28/28, audit passes 22/22, health is 100/100, and parity clearly separates informational Python-only exports from actionable test gaps.
+8. **Documentation remains evidence:** completed plans were removed from `_active`, counts and commands were reconciled, and future maintenance must keep these records synchronized.
+9. **Utilization contract:** UI/API beam utilization must use `ComplianceCaseResult.governing_utilization`; `Mu_lim` is the singly reinforced limit and is not the final capacity of a valid doubly reinforced design.
+10. **Mac port safety:** local cleanup may target only `LISTEN` processes. Plain `lsof -ti :PORT` also returns connected clients and is forbidden in the launcher.
+11. **Live design contract:** WebSocket results must preserve the full REST `BeamDesignResponse`; frontend compatibility normalization may fill legacy shapes but must never overwrite live capacity or utilization data.
+12. **Release runtime truth:** macOS preflight uses reclaimable memory and the Node major in `.nvmrc`; isolated wheel verification installs the package `[dev]` extra before running the source test suite.
+
+### Recovery Progress (2026-08-07)
+
+- `task/MAINT-001` and pushed checkpoint `b28ee4e3` preserve all inherited April work.
+- Python editable metadata and module version now match v0.21.6.
+- Node 24.19.0 LTS is installed keg-only; `.nvmrc`, React engines, lock metadata, CI, and setup docs target Node 24.
+- React passes 146 tests, lint (one known hook warning), and production build on Node 24.
+- Nightly no longer uses the unsupported link-checker flag; all 1,056 internal links pass.
+- Maintained import E2E scripts understand the standard response envelope and pass 18/18 against a live API with all 153 sample beams.
+- Import validation excludes archives, recognizes optional `xlwings`, and resolves all scanned imports; quick gate is 8/8.
+- Colima's transferred VZ disk remains marked in use despite process cleanup. Preserve the disk; restart macOS before retrying, and require backup/approval before VM recreation.
+- Root requirements now declare the previously implicit `pytest-asyncio` plugin and patched security floors. The final preflight passes 5,159 tests (3 skipped, 6 deselected) and all 336 FastAPI tests.
+- The Python lock excludes editable/local Git references and retired `python-jose` residue; pip-audit reports zero known vulnerabilities across 147 installed dependencies.
+- npm audit is reduced from 13 findings to one underlying React Router RSC-only advisory. Its exact scope, rationale, CI allowlist, and removal condition are recorded in `dependency-security-baseline.md`.
+- MAINT-004 is complete: API manifest, schema snapshot, script indexes, bootstrap counts, hooks, import scanner, health scanner, audit scanner, and parity scanner now agree.
+- Project health is 100/100 with 22 of 23 feedback records resolved. Only the tester-output watch at occurrence two of three remains pending.
+- MAINT-005 checkpoint `6f119132` raises actionable parity to 96%: 15/17 curated clause areas, 60/60 direct route tests, and 13/13 connected hooks.
+- The live 153-beam sample import, auto-design, R3F editor, dashboard, and export path passes. WebSocket designs preserve the full REST result; valid doubly reinforced beams report governing utilization and real capacities.
+- BBS, DXF, single HTML/PDF report, building HTML/PDF/CSV summary, and BOQ CSV actions reach the live API; byte-level artifact checks confirm valid CSV structure, DXF sections/EOF, and PDF signatures. Final quantities are 2,663.4 kg steel and 114.8 m³ concrete.
+- MAINT-005 is complete. `./run.sh release preflight 0.21.7` is green with zero warnings; v0.21.7 is ready but has not been released.
+- MAINT-001 remains blocked only on GitHub CLI browser authorization and a macOS restart before non-destructive Colima recovery. SSH push works; do not delete the transferred VM disk.
+
+### Canonical Maintenance Records
+
+- `docs/TASKS.md` — active priorities and exit conditions.
+- `docs/WORKLOG.md` — completed changes only, one line per meaningful change.
+- `docs/SESSION_LOG.md` — decisions, evidence, and session outcomes.
+- `docs/planning/next-session-brief.md` — exact restart point and blockers.
+- This file — durable project state and architectural decisions, not command-by-command history.
+
+---
+
+## Historical State (2026-01-07)
 
 ### Recent Release
 - **v0.15.0** released (2026-01-07)
@@ -282,3 +347,30 @@ python -m mypy
 ---
 
 **Last Major Update:** 2026-01-07 (Agent collaboration framework v2.0, v0.16-v0.17 roadmap)
+
+---
+
+## 2026-08-07 — Maintenance and Agent Operations Update
+
+- The active stack is React 19 → FastAPI → `Python/structural_lib`; Streamlit is
+  legacy only. Current work remains on `task/MAINT-001` / PR #676.
+- Mac Mini recovery is complete: GitHub CLI plus SSH pass, and Colima/Docker are
+  healthy on the preserved transferred disk.
+- The main Codex orchestrator uses GPT-5.6 Sol High. Luna handles clear,
+  repetitive work; Terra handles normal implementation and focused review.
+  Keep zero subagents by default and never exceed two.
+- Use `./run.sh model` for task-aware recommendations and
+  `./run.sh session usage` at start, 2–3 hour milestones, and closeout. The
+  usage ledger records observable model/agent/time/check data but does not
+  estimate billing tokens or cost.
+- `./run.sh pr status` is terminal-only. Browser opening requires
+  `./run.sh pr status --web`; GitHub device login may still open a browser as
+  part of explicit authentication.
+- Current automation inventory: 16 Copilot roles, 14 Copilot skills, 113 mapped
+  scripts, 29 full validation checks, and 9 quick checks. Copilot's Claude
+  model fields are separate from Codex Luna/Terra/Sol routing.
+- On 2026-08-09 the owner authorized maintenance closeout. Commit `242ba8ce`
+  removed three empty evidence-template links, replaced one crawler-blocked
+  OpenAI URL, and pinned Ruff 0.15.8 across active install surfaces. PR #676 is
+  clean and mergeable with every required check passing. Merge and release still
+  require separate explicit owner approval.

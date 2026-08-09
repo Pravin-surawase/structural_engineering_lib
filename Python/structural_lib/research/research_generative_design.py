@@ -426,8 +426,7 @@ def _generate_narrative(
     elif persona.weight_carbon >= 0.5:
         if is_greenest:
             parts.append(
-                f"This is the lowest-carbon design at "
-                f"{rec.carbon_kgco2e:.1f} kgCO₂e."
+                f"This is the lowest-carbon design at {rec.carbon_kgco2e:.1f} kgCO₂e."
             )
         else:
             parts.append(
@@ -449,7 +448,7 @@ def _generate_narrative(
         else:
             parts.append(
                 f"Utilization={rec.utilization:.3f} gives "
-                f"{(1 - rec.utilization)*100:.0f}% reserve capacity."
+                f"{(1 - rec.utilization) * 100:.0f}% reserve capacity."
             )
         parts.append(
             "The generous safety margin means this beam can handle "
@@ -468,11 +467,10 @@ def _generate_narrative(
         if cost_vs_cheapest > 5:
             tradeoffs.append(f"{cost_vs_cheapest:.0f}% more than cheapest")
         if carbon_vs_greenest > 5:
-            tradeoffs.append(f"{carbon_vs_greenest:.0f}% more carbon " "than greenest")
+            tradeoffs.append(f"{carbon_vs_greenest:.0f}% more carbon than greenest")
         if tradeoffs:
             parts.append(
-                f"Trade-offs: {'; '.join(tradeoffs)} — "
-                f"but no single metric is extreme."
+                f"Trade-offs: {'; '.join(tradeoffs)} — but no single metric is extreme."
             )
 
     # Rebar detail
@@ -747,11 +745,9 @@ def _demo() -> None:
         )
         print(
             f"  xu/xu_max = {rec.recommended.utilization:.3f} "
-            f"→ {(1 - rec.recommended.utilization)*100:.0f}% reserve"
+            f"→ {(1 - rec.recommended.utilization) * 100:.0f}% reserve"
         )
-        print(
-            f"  Shear stirrup spacing = " f"{rec.recommended.shear_spacing_mm:.0f} mm"
-        )
+        print(f"  Shear stirrup spacing = {rec.recommended.shear_spacing_mm:.0f} mm")
 
 
 if __name__ == "__main__":

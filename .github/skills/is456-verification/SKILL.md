@@ -109,7 +109,7 @@ Run structural engineering verification tests to validate IS 456:2000 compliance
 
 For comprehensive pre-merge validation:
 ```bash
-./run.sh check          # 28 checks including tests, linting, architecture
+./run.sh check          # 29 checks including API, docs, architecture, and governance
 ./run.sh check --quick  # Fast subset (<30s)
 ./run.sh test           # Just tests
 ```

@@ -8,7 +8,7 @@ import { useMemo, useCallback } from 'react';
 import { AgGridReact } from '@ag-grid-community/react';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { ModuleRegistry } from '@ag-grid-community/core';
-import type { ColDef, SelectionChangedEvent, RowClassParams, RowClickedEvent } from '@ag-grid-community/core';
+import type { ColDef, RowClickedEvent, RowClassParams, RowSelectionOptions, SelectionChangedEvent } from '@ag-grid-community/core';
 import '@ag-grid-community/styles/ag-grid.css';
 import '@ag-grid-community/styles/ag-theme-alpine.css';
 
@@ -30,6 +30,11 @@ export interface BeamRowData {
   utilization?: number;
   status?: 'pending' | 'designing' | 'pass' | 'fail' | 'warning';
 }
+
+const TABLE_ROW_SELECTION: RowSelectionOptions<BeamRowData> = {
+  mode: 'multiRow',
+  enableClickSelection: true,
+};
 
 interface BeamTableProps {
   beams: BeamRowData[];
@@ -88,8 +93,6 @@ export function BeamTable({
       field: 'id',
       width: 120,
       pinned: 'left',
-      checkboxSelection: true,
-      headerCheckboxSelection: true,
     },
     { headerName: 'Story', field: 'story', width: 100 },
     { headerName: 'Width (mm)', field: 'width_mm', width: 100, type: 'numericColumn' },
@@ -185,7 +188,7 @@ export function BeamTable({
         rowData={beams}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
-        rowSelection="multiple"
+        rowSelection={TABLE_ROW_SELECTION}
         suppressRowClickSelection={false}
         onSelectionChanged={handleSelectionChanged}
         onRowClicked={handleRowClicked}

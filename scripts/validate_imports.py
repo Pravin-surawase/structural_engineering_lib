@@ -125,13 +125,21 @@ EXTERNAL_PACKAGES = {
     "openpyxl",
     "xlrd",
     "xlsxwriter",
+    "xlwings",
     "PIL",
     "cv2",
     "sklearn",
     "torch",
 }
 
-SKIP_PATTERNS = {"__pycache__", ".pytest_cache", ".mypy_cache", "node_modules", ".venv"}
+SKIP_PATTERNS = {
+    "__pycache__",
+    ".pytest_cache",
+    ".mypy_cache",
+    "node_modules",
+    ".venv",
+    "_archive",
+}
 
 
 def find_python_files(scope: str) -> list[Path]:

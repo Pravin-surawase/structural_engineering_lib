@@ -64,9 +64,9 @@ def test_effective_length_golden(vector: dict):
     )
     expected = vector["expected"]["le_mm"]
     tol = vector.get("tolerance", 1e-12)
-    assert le == pytest.approx(expected, rel=tol), (
-        f"IS 456 Table 28 mismatch: {end_cond.name}, " f"got {le}, expected {expected}"
-    )
+    assert le == pytest.approx(
+        expected, rel=tol
+    ), f"IS 456 Table 28 mismatch: {end_cond.name}, got {le}, expected {expected}"
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -88,7 +88,7 @@ def test_classify_column_golden(vector: dict):
     result = classify_column(le_mm=inp["le_mm"], D_mm=inp["D_mm"])
     expected_cls = ColumnClassification[vector["expected"]["classification"]]
     assert result == expected_cls, (
-        f"le/D = {inp['le_mm']/inp['D_mm']:.2f}, "
+        f"le/D = {inp['le_mm'] / inp['D_mm']:.2f}, "
         f"expected {expected_cls.name}, got {result.name}"
     )
 

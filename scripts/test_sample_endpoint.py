@@ -4,9 +4,26 @@
 import json
 import urllib.request
 
+
+def unwrap_response(payload: dict) -> dict:
+    """Return data from the standard API envelope, or a direct response."""
+    if "data" not in payload:
+        return payload
+
+    if payload.get("success") is not True:
+        raise AssertionError(f"API request failed: {payload.get('error')}")
+
+    data = payload["data"]
+    if not isinstance(data, dict):
+        raise AssertionError(
+            f"Expected object in response data, got {type(data).__name__}"
+        )
+    return data
+
+
 url = "http://localhost:8000/api/v1/import/sample"
-with urllib.request.urlopen(url) as resp:
-    data = json.loads(resp.read())
+with urllib.request.urlopen(url, timeout=30) as resp:
+    data = unwrap_response(json.loads(resp.read()))
 
 print(f"Success: {data['success']}")
 print(f"Message: {data['message']}")

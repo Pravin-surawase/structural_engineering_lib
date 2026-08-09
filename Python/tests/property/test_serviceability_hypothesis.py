@@ -43,7 +43,7 @@ class TestDeflectionSpanDepthProperties:
         # If it passes with smaller d, it must pass with larger d
         if r1.is_ok:
             assert r2.is_ok, (
-                f"Passed with d={d} but failed with d={2*d}; "
+                f"Passed with d={d} but failed with d={2 * d}; "
                 f"L/d1={r1.computed['ld_ratio']:.3f}, L/d2={r2.computed['ld_ratio']:.3f}"
             )
 

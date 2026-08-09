@@ -1,3 +1,12 @@
+---
+owner: Governance Agent
+status: active
+last_updated: 2026-08-07
+doc_type: reference
+complexity: intermediate
+tags: [agents, roles]
+---
+
 # INTEGRATION Agent — Role Document
 
 **Role:** Data/interop owner for ETABS/CSV inputs and schema contracts.

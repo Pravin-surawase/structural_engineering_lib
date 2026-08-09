@@ -371,8 +371,7 @@ def design_short_column_uniaxial(
         )
     if d_prime_mm <= 0 or d_prime_mm >= D_mm / 2.0:
         raise DimensionError(
-            f"Cover d_prime_mm must be > 0 and < D/2={D_mm / 2.0}, "
-            f"got {d_prime_mm}",
+            f"Cover d_prime_mm must be > 0 and < D/2={D_mm / 2.0}, got {d_prime_mm}",
             details={"d_prime_mm": d_prime_mm, "D_mm": D_mm},
             clause_ref="Cl. 26.4",
         )
@@ -404,7 +403,7 @@ def design_short_column_uniaxial(
     # --- Loads ---
     if Pu_kN < 0:
         raise DimensionError(
-            f"Axial load Pu_kN must be >= 0 for compression member, " f"got {Pu_kN}",
+            f"Axial load Pu_kN must be >= 0 for compression member, got {Pu_kN}",
             details={"Pu_kN": Pu_kN},
             clause_ref="Cl. 39.5",
         )
@@ -605,7 +604,7 @@ def design_short_column_uniaxial(
                 clause_ref="Cl. 39.5",
             )
         raise CalculationError(
-            "Utilization ratio is NaN or Inf. " f"r_applied={r_applied}, r_cap={r_cap}",
+            f"Utilization ratio is NaN or Inf. r_applied={r_applied}, r_cap={r_cap}",
             details={
                 "Pu_kN": Pu_kN,
                 "Mu_kNm": Mu_kNm,
@@ -732,8 +731,7 @@ def pm_interaction_curve(
         )
     if d_prime_mm <= 0 or d_prime_mm >= D_mm / 2.0:
         raise DimensionError(
-            f"Cover d_prime_mm must be > 0 and < D/2={D_mm / 2.0}, "
-            f"got {d_prime_mm}",
+            f"Cover d_prime_mm must be > 0 and < D/2={D_mm / 2.0}, got {d_prime_mm}",
             details={"d_prime_mm": d_prime_mm, "D_mm": D_mm},
             clause_ref="Cl. 26.4",
         )
@@ -859,7 +857,7 @@ def pm_interaction_curve(
         min_idx = min(range(len(envelope_P)), key=lambda j: abs(envelope_P[j]))
         Mu_0_kNm = envelope_M[min_idx]
         warnings.append(
-            "Pure bending point (Pu=0) not found in sweep; " "using closest point"
+            "Pure bending point (Pu=0) not found in sweep; using closest point"
         )
 
     # ===========================================================

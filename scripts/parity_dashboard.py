@@ -17,6 +17,8 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import ast
+import inspect
 import json
 import re
 import sys
@@ -34,6 +36,7 @@ API_PY = REPO_ROOT / "Python" / "structural_lib" / "services" / "api.py"
 ROUTERS_DIR = REPO_ROOT / "fastapi_app" / "routers"
 FASTAPI_TESTS = REPO_ROOT / "fastapi_app" / "tests"
 HOOKS_DIR = REPO_ROOT / "react_app" / "src" / "hooks"
+LOCAL_ONLY_HOOKS = {"useReducedMotion", "useWebGLContextLoss"}
 
 # ---------------------------------------------------------------------------
 # IS 456 Clause Reference
@@ -82,9 +85,18 @@ IS456_CLAUSES: dict[str, dict[str, str]] = {
         "status": "implemented",
         "module": "column/slenderness.py",
     },
-    "Cl 34": {"desc": "Slab design", "status": "planned"},
-    "Cl 34.2": {"desc": "One-way slab", "status": "planned"},
-    "Cl 31": {"desc": "Footing design", "status": "planned"},
+    "Cl 24": {"desc": "Slab design", "status": "planned"},
+    "Annex D": {"desc": "Two-way slab coefficients", "status": "planned"},
+    "Cl 34": {
+        "desc": "Footing design",
+        "status": "implemented",
+        "module": "footing/bearing.py",
+    },
+    "Cl 31.6": {
+        "desc": "Punching shear",
+        "status": "implemented",
+        "module": "footing/punching_shear.py",
+    },
     "Cl 42": {
         "desc": "Development length",
         "status": "implemented",
@@ -113,16 +125,22 @@ def _progress_bar(fraction: float, width: int = 23) -> str:
     return "\u2588" * filled + "\u2591" * (width - filled)
 
 
-def _scan_public_functions(path: Path) -> list[str]:
-    """Extract public function names (def name(...)) from a Python file."""
-    if not path.is_file():
-        return []
-    funcs = []
-    for line in path.read_text().splitlines():
-        m = re.match(r"^def ([a-z]\w+)\(", line)
-        if m and not m.group(1).startswith("_"):
-            funcs.append(m.group(1))
-    return funcs
+def _scan_public_functions(_path: Path) -> list[str]:
+    """Return callable functions exported by the public API hub.
+
+    ``services/api.py`` is now a re-export module, so scanning only local
+    ``def`` statements incorrectly reports 0/0 coverage.
+    """
+    python_root = REPO_ROOT / "Python"
+    sys.path.insert(0, str(python_root))
+    from structural_lib import api  # type: ignore
+
+    return sorted(
+        name
+        for name in getattr(api, "__all__", [])
+        if inspect.isfunction(getattr(api, name, None))
+        or inspect.isbuiltin(getattr(api, name, None))
+    )
 
 
 def _scan_router_endpoints(routers_dir: Path) -> list[dict[str, str]]:
@@ -135,12 +153,18 @@ def _scan_router_endpoints(routers_dir: Path) -> list[dict[str, str]]:
             continue
         router_name = py.stem
         text = py.read_text()
+        prefix_match = re.search(
+            r"APIRouter\((?:(?!\)\s*$).)*?prefix\s*=\s*[\"']([^\"']*)[\"']",
+            text,
+            re.MULTILINE | re.DOTALL,
+        )
+        prefix = prefix_match.group(1).rstrip("/") if prefix_match else ""
         for m in re.finditer(
             r'@router\.(get|post|put|delete|patch|websocket)\(\s*["\']([^"\']*)["\']',
             text,
         ):
             method = m.group(1).upper()
-            path = m.group(2)
+            path = f"{prefix}/{m.group(2).lstrip('/')}" or "/"
             endpoints.append({"router": router_name, "method": method, "path": path})
     return endpoints
 
@@ -152,8 +176,15 @@ def _scan_test_functions(tests_dir: Path) -> list[dict[str, str]]:
         return tests
     for py in sorted(tests_dir.glob("test_*.py")):
         text = py.read_text()
-        for m in re.finditer(r"^(?:async )?def (test_\w+)\(", text, re.MULTILINE):
-            tests.append({"file": py.name, "name": m.group(1)})
+        try:
+            tree = ast.parse(text)
+        except SyntaxError:
+            continue
+        for node in ast.walk(tree):
+            if isinstance(
+                node, (ast.FunctionDef, ast.AsyncFunctionDef)
+            ) and node.name.startswith("test_"):
+                tests.append({"file": py.name, "name": node.name})
     return tests
 
 
@@ -208,9 +239,13 @@ def check_clause_coverage() -> dict[str, Any]:
 
 
 def check_api_endpoint_coverage() -> dict[str, Any]:
-    """Dimension 2: API functions → FastAPI endpoint coverage."""
+    """Dimension 2: public API functions used directly by FastAPI routers.
+
+    This is an exposure metric, not a completeness gate. Many public library
+    functions are intentionally available only to Python consumers or are
+    composed by higher-level service functions before reaching a router.
+    """
     api_funcs = _scan_public_functions(API_PY)
-    endpoints = _scan_router_endpoints(ROUTERS_DIR)
 
     # Build a set of "covered" API function names by looking for imports/references
     # in router files
@@ -231,12 +266,14 @@ def check_api_endpoint_coverage() -> dict[str, Any]:
     total = len(api_funcs)
     covered_count = len(covered)
     return {
-        "name": "API \u2192 Endpoint Coverage",
+        "name": "Public API \u2192 Direct Router Wiring",
         "covered": covered_count,
-        "missing": len(uncovered),
+        "library_only": len(uncovered),
         "total": total,
         "pct": round(covered_count / total * 100) if total else 0,
-        "missing_items": uncovered,
+        "library_only_items": uncovered,
+        "gap_label": "Library-only",
+        "informational": True,
     }
 
 
@@ -251,23 +288,17 @@ def check_endpoint_test_coverage() -> dict[str, Any]:
         for py in FASTAPI_TESTS.glob("test_*.py"):
             test_text += py.read_text() + "\n"
 
-    tested_routers: set[str] = set()
-    tested_paths: set[str] = set()
     untested: list[dict[str, str]] = []
 
     for ep in endpoints:
-        # Check if the endpoint path or router name appears in test files
+        # Match literal paths and parameterized routes against concrete test
+        # URLs (for example, ``/{bar_diameter}`` should match ``/16``).
         path_fragment = (
             ep["path"].strip("/").replace("/", "_").replace("{", "").replace("}", "")
         )
-        if (
-            ep["path"] in test_text
-            or path_fragment in test_text
-            or ep["router"] in test_text
-        ):
-            tested_routers.add(ep["router"])
-            tested_paths.add(f"{ep['method']} {ep['path']}")
-        else:
+        route_pattern = re.escape(ep["path"])
+        route_pattern = re.sub(r"\\\{[^{}]+\\\}", r"[^/\"'\\s?]+", route_pattern)
+        if not (re.search(route_pattern, test_text) or path_fragment in test_text):
             untested.append(ep)
 
     total = len(endpoints)
@@ -279,13 +310,13 @@ def check_endpoint_test_coverage() -> dict[str, Any]:
         "total": total,
         "pct": round(tested_count / total * 100) if total else 0,
         "test_count": len(test_funcs),
-        "missing_items": [f"{e['method']} {e['router']}{e['path']}" for e in untested],
+        "missing_items": [f"{e['method']} {e['path']}" for e in untested],
     }
 
 
 def check_hook_api_coverage() -> dict[str, Any]:
     """Dimension 4: React hooks → API route connectivity."""
-    hooks = _scan_hooks(HOOKS_DIR)
+    hooks = [hook for hook in _scan_hooks(HOOKS_DIR) if hook not in LOCAL_ONLY_HOOKS]
     endpoints = _scan_router_endpoints(ROUTERS_DIR)
 
     # Build set of endpoint paths for rough matching
@@ -313,6 +344,7 @@ def check_hook_api_coverage() -> dict[str, Any]:
                 "/api/",
                 "fetch(",
                 "axios",
+                "websocket",
                 "usemutation",
                 "usequery",
                 "post(",
@@ -364,12 +396,14 @@ def _print_section(data: dict[str, Any], *, show_missing: bool = False) -> None:
         num = 0
         label1 = "Done"
 
-    gap = data.get("missing", data.get("planned", total - num))
+    gap = data.get(
+        "missing", data.get("planned", data.get("library_only", total - num))
+    )
 
     print(f"  {name}")
     print("  \u2501" * 24)
     print(f"  {label1}:{num:>5}/{total}  ({pct}%)")
-    gap_label = "Planned" if "planned" in data else "Missing"
+    gap_label = data.get("gap_label", "Planned" if "planned" in data else "Missing")
     print(f"  {gap_label}:{gap:>6}/{total}  ({100 - pct}%)")
     print(f"  {_progress_bar(pct / 100)}  {pct}%")
 
@@ -392,11 +426,15 @@ def _print_section(data: dict[str, Any], *, show_missing: bool = False) -> None:
 
 
 def _overall_score(sections: list[dict[str, Any]]) -> int:
-    """Weighted average parity score."""
-    if not sections:
+    """Average actionable parity dimensions.
+
+    Informational exposure metrics are displayed but do not lower the score.
+    """
+    actionable = [section for section in sections if not section.get("informational")]
+    if not actionable:
         return 0
-    total_pct = sum(s["pct"] for s in sections)
-    return round(total_pct / len(sections))
+    total_pct = sum(s["pct"] for s in actionable)
+    return round(total_pct / len(actionable))
 
 
 def run_dashboard(

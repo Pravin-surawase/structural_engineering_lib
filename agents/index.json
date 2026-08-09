@@ -1,28 +1,40 @@
 {
   "folder": "agents",
   "type": "documentation",
-  "description": "> **⚠️ NOTE:** The authoritative agent system is in `.github/agents/` (11 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlie",
-  "last_updated": "2026-04-07",
-  "file_count": 2,
+  "description": "> **⚠️ NOTE:** The authoritative role system is in `.github/agents/` (16 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlier",
+  "last_updated": "2026-08-07",
+  "file_count": 3,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 140,
-      "last_updated": "2026-03-28",
+      "size_lines": 145,
+      "last_updated": "2026-08-07",
       "title": "Agent Prompt Cheat Sheet",
-      "description": "> **⚠️ NOTE:** The authoritative agent system is in .github/agents/ (11 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlier ",
-      "content_hash": "71c04d88fb0e"
+      "description": "> **⚠️ NOTE:** The authoritative role system is in .github/agents/ (16 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlier f",
+      "content_hash": "f17c7a90ff12"
     },
     {
       "name": "agent_registry.json",
       "type": "config",
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-04-07",
       "top_level_keys": [
         "agents",
         "_meta"
       ],
       "content_hash": "363ad7257e66"
+    },
+    {
+      "name": "model_policy.json",
+      "type": "config",
+      "last_updated": "2026-08-07",
+      "top_level_keys": [
+        "_meta",
+        "defaults",
+        "relative_token_rates",
+        "profiles"
+      ],
+      "content_hash": "04702a9182d8"
     }
   ],
   "subfolders": [
@@ -35,8 +47,8 @@
       "name": "roles",
       "path": "roles/",
       "file_count": 15,
-      "description": "> **⚠️ LEGACY:** These role definitions are from an earlier agent framework. The authoritative agent definitions are now in `.github/agents/` (11 Copi"
+      "description": "> **⚠️ LEGACY:** These role definitions are from an earlier agent framework. The authoritative agent definitions are now in `.github/agents/` (16 Copi"
     }
   ],
-  "content_hash": "726e91719032a02f"
+  "content_hash": "a2cfc8784f128070"
 }

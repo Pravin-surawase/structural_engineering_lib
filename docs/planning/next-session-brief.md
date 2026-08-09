@@ -3,11 +3,66 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-04-07
+- Date: 2026-08-09
+- Focus: Complete MAINT-001, verify PR #676, and leave merge/release for explicit owner approval
 <!-- HANDOFF:END -->
 
-**Last Updated:** 2026-04-07
-**Last Session:** v0.21.7 Session 1 — Security Hardening (P1–P3 complete)
+**Last Updated:** 2026-08-09
+**Current Session:** MAINT-008 is fully planned; execution waits for the owner decision on green PR #676
+
+## Start Here
+
+1. Obtain explicit owner approval before merging green PR #676.
+2. After merge, follow [MAINT-008 — Compact Project Modernization Plan](compact-modernization-plan.md) in dependency order; do not mix it into PR #676.
+3. Obtain separate explicit decisions for the GitHub required-check change, the MAINT-008 merge, and the v0.21.7 release.
+4. Preserve the recovered Mac baseline and accepted main-process results; do not start adjacent feature work.
+
+Full evidence and accepted risks are in
+[maintenance-recovery-audit-2026-08-07.md](../audit/maintenance-recovery-audit-2026-08-07.md).
+
+## Current Evidence
+
+- Repository transfer is intact: no corrupt reachable Git objects, broken symlinks, submodule issues, or missing ETABS sample files.
+- Local/remote `main`: `fa854e0f`; published package: v0.21.6.
+- Pre-session dirty tree: 73 modified tracked files and 47 untracked files, preserved by checkpoint `b28ee4e3`.
+- Passing baselines: release preflight 5,159 Python passed, 3 skipped, 6 deselected; FastAPI 336; React 146; Node 24 production build.
+- Clean-wheel UAT: 5,120 passed, 41 skipped, 6 deselected plus packaged job, critical-case CSV, and HTML-report CLI workflows.
+- GitHub CLI keyring/API, repository queries, PR access, SSH, and remote Git transport pass. PR #676 is open from `task/MAINT-001`.
+- Colima is healthy on the preserved VZ disk after a targeted stale-lock recovery; Docker reports 4 CPUs/~4 GB and Compose config passes.
+- Docker preflight passes 5,158 Python tests, 8 skips, 6 deselections, plus the Node 24 React production build.
+- Low-token policy checkpoint `6e8e4a31` adds project Codex defaults, a two-subagent cap, focused handoffs, `./run.sh efficiency`, and a 9/9 quick gate.
+- The analytics-calibrated model picker is in `agents/model_policy.json` and `./run.sh model`; it recommends Luna-first for repeatable work and never auto-selects approval-gated Sol.
+- Model-routing checkpoint `fe55d130` is pushed on PR #676. Focused Ruff/tests pass; the full gate's 22 non-doc checks passed and the corrected Docs category passes 7/7.
+- Historical orchestrator checkpoint `ff6d525d` aligned role instructions and worker packets; checkpoint `79771b12` removes forced parent model/reasoning settings so the user's current selection remains authoritative.
+- MAINT-007 makes PR status terminal-only by default, corrects stale bootstrap/tool counts and active-task briefs, discovers all 14 Copilot skills, and adds honest local model/agent checkpoints through `./run.sh session usage`.
+- MAINT-007 verification is green: 32 focused tests, quick 9/9, full 29/29, audit 22/22, and health 100/100. The first local usage ledger records Sol High, one parent, zero subagents, and no fabricated billing values.
+- MAINT-007 checkpoint `4d5b9eb5` is pushed to PR #676.
+- Current gate: commit `242ba8ce` fixes the empty-link and Ruff-drift root causes; PR #676 is clean and mergeable with 19 checks passed, two intentionally skipped, and zero failures. React coverage remains an accepted follow-up risk.
+- Recovery checkpoint: `b28ee4e3` pushed on `task/MAINT-001`.
+- MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.
+- Quick canonical gate: 9/9 green; all 3,248 scanned imports resolve.
+- MAINT-003: clean Python lock audits at zero known vulnerabilities; npm has one narrowly allowlisted RSC-only advisory.
+- MAINT-004: complete. Canonical check 28/28, audit 22/22, health 100/100, completed active plans archived, and feedback is 22/23 resolved.
+- MAINT-005 checkpoint `6f119132`: 60/60 direct FastAPI route tests, 13/13 API-connected React hooks, and 96% actionable parity.
+- Browser/export evidence: the 153-beam ETABS sample imports, auto-designs, renders in R3F, reaches a 153/153-pass dashboard, and exercises BBS, DXF, single report, building summary, and BOQ exports with no new warnings. Byte-level checks validate CSV/DXF/PDF artifacts; final quantities are 2,663.4 kg steel and 114.8 m³ concrete.
+- Mac launcher evidence: `.nvmrc` Node 24 is selected even when a stale unversioned Node is first on `PATH`; port cleanup targets listeners only and no longer kills connected browser/client helpers.
+- Live-design evidence: WebSocket payloads now retain the complete REST response contract, including real capacities and governing utilization; current and legacy payload shapes are normalized in the frontend.
+- Release evidence: macOS reclaimable-memory and Node-runtime detection are repaired; `./run.sh release preflight 0.21.7` reports READY TO RELEASE with zero warnings.
+
+## Maintenance Sequence
+
+| Order | Task | Outcome |
+|-------|------|---------|
+| 1 | MAINT-001 recovery checkpoint | No inherited work can be lost |
+| 2 | MAINT-002 CI + E2E contract | Nightly stops failing/spamming; live import flow is enforced |
+| 3 | MAINT-003 environment/security | Reproducible Mac Mini baseline and deliberate dependency upgrades |
+| 4 | MAINT-004 canonical automation/docs | One trustworthy project status signal |
+| 5 | MAINT-005 frontend/release scope | Credible v0.21.7 stabilization exit criteria |
+| 6 | MAINT-006 token/model policy | Analytics-calibrated low-token routing with enforced safety limits |
+| 7 | MAINT-007 docs/tool refresh | Current onboarding, complete discovery, local usage evidence, and no surprise PR tabs |
+| 8 | [MAINT-008 compact modernization](compact-modernization-plan.md) | One truthful PR gate, minimal workflow lanes, supported commands, and unchanged product evidence |
+
+## Previous Handoff (2026-04-07)
 
 ## What Was Completed (v0.21.7 Session 1)
 - **v0.21.6 version refs fixed** — CHANGELOG.md, Python/README.md, docs/git-automation/README.md

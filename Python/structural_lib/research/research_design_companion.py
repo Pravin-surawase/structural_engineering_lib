@@ -535,7 +535,7 @@ def _build_reasoning_chain(
                 else f"Doubly reinforced needed — Mu ({mu_knm:.1f}) > Mu_lim ({mu_lim:.1f})"
             ),
             significance=(
-                f"Mu/Mu_lim = {mu_knm/mu_lim:.2f}. "
+                f"Mu/Mu_lim = {mu_knm / mu_lim:.2f}. "
                 + (
                     "Comfortable margin — room for load increases."
                     if mu_knm / mu_lim < 0.7
@@ -661,15 +661,15 @@ def _build_reasoning_chain(
                 "fck": f"{fck:.0f} N/mm²",
                 "b": f"{b_mm:.0f} mm",
             },
-            result=f"xu = {xu:.1f} mm  |  xu/d = {xu/d_mm:.3f}  |  xu/xu_max = {xu/xu_max:.3f}",
+            result=f"xu = {xu:.1f} mm  |  xu/d = {xu / d_mm:.3f}  |  xu/xu_max = {xu / xu_max:.3f}",
             decision=(
                 f"xu ({xu:.1f}) {'<' if xu < xu_max else '>'} xu_max ({xu_max:.1f}) — "
                 f"{'UNDER-REINFORCED (ductile, safe) ✓' if xu < xu_max else 'OVER-REINFORCED (brittle, unsafe) ✗'}"
             ),
             significance=(
-                f"Utilization = {xu/xu_max:.1%}. "
+                f"Utilization = {xu / xu_max:.1%}. "
                 + (
-                    f"The beam has {(1 - xu/xu_max) * 100:.0f}% reserve capacity for unexpected loads."
+                    f"The beam has {(1 - xu / xu_max) * 100:.0f}% reserve capacity for unexpected loads."
                     if xu < xu_max
                     else "DANGER: Beam is over-reinforced."
                 )
@@ -1305,7 +1305,7 @@ def _detect_anomalies(
                 severity="alert",
                 explanation=(
                     f"xu/xu_max = {utilization:.3f} — the beam is "
-                    f"working at {utilization*100:.0f}% of its capacity. "
+                    f"working at {utilization * 100:.0f}% of its capacity. "
                     f"Almost no reserve. Any construction tolerance or "
                     f"load uncertainty could cause failure."
                 ),
@@ -1321,7 +1321,7 @@ def _detect_anomalies(
                 severity="info",
                 explanation=(
                     f"xu/xu_max = {utilization:.3f} — the beam is using only "
-                    f"{utilization*100:.0f}% of its capacity. This is safe but "
+                    f"{utilization * 100:.0f}% of its capacity. This is safe but "
                     f"wasteful. The section is oversized for the load."
                 ),
                 question="Can the section be reduced to save material and cost?",
@@ -1604,7 +1604,7 @@ def _build_executive_summary(
 
     # Safety margin
     parts.append(
-        f"The beam can sustain {(failure.critical_overload - 1)*100:.0f}% "
+        f"The beam can sustain {(failure.critical_overload - 1) * 100:.0f}% "
         f"overload before reaching section capacity, with "
         f"{'ductile' if failure.scenarios[0].is_ductile else 'brittle'} "
         f"failure characteristics."

@@ -50,7 +50,7 @@ export interface BeamCSVRow {
   ast_required?: number;    // Required steel area mm²
   asc_required?: number;    // Required compression steel mm²
   ast_provided?: number;    // Provided steel area mm²
-  utilization?: number;     // Utilization ratio (0-1+)
+  utilization?: number;     // Governing IS 456 compliance utilization (0-1+)
   bar_count?: number;
   bar_diameter?: number;
   stirrup_diameter?: number;

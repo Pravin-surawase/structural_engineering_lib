@@ -87,7 +87,7 @@ This appendix lists scripts present in `scripts/` but not yet expanded into the 
 - `enhance_readme.py` — Enhance README content
 - `generate_all_indexes.sh` — Generate all index files
 - `generate_docs_index.py` — Generate docs-index.json
-- `generate_folder_index.py` — Generate folder index files
+- `generate_enhanced_index.py <folder>` — Generate current `index.json` and `index.md` folder summaries
 
 ### file_operations
 - `archive_deprecated_docs.py` — Archive deprecated docs
@@ -135,7 +135,7 @@ This appendix lists scripts present in `scripts/` but not yet expanded into the 
 
 ### testing
 - `run_vba_smoke_tests.py` — Run VBA smoke tests via Excel automation (macOS)
-- `test_import_3d_pipeline.py` — Integration test for import → design → 3D pipeline
+- `test_import_pipeline.py` — Live API integration test for import → batch design → 3D geometry
 - `test_setup.py` — Quick test of structural_lib installation
 - `test_vba_adapter.py` — Test ETABSAdapter with VBA ETABS export data
 - `validate_trial_data.py` — Validate trial/test data

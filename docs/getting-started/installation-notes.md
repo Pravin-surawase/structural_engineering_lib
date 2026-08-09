@@ -60,9 +60,9 @@ pip install <package_name>
 ## ⚠️ Troubleshooting
 
 ### "ModuleNotFoundError: No module named 'X'"
-Use the full path to pip:
+Run from the repository root and use the virtual-environment pip explicitly:
 ```bash
-/Users/Pravin/Project_VS_code/structural_engineering_lib/.venv/bin/pip install <package>
+.venv/bin/pip install <package>
 ```
 
 ### Streamlit Not Found

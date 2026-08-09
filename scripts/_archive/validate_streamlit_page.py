@@ -130,7 +130,7 @@ class StreamlitPageValidator:
                     theme_init_line = i
                 if "apply_dark_mode_theme()" in line and theme_init_line is None:
                     self.warnings.append(
-                        f"Line {i+1}: apply_dark_mode_theme() before initialize_theme()"
+                        f"Line {i + 1}: apply_dark_mode_theme() before initialize_theme()"
                     )
 
             print("   ✅ Theme setup checked")

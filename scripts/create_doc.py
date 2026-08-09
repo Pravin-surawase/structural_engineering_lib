@@ -183,8 +183,7 @@ def main():
                 print(f"  • Canonical: {match.get('path')} ({match.get('title')})")
             for doc in high_similar[:5]:
                 print(
-                    f"  • Similar: {doc.get('path')} "
-                    f"({doc.get('reason', 'similar')})"
+                    f"  • Similar: {doc.get('path')} ({doc.get('reason', 'similar')})"
                 )
             print()
             print("→ Update existing docs instead of creating a new one.")
@@ -218,7 +217,7 @@ def main():
             status = "Active"
         archive_after = (date.today() + timedelta(days=30)).strftime("%Y-%m-%d")
         lifecycle_block = (
-            f"**Lifecycle:** Session\n" f"**Archive After:** {archive_after}\n"
+            f"**Lifecycle:** Session\n**Archive After:** {archive_after}\n"
         )
 
     # Generate content

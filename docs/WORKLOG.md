@@ -17,7 +17,7 @@ tags: []
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-03-25
-**Last Updated:** 2026-04-06
+**Last Updated:** 2026-08-07
 
 ---
 
@@ -34,6 +34,8 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-08-09 | MAINT-001 | Closed PR #676 CI root causes, added essential-only/root-cause review policy, and verified all local and GitHub gates | 242ba8ce |
+| 2026-08-07 | MAINT-007 | Refreshed onboarding/agent/tool indexes, added model-agent usage checkpoints, and made PR status terminal-only unless `--web` is explicit | 4d5b9eb5 |
 | 2026-04-06 | TASK-720 | Golden vector baselines: 42+ tests (9 beam + 20 column + 13 footing) with `@pytest.mark.golden` | — |
 | 2026-04-06 | TASK-721 | Contract tests: 18 API surface contracts (column, footing, torsion) with `@pytest.mark.contract` | — |
 | 2026-04-06 | TASK-722 | conftest.py golden_vectors fixture with SP:16 reference values | — |
@@ -302,3 +304,22 @@ tags: []
 | 2026-04-07 | CI-FIX | fix: scorecard/sbom workflow permissions (least-privilege) | PR #550 |
 | 2026-04-07 | CI-FIX | fix: OpenAPI baseline drift (BiaxialCheckRequest) | PR #550 |
 | 2026-04-07 | CI-FIX | fix: nightly QA smoke test failure guard | PR #550 |
+| 2026-08-07 | MAINT-001 | Preserved inherited April worktree and maintenance control records on recovery branch | b28ee4e3 |
+| 2026-08-07 | MAINT-001 | Repaired editable package metadata to v0.21.6; pinned Python 3.11.15 and Node 24 LTS; documented transferred Colima VZ blocker | 1a573c18 |
+| 2026-08-07 | MAINT-002 | Fixed nightly link command, API response-envelope E2E scripts, and three broken documentation links | 1a573c18 |
+| 2026-08-07 | MAINT-004 | Repointed pipeline command to maintained E2E test, archived removed Streamlit pipeline, and restored 8/8 quick gate | 1a573c18 |
+| 2026-08-07 | MAINT-003 | Rebuilt clean Python/npm locks, closed auditable vulnerabilities, documented the RSC-only npm exception, and made dependency CI/Dependabot complete | 9ae38d13 |
+| 2026-08-07 | MAINT-004 | Repaired canonical scanners/manifests/indexes and restored 28/28 checks, 22/22 audit readiness, and 100/100 project health | 9ae38d13 |
+| 2026-08-07 | MAINT-004 | Archived two completed active-work documents safely; reconciled feedback to one evidence-based watch item | 9ae38d13 |
+| 2026-08-07 | MAINT-005 | Recorded eight direct FastAPI route-test gaps and the critical browser-flow/React coverage finish line | 9ae38d13 |
+| 2026-08-07 | MAINT-005 | Closed all eight direct route-test gaps; parity reached 60/60 routes and 96% actionable coverage | 6f119132 |
+| 2026-08-07 | MAINT-005 | Repaired Node 24 launch selection, listener-safe cleanup, beam utilization semantics, sample metadata, editor state, and dashboard BOQ consistency | 6f119132 |
+| 2026-08-07 | MAINT-005 | Recorded the 60/60-route browser confidence checkpoint and remaining export boundary | 1724e3bc |
+| 2026-08-07 | MAINT-005 | Aligned WebSocket live-design payloads with the REST contract and repaired session/task parsing regressions | e5dd7eb0 |
+| 2026-08-07 | v0.21.7 | Made release preflight honor `.nvmrc` Node 24 and macOS reclaimable memory | 78f1453c |
+| 2026-08-07 | v0.21.7 | Installed package `[dev]` dependencies for isolated wheel verification; clean-wheel tests and CLI UAT pass | 6e01af36 |
+| 2026-08-07 | MAINT-004 | Made session-history date detection work across multiline logs and added regression coverage | f9696cf9 |
+| 2026-08-07 | MAINT-001 | Recovered the preserved Colima VZ disk non-destructively, verified GitHub CLI/SSH, hardened Docker preflight, and opened PR #676 | 3da587aa |
+| 2026-08-07 | MAINT-006 | Enforced Terra-first low-token defaults, Fast-off mode, a two-subagent cap, focused context packets, and a canonical efficiency check | 6e8e4a31 |
+| 2026-08-07 | MAINT-006 | Added authenticated-analytics-calibrated Luna/Terra/Sol routing, reasoning comparisons, and the advisory `run.sh model` picker | fe55d130 |
+| 2026-08-07 | MAINT-006 | Made Sol High mandatory for main orchestration and added lower-model task-packet and independent-verification requirements | ff6d525d |

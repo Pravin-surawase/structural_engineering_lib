@@ -114,7 +114,10 @@ class BatchDesignResult(BaseModel):
     asc_required: float = 0.0
     stirrup_spacing: float = 0.0
     is_safe: bool = False
-    utilization_ratio: float = 0.0  # Mu / Mu_cap (moment demand / moment capacity)
+    # Governing IS 456 compliance utilization. Doubly reinforced flexure is
+    # reported as 1.0 when the designed reinforcement is valid because the
+    # current FlexureResult does not expose its final reinforced capacity.
+    utilization_ratio: float = 0.0
     error: str | None = None
 
 
@@ -659,16 +662,8 @@ async def batch_design(
                     fy_nmm2=beam.fy_mpa,
                 )
 
-                is_safe = result.flexure.is_safe
-                if result.shear:
-                    is_safe = is_safe and result.shear.is_safe
-
-                mu_cap = (
-                    result.flexure.Mu_lim
-                    if result.flexure.Mu_lim and result.flexure.Mu_lim > 0
-                    else None
-                )
-                utilization_ratio = min(beam.mu_knm / mu_cap, 2.0) if mu_cap else 1.0
+                is_safe = result.is_ok
+                utilization_ratio = min(result.governing_utilization, 2.0)
 
                 results.append(
                     BatchDesignResult(
@@ -791,14 +786,14 @@ async def get_supported_formats():
 @router.get(
     "/sample",
     summary="Get Sample Data with 3D Geometry",
-    description="Load 154 real beams from ETABS export with 3D positions for visualization.",
+    description="Load the bundled ETABS sample building with 3D positions for visualization.",
 )
 async def get_sample_data():
     """
     Load sample building data from actual ETABS export CSV files.
 
     Loads and merges:
-    - beam_forces.csv (154 beams with Mu, Vu, dimensions)
+    - beam_forces.csv (beam forces and dimensions)
     - frames_geometry.csv (3D positions Point1X/Y/Z, Point2X/Y/Z)
 
     This provides real structural engineering data with 3D positions for:
@@ -886,7 +881,7 @@ async def get_sample_data():
             p1_x, p1_y = geom.get("point1_x", 0), geom.get("point1_y", 0)
             p2_x, p2_y = geom.get("point2_x", 0), geom.get("point2_y", 0)
             span_from_geom = math.sqrt((p2_x - p1_x) ** 2 + (p2_y - p1_y) ** 2)
-            span_mm = span_from_geom * 1000  # m to mm
+            span_mm = round(span_from_geom * 1000, 3)  # m to mm
         else:
             span_mm = force["span_m"] * 1000
 

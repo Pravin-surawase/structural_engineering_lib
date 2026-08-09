@@ -81,7 +81,7 @@ export function ProjectBOQPanel({ data, isLoading, error }: ProjectBOQPanelProps
         <div>
           <p className="text-[9px] text-zinc-500 uppercase tracking-wider">Total Steel</p>
           <p className="text-xl font-bold text-blue-400 tabular-nums">
-            {formatNum(data.grand_total_steel_kg)}
+            {formatNum(data.grand_total_steel_kg, 1)}
             <span className="text-xs text-zinc-500 ml-1">kg</span>
           </p>
         </div>

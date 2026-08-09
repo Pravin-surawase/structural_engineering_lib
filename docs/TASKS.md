@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-04-07 — v0.21.6 audit + online research root cause analysis; 16 new issues from OWASP 2025/PyPI best practices
+**Updated:** 2026-08-09 — PR #676 is green; MAINT-008 compact modernization is planned and waits for the owner merge decision
 
 ---
 
@@ -11,6 +11,51 @@
 - **Done = tests pass + docs updated + scanner passes**
 - **Archive rule:** Move completed items to [tasks-history.md](_archive/tasks-history.md) after 20+ items
 - **No new Streamlit work** — all new features go to React. Bug fixes only for Streamlit-only features.
+
+---
+
+## Maintenance Recovery Dashboard
+
+> Maintenance baseline comes before feature work. Preserve the inherited April worktree before cleanup.
+> Consolidated evidence: [maintenance recovery audit](audit/maintenance-recovery-audit-2026-08-07.md).
+
+| ID | Task | Priority | Status | Exit condition |
+|----|------|----------|--------|----------------|
+| MAINT-001 | Preserve April worktree and recover the Mac Mini development baseline | P0 | ✅ DONE | GitHub/SSH, Python/Node, Colima/Docker, and release preflight pass; PR #676 required checks are green |
+| MAINT-002 | Repair nightly QA and stale import E2E response-envelope assertions | P0 | ✅ DONE | Nightly command is valid; import/sample/dual/batch scripts pass against the live API |
+| MAINT-003 | Rebuild dependency and security baseline | P0 | ✅ DONE | Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted |
+| MAINT-004 | Make `run.sh check` the canonical truth source and repair stale indexes/scanners | P1 | ✅ DONE | Canonical check, audit, health, API manifest, schemas, hooks, and registries agree |
+| MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | ✅ DONE | Live import→design→3D→dashboard→export flow and byte-level artifacts pass; v0.21.7 preflight is ready |
+| MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | User-selected parent model is preserved; Luna/Terra advisory routing, bounded worker packets, two-subagent cap, and quick-gate check pass |
+| MAINT-007 | Refresh onboarding, agents, tools, and usage telemetry | P1 | ✅ DONE | Terminal-only PR status, current bootstrap/counts, complete 14-skill discovery, honest usage checkpoints, and focused regressions pass |
+| MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | 📋 READY AFTER #676 | [Implementation plan](planning/compact-modernization-plan.md) completes with one truthful PR gate, four or fewer justified workflows, supported commands only, and unchanged main-process evidence |
+
+### Maintenance evidence captured 2026-08-07
+
+- Git object database and transferred sample data are intact; local and remote `main` both point to `fa854e0f`.
+- Inherited worktree: 73 modified tracked files plus 47 untracked files before session startup; 70 Python diffs are AST-equivalent formatting changes.
+- Final release preflight: 5,159 Python tests passed, 3 skipped, 6 deselected; 336 FastAPI and 146 React tests pass. A clean built-wheel environment independently passes 5,120 tests, 41 skips, 6 deselections, and packaged CLI workflows.
+- Repository release gates are green. GitHub CLI/SSH, Colima, and Docker are recovered; PR #676 is clean and mergeable. React's 17.74% statement coverage remains an accepted stabilization risk outside this maintenance scope.
+- Canonical validation is 28/28 checks, 22/22 audit readiness, 100/100 health, and 96% parity. Feedback is 22/23 resolved; only the existing tester-output recurrence watch remains open.
+- MAINT-005 checkpoint `6f119132`: direct tests now cover 60/60 routes; parity is 96%. The live 153-beam import → auto-design → 3D editor → dashboard path passes with no new browser warnings.
+- Runtime/product repairs from the browser sweep: the launcher selects Node 24 from `.nvmrc` and kills listeners only; canonical compliance utilization replaces misleading `Mu/Mu_lim`; imported spans are rounded; dashboard and BOQ steel totals agree.
+- MAINT-005 exit evidence: WebSocket designs now preserve the complete REST response contract; the live 153-beam flow passes 153/153 and exports valid BBS, DXF, HTML/PDF reports, building HTML/PDF/CSV summaries, and BOQ CSV. Current BOQ totals are 2,663.4 kg steel and 114.8 m³ concrete.
+- Release automation now selects `.nvmrc` Node 24, evaluates reclaimable macOS memory, and installs wheel `[dev]` dependencies for isolated verification. `./run.sh release preflight 0.21.7` reports READY TO RELEASE with zero warnings.
+- GitHub CLI API and SSH auth now pass end to end. Colima's stale transferred-disk lock was released only after Lima confirmed the VM was stopped; the existing VZ disk was preserved and Docker is healthy.
+- Docker release preflight passes with 5,158 Python tests, 8 skips, 6 deselections, and a Node 24 React production build. PR #676 is open on `task/MAINT-001`.
+- Low-token policy checkpoint `6e8e4a31` defaults Codex to Terra/medium, disables Fast mode, caps subagents at two, replaces full-history handoffs, and adds a ninth canonical quick check.
+- Authenticated analytics showed 1,858 turns in the one-month view: 1,065 GPT-5.5, 635 Sol, 96 Luna, 43 Terra, and 19 older models. The checked-in picker now favors Luna for clear/repeatable work, Terra for normal/high-risk implementation, and approval-gates Sol.
+- MAINT-007 removed the default `gh pr view --web` side effect from `./run.sh pr status`; browser opening now requires `--web`. Session checkpoints record model, reasoning, elapsed time, parent/subagent counts, optional dashboard values, verification, and Git state without estimating tokens or cost.
+- MAINT-007 closeout: 32 focused regressions, Ruff/Black, quick 9/9, full 29/29, audit 22/22, and health 100/100 pass; folder indexes and the 282-document global index are current.
+
+### Recovery progress
+
+- Recovery checkpoint `b28ee4e3` is pushed on `task/MAINT-001`.
+- Python editable metadata/module version repaired to v0.21.6; Node 24.19.0 installed keg-only and React passes 139 tests, lint, and build on it.
+- Quick canonical gate is 8/8 green; import validation resolves all 3,248 scanned imports.
+- MAINT-001 is complete. Commit `242ba8ce` removed the empty-link inputs, replaced the crawler-blocked pricing URL, and pinned Ruff 0.15.8 across active install surfaces; all PR #676 checks pass.
+- MAINT-002 validation: 18/18 live import E2E checks, 153/153 sample beams, and 1,056/1,056 internal documentation links pass.
+- MAINT-003 validation: a clean Python 3.11 environment has zero known vulnerabilities; npm dropped from 13 findings to one documented RSC-only advisory. The later final gates pass 5,159 Python, 336 FastAPI, and 146 React tests.
 
 ---
 
@@ -33,7 +78,7 @@
 | **v0.21.4** | Stabilization | ✅ Released (v0.21.4) | CostProfile fix, float sanitization, footing API, bearing check, torsion shim |
 | **v0.21.5** | Test Coverage & Regression Prevention | ✅ DONE | Golden vectors (42+), contract tests (18), 99% branch coverage |
 | **v0.21.6** | API Quality & Introspection | ✅ Released | check_code(), show_versions(), OpenAPI freeze, limitation docs |
-| **v0.21.7** | Security Hardening | � IN PROGRESS | Input validation, error sanitization, packaging gates, CI hardening |
+| **v0.21.7** | Security Hardening | ✅ READY FOR RELEASE | Input validation, error sanitization, packaging gates, CI hardening |
 | **v0.21.8** | Performance & Property Testing | 📋 PLANNED | Benchmarks, Hypothesis, performance baselines |
 | **v0.22.0** | Stabilization Release | 📋 PLANNED | API naming convention (Batch 3), provenance, SP:16 verification |
 | **v0.23** | IS 456 Slabs + Footing Completion | 📋 PLANNED | One-way slab, two-way slab, footing dowels + API, punching shear |
@@ -68,6 +113,42 @@
 > Detailed specs: [next-phase-improvements-plan.md](planning/next-phase-improvements-plan.md) Part 2.
 
 ---
+
+## Active
+
+| ID | Task | Owner | Status |
+|----|------|-------|--------|
+| MAINT-008 | Execute the [compact modernization plan](planning/compact-modernization-plan.md) | Main Agent | ⏸ BLOCKED — merge PR #676 first with owner approval |
+
+## Up Next
+
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| MAINT-008 | Obtain explicit owner approval to merge PR #676, then create a separate modernization PR | ops + owner | 3–5 bounded packets | P0 | ⏳ WAITING APPROVAL |
+| v0.21.7 | Re-run release preflight and obtain a separate release approval after MAINT-008 | ops + owner | <1 session | P1 | ⏸ AFTER MAINT-008 |
+
+## Backlog
+
+The version roadmap and detailed v0.21.7+ backlog remain below. Do not start
+feature work until PR #676 is merged, MAINT-008 is complete, and the v0.21.7
+release decision is handled.
+
+## Recently Done
+
+| ID | Task | Agent | Status |
+|----|------|-------|--------|
+| MAINT-001 | Preserve the inherited worktree, recover the Mac baseline, and close PR #676 required checks | Main Agent | ✅ DONE |
+| MAINT-006 | Add enforceable low-token defaults, context rules, analytics-calibrated model routing, and automation | Main Agent | ✅ DONE |
+| MAINT-007 | Re-audit and modernize onboarding, agent/tool discovery, usage telemetry, and PR browser behavior | Main Agent | ✅ DONE |
+| MAINT-005 | Verify the full live browser/export workflow and establish the evidence-based v0.21.7 finish line | Main Agent | ✅ DONE |
+| MAINT-004 | Reconcile canonical checks, manifests, indexes, health, parity, active docs, and feedback | Main Agent | ✅ DONE |
+| MAINT-002 | Repair nightly QA, maintained import E2E contracts, and documentation links | Main Agent | ✅ DONE |
+| MAINT-003 | Rebuild clean Python/npm dependency locks and enforce security audits | Main Agent | ✅ DONE |
+
+## Archive
+
+Completed historical tasks live in [tasks-history.md](_archive/tasks-history.md)
+(`docs/_archive/tasks-history.md`).
 
 ## Completed (Archived)
 

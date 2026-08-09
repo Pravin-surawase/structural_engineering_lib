@@ -13,7 +13,12 @@ import { useNavigate } from "react-router-dom";
 import { AgGridReact } from "@ag-grid-community/react";
 import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
 import { ModuleRegistry } from "@ag-grid-community/core";
-import type { ColDef, RowClickedEvent, CellValueChangedEvent } from "@ag-grid-community/core";
+import type {
+  CellValueChangedEvent,
+  ColDef,
+  RowClickedEvent,
+  RowSelectionOptions,
+} from "@ag-grid-community/core";
 import "@ag-grid-community/styles/ag-grid.css";
 import "@ag-grid-community/styles/ag-theme-alpine.css";
 import {
@@ -38,6 +43,12 @@ import { WorkflowHint } from "../ui/WorkflowHint";
 import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
+
+const EDITOR_ROW_SELECTION: RowSelectionOptions<BeamCSVRow> = {
+  mode: "singleRow",
+  enableClickSelection: true,
+  checkboxes: false,
+};
 
 /* ---- Helpers ---- */
 
@@ -382,6 +393,7 @@ export function BuildingEditorPage() {
         valueFormatter: (p) => p.value ? `${p.value}` : "-", hide: !showAdvanced },
       {
         headerName: "Util.",
+        headerTooltip: "Governing IS 456 compliance utilization",
         field: "utilization",
         width: 95,
         cellRenderer: UtilizationRenderer,
@@ -574,7 +586,7 @@ export function BuildingEditorPage() {
               rowData={filteredBeams}
               columnDefs={columnDefs}
               defaultColDef={defaultColDef}
-              rowSelection="single"
+              rowSelection={EDITOR_ROW_SELECTION}
               onRowClicked={handleRowClicked}
               onCellValueChanged={handleCellValueChanged}
               animateRows

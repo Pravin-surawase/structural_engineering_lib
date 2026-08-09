@@ -233,10 +233,10 @@ def generate_report():
     with_status = sum(1 for m in metadata_list if m.get("has_status_metadata", False))
     print("📋 Metadata compliance:")
     print(
-        f"   Files with **Type:** metadata: {with_type} ({with_type/len(all_files)*100:.1f}%)"
+        f"   Files with **Type:** metadata: {with_type} ({with_type / len(all_files) * 100:.1f}%)"
     )
     print(
-        f"   Files with **Status:** metadata: {with_status} ({with_status/len(all_files)*100:.1f}%)"
+        f"   Files with **Status:** metadata: {with_status} ({with_status / len(all_files) * 100:.1f}%)"
     )
     print()
 

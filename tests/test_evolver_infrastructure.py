@@ -295,18 +295,13 @@ class TestAgentData:
         """Should create sessions/, trends/, drift/, backups/, paper-export/."""
         import _lib.agent_data as agent_data
 
-        with patch.object(
-            agent_data, "PERFORMANCE_DIR", tmp_path / "perf"
-        ), patch.object(
-            agent_data, "SESSIONS_DIR", tmp_path / "perf" / "sessions"
-        ), patch.object(
-            agent_data, "TRENDS_DIR", tmp_path / "perf" / "trends"
-        ), patch.object(
-            agent_data, "DRIFT_DIR", tmp_path / "perf" / "drift"
-        ), patch.object(
-            agent_data, "BACKUPS_DIR", tmp_path / "perf" / "backups"
-        ), patch.object(
-            agent_data, "PAPER_DIR", tmp_path / "perf" / "paper-export"
+        with (
+            patch.object(agent_data, "PERFORMANCE_DIR", tmp_path / "perf"),
+            patch.object(agent_data, "SESSIONS_DIR", tmp_path / "perf" / "sessions"),
+            patch.object(agent_data, "TRENDS_DIR", tmp_path / "perf" / "trends"),
+            patch.object(agent_data, "DRIFT_DIR", tmp_path / "perf" / "drift"),
+            patch.object(agent_data, "BACKUPS_DIR", tmp_path / "perf" / "backups"),
+            patch.object(agent_data, "PAPER_DIR", tmp_path / "perf" / "paper-export"),
         ):
             agent_data.ensure_dirs()
 
@@ -322,8 +317,9 @@ class TestAgentData:
 
         sessions_dir = tmp_path / "sessions"
         sessions_dir.mkdir(parents=True)
-        with patch.object(agent_data, "SESSIONS_DIR", sessions_dir), patch.object(
-            agent_data, "PERFORMANCE_DIR", tmp_path
+        with (
+            patch.object(agent_data, "SESSIONS_DIR", sessions_dir),
+            patch.object(agent_data, "PERFORMANCE_DIR", tmp_path),
         ):
             data = {"agent": "tester", "score": 8.5, "commits": []}
             agent_data.save_session("2026-04-01T14-30", data)
@@ -414,14 +410,13 @@ class TestAgentData:
         import _lib.agent_data as agent_data
 
         perf = tmp_path / "auto_create"
-        with patch.object(agent_data, "PERFORMANCE_DIR", perf), patch.object(
-            agent_data, "SESSIONS_DIR", perf / "sessions"
-        ), patch.object(agent_data, "TRENDS_DIR", perf / "trends"), patch.object(
-            agent_data, "DRIFT_DIR", perf / "drift"
-        ), patch.object(
-            agent_data, "BACKUPS_DIR", perf / "backups"
-        ), patch.object(
-            agent_data, "PAPER_DIR", perf / "paper-export"
+        with (
+            patch.object(agent_data, "PERFORMANCE_DIR", perf),
+            patch.object(agent_data, "SESSIONS_DIR", perf / "sessions"),
+            patch.object(agent_data, "TRENDS_DIR", perf / "trends"),
+            patch.object(agent_data, "DRIFT_DIR", perf / "drift"),
+            patch.object(agent_data, "BACKUPS_DIR", perf / "backups"),
+            patch.object(agent_data, "PAPER_DIR", perf / "paper-export"),
         ):
             agent_data.save_session("test-session", {"data": True})
 

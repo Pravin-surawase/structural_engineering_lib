@@ -8,6 +8,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { useDesignStore } from '../store/designStore';
+import type { BeamDesignResponse } from '../api/client';
 
 import { WS_BASE_URL } from '../config';
 
@@ -20,6 +21,57 @@ export interface WebSocketState {
   error: string | null;
   retryCount: number;
   lastConnectedAt: Date | null;
+}
+
+type WebSocketDesignData = Omit<Partial<BeamDesignResponse>, 'flexure' | 'shear'> & {
+  flexure?: Partial<BeamDesignResponse['flexure']> & {
+    // Legacy field used by servers before the REST/WebSocket contract was aligned.
+    mu_lim?: number;
+    is_safe?: boolean;
+  };
+  shear?: Partial<NonNullable<BeamDesignResponse['shear']>> & {
+    // Legacy field names kept for a graceful rolling upgrade.
+    tv?: number;
+    tc?: number;
+    spacing?: number;
+  };
+};
+
+/** Normalize current and legacy WebSocket payloads to the REST response shape. */
+export function normalizeWebSocketDesignResult(data: WebSocketDesignData): BeamDesignResponse {
+  const flexure = data.flexure ?? {};
+  const shear = data.shear;
+
+  return {
+    success: data.success ?? flexure.is_safe ?? false,
+    message: data.message ?? 'Design complete via WebSocket',
+    flexure: {
+      ast_required: flexure.ast_required ?? 0,
+      ast_min: flexure.ast_min ?? 0,
+      ast_max: flexure.ast_max ?? 0,
+      xu: flexure.xu ?? 0,
+      xu_max: flexure.xu_max ?? 0,
+      is_under_reinforced: flexure.is_under_reinforced ?? true,
+      moment_capacity: flexure.moment_capacity ?? flexure.mu_lim ?? 0,
+      asc_required: flexure.asc_required ?? 0,
+    },
+    shear: shear
+      ? {
+          tau_v: shear.tau_v ?? shear.tv ?? 0,
+          tau_c: shear.tau_c ?? shear.tc ?? 0,
+          tau_c_max: shear.tau_c_max ?? 0,
+          asv_required: shear.asv_required ?? 0,
+          stirrup_spacing: shear.stirrup_spacing ?? shear.spacing ?? 0,
+          sv_max: shear.sv_max ?? 0,
+          shear_capacity: shear.shear_capacity ?? 0,
+        }
+      : undefined,
+    ast_total: data.ast_total ?? flexure.ast_required ?? 0,
+    asc_total: data.asc_total ?? flexure.asc_required ?? 0,
+    utilization_ratio: data.utilization_ratio ?? 0,
+    effective_depth_used: data.effective_depth_used,
+    warnings: data.warnings ?? [],
+  };
 }
 
 // ReconnectingWebSocket options for robust connection
@@ -43,6 +95,31 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
     retryCount: 0,
     lastConnectedAt: null,
   });
+
+  // Handle incoming messages
+  const handleMessage = useCallback(
+    (message: { type: string; latency_ms?: number; data?: unknown; message?: string }) => {
+      switch (message.type) {
+        case 'design_result':
+          setState((s) => ({ ...s, latency: message.latency_ms ?? null }));
+          setLoading(false);
+          if (message.data) {
+            setResult(normalizeWebSocketDesignResult(message.data as WebSocketDesignData));
+          }
+          break;
+
+        case 'pong':
+          // Heartbeat response
+          break;
+
+        case 'error':
+          setError(message.message ?? 'Unknown WebSocket error');
+          setLoading(false);
+          break;
+      }
+    },
+    [setResult, setLoading, setError]
+  );
 
   // Connect to WebSocket using ReconnectingWebSocket
   const connect = useCallback(() => {
@@ -104,74 +181,7 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
         error: (err as Error).message,
       }));
     }
-  }, [sessionId, enabled]);
-
-  // Handle incoming messages
-  const handleMessage = useCallback(
-    (message: { type: string; latency_ms?: number; data?: unknown; message?: string }) => {
-      switch (message.type) {
-        case 'design_result':
-          setState((s) => ({ ...s, latency: message.latency_ms ?? null }));
-          setLoading(false);
-          if (message.data) {
-            // Transform WebSocket response to match BeamDesignResponse
-            const data = message.data as {
-              flexure?: {
-                ast_required?: number;
-                mu_lim?: number;
-                xu?: number;
-                xu_max?: number;
-                is_safe?: boolean;
-              };
-              shear?: {
-                tv?: number;
-                tc?: number;
-                spacing?: number;
-                is_safe?: boolean;
-              };
-            };
-            setResult({
-              success: data.flexure?.is_safe ?? false,
-              message: 'Design complete via WebSocket',
-              flexure: {
-                ast_required: data.flexure?.ast_required ?? 0,
-                ast_min: 0,
-                ast_max: 0,
-                xu: data.flexure?.xu ?? 0,
-                xu_max: data.flexure?.xu_max ?? 0,
-                is_under_reinforced: true,
-                moment_capacity: data.flexure?.mu_lim ?? 0,
-              },
-              shear: data.shear
-                ? {
-                    tau_v: data.shear.tv ?? 0,
-                    tau_c: data.shear.tc ?? 0,
-                    tau_c_max: 0,
-                    asv_required: 0,
-                    stirrup_spacing: data.shear.spacing ?? 0,
-                    sv_max: 0,
-                    shear_capacity: 0,
-                  }
-                : undefined,
-              ast_total: data.flexure?.ast_required ?? 0,
-              asc_total: 0,
-              utilization_ratio: 0,
-            });
-          }
-          break;
-
-        case 'pong':
-          // Heartbeat response
-          break;
-
-        case 'error':
-          setError(message.message ?? 'Unknown WebSocket error');
-          setLoading(false);
-          break;
-      }
-    },
-    [setResult, setLoading, setError]
-  );
+  }, [sessionId, enabled, handleMessage]);
 
   // Send design request
   const sendDesign = useCallback(() => {

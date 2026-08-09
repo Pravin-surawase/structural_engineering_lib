@@ -1,3 +1,12 @@
+---
+owner: Governance Agent
+status: active
+last_updated: 2026-08-07
+doc_type: reference
+complexity: intermediate
+tags: [agents, governance]
+---
+
 # Agent 9: Metrics & Tracking Templates
 
 **Purpose:** Metric tracking templates and dashboard formats

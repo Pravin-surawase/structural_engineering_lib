@@ -47,9 +47,19 @@ class TestWebSocketDesign:
             assert "data" in response
 
             # Verify flexure results
-            flexure = response["data"]["flexure"]
+            data = response["data"]
+            flexure = data["flexure"]
             assert flexure["ast_required"] > 0
-            assert flexure["is_safe"] is not None
+            assert flexure["moment_capacity"] > 0
+            assert data["success"] is True
+            assert data["ast_total"] == flexure["ast_required"]
+            assert 0 < data["utilization_ratio"] <= 1.0
+            assert data["effective_depth_used"] > 0
+
+            shear = data["shear"]
+            assert shear["tau_v"] > 0
+            assert shear["tau_c_max"] > 0
+            assert shear["stirrup_spacing"] > 0
 
     def test_websocket_design_beam_latency(self):
         """Test that WebSocket design is fast (<100ms)."""

@@ -34,7 +34,7 @@ Output includes:
 .venv/bin/python scripts/discover_api_signatures.py --all
 ```
 
-Shows all 36 public functions + 7 private helpers.
+Shows all 68 public functions + 15 internal helpers.
 
 ## Filter by Keyword
 

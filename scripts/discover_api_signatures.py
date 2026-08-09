@@ -225,9 +225,9 @@ def discover_signature(func: Any, func_name: str) -> SignatureInfo:
 def format_signature_text(info: SignatureInfo, verbose: bool = False) -> str:
     """Format signature info as readable text."""
     lines = [
-        f"\n{'='*60}",
+        f"\n{'=' * 60}",
         f"📦 {info.name}",
-        f"{'='*60}",
+        f"{'=' * 60}",
         f"Module: {info.module}",
         "",
         "Parameters:",

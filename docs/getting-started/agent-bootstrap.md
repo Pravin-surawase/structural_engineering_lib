@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-07
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -98,7 +98,13 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | `useCodeChecks` | Live IS 456 clause check badges | `useInsights.ts` |
 | `useRebarSuggestions` | AI rebar suggestion options | `useInsights.ts` |
 | `useDesignWebSocket` | Low-level WebSocket connection | `useDesignWebSocket.ts` |
-| `useBatchProgress` | SSE batch design progress tracking | `useBatchProgress.ts` |
+| `useSimpleBatchDesign` | Lightweight batch-design orchestration | `useSimpleBatchDesign.ts` |
+| `useLoadAnalysis` | Load-analysis API state | `useLoadAnalysis.ts` |
+| `useParetoDesign` | Pareto optimization request/state | `useParetoDesign.ts` |
+| `useProjectBOQ` | Project bill-of-quantities request/state | `useProjectBOQ.ts` |
+| `useExportBuildingSummary` | Building-summary export | `useExportBuildingSummary.ts` |
+| `useReducedMotion` | Accessibility motion preference | `useReducedMotion.ts` |
+| `useWebGLContextLoss` | WebGL context-loss recovery | `useWebGLContextLoss.ts` |
 
 ### React Components (`react_app/src/components/`)
 
@@ -116,6 +122,16 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 | `FileDropZone` | Drag-drop CSV upload |
 | `CommandPalette` | Global keyboard-driven command palette |
 | `BatchProgressBar` | SSE-driven batch design progress bar |
+| `HomePage`, `HubPage`, `ModeSelectPage` | Entry, workflow hub, and mode-selection routes |
+| `BatchDesignPage`, `BeamDetailPage` | Batch and individual beam workflow routes |
+| `BeamForm`, `BeamTable`, `CSVImportPanel`, `ResultsPanel` | Core beam input/import/result surfaces |
+| `ParetoPanel`, `ProjectBOQPanel`, `SettingsPanel` | Optimization, quantity, and application settings panels |
+| `ModernAppLayout`, `WorkspaceLayout`, `TopBar` | Primary application shells and navigation |
+| `WorkflowBreadcrumb`, `WorkflowHint`, `ConnectionStatus`, `ToastContainer` | Workflow guidance and system feedback |
+| `BentoGrid`, `BentoCard`, `BentoCardHeader` | Dashboard layout primitives |
+| `Skeleton`, `SkeletonCard`, `SkeletonForm`, `SkeletonTableRow` | Generic loading-state primitives |
+| `SkeletonBeamTable`, `SkeletonResultsPanel`, `SkeletonViewport` | Domain loading states |
+| `LandingView` | Legacy/alternate landing surface retained for compatibility |
 
 ### FastAPI Endpoints (`fastapi_app/routers/`)
 
@@ -188,7 +204,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 | Module | Key Functions |
 |--------|---------------|
-| `services/api.py` | 44 functions (37 public + 7 private) — key entry points: `design_beam_is456()`, `detail_beam_is456()`, `optimize_beam_cost()`, `smart_analyze_design()` |
+| `services/api.py` | 68 public API functions; implementations split across `beam_api.py`, `column_api.py`, and `common_api.py` (15 private helpers) |
 | `api.py` | **Backward-compat stub only** — imports from `services/api.py` |
 | `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
 | `visualization/geometry_3d.py` | `beam_to_3d_geometry()` — 3D rebar/stirrup positions |
@@ -224,7 +240,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 ```bash
 ls react_app/src/hooks/                                         # React hooks
 grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI routes
-grep "^def " Python/structural_lib/services/api.py | head -20   # Library functions
+./run.sh find --api <func>                                   # Exact public API signature
 ```
 
 ---
@@ -392,7 +408,7 @@ curl http://localhost:8000/health           # Should return {"status":"ok"}
 
 ```bash
 pip install -e Python/                               # Install in dev mode
-python -c "from structural_lib import design_beam_is456; print('OK')"
+.venv/bin/python -c "from structural_lib import design_beam_is456; print('OK')"
 ```
 
 ### Port Map
@@ -408,10 +424,9 @@ python -c "from structural_lib import design_beam_is456; print('OK')"
 | Problem | Fix |
 |---------|-----|
 | `docker ps` permission denied | Colima not running → `colima start --cpu 4 --memory 4` |
-| Colima download fails | Network issue → `colima delete -f && colima start` (retries download) |
-| Colima won't start | `colima delete && colima start` (fresh VM) |
-| Port 8000 already in use | `lsof -ti :8000 \| xargs kill -9` |
-| Port 5173 already in use | `lsof -ti :5173 \| xargs kill -9` |
+| Colima download/start fails | Run `colima status`, then inspect `~/.colima/_lima/colima/ha.stderr.log`; do not delete the transferred VM without approval |
+| Port 8000 already in use | Inspect the listener: `lsof -nP -iTCP:8000 -sTCP:LISTEN` |
+| Port 5173 already in use | Inspect the listener: `lsof -nP -iTCP:5173 -sTCP:LISTEN` |
 | `uvicorn: command not found` | Venv not activated → `source .venv/bin/activate` or use `.venv/bin/uvicorn` |
 | `ModuleNotFoundError: structural_lib` | Venv not active or re-install → `source .venv/bin/activate && pip install -e Python/` |
 | React shows blank / "cannot connect" | FastAPI not running — start it first on :8000 |
@@ -427,10 +442,11 @@ python -c "from structural_lib import design_beam_is456; print('OK')"
 ```bash
 # Session start
 ./run.sh session start                               # Verify env, read priorities
+./run.sh session usage --checkpoint start --task-id TASK-XXX --task "short scope"
 
 # Validate codebase
-./run.sh check --quick                               # Fast validation (8 checks, <30s)
-./run.sh check                                       # Full validation (28 checks, parallel)
+./run.sh check --quick                               # Fast validation (9 checks, <30s)
+./run.sh check                                       # Full validation (29 checks, parallel)
 ./run.sh check --category api                        # One category only
 
 # Run tests
@@ -507,9 +523,11 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 ```
 START:  □ ./run.sh session context              ← quick orientation (brief + tasks + git)
         □ ./run.sh session start
+        □ ./run.sh session usage --checkpoint start --task-id TASK-XXX --task "scope"
         □ ./run.sh preflight                     ← check branch, venv, ports, conflicts
 
 END:    □ ./run.sh commit "type: message"        ← commit all work
+        □ ./run.sh session usage --checkpoint closeout --elapsed-min N --verification "gate"
         □ ./run.sh session summary               ← auto-log to SESSION_LOG.md
         □ ./run.sh session sync                  ← fix stale doc numbers
         □ ./run.sh evolve --status              # P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
@@ -537,6 +555,7 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
 | Test changed | `./run.sh test --changed` | `.venv/bin/python scripts/test_changed.py` |
 | Pre-flight | `./run.sh preflight` | `.venv/bin/python scripts/preflight.py` |
 | Session context | `./run.sh session context` | `.venv/bin/python scripts/session.py context` |
+| Usage checkpoint | `./run.sh session usage ...` | `.venv/bin/python scripts/session.py usage ...` |
 | PR decision | `./run.sh pr status` | `./scripts/should_use_pr.sh --explain` |
 | Find script | `./run.sh find "task"` | `.venv/bin/python scripts/find_automation.py "task"` |
 | API signatures | `./run.sh find --api <func>` | `.venv/bin/python scripts/discover_api_signatures.py <func>` |

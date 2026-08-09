@@ -24,7 +24,7 @@ jobs:
           cache-dependency-path: Python/pyproject.toml
 
       - name: Install formatters
-        run: pip install black ruff
+        run: pip install black ruff==0.15.8
 
       - name: Run black (check)
         working-directory: Python

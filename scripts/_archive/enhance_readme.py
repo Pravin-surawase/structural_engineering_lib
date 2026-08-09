@@ -217,16 +217,16 @@ def main():
 
     if args.check_all:
         sparse = check_all_readmes(args.min_lines)
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print(f"📁 Sparse READMEs (<{args.min_lines} lines)")
-        print(f"{'='*60}\n")
+        print(f"{'=' * 60}\n")
 
         if not sparse:
             print("✅ All READMEs have sufficient content!")
             return
 
         print(f"{'Lines':<8} {'Path'}")
-        print(f"{'-'*8} {'-'*50}")
+        print(f"{'-' * 8} {'-' * 50}")
         for r in sparse:
             print(f"{r['lines']:<8} {r['path']}")
 
@@ -250,9 +250,9 @@ def main():
     analysis = analyze_folder(folder_path)
     content = generate_readme_content(folder_path, analysis)
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print(f"📁 README Enhancement: {folder_path.relative_to(root)}")
-    print(f"{'='*60}\n")
+    print(f"{'=' * 60}\n")
 
     print(f"Current README: {analysis['readme_lines']} lines")
     print(f"Markdown files: {len(analysis['markdown_files'])}")

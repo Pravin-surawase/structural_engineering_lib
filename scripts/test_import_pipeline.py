@@ -6,15 +6,30 @@ Tests: sample data, single CSV, dual CSV, batch design.
 """
 
 import json
-import urllib.request
-import urllib.error
 import sys
+import urllib.request
 from pathlib import Path
 
 API = "http://localhost:8000"
 BASE = Path(__file__).parent.parent
 PASS = 0
 FAIL = 0
+
+
+def unwrap_response(payload: dict) -> dict:
+    """Return data from the standard API envelope, or a direct response."""
+    if "data" not in payload:
+        return payload
+
+    if payload.get("success") is not True:
+        raise AssertionError(f"API request failed: {payload.get('error')}")
+
+    data = payload["data"]
+    if not isinstance(data, dict):
+        raise AssertionError(
+            f"Expected object in response data, got {type(data).__name__}"
+        )
+    return data
 
 
 def test(name, fn):
@@ -29,8 +44,8 @@ def test(name, fn):
 
 
 def api_get(path):
-    with urllib.request.urlopen(f"{API}{path}") as r:
-        return json.loads(r.read())
+    with urllib.request.urlopen(f"{API}{path}", timeout=30) as r:
+        return unwrap_response(json.loads(r.read()))
 
 
 def api_post_json(path, body):
@@ -38,8 +53,8 @@ def api_post_json(path, body):
     req = urllib.request.Request(
         f"{API}{path}", data=data, headers={"Content-Type": "application/json"}
     )
-    with urllib.request.urlopen(req) as r:
-        return json.loads(r.read())
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return unwrap_response(json.loads(r.read()))
 
 
 def api_post_form(path, fields, files):
@@ -63,8 +78,8 @@ def api_post_form(path, fields, files):
         data=body,
         headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
     )
-    with urllib.request.urlopen(req) as r:
-        return json.loads(r.read())
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return unwrap_response(json.loads(r.read()))
 
 
 def simulate_store_mapping(beam_from_api, has_3d=False):

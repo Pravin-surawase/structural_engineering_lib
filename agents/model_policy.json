@@ -1,0 +1,110 @@
+{
+  "_meta": {
+    "version": "1.1",
+    "last_verified": "2026-08-09",
+    "source": "https://help.openai.com/en/articles/20001106",
+    "note": "Relative rates assume the same input, cached-input, and output token mix. Reasoning effort changes token volume and has no fixed multiplier.",
+    "standing_user_approval": "No repository model override. The parent respects the user's active model and reasoning selection. Sol profiles require explicit user selection or case-specific approval."
+  },
+  "defaults": {
+    "parent_profile": "user-selected",
+    "subagent_profile": "luna-low",
+    "fast_mode": false,
+    "max_concurrent_subagents": 2
+  },
+  "relative_token_rates": {
+    "gpt-5.6-luna": 1,
+    "gpt-5.6-terra": 10,
+    "gpt-5.6-sol": 25
+  },
+  "profiles": [
+    {
+      "id": "luna-low",
+      "model": "gpt-5.6-luna",
+      "reasoning": "low",
+      "approval_required": false,
+      "use_for": "Search, status, extraction, formatting, indexes, and deterministic repetitive work",
+      "tradeoff": "Cheapest default; escalate when requirements or failure causes are unclear"
+    },
+    {
+      "id": "luna-medium",
+      "model": "gpt-5.6-luna",
+      "reasoning": "medium",
+      "approval_required": false,
+      "use_for": "Bounded documentation, test updates, summaries, and mechanical multi-file edits",
+      "tradeoff": "Good when done is explicit and patterns already exist"
+    },
+    {
+      "id": "luna-high",
+      "model": "gpt-5.6-luna",
+      "reasoning": "high",
+      "approval_required": false,
+      "use_for": "Structured audits, log triage, and constrained repetitive code changes",
+      "tradeoff": "Try before Terra when the task is difficult but still unambiguous"
+    },
+    {
+      "id": "luna-xhigh",
+      "model": "gpt-5.6-luna",
+      "reasoning": "xhigh",
+      "approval_required": false,
+      "use_for": "Rare, highly structured tasks needing extensive checking",
+      "tradeoff": "Usually prefer Terra low or medium if the difficulty comes from ambiguity"
+    },
+    {
+      "id": "terra-low",
+      "model": "gpt-5.6-terra",
+      "reasoning": "low",
+      "approval_required": false,
+      "use_for": "Small code fixes with an obvious pattern and targeted tests",
+      "tradeoff": "Stronger tool judgment than Luna at a higher per-token rate"
+    },
+    {
+      "id": "terra-medium",
+      "model": "gpt-5.6-terra",
+      "reasoning": "medium",
+      "approval_required": false,
+      "use_for": "Normal implementation, testing, maintenance, documentation, and review",
+      "tradeoff": "Efficient advisory fallback when the user has not selected a parent model"
+    },
+    {
+      "id": "terra-high",
+      "model": "gpt-5.6-terra",
+      "reasoning": "high",
+      "approval_required": false,
+      "use_for": "Cross-layer debugging, architecture, security, release, and structural-math work",
+      "tradeoff": "Preferred high-risk starting point before requesting Sol"
+    },
+    {
+      "id": "terra-xhigh",
+      "model": "gpt-5.6-terra",
+      "reasoning": "xhigh",
+      "approval_required": false,
+      "use_for": "Rare complex but well-bounded work when Sol approval is unavailable",
+      "tradeoff": "Can consume many tokens; compare against Sol medium on quality-critical work"
+    },
+    {
+      "id": "sol-medium",
+      "model": "gpt-5.6-sol",
+      "reasoning": "medium",
+      "approval_required": true,
+      "use_for": "Ambiguous architecture, difficult root-cause analysis, and high-value final review",
+      "tradeoff": "Strongest family at 25x Luna's per-token rate in the verified rate card"
+    },
+    {
+      "id": "sol-high",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "approval_required": true,
+      "use_for": "Explicitly selected important, complicated, or high-stakes execution work",
+      "tradeoff": "Use only when the user selects it or approves escalation; otherwise keep the active parent model"
+    },
+    {
+      "id": "sol-xhigh",
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "approval_required": true,
+      "use_for": "Exceptional hardest single-agent review or design problem",
+      "tradeoff": "Not a routine development setting; Max and Ultra are even more expensive"
+    }
+  ]
+}

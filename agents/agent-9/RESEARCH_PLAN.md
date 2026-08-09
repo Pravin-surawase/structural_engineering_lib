@@ -1,3 +1,12 @@
+---
+owner: Governance Agent
+status: active
+last_updated: 2026-08-07
+doc_type: spec
+complexity: advanced
+tags: [agents, governance]
+---
+
 # Agent 9 Research Plan
 **Version:** 1.0.0
 **Created:** 2026-01-10

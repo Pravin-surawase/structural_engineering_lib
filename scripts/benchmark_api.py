@@ -354,9 +354,9 @@ def run_benchmarks(
     suite = BenchmarkSuite(threshold_ms=threshold_ms)
 
     if verbose:
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print(f"API Performance Benchmark {'(quick mode)' if quick else ''}")
-        print(f"{'='*60}\n")
+        print(f"{'=' * 60}\n")
 
     for case in test_cases:
         endpoint = case["endpoint"]
@@ -394,9 +394,9 @@ def run_benchmarks(
 
 def print_summary(suite: BenchmarkSuite) -> None:
     """Print human-readable summary for FastAPI benchmarks."""
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("FASTAPI BENCHMARK SUMMARY")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print(f"Timestamp: {suite.timestamp}")
     print(f"Endpoints tested: {len(suite.results)}")
 
@@ -640,9 +640,9 @@ def run_direct_benchmarks(
         benchmarks = [b for b in benchmarks if b.function == function_filter]
 
     if verbose:
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print("Direct Library API Benchmarks (V3 Preparation)")
-        print(f"{'='*60}")
+        print(f"{'=' * 60}")
         print(f"Running {len(benchmarks)} benchmarks, {iterations} iterations each...")
 
     results = []
@@ -667,9 +667,9 @@ def print_direct_summary(results: list[DirectBenchmarkResult]) -> None:
     passed = sum(1 for r in results if r.passed)
     failed = len(results) - passed
 
-    print(f"\n{'='*60}")
+    print(f"\n{'=' * 60}")
     print("DIRECT LIBRARY BENCHMARK SUMMARY")
-    print(f"{'='*60}")
+    print(f"{'=' * 60}")
     print(f"Total benchmarks: {len(results)}")
     print(f"Passed: {passed} ✅  Failed: {failed} ❌")
     print()

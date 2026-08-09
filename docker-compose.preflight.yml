@@ -13,11 +13,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.fastapi
-    command: ["python", "-m", "pytest", "Python/tests/", "-v", "--tb=short", "-q", "-x"]
+    command: ["python", "-m", "pytest", "Python/tests/", "-v", "--tb=short", "-q", "-x", "-m", "not slow", "-p", "no:cacheprovider"]
     working_dir: /app
     volumes:
       - ./Python:/app/Python:ro
       - ./Etabs_CSV:/app/Etabs_CSV:ro
+      - ./scripts:/app/scripts:ro
+      - ./agents:/app/agents:ro
+      - ./.github/agents:/app/.github/agents:ro
+      - ./react_app/package.json:/app/react_app/package.json:ro
+      - ./CITATION.cff:/app/CITATION.cff:ro
+      - ./.nvmrc:/app/.nvmrc:ro
+      - ./Dockerfile.fastapi:/app/Dockerfile.fastapi:ro
+      - ./docker-compose.preflight.yml:/app/docker-compose.preflight.yml:ro
     deploy:
       resources:
         limits:
@@ -28,7 +36,7 @@ services:
     profiles: ["test", "all"]
 
   build-react:
-    image: node:20-alpine
+    image: node:24-alpine
     command: ["sh", "-c", "npm ci && npm run build"]
     working_dir: /app
     volumes:

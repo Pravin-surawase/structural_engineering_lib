@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "description": "Schema snapshots for API contract testing - auto-generated, do not edit manually",
-  "generated": "2026-01-24",
+  "generated": "2026-08-06",
   "version": "1.0.0",
   "models": {
     "Point3D": {
@@ -22,10 +22,12 @@
         "width_mm"
       ],
       "properties": [
+        "bar_dia_mm",
         "cover_mm",
         "depth_mm",
         "fck_mpa",
         "fy_mpa",
+        "stirrup_dia_mm",
         "width_mm"
       ],
       "computed": [

@@ -1,0 +1,206 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-08-09
+doc_type: guide
+---
+
+# AI Token-Efficiency Policy
+
+This is the canonical low-token operating policy for AI-assisted work in this
+repository. It controls avoidable context and agent fan-out without weakening
+engineering, test, or Git safety gates.
+
+## Defaults
+
+1. Keep one parent task active for this project. Finish, pause, or stop it
+   before starting a separate parent task.
+2. The main orchestrator respects the model and reasoning selected by the user.
+   Neither project configuration nor repository instructions may silently
+   switch the parent model.
+3. Use Luna, when the active client exposes it, for simple searches, status
+   checks, extraction, formatting, and small mechanical edits. Use Terra for
+   normal implementation, testing, documentation, and focused worker review.
+4. Sol profiles require explicit user selection or case-specific approval.
+   Escalate only after a concrete quality gap on the active model.
+5. Keep Fast mode off. Enable it only when the user explicitly chooses speed
+   over credit efficiency for a time-sensitive task.
+
+## Model and Reasoning Matrix
+
+The verified token rate card makes Luna the reference rate: Terra is 10x and
+Sol is 25x for the same input/cached-input/output token mix. Reasoning effort
+changes how many tokens a task may consume, but OpenAI does not publish a fixed
+Low/Medium/High/Extra High multiplier. Therefore, do not assume that Luna Extra
+High is always cheaper than Terra Low for a real task; use the lowest profile
+that reliably completes the work.
+
+| Profile | Default use | Escalate when |
+|---|---|---|
+| Luna Low | Search, status, extraction, formatting, indexes | The task is not deterministic |
+| Luna Medium | Bounded docs, tests, summaries, mechanical edits | Tool use or requirements become unclear |
+| Luna High | Structured audits, log triage, constrained repetitive code | The problem becomes cross-layer or ambiguous |
+| Luna Extra High | Rare, highly structured work needing extensive checking | Prefer Terra if ambiguity is the difficulty |
+| Terra Low | Small code fixes with an obvious pattern | Targeted verification does not explain a failure |
+| Terra Medium | Normal implementation and maintenance | Architecture, safety, or multiple systems interact |
+| Terra High | Cross-layer debugging, architecture, security, release, IS 456 | A concrete unresolved quality gap justifies Sol |
+| Terra Extra High | Rare, critical but bounded work | Sol may materially improve a high-value decision |
+| Sol High | Explicitly selected important, complicated, or high-stakes execution | Obtain case-specific user approval |
+| Sol Medium/Extra High | Exceptional Sol profiles | Obtain case-specific user approval |
+
+Max is a quality-first single-agent mode. Ultra may create subagents. Both are
+outside the routine project profiles and require case-specific approval. Fast mode
+uses 2.5x the standard credits for currently documented GPT-5.6/5.5 models.
+
+## Task-Aware Picker
+
+Use the deterministic picker before selecting a model for a new bounded task:
+
+```bash
+./run.sh model --table
+./run.sh model "fix the known FastAPI validation error"
+./run.sh model "verify the release calculation" --risk critical
+./run.sh model "plan the next architecture milestone" --important
+./run.sh model "start and delegate the maintenance task" --orchestrator
+```
+
+The policy is stored in [`agents/model_policy.json`](../../agents/model_policy.json).
+The picker is optional and advisory. Run it only when the user asks for a
+recommendation or has not selected a model. It never overrides the active
+parent model. Sol recommendations are approval-gated. Apply a recommendation
+with `/model` only after the user chooses it. Use a fresh task when changing to
+a genuinely different issue.
+
+## Orchestrator Contract
+
+The user-selected orchestrator owns decomposition and acceptance, not just routing.
+Before handing work to Luna or Terra, it provides a compact task packet with:
+
+- one objective and explicit non-goals;
+- exact files/paths and existing patterns to reuse;
+- constraints, architecture/units/Git rules, and likely pitfalls;
+- measurable acceptance criteria and the narrow test commands;
+- expected return format: findings or changes, evidence, unresolved risks, and
+  files touched.
+
+The orchestrator keeps disjoint workstreams, avoids overlapping writes, and
+does not pass full conversation history. After each handoff it reviews the diff
+or findings, checks the requested evidence, tests integration assumptions, and
+either accepts the result or returns a precise correction packet. It never
+equates a subagent's confident report with verified completion.
+
+Project-local efficiency defaults live in
+[`.codex/config.toml`](../../.codex/config.toml). Parent `model` and
+`model_reasoning_effort` are deliberately unset so the user choice wins.
+
+## Delegation Budget
+
+- Default to no subagents for routine work.
+- Use at most two concurrent subagents, and only for independent, bounded
+  workstreams where parallelism materially improves quality or elapsed time.
+- Prefer read-heavy delegation: focused exploration, log analysis, tests, or
+  independent review. Avoid parallel writes to overlapping files.
+- Give every subagent a compact task packet: objective, exact files or paths,
+  constraints, precise question, expected output, and relevant commands.
+- Do not fork the full conversation. In runtimes that expose history controls,
+  use no inherited turns (`fork_turns="none"`) or the smallest useful recent
+  slice.
+- Ask for distilled findings with file references, not raw logs or a transcript.
+- Close completed subagents immediately. Do not keep idle reviewers alive.
+
+The named handoff chains in project documentation describe quality roles, not
+mandatory agent processes. The parent agent normally performs the specialist,
+test, documentation, and operations passes itself. Separate agents are reserved
+for the bounded exceptions above.
+
+## Context Budget
+
+Start with the smallest orientation pack:
+
+```bash
+./run.sh session brief --agent <role>
+sed -n '1,80p' docs/TASKS.md
+git status --short --branch
+```
+
+Then:
+
+- Read folder `index.json` or `index.md` before individual files.
+- Search with `rg` and read only the matching sections.
+- Load the full bootstrap, a full agent file, or large logs only when the task
+  actually depends on them.
+- Keep tool output bounded; return tails, summaries, or counts instead of full
+  logs where possible.
+- Use `/compact` when the same task must continue after substantial context
+  growth. Start a fresh task with a concise handoff for a genuinely new issue.
+- State each instruction once. Avoid repeating architecture, Git, and style
+  rules already provided by `AGENTS.md`.
+
+## Verification Ladder
+
+1. Inspect only affected files and existing patterns.
+2. Implement one bounded issue.
+3. Run the narrowest relevant test or lint command while iterating.
+4. Add one or two independent reviews only when risk justifies them.
+5. Run `./run.sh check --quick` before committing.
+6. Run the full project or release gate once at closeout. Repeat only the failed
+   portion unless the fix can affect other categories.
+
+Safety-critical structural calculations still require independent reference
+validation. Token efficiency never replaces practicing-engineer review or the
+IS 456 quality gate.
+
+## Monitoring
+
+- Use `/status` in Codex to inspect current context usage and rate limits.
+- Use **Settings → Usage** for account/workspace usage and credits.
+- `/usage daily` and `/usage weekly` are not current documented Codex desktop
+  commands and must not be included in project prompts.
+- Run `./run.sh efficiency check` to validate repository-side controls. This
+  checks configuration and context proxies; it cannot read OpenAI billing.
+- Run `./run.sh efficiency prompt` to print a reusable task preamble.
+- Run `./run.sh model --table` to compare profiles, or pass a task description
+  to receive a deterministic recommendation and explicit escalation trigger.
+- Record start, milestone (roughly every 2–3 hours), and closeout checkpoints
+  with `./run.sh session usage`. The local JSONL ledger records model,
+  reasoning, elapsed time, parent/subagent counts, optional manually copied
+  dashboard values, verification, and Git state. It deliberately leaves token
+  and billing fields empty because the repository cannot measure them.
+
+```bash
+./run.sh session usage --checkpoint start --task-id TASK-XXX --task "bounded scope"
+./run.sh session usage --checkpoint milestone --elapsed-min 120 \
+  --verification "targeted tests pass" --notes "no subagents"
+./run.sh session usage --checkpoint closeout --elapsed-min 210 \
+  --verification "quick gate 9/9"
+./run.sh session usage --summary --hours 24
+```
+
+The Claude model labels in `.github/agents/*.agent.md` and
+`agents/agent_registry.json` are VS Code Copilot configuration. They are not
+Codex routing inputs; Codex Luna/Terra/Sol choices live only in
+`agents/model_policy.json` and project `.codex/config.toml`.
+
+## Reusable Task Preamble
+
+```text
+Work in low-token mode.
+
+Respect the parent model and reasoning selected by the user; never override it
+from repository policy. Keep Fast mode off. Use Luna-low subagents only for
+clear repetitive work and ask before any Sol escalation. Default to no
+subagents; use no more than two only for independent,
+bounded work. Give each a concise packet with objective, exact files, non-goals,
+pitfalls, acceptance criteria, tests, and return format—never full conversation
+history. Verify every result before accepting it. Run targeted tests during
+development and the full gate once at closeout. Close subagents and stop when done.
+```
+
+## Official References
+
+- [Codex models](https://learn.chatgpt.com/docs/models)
+- [Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents)
+- [Codex Speed and Fast mode](https://learn.chatgpt.com/docs/agent-configuration/speed)
+- [Codex pricing and usage](https://developers.openai.com/codex/pricing/)
+- [Codex slash commands](https://learn.chatgpt.com/docs/reference/slash-commands)
+- [Codex project configuration](https://learn.chatgpt.com/docs/config-file/config-basic)

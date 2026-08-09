@@ -12,13 +12,22 @@ tags: []
 **Version:** 1.0
 **Last Updated:** 2026-03-29
 **Status:** ACTIVE
-**Purpose:** Enable professional multi-agent maintenance with parallel workflows
+**Purpose:** Enable professional AI-assisted maintenance with bounded delegation
 
 ---
 
 ## Executive Summary
 
-This project uses **agent-driven maintenance** where specialized AI agents (researcher, tester, devops, pm, dev) work in parallel on isolated tasks. This framework defines roles, workflows, and coordination protocols for up to **5 concurrent agents** working safely without conflicts.
+This project uses **agent-assisted maintenance** where specialist names describe
+quality roles. One parent task owns the outcome. It may use up to **2 concurrent
+subagents** for independent, bounded work; routine work stays single-agent. See
+[AI Token-Efficiency Policy](../guidelines/ai-token-efficiency.md).
+
+The MAIN orchestrator always respects the model and reasoning selected by the
+user. It decomposes work into compact packets that Luna or Terra can follow:
+objective, non-goals, exact files, constraints, pitfalls,
+acceptance criteria, tests, and return format. The MAIN agent independently
+checks each result before accepting or integrating it.
 
 **Key Principles:**
 1. **Specialization:** Each agent has a defined role and expertise
@@ -48,7 +57,11 @@ This project uses **agent-driven maintenance** where specialized AI agents (rese
 
 **Responsibilities:**
 - Communicate with user
-- Assign tasks to background agents
+- Plan on the user-selected parent model and assign bounded tasks to the
+  cheapest capable worker
+- Include exact scope, non-goals, pitfalls, acceptance criteria, tests, and a
+  return format in every worker packet
+- Independently review returned diffs, evidence, and integration assumptions
 - Review PRs and merge approved work
 - Maintain TASKS.md and SESSION_LOG.md
 - Resolve conflicts between agents

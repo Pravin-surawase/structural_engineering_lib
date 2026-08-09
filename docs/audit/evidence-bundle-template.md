@@ -46,9 +46,9 @@ tags: []
 
 | Workflow | Run ID | Status | Link |
 |----------|--------|--------|------|
-| python-tests.yml | #XXXX | ⬜ | [Link]() |
-| fast-checks.yml | #XXXX | ⬜ | [Link]() |
-| streamlit-validation.yml | #XXXX | ⬜ | [Link]() |
+| python-tests.yml | #XXXX | ⬜ | CI run URL |
+| fast-checks.yml | #XXXX | ⬜ | CI run URL |
+| streamlit-validation.yml | #XXXX | ⬜ | CI run URL |
 
 ### 1.3 Coverage Artifact
 

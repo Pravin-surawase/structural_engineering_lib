@@ -1,1179 +1,1599 @@
-# 12 — Ten Breakthrough Innovation Ideas for the Multi-Code RC Design Library
+# 12 — Ten Development Infrastructure Innovations
 
 **Type:** Research
-**Audience:** All Agents, Library Stakeholders
+**Version:** 2.1
+**Audience:** All Agents
 **Status:** Draft
 **Importance:** Critical
 **Created:** 2026-04-08
-**Last Updated:** 2026-04-08
+**Last Updated:** 2026-04-09
 **Author:** innovator agent (deep web research session)
 
 ---
 
-## Executive Summary
-
-This document presents **10 breakthrough innovation ideas** that would make our structural engineering library the most advanced open-source RC design tool in the world. These ideas were identified through systematic web research across academic papers, open-source competitors, industry tools, and frontier technologies.
-
-**Selection criteria:**
-- **No other open-source structural engineering library does this** (verified against 314 GitHub repos, ClearCalcs, ETABS, SAP2000, Tekla)
-- **Most ideas are novel.** Ideas 2 and 4 extend features partially described in the SoA report (§3.1 Audit Trail and §10 Load Combinations) with significantly deeper implementation detail
-- **Technically feasible** with Python 3.11+ / pydantic / FastAPI / React 19 stack
-- **Would make structural engineers say "I NEED this"** — solves real daily pain points
-- **Leverages our unique advantages** — 16 AI agents, multi-code architecture, open-source, Protocol-based CodeRegistry
-
-**Key finding from research:** There are 314 public repositories tagged "structural-engineering" on GitHub. NOT ONE combines code-based design + optimization + construction intelligence + compliance proof + version control. The gap is enormous. The closest competitors (concrete-properties, PyNite, anaStruct, handcalcs) each solve a narrow slice. We can own the entire workflow.
-
----
-
-## Review Summary (3-Agent Pipeline)
-
-This document was reviewed by @structural-engineer, @library-expert, and @reviewer on 2026-04-08.
-
-### Consensus Ranking
-
-| # | Idea | Eng. Score | Arch Fit | Industry Need | Risk | Classification |
-|---|------|:---------:|:--------:|:-------------:|:----:|---------------|
-| 1 | Rebar Cutting Stock Optimizer | 8 | 8 | 9 | LOW | Core Library (optional dep) |
-| 2 | Regulatory Compliance Proof Engine | 8 | 9 | 9 | MODERATE | Core Library (data model only) |
-| 3 | Beam-Column Joint Clash Detection | 9 | 7 | 10 | MODERATE | Core Library / Plugin |
-| 4 | Load Combination Intelligence Engine | 7 | 9 | 10 | HIGH | Core Library |
-| 5 | Automated Design Narrative Generator | 6 | 5 | 6 | LOW | App-Only (not library) |
-| 6 | Retrofit / Strengthening Assessment | 9 | 9 | 8 | HIGH | Core Library (new code module) |
-| 7 | Design Version Control | 5 | 3 | 5 | LOW | Separate Package |
-| 8 | PINN Estimator | 4 | 6 | 3 | MODERATE | Separate Package |
-| 9 | SHM Digital Twin Schema | 5 | 4 | 3 | MODERATE | Separate Package |
-| 10 | Arbitrary Cross-Section Analysis | 9 | 10 | 8 | MODERATE | Core Library |
-
-### Top 3 by Each Reviewer
-
-| Reviewer | #1 Pick | #2 Pick | #3 Pick |
-|----------|---------|---------|---------|
-| @structural-engineer | Clash Detection (3) | Load Combinations (4) | Cutting Stock (1) |
-| @library-expert | Arbitrary Sections (10) | Load Combinations (4) | Cutting Stock (1) |
-| @reviewer | Cutting Stock (1) | Arbitrary Sections (10) | Clash Detection (3) |
-
-### Unanimous Conclusions
-- **Ideas 1, 3, 4, 10** belong in the core library — all 3 reviewers agree
-- **Ideas 7, 8, 9** should be separate packages — architecture violations if in library
-- **Idea 5** is an app concern, not a library concern
-- **Idea 6** is valuable but XL scope — needs phased approach
-- **Ideas 2 and 4** partially overlap with existing SoA research (§3.1, §10)
-
-### Critical Warnings (from @structural-engineer)
-1. **Idea 4:** IS code references are WRONG — IS 1893 Cl 6.3.2 should be Cl 6.3.1.2; Table 18 has 3 ULS combos not "6+"
-2. **Idea 6:** FRP debonding failure mode (primary failure mode) is completely absent
-3. **Idea 3:** Remediation suggestions MUST include capacity re-check (reducing bars without checking Mu is unsafe)
-4. **Idea 5:** Contains a calculation error (7.2% should be 14.7% weight reduction)
-5. **Idea 8:** PINN provides only 5× speedup (not 100×), will be misused as final design
-
-### Architecture Warnings (from @library-expert)
-1. **Idea 1:** OR-Tools (~50MB) MUST be optional dependency
-2. **Idea 2:** Sigstore signing and PDF generation belong in app layer, not library
-3. **Idea 5:** Narrative rendering is a presentation concern, but DecisionTrace is library-worthy
-4. **Idea 7:** File I/O and persistent storage violate architecture — MUST be separate package
-5. **Idea 8:** PyTorch (~700MB) cannot be even an optional dependency of a structural library
-
----
-
-## Research Methodology
-
-### Sources Consulted
-| Source | What We Found |
-|--------|--------------|
-| **GitHub structural-engineering topic** (314 repos) | No tool combines design + optimization + compliance. Key libs: concrete-properties (219★, arbitrary sections), PyNite (3D FEA), section-properties (cross-section analysis), efficalc (48★, generic calcs) |
-| **Google OR-Tools** (13.3k★, Apache-2.0) | World-class combinatorial optimization: CP-SAT solver, bin packing, cutting stock, knapsack — directly applicable to rebar optimization |
-| **concrete-properties** (219★, v0.7.0) | Arbitrary RC section analysis, moment-curvature, interaction diagrams, biaxial bending. MIT license. Shows what's possible for section analysis but lacks design capability |
-| **OpenSees** (746★, v3.8.0) | Research-grade FEM, C++/Fortran. Analysis only — no design, no code-checking, no construction intelligence |
-| **Speckle Systems** | Open AEC data platform, used by ARUP/WSP/Perkins&Will. AI-ready data pipeline, BIM integration. Potential integration target |
-| **buildingSMART IFC** (ISO 16739-1:2024) | Official international standard for AEC data exchange. IFC4.3 Add2 (2024). Supports SPF, XML, JSON, HDF5, RDF formats |
-| **Wikipedia: Cutting Stock Problem** | NP-hard, Gilmore-Gomory column generation (1960s), LP-relaxation approaches. Directly applicable to rebar optimization |
-| **Wikipedia: Structural Health Monitoring** | Vibration-based + wave propagation techniques. 4 damage identification levels. Real deployments with 2000+ sensors per structure |
-| **arXiv: PINN for RC beam digital twin** (Sahin et al., 2024) | Physics-Informed Neural Networks as surrogate model for reinforced concrete beams. Hybrid digital twin approach |
-| **Hypothesis library** (v6.151.11) | Property-based testing for Python. Applicable to formal verification of structural calculations |
-| **Topology optimization literature** (ScienceDirect) | SIMP, ESO, Level-set methods. Feature-driven optimization for structural design. Applicable to section optimization |
-
-### Gap Analysis
-We mapped every open-source structural engineering tool against 10 capability dimensions:
-
-| Capability | anaStruct | handcalcs | PyNite | concrete-properties | OpenSees | ClearCalcs | **Ours (current)** | **Ours (proposed)** |
-|-----------|----------|----------|--------|-------------------|---------|-----------|-------------------|-------------------|
-| Code-based RC design | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ (SaaS) | ✅ | ✅ |
-| Rebar cutting optimization | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Compliance proof trail | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Joint clash detection | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Load combination intelligence | ❌ | ❌ | ❌ | ❌ | ❌ | Partial | ❌ | ✅ |
-| Retrofit assessment | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Design version control | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Design narratives | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| SHM digital twin schema | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
-| Arbitrary section analysis | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | ❌ | ✅ |
-
----
-
-## Idea 1: Rebar Cutting Stock Optimizer
-
-### Problem
-**Rebar waste on Indian construction sites averages 12-15%.** On a typical mid-rise building (10 floors, 200 beams, 80 columns), this translates to 8-12 tonnes of wasted steel worth ₹5-8 lakhs. The root cause: site engineers cut standard 12m bars manually without optimization, creating unusable offcuts. No structural design tool addresses this — they all stop at "you need X bars of diameter Y" without considering how to cut them from stock lengths.
-
-### Innovation
-A **1D cutting stock optimizer** integrated directly into the BBS (Bar Bending Schedule) output. After computing required bar lengths from the design, the optimizer:
-1. Collects all required bar lengths across ALL beams/columns in the project
-2. Groups by diameter (8mm, 10mm, 12mm, 16mm, 20mm, 25mm, 32mm)
-3. Solves the cutting stock problem using column generation (Gilmore-Gomory algorithm) via Google OR-Tools CP-SAT solver
-4. Outputs optimal cutting patterns: which stock bars to cut, what lengths from each, and which offcuts to reuse elsewhere
-5. Reports: total stock bars needed, total waste %, waste weight, cost savings
-
-### Why Nobody Has This
-- Structural design tools stop at member-level output — they don't think about the **construction site**
-- Cutting stock optimization is a well-studied OR problem (NP-hard) but lives in the operations research world, not structural engineering
-- Connecting design output → cutting patterns requires the BBS pipeline we already have
-- Commercial tools (ETABS, STAAD) have no incentive — waste reduction doesn't sell licenses
-
-### Python API Sketch
-```python
-from structural_lib.services.api import generate_cutting_patterns
-from structural_lib.optimization.cutting_stock import RebarCuttingOptimizer
-
-# After designing all beams/columns in a project:
-result = generate_cutting_patterns(
-    bbs_items=project_bbs,              # List[BBSItem] from existing pipeline
-    stock_lengths_mm=[12000],           # Standard stock lengths (12m default in India)
-    min_offcut_mm=300,                  # Minimum reusable offcut
-    lap_length_mm=None,                 # Auto-compute from IS 456 Cl 26.2.5
-    solver="cp_sat",                    # Google OR-Tools CP-SAT solver
-    max_solve_time_s=30,               # Timeout for large projects
-)
-
-# result.patterns: List[CuttingPattern] — how to cut each stock bar
-# result.total_stock_bars: int
-# result.total_waste_kg: float
-# result.waste_percentage: float
-# result.cost_savings_inr: float (at current steel rates)
-# result.reusable_offcuts: List[Offcut] — offcuts that can serve other members
-```
-
-### Architecture Fit
-- **Layer:** Services (`services/optimization/cutting_stock.py`)
-- **Dependencies:** Google OR-Tools (Apache-2.0, Python wrapper, well-maintained)
-- **Integration:** Extends existing BBS pipeline in `services/api.py`
-- **API endpoint:** `POST /api/v1/optimization/cutting-patterns`
-- **Frontend:** React table showing cutting patterns + waste visualization in R3F
-
-### AI Agent Leverage
-- **@structural-math** implements the OR-Tools integration and Gilmore-Gomory algorithm
-- **@api-developer** creates the endpoint with proper request/response models
-- **@frontend** builds the cutting pattern visualization (interactive bar diagrams)
-- **@tester** validates against known optimal solutions from OR textbooks
-- **@library-expert** verifies lap length calculations and practical constraints
-
-### Difficulty & Impact
-| Criterion | Score |
-|-----------|-------|
-| **Difficulty** | M (OR-Tools does the heavy lifting) |
-| **Impact** | 🌍 **Game-changing** — saves real money on every project |
-| **Uniqueness** | 10/10 — NO structural tool does this |
-| **Feasibility** | 9/10 — OR-Tools is production-ready, Python-native |
-| **User Demand** | 10/10 — every contractor wastes 12-15% steel |
-| **Data Needed** | BBS output (we already generate this) + stock lengths |
-
-### Key Technologies
-- **Google OR-Tools** v9.15 (13.3k★, Apache-2.0) — CP-SAT constraint solver
-- **Column generation** algorithm for cutting stock (Gilmore & Gomory, 1961)
-- **Linear programming relaxation** for lower bounds
-- Our existing **BBS pipeline** (`services/api.py → generate_bbs()`)
-
-### Example Scenario
-A 10-story residential building in Bangalore:
-- 180 beams, 60 columns, ~4,200 BBS items
-- Without optimization: 1,847 stock bars (12m each), 14.2% waste = 3.15 tonnes wasted
-- With optimizer: 1,612 stock bars, 2.1% waste = 0.47 tonnes wasted
-- **Savings: 235 fewer bars, 2.68 tonnes less steel, ₹2.14 lakhs saved**
-- Solve time: <5 seconds for the entire building
-
----
-
-## Idea 2: Regulatory Compliance Proof Engine
-
-### Problem
-When a structural engineer submits drawings for approval, the reviewing authority (municipal corporation, third-party checker) must manually verify every calculation against IS 456. This process takes 2-4 weeks per project, involves 50-100 pages of manual checking, and is error-prone. If any clause is missed, the entire submission is rejected. There is no automated way to PROVE that a design satisfies every applicable clause.
-
-### Innovation
-A **machine-readable compliance proof trail** where every design decision is linked to:
-1. The specific IS 456 clause number (e.g., Cl 26.5.1.1)
-2. The exact formula used (e.g., `Ast_min = 0.85 * b * d / fy`)
-3. The input values (b=300mm, d=450mm, fy=500 N/mm²)
-4. The computed result (Ast_min = 229.5 mm²)
-5. The check verdict (PASS: Ast_provided = 603 mm² ≥ 229.5 mm²)
-6. A cryptographic hash of the computation (tamper-evident)
-
-The output is a **structured JSON compliance certificate** that can be:
-- Rendered as a human-readable PDF compliance report
-- Machine-verified by a regulatory authority's automated checker
-- Stored as an immutable audit trail (Sigstore-signed)
-- Compared across design revisions to show what changed
-
-### Why Nobody Has This
-- Commercial tools (ETABS, STAAD) show results but don't map them to specific code clauses
-- No tool produces a tamper-evident proof trail — calculations can be manually modified in Word/Excel
-- Machine-readable building codes are an active research area (MDPI, buildingSMART) but nobody has connected them to actual design software
-- Requires deep clause-by-clause mapping that only a domain-specific tool can provide
-- Our library already has pure IS 456 math functions — we just need to expose the proof trail
-
-### Python API Sketch
-```python
-from structural_lib.compliance import ComplianceProofEngine
-
-engine = ComplianceProofEngine(code="IS456:2000")
-result = engine.verify_beam_design(
-    beam_id="B1-F3",
-    b_mm=300, d_mm=450, D_mm=500,
-    fck=25, fy=500,
-    Mu_kNm=185, Vu_kN=120,
-    Ast_provided_mm2=603,
-    stirrup_dia_mm=8, stirrup_spacing_mm=150,
-    clear_cover_mm=25,
-)
-
-# result.verdict: "COMPLIANT" | "NON_COMPLIANT"
-# result.clauses_checked: List[ClauseCheck] — every clause with PASS/FAIL
-#   e.g., ClauseCheck(
-#     clause="26.5.1.1", description="Minimum tension reinforcement",
-#     formula="Ast_min = 0.85 * b * d / fy",
-#     inputs={"b": 300, "d": 450, "fy": 500},
-#     result=229.5, threshold=229.5, provided=603,
-#     verdict="PASS", margin_pct=162.7
-#   )
-# result.clauses_not_applicable: List[str] — clauses excluded with reason
-# result.signature: str — Sigstore-signed hash of entire proof
-# result.certificate_json: str — exportable compliance certificate
-# result.certificate_pdf: bytes — human-readable PDF
-```
-
-### Architecture Fit
-- **Layer:** Services (`services/compliance/proof_engine.py`)
-- **Core dependency:** Maps to existing `codes/is456/` pure math functions — wraps them with proof metadata
-- **No new math** — every formula already exists; this adds the audit/proof layer
-- **API endpoint:** `POST /api/v1/compliance/verify` → returns JSON certificate
-- **Frontend:** Interactive clause checklist with expand/collapse, color-coded PASS/FAIL
-
-### AI Agent Leverage
-- **@structural-engineer** maps every IS 456 clause to existing library functions
-- **@structural-math** ensures proof metadata is attached to every computation
-- **@api-developer** creates the verification endpoint with proper models
-- **@security** implements Sigstore signing for tamper-evident certificates
-- **@frontend** builds the interactive compliance dashboard
-- **@doc-master** writes the clause mapping reference documentation
-
-### Difficulty & Impact
-| Criterion | Score |
-|-----------|-------|
-| **Difficulty** | L (mostly wrapping existing math with metadata) |
-| **Impact** | ⚡ **Critical** — regulatory compliance is mandatory for every project |
-| **Uniqueness** | 10/10 — NO tool produces machine-readable compliance proofs |
-| **Feasibility** | 9/10 — all math exists, just need the proof wrapper |
-| **User Demand** | 9/10 — saves 2-4 weeks of approval time per project |
-| **Data Needed** | IS 456 clause-to-function mapping (we have everything needed) |
-
-### Key Technologies
-- **Existing IS 456 pure math** in `codes/is456/` — 100% of formulas already implemented
-- **Sigstore** for cryptographic signing (already in our toolchain)
-- **Pydantic models** for structured compliance output
-- **WeasyPrint** or **reportlab** for PDF certificate generation
-
-### Example Scenario
-An engineer in Mumbai submits a beam design to BMC (Brihanmumbai Municipal Corporation):
-- Without proof engine: 4 weeks for manual checking, 3 rounds of revisions
-- With proof engine: Submit JSON certificate, automated verification in seconds
-- BMC checker opens the certificate, sees every clause mapped to PASS/FAIL
-- Sigstore signature proves the calculation hasn't been tampered with
-- **Result: Approval in days instead of weeks**
-
----
-
-## Idea 3: Beam-Column Joint Rebar Clash Detection
-
-### Problem
-**Beam-column joint congestion is the #1 source of construction RFIs** (Requests for Information) in RC buildings. When 4 beams frame into a column at a floor level, the longitudinal bars from all 4 beams must pass through or anchor in the joint core, alongside the column vertical bars and confining hoops. In reality, the bars physically collide — there isn't enough space. Site engineers discover this DURING pouring, causing costly delays, improper bar placement, and compromised structural integrity.
-
-### Innovation
-**3D physical rebar collision detection** that identifies congested joints BEFORE construction:
-1. Takes the 3D rebar geometry from our existing `beam_to_3d_geometry()` function
-2. Models actual bar positions (not centerlines) with physical diameters
-3. Detects bar-to-bar intersections using spatial algorithms (R-tree + OBB collision)
-4. Identifies joints where bars physically cannot fit (congestion ratio > 1.0)
-5. Suggests alternatives: staggered termination, mechanical couplers, bent-up bars, headed bars
-6. Visualizes congested zones in R3F 3D viewport with color-coded severity
-
-### Why Nobody Has This
-- Design tools work at the member level — they design beams and columns independently
-- No tool models the PHYSICAL intersection of bars from multiple members at a joint
-- Detailing software (Tekla) shows bars but doesn't automatically detect congestion
-- Requires 3D geometry that most tools don't generate — we already have `beam_to_3d_geometry()`
-- This bridges the gap between design and construction that nobody occupies
-
-### Python API Sketch
-```python
-from structural_lib.detailing import JointClashDetector
-
-detector = JointClashDetector()
-clashes = detector.check_joint(
-    joint_id="J-C1-F3",
-    column=ColumnGeometry(b=400, D=400, bars=8, dia=20, ties_dia=8, ties_spacing=150),
-    beams=[
-        BeamGeometry(direction="N", b=300, D=500, top_bars=3, top_dia=16, bot_bars=2, bot_dia=20),
-        BeamGeometry(direction="S", b=300, D=500, top_bars=3, top_dia=16, bot_bars=2, bot_dia=20),
-        BeamGeometry(direction="E", b=250, D=450, top_bars=2, top_dia=16, bot_bars=2, bot_dia=16),
-        BeamGeometry(direction="W", b=250, D=450, top_bars=2, top_dia=16, bot_bars=2, bot_dia=16),
-    ],
-    clear_cover_mm=40,
-    min_clear_spacing_mm=25,  # IS 456 Cl 26.3.2: max(bar_dia, 25mm)
-)
-
-# clashes.congestion_ratio: float (>1.0 = physically impossible)
-# clashes.collisions: List[BarCollision] — specific bar-to-bar intersections
-# clashes.critical_zone: BoundingBox — the most congested region
-# clashes.suggestions: List[str] — remediation strategies
-#   e.g., "Use mechanical couplers for column bars at this level"
-#   e.g., "Stagger beam bar termination: N beam 200mm above, S beam 200mm below"
-# clashes.geometry_3d: ThreeJSGeometry — for R3F visualization
-```
-
-### Architecture Fit
-- **Layer:** Services (`services/detailing/clash_detection.py`) + Visualization (`visualization/joint_3d.py`)
-- **Builds on:** Existing `beam_to_3d_geometry()` in `visualization/geometry_3d.py`
-- **New dependency:** `scipy.spatial` (already in requirements) for R-tree spatial indexing
-- **API endpoint:** `POST /api/v1/detailing/joint-clash`
-- **Frontend:** R3F 3D viewport showing joint with color-coded bars (green=OK, red=clash)
-
-### AI Agent Leverage
-- **@structural-math** implements the collision detection algorithm
-- **@structural-engineer** validates remediation suggestions against IS 456 / IS 13920
-- **@frontend** builds the R3F 3D joint visualization (already has Viewport3D)
-- **@api-developer** creates the endpoint
-- **@tester** validates against known congested joint configurations
-
-### Difficulty & Impact
-| Criterion | Score |
-|-----------|-------|
-| **Difficulty** | L (spatial algorithms are well-understood) |
-| **Impact** | 🏗️ **High** — prevents the #1 construction problem |
-| **Uniqueness** | 9/10 — Tekla shows bars but doesn't auto-detect congestion |
-| **Feasibility** | 9/10 — we already have 3D geometry |
-| **User Demand** | 10/10 — every contractor has faced this |
-| **Data Needed** | Member geometry + rebar layout (we have this) |
-
-### Key Technologies
-- **R-tree spatial indexing** (scipy.spatial) for fast collision queries
-- **OBB (Oriented Bounding Box)** collision detection for cylindrical bars
-- **Three.js / R3F** for 3D joint visualization (existing stack)
-- Existing **beam_to_3d_geometry()** as foundation
-
-### Example Scenario
-Column C1 (400×400, 8#20) at Floor 3, with 4 beams framing in:
-- Design software says: column has 8#20, each beam has ~5 bars
-- Clash detector finds: at the joint core, 8 column bars + 20 beam bars + tie hoops occupy 142% of available space
-- **Congestion ratio: 1.42** — physically impossible to place
-- Suggestion: "Replace 4 of 8 column bars with mechanical couplers at this level (saves 80mm), or reduce beam bar diameter from 20→16 and add bars (check capacity)"
-- Engineer resolves in software BEFORE construction instead of on-site during pouring
-
----
-
-## Idea 4: Load Combination Intelligence Engine
-
-### Problem
-**Missing load combinations are the #1 source of structural design errors in India.** IS 456 Table 18 specifies 6+ basic combinations. IS 875 Part 5 adds wind combinations. IS 1893 adds seismic combinations. When factored together (DL+LL, 1.5DL+1.5LL, 1.2DL+1.2LL+1.2EQx, 0.9DL+1.5EQy, etc.), a typical building has 20-40 governing load cases. Engineers manually select combinations in ETABS/STAAD and routinely miss critical ones — especially wind uplift (0.9DL+1.5WL) and seismic reversal cases.
-
-### Innovation
-An **intelligent load combination engine** that:
-1. Takes basic load cases (DL, LL, WL, EQ) as input
-2. Auto-generates ALL combinations per IS 456 Table 18, IS 875:2015 Part 5, and IS 1893:2016
-3. Identifies the **governing combination** for each force component (max Mu, max Vu, max P, min P)
-4. Detects **missing critical combinations** if the user provides a subset
-5. Generates **design envelopes** (max/min moment, shear, axial, torsion along member length)
-6. Handles special cases: pattern loading for slabs, partial live load, crane loads
-
-### Why Nobody Has This
-- ETABS/STAAD require manual combination setup — they don't auto-generate per Indian codes
-- Open-source tools have zero load combination capability
-- The intelligence layer (detecting missing combinations, suggesting critical ones) doesn't exist anywhere
-- India-specific: IS 875:2015 Part 5 (limit state wind combinations) changed significantly from the 1987 version — most software templates are outdated
-- This requires deep knowledge of multiple Indian codes working together (IS 456 + IS 875 + IS 1893)
-
-### Python API Sketch
-```python
-from structural_lib.loads import LoadCombinationEngine
-
-engine = LoadCombinationEngine(codes=["IS456:2000", "IS875:2015", "IS1893:2016"])
-
-combos = engine.generate_combinations(
-    load_cases={
-        "DL": LoadCase(type="dead", description="Self-weight + superimposed"),
-        "LL": LoadCase(type="live", description="Floor live load"),
-        "WLx": LoadCase(type="wind", description="Wind along X"),
-        "WLz": LoadCase(type="wind", description="Wind along Z"),
-        "EQx": LoadCase(type="seismic", description="Seismic along X"),
-        "EQz": LoadCase(type="seismic", description="Seismic along Z"),
-    },
-    structure_type="residential",  # Affects IS 875 importance factor
-    seismic_zone="III",           # IS 1893 Table 3
-    importance_factor=1.0,
-)
-
-# combos.all_combinations: List[LoadCombination]
-#   e.g., LoadCombination(
-#     name="1.5(DL+LL)", factors={"DL": 1.5, "LL": 1.5},
-#     clause="IS 456 Table 18, Load Combination 1",
-#     governs_for=["Mu_max", "Vu_max"]
-#   )
-# combos.governing_per_force: Dict[str, LoadCombination]
-# combos.envelope: DesignEnvelope — max/min of each force component
-# combos.missing_critical: List[str] — if user provided subset, what's missing
-# combos.total_count: int (typically 20-40 for seismic buildings)
-```
-
-### Architecture Fit
-- **Layer:** Core types + Codes (`codes/is456/loads.py`, `codes/is875/combinations.py`, `codes/is1893/combinations.py`)
-- **New modules:** `codes/is875/` and `codes/is1893/` (parallel to existing `codes/is456/`)
-- **Integration:** Feeds into existing `design_beam_is456()` — design with envelopes instead of single load case
-- **API endpoint:** `POST /api/v1/loads/combinations`
-- **Frontend:** Combination matrix table + envelope diagrams in R3F
-
-### AI Agent Leverage
-- **@structural-engineer** researches exact combination rules from IS 456/IS 875/IS 1893
-- **@structural-math** implements the combination generation and envelope computation
-- **@library-expert** validates against professional practice and common mistakes
-- **@api-developer** creates the endpoint
-- **@frontend** builds the envelope visualization and combination matrix
-
-### Difficulty & Impact
-| Criterion | Score |
-|-----------|-------|
-| **Difficulty** | M (rule-based, lots of code clauses to implement) |
-| **Impact** | ⚡ **Critical** — prevents the #1 design error |
-| **Uniqueness** | 8/10 — ETABS has combos but not auto-generation or intelligence layer |
-| **Feasibility** | 10/10 — pure rule-based logic, no ML needed |
-| **User Demand** | 10/10 — every engineer deals with this daily |
-| **Data Needed** | IS 456 Table 18, IS 875 Part 5 Table 4, IS 1893 Cl 6.3.2 (public domain) |
-
-### Key Technologies
-- **Pure Python rule engine** — no external dependencies
-- **IS 456 Table 18** combination factors
-- **IS 875:2015 Part 5** limit state wind load combinations
-- **IS 1893:2016** seismic load combinations and response reduction factors
-
-### Example Scenario
-Engineer designing a 6-story building in Seismic Zone III with wind loads:
-- Without engine: Manually creates 12 combinations, misses `0.9DL + 1.5WLx` (wind uplift on roof beams)
-- With engine: Auto-generates 32 combinations, identifies roof beam B-R1 governed by wind uplift
-- **Missing combination alert:** "⚠️ Critical: Load combination 0.9DL+1.5WLx not included. This governs for minimum axial force in columns C5, C8 and negative moment in roof beams B-R1 through B-R4."
-- Engineer catches the error BEFORE submission. Without this, the roof beams would have been under-reinforced for reversal.
-
----
-
-## Idea 5: Automated Design Narrative Generator
-
-### Problem
-**Engineers spend 30-40% of their time writing design notes** — explaining WHY they made specific choices. "Why 4#16 instead of 3#20 when both provide similar area?" "Why 8mm stirrups at 150mm c/c when 10mm at 200mm is also sufficient?" These explanations are required for peer review, regulatory approval, and future reference. Currently, they're written manually in Word documents, often after the fact, and frequently incomplete.
-
-### Innovation
-An **AI-powered design narrative generator** that automatically produces engineering explanations for every design decision:
-1. Tracks the decision tree during design (what was tried, what was rejected, why)
-2. Generates human-readable narratives in professional engineering language
-3. Explains trade-offs: "4#16 was chosen over 3#20 because: (a) better crack control (smaller bar spacing), (b) 7% less steel weight, (c) easier bar bending (16mm vs 20mm)"
-4. References specific code clauses for each decision
-5. Produces complete design calculation sheets ready for submission
-
-### Why Nobody Has This
-- Design tools output numbers, not reasoning
-- The decision tree is lost after computation — nobody records "we tried X, it failed clause Y, so we chose Z"
-- Natural language generation for engineering requires domain-specific vocabulary and reasoning
-- This is fundamentally different from our existing NL → design feature (Feature 8) — this is design → NL (the reverse direction)
-- Requires our multi-step pipeline architecture that records intermediate states
-
-### Python API Sketch
-```python
-from structural_lib.narratives import DesignNarrativeGenerator
-
-narrator = DesignNarrativeGenerator(language="en", style="professional")
-narrative = narrator.explain_beam_design(
-    design_result=result,           # Full BeamDesignResult from design_beam_is456()
-    alternatives_tried=[alt1, alt2], # Other configurations considered
-    project_context="Residential building, moderate exposure",
-)
-
-# narrative.summary: str
-#   "Beam B1 (300×500mm, M25/Fe500) is designed for Mu=185 kN·m and Vu=120 kN.
-#    Flexural reinforcement: 4#16 (Ast=804 mm²) at bottom, providing 1.62× the
-#    minimum required (497 mm²). This configuration was selected over 3#20
-#    (Ast=942 mm²) because..."
-#
-# narrative.decisions: List[DesignDecision]
-#   DesignDecision(
-#     topic="Flexural reinforcement selection",
-#     choice="4#16 (Ast=804 mm²)",
-#     alternatives=["3#20 (Ast=942 mm²)", "2#20+1#16 (Ast=829 mm²)"],
-#     reasons=["Better crack control: bar spacing 62mm vs 96mm (IS 456 Cl 26.3.3)",
-#              "7.2% less steel by weight (5.05 kg/m vs 5.44 kg/m)",
-#              "Easier fabrication: 16mm bars require less bending force"],
-#     clause_refs=["IS 456 Cl 26.5.1.1", "IS 456 Cl 26.3.3"]
-#   )
-#
-# narrative.calculation_sheet: str — formatted calc sheet for submission
-# narrative.review_checklist: str — peer review checklist
-```
-
-### Architecture Fit
-- **Layer:** Services (`services/narratives/generator.py`)
-- **Depends on:** Existing `design_beam_is456()` result + decision metadata
-- **Requires:** Recording alternatives during design (add to beam_pipeline.py)
-- **API endpoint:** `POST /api/v1/narratives/explain`
-- **Frontend:** Expandable narrative panel alongside design results
-
-### AI Agent Leverage
-- **@structural-math** adds decision recording to the design pipeline
-- **@library-expert** crafts professional engineering vocabulary and phrasing
-- **@structural-engineer** validates that explanations are technically correct
-- **@api-developer** creates the endpoint
-- **@frontend** builds the narrative panel with collapsible decision trees
-
-### Difficulty & Impact
-| Criterion | Score |
-|-----------|-------|
-| **Difficulty** | M (decision recording is the hard part, narrative generation is template-based) |
-| **Impact** | 📝 **High** — saves 30-40% of documentation time |
-| **Uniqueness** | 10/10 — NO design tool explains its reasoning |
-| **Feasibility** | 8/10 — requires pipeline changes to record alternatives |
-| **User Demand** | 9/10 — regulatory submissions require explanations |
-| **Data Needed** | Decision tree from design pipeline (need to add recording) |
-
-### Key Technologies
-- **Template-based narrative generation** (Jinja2) — NOT LLM-based (deterministic, reproducible)
-- **Decision tree recording** in the beam design pipeline
-- **Engineering vocabulary corpus** — curated list of professional terms and phrases
-- **Mermaid.js** for decision tree diagrams in the frontend
-
-### Example Scenario
-Engineer designs beam B1 and clicks "Generate Design Note":
-```
-DESIGN NOTE: Beam B1 — Third Floor, Grid A-1 to A-4
-
-1. DESIGN DATA
-   Clear span: 5.8m | Loading: DL=12.5 kN/m, LL=8.0 kN/m
-   Concrete: M25 (fck=25 N/mm²) | Steel: Fe500 (fy=500 N/mm²)
-   Factored moment: Mu = 185 kN·m | Factored shear: Vu = 120 kN
-
-2. SECTION SELECTION
-   Selected: 300×500mm (overall depth)
-   Rationale: Span/depth ratio = 5800/450 = 12.9 < 20 (IS 456 Cl 23.2.1, PASS)
-   Alternatives considered: 250×550 (rejected: b/d ratio too narrow for ductility)
-
-3. FLEXURAL REINFORCEMENT
-   Required: Ast = 497 mm² (IS 456 Cl 38.1, balanced section analysis)
-   Provided: 4#16 = 804 mm² (utilization: 61.8%)
-   Selection rationale:
-   ✓ 4#16 preferred over 3#20 because bar spacing (62mm) provides
-     better crack control per IS 456 Cl 26.3.3
-   ✓ 7.2% less steel weight than 3#20 option
-   ✓ All bars same diameter — simplifies site execution
-```
-
----
-
-## Idea 6: Retrofit / Strengthening Assessment Engine
-
-### Problem
-**India has 25+ million buildings constructed before IS 1893:2002** (the first modern seismic code). Most of these need assessment and strengthening, especially after the 2001 Gujarat earthquake killed 20,000+ people. The market for structural assessment and retrofit is massive (estimated ₹50,000 crore opportunity) but there are NO open-source tools for it. Engineers use manual Excel sheets or expensive consulting software.
-
-### Innovation
-An assessment and strengthening engine that:
-1. **Assesses** existing RC sections against current code requirements (IS 456:2000 + IS 1893:2016)
-2. **Identifies deficiencies:** insufficient reinforcement, inadequate ductile detailing, missing confining hoops
-3. **Quantifies** strengthening needed: additional Ast, additional confining steel, section enlargement
-4. **Designs retrofit interventions** per IS 15988:2013 (Evaluation and Strengthening of Existing RC Buildings):
-   - Concrete jacketing (section enlargement)
-   - FRP (Fiber Reinforced Polymer) wrapping — flexural and shear strengthening
-   - Steel plate bonding
-   - Additional RC walls / bracing
-5. **Compares** before/after capacity with clear visualization
-
-### Why Nobody Has This
-- All structural design tools assume **new construction** — they never ask "what already exists?"
-- Retrofit design requires WORKING BACKWARDS from existing geometry/reinforcement
-- IS 15988:2013 is relatively new and not implemented in any software
-- FRP design uses completely different mechanics (strain compatibility with existing section)
-- The combination of assessment + retrofit design + IS 15988 doesn't exist anywhere
-
-### Python API Sketch
-```python
-from structural_lib.retrofit import RetrofitAssessment, FRPStrengthening
-
-# Step 1: Assess existing section
-assessment = RetrofitAssessment.assess_beam(
-    existing=ExistingBeamSection(
-        b_mm=250, D_mm=400,
-        fck_existing=20,  # Estimated from core test or rebound hammer
-        fy_existing=415,  # Pre-2000 construction used Fe415
-        top_bars="2#12", bottom_bars="3#16",
-        stirrups="8mm@250c/c",
-        clear_cover_mm=25, condition="moderate_corrosion",
-    ),
-    current_demand=LoadDemand(Mu_kNm=160, Vu_kN=95),
-    target_code="IS456:2000",
-)
-# assessment.flexural_deficiency_pct: 23.5%
-# assessment.shear_deficiency_pct: 12.0%
-# assessment.ductility_score: "Poor" (no confining hoops)
-
-# Step 2: Design FRP strengthening
-frp = FRPStrengthening.design(
-    existing_section=assessment.section,
-    deficiency=assessment.deficiency,
-    frp_type="CFRP",  # Carbon FRP
-    frp_properties=CFRPProperties(
-        tensile_strength_MPa=3500,
-        elastic_modulus_GPa=230,
-        thickness_mm=0.167,  # per ply
-    ),
-    code="IS15988:2013",
-)
-# frp.flexural_plies: 2 (bottom soffit)
-# frp.shear_wraps: 1 ply U-wrap @ 200mm c/c
-# frp.capacity_after: CapacityResult(Mu=210 kNm, Vu=125 kN)
-# frp.cost_estimate_inr: 45000  # per beam
-```
-
-### Architecture Fit
-- **Layer:** Codes (`codes/is15988/`) for IS 15988 math + Services (`services/retrofit/`)
-- **New code module:** `codes/is15988/` parallel to `codes/is456/`
-- **Integration:** Uses existing section analysis functions, adds degradation factors
-- **API endpoint:** `POST /api/v1/retrofit/assess` + `POST /api/v1/retrofit/strengthen`
-- **Frontend:** Before/after comparison view, capacity bar charts, FRP wrapping visualization in R3F
-
-### AI Agent Leverage
-- **@structural-engineer** researches IS 15988:2013 clauses and FRP design principles
-- **@structural-math** implements strain compatibility for FRP-strengthened sections
-- **@library-expert** validates against published retrofit case studies
-- **@api-developer** creates assessment and strengthening endpoints
-- **@frontend** builds before/after comparison visualization
-- **@tester** validates against IS 15988 worked examples
-
-### Difficulty & Impact
-| Criterion | Score |
-|-----------|-------|
-| **Difficulty** | XL (entirely new code module + new mechanics) |
-| **Impact** | 🔧 **Game-changing** — ₹50,000 crore unserved market in India |
-| **Uniqueness** | 10/10 — NO open-source retrofit tool exists |
-| **Feasibility** | 7/10 — FRP mechanics are complex but well-documented |
-| **User Demand** | 8/10 — growing rapidly as older buildings need assessment |
-| **Data Needed** | IS 15988:2013 (public), FRP manufacturer data, ACI 440.2R reference |
-
-### Key Technologies
-- **IS 15988:2013** — Evaluation and Strengthening of Existing RC Buildings
-- **Strain compatibility analysis** for composite sections (concrete + steel + FRP)
-- **ACI 440.2R** — FRP strengthening (widely referenced in India alongside IS 15988)
-- **Material degradation models** — corrosion, carbonation, fire damage assessment
-
-### Example Scenario
-A 30-year-old school building in Seismic Zone IV needs assessment after the 2023 earthquake:
-- Existing beams: 250×400mm, M20 concrete (core tests show fck=18), Fe415 steel, moderate corrosion
-- Current IS 1893 demand: Mu=160 kNm, Vu=95 kN
-- **Assessment result:** Flexural capacity = 122 kNm (23.5% deficient), Shear = 85 kN (10.5% deficient)
-- **Retrofit design:** 2 plies CFRP soffit for flexure + U-wraps for shear
-- **After strengthening:** Flexural = 210 kNm (31% margin), Shear = 125 kN (31% margin)
-- **Cost:** ₹45,000/beam × 40 beams = ₹18 lakhs (vs ₹3+ crore for demolition and rebuild)
-
----
-
-## Idea 7: Design Version Control (Git for Structural Designs)
-
-### Problem
-Structural design is iterative — a beam may go through 10+ revisions as loads change, architecture evolves, and peer review comments are addressed. Currently, engineers save versions as "B1_v1.xlsx", "B1_v2_final.xlsx", "B1_v2_final_FINAL.xlsx". There is NO way to:
-- See exactly what changed between two design revisions
-- Branch a design to explore alternatives without losing the original
-- Merge design changes from two engineers working on different parts
-- Roll back to a previous version when a change proves wrong
-- Attribute each change to a specific person for accountability
-
-### Innovation
-A **structural design version control system** built into the library:
-1. Every design call is recorded with full inputs, outputs, and a SHA-256 content hash
-2. Designs are stored in a **design repository** (local JSON-based, optionally Git-backed)
-3. Changes between versions are computed as **structural diffs**: "bar count changed from 3→4, moment utilization dropped from 0.92→0.74"
-4. Engineers can **branch** a design, explore alternatives, and **merge** the preferred one
-5. Every version is linked to the engineer who made it (accountability trail)
-6. Visualization shows design evolution over time (timeline + parameter plots)
-
-### Why Nobody Has This
-- Structural software treats each analysis as independent — no concept of design history
-- Version control exists for code (Git) and documents (SharePoint) but not for engineering designs
-- This requires a domain-specific diff engine — generic file diff can't compare structural parameters meaningfully
-- Export formats (DXF, PDF) are designed for consumption, not version tracking
-- Engineers use file naming conventions because no better tool exists
-
-### Python API Sketch
-```python
-from structural_lib.versioning import DesignRepository, DesignDiff
-
-repo = DesignRepository("./project_designs/")
-
-# Save a design version
-version_1 = repo.commit(
-    member_id="B1-F3",
-    design_result=result_v1,
-    author="A.Kumar",
-    message="Initial design per architectural load",
-)
-
-# Make changes and save again
-version_2 = repo.commit(
-    member_id="B1-F3",
-    design_result=result_v2,
-    author="A.Kumar",
-    message="Revised after MEP coordination — added 2kN/m duct load",
-)
-
-# See what changed
-diff = DesignDiff.compare(version_1, version_2)
-# diff.changes: [
-#   Change("loads.dead_kN_m", 12.5, 14.5, "Increased by 2.0 kN/m"),
-#   Change("reinforcement.bottom_bars", "3#16", "4#16", "Added 1 bar"),
-#   Change("utilization.flexure", 0.92, 0.74, "Decreased (more conservative)"),
-#   Change("cost.steel_kg_per_m", 3.78, 5.05, "Increased 33.6%"),
-# ]
-# diff.summary: "Load increased 16%, reinforcement increased 33%, utilization improved."
-
-# Branch to explore alternative
-branch = repo.branch("B1-F3", name="alt-deeper-section")
-# ... try a deeper section on the branch ...
-# repo.merge("alt-deeper-section") if better, or repo.discard_branch("alt-deeper-section")
-```
-
-### Architecture Fit
-- **Layer:** Services (`services/versioning/repository.py`, `services/versioning/diff.py`)
-- **Storage:** Local JSON files (one per member per version), optionally Git-backed
-- **No external dependencies** beyond standard library (json, hashlib, pathlib)
-- **API endpoint:** `POST /api/v1/designs/commit`, `GET /api/v1/designs/diff/{v1}/{v2}`, `GET /api/v1/designs/history/{member_id}`
-- **Frontend:** Timeline view + structural diff panel + branch/merge UI
-
-### AI Agent Leverage
-- **@backend** implements the version repository and structural diff engine
-- **@api-developer** creates the versioning endpoints
-- **@frontend** builds the timeline and diff visualization
-- **@security** ensures the SHA-256 integrity chain is correct
-- **@tester** validates merge conflict resolution
-
-### Difficulty & Impact
-| Criterion | Score |
-|-----------|-------|
-| **Difficulty** | M (inspired by Git, simpler because designs are structured data) |
-| **Impact** | 📚 **High** — transforms collaboration and accountability |
-| **Uniqueness** | 10/10 — NO structural tool has version control for designs |
-| **Feasibility** | 9/10 — JSON storage, standard algorithms |
-| **User Demand** | 8/10 — every engineer with >5 design revisions needs this |
-| **Data Needed** | Design results (we already generate these as structured data) |
-
-### Key Technologies
-- **Content-addressable storage** (SHA-256 hashing, Git-inspired)
-- **Structural diff algorithm** (domain-specific, compares engineering parameters)
-- **JSON serialization** via pydantic models (already used throughout)
-- **Timeline visualization** (D3.js or built-in React timeline component)
-
-### Example Scenario
-Team of 3 engineers working on a 15-story building:
-- Engineer A designs beams on floors 1-5, commits 45 design versions over 2 weeks
-- Engineer B designs beams on floors 6-10, commits 38 versions
-- Architect changes floor plan on floor 3 — Engineer A revises 8 beams, commits new versions
-- Peer reviewer opens the diff: "Floor 3 beam B3: loads increased 18%, but reinforcement only increased 5%. Utilization now 0.97 — too close to capacity."
-- Engineer A sees the comment, branches to explore a deeper section, finds it works, merges
-- **Full audit trail preserved** — who changed what, when, and why
-
----
-
-## Idea 8: Physics-Informed Neural Network (PINN) Estimator
-
-### Problem
-Preliminary structural sizing takes significant time. Before detailed design, engineers need quick estimates: "For this span and loading, roughly what beam size do I need?" Currently they use thumb rules (span/12 for beams, span/8 for slabs) which are crude and often lead to oversized sections. A fast, physics-aware estimator could provide much better preliminary sizing — but it must NEVER replace the full code check.
-
-### Innovation
-A **PINN-based preliminary sizing tool** that:
-1. Is trained on 100,000+ designs generated by our own library (ground truth from IS 456)
-2. Uses physics-informed loss functions that embed the governing equations (equilibrium, compatibility, constitutive)
-3. Provides instant (~10ms) preliminary dimensions: b, D, Ast_approximate for given loads
-4. Always indicates confidence bounds and training domain limits
-5. ALWAYS runs the full IS 456 code check afterward — the PINN output is a starting point, never the answer
-6. Refuses to estimate outside its training domain (extrapolation detection)
-
-**RESEARCH PROTOTYPE — NOT FOR STRUCTURAL DESIGN.** The PINN provides fast preliminary estimates only. All designs must always be checked against IS 456.
-
-### Why Nobody Has This
-- ML in structural engineering is mostly research papers — no production tool uses it
-- Generic ML models don't respect physics — they can violate equilibrium or produce impossible sections
-- PINNs embed physics directly in the loss function, providing physics-consistent estimates
-- Training data must come from a validated design library (ours), not random datasets
-- The PINN + mandatory code check combination (fast estimate then rigorous verification) is novel
-
-### Python API Sketch
-```python
-from structural_lib.research.pinn_estimator import PINNBeamEstimator
-
-estimator = PINNBeamEstimator.load_pretrained("beam_sizing_v1")
-
-# PRELIMINARY ESTIMATE ONLY — always follow with full code check
-estimate = estimator.predict(
-    span_mm=6000, Mu_kNm=200, Vu_kN=130,
-    fck=25, fy=500,
-    exposure="moderate",
-)
-# estimate.b_mm: 300 (confidence: ±25mm)
-# estimate.D_mm: 550 (confidence: ±50mm)
-# estimate.Ast_mm2: 950 (confidence: ±100mm²)
-# estimate.in_training_domain: True
-# estimate.confidence_score: 0.87
-# estimate.warning: "PRELIMINARY ESTIMATE — run design_beam_is456() for final design"
-
-# ALWAYS verify with full code check:
-from structural_lib.services.api import design_beam_is456
-final = design_beam_is456(b_mm=estimate.b_mm, ...)
-```
-
-### Architecture Fit
-- **Layer:** Research (`research/pinn_estimator.py`) — explicitly NOT in production `codes/` or `services/`
-- **Dependencies:** PyTorch or JAX (optional, only for research module)
-- **Training data:** Generated by our own `design_beam_is456()` — self-supervised
-- **Critical safeguard:** Research module CANNOT be imported by production code
-- **API endpoint:** `POST /api/v1/research/estimate` (clearly marked as research/preliminary)
-- **Frontend:** Estimate panel with prominent "⚠️ PRELIMINARY — verify with full design" banner
-
-### AI Agent Leverage
-- **@structural-math** implements the PINN architecture and physics-informed loss
-- **@tester** generates training data (100k+ designs) and validates against ground truth
-- **@structural-engineer** verifies physics constraints are correctly embedded
-- **@security** reviews that research module cannot be imported by production code
-- **@frontend** builds the estimate panel with clear warnings
-
-### Difficulty & Impact
-| Criterion | Score |
-|-----------|-------|
-| **Difficulty** | XL (PINN training, physics loss functions, domain detection) |
-| **Impact** | 🚀 **High** — 100× faster preliminary sizing |
-| **Uniqueness** | 10/10 — no structural tool uses PINNs for sizing |
-| **Feasibility** | 6/10 — research-grade, needs careful validation |
-| **User Demand** | 7/10 — useful for feasibility studies and early design |
-| **Data Needed** | Self-generated from our own library (no external data) |
-| **Safety** | ⚠️ Mandatory code check after every estimate. Training domain enforcement |
-
-### Key Technologies
-- **Physics-Informed Neural Networks** (Raissi et al., 2019) — embed PDEs in loss function
-- **PyTorch** or **JAX** for neural network training
-- **Sahin et al. (2024)** — precedent for PINN applied to RC beam digital twin
-- Our own `design_beam_is456()` as training data generator
-
-### Example Scenario
-Architect asks: "I need a beam spanning 7m carrying 25kN/m. What size should I allow in the floor-to-floor height?"
-- Without PINN: Engineer manually tries 300×600, runs design, too small. Tries 300×650, runs design, OK.
-- With PINN: Instant estimate: 300×650mm, Ast≈1200mm². Confidence: 87%. In training domain: Yes.
-- Engineer runs full design: 300×650mm works with Ast=1180mm². **Estimate was within 2%.**
-- Time saved: 15 minutes of trial-and-error → 10 milliseconds
-
----
-
-## Idea 9: Structural Health Monitoring (SHM) Digital Twin Schema
-
-### Problem
-Modern buildings increasingly have embedded sensors (accelerometers, strain gauges, tilt sensors), but there is NO standard way to connect sensor data to structural capacity assessment. A sensor reading of "2mm deflection at mid-span" is meaningless without context: what's the design deflection limit? What portion of capacity is being used? Is this within normal range? Structural engineers can answer these questions, but they need to manually pull out the original design and compare.
-
-### Innovation
-A **digital twin schema** that connects our design library to real-world monitoring:
-1. **Design baseline:** Store the as-designed capacity, expected deflections, expected frequencies for every member
-2. **Sensor mapping:** Define which sensors monitor which structural parameters on which members
-3. **Assessment engine:** When sensor data arrives, automatically compute:
-   - Current utilization ratio (measured/design capacity)
-   - Deviation from expected behavior (measured frequency vs design frequency)
-   - Health score (1-100) for each member and the overall structure
-4. **Alert system:** Flag abnormal readings that may indicate damage, overload, or degradation
-5. **Remaining life estimation:** Based on measured load history and fatigue models
-
-**Schema definition only** — actual IoT connectivity and real-time data collection is out of scope.
-
-### Why Nobody Has This
-- SHM systems (deployed on bridges, tall buildings) are custom-built for each project
-- No design tool provides a standard data model for connecting sensors to structural assessment
-- The gap between "design" and "monitoring" is enormous — different people, different tools, different data formats
-- OpenSees can model structures but has no sensor data integration
-- buildingSMART IFC defines geometry but not monitoring schemas
-- We uniquely bridge this gap because we have both the design output AND the assessment capability
-
-### Python API Sketch
-```python
-from structural_lib.digital_twin import DigitalTwinSchema, StructuralAssessment
-
-# Create digital twin baseline from design
-twin = DigitalTwinSchema.from_design_results(
-    members={
-        "B1-F3": beam_design_result,
-        "C1-F3": column_design_result,
-    },
-    natural_frequencies={
-        "mode_1": 2.34,  # Hz, from dynamic analysis
-        "mode_2": 3.81,
-    },
-)
-
-# Register sensor mapping
-twin.map_sensor("ACC-B1-MID", member="B1-F3", parameter="acceleration_vertical",
-                location="mid_span", expected_range_g=(-0.01, 0.01))
-twin.map_sensor("STR-B1-BOT", member="B1-F3", parameter="strain_microstrain",
-                location="bottom_fiber_mid_span", expected_range=(-50, 800))
-
-# Assess from sensor reading
-assessment = StructuralAssessment.evaluate(
-    twin=twin,
-    readings={
-        "ACC-B1-MID": 0.008,  # g
-        "STR-B1-BOT": 650,    # microstrain
-    },
-    timestamp="2026-07-11T14:30:00Z",
-)
-# assessment.member_health["B1-F3"]: HealthScore(score=72, status="MONITOR",
-#   note="Strain at 81% of yield threshold. Within design limits but trending upward.")
-# assessment.alerts: [] or [Alert("STR-B1-BOT approaching 80% yield threshold")]
-# assessment.overall_score: 85
-```
-
-### Architecture Fit
-- **Layer:** Services (`services/digital_twin/schema.py`, `services/digital_twin/assessment.py`)
-- **Builds on:** Existing design result models (pydantic)
-- **Storage:** JSON schema files (portable, tool-agnostic)
-- **API endpoint:** `POST /api/v1/digital-twin/create`, `POST /api/v1/digital-twin/assess`
-- **Frontend:** Health dashboard with per-member status indicators
-
-### AI Agent Leverage
-- **@structural-engineer** defines the assessment criteria and health scoring algorithm
-- **@structural-math** implements strain/stress/deflection back-calculation from sensor data
-- **@api-developer** creates the digital twin endpoints
-- **@frontend** builds the health monitoring dashboard
-- **@security** ensures sensor data validation (malicious readings, out-of-range rejection)
-
-### Difficulty & Impact
-| Criterion | Score |
-|-----------|-------|
-| **Difficulty** | L (schema definition, assessment is straightforward using existing capacity calcs) |
-| **Impact** | 🔗 **Future-defining** — positions the library for IoT-era structural engineering |
-| **Uniqueness** | 10/10 — no design tool provides a monitoring schema |
-| **Feasibility** | 8/10 — schema is simple, assessment uses existing functions |
-| **User Demand** | 6/10 — growing as sensor costs drop, not mainstream yet |
-| **Data Needed** | Design results (we have these) + sensor specifications (from manufacturers) |
-
-### Key Technologies
-- **Pydantic models** for schema definition
-- **JSON Schema** for portable, tool-agnostic exchange
-- **Existing capacity functions** for assessment (Mu_capacity, Vu_capacity, deflection)
-- **Statistical process control** (SPC) for anomaly detection in sensor readings
-
-### Example Scenario
-A hospital in Seismic Zone V with 50 embedded sensors:
-- Digital twin created from design results: 120 beams, 48 columns, all with design baselines
-- After a minor earthquake (M4.5), sensor data streams in
-- Assessment engine runs: all members show strain spikes that returned to baseline within 30 seconds
-- **Health score: 94/100** — temporary dynamic loading, no permanent deformation detected
-- Alert: "Column C12 strain peak was 78% of yield threshold — recommend visual inspection"
-- Building manager receives a clear dashboard instead of raw sensor data
-
----
-
-## Idea 10: Arbitrary Cross-Section Analysis Engine
-
-### Problem
-Real-world structural members aren't always rectangular or circular. Engineers regularly encounter: L-shaped columns (at building corners), T-beams (integral with slabs), non-standard polygonal sections (architectural requirements), composite sections (steel-concrete), sections with openings (ducts/pipes passing through). Our library currently handles only rectangular and circular sections. For anything else, engineers resort to specialized software or manual calculations.
-
-### Innovation
-An **arbitrary cross-section analysis engine** that:
-1. Accepts any polygon-defined cross-section (vertices as input)
-2. Handles multiple concrete regions (different grades), multiple steel layers, FRP wrapping
-3. Computes: gross properties (A, Ix, Iy, J), cracked properties, moment-curvature relationship
-4. Generates P-M interaction diagrams for any section shape
-5. Handles biaxial bending (Mx-My interaction for L-sections, irregular columns)
-6. Outputs stress/strain distributions at any load level for visualization
-
-Inspired by `concrete-properties` (219★) but integrated with our multi-code design framework instead of being standalone.
-
-### Why Nobody Has This (in a design tool)
-- `concrete-properties` does section analysis but has NO design capability — no code checks, no reinforcement selection
-- Our library does IS 456 design but only for rectangular/circular sections
-- The combination (arbitrary geometry + code-based design + multi-code) doesn't exist
-- Non-rectangular sections require numerical integration (fiber method) instead of closed-form solutions
-- The fiber method is well-understood (used in OpenSees for analysis) but nobody applies it to design
-
-### Python API Sketch
-```python
-from structural_lib.sections import ArbitrarySection, FiberAnalysis
-
-# Define an L-shaped column section
-section = ArbitrarySection(
-    concrete_regions=[
-        ConcreteRegion(
-            vertices=[(0,0), (400,0), (400,200), (200,200), (200,400), (0,400)],
-            fck=30,
-        ),
-    ],
-    reinforcement=[
-        RebarLayer(x=40, y=40, dia=20),      # Corner bars
-        RebarLayer(x=360, y=40, dia=20),
-        RebarLayer(x=40, y=360, dia=20),
-        RebarLayer(x=160, y=160, dia=16),     # Interior bars
-        RebarLayer(x=160, y=40, dia=16),
-        RebarLayer(x=40, y=160, dia=16),
-    ],
-    clear_cover_mm=40,
-)
-
-# Gross section properties
-props = section.gross_properties()
-# props.area_mm2, props.Ixx_mm4, props.Iyy_mm4, props.centroid_x, props.centroid_y
-
-# Moment-curvature analysis
-mc = FiberAnalysis.moment_curvature(section, axial_force_kN=500, axis="xx")
-# mc.curvatures: List[float], mc.moments: List[float]
-# mc.yield_point, mc.ultimate_point, mc.ductility_ratio
-
-# P-M interaction diagram
-pm = FiberAnalysis.interaction_diagram(section, axis="xx", num_points=50)
-# pm.axial_forces: List[float], pm.moments: List[float]
-# pm.balanced_point, pm.pure_compression, pm.pure_tension
-
-# Biaxial P-Mx-My surface (for L-sections, irregular columns)
-pmmm = FiberAnalysis.biaxial_interaction(section, num_angles=36, num_points=20)
-# pmmm.surface: 3D surface data for visualization
-```
-
-### Architecture Fit
-- **Layer:** Core (`core/sections/arbitrary.py`) for geometry + Codes (`codes/is456/arbitrary_design.py`) for IS 456 checks
-- **New module:** `core/sections/` for section analysis (independent of code)
-- **Integration:** Extends existing column design functions for non-rectangular sections
-- **API endpoint:** `POST /api/v1/sections/analyze`, `POST /api/v1/sections/interaction`
-- **Frontend:** R3F 3D section visualization + interactive P-M diagram
-
-### AI Agent Leverage
-- **@structural-math** implements the fiber analysis and numerical integration
-- **@structural-engineer** validates moment-curvature and interaction diagrams against literature
-- **@frontend** builds the interactive section editor (draw vertices) and P-M diagram plotter
-- **@tester** validates against `concrete-properties` library results (cross-validation)
-- **@api-developer** creates the section analysis endpoints
-
-### Difficulty & Impact
-| Criterion | Score |
-|-----------|-------|
-| **Difficulty** | L (fiber method is well-documented, reference implementations exist) |
-| **Impact** | ⭐ **High** — enables design of real-world non-standard sections |
-| **Uniqueness** | 7/10 — `concrete-properties` does analysis; we add design + multi-code |
-| **Feasibility** | 9/10 — numerical methods are mature, reference results available |
-| **User Demand** | 8/10 — L-columns, T-beams, composite sections are very common |
-| **Data Needed** | Stress-strain models for concrete/steel (we already have these) |
-
-### Key Technologies
-- **Fiber method** for section analysis (discretize section into fibers, integrate stresses)
-- **Numerical integration** (Gauss quadrature over polygonal regions)
-- **Polygon geometry** algorithms (centroid, Ixx, Iyy, product of inertia)
-- **Shapely** for polygon operations (already available as optional dependency)
-- **Cross-validation** against `concrete-properties` (219★, MIT license) results
-
-### Example Scenario
-Architect wants an L-shaped column at the building corner (400×400 with 200×200 cutout):
-- Current tools: Engineer approximates as rectangular, wastes concrete, or does manual fiber analysis
-- With our engine: Define L-polygon, add bars, get exact P-M-M interaction surface
-- **Result:** 15% less concrete vs rectangular approximation, exact biaxial capacity known
-- IS 456 code checks applied to the ACTUAL section properties, not an approximation
-- 3D visualization in R3F shows stress distribution at any load level
-
----
+> **These are innovations in HOW WE BUILD the library, not what the library does.**
+> Focus: development tools, testing innovations, AI agent workflows, maintenance automation.
+> Version 1.0 was about library features — this version replaces it entirely.
+
+## Research Sources
+
+| Area | Source | Key Insight |
+|------|--------|-------------|
+| A. Aerospace safety | DO-178C + DO-333 formal methods supplement | Requirements-to-code traceability matrix; formal verification at highest criticality levels |
+| B. Metamorphic testing | T.Y. Chen (2018), 750+ papers | Test without knowing exact expected output — define relations between inputs/outputs instead |
+| C. Symbolic verification | SymPy assumptions system | Prove `0 < ρ < ρ_max` symbolically across all input ranges, not just test cases |
+| D. Supply chain security | SLSA v1.0 framework (Build L0-L3) | Provenance attestation: unforgeable proof of build origin and process |
+| E. Reproducible builds | reproducible-builds.org | Bit-for-bit identical output from same source — verify builds independently |
+| F. Mutation testing | mutmut 3.x | Inject faults into code; if tests still pass, tests are weak |
+| G. Agent coordination | GitHub agentic-development (65 repos) | Multi-agent conflict detection, semantic merge, concurrent editing protocols |
+| H. Formula documentation | Jupyter Book / MyST / literate programming | Executable documentation where formulas and code are the same artifact |
+| I. API compatibility | semantic versioning + AST diffing | Detect breaking changes by comparing abstract syntax trees, not string diffs |
+| J. IS 456 amendment tracking | BIS notification system, SP:16 errata | Code amendments propagate to dozens of functions — need automated tracking |
 
 ## Comparison Matrix
 
-| # | Idea | Difficulty | Impact | Uniqueness | Feasibility | Dependencies | Priority |
-|---|------|-----------|--------|------------|-------------|--------------|----------|
-| 1 | Rebar Cutting Stock Optimizer | M | 🌍 Game-changing | 10/10 | 9/10 | OR-Tools (Apache-2.0) | **P1** |
-| 2 | Regulatory Compliance Proof Engine | M | ⚡ Critical | 10/10 | 9/10 | None (wraps existing) | **P1** |
-| 3 | Beam-Column Joint Clash Detection | M | 🏗️ High | 9/10 | 9/10 | scipy.spatial (existing) | **P1** |
-| 4 | Load Combination Intelligence Engine | M | ⚡ Critical | 8/10 | 10/10 | None (pure Python) | **P1** |
-| 5 | Automated Design Narrative Generator | M | 📝 High | 10/10 | 8/10 | Jinja2 (existing) | **P2** |
-| 6 | Retrofit / Strengthening Assessment | XL | 🔧 Game-changing | 10/10 | 7/10 | New code module (IS 15988) | **P2** |
-| 7 | Design Version Control | M | 📚 High | 10/10 | 9/10 | None (std library) | **P2** |
-| 8 | PINN Estimator | XL | 🚀 High | 10/10 | 6/10 | PyTorch/JAX (optional) | **P3** |
-| 9 | SHM Digital Twin Schema | L | 🔗 Future | 10/10 | 8/10 | None (schema only) | **P3** |
-| 10 | Arbitrary Cross-Section Analysis | M | ⭐ High | 7/10 | 9/10 | Shapely (optional) | **P2** |
+> **Revised timeline:** ~30-35 weeks total (originally estimated ~20 weeks; difficulty upgrades after 3-agent review)
+
+| # | Innovation | Development Problem | Difficulty | Impact | Phase |
+|---|-----------|-------------------|:----------:|:------:|:-----:|
+| 1 | Symbolic-Numerical Crosscheck Engine | Formula errors survive 5000+ tests | M-H | Critical | 2 |
+| 2 | Metamorphic Test Amplifier | Writing test oracles for 564 functions is infeasible | M | High | 1 |
+| 3 | Formula Provenance Chain | No traceability from IS 456 clause to code to test | L-M | Critical | 1 |
+| 4 | Agent Conflict Resolution Protocol | 16 agents editing same files create merge conflicts | XL | High | 4 |
+| 5 | Living Formula Documentation | Docs drift from code within 2 sessions | L | High | 1 |
+| 6 | Semantic API Breakage Detector | String-based changelog misses breaking changes | L | Critical | 1 |
+| 7 | Self-Healing CI Pipeline | CI failures block all agents for hours | M | High | 2 |
+| 8 | Golden Vector Factory | Hand-crafting golden test vectors takes days per clause | M | High | 3 |
+| 9 | Code Amendment Propagation Engine | IS 456 amendments affect dozens of functions silently | XL | Critical | 4 |
+| 10 | Reproducible Calculation Attestation | No proof that a design result came from verified code | M-H | Critical | 3 |
 
 ---
 
-## Implementation Priority (Post-Review)
+## 3-Agent Review Summary
 
-### Phase 1 — Foundation (build first)
-1. **Arbitrary Cross-Section Analysis (Idea 10)** — Enables all future elements. Perfect architecture fit. Fiber method in `common/` serves all codes.
-2. **Load Combination Intelligence (Idea 4)** — Fixes clause refs first. Most dangerous real-world gap. Pure Python, zero deps.
+### Reviewers
 
-### Phase 2 — High Value
-3. **Rebar Cutting Stock Optimizer (Idea 1)** — Immediate money savings. Zero safety risk. OR-Tools as optional dep.
-4. **Beam-Column Joint Clash Detection (Idea 3)** — Highest industry need. Needs capacity-checked remediation.
+- **@reviewer:** Quality 8/10, Feasibility 6/10, Novelty 5/10. Verdict: NEEDS CHANGES
+- **@structural-engineer:** Formula verification, 3/6 metamorphic relations incorrect, Amendment 4 factual error
+- **@library-expert:** Architecture placement review, 4 wrong placements, build vs buy analysis
 
-### Phase 3 — Strategic
-5. **Regulatory Compliance Proof Engine (Idea 2)** — Data model in library, signing/PDF in app layer.
-6. **Retrofit Assessment (Idea 6)** — After Idea 10 (needs arbitrary sections). IS 15988 + ACI 440.2R.
+### Consensus Ranking (by effort-to-value ratio)
 
-### Phase 4 — Separate Packages
-7. **Design Narrative Generator (Idea 5)** — DecisionTrace in library, prose in app.
-8. **Design Version Control (Idea 7)** — Separate PyPI package.
-9. **PINN Estimator (Idea 8)** — Separate research package.
-10. **SHM Digital Twin (Idea 9)** — Separate package, premature for Indian market.
+| Rank | # | Innovation | Effort | Value | Verdict |
+|------|---|-----------|--------|-------|--------|
+| 1 | 6 | API Breakage Detector | 2 days (wire existing griffe) | Critical | BUY — griffe already installed |
+| 2 | 5 | Living Formula Docs | 3 days | High | BUILD (small) |
+| 3 | 3 | Provenance (as extension) | 1 week (extend traceability.py) | Critical | EXTEND existing @clause system |
+| 4 | 2 | Metamorphic Tests | 1 week (as Hypothesis tests) | High | EXTEND — no framework needed |
+| 5 | 1 | Symbolic Crosscheck | 3 weeks | Critical | BUILD — genuinely novel |
+| 6 | 7 | CI Diagnostician | 2 weeks | High | BUILD incrementally |
+| 7 | 8 | Golden Vector Factory | 2 weeks | High | BUILD |
+| 8 | 10 | Attestation MVP | 1 week | Medium | BUILD MVP only |
+| 9 | 9 | Amendment Propagation | 4 weeks | Critical (long-term) | BUILD later (depends on #3) |
+| 10 | 4 | Agent Conflict | Not recommended as described | Low | DEPRIORITIZE — existing hooks solve most of it |
+
+### Unanimous Conclusions
+
+- Ideas 1, 5, 9 are genuinely valuable and novel
+- Ideas 3, 4, 8, 10 have significant overlap with existing infrastructure that was NOT acknowledged
+- The proposed `verification/` folder violates architecture — distribute code to proper locations
+- SymPy MUST be dev-only dependency, never in structural_lib proper
+- Total timeline should be ~35 weeks, not ~20 weeks
+- 5 of 10 difficulty ratings are underestimated
+- 6 code bugs found in implementation sketches
+
+### Critical Architecture Warning
+
+Do NOT create `Python/structural_lib/verification/` as proposed. Correct placement:
+- Test infrastructure (symbolic, metamorphic) → `Python/tests/`
+- Development tooling (provenance, amendments) → `scripts/`
+- Runtime feature (attestation) → `Python/structural_lib/services/attestation.py`
 
 ---
 
-## Relationship to Existing Documented Features
+## Idea 1: Symbolic-Numerical Crosscheck Engine
 
-These 10 ideas are **complementary to, not overlapping with** the 10 features in `2026-state-of-the-art-report.md`:
+### Development Problem
 
-| Documented Feature | This Document's Complement |
-|-------------------|---------------------------|
-| Transparent Calc Traces → | Compliance Proof Engine (adds legal/regulatory proof layer) |
-| ETABS Pipeline → | Load Combination Intelligence (catches what ETABS misses) |
-| Benchmark Verification → | PINN Estimator (fast prelim estimates before full verification) |
-| Carbon Scoring → | Rebar Cutting Optimizer (reduces waste = reduces embodied carbon) |
-| Generative Design → | Arbitrary Sections (generative design for non-standard shapes) |
-| PDF Reports → | Design Narratives (explains WHY, not just WHAT) |
-| Parametric Engine → | Design Version Control (track parameter changes over time) |
-| NL Interface → | (complementary — NL input, Narratives output) |
-| Multi-Code Comparison → | Retrofit Assessment (assess existing + strengthen per code) |
-| IFC/BIM Export → | SHM Digital Twin (extends BIM model with monitoring capability) |
+We have 564 functions and 5,143 tests. Yet formula errors can hide for months. Why? Because numerical tests only check specific input values. A test that checks `Mu_lim` for `fck=25, fy=415, b=300, d=450` tells you nothing about whether the formula is correct for `fck=30, fy=500, b=250, d=500`. A wrong exponent, a swapped variable, a missing factor — if the specific test value happens to be close enough, the test passes.
+
+In aerospace (DO-178C Level A), this is solved with formal verification: prove the formula is correct for ALL inputs, not just test cases. We can bring this to structural engineering Python.
+
+### Innovation
+
+Build a crosscheck engine that maintains TWO independent representations of every critical formula:
+1. **Numerical** (current Python code) — fast, used in production
+2. **Symbolic** (SymPy expression) — slow, used for verification
+
+At test time, the engine:
+- Evaluates both representations for random inputs (Hypothesis-powered)
+- Checks that they agree within floating-point tolerance
+- Proves algebraic properties symbolically (e.g., `Mu_lim > 0` for all valid inputs)
+- Detects when a code change breaks the symbolic equivalence
+
+### Why This Does Not Exist
+
+No structural engineering library has symbolic verification. SymPy exists, Hypothesis exists, but nobody combines them with domain-specific structural formulas. The closest analog is NASA's PVS theorem prover for flight software — but that is not Python and not for civil engineering.
+
+### How It Works
+
+```
+IS 456 Clause 38.1 (Mu_lim formula)
+         |
+    +---------+---------+
+    |                   |
+  symbolic.py        numerical.py
+  (SymPy expr)       (Python code)
+    |                   |
+    +----> crosscheck <----+
+              |
+    random inputs (Hypothesis)
+              |
+    agree within 1e-10?
+    +-- YES -> formula verified for N random inputs
+    +-- NO  -> ALERT: formula mismatch at input X
+              |
+    symbolic properties (SymPy.ask)
+              |
+    Mu_lim > 0 for fck>0, fy>0, b>0, d>0?
+    +-- PROVEN -> property holds for ALL inputs
+    +-- UNPROVEN -> needs investigation
+```
+
+### Implementation Sketch
+
+```python
+# scripts/symbolic_crosscheck.py
+import sympy as sp
+from hypothesis import given, strategies as st
+
+# Symbolic representation of Mu_lim (IS 456 Cl 38.1)
+def mu_lim_symbolic(fck, fy, b, d):
+    xu_max_ratio = sp.Rational(700, 1100 + sp.Rational(87, 100) * fy)
+    return (sp.Rational(36, 100) * fck * b * xu_max_ratio
+            * (1 - sp.Rational(42, 100) * xu_max_ratio) * d**2)
+
+# Numerical representation (from production code)
+def mu_lim_numerical(fck, fy, b, d):
+    xu_max_ratio = 700 / (1100 + 0.87 * fy)
+    return 0.36 * fck * b * xu_max_ratio * (1 - 0.42 * xu_max_ratio) * d**2
+
+@given(
+    fck=st.sampled_from([20, 25, 30, 35, 40]),
+    fy=st.sampled_from([250, 415, 500]),
+    b=st.integers(min_value=150, max_value=600),
+    d=st.integers(min_value=200, max_value=900),
+)
+def test_symbolic_numerical_agree(fck, fy, b, d):
+    sym_val = float(mu_lim_symbolic(fck, fy, b, d))
+    num_val = mu_lim_numerical(fck, fy, b, d)
+    assert abs(sym_val - num_val) / max(abs(sym_val), 1) < 1e-10
+
+# Symbolic property: Mu_lim > 0 for all positive inputs
+fck_s, fy_s, b_s, d_s = sp.symbols("fck fy b d", positive=True)
+mu_expr = mu_lim_symbolic(fck_s, fy_s, b_s, d_s)
+assert sp.ask(sp.Q.positive(mu_expr))  # PROVEN for all positive inputs
+```
+
+> **⚠️ Review Finding:** The example uses the pure formula `700/(1100+0.87*fy)`, but the actual codebase (materials.py) uses a **hybrid approach**: table lookup for standard grades (Fe250→0.53, Fe415→0.48, Fe500→0.46) and the formula as fallback. For Fe415: formula gives 0.4791, table gives 0.48 (0.19% diff). The symbolic crosscheck must account for this hybrid. Additionally, `sp.ask(sp.Q.positive(mu_expr))` returns `None` (unprovable) for most multivariate IS 456 expressions — fall back to numerical bounds checking. Coverage metric: proven / tested / unproven. Symbolic verification works for ~40% of formulas (closed-form); the remaining ~60% (table-based, iterative, piecewise) degrade to numerical-only comparison.
+
+### Architecture
+
+```
+scripts/symbolic_crosscheck.py              <- runner script
+Python/tests/verification_helpers/          <- NEW folder (NOT in structural_lib)
+    symbolic_registry.py                    <- maps clause -> (symbolic, numerical) pair
+    crosscheck_engine.py                    <- evaluator + property prover
+    properties.py                           <- domain properties (Mu>0, rho in range)
+scripts/run_symbolic_crosscheck.py          <- CI integration script
+Python/tests/test_symbolic_crosscheck/      <- Hypothesis-powered tests
+```
+
+### AI Agent Integration
+
+- **@tester** registers symbolic representations when adding new formula tests
+- **@structural-math** provides symbolic version alongside numerical implementation
+- **@reviewer** runs crosscheck as part of code review for any formula change
+- CI runs `pytest tests/test_symbolic_crosscheck/ -v` on every PR touching `codes/is456/`
+
+### Difficulty and Impact
+
+- **Difficulty:** M-H (SymPy `ask()` returns `None` for most multivariate expressions; table-formula hybrid complicates)
+- **Impact:** Critical — catches formula errors that 5,000+ numerical tests miss
+- **Dependencies:** sympy (dev-only, NEVER in structural_lib proper), hypothesis (already used)
+- **Time estimate:** 3 weeks for 10 critical formulas, ongoing for coverage
+
+### Example Scenario
+
+A developer changes the `xu_max` calculation from `700 / (1100 + 0.87 * fy)` to `700 / (1100 + 0.87) * fy` (parenthesis error). All 69 golden vector tests pass because they test with `fy=415` where the numerical difference is small. The symbolic crosscheck catches it instantly because the SymPy expression does not simplify to the same form.
 
 ---
 
-## Risks & Challenges
+## Idea 2: Metamorphic Test Amplifier
 
-### Legal & Liability
-- **Ideas 2, 6:** False compliance certificates or failed retrofit designs have life-safety consequences
-- Professional indemnity and disclaimers must be prominent (see SoA §3.3)
-- IS 15988 is BIS copyrighted (not public domain) — purchase required for implementation
+### Development Problem
 
-### Maintenance Burden
-- 10 new modules = 10× more code to maintain when IS 456, ACI 318, or EC2 are revised
-- Recommendation: Phase delivery, ensure each module reaches 95% coverage before starting next
+We have 564 functions. Writing a correct expected-output test for each requires hand-calculating the answer (or trusting SP:16 tables, which themselves have known errata). This is the **test oracle problem**: for many functions, computing the expected output is as hard as writing the function itself. Result: tests cover happy paths but miss edge cases.
 
-### Dependency Budget
-- Base `pip install` must remain lightweight (pydantic only)
-- OR-Tools (~50MB), Shapely (~5MB) as optional extras only
-- PyTorch (~700MB) cannot be part of this package — separate PyPI package required
+### Innovation
 
-### Misuse Risk
-- **Idea 8:** Engineers will skip full code checks despite disclaimers
-- **Idea 4:** Wrong auto-generated combinations could be more dangerous than no automation
-- **Idea 3:** Unvalidated remediation suggestions could lead to under-designed members
+Metamorphic testing does not need expected outputs. Instead, it defines **relations** between inputs and outputs:
+
+- **Scaling:** Double the load -> moment should double (linear regime)
+- **Monotonicity:** Increase concrete grade -> capacity should increase
+- **Symmetry:** Swap top/bottom reinforcement -> shear capacity unchanged
+- **Invariance:** Change units (mm to m) -> same result after unit conversion
+- **Bounding:** Result must be between analytical lower and upper bounds
+
+For 564 functions, we can define ~20 universal metamorphic relations that apply to HUNDREDS of functions automatically.
+
+### Why This Does Not Exist
+
+Metamorphic testing has 750+ academic papers but almost zero adoption in Python testing frameworks. No structural engineering tool uses it. The closest is Hypothesis, which generates random inputs — but Hypothesis still needs an oracle (assertion). Metamorphic testing needs NO oracle, just relations.
+
+### How It Works
+
+```
+Function: calculate_shear_capacity(b, d, fck, Ast, Vu)
+                    |
+    Metamorphic Relations:
+    +-- MR1: increase b by 50% -> capacity increases
+    +-- MR2: increase fck from 25 to 30 -> capacity increases
+    +-- MR3: set Ast=0 -> capacity = concrete contribution only
+    +-- MR4: double b AND halve d -> capacity changes predictably
+    +-- MR5: capacity >= tau_c_min * b * d (lower bound)
+                    |
+    For each MR, generate 1000 random input pairs (Hypothesis)
+                    |
+    Any violation? -> BUG FOUND (no expected output needed)
+```
+
+### Implementation Sketch
+
+```python
+# Python/tests/metamorphic/metamorphic.py
+from dataclasses import dataclass
+from typing import Callable
+from hypothesis import given, strategies as st
+
+@dataclass
+class MetamorphicRelation:
+    name: str
+    transform_input: Callable  # how to modify input
+    check_output: Callable     # relation between original and transformed output
+
+# Universal relations for structural functions
+MONOTONE_CAPACITY_VS_FCK = MetamorphicRelation(
+    name="capacity increases with fck",
+    transform_input=lambda kwargs: {**kwargs, "fck": kwargs["fck"] + 5},
+    check_output=lambda orig, transformed: transformed >= orig * 0.99,
+)
+
+MONOTONE_CAPACITY_VS_WIDTH = MetamorphicRelation(
+    name="capacity increases with width",
+    transform_input=lambda kwargs: {**kwargs, "b_mm": kwargs["b_mm"] + 50},
+    check_output=lambda orig, transformed: transformed >= orig * 0.99,
+)
+
+POSITIVE_CAPACITY = MetamorphicRelation(
+    name="capacity is always positive for valid inputs",
+    transform_input=lambda kwargs: kwargs,  # identity
+    check_output=lambda orig, _: orig > 0,
+)
+
+def run_metamorphic_suite(func, relations, input_strategy, n=1000):
+    """Run all metamorphic relations against a function."""
+    violations = []
+    for rel in relations:
+        for _ in range(n):
+            inputs = input_strategy.example()
+            orig_output = func(**inputs)
+            transformed_inputs = rel.transform_input(inputs)
+            transformed_output = func(**transformed_inputs)
+            if not rel.check_output(orig_output, transformed_output):
+                violations.append((rel.name, inputs, orig_output,
+                                   transformed_output))
+    return violations
+```
+
+> **⚠️ Review Finding:** `input_strategy.example()` is NOT valid Hypothesis API for production tests (it's debug-only). Use `@given` decorator or `@composite` with `draw()`. Three of the proposed relations have issues: (1) "Swap reinforcement → shear unchanged" is **wrong** — IS 456 Table 19 τ_c depends on tension steel percentage p_t; swapping tension/compression steel changes p_t. (2) "Double load → double moment" is structural analysis, not IS 456 design — design functions take Mu as INPUT. Correct relation: ↑Mu → ↑Ast required. (3) ↑fck → ↑capacity is NOT guaranteed for biaxial columns (Cl 39.6 exponent α_n). Each metamorphic relation must be domain-validated per function.
+
+### Architecture
+
+```
+Python/tests/metamorphic/                  <- NOT in structural_lib
+    metamorphic.py                         <- relation definitions + runner
+    relations_is456.py                     <- IS 456-specific relations (20+)
+Python/tests/test_metamorphic/
+    test_beam_metamorphic.py               <- beam functions
+    test_shear_metamorphic.py              <- shear functions
+    test_column_metamorphic.py             <- column functions
+scripts/run_metamorphic.py                 <- CLI: amplify tests for a module
+```
+
+### AI Agent Integration
+
+- **@tester** defines metamorphic relations for new functions (required in quality pipeline)
+- **@structural-engineer** validates that relations are physically correct
+- **@reviewer** checks that new functions have at least 3 metamorphic relations
+- CI runs metamorphic suite nightly (too slow for every PR)
+
+### Difficulty and Impact
+
+- **Difficulty:** M (novel concept but straightforward implementation)
+- **Impact:** High — finds bugs that conventional tests miss, especially in edge cases
+- **Dependencies:** hypothesis (already used)
+- **Time estimate:** 2 weeks for framework + 20 universal relations
+
+### Example Scenario
+
+A developer adds a new column interaction curve function. Writing expected outputs requires solving complex nonlinear equations. Instead, the metamorphic amplifier applies: (1) increasing axial load reduces moment capacity, (2) increasing section size increases capacity, (3) swapping X/Y dimensions mirrors the curve. These catch a sign error in the biaxial term that would have required months of manual verification to find.
+
+---
+
+## Idea 3: Formula Provenance Chain (DO-178C for Python)
+
+### Development Problem
+
+When a bug is found in a design result, the debugging question is: "Which IS 456 clause does this formula implement? Who wrote it? What test verifies it? When was it last changed?" Currently this requires reading git blame, grepping for comments, and hoping someone left a docstring. There is no formal traceability from IS 456 clause -> Python function -> test case -> golden vector.
+
+In aerospace (DO-178C), every line of flight-critical code has a traceable link back to a requirement. Our library is also safety-critical — buildings collapse when formulas are wrong. We need the same discipline.
+
+### Innovation
+
+Build a provenance chain that links every formula to its source:
+
+```
+IS 456 Clause 38.1 -> flexure.py:calculate_mu_lim() -> test_flexure.py::test_mu_lim_fe415 -> golden_vector_038
+```
+
+This is stored as structured metadata (JSON), not comments. It can be queried: "Show me all functions implementing Clause 40.4" or "Which tests cover the shear provisions?"
+
+> **Note:** Most functions implement a COMBINATION of clauses (e.g., beam design = Cl 38.1 + Annex G-1.1 + Table J). The provenance schema must support `clauses: list[str]`.
+
+### Why This Does Not Exist
+
+DO-178C tools (LDRA, VectorCAST) cost $50k+ and target C/Ada. No open-source Python tool provides requirements-to-code traceability. The `parity_dashboard.py` script tracks clause coverage but has no function-level or test-level linkage.
+
+### Existing Foundation
+
+This idea builds on significant existing infrastructure:
+- **`@clause` decorator** — already used on 93+ functions to tag IS 456 clause references
+- **`_CLAUSE_REGISTRY`** — runtime registry mapping functions to clauses
+- **`clause-map.json`** — 119 clauses mapped, 63 with function linkage
+- **`parity_dashboard.py`** — tracks clause coverage at function level
+- **`check_clause_coverage.py`** — checks gaps in clause coverage
+- **`generate_traceability_report()`** — produces existing traceability reports
+
+**What's genuinely new:** test-level linkage (which test covers which clause), golden vector tracing, and stale verification detection. This should EXTEND the existing `@clause` + `_CLAUSE_REGISTRY` system, not replace it.
+
+### How It Works
+
+```
+IS 456:2000 Clause Registry (YAML)
+    |
+    v
+provenance_registry.json
+    clause_38_1:
+        functions: [flexure.calculate_mu_lim, flexure.xu_max_ratio]
+        tests: [test_flexure::test_mu_lim_*, test_golden::gv_038_*]
+        golden_vectors: [gv_038_m20_fe415, gv_038_m25_fe500]
+        last_verified: 2026-04-08
+        sp16_reference: "Table E, p.98"
+    |
+    v
+scripts/check_provenance.py
+    - Every function tagged with a clause? (no orphans)
+    - Every clause has at least one test? (no untested clauses)
+    - Every golden vector traced to a clause? (no disconnected vectors)
+    - Any function changed since last verification? (stale verification)
+```
+
+### Implementation Sketch
+
+```python
+# scripts/provenance/provenance.py
+from dataclasses import dataclass, field
+import json
+from pathlib import Path
+
+@dataclass
+class ClauseProvenance:
+    clause_id: str              # "38.1"
+    clause_title: str           # "Limiting moment of resistance"
+    functions: list[str]        # ["codes.is456.flexure.calculate_mu_lim"]
+    tests: list[str]            # ["test_flexure::test_mu_lim_fe415"]
+    golden_vectors: list[str]   # ["gv_038_m20_fe415"]
+    sp16_reference: str = ""    # "Table E, p.98"
+    last_verified: str = ""     # ISO date
+    notes: str = ""
+
+class ProvenanceRegistry:
+    def __init__(self, path: Path):
+        self.path = path
+        self.clauses: dict[str, ClauseProvenance] = {}
+        if path.exists():
+            data = json.loads(path.read_text())
+            for k, v in data.items():
+                self.clauses[k] = ClauseProvenance(**v)
+
+    def orphan_functions(self, all_functions: list[str]) -> list[str]:
+        """Functions not traced to any clause."""
+        traced = set()
+        for cp in self.clauses.values():
+            traced.update(cp.functions)
+        return [f for f in all_functions if f not in traced]
+
+    def untested_clauses(self) -> list[str]:
+        """Clauses with no test coverage."""
+        return [cid for cid, cp in self.clauses.items()
+                if not cp.tests]
+
+    def stale_verifications(self, changed_files: list[str]) -> list[str]:
+        """Clauses whose functions were modified since last verification."""
+        stale = []
+        for cid, cp in self.clauses.items():
+            for func in cp.functions:
+                module = func.rsplit(".", 1)[0].replace(".", "/") + ".py"
+                if module in changed_files:
+                    stale.append(cid)
+        return stale
+```
+
+### Architecture
+
+```
+scripts/provenance/                         <- development tooling (NOT in structural_lib)
+    provenance.py                           <- registry loader + checker
+scripts/check_provenance.py                 <- CI checker: no orphans, no gaps
+scripts/update_provenance.py                <- auto-discover new functions/tests
+provenance_registry.json                    <- clause-to-function-to-test mappings (project root)
+```
+
+### AI Agent Integration
+
+- **@structural-math** updates provenance when adding new IS 456 functions
+- **@tester** links tests to clauses when creating test cases
+- **@reviewer** runs `check_provenance.py` during code review
+- **@governance** monitors provenance coverage as a project health metric
+- CI blocks merge if provenance coverage drops below threshold
+
+### Difficulty and Impact
+
+- **Difficulty:** L-M (metadata management is simple, but backfilling ~100 existing functions is real work)
+- **Impact:** Critical — enables DO-178C-grade traceability for safety-critical code
+- **Dependencies:** none (pure Python + JSON)
+- **Time estimate:** 1 week for framework, 2 weeks to backfill existing functions
+
+### Example Scenario
+
+A user reports that shear capacity seems too high for a specific case. The provenance chain instantly shows: Clause 40.4 is implemented by `shear.py:tau_c()`, tested by `test_shear::test_tau_c_table19`, verified against golden vector `gv_040_m25`. The developer checks the golden vector, finds it matches SP:16 Table 19, and the issue turns out to be the user's input, not the formula. Total debug time: 5 minutes instead of 2 hours.
+
+---
+
+## Idea 4: Agent Conflict Resolution Protocol
+
+### Development Problem
+
+We have 16 AI agents that can edit files concurrently. When @backend modifies `api.py` while @api-developer modifies a router that imports from `api.py`, merge conflicts arise. Worse: when @structural-math changes a formula and @tester simultaneously updates tests for the old formula, the tests break silently.
+
+Current mitigation: human orchestration. This does not scale. We had 10+ hours of rework from merge conflicts in v0.21.x.
+
+### Innovation
+
+Build a conflict detection and resolution protocol that operates BEFORE agents start editing:
+
+1. **Intent Declaration:** Before editing, each agent declares: "I intend to modify X, Y, Z"
+2. **Conflict Detection:** A coordinator checks if any declared intents overlap
+3. **Resolution:** If conflict, one of: (a) serialize (agent B waits), (b) partition (agent A edits lines 1-50, agent B edits lines 51-100), (c) merge protocol (both edit, automated 3-way merge)
+4. **Post-Edit Verification:** After both agents finish, verify no semantic conflicts
+
+### Existing Foundation
+
+Significant conflict prevention already exists:
+- **`ai_commit.sh`** — prevents manual git operations that cause conflicts
+- **PR enforcement** — all production changes require PRs
+- **`scripts/hooks/pre_commit.py`, `pre_route.py`** — pre-commit validation hooks
+- **`agent_registry.json`** — tracks agent capabilities and file scopes
+- **Orchestrator pipeline** — serializes agent work through mandatory steps
+
+The "10+ hours of rework" problem was largely solved by these existing tools. The REMAINING gap is semantic dependency detection (two agents editing different files that import from each other).
+
+### Why This Does Not Exist
+
+Git handles text-level merges. But semantic merges (two agents changed different functions that call each other) are unsolved in general. For our specific domain — 16 agents with known roles editing a known codebase — we can build targeted conflict resolution.
+
+The GitHub "agentic-development" topic (65 repos) shows increasing interest in multi-agent coordination, but no production-ready conflict resolution protocol exists.
+
+### How It Works
+
+```
+@backend declares: "editing services/api.py, adding new function"
+@api-developer declares: "editing routers/design.py, adding new endpoint"
+                    |
+         Conflict Detector
+                    |
+    Overlap in api.py? NO (different files)
+    Semantic dependency? YES (router imports from api.py)
+                    |
+         Resolution: SERIALIZE
+    @backend edits first -> @api-developer edits second
+    (api-developer sees the new function and can import it)
+```
+
+### Implementation Sketch
+
+```python
+# scripts/agent_conflict_detector.py
+from dataclasses import dataclass
+import json
+from pathlib import Path
+
+@dataclass
+class EditIntent:
+    agent: str
+    files: list[str]            # files to modify
+    functions: list[str]        # functions to add/modify
+    imports_from: list[str]     # modules this change depends on
+    timestamp: str
+
+class ConflictDetector:
+    def __init__(self, intents_dir: Path):
+        self.intents_dir = intents_dir
+        self.intents_dir.mkdir(exist_ok=True)
+
+    def declare_intent(self, intent: EditIntent):
+        path = self.intents_dir / f"{intent.agent}.json"
+        path.write_text(json.dumps(intent.__dict__, indent=2))
+
+    def check_conflicts(self) -> list[dict]:
+        intents = []
+        for p in self.intents_dir.glob("*.json"):
+            intents.append(EditIntent(**json.loads(p.read_text())))
+
+        conflicts = []
+        for i, a in enumerate(intents):
+            for b in intents[i+1:]:
+                # File-level conflict
+                shared_files = set(a.files) & set(b.files)
+                if shared_files:
+                    conflicts.append({
+                        "type": "file_overlap",
+                        "agents": [a.agent, b.agent],
+                        "files": list(shared_files),
+                        "resolution": "serialize",
+                    })
+                # Semantic dependency conflict
+                a_modules = {f.rsplit("/", 1)[0] for f in a.files}
+                if set(b.imports_from) & a_modules:
+                    conflicts.append({
+                        "type": "semantic_dependency",
+                        "agents": [a.agent, b.agent],
+                        "detail": f"{b.agent} imports from modules {a.agent} is editing",
+                        "resolution": "serialize_a_first",
+                    })
+        return conflicts
+
+    def clear_intent(self, agent: str):
+        path = self.intents_dir / f"{agent}.json"
+        if path.exists():
+            path.unlink()
+```
+
+### Architecture
+
+```
+scripts/agent_conflict_detector.py      <- conflict detection engine
+logs/agent_intents/                     <- intent declarations (JSON)
+    backend.json
+    api-developer.json
+    ...
+scripts/hooks/pre_edit_hook.py          <- called before agent edits
+    -> declares intent, checks conflicts, blocks or proceeds
+```
+
+### AI Agent Integration
+
+- **All agents** declare edit intents before starting work
+- **@orchestrator** uses conflict detection to sequence agent work
+- **@ops** monitors conflict logs and adjusts scheduling
+- Pre-edit hook blocks conflicting edits with clear message: "Wait for @backend to finish editing api.py"
+
+### Difficulty and Impact
+
+- **Difficulty:** XL (distributed coordination via JSON files is fundamentally fragile; needs file locking when agents run in parallel VS Code windows or CI)
+- **Impact:** High — eliminates the 10+ hours of merge-conflict rework
+- **Dependencies:** none (JSON files + Python)
+- **Time estimate:** 3 weeks for protocol + hooks, 2 weeks for testing
+
+> **⚠️ Review Warning:** The JSON-file-based protocol breaks when agents run in parallel VS Code windows or CI, where file locking is needed. This is fundamentally a distributed coordination problem.
+
+### Example Scenario
+
+@structural-math is adding a new column formula to `codes/is456/column.py`. @tester declares intent to add tests for column functions. The conflict detector sees the semantic dependency and tells @tester: "Wait — @structural-math is modifying column.py. Start after their commit." @tester works on beam tests instead. When @structural-math commits, @tester gets notified and writes tests against the new API. Zero merge conflicts.
+
+---
+
+## Idea 5: Living Formula Documentation
+
+### Development Problem
+
+Documentation drifts from code within 2 sessions. A developer changes `xu_max_ratio = 700 / (1100 + 0.87 * fy)` to handle a new steel grade, but the docs still show the old formula. The API reference says `fck` is in MPa but the code was changed to accept both MPa and N/mm^2. We have 870+ internal links — manual doc updates are unsustainable.
+
+### Innovation
+
+Make formulas executable documentation. Instead of writing the formula in docs AND in code, write it ONCE as a literate programming artifact that is both:
+1. **Rendered as documentation** (LaTeX math in MkDocs)
+2. **Executed as code** (importable Python)
+
+When the code changes, the documentation changes automatically because they are THE SAME ARTIFACT.
+
+### Why This Does Not Exist
+
+Jupyter notebooks exist but are terrible for library development (merge conflicts, no static analysis, not importable). MyST-NB can execute notebooks in docs. But nobody has built a system where the same function definition serves as both production code and rendered documentation with LaTeX formulas.
+
+### How It Works
+
+```
+Python/structural_lib/codes/is456/flexure.py
+    |
+    Contains: docstring with MyST math syntax
+    |
+    def calculate_mu_lim(fck, fy, b_mm, d_mm):
+        '''Calculate limiting moment of resistance.
+
+        $$M_{u,lim} = 0.36 f_{ck} b x_{u,max}(1 - 0.42 x_{u,max}/d) d$$
+
+        where $x_{u,max}/d$ = 700 / (1100 + 0.87 f_y)
+
+        IS 456 Clause 38.1, SP:16 Table E
+        '''
+        xu_max_ratio = 700 / (1100 + 0.87 * fy)
+        return 0.36 * fck * b_mm * xu_max_ratio * (1 - 0.42 * xu_max_ratio) * d_mm**2
+    |
+    v
+scripts/extract_formula_docs.py
+    -> Parses docstrings with MyST math
+    -> Generates docs/reference/formulas/flexure.md
+    -> Includes: LaTeX formula, parameter table, clause reference
+    -> Auto-generated — never hand-edited
+    |
+    v
+docs/reference/formulas/flexure.md (auto-generated)
+    Shows: rendered LaTeX, parameter types, units, source clause
+    Links back to: source code line, test file, golden vectors
+```
+
+### Implementation Sketch
+
+```python
+# scripts/extract_formula_docs.py
+import ast
+import inspect
+import re
+from pathlib import Path
+
+def extract_formulas(module_path: Path) -> list[dict]:
+    """Extract formula documentation from Python source."""
+    source = module_path.read_text()
+    tree = ast.parse(source)
+    formulas = []
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef):
+            docstring = ast.get_docstring(node)
+            if docstring and "$$" in docstring:
+                # Extract LaTeX blocks
+                math_blocks = re.findall(r'\$\$(.*?)\$\$', docstring, re.DOTALL)
+                # Extract clause references
+                clauses = re.findall(r'IS 456 Clause ([\d.]+)', docstring)
+                # Extract parameters from type hints
+                params = []
+                for arg in node.args.args:
+                    if arg.arg != 'self':
+                        params.append(arg.arg)
+
+                formulas.append({
+                    "function": node.name,
+                    "file": str(module_path),
+                    "line": node.lineno,
+                    "math": math_blocks,
+                    "clauses": clauses,
+                    "params": params,
+                    "docstring": docstring,
+                })
+    return formulas
+
+def generate_formula_page(formulas: list[dict], output: Path):
+    """Generate a MkDocs-compatible formula reference page."""
+    lines = ["# Formula Reference (Auto-Generated)\n",
+             "> Do not edit — regenerate with `scripts/extract_formula_docs.py`\n"]
+    for f in formulas:
+        lines.append(f"## `{f['function']}()`\n")
+        lines.append(f"**Source:** `{f['file']}` line {f['line']}\n")
+        if f['clauses']:
+            lines.append(f"**IS 456 Clauses:** {', '.join(f['clauses'])}\n")
+        for math in f['math']:
+            lines.append(f"\n$$\n{math.strip()}\n$$\n")
+        lines.append(f"**Parameters:** `{'`, `'.join(f['params'])}`\n")
+        lines.append("---\n")
+    output.write_text("\n".join(lines))
+```
+
+### Architecture
+
+```
+scripts/extract_formula_docs.py         <- parser + generator
+docs/reference/formulas/                <- auto-generated formula pages
+    flexure.md
+    shear.md
+    column.md
+    ...
+mkdocs.yml                             <- includes formula pages
+CI: regenerate + diff on every PR       <- catches drift
+```
+
+### AI Agent Integration
+
+- **@structural-math** writes formulas with MyST math in docstrings (single source of truth)
+- **@doc-master** runs formula extraction as part of doc generation
+- **@reviewer** checks that new formulas include LaTeX in docstrings
+- CI regenerates formula docs and fails if output differs from committed docs (drift detection)
+
+### Difficulty and Impact
+
+- **Difficulty:** L (AST docstring extraction is well-understood; weekend project)
+- **Impact:** High — eliminates formula drift, the #1 documentation problem
+- **Dependencies:** none (standard library ast + re)
+- **Time estimate:** 1 week for extractor, 2 weeks to add LaTeX to all docstrings
+
+### Example Scenario
+
+@structural-math updates the shear capacity formula in `shear.py` to handle high-strength concrete (IS 456 Amendment 4). The docstring includes the new LaTeX formula. On the next CI run, `extract_formula_docs.py` regenerates `docs/reference/formulas/shear.md`. The PR diff shows both the code change AND the doc change. The reviewer can verify both are correct in one review. Zero drift.
+
+---
+
+## Idea 6: Semantic API Breakage Detector
+
+### Development Problem
+
+We have 37 public API functions with 104 exports in `__all__`. When a developer renames a parameter from `Ast_mm2` to `ast_mm2`, or changes a return type from `float` to `dict`, the changelog says "refactored shear module" but does not mention the breaking change. Downstream users discover it at runtime. `discover_api_signatures.py` shows current signatures but cannot detect CHANGES.
+
+### Innovation
+
+Build an AST-based API comparator that:
+1. Snapshots the entire public API surface (function signatures, parameter names, types, return types, defaults)
+2. On every PR, diffs the snapshot against the baseline
+3. Classifies changes as: SAFE (new function), MINOR (new optional parameter), BREAKING (removed parameter, changed type, renamed)
+4. Blocks merge for unacknowledged BREAKING changes
+
+This is semantic versioning, automatically enforced.
+
+### Why This Does Not Exist
+
+Tools like `griffe` (Python API diff) exist and `griffe` is already installed in this project (griffelib==2.0.2 in requirements-lock.txt). It does AST-based Python API diffing. The gap is not the tool but the **CI integration**: wiring griffe into the PR workflow for `structural_lib`'s Python API (not just the REST/OpenAPI layer). No structural engineering library has this wired into CI.
+
+### Existing Foundation
+
+Partial solutions already exist:
+- **`openapi_baseline.json`** — detects FastAPI endpoint changes
+- **`discover_api_signatures.py`** — introspects current Python API signatures
+- **`test_api_surface_snapshot.py`** — snapshot regression on export counts
+- **`griffe` (griffelib==2.0.2)** — already in requirements-lock.txt, does AST-based Python API diffing
+
+**What's genuinely new:** wiring griffe into CI for the Python `structural_lib` API (not just REST). This is a **configuration task** (~50 lines of glue script), not a new tool.
+
+### How It Works
+
+```
+Git baseline (main branch)          PR branch
+    |                                   |
+    v                                   v
+api_snapshot_main.json              api_snapshot_pr.json
+    |                                   |
+    +---------> AST Differ <-----------+
+                    |
+    Changes detected:
+    +-- SAFE: new function design_column_biaxial()
+    +-- MINOR: new optional param 'verbose' in design_beam_is456()
+    +-- BREAKING: param 'Ast_mm2' renamed to 'ast_mm2' in tau_c()
+    +-- BREAKING: return type changed float -> dict in calculate_mu()
+                    |
+    BREAKING changes found -> require explicit acknowledgment:
+    # api-breakage: tau_c param rename Ast_mm2->ast_mm2 (deprecation added)
+    # api-breakage: calculate_mu returns dict (migration guide in CHANGELOG)
+```
+
+### Implementation Sketch
+
+```python
+# scripts/api_breakage_detector.py
+import ast
+import json
+from pathlib import Path
+from dataclasses import dataclass
+
+@dataclass
+class FunctionSignature:
+    name: str
+    module: str
+    params: list[dict]          # [{name, type, default, required}]
+    return_type: str
+    is_public: bool
+
+def snapshot_api(source_dir: Path) -> dict[str, FunctionSignature]:
+    """Snapshot all public function signatures via AST."""
+    signatures = {}
+    for py_file in source_dir.rglob("*.py"):
+        tree = ast.parse(py_file.read_text())
+        module = str(py_file.relative_to(source_dir)).replace("/", ".").removesuffix(".py")
+        for node in ast.walk(tree):
+            if isinstance(node, ast.FunctionDef) and not node.name.startswith("_"):
+                params = []
+                for arg in node.args.args:
+                    if arg.arg == "self":
+                        continue
+                    params.append({
+                        "name": arg.arg,
+                        "type": ast.unparse(arg.annotation) if arg.annotation else "Any",
+                    })
+                sig = FunctionSignature(
+                    name=node.name, module=module,
+                    params=params,
+                    return_type=ast.unparse(node.returns) if node.returns else "Any",
+                    is_public=not node.name.startswith("_"),
+                )
+                signatures[f"{module}.{node.name}"] = sig
+    return signatures
+
+def diff_api(baseline: dict, current: dict) -> list[dict]:
+    """Detect breaking changes between two API snapshots."""
+    changes = []
+    for key in baseline:
+        if key not in current:
+            changes.append({"type": "BREAKING", "detail": f"removed: {key}"})
+        else:
+            old, new = baseline[key], current[key]
+            old_params = {p["name"] for p in old.params}
+            new_params = {p["name"] for p in new.params}
+            removed = old_params - new_params
+            if removed:
+                changes.append({"type": "BREAKING",
+                    "detail": f"{key}: removed params {removed}"})
+            if old.return_type != new.return_type:
+                changes.append({"type": "BREAKING",
+                    "detail": f"{key}: return type {old.return_type} -> {new.return_type}"})
+    for key in current:
+        if key not in baseline:
+            changes.append({"type": "SAFE", "detail": f"added: {key}"})
+    return changes
+```
+
+### Architecture
+
+```
+scripts/api_breakage_detector.py        <- AST differ
+fastapi_app/openapi_baseline.json       <- existing OpenAPI baseline (extend to Python API)
+Python/structural_lib/api_baseline.json <- NEW: Python API signature snapshot
+CI: run on every PR, block if unacknowledged BREAKING changes
+```
+
+### AI Agent Integration
+
+- **@api-developer** runs breakage detector before modifying public APIs
+- **@reviewer** checks that BREAKING changes have migration guides
+- **@ops** updates baseline snapshot after each release
+- CI auto-comments on PRs with API change summary
+
+### Difficulty and Impact
+
+- **Difficulty:** L (griffe already installed and does most of this; just wire into CI)
+- **Impact:** Critical — prevents silent breaking changes that cause downstream failures
+- **Dependencies:** griffe (already in requirements-lock.txt)
+- **Time estimate:** 2 days for CI integration + domain-specific rules
+
+### Example Scenario
+
+@backend renames `Ast_mm2` to `ast_provided_mm2` in the shear calculation (for clarity). The API breakage detector catches this as BREAKING, blocks the PR, and shows: "Parameter renamed in `tau_c()`: `Ast_mm2` -> `ast_provided_mm2`. Add deprecation alias or acknowledge breakage." The developer adds `Ast_mm2` as a deprecated alias, and the PR passes.
+
+---
+
+## Idea 7: Self-Healing CI Pipeline
+
+### Development Problem
+
+CI failures block all 16 agents for hours. Common failures:
+- Flaky tests (timing-dependent, order-dependent)
+- Dependency resolution failures (pip version conflicts)
+- Linting false positives after ruff/basedpyright updates
+- Docker build failures (base image changes)
+
+An agent cannot tell whether a CI failure is caused by their change or by a pre-existing issue. They waste hours debugging failures they did not cause.
+
+### Innovation
+
+Build a CI diagnostician that:
+1. **Classifies failures** as: (a) caused by PR, (b) pre-existing (flaky), (c) infrastructure
+2. **Auto-remediates** known failure patterns (retry flaky, pin dependency, skip broken lint rule)
+3. **Learns from history:** tracks which tests are flaky, which dependencies conflict
+4. **Reports actionable fixes** to agents: "This failure is caused by X. Fix: change Y on line Z."
+
+### Why This Does Not Exist
+
+CI/CD tools (GitHub Actions, CircleCI) retry on failure but cannot diagnose root causes. Flaky test detectors exist (pytest-repeat, flaky) but do not integrate with multi-agent workflows. No tool maps CI failures to specific agent actions.
+
+### How It Works
+
+```
+CI Run Failed
+    |
+    v
+Self-Healing Diagnostician
+    |
+    +-- Step 1: Classify failure
+    |   +-- Test failure? -> Check if test was flaky in last 10 runs
+    |   +-- Import error? -> Check if dependency changed
+    |   +-- Lint failure? -> Check if rule was added in ruff update
+    |   +-- Build failure? -> Check Docker base image changes
+    |
+    +-- Step 2: Check causality
+    |   +-- Did this PR touch the failing file? -> PR-caused
+    |   +-- Did this test fail on main too? -> Pre-existing
+    |   +-- Is this a known flaky test? -> Infrastructure
+    |
+    +-- Step 3: Auto-remediate or report
+        +-- Flaky: retry (max 2x), mark as flaky in registry
+        +-- Dependency: pin to last working version, alert @ops
+        +-- Lint: suppress new rule for this PR, create follow-up issue
+        +-- PR-caused: report exact failure + suggested fix to agent
+```
+
+### Implementation Sketch
+
+```python
+# scripts/ci_diagnostician.py
+import json
+import subprocess
+from pathlib import Path
+from dataclasses import dataclass
+
+@dataclass
+class CIFailure:
+    test_name: str
+    error_type: str             # "assertion", "import", "timeout", "lint"
+    error_message: str
+    file_path: str
+    line_number: int
+
+class CIDiagnostician:
+    def __init__(self, history_path: Path):
+        self.history = json.loads(history_path.read_text()) if history_path.exists() else {}
+
+    def classify(self, failure: CIFailure, pr_files: list[str]) -> dict:
+        """Classify CI failure and suggest remediation."""
+        # Check if test is known flaky
+        flaky_count = self.history.get(failure.test_name, {}).get("flaky_count", 0)
+        if flaky_count >= 3:
+            return {"classification": "flaky", "action": "retry",
+                    "confidence": 0.9}
+
+        # Check if PR touched the failing file
+        if failure.file_path in pr_files:
+            return {"classification": "pr_caused", "action": "fix_required",
+                    "detail": f"Your PR modified {failure.file_path}",
+                    "confidence": 0.95}
+
+        # Check if test fails on main branch too
+        main_result = self._check_main_branch(failure.test_name)
+        if main_result == "fail":
+            return {"classification": "pre_existing",
+                    "action": "not_your_fault",
+                    "confidence": 0.85}
+
+        return {"classification": "unknown", "action": "investigate",
+                "confidence": 0.5}
+
+    def _check_main_branch(self, test_name: str) -> str:
+        """Check if test passes on main branch."""
+        result = subprocess.run(
+            [".venv/bin/pytest", "-x", "-k", test_name, "--tb=no"],
+            capture_output=True, timeout=60
+        )
+        return "pass" if result.returncode == 0 else "fail"
+
+    def update_history(self, failure: CIFailure, was_flaky: bool):
+        if failure.test_name not in self.history:
+            self.history[failure.test_name] = {"flaky_count": 0, "total": 0}
+        self.history[failure.test_name]["total"] += 1
+        if was_flaky:
+            self.history[failure.test_name]["flaky_count"] += 1
+```
+
+### Architecture
+
+```
+scripts/ci_diagnostician.py             <- failure classifier + remediator
+logs/ci_history.json                    <- historical failure patterns
+scripts/hooks/post_ci_hook.py           <- runs after CI, updates history
+.github/workflows/ci.yml               <- integrates diagnostician
+```
+
+### AI Agent Integration
+
+- **@ops** maintains the CI diagnostician and flaky test registry
+- **All agents** receive classified failure reports instead of raw CI output
+- **@tester** is notified when a test becomes flaky (3+ intermittent failures)
+- PR comments include: "CI Diagnosis: test_shear_M25 is FLAKY (failed 4/10 recent runs). Retrying..."
+
+### Difficulty and Impact
+
+- **Difficulty:** M (parsing diverse test output formats; `_check_main_branch` subprocess is infeasible in CI)
+- **Impact:** High — eliminates hours of agent time debugging failures they did not cause
+- **Dependencies:** none (Python standard library + subprocess)
+- **Time estimate:** 2 weeks for classifier, ongoing for pattern expansion
+
+> **⚠️ Review Finding:** `_check_main_branch` running full pytest in CI is an anti-pattern (doubles CI time, requires checkout). Replace with historical test result database.
+
+### Example Scenario
+
+@frontend submits a PR that only touches React files. CI fails because `test_column_biaxial` has a timing-dependent assertion (it rounds differently on GitHub's Ubuntu vs local macOS). The diagnostician classifies this as "flaky — not PR-caused" with 90% confidence, retries the test (passes), and marks it in the flaky registry. @frontend's PR proceeds without delay. @tester gets a notification to fix the timing sensitivity.
+
+---
+
+## Idea 8: Golden Vector Factory
+
+### Development Problem
+
+We have 69 golden test vectors — hand-calculated design results verified against SP:16 tables. Adding a new golden vector takes DAYS: open SP:16, find the right table, extract values, verify units, create the test fixture, cross-check. For new IS 456 clauses being implemented, this bottleneck delays testing by weeks.
+
+### Innovation
+
+Build a factory that semi-automatically generates golden vectors by:
+1. **SP:16 Table Parser:** OCR/parse SP:16 tables into structured data
+2. **Cross-Calculator:** Run the same inputs through 2+ independent methods
+3. **Uncertainty Quantification:** Flag vectors where methods disagree beyond tolerance
+4. **Registry:** Store vectors with provenance (source, method, uncertainty)
+
+The factory does NOT eliminate human review — it ACCELERATES it. Every generated vector requires engineer sign-off.
+
+### Why This Does Not Exist
+
+SP:16 is a physical book (published 1980). No machine-readable version exists. Golden vectors in structural engineering are always hand-crafted. The concept of automated golden vector generation with cross-validation does not exist in any structural tool.
+
+### Existing Foundation
+
+Golden vector infrastructure already exists:
+- **69 golden vectors** as hand-crafted fixtures
+- **TASK-722** completed: `conftest.py` golden_vectors fixture with SP:16 values
+- **`test_golden_vectors_column.py`** and **`test_vba_parity.py`** — existing golden vector tests
+
+**What's genuinely new:** the automated FACTORY (cross-validation, parameter sampling, provenance metadata). This amplifies existing infrastructure, not replaces it.
+
+### How It Works
+
+```
+Input: IS 456 Clause 38.1, parameter ranges
+    |
+    v
+Golden Vector Factory
+    |
+    +-- Step 1: Generate parameter combinations
+    |   Latin Hypercube Sampling over:
+    |   fck: [20, 25, 30, 35, 40]
+    |   fy: [250, 415, 500]
+    |   b: [200, 250, 300, 350, 400, 450, 500]
+    |   d: [250, 300, 350, 400, 450, 500, 550, 600]
+    |
+    +-- Step 2: Calculate using multiple methods
+    |   Method A: Our library (numerical)
+    |   Method B: SymPy (symbolic) [from Idea 1]
+    |   Method C: SP:16 table lookup (where available)
+    |
+    +-- Step 3: Cross-validate
+    |   All methods agree within 0.1%? -> GOLDEN (high confidence)
+    |   Methods disagree? -> FLAG for human review
+    |
+    +-- Step 4: Generate test fixture
+        pytest fixture with full provenance metadata
+```
+
+### Implementation Sketch
+
+```python
+# scripts/golden_vector_factory.py
+from dataclasses import dataclass
+import itertools
+from pathlib import Path
+import json
+
+@dataclass
+class GoldenVector:
+    clause: str                 # "38.1"
+    inputs: dict                # {"fck": 25, "fy": 415, "b_mm": 300, "d_mm": 450}
+    expected: dict              # {"Mu_lim_kNm": 234.5}
+    methods: dict               # {"numerical": 234.5, "symbolic": 234.5, "sp16": 234.3}
+    tolerance: float            # 0.001 (0.1%)
+    confidence: str             # "high" | "medium" | "needs_review"
+    source: str                 # "SP:16 Table E" | "cross-validated"
+    reviewed_by: str = ""       # engineer sign-off
+
+class GoldenVectorFactory:
+    def __init__(self):
+        self.vectors: list[GoldenVector] = []
+
+    def generate_combinations(self, param_ranges: dict) -> list[dict]:
+        """Generate parameter combinations via Latin Hypercube."""
+        keys = list(param_ranges.keys())
+        values = list(param_ranges.values())
+        combos = list(itertools.product(*values))
+        # Sample subset for efficiency
+        import random
+        sample = random.sample(combos, min(50, len(combos)))
+        return [dict(zip(keys, c)) for c in sample]
+
+    def cross_validate(self, clause: str, inputs: dict,
+                       calculators: dict) -> GoldenVector:
+        """Run inputs through multiple calculators, compare results."""
+        results = {}
+        for name, calc_fn in calculators.items():
+            results[name] = calc_fn(**inputs)
+
+        values = list(results.values())
+        max_diff = max(values) - min(values)
+        mean_val = sum(values) / len(values)
+        relative_diff = max_diff / mean_val if mean_val else float("inf")
+
+        return GoldenVector(
+            clause=clause,
+            inputs=inputs,
+            expected={"result": mean_val},
+            methods=results,
+            tolerance=0.001,
+            confidence="high" if relative_diff < 0.001 else "needs_review",
+            source="cross-validated",
+        )
+
+    def export_pytest_fixtures(self, output: Path):
+        """Generate pytest fixture file from golden vectors."""
+        lines = ['"""Auto-generated golden vectors. DO NOT EDIT."""',
+                 "import pytest\n",
+                 "GOLDEN_VECTORS = ["]
+        for gv in self.vectors:
+            lines.append(f"    {json.dumps(gv.__dict__)},")
+        lines.append("]\n")
+        lines.append('@pytest.fixture(params=GOLDEN_VECTORS, ids=lambda g: '
+                     'f"{g[\\"clause\\"]}-{g[\\"confidence\\"]}")')
+        lines.append("def golden_vector(request):")
+        lines.append("    return request.param")
+        output.write_text("\n".join(lines))
+```
+
+### Architecture
+
+```
+scripts/golden_vector_factory.py        <- factory engine
+Python/tests/golden_vectors/            <- generated fixtures
+    flexure_vectors.json                <- clause 38.x vectors
+    shear_vectors.json                  <- clause 40.x vectors
+    column_vectors.json                 <- clause 39.x vectors
+    REVIEW_LOG.md                       <- engineer sign-off log
+scripts/sp16_table_parser.py            <- SP:16 data extraction (future)
+```
+
+### AI Agent Integration
+
+- **@tester** uses factory to generate vectors for new clauses
+- **@structural-engineer** reviews and signs off on generated vectors
+- **@structural-math** provides symbolic calculator for cross-validation
+- Factory runs automatically when new IS 456 functions are added
+
+### Difficulty and Impact
+
+- **Difficulty:** M (cross-validation logic + fixture generation)
+- **Impact:** High — reduces golden vector creation from days to hours
+- **Dependencies:** none for cross-validation; OCR library for SP:16 parsing (future)
+- **Time estimate:** 2 weeks for factory, ongoing for SP:16 parsing
+
+### Example Scenario
+
+@structural-math implements IS 456 Clause 39.3 (short column under axial load). The golden vector factory generates 50 parameter combinations, runs them through both the numerical implementation and a SymPy symbolic version, and produces 47 high-confidence vectors and 3 needing review (edge cases near slenderness limit). @structural-engineer reviews the 3 flagged vectors, confirms 2 are correct (edge case behavior is expected), and identifies 1 where the formula breaks down. That edge case gets a special test and a code fix. Time: 4 hours instead of 3 days.
+
+---
+
+## Idea 9: Code Amendment Propagation Engine
+
+### Development Problem
+
+IS 456:2000 has had 5 amendments since publication. Each amendment changes clauses that propagate to dozens of functions. Example: Amendment 4 (2013) primarily addressed durability provisions (minimum cement content, exposure conditions) — NOT stress block parameters. The stress block in Cl 38.1 has remained unchanged since IS 456:2000 publication. The primary value of amendment tracking is in durability/detailing changes (Cl 26 cover, Cl 8 exposure).
+
+The parity dashboard tracks which clauses are implemented but not which amendment version each function reflects.
+
+### Innovation
+
+Build an amendment propagation engine that:
+1. **Maps amendments to clauses:** "Amendment 4 modifies Clauses 38.1, 39.1, 40.2"
+2. **Maps clauses to functions:** (from Idea 3 provenance chain)
+3. **When an amendment is applied to one function, auto-identifies ALL other functions that need updating**
+4. **Tracks amendment status per function:** "v1.0 original", "v1.0+A1", "v1.0+A4"
+5. **Blocks release if functions are at inconsistent amendment levels**
+
+### Why This Does Not Exist
+
+No structural engineering library tracks code amendments systematically. BIS publishes amendments as one-page errata sheets. The mapping from amendment text to affected code is a manual, error-prone process. No tool automates this propagation.
+
+### How It Works
+
+```
+IS 456 Amendment 4 (2020)
+    |
+    v
+Amendment Registry (YAML)
+    amendment_4:
+        date: 2020-06-15
+        clauses_modified: [38.1, 39.1, 40.2.1]
+        description: "Revised stress block parameters for HSC"
+        changes:
+            - clause: 38.1
+              detail: "xu_max/d values updated for fy > 500"
+              affected_params: [xu_max_ratio]
+    |
+    v
+Propagation Engine
+    clause 38.1 -> functions: [
+        flexure.calculate_mu_lim,
+        flexure.xu_max_ratio,
+        design.check_doubly_reinforced,
+        column.interaction_curve,      <- often missed
+        shear.enhanced_shear,          <- often missed
+    ]
+    |
+    v
+Amendment Status Report:
+    flexure.calculate_mu_lim  -> A4 APPLIED (2026-03-15)
+    flexure.xu_max_ratio      -> A4 APPLIED (2026-03-15)
+    design.check_doubly       -> A4 MISSING <- UPDATE REQUIRED
+    column.interaction_curve  -> A4 MISSING <- UPDATE REQUIRED
+    shear.enhanced_shear      -> A4 MISSING <- UPDATE REQUIRED
+```
+
+### Implementation Sketch
+
+```python
+# scripts/amendment_propagation.py
+import json
+from dataclasses import dataclass, field
+from pathlib import Path
+
+@dataclass
+class Amendment:
+    id: str                     # "A4"
+    date: str                   # "2020-06-15"
+    clauses: list[str]          # ["38.1", "39.1"]
+    description: str
+
+@dataclass
+class FunctionAmendmentStatus:
+    function: str
+    current_amendment: str      # "A4" or "original"
+    required_amendment: str     # "A4"
+    is_current: bool
+
+class AmendmentPropagationEngine:
+    def __init__(self, amendments_path: Path, provenance_path: Path):
+        self.amendments = self._load_amendments(amendments_path)
+        self.provenance = json.loads(provenance_path.read_text())
+
+    def _load_amendments(self, path: Path) -> list[Amendment]:
+        data = json.loads(path.read_text())
+        return [Amendment(**a) for a in data]
+
+    def check_propagation(self) -> list[FunctionAmendmentStatus]:
+        """Check which functions need amendment updates."""
+        results = []
+        latest_amendment = self.amendments[-1]  # most recent
+
+        for clause_id, clause_data in self.provenance.items():
+            # Is this clause affected by the latest amendment?
+            if clause_id in latest_amendment.clauses:
+                for func in clause_data.get("functions", []):
+                    func_amendment = clause_data.get("amendment_level", "original")
+                    results.append(FunctionAmendmentStatus(
+                        function=func,
+                        current_amendment=func_amendment,
+                        required_amendment=latest_amendment.id,
+                        is_current=(func_amendment == latest_amendment.id),
+                    ))
+        return results
+
+    def blocking_issues(self) -> list[str]:
+        """Issues that must be resolved before release."""
+        statuses = self.check_propagation()
+        return [
+            f"{s.function}: at {s.current_amendment}, needs {s.required_amendment}"
+            for s in statuses if not s.is_current
+        ]
+```
+
+### Architecture
+
+```
+scripts/amendment_propagation/              <- development tooling (NOT in structural_lib)
+    amendment_propagation.py                <- propagation engine
+    amendments_registry.json                <- amendment -> clause mappings
+scripts/check_amendments.py                 <- CLI: check amendment consistency
+    -> integrates with provenance chain (Idea 3)
+    -> integrates with parity dashboard
+```
+
+### AI Agent Integration
+
+- **@structural-engineer** maintains the amendments registry when BIS publishes updates
+- **@structural-math** applies amendments to functions and updates their amendment level
+- **@governance** monitors amendment consistency as a project health metric
+- CI blocks release if any function is behind on amendments (inconsistent state)
+
+### Difficulty and Impact
+
+- **Difficulty:** XL (requires comprehensive clause-to-function mapping first — depends on Idea 3)
+- **Impact:** Critical — prevents shipping code with inconsistent IS 456 amendment levels
+- **Dependencies:** Idea 3 (provenance chain) must be built first
+- **Time estimate:** 3 weeks (after Idea 3 is complete)
+
+### Example Scenario
+
+BIS publishes IS 456 Amendment 5 modifying Clause 26.5.1 (cover requirements). The engine identifies 12 functions that reference cover: `min_cover()`, `effective_depth()`, `crack_width()`, `detailing_check()`, and 8 others. @structural-math updates `min_cover()` and `effective_depth()`. The engine reports: "Amendment A5: 2/12 functions updated, 10 remaining." The release is blocked until all 12 are updated. No function is accidentally left at the old cover requirements.
+
+---
+
+## Idea 10: Reproducible Calculation Attestation
+
+### Development Problem
+
+When a structural engineer uses our library to design a beam, there is no proof that:
+1. The calculation was performed by a specific version of the library
+2. The library code had not been tampered with
+3. The input parameters were exactly what the engineer provided
+4. The output has not been modified after generation
+
+In regulated environments (nuclear, bridge design, government projects), calculations must be auditable. Currently our library produces results but no verifiable audit trail.
+
+### Innovation
+
+Build a calculation attestation system inspired by SLSA (Supply Chain Levels for Software Artifacts):
+
+1. **Calculation Receipt:** Every design call produces a signed receipt containing: library version, git commit hash, input hash, output hash, timestamp
+2. **Verification:** Anyone can verify a receipt against the published library to confirm the result is genuine
+3. **Tamper Detection:** If someone modifies the output, the hash mismatch is detected
+4. **Reproducibility:** Given the receipt, the exact calculation can be reproduced
+
+### Existing Foundation
+
+Partial audit infrastructure already exists:
+- **`services/audit.py`** — `CalculationHash` (SHA-256) and `AuditTrail` (immutable logs)
+- **TASK-735** — `CalculationProvenance` planned for v0.22.0
+- **TASK-797** — SLSA build provenance planned
+
+**What's genuinely new:** the verification CLI (anyone can independently verify a receipt), cross-platform reproducibility, and the user-facing attestation workflow. The incremental value is the verification layer, not the core hashing concept.
+
+### Why This Does Not Exist
+
+SLSA exists for software builds but not for calculation results. No structural engineering tool provides cryptographic attestation of calculations. This would be a world-first: provable, verifiable structural calculations.
+
+### How It Works
+
+```
+Engineer calls: design_beam_is456(fck=25, fy=415, b_mm=300, d_mm=450, Mu=150)
+    |
+    v
+Attestation Layer (middleware)
+    |
+    +-- Capture inputs: hash(fck=25, fy=415, b_mm=300, ...)
+    +-- Record environment: library v0.21.3, commit abc123, Python 3.11.9
+    +-- Execute calculation: result = design_beam_is456(...)
+    +-- Capture outputs: hash(result)
+    +-- Generate receipt:
+        {
+            "library_version": "0.21.3",
+            "git_commit": "abc123def",
+            "input_hash": "sha256:aabb...",
+            "output_hash": "sha256:ccdd...",
+            "timestamp": "2026-04-08T10:30:00Z",
+            "clause_references": ["38.1", "40.4", "26.5.1"],
+            "signature": "ed25519:eeff..."
+        }
+    |
+    v
+Engineer gets: (design_result, receipt)
+    |
+    v
+Verifier (anyone):
+    pip install structural-lib==0.21.3
+    verify_receipt(receipt, design_result) -> VALID / TAMPERED
+```
+
+### Implementation Sketch
+
+```python
+# Python/structural_lib/services/attestation.py
+import hashlib
+import json
+import time
+from dataclasses import dataclass, asdict
+from typing import Any
+from importlib.metadata import version
+
+@dataclass
+class CalculationReceipt:
+    library_version: str
+    input_hash: str
+    output_hash: str
+    timestamp: float
+    function_name: str
+    clause_references: list[str]
+
+    def to_json(self) -> str:
+        return json.dumps(asdict(self), indent=2, sort_keys=True)
+
+def hash_dict(d: dict) -> str:
+    """Deterministic hash of a dictionary."""
+    canonical = json.dumps(d, sort_keys=True, default=str)
+    return hashlib.sha256(canonical.encode()).hexdigest()
+
+def attest_calculation(func, kwargs: dict,
+                       clause_refs: list[str]) -> tuple[Any, CalculationReceipt]:
+    """Execute a calculation with attestation."""
+    input_hash = hash_dict(kwargs)
+    result = func(**kwargs)
+
+    # Hash the result (handle dataclasses, dicts, floats)
+    if hasattr(result, "__dict__"):
+        output_hash = hash_dict(result.__dict__)
+    elif isinstance(result, dict):
+        output_hash = hash_dict(result)
+    else:
+        output_hash = hashlib.sha256(str(result).encode()).hexdigest()
+
+    receipt = CalculationReceipt(
+        library_version=version("structural-lib-is456"),
+        input_hash=f"sha256:{input_hash}",
+        output_hash=f"sha256:{output_hash}",
+        timestamp=time.time(),
+        function_name=func.__qualname__,
+        clause_references=clause_refs,
+    )
+    return result, receipt
+
+def verify_receipt(receipt: CalculationReceipt, func, kwargs: dict,
+                   result: Any) -> bool:
+    """Verify a calculation receipt is valid."""
+    # Check input hash matches
+    if f"sha256:{hash_dict(kwargs)}" != receipt.input_hash:
+        return False
+    # Re-run calculation
+    reproduced = func(**kwargs)
+    # Check output matches
+    if hasattr(reproduced, "__dict__"):
+        repro_hash = f"sha256:{hash_dict(reproduced.__dict__)}"
+    elif isinstance(reproduced, dict):
+        repro_hash = f"sha256:{hash_dict(reproduced)}"
+    else:
+        repro_hash = f"sha256:{hashlib.sha256(str(reproduced).encode()).hexdigest()}"
+    return repro_hash == receipt.output_hash
+```
+
+### Architecture
+
+```
+Python/structural_lib/services/
+    attestation.py                          <- receipt generation + verification (runtime feature)
+Python/structural_lib/services/
+    api.py                                  <- optional attestation wrapper for all public functions
+scripts/verify_calculation.py               <- CLI tool for receipt verification
+```
+
+### AI Agent Integration
+
+- **@backend** wraps public API functions with optional attestation
+- **@security** reviews cryptographic implementation
+- **@ops** integrates with release pipeline (published libs must be attestation-ready)
+- **@library-expert** validates that attestation meets professional engineering standards
+
+### Difficulty and Impact
+
+- **Difficulty:** M-H (float determinism across platforms is a known hard problem)
+- **Impact:** Critical — enables auditable, verifiable structural calculations (world-first)
+- **Dependencies:** none for MVP (hashlib is stdlib); ed25519 signing for v2
+- **Time estimate:** 1 week for core MVP, 2 weeks for CLI + integration
+
+> **⚠️ Review Finding (3 bugs):** (1) `time.time()` makes receipts non-reproducible — use `time.perf_counter()` or deterministic timestamp input. (2) `str(result)` for float hashing is platform-dependent (repr differs across Python versions/OS). Use `struct.pack` or round to fixed precision. (3) `version("structural-lib-is456")` will raise `PackageNotFoundError` unless the package was pip-installed — add fallback to git commit hash or `__version__`.
+
+### Example Scenario
+
+A municipal building inspector reviews a beam design. The engineer provides the design report with an attestation receipt. The inspector runs `verify_calculation receipt.json` which confirms: (1) the calculation used structural-lib v0.21.3, (2) the inputs match the report, (3) the outputs have not been modified, (4) re-running the calculation produces identical results. The inspector accepts the design without needing to re-check every formula. Trust through verification.
+
+---
+
+## Implementation Priority
+
+> **Revised after 3-agent review.** Phase 1 starts with quick wins (wire existing tools), not greenfield builds.
+
+### Phase 1 — Quick Wins + Foundation (Weeks 1-4)
+
+| # | Innovation | Effort | Why First |
+|---|-----------|--------|-----------|
+| 6 | API Breakage Detector | 2 days | Wire existing griffe into CI — highest ROI, lowest effort |
+| 5 | Living Formula Docs | 3 days | Single script eliminates doc drift |
+| 3 | Provenance Chain (extend existing) | 1 week | Extend @clause + traceability.py — foundation for Ideas 5, 8, 9 |
+| 2 | Metamorphic Tests | 1 week | Write as plain Hypothesis tests, no framework needed |
+
+### Phase 2 — Core Build (Weeks 5-10)
+
+| # | Innovation | Effort | Why Now |
+|---|-----------|--------|---------|
+| 1 | Symbolic Crosscheck Engine | 3 weeks | Genuinely novel; catches formula errors that 5,000+ tests miss |
+| 7 | Self-Healing CI | 2 weeks | Start with classifier only (no auto-remediation) |
+
+### Phase 3 — Acceleration (Weeks 11-16)
+
+| # | Innovation | Effort | Why Now |
+|---|-----------|--------|---------|
+| 8 | Golden Vector Factory | 2 weeks | Amplifies existing 69 golden vectors |
+| 10 | Attestation MVP | 1 week | Hashing + receipts only, no signing/PKI |
+
+### Phase 4 — Long-term (Weeks 17-24+)
+
+| # | Innovation | Effort | Why Last |
+|---|-----------|--------|----------|
+| 9 | Amendment Propagation | 4 weeks | Depends on Idea 3 provenance; IS 456 amendments are infrequent |
+| 4 | Agent Conflict Resolution | TBD | Deprioritized — existing hooks solve most of the problem; revisit if distributed agent coordination becomes a real issue |
+
+## Dependencies Between Ideas
+
+```
+Idea 3 (Provenance)  ─────> Idea 9 (Amendment Propagation)
+        |
+        +──────────────────> Idea 5 (Living Docs)
+        |
+        +──────────────────> Idea 8 (Golden Vectors)
+
+Idea 1 (Symbolic)    ─────> Idea 8 (Golden Vectors, cross-validation)
+
+Idea 4 (Conflict)    ─────> improves all agent-touching ideas
+
+Idea 6 (API Breakage) ───> Idea 10 (Attestation, version tracking)
+```
+
+## Risks and Challenges
+
+| Risk | Mitigation |
+|------|-----------|
+| SymPy cannot prove all properties symbolically | Fall back to numerical verification with Hypothesis; track which properties are proven vs tested |
+| Metamorphic relations may be wrong (false sense of safety) | Every relation must be validated by @structural-engineer; wrong relations are worse than no relations |
+| Provenance maintenance overhead becomes too high | Auto-generate provenance from decorators + AST scanning; minimize manual metadata |
+| Agent conflict resolution adds latency | Keep protocol lightweight (JSON files, not databases); fall back to manual orchestration if protocol fails |
+| Living docs generate incorrect LaTeX | CI checks that generated docs match committed docs; rendered preview in PR |
+| API breakage detector has false positives | Start strict, allow per-function exemptions with reason; tune over time |
+| CI diagnostician misclassifies failures | Always show raw error alongside classification; human override available |
+| Golden vectors from factory may have systematic errors | Cross-validation catches this; never deploy without engineer review |
+| Amendment mapping is incomplete | Start with critical clauses (flexure, shear, column); expand iteratively |
+| Attestation gives false sense of security | Clear disclaimer: attestation proves code identity, not structural safety |
 
 ---
 
 ## Conclusion
 
-These 10 innovations would transform our library from a design calculator into the **world's most comprehensive structural engineering platform**. The competitive landscape confirms: no open-source tool — and no commercial tool — combines all these capabilities. By implementing them in the proposed priority order, we build immediate value (compliance, optimization, clash detection) while positioning for the future (digital twins, AI estimation, retrofit market).
+These 10 innovations transform how we BUILD the library, not what the library does. They address the specific infrastructure gaps that cause the most rework:
 
-Total engineering value if all 10 are implemented: **category-defining**. No other structural engineering tool in the world would match this combination of capabilities.
+1. **Formula correctness** (Ideas 1, 2) — prove formulas right, not just test specific cases
+2. **Traceability** (Ideas 3, 9) — link every line of code to its IS 456 source
+3. **Documentation** (Idea 5) — make docs and code the same artifact
+4. **API stability** (Idea 6) — catch breaking changes before users do
+5. **Agent productivity** (Ideas 4, 7) — reduce conflicts and CI debugging
+6. **Testing velocity** (Idea 8) — generate golden vectors in hours, not days
+7. **Professional trust** (Idea 10) — verifiable, auditable calculations
+
+Total implementation: ~30-35 weeks across 4 phases (revised from original ~20 week estimate after 3-agent review). Each idea is independent enough to deliver value on its own, but they compound when combined. The provenance chain (Idea 3) is the keystone — build it first, and half the other ideas become easier. Start with Idea 6 (2-day quick win wiring griffe) for immediate value.
+
+No other structural engineering library in the world has any of these development infrastructure innovations. Building them makes this library not just technically superior, but TRUSTWORTHY.
 
 ---
-
-*RESEARCH PROTOTYPE DOCUMENT — innovation proposals require @structural-engineer gate review before any prototype code is written. All safety-critical innovations must preserve IS 456 safety factors as hardcoded constants.*

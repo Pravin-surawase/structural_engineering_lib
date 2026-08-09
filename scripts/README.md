@@ -2,8 +2,8 @@
 
 > **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks
 > **Owner:** All contributors
-> **Last Updated:** 2026-03-24
-> **Total Scripts:** 78 active (100 archived)
+> **Last Updated:** 2026-08-07
+> **Total Scripts:** 113 active (top-level `.py`/`.sh`; validated by `check_scripts_index.py`)
 
 ## 🚀 Unified CLI (`./run.sh`)
 
@@ -12,8 +12,8 @@ All scripts are accessible through `./run.sh` at the repo root — **use this in
 ```bash
 ./run.sh session start              # Begin work
 ./run.sh commit "type: message"     # Commit safely
-./run.sh check --quick              # Fast validation (8 checks, <30s)
-./run.sh check                      # Full validation (28 checks, parallel)
+./run.sh check --quick              # Fast validation (9 checks, <30s)
+./run.sh check                      # Full validation (29 checks, parallel)
 ./run.sh check --category api       # Run one category only
 ./run.sh check --json               # Machine-readable output
 ./run.sh test                       # Run pytest suite
@@ -22,6 +22,7 @@ All scripts are accessible through `./run.sh` at the repo root — **use this in
 ./run.sh find --api func_name       # Get API param names
 ./run.sh audit                      # Full readiness audit
 ./run.sh generate indexes           # Regenerate folder indexes
+./run.sh session usage --summary    # Review model/reasoning/agent checkpoints
 ./run.sh session end                # Wrap up
 ```
 
@@ -30,12 +31,14 @@ Run `./run.sh --help` or `./run.sh <command> --help` for full usage.
 ### Architecture
 
 `run.sh` is a **thin bash dispatcher** — no logic, just routes to existing scripts:
-- `./run.sh check` → `scripts/check_all.py` (parallel orchestrator, 28 checks across 9 categories)
+- `./run.sh check` → `scripts/check_all.py` (parallel orchestrator, 29 checks across 8 categories)
 - `./run.sh commit` → `scripts/ai_commit.sh`
-- `./run.sh test` → `Python/.venv/bin/pytest` or specialized test scripts
+- `./run.sh test` → `.venv/bin/pytest Python/tests/` or specialized test scripts
 - `./run.sh find` → `scripts/find_automation.py` / `scripts/discover_api_signatures.py`
 
-Both paths work: `./run.sh check --category git` and `.venv/bin/python scripts/validate_git_state.sh` are equivalent.
+For direct fallback, match the script type: `./run.sh check --category git` routes
+to shell and Python validators; invoke shell validators with `bash` and Python
+validators with `.venv/bin/python`.
 
 ## 🤖 For AI Agents: Quick Discovery
 
@@ -80,7 +83,6 @@ Both paths work: `./run.sh check --category git` and `.venv/bin/python scripts/v
 | `check_governance.py` | Unified governance — folder structure + compliance (`--structure`, `--compliance`) |
 | `check_docs.py` | Unified doc checker — metadata, frontmatter, index (`--metadata`, `--all`) |
 | `check_api.py` | Unified API checker — signatures, docs sync (`--signatures`, `--sync`) |
-| `check_streamlit.py` | Unified Streamlit validation (AST scanner + fragment checks) |
 | `check_doc_versions.py` | Check version drift in docs |
 | `generate_api_manifest.py` | Generate API manifest JSON |
 | `check_scripts_index.py` | Ensure scripts index is in sync |
@@ -104,7 +106,7 @@ Both paths work: `./run.sh check --category git` and `.venv/bin/python scripts/v
 ### Session Management
 | Script | Purpose |
 |--------|---------|
-| `session.py` | Unified session management (start, end, handoff, check, summary, sync) |
+| `session.py` | Session lifecycle plus honest model/agent usage checkpoints (`usage`) |
 | `agent_start.sh` | Agent environment setup + pre-flight checks |
 | `collect_diagnostics.py` | Bundle debug context (env, git, logs) |
 

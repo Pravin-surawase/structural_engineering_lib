@@ -127,6 +127,7 @@ CATEGORIES: list[Category] = [
         checks=[
             Check("Governance rules", _py("check_governance.py", "--full")),
             Check("Repo hygiene", _py("check_repo_hygiene.py")),
+            Check("Token efficiency", _py("check_token_efficiency.py")),
             Check("Python version", _py("check_python_version.py")),
             Check("Schema snapshots", _py("validate_schema_snapshots.py"), timeout=90),
         ],
@@ -176,7 +177,7 @@ CATEGORIES: list[Category] = [
 QUICK_CHECKS: dict[str, list[str]] = {
     "docs": ["Broken links", "Doc versions", "Brief length"],
     "arch": ["Import validation"],
-    "governance": ["Repo hygiene"],
+    "governance": ["Repo hygiene", "Token efficiency"],
     "git": ["Git state", "Unfinished merge"],
     "stale": ["Script references"],
 }
@@ -188,6 +189,7 @@ _PATH_TO_CATEGORIES: list[tuple[str, list[str]]] = [
     ("fastapi_app/", ["api", "fastapi"]),
     ("docs/", ["docs", "stale"]),
     ("scripts/", ["stale", "governance"]),
+    (".codex/", ["governance"]),
     ("react_app/", []),  # No script-based checks for React yet
     (".pre-commit", ["governance"]),
     ("docker-compose", ["fastapi"]),
@@ -650,7 +652,6 @@ def main() -> int:
 
     # Run checks
     results: list[CheckResult] = []
-    start_time = time.monotonic()
 
     if args.serial or len(checks) == 1:
         # Serial execution

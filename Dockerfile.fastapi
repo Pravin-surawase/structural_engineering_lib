@@ -1,7 +1,9 @@
 FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    PIP_DEFAULT_TIMEOUT=120 \
+    PIP_RETRIES=5
 
 WORKDIR /app
 
@@ -18,12 +20,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install runtime dependencies
 COPY requirements.txt ./requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --timeout 120 --retries 5 -r requirements.txt
 
 # Install structural_lib package (located under Python/)
 COPY Python/pyproject.toml Python/README.md ./Python/
 COPY Python/structural_lib ./Python/structural_lib
-RUN pip install --no-cache-dir ./Python
+RUN pip install --no-cache-dir --timeout 120 --retries 5 ./Python
 
 # Copy FastAPI app
 COPY fastapi_app ./fastapi_app

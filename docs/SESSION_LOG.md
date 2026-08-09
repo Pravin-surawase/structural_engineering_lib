@@ -5,6 +5,133 @@
 
 ---
 
+## 2026-08-09 — Session
+
+**Focus:** Complete MAINT-001, verify PR #676, and leave merge/release for explicit owner approval
+
+### Summary
+**1 commits**, **14 files changed**
+
+**Bug Fixes:**
+- close CI root causes and narrow reviews
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| — | None; PR #676 remains open pending explicit owner approval |
+
+### Key Deliverables
+- Commit `242ba8ce` replaces empty link placeholders and a crawler-blocked URL,
+  and pins Ruff 0.15.8 across package metadata, requirements, lock data,
+  pre-commit, and formatter/governance workflows.
+- Local evidence: focused Ruff checks pass, 1,073/1,073 internal links pass,
+  quick gate 9/9, full gate 29/29, audit 22/22, and health 100/100.
+- GitHub evidence: PR #676 is clean and mergeable with 19 checks passed, two
+  intentionally skipped, and zero failures.
+
+### Notes
+- The main-process maintenance outcome is complete. The accepted React coverage,
+  RSC-only advisory, planned product work, and tester-output watch were not
+  reopened because they do not change this maintenance outcome.
+- Merging PR #676 and releasing v0.21.7 remain explicit owner decisions.
+
+
+## 2026-08-07 — Maintenance Recovery Session
+
+**Agent:** Codex
+**Branch:** `task/MAINT-001`
+**Focus:** Preserve inherited work, restore the Mac Mini baseline, complete product/repository maintenance, and establish a trustworthy v0.21.7 release boundary
+
+### Summary
+- Resumed v0.21.7 work after a four-month pause and Mac Mini transfer.
+- Completed a repository, migration, architecture, test, packaging, CI,
+  security, documentation, agent-infrastructure, and live-browser audit.
+- Preserved inherited work in `b28ee4e3` and completed 19 maintenance commits
+  through `fe55d130`, touching 222 files across recovery and stabilization.
+- Completed MAINT-002 through MAINT-007. The repository/product maintenance,
+  Mac control plane, Docker preflight, and low-token model policy are green; no
+  release was executed.
+- MAINT-001 now remains open only for the two diagnosed PR #676 CI failures and
+  final required-check validation.
+
+**Completed:**
+- MAINT-002, MAINT-003, MAINT-004, MAINT-005, and MAINT-006 with evidence below.
+- v0.21.7 release preflight and isolated-wheel UAT; release intentionally not executed.
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| [#676](https://github.com/Pravin-surawase/structural_engineering_lib/pull/676) | Open — maintenance recovery and v0.21.7 stabilization |
+
+### Key Deliverables
+- Maintenance task sequence recorded in `docs/TASKS.md`.
+- Current recovery evidence and exact restart point recorded in `docs/planning/next-session-brief.md`.
+- Persistent project state updated in `docs/planning/memory.md`.
+- Python editable metadata and module version now agree at v0.21.6.
+- `.nvmrc`, `.python-version`, React engines, lock metadata, CI runtime, and Mac Mini setup guide aligned.
+- Nightly link checker now invokes a supported command; 1,056 internal links validate.
+- Live API verifies all 153 ETABS sample beams and all import/design/3D payload contracts.
+- Clean Python 3.11 dependency graph: 147 packages, zero known vulnerabilities, no broken requirements; final preflight passes 5,159 tests (3 skipped, 6 deselected), and 336 FastAPI tests pass.
+- npm dependency graph reduced from 13 findings to one RSC-only React Router advisory; the browser-only applicability decision and strict exception are recorded in `docs/planning/dependency-security-baseline.md`.
+- Full canonical check passes 28/28; audit readiness passes 22/22; health is 100/100.
+- Parity reports 15/17 curated IS 456 areas implemented, 52/60 FastAPI routes directly tested, and 13/13 API-connected React hooks; intentional Python-only exports are informational rather than defects.
+- The completed March agent audit and unified CLI plan were moved from `docs/_active/` through the safe mover with zero broken links.
+- Twenty-two of twenty-three feedback records are resolved. Only the tester empty-output watch at occurrence two of three remains.
+- MAINT-005 checkpoint `6f119132` adds direct tests for the eight missing routes; FastAPI now passes 336 tests and parity reports 60/60 tested routes with a 96% actionable score.
+- The full local stack launches on Node 24 and the live 153-beam sample passes import, auto-design, R3F editor, status/utilization, dashboard, and export verification with no new browser warnings.
+- WebSocket designs now preserve the full REST contract; the UI displays real capacities and canonical governing utilization rather than fallback zeroes.
+- All export boundaries pass: BBS CSV, DXF, single HTML/PDF report, building HTML/PDF/CSV summary, and BOQ CSV. Byte-level checks confirm CSV structure, DXF sections/EOF, and PDF signatures; final quantities are 2,663.4 kg steel and 114.8 m³ concrete.
+- React passes 146 tests, production build, and lint with one existing hook warning. Canonical check is 28/28, audit 22/22, health 100/100, and parity 96%.
+- Release preflight now honors `.nvmrc` Node 24 and macOS reclaimable memory. A clean built-wheel environment passes 5,120 tests (41 skipped, 6 deselected) plus packaged CLI job/critical/report workflows.
+- Session automation recognizes descriptive/multiline session history and current `TASKS.md` Active formats, preventing historical summary rewinds.
+- GitHub CLI API and SSH verification pass end to end after browser reauthorization; PR #676 is open and receives pushed maintenance checkpoints.
+- Colima's transferred disk was confirmed stopped and unlocked with Lima's targeted emergency-recovery command; the existing VM data was preserved and Docker is healthy.
+- Docker preflight now uses resilient pip downloads, Node 24, bounded diagnostics, and repo-only test mounts; 5,158 Python tests and the React production build pass in containers.
+- MAINT-006 adds `.codex/config.toml`, the canonical token-efficiency guide, a maximum of two subagents, focused no-history task packets, `./run.sh efficiency`, regression tests, and enforcement in the 9/9 quick gate.
+- The authenticated one-month analytics view reported 1,858 turns: 1,065 GPT-5.5, 635 Sol, 96 Luna, 43 Terra, and 19 older-model turns. The last seven days contained 632 turns, including 105 Sol versus only 32 Luna and 15 Terra. This supports Luna-first repeatable work and Terra-first implementation.
+- `agents/model_policy.json`, `scripts/model_picker.py`, and `./run.sh model` now compare Luna/Terra/Sol reasoning profiles, state equal-token relative rates, recommend the cheapest credible start, and retain explicit approval for Sol.
+- Model-routing checkpoint `fe55d130` is pushed. Thirteen focused tests and Ruff pass; the full gate passed all 22 non-doc checks, then the two introduced doc/index findings were corrected and the Docs category passed 7/7.
+- The owner made Sol High mandatory for the main orchestrator's intake, planning, delegation, integration, and final review. Luna/Terra remain execution workers. The orchestrator must provide exact scope, non-goals, pitfalls, acceptance criteria, tests, and return format, then independently verify returned work.
+- Orchestrator-policy checkpoint `ff6d525d` is pushed; 17 focused tests, Ruff, the 9/9 quick gate, and Docs 7/7 pass.
+- MAINT-007 re-audited onboarding, bootstrap steps, 16 agent definitions, 14 skills, 113 mapped scripts, folder governance, and tool permissions. The fast brief now reads the current Active table and labels its fast grep metric as test functions.
+- `./run.sh session usage` now records local start/milestone/closeout evidence: model, reasoning, elapsed time, parent/subagent counts, optional dashboard values, verification, and Git state. Billing token/cost fields remain explicitly empty.
+- `./run.sh pr status` no longer calls `gh pr view --web` by default. It prints PR details in the terminal; `./run.sh pr status --web` is the explicit browser action.
+- MAINT-007 verification passes 32 focused tests, Ruff/Black, instruction and bootstrap drift checks, the 9/9 quick gate, the 29/29 full gate, audit readiness 22/22, and health 100/100. The authoritative Python collection is 5,193 tests.
+- MAINT-007 implementation and synchronized indexes were pushed in `4d5b9eb5`.
+
+### Notes
+- Inherited pre-session tree: 73 modified tracked files plus 47 untracked files; 70 Python diffs are AST-equivalent formatting changes.
+- Recovery branch created through `scripts/ai_commit.sh --branch`; GitHub CLI device authentication remains in progress for PR operations.
+- No formatter, bulk cleanup, dependency auto-fix, or feature work is authorized before the recovery checkpoint.
+- PR #676 is not merge-ready: Link Check reports three empty template links, and FastAPI Validation installed unbounded Ruff 0.16.1 while the proven local gate uses 0.15.8. Focused fixes await explicit approval.
+- The transferred `.venv` reported 98 findings across 21 packages because it accumulated undeclared/stale packages. It is retained only as a diagnostic artifact; clean-install declarations and locks are now authoritative.
+- The browser harness does not expose programmatic Blob downloads as native download events. Export confidence therefore combines live UI-to-API 200 evidence with byte-level validation of the same response artifacts.
+- `scripts/_tmp_write_days.py` was a tracked placeholder and was removed with the safe-delete tool; a recoverable copy remains under ignored `tmp/deleted_backups/`.
+- Session-end evolution status was observed without applying changes: health trend is 48 → 100, and the monthly review is 124 days overdue.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: The transferred unversioned Homebrew Node 25 failed at startup because `libsimdjson.29.dylib` was missing → `scripts/launch_stack.sh` now selects the `.nvmrc` Node 24 keg and enforces the required major.
+- ⚠️ TERMINAL ISSUE: macOS port discovery used `lsof -ti :PORT` and included connected clients, terminating a Codex browser helper → listener discovery is now restricted to `-sTCP:LISTEN`.
+- ⚠️ TERMINAL ISSUE: `./run.sh dev --check-only --verbose` treated the deliberately running stack as a failed preflight and triggered cleanup → the stack was restarted with `./run.sh dev --local`; this behavior remains documented for future launcher UX work.
+- ⚠️ TERMINAL ISSUE: the optional `agent-browser` CLI was unavailable → the maintained in-app Browser control path completed the live verification.
+- ⚠️ TERMINAL ISSUE: `./run.sh pr status` returns GitHub HTTP 401 because the transferred CLI credential expired → the enforced `ai_commit.sh` workflow committed and pushed over working SSH without bypass flags; PR creation still requires renewed auth.
+- ⚠️ TERMINAL ISSUE: `./run.sh session start` reported no Active section despite current rows under `## Active` → the parser now accepts current/legacy headings and plain/bold task IDs.
+- ⚠️ TERMINAL ISSUE: the initial targeted pytest node used a stale class path and collected nothing → the exact class was located with `rg` and the corrected target passed.
+- ⚠️ TERMINAL ISSUE: release preflight counted only immediately free macOS pages and incorrectly blocked at 1.0 GB → it now uses reclaimable memory and passed with 10.4 GB.
+- ⚠️ TERMINAL ISSUE: bare npm resolved the transferred broken Node 25 and failed on missing `libsimdjson.29.dylib` → verification used Node 24 and preflight now selects the `.nvmrc` runtime.
+- ⚠️ TERMINAL ISSUE: clean-wheel release verification installed only pytest and failed importing Hypothesis → the verifier now installs the wheel's `[dev]` extra and the isolated 5,120-test/CLI UAT passes.
+- ⚠️ TERMINAL ISSUE: a compound `find` command used an invalid escaped `-exec` terminator → the artifact directory was resolved with a simple validated `/tmp` lookup.
+- ⚠️ TERMINAL ISSUE: the hidden browser file-input interaction timed out and reset the automation kernel → the visible “click to browse” path completed the import safely.
+- ⚠️ TERMINAL ISSUE: session summary did not detect dates across multiline log content and fell back to the last 20 commits → line-wise date parsing is now regression-tested; this handoff was reconciled after the fix.
+- ⚠️ TERMINAL ISSUE: `colima daemon stop` without a profile failed → `colima daemon stop default` stopped the daemon before the targeted stale-disk unlock.
+- ⚠️ TERMINAL ISSUE: `./run.sh pr create` required execution from `main` even though the task branch already existed → the documented direct `gh pr create` fallback opened PR #676.
+- ⚠️ TERMINAL ISSUE: `./run.sh pr status` and `bash run.sh pr status` returned no visible output → `./scripts/ai_commit.sh --status` provided the required branch/PR state without bypassing safeguards.
+- ⚠️ TERMINAL ISSUE: the documented direct `scripts/generate_folder_index.py` path did not exist → `./run.sh generate indexes` used the maintained generator; unrelated generated churn was then narrowed to affected indexes only.
+- ⚠️ TERMINAL ISSUE: every enforced `./run.sh pr status` call opened another Chrome PR tab because `run.sh` unconditionally used `gh pr view --web` → status is now terminal-only and browser opening requires the explicit `--web` flag.
+
+
+
 ## 2026-04-07 — Session — CI Fixes & v0.21.6 Release
 
 **Agent:** orchestrator → backend → doc-master → ops
@@ -296,4 +423,3 @@
 `--host "::"` is now the canonical uvicorn start command for this project (not `0.0.0.0`).
 
 ---
-

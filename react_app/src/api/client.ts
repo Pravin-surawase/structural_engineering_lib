@@ -43,6 +43,7 @@ export interface BeamDesignResponse {
   ast_total: number;
   asc_total: number;
   utilization_ratio: number;
+  effective_depth_used?: number;
   warnings?: string[];
 }
 

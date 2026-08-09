@@ -130,11 +130,11 @@ def calculate_<quantity>(b: float, d: float, fck: float, fy: float, ...) -> floa
 | Module | IS 456 Clauses | Priority | Key Functions Needed |
 |--------|----------------|----------|---------------------|
 | `column.py` | Cl 25, 26, 39 | 🔴 P1 | `design_short_column`, `design_long_column`, `pm_interaction_curve`, `biaxial_bending_check` |
-| `slab_oneway.py` | Cl 24, 26 | 🟡 P2 | `design_oneway_slab`, `calculate_distribution_steel` |
-| `slab_twoway.py` | Cl 24, Annex D | 🟡 P2 | `design_twoway_slab`, `moment_coefficients` |
-| `footing.py` | Cl 34 | 🟡 P3 | `design_isolated_footing`, `punching_shear_check`, `one_way_shear_check` |
-| `staircase.py` | — | 🟢 P4 | `design_waist_slab_staircase`, `design_dog_legged` |
-| `shear_wall.py` | Cl 32 | 🟢 P4 | `design_shear_wall`, `interaction_check` |
+| `<planned>/slab_oneway.py` | Cl 24, 26 | 🟡 P2 | `design_oneway_slab`, `calculate_distribution_steel` |
+| `<planned>/slab_twoway.py` | Cl 24, Annex D | 🟡 P2 | `design_twoway_slab`, `moment_coefficients` |
+| `<planned>/footing.py` | Cl 34 | 🟡 P3 | `design_isolated_footing`, `punching_shear_check`, `one_way_shear_check` |
+| `<planned>/staircase.py` | — | 🟢 P4 | `design_waist_slab_staircase`, `design_dog_legged` |
+| `<planned>/shear_wall.py` | Cl 32 | 🟢 P4 | `design_shear_wall`, `interaction_check` |
 
 ## Core Type Patterns (match these)
 
@@ -403,7 +403,7 @@ Functions used by 2+ elements MUST be extracted to `codes/is456/common/`:
 | `calculate_xu_max(fck, fy)` | beam, column, slab | `common/stress_blocks.py` |
 | `stress_block_depth(xu, fck)` | beam, column, slab | `common/stress_blocks.py` |
 | `bar_spacing_limits(bar_dia, agg_size)` | all elements | `common/reinforcement.py` |
-| `min_reinforcement(element_type, fck, fy)` | all elements | `common/minimums.py` |
+| `min_reinforcement(element_type, fck, fy)` | all elements | `<planned>/common/minimums.py` |
 
 **Rule:** NEVER duplicate beam math in column.py. Extract to `common/` first.
 
@@ -418,6 +418,13 @@ When implementing a new structural element, follow this order:
 5. **Continue** — biaxial → slender → helical reinforcement
 
 **NEVER jump to the complex case.** Each level builds on verified foundation.
+
+### Mechanical Edit Syntax Gate
+
+After a bulk or mechanical edit (decorators, return wrappers, signature
+renames, or repeated annotations), run `.venv/bin/python -m py_compile` on
+every modified Python file before handoff. Do this before the test suite so a
+syntax error is reported at its source instead of appearing later in CI.
 
 ### Red Flags — STOP and Investigate
 
@@ -448,5 +455,6 @@ After implementing a function:
 - DO NOT duplicate existing functions — search before coding
 - DO NOT skip the `@clause` decorator on IS 456 functions
 - DO NOT use bare `python` — always `.venv/bin/python`
+- DO NOT hand off bulk-edited Python before the per-file `py_compile` gate
 - DO NOT modify `services/api.py` — hand off to `@backend`
 - DO NOT modify `fastapi_app/` — hand off to `@api-developer`

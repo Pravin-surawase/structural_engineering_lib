@@ -311,16 +311,16 @@ def main() -> int:
     header = textwrap.dedent(f"""
         External CLI Test (S-007)
 
-        Timestamp: {time.strftime('%Y-%m-%d %H:%M:%S')}
+        Timestamp: {time.strftime("%Y-%m-%d %H:%M:%S")}
         Platform:  {platform.platform()}
-        Python:    {sys.version.replace(os.linesep, ' ')}
+        Python:    {sys.version.replace(os.linesep, " ")}
         Executable:{sys.executable}
         Workdir:   {workdir}
 
         Notes:
         - Required steps: {len(required_steps)}
         - Optional steps: {len(optional_steps)}
-        - Repo mode: {'yes' if repo_root else 'no'}
+        - Repo mode: {"yes" if repo_root else "no"}
         """).strip() + "\n"
 
     with log_path.open("w", encoding="utf-8") as f:

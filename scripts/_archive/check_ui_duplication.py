@@ -411,7 +411,7 @@ def format_console_report(report: DuplicationReport, show_similar: bool = False)
     )
     lines.append(f"  Exact duplicates: {report.summary.get('exact_duplicates', 0)}")
     lines.append(
-        f"  Near duplicates (≥{SIMILARITY_THRESHOLD*100:.0f}% similar): {report.summary.get('near_duplicates', 0)}"
+        f"  Near duplicates (≥{SIMILARITY_THRESHOLD * 100:.0f}% similar): {report.summary.get('near_duplicates', 0)}"
     )
     lines.append(f"  Similar names: {report.summary.get('similar_names', 0)}")
     lines.append("")
@@ -440,7 +440,9 @@ def format_console_report(report: DuplicationReport, show_similar: bool = False)
         for func1, func2, sim in sorted(report.near_duplicates, key=lambda x: -x[2])[
             :10
         ]:
-            lines.append(f"  {func1.name}() ↔ {func2.name()}  ({sim*100:.0f}% similar)")
+            lines.append(
+                f"  {func1.name}() ↔ {func2.name()}  ({sim * 100:.0f}% similar)"
+            )
             lines.append(f"    📍 {func1.file}:{func1.line}")
             lines.append(f"    📍 {func2.file}:{func2.line}")
             if show_similar:

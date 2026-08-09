@@ -270,7 +270,9 @@ def migrate_module(module_name: str, dry_run: bool = False) -> bool:
         dep_dst = CODES_IS456 / f"{dep_module}.py"
         if not dep_dst.exists():
             print(f"⚠️  Dependency {dep_module} not migrated yet")
-            print(f"   Migrate in order: {', '.join(MIGRATION_ORDER[:module_idx + 1])}")
+            print(
+                f"   Migrate in order: {', '.join(MIGRATION_ORDER[: module_idx + 1])}"
+            )
             # Don't fail - might be intentional
 
     # Read source content

@@ -2,6 +2,13 @@
 
 Open-source IS 456 RC beam design library. V3 stack: React 19 + R3F + Tailwind → FastAPI → Python structural_lib.
 
+## Surgical Work and Essential-Only Review (MANDATORY)
+
+- Keep work surgical, evidence-driven, and complete within the agreed scope. Inspect enough of the main process to find confirmed defects, then finish the scoped work to a good standard without adjacent improvements.
+- Always trace a confirmed defect to its root cause and fix that cause. Do not stop at a workaround, suppress the symptom, or apply a superficial patch; verify that the main-process outcome is corrected.
+- For every review finding, ask: **Would fixing this change the outcome of the main process?** If not, ignore it. If a non-essential concern needs preservation, file a follow-up bead/task only when necessary; do not expand the current scope.
+- Review only essential main-process behavior. Do not report issues about comments, edge cases, test-coverage or falsification gaps, generic hardening, or adjacent improvements. Do not add tests during review. Reject security or concurrency observations that are merely hardening and do not change the main-process outcome.
+
 ## IMPORTANT: Git
 
 ALWAYS use `./scripts/ai_commit.sh "type: message"` for commits. NEVER use manual git add/commit/push/pull.
@@ -62,7 +69,7 @@ Agents keep duplicating code. Check what exists BEFORE writing new code:
 ```bash
 ls react_app/src/hooks/                                         # React hooks (CSV, geometry, export, insights)
 grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI endpoints (13 routers)
-grep "^def " Python/structural_lib/services/api.py | head -20   # 0 public + 0 private helpers
+./run.sh find --api <func>                                   # Public API exact signature (68 functions)
 .venv/bin/python scripts/discover_api_signatures.py <func>      # Get exact param names (b_mm not width)
 ```
 
@@ -73,7 +80,7 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
 ./run.sh commit "type: message"     # Commit safely (THE ONE RULE)
-./run.sh check                      # Validate everything (28 checks, parallel)
+./run.sh check                      # Validate everything (29 checks, parallel)
 ./run.sh check --quick              # Fast validation (<30s)
 ./run.sh pr create TASK-XXX "desc"  # Start a PR
 ./run.sh pr finish                  # Ship the PR
@@ -102,7 +109,8 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ./run.sh parity                     # IS 456 clause/endpoint/test coverage dashboard
 ./run.sh pipeline status TASK-XXX   # Check pipeline step for a task
 ./run.sh session compact            # Archive old SESSION_LOG entries (<50KB)
-./run.sh session costs --summary    # Agent cost/efficiency tracking
+./run.sh efficiency check           # Validate low-token project controls
+./run.sh session usage --summary    # Model/reasoning/agent checkpoints
 ./run.sh session trust              # Check session trust state
 ```
 

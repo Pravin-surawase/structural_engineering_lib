@@ -22,6 +22,7 @@
 #   route     Route tasks to the right agent
 #   tools     Tool & script discovery
 #   pipeline  Pipeline state tracking
+#   parity    Cross-layer implementation/test parity dashboard
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 set -euo pipefail
 
@@ -156,7 +157,26 @@ _cmd_pr() {
             ;;
         status)
             if command -v gh &>/dev/null; then
-                gh pr view --web 2>/dev/null || gh pr list
+                if [[ "${1:-}" == "--web" ]]; then
+                    gh pr view --web
+                    return
+                fi
+
+                local branch
+                branch=$(git branch --show-current 2>/dev/null)
+                if gh pr view \
+                    --json number,title,state,url,headRefName,baseRefName,mergeStateStatus \
+                    --jq '"PR #\(.number) [\(.state)] \(.title)\nBranch: \(.headRefName) -> \(.baseRefName)\nMerge state: \(.mergeStateStatus)\nURL: \(.url)"' \
+                    2>/dev/null; then
+                    return
+                fi
+
+                echo "No pull request is associated with branch: ${branch:-unknown}"
+                if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
+                    "$SCRIPTS/ai_commit.sh" --pr-check
+                else
+                    echo "Working tree clean; no PR decision is needed."
+                fi
             else
                 _error "GitHub CLI (gh) not installed"
                 echo "  Install: brew install gh"
@@ -180,12 +200,14 @@ Manage pull requests.
 Subcommands:
   create TASK-XXX "description"    Create a task PR branch
   finish [args]                    Push, create/merge PR
-  status                           View current PR status
+  status                           Print current PR status in the terminal
+  status --web                     Open the current PR in a browser
 
 Examples:
   ./run.sh pr create TASK-501 "Add shear wall support"
   ./run.sh pr finish
   ./run.sh pr status
+  ./run.sh pr status --web
 EOF
 }
 
@@ -222,6 +244,10 @@ _cmd_session() {
         brief)
             bash "$SCRIPTS/agent_brief.sh" "$@"
             ;;
+        costs|usage|compact|trust)
+            _require_venv
+            "$VENV" "$SCRIPTS/session.py" "$subcmd" "$@"
+            ;;
         *)
             _help_session
             [[ -n "$subcmd" ]] && _error "Unknown session subcommand: $subcmd"
@@ -244,10 +270,15 @@ Subcommands:
   check      Check session docs for issues
   context    Dump compact orientation context (tasks, brief, git status)
   brief      Fast 20-line agent brief (--agent <name> | --handoff)
+  usage      Record/show model, reasoning, agent, and usage checkpoints
+  costs      Show legacy Git-activity proxies (not billing or tokens)
+  compact    Archive old SESSION_LOG entries
+  trust      Show or reset session trust state
 
 Examples:
   ./run.sh session start      # First thing every session
   ./run.sh session context    # Quick orientation mid-session
+  ./run.sh session usage --help
   ./run.sh session end        # Last thing every session
   ./run.sh session sync       # Fix stale numbers mid-session
 EOF
@@ -390,7 +421,7 @@ _cmd_test() {
             ;;
         --pipeline)
             _require_venv
-            "$VENV" "$SCRIPTS/test_import_3d_pipeline.py" "${@:2}"
+            "$VENV" "$SCRIPTS/test_import_pipeline.py" "${@:2}"
             ;;
         --vba)
             _require_venv
@@ -721,6 +752,75 @@ _cmd_coverage() {
     "$VENV" "$SCRIPTS/check_clause_coverage.py" "$@"
 }
 
+_cmd_parity() {
+    _require_venv
+    "$VENV" "$SCRIPTS/parity_dashboard.py" "$@"
+}
+
+_help_parity() {
+    cat <<'EOF'
+Usage: ./run.sh parity [--json] [--missing] [--section <name>]
+
+Show cross-layer coverage for IS 456 clauses, public API functions, FastAPI
+endpoints/tests, and frontend API hooks.
+EOF
+}
+
+# ── Command: efficiency ───────────────────────────────────────────────────
+
+_cmd_efficiency() {
+    _require_venv
+    local subcmd="${1:-check}"
+    case "$subcmd" in
+        check)
+            shift || true
+            "$VENV" "$SCRIPTS/check_token_efficiency.py" "$@"
+            ;;
+        prompt)
+            "$VENV" "$SCRIPTS/check_token_efficiency.py" --prompt
+            ;;
+        *)
+            _error "Unknown efficiency subcommand: $subcmd"
+            _help_efficiency
+            return 1
+            ;;
+    esac
+}
+
+_help_efficiency() {
+    cat <<'EOF'
+Usage: ./run.sh efficiency [check|prompt] [--json]
+
+Validate project-side low-token controls or print the reusable task preamble.
+Provider usage is available through Codex /status and Settings > Usage.
+EOF
+}
+
+# ── Command: model ────────────────────────────────────────────────────────
+
+_cmd_model() {
+    _require_venv
+    "$VENV" "$SCRIPTS/model_picker.py" "$@"
+}
+
+_help_model() {
+    cat <<'EOF'
+Usage: ./run.sh model <task description> [options]
+       ./run.sh model --table
+
+Recommend a GPT-5.6 model and reasoning profile from the checked-in policy.
+The command advises only; apply the result with /model in Codex desktop.
+
+Options:
+  --risk auto|low|normal|high|critical
+  --repeatable
+  --ambiguous
+  --important
+  --orchestrator
+  --json
+EOF
+}
+
 # ── Main Dispatch ──────────────────────────────────────────────────────────
 
 _print_usage() {
@@ -747,6 +847,9 @@ _print_usage() {
     echo -e "  ${GREEN}tools${NC}       Tool & script discovery (list, find,stats)"
     echo -e "  ${GREEN}pipeline${NC}    Pipeline state tracking (new, advance, show)"
     echo -e "  ${GREEN}coverage${NC}    IS 456 clause coverage gap detection"
+    echo -e "  ${GREEN}parity${NC}      Cross-layer implementation/test parity dashboard"
+    echo -e "  ${GREEN}efficiency${NC}  Validate low-token agent and context controls"
+    echo -e "  ${GREEN}model${NC}       Recommend a model and reasoning level for a task"
     echo -e "  ${GREEN}diagnose${NC}    Diagnose CI failures (--pr N, --local, --fix)"
     echo ""
     echo -e "${BOLD}Quick Start:${NC}"
@@ -779,6 +882,9 @@ _dispatch_help() {
         tools)    _cmd_tools ;;
         pipeline) _cmd_pipeline ;;
         coverage) _cmd_coverage ;;
+        parity)   _help_parity ;;
+        efficiency) _help_efficiency ;;
+        model)      _help_model ;;
         *)        _print_usage ;;
     esac
 }
@@ -807,11 +913,14 @@ _run_sh() {
         'route:Route tasks to the right agent'
         'tools:Tool and script discovery'
         'pipeline:Pipeline state tracking'
+        'parity:Cross-layer parity dashboard'
+        'efficiency:Validate low-token controls'
+        'model:Recommend model and reasoning profile'
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
     local -a pr_subs=('create' 'finish' 'status')
-    local -a session_subs=('start' 'end' 'summary' 'sync' 'check')
+    local -a session_subs=('start' 'end' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'costs' 'compact' 'trust')
     local -a generate_subs=('indexes' 'sdk' 'manifest' 'docs-index' 'scaffold')
     local -a health_opts=('--fix' '--score' '--quick' '--category' '--json')
     local -a feedback_subs=('log' 'summary' 'pending' 'resolve' 'stats')
@@ -819,6 +928,7 @@ _run_sh() {
     local -a test_opts=('--parity' '--pipeline' '--vba' '--cli' '--benchmark' '--ci' '--stats')
     local -a audit_opts=('--score' '--errors' '--inputs' '--diagnostics')
     local -a release_subs=('preflight' 'run' 'verify' 'check-docs' 'checklist')
+    local -a efficiency_subs=('check' 'prompt')
 
     if (( CURRENT == 2 )); then
         _describe 'command' commands
@@ -834,6 +944,7 @@ _run_sh() {
             test) _values 'option' $test_opts ;;
             audit) _values 'option' $audit_opts ;;
             release) _values 'subcommand' $release_subs ;;
+            efficiency) _values 'subcommand' $efficiency_subs ;;
         esac
     elif (( CURRENT == 4 )); then
         case "${words[2]}" in
@@ -900,8 +1011,11 @@ main() {
         route)    _cmd_route "$@" ;;
         tools)    _cmd_tools "$@" ;;
         coverage) _cmd_coverage "$@" ;;
+        parity)    _cmd_parity "$@" ;;
         diagnose) _require_venv; "$VENV" "$SCRIPTS/diagnose_ci.py" "$@" ;;
         pipeline) _cmd_pipeline "$@" ;;
+        efficiency) _cmd_efficiency "$@" ;;
+        model)      _cmd_model "$@" ;;
         *)
             _error "Unknown command: $cmd"
             echo ""

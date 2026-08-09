@@ -1,0 +1,408 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-08-07
+doc_type: tutorial
+complexity: beginner
+tags: [learning, foundations]
+---
+
+# Module 9: Git and Version Control
+
+## The Big Idea
+
+**Git** tracks every change to every file in your project. It's like an infinite undo button — you can go back to any point in history. More importantly, it lets multiple people work on the same project without overwriting each other's work.
+
+---
+
+## Part 1: What Is Version Control?
+
+### Without version control:
+```
+project/
+├── beam_design.py
+├── beam_design_v2.py
+├── beam_design_v2_fixed.py
+├── beam_design_v2_fixed_FINAL.py
+├── beam_design_v2_fixed_FINAL_v2.py    ← Which one is current?
+└── beam_design_v2_fixed_FINAL_v2_USE_THIS.py
+```
+
+### With version control (Git):
+```
+project/
+└── beam_design.py   ← Always the current version
+
+Git history:
+  commit abc123  "fix: correct shear calculation"         ← latest
+  commit def456  "feat: add column design"
+  commit 789abc  "fix: unit conversion bug"
+  commit 012def  "feat: initial beam design"              ← oldest
+
+  You can see, compare, or restore ANY of these versions.
+```
+
+---
+
+## Part 2: Git Concepts
+
+### Repository (repo)
+A folder tracked by Git. Contains all your code + full history.
+
+### Commit
+A snapshot of your code at a point in time. Each commit has:
+- A unique ID (hash): `abc123def456`
+- A message: "fix: correct shear calculation"
+- The author and timestamp
+- The actual changes (diff)
+
+```
+Commit abc123
+  Author: developer@email.com
+  Date:   2024-01-15 14:30
+  Message: fix: correct shear calculation
+
+  Changed files:
+    M  Python/structural_lib/codes/is456/shear.py   (+5, -3)
+    M  Python/tests/test_shear.py                    (+12, -0)
+```
+
+### Branch
+A separate line of development. Like making a copy of the project to experiment on.
+
+```
+main:     A ── B ── C ── D ── E        ← stable, released code
+                    │
+feature:            └── F ── G ── H    ← new feature being developed
+```
+
+### Merge / Pull Request
+Combining changes from one branch into another.
+
+```
+Before merge:
+main:     A ── B ── C ── D
+feature:            └── E ── F
+
+After merge:
+main:     A ── B ── C ── D ── M    ← M includes changes from E and F
+```
+
+---
+
+## Part 3: Basic Git Commands
+
+| Command | What It Does | When |
+|---------|-------------|------|
+| `git status` | Show changed files | Before committing |
+| `git log --oneline -10` | Show recent history | Understanding what happened |
+| `git diff` | Show exact changes | Before committing |
+| `git branch` | List branches | See where you are |
+| `git checkout -b name` | Create new branch | Starting new work |
+| `git add .` | Stage all changes | Preparing to commit |
+| `git commit -m "msg"` | Save a snapshot | After meaningful changes |
+| `git push` | Upload to GitHub | Share with others |
+| `git pull` | Download from GitHub | Get others' changes |
+
+### Example workflow:
+```bash
+# 1. Check current state
+git status                    # What files changed?
+git branch                    # What branch am I on?
+
+# 2. Make changes
+# ... edit files ...
+
+# 3. Stage and commit
+git add .                     # Stage all changes
+git commit -m "feat: add column design"
+
+# 4. Push to remote
+git push
+```
+
+---
+
+## Part 4: Conventional Commits — Meaningful Messages
+
+A commit message should explain WHAT changed and WHY. Conventional commits add structure:
+
+```
+type(scope): description
+
+Examples:
+  feat(beam): add doubly reinforced beam design
+  fix(shear): correct tau_c lookup table for M25
+  docs(api): update API reference for column endpoints
+  test(flexure): add benchmark tests from SP-16
+  refactor(core): simplify BeamSection dataclass
+  chore(deps): update Pydantic to 2.6
+  ci(tests): run tests in parallel
+```
+
+### Types:
+
+| Type | When | Example |
+|------|------|---------|
+| `feat` | New feature | `feat: add column design` |
+| `fix` | Bug fix | `fix: correct unit conversion` |
+| `docs` | Documentation | `docs: update API reference` |
+| `test` | Tests only | `test: add shear benchmarks` |
+| `refactor` | Code restructure (no behavior change) | `refactor: split flexure module` |
+| `chore` | Maintenance | `chore: update dependencies` |
+| `ci` | CI/CD changes | `ci: add Python 3.12 to matrix` |
+
+### Why this format?
+- Auto-generate changelogs
+- Determine version bumps (feat = minor, fix = patch)
+- Easy to scan in `git log`
+
+---
+
+## Part 5: Branches — Working in Parallel
+
+### Branch strategy:
+```
+main (stable)
+├── TASK-042-column-design      ← Feature branch
+├── TASK-043-fix-shear-table    ← Bug fix branch
+└── TASK-044-update-docs        ← Docs branch
+```
+
+**Rules:**
+- `main` is always stable and deployable
+- Each task gets its own branch
+- Work on your branch, then merge via Pull Request
+- Never commit directly to `main` (for production code)
+
+### Create a branch:
+```bash
+# Create and switch to a new branch
+git checkout -b TASK-042-column-design
+
+# Work on it...
+git commit -m "feat(column): add axial capacity calculation"
+git commit -m "test(column): add benchmark tests"
+
+# Push the branch
+git push -u origin TASK-042-column-design
+```
+
+---
+
+## Part 6: Pull Requests — Code Review Gateway
+
+A **Pull Request** (PR) is a request to merge your branch into `main`. It's where code review happens.
+
+```
+Your Branch (TASK-042)              main
+  │                                  │
+  │  1. Push commits                 │
+  │  2. Open PR on GitHub            │
+  │  3. CI tests run automatically   │
+  │  4. Reviewer reads your code     │
+  │  5. Reviewer approves            │
+  │  6. Merge into main              │
+  │ ────────────────────────────────→│
+```
+
+### PR contents:
+- **Title:** "feat(column): add axial capacity calculation"
+- **Description:** What changed, why, how to test
+- **Changes:** Diff of all modified files
+- **CI status:** ✅ All tests pass or ❌ Failures
+- **Review:** Comments from other developers
+
+### What CI checks on a PR:
+```
+✅ Python tests pass (pytest)
+✅ React builds (npm run build)
+✅ Type checks pass (pyright, tsc)
+✅ Linting passes (ruff, eslint)
+✅ Architecture boundaries respected
+✅ No broken imports
+```
+
+---
+
+## Part 7: Git Hooks — Automatic Checks
+
+**Git hooks** are scripts that run automatically at certain Git events.
+
+```
+You type: git commit -m "feat: ..."
+                │
+                ▼
+    ┌─────────────────────┐
+    │  pre-commit hook     │ ← Runs BEFORE commit
+    │  • Format code       │
+    │  • Check types       │
+    │  • Run quick tests   │
+    │  • Validate imports  │
+    └──────────┬──────────┘
+               │ passes?
+     ┌─────────┴─────────┐
+     │ YES               │ NO
+     ▼                   ▼
+  Commit saved      Commit blocked
+                    "Fix errors first"
+```
+
+### Common hooks:
+
+| Hook | When | What It Does |
+|------|------|-------------|
+| `pre-commit` | Before commit is saved | Lint, format, quick checks |
+| `commit-msg` | After message is written | Validate conventional commit format |
+| `pre-push` | Before push to remote | Run tests |
+| `post-commit` | After commit succeeds | Update indexes, log |
+
+### This project's hooks:
+```
+scripts/hooks/
+├── pre_commit_hook.py    ← Format check, import validation, stub detection
+├── post_commit_hook.py   ← Auto-update indexes
+└── commit_msg_hook.py    ← Enforce conventional commit format
+```
+
+---
+
+## Part 8: Git Automation — ai_commit.sh
+
+This project wraps Git in a safety script that prevents common mistakes.
+
+### Why?
+```
+PROBLEM: Manual git is error-prone
+  git add .                      ← Might add temp files
+  git commit -m "fix stuff"      ← Bad message
+  git push                       ← Might push to wrong branch
+
+SOLUTION: One script handles everything
+  ./scripts/ai_commit.sh "fix(shear): correct tau_c for M25"
+  → Stages all changes
+  → Validates commit message
+  → Runs pre-commit hooks
+  → Pulls latest changes
+  → Pushes safely
+```
+
+### Script flags:
+```bash
+./scripts/ai_commit.sh "type: message"    # Standard commit + push
+./scripts/ai_commit.sh "msg" --preview    # Show what would be committed
+./scripts/ai_commit.sh --undo             # Undo last unpushed commit
+./scripts/ai_commit.sh --status           # Show project state
+./scripts/ai_commit.sh --branch TASK-042 "column design"  # Create task branch
+./scripts/ai_commit.sh --finish "done"    # Merge PR + cleanup
+```
+
+---
+
+## Part 9: .gitignore — What NOT to Track
+
+Some files should never be in Git:
+
+```
+# .gitignore
+
+# Virtual environments
+.venv/
+node_modules/
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+
+# Secrets
+.env
+*.key
+*.pem
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/settings.json
+.idea/
+
+# Cache
+__pycache__/
+.pytest_cache/
+```
+
+**Rule:** Never commit secrets, build outputs, or dependency folders.
+
+---
+
+## Part 10: Common Git Mistakes and Fixes
+
+| Mistake | What Happens | Fix |
+|---------|-------------|-----|
+| Committed secrets | Secrets in public history | Rotate credentials IMMEDIATELY. Use `git filter-branch` to remove |
+| Committed to wrong branch | Changes on main instead of feature | `git stash`, checkout correct branch, `git stash pop` |
+| Bad commit message | "fix stuff" in history | `git commit --amend -m "fix(shear): correct tau_c"` (before push only) |
+| Merge conflicts | Two people changed same line | Edit the file, remove conflict markers, commit |
+| Accidentally deleted file | File gone | `git checkout HEAD -- path/to/file` |
+| Want to undo last commit | Realize mistake after commit | `git reset --soft HEAD~1` (keeps changes) |
+
+### Merge conflict example:
+```
+<<<<<<< HEAD
+def calculate_shear(b_mm, d_mm, fck):
+=======
+def calculate_shear(b_mm: float, d_mm: float, fck: float):
+>>>>>>> feature-branch
+```
+
+**Fix:** Choose which version to keep (or combine), remove the markers, save, and commit.
+
+---
+
+## Part 11: GitHub — Remote Hosting
+
+```
+Your Computer          GitHub (cloud)
+┌──────────┐    push   ┌──────────┐
+│  Local    │ ────────→│  Remote  │
+│  Repo     │ ←────────│  Repo    │
+│  (.git/)  │   pull   │          │
+└──────────┘           └──────────┘
+```
+
+### GitHub adds on top of Git:
+- **Pull Requests** — Code review workflow
+- **Issues** — Bug and feature tracking
+- **Actions** — Automated CI/CD (see Module 10)
+- **Pages** — Host documentation sites
+- **Releases** — Versioned downloads
+
+---
+
+## Part 12: Exercises
+
+1. **Read history:** Run `git log --oneline -20`. What were the last 20 changes?
+2. **Check status:** Run `git status`. Are there uncommitted changes?
+3. **Read a diff:** Run `git diff` (if there are changes). What exactly changed?
+4. **Find a file's history:** Run `git log --oneline -- Python/structural_lib/codes/is456/flexure.py`. How many times was this file changed?
+
+---
+
+## Part 13: Self-Check
+
+1. **What is a commit?** A snapshot of your code at a point in time with a message.
+2. **What is a branch?** A parallel line of development that can be merged later.
+3. **What is a Pull Request?** A request to merge a branch into main, with code review.
+4. **What does `pre-commit` hook do?** Runs checks automatically before allowing a commit.
+5. **Why conventional commits?** Consistent format, auto-changelogs, semantic versioning.
+6. **What goes in .gitignore?** Secrets, build outputs, dependencies, OS files, caches.
+
+---
+
+## Key Takeaway
+
+> Git is your **safety net** and **collaboration tool**. Every commit is a savepoint. Every branch is an experiment. Every PR is a quality gate. Learn git well — it's the most universally useful tool in software development.
+
+**Next:** [Module 10 — CI/CD](10-ci-cd.md) explains how to automate testing, checking, and deploying your code.

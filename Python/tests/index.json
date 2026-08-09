@@ -2,8 +2,8 @@
   "folder": "Python/tests",
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
-  "last_updated": "2026-04-07",
-  "file_count": 44,
+  "last_updated": "2026-08-07",
+  "file_count": 49,
   "files": [
     {
       "name": "README.md",
@@ -104,8 +104,8 @@
     {
       "name": "test_api_stability.py",
       "type": "python",
-      "size_lines": 227,
-      "last_updated": "2026-04-05",
+      "size_lines": 233,
+      "last_updated": "2026-08-07",
       "description": "EA-9: Wheel API stability tests.",
       "classes": [
         {
@@ -153,13 +153,13 @@
           ]
         }
       ],
-      "content_hash": "92cf56cfd140"
+      "content_hash": "1f024a437b9d"
     },
     {
       "name": "test_api_surface_snapshot.py",
       "type": "python",
       "size_lines": 122,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-07",
       "description": "Snapshot regression tests — assert minimum API surface counts.",
       "classes": [
         {
@@ -995,7 +995,7 @@
       "name": "test_column_return_types.py",
       "type": "python",
       "size_lines": 281,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-04-07",
       "description": "Tests for UX-02: Column API return type unification.",
       "classes": [
         {
@@ -1079,7 +1079,7 @@
           "description": "Standard uniaxial result for a 300x450 column."
         }
       ],
-      "content_hash": "9b75a827afa5"
+      "content_hash": "376e193ec460"
     },
     {
       "name": "test_core.py",
@@ -1802,7 +1802,7 @@
       "name": "test_is456_common.py",
       "type": "python",
       "size_lines": 747,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-07",
       "description": "Tests for IS 456:2000 common modules - stress_blocks, reinforcement, validation.",
       "classes": [
         {
@@ -1972,7 +1972,7 @@
         "_FE500_POINT1",
         "_FE500_POINT5"
       ],
-      "content_hash": "f28916268cd3"
+      "content_hash": "fe419d3500fb"
     },
     {
       "name": "test_is456_constants.py",
@@ -2001,10 +2001,51 @@
       "content_hash": "b30e404c43d1"
     },
     {
+      "name": "test_model_picker.py",
+      "type": "python",
+      "size_lines": 87,
+      "last_updated": "2026-08-07",
+      "description": "Tests for the deterministic low-token model picker.",
+      "functions": [
+        {
+          "name": "test_model_picker_routes_task_shape",
+          "params": [
+            "query",
+            "profile"
+          ]
+        },
+        {
+          "name": "test_critical_work_uses_standing_sol_high_approval"
+        },
+        {
+          "name": "test_substantial_planning_uses_standing_sol_high_approval",
+          "params": [
+            "query"
+          ]
+        },
+        {
+          "name": "test_mechanical_planning_doc_update_stays_on_luna"
+        },
+        {
+          "name": "test_main_orchestrator_always_uses_sol_high"
+        },
+        {
+          "name": "test_low_risk_override_prefers_luna"
+        },
+        {
+          "name": "test_model_policy_profiles_are_unique_and_complete"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT"
+      ],
+      "content_hash": "a02f55f0ce65"
+    },
+    {
       "name": "test_multi_objective_optimizer.py",
       "type": "python",
       "size_lines": 319,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-07",
       "description": "Tests for the multi-objective optimizer module (NSGA-II).",
       "classes": [
         {
@@ -2116,8 +2157,8 @@
     {
       "name": "test_packaging.py",
       "type": "python",
-      "size_lines": 258,
-      "last_updated": "2026-04-07",
+      "size_lines": 398,
+      "last_updated": "2026-08-07",
       "description": "Tests for package distribution correctness.",
       "classes": [
         {
@@ -2173,9 +2214,36 @@
             "test_report_templates_accessible",
             "test_pyproject_includes_template_glob"
           ]
+        },
+        {
+          "name": "TestImportStrictWarnings",
+          "description": "EA-6 strict: validate import under -Werror flag.",
+          "public_methods": [
+            "test_import_strict_no_warnings"
+          ]
+        },
+        {
+          "name": "TestWheelSmokeTests",
+          "description": "Smoke tests validating core workflows work after install.",
+          "public_methods": [
+            "test_design_beam_roundtrip",
+            "test_detail_beam_roundtrip",
+            "test_bbs_generation",
+            "test_report_fallback_without_jinja2",
+            "test_csv_adapter_importable",
+            "test_column_design_importable"
+          ]
+        },
+        {
+          "name": "TestREADMESnippets",
+          "description": "Verify README code examples actually work.",
+          "public_methods": [
+            "test_readme_beam_design_snippet",
+            "test_readme_csv_adapter_snippet"
+          ]
         }
       ],
-      "content_hash": "389be7bd9873"
+      "content_hash": "1d6ccd71c164"
     },
     {
       "name": "test_pipeline_state.py",
@@ -2255,10 +2323,43 @@
       "content_hash": "a45107645a79"
     },
     {
+      "name": "test_release_environment.py",
+      "type": "python",
+      "size_lines": 77,
+      "last_updated": "2026-08-07",
+      "description": "Regression tests for local release preflight environment selection.",
+      "functions": [
+        {
+          "name": "test_available_ram_uses_memory_pressure_percentage",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_node_runtime_prefers_required_healthy_binary",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_node_runtime_rejects_wrong_major",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        }
+      ],
+      "constants": [
+        "REPO_ROOT"
+      ],
+      "content_hash": "c76a914d77b1"
+    },
+    {
       "name": "test_release_scripts.py",
       "type": "python",
-      "size_lines": 342,
-      "last_updated": "2026-04-05",
+      "size_lines": 404,
+      "last_updated": "2026-08-07",
       "description": "Tests for release scripts (bump_version.py, release.py).",
       "classes": [
         {
@@ -2323,9 +2424,21 @@
           ]
         },
         {
+          "name": "TestReleaseVerifyDependencies",
+          "description": "The isolated wheel verifier must install its declared test tools.",
+          "public_methods": [
+            "test_dev_extra_declares_hypothesis",
+            "test_wheel_verify_installs_dev_extra"
+          ]
+        },
+        {
           "name": "TestReleasePreflight",
           "description": "Tests for the preflight subcommand.",
           "public_methods": [
+            "test_docker_preflight_uses_project_node_major",
+            "test_docker_preflight_mounts_repo_only_test_inputs",
+            "test_fastapi_image_retries_slow_dependency_downloads",
+            "test_failure_tail_reports_bounded_diagnostics",
             "test_preflight_runs",
             "test_preflight_with_version",
             "test_preflight_detects_version_issues"
@@ -2379,7 +2492,7 @@
         "RELEASE_SCRIPT",
         "VERSION_TRACKED_FILES"
       ],
-      "content_hash": "65e6c8d7ceb1"
+      "content_hash": "5ea6f3fef8c8"
     },
     {
       "name": "test_report_edge_cases.py",
@@ -2582,7 +2695,7 @@
       "name": "test_research_prototypes.py",
       "type": "python",
       "size_lines": 908,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-07",
       "description": "Tests for research prototypes: Sustainability, Generative Design, Design Companion.",
       "classes": [
         {
@@ -2650,7 +2763,7 @@
           ]
         }
       ],
-      "content_hash": "71b62f0c2045"
+      "content_hash": "c210912fd454"
     },
     {
       "name": "test_result_base.py",
@@ -2720,6 +2833,83 @@
         }
       ],
       "content_hash": "c91f8121885a"
+    },
+    {
+      "name": "test_session_automation.py",
+      "type": "python",
+      "size_lines": 249,
+      "last_updated": "2026-08-07",
+      "description": "Regression tests for maintenance session automation.",
+      "functions": [
+        {
+          "name": "test_session_heading_marker_accepts_descriptive_titles",
+          "params": [
+            "heading"
+          ]
+        },
+        {
+          "name": "test_latest_session_block_does_not_rewind_descriptive_heading"
+        },
+        {
+          "name": "test_last_session_date_reads_multiline_log",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_active_task_reader_accepts_current_and_legacy_headings",
+          "params": [
+            "tmp_path",
+            "monkeypatch",
+            "heading",
+            "task_id"
+          ]
+        },
+        {
+          "name": "test_commit_summary_uses_exclusive_previous_day_boundary",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_launcher_port_discovery_is_listener_only"
+        },
+        {
+          "name": "test_pr_status_is_terminal_first_and_browser_is_explicit"
+        },
+        {
+          "name": "test_usage_checkpoint_records_observable_fields_only",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_tool_registry_discovers_all_copilot_skills"
+        },
+        {
+          "name": "test_generated_indexes_do_not_emit_trailing_space_hard_breaks"
+        },
+        {
+          "name": "test_session_end_preserves_current_same_day_handoff",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_legacy_activity_log_uses_local_midnight_and_no_billing_estimate",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        }
+      ],
+      "constants": [
+        "REPO_ROOT"
+      ],
+      "content_hash": "65215bd3652e"
     },
     {
       "name": "test_session_store.py",
@@ -2999,6 +3189,54 @@
       "content_hash": "178f8832ab9d"
     },
     {
+      "name": "test_timing_regression.py",
+      "type": "python",
+      "size_lines": 86,
+      "last_updated": "2026-04-07",
+      "description": "Regression tests for Windows-compatible timing.",
+      "functions": [
+        {
+          "name": "test_no_time_time_in_timing_files",
+          "description": "Ensure timing files use time.perf_counter(), not time.time().",
+          "params": [
+            "relpath"
+          ]
+        }
+      ],
+      "constants": [
+        "TIMING_FILES"
+      ],
+      "content_hash": "0c5316201217"
+    },
+    {
+      "name": "test_token_efficiency.py",
+      "type": "python",
+      "size_lines": 82,
+      "last_updated": "2026-08-07",
+      "description": "Regression tests for repository-side token-efficiency controls.",
+      "functions": [
+        {
+          "name": "test_project_codex_defaults_are_low_token"
+        },
+        {
+          "name": "test_token_efficiency_checker_passes"
+        },
+        {
+          "name": "test_low_token_prompt_is_bounded_and_actionable"
+        },
+        {
+          "name": "test_quick_gate_enforces_token_policy"
+        },
+        {
+          "name": "test_verified_model_rates_are_checked_in"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT"
+      ],
+      "content_hash": "59b2ff3cb516"
+    },
+    {
       "name": "test_visualization_edge_cases.py",
       "type": "python",
       "size_lines": 757,
@@ -3248,7 +3486,7 @@
       "name": "test_visualization_integration.py",
       "type": "python",
       "size_lines": 246,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-07",
       "description": "Integration tests for visualization.geometry_3d with detailing module.",
       "classes": [
         {
@@ -3276,7 +3514,7 @@
           ]
         }
       ],
-      "content_hash": "9686467a5ccd"
+      "content_hash": "96711c05fa04"
     }
   ],
   "subfolders": [
@@ -3329,10 +3567,10 @@
     {
       "name": "unit",
       "path": "unit/",
-      "file_count": 32,
+      "file_count": 33,
       "is_package": true
     }
   ],
-  "content_hash": "24711f0ae1ed5a8b",
+  "content_hash": "a18a3fdaebe8e81f",
   "has_init": true
 }

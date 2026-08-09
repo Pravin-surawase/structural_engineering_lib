@@ -1,10 +1,10 @@
 ---
 owner: Pravin Surawase
-status: proposed
+status: draft
 version: "2.0"
 last_updated: 2026-04-08
-doc_type: adr
-complexity: critical
+doc_type: spec
+complexity: advanced
 tags: [architecture, packaging, separation, library, professional, is456, pypi, multi-code, aci318, ec2]
 ---
 
@@ -957,7 +957,7 @@ Professional IS 456:2000 structural design library for Python.
 ## Verification
 
 All results verified against IS 456:2000 SP:16 handbook examples.
-See [benchmark results](docs/verification/benchmark-results.md).
+See the [validation pack](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/verification/validation-pack.md).
 ```
 
 ---

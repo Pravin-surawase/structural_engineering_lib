@@ -11,6 +11,31 @@ Open-source IS 456 RC beam design library. Full stack:
 - **FastAPI backend** (`fastapi_app/`) — REST + WebSocket API (60 endpoints, 13 routers)
 - **React 19 frontend** (`react_app/`) — R3F 3D visualization + Tailwind
 
+## Token-Efficiency Policy (MANDATORY)
+
+The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines/ai-token-efficiency.md); project efficiency defaults are enforced by [`.codex/config.toml`](.codex/config.toml).
+
+- Keep one parent task active. Always respect the parent model and reasoning selected by the user; repository configuration and agents must not switch or override it. If the user asks for a recommendation, prefer Luna for clear repeatable work, Terra for normal implementation, and Sol only for an explicitly approved escalation.
+- Keep Fast mode off unless the user explicitly prioritizes speed over usage.
+- Default to no subagents. Use at most two concurrent subagents, only for independent bounded work that materially benefits from delegation.
+- Never pass full parent history to a subagent. Send a concise packet with the objective, exact files, constraints, question, commands, and expected output.
+- The orchestrator must add non-goals, likely pitfalls, measurable acceptance criteria, narrow tests, and a return format to each packet, then independently inspect and verify the result before acceptance.
+- Named handoff chains below are quality roles, not mandatory agent processes. The parent normally performs implementation, testing, documentation, and operations passes itself.
+- Start with `./run.sh session brief --agent <role>`, folder indexes, and targeted `rg`; do not load full agent files or large logs unless required.
+- Use targeted tests while iterating, `./run.sh check --quick` before commit, and the full gate once at closeout.
+- Use `/status` and Settings → Usage for Codex usage. Run `./run.sh efficiency check` for repository-side policy validation.
+- Run `./run.sh model "task"` only when the user asks for a recommendation or
+  has not selected a model. The picker is advisory and must never change the
+  active parent model: Luna-first for clear repeatable work, Terra for normal
+  or high-risk implementation, and Sol only after explicit approval.
+
+## Surgical Work and Essential-Only Review (MANDATORY)
+
+- Keep work surgical, evidence-driven, and complete within the agreed scope. Inspect enough of the main process to find confirmed defects, then finish the scoped work to a good standard without adjacent improvements.
+- Always trace a confirmed defect to its root cause and fix that cause. Do not stop at a workaround, suppress the symptom, or apply a superficial patch; verify that the main-process outcome is corrected.
+- For every review finding, ask: **Would fixing this change the outcome of the main process?** If not, ignore it. If a non-essential concern needs preservation, file a follow-up bead/task only when necessary; do not expand the current scope.
+- Review only essential main-process behavior. Do not report issues about comments, edge cases, test-coverage or falsification gaps, generic hardening, or adjacent improvements. Do not add tests during review. Reject security or concurrency observations that are merely hardening and do not change the main-process outcome.
+
 ## Git — THE ONE RULE
 
 ```bash
@@ -81,9 +106,9 @@ UI/IO        → react_app/, fastapi_app/
 ```bash
 ls react_app/src/hooks/                                         # Existing React hooks
 grep -r "@router" fastapi_app/routers/ | head -30               # Existing API routes
-grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (37 public + 7 private helpers)
+./run.sh find --api <func>                                   # Public API exact signature (68 functions)
 .venv/bin/python scripts/discover_api_signatures.py <func>      # Exact param names (b_mm not width)
-.venv/bin/python scripts/find_automation.py "task"              # Find existing scripts (83 mapped)
+.venv/bin/python scripts/find_automation.py "task"              # Find existing scripts (113 mapped)
 ```
 
 ## Essential Commands (`./run.sh` — preferred entry point)
@@ -91,8 +116,8 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (37
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
 ./run.sh commit "type: message"     # Safe commit + push (THE ONE RULE)
-./run.sh check --quick              # Fast validation (<30s, 8 checks)
-./run.sh check                      # Full validation (28 checks, parallel)
+./run.sh check --quick              # Fast validation (<30s, 9 checks)
+./run.sh check                      # Full validation (29 checks, parallel)
 ./run.sh test                       # Run pytest suite
 ./run.sh pr create TASK-XXX "desc"  # Start a PR
 ./run.sh pr finish                  # Ship the PR
@@ -118,7 +143,8 @@ grep "^def " Python/structural_lib/services/api.py | head -20   # Public API (37
 ./run.sh parity                     # IS 456 clause/endpoint/test coverage dashboard
 ./run.sh pipeline status TASK-XXX   # Check pipeline step for a task
 ./run.sh session compact            # Archive old SESSION_LOG entries (<50KB)
-./run.sh session costs --summary    # Agent cost/efficiency tracking
+./run.sh efficiency check           # Validate low-token project controls
+./run.sh session usage --summary    # Model/reasoning/agent checkpoints
 ./run.sh session trust              # Check session trust state
 ```
 
@@ -265,6 +291,10 @@ docs/TASKS.md                                   # Task board
 | `innovation-research` | Innovation research cycle workflow |
 
 ### Handoff Chains
+
+These chains define required quality concerns and ownership. They do not require
+spawning every named role; the active parent performs them sequentially unless
+the token-efficiency policy justifies one or two bounded subagents.
 
 - **New feature:** orchestrator → backend → api-developer → frontend → reviewer → tester → doc-master → ops
 - **IS 456 change:** orchestrator → structural-engineer → backend → api-developer → reviewer → tester → doc-master → ops

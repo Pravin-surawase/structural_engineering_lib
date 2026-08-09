@@ -5,10 +5,19 @@ on:
     branches: [main]
     paths:
       - "Python/**"
+      - "fastapi_app/**"
+      - "react_app/package.json"
+      - "react_app/package-lock.json"
+      - "requirements*.txt"
       - ".github/workflows/security.yml"
   pull_request:
     paths:
       - "Python/**"
+      - "fastapi_app/**"
+      - "react_app/package.json"
+      - "react_app/package-lock.json"
+      - "requirements*.txt"
+      - ".github/workflows/security.yml"
   schedule:
     # Run daily at 6 AM UTC (11:30 AM IST)
     - cron: "0 6 * * *"
@@ -31,37 +40,22 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
+          python-version: "3.11"
+          cache: "pip"
 
-      - name: Install package
-        working-directory: Python
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -e "."
-
-      - name: Install security tools
-        run: |
-          python -m pip install pip-audit safety
+      - name: Install pip-audit
+        run: python -m pip install 'pip-audit>=2.9,<3'
 
       - name: Run pip-audit
         id: pip-audit
-        continue-on-error: true
         run: |
-          pip-audit --format json --output pip-audit-report.json || true
-          pip-audit --format markdown --output pip-audit-report.md || true
-
-          # Check for critical/high vulnerabilities
-          if pip-audit --strict 2>/dev/null; then
-            echo "status=pass" >> $GITHUB_OUTPUT
-          else
-            echo "status=fail" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Run safety check
-        id: safety
-        continue-on-error: true
-        run: |
-          safety check --output json > safety-report.json 2>&1 || true
+          set +e
+          pip-audit --strict --no-deps --requirement requirements-lock.txt \
+            --format json --output pip-audit-report.json
+          audit_status=$?
+          pip-audit --strict --no-deps --requirement requirements-lock.txt \
+            --format markdown --output pip-audit-report.md || true
+          exit "$audit_status"
 
       - name: Upload audit reports
         if: always()
@@ -71,7 +65,6 @@ jobs:
           path: |
             pip-audit-report.json
             pip-audit-report.md
-            safety-report.json
           retention-days: 30
 
       - name: Summarize results
@@ -87,12 +80,63 @@ jobs:
             echo "✅ No vulnerabilities found by pip-audit" >> $GITHUB_STEP_SUMMARY
           fi
 
-      - name: Fail on critical vulnerabilities
-        if: steps.pip-audit.outputs.status == 'fail'
+  frontend-dependency-audit:
+    name: Frontend Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: react_app/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: react_app
+        run: npm ci
+
+      - name: Run npm audit
+        working-directory: react_app
         run: |
-          echo "::warning::Security vulnerabilities detected. Review pip-audit-report.md"
-          # Don't fail the build for now, just warn
-          # exit 1
+          npm audit --omit=dev --json > npm-audit-report.json || true
+
+          total=$(jq -r '.metadata.vulnerabilities.total // 0' npm-audit-report.json)
+          unexpected_packages=$(jq -r '.vulnerabilities | keys[]?' npm-audit-report.json \
+            | grep -Ev '^(react-router|react-router-dom)$' || true)
+          unexpected_advisories=$(jq -r \
+            '[.vulnerabilities[]?.via[]? | select(type == "object") | .url] | unique[]?' \
+            npm-audit-report.json \
+            | grep -Fvx 'https://github.com/advisories/GHSA-qwww-vcr4-c8h2' || true)
+          advisory_count=$(jq -r \
+            '[.vulnerabilities[]?.via[]? | select(type == "object") | .url] | unique | length' \
+            npm-audit-report.json)
+
+          if [ -n "$unexpected_packages" ] || [ -n "$unexpected_advisories" ]; then
+            echo "::error::Unexpected npm vulnerability detected"
+            exit 1
+          fi
+
+          if [ "$total" -gt 0 ] && [ "$advisory_count" -eq 0 ]; then
+            echo "::error::npm reported vulnerabilities without an auditable advisory URL"
+            exit 1
+          fi
+
+          if [ "$total" -gt 0 ]; then
+            echo "::warning::Known React Router RSC-only advisory remains allowlisted; see docs/planning/dependency-security-baseline.md"
+          fi
+
+      - name: Upload npm audit report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: npm-security-report
+          path: react_app/npm-audit-report.json
+          retention-days: 30
 
   sbom-generation:
     name: Generate SBOM

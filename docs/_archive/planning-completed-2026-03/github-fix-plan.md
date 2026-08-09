@@ -67,7 +67,7 @@ Removed all dead Streamlit references from scripts that survived the initial cle
 | `scripts/migrate_python_module.py` | `streamlit_app` from search dirs |
 | `scripts/safe_file_delete.py` | `streamlit_app` from search dirs |
 | `scripts/safe_file_move.py` | `streamlit_app` from search dirs (2 locations) |
-| `scripts/test_import_3d_pipeline.py` | `streamlit_dir` path setup + `streamlit_app` sys.path |
+| `scripts/_archive/test_import_3d_pipeline.py` | `streamlit_dir` path setup + `streamlit_app` sys.path |
 | `Python/structural_lib/services/dxf_export.py` | Streamlit docstring example replaced with file-based example |
 
 ### Phase 3: Deleted Orphaned Test Files (4 files, 1627 lines)

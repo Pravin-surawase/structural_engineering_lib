@@ -15,6 +15,7 @@ import httpx
 @dataclass
 class FlexureResult:
     """Flexure design calculation results."""
+
     ast_required: float
     ast_min: float
     ast_max: float
@@ -28,6 +29,7 @@ class FlexureResult:
 @dataclass
 class ShearResult:
     """Shear design calculation results."""
+
     tau_v: float
     tau_c: float
     tau_c_max: float
@@ -40,6 +42,7 @@ class ShearResult:
 @dataclass
 class BeamDesignResponse:
     """Complete beam design results."""
+
     success: bool
     message: str
     flexure: FlexureResult

@@ -1,3 +1,12 @@
+---
+owner: Governance Agent
+status: active
+last_updated: 2026-08-07
+doc_type: reference
+complexity: intermediate
+tags: [agents, roles]
+---
+
 # PM (Product Manager) Agent — Role Document
 
 **Role:** Project Lead, Scope Guardian, and Agent Orchestrator.
