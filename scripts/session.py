@@ -156,6 +156,8 @@ def add_session_log_entry() -> bool:
         "",
         f"## {today_str} — Session",
         "",
+        "**Focus:** -",
+        "",
         "### Summary",
         "-",
         "",

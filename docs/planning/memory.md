@@ -369,6 +369,8 @@ python -m mypy
 - Current automation inventory: 16 Copilot roles, 14 Copilot skills, 113 mapped
   scripts, 29 full validation checks, and 9 quick checks. Copilot's Claude
   model fields are separate from Codex Luna/Terra/Sol routing.
-- Do not apply the two focused PR #676 CI fixes, merge, or release without owner
-  approval. The pending fixes are three empty evidence-template links and Ruff
-  0.15.8/0.16.1 toolchain drift.
+- On 2026-08-09 the owner authorized maintenance closeout. Commit `242ba8ce`
+  removed three empty evidence-template links, replaced one crawler-blocked
+  OpenAI URL, and pinned Ruff 0.15.8 across active install surfaces. PR #676 is
+  clean and mergeable with every required check passing. Merge and release still
+  require separate explicit owner approval.

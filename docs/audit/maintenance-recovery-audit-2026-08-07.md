@@ -18,10 +18,10 @@ credentials, dependency drift, and governance scanners that disagreed.
 
 The inherited work is preserved on `task/MAINT-001`. Local application,
 package, test, documentation, browser, export, and maintenance gates are green.
-MAINT-005 is complete and v0.21.7 is ready for its controlled release workflow.
-GitHub CLI/SSH and Colima/Docker have since been recovered without deleting the
-transferred VM. The remaining closeout is PR #676's two diagnosed CI failures;
-their focused fixes still require owner approval.
+GitHub CLI/SSH and Colima/Docker were recovered without deleting the transferred
+VM. Commit `242ba8ce` fixed PR #676's two CI root causes, and all PR checks now
+pass. MAINT-001 through MAINT-007 are complete; merging and releasing v0.21.7
+remain separate owner-approved operations.
 
 ## Audit scope
 
@@ -127,12 +127,12 @@ objects, symlinks, and migration records relevant to the current architecture.
 - Closeout evidence: 32 focused regressions, quick gate 9/9, full gate 29/29,
   audit readiness 22/22, health 100/100, and a 5,193-test collection.
 
-## Open findings
+## Closeout findings
 
 | Priority | Finding | Decision / next action |
 |----------|---------|------------------------|
-| P0 CI | PR #676 link check has three empty template links | Apply only after the owner approves the focused content fix |
-| P0 CI | PR #676 installs unbounded Ruff 0.16.1 while the proven local lock uses 0.15.8 | Pin consistently only after owner approval, then rerun the affected check |
+| P0 CI | PR #676 link check had three empty template links and one crawler-blocked external URL | Fixed in `242ba8ce`; `Check Links` passes |
+| P0 CI | PR #676 installed unbounded Ruff 0.16.1 while the proven local gate used 0.15.8 | Fixed at the dependency source and all active install surfaces in `242ba8ce`; `FastAPI Validation` passes |
 | P2 frontend | React statement coverage is 17.74% | Critical live flow is verified; add focused automated flow tests before broad percentage chasing |
 | P2 security | React Router RSC-only advisory remains | Keep exact CI exception only while the Vite browser app has no RSC; remove on patched release |
 | P2 product | Slab design and Annex D remain planned | Keep outside stabilization unless the owner explicitly changes scope |
@@ -141,11 +141,11 @@ objects, symlinks, and migration records relevant to the current architecture.
 ## Maintenance sequence
 
 1. Preserve the current green local baseline and commit through
-   `scripts/ai_commit.sh`.
-2. Obtain approval for the two focused PR #676 CI fixes and validate only the
-   affected checks before the final gate.
-3. Run the approved v0.21.7 release workflow after required CI passes.
-4. Resume feature planning only after the release decision is recorded.
+   `scripts/ai_commit.sh`. **Complete.**
+2. Apply the approved focused PR #676 CI fixes and validate the affected checks
+   plus the final gate. **Complete.**
+3. Obtain explicit owner approval to merge PR #676 and run the v0.21.7 release
+   workflow. **Pending owner decision; outside maintenance closeout.**
 
 ## Guardrails retained
 

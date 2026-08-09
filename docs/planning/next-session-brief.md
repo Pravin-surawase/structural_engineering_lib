@@ -3,20 +3,18 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-07
-- Focus: Obtain approval for the two focused PR #676 CI fixes, validate required checks, and request the v0.21.7 release decision
+- Date: 2026-08-09
+- Focus: Complete MAINT-001, verify PR #676, and leave merge/release for explicit owner approval
 <!-- HANDOFF:END -->
 
-**Last Updated:** 2026-08-07
-**Current Session:** Maintenance Recovery — Mac/GitHub/Docker recovery complete; PR CI closeout remains
+**Last Updated:** 2026-08-09
+**Current Session:** Maintenance complete — PR #676 is green and awaits the owner merge/release decision
 
 ## Start Here
 
-1. Obtain explicit approval before applying the two focused PR #676 CI fixes: replace three empty template links and pin Ruff 0.15.8 consistently instead of accepting unbounded 0.16.1 drift.
-2. Re-run only the affected link/lint checks, push through `ai_commit.sh`, and monitor PR #676 required checks. Do not merge or release without explicit user approval.
-3. Preserve the recovered Mac baseline: GitHub API/SSH pass, Colima/Docker are healthy with the transferred disk intact, and Docker release preflight is green.
-4. Run the main orchestrator on Sol High for intake, planning, delegation, integration, and final review. Give Luna/Terra workers compact packets with exact scope, non-goals, pitfalls, acceptance criteria, tests, and return format; verify their work before acceptance.
-5. Treat 17.74% React statement coverage, one hook lint warning, and one RSC-only advisory as recorded risks—not reasons to reopen completed maintenance without a focused task.
+1. Obtain explicit owner approval before merging green PR #676.
+2. Obtain a separate explicit owner decision before running the v0.21.7 release workflow.
+3. Preserve the recovered Mac baseline and accepted risks; do not reopen maintenance or begin feature work unless the owner changes scope.
 
 Full evidence and accepted risks are in
 [maintenance-recovery-audit-2026-08-07.md](../audit/maintenance-recovery-audit-2026-08-07.md).
@@ -38,7 +36,7 @@ Full evidence and accepted risks are in
 - MAINT-007 makes PR status terminal-only by default, corrects stale bootstrap/tool counts and active-task briefs, discovers all 14 Copilot skills, and adds honest local model/agent checkpoints through `./run.sh session usage`.
 - MAINT-007 verification is green: 32 focused tests, quick 9/9, full 29/29, audit 22/22, and health 100/100. The first local usage ledger records Sol High, one parent, zero subagents, and no fabricated billing values.
 - MAINT-007 checkpoint `4d5b9eb5` is pushed to PR #676.
-- Current gate: PR #676 has two diagnosed CI failures awaiting approval—three empty template links and Ruff 0.16.1 dependency drift. React coverage remains an accepted follow-up risk.
+- Current gate: commit `242ba8ce` fixes the empty-link and Ruff-drift root causes; PR #676 is clean and mergeable with 19 checks passed, two intentionally skipped, and zero failures. React coverage remains an accepted follow-up risk.
 - Recovery checkpoint: `b28ee4e3` pushed on `task/MAINT-001`.
 - MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.
 - Quick canonical gate: 9/9 green; all 3,248 scanned imports resolve.

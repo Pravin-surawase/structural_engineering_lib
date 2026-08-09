@@ -34,6 +34,7 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-08-09 | MAINT-001 | Closed PR #676 CI root causes, added essential-only/root-cause review policy, and verified all local and GitHub gates | 242ba8ce |
 | 2026-08-07 | MAINT-007 | Refreshed onboarding/agent/tool indexes, added model-agent usage checkpoints, and made PR status terminal-only unless `--web` is explicit | 4d5b9eb5 |
 | 2026-04-06 | TASK-720 | Golden vector baselines: 42+ tests (9 beam + 20 column + 13 footing) with `@pytest.mark.golden` | — |
 | 2026-04-06 | TASK-721 | Contract tests: 18 API surface contracts (column, footing, torsion) with `@pytest.mark.contract` | — |

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-07 — Mac recovery complete; PR #676 CI closeout remains
+**Updated:** 2026-08-09 — Maintenance complete; PR #676 is green and awaits the owner merge/release decision
 
 ---
 
@@ -21,7 +21,7 @@
 
 | ID | Task | Priority | Status | Exit condition |
 |----|------|----------|--------|----------------|
-| MAINT-001 | Preserve April worktree and recover the Mac Mini development baseline | P0 | 🚧 IN PROGRESS | GitHub/SSH, Python/Node, Colima/Docker, and release preflight pass; PR #676 required checks are green |
+| MAINT-001 | Preserve April worktree and recover the Mac Mini development baseline | P0 | ✅ DONE | GitHub/SSH, Python/Node, Colima/Docker, and release preflight pass; PR #676 required checks are green |
 | MAINT-002 | Repair nightly QA and stale import E2E response-envelope assertions | P0 | ✅ DONE | Nightly command is valid; import/sample/dual/batch scripts pass against the live API |
 | MAINT-003 | Rebuild dependency and security baseline | P0 | ✅ DONE | Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted |
 | MAINT-004 | Make `run.sh check` the canonical truth source and repair stale indexes/scanners | P1 | ✅ DONE | Canonical check, audit, health, API manifest, schemas, hooks, and registries agree |
@@ -34,7 +34,7 @@
 - Git object database and transferred sample data are intact; local and remote `main` both point to `fa854e0f`.
 - Inherited worktree: 73 modified tracked files plus 47 untracked files before session startup; 70 Python diffs are AST-equivalent formatting changes.
 - Final release preflight: 5,159 Python tests passed, 3 skipped, 6 deselected; 336 FastAPI and 146 React tests pass. A clean built-wheel environment independently passes 5,120 tests, 41 skips, 6 deselections, and packaged CLI workflows.
-- Repository release gates are green. Remaining blockers are external: renew GitHub CLI authorization and restart macOS before retrying the preserved Colima VM. React's 17.74% statement coverage is an accepted stabilization risk, not an unreported pass.
+- Repository release gates are green. GitHub CLI/SSH, Colima, and Docker are recovered; PR #676 is clean and mergeable. React's 17.74% statement coverage remains an accepted stabilization risk outside this maintenance scope.
 - Canonical validation is 28/28 checks, 22/22 audit readiness, 100/100 health, and 96% parity. Feedback is 22/23 resolved; only the existing tester-output recurrence watch remains open.
 - MAINT-005 checkpoint `6f119132`: direct tests now cover 60/60 routes; parity is 96%. The live 153-beam import → auto-design → 3D editor → dashboard path passes with no new browser warnings.
 - Runtime/product repairs from the browser sweep: the launcher selects Node 24 from `.nvmrc` and kills listeners only; canonical compliance utilization replaces misleading `Mu/Mu_lim`; imported spans are rounded; dashboard and BOQ steel totals agree.
@@ -52,7 +52,7 @@
 - Recovery checkpoint `b28ee4e3` is pushed on `task/MAINT-001`.
 - Python editable metadata/module version repaired to v0.21.6; Node 24.19.0 installed keg-only and React passes 139 tests, lint, and build on it.
 - Quick canonical gate is 8/8 green; import validation resolves all 3,248 scanned imports.
-- MAINT-001 recovery is complete. Remaining closeout is PR #676 CI: three empty template links and Ruff 0.16.1 toolchain drift were diagnosed; their focused fixes await explicit approval.
+- MAINT-001 is complete. Commit `242ba8ce` removed the empty-link inputs, replaced the crawler-blocked pricing URL, and pinned Ruff 0.15.8 across active install surfaces; all PR #676 checks pass.
 - MAINT-002 validation: 18/18 live import E2E checks, 153/153 sample beams, and 1,056/1,056 internal documentation links pass.
 - MAINT-003 validation: a clean Python 3.11 environment has zero known vulnerabilities; npm dropped from 13 findings to one documented RSC-only advisory. The later final gates pass 5,159 Python, 336 FastAPI, and 146 React tests.
 
@@ -117,13 +117,12 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| MAINT-001 | Close PR #676 required checks and record the final maintenance handoff | Main Agent + owner | 🚧 IN PROGRESS |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| v0.21.7 | Apply the approved focused CI fixes, validate PR #676, then request release approval | ops + owner | <1 session | P1 | ⏳ WAITING APPROVAL |
+| v0.21.7 | Obtain explicit owner approval to merge PR #676 and run the release workflow | ops + owner | <1 session | P1 | ⏳ WAITING APPROVAL |
 
 ## Backlog
 
@@ -134,6 +133,7 @@ feature work until PR #676 is green and the v0.21.7 release decision is handled.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| MAINT-001 | Preserve the inherited worktree, recover the Mac baseline, and close PR #676 required checks | Main Agent | ✅ DONE |
 | MAINT-006 | Add enforceable low-token defaults, context rules, analytics-calibrated model routing, and automation | Main Agent | ✅ DONE |
 | MAINT-007 | Re-audit and modernize onboarding, agent/tool discovery, usage telemetry, and PR browser behavior | Main Agent | ✅ DONE |
 | MAINT-005 | Verify the full live browser/export workflow and establish the evidence-based v0.21.7 finish line | Main Agent | ✅ DONE |

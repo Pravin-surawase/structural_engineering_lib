@@ -7,19 +7,33 @@
 
 ## 2026-08-09 — Session
 
+**Focus:** Complete MAINT-001, verify PR #676, and leave merge/release for explicit owner approval
+
 ### Summary
--
+**1 commits**, **14 files changed**
+
+**Bug Fixes:**
+- close CI root causes and narrow reviews
 
 ### PRs Merged
 | PR | Summary |
 |----|---------|
-| #XX | - |
+| — | None; PR #676 remains open pending explicit owner approval |
 
 ### Key Deliverables
--
+- Commit `242ba8ce` replaces empty link placeholders and a crawler-blocked URL,
+  and pins Ruff 0.15.8 across package metadata, requirements, lock data,
+  pre-commit, and formatter/governance workflows.
+- Local evidence: focused Ruff checks pass, 1,073/1,073 internal links pass,
+  quick gate 9/9, full gate 29/29, audit 22/22, and health 100/100.
+- GitHub evidence: PR #676 is clean and mergeable with 19 checks passed, two
+  intentionally skipped, and zero failures.
 
 ### Notes
--
+- The main-process maintenance outcome is complete. The accepted React coverage,
+  RSC-only advisory, planned product work, and tester-output watch were not
+  reopened because they do not change this maintenance outcome.
+- Merging PR #676 and releasing v0.21.7 remain explicit owner decisions.
 
 
 ## 2026-08-07 — Maintenance Recovery Session

@@ -6,6 +6,7 @@ import importlib
 import json
 import subprocess
 import sys
+from datetime import date
 from pathlib import Path
 
 import pytest
@@ -52,6 +53,11 @@ def test_latest_session_block_does_not_rewind_descriptive_heading():
 def test_last_session_date_reads_multiline_log(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):
+    class SessionDate(date):
+        @classmethod
+        def today(cls) -> date:
+            return cls(2026, 8, 7)
+
     session_log = tmp_path / "SESSION_LOG.md"
     session_log.write_text(
         """# Session Log
@@ -65,6 +71,7 @@ def test_last_session_date_reads_multiline_log(
         encoding="utf-8",
     )
     monkeypatch.setattr(session, "SESSION_LOG", session_log)
+    monkeypatch.setattr(session, "date", SessionDate)
 
     assert session._get_last_session_date() == "2026-04-07"
 
