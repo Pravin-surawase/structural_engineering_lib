@@ -1,8 +1,8 @@
 ---
 owner: Main Agent
-status: ready-after-pr-676
+status: active
 last_updated: 2026-08-09
-doc_type: implementation-plan
+doc_type: spec
 task: MAINT-008
 title: MAINT-008 Compact Project Modernization Plan
 ---
@@ -77,6 +77,7 @@ These are the only starting problems authorized by this plan:
 5. Active pre-commit and command surfaces still contain references to removed Streamlit and VBA paths.
 6. The repository contains a large agent, script, and documentation surface. It must be made easier to enter and navigate, but historical evidence and ETABS reference material must not be deleted merely to reduce file count.
 7. The repository-level Codex configuration previously forced a parent model. That override has been removed; user-selected model and reasoning settings are now authoritative.
+8. The 14 skill entrypoints had conflicting tier/count/assignment sources and several stale or destructive commands. A separately authorized skills lane must repair that control plane before lower-cost agents execute the CI packets.
 
 ## 5. Non-goals and protected areas
 
@@ -88,7 +89,7 @@ The following are outside MAINT-008 unless a change is strictly required to keep
 - redesigning the React interface;
 - increasing test coverage, adding falsification cases, or adding new tests during review;
 - generic security hardening, concurrency hardening, comment cleanup, style cleanup, or speculative edge-case handling;
-- rewriting all custom agents, prompts, or skills;
+- rewriting custom agents or prompts, or changing skills beyond the separately authorized 14-skill control-plane repair;
 - deleting vendor ETABS reference files or historical release evidence;
 - closing existing GitHub issues, merging a PR, publishing a package, creating a release, or changing a GitHub ruleset without the required owner approval;
 - changing the user's global or project model choice again.
@@ -177,13 +178,15 @@ No worker should need to scan `SESSION_LOG.md`, all agent definitions, all promp
 ```text
 Owner approves merge of PR #676
     -> Packet 0: establish MAINT-008 branch and baseline
-        -> Packet A: create truthful PR Gate
-            -> Owner approves main-ruleset switch
-                -> Packet B: compact scheduled and release lanes
-                    -> Packet C: compact supported local control surface
-                        -> Packet D: integrated closeout
-                            -> Owner separately approves merge
-                                -> Owner separately approves release
+        -> Packet S: isolated skills control-plane repair
+            -> Owner approves skills PR merge
+                -> Packet A: create truthful PR Gate
+                    -> Owner approves main-ruleset switch
+                        -> Packet B: compact scheduled and release lanes
+                            -> Packet C: compact supported local control surface
+                                -> Packet D: integrated closeout
+                                    -> Owner separately approves merge
+                                        -> Owner separately approves release
 ```
 
 Packets B and C may run in parallel only after packet A is complete and only if they do not edit the same files. Packet D is always performed by the parent.
@@ -195,6 +198,8 @@ Packets B and C may run in parallel only after packet A is complete and only if 
 **Start condition:** explicit owner approval to merge PR #676
 
 **End condition:** a clean MAINT-008 task branch/PR with recorded baseline
+
+**Result:** completed; PR #676 was safely merged and baseline `755ac9fb` was recorded before `task/MAINT-008-SKILLS` was created.
 
 ### Objective
 
@@ -244,6 +249,34 @@ Commands run:
 Unexpected state:
 Next packet authorized: yes/no
 ```
+
+## 10.1 Packet S — Isolated skills control plane
+
+**Branch:** `task/MAINT-008-SKILLS`
+
+**Status:** implemented; local and CI gates green on draft PR #689, pending owner approval
+
+**Files in scope:** the 14 `.github/skills/*/SKILL.md` entrypoints, `.github/skills/skill_tiers.json`, cross-agent session instructions, agent skill assignments/metadata, and only the supporting session/discovery/architecture/release/evolution scripts needed to make those instructions truthful.
+
+### Objective
+
+Make the skill surface safe for lower-cost agents: one canonical catalog, bounded role routing, current executable commands, preview-first destructive operations, exact release artifacts, and no mandatory agent fan-out or duplicated gates.
+
+### Acceptance criteria
+
+- all 14 skill files have valid frontmatter and a focused trigger;
+- catalog, filesystem, registry assignments, and registry count agree;
+- safe delete explicitly uses `--dry-run` and never recommends `--force`;
+- release/UAT uses unique temporary environments and an exact versioned wheel;
+- architecture validation enforces Core → IS 456 → Services → UI on a green baseline;
+- API discovery exits nonzero for a missing requested function;
+- agent evolution uses supported flags, exact evolution IDs, and refuses proposals below 15 collected sessions;
+- review skills enforce the essential main-process outcome filter and do not add tests in review-only work;
+- no product calculation, test, workflow, ruleset, or release action is changed.
+
+### Gate and handoff
+
+Run targeted script validation, `./run.sh check --quick`, and one `./run.sh check` closeout. Commit and push through the safe wrapper, then open an isolated PR. The worker does not merge it. Packet A begins only after explicit owner approval and synchronization to the merged skills baseline.
 
 ## 11. Packet A — Truthful PR gate
 

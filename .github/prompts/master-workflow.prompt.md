@@ -1,70 +1,75 @@
 ---
-description: "Quality-gated pipeline for all code changes — ensures review, docs, and safe commit"
+description: "Compact task workflow — root cause, essential review, proportional verification, safe commit"
 ---
 
-# Master Workflow — Quality-Gated Pipeline
+# Master Workflow — Compact Quality Loop
 
-Every code change in this project MUST follow this 6-step pipeline. No exceptions.
+The active parent normally owns this loop end to end. Agent names describe
+expertise, not mandatory handoffs.
 
 ## The Pipeline
 
 ```
-Step 1: @orchestrator  → Plan & scope the work
-Step 2: @specialist    → Gather context (read existing code BEFORE changing anything)
-Step 3: @specialist    → Execute the change
-Step 4: @reviewer      → Verify (architecture, tests, IS 456, git hygiene)
-Step 5: @doc-master    → Update WORKLOG, TASKS, next-session-brief
-Step 6: @ops           → Commit via ai_commit.sh
+Step 1: SCOPE      → main-process outcome, non-goals, exact files
+Step 2: TRACE      → inspect the existing process and confirm the root cause
+Step 3: EXECUTE    → make the smallest complete correction
+Step 4: VERIFY     → narrow checks plus essential-only review
+Step 5: RECORD     → update only task-owned state and handoff records
+Step 6: COMMIT     → quick gate once, then ai_commit.sh
 ```
 
-## Step 1: Orchestrator Plans
+## Step 1: Scope
 
-- Read TASKS.md and next-session-brief.md
+- Start from `./run.sh session brief --agent <role>`
 - Identify which files will be changed
-- Choose the right specialist agent
-- Provide a specific handoff with: task description, files to check, expected output
+- Delegate only independent bounded work that materially benefits from it
+- For any delegation, provide objective, non-goals, exact files, pitfalls,
+  acceptance, narrow commands, and return format
 
 **Good handoff:**
 > Task: Add `xu_max` limit check to flexure.py. Read `codes/is456/flexure.py` lines 80-120 first.
-> After completing, hand off to @reviewer with files changed and how to test.
+> Return the files changed, root cause corrected, and narrow verification result.
 
 **Bad handoff:**
 > Fix the beam calculation thing.
 
-## Step 2: Specialist Executes
+## Steps 2-3: Trace and Execute
 
 Before coding:
 1. Read the files you'll modify
 2. Check for existing code (hooks, routes, functions)
 3. Understand current behavior
 
-After coding — report to @reviewer:
+After coding, retain this compact implementation record:
 ```
 Files Changed: [list]
 What Changed: [summary]
 How to Test: [steps]
 ```
 
-## Step 3: Reviewer Verifies
+## Step 4: Verify
 
-Runs checks based on what changed:
+Run existing checks based on what changed:
 - Python: `pytest`, architecture boundaries, import validation
 - React: `npm run build`, hook duplication check
 - FastAPI: route duplication, Pydantic model validation
 - IS 456: formula verification, clause references
 
-Reports verdict: **APPROVED** → @doc-master | **NEEDS CHANGES** → back to specialist
+For each review finding ask whether fixing it changes the main-process outcome.
+Ignore comments, edge cases, test-coverage gaps, generic hardening, and adjacent
+improvements. Do not add tests during review.
 
-## Step 4: Doc-Master Updates
+## Step 5: Record State
 
-- WORKLOG.md: one line per change
-- TASKS.md: mark done, add new items
-- next-session-brief.md: if session is ending
-- Hand off to @ops
+- Update TASKS only when task state changed.
+- Update the brief only for a durable continuation or ownership handoff.
+- Do not create global log churn or a second docs commit by default.
 
-## Step 5: Ops Commits
+## Step 6: Commit
 
 ```bash
+./run.sh check --quick
+./run.sh pr status
 ./scripts/ai_commit.sh "type(scope): description"
 ```
 
@@ -72,21 +77,15 @@ Reports: commit hash, branch, PR status, pipeline complete.
 
 ## Feedback Loop (Continuous Improvement)
 
-Every completed task feeds back into the system. This is how agents get smarter over time.
+Feed concrete repeated failures back into the system on the governance cadence.
 
-### After Each Task
-The orchestrator reviews:
-1. **Did the specialist need extra guidance?** → Update their `.agent.md` with specific instructions
-2. **Did the reviewer catch preventable issues?** → Add a rule to the specialist's checklist
-3. **Did anything get duplicated?** → Add to "DO NOT recreate" lists in the relevant agent
-4. **Did @ops report any git issues?** → Add to Historical Mistakes in ops.agent.md
-5. **Was the handoff clear enough?** → Improve the delegation template
-
-### After Each Session
-The orchestrator updates:
-- `docs/TASKS.md` — mark completed, add discovered items
-- `docs/planning/next-session-brief.md` — specific handoff for next agent
-- Agent files — incorporate lessons learned during the session
+### On Concrete Evidence
+The orchestrator asks:
+1. **Did the same failure recur with evidence?** → Correct the shared root instruction or automation
+2. **Would the change alter future main-process outcomes?** → If not, do not encode new policy
+3. **Did duplication cause a repeated wrong outcome?** → Correct its canonical source
+4. **Did Git workflow fail repeatedly?** → Preserve the proven recovery rule
+5. **Did ambiguous handoffs recur?** → Improve the canonical delegation template
 
 ### Feedback Data Flow
 
@@ -99,17 +98,17 @@ The orchestrator updates:
 ```
 
 ### Escalation Rules
-- Same mistake 2x → Add warning to agent file
-- Same mistake 3x → Add enforcement check (script or pre-commit hook)
-- Same mistake 5x → Redesign the workflow to prevent it structurally
+- One occurrence → fix the scoped root cause; do not create permanent policy
+- Three or more evidenced occurrences → propose one canonical instruction change
+- Persistent failure after instruction repair → consider focused automation
 
 ## Quick Reference
 
 | Step | Agent | Key Output |
 |------|-------|------------|
-| 1. Plan | @orchestrator | Task scope + file list + specialist assignment |
-| 2. Gather | @frontend/@backend/@api-developer | Context acquired (existing patterns, functions, hooks) |
-| 3. Execute | @frontend/@backend/@api-developer | Code changes + work report |
-| 4. Verify | @reviewer | APPROVED / NEEDS CHANGES + specific issues |
-| 5. Document | @doc-master | WORKLOG + TASKS updated |
-| 6. Commit | @ops | Commit hash + branch + PR status |
+| 1. Scope | Active parent | Outcome, non-goals, file list |
+| 2. Trace | Active parent or bounded specialist | Existing path and root cause |
+| 3. Execute | Active parent or bounded specialist | Complete scoped change |
+| 4. Verify | Active parent or independent reviewer when justified | Essential outcome verdict |
+| 5. Record | Active parent | Only changed task/handoff state |
+| 6. Commit | Active parent or ops when justified | Commit hash + branch + PR status |

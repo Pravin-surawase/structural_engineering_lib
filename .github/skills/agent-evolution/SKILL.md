@@ -1,110 +1,59 @@
 ---
 name: agent-evolution
-description: "Run self-evolution cycle — score agents, detect drift, propose instruction improvements. Use at session end, weekly cadence, or monthly deep review."
+description: "Observe agent performance on a scheduled cadence, score exact collected sessions, and apply a reviewed evolution by ID only after enough evidence and explicit approval."
 ---
 
-# Agent Evolution Skill
+# Agent Evolution
 
-Run the self-evolving agent improvement cycle — from data collection through scoring, drift detection, and instruction evolution.
+This is an experimental governance process, not a mandatory session-end step. Normal coding sessions may log concrete feedback, but they do not run or apply evolution automatically.
 
-## When to Use
-
-- **Session end:** Quick status check and data collection
-- **Weekly review:** Full scoring + drift detection + trend analysis
-- **Monthly audit:** Complete audit with paper export and evolution proposals
-
-## Quick Status Check (Session End)
+## Read-Only Status and Reviews
 
 ```bash
 ./run.sh evolve --status
-./run.sh feedback log --agent <name>
+./run.sh evolve --review weekly
+./run.sh evolve --review monthly
 ```
 
-## Weekly Evolution Cycle
+Periodic reviews are report-only unless `--fix` is explicitly supplied. Do not use `--fix` during burn-in or merely because status says a review is due.
 
-Run these 5 steps in order:
+## Collect and Score One Exact Session
 
-1. **Collect session data:**
-   ```bash
-   .venv/bin/python scripts/agent_session_collector.py
-   ```
-
-2. **Score agents:**
-   ```bash
-   .venv/bin/python scripts/agent_scorer.py --all
-   ```
-
-3. **Detect drift:**
-   ```bash
-   .venv/bin/python scripts/agent_drift_detector.py
-   ```
-
-4. **Check compliance:**
-   ```bash
-   .venv/bin/python scripts/agent_compliance_checker.py
-   ```
-
-5. **Analyze trends:**
-   ```bash
-   .venv/bin/python scripts/agent_trends.py --weekly
-   ```
-
-Or one command: `./run.sh evolve --review weekly`
-
-## Monthly Deep Review
-
-Additional steps beyond the weekly cycle:
-
-1. **Run weekly cycle first** (steps 1-5 above)
-
-2. **Export paper data:**
-   ```bash
-   .venv/bin/python scripts/export_paper_data.py
-   ```
-
-3. **Propose evolutions:**
-   ```bash
-   .venv/bin/python scripts/agent_evolve_instructions.py --propose
-   ```
-
-4. **Review proposals:**
-   ```bash
-   .venv/bin/python scripts/agent_evolve_instructions.py --list
-   ```
-
-5. **Apply approved:**
-   ```bash
-   .venv/bin/python scripts/agent_evolve_instructions.py --apply --confirm
-   ```
-
-Or: `./run.sh evolve --review monthly`
-
-## Rollback
-
-Emergency rollback procedure:
+Choose a stable session ID and agent name:
 
 ```bash
-.venv/bin/python scripts/agent_evolve_instructions.py --rollback <agent-name>
+.venv/bin/python scripts/agent_session_collector.py --session-id <session-id>
+.venv/bin/python scripts/agent_scorer.py --session <session-id> --agent <agent> --auto-only
+.venv/bin/python scripts/agent_drift_detector.py --session <session-id> --agent <agent>
+.venv/bin/python scripts/agent_compliance_checker.py --session <session-id> --agent <agent>
 ```
 
-## Key Data Files
+Do not use nonexistent bulk flags. Manual scores require the scorer's explicit dimension flags and evidence; do not invent values to complete a record.
 
-| File | Purpose |
-|------|---------|
-| `logs/agent-performance/scorecard_index.json` | Latest scores per agent |
-| `logs/agent-performance/evolution-log.json` | Applied evolution history |
-| `logs/agent-performance/pending-evolutions.json` | Proposed changes |
-| `logs/agent-performance/sessions/*.json` | Raw session data |
-| `logs/agent-performance/trends/*.json` | Trend analyses |
-| `logs/agent-performance/backups/*.bak` | Agent file backups |
+## Proposal Gate
 
-## Safety Rules
+Instruction proposals require at least 15 collected session records. Before that threshold, observe and collect only. When the threshold is met and an evolution review is requested:
 
-- Level 2+ changes on safety-critical agents are **BLOCKED**
-- Maximum 3 auto-edits per week
-- Always verify with `--dry-run` or `--propose` before `--apply`
-- Backups are created automatically; rollback with `--rollback`
+```bash
+.venv/bin/python scripts/agent_trends.py --weekly --alert
+.venv/bin/python scripts/agent_evolve_instructions.py --propose
+.venv/bin/python scripts/agent_evolve_instructions.py --list
+```
 
-## Burn-in Period
+Review each proposal against the underlying sessions. Correlation or a single bad run is not a root cause.
 
-The system requires **15-20 sessions** of data collection before evolution proposals become meaningful. During burn-in, focus on **OBSERVE** and **MEASURE** only — do not **EVOLVE**.
+## Apply or Roll Back
+
+Preview one exact proposal ID:
+
+```bash
+.venv/bin/python scripts/agent_evolve_instructions.py --apply <evolution-id> --dry-run
+```
+
+Actual `--apply <evolution-id>` changes agent instructions and requires explicit user approval. `--rollback <evolution-id>` also requires explicit approval and the evolution ID from the log; an agent name is not a valid rollback target.
+
+After an approved change, run the narrow instruction/registry validations and inspect the diff before committing. Never combine an evolution edit with unrelated product work.
+
+## Decision Record
+
+Record the session IDs, repeated behavior, root cause, exact instruction changed, expected measurable effect, preview result, approval, and rollback ID. Without that chain, leave the proposal unapplied.

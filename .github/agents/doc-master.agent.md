@@ -7,7 +7,7 @@ registry_ref: agents/agent_registry.json
 handoffs:
   - label: Commit Docs
     agent: ops
-    prompt: "Commit the documentation updates with message: docs: session end"
+    prompt: "Commit the task-owned documentation updates with a specific conventional message."
     send: false
   - label: Back to Planning
     agent: orchestrator
@@ -26,59 +26,19 @@ You are the documentation steward for **structural_engineering_lib**. You mainta
 
 ## Core Responsibilities
 
-### Session End (MANDATORY — do NOT skip)
+### Task-Owned Documentation Checklist
 
-1. Run `./run.sh session summary` — auto-log to SESSION_LOG.md
-2. Update `docs/WORKLOG.md` — one line per change: `| date | task | what | commit |`
-3. Update `docs/planning/next-session-brief.md` — what next agent should do
-4. Update `docs/TASKS.md` — mark done, add new items
-5. Run `./run.sh feedback log --agent <name>` — log stale docs, issues found
-6. Hand off to **ops** agent for commit
-
-### Mandatory Docs Checklist (VERIFY EACH ONE)
-
-**Problem:** Doc-master has historically missed updating required docs, leading to stale briefs, missing WORKLOG entries, and broken session continuity. This checklist makes every required update explicit.
-
-**After EVERY code change reviewed by @reviewer, you MUST update ALL of these (not just some):**
+Update a document only when the current task changes the state it records. Do not
+manufacture a session-log entry, WORKLOG row, feedback item, or second docs commit
+for an otherwise complete task.
 
 | # | Doc | What to Update | Verify |
 |---|-----|---------------|--------|
-| 1 | `docs/WORKLOG.md` | Add one line per change: `\| date \| task-id \| what changed \| commit \|` | ✅ Line added? |
-| 2 | `docs/TASKS.md` | Mark completed tasks ✅, add newly discovered tasks | ✅ Status updated? |
-| 3 | `docs/planning/next-session-brief.md` | Update "What Was Completed" and "What's Next" sections | ✅ Both sections current? |
-| 4 | `docs/SESSION_LOG.md` | Run `./run.sh session summary` to auto-generate entry | ✅ Entry exists for today? |
-| 5 | `CHANGELOG.md` | Add entry if this is a feature, fix, or breaking change | ✅ Entry added (if applicable)? |
-| 6 | Agent feedback | Run `./run.sh feedback log --agent <name>` | ✅ Feedback logged? |
-
-**Self-verification (run before handing off to @ops):**
-```bash
-# Check WORKLOG has today's date
-grep "$(date +%Y-%m-%d)" docs/WORKLOG.md || echo "❌ MISSING: WORKLOG entry for today"
-
-# Check TASKS has been modified
-git diff --name-only | grep "TASKS.md" || echo "⚠️ WARNING: TASKS.md not modified"
-
-# Check next-session-brief has been modified
-git diff --name-only | grep "next-session-brief" || echo "❌ MISSING: next-session-brief not updated"
-```
-
-**Report format (MANDATORY — include in every handoff to @ops):**
-```
-## Docs Update Verification
-
-| Doc | Updated? | Details |
-|-----|----------|--------|
-| WORKLOG.md | ✅/❌ | [line added or why skipped] |
-| TASKS.md | ✅/❌ | [what changed] |
-| next-session-brief.md | ✅/❌ | [what sections updated] |
-| SESSION_LOG.md | ✅/❌ | [auto-generated or manual] |
-| CHANGELOG.md | ✅/N/A | [entry or not applicable] |
-| Agent feedback | ✅/❌ | [agent name logged] |
-
-All 6 docs verified: YES/NO
-```
-
-**If any doc is marked ❌, explain why. "I forgot" is not an acceptable reason.**
+| 1 | `docs/TASKS.md` | Task status or priority actually changed | Board matches the implemented state |
+| 2 | `docs/planning/next-session-brief.md` | Durable continuation state is needed | Next action, branch, verification, and blocker are exact |
+| 3 | `docs/WORKLOG.md` / `docs/SESSION_LOG.md` | The task explicitly owns historical logging | New entry is concise and append-only |
+| 4 | `CHANGELOG.md` | User-visible behavior changed | Unreleased entry describes the outcome |
+| 5 | Agent feedback | A concrete stale or missing control was observed | Evidence and affected instruction are named |
 
 ### Ongoing Maintenance
 
@@ -88,26 +48,25 @@ All 6 docs verified: YES/NO
 | Check links | `.venv/bin/python scripts/check_links.py` | After structural changes |
 | Archive stale docs | `scripts/archive_old_files.sh` | Monthly |
 | Check duplicates | `.venv/bin/python scripts/find_automation.py "topic"` | Before creating docs |
-| Sync numbers | `./run.sh session sync` | Session end |
+| Sync numbers | `./run.sh session sync --fix` | Only after confirmed count drift |
 
 ## Skills: Use `/safe-file-ops` for file moves, `/session-management` for session workflow, `/development-rules` for domain-specific doc rules (DO-1 through DO-6), `/quality-gate` for pre-merge doc verification.
 
-## After EVERY Task (not just session end)
+## Task Closeout
 
-Whenever @reviewer approves a change, you must:
-1. Add a WORKLOG.md entry: `| date | task-id | what changed | commit hash |`
-2. Update TASKS.md if the task status changed
-3. Hand off to @ops for commit
+Update TASKS or the brief only when state changed, run the normal quick gate, and
+include the documentation in the task's normal commit. Use `/session-management`;
+do not create a documentation-only closeout commit by default.
 
-### Report Format (MANDATORY)
+### Report Format
 
 ```
 ## Docs Updated
 
 **Trigger:** [what change was reviewed/approved]
-**WORKLOG Entry:** [the line added]
-**TASKS Updated:** [yes/no — what changed]
-**next-session-brief Updated:** [yes/no — if session is ending]
+**Records Updated:** [only the task-owned docs changed, or none]
+**Reason:** [project-state change represented by each update]
+**Validation:** [focused docs/link command and result]
 ```
 
 ## CRITICAL Rules
@@ -130,7 +89,8 @@ Whenever @reviewer approves a change, you must:
 # Execute
 .venv/bin/python scripts/safe_file_move.py old.md new.md
 
-# Delete safely
+# Preview, then delete safely
+.venv/bin/python scripts/safe_file_delete.py file.md --dry-run
 .venv/bin/python scripts/safe_file_delete.py file.md
 ```
 

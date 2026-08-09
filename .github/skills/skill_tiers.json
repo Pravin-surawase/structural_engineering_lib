@@ -2,11 +2,11 @@
   "_meta": {
     "description": "Skill tier classifications for agent infrastructure",
     "tiers": {
-      "core": "Always available to all agents",
+      "core": "Available to any agent when the task requires it",
       "specialist": "Available to specific agents based on role",
       "experimental": "Requires explicit activation"
     },
-    "last_updated": "2026-04-05"
+    "last_updated": "2026-08-09"
   },
   "core": [
     {"name": "session-management", "description": "Session start/end automation", "available_to": "all"},
@@ -17,7 +17,7 @@
   "specialist": [
     {"name": "function-quality-pipeline", "description": "9-step IS 456 function quality gate", "available_to": ["structural-math", "tester", "reviewer"]},
     {"name": "new-structural-element", "description": "New structural element workflow", "available_to": ["structural-math", "structural-engineer"]},
-    {"name": "is456-verification", "description": "IS 456 compliance tests", "available_to": ["structural-engineer", "backend", "tester"]},
+    {"name": "is456-verification", "description": "IS 456 compliance tests", "available_to": ["structural-math", "structural-engineer", "backend", "tester", "library-expert"]},
     {"name": "quality-gate", "description": "Mandatory pre-merge quality checks", "available_to": ["reviewer", "ops", "tester", "governance"]},
     {"name": "release-preflight", "description": "Pre-release validation and packaging verification", "available_to": ["ops", "reviewer", "tester"]},
     {"name": "user-acceptance-test", "description": "End-user perspective testing", "available_to": ["tester", "ops", "reviewer"]}

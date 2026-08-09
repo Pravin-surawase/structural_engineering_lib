@@ -84,7 +84,7 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ./run.sh check --quick              # Fast validation (<30s)
 ./run.sh pr create TASK-XXX "desc"  # Start a PR
 ./run.sh pr finish                  # Ship the PR
-./run.sh session end                # Wrap up (logs, sync, handoff)
+./run.sh session end                # Validate closeout (read-only by default)
 ./run.sh find "topic"               # Find the right script
 ./run.sh find --api func_name       # Get API signatures
 ./run.sh test                       # Run test suite
@@ -93,11 +93,11 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ./run.sh generate indexes           # Regenerate folder indexes
 ./run.sh health                     # Project health scan (0-100 score)
 ./run.sh health --fix               # Auto-fix fixable issues
-./run.sh feedback log --agent X     # Log agent feedback (session end)
+./run.sh feedback log --agent X     # Log concrete feedback when found
 ./run.sh feedback summary           # Feedback trends & recurring issues
 ./run.sh evolve                     # Self-evolution cycle (dry-run)
 ./run.sh evolve --fix               # Apply fixes + commit
-./run.sh evolve --review weekly     # Weekly auto-maintenance
+./run.sh evolve --review weekly     # Weekly report-only review
 ./run.sh dev                        # Launch full dev stack (FastAPI + React)
 ./run.sh dev --docker               # Launch with Docker (needs Colima)
 ./run.sh dev --kill-only            # Kill all dev services
@@ -160,47 +160,40 @@ When you encounter terminal problems (commands failing, wrong directory, scripts
 `⚠️ TERMINAL ISSUE: [what happened] → [what worked instead]`
 This feeds the improvement loop — recurring issues get fixed in agent instructions.
 
-## Session End (auto-summary + sync)
+## Session Closeout
 
 ```bash
-./run.sh session summary            # Auto-generate summary from git log
-./run.sh session sync               # Sync stale doc numbers
-./run.sh session end                # Run end-of-session checks
-./run.sh commit "docs: session end" # Commit doc updates
+./run.sh check --quick
+./run.sh pr status
+./run.sh commit "type(scope): completed outcome"
+./run.sh session end --agent <role> # Validate; no hidden writes
 ```
 
-Or just scan numbers: `.venv/bin/python scripts/sync_numbers.py --fix`
+`session summary`, `session sync`, and `session end` are read-only by default. Use `--write` or `--fix` only when that mutation is explicitly required.
 
 ## IMPORTANT: Session Logging (MANDATORY)
 
-Every AI agent session MUST follow this workflow. Skipping these steps breaks continuity for the next agent/session.
+Every coding session uses the bounded workflow below.
 
 ### Session Start
-1. Read `docs/planning/next-session-brief.md` to understand current priorities
-2. Read `docs/TASKS.md` for active work items
-3. Run `./run.sh session start` to verify environment
+1. Run `./run.sh session brief --agent <role>` for bounded priorities.
+2. Run `./run.sh session start` once to verify the environment.
 
 ### During Session
-- Commit frequently with descriptive conventional messages via `./run.sh commit`
+- Use targeted checks while editing and one normal task commit via `./run.sh commit`.
 - Track what you changed, what you decided, and what's unfinished
 
 ### Session End (REQUIRED — do NOT skip)
-1. Run `./run.sh commit` for any uncommitted work
-2. Run `./run.sh feedback log --agent <name>` — log stale docs, missing info, issues found
-3. Run `./run.sh session summary` — auto-generates SESSION_LOG entry
-4. Run `./run.sh session sync` — fixes stale numbers in docs
-5. Run `./run.sh evolve --status` — Agent evolution check (MANDATORY every session)
-6. Append to `docs/WORKLOG.md` — one line per change (date | task | what | commit)
-7. Update `docs/planning/next-session-brief.md` — what the NEXT agent should do first
-8. Update `docs/TASKS.md` — mark completed items, add new items discovered
-9. Run `./run.sh commit "docs: session end"` — commit all doc updates
+1. Update `docs/TASKS.md` and `docs/planning/next-session-brief.md` only when their state changed or a durable handoff is needed.
+2. Run `./run.sh check --quick` once before commit.
+3. Run `./run.sh pr status`, then commit through `./run.sh commit`.
+4. Run `./run.sh session end --agent <role>` to validate the clean handoff.
+5. Log feedback only when a concrete stale or missing control was found.
 
 ### Why This Matters
-- **WORKLOG.md** is the compact change log — one line per item, prevents rework
-- **SESSION_LOG.md** is the project memory — gaps mean lost context
-- **next-session-brief.md** is the handoff — without it, the next agent wastes time rediscovering state
-- **TASKS.md** tracks priorities — unupdated tasks get repeated or lost
-- Empty sessions (no log, no handoff) have caused 10+ hours of wasted rework historically
+- **next-session-brief.md** carries task-specific continuation state.
+- **TASKS.md** tracks real project-state changes.
+- Global logs, metrics, indexes, and evolution reviews are updated only by tasks that own them.
 
 ## Migration & Folder Structure Scripts
 

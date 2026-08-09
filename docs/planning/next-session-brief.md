@@ -4,18 +4,18 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-09
-- Focus: Complete MAINT-001, verify PR #676, and leave merge/release for explicit owner approval
+- Focus: Close the isolated MAINT-008 skills control-plane repair; leave its merge and all CI/ruleset/release work for separate approval
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-08-09
-**Current Session:** MAINT-008 is fully planned; execution waits for the owner decision on green PR #676
+**Current Session:** PR #676 is merged; MAINT-008 skills repair is implemented on `task/MAINT-008-SKILLS` and is in closeout
 
 ## Start Here
 
-1. Obtain explicit owner approval before merging green PR #676.
-2. After merge, follow [MAINT-008 — Compact Project Modernization Plan](compact-modernization-plan.md) in dependency order; do not mix it into PR #676.
-3. Obtain separate explicit decisions for the GitHub required-check change, the MAINT-008 merge, and the v0.21.7 release.
-4. Preserve the recovered Mac baseline and accepted main-process results; do not start adjacent feature work.
+1. Review the MAINT-008 skills PR and its gate evidence; do not merge it without explicit owner approval.
+2. After that skills PR is merged and synchronized, follow [MAINT-008 — Compact Project Modernization Plan](compact-modernization-plan.md) from packet A on a new clean branch.
+3. Obtain separate explicit decisions for the skills merge, GitHub required-check change, later MAINT-008 CI merge, and v0.21.7 release.
+4. Preserve the recovered Mac baseline and accepted main-process results; do not mix workflow compaction or product work into the skills PR.
 
 Full evidence and accepted risks are in
 [maintenance-recovery-audit-2026-08-07.md](../audit/maintenance-recovery-audit-2026-08-07.md).
@@ -23,11 +23,11 @@ Full evidence and accepted risks are in
 ## Current Evidence
 
 - Repository transfer is intact: no corrupt reachable Git objects, broken symlinks, submodule issues, or missing ETABS sample files.
-- Local/remote `main`: `fa854e0f`; published package: v0.21.6.
+- Clean post-merge baseline: `755ac9fb`; published package: v0.21.6.
 - Pre-session dirty tree: 73 modified tracked files and 47 untracked files, preserved by checkpoint `b28ee4e3`.
 - Passing baselines: release preflight 5,159 Python passed, 3 skipped, 6 deselected; FastAPI 336; React 146; Node 24 production build.
 - Clean-wheel UAT: 5,120 passed, 41 skipped, 6 deselected plus packaged job, critical-case CSV, and HTML-report CLI workflows.
-- GitHub CLI keyring/API, repository queries, PR access, SSH, and remote Git transport pass. PR #676 is open from `task/MAINT-001`.
+- GitHub CLI keyring/API, repository queries, PR access, SSH, and remote Git transport pass. PR #676 was safely squash-merged before the skills branch was created.
 - Colima is healthy on the preserved VZ disk after a targeted stale-lock recovery; Docker reports 4 CPUs/~4 GB and Compose config passes.
 - Docker preflight passes 5,158 Python tests, 8 skips, 6 deselections, plus the Node 24 React production build.
 - Low-token policy checkpoint `6e8e4a31` adds project Codex defaults, a two-subagent cap, focused handoffs, `./run.sh efficiency`, and a 9/9 quick gate.
@@ -37,7 +37,10 @@ Full evidence and accepted risks are in
 - MAINT-007 makes PR status terminal-only by default, corrects stale bootstrap/tool counts and active-task briefs, discovers all 14 Copilot skills, and adds honest local model/agent checkpoints through `./run.sh session usage`.
 - MAINT-007 verification is green: 32 focused tests, quick 9/9, full 29/29, audit 22/22, and health 100/100. The first local usage ledger records Sol High, one parent, zero subagents, and no fabricated billing values.
 - MAINT-007 checkpoint `4d5b9eb5` is pushed to PR #676.
-- Current gate: commit `242ba8ce` fixes the empty-link and Ruff-drift root causes; PR #676 is clean and mergeable with 19 checks passed, two intentionally skipped, and zero failures. React coverage remains an accepted follow-up risk.
+- PR #676 closeout: its required checks were green before the safe squash merge. React coverage remains an accepted follow-up risk.
+- MAINT-008 skills branch: all 14 skill entrypoints were reviewed and repaired; one JSON catalog now drives tier validation, agent routes and metadata agree, and supporting API/architecture/release/evolution commands fail closed on ambiguous or insufficient evidence.
+- Skills commits: `5ac70ac1` repairs the compact control plane; `fc4d0249` removes hidden session writes. Draft PR #689 is open, clean, and has all applicable GitHub checks passing.
+- Skills targeted evidence: tier assignment validation, four-layer architecture scan (119 files, zero violations), API discovery success/missing-function behavior, Python compilation, frontmatter/stale-command scan, and evolution 9/15 burn-in gate pass.
 - Recovery checkpoint: `b28ee4e3` pushed on `task/MAINT-001`.
 - MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.
 - Quick canonical gate: 9/9 green; all 3,248 scanned imports resolve.
@@ -48,6 +51,14 @@ Full evidence and accepted risks are in
 - Mac launcher evidence: `.nvmrc` Node 24 is selected even when a stale unversioned Node is first on `PATH`; port cleanup targets listeners only and no longer kills connected browser/client helpers.
 - Live-design evidence: WebSocket payloads now retain the complete REST response contract, including real capacities and governing utilization; current and legacy payload shapes are normalized in the frontend.
 - Release evidence: macOS reclaimable-memory and Node-runtime detection are repaired; `./run.sh release preflight 0.21.7` reports READY TO RELEASE with zero warnings.
+
+## Lessons and Repeat Prevention
+
+- Treat `.github/skills/skill_tiers.json` as canonical; validate its projections instead of copying counts or assignments among prose and registries.
+- Session summary, sync, and end are read-only; add `--write`, `--fix`, or `--log-cost` only when the task intentionally owns that mutation.
+- Evidence commands must reject missing, ambiguous, or insufficient proof; never accept a convenient first match.
+- Run from the workspace root. Find docs through indexes or `rg --files`; the compact log is `docs/WORKLOG.md`.
+- Do not extend draft PR #689. After an owner-approved merge, synchronize and start packet A on a clean branch; ruleset, later merge, and release decisions remain separate.
 
 ## Maintenance Sequence
 
@@ -60,7 +71,7 @@ Full evidence and accepted risks are in
 | 5 | MAINT-005 frontend/release scope | Credible v0.21.7 stabilization exit criteria |
 | 6 | MAINT-006 token/model policy | Analytics-calibrated low-token routing with enforced safety limits |
 | 7 | MAINT-007 docs/tool refresh | Current onboarding, complete discovery, local usage evidence, and no surprise PR tabs |
-| 8 | [MAINT-008 compact modernization](compact-modernization-plan.md) | One truthful PR gate, minimal workflow lanes, supported commands, and unchanged product evidence |
+| 8 | [MAINT-008 compact modernization](compact-modernization-plan.md) | Skills control-plane PR first; then one truthful PR gate, minimal workflow lanes, supported commands, and unchanged product evidence |
 
 ## Previous Handoff (2026-04-07)
 

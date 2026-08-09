@@ -1,102 +1,56 @@
 ---
 name: development-rules
-description: "Hard-learned development rules by domain — Python, FastAPI, React, Testing. Prevents the specific mistakes that caused 70+ audit findings across v0.21.0-v0.21.3."
+description: "Apply the small set of outcome-critical project rules for Python, IS 456, FastAPI, React, documentation, and review without turning them into generic hardening."
 ---
 
-# Development Rules Skill
+# Development Rules
 
-These rules were learned the hard way across v0.21.0-v0.21.3, where 70+ issues were discovered post-release. Each rule maps to a specific incident.
+Load only the section for the changed domain. Existing project automation and adjacent code are the source of implementation patterns; this file defines the decisions that must remain consistent.
 
-## When to Use
+## Universal
 
-- **Every agent should read their domain section** before writing code
-- **Reviewer must verify** these rules during code review
-- **New agents** must read this as part of onboarding
+1. Trace a confirmed defect to its root cause. Do not suppress the symptom or introduce a fallback that silently changes an engineering result.
+2. Search before adding a public function, hook, component, route, adapter, or script.
+3. Preserve the dependency direction: Core → IS 456 → Services → UI/IO.
+4. Preserve explicit units at every calculation and API boundary.
+5. During review, report only confirmed defects whose fix changes the scoped main-process outcome. Ignore comments, coverage gaps, edge-case speculation, generic hardening, and adjacent cleanup. Do not add tests in review-only work.
 
-## Universal Rules (ALL Agents)
+## Python and IS 456
 
-| # | Rule | Incident | Severity |
-|---|------|----------|----------|
-| U-1 | Never swallow exceptions silently — log or re-raise with context | v0.21.2: clauses.json missing → silent `{}` | CRITICAL |
-| U-2 | Never use `except Exception:` without specific handling | v0.21.2: traceability.py hid failures | CRITICAL |
-| U-3 | All public functions must be in `__all__` AND importable | v0.21.2: README claimed non-existent API | HIGH |
-| U-4 | Data files must be declared in pyproject.toml package-data | v0.21.2: clauses.json not in wheel | HIGH |
-| U-5 | README code examples must be tested in CI | v0.21.2: examples didn't work | HIGH |
-| U-6 | Version numbers must be consistent across all files | v0.21.x: version drift across docs | MEDIUM |
-| U-7 | Import-time side effects are forbidden (no warnings, no I/O) | v0.21.3 EA-2: import warnings | HIGH |
+- Put base types and shared primitives in `core/`, pure code calculations in `codes/is456/`, and orchestration/I/O in `services/`.
+- Use the live neighboring module and `./run.sh find --api <name>` before choosing parameter names or result shapes.
+- Use lowercase unit suffixes that match the public API, such as `_mm`, `_mm2`, `_kn`, `_knm`, and `_nmm2`.
+- Validate a denominator according to the formula's domain. If `safe_divide()` is used, choose its `default` deliberately; never treat an invalid denominator as a valid zero result by accident.
+- A changed IS 456 formula needs a clause identifier, dimensional reasoning, and an independent benchmark with a source-specific tolerance. Tests are software evidence, not professional certification.
+- Keep imports quiet and public exports importable. Packaging data needed by the main process must be declared in the package configuration.
 
-## Python Core Rules (`Python/structural_lib/`)
+## FastAPI
 
-| # | Rule | Incident | Agent |
-|---|------|----------|-------|
-| PY-1 | All parameters use explicit units: `b_mm`, `d_mm`, `fck_nmm2`, `Mu_knm` | Historical confusion | @backend, @structural-math |
-| PY-2 | Division by zero must be guarded: `x / y if y != 0 else 0` | Edge case failures | @structural-math |
-| PY-3 | IS 456 clause reference required in docstring for every formula | Audit finding | @structural-math |
-| PY-4 | Every new function needs: unit test + edge test + SP:16 benchmark | v0.21.0: insufficient testing | @tester |
-| PY-5 | Return types must be dataclasses, not dicts (with `.to_dict()` method) | v0.21.3 EA-4: inconsistent returns | @backend |
-| PY-6 | Lazy imports for non-core modules (use `__getattr__` pattern) | v0.21.3 EA-10: 382ms startup | @backend |
-| PY-7 | Never modify `core/` from `codes/` or `services/` | Architecture rule | @backend |
-| PY-8 | Deprecation warnings gated behind actual function call, not module load | v0.21.3 EA-2 | @backend |
+- Routers validate transport input, call public/service functions, and serialize results. They do not reimplement structural math.
+- Preserve the established request, response, error, and units contract of the route being changed.
+- Log diagnostic details server-side; do not return internal exception text, paths, or tracebacks to the client.
+- When an endpoint changes, verify the actual request → service → response path, not only model construction.
 
-## FastAPI Rules (`fastapi_app/`)
+## React
 
-| # | Rule | Incident | Agent |
-|---|------|----------|-------|
-| FA-1 | NEVER use `str(e)` in error responses — use generic messages, log original | v0.21.3 EA-18: 32 CWE-209 instances | @api-developer |
-| FA-2 | All endpoints must have rate limiting (global middleware) | v0.21.3 EA-17: only 2/59 had limits | @api-developer |
-| FA-3 | WebSocket inputs validated via Pydantic models | v0.21.3 EA-19: raw dict access | @api-developer |
-| FA-4 | CORS origins from config/env, never hardcoded | v0.21.3 EA-20 | @api-developer |
-| FA-5 | Auth warning when disabled in production | v0.21.3 EA-16 | @ops |
-| FA-6 | Routers import from `structural_lib` — never reimplement math | Architecture rule | @api-developer |
-| FA-7 | Error responses must not expose internal paths or stack traces | OWASP CWE-209 | @api-developer, @security |
+- Structural calculations come from FastAPI. Client code manages input, state, visualization, and presentation.
+- Search existing hooks and components before creating another abstraction.
+- Keep request/response types aligned with the live FastAPI contract and preserve explicit units in field names.
+- When a user-visible flow changes, verify the browser → API → rendered/downloaded result.
 
-## React Rules (`react_app/`)
+## Tests and Verification
 
-| # | Rule | Incident | Agent |
-|---|------|----------|-------|
-| RE-1 | Forms must have cross-field validation (not just HTML5) | v0.21.3 EA-15: depth > cover unchecked | @frontend |
-| RE-2 | All computations go through FastAPI — no local JS math | Architecture rule | @frontend |
-| RE-3 | Check `react_app/src/hooks/` before creating a new hook | Historical duplication | @frontend |
-| RE-4 | Check `react_app/src/components/` before creating a component | Historical duplication | @frontend |
-| RE-5 | Tailwind only — no custom CSS files | Project convention | @frontend |
-| RE-6 | Workflow guidance (WorkflowHint) on key pages | v0.21.3 EA-11: users lost | @frontend |
+- During implementation, change or add the narrow evidence required by the requested behavior; do not add tests during review-only work.
+- Use real structural result types when their behavior is part of the process. Do not use mocks that make impossible states appear valid.
+- Run targeted checks while editing, `./run.sh check --quick` once before commit, and `./run.sh check` once at closeout.
+- Use release/UAT automation only for release or packaging scope.
 
-## Testing Rules (`Python/tests/`)
+## Documentation and State
 
-| # | Rule | Incident | Agent |
-|---|------|----------|-------|
-| TE-1 | NEVER use MagicMock for structural Result types (FlexureResult, ShearResult, etc.) | v0.21.0: ShearResult field bug masked by mock | @tester |
-| TE-2 | Use `repo_only` marker for tests needing full repo (not just package) | v0.21.3 EA-8: sdist tests broke | @tester |
-| TE-3 | E2E pipeline test required for each structural element | v0.21.3 EA-7: no chain testing | @tester |
-| TE-4 | API stability test: all `__all__` members must be importable | v0.21.3 EA-9: phantom exports | @tester |
-| TE-5 | Import silence test: `import structural_lib` emits zero warnings | v0.21.3 EA-6 | @tester |
-| TE-6 | SP:16 benchmark values must match within ±0.1% | IS 456 compliance requirement | @tester |
-| TE-7 | Packaging test: wheel must not contain tests/, scripts/, examples/ | v0.21.2: leaked files | @tester |
+- Update public docs when the changed public contract makes them false.
+- Update task/handoff files only when their state changes or another session needs a durable handoff.
+- Do not regenerate global indexes, metrics, release notes, or logs as adjacent maintenance.
 
-## Documentation Rules
+## Review Question
 
-| # | Rule | Incident | Agent |
-|---|------|----------|-------|
-| DO-1 | WORKLOG.md: one line per code change, every time, no exceptions | Historical gaps | @doc-master |
-| DO-2 | next-session-brief.md: MUST be updated at session end | 10+ hours rework from missing brief | @doc-master |
-| DO-3 | TASKS.md: mark done items, add discovered items | Tasks repeated when not tracked | @doc-master |
-| DO-4 | README code examples must match actual API exactly | v0.21.2: phantom function claims | @doc-master |
-| DO-5 | CHANGELOG: append-only, immutable past entries | Data integrity | @doc-master |
-| DO-6 | New docs need metadata header (Type, Audience, Status, etc.) | Governance requirement | @doc-master |
-
-## Security Rules
-
-| # | Rule | Incident | Agent |
-|---|------|----------|-------|
-| SE-1 | No internal error details in HTTP responses | v0.21.3: CWE-209 | @security, @api-developer |
-| SE-2 | Rate limiting on all public endpoints | v0.21.3: DoS risk | @api-developer |
-| SE-3 | Input validation at system boundaries (Pydantic) | v0.21.3: WebSocket raw | @api-developer |
-| SE-4 | Dependencies audited before release | pip-audit recommended | @security |
-| SE-5 | Auth must warn in production when disabled | v0.21.3 EA-16 | @ops |
-
-## How to Enforce
-
-1. **Code review**: Reviewer checks rules for changed domains
-2. **Quality gate**: Level 1-3 automated checks (see `/quality-gate` skill)
-3. **Pre-release**: Full checklist (see `/release-preflight` skill)
-4. **Agent evolution**: Violations tracked by agent-evolver scoring
+For every possible finding, answer: **Would fixing this change the outcome of the main process in scope?** If not, leave it out of the review. Preserve a non-essential concern as a follow-up task only when losing it would materially obstruct later work.

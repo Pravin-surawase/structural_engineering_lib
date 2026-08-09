@@ -5,6 +5,79 @@
 
 ---
 
+## 2026-08-09 — MAINT-008 Skills Control-Plane Closeout
+
+**Agent:** Codex
+**Branch:** `task/MAINT-008-SKILLS`
+**Focus:** Repair the isolated agent-skill control plane, prove its main process, and hand off the remaining MAINT-008 packets without merging or expanding scope
+
+### Summary
+
+- Completed the bounded MAINT-008 skills lane in commits `5ac70ac1` and
+  `fc4d0249`: 41 files changed, with 1,107 insertions and 2,100 deletions.
+- Opened draft PR #689. It is clean and all applicable GitHub checks pass;
+  four product lanes are intentionally skipped because this PR changes agent
+  and maintenance controls rather than product code.
+- Left the PR merge, GitHub required-check change, later CI modernization, and
+  v0.21.7 release as separate owner-approved operations.
+
+### Root causes fixed
+
+- Skill tiers, registry assignments, counts, and role routes were maintained in
+  several places, so they could disagree while individual files still looked
+  valid. `skill_tiers.json` is now the canonical catalog and validation checks
+  every projection against it.
+- Several maintenance commands treated missing or ambiguous evidence as
+  success, or selected a convenient first match. API discovery, architecture
+  checks, release artifact selection, and evolution burn-in now fail closed
+  when the requested proof is absent or insufficient.
+- `run.sh` session aliases silently supplied write flags, so read-looking
+  summary, sync, and end commands could mutate handoff state. Those commands
+  are now read-only by default; `--write`, `--fix`, and `--log-cost` are
+  explicit operations.
+- Agent and skill instructions duplicated gates, forced role fan-out, and could
+  override the user's selected parent model. The compact entrypoints now keep
+  delegation optional, preserve the active parent selection, and run one
+  proportionate closeout gate.
+
+### Verification
+
+- Skill catalog/filesystem/registry agreement and frontmatter checks pass for
+  all 14 skill entrypoints.
+- Four-layer architecture scan passes across 119 files with zero violations.
+- API discovery succeeds for an existing public function and exits nonzero for
+  a missing requested function.
+- Exact release-artifact selection, Python compilation, stale-command scans,
+  and the 9/15 evolution burn-in refusal pass.
+- Local quick and full closeout gates pass; draft PR #689 is clean with all
+  applicable GitHub checks successful.
+
+### Lessons and repeat prevention
+
+- Put shared control-plane facts in one machine-readable catalog and validate
+  every generated or hand-maintained projection; do not reconcile drift by
+  copying counts between prose files.
+- A command that sounds observational must not write by default. Future agents
+  should preview `session summary`, `session sync`, and `session end`, then add
+  the explicit mutation flag only when the task owns that documentation change.
+- Evidence-sensitive commands must reject zero matches, multiple plausible
+  matches, and incomplete burn-in. A green exit without the requested evidence
+  is not a successful main-process outcome.
+- Keep the skills PR isolated. After owner-approved merge and synchronization,
+  start MAINT-008 packet A from a clean branch; do not add CI, product,
+  ruleset, merge, or release work to PR #689.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: A guessed worklog path
+  `docs/task_logs/structural_engineering_lib_worklog.md` did not exist →
+  `rg --files docs | rg 'worklog|WORKLOG'` located the canonical
+  `docs/WORKLOG.md`. Future sessions should search the repository index or
+  `rg --files` before using a remembered documentation path.
+- No terminal issue remains unresolved in this lane. Run all documented
+  commands from the workspace root and use the explicit fallbacks in
+  `.github/instructions/terminal-rules.instructions.md` if `run.sh` fails.
+
 ## 2026-08-09 — Session
 
 **Focus:** Complete MAINT-001, verify PR #676, and leave merge/release for explicit owner approval

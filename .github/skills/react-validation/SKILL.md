@@ -1,86 +1,59 @@
 ---
 name: react-validation
-description: "Run React build, lint, type-check, and test validation. Use after modifying React components, hooks, or configuration. Catches TypeScript errors, Tailwind issues, and build failures before commit."
-argument-hint: "Optional: 'build' | 'lint' | 'types' | 'test' | 'all' (default: all)"
+description: "Validate changed React behavior with the Node version pinned by .nvmrc, root-stable npm commands, narrow tests while editing, and one production build."
+argument-hint: "Changed hook, component, route, or user flow"
 ---
 
-# React Validation Skill
+# React Validation
 
-Validate React frontend code quality — build, lint, type-check, and test.
+Run from the workspace root. Commands use `npm --prefix react_app` so later terminal commands do not inherit a hidden `react_app/` working directory.
 
-## When to Use
-
-- After modifying any file in `react_app/src/`
-- After adding new components, hooks, or types
-- Before committing any frontend change
-- When `npm run build` fails and you need diagnostics
-
-## Full Validation (Default)
+## Select the Pinned Runtime
 
 ```bash
-cd react_app && npm run build
+nvm use
+node --version
+npm --version
 ```
 
-Build includes TypeScript compilation — catches both type errors and import issues.
+The Node major must match `.nvmrc` and npm must satisfy `react_app/package.json`. If `nvm` is unavailable or the selected binary is broken, follow `docs/getting-started/mac-mini-setup.md`; do not install a different major as an adjacent change.
 
-## Individual Checks
+## While Editing
 
-### TypeScript type-check only:
+Run the narrowest applicable command:
+
 ```bash
-cd react_app && npx tsc --noEmit
+npm --prefix react_app run lint
+npm --prefix react_app run test -- <test-pattern>
 ```
 
-### Lint check:
+Before adding a hook or component, search the live tree rather than relying on a hardcoded count:
+
 ```bash
-cd react_app && npx eslint src/ --max-warnings 0
+rg --files react_app/src/hooks
+rg -n "<concept>" react_app/src/hooks react_app/src/components
 ```
 
-### Run tests:
+## Stable Frontend Check
+
 ```bash
-cd react_app && npx vitest run
+npm --prefix react_app run build
 ```
 
-### Dev server (manual testing):
+The build performs TypeScript compilation and the production Vite build. Do not add a separate `npx tsc` run unless diagnosing the TypeScript phase specifically, and do not download tooling through `npx`.
+
+## User-Flow Verification
+
+When the change affects a visible main process, start the canonical stack:
+
 ```bash
-cd react_app && npm run dev
-# Opens at http://localhost:5173
+./run.sh dev
 ```
 
-## Pre-Commit Checklist
+Verify the exact browser input → FastAPI request → rendered result or downloaded bytes. A successful build alone does not prove that flow. Clean up only the listeners started for this task with `./run.sh dev --kill-only`.
 
-Run these in order before committing frontend changes:
+## Closeout
 
-1. **Build passes:** `cd react_app && npm run build`
-2. **No unused imports:** Check build output for warnings
-3. **No duplicate hooks:** `ls react_app/src/hooks/` — verify you didn't recreate an existing hook
-4. **No CSS files created:** `find react_app/src -name "*.css" ! -name "index.css"` — should return nothing
+Run `./run.sh check --quick` before commit and `./run.sh check` once at stable implementation closeout. Do not run browser, Docker, coverage, or release checks when they are outside the changed user process.
 
-## Common Build Errors
-
-| Error | Cause | Fix |
-|-------|-------|-----|
-| `TS2307: Cannot find module` | Wrong import path | Check if file was moved — use relative paths |
-| `TS2339: Property does not exist` | Wrong type or missing field | Check TypeScript types in `types/` |
-| `TS2345: Argument not assignable` | Type mismatch in hook/component | Verify Pydantic model matches TS type |
-| `Module not found` | Missing dependency | `cd react_app && npm install <pkg>` |
-| Tailwind class not applied | Typo in class name | Check Tailwind docs for correct utility name |
-
-## Existing Hooks (DO NOT recreate)
-
-Before creating a new hook, check:
-```bash
-ls react_app/src/hooks/
-```
-
-21 hooks across 11 files already exist. See `frontend.agent.md` for the full list.
-
-## Existing Components
-
-Before creating a new component, check:
-```bash
-ls react_app/src/components/
-ls react_app/src/components/design/
-ls react_app/src/components/import/
-ls react_app/src/components/viewport/
-ls react_app/src/components/ui/
-```
+For review-only work, report only confirmed failures that change the scoped user outcome; do not add tests or generic frontend cleanup.

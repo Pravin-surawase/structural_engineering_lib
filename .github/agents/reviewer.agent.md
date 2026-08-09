@@ -42,7 +42,9 @@ The repository-wide surgical-work policy overrides the broad checklists below. A
 
 > Architecture, git rules, and session workflow are in global instructions — not repeated here.
 
-**You are a MANDATORY gate in the pipeline.** Every code change must pass through you before going to @doc-master and @ops. If you are not invoked, the pipeline is broken.
+The review concern is mandatory for code changes, but a separate reviewer agent
+is not. The active parent normally performs this pass and invokes this role only
+when bounded independent review materially improves the outcome.
 
 ## Terminal Commands
 

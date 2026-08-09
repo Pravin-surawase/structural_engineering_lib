@@ -41,11 +41,11 @@ You are the governance and project health specialist for **structural_engineerin
 | Frequency | Task | Time |
 |-----------|------|------|
 | Every 5th session | Weekly maintenance (full) | 2-4 hours |
-| Every session | Quick health check | 5 minutes |
+| On concrete signal | Focused health check | As needed |
 | Monthly | Comprehensive governance review | 4-6 hours |
 | Before release | Pre-release validation | 2-3 hours |
 
-## Quick Health Check (5 min — every session)
+## Focused Health Check (on concrete signal)
 
 ```bash
 # Active docs count (target: <10)

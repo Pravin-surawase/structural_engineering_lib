@@ -489,12 +489,12 @@ def cmd_status(args: argparse.Namespace) -> int:
             print(
                 f"\n  \033[1;33m⚠️  {days_since} days since last run. Monthly review recommended.\033[0m"
             )
-            print("     Run: ./run.sh evolve --review monthly --fix")
+            print("     Run: ./run.sh evolve --review monthly")
         elif days_since >= 7:
             print(
                 f"\n  \033[1;33m⚠️  {days_since} days since last run. Weekly review recommended.\033[0m"
             )
-            print("     Run: ./run.sh evolve --review weekly --fix")
+            print("     Run: ./run.sh evolve --review weekly")
         else:
             print(f"\n  ✅ Last run was {days_since} day(s) ago. System is current.")
     except ValueError:

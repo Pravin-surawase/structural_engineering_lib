@@ -1,19 +1,18 @@
 ---
 name: architecture-check
-description: "Validate 4-layer architecture boundaries, import direction, code duplication, and structural integrity. Use during code review or after cross-layer changes. Wraps check_architecture_boundaries.py, validate_imports.py, and duplication scans."
+description: "Validate the live four-layer Python architecture and import resolution after cross-layer changes. Report only confirmed violations that change the scoped main process."
 argument-hint: "Optional: 'boundaries' | 'imports' | 'duplication' | 'all' (default: all)"
 ---
 
-# Architecture Check Skill
+# Architecture Check
 
-Validate the 4-layer architecture, import direction, and code duplication rules.
+Validate the four-layer architecture and imports from the workspace root.
 
 ## When to Use
 
-- During code review (reviewer agent)
-- After any change that touches multiple layers
-- After adding new imports across modules
-- Before merging PRs that modify `structural_lib/`, `fastapi_app/`, or `react_app/`
+- After a change adds or moves imports between architecture layers
+- During review of a cross-layer Python or FastAPI change
+- When diagnosing a confirmed layer-boundary failure
 
 ## Architecture Layers (Strict)
 
@@ -26,16 +25,17 @@ Layer 4: UI/IO         → react_app/, fastapi_app/             # External inter
 
 **Import rule:** Core ← IS 456 ← Services ← UI. Never import upward.
 
-## Full Architecture Validation
+## Boundary Validation
 
 ```bash
 .venv/bin/python scripts/check_architecture_boundaries.py
 ```
 
 Checks:
-- No upward imports (Core importing from Services, Services from UI)
-- IS 456 layer has no I/O operations
-- FastAPI routers only import from Services layer
+- Core does not import IS 456, Services, or UI
+- IS 456 does not import Services or UI and does not perform ordinary file I/O
+- Services does not import UI
+- FastAPI does not bypass Services/public APIs to import Core or IS 456 internals
 
 ## Import Validation
 
@@ -43,63 +43,36 @@ Checks:
 .venv/bin/python scripts/validate_imports.py --scope structural_lib
 ```
 
-Checks:
-- No circular imports
-- No broken import paths
-- Import direction follows layer hierarchy
+This is a separate resolution check. It catches broken module paths; the boundary checker owns layer direction.
 
-## Circular Import Check
+Run the circular-import checker only if the change creates an import cycle or the normal import validation reports one:
 
 ```bash
 .venv/bin/python scripts/check_circular_imports.py
 ```
 
-## Duplication Scan
+Do not run generic duplication scans as part of this skill. Before adding a new hook, route, or public function, use targeted `rg` in that component to locate an existing implementation.
 
-### React hooks (most common duplication):
-```bash
-ls react_app/src/hooks/
-# Compare with the 21 existing hooks listed in frontend.agent.md
-```
-
-### FastAPI routes:
-```bash
-grep -r "@router" fastapi_app/routers/ | sort
-# Check for duplicate HTTP method + path combinations
-```
-
-### Python API functions:
-```bash
-grep "^def " Python/structural_lib/services/api.py | head -30
-# Verify no function duplicates the logic of an existing one
-```
-
-## Quick Check (< 30 seconds)
+## Gate Relationship
 
 ```bash
 ./run.sh check --quick
 ```
 
-Runs 8 fast checks including architecture boundaries.
+The quick gate validates import/hygiene essentials but is not evidence that the full architecture boundary checker ran. Run the boundary command above for architecture work.
 
-## Full Check (29 checks)
-
-```bash
-./run.sh check
-```
+`./run.sh check` includes the architecture checker and runs once at implementation closeout.
 
 ## Common Violations
 
 | Violation | Example | Fix |
 |-----------|---------|-----|
-| Upward import | `codes/is456/flexure.py` imports from `services/` | Move shared code to `core/` |
+| Upward import | `codes/is456/beam/flexure.py` imports `services/` | Move the dependency to `core/` or orchestrate it from Services |
 | Math in UI | React component calculates reinforcement | Move to API endpoint + structural_lib |
 | Math in router | FastAPI router computes shear capacity | Call `structural_lib` function instead |
 | I/O in IS 456 | `codes/is456/` reads a file or network | Move I/O to Services layer |
 | Duplicate hook | New `useCSVImport` when `useCSVFileImport` exists | Use existing hook |
 
-## Interpreting Results
+## Review Decision
 
-- **PASS (0 violations):** Architecture is clean
-- **WARNING (1-2 minor):** Fix before merge
-- **FAIL (3+ or critical):** Block the PR, fix immediately
+A nonzero checker result blocks a cross-layer change only when the reported import is introduced or exercised by the scoped main process. Fix the root dependency direction. Do not turn unrelated pre-existing findings, comments, coverage gaps, or generic cleanup into current-scope work.
