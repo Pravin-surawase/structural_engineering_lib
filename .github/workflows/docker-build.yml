@@ -20,15 +20,6 @@ on:
       - 'requirements.txt'
       - 'fastapi_app/**'
       - 'Python/structural_lib/**'
-  pull_request:
-    branches: [main]
-    paths:
-      - 'Dockerfile.fastapi'
-      - 'docker-compose*.yml'
-      - '.dockerignore'
-      - 'requirements.txt'
-      - 'fastapi_app/**'
-      - 'Python/structural_lib/**'
   workflow_dispatch:
 
 jobs:

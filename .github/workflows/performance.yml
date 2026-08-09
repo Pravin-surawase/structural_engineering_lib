@@ -24,13 +24,6 @@ on:
       - 'Python/tests/benchmarks/**'
       - '.github/workflows/performance.yml'
 
-  # Run on PRs to detect regressions
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'Python/structural_lib/**/*.py'
-      - 'Python/tests/benchmarks/**'
-
   # Weekly baseline refresh
   schedule:
     - cron: '0 4 * * 0'  # Sunday 4 AM UTC
