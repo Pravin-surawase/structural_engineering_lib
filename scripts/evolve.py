@@ -7,7 +7,7 @@ or on-demand to keep the project self-maintaining.
 
 Usage:
     python scripts/evolve.py                        # Full evolution cycle (dry-run)
-    python scripts/evolve.py --fix                  # Apply all auto-fixes + commit
+    python scripts/evolve.py --fix                  # Apply auto-fixes; Codex reviews Git changes
     python scripts/evolve.py --report               # Generate evolution report only
     python scripts/evolve.py --review weekly         # Quick weekly review
     python scripts/evolve.py --review monthly        # Comprehensive monthly review
@@ -39,7 +39,6 @@ from _lib.output import StatusLine, print_json
 VENV_PYTHON = REPO_ROOT / ".venv" / "bin" / "python"
 EVOLUTION_DIR = REPO_ROOT / "logs" / "evolution"
 FEEDBACK_DIR = REPO_ROOT / "logs" / "feedback"
-AI_COMMIT = REPO_ROOT / "scripts" / "ai_commit.sh"
 TASKS_MD = REPO_ROOT / "docs" / "TASKS.md"
 
 
@@ -84,24 +83,6 @@ def _save_evolution_report(report: dict) -> Path:
     filepath = EVOLUTION_DIR / f"evolution_{timestamp}.json"
     filepath.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     return filepath
-
-
-def _auto_commit(message: str) -> bool:
-    """Auto-commit changes via ai_commit.sh."""
-    if not AI_COMMIT.exists():
-        StatusLine.warn("ai_commit.sh not found, skipping auto-commit")
-        return False
-    try:
-        result = subprocess.run(
-            ["bash", str(AI_COMMIT), message],
-            capture_output=True,
-            text=True,
-            timeout=60,
-            cwd=str(REPO_ROOT),
-        )
-        return result.returncode == 0
-    except (subprocess.TimeoutExpired, FileNotFoundError):
-        return False
 
 
 def _append_tasks(tasks: list[str]) -> None:
@@ -398,14 +379,10 @@ def run_evolution(fix: bool = False, report_only: bool = False) -> dict:
         _append_tasks(todos)
         StatusLine.ok(f"Added {len(todos)} TODO items to TASKS.md")
 
-    # Auto-commit if fixes were applied
     if fix:
-        fixes = evolution["steps"]["health_scan"].get("fixes_applied", 0) + evolution[
-            "steps"
-        ]["sync_numbers"].get("drift_found", 0)
-        if fixes > 0:
-            StatusLine.ok(f"Auto-committing {fixes} fix(es)...")
-            _auto_commit(f"chore: evolve - auto-fix {fixes} issue(s)")
+        StatusLine.warn(
+            "Fixes were applied but not committed; Codex must review the diff"
+        )
 
     # Print summary
     _print_evolution_summary(evolution, report_path)
@@ -514,14 +491,14 @@ def main() -> int:
         epilog="""
 Examples:
   %(prog)s                         Full evolution cycle (dry-run)
-  %(prog)s --fix                   Apply fixes and commit
+  %(prog)s --fix                   Apply fixes for Codex review
   %(prog)s --review weekly         Quick weekly review
   %(prog)s --review monthly --fix  Monthly review with auto-fix
   %(prog)s --status                Last run info + recommendations
         """,
     )
     parser.add_argument(
-        "--fix", action="store_true", help="Apply auto-fixes and commit"
+        "--fix", action="store_true", help="Apply auto-fixes for Codex review"
     )
     parser.add_argument(
         "--report",

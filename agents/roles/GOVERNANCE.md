@@ -285,7 +285,6 @@ Shopify uses 75/25 (25% for technical debt). We're more generous (80/20) but sti
 **Enforcement:**
 ```bash
 # Check WIP limits before starting new work
-./scripts/check_worktree_limit.sh
 ./scripts/check_wip_limits.sh
 
 # Automated checks in pre-commit hook
@@ -639,7 +638,7 @@ GOVERNANCE: Reviews metrics → Archives doc after 7 days → Updates health rep
 ```
 Agent 8: "Commits now 90% faster (5s vs 45s)"
 GOVERNANCE: "Velocity increased from 40/day to 122/day - recommend WIP limits"
-Agent 8: Implements commit batching in ai_commit.sh
+Agent 8: Implements reviewed commit batching through native Git
 GOVERNANCE: Monitors new velocity (target: 50-75/day sustained)
 ```
 

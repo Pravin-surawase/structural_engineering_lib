@@ -80,7 +80,7 @@ Quick reference for common development tasks with step-by-step checklists.
 
 - [ ] **10. Commit:**
   ```bash
-  ./scripts/ai_commit.sh "feat(streamlit): Add PageName page"
+  # Codex reviews and commits the scoped page change.
   ```
 
 ### Page Template
@@ -317,7 +317,7 @@ class TestFeatureErrors:
 
 - [ ] **8. Commit:**
   ```bash
-  ./scripts/ai_commit.sh "feat(utils): Add UtilityName utility"
+  # Codex reviews and commits the scoped utility change.
   ```
 
 ---
@@ -330,7 +330,7 @@ class TestFeatureErrors:
 ./scripts/quick_check.sh
 
 # If passes, commit
-./scripts/ai_commit.sh "commit message"
+# Codex reviews, commits, pushes, and updates the PR.
 ```
 
 ### Manual Workflow (if quick_check unavailable)
@@ -345,7 +345,7 @@ mypy changed_files.py --ignore-missing-imports
 pytest tests/ -v
 
 # 4. Commit
-./scripts/ai_commit.sh "commit message"
+# Codex reviews, commits, pushes, and updates the PR.
 ```
 
 ---
@@ -498,7 +498,7 @@ pytest tests/ -v
 mypy file.py --ignore-missing-imports
 
 # Commit
-./scripts/ai_commit.sh "commit message"
+# Codex reviews, commits, pushes, and updates the PR.
 ```
 
 ---

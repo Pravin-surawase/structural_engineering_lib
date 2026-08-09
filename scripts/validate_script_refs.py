@@ -16,6 +16,15 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = REPO_ROOT / "scripts"
 ARCHIVE_DIR = SCRIPTS_DIR / "_archive"
+RETIRED_NAMES = {
+    "ai_commit.sh",
+    "safe_push.sh",
+    "recover_git_state.sh",
+    "finish_task_pr.sh",
+    "create_task_pr.sh",
+    "should_use_pr.sh",
+    "install_git_hooks.sh",
+}
 
 # Patterns that indicate documentation, not runtime calls
 DOC_PATTERNS = [
@@ -53,7 +62,7 @@ def get_archived_names() -> set[str]:
             active_version = SCRIPTS_DIR / f.name
             if not active_version.exists():
                 archived.add(f.name)
-    return archived
+    return archived | RETIRED_NAMES
 
 
 def is_doc_line(line: str) -> bool:

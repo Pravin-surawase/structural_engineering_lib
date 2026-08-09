@@ -101,12 +101,8 @@ The handoff must state:
 - remaining owner or qualified-engineer decisions;
 - explicit statement that software verification is not professional design approval.
 
-Commit only through:
-
-```bash
-./run.sh pr status
-./scripts/ai_commit.sh "feat(is456): <outcome>"
-```
+Return the verified, scoped diff and a suggested `feat(is456): <outcome>`
+message to Codex for Git/GitHub closeout.
 
 ## Stop Conditions
 

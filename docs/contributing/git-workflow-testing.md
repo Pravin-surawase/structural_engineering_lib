@@ -1,13 +1,16 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-09
 doc_type: guide
 complexity: intermediate
 tags: []
 ---
 
 # Git Workflow Testing Strategy
+
+> Historical test strategy for the retired wrapper layer. Do not execute these
+> commands; current enforcement is `scripts/check_codex_git_workflow.py`.
 
 **Type:** Guide
 **Audience:** Developers

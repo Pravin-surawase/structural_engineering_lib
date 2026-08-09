@@ -1,13 +1,14 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-09
 doc_type: guide
 complexity: intermediate
 tags: []
 ---
 
 # Agent 8: Mistakes Prevention Guide (Lessons Learned)
+> Historical only. Wrapper commands below are not current instructions.
 <!-- lint-ignore-git -->
 
 **Version:** 2.1 (With Historical Banner)

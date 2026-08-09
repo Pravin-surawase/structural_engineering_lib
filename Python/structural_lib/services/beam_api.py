@@ -14,11 +14,7 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any, TypeVar
 
-from structural_lib.codes.is456 import (
-    compliance,
-    serviceability,
-    slenderness,
-)
+from structural_lib.codes.is456 import compliance, serviceability, slenderness
 from structural_lib.codes.is456.beam import detailing
 from structural_lib.codes.is456.beam.shear import enhanced_shear_strength
 from structural_lib.codes.is13920 import beam as ductile
@@ -28,9 +24,7 @@ from structural_lib.core.data_types import (
     CrackWidthParams,
     DeflectionParams,
 )
-from structural_lib.core.inputs import (
-    BeamInput,
-)
+from structural_lib.core.inputs import BeamInput
 from structural_lib.insights import cost_optimization, design_suggestions
 from structural_lib.services import bbs, beam_pipeline, report
 from structural_lib.services.common_api import (
@@ -53,6 +47,31 @@ from .costing import CostProfile
 # ============================================================================
 
 _T = TypeVar("_T")
+
+
+def calculate_development_length(
+    *,
+    bar_diameter: float,
+    fck: float,
+    fy: float,
+    bar_type: str = "deformed",
+    stress_ratio: float = 0.87,
+) -> dict[str, float]:
+    """Return the beam-detailing development-length result for API consumers.
+
+    This stable service adapter preserves the transport-facing parameter names
+    and delegates all engineering arithmetic to the pure IS 456 detailing
+    module. Length is returned in mm and bond stress in N/mm2.
+    """
+    tau_bd = detailing.get_bond_stress(fck, bar_type)
+    ld_mm = detailing.calculate_development_length(
+        bar_dia=bar_diameter,
+        fck=fck,
+        fy=fy,
+        bar_type=bar_type,
+        stress_ratio=stress_ratio,
+    )
+    return {"tau_bd": tau_bd, "ld": ld_mm}
 
 
 def _resolve_deprecated_param(

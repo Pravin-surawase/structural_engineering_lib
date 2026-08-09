@@ -137,13 +137,13 @@
     },
     {
       "name": "ops",
-      "description": "Git workflow, CI/CD, Docker, environment management.",
+      "description": "CI/CD, Docker, environment diagnosis, and Git/GitHub readiness evidence.",
       "tools": ["search", "editFiles", "runInTerminal", "listFiles", "readFile"],
       "model": "Claude Opus 4.6",
-      "permission_level": "DangerFullAccess",
+      "permission_level": "WorkspaceWrite",
       "skills": ["session-management", "safe-file-ops", "quality-gate", "release-preflight", "user-acceptance-test"],
-      "scripts": ["ai_commit.sh", "should_use_pr.sh", "create_task_pr.sh", "recover_git_state.sh", "install_git_hooks.sh"],
-      "keywords": ["git", "commit", "push", "branch", "pr", "docker", "ci", "deploy", "release"],
+      "scripts": ["diagnose_ci.py", "validate_git_state.sh", "check_docker_config.py", "preflight.py"],
+      "keywords": ["git status", "branch state", "pr checks", "docker", "ci", "deploy", "release readiness"],
       "handoff_targets": ["orchestrator"],
       "can_edit_files": true,
       "file_scope": "scripts/**"

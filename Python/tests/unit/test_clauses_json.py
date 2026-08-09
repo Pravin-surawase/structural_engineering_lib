@@ -41,7 +41,7 @@ VALID_CATEGORIES = {
     "torsion",
 }
 
-REQUIRED_FIELDS = {"title", "section", "text", "category", "keywords"}
+REQUIRED_FIELDS = {"title", "section", "category", "keywords"}
 
 
 @pytest.fixture(scope="module")
@@ -78,13 +78,35 @@ def test_clauses_metadata_count_matches(clauses_data):
 
 
 def test_clauses_required_fields(clauses):
-    """Every clause has: title, section, text, category, keywords."""
+    """Every clause retains the identifier/search metadata contract."""
     missing = {}
     for clause_id, clause in clauses.items():
         absent = REQUIRED_FIELDS - set(clause.keys())
         if absent:
             missing[clause_id] = absent
     assert not missing, f"Clauses missing required fields: {missing}"
+
+
+def test_packaged_registry_excludes_protected_text_and_table_values(clauses_data):
+    """The distributable registry contains identities, not standards content."""
+    assert clauses_data["metadata"]["content_policy"] == (
+        "identifiers_and_project_metadata_only"
+    )
+    assert clauses_data["metadata"]["protected_standard_text_included"] is False
+    assert clauses_data["metadata"]["protected_table_values_included"] is False
+
+    def assert_sanitized(value):
+        if isinstance(value, dict):
+            assert "text" not in value
+            assert "data" not in value
+            assert "description" not in value
+            for nested in value.values():
+                assert_sanitized(nested)
+        elif isinstance(value, list):
+            for nested in value:
+                assert_sanitized(nested)
+
+    assert_sanitized(clauses_data)
 
 
 def test_clauses_categories_valid(clauses):

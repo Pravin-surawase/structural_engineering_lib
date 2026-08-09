@@ -58,7 +58,7 @@ This guide ensures AI agents write code that is:
 │  □ Run: mypy structural_lib/                                 │
 │  □ Update __all__ in module's __init__.py                    │
 │  □ Update api.py if adding public function                   │
-│  □ Commit with: ./scripts/ai_commit.sh "type: message"       │
+│  □ Return scoped diff and suggested commit to Codex          │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -737,7 +737,7 @@ __all__ = [
 ║  • mypy structural_lib/                                       ║
 ║                                                               ║
 ║  COMMIT                                                       ║
-║  • ./scripts/ai_commit.sh "type: description"                 ║
+║  • Codex owns the scoped Git/GitHub closeout                  ║
 ║                                                               ║
 ╚═══════════════════════════════════════════════════════════════╝
 ```

@@ -18,10 +18,10 @@ Thanks for helping improve **structural_engineering_lib**.
 ## Workflow
 
 ### For AI Agents (CRITICAL)
-- ⚠️ **ALWAYS use `./scripts/safe_push.sh "message"` for commits** to avoid git race conditions
-- Read the full guide: [docs/contributing/git-workflow-for-ai-agents.md](docs/_archive/contributing/git-workflow-for-ai-agents.md)
-- Pre-commit hooks modify files after staging — safe_push.sh handles this automatically
-- Never use `git push` directly after `git commit`
+- Codex owns branch inspection, scoped staging, conventional commits, pushes, and connected GitHub PR work.
+- Read the [canonical Codex-native workflow](docs/git-automation/git-workflow-single-source.md).
+- Preserve unrelated work and stage only intended paths.
+- Stop on unclear Git state; do not automate recovery or rewrite history.
 
 ### For Repository Maintainer (Pravin)
 - **Direct push** to main allowed for routine changes (docs, fixes, tests, minor updates)
@@ -29,11 +29,7 @@ Thanks for helping improve **structural_engineering_lib**.
 - CI runs on every push — watch for failures and fix immediately
 - Rule of thumb: <20 lines and low-risk → direct push; >20 lines or risky → use PR
 
-Helper script (optional):
-- `./scripts/safe_push.sh "message"` (recommended for all commits — prevents race conditions)
-- `./scripts/quick_push.sh "docs: update something"` (runs `./scripts/quick_check.sh`, then commits + pushes)
-- `./scripts/quick_push.sh "docs: update docs" docs` (docs-only checks)
-- `./scripts/quick_push.sh "test: update" --cov` (runs tests with coverage gate)
+Repository scripts validate the work but do not commit, push, or create PRs.
 
 ### For External Contributors (if any)
 - Fork the repository

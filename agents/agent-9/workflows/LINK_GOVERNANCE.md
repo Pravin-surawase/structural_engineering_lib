@@ -132,8 +132,9 @@ grep -rl "old-path/file.md" docs/ | xargs sed -i '' 's|old-path/file.md|new-path
 # 3. Verify no broken links
 python scripts/check_links.py
 
-# 4. Commit with Agent 8 workflow
-./scripts/ai_commit.sh "refactor(docs): Move file.md to new location"
+# 4. Stage the reviewed paths and commit natively
+git add <reviewed-paths>
+git commit -m "refactor(docs): Move file.md to new location"
 ```
 
 ---
@@ -153,7 +154,8 @@ grep -rl "old-pattern" docs/ | xargs sed -i '' 's|old-pattern|new-pattern|g'
 python scripts/check_links.py
 
 # 4. Commit
-./scripts/ai_commit.sh "fix(docs): Fix broken links (old-pattern → new-pattern)"
+git add <reviewed-paths>
+git commit -m "fix(docs): Fix broken links (old-pattern → new-pattern)"
 ```
 
 ---
@@ -193,7 +195,8 @@ python scripts/check_links.py --all
 python scripts/check_links.py
 
 # Fix and re-commit
-./scripts/ai_commit.sh "fix: resolve broken links"
+git add <reviewed-paths>
+git commit -m "fix: resolve broken links"
 ```
 
 ### False positive (planning doc flagged)

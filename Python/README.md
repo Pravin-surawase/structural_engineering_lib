@@ -7,6 +7,11 @@ IS 456 RC Beam Design Library (Python package).
 
 > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
 
+> **Supported-case boundary:** this package implements selected IS 456 workflows,
+> not the whole standard. Every output requires independent verification and
+> qualified structural-engineering review. Use official standards as the
+> authoritative source.
+
 ## New in v0.21.6
 
 - **Security hardening:** 14 cross-field plausibility validators, error sanitization
@@ -156,6 +161,9 @@ python -m structural_lib --help                                  # All options
 
 ### Beam Design & Detailing
 
+The primary combined beam route covers flexure and shear. Torsion is available
+only through the separate explicit torsion workflow.
+
 | Category | Functions | Description |
 |----------|-----------|-------------|
 | **Beam Design** | `design_beam_is456`, `design_and_detail_beam_is456`, `design_from_input` | IS 456 flexure + shear |
@@ -171,7 +179,7 @@ python -m structural_lib --help                                  # All options
 
 | Category | Functions | Description |
 |----------|-----------|-------------|
-| **Unified Design** | `design_column_is456` | Full column design orchestration |
+| **Unified Design** | `design_column_is456` | Bounded rectangular-column orchestration |
 | **Axial Capacity** | `design_column_axial_is456` | Short column axial capacity (Cl 39.3) |
 | **Uniaxial Bending** | `design_short_column_uniaxial_is456` | Short column with uniaxial moment (Cl 39.5) |
 | **Biaxial Bending** | `biaxial_bending_check_is456` | Biaxial bending check (Cl 39.6) |
@@ -190,6 +198,22 @@ python -m structural_lib --help                                  # All options
 | **One-Way Shear** | `footing_one_way_shear` | One-way shear check at d from face |
 | **Punching Shear** | `footing_punching_shear` | Two-way punching shear at d/2 perimeter |
 | **Bearing** | `check_bearing_pressure`, `bearing_stress_enhancement` | Bearing pressure & stress enhancement |
+| **Load Transfer** | `check_isolated_footing_load_transfer` | Bounded concentric bearing/dowel transfer with approved effective A1 |
+
+Combined, strap, raft and pile-cap foundations, settlement, geotechnical
+design, and lateral stability are outside these footing workflows.
+
+### Solid Slab Design (Supported Cases)
+
+| Category | Functions | Description |
+|----------|-----------|-------------|
+| **One-Way Slab** | `design_one_way_slab_is456` | Simply supported solid rectangular strip: flexure and supplied-bar checks |
+| **Two-Way Slab** | `design_two_way_slab_is456` | One interior four-edge-continuous flexure case using accepted caller-supplied coefficients |
+| **Discovery** | `get_supported_is456_capabilities` | Machine-readable supported workflows and held cases |
+
+Two-way coefficients are not built in or verified by the library. The two-way
+route requires explicit source approval and a qualified acceptance reference.
+Flat/drop/ribbed slabs, openings, irregular panels and FEM are excluded.
 
 ### IS 13920 Ductile Detailing
 
@@ -213,3 +237,8 @@ python -m structural_lib --help                                  # All options
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+Engineering-use conditions and professional responsibilities are described in
+the repository's `LICENSE_ENGINEERING.md`. The software is a design aid, not a
+substitute for official code publications, independent calculation, or
+professional approval.

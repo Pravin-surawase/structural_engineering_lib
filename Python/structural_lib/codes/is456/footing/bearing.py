@@ -21,10 +21,7 @@ from structural_lib.core.data_types import (
     FootingBearingResult,
     FootingType,
 )
-from structural_lib.core.errors import (
-    DimensionError,
-    ValidationError,
-)
+from structural_lib.core.errors import DimensionError, ValidationError
 
 
 @clause("34.1")
@@ -255,6 +252,9 @@ def check_bearing_pressure(
     column_D_mm: float,
     footing_B_mm: float,
     footing_L_mm: float,
+    *,
+    effective_supporting_area_A1_mm2: float | None = None,
+    effective_supporting_area_is_approved: bool = False,
 ) -> BearingPressureCheckResult:
     """Check bearing pressure at column-footing interface per IS 456 Cl 34.4.
 
@@ -268,6 +268,11 @@ def check_bearing_pressure(
         column_D_mm: Column depth (mm).
         footing_B_mm: Footing width (mm).
         footing_L_mm: Footing length (mm).
+        effective_supporting_area_A1_mm2: Optional approved effective supporting
+            area (mm²). When omitted, no enhancement is applied. The full
+            footing plan is never inferred as A1.
+        effective_supporting_area_is_approved: Must be true when an effective
+            A1 is supplied, confirming the required contained-frustum geometry.
 
     Returns:
         BearingPressureCheckResult with actual stress, permissible stress,
@@ -287,8 +292,8 @@ def check_bearing_pressure(
           transfer or eccentric loading at the column-footing interface.
         - Assumes column is centred on footing; edge or corner columns
           with asymmetric frustum geometry are not handled.
-        - Does not check dowel bar requirements for load transfer
-          (Cl. 34.4.1); use detailing checks separately.
+        - Does not check dowel bar requirements for load transfer; use
+          ``check_isolated_footing_load_transfer``.
     """
     # --- Input validation ---
     if Pu_kN <= 0:
@@ -327,8 +332,22 @@ def check_bearing_pressure(
     # IS 456 Cl 34.4: Loaded area A2 = column footprint
     A2_mm2 = column_b_mm * column_D_mm
 
-    # IS 456 Cl 34.4: Supporting area A1 = footing area
-    A1_mm2 = footing_B_mm * footing_L_mm
+    # The whole footing plan is not generally the effective A1.  Preserve the
+    # legacy call shape safely by applying no enhancement unless a separately
+    # established contained-frustum area is supplied and explicitly approved.
+    if effective_supporting_area_A1_mm2 is None:
+        A1_mm2 = A2_mm2
+    else:
+        if not effective_supporting_area_is_approved:
+            raise ValidationError(
+                "effective A1 must be approved; full footing plan area cannot be assumed",
+                details={
+                    "effective_supporting_area_A1_mm2": effective_supporting_area_A1_mm2,
+                    "effective_supporting_area_is_approved": False,
+                },
+                clause_ref="Cl. 34.4",
+            )
+        A1_mm2 = effective_supporting_area_A1_mm2
 
     # IS 456 Cl 34.4: Actual bearing stress = Pu / A2
     Pu_N = Pu_kN * 1e3

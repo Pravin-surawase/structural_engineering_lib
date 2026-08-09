@@ -39,6 +39,7 @@ from structural_lib.codes.is456 import (
     column,  # noqa: F401
     compliance,
     footing,  # noqa: F401
+    slab,  # noqa: F401
     slenderness,
     tables,
     traceability,
@@ -125,6 +126,8 @@ __all__ = [
     # Subpackages
     "beam",
     "column",
+    "footing",
+    "slab",
     # Modules
     "tables",
     "shear",

@@ -365,7 +365,7 @@ class TestCheckBearingPressure:
         """IS 456 Cl 34.4: Moderate load on large footing — should be safe.
         Pu=500kN, fck=25, col 300×300, footing 1500×1500.
         A2 = 90000mm², actual = 500e3/90000 = 5.556 MPa.
-        A1 = 2250000mm², √(A1/A2) = √25 = 5.0 → capped at 2.0.
+        Approved effective A1 = 360000mm², so √(A1/A2) = 2.0.
         basic = 0.45×25 = 11.25 MPa, permissible = 22.5 MPa.
         utilization = 5.556/22.5 ≈ 0.247 → SAFE.
         """
@@ -376,6 +376,8 @@ class TestCheckBearingPressure:
             column_D_mm=300,
             footing_B_mm=1500,
             footing_L_mm=1500,
+            effective_supporting_area_A1_mm2=360_000,
+            effective_supporting_area_is_approved=True,
         )
         assert isinstance(result, BearingPressureCheckResult)
         assert result.actual_stress_mpa == pytest.approx(5.556, rel=0.01)
@@ -388,7 +390,7 @@ class TestCheckBearingPressure:
         """IS 456 Cl 34.4: Very high load on small footing — should fail.
         Pu=5000kN, fck=20, col 250×250, footing 800×800.
         A2 = 62500mm², actual = 5000e3/62500 = 80.0 MPa.
-        √(A1/A2) = √(640000/62500) ≈ 3.2 → capped at 2.0.
+        Approved effective A1 = 250000mm², so √(A1/A2) = 2.0.
         basic = 0.45×20 = 9.0 MPa, permissible = 18.0 MPa.
         utilization = 80/18 ≈ 4.44 → UNSAFE.
         """
@@ -399,6 +401,8 @@ class TestCheckBearingPressure:
             column_D_mm=250,
             footing_B_mm=800,
             footing_L_mm=800,
+            effective_supporting_area_A1_mm2=250_000,
+            effective_supporting_area_is_approved=True,
         )
         assert isinstance(result, BearingPressureCheckResult)
         assert result.actual_stress_mpa == pytest.approx(80.0, rel=0.01)
@@ -414,7 +418,7 @@ class TestCheckBearingPressure:
         col_b, col_D = 400, 400
         ftg_B, ftg_L = 1200, 1200
         A2 = col_b * col_D
-        A1 = ftg_B * ftg_L
+        A1 = 4 * A2
 
         result = check_bearing_pressure(
             Pu_kN=600,
@@ -423,6 +427,8 @@ class TestCheckBearingPressure:
             column_D_mm=col_D,
             footing_B_mm=ftg_B,
             footing_L_mm=ftg_L,
+            effective_supporting_area_A1_mm2=A1,
+            effective_supporting_area_is_approved=True,
         )
         standalone = bearing_stress_enhancement(fck=25, A1_mm2=A1, A2_mm2=A2)
 
@@ -453,7 +459,7 @@ class TestCheckBearingPressure:
         """IS 456 Cl 34.4: utilization_ratio = actual_stress / permissible_stress.
         Pu=1000kN, fck=30, col 350×350, footing 1400×1400.
         A2 = 122500mm², actual = 1e6/122500 = 8.163 MPa.
-        A1 = 1960000mm², √(A1/A2) = √16 = 4.0 → capped at 2.0.
+        Approved effective A1 = 490000mm², so √(A1/A2) = 2.0.
         basic = 0.45×30 = 13.5, permissible = 27.0.
         utilization = 8.163/27.0 ≈ 0.302.
         """
@@ -464,6 +470,8 @@ class TestCheckBearingPressure:
             column_D_mm=350,
             footing_B_mm=1400,
             footing_L_mm=1400,
+            effective_supporting_area_A1_mm2=490_000,
+            effective_supporting_area_is_approved=True,
         )
         expected_actual = 1000e3 / (350 * 350)
         expected_permissible = 0.45 * 30 * 2.0
@@ -475,6 +483,30 @@ class TestCheckBearingPressure:
         )
         assert result.utilization_ratio == pytest.approx(expected_util, rel=0.001)
         assert result.is_safe is True
+
+    def test_bearing_pressure_defaults_to_no_enhancement_without_approved_a1(self):
+        result = check_bearing_pressure(
+            Pu_kN=500,
+            fck=25,
+            column_b_mm=300,
+            column_D_mm=300,
+            footing_B_mm=1500,
+            footing_L_mm=1500,
+        )
+        assert result.A1_mm2 == pytest.approx(result.A2_mm2)
+        assert result.enhancement_factor == pytest.approx(1.0)
+
+    def test_bearing_pressure_rejects_unapproved_effective_a1(self):
+        with pytest.raises(ValidationError, match="must be approved"):
+            check_bearing_pressure(
+                Pu_kN=500,
+                fck=25,
+                column_b_mm=300,
+                column_D_mm=300,
+                footing_B_mm=1500,
+                footing_L_mm=1500,
+                effective_supporting_area_A1_mm2=360_000,
+            )
 
     def test_bearing_pressure_invalid_negative_load(self):
         """Validation: Negative Pu_kN → ValidationError."""

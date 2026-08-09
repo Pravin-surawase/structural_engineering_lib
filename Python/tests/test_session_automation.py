@@ -18,6 +18,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 session = importlib.import_module("scripts.session")
+check_api = importlib.import_module("scripts.check_api")
 
 
 @pytest.mark.parametrize(
@@ -128,13 +129,48 @@ def test_launcher_port_discovery_is_listener_only():
     assert "lsof -ti :" not in commands
 
 
-def test_pr_status_is_terminal_first_and_browser_is_explicit():
+def test_run_sh_does_not_own_git_or_github_lifecycle():
     run_sh = (REPO_ROOT / "run.sh").read_text(encoding="utf-8")
-    status_body = run_sh.split("        status)", 1)[1].split("        *)", 1)[0]
+    assert "_cmd_commit" not in run_sh
+    assert "_cmd_pr" not in run_sh
+    assert "scripts/ai_commit.sh" not in run_sh
+    assert "scripts/create_task_pr.sh" not in run_sh
 
-    assert 'if [[ "${1:-}" == "--web" ]]' in status_body
-    assert status_body.count("gh pr view --web") == 1
-    assert "--json number,title,state,url" in status_body
+
+def test_retired_git_lifecycle_paths_stay_absent():
+    retired = (
+        "scripts/ai_commit.sh",
+        "scripts/safe_push.sh",
+        "scripts/recover_git_state.sh",
+        "scripts/finish_task_pr.sh",
+        "scripts/create_task_pr.sh",
+        "scripts/should_use_pr.sh",
+        "scripts/install_git_hooks.sh",
+        "scripts/git-hooks/pre-commit",
+        "scripts/git-hooks/pre-push",
+        "scripts/git-hooks/commit-msg",
+    )
+    assert not [path for path in retired if (REPO_ROOT / path).exists()]
+
+
+def test_api_endpoint_extraction_stops_before_query_template():
+    expression = (
+        "`${API_BASE_URL}/api/v1/import/dual-csv" "${queryStr ? `?${queryStr}` : ''}`"
+    )
+    assert check_api._extract_endpoint(expression) == "/api/v1/import/dual-csv"
+
+
+def test_api_route_shape_matches_dynamic_segments():
+    assert check_api._same_route_shape(
+        "/api/v1/export/{dynamic}", "/api/v1/export/{format}"
+    )
+    assert not check_api._same_route_shape(
+        "/api/v1/export/{dynamic}", "/api/v1/export/archive/{format}"
+    )
+
+
+def test_api_contract_scan_fails_closed_without_typescript(tmp_path: Path):
+    assert check_api.check_signatures(pages_dir=str(tmp_path)) == 1
 
 
 def test_usage_checkpoint_records_observable_fields_only(

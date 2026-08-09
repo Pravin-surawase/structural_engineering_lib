@@ -164,8 +164,8 @@ These checks prevent the specific failures that shipped in v0.21.0-v0.21.3:
 - [ ] Commit message follows conventional format (`type(scope): description`)
 - [ ] Commit type matches the actual change (not `docs:` for a code change)
 - [ ] No `--force` PR bypass in the commit history
-- [ ] Changes that touch production code have PR (check with `./run.sh pr status`)
-- [ ] No manual `git add/commit/push` was used (check for automation markers)
+- [ ] Changes that touch production code use a Codex-managed task branch and PR
+- [ ] The intended scope and conventional commit match the reviewed diff
 
 ### Testing
 - [ ] `.venv/bin/pytest Python/tests/ -v` passes
@@ -267,7 +267,7 @@ When @ops or any agent hands off CI fixes for review, apply extra scrutiny — C
 | Catching broad `Exception` to suppress CI | Swallows real errors |
 
 ### Handoff After CI Fix Review
-- **APPROVED** → hand off to @ops for commit: `./scripts/ai_commit.sh "fix: resolve CI failures"`
+- **APPROVED** → return the reviewed diff, evidence, and suggested commit to Codex
 - **REJECTED** → hand back to the fixing agent with specific issues to address
 
 ## Feedback to Orchestrator

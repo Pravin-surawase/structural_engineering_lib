@@ -34,9 +34,6 @@ If `./run.sh <cmd>` produces no output or fails:
 
 | run.sh Command | Direct Script Fallback | CLI Fallback |
 |----------------|----------------------|--------------|
-| `./run.sh commit "msg"` | `./scripts/ai_commit.sh "msg"` | Flags: `--preview`, `--undo`, `--signoff` |
-| `./run.sh pr status` | `./scripts/should_use_pr.sh` | `gh pr list --head $(git branch --show-current)` |
-| `./run.sh pr create ID "desc"` | `./scripts/create_task_pr.sh ID "desc"` | `gh pr create --title "..." --base main` |
 | `./run.sh test` | `.venv/bin/pytest Python/tests/ -v` | — |
 | `./run.sh check --quick` | `.venv/bin/python scripts/check_all.py --quick` | — |
 | `./run.sh find --api func` | `.venv/bin/python scripts/discover_api_signatures.py func` | — |
@@ -82,39 +79,32 @@ docker compose up --build                            # Production at :8000/docs
 docker compose -f docker-compose.dev.yml up           # Dev with hot reload
 ```
 
-### Git — NEVER Manual (ALL agents)
+### Git and GitHub — Codex Native
 ```bash
-./scripts/ai_commit.sh "type(scope): message"         # Commit + push (THE ONE RULE)
-./scripts/ai_commit.sh "msg" --preview                # Preview changes before committing
-./scripts/ai_commit.sh --undo                         # Undo last unpushed commit
-./scripts/ai_commit.sh "msg" --signoff                # DCO sign-off
-./scripts/ai_commit.sh --status                        # Check project state
-./scripts/ai_commit.sh --branch TASK-XXX "desc"        # Create task branch
-./scripts/ai_commit.sh --finish "description"          # CI poll + merge PR
-./scripts/ai_commit.sh --pr-check                     # Check if PR required
-git status --short                                    # Check state (read-only OK)
-git branch --show-current                             # Current branch (read-only OK)
-git log --oneline -10                                 # Recent history (read-only OK)
+git status --short                                    # Inspect worktree
+git branch --show-current                             # Inspect branch
+git diff --check                                      # Check patch hygiene
+git log --oneline -10                                 # Inspect recent history
 ```
+
+Codex inspects the state and diff, stages only intended paths, creates a conventional commit, pushes without rewriting history, and creates or updates the PR through the connected GitHub integration. Repository scripts must not automate that lifecycle. See `docs/git-automation/git-workflow-single-source.md`.
 
 **FORBIDDEN (causes merge conflicts, rework, and lost changes):**
 ```
-NEVER: git add / git commit / git push / git pull     ← use ai_commit.sh instead
 NEVER: rm file.md                                     ← use .venv/bin/python scripts/safe_file_delete.py
 NEVER: mv old.md new.md                               ← use .venv/bin/python scripts/safe_file_move.py
-NEVER: git commit --amend                             ← use ./scripts/ai_commit.sh --amend
 NEVER: --no-verify or --force                         ← has caused 10+ hours of rework
+NEVER: git rebase --skip                              ← can silently drop commits
 NEVER: cat > file << 'EOF' ... EOF   ← heredoc fails in agent terminals; use editFiles tool
 ```
 
-**Read-only git commands are OK:** `git status`, `git log`, `git diff`, `git branch`, `git show`.
+Routine Git writes are performed intentionally by Codex after inspecting scope. Destructive or history-rewriting actions require explicit user approval.
 
 **FORBIDDEN GitHub operations (all agents):**
 ```
 NEVER: gh pr merge --admin            ← bypasses required CI checks
 NEVER: gh issue close (without user approval) ← destructive, ask first
 NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py --dry-run
-NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
 ```
 
 Destructive GitHub operations (closing issues, deleting branches, merging PRs) require **explicit user confirmation** before execution.

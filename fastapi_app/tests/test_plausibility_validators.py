@@ -9,26 +9,23 @@ Each Pydantic model with a @model_validator is tested for:
 import pytest
 from pydantic import ValidationError
 
+from fastapi_app.models.analysis import SmartAnalysisRequest
 from fastapi_app.models.beam import (
     BeamCheckRequest,
     BeamDesignRequest,
     BeamDetailingRequest,
 )
-from fastapi_app.models.geometry import (
-    BeamGeometryRequest,
-    CrossSectionRequest,
-)
-from fastapi_app.models.analysis import SmartAnalysisRequest
 from fastapi_app.models.column import (
-    ColumnAxialRequest,
-    ColumnUniaxialRequest,
-    BiaxialCheckRequest,
-    PMInteractionRequest,
     AdditionalMomentRequest,
-    LongColumnRequest,
+    BiaxialCheckRequest,
+    ColumnAxialRequest,
     ColumnDesignRequest,
+    ColumnUniaxialRequest,
     HelicalCheckRequest,
+    LongColumnRequest,
+    PMInteractionRequest,
 )
+from fastapi_app.models.geometry import BeamGeometryRequest, CrossSectionRequest
 
 # =============================================================================
 # BeamDesignRequest — effective_depth < depth, clear_cover < depth, depth/width <= 6
@@ -444,6 +441,7 @@ class TestBiaxialCheckRequestValidator:
             fy=415,
             Asc_mm2=2400,
             d_prime_mm=50,
+            l_unsupported_mm=6000,
         )
         assert req.d_prime_mm == 50
 
@@ -578,6 +576,7 @@ class TestLongColumnRequestValidator:
             fy=415,
             Asc_mm2=2400,
             d_prime_mm=50,
+            l_unsupported_mm=6000,
         )
         assert req.d_prime_mm == 50
 
@@ -593,6 +592,7 @@ class TestLongColumnRequestValidator:
                 fy=415,
                 Asc_mm2=2400,
                 d_prime_mm=225,
+                l_unsupported_mm=6000,
             )
 
     def test_rejects_fck_below_15(self):
@@ -607,6 +607,7 @@ class TestLongColumnRequestValidator:
                 fy=415,
                 Asc_mm2=2400,
                 d_prime_mm=50,
+                l_unsupported_mm=6000,
             )
 
     def test_rejects_fy_below_250(self):
@@ -621,6 +622,7 @@ class TestLongColumnRequestValidator:
                 fy=200,
                 Asc_mm2=2400,
                 d_prime_mm=50,
+                l_unsupported_mm=6000,
             )
 
 

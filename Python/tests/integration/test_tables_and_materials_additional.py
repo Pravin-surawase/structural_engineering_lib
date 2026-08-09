@@ -510,14 +510,20 @@ def test_dxf_export_importerror_sets_ezdxf_unavailable(monkeypatch):
             raise ImportError("forced")
         return real_import(name, globals, locals, fromlist, level)
 
-    monkeypatch.setattr(builtins, "__import__", guarded_import)
+    with monkeypatch.context() as import_patch:
+        import_patch.setattr(builtins, "__import__", guarded_import)
+        sys.modules.pop("structural_lib.dxf_export", None)
+        sys.modules.pop("structural_lib.services.dxf_export", None)
+        sys.modules.pop("ezdxf", None)
 
-    sys.modules.pop("structural_lib.dxf_export", None)
+        mod = importlib.import_module("structural_lib.services.dxf_export")
+        assert mod.EZDXF_AVAILABLE is False
+
+    # Restore the real optional-dependency module so this branch test cannot
+    # poison later DXF consumers in the same full-suite process.
     sys.modules.pop("structural_lib.services.dxf_export", None)
-    sys.modules.pop("ezdxf", None)
-
-    mod = importlib.import_module("structural_lib.services.dxf_export")
-    assert mod.EZDXF_AVAILABLE is False
+    restored = importlib.import_module("structural_lib.services.dxf_export")
+    assert restored.EZDXF_AVAILABLE is True
 
 
 def test_flexure_flanged_bisection_else_branch_with_nan_mu():

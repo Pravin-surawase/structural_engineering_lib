@@ -203,12 +203,9 @@ jobs:
 
       - name: Validate maintenance scripts
         run: |
-          bash -n scripts/safe_push.sh
-          bash -n scripts/ai_commit.sh
-          bash -n scripts/create_task_pr.sh
-          bash -n scripts/finish_task_pr.sh
           bash -n scripts/validate_git_state.sh
-          bash -n scripts/recover_git_state.sh
+          bash -n scripts/agent_start.sh
+          python scripts/check_codex_git_workflow.py
           python -m pytest tests/integration/test_migration_scripts.py -q
 
   pr-gate:

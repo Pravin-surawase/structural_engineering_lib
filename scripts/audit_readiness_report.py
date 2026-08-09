@@ -515,29 +515,16 @@ def collect_security_evidence(report: AuditReport) -> None:
 def collect_change_control_evidence(report: AuditReport) -> None:
     """Collect change control evidence."""
 
-    # Check git automation
-    ai_commit = Path("scripts/ai_commit.sh")
+    # Check the Codex-native workflow contract.
+    workflow_doc = Path("docs/git-automation/git-workflow-single-source.md")
     report.add_evidence(
         EvidenceItem(
             category="ChangeControl",
-            name="Git Automation",
-            status="PASS" if ai_commit.exists() else "WARN",
+            name="Codex-Native Git Workflow",
+            status="PASS" if workflow_doc.exists() else "WARN",
             required=True,
-            source=str(ai_commit),
-            details="ai_commit.sh workflow present",
-        )
-    )
-
-    # Check PR workflow
-    pr_helper = Path("scripts/should_use_pr.sh")
-    report.add_evidence(
-        EvidenceItem(
-            category="ChangeControl",
-            name="PR Decision Automation",
-            status="PASS" if pr_helper.exists() else "WARN",
-            required=False,
-            source=str(pr_helper),
-            details="PR vs direct commit decision helper",
+            source=str(workflow_doc),
+            details="Codex owns scoped commits, pushes, and connected GitHub PR operations",
         )
     )
 
@@ -554,29 +541,6 @@ def collect_change_control_evidence(report: AuditReport) -> None:
                 "fast-checks.yml validates PRs"
                 if fast_checks.exists()
                 else "No PR validation workflow"
-            ),
-        )
-    )
-
-    # Check commit message hooks
-    hooks_path = subprocess.run(
-        ["git", "config", "--get", "core.hooksPath"],
-        capture_output=True,
-        text=True,
-    ).stdout.strip()
-    commit_hook = (
-        Path(hooks_path) / "commit-msg" if hooks_path else Path(".git/hooks/commit-msg")
-    )
-    hook_exists = commit_hook.exists()
-    report.add_evidence(
-        EvidenceItem(
-            category="ChangeControl",
-            name="Commit Message Validation",
-            status="PASS" if hook_exists else "WARN",
-            required=False,
-            source=str(commit_hook),
-            details=(
-                "commit-msg hook installed" if hook_exists else "No commit-msg hook"
             ),
         )
     )

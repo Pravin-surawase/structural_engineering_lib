@@ -135,37 +135,25 @@ Fixes #456
 Co-authored-by: Team Member <team@example.com>
 ```
 
-## Multi-Line Messages with ai_commit.sh
+## Multi-Line Messages
 
-The `ai_commit.sh` script supports multi-line messages:
+Codex creates the commit after reviewing the final scoped diff:
 
 ```bash
-# Single line (most common)
-./scripts/ai_commit.sh "feat(api): add new endpoint"
+feat(api): add new endpoint
 
-# For longer descriptions, edit commit message after:
-git commit --amend  # Opens editor for full message
+Explain motivation and compatibility effects in the body when needed.
 ```
 
 ## Enforcement
 
-### Install Commit Message Hook
-
-```bash
-./scripts/install_hooks.sh
-```
-
-This installs `.git/hooks/commit-msg` which validates:
+Codex validates that the message has:
 - Subject line length (≤72 chars)
 - Type prefix present
 - No trailing period
 - Body line length (≤72 chars)
 
-### Bypass (Not Recommended)
-
-```bash
-git commit --no-verify -m "emergency fix"
-```
+Do not bypass validation with `--no-verify`.
 
 ## Common Patterns
 

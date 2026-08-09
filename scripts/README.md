@@ -1,166 +1,67 @@
 # Scripts
 
-> **Purpose:** Automation scripts for development, CI/CD, and maintenance tasks
-> **Owner:** All contributors
-> **Last Updated:** 2026-08-07
-> **Total Scripts:** 113 active (top-level `.py`/`.sh`; validated by `check_scripts_index.py`)
+> Development, validation, discovery, release-preparation, and maintenance tools.
+> Git/GitHub lifecycle wrappers were retired on 2026-08-09; Codex owns that
+> workflow directly.
 
-## 🚀 Unified CLI (`./run.sh`)
-
-All scripts are accessible through `./run.sh` at the repo root — **use this instead of calling scripts directly:**
+## Preferred entry points
 
 ```bash
-./run.sh session start              # Begin work
-./run.sh commit "type: message"     # Commit safely
-./run.sh check --quick              # Fast validation (9 checks, <30s)
-./run.sh check                      # Full validation (29 checks, parallel)
-./run.sh check --category api       # Run one category only
-./run.sh check --json               # Machine-readable output
-./run.sh test                       # Run pytest suite
-./run.sh pr create TASK-XXX "desc"  # Start a PR
-./run.sh find "topic"               # Discover scripts by task
-./run.sh find --api func_name       # Get API param names
-./run.sh audit                      # Full readiness audit
-./run.sh generate indexes           # Regenerate folder indexes
-./run.sh session usage --summary    # Review model/reasoning/agent checkpoints
-./run.sh session end                # Wrap up
+./run.sh session start
+./run.sh check --quick
+./run.sh check
+./run.sh test
+./run.sh find "topic"
+./run.sh find --api function_name
+./run.sh audit
+./run.sh health
+./run.sh generate indexes
+./run.sh session usage --summary
+./run.sh session end
 ```
 
-Run `./run.sh --help` or `./run.sh <command> --help` for full usage.
+`run.sh` is a thin dispatcher for project validation and discovery. It does not
+stage, commit, push, create PRs, merge, or recover Git state.
 
-### Architecture
+## Codex-native Git/GitHub boundary
 
-`run.sh` is a **thin bash dispatcher** — no logic, just routes to existing scripts:
-- `./run.sh check` → `scripts/check_all.py` (parallel orchestrator, 29 checks across 8 categories)
-- `./run.sh commit` → `scripts/ai_commit.sh`
-- `./run.sh test` → `.venv/bin/pytest Python/tests/` or specialized test scripts
-- `./run.sh find` → `scripts/find_automation.py` / `scripts/discover_api_signatures.py`
+Codex must inspect the branch, worktree, and diff; stage only intended paths;
+create a conventional commit; push without rewriting history; and create or
+update the PR through the connected GitHub integration. The canonical contract
+is [git-workflow-single-source.md](../docs/git-automation/git-workflow-single-source.md).
 
-For direct fallback, match the script type: `./run.sh check --category git` routes
-to shell and Python validators; invoke shell validators with `bash` and Python
-validators with `.venv/bin/python`.
+Standard pre-commit validation may run during a Codex commit. Repository-owned
+hook enforcement and scripts that automate the Git lifecycle are prohibited.
 
-## 🤖 For AI Agents: Quick Discovery
+## Important tools
 
-**Use `index.json` for comprehensive script discovery:**
+| Area | Tool | Purpose |
+|------|------|---------|
+| Validation | `check_all.py` | Quick and full validation orchestrator |
+| API contract | `check_api.py` | Validate React call sites against FastAPI OpenAPI |
+| Docs | `check_docs.py` | Metadata and documentation checks |
+| Governance | `check_governance.py` | Folder and policy validation |
+| Git diagnosis | `validate_git_state.sh` | Read-only Git state report |
+| Discovery | `find_automation.py` | Find an existing project automation |
+| API discovery | `discover_api_signatures.py` | Exact Python API signatures |
+| Files | `safe_file_move.py` | Move files after a dry run and link scan |
+| Files | `safe_file_delete.py` | Delete files after a dry run and reference scan |
+| Indexes | `generate_enhanced_index.py` | Regenerate folder indexes |
+| Sessions | `session.py` | Bounded session lifecycle and usage checkpoints |
+| CI | `diagnose_ci.py` | Diagnose CI failures without managing Git |
+| Release | `release.py` | Authorized release preparation and validation |
 
-```python
-# In your context, load this file for full script catalog:
-# scripts/index.json - Contains all scripts organized by category
-```
+## Operating rules
 
-**Key categories in index.json:**
-- `tier0` - 5 essential scripts (use 95% of the time)
-- `categories` - All scripts grouped by purpose (15 categories)
-- `quick_reference` - Copy-paste commands
-- `workflows` - Common workflow patterns
-- `deprecated` - Scripts NOT to use
+- Run from the repository root and use `.venv/bin/python`, never bare `python`.
+- Inspect `--help` before invoking an unfamiliar tool.
+- Use `--dry-run` before supported destructive file operations.
+- Prefer targeted checks while editing and one full gate at closeout.
+- Preserve unrelated changes in a dirty worktree.
+- Stop on unclear Git state; do not automate recovery or rewrite history.
+- Release, merge, issue closure, and branch deletion require explicit user
+  confirmation.
 
-**Start here:**
-```bash
-./run.sh session start             # Start session
-./run.sh commit "message"          # Commit changes
-./scripts/recover_git_state.sh     # Fix git issues
-```
-
----
-
-## Contents
-
-### Git & Workflow Automation
-| Script | Purpose |
-|--------|---------|
-| `ai_commit.sh` | AI-agent commit workflow (primary method) |
-| `safe_push.sh` | Safe push with conflict prevention |
-| `create_task_pr.sh` | Create PR for task |
-| `finish_task_pr.sh` | Finish and merge PR |
-| `should_use_pr.sh` | Decision helper: PR vs direct commit |
-
-### Code Quality & Validation
-| Script | Purpose |
-|--------|---------|
-| `check_links.py` | Validate and fix broken internal markdown links |
-| `check_governance.py` | Unified governance — folder structure + compliance (`--structure`, `--compliance`) |
-| `check_docs.py` | Unified doc checker — metadata, frontmatter, index (`--metadata`, `--all`) |
-| `check_api.py` | Unified API checker — signatures, docs sync (`--signatures`, `--sync`) |
-| `check_doc_versions.py` | Check version drift in docs |
-| `generate_api_manifest.py` | Generate API manifest JSON |
-| `check_scripts_index.py` | Ensure scripts index is in sync |
-
-### File & Folder Management
-| Script | Purpose |
-|--------|---------|
-| `safe_file_move.py` | Move files with link updates |
-| `safe_file_delete.py` | Delete files with reference check |
-| `archive_old_files.sh` | Archive old docs (90-day policy) |
-
-### Documentation & Indexing
-| Script | Purpose |
-|--------|---------|
-| `generate_docs_index.py` | Generate docs-index.json |
-| `generate_enhanced_index.py` | Generate index.json + index.md for any folder |
-| `generate_all_indexes.sh` | Regenerate all folder indexes |
-| `check_docs.py --index` | Validate docs index structure |
-| `check_docs.py --index-links` | Validate docs index links |
-
-### Session Management
-| Script | Purpose |
-|--------|---------|
-| `session.py` | Session lifecycle plus honest model/agent usage checkpoints (`usage`) |
-| `agent_start.sh` | Agent environment setup + pre-flight checks |
-| `collect_diagnostics.py` | Bundle debug context (env, git, logs) |
-
-### Script Discovery
-| Script | Purpose |
-|--------|--------|
-| `find_automation.py` | Find the right script for a task (fuzzy search) |
-| `discover_api_signatures.py` | Look up exact API function parameters |
-| `validate_script_refs.py` | Detect stale references to archived scripts |
-
-### Release & Versioning
-| Script | Purpose |
-|--------|---------|
-| `bump_version.py` | Version management |
-| `release.py` | Unified release management (run, verify, check-docs, checklist) |
-
-## Guidelines
-
-1. **Shell scripts** (`.sh`) should be POSIX-compatible where possible
-2. **Python scripts** should use `from __future__ import annotations` for 3.9 compatibility
-3. All scripts should have `--help` option
-4. Use `--dry-run` option for destructive operations
-5. Exit codes: 0 = success, 1 = error, 2 = warning
-
-## For AI Agents
-
-When working with scripts:
-- **ALWAYS use `ai_commit.sh` or `safe_push.sh`** for git operations
-- Never run destructive scripts without `--dry-run` first
-- Check script help before using: `python script.py --help`
-- Scripts in this folder don't need README.md each - this folder README covers them
-
-### Common Workflows
-
-```bash
-# Start session
-./scripts/agent_start.sh --quick
-
-# Find the right script
-.venv/bin/python scripts/find_automation.py "your task"
-
-# Safe file operations
-.venv/bin/python scripts/safe_file_move.py old.md new.md --dry-run
-.venv/bin/python scripts/safe_file_delete.py file.md --dry-run
-
-# Validate before commit
-.venv/bin/python scripts/check_links.py
-.venv/bin/python scripts/check_governance.py
-
-# Commit changes
-./scripts/ai_commit.sh "feat: description"
-
-# PR workflow
-./scripts/create_task_pr.sh TASK-XXX "description"
-# ... make changes and commit ...
-./scripts/finish_task_pr.sh TASK-XXX "description"
-```
+The generated inventories [index.json](index.json) and [index.md](index.md) are
+the exhaustive script catalog. Regenerate them after adding, removing, or
+renaming scripts.

@@ -147,7 +147,8 @@ Tests should pass unchanged.
 
 ### Step 1.4: Commit
 ```bash
-./scripts/ai_commit.sh "refactor: migrate tables.py to codes/is456/"
+git add -- Python/structural_lib
+git commit -m "refactor: migrate tables.py to codes/is456/"
 ```
 
 ---
@@ -168,7 +169,8 @@ Tests should pass unchanged.
 
 ### Step 2.3: Commit
 ```bash
-./scripts/ai_commit.sh "refactor: migrate shear.py to codes/is456/"
+git add -- Python/structural_lib
+git commit -m "refactor: migrate shear.py to codes/is456/"
 ```
 
 ---
@@ -189,7 +191,8 @@ Tests should pass unchanged.
 
 ### Step 3.3: Commit
 ```bash
-./scripts/ai_commit.sh "refactor: migrate flexure.py to codes/is456/"
+git add -- Python/structural_lib
+git commit -m "refactor: migrate flexure.py to codes/is456/"
 ```
 
 ---
@@ -209,7 +212,8 @@ Tests should pass unchanged.
 
 ### Step 4.3: Commit
 ```bash
-./scripts/ai_commit.sh "refactor: migrate detailing.py to codes/is456/"
+git add -- Python/structural_lib
+git commit -m "refactor: migrate detailing.py to codes/is456/"
 ```
 
 ---
@@ -229,7 +233,8 @@ Tests should pass unchanged.
 
 ### Step 5.3: Commit
 ```bash
-./scripts/ai_commit.sh "refactor: migrate serviceability.py to codes/is456/"
+git add -- Python/structural_lib
+git commit -m "refactor: migrate serviceability.py to codes/is456/"
 ```
 
 ---
@@ -249,7 +254,8 @@ Tests should pass unchanged.
 
 ### Step 6.3: Commit
 ```bash
-./scripts/ai_commit.sh "refactor: migrate compliance.py to codes/is456/"
+git add -- Python/structural_lib
+git commit -m "refactor: migrate compliance.py to codes/is456/"
 ```
 
 ---
@@ -269,7 +275,8 @@ Tests should pass unchanged.
 
 ### Step 7.3: Commit
 ```bash
-./scripts/ai_commit.sh "refactor: migrate ductile.py to codes/is456/"
+git add -- Python/structural_lib
+git commit -m "refactor: migrate ductile.py to codes/is456/"
 ```
 
 ---
@@ -323,7 +330,8 @@ from structural_lib.codes.is456.detailing import *
 
 ### Step 8.5: Final Commit
 ```bash
-./scripts/ai_commit.sh "refactor: complete IS 456 module migration"
+git add -- Python/structural_lib Python/tests
+git commit -m "refactor: complete IS 456 module migration"
 ```
 
 ---

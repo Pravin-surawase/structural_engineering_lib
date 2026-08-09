@@ -1,13 +1,16 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-09
 doc_type: guide
 complexity: intermediate
 tags: []
 ---
 
 # Agent 8: GIT OPERATIONS SPECIALIST
+
+> Historical only. Codex now owns Git/GitHub closeout; repository lifecycle
+> wrappers and enforcement hooks were retired on 2026-08-09.
 
 **Agent Role:** GIT OPERATIONS & WORKFLOW ORCHESTRATOR
 **Primary Focus:** Centralized git workflow management, CI/CD monitoring, background agent coordination, conflict resolution

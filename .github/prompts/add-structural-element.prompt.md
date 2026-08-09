@@ -143,7 +143,7 @@ Add router + Pydantic models + register in main.py.
 ## Step 8: Commit
 
 ```bash
-./scripts/ai_commit.sh "feat(is456): add {{element}} design module — Cl {{clauses}}"
+# Suggest to Codex: feat(is456): add {{element}} design module — Cl {{clauses}}
 ```
 
 ## Agent Pipeline

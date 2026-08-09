@@ -1,8 +1,8 @@
 {
-  "generated": "2026-08-06",
+  "generated": "2026-08-09",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 108,
+  "count": 116,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -115,6 +115,11 @@
       "signature": "(*args, **kwds)"
     },
     {
+      "name": "IS456Capability",
+      "kind": "class",
+      "signature": "(element: 'str', public_workflows: 'tuple[str, ...]', supported_case: 'str', held_cases: 'tuple[str, ...]', qualified_review_required: 'bool') -> None"
+    },
+    {
       "name": "InputSection",
       "kind": "class",
       "signature": "(geometry: 'dict[str, Any]' = <factory>, materials: 'dict[str, Any]' = <factory>, loads: 'list[dict[str, Any]]' = <factory>, detailing: 'dict[str, Any]' = <factory>) -> None"
@@ -135,6 +140,11 @@
       "signature": "(positions_mm: 'list[float]', bmd_knm: 'list[float]', sfd_kn: 'list[float]', critical_points: 'list[CriticalPoint]', span_mm: 'float', support_condition: 'str', loads: 'list[LoadDefinition]', max_bm_knm: 'float' = 0.0, min_bm_knm: 'float' = 0.0, max_sf_kn: 'float' = 0.0, min_sf_kn: 'float' = 0.0) -> None"
     },
     {
+      "name": "LoadTransferResult",
+      "kind": "class",
+      "signature": "(source_ids: 'tuple[str, str]', source_notes: 'tuple[str, str]', clause_refs: 'tuple[str, str, str, str, str]', supported_case: 'str', exclusions: 'tuple[str, ...]', units: 'dict[str, str]', limits: 'dict[str, float | int | str]', Pu_kN: 'float', loaded_area_A2_mm2: 'float', effective_supporting_area_A1_mm2: 'float', effective_supporting_area_basis: 'str', bearing_enhancement_factor: 'float', actual_bearing_stress_nmm2: 'float', supported_concrete_bearing_capacity_kN: 'float', supporting_concrete_bearing_capacity_kN: 'float', governing_concrete_member: 'str', governing_concrete_bearing_capacity_kN: 'float', concrete_bearing_without_transfer_is_safe: 'bool', excess_force_kN: 'float', excess_transfer_steel_area_mm2: 'float', minimum_transfer_steel_area_mm2: 'float', required_transfer_steel_area_mm2: 'float', provided_transfer_steel_area_mm2: 'float', transfer_steel_capacity_kN: 'float', minimum_bar_count: 'int', provided_bar_count: 'int', maximum_dowel_diameter_mm: 'float', provided_dowel_diameter_mm: 'float', supporting_concrete_design_bond_stress_nmm2: 'float', supported_concrete_design_bond_stress_nmm2: 'float', required_dowel_development_length_into_footing_mm: 'float', required_dowel_development_length_into_supported_member_mm: 'float', available_dowel_development_length_into_footing_mm: 'float', available_dowel_development_length_into_supported_member_mm: 'float', reinforcement_area_is_safe: 'bool', bar_count_is_safe: 'bool', dowel_diameter_is_safe: 'bool', footing_development_length_is_safe: 'bool', supported_member_development_length_is_safe: 'bool', development_lengths_are_safe: 'bool', is_safe: 'bool', reasons: 'tuple[str, ...]') -> None"
+    },
+    {
       "name": "LoadType",
       "kind": "class",
       "signature": "(*args, **kwds)"
@@ -148,6 +158,11 @@
       "name": "MaterialsInput",
       "kind": "class",
       "signature": "(fck_nmm2: 'float', fy_nmm2: 'float', es_nmm2: 'float' = 200000.0) -> None"
+    },
+    {
+      "name": "OneWaySlabDesignResult",
+      "kind": "class",
+      "signature": "(flexure: 'OneWaySlabFlexureResult', detailing: 'OneWaySlabDetailingResult') -> None"
     },
     {
       "name": "ParetoCandidate",
@@ -230,6 +245,11 @@
       "signature": "(Pu_kN: 'float', b_mm: 'float', D_mm: 'float', lex_mm: 'float', ley_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'AdditionalMomentResult'"
     },
     {
+      "name": "calculate_development_length",
+      "kind": "function",
+      "signature": "(*, bar_diameter: 'float', fck: 'float', fy: 'float', bar_type: 'str' = 'deformed', stress_ratio: 'float' = 0.87) -> 'dict[str, float]'"
+    },
+    {
       "name": "calculate_effective_length_is456",
       "kind": "function",
       "signature": "(l_mm: 'float', end_condition: 'str', use_theoretical: 'bool' = False) -> 'dict[str, Any]'"
@@ -282,7 +302,7 @@
     {
       "name": "check_bearing_pressure",
       "kind": "function",
-      "signature": "(Pu_kN: 'float', fck: 'float', column_b_mm: 'float', column_D_mm: 'float', footing_B_mm: 'float', footing_L_mm: 'float') -> 'BearingPressureCheckResult'"
+      "signature": "(Pu_kN: 'float', fck: 'float', column_b_mm: 'float', column_D_mm: 'float', footing_B_mm: 'float', footing_L_mm: 'float', *, effective_supporting_area_A1_mm2: 'float | None' = None, effective_supporting_area_is_approved: 'bool' = False) -> 'BearingPressureCheckResult'"
     },
     {
       "name": "check_code",
@@ -313,6 +333,11 @@
       "name": "check_helical_reinforcement_is456",
       "kind": "function",
       "signature": "(D_mm: 'float', D_core_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, d_helix_mm: 'float' = 0.0, pitch_mm: 'float' = 0.0, Pu_axial_kN: 'float' = 0.0, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'HelicalReinforcementResult'"
+    },
+    {
+      "name": "check_isolated_footing_load_transfer",
+      "kind": "function",
+      "signature": "(*, Pu_kN: 'float', loaded_area_A2_mm2: 'float', effective_supporting_area_A1_mm2: 'float', effective_supporting_area_basis: 'str', effective_supporting_area_is_approved: 'bool', supporting_concrete_fck_nmm2: 'float', supported_concrete_fck_nmm2: 'float', steel_fy_nmm2: 'float', dowel_count: 'int', dowel_diameter_mm: 'float', column_longitudinal_bar_diameter_mm: 'float', available_dowel_development_length_into_footing_mm: 'float', available_dowel_development_length_into_supported_member_mm: 'float', dowel_bar_type: 'str' = 'deformed') -> 'LoadTransferResult'"
     },
     {
       "name": "classify_column_is456",
@@ -417,7 +442,12 @@
     {
       "name": "design_long_column_is456",
       "kind": "function",
-      "signature": "(Pu_kN: 'float', M1x_kNm: 'float', M2x_kNm: 'float', M1y_kNm: 'float', M2y_kNm: 'float', b_mm: 'float', D_mm: 'float', lex_mm: 'float', ley_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, braced: 'bool' = True, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'LongColumnResult'"
+      "signature": "(Pu_kN: 'float', M1x_kNm: 'float', M2x_kNm: 'float', M1y_kNm: 'float', M2y_kNm: 'float', b_mm: 'float', D_mm: 'float', lex_mm: 'float', ley_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, braced: 'bool' = True, *, l_unsupported_mm: 'float', fck: 'float | None' = None, fy: 'float | None' = None) -> 'LongColumnResult'"
+    },
+    {
+      "name": "design_one_way_slab_is456",
+      "kind": "function",
+      "signature": "(*, short_effective_span_mm: 'float', long_effective_span_mm: 'float', thickness_mm: 'float', d_mm: 'float', factored_area_load_kn_per_m2: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', main_bar_diameter_mm: 'float', main_bar_spacing_mm: 'float', distribution_bar_diameter_mm: 'float', distribution_bar_spacing_mm: 'float', strip_width_mm: 'float' = 1000.0) -> 'OneWaySlabDesignResult'"
     },
     {
       "name": "design_short_column_uniaxial_is456",
@@ -428,6 +458,11 @@
       "name": "design_torsion",
       "kind": "function",
       "signature": "(tu_knm: 'float', vu_kn: 'float', mu_knm: 'float', b: 'float', D: 'float', d: 'float', fck: 'float', fy: 'float', cover: 'float', stirrup_dia: 'float' = 8, pt: 'float' = 1.0) -> 'TorsionResult'"
+    },
+    {
+      "name": "design_two_way_slab_is456",
+      "kind": "function",
+      "signature": "(*, short_effective_span_mm: 'float', long_effective_span_mm: 'float', thickness_mm: 'float', alpha_x: 'float', alpha_y: 'float', coefficient_source_reference: 'str', coefficient_source_is_approved: 'bool', qualified_coefficient_acceptance_reference: 'str', qualified_coefficient_acceptance_acknowledged: 'bool', is_interior_solid_rectangular_panel: 'bool', all_four_edges_continuous: 'bool', factored_area_load_kn_per_m2: 'float', d_x_mm: 'float', d_y_mm: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', strip_width_mm: 'float' = 1000.0) -> 'TwoWaySlabFlexureResult'"
     },
     {
       "name": "detail_beam_is456",
@@ -473,6 +508,11 @@
       "name": "get_library_version",
       "kind": "function",
       "signature": "() -> 'str'"
+    },
+    {
+      "name": "get_supported_is456_capabilities",
+      "kind": "function",
+      "signature": "() -> 'tuple[IS456Capability, ...]'"
     },
     {
       "name": "load_etabs_csv",

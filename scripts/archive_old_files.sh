@@ -200,7 +200,7 @@ else
         echo "Next steps:"
         echo "  1. Regenerate indexes: .venv/bin/python scripts/generate_enhanced_index.py scripts/"
         echo "  2. Check for phantom entries: .venv/bin/python scripts/check_scripts_index.py"
-        echo "  3. Commit changes: ./scripts/ai_commit.sh \"chore: archive old files\""
+        echo "  3. Have Codex review and include the archive in the scoped commit"
     else
         echo -e "${GREEN}✅ No files archived (all up to date)${NC}"
     fi

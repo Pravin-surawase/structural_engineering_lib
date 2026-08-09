@@ -281,7 +281,6 @@ def create_backward_compat_stub(
 
     if public_names:
         # Explicit re-exports
-        names_str = ", ".join(sorted(set(public_names)))
         stub_lines.append(f"from {new_module} import (  # noqa: F401, E402")
         for name in sorted(set(public_names)):
             stub_lines.append(f"    {name},")
@@ -462,7 +461,7 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
         print("Next steps:")
         print("  1. Run tests: .venv/bin/pytest Python/tests/ -v")
         print("  2. Run FastAPI tests: .venv/bin/pytest fastapi_app/tests/ -v")
-        print("  3. Commit: ./scripts/ai_commit.sh 'refactor: move module'")
+        print("  3. Have Codex review and include the migration in the scoped commit")
     print("=" * 60)
     changed_files = set(updated_files)
     changed_files.update(

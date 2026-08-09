@@ -128,6 +128,9 @@ logs/*
 # -----------------------------------------------------------------------------
 docs/_references/downloads_snapshot/
 
+# Protected engineering sources and extracted standard data (local only)
+/private_sources/
+
 # -----------------------------------------------------------------------------
 # Private owner learning notes (local only)
 # -----------------------------------------------------------------------------

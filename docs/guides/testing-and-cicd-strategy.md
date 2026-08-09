@@ -69,7 +69,7 @@ markers =
 
 **File:** `.pre-commit-config.yaml` (269 lines)
 
-- **Formatting:** black, isort
+- **Formatting:** black; Ruff `I` rules own import sorting
 - **Linting:** ruff (7 rule categories), bandit
 - **Type checking:** mypy (strict mode)
 - **Custom hooks:** API contracts, circular imports, fragment violations, performance anti-patterns
@@ -87,8 +87,8 @@ markers =
 
 ```
 scripts/
-├── ai_commit.sh          # Safe commits
-├── safe_push.sh          # Pre-push validation
+├── check_all.py          # Local validation orchestrator
+├── check_codex_git_workflow.py  # Guard retired wrapper boundary
 ├── ci_local.sh           # Local CI simulation
 ├── check_circular_imports.py
 ├── check_type_annotations.py
@@ -100,7 +100,7 @@ scripts/
 
 **Installed:** `.git/hooks/pre-commit`, `commit-msg`
 
-- Blocks manual `git commit` (requires `ai_commit.sh`)
+- Standard pre-commit validates content; Codex owns scoped Git operations
 - Enforces automation workflow
 
 ---
@@ -129,7 +129,7 @@ lint:
 
 format:
 	black Python/
-	isort Python/
+	ruff check --select I --fix Python/
 
 coverage:
 	cd Python && pytest --cov=structural_lib --cov-report=html tests/
@@ -211,7 +211,7 @@ pytest tests/performance/ -v -m performance
 ```bash
 # Format
 black Python/
-isort Python/
+ruff check --select I --fix Python/
 
 # Lint
 ruff check --fix Python/
@@ -230,10 +230,10 @@ pre-commit run --all-files
 ./scripts/ci_local.sh
 
 # Safe commit (use instead of git commit)
-./scripts/ai_commit.sh "commit message"
+# Codex reviews and creates the conventional commit.
 
 # Safe push with validation
-./scripts/safe_push.sh
+# Codex pushes without rewriting history and updates the connected PR.
 ```
 
 ---

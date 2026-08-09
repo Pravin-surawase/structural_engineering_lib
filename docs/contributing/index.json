@@ -2,49 +2,49 @@
   "folder": "docs/contributing",
   "type": "documentation",
   "description": "Guides for developers and maintainers of the structural engineering library.",
-  "last_updated": "2026-08-07",
+  "last_updated": "2026-08-09",
   "file_count": 24,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 100,
-      "last_updated": "2026-03-26",
+      "size_lines": 99,
+      "last_updated": "2026-08-09",
       "title": "Contributing",
       "description": "Guides for developers and maintainers of the structural engineering library. | I want to... | Do this |",
-      "content_hash": "6d9231f505f6"
+      "content_hash": "2380100c5572"
     },
     {
       "name": "agent-coding-standards.md",
       "type": "documentation",
       "size_lines": 753,
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-08-09",
       "description": "This guide ensures AI agents write code that is: - ✅ Compatible with existing structural_lib code",
-      "content_hash": "1bc6d2705049"
+      "content_hash": "9ff3bdbaf9cc"
     },
     {
       "name": "agent-collaboration-framework.md",
       "type": "documentation",
-      "size_lines": 687,
-      "last_updated": "2026-08-07",
+      "size_lines": 685,
+      "last_updated": "2026-08-09",
       "description": "This project uses **agent-assisted maintenance** where specialist names describe quality roles. One parent task owns the outcome. It may use up to **2 concurrent",
-      "content_hash": "e91cb2d1027f"
+      "content_hash": "e332e2485aad"
     },
     {
       "name": "agent-onboarding-message.md",
       "type": "documentation",
       "size_lines": 54,
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-08-09",
       "description": "> **Copy-paste this exact message to any new agent starting work on this project.** ",
-      "content_hash": "eb550d58d613"
+      "content_hash": "32346386a56f"
     },
     {
       "name": "background-agent-guide.md",
       "type": "documentation",
       "size_lines": 594,
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-08-09",
       "description": "- **Background AI Agents:** Other AI assistant instances (Claude, Copilot, ChatGPT) working on assigned tasks - **MAIN Agent/User:** You (the project owner) coordinating work and handling all remote G",
-      "content_hash": "afd94726c31d"
+      "content_hash": "52410753ee6d"
     },
     {
       "name": "changelog-deprecation-template.md",
@@ -57,18 +57,18 @@
     {
       "name": "commit-message-conventions.md",
       "type": "documentation",
-      "size_lines": 217,
-      "last_updated": "2026-03-30",
+      "size_lines": 205,
+      "last_updated": "2026-08-09",
       "description": " <type>(<scope>): <subject>",
-      "content_hash": "d659ca70ed4c"
+      "content_hash": "9711fc2fd5b2"
     },
     {
       "name": "development-guide.md",
       "type": "documentation",
-      "size_lines": 1521,
-      "last_updated": "2026-04-04",
+      "size_lines": 1522,
+      "last_updated": "2026-08-09",
       "description": "1. Overview 2. Project Structure",
-      "content_hash": "addb090aa1e8"
+      "content_hash": "46aa16e2389d"
     },
     {
       "name": "doc-template.md",
@@ -89,34 +89,34 @@
     {
       "name": "end-of-session-workflow.md",
       "type": "documentation",
-      "size_lines": 499,
-      "last_updated": "2026-03-30",
+      "size_lines": 498,
+      "last_updated": "2026-08-09",
       "description": "> **Standard procedure for ALL agents when ending a session.** bash",
-      "content_hash": "6f4318c3e352"
+      "content_hash": "4fb720ae571f"
     },
     {
       "name": "git-workflow-ai-agents.md",
       "type": "documentation",
-      "size_lines": 96,
-      "last_updated": "2026-03-30",
-      "description": "Run: bash",
-      "content_hash": "22271f222eaf"
+      "size_lines": 24,
+      "last_updated": "2026-08-09",
+      "description": "The canonical workflow is git-workflow-single-source.md.",
+      "content_hash": "f91bb9c737d3"
     },
     {
       "name": "git-workflow-testing.md",
       "type": "documentation",
-      "size_lines": 343,
-      "last_updated": "2026-03-30",
-      "description": "This document explains how we test and validate our git workflow to prevent merge conflicts, rebase issues, and other common git problems. 1. **Prevent merge conflicts** through automated conflict det",
-      "content_hash": "ed12428d9ff8"
+      "size_lines": 346,
+      "last_updated": "2026-08-09",
+      "description": "> Historical test strategy for the retired wrapper layer. Do not execute these > commands; current enforcement is scripts/check_codex_git_workflow.py.",
+      "content_hash": "8e9b091fe332"
     },
     {
       "name": "github-workflow.md",
       "type": "documentation",
-      "size_lines": 296,
-      "last_updated": "2026-03-30",
-      "description": "bash ./scripts/should_use_pr.sh --explain",
-      "content_hash": "a926a9e61c43"
+      "size_lines": 55,
+      "last_updated": "2026-08-09",
+      "description": "Codex owns the repository's Git and GitHub lifecycle. The old shell wrappers that staged everything, synchronized branches, pushed, created PRs, or attempted",
+      "content_hash": "ff959d36734a"
     },
     {
       "name": "handoff.md",
@@ -130,17 +130,17 @@
       "name": "learning-paths.md",
       "type": "documentation",
       "size_lines": 99,
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-08-09",
       "description": "Pick the smallest reading path that still protects quality. Each path lists the minimum docs to read before you work. | Task type | Path | Read first |",
-      "content_hash": "fc965af8217d"
+      "content_hash": "3ab159a5ad1c"
     },
     {
       "name": "lesson-incomplete-implementation.md",
       "type": "documentation",
-      "size_lines": 372,
-      "last_updated": "2026-03-30",
-      "description": "✅ \"Background agents work on worktrees (local commits only)\" ✅ \"Automatic detection, zero configuration\"",
-      "content_hash": "a8df5c23b840"
+      "size_lines": 374,
+      "last_updated": "2026-08-09",
+      "description": "> Historical incident lesson. Wrapper commands below were retired on 2026-08-09. ✅ \"Background agents work on worktrees (local commits only)\"",
+      "content_hash": "8784afe1f209"
     },
     {
       "name": "naming-conventions.md",
@@ -154,9 +154,9 @@
       "name": "quickstart-checklist.md",
       "type": "documentation",
       "size_lines": 509,
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-08-09",
       "description": "Quick reference for common development tasks with step-by-step checklists. - [ ] **1. Create page file:** streamlit_app/pages/NN_📋_page_name.py",
-      "content_hash": "c63df90b8f0b"
+      "content_hash": "fc45765618da"
     },
     {
       "name": "repo-professionalism.md",
@@ -169,10 +169,10 @@
     {
       "name": "session-issues.md",
       "type": "documentation",
-      "size_lines": 71,
-      "last_updated": "2026-03-30",
+      "size_lines": 69,
+      "last_updated": "2026-08-09",
       "description": "Purpose: capture recurring friction points and the fixes so we do not repeat them. - Pre-commit failures (files changed by hooks after staging)",
-      "content_hash": "cc9a048c2f1a"
+      "content_hash": "22ac3fe3a061"
     },
     {
       "name": "solo-maintainer-operating-system.md",
@@ -185,20 +185,20 @@
     {
       "name": "testing-strategy.md",
       "type": "documentation",
-      "size_lines": 285,
-      "last_updated": "2026-03-30",
+      "size_lines": 283,
+      "last_updated": "2026-08-09",
       "description": "- Location: Python/tests/ - Runner: pytest",
-      "content_hash": "f27be5d75fcc"
+      "content_hash": "6f72025a7f7f"
     },
     {
       "name": "workflow-professional-review.md",
       "type": "documentation",
-      "size_lines": 458,
-      "last_updated": "2026-03-30",
-      "description": "| Feature | Status | Notes | |---------|--------|-------|",
-      "content_hash": "c90084403487"
+      "size_lines": 460,
+      "last_updated": "2026-08-09",
+      "description": "> Historical review of the retired wrapper design. It is not current guidance. | Feature | Status | Notes |",
+      "content_hash": "4871421bb24a"
     }
   ],
   "subfolders": [],
-  "content_hash": "69423c9a40f052c1"
+  "content_hash": "a1cc661b7e310854"
 }

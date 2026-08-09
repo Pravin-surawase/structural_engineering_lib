@@ -11,7 +11,7 @@ tags: []
 
 **Type:** Reference
 **Audience:** Developers
-**Status:** Production Ready
+**Status:** Development Preview — Supported Cases Only
 **Importance:** Critical
 **Document Version:** 0.21.6
 **Created:** 2025-01-01
@@ -19,7 +19,13 @@ tags: []
 
 ---
 
-**Scope:** Contract-tested public APIs for professional-grade Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI, torsion, serviceability Level A/B/C, ETABS import, column design — axial/uniaxial/biaxial/P-M curves/slender/helical/detailing/ductile). All APIs protected against accidental breaking changes.
+**Scope:** Contract-tested calculation and checking APIs with route-specific
+geometry, loading, reinforcement, and evidence boundaries. The primary combined
+beam route covers rectangular flexure and shear (plus optional serviceability),
+while torsion and other specialist beam cases remain separate utilities. Column
+interaction workflows are limited to rectangular/square sections with symmetric
+two-face reinforcement idealization. These APIs are design aids for qualified
+review, not professional approval or complete IS 456 coverage.
 
 ---
 
@@ -30,6 +36,20 @@ Machine-readable signatures live in `docs/reference/api-manifest.json`.
 ```bash
 .venv/bin/python scripts/generate_api_manifest.py
 ```
+
+The canonical public import path is `structural_lib.services.api`.
+`structural_lib.api` and selected package-root imports are compatibility paths
+that delegate to the same objects. Capability boundaries are discoverable with
+`get_supported_is456_capabilities()`.
+
+New LIB-IS456-V1 workflows include `api.check_isolated_footing_load_transfer`,
+`api.design_one_way_slab_is456`, and `api.design_two_way_slab_is456`. Their
+result/capability types are `api.LoadTransferResult`,
+`api.OneWaySlabDesignResult`, and `api.IS456Capability`; supported-case
+discovery is available through `api.get_supported_is456_capabilities`. The
+two-way route accepts only qualified, caller-supplied coefficients and explicit
+literal-true declarations for its single documented interior,
+four-edge-continuous panel case.
 
 ## 0. Unified CLI (v0.9.4+)
 
@@ -1546,8 +1566,11 @@ def calculate_longitudinal_torsion_steel(
 ) -> float        # Longitudinal steel Al (mm²)
 ```
 
-### 3A.6 Design Torsion (Main Entry Point)
-Comprehensive torsion design combining all calculations.
+### 3A.6 Bounded Torsion Utility
+
+Combines the implemented torsion calculations for the explicit inputs below.
+It is separate from `design_beam_is456`; callers must not assume the primary
+combined beam route applies torsion automatically.
 
 **Python:**
 ```python
@@ -3180,6 +3203,13 @@ api.beam_to_3d_geometry(detailing, is_seismic=False)
 
 ## 16. Column Design Module
 
+These are bounded calculation/checking utilities. Interaction functions assume
+rectangular/square compression members with symmetric equal reinforcement on
+two faces and a two-layer centroid idealization. The direct biaxial route is for
+short columns and fails closed if either axis is slender; use the long-column
+workflow with an explicit unsupported length in that case. Circular/helical
+support is not complete circular-column design.
+
 ### `classify_column_is456(le_mm, D_mm) → str`
 
 Classify column as **SHORT** or **SLENDER** based on slenderness ratio.
@@ -3423,7 +3453,7 @@ print(f"Ma_x: {result['Ma_x_kNm']:.2f} kN·m, Ma_y: {result['Ma_y_kNm']:.2f} kN�
 
 ---
 
-### `design_long_column_is456(Pu_kN, M1x_kNm, M2x_kNm, M1y_kNm, M2y_kNm, b_mm, D_mm, lex_mm, ley_mm, fck, fy, Asc_mm2, d_prime_mm, braced=True) → dict`
+### `design_long_column_is456(Pu_kN, M1x_kNm, M2x_kNm, M1y_kNm, M2y_kNm, b_mm, D_mm, lex_mm, ley_mm, fck, fy, Asc_mm2, d_prime_mm, braced=True, *, l_unsupported_mm) → dict`
 
 Design a long (slender) column per IS 456 Cl 39.7. Calculates additional moments (Cl 39.7.1), augments applied moments, and checks biaxial capacity with the Bresler formula.
 
@@ -3438,6 +3468,7 @@ Design a long (slender) column per IS 456 Cl 39.7. Calculates additional moments
 | `D_mm` | `float` | Column depth (mm). Typical: 100–2000 |
 | `lex_mm` | `float` | Effective length about x-axis (mm) |
 | `ley_mm` | `float` | Effective length about y-axis (mm) |
+| `l_unsupported_mm` | `float` | Unsupported member length (mm), required for the two-axis minimum-eccentricity envelope |
 | `fck` | `float` | Concrete strength (N/mm²). IS 456 range: 15–80 |
 | `fy` | `float` | Steel yield strength (N/mm²). IS 456 range: 250–550 |
 | `Asc_mm2` | `float` | Total longitudinal steel area (mm²), symmetrically placed |
@@ -3469,7 +3500,9 @@ print(f"Safe: {result['is_safe']}, Design Mx: {result['Mx_design_kNm']:.2f} kN·
 
 ### `check_helical_reinforcement_is456(D_mm, D_core_mm, fck, fy, d_helix_mm, pitch_mm, Pu_axial_kN) → dict`
 
-Check helical (spiral) reinforcement for circular column per IS 456 Cl 39.4. Validates pitch, bar diameter, volumetric ratio, and computes enhanced axial capacity with 1.05 factor.
+Check a supplied circular helix and apply the 1.05 multiplier to a caller-supplied
+short-axial capacity. This function does not calculate circular-column capacity
+from longitudinal reinforcement and does not compare an applied axial demand.
 
 | Param | Type | Description |
 |-------|------|-------------|
@@ -3479,9 +3512,11 @@ Check helical (spiral) reinforcement for circular column per IS 456 Cl 39.4. Val
 | `fy` | `float` | Steel yield strength (N/mm²). IS 456 range: 250–550 |
 | `d_helix_mm` | `float` | Diameter of helical bar (mm). Typical: 8–20 |
 | `pitch_mm` | `float` | Pitch of helix (mm). Must satisfy: 25mm ≤ pitch ≤ 75mm per Cl 26.5.3.2(c) |
-| `Pu_axial_kN` | `float` | Applied factored axial load (kN). Must be ≥ 0 |
+| `Pu_axial_kN` | `float` | Caller-supplied short-column axial capacity (kN); legacy parameter name |
 
-**Returns:** `dict` with keys: `is_safe`, `Pu_capacity_kN`, `rho_h`, `Ah_mm2`, `pitch_ok`, `d_helix_ok`, `utilization`, `clause_ref`, `warnings`
+**Returns:** `HelicalReinforcementResult` with helix adequacy, provided/required
+helical ratios, pitch limits, and `Pu_enhanced_kN`. It has no demand utilization
+or overall circular-column design result.
 
 **Reference:** IS 456 Cl 39.4, Cl 26.5.3.2(c)
 
@@ -3873,7 +3908,8 @@ full = api.design_and_detail_beam_is456(
 )
 ```
 
-**Use when:** You want complete beam/column design with all IS 456 checks.
+**Use when:** You want the documented combined workflow for its stated geometry,
+load, and reinforcement assumptions. It is not an all-checks or whole-code route.
 **Returns:** Typed dataclasses (`ComplianceCaseResult`, `DesignAndDetailResult`).
 
 ### Level 2: Module-Level Functions — For specific calculations

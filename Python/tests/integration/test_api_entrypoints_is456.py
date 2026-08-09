@@ -1,245 +1,126 @@
+"""Integrated public-entrypoint checks for the supported IS 456 RC core."""
+
+from __future__ import annotations
+
 import pytest
 
+import structural_lib
 from structural_lib import api
-from structural_lib.core.types import ComplianceCaseResult, ComplianceReport
+from structural_lib.services import api as services_api
+
+PUBLIC_COMPLETION_SYMBOLS = (
+    "calculate_development_length",
+    "check_anchorage_at_simple_support",
+    "check_isolated_footing_load_transfer",
+    "design_one_way_slab_is456",
+    "design_two_way_slab_is456",
+    "get_supported_is456_capabilities",
+)
 
 
-def test_design_beam_is456_requires_units_param():
-    with pytest.raises(TypeError):
-        api.design_beam_is456(
-            mu_knm=120.0,
-            vu_kn=80.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            d_mm=450.0,
-            fck_nmm2=25.0,
-            fy_nmm2=500.0,
+def test_completion_symbols_have_one_canonical_service_facade_and_compatibility_paths():
+    for name in PUBLIC_COMPLETION_SYMBOLS:
+        canonical = getattr(services_api, name)
+        assert name in services_api.__all__
+        assert getattr(api, name) is canonical
+        assert getattr(structural_lib, name) is canonical
+        assert name in structural_lib.__all__
+
+
+def test_development_length_service_adapter_matches_transport_contract():
+    result = services_api.calculate_development_length(
+        bar_diameter=16,
+        fck=25,
+        fy=500,
+        bar_type="deformed",
+    )
+
+    assert result == pytest.approx({"tau_bd": 2.24, "ld": 777.0})
+
+
+def test_one_way_public_workflow_matches_independent_packet_benchmark():
+    result = services_api.design_one_way_slab_is456(
+        short_effective_span_mm=3000,
+        long_effective_span_mm=7500,
+        thickness_mm=150,
+        d_mm=125,
+        factored_area_load_kn_per_m2=10,
+        fck_n_per_mm2=20,
+        fy_n_per_mm2=415,
+        main_bar_diameter_mm=10,
+        main_bar_spacing_mm=250,
+        distribution_bar_diameter_mm=8,
+        distribution_bar_spacing_mm=250,
+    )
+
+    assert result.flexure.factored_moment_knm == pytest.approx(11.25)
+    assert result.flexure.ast_required_mm2 == pytest.approx(260.7266304)
+    assert result.is_detailing_adequate is True
+    assert result.detailing.review_requirement.value == "qualified_review_required"
+
+
+def test_two_way_public_workflow_matches_independent_packet_benchmark():
+    result = services_api.design_two_way_slab_is456(
+        short_effective_span_mm=4000,
+        long_effective_span_mm=6000,
+        thickness_mm=180,
+        alpha_x=0.08,
+        alpha_y=0.06,
+        coefficient_source_reference="qualified-external-sheet:table-row-14",
+        coefficient_source_is_approved=True,
+        qualified_coefficient_acceptance_reference="engineer-review:two-way-panel-1",
+        qualified_coefficient_acceptance_acknowledged=True,
+        is_interior_solid_rectangular_panel=True,
+        all_four_edges_continuous=True,
+        factored_area_load_kn_per_m2=10,
+        d_x_mm=150,
+        d_y_mm=140,
+        fck_n_per_mm2=20,
+        fy_n_per_mm2=415,
+    )
+
+    assert result.x_direction.factored_moment_knm == pytest.approx(12.8)
+    assert result.y_direction.factored_moment_knm == pytest.approx(9.6)
+    assert result.x_direction.ast_required_mm2 == pytest.approx(244.7591, abs=1e-4)
+    assert result.y_direction.ast_required_mm2 == pytest.approx(195.6828, abs=1e-4)
+
+
+@pytest.mark.parametrize(
+    ("is_interior", "all_four_continuous"),
+    [(False, True), (True, False)],
+)
+def test_two_way_public_workflow_rejects_unsupported_panel_configuration(
+    is_interior, all_four_continuous
+):
+    with pytest.raises(ValueError):
+        services_api.design_two_way_slab_is456(
+            short_effective_span_mm=4000,
+            long_effective_span_mm=6000,
+            thickness_mm=180,
+            alpha_x=0.08,
+            alpha_y=0.06,
+            coefficient_source_reference="qualified-external-sheet:table-row-14",
+            coefficient_source_is_approved=True,
+            qualified_coefficient_acceptance_reference="engineer-review:two-way-panel-1",
+            qualified_coefficient_acceptance_acknowledged=True,
+            is_interior_solid_rectangular_panel=is_interior,
+            all_four_edges_continuous=all_four_continuous,
+            factored_area_load_kn_per_m2=10,
+            d_x_mm=150,
+            d_y_mm=140,
+            fck_n_per_mm2=20,
+            fy_n_per_mm2=415,
         )
 
 
-def test_design_beam_is456_rejects_unknown_units():
-    with pytest.raises(ValueError, match="Invalid units"):
-        api.design_beam_is456(
-            units="kips-in",
-            mu_knm=120.0,
-            vu_kn=80.0,
-            b_mm=300.0,
-            D_mm=500.0,
-            d_mm=450.0,
-            fck_nmm2=25.0,
-            fy_nmm2=500.0,
-        )
+def test_capability_registry_names_every_supported_core_element():
+    capabilities = services_api.get_supported_is456_capabilities()
 
-
-def test_design_beam_is456_returns_case_result_and_records_pt_assumption():
-    res = api.design_beam_is456(
-        units="IS456",
-        case_id="S1",
-        mu_knm=120.0,
-        vu_kn=80.0,
-        b_mm=300.0,
-        D_mm=500.0,
-        d_mm=450.0,
-        fck_nmm2=25.0,
-        fy_nmm2=500.0,
-        # pt_percent intentionally omitted
+    assert tuple(item.element for item in capabilities) == (
+        "beam",
+        "column",
+        "isolated_footing",
+        "solid_slab",
     )
-
-    assert isinstance(res, ComplianceCaseResult)
-    assert res.case_id == "S1"
-    assert isinstance(res.utilizations, dict)
-
-    # Deterministic behavior: if pt_percent is missing, it must be derived and recorded.
-    assert "Computed pt_percent for shear" in res.remarks
-
-
-def test_design_beam_is456_converts_vu_kn_to_tv_nmm2():
-    res = api.design_beam_is456(
-        units="IS456",
-        case_id="C-TV",
-        mu_knm=50.0,
-        vu_kn=80.0,
-        b_mm=200.0,
-        D_mm=450.0,
-        d_mm=400.0,
-        fck_nmm2=25.0,
-        fy_nmm2=500.0,
-        pt_percent=1.0,
-        asv_mm2=100.0,
-    )
-
-    assert res.shear.tau_v == pytest.approx(1.0, rel=0.0, abs=1e-6)
-
-
-def test_check_beam_is456_runs_multi_case_report():
-    cases = [
-        {"case_id": "C1", "mu_knm": 80.0, "vu_kn": 60.0},
-        {"case_id": "C2", "mu_knm": 120.0, "vu_kn": 80.0},
-    ]
-
-    report = api.check_beam_is456(
-        units="IS456",
-        cases=cases,
-        b_mm=300.0,
-        D_mm=500.0,
-        d_mm=450.0,
-        fck_nmm2=25.0,
-        fy_nmm2=500.0,
-    )
-
-    assert isinstance(report, ComplianceReport)
-    assert report.governing_case_id in {"C1", "C2"}
-    assert len(report.cases) == 2
-
-
-def test_detail_beam_is456_wraps_detailing():
-    res = api.detail_beam_is456(
-        units="IS456",
-        beam_id="B1",
-        story="S1",
-        b_mm=300.0,
-        D_mm=500.0,
-        span_mm=5000.0,
-        cover_mm=25.0,
-        fck_nmm2=25.0,
-        fy_nmm2=500.0,
-        ast_start_mm2=1200.0,
-        ast_mid_mm2=900.0,
-        ast_end_mm2=1200.0,
-    )
-
-    assert res.is_valid is True
-    assert res.remarks
-    assert len(res.top_bars) == 3
-    assert len(res.bottom_bars) == 3
-    assert len(res.stirrups) == 3
-
-
-# =============================================================================
-# Tests for design_and_detail_beam_is456 (convenience function)
-# =============================================================================
-
-
-def test_design_and_detail_beam_is456_combines_design_and_detailing():
-    """Test that the combined function produces both design and detailing."""
-    result = api.design_and_detail_beam_is456(
-        units="IS456",
-        beam_id="B1",
-        story="GF",
-        span_mm=5000.0,
-        mu_knm=150.0,
-        vu_kn=80.0,
-        b_mm=300.0,
-        D_mm=500.0,
-        fck_nmm2=25.0,
-        fy_nmm2=500.0,
-    )
-
-    # Check design result is present
-    assert result.design is not None
-    assert hasattr(result.design, "flexure")
-    assert hasattr(result.design, "shear")
-    assert result.design.flexure.Ast_required > 0
-
-    # Check detailing result is present
-    assert result.detailing is not None
-    assert len(result.detailing.top_bars) == 3
-    assert len(result.detailing.bottom_bars) == 3
-    assert len(result.detailing.stirrups) == 3
-
-    # Check combined status
-    assert result.is_ok is True
-    assert result.beam_id == "B1"
-    assert result.story == "GF"
-
-
-def test_design_and_detail_beam_is456_summary():
-    """Test that the summary method produces valid output."""
-    result = api.design_and_detail_beam_is456(
-        units="IS456",
-        beam_id="FB-101",
-        story="1F",
-        span_mm=6000.0,
-        mu_knm=200.0,
-        vu_kn=100.0,
-        b_mm=350.0,
-        D_mm=600.0,
-        fck_nmm2=30.0,
-        fy_nmm2=500.0,
-    )
-
-    summary = result.summary()
-    assert "FB-101@1F" in summary
-    assert "350×600mm" in summary
-    assert "Ast=" in summary
-
-
-def test_design_and_detail_beam_is456_to_dict():
-    """Test that to_dict produces serializable dictionary."""
-    result = api.design_and_detail_beam_is456(
-        units="IS456",
-        beam_id="B2",
-        story="GF",
-        span_mm=4000.0,
-        mu_knm=100.0,
-        vu_kn=60.0,
-        b_mm=250.0,
-        D_mm=450.0,
-        fck_nmm2=25.0,
-        fy_nmm2=500.0,
-    )
-
-    data = result.to_dict()
-    assert isinstance(data, dict)
-    assert data["beam_id"] == "B2"
-    assert data["story"] == "GF"
-    assert "design" in data
-    assert "detailing" in data
-    assert "geometry" in data
-    assert data["geometry"]["b_mm"] == 250.0
-    assert data["geometry"]["D_mm"] == 450.0
-
-
-def test_design_and_detail_beam_is456_to_json():
-    """Test that to_json produces valid JSON string."""
-    import json
-
-    result = api.design_and_detail_beam_is456(
-        units="IS456",
-        beam_id="B3",
-        story="GF",
-        span_mm=4000.0,
-        mu_knm=80.0,
-        vu_kn=50.0,
-        b_mm=230.0,
-        D_mm=400.0,
-        fck_nmm2=25.0,
-        fy_nmm2=500.0,
-    )
-
-    json_str = result.to_json()
-    assert isinstance(json_str, str)
-
-    # Should be valid JSON
-    parsed = json.loads(json_str)
-    assert parsed["beam_id"] == "B3"
-
-
-def test_design_and_detail_beam_is456_auto_calculates_effective_depth():
-    """Test that effective depth is auto-calculated when not provided."""
-    result = api.design_and_detail_beam_is456(
-        units="IS456",
-        beam_id="B4",
-        story="GF",
-        span_mm=5000.0,
-        mu_knm=120.0,
-        vu_kn=70.0,
-        b_mm=300.0,
-        D_mm=500.0,
-        cover_mm=40.0,  # d should be 500 - 40 = 460mm
-        fck_nmm2=25.0,
-        fy_nmm2=500.0,
-    )
-
-    assert result.geometry["d_mm"] == 460.0
-    assert result.is_ok is True
+    assert all(item.qualified_review_required for item in capabilities)
+    assert all(item.public_workflows for item in capabilities)

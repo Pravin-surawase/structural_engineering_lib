@@ -323,7 +323,7 @@ ls Python/structural_lib/insights/
 # 2. Log prototypes created
 # 3. Update TASKS.md with new innovation tasks
 # 4. Write next-session-brief with research continuity
-# 5. Commit: ./scripts/ai_commit.sh "research: <description>"
+# 5. Return the scoped diff and suggested commit to Codex
 ```
 
 ## Key Files to Read

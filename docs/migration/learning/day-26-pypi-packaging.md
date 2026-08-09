@@ -303,7 +303,7 @@ Key sections and what they control:
 [tool.ruff]            → Linting config (Day 25)
 [tool.mypy]            → Type checking config
 [tool.bandit]          → Security scanning
-[tool.isort]           → Import sorting
+[tool.ruff.lint]       → Linting and import sorting (`I` rules)
 ```
 
 ### Building and Installing Locally

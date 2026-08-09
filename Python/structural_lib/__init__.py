@@ -45,29 +45,22 @@ from .core.data_types import EndCondition
 from .core.models import BeamGeometry, DesignDefaults, FrameType
 
 # Import all public API functions from services.api
-from .services.api import (
-    # Audit & Verification
+from .services.api import (  # Audit & Verification; Input dataclasses; Calculation Report; Self-validation (TASK-724); Return types (for type annotations); Load Analysis; ETABS Integration; Multi-objective optimization; Torsion Design; Column Design; Serviceability; Outputs; Core design functions; Shear; Version; Smart features; Diagnostics (TASK-725); Footing Design (IS 456 Cl 34); Validation
     AuditLogEntry,
     AuditTrail,
-    # Input dataclasses
     BeamGeometryInput,
     BeamInput,
     BearingPressureCheckResult,
     BearingStressEnhancementResult,
     CalculationHash,
-    # Calculation Report
     CalculationReport,
-    # Self-validation (TASK-724)
     CheckCodeReport,
-    # Return types (for type annotations)
     ComplianceCaseResult,
     ComplianceReport,
     CostProfile,
-    # Load Analysis
     CriticalPoint,
     DesignAndDetailResult,
     DetailingConfigInput,
-    # ETABS Integration
     ETABSEnvelopeResult,
     ETABSForceRow,
     FootingBearingResult,
@@ -75,33 +68,34 @@ from .services.api import (
     FootingOneWayShearResult,
     FootingPunchingResult,
     InputSection,
+    IS456Capability,
     LoadCaseInput,
     LoadDefinition,
     LoadDiagramResult,
     LoadsInput,
+    LoadTransferResult,
     LoadType,
     MaterialsInput,
-    # Multi-objective optimization
+    OneWaySlabDesignResult,
     ParetoCandidate,
     ParetoOptimizationResult,
     ProjectInfo,
     ResultSection,
-    # Torsion Design
     TorsionResult,
     ValidationReport,
     VersionInfo,
     bearing_stress_enhancement,
-    # Column Design
     biaxial_bending_check_is456,
     build_detailing_input,
     calculate_additional_moment_is456,
+    calculate_development_length,
     calculate_effective_length_is456,
     calculate_equivalent_moment,
     calculate_equivalent_shear,
     calculate_longitudinal_torsion_steel,
     calculate_torsion_shear_stress,
     calculate_torsion_stirrup_area,
-    # Serviceability
+    check_anchorage_at_simple_support,
     check_beam_ductility,
     check_beam_is456,
     check_beam_slenderness,
@@ -112,11 +106,11 @@ from .services.api import (
     check_crack_width,
     check_deflection_span_depth,
     check_helical_reinforcement_is456,
+    check_isolated_footing_load_transfer,
     classify_column_is456,
     compute_bbs,
     compute_bmd_sfd,
     compute_critical,
-    # Outputs
     compute_detailing,
     compute_dxf,
     compute_hash,
@@ -124,41 +118,37 @@ from .services.api import (
     create_calculation_certificate,
     create_job_from_etabs,
     create_jobs_from_etabs_csv,
-    # Core design functions
     design_and_detail_beam_is456,
     design_beam_is456,
     design_column_axial_is456,
     design_column_is456,
     design_from_input,
     design_long_column_is456,
+    design_one_way_slab_is456,
     design_short_column_uniaxial_is456,
     design_torsion,
+    design_two_way_slab_is456,
     detail_beam_is456,
     detail_column_is456,
-    # Shear
     enhanced_shear_strength_is456,
     export_bbs,
     footing_flexure,
     footing_one_way_shear,
     footing_punching_shear,
     generate_calculation_report,
-    # Version
     get_library_version,
+    get_supported_is456_capabilities,
     load_etabs_csv,
     min_eccentricity_is456,
     normalize_etabs_forces,
-    # Smart features
     optimize_beam_cost,
     optimize_pareto_front,
     pm_interaction_curve_is456,
-    # Diagnostics (TASK-725)
     show_versions,
-    # Footing Design (IS 456 Cl 34)
     size_footing,
     smart_analyze_design,
     suggest_beam_design_improvements,
     validate_design_results,
-    # Validation
     validate_etabs_csv,
     validate_job_spec,
     verify_calculation,
@@ -268,6 +258,8 @@ __all__ = [
     # Outputs
     "compute_detailing",
     "build_detailing_input",
+    "calculate_development_length",
+    "check_anchorage_at_simple_support",
     "compute_bbs",
     "export_bbs",
     "compute_dxf",
@@ -357,6 +349,15 @@ __all__ = [
     "FootingFlexureResult",
     "FootingOneWayShearResult",
     "FootingPunchingResult",
+    "check_isolated_footing_load_transfer",
+    "LoadTransferResult",
+    # Solid slab design (bounded supported cases)
+    "design_one_way_slab_is456",
+    "design_two_way_slab_is456",
+    "OneWaySlabDesignResult",
+    # Capability discovery
+    "get_supported_is456_capabilities",
+    "IS456Capability",
     # Self-validation (TASK-724)
     "check_code",
     "CheckCodeReport",

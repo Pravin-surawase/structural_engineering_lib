@@ -86,5 +86,5 @@ Add the function to `services/api.py` (NOT the stub `api.py`).
 ## 8. Commit
 
 ```bash
-./scripts/ai_commit.sh "feat(is456): implement Cl {{clause_number}} — {{description}}"
+# Suggest to Codex: feat(is456): implement Cl {{clause_number}} — {{description}}
 ```

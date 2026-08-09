@@ -295,7 +295,7 @@ These are the MOST CRITICAL rules from `/development-rules` for structural-math 
 
 | Rule | Description |
 |------|-------------|
-| U-1 | NEVER commit without `./scripts/ai_commit.sh` |
+| U-1 | Leave scoped Git/GitHub closeout to Codex |
 | U-2 | ALWAYS search before creating — check hooks, routes, API functions |
 | U-7 | ALWAYS use `.venv/bin/python`, never bare `python` |
 | PY-1 | NEVER import upward across architecture layers |

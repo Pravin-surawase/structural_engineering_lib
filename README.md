@@ -45,13 +45,14 @@ Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 
 ## Features
 
-- 🏗️ **Beam Design** — Design and check RC beams to IS 456:2000 (flexure, shear, torsion)
-- 🏛️ **Column Design** — Classification, effective length (Table 28), axial capacity (Cl 39.3), uniaxial bending (Cl 39.5), P-M interaction curves, biaxial check (Cl 39.6), slender columns (Cl 39.7), helical reinforcement (Cl 39.4), detailing (Cl 26.5.3), IS 13920 Cl 7 ductile detailing
-- 🧱 **Footing Design** — Bearing pressure sizing (Cl 34.1), flexure (Cl 34.2.3), one-way shear (Cl 34.2.4), punching shear (Cl 31.6.1)
+- 🏗️ **Beam Utilities** — Rectangular flexure and shear in the primary combined route; separate bounded torsion, flanged, doubly reinforced, detailing, and serviceability utilities
+- 🏛️ **Column Utilities** — Rectangular/square, symmetric two-face interaction workflows; directional slenderness and minimum eccentricity are enforced, while helical support is an isolated reinforcement/capacity-multiplier check
+- 🧱 **Isolated Footing Utilities** — Sizing, flexure, one-way shear, punching shear, and explicit bearing/dowel transfer for concentric square/rectangular cases
+- 🧩 **Solid Slab Utilities** — Simply supported one-way design/detailing plus one accepted-coefficient interior two-way flexure case
 - 📋 **Bar Bending Schedules** — Auto-generate BBS from design results
 - 📐 **DXF Export** — CAD-ready reinforcement drawings
 - 📊 **Batch Processing** — Design hundreds of beams from CSV/JSON inputs
-- 🌐 **REST & WebSocket API** — 60 endpoints via FastAPI
+- 🌐 **REST & WebSocket API** — 62 HTTP endpoints plus WebSocket via FastAPI
 - 🎨 **3D Visualization** — Interactive rebar geometry in React Three Fiber
 - 📑 **HTML & PDF Reports** — Comprehensive design reports
 - ⚡ **CLI Pipeline** — From input to design → detail → BBS → DXF in one flow
@@ -62,15 +63,22 @@ Use it as a Python package, a CLI, a FastAPI backend, or a React app.
 
 | Metric | Value |
 |--------|-------|
-| **Python tests** | 4,200+ tests across Ubuntu, Windows, macOS |
+| **Python/FastAPI tests** | 5,605 collected tests across Ubuntu, Windows, macOS |
 | **Test matrix** | Python 3.11, 3.12 × Linux, Windows, macOS |
-| **API functions** | 68 public functions in `structural_lib.api` |
-| **REST endpoints** | 60 endpoints across 13 routers + WebSocket |
+| **API symbols** | 116 intentional public symbols in `structural_lib.api` |
+| **REST endpoints** | 62 HTTP endpoints across 14 routers + WebSocket |
 | **React hooks** | 12 hook files (20+ exported functions) for CSV, geometry, export, live design |
 | **IS 456 clauses** | Flexure (Cl 38), shear (Cl 40), torsion (Cl 41), detailing (Cl 26), serviceability (Cl 43), columns (Cl 39), footings (Cl 34) + IS 13920 ductile detailing |
 | **AI agents** | 16 VS Code Copilot agents with 10 skills |
 | **CSV column mappings** | 40+ column names auto-detected |
 | **Export formats** | BBS CSV, DXF drawings, HTML/PDF reports |
+
+Engineering support is route-specific. The primary combined beam workflow is
+rectangular flexure plus shear, with optional serviceability; it does not add
+torsion automatically. Column interaction utilities assume rectangular/square
+sections and symmetric reinforcement on two faces. Circular/helical utilities
+do not perform complete circular-column design. Results are software evidence
+for qualified-engineer review, not design approval.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -212,7 +220,9 @@ Units are explicit at the API boundary: `mm`, `kN`, `kN·m`, and `N/mm²`.
 
 ## API Surface
 
-The Python library exposes 68 public functions through `structural_lib.api`. The FastAPI backend provides 60 REST/WebSocket/SSE endpoints across 13 routers.
+The Python library exposes 116 intentional public symbols through
+`structural_lib.api`. The FastAPI backend provides 62 HTTP endpoints across 14
+routers, plus WebSocket/SSE consumers.
 
 - [Python API Reference](docs/reference/api.md)
 - [FastAPI Swagger UI](http://localhost:8000/docs) (when running locally)
@@ -245,14 +255,14 @@ structural_engineering_lib/
 
 ## Roadmap
 
-- [x] Beam flexure, shear, and torsion design (IS 456 Cl 38, 40, 41)
+- [x] Bounded beam flexure, shear, and separate torsion utilities (IS 456 Cl 38, 40, 41)
 - [x] Column classification and short-column axial capacity (IS 456 Cl 39.3)
-- [x] Column biaxial bending and P-M interaction (IS 456 Cl 39.5–39.6)
-- [x] Column slender/long column design, helical reinforcement, detailing (IS 456 Cl 39.7, 39.4, 26.5.3)
+- [x] Rectangular symmetric column biaxial bending and P-M interaction utilities (IS 456 Cl 39.5–39.6)
+- [x] Bounded long-column, helical-reinforcement, and detailing checks (IS 456 Cl 39.7, 39.4, 26.5.3)
 - [x] IS 13920 ductile detailing — beam (Cl 6) and column (Cl 7)
-- [x] Footing design — bearing, flexure, one-way shear, punching shear (IS 456 Cl 31.6, 34)
+- [x] Concentric isolated-footing utilities — bearing, transfer dowels, flexure, one-way shear, punching shear (IS 456 Cl 31.6, 34)
 - [x] PDF export, load calculator, project BOQ
-- [ ] Slab design module
+- [x] Bounded solid-slab workflows: simply supported one-way and one accepted-coefficient interior two-way flexure case
 
 See [docs/TASKS.md](docs/TASKS.md) for the full task board.
 
@@ -272,13 +282,13 @@ See [LICENSE_ENGINEERING.md](LICENSE_ENGINEERING.md) and [docs/legal/verificatio
 
 ## Contributing
 
-Contributions are welcome! This repo has strong automation around validation, task handoff, and git workflow.
+Contributions are welcome! This repo has strong automation around validation and task handoff; Codex owns Git/GitHub closeout.
 
 ```bash
 ./run.sh session start               # Begin work
 ./run.sh check --quick               # Fast validation
 ./run.sh test                        # Run test suite
-./run.sh commit "type: description"  # Safe commit + push
+# Codex reviews the diff, commits intended paths, pushes, and updates the PR.
 ```
 
 - [CONTRIBUTING.md](CONTRIBUTING.md)

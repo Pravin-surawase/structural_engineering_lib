@@ -1,13 +1,16 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-09
 doc_type: guide
 complexity: intermediate
 tags: []
 ---
 
 # Agent Automation System v1.1.0
+
+> Historical architecture. Git lifecycle wrappers described below were retired
+> in favor of the Codex-native workflow.
 
 **Status:** ✅ Production Ready (All tests passing)
 **Created:** 2026-01-08

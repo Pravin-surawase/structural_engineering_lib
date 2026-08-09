@@ -70,8 +70,7 @@ cd Python && pytest
 # 3. Format code
 python -m black .
 
-# 4. Commit using safe workflow
-./scripts/ai_commit.sh "feat: your feature description"
+# 4. Return the verified diff and suggested commit to Codex
 ```
 
 ---

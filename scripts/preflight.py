@@ -75,7 +75,7 @@ def check_uncommitted() -> None:
     rc, status = _run(["git", "status", "--porcelain"])
     if status:
         count = len(status.strip().split("\n"))
-        _warn(f"{count} uncommitted change(s)", "./run.sh commit 'type: msg'")
+        _warn(f"{count} uncommitted change(s)", "Codex must review and scope them")
     else:
         _pass("Working tree clean")
 
@@ -101,11 +101,11 @@ def check_merge_conflicts() -> None:
     """Detect unresolved merge conflicts."""
     merge_head = os.path.join(REPO_ROOT, ".git", "MERGE_HEAD")
     if os.path.exists(merge_head):
-        _fail("Unfinished merge in progress", "./scripts/recover_git_state.sh")
+        _fail("Unfinished merge in progress", "Stop and have Codex inspect git status")
         return
     rc, output = _run(["git", "diff", "--check"])
     if output and "conflict" in output.lower():
-        _fail("Merge conflicts detected", "./scripts/recover_git_state.sh")
+        _fail("Merge conflicts detected", "Stop and have Codex inspect git status")
     else:
         _pass("No merge conflicts")
 
@@ -118,7 +118,7 @@ def check_key_files() -> None:
         "Python/structural_lib/__init__.py",
         "fastapi_app/main.py",
         "react_app/package.json",
-        "scripts/ai_commit.sh",
+        "docs/git-automation/git-workflow-single-source.md",
     ]
     missing = [f for f in critical if not os.path.exists(os.path.join(REPO_ROOT, f))]
     if missing:

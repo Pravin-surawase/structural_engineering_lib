@@ -2,7 +2,7 @@
 """Scan codebase and sync stale numbers across documentation files.
 
 When to use: After adding/removing tests, endpoints, hooks, components, or scripts.
-Also runs automatically via ai_commit.sh post-commit hook (non-blocking warning).
+May be run explicitly by maintenance checks; it never commits its own changes.
 
 Scans actual code to get current counts (tests, scripts, hooks, endpoints,
 etc.) and updates documentation files that reference these numbers.

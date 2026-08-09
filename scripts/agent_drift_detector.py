@@ -28,36 +28,11 @@ from _lib.output import StatusLine, print_table
 # Each rule has: id, name, pattern, description, severity
 DRIFT_RULES = {
     "ops": {
-        "prescribed": [
-            {
-                "id": "OPS-001",
-                "pattern": r"ai_commit\.sh",
-                "name": "THE_ONE_RULE",
-                "description": "All commits via ai_commit.sh",
-            },
-        ],
+        "prescribed": [],
         "forbidden": [
             {
-                "id": "OPS-002",
-                "pattern": r"^git add",
-                "name": "NO_MANUAL_GIT",
-                "severity": "CRITICAL",
-            },
-            {
-                "id": "OPS-003",
-                "pattern": r"^git commit",
-                "name": "NO_MANUAL_GIT",
-                "severity": "CRITICAL",
-            },
-            {
-                "id": "OPS-004",
-                "pattern": r"^git push",
-                "name": "NO_MANUAL_GIT",
-                "severity": "CRITICAL",
-            },
-            {
                 "id": "OPS-005",
-                "pattern": r"--force|--no-verify",
+                "pattern": r"--force|--no-verify|rebase --skip",
                 "name": "NO_FORCE",
                 "severity": "CRITICAL",
             },
@@ -65,12 +40,6 @@ DRIFT_RULES = {
                 "id": "OPS-006",
                 "pattern": r"gh pr merge --admin",
                 "name": "NO_ADMIN_MERGE",
-                "severity": "CRITICAL",
-            },
-            {
-                "id": "OPS-007",
-                "pattern": r"GIT_HOOKS_BYPASS",
-                "name": "NO_BYPASS",
                 "severity": "CRITICAL",
             },
         ],

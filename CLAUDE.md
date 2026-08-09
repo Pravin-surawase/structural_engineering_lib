@@ -9,13 +9,13 @@ Open-source IS 456 RC beam design library. V3 stack: React 19 + R3F + Tailwind �
 - For every review finding, ask: **Would fixing this change the outcome of the main process?** If not, ignore it. If a non-essential concern needs preservation, file a follow-up bead/task only when necessary; do not expand the current scope.
 - Review only essential main-process behavior. Do not report issues about comments, edge cases, test-coverage or falsification gaps, generic hardening, or adjacent improvements. Do not add tests during review. Reject security or concurrency observations that are merely hardening and do not change the main-process outcome.
 
-## IMPORTANT: Git
+## IMPORTANT: Git and GitHub
 
-ALWAYS use `./scripts/ai_commit.sh "type: message"` for commits. NEVER use manual git add/commit/push/pull.
-Flags: `--preview`, `--undo`, `--signoff`, `--status`, `--branch TASK-XXX "desc"`, `--finish "desc"`, `--pr-check`.
-Full PR lifecycle: `--status` → `--branch` → commit → `--finish`.
-
-**PR Rule:** When `./run.sh pr status` says "PR required", you MUST use a PR. NEVER use `--force` to bypass. No exceptions.
+Follow the Codex-native workflow in `AGENTS.md` and
+`docs/git-automation/git-workflow-single-source.md`. Codex stages only intended
+paths, creates conventional commits, pushes without rewriting history, and
+creates or updates PRs through connected GitHub. Repository shell wrappers do
+not own the Git/GitHub lifecycle.
 
 **FORBIDDEN commands (all agents):**
 ```
@@ -23,16 +23,10 @@ NEVER: gh pr merge --admin            ← bypasses required CI checks
 NEVER: gh pr merge <N> --squash (with failing CI) ← fix failures first, then merge
 NEVER: gh issue close (without user approval) ← destructive, ask first
 NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py --dry-run
-NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
 NEVER: --no-verify / --force          ← breaks CI, causes rework
 NEVER: git rebase --skip              ← silently drops conflicting commits
-NEVER: git push --force-with-lease (outside --amend) ← bypasses safe_push.sh
+NEVER: git push --force-with-lease     ← rewrites shared history
 ```
-
-**When git operations fail (all agents):**
-1. Run: `./scripts/recover_git_state.sh`
-2. If that fails, report to @ops
-3. NEVER attempt manual `git rebase`, `--skip`, or `--force` push
 
 Destructive GitHub operations (closing issues, deleting branches, merging PRs) require **explicit user confirmation** before execution.
 
@@ -58,7 +52,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI.
 - **Permission Enforcement:** `scripts/tool_permissions.py` — programmatic access control
 - **Session Persistence:** `scripts/session_store.py` — JSON session state in logs/sessions/
 - **Pipeline Resume:** `scripts/pipeline_state.py` — resumable 8-step task pipeline
-- **Hooks Framework:** `scripts/hooks/` — pre/post execution hooks (pre_commit, post_commit, pre_route)
+- **Hooks Framework:** `scripts/hooks/` — non-Git execution hooks such as `pre_route`
 - **Parity Dashboard:** `scripts/parity_dashboard.py` — IS 456 clause/endpoint/test coverage
 - **Skill Tiers:** Core (always), Specialist (role-based), Experimental (explicit)
 
@@ -79,11 +73,9 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
-./run.sh commit "type: message"     # Commit safely (THE ONE RULE)
 ./run.sh check                      # Validate everything (29 checks, parallel)
 ./run.sh check --quick              # Fast validation (<30s)
-./run.sh pr create TASK-XXX "desc"  # Start a PR
-./run.sh pr finish                  # Ship the PR
+# Codex handles branch, commit, push, and PR operations directly.
 ./run.sh session end                # Validate closeout (read-only by default)
 ./run.sh find "topic"               # Find the right script
 ./run.sh find --api func_name       # Get API signatures
@@ -96,7 +88,7 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ./run.sh feedback log --agent X     # Log concrete feedback when found
 ./run.sh feedback summary           # Feedback trends & recurring issues
 ./run.sh evolve                     # Self-evolution cycle (dry-run)
-./run.sh evolve --fix               # Apply fixes + commit
+./run.sh evolve --fix               # Apply fixes for Codex review
 ./run.sh evolve --review weekly     # Weekly report-only review
 ./run.sh dev                        # Launch full dev stack (FastAPI + React)
 ./run.sh dev --docker               # Launch with Docker (needs Colima)
@@ -150,8 +142,8 @@ RIGHT: cd react_app && npm run build               ← explicit cd first
 ### run.sh Fallback Chain
 If `./run.sh` produces no output or fails, try these in order:
 1. `bash run.sh <command>` — explicit bash invocation
-2. Direct script (e.g., `./scripts/ai_commit.sh` instead of `./run.sh commit`)
-3. Direct CLI command (e.g., `gh pr create` instead of `./run.sh pr create`)
+2. Direct validation or implementation script
+3. The underlying CLI command for non-GitHub project operations
 
 See `.github/instructions/terminal-rules.instructions.md` for the full fallback table.
 
@@ -164,8 +156,7 @@ This feeds the improvement loop — recurring issues get fixed in agent instruct
 
 ```bash
 ./run.sh check --quick
-./run.sh pr status
-./run.sh commit "type(scope): completed outcome"
+# Codex stages intended paths, commits, pushes, and creates/updates the PR.
 ./run.sh session end --agent <role> # Validate; no hidden writes
 ```
 
@@ -180,13 +171,13 @@ Every coding session uses the bounded workflow below.
 2. Run `./run.sh session start` once to verify the environment.
 
 ### During Session
-- Use targeted checks while editing and one normal task commit via `./run.sh commit`.
+- Use targeted checks while editing; Codex owns the reviewed task commit and PR.
 - Track what you changed, what you decided, and what's unfinished
 
 ### Session End (REQUIRED — do NOT skip)
 1. Update `docs/TASKS.md` and `docs/planning/next-session-brief.md` only when their state changed or a durable handoff is needed.
 2. Run `./run.sh check --quick` once before commit.
-3. Run `./run.sh pr status`, then commit through `./run.sh commit`.
+3. Let Codex inspect Git/PR state, stage intended paths, commit, push, and update the PR.
 4. Run `./run.sh session end --agent <role>` to validate the clean handoff.
 5. Log feedback only when a concrete stale or missing control was found.
 

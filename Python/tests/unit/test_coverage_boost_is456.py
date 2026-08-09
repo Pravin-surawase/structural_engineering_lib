@@ -992,6 +992,7 @@ class TestLongColumnValidation:
         "fy": 415,
         "Asc_mm2": 1200,
         "d_prime_mm": 50,
+        "l_unsupported_mm": 6000,
     }
 
     def test_negative_pu_raises(self):
@@ -1182,7 +1183,7 @@ class TestBiaxialEdgeCases:
             Muy_kNm=30,
             b_mm=300,
             D_mm=400,
-            le_mm=3600,
+            le_mm=3500,
             fck=25,
             fy=415,
             Asc_mm2=1200,
@@ -1201,7 +1202,7 @@ class TestBiaxialEdgeCases:
             Muy_kNm=0,
             b_mm=300,
             D_mm=400,
-            le_mm=3600,
+            le_mm=3500,
             fck=25,
             fy=415,
             Asc_mm2=1200,
@@ -1220,7 +1221,7 @@ class TestBiaxialEdgeCases:
             Muy_kNm=30,
             b_mm=300,
             D_mm=400,
-            le_mm=3600,
+            le_mm=3500,
             fck=90,
             fy=415,
             Asc_mm2=1200,
@@ -1238,7 +1239,7 @@ class TestBiaxialEdgeCases:
             Muy_kNm=30,
             b_mm=300,
             D_mm=400,
-            le_mm=3600,
+            le_mm=3500,
             fck=25,
             fy=600,
             Asc_mm2=1200,
@@ -1256,7 +1257,7 @@ class TestBiaxialEdgeCases:
             Muy_kNm=1,
             b_mm=300,
             D_mm=400,
-            le_mm=3600,
+            le_mm=3500,
             fck=25,
             fy=415,
             Asc_mm2=2400,
@@ -2830,6 +2831,7 @@ class TestLongColumnUncoveredBranches:
         "fy": 415,
         "Asc_mm2": 1200,
         "d_prime_mm": 50,
+        "l_unsupported_mm": 6000,
     }
 
     def test_ley_excessive_slenderness_raises(self):
@@ -2886,6 +2888,7 @@ class TestLongColumnUncoveredBranches:
             fy=415,
             Asc_mm2=1200,
             d_prime_mm=50,
+            l_unsupported_mm=6000,
         )
         assert result.Mux_design_kNm > 0
         assert result.Muy_design_kNm > 0
@@ -2908,6 +2911,7 @@ class TestLongColumnUncoveredBranches:
             fy=415,
             Asc_mm2=1200,
             d_prime_mm=50,
+            l_unsupported_mm=6000,
         )
         # Should still produce a valid result (additional moment from slenderness)
         assert result.is_safe is not None
@@ -4688,9 +4692,7 @@ class TestCreateColumnDetailingValidation:
 
     def test_negative_cover_raises(self):
         """Negative cover_mm raises DimensionError (line 478)."""
-        from structural_lib.codes.is456.column.detailing import (
-            create_column_detailing,
-        )
+        from structural_lib.codes.is456.column.detailing import create_column_detailing
         from structural_lib.core.errors import DimensionError
 
         with pytest.raises(DimensionError, match="Clear cover must be >= 0"):
@@ -4706,9 +4708,7 @@ class TestCreateColumnDetailingValidation:
 
     def test_zero_num_bars_raises(self):
         """num_bars < 1 raises DimensionError (line 490)."""
-        from structural_lib.codes.is456.column.detailing import (
-            create_column_detailing,
-        )
+        from structural_lib.codes.is456.column.detailing import create_column_detailing
         from structural_lib.core.errors import DimensionError
 
         with pytest.raises(DimensionError, match="Number of bars must be >= 1"):
@@ -4724,9 +4724,7 @@ class TestCreateColumnDetailingValidation:
 
     def test_negative_num_bars_raises(self):
         """Negative num_bars raises DimensionError (line 490)."""
-        from structural_lib.codes.is456.column.detailing import (
-            create_column_detailing,
-        )
+        from structural_lib.codes.is456.column.detailing import create_column_detailing
         from structural_lib.core.errors import DimensionError
 
         with pytest.raises(DimensionError, match="Number of bars must be >= 1"):

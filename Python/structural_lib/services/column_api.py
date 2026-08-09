@@ -784,6 +784,7 @@ def design_long_column_is456(
     d_prime_mm: float = 0.0,
     braced: bool = True,
     *,
+    l_unsupported_mm: float,
     fck: float | None = None,  # Deprecated alias
     fy: float | None = None,  # Deprecated alias
 ) -> LongColumnResult:
@@ -813,6 +814,8 @@ def design_long_column_is456(
         Asc_mm2: Total longitudinal steel area (mm²), symmetrically placed.
         d_prime_mm: Cover to centroid of reinforcement (mm). Must be > 0.
         braced: If True, assumes braced frame (sway prevented). Default: True.
+        l_unsupported_mm: Unsupported member length (mm), used for the Cl. 25.4
+            minimum-eccentricity envelope about both axes.
 
     Returns:
         Dictionary with:
@@ -912,6 +915,7 @@ def design_long_column_is456(
         Asc_mm2=Asc_mm2,
         d_prime_mm=d_prime_mm,
         braced=braced,
+        l_unsupported_mm=l_unsupported_mm,
     )
 
     # Return dataclass (DictCompatMixin provides result["key"] access)
@@ -930,21 +934,12 @@ def check_helical_reinforcement_is456(
     fck: float | None = None,  # Deprecated alias
     fy: float | None = None,  # Deprecated alias
 ) -> HelicalReinforcementResult:
-    """For circular columns with helical (spiral) reinforcement, IS 456 Cl 39.4
-    provides an alternative design approach where the helically reinforced
-    core can carry significantly higher loads than a tied column.
+    """Check a supplied circular helix and multiply an existing short-column
+    axial capacity when the helix is adequate.
 
-    The pure axial capacity is given by:
-        Pu = 1.05 × (0.4·fck·Ac + 0.67·fy·Asc + ρh·fck·Ak)
-
-    where:
-    - Ac = core area within helix
-    - Asc = longitudinal steel area
-    - Ak = core area measured to outside of helix
-    - ρh = volumetric ratio of helical steel
-
-    The helix must satisfy minimum pitch and bar diameter requirements
-    per Cl 26.5.3.2(c).
+    This is not circular-column design: it has no longitudinal-reinforcement
+    input and does not compare an applied axial demand. ``Pu_axial_kN`` is a
+    legacy name for the caller-supplied short-column capacity.
 
     Args:
         D_mm: Overall column diameter (mm). Must be > 200 (typical: 200-2000).
@@ -954,17 +949,14 @@ def check_helical_reinforcement_is456(
         d_helix_mm: Diameter of helical bar (mm). Typical: 8-20.
         pitch_mm: Pitch of helix (mm). Must satisfy: 25mm ≤ pitch ≤ 75mm
             or pitch ≤ D_core/6 per Cl 26.5.3.2(c).
-        Pu_axial_kN: Applied factored axial load (kN). Must be >= 0.
+        Pu_axial_kN: Caller-supplied short-column axial capacity (kN). Must be > 0.
 
     Returns:
-        Dictionary with:
-            - is_safe (bool): True if helix satisfies IS 456 requirements
-            - Pu_capacity_kN (float): Axial capacity with helical reinforcement (kN)
-            - rho_h (float): Volumetric ratio of helical steel (dimensionless)
-            - Ah_mm2 (float): Cross-sectional area of one helix turn (mm²)
+        ``HelicalReinforcementResult`` with:
+            - is_adequate: whether ratio and pitch conditions are met
+            - Pu_enhanced_kN: 1.05 times the supplied short-column capacity
+            - helical_ratio_provided / helical_ratio_required
             - pitch_ok (bool): True if pitch meets Cl 26.5.3.2(c)
-            - d_helix_ok (bool): True if bar diameter adequate
-            - utilization (float): Pu_axial / Pu_capacity (0.0-1.0)
             - clause_ref (str): "Cl. 39.4"
             - warnings (list): Warning messages
 
@@ -987,8 +979,8 @@ def check_helical_reinforcement_is456(
         ...     pitch_mm=50.0,
         ...     Pu_axial_kN=2000.0,
         ... )
-        >>> print(f"Safe: {result['is_safe']}")
-        >>> print(f"Capacity: {result['Pu_capacity_kN']:.2f} kN")
+        >>> print(f"Helix adequate: {result['is_adequate']}")
+        >>> print(f"Enhanced capacity: {result['Pu_enhanced_kN']:.2f} kN")
 
     See Also:
         - design_column_axial_is456: Pure axial capacity check
@@ -1334,6 +1326,7 @@ def design_column_is456(
             Asc_mm2=Asc_mm2,
             d_prime_mm=d_prime_mm,
             braced=braced,
+            l_unsupported_mm=l_unsup,
         )
 
         result["checks"]["long_column"] = long_result

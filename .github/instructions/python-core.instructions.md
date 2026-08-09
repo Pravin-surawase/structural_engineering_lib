@@ -64,7 +64,7 @@ The services API currently has 68 public functions and 15 internal helpers. Key 
 ## Testing & Quality
 
 - Tests: `.venv/bin/pytest Python/tests/ -v` (85% branch coverage required)
-- Production code always requires PR: `./scripts/create_task_pr.sh TASK-XXX "desc"`
+- Production code requires a Codex-managed branch and PR through the connected GitHub integration.
 
 ## Cross-Platform File I/O
 

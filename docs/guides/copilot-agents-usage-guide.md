@@ -264,7 +264,7 @@ The orchestrator will:
 @ops create a PR for the deflection feature
 ```
 
-**It knows about:** THE ONE RULE (ai_commit.sh), PR workflow, Colima/Docker, port management, emergency recovery.
+**It knows about:** the Codex-native Git/GitHub boundary, Colima/Docker, port management, and fail-closed recovery.
 
 ---
 
@@ -466,7 +466,7 @@ You can also manually invoke agents at any point — you're not locked into the 
 
 - **Don't skip session end** — it costs 10+ hours of rework for the next session
 - **Don't guess parameter names** — use `/api-discovery` (it's `b_mm` not `width`)
-- **Don't use `git commit` manually** — always `./scripts/ai_commit.sh`
+- **Return verified scope to Codex** — Codex owns commit, push, and PR work
 - **Don't create new hooks without checking** — ask `@frontend` to search first
 - **Don't edit `Python/structural_lib/api.py`** — it's a stub, real code is in `services/api.py`
 - **Don't create `.css` files** — Tailwind only
@@ -493,8 +493,7 @@ PROMPTS:     #new-feature  #bug-fix  #code-review  #add-api-endpoint
              #file-move  #is456-verify  #context-recovery
              #master-workflow
 
-GIT:         ./scripts/ai_commit.sh "type: message"    (ALWAYS)
-PR:          ./run.sh pr status → ./run.sh pr create    (when required)
+GIT/GITHUB:  Codex reviews scope, commits, pushes, and updates the connected PR
 ```
 
 ---

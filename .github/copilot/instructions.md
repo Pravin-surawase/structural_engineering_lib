@@ -20,8 +20,7 @@
 # Agent-specific context (16 agents)
 .venv/bin/python scripts/agent_context.py backend
 
-# Commits (ALWAYS use automation)
-./scripts/ai_commit.sh "commit message"
+# Git/GitHub closeout is performed directly by Codex; see the canonical workflow.
 
 # Git pager prevention
 git --no-pager status
@@ -30,4 +29,4 @@ git log --oneline -n 10
 
 ---
 
-*Last updated: 2026-01-11 | See canonical file for all rules*
+*Last updated: 2026-08-09 | See canonical file for all rules*

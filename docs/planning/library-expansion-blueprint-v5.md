@@ -1024,7 +1024,7 @@ Every IS 456 function must pass the 9-step pipeline from `/function-quality-pipe
 6. API WIRE → @backend adds to services/api.py
 7. ENDPOINT → @api-developer creates FastAPI route
 8. DOCUMENT → @doc-master
-9. COMMIT → @ops via ai_commit.sh
+9. CLOSEOUT → Codex-managed commit, push, and connected GitHub PR update
 
 **Gates:**
 - Step 2→3: Formula approved by @structural-engineer

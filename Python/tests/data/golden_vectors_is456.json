@@ -365,7 +365,9 @@
         "column_b_mm": 400,
         "column_D_mm": 400,
         "footing_B_mm": 1500,
-        "footing_L_mm": 1500
+        "footing_L_mm": 1500,
+        "effective_supporting_area_A1_mm2": 640000,
+        "effective_supporting_area_is_approved": true
       },
       "expected": {
         "actual_stress_mpa": 7.5,
@@ -388,7 +390,9 @@
         "column_b_mm": 300,
         "column_D_mm": 300,
         "footing_B_mm": 1000,
-        "footing_L_mm": 1000
+        "footing_L_mm": 1000,
+        "effective_supporting_area_A1_mm2": 360000,
+        "effective_supporting_area_is_approved": true
       },
       "expected": {
         "actual_stress_mpa": 22.22222222222222,

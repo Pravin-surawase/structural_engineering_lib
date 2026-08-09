@@ -15,7 +15,7 @@
 #   reviewer, tester, doc-master, ops, governance, ui-designer
 #
 # This script handles (all-in-one):
-#   1. Git hooks + pager config (prevents terminal lock)
+#   1. Codex-native Git mode + pager config
 #   2. Environment setup (venv, dependencies)
 #   3. Pre-flight checks (git state, imports)
 #   4. Session start via session.py
@@ -99,16 +99,15 @@ echo -e "${BOLD}║           🤖 Agent Start - Unified Onboarding v3.0        
 echo -e "${BOLD}╚════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
-# Step 0: Install Git Hooks (ensures enforcement is active)
-echo -e "${BLUE}[0/6]${NC} Installing git hooks (enforcement)..."
-if [ -f "$SCRIPT_DIR/install_git_hooks.sh" ]; then
-    "$SCRIPT_DIR/install_git_hooks.sh" > /dev/null 2>&1 && {
-        echo -e "  ${GREEN}✓${NC} Git hooks installed (manual git blocked)"
-    } || {
-        echo -e "  ${YELLOW}⚠${NC} Git hooks installation had warnings"
-    }
+# Step 0: Confirm the retired wrapper-enforcement hook path is not active.
+echo -e "${BLUE}[0/6]${NC} Checking Codex-native Git mode..."
+HOOKS_PATH=$(git config --get core.hooksPath 2>/dev/null || true)
+if [[ "$HOOKS_PATH" == "scripts/git-hooks" || "$HOOKS_PATH" == */scripts/git-hooks ]]; then
+    echo -e "  ${RED}✗${NC} Retired wrapper hooks are still configured."
+    echo -e "  ${YELLOW}→${NC} Remove the local override: git config --unset core.hooksPath"
+    exit 1
 else
-    echo -e "  ${YELLOW}⚠${NC} install_git_hooks.sh not found"
+    echo -e "  ${GREEN}✓${NC} Repository Git wrapper enforcement is disabled"
 fi
 
 # Step 1: Git Pager Configuration (inline — copilot_setup.sh was consolidated here)
@@ -272,9 +271,7 @@ if [ -n "$WORKTREE" ]; then
     echo -e "${BOLD}🌳 Worktree Mode: $WORKTREE${NC}"
     echo ""
     echo "  Your changes are isolated in this worktree."
-    echo "  When done, submit work:"
-    echo "    cd $PROJECT_ROOT"
-    echo "    ./scripts/ai_commit.sh \"feat: description\""
+    echo "  When done, return to the main Codex task for diff review and integration."
     echo ""
 fi
 
@@ -285,13 +282,12 @@ echo "  • docs/planning/next-session-brief.md (last session handoff)"
 echo "  • .github/copilot-instructions.md (all rules)"
 echo ""
 
-echo -e "${BOLD}⚡ THE ONE RULE${NC}"
-echo -e "  ${RED}NEVER use manual git commands!${NC}"
-echo "  ALWAYS use: ./scripts/ai_commit.sh \"message\""
+echo -e "${BOLD}Git and GitHub${NC}"
+echo "  Codex reviews the diff, commits and pushes intended files, and manages the PR."
+echo "  Canonical workflow: docs/git-automation/git-workflow-single-source.md"
 echo ""
 
 echo -e "${BOLD}🔍 Key Commands${NC}"
-echo "  ./scripts/ai_commit.sh \"message\"                        # Commit (THE ONE RULE)"
 echo "  .venv/bin/python scripts/agent_context.py <agent>       # Agent-specific context"
 echo "  .venv/bin/python scripts/find_automation.py \"task\"      # Find the right script"
 echo "  .venv/bin/python scripts/discover_api_signatures.py fn  # API param names"

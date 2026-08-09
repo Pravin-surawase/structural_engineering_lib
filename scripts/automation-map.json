@@ -1,8 +1,8 @@
 {
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
-  "_updated": "2026-08-07",
+  "_updated": "2026-08-09",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "113/113 scripts mapped",
+  "_coverage": "106/106 scripts mapped",
   "tasks": {
     "choose codex model": {
       "group": "Agent Infrastructure",
@@ -55,25 +55,6 @@
         "--local --fix": "Auto-fix formatting and lint issues",
         "--last": "Last CI run on current branch"
       }
-    },
-    "commit code": {
-      "group": "Git",
-      "script": "./scripts/ai_commit.sh \"message\"",
-      "description": "Stage, commit, and push with all safety checks",
-      "context_docs": [
-        ".github/copilot-instructions.md",
-        "docs/git-automation/README.md"
-      ],
-      "never_use": [
-        "git add",
-        "git commit",
-        "git push"
-      ]
-    },
-    "push code": {
-      "group": "Git",
-      "script": "./scripts/safe_push.sh \"message\"",
-      "description": "Conflict-minimized push with parallel fetch, amend detection, and sync"
     },
     "move file": {
       "group": "Docs",
@@ -210,26 +191,6 @@
       "script": "./scripts/validate_git_state.sh",
       "description": "Validate git state before any git operation"
     },
-    "recover git": {
-      "group": "Git",
-      "script": "./scripts/recover_git_state.sh",
-      "description": "Fix common git issues automatically (merge conflicts, detached HEAD, stale locks)"
-    },
-    "decide pr vs direct": {
-      "group": "Git",
-      "script": "./scripts/should_use_pr.sh --explain",
-      "description": "Analyze staged changes and recommend PR vs direct commit"
-    },
-    "create pr branch": {
-      "group": "Git",
-      "script": "./scripts/create_task_pr.sh TASK-XXX \"description\"",
-      "description": "Start PR workflow — create task branch and initial commit"
-    },
-    "finish pr": {
-      "group": "Git",
-      "script": "./scripts/finish_task_pr.sh TASK-XXX \"description\"",
-      "description": "Submit PR and trigger merge"
-    },
     "check api signatures": {
       "group": "Discovery",
       "script": ".venv/bin/python scripts/check_api.py --all",
@@ -258,10 +219,10 @@
       "script": ".venv/bin/python scripts/check_architecture_boundaries.py",
       "description": "Enforce 4-layer architecture — core cannot import services/UI"
     },
-    "check git script budget": {
+    "check codex git workflow": {
       "group": "Quality",
-      "script": ".venv/bin/python scripts/check_git_script_budget.py",
-      "description": "Check that git automation scripts stay within line budget (2500 total, 700 per script)"
+      "script": ".venv/bin/python scripts/check_codex_git_workflow.py",
+      "description": "Ensure retired Git lifecycle wrappers and enforcement hooks stay removed"
     },
     "check element completeness": {
       "group": "Quality",
@@ -570,11 +531,6 @@
       "group": "Infrastructure",
       "script": "./scripts/collect_metrics.sh",
       "description": "Collect project metrics — test counts, coverage, complexity, sizes"
-    },
-    "install git hooks": {
-      "group": "Git",
-      "script": "./scripts/install_git_hooks.sh",
-      "description": "Install versioned git hooks via core.hooksPath"
     },
     "pre commit check": {
       "group": "Git",
@@ -903,7 +859,6 @@
       "cleanup stale branches",
       "collect diagnostics",
       "collect metrics",
-      "install git hooks",
       "pre commit check",
       "local ci",
       "repo health check",

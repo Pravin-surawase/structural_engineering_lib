@@ -20,8 +20,8 @@ if [ -f .git/MERGE_HEAD ]; then
     echo "  3. Complete the merge: git commit --no-edit"
     echo "  4. Push: git push"
     echo ""
-    echo "Or use the safe push script:"
-    echo "  ./scripts/safe_push.sh (it will complete the merge automatically)"
+    echo "Do not run an automated recovery script. Have Codex inspect the exact"
+    echo "state and choose a non-destructive recovery path."
     echo ""
     exit 1
 fi

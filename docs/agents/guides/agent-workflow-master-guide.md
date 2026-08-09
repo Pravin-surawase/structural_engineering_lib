@@ -1,13 +1,14 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-09
 doc_type: guide
 complexity: intermediate
 tags: []
 ---
 
 # Agent Workflow Master Guide
+> Historical workflow. Use the current `AGENTS.md` and Codex-native Git workflow.
 **Version:** 2.2.0
 **Last Updated:** 2026-01-13
 **Status:** ✅ Production Ready

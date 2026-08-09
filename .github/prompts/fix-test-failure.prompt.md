@@ -67,5 +67,5 @@ cd react_app && npx vitest run
 ## 6. Commit
 
 ```bash
-./scripts/ai_commit.sh "fix: resolve {{test_name}} failure — [brief cause]"
+# Suggest to Codex: fix: resolve {{test_name}} failure — [brief cause]
 ```

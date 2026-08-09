@@ -87,7 +87,7 @@ describe('useBatchDesign', () => {
     });
 
     expect(MockEventSource.instances).toHaveLength(1);
-    expect(MockEventSource.instances[0].url).toContain('/api/v1/stream/batch-design');
+    expect(MockEventSource.instances[0].url).toContain('/stream/batch-design');
     expect(result.current.status).toBe('running');
     expect(result.current.progress.total).toBe(2);
   });

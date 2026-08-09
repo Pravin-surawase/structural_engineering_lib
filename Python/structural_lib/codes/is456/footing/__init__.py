@@ -14,6 +14,7 @@ Created during Phase 3 footing design (TASK-650).
 from structural_lib.codes.is456.footing import (
     bearing,
     flexure,
+    load_transfer,
     one_way_shear,
     punching_shear,
 )
@@ -23,12 +24,17 @@ from structural_lib.codes.is456.footing.bearing import (
     size_footing,
 )
 from structural_lib.codes.is456.footing.flexure import footing_flexure
+from structural_lib.codes.is456.footing.load_transfer import (
+    LoadTransferResult,
+    check_isolated_footing_load_transfer,
+)
 from structural_lib.codes.is456.footing.one_way_shear import footing_one_way_shear
 from structural_lib.codes.is456.footing.punching_shear import footing_punching_shear
 
 __all__ = [
     "bearing",
     "flexure",
+    "load_transfer",
     "one_way_shear",
     "punching_shear",
     "size_footing",
@@ -37,4 +43,6 @@ __all__ = [
     "footing_flexure",
     "footing_one_way_shear",
     "footing_punching_shear",
+    "LoadTransferResult",
+    "check_isolated_footing_load_transfer",
 ]

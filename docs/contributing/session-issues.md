@@ -18,17 +18,15 @@ Purpose: capture recurring friction points and the fixes so we do not repeat the
 **Run `./scripts/agent_mistakes_report.sh` at the start of each session** to see:
 - Pre-commit failures (files changed by hooks after staging)
 - Missing commit messages (empty or placeholder messages)
-- Policy blocks (manual git blocked by hooks)
+- Historical Git-wrapper failures (when present in old logs)
 
 **What to do with this data:**
 1. **High pre-commit failures?** → Run `black` and `ruff` before committing
-2. **Policy blocks?** → You or another agent tried manual git - always use `ai_commit.sh`
+2. **Git workflow issue?** → Codex inspects scope and the exact repository state
 3. **Missing messages?** → Write meaningful commit messages describing the change
 
-**Automatic logging (OPS-01):**
-- Git hooks now log all blocked manual git attempts to `logs/git_workflow.log`
-- The `agent_mistakes_report.sh` script parses these logs
-- Review patterns weekly to identify training/documentation gaps
+`agent_mistakes_report.sh` may still summarize historical logs. Current Git and
+GitHub work is Codex-native and does not use repository enforcement hooks.
 
 ---
 
@@ -42,7 +40,7 @@ Purpose: capture recurring friction points and the fixes so we do not repeat the
 
 ### Fixes Applied
 - **Doc stamp formatting:** switch “Last Updated” lines to `...<br>` instead of trailing spaces; update `scripts/bump_version.py` to output `<br>` (no whitespace).
-- **Checks timeout:** avoid TUI checks; use `./scripts/pr_async_merge.sh status` or `finish_task_pr.sh --wait` (polling).
+- **Checks timeout:** inspect connected GitHub checks without assuming a timeout is a failure.
 - **Update-behind PRs:** run `gh pr update-branch <num>` then re-check CI before merging.
 - **Clean-venv verify:** use a fresh venv for `pip install structural-lib-is456==X.Y.Z`.
 

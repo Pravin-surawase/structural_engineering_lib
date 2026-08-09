@@ -511,7 +511,7 @@ def scan_infra(fix: bool = False) -> CategoryResult:
     """Scan infrastructure health."""
     result = CategoryResult(name="infra")
 
-    # Check 1: Git hooks installed
+    # Check 1: Codex-native Git workflow is present and retired hooks are inactive
     result.checks_run += 1
     hooks_path_result = subprocess.run(
         ["git", "config", "--get", "core.hooksPath"],
@@ -520,20 +520,22 @@ def scan_infra(fix: bool = False) -> CategoryResult:
         cwd=REPO_ROOT,
     )
     configured_path = hooks_path_result.stdout.strip()
-    hooks_dir = (
-        Path(configured_path) if configured_path else REPO_ROOT / ".git" / "hooks"
-    )
-    required_hooks = ("pre-commit", "pre-push", "commit-msg")
-    missing = [name for name in required_hooks if not (hooks_dir / name).exists()]
-    if not missing:
+    workflow_doc = REPO_ROOT / "docs/git-automation/git-workflow-single-source.md"
+    retired_hooks_active = configured_path.endswith("scripts/git-hooks")
+    if not retired_hooks_active and workflow_doc.exists():
         result.checks_passed += 1
     else:
+        problems = []
+        if retired_hooks_active:
+            problems.append("retired scripts/git-hooks path is active")
+        if not workflow_doc.exists():
+            problems.append("canonical Codex-native workflow is missing")
         result.issues.append(
             Issue(
                 category="infra",
                 severity="error",
-                message=f"Git hooks missing: {', '.join(missing)}. Run: scripts/install_git_hooks.sh",
-                fixable=True,
+                message="Git workflow issue: " + "; ".join(problems),
+                fixable=False,
             )
         )
 

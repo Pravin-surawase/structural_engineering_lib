@@ -83,8 +83,7 @@ All checks passed! Ready to hand off.
 
 **❌ Uncommitted changes detected:**
 ```bash
-# Commit via automation (stages internally)
-./scripts/ai_commit.sh "session: document work"
+# Codex reviews and includes task-owned session records in the scoped commit.
 ```
 
 **❌ Session log entry missing:**
@@ -294,7 +293,7 @@ git log --oneline -3    # Verify your commits are there
 
 ### ✅ Session Docs Rule (Avoid the Commit Loop)
 Update `docs/SESSION_LOG.md` and `docs/planning/next-session-brief.md` **in the same PR**
-before running `finish_task_pr.sh`. Record the **PR number** (not the merge hash) in the
+before asking Codex to close out the PR. Record the **PR number** (not the merge hash) in the
 SESSION_LOG entry so you never need a post-merge log commit.
 
 ### Routine Bug Fix (1-2 hours)

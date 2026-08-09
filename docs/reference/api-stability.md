@@ -492,6 +492,26 @@ footing.footing_punching_shear(...)
 
 **Status:** Preview - Function signatures and return types may change before v1.0.
 
+### Library-First Footing and Slab APIs (Development Preview)
+
+The bounded LIB-IS456-V1 routes are public for evaluation, but are not yet a
+pre-1.0 stability promise:
+
+```python
+from structural_lib import api
+
+transfer: api.LoadTransferResult = api.check_isolated_footing_load_transfer(...)
+one_way: api.OneWaySlabDesignResult = api.design_one_way_slab_is456(...)
+two_way = api.design_two_way_slab_is456(...)
+capabilities: tuple[api.IS456Capability, ...] = (
+    api.get_supported_is456_capabilities()
+)
+```
+
+The two-way route supports only its documented interior-panel configuration
+with caller-supplied, qualified coefficients. Capability records and result
+types may change before v1.0.
+
 ---
 
 ## Internal API (May Change Without Notice)

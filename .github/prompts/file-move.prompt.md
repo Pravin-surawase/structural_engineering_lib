@@ -55,5 +55,5 @@ NEVER use `mv`, `rm`, `git mv`, or manual rename.
 ## Step 6: Commit
 
 ```bash
-./scripts/ai_commit.sh "refactor: move {{old_path}} to {{new_path}}"
+# Suggest to Codex: refactor: move {{old_path}} to {{new_path}}
 ```

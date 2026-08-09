@@ -9,7 +9,7 @@
 
 | Agent | Role | Domain | Quick Start | Hub | Complexity |
 |-------|------|--------|-------------|-----|------------|
-| **8** | Git Operations | Commits, PRs, conflict prevention | [Automation](guides/agent-8-automation.md) | [Full Hub](guides/agent-8-git-ops.md) | 🟡 Intermediate |
+| **Codex** | Git/GitHub closeout | Scoped commits, pushes, and connected PR operations | [Canonical workflow](../git-automation/git-workflow-single-source.md) | [Git hub](../git-automation/README.md) | 🟡 Intermediate |
 | **9** | Governance | Docs structure, migrations, quality | [60s Start](guides/agent-9-quick-start.md) | [Full Hub](guides/agent-9-governance-hub.md) | 🟡 Intermediate |
 
 ### 📋 When to Use Each Agent
@@ -17,8 +17,8 @@
 | Task | Agent | Key Docs |
 |------|-------|----------|
 
-| Commit code changes | **8** | [ai_commit.sh](../../scripts/ai_commit.sh), [safe_push.sh](../../scripts/safe_push.sh) |
-| Fix merge conflicts | **8** | [mistake-prevention](guides/agent-8-mistakes-prevention-guide.md) |
+| Commit or update a PR | **Codex** | [Codex-native workflow](../git-automation/git-workflow-single-source.md) |
+| Diagnose unclear Git state | **Codex** | Stop, inspect, and use the canonical fail-closed workflow |
 | Reorganize docs | **9** | [governance spec](../guidelines/folder-structure-governance.md) |
 | Clean up stale files | **9** | [check_redirect_stubs.py](../../scripts/_archive/check_redirect_stubs.py) |
 
@@ -28,7 +28,7 @@
 
 ### guides/
 Agent-specific guides, protocols, and reference documentation:
-- **Agent 8 (Git Operations):** Git workflow automation, mistake prevention, coordination
+- **Legacy Agent 8:** Historical Git-automation material; current work uses Codex
 - **Agent 9 (Governance):** Documentation governance, migration plans, quality standards
 
 ### sessions/
@@ -40,8 +40,8 @@ Time-bucketed session logs and summaries by month:
 
 ## Quick Links
 
-### Agent 8 - Git Operations Automation
-**Mission:** Prevent merge conflicts, automate git workflows, ensure safe commits
+### Legacy Agent 8 material
+**Status:** Historical. Do not follow its wrapper-script commands for current work.
 
 - [Automation Index](guides/agent-8-automation.md) - Quick start + all scripts & tools
 - [Git Operations Protocol](guides/agent-8-git-ops.md) - Core mission & workflow
@@ -65,4 +65,4 @@ Time-bucketed session logs and summaries by month:
 
 ---
 
-**Last Updated:** 2026-01-10
+**Last Updated:** 2026-08-09

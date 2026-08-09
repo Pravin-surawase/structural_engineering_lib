@@ -1,13 +1,16 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-09
 doc_type: guide
 complexity: intermediate
 tags: []
 ---
 
 # Self-Evolving Multi-Agent Git Infrastructure for AI-Assisted Structural Engineering Software Development: Architecture, Automation, and Lessons Learned
+
+> Historical publication snapshot. The described wrapper infrastructure was
+> retired on 2026-08-09 and is not current operating guidance.
 
 **Type:** Research
 **Audience:** All Agents

@@ -130,6 +130,10 @@ def test_check_bearing_pressure_golden(vector: dict):
         column_D_mm=inp["column_D_mm"],
         footing_B_mm=inp["footing_B_mm"],
         footing_L_mm=inp["footing_L_mm"],
+        effective_supporting_area_A1_mm2=inp.get("effective_supporting_area_A1_mm2"),
+        effective_supporting_area_is_approved=inp.get(
+            "effective_supporting_area_is_approved", False
+        ),
     )
 
     exp = vector["expected"]

@@ -1,11 +1,13 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-09
 doc_type: spec
 complexity: intermediate
 tags: []
 ---
+
+> Historical Agent 8 log specification. It is not a current Git workflow.
 
 
 ---

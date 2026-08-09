@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "structural-lib-is456"
 version = "0.21.6"
-description = "IS 456 RC Design Library — beams, columns & footings (flexure, shear, axial, ductile detailing, DXF export)"
+description = "Supported-case IS 456 RC workflows for beams, columns, isolated footings, and solid slabs"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
@@ -45,7 +45,6 @@ dev = [
   "pre-commit",
   "ruff==0.15.8",
   "bandit",
-  "isort",
   "hypothesis>=6.0",
 ]
 dxf = ["ezdxf>=1.0"]  # For DXF drawing generation
@@ -62,7 +61,15 @@ docs = [
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["structural_lib*"]
-exclude = ["tests*", "examples*", "scripts*"]
+exclude = [
+  "tests*",
+  "examples*",
+  "scripts*",
+  "structural_lib._migration_fixtures*",
+  "structural_lib.research*",
+  "structural_lib.codes.aci318*",
+  "structural_lib.codes.ec2*",
+]
 
 [tool.setuptools.package-data]
 structural_lib = ["py.typed", "codes/is456/clauses.json", "reports/templates/*.j2"]
@@ -194,8 +201,3 @@ disable_error_code = ["no-any-return"]
 [tool.bandit]
 skips = ["B101"]  # Skip assert_used (common in tests)
 exclude_dirs = ["tests", "examples"]
-
-[tool.isort]
-profile = "black"
-line_length = 88
-skip_gitignore = true

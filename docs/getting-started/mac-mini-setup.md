@@ -251,17 +251,15 @@ kill %1
 
 ```bash
 ./run.sh session start              # Begin work session
-./run.sh commit "type: message"     # Safe commit + push (ALWAYS use this)
 ./run.sh check --quick              # Fast validation
 ./run.sh test                       # Run pytest suite
 ./run.sh find "topic"               # Find the right script
 ./run.sh find --api func_name       # Get exact API parameter names
-./run.sh pr create TASK-XXX "desc"  # Start a PR branch
-./run.sh pr finish                  # Ship the PR
 ./run.sh session end                # End-of-session logging
 ```
 
-**Git rule:** NEVER use manual `git add/commit/push`. Always use `./scripts/ai_commit.sh` or `./run.sh commit`.
+**Git rule:** Codex owns scoped commits, pushes, and connected GitHub PR work.
+Repository lifecycle wrappers are retired.
 
 ---
 

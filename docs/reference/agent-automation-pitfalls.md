@@ -22,7 +22,8 @@ tags: []
 **Purpose:** Common pitfalls when building automated agents and LLM-based workflows
 
 > ⚠️ **Note:** This document includes manual git examples only to illustrate pitfalls.
-> Use automation in this repo: `./scripts/ai_commit.sh` and `./scripts/recover_git_state.sh`.
+> Git/GitHub lifecycle wrappers are retired. Codex inspects and scopes Git work
+> directly; unclear Git state is a stop condition, not an automated recovery cue.
 
 ## Table of Contents
 
