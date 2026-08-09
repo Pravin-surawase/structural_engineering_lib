@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.23.0] — Prepared candidate (unreleased; on hold)
+## [0.23.0] — 2026-08-10
 
-This candidate is not tagged or published. The entries below describe the
-prepared source scope and remain subject to the release hold. Development is
-continuing; this candidate is not approved or usable for engineering decisions.
+Alpha development preview of the bounded Supported IS 456 RC Core. This is
+case-qualified software evidence, not professional design approval or complete
+IS 456 coverage.
 
 ### Added
 - Bounded simply supported one-way slab flexure/detailing and one interior,
@@ -50,10 +50,10 @@ continuing; this candidate is not approved or usable for engineering decisions.
 - Public claims now describe only the supported beam, column, isolated-footing,
   and solid-slab cases and retain qualified-engineer review boundaries.
 
-### Candidate verification snapshot (not release approval)
+### Release-candidate verification snapshot
 - Canonical quick gate 9/9 and full gate 29/29.
-- Release preflight: 5,273 passed, 3 skipped, 6 deselected.
-- React Node 24 lane: 146 tests, zero lint warnings, and production build pass.
+- Release preflight: 5,452 passed, 3 skipped, 6 deselected.
+- React Node 24 lane: 147 tests, zero lint warnings, and production build pass.
 - PR #693 aggregate gate passed before merge.
 
 ## [0.21.6] — 2026-04-07

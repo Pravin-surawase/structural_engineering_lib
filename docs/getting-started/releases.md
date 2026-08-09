@@ -78,16 +78,18 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
-## v0.23.0 — Supported IS 456 RC Core (2026-08-09)
+## v0.23.0 — Supported IS 456 RC Core (2026-08-10)
 
-**Status:** ⛔ Development hold; not tagged or published; not approved or usable for engineering decisions
+**Status:** 🚀 Alpha release authorized on 2026-08-10; publication evidence pending
 **Source basis:** IS 456:2000 consolidated through Amendment 5, reaffirmed
 2021, with Amendment 6 (June 2024) reviewed by route
 **Scope:** Case-qualified beam, rectangular-column, isolated-footing, and solid
 slab workflows; not complete IS 456 coverage or professional approval
 
-Professional review is deliberately deferred until the owner declares all
-intended development complete and freezes the final scope.
+Qualified structural-engineering review is deliberately cumulative and deferred
+until the owner declares the stable/engineering-use scope complete. It is not a
+per-packet or Alpha publication gate; this release remains a case-qualified
+development preview without a professional-approval claim.
 
 **Highlights:**
 - Correct two-axis column slenderness and minimum-eccentricity enforcement.
@@ -101,10 +103,10 @@ intended development complete and freezes the final scope.
 - Native Codex Git/GitHub workflow with unsafe custom lifecycle wrappers and
   enforcement hooks retired.
 
-**Verification:** 5,273 release-preflight tests passed, 3 skipped, 6 deselected;
-React 146 tests/lint/build passed; canonical gate 29/29; PR #693 gate passed.
+**Verification:** 5,452 release-preflight tests passed, 3 skipped, 6 deselected;
+React 147 tests/lint/build passed; canonical gate 29/29; PR #693 gate passed.
 
-**Full changelog:** See [CHANGELOG.md](../../CHANGELOG.md#0230--2026-08-09)
+**Full changelog:** See [CHANGELOG.md](../../CHANGELOG.md#0230--2026-08-10)
 
 ---
 

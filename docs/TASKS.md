@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — bounded IS 456 C0-C4 closeout complete; qualified review and owner release decision remain held
+**Updated:** 2026-08-10 — bounded IS 456 C0-C4 closeout complete; owner-authorized v0.23.0 Alpha release in progress
 
 ---
 
@@ -69,10 +69,10 @@
 
 ## Current Release
 
-| **Current candidate** | v0.23.0 | ⛔ RELEASE HOLD — source is prepared locally; no v0.23.0 tag or publication exists |
+| **Current candidate** | v0.23.0 | 🚀 ALPHA RELEASE AUTHORIZED — exact CI artifact and publication pending |
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
-- **Target:** v0.21.7 next, then v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)
+- **Target:** publish v0.23.0 Alpha, then activate later roadmap work separately
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 - **Architecture:** [unified-architecture-v1.md](architecture/unified-architecture-v1.md) §20 — complete v0.21.5→v1.0 roadmap
 
@@ -89,7 +89,7 @@
 | **v0.21.7** | Security Hardening | ✅ READY FOR RELEASE | Input validation, error sanitization, packaging gates, CI hardening |
 | **v0.21.8** | Performance & Property Testing | 📋 PLANNED | Benchmarks, Hypothesis, performance baselines |
 | **v0.22.0** | Stabilization Release | 📋 PLANNED | API naming convention (Batch 3), provenance, SP:16 verification |
-| **v0.23** | Bounded IS 456 slabs + footing completion | ⛔ DEVELOPMENT HOLD | Remediation is implemented; development may continue, but the candidate is not approved or usable for engineering decisions |
+| **v0.23** | Bounded IS 456 slabs + footing completion | 🚀 ALPHA RELEASE IN PROGRESS | Case-qualified development preview; professional review remains a final stable/engineering-use gate |
 | **v0.24** | Multi-Code Infrastructure | 📋 PLANNED | CodeRegistry activation, DesignEnvelope, units.py, API v2 routes |
 | **v0.25** | ACI 318-19 Beam | 📋 PLANNED | ACI beam flexure + shear, PCA Notes ±0.1% benchmarks |
 | **v1.0** | Production Multi-Code | 📋 PLANNED | IS 456 complete, ACI 318 beam+column, EC2 beam, API stability guarantee |

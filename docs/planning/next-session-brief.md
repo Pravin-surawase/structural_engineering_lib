@@ -4,7 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: qualified engineering review and owner release decision after completed C0-C4 closeout
+- Focus: execute the owner-authorized v0.23.0 Alpha release after completed C0-C4 closeout
 <!-- HANDOFF:END -->
 
 **Current branch:** `codex/release-v0.23.0`
@@ -19,7 +19,7 @@
 
 | Release state | Version | Decision |
 |---|---|---|
-| **Current** | v0.23.0 | Prepared development candidate on release hold; not published |
+| **Current** | v0.23.0 | Alpha release authorized; exact CI artifact and publication pending |
 | **Next** | v0.24.0 | Future roadmap only; inactive pending separate owner activation |
 
 ## Outcome
@@ -38,10 +38,12 @@ left unchanged. C3 froze the exact local v0.23.0 wheel/sdist from source commit
 C4 froze the bounded source, unit, benchmark, limitation, unsafe-case, claim and
 artifact evidence requested by the owner.
 
-Until that final qualified review is recorded, the repository and every
-candidate artifact are development software: they are not approved or usable
-for engineering decisions. AI code or engineering review may be used during
-development, but it does not satisfy the final professional gate.
+The owner moved qualified structural-engineering review to the final
+stable/engineering-use gate on 2026-08-10. Development packets and Alpha
+publication no longer require separate qualified sign-off. Every candidate
+remains development software and cannot claim professional approval; its
+source, benchmark, units, unsafe cases and limitations accumulate for the final
+review.
 
 ## Implemented remediation
 
@@ -102,13 +104,13 @@ They are prepublication evidence, not the CI publication identity.
 
 ## Next actions
 
-1. Obtain and record qualified structural-engineering review of the frozen
-   supported-case/formula evidence; do not treat AI/software review as that gate.
-2. If the owner wants to proceed, separately approve merge and the protected
-   CI/TestPyPI release-candidate workflow. Capture the exact CI-built wheel,
+1. Merge PR #696 after its current-commit PR Gate passes.
+2. Run the protected CI/TestPyPI rehearsal and capture the exact CI-built wheel,
    sdist, inventories, hashes, SBOM and clean-install UAT.
-3. Ask again before tag, production PyPI or GitHub Release. After publication,
-   run exact-version PyPI UAT. No owner-only action is implied by C0-C4.
+3. If that evidence is green, create v0.23.0 and let the tag-only workflow
+   publish to PyPI and GitHub Releases; then run exact-version PyPI UAT.
+4. Retain accumulated engineering evidence for qualified review before any
+   stable or engineering-use approval.
 
 ## Terminal issues recorded
 
@@ -145,3 +147,4 @@ They are prepublication evidence, not the CI publication identity.
   front-matter status was outside the validated enum; `check_docs.py --metadata`
   and `--frontmatter` were used, with machine status kept `active` while the
   visible plan status records bounded closeout complete.
+- ⚠️ TERMINAL ISSUE: unsupported `check_links.py --modified` and broad index rewrites → the full link check passed and only generated cache diffs were reversed.

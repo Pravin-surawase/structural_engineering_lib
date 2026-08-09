@@ -17,6 +17,10 @@ Use after changing a calculation or when diagnosing a reported structural result
 
 Tests passing prove software behavior only. They do not certify the formula, replace access to the governing standard, or constitute professional design approval.
 
+Do not require a separate qualified sign-off for each verified development
+change or Alpha release. Preserve the evidence for cumulative review before a
+stable or engineering-use approval.
+
 ## Locate the Narrow Evidence
 
 ```bash
@@ -53,9 +57,13 @@ Run the full `./run.sh check` once at stable closeout. Use `./run.sh test` only 
 
 - Benchmark mismatch: stop and resolve formula, assumptions, or units.
 - Targeted regression failure: fix the root calculation or contract; do not update an expected value without source evidence.
-- Unavailable or ambiguous governing evidence: request qualified engineering input.
+- Unavailable or ambiguous governing evidence: stop or narrow the supported
+  case, record the unresolved interpretation, and defer it to the final
+  qualified-review ledger.
 - Unrelated pre-existing failure: preserve evidence and keep it outside the current implementation unless it blocks the main process.
 
 ## Report
 
-Return the clause/source, benchmark case, actual versus expected result with units, commands run, supported conclusion, exclusions, and any decision requiring qualified review.
+Return the clause/source, benchmark case, actual versus expected result with
+units, commands run, supported conclusion, exclusions, and evidence deferred to
+the final qualified review.

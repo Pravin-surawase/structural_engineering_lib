@@ -14,8 +14,9 @@ Installed metadata version: 0.23.0
 - **Branch:** `codex/release-v0.23.0`
 - **Implementation PR:** #693 merged at `cc99e610`
 - **Closeout PR:** draft #696; C3 artifact source commit `9be6eb35`
-- **Release target:** v0.23.0 selected; publication paused by the owner before tag or upload
-- **Publication state:** C0-C4 bounded software/evidence scope frozen; qualified review, exact CI artifact evidence and post-PyPI UAT pending
+- **Release target:** v0.23.0 Alpha; publication sequence authorized by the owner on 2026-08-10
+- **Publication state:** C0-C4 bounded software/evidence scope frozen; exact CI artifact evidence and post-PyPI UAT pending
+- **Review policy:** qualified structural-engineering review is required before stable/engineering-use approval, not before this Alpha release
 
 ## Beta Readiness Checklist
 
@@ -41,8 +42,8 @@ Installed metadata version: 0.23.0
 - [x] Exact local wheel clean-install tests and CLI UAT pass
 - [ ] CI-built artifact manifest, hashes, inventories and SBOM reviewed
 - [ ] Exact CI-built wheel UAT evidence reviewed
-- [ ] Owner approves TestPyPI upload, if desired
-- [ ] Owner re-authorizes the final tag and production PyPI publication
+- [x] Owner authorizes the TestPyPI rehearsal
+- [x] Owner authorizes the v0.23.0 tag, production PyPI publication, and GitHub Release after exact CI evidence passes
 
 ### Required Before 1.0
 

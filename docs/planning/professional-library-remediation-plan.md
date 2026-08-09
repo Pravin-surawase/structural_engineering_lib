@@ -14,25 +14,23 @@ complete, and their findings, packet definitions, and verification remain here
 as the durable remediation record. Active bounded-product closeout now follows
 [is456-library-first-master-plan.md](is456-library-first-master-plan.md).
 
-The repository is not ready to publish or describe v0.23.0 as released. The
-software baseline is broad and well tested, but the audit confirmed failures
-that can change a supported design outcome or misrepresent it to a user.
-
 All P0/P1 remediation packets, the exact local artifact gate, and the owner's
-bounded C4 scope freeze are complete. The release hold now remains for the
-qualified structural-engineering review, exact CI publication-artifact
-identity/UAT, and separate owner authorization for each release action.
-Passing software tests is evidence of software behavior; it is not formula
-certification or professional design approval.
+bounded C4 scope freeze are complete. The owner revised the governance policy
+on 2026-08-10: qualified structural-engineering review is cumulative and occurs
+before stable/engineering-use approval, not after every development packet and
+not as a blocker for an Alpha release.
 
-The bounded development scope is now frozen and ready for qualified review.
-Until that final review is recorded, this repository and every prepared
-artifact must be described as development software that is **not approved or
-usable for engineering decisions**. An AI review may improve software quality
-but cannot satisfy or replace the final qualified-engineer gate.
+The v0.23.0 Alpha release may proceed after exact CI publication-artifact
+identity/UAT succeeds. It remains development software and must not be described
+as professionally approved or usable without project-specific independent
+verification and qualified professional approval. Passing software tests is
+evidence of software behavior; it is not formula certification or professional
+design approval.
 
-No tag, PyPI upload, GitHub Release, merge, issue closure, or branch deletion is
-authorized by this plan. Those remain owner-only actions requiring explicit
+Release actions remain owner-only. The owner's 2026-08-10 instruction
+authorizes the PR #696 merge, TestPyPI rehearsal, v0.23.0 tag, production PyPI
+upload, and GitHub Release as one conditioned sequence. It does not authorize
+issue closure, branch deletion, a stable-release claim, or an engineering-use
 approval.
 
 ## 2. Audit basis and present state
@@ -40,7 +38,8 @@ approval.
 The audit used the current `codex/release-v0.23.0` tree at release-preparation
 commit `b1634a5f`, compared it with `main` at `cc99e610`, inspected all current
 uncommitted paths, and traced relevant work back through repository history.
-The current branch has no v0.23.0 tag, GitHub Release, or pull request.
+The current branch is represented by draft PR #696 and has no v0.23.0 tag or
+GitHub Release at this checkpoint.
 
 The clean product baseline before remediation was:
 
@@ -524,12 +523,12 @@ Closeout evidence:
   ACI/EC2 namespaces, clean import and CLI help passed; SHA-256
   `1414a06acbac36f503c9e18c11461a10d02f722f87f78c95a530336f35063770`.
 
-LIB-PRO-001 is not professionally closed. Development may continue under the
-release hold, but no professional review is requested yet and no engineering-
-usability claim is permitted. After the owner declares the entire intended
-work scope complete, the final frozen scope must receive qualified structural-
-engineering review; merge and publication remain separate owner decisions.
-No release action was performed.
+LIB-PRO-001 is not professionally closed. Development and Alpha publication may
+continue without a separate qualified sign-off for each packet, but no
+engineering-usability claim is permitted. When the owner declares the stable
+scope complete, its accumulated source, benchmark, unit, unsafe-case and
+limitation evidence must receive qualified structural-engineering review before
+stable/engineering-use approval.
 
 ## 10. Bounded closeout checkpoint — 2026-08-10
 
@@ -542,7 +541,9 @@ installed CLI workflows, and current-candidate preflight passed 5,452 source
 tests plus the React build with zero preflight warnings.
 
 The owner request to finish the bounded master plan freezes the intended C4
-review scope. No qualified structural-engineering review has been recorded,
-and the local hashes are not CI publication identities. Merge, exact CI
-artifact generation, tag, TestPyPI/PyPI, GitHub Release and post-publication
-UAT remain separate held decisions. No release action was performed.
+scope. No qualified structural-engineering review has been recorded; under the
+2026-08-10 policy decision this remains a final stable/engineering-use gate and
+does not block the v0.23.0 Alpha release. The local hashes are not CI
+publication identities, so exact CI artifact generation and UAT still precede
+tagged production publication. The owner authorized that conditioned release
+sequence on 2026-08-10.

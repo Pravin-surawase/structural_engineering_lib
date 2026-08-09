@@ -8,13 +8,13 @@ last_updated: 2026-08-10
 doc_type: spec
 baseline_commit: d4eb9e9dda4a
 release_decision: v0.21.7 deferred
-target_version: v0.23.0 provisional
-current_blocker: Qualified engineering review and exact CI publication-artifact evidence
+target_version: v0.23.0
+current_blocker: Exact CI publication-artifact evidence
 ---
 
 **Type:** Plan
 **Audience:** All Agents
-**Status:** C0-C4 Bounded Closeout Complete — Release Hold
+**Status:** C0-C4 Bounded Closeout Complete — Alpha Release Authorized
 **Importance:** Critical
 **Created:** 2026-08-09
 **Last Updated:** 2026-08-10
@@ -58,7 +58,10 @@ owner changes scope through a separate decision.
 
 This document is the execution authority and frozen evidence boundary for the
 library-first IS 456 lane activated by the owner. C0-C4 are complete; the
-remaining gates are qualified review and separately authorized release work.
+remaining release gates are exact CI publication-artifact evidence and
+owner-authorized release work. Qualified structural-engineering review is a
+cumulative final gate before stable/engineering-use approval, not a blocker for
+each development packet or Alpha release.
 
 It narrows the immediate IS 456 execution order in
 `docs/planning/library-expansion-blueprint-v5.md`. It does not reverse that
@@ -1321,6 +1324,7 @@ Use existing canonical records. Do not create one log per agent.
 | 2026-08-10 | C2 | Main Agent with two read-only audits | COMPLETE | `codex/release-v0.23.0`, working tree | Vite proxy, focused source/live product paths, existing evidence records | Focused Python/FastAPI/React green; live safe/unsafe SSE and apply behavior; live column/footing/slab/422/export bytes; frontend build green | Quick 9/9; full 29/29 | Release and professional-review holds remain | C3 |
 | 2026-08-10 | C3 | Main Agent | COMPLETE | `codex/release-v0.23.0` at `9be6eb35`; draft PR #696 | Package manifest boundary, release skill, optional-DXF test, exact local wheel/sdist | Twine and candidate checks; 181/206 members; zero forbidden/protected content; exact-wheel 5,404 passed; candidate preflight 5,452 passed plus React build | Focused + quick + current-commit PR Gate | Local evidence is not CI publication identity; no upload authorized | C4 |
 | 2026-08-10 | C4 | Main Agent + owner scope instruction | COMPLETE / FROZEN | Draft PR #696; artifact source `9be6eb35` | Master plan, task/session/handoff records, evidence crosswalk and release checklist | Controlled source IDs, units/claims, unsafe cases, limitations, local artifact hashes/SBOM, and held gates reconciled | Documentation/session checks; final PR Gate required on evidence commit | Qualified review and every merge/tag/publish action remain held | Qualified review / owner release decision |
+| 2026-08-10 | REL-0 | Repository owner + Main Agent | APPROVED | Draft PR #696 | Release policy, maintained skills and current release records | Per-packet qualified-review gates removed; technical evidence retained; v0.23.0 remains an Alpha development preview | Documentation + quick + PR Gate | Qualified review remains required before stable/engineering-use approval | P13 release execution |
 
 ### Required handoff content
 
@@ -1439,8 +1443,9 @@ C2 final product UAT found and repaired the missing local Vite `/stream` proxy;
 source-tree and live safe/unsafe outcomes now agree. C3 froze the exact local
 wheel/sdist at source commit `9be6eb35`, and C4 froze the final bounded evidence
 and limitations on draft PR #696. Do not begin new calculation, multi-code, or
-excluded structural-system work. Qualified review, exact CI publication-
-artifact evidence, and every publication action remain deferred.
+excluded structural-system work. The owner authorized the v0.23.0 Alpha release
+sequence on 2026-08-10. Exact CI publication-artifact evidence remains required;
+qualified review is deferred to the final stable/engineering-use gate.
 
 ## 21. Final program acceptance checklist
 
@@ -1469,8 +1474,11 @@ artifact evidence, and every publication action remain deferred.
 - [ ] CI publication-artifact filenames/SHA-256 values are separately recorded.
 - [x] Local rehearsal clean-install/CLI UAT is green on the exact wheel.
 - [ ] CI publication-artifact clean-install/CLI UAT is green.
-- [ ] Owner has separately approved any TestPyPI/PyPI/tag/GitHub Release action.
+- [x] Owner approved the PR #696 merge, TestPyPI rehearsal, v0.23.0 tag, PyPI
+      upload, and GitHub Release sequence on 2026-08-10.
 - [ ] Exact published PyPI version passes post-publication UAT.
+- [ ] Qualified structural-engineering review is recorded before any stable or
+      engineering-use approval; this is not an Alpha publication gate.
 - [x] Handoff and execution ledger identify remaining limitations and review
       boundaries.
 

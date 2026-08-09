@@ -5,7 +5,7 @@
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-08-09
+**Last Updated:** 2026-08-10
 
 ---
 
@@ -30,10 +30,10 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `next-session-brief.md` | 2026-08-09 | ✅ Current handoff |
+| `next-session-brief.md` | 2026-08-10 | ✅ Current release handoff |
 | `compact-modernization-plan.md` | 2026-08-09 | 📋 Ready after PR #676 |
-| `is456-library-first-master-plan.md` | 2026-08-09 | 🔄 P0-P11/FAPI-1 complete; P12 local artifact/full-gate evidence in progress |
-| `professional-library-remediation-plan.md` | 2026-08-09 | ⛔ Active release-blocking remediation plan |
+| `is456-library-first-master-plan.md` | 2026-08-10 | 🚀 C0-C4 complete; v0.23.0 Alpha release authorized |
+| `professional-library-remediation-plan.md` | 2026-08-10 | ✅ Software remediation evidence ledger; final professional review deferred |
 | `folder-audit.md` | 2026-03-24 | ✅ Complete (11 batches) |
 | `ai-agent-efficiency-and-git-workflow-plan.md` | 2026-03-24 | ✅ Partially implemented |
 | `agent-workflow-improvements.md` | 2026-03-23 | ✅ Active |

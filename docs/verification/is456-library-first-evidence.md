@@ -7,7 +7,7 @@
 **Created:** 2026-08-09
 **Last Updated:** 2026-08-10
 **Date:** 2026-08-10
-**State:** C0-C4 bounded software/evidence scope frozen; engineering review, exact CI publication evidence and publication approval remain separate
+**State:** C0-C4 bounded software/evidence scope frozen; v0.23.0 Alpha release authorized; exact CI publication evidence pending; qualified review deferred to final stable/engineering-use approval
 
 ## Controlled sources
 

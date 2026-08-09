@@ -335,3 +335,4 @@ tags: []
 | 2026-08-10 | LIB-IS456-C2 | Completed bounded source/live product UAT; repaired the missing local Vite `/stream` proxy; proved unsafe shear remains FAIL in SSE, React display, apply behavior and exports; retained the release/professional-review holds | — |
 | 2026-08-10 | LIB-IS456-C3 | Froze the v0.23.0 local wheel/sdist from `9be6eb35`; fixed stale egg-info package leakage at the manifest boundary; passed exact-wheel UAT, Twine, allowlist/protected-content, SBOM and candidate preflight | 9be6eb35 |
 | 2026-08-10 | LIB-IS456-C4 | Froze the bounded evidence, limitations and review boundaries on draft PR #696; left qualified review, exact CI publication artifacts, merge, tag and publishing as explicit held gates | — |
+| 2026-08-10 | LIB-IS456-REL-0 | Owner moved qualified review to the final stable/engineering-use gate, retained technical and evidence controls, and authorized the conditioned v0.23.0 Alpha release sequence | — |
