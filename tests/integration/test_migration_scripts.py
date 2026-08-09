@@ -135,12 +135,15 @@ def test_safe_file_move_dry_run_matches_golden() -> None:
     assert subset == _load_golden("safe_file_move_dry_run.json")
 
 
-def test_batch_runner_dry_run_matches_golden() -> None:
+def test_batch_runner_dry_run_matches_golden(tmp_path: Path) -> None:
+    rollback_root = tmp_path / "dry-run-rollback-logs"
     cmd = [
         sys.executable,
         str(REPO_ROOT / "scripts" / "batch_migrate_runner.py"),
         str(FIXTURES / "plans" / "batch_plan_python_fixture.json"),
         "--dry-run",
+        "--rollback-dir",
+        str(rollback_root),
         "--json",
     ]
     result = subprocess.run(
@@ -171,6 +174,7 @@ def test_batch_runner_dry_run_matches_golden() -> None:
         },
     }
     assert subset == _load_golden("batch_runner_dry_run.json")
+    assert not rollback_root.exists()
 
 
 def test_batch_runner_live_writes_per_file_rollback_manifest() -> None:
@@ -244,5 +248,15 @@ def test_batch_runner_live_writes_per_file_rollback_manifest() -> None:
         assert destination_entry["existed"] is False
         assert destination_entry["sha256"] is None
         assert destination_entry["size_bytes"] == 0
+
+        rollback_script = Path(operation["rollback_script"])
+        if not rollback_script.is_absolute():
+            rollback_script = REPO_ROOT / rollback_script
+        rollback_source = rollback_script.read_text(encoding="utf-8")
+        assert "python_runtime.sh" in rollback_source
+        assert "safe_file_move.py" in rollback_source
+        assert "safe_file_delete.py" in rollback_source
+        assert "rm -f" not in rollback_source
+        assert " cp " not in rollback_source
     finally:
         shutil.rmtree(runtime_dir, ignore_errors=True)

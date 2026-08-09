@@ -3,11 +3,13 @@
 
 Verifies types, math, tests, API, endpoint, frontend, and docs for each element.
 
+When to use: while implementing or reviewing a structural element across all layers.
+
 Usage:
-    python scripts/check_new_element_completeness.py                  # Full report
-    python scripts/check_new_element_completeness.py --element column # Specific element
-    python scripts/check_new_element_completeness.py --json           # Machine-readable
-    python scripts/check_new_element_completeness.py --verbose        # Show file paths
+    ./scripts/python_runtime.sh scripts/check_new_element_completeness.py
+    ./scripts/python_runtime.sh scripts/check_new_element_completeness.py --element column
+    ./scripts/python_runtime.sh scripts/check_new_element_completeness.py --json
+    ./scripts/python_runtime.sh scripts/check_new_element_completeness.py --verbose
 """
 
 import ast

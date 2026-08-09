@@ -5,12 +5,26 @@
 # Provides instant feedback during development
 #
 # Requires: fswatch (install with: brew install fswatch on macOS)
+# When to use: during a focused Python implementation loop when fswatch is available.
 #
 # Author: Agent 6 (Quality Improvement - Solution 5)
 # Date: 2026-01-09
 
+set -u
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+PYTHON_RUNTIME="$SCRIPT_DIR/python_runtime.sh"
+cd "$REPO_ROOT"
+
+if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+    echo "Usage: ./scripts/watch_tests.sh [watch_dir] [pytest_path]"
+    echo "Defaults: watch_dir=. pytest_path=Python/tests/"
+    exit 0
+fi
+
 WATCH_DIR=${1:-.}
-TEST_PATTERN=${2:-tests/}
+TEST_PATTERN=${2:-Python/tests/}
 
 # Colors
 RED='\033[0;31m'
@@ -41,7 +55,8 @@ echo ""
 
 # Run initial validation
 echo -e "${GREEN}▶ Initial validation...${NC}"
-.venv/bin/pytest Python/tests/ -x -q --tb=short 2>/dev/null || true
+"$REPO_ROOT/run.sh" check --quick || true
+"$PYTHON_RUNTIME" -m pytest "$TEST_PATTERN" -x -q --tb=short || true
 echo ""
 echo -e "${BLUE}👀 Waiting for changes...${NC}"
 
@@ -65,13 +80,13 @@ while true; do
 
     # Run quick validation
     echo -e "${YELLOW}🔍 Running quick validation...${NC}"
-    echo -e "${GREEN}  ✓ Scanner check skipped (Streamlit removed)${NC}"
+    "$REPO_ROOT/run.sh" check --quick || true
 
     echo ""
 
     # Run tests (stop on first failure for speed)
     echo -e "${YELLOW}🧪 Running tests...${NC}"
-    if pytest $TEST_PATTERN -v --tb=short -x --maxfail=3; then
+    if "$PYTHON_RUNTIME" -m pytest "$TEST_PATTERN" -v --tb=short -x --maxfail=3; then
         echo ""
         echo -e "${GREEN}✅ All checks passed!${NC}"
     else

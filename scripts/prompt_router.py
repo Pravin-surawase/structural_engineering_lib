@@ -6,10 +6,12 @@ Takes a query like "design beam 300x500" and returns which agent, skills,
 and scripts should handle it, using weighted keyword matching against
 agents/agent_registry.json.
 
+When to use: when selecting an existing repository role for a concrete task.
+
 Usage:
-    python scripts/prompt_router.py "design beam 300x500"
-    python scripts/prompt_router.py --json "fix test failure"
-    python scripts/prompt_router.py --all "security audit"
+    ./scripts/python_runtime.sh scripts/prompt_router.py "design beam 300x500"
+    ./scripts/python_runtime.sh scripts/prompt_router.py --json "fix test failure"
+    ./scripts/python_runtime.sh scripts/prompt_router.py --all "security audit"
 """
 
 from __future__ import annotations
@@ -462,9 +464,9 @@ def main() -> None:
         description="Route natural language queries to the best agent + skills.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""Examples:
-  python scripts/prompt_router.py "design beam 300x500 with IS 456"
-  python scripts/prompt_router.py --json "fix csv import bug"
-  python scripts/prompt_router.py --all "security audit"
+  ./scripts/python_runtime.sh scripts/prompt_router.py "design beam 300x500 with IS 456"
+  ./scripts/python_runtime.sh scripts/prompt_router.py --json "fix csv import bug"
+  ./scripts/python_runtime.sh scripts/prompt_router.py --all "security audit"
 """,
     )
     parser.add_argument("query", help="Natural language query to route")

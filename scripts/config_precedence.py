@@ -5,6 +5,8 @@ Configuration precedence auditing for instruction files.
 Documents and validates the instruction precedence chain across all
 configuration files to prevent conflicts and ensure consistent behavior.
 
+When to use: after changing agent or instruction files, or while diagnosing rule conflicts.
+
 PRECEDENCE (highest to lowest):
   1. Agent-specific rules:  .github/agents/*.agent.md       (per-agent)
   2. File-type rules:       .github/instructions/*.md       (per file pattern)
@@ -13,10 +15,10 @@ PRECEDENCE (highest to lowest):
   5. Root entry points:     AGENTS.md, CLAUDE.md             (bootstrapping)
 
 USAGE:
-    python scripts/config_precedence.py show <file_path>    # Show what applies
-    python scripts/config_precedence.py audit                # Full audit
-    python scripts/config_precedence.py list                 # List all by level
-    python scripts/config_precedence.py --json               # Machine-readable
+    ./scripts/python_runtime.sh scripts/config_precedence.py show <file_path>
+    ./scripts/python_runtime.sh scripts/config_precedence.py audit
+    ./scripts/python_runtime.sh scripts/config_precedence.py list
+    ./scripts/python_runtime.sh scripts/config_precedence.py --json
 """
 
 from __future__ import annotations

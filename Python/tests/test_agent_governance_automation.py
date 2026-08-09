@@ -26,7 +26,11 @@ agent_drift = importlib.import_module("agent_drift_detector")
 agent_trends = importlib.import_module("agent_trends")
 audit_permissions = importlib.import_module("audit_permissions")
 check_all = importlib.import_module("check_all")
+check_scripts_index = importlib.import_module("check_scripts_index")
 cli_smoke = importlib.import_module("test_cli_smoke")
+evolve = importlib.import_module("evolve")
+external_cli = importlib.import_module("external_cli_test")
+find_automation = importlib.import_module("find_automation")
 tool_permissions = importlib.import_module("tool_permissions")
 tool_registry = importlib.import_module("tool_registry")
 
@@ -59,6 +63,37 @@ def test_control_paths_use_python_runtime_launcher():
     assert cli_smoke.VENV == launcher
     assert 'VENV="$SCRIPTS/python_runtime.sh"' in run_sh
     assert all(".venv/bin/python" not in line for line in entry_lines)
+
+    for name in ("agent_start.sh", "preflight.py", "test_changed.py", "evolve.py"):
+        source = (SCRIPTS_DIR / name).read_text(encoding="utf-8")
+        assert "python_runtime.sh" in source
+
+    agent_start_source = (SCRIPTS_DIR / "agent_start.sh").read_text(encoding="utf-8")
+    assert ".venv/bin/python" not in agent_start_source
+    assert "git config --global" not in agent_start_source
+    assert "git fetch" not in agent_start_source
+    assert "gh pr" not in agent_start_source
+    assert "chmod +x" not in agent_start_source
+
+    workflow = (REPO_ROOT / ".github" / "workflows" / "fast-checks.yml").read_text(
+        encoding="utf-8"
+    )
+    install_offset = workflow.index("python -m pip install -e Python pytest PyYAML")
+    smoke_offset = workflow.index("python scripts/test_cli_smoke.py")
+    assert install_offset < smoke_offset
+
+
+def test_watch_help_does_not_require_fswatch():
+    result = subprocess.run(
+        [str(SCRIPTS_DIR / "watch_tests.sh"), "--help"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 0
+    assert "Python/tests/" in result.stdout
 
 
 def test_current_session_ids_uses_injected_date_and_ignores_malformed_ids():
@@ -256,6 +291,118 @@ def test_tool_registry_does_not_infer_permission_from_git_text():
     assert registry["check git state"].permission == "ReadOnly"
     assert registry["project health"].permission_modes == {"--fix": "WorkspaceWrite"}
     assert registry["governance health score"].permission is None
+
+
+@pytest.mark.parametrize(
+    ("operation", "mode", "expected"),
+    [
+        ("generate folder index", None, "WorkspaceWrite"),
+        ("generate folder index", "--dry-run", "ReadOnly"),
+        ("batch migration", None, "WorkspaceWrite"),
+        ("batch migration", "--dry-run", "ReadOnly"),
+        ("pipeline state", "new", "WorkspaceWrite"),
+        ("pipeline state", "list", "ReadOnly"),
+        ("session store", "end", "WorkspaceWrite"),
+        ("session store", "show", "ReadOnly"),
+        ("self evolve", "--report", "WorkspaceWrite"),
+    ],
+)
+def test_remaining_automation_permissions_match_modes(operation, mode, expected):
+    assert (
+        tool_permissions.resolve_required_permission(operation, mode=mode) == expected
+    )
+
+
+def test_automation_discovery_metadata_is_single_source():
+    automation_map = json.loads(
+        (SCRIPTS_DIR / "automation-map.json").read_text(encoding="utf-8")
+    )
+
+    assert check_scripts_index._automation_semantic_issues(automation_map) == {
+        "legacy_categories": [],
+        "missing_group": [],
+        "removed_without_deprecation": [],
+        "temporary_targets": [],
+    }
+    active = find_automation.active_tasks(automation_map)
+    assert "add groups temp" not in active
+    assert "test vba adapter" not in active
+    assert all("streamlit" not in name for name in active)
+
+
+def test_automation_semantics_reject_stale_and_temporary_entries():
+    issues = check_scripts_index._automation_semantic_issues(
+        {
+            "categories": {"Legacy": ["removed task"]},
+            "tasks": {
+                "missing group": {"script": "./run.sh test"},
+                "removed task": {
+                    "group": "Testing",
+                    "script": "./run.sh test",
+                    "description": "Target (REMOVED)",
+                },
+                "temporary task": {
+                    "group": "Infrastructure",
+                    "script": "python scripts/_tmp_once.py",
+                },
+            },
+        }
+    )
+
+    assert issues == {
+        "legacy_categories": ["Legacy"],
+        "missing_group": ["missing group"],
+        "removed_without_deprecation": ["removed task"],
+        "temporary_targets": ["temporary task"],
+    }
+
+
+def test_explicit_quick_category_cannot_false_green(monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["check_all.py", "--quick", "--category", "api"])
+
+    assert check_all.main() == 1
+
+
+def test_evolution_preview_does_not_write_report(monkeypatch):
+    monkeypatch.setattr(evolve, "step_health_scan", lambda fix=False: {"score": 100})
+    monkeypatch.setattr(evolve, "step_sync_numbers", lambda fix=False: {})
+    monkeypatch.setattr(evolve, "step_regenerate_indexes", lambda fix=False: {})
+    monkeypatch.setattr(evolve, "step_process_feedback", dict)
+    monkeypatch.setattr(evolve, "step_check_instruction_drift", dict)
+    monkeypatch.setattr(evolve, "step_archive_stale_docs", lambda fix=False: {})
+    monkeypatch.setattr(evolve, "step_generate_todo_items", lambda _data: [])
+
+    def unexpected_write(*_args, **_kwargs):
+        raise AssertionError("preview evolution attempted to write a report")
+
+    monkeypatch.setattr(evolve, "_save_evolution_report", unexpected_write)
+
+    result = evolve.run_evolution()
+
+    assert result["mode"] == "dry-run"
+
+
+def test_external_cli_refuses_existing_workdir(tmp_path):
+    sentinel = tmp_path / "keep.txt"
+    sentinel.write_text("preserve", encoding="utf-8")
+
+    with pytest.raises(FileExistsError):
+        external_cli._prepare_workdir(str(tmp_path))
+
+    assert sentinel.read_text(encoding="utf-8") == "preserve"
+
+
+def test_shell_maintenance_uses_safe_file_operations():
+    archive_source = (SCRIPTS_DIR / "archive_old_files.sh").read_text(encoding="utf-8")
+    root_count_source = (SCRIPTS_DIR / "check_root_file_count.sh").read_text(
+        encoding="utf-8"
+    )
+
+    assert "safe_file_move.py" in archive_source
+    assert "done < <(" in archive_source
+    assert "git mv" not in root_count_source
+    assert "scripts/safe_file_move.py <file>" in root_count_source
+    assert "--dry-run" in root_count_source
 
 
 def test_permission_metadata_audit_accepts_current_declarations():

@@ -7,6 +7,12 @@ Use ``generate_api_manifest.py --check`` for validation and
 ``generate_api_manifest.py`` to update ``docs/reference/api-manifest.json``.
 This retained command delegates to that single source of truth so older
 automation cannot create or compare a second private manifest.
+
+When to use: before a PR or release that changes the public Python API.
+
+Usage:
+    ./scripts/python_runtime.sh scripts/check_api_compat.py
+    ./scripts/python_runtime.sh scripts/check_api_compat.py --update
 """
 
 from __future__ import annotations

@@ -171,10 +171,12 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
-          cache-dependency-path: requirements-lock.txt
+          cache-dependency-path: |
+            requirements-lock.txt
+            Python/pyproject.toml
 
       - name: Install validation dependencies
-        run: python -m pip install pytest PyYAML
+        run: python -m pip install -e Python pytest PyYAML
 
       - name: Validate YAML syntax
         run: |
@@ -197,6 +199,7 @@ jobs:
           python scripts/check_links.py
           python scripts/check_scripts_index.py
           python scripts/validate_script_refs.py
+          STRUCTURAL_LIB_PYTHON="$(command -v python)" python scripts/test_cli_smoke.py
           python scripts/check_token_efficiency.py
           python scripts/check_architecture_boundaries.py
           python scripts/skill_tiers.py validate

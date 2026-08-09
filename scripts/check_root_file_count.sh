@@ -12,11 +12,12 @@ set -e
 
 # Configuration — single source of truth: governance-limits.json
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PYTHON_RUNTIME="$PROJECT_ROOT/scripts/python_runtime.sh"
 cd "$PROJECT_ROOT"
 
 GOVERNANCE_JSON="$PROJECT_ROOT/docs/guidelines/governance-limits.json"
 if [[ -f "$GOVERNANCE_JSON" ]]; then
-    MAX_FILES=$(python3 -c "import json; print(json.load(open('$GOVERNANCE_JSON'))['root']['max_files'])" 2>/dev/null || echo 17)
+    MAX_FILES=$("$PYTHON_RUNTIME" -c 'import json, sys; print(json.load(open(sys.argv[1]))["root"]["max_files"])' "$GOVERNANCE_JSON" 2>/dev/null || echo 17)
 else
     MAX_FILES=17
     echo "⚠ governance-limits.json not found, using default MAX_FILES=$MAX_FILES"
@@ -49,7 +50,8 @@ else
     echo "2. Canonical files that should stay in root:"
     echo "   - README.md, CHANGELOG.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md"
     echo "   - SECURITY.md, AUTHORS.md, LICENSE*, SUPPORT.md"
-    echo "3. Run: git mv <file> docs/_archive/\$(date +%Y-%m)/"
+    echo "3. Run: ./scripts/python_runtime.sh scripts/safe_file_move.py <file> docs/_archive/YYYY-MM/<file> --dry-run"
+    echo "   Then rerun without --dry-run after reviewing the preview."
     echo "4. Update docs/_archive/README.md"
     echo ""
     echo "See: docs/_archive/README.md for archival guidelines"

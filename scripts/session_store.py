@@ -4,13 +4,15 @@ JSON-based session state persistence for AI agent sessions.
 
 Provides state storage, retrieval, and resume context for multi-step agent workflows.
 
+When to use: only when a task intentionally uses the persistent session-state store.
+
 USAGE:
-    python scripts/session_store.py new --agent backend --task TASK-856 --desc "Create session store"
-    python scripts/session_store.py list [--last N]
-    python scripts/session_store.py show <session_id>
-    python scripts/session_store.py end [session_id] [--notes "summary"]
-    python scripts/session_store.py resume <session_id>
-    python scripts/session_store.py active
+    ./scripts/python_runtime.sh scripts/session_store.py new --agent backend --task TASK-856 --desc "Create session store"
+    ./scripts/python_runtime.sh scripts/session_store.py list
+    ./scripts/python_runtime.sh scripts/session_store.py show <session_id>
+    ./scripts/python_runtime.sh scripts/session_store.py end [session_id]
+    ./scripts/python_runtime.sh scripts/session_store.py resume <session_id>
+    ./scripts/python_runtime.sh scripts/session_store.py active
 """
 
 from __future__ import annotations

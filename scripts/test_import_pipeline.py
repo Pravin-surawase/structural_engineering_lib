@@ -3,6 +3,12 @@
 End-to-end test of all import paths.
 Simulates what the React app does for each import flow.
 Tests: sample data, single CSV, dual CSV, batch design.
+
+When to use: after changing import or batch-design endpoints. Requires FastAPI at
+http://localhost:8000 (start it with ./run.sh dev).
+
+Usage:
+    ./scripts/python_runtime.sh scripts/test_import_pipeline.py
 """
 
 import json

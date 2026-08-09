@@ -16,12 +16,14 @@ Performs AST-based static analysis on IS 456 code modules to check:
   11. validate_* called early (advisory)
   12. Errors as tuple return (advisory)
 
+When to use: after changing IS 456 functions or before their quality-gate review.
+
 Usage:
-    python scripts/check_function_quality.py                  # Default: --warn mode
-    python scripts/check_function_quality.py --strict         # Exit 1 on failures
-    python scripts/check_function_quality.py --module flexure # Specific module
-    python scripts/check_function_quality.py --json           # Machine-readable output
-    python scripts/check_function_quality.py --summary        # Just totals
+    ./scripts/python_runtime.sh scripts/check_function_quality.py
+    ./scripts/python_runtime.sh scripts/check_function_quality.py --strict
+    ./scripts/python_runtime.sh scripts/check_function_quality.py --module flexure
+    ./scripts/python_runtime.sh scripts/check_function_quality.py --json
+    ./scripts/python_runtime.sh scripts/check_function_quality.py --summary
 """
 
 from __future__ import annotations

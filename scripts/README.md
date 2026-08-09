@@ -57,7 +57,7 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 
 ## Operating rules
 
-- Run from the repository root and use `.venv/bin/python`, never bare `python`.
+- Run from the repository root and use `./scripts/python_runtime.sh`, never bare `python`.
 - Inspect `--help` before invoking an unfamiliar tool.
 - Use `--dry-run` before supported destructive file operations.
 - Prefer targeted checks while editing and one full gate at closeout.

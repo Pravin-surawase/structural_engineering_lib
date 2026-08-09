@@ -13,7 +13,11 @@ Typical usage (after installing the package):
     python external_cli_test.py
 
 Repo usage (if running from this repository without installing the package):
-    .venv/bin/python scripts/external_cli_test.py
+    ./scripts/python_runtime.sh scripts/external_cli_test.py
+
+By default, outputs are written to a new system-temporary directory. An
+explicit --workdir must not already exist; this command never deletes a prior
+directory.
 
 The script will:
 - Run `python -m structural_lib --help`
@@ -34,9 +38,9 @@ from __future__ import annotations
 import argparse
 import os
 import platform
-import shutil
 import subprocess
 import sys
+import tempfile
 import textwrap
 import time
 from dataclasses import dataclass
@@ -109,6 +113,18 @@ def _subprocess_env(repo_root: Path | None) -> dict[str, str]:
     return env
 
 
+def _prepare_workdir(requested: str | None) -> Path:
+    """Create a new isolated work directory without replacing existing data."""
+    if requested is None:
+        return Path(tempfile.mkdtemp(prefix="structural-cli-smoke-"))
+
+    workdir = Path(requested).resolve()
+    if workdir.exists():
+        raise FileExistsError(f"Refusing to replace existing workdir: {workdir}")
+    workdir.mkdir(parents=True)
+    return workdir
+
+
 def _run(cmd: list[str], cwd: Path, env: dict[str, str], timeout_s: int) -> CmdResult:
     start = time.perf_counter()
     p = subprocess.run(
@@ -164,8 +180,8 @@ def main() -> int:
     )
     parser.add_argument(
         "--workdir",
-        default="external_cli_test_run",
-        help="Folder to write inputs/outputs/logs (default: external_cli_test_run)",
+        default=None,
+        help="New folder for inputs/outputs/logs (default: unique system temp dir)",
     )
     parser.add_argument(
         "--timeout",
@@ -183,10 +199,10 @@ def main() -> int:
     repo_root = _repo_root_from_script()
     env = _subprocess_env(repo_root)
 
-    workdir = Path(args.workdir).resolve()
-    if workdir.exists():
-        shutil.rmtree(workdir)
-    workdir.mkdir(parents=True, exist_ok=True)
+    try:
+        workdir = _prepare_workdir(args.workdir)
+    except FileExistsError as exc:
+        parser.error(str(exc))
 
     inputs_dir = workdir / "inputs"
     outputs_dir = workdir / "outputs"

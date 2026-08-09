@@ -7,15 +7,13 @@
 #   ./scripts/agent_start.sh --quick                 # Skip detailed checks
 #   ./scripts/agent_start.sh --agent backend         # Agent-specific context
 #   ./scripts/agent_start.sh --agent frontend        # Agent-specific context
-#   ./scripts/agent_start.sh --worktree AGENT_5      # Background agent worktree
+#   ./scripts/agent_start.sh --worktree AGENT_5      # Worktree-specific guidance
 #   ./scripts/agent_start.sh --skip-preflight        # Skip preflight (for recovery)
 #
-# Available agents (11):
-#   orchestrator, backend, frontend, api-developer, structural-engineer,
-#   reviewer, tester, doc-master, ops, governance, ui-designer
+# Available agents come from agents/agent_registry.json.
 #
 # This script handles (all-in-one):
-#   1. Codex-native Git mode + pager config
+#   1. Codex-native Git boundary + process-local pager config
 #   2. Environment setup (venv, dependencies)
 #   3. Pre-flight checks (git state, imports)
 #   4. Session start via session.py
@@ -28,6 +26,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PYTHON_RUNTIME="$SCRIPT_DIR/python_runtime.sh"
 
 # Colors
 GREEN='\033[0;32m'
@@ -67,11 +66,10 @@ while [[ $# -gt 0 ]]; do
             echo "Options:"
             echo "  --agent NAME      Load agent-specific context (see agents below)"
             echo "  --quick           Skip detailed checks, faster startup"
-            echo "  --worktree NAME   Create/use a worktree for background agent"
+            echo "  --worktree NAME   Display worktree-specific guidance"
             echo "  --skip-preflight  Skip pre-flight checks (for recovery)"
             echo ""
-            echo "Agents: orchestrator, backend, frontend, api-developer,"
-            echo "  structural-engineer, reviewer, tester, doc-master, ops, governance, ui-designer"
+            echo "Agents: ./scripts/python_runtime.sh scripts/agent_context.py --list"
             echo ""
             echo "Examples:"
             echo "  ./scripts/agent_start.sh                      # Full checks"
@@ -90,9 +88,6 @@ done
 
 cd "$PROJECT_ROOT"
 
-# Ensure all scripts are executable
-chmod +x "$SCRIPT_DIR"/*.sh 2>/dev/null || true
-
 echo ""
 echo -e "${BOLD}╔════════════════════════════════════════════════════════════╗${NC}"
 echo -e "${BOLD}║           🤖 Agent Start - Unified Onboarding v3.0         ║${NC}"
@@ -110,30 +105,25 @@ else
     echo -e "  ${GREEN}✓${NC} Repository Git wrapper enforcement is disabled"
 fi
 
-# Step 1: Git Pager Configuration (inline — copilot_setup.sh was consolidated here)
-echo -e "${BLUE}[1/6]${NC} Configuring git pager (prevents terminal lock)..."
-git config --global core.pager cat 2>/dev/null || true
-git config --global pager.status false 2>/dev/null || true
-git config --global pager.branch false 2>/dev/null || true
-git config --global pager.diff false 2>/dev/null || true
+# Step 1: Process-local pager configuration (no global Git mutation).
+echo -e "${BLUE}[1/6]${NC} Configuring process-local Git pager..."
+export GIT_PAGER=cat
 export GIT_EDITOR=":"
 export PAGER=cat
 echo -e "  ${GREEN}✓${NC} Git pager disabled"
 
-# Step 2: Environment Setup (inline — agent_setup.sh was consolidated here)
-echo -e "${BLUE}[2/6]${NC} Running environment setup..."
-if [ -f "$PROJECT_ROOT/.venv/bin/activate" ]; then
-    source "$PROJECT_ROOT/.venv/bin/activate"
-    echo -e "  ${GREEN}✓${NC} Virtual environment activated"
-else
-    echo -e "  ${RED}✗${NC} Virtual environment not found!"
-    echo -e "  ${YELLOW}→${NC} Recovery steps:"
-    echo -e "     1. Run: python3 -m venv .venv"
-    echo -e "     2. Run: source .venv/bin/activate"
-    echo -e "     3. Run: cd Python && pip install -e '.[dev]' && cd .."
-    echo -e "     4. Then re-run: ./scripts/agent_start.sh"
+# Step 2: Resolve the approved Python runtime for this or the primary worktree.
+echo -e "${BLUE}[2/6]${NC} Resolving Python runtime..."
+if [ ! -x "$PYTHON_RUNTIME" ]; then
+    echo -e "  ${RED}✗${NC} Python runtime launcher not found: $PYTHON_RUNTIME"
     exit 1
 fi
+PYTHON_PATH=$("$PYTHON_RUNTIME" -c 'import sys; print(sys.executable)' 2>/dev/null) || {
+    echo -e "  ${RED}✗${NC} No approved Python interpreter could be resolved"
+    echo -e "  ${YELLOW}→${NC} Create .venv in the primary checkout or set STRUCTURAL_LIB_PYTHON"
+    exit 1
+}
+echo -e "  ${GREEN}✓${NC} Python runtime: $PYTHON_PATH"
 
 # Step 3: Pre-flight Check (skip in quick mode or if explicitly skipped)
 echo -e "${BLUE}[3/6]${NC} Running pre-flight checks..."
@@ -143,14 +133,13 @@ if [ -z "$QUICK" ]; then
     MISSING_DEPS=""
 
     # Check critical dependencies (fail fast if missing)
-    "$PROJECT_ROOT/.venv/bin/python" -c "import pydantic" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS pydantic"
-    "$PROJECT_ROOT/.venv/bin/python" -c "import pandas" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS pandas"
-    "$PROJECT_ROOT/.venv/bin/python" -c "import numpy" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS numpy"
+    "$PYTHON_RUNTIME" -c "import pydantic" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS pydantic"
+    "$PYTHON_RUNTIME" -c "import pandas" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS pandas"
+    "$PYTHON_RUNTIME" -c "import numpy" 2>/dev/null || MISSING_DEPS="$MISSING_DEPS numpy"
 
     if [ -n "$MISSING_DEPS" ]; then
         echo -e "  ${YELLOW}⚠${NC} Missing dependencies:$MISSING_DEPS"
-        echo -e "  ${YELLOW}→${NC} Run: .venv/bin/pip install -r requirements.txt"
-        echo -e "  ${YELLOW}→${NC} Or:  .venv/bin/pip install -e \"Python[dev,dxf,render,report,pdf,validation,cad]\""
+        echo -e "  ${YELLOW}→${NC} Install dependencies in the resolved environment before continuing"
     else
         echo -e "  ${GREEN}✓${NC} Critical dependencies verified"
     fi
@@ -175,11 +164,9 @@ else
         PREFLIGHT_OK=false
     fi
     # Check for broken imports
-    if [ -f "$PROJECT_ROOT/.venv/bin/python" ]; then
-        "$PROJECT_ROOT/.venv/bin/python" -c "import structural_lib" 2>/dev/null || {
-            echo -e "  ${YELLOW}⚠${NC} structural_lib import failed (check Python/)"
-        }
-    fi
+    "$PYTHON_RUNTIME" -c "import structural_lib" 2>/dev/null || {
+        echo -e "  ${YELLOW}⚠${NC} structural_lib import failed (check Python/)"
+    }
     if [ "$PREFLIGHT_OK" = false ]; then
         echo -e "  ${RED}✗${NC} Pre-flight failed! Fix issues before continuing."
         echo -e "  ${YELLOW}→${NC} Run with --skip-preflight to bypass (not recommended)"
@@ -189,62 +176,9 @@ else
     fi
 fi
 
-# Step 3b: Git hygiene (non-blocking)
-if [ -z "$QUICK" ] && [ -z "$SKIP_PREFLIGHT" ]; then
-    echo -e "${BLUE}[3b/6]${NC} Git hygiene..."
-
-    # Prune stale remote tracking refs (silent network call)
-    BEFORE_PRUNE=$(git branch -r 2>/dev/null | wc -l | tr -d ' ')
-    git fetch --prune --quiet 2>/dev/null || true
-    AFTER_PRUNE=$(git branch -r 2>/dev/null | wc -l | tr -d ' ')
-    PRUNED=$((BEFORE_PRUNE - AFTER_PRUNE))
-    [ "$PRUNED" -gt 0 ] && echo -e "  ${GREEN}✓${NC} Pruned $PRUNED stale remote tracking ref(s)"
-
-    # Check for stale local branches (merged into main)
-    STALE_MERGED=$(git branch --merged main 2>/dev/null | grep -v '^\*\|main$' | wc -l | tr -d ' ')
-    if [ "$STALE_MERGED" -gt 0 ]; then
-        echo -e "  ${YELLOW}⚠${NC} $STALE_MERGED local branch(es) already merged into main"
-        git branch --merged main 2>/dev/null | grep -v '^\*\|main$' | head -5
-        echo -e "  ${DIM}Cleanup: .venv/bin/python scripts/cleanup_stale_branches.py --delete${NC}"
-    fi
-
-    # Check for unmerged branches
-    STALE_UNMERGED=$(git branch --no-merged main 2>/dev/null | grep -v '^\*' | wc -l | tr -d ' ')
-    if [ "$STALE_UNMERGED" -gt 0 ]; then
-        echo -e "  ${YELLOW}⚠${NC} $STALE_UNMERGED local branch(es) NOT merged into main"
-        git branch --no-merged main 2>/dev/null | grep -v '^\*' | head -5
-    fi
-
-    # Check stale auto-stashes (warn only, no auto-drop)
-    STASH_COUNT=$(git stash list 2>/dev/null | grep -c "auto-stash" || echo "0")
-    if [ "$STASH_COUNT" -gt 2 ]; then
-        echo -e "  ${YELLOW}⚠${NC} $STASH_COUNT auto-stash entries — review: git stash list"
-    fi
-
-    # Check for open PRs
-    OPEN_PRS=$(gh pr list --state open --limit 5 --json number,title 2>/dev/null || echo "")
-    if [ -n "$OPEN_PRS" ] && [ "$OPEN_PRS" != "[]" ]; then
-        PR_COUNT=$(echo "$OPEN_PRS" | grep -c '"number"' || echo "0")
-        echo -e "  ${YELLOW}⚠${NC} $PR_COUNT open PR(s):"
-        echo "$OPEN_PRS" | grep '"title"' | sed 's/.*"title": *"//;s/".*/  /' | head -3
-    fi
-
-    if [ "$PRUNED" -eq 0 ] && [ "$STALE_MERGED" -eq 0 ] && [ "$STALE_UNMERGED" -eq 0 ] && [ "$STASH_COUNT" -le 2 ]; then
-        echo -e "  ${GREEN}✓${NC} Git state clean"
-    fi
-fi
-
 # Step 4: Start Session
 echo -e "${BLUE}[4/6]${NC} Starting session..."
-if [ -f "$PROJECT_ROOT/.venv/bin/python" ]; then
-    "$PROJECT_ROOT/.venv/bin/python" scripts/session.py start $QUICK
-else
-    echo -e "  ${RED}✗${NC} Python interpreter not found in .venv"
-    echo ""
-    echo -e "  ${YELLOW}💡 Tip: Collect diagnostics for troubleshooting:${NC}"
-    echo "     .venv/bin/python scripts/collect_diagnostics.py > diagnostics.txt"
-    exit 1
-fi
+"$PYTHON_RUNTIME" scripts/session.py start $QUICK
 
 # Step 5: Agent-specific guidance
 echo -e "${BLUE}[5/6]${NC} Ready!"
@@ -255,9 +189,9 @@ echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━�
 if [ -n "$AGENT" ]; then
     echo ""
     if [ -f "$SCRIPT_DIR/agent_context.py" ]; then
-        "$PROJECT_ROOT/.venv/bin/python" "$SCRIPT_DIR/agent_context.py" "$AGENT" 2>&1 || {
+        "$PYTHON_RUNTIME" "$SCRIPT_DIR/agent_context.py" "$AGENT" 2>&1 || {
             echo -e "  ${RED}Unknown agent '$AGENT'${NC}"
-            echo -e "  Run: .venv/bin/python scripts/agent_context.py --list"
+            echo -e "  Run: ./scripts/python_runtime.sh scripts/agent_context.py --list"
         }
     else
         echo -e "  ${RED}✗${NC} agent_context.py not found at $SCRIPT_DIR/agent_context.py"
@@ -288,9 +222,9 @@ echo "  Canonical workflow: docs/git-automation/git-workflow-single-source.md"
 echo ""
 
 echo -e "${BOLD}🔍 Key Commands${NC}"
-echo "  .venv/bin/python scripts/agent_context.py <agent>       # Agent-specific context"
-echo "  .venv/bin/python scripts/find_automation.py \"task\"      # Find the right script"
-echo "  .venv/bin/python scripts/discover_api_signatures.py fn  # API param names"
+echo "  ./scripts/python_runtime.sh scripts/agent_context.py <agent>       # Agent-specific context"
+echo "  ./scripts/python_runtime.sh scripts/find_automation.py \"task\"      # Find the right script"
+echo "  ./scripts/python_runtime.sh scripts/discover_api_signatures.py fn  # API param names"
 echo ""
 
 # Docker status check

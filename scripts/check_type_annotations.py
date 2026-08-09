@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Type Annotation Checker for Streamlit Application
+Type Annotation Checker for the Python Structural Library
 
-When to use: After adding new Streamlit functions. Checks type annotation coverage.
+When to use: After adding or changing public Python functions. Checks type annotation coverage.
 
 TASK-402: Detects functions and methods missing type annotations.
 
@@ -14,11 +14,11 @@ Features:
 - JSON output for CI integration
 
 Usage:
-    python scripts/check_type_annotations.py                    # Check all Streamlit files
-    python scripts/check_type_annotations.py --strict           # Require all annotations
-    python scripts/check_type_annotations.py --file path.py     # Check specific file
-    python scripts/check_type_annotations.py --json             # JSON output
-    python scripts/check_type_annotations.py --fix-suggestions  # Show fix suggestions
+    ./scripts/python_runtime.sh scripts/check_type_annotations.py
+    ./scripts/python_runtime.sh scripts/check_type_annotations.py --strict
+    ./scripts/python_runtime.sh scripts/check_type_annotations.py --file path.py
+    ./scripts/python_runtime.sh scripts/check_type_annotations.py --json
+    ./scripts/python_runtime.sh scripts/check_type_annotations.py --fix-suggestions
 
 Strictness Levels:
     --lenient   Only warn on public functions (no underscore prefix)
@@ -162,7 +162,6 @@ class TypeAnnotationVisitor(ast.NodeVisitor):
         """Check a function for type annotations."""
         name = node.name
         is_dunder = name.startswith("__") and name.endswith("__")
-        is_private = name.startswith("_") and not is_dunder
         is_public = not name.startswith("_")
 
         # Check if we should skip based on strictness

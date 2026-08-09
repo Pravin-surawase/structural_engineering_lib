@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Circular Import Detector for Streamlit Application
+Circular Import Detector for the Python Structural Library
 
 When to use: After restructuring imports in Python/structural_lib/. Detects circular import chains.
 
@@ -14,11 +14,11 @@ Features:
 - JSON output for CI integration
 
 Usage:
-    python scripts/check_circular_imports.py                    # Check all Streamlit files
-    python scripts/check_circular_imports.py --file path.py     # Check specific file
-    python scripts/check_circular_imports.py --json             # JSON output
-    python scripts/check_circular_imports.py --verbose          # Show all imports
-    python scripts/check_circular_imports.py --graph            # Show dependency graph
+    ./scripts/python_runtime.sh scripts/check_circular_imports.py
+    ./scripts/python_runtime.sh scripts/check_circular_imports.py --file path.py
+    ./scripts/python_runtime.sh scripts/check_circular_imports.py --json
+    ./scripts/python_runtime.sh scripts/check_circular_imports.py --verbose
+    ./scripts/python_runtime.sh scripts/check_circular_imports.py --graph
 
 Exit Codes:
     0 = No circular imports found
