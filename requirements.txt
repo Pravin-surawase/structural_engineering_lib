@@ -31,7 +31,7 @@ pytest-benchmark>=5.0
 black>=26.0
 mypy>=1.19,<2
 pre-commit>=4.5
-ruff==0.15.8
+ruff==0.16.1
 bandit>=1.9
 hypothesis>=6.0
 
@@ -67,8 +67,8 @@ stpyvista>=0.1.4
 # Data & Scientific (project-wide, not in pyproject.toml)
 # ===========================================
 pandas>=2.0
-numpy>=2.0,<2.5
-scipy>=1.14
+numpy>=2.5.1,<2.6
+scipy>=1.18.0
 
 # ===========================================
 # FastAPI Backend (project-wide, not in pyproject.toml)
