@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-09 — PR #676 is green; MAINT-008 compact modernization is planned and waits for the owner merge decision
+**Updated:** 2026-08-09 — PR #676 is merged; the isolated MAINT-008 skills control-plane lane is in closeout
 
 ---
 
@@ -28,25 +28,27 @@
 | MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | ✅ DONE | Live import→design→3D→dashboard→export flow and byte-level artifacts pass; v0.21.7 preflight is ready |
 | MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | User-selected parent model is preserved; Luna/Terra advisory routing, bounded worker packets, two-subagent cap, and quick-gate check pass |
 | MAINT-007 | Refresh onboarding, agents, tools, and usage telemetry | P1 | ✅ DONE | Terminal-only PR status, current bootstrap/counts, complete 14-skill discovery, honest usage checkpoints, and focused regressions pass |
-| MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | 📋 READY AFTER #676 | [Implementation plan](planning/compact-modernization-plan.md) completes with one truthful PR gate, four or fewer justified workflows, supported commands only, and unchanged main-process evidence |
+| MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | 🔄 IN PROGRESS | Isolated skills repair passes; later CI packets complete the [implementation plan](planning/compact-modernization-plan.md) with one truthful PR gate and unchanged main-process evidence |
 
 ### Maintenance evidence captured 2026-08-07
 
 - Git object database and transferred sample data are intact; local and remote `main` both point to `fa854e0f`.
 - Inherited worktree: 73 modified tracked files plus 47 untracked files before session startup; 70 Python diffs are AST-equivalent formatting changes.
 - Final release preflight: 5,159 Python tests passed, 3 skipped, 6 deselected; 336 FastAPI and 146 React tests pass. A clean built-wheel environment independently passes 5,120 tests, 41 skips, 6 deselections, and packaged CLI workflows.
-- Repository release gates are green. GitHub CLI/SSH, Colima, and Docker are recovered; PR #676 is clean and mergeable. React's 17.74% statement coverage remains an accepted stabilization risk outside this maintenance scope.
+- Repository release gates were green before PR #676 was safely merged. GitHub CLI/SSH, Colima, and Docker are recovered. React's 17.74% statement coverage remains an accepted stabilization risk outside this maintenance scope.
 - Canonical validation is 28/28 checks, 22/22 audit readiness, 100/100 health, and 96% parity. Feedback is 22/23 resolved; only the existing tester-output recurrence watch remains open.
 - MAINT-005 checkpoint `6f119132`: direct tests now cover 60/60 routes; parity is 96%. The live 153-beam import → auto-design → 3D editor → dashboard path passes with no new browser warnings.
 - Runtime/product repairs from the browser sweep: the launcher selects Node 24 from `.nvmrc` and kills listeners only; canonical compliance utilization replaces misleading `Mu/Mu_lim`; imported spans are rounded; dashboard and BOQ steel totals agree.
 - MAINT-005 exit evidence: WebSocket designs now preserve the complete REST response contract; the live 153-beam flow passes 153/153 and exports valid BBS, DXF, HTML/PDF reports, building HTML/PDF/CSV summaries, and BOQ CSV. Current BOQ totals are 2,663.4 kg steel and 114.8 m³ concrete.
 - Release automation now selects `.nvmrc` Node 24, evaluates reclaimable macOS memory, and installs wheel `[dev]` dependencies for isolated verification. `./run.sh release preflight 0.21.7` reports READY TO RELEASE with zero warnings.
 - GitHub CLI API and SSH auth now pass end to end. Colima's stale transferred-disk lock was released only after Lima confirmed the VM was stopped; the existing VZ disk was preserved and Docker is healthy.
-- Docker release preflight passes with 5,158 Python tests, 8 skips, 6 deselections, and a Node 24 React production build. PR #676 is open on `task/MAINT-001`.
+- Docker release preflight passes with 5,158 Python tests, 8 skips, 6 deselections, and a Node 24 React production build. That evidence was merged through PR #676.
 - Low-token policy checkpoint `6e8e4a31` defaults Codex to Terra/medium, disables Fast mode, caps subagents at two, replaces full-history handoffs, and adds a ninth canonical quick check.
 - Authenticated analytics showed 1,858 turns in the one-month view: 1,065 GPT-5.5, 635 Sol, 96 Luna, 43 Terra, and 19 older models. The checked-in picker now favors Luna for clear/repeatable work, Terra for normal/high-risk implementation, and approval-gates Sol.
 - MAINT-007 removed the default `gh pr view --web` side effect from `./run.sh pr status`; browser opening now requires `--web`. Session checkpoints record model, reasoning, elapsed time, parent/subagent counts, optional dashboard values, verification, and Git state without estimating tokens or cost.
 - MAINT-007 closeout: 32 focused regressions, Ruff/Black, quick 9/9, full 29/29, audit 22/22, and health 100/100 pass; folder indexes and the 282-document global index are current.
+- PR #676 was safely squash-merged and synchronized; clean MAINT-008 baseline commit is `755ac9fb`.
+- MAINT-008 skills lane: all 14 skills have valid frontmatter and current commands, `skill_tiers.json` is the single catalog, registry routing/counts validate, the four-layer architecture checker is green, missing API discovery fails closed, release verification selects exact artifacts, and evolution proposals stop below 15 collected sessions.
 
 ### Recovery progress
 
@@ -118,13 +120,13 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| MAINT-008 | Execute the [compact modernization plan](planning/compact-modernization-plan.md) | Main Agent | ⏸ BLOCKED — merge PR #676 first with owner approval |
+| MAINT-008 | Execute the [compact modernization plan](planning/compact-modernization-plan.md) | Main Agent | 🔄 Skills lane in closeout on `task/MAINT-008-SKILLS`; CI packets not started |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-008 | Obtain explicit owner approval to merge PR #676, then create a separate modernization PR | ops + owner | 3–5 bounded packets | P0 | ⏳ WAITING APPROVAL |
+| MAINT-008 | Review the isolated skills PR; after separate owner merge approval, start truthful PR Gate packet A from a clean baseline | ops + owner | bounded packets | P0 | ⏳ AFTER SKILLS PR |
 | v0.21.7 | Re-run release preflight and obtain a separate release approval after MAINT-008 | ops + owner | <1 session | P1 | ⏸ AFTER MAINT-008 |
 
 ## Backlog

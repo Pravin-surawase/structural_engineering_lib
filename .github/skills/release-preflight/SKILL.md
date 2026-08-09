@@ -1,142 +1,95 @@
 ---
 name: release-preflight
-description: "Pre-release validation — packaging verification, user acceptance testing, security scan, API drift detection. Prevents the recurring pattern of shipping broken wheels and missing files."
+description: "Prepare and verify a release candidate through the canonical release CLI: one preflight, one exact wheel build, one clean-install UAT, and explicit approval for publishing actions."
 ---
 
-# Release Preflight Skill
+# Release Preflight
 
-Comprehensive pre-release validation that catches the issues we've repeatedly shipped: missing package data, broken imports, security gaps, API/doc drift, and silent failures.
+Use this only for an actual release candidate. The canonical automation owns resource checks, test/build selection, document/version checks, clean temporary environments, and cleanup. Do not copy those checks into shell snippets.
 
 ## When to Use
 
-- **Before ANY version release** — run the full checklist
-- **Before creating a release PR** — catch issues before they reach PyPI
-- **After fixing audit findings** — verify fixes actually work from user perspective
+- Before creating or approving a release PR
+- After packaging or public-entry-point changes when release readiness is requested
+- Before publishing a version to PyPI
 
-## Why This Exists
+## Preconditions
 
-v0.21.0 through v0.21.3 required 4 releases in 2 days because we shipped:
-- Missing `clauses.json` in wheel (silent failure)
-- Tests packaged in wheel (scope leak)
-- 32 instances of `str(e)` leaking internals
-- Rate limiting on only 2/59 endpoints
-- README advertising non-existent functions
-- Import-time warnings breaking user scripts
+- Run from the workspace root on the intended release branch.
+- Know the exact target version in `X.Y.Z` form.
+- Preserve unrelated work; preflight requires a clean working tree.
+- The `PR Gate` for the release candidate must pass on its current commit.
 
-## Full Preflight Checklist (ALL steps mandatory)
+## Release Candidate Flow
 
-### Phase 1: Packaging Verification (5 min)
+### 1. Preflight before version mutation
 
 ```bash
-# 1. Build wheel and sdist
-cd Python && ../.venv/bin/python -m build
-
-# 2. Verify wheel contents (no tests/, no scripts/)
-unzip -l dist/*.whl | grep -E "tests/|scripts/|examples/" && echo "FAIL: leaked files" || echo "PASS"
-
-# 3. Verify required data files
-unzip -l dist/*.whl | grep "clauses.json" && echo "PASS" || echo "FAIL: clauses.json missing"
-
-# 4. Install in clean temp venv and test imports
-python -m venv /tmp/test_release && \
-  /tmp/test_release/bin/pip install dist/*.whl && \
-  /tmp/test_release/bin/python -c "import structural_lib; print(structural_lib.__version__)" && \
-  rm -rf /tmp/test_release
+./run.sh release preflight <target-version>
 ```
 
-### Phase 2: User Acceptance Test (10 min)
+This is read-only. Run it once. If local resource checks fail and Docker is the intended fallback, start Colima and run the Docker variant instead of running both full paths:
 
 ```bash
-# 5. Import silence test — ZERO warnings allowed
-/tmp/test_release/bin/python -W error -c "import structural_lib"
-
-# 6. Core workflow: design → detailing → BBS → report
-/tmp/test_release/bin/python -c "
-from structural_lib import design_beam_is456, build_detailing_input, compute_detailing, compute_bbs
-result = design_beam_is456(units='IS456', b_mm=300, D_mm=500, d_mm=450, fck_nmm2=25, fy_nmm2=500, mu_knm=150, vu_kn=100)
-assert result.flexure.is_safe, 'Design should be safe'
-print('PASS: Core workflow')
-"
-
-# 7. Verify all __all__ exports are importable
-/tmp/test_release/bin/python -c "
-import structural_lib
-for name in structural_lib.__all__:
-    obj = getattr(structural_lib, name)
-    assert obj is not None, f'{name} is None'
-print(f'PASS: All {len(structural_lib.__all__)} exports importable')
-"
-
-# 8. Verify README code examples actually work
-# Run examples/end_to_end_workflow.py against installed package
+colima start --cpu 4 --memory 4
+./run.sh release preflight <target-version> --docker
 ```
 
-### Phase 3: Security Quick Scan (5 min)
+Repair failures by rerunning only their narrow command, then establish one final green preflight.
+
+### 2. Prepare the release changes
+
+`./run.sh release run <target-version>` changes version-controlled files and is owner-approved release work. Do not run it during a review-only task or without authorization to prepare the release.
+
+After the version change, review the diff and complete the release notes required by the printed checklist. Commit through `./scripts/ai_commit.sh`; do not tag, merge, or publish yet.
+
+### 3. Build one exact artifact
+
+From the workspace root:
 
 ```bash
-# 9. Check for str(e) in router error responses
-grep -rn "str(e)" fastapi_app/routers/ && echo "FAIL: raw exception strings" || echo "PASS"
-
-# 10. Check for bare except clauses
-grep -rn "except Exception:" Python/structural_lib/ | grep -v "# nosec" && echo "WARNING: bare except" || echo "PASS"
-
-# 11. Dependency vulnerability scan
-.venv/bin/pip-audit 2>/dev/null || echo "SKIP: pip-audit not installed"
+.venv/bin/python -m build Python
 ```
 
-### Phase 4: API/Doc Consistency (5 min)
+Confirm that `Python/dist/` contains the wheel for the exact target version. Do not verify an unversioned wildcard when several wheels exist.
+
+### 4. Verify the installed artifact
 
 ```bash
-# 12. Verify README claims match actual API
-.venv/bin/python -c "
-import structural_lib
-readme_functions = ['design_beam_is456', 'build_detailing_input', 'compute_detailing',
-                    'compute_bbs', 'compute_dxf', 'compute_report', 'optimize_beam_cost',
-                    'check_beam_is456', 'design_column_axial_is456']
-for func in readme_functions:
-    assert hasattr(structural_lib, func), f'README claims {func} but not in package'
-print('PASS: All README functions exist')
-"
-
-# 13. Version consistency
-.venv/bin/python scripts/check_doc_versions.py
-
-# 14. OpenAPI baseline check (if FastAPI changed)
-diff <(.venv/bin/python -c "from fastapi_app.main import app; import json; print(json.dumps(app.openapi(), indent=2))") fastapi_app/openapi_baseline.json || echo "WARNING: OpenAPI schema changed"
+./run.sh release verify --version <target-version> --source wheel
 ```
 
-### Phase 5: CI Green Check (2 min)
+This creates and removes a unique temporary environment, installs the exact wheel, verifies the package, runs the installed-package checks, and exercises the CLI workflow. Do not create or delete a fixed `/tmp` directory manually.
+
+After publication, verify the exact public version separately:
 
 ```bash
-# 15. Full test suite
-.venv/bin/pytest Python/tests/ -v --tb=short
-
-# 16. FastAPI tests
-.venv/bin/pytest fastapi_app/tests/ -v --tb=short
-
-# 17. React build
-cd react_app && npm run build
+./run.sh release verify --version <target-version> --source pypi
 ```
+
+### 5. Owner-only actions
+
+Merging the release PR, creating/pushing a tag, publishing to PyPI, creating the GitHub release, and closing release issues require explicit user approval. A green preflight does not authorize any of them.
 
 ## Report Format
 
 ```
 ## Release Preflight: v{VERSION}
 
-| Phase | Status | Issues |
-|-------|--------|--------|
-| Packaging | ✅/❌ | [details] |
-| User Acceptance | ✅/❌ | [details] |
-| Security | ✅/❌ | [details] |
-| API/Doc Consistency | ✅/❌ | [details] |
-| CI Green | ✅/❌ | [details] |
+| Evidence | Status | Details |
+|----------|--------|---------|
+| Preflight | ✅/❌ | [command, commit] |
+| Exact artifact | ✅/❌ | [wheel filename] |
+| Clean-install UAT | ✅/❌ | [wheel/PyPI source] |
+| PR Gate | ✅/❌ | [current commit] |
 
 **Verdict:** READY / NOT READY
-**Blockers:** [list any]
+**Blockers:** [confirmed release-outcome failures only]
+**Owner approval still required:** [merge/tag/publish actions]
 ```
 
 ## Integration
 
-- **Ops agent** runs this before `./run.sh release run X.Y.Z`
-- **Reviewer agent** verifies preflight report before approving release PR
-- **Tester agent** can run Phase 2 independently for regression testing
+- **@ops** runs the release automation and preserves approval boundaries
+- **@reviewer** checks that evidence belongs to the current release commit
+- **@tester** runs the installed-artifact verification when requested

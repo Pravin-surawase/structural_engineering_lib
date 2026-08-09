@@ -297,7 +297,7 @@ def get_all_api_functions() -> dict[str, Any]:
     return functions
 
 
-def main() -> None:
+def main() -> int:
     """Main entry point."""
     parser = argparse.ArgumentParser(
         description="Discover structural_lib API signatures. Run BEFORE implementing wrappers!",
@@ -338,7 +338,7 @@ def main() -> None:
         print("   python scripts/discover_api_signatures.py design_beam_is456")
         print("   python scripts/discover_api_signatures.py --all")
         print("   python scripts/discover_api_signatures.py --filter design")
-        sys.exit(0)
+        return 0
 
     all_functions = get_all_api_functions()
 
@@ -354,15 +354,21 @@ def main() -> None:
 
     if not target_names:
         print("❌ No matching functions found")
-        sys.exit(1)
+        return 1
 
     results = []
+    missing_names: list[str] = []
     for name in target_names:
         if name not in all_functions:
-            print(f"⚠️  Function '{name}' not found in structural_lib.api")
-            print(f"   Available functions containing '{name[:5]}': ", end="")
             matches = [n for n in all_functions if name[:5].lower() in n.lower()]
-            print(", ".join(matches[:5]) if matches else "none")
+            message = f"Function '{name}' not found in structural_lib.api. Nearby: " + (
+                ", ".join(matches[:5]) if matches else "none"
+            )
+            if args.json:
+                print(message, file=sys.stderr)
+            else:
+                print(f"⚠️  {message}")
+            missing_names.append(name)
             continue
 
         info = discover_signature(all_functions[name], name)
@@ -384,7 +390,8 @@ def main() -> None:
         print("\n" + "=" * 60)
         print(f"✅ Discovered {len(results)} function(s)")
         print("=" * 60)
+    return 1 if missing_names else 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

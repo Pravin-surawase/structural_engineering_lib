@@ -2,8 +2,8 @@
 """
 Skill tier classification and management for AI agents.
 
-Classifies skills into three tiers:
-  - Core: Always available to all agents
+Classifies skills into three tiers from .github/skills/skill_tiers.json:
+  - Core: Available to any agent when the task requires it
   - Specialist: Available to specific agents based on role
   - Experimental: Require explicit activation (new/unstable)
 
@@ -29,48 +29,32 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.output import StatusLine, print_json
 from _lib.utils import REPO_ROOT
 
-# Skill tier definitions
-SKILL_TIERS: dict[str, dict[str, Any]] = {
-    "core": {
-        "description": "Always available to all agents",
-        "skills": ["session-management", "api-discovery", "safe-file-ops"],
-        "auto_load": True,
-    },
-    "specialist": {
-        "description": "Available to specific agents based on role",
-        "skills": [
-            "is456-verification",
-            "new-structural-element",
-            "function-quality-pipeline",
-            "react-validation",
-            "architecture-check",
-            "agent-evolution",
-        ],
-        "auto_load": False,
-        "requires_agent_match": True,
-    },
-    "experimental": {
-        "description": "Require explicit activation — new or unstable skills",
-        "skills": [],  # None yet — placeholder for future skills
-        "auto_load": False,
-        "requires_activation": True,
-    },
-}
+CATALOG_PATH = REPO_ROOT / ".github" / "skills" / "skill_tiers.json"
+TIER_NAMES = ("core", "specialist", "experimental")
 
-# Specialist skill to agent mappings
-SPECIALIST_SKILL_AGENTS: dict[str, list[str]] = {
-    "is456-verification": [
-        "structural-math",
-        "structural-engineer",
-        "tester",
-        "backend",
-    ],
-    "new-structural-element": ["structural-math"],
-    "function-quality-pipeline": ["structural-math", "tester", "reviewer"],
-    "react-validation": ["frontend", "reviewer"],
-    "architecture-check": ["reviewer"],
-    "agent-evolution": ["agent-evolver"],
-}
+
+def load_skill_catalog() -> dict[str, Any]:
+    """Load the canonical skill catalog."""
+    if not CATALOG_PATH.exists():
+        raise FileNotFoundError(f"Skill catalog not found: {CATALOG_PATH}")
+    with CATALOG_PATH.open("r", encoding="utf-8") as file:
+        return json.load(file)
+
+
+def catalog_entries(catalog: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    """Return skill metadata keyed by name, including each skill's tier."""
+    entries: dict[str, dict[str, Any]] = {}
+    for tier in TIER_NAMES:
+        for item in catalog.get(tier, []):
+            name = item.get("name")
+            if isinstance(name, str) and name not in entries:
+                entries[name] = {**item, "tier": tier}
+    return entries
+
+
+def tier_description(catalog: dict[str, Any], tier: str) -> str:
+    """Return the catalog description for a tier."""
+    return catalog.get("_meta", {}).get("tiers", {}).get(tier, tier)
 
 
 @dataclass
@@ -133,6 +117,7 @@ def get_skills_for_agent(agent_name: str) -> dict[str, list[str]]:
         Dictionary mapping tier name to list of skill names
     """
     registry = load_agent_registry()
+    entries = catalog_entries(load_skill_catalog())
 
     # Find agent in registry
     agent_data = None
@@ -155,17 +140,9 @@ def get_skills_for_agent(agent_name: str) -> dict[str, list[str]]:
     }
 
     for skill in assigned_skills:
-        # Check which tier this skill belongs to
-        found = False
-        for tier_name, tier_config in SKILL_TIERS.items():
-            if skill in tier_config["skills"]:
-                classified[tier_name].append(skill)
-                found = True
-                break
-
-        # If not found in any tier, treat as specialist (assume it's a valid skill)
-        if not found:
-            classified["specialist"].append(skill)
+        metadata = entries.get(skill)
+        if metadata:
+            classified[metadata["tier"]].append(skill)
 
     return classified
 
@@ -176,114 +153,147 @@ def validate_skill_assignments() -> list[Issue]:
     Returns:
         List of Issue objects found
     """
-    issues = []
+    issues: list[Issue] = []
     registry = load_agent_registry()
+    catalog = load_skill_catalog()
     available_skills = discover_available_skills()
+    agent_names = {
+        agent.get("name") for agent in registry.get("agents", []) if agent.get("name")
+    }
+
+    entries: dict[str, dict[str, Any]] = {}
+    for tier in TIER_NAMES:
+        tier_entries = catalog.get(tier)
+        if not isinstance(tier_entries, list):
+            issues.append(Issue("error", "catalog", f"Tier '{tier}' must be a list"))
+            continue
+        for item in tier_entries:
+            name = item.get("name") if isinstance(item, dict) else None
+            if not isinstance(name, str) or not name:
+                issues.append(
+                    Issue("error", "catalog", f"Tier '{tier}' has an invalid entry")
+                )
+                continue
+            if name in entries:
+                issues.append(
+                    Issue(
+                        "error",
+                        "duplicate",
+                        f"Skill '{name}' is classified more than once",
+                    )
+                )
+                continue
+            entries[name] = {**item, "tier": tier}
 
     # Build a reverse map: skill -> agents
     skill_to_agents: dict[str, list[str]] = {}
     for agent in registry.get("agents", []):
         agent_name = agent.get("name")
-        for skill in agent.get("skills", []):
-            if skill not in skill_to_agents:
-                skill_to_agents[skill] = []
-            skill_to_agents[skill].append(agent_name)
+        assigned = agent.get("skills", [])
+        if len(assigned) != len(set(assigned)):
+            issues.append(
+                Issue("error", "duplicate", f"Agent '{agent_name}' repeats a skill")
+            )
+        for skill in assigned:
+            skill_to_agents.setdefault(skill, []).append(agent_name)
 
-    # Check 1: All agents should have core skills
-    core_skills = SKILL_TIERS["core"]["skills"]
-    for agent in registry.get("agents", []):
-        agent_name = agent.get("name")
-        agent_skills = agent.get("skills", [])
+    # Filesystem and catalog must describe exactly the same set of skills.
+    for skill in sorted(set(available_skills) - set(entries)):
+        issues.append(
+            Issue(
+                "error", "unclassified", f"Skill '{skill}' is absent from the catalog"
+            )
+        )
+    for skill in sorted(set(entries) - set(available_skills)):
+        issues.append(
+            Issue("error", "missing", f"Catalog skill '{skill}' has no skill directory")
+        )
 
-        missing_core = [skill for skill in core_skills if skill not in agent_skills]
-        if missing_core:
+    # Catalog eligibility must be valid even before a skill receives a route.
+    for skill, metadata in sorted(entries.items()):
+        available_to = metadata.get("available_to")
+        if available_to == "all":
+            continue
+        if not isinstance(available_to, list):
+            issues.append(
+                Issue("error", "catalog", f"Skill '{skill}' has invalid available_to")
+            )
+            continue
+        unknown_agents = sorted(set(available_to) - agent_names)
+        if unknown_agents:
             issues.append(
                 Issue(
-                    level="warning",
-                    category="missing",
-                    description=f"Agent '{agent_name}' missing core skills",
-                    details=f"Missing: {', '.join(missing_core)}",
+                    "error",
+                    "catalog",
+                    f"Skill '{skill}' names unknown eligible agents",
+                    f"Unknown: {', '.join(unknown_agents)}",
                 )
             )
 
-    # Check 2: Specialist skills assigned to correct agents
-    for skill, expected_agents in SPECIALIST_SKILL_AGENTS.items():
-        assigned_agents = skill_to_agents.get(skill, [])
-
-        # Check for unexpected assignments
-        unexpected = [a for a in assigned_agents if a not in expected_agents]
+    # Registry assignments must exist and respect catalog eligibility.
+    for skill, assigned_agents in sorted(skill_to_agents.items()):
+        metadata = entries.get(skill)
+        if not metadata:
+            issues.append(
+                Issue(
+                    "error",
+                    "orphan",
+                    f"Registry skill '{skill}' is not in the catalog",
+                    f"Assigned to: {', '.join(assigned_agents)}",
+                )
+            )
+            continue
+        available_to = metadata.get("available_to")
+        if available_to == "all":
+            continue
+        if not isinstance(available_to, list):
+            continue
+        unexpected = sorted(set(assigned_agents) - set(available_to))
         if unexpected:
             issues.append(
                 Issue(
-                    level="warning",
-                    category="mismatch",
-                    description=f"Skill '{skill}' assigned to unexpected agents",
-                    details=f"Expected: {', '.join(expected_agents)}, Got: {', '.join(unexpected)}",
+                    "error",
+                    "mismatch",
+                    f"Skill '{skill}' is assigned outside available_to",
+                    f"Unexpected: {', '.join(unexpected)}",
                 )
             )
 
-        # Check for missing assignments
-        missing = [a for a in expected_agents if a not in assigned_agents]
-        if missing:
+    # Every stable role-specific skill needs at least one default route.
+    for skill, metadata in sorted(entries.items()):
+        if metadata["tier"] == "specialist" and skill not in skill_to_agents:
             issues.append(
                 Issue(
-                    level="info",
-                    category="unassigned",
-                    description=f"Skill '{skill}' not assigned to expected agents",
-                    details=f"Missing from: {', '.join(missing)}",
+                    "error",
+                    "unassigned",
+                    f"Specialist skill '{skill}' has no agent route",
                 )
             )
 
-    # Check 3: Skills in registry but not in SKILL_TIERS or available
-    all_tier_skills = []
-    for tier_config in SKILL_TIERS.values():
-        all_tier_skills.extend(tier_config["skills"])
-
-    for skill, agents in skill_to_agents.items():
-        if skill not in all_tier_skills and skill not in available_skills:
-            issues.append(
-                Issue(
-                    level="warning",
-                    category="orphan",
-                    description=f"Skill '{skill}' in registry but not in tiers or available",
-                    details=f"Assigned to: {', '.join(agents)}",
-                )
+    expected_count = len(entries)
+    declared_count = registry.get("_meta", {}).get("skill_count")
+    if declared_count != expected_count:
+        issues.append(
+            Issue(
+                "error",
+                "metadata",
+                "Registry skill_count does not match the canonical catalog",
+                f"Declared: {declared_count}, Actual: {expected_count}",
             )
-
-    # Check 4: Skills in SKILL_TIERS but not assigned to any agent
-    for tier_name, tier_config in SKILL_TIERS.items():
-        for skill in tier_config["skills"]:
-            if skill not in skill_to_agents:
-                # Core skills should be on ALL agents
-                if tier_name == "core":
-                    issues.append(
-                        Issue(
-                            level="error",
-                            category="missing",
-                            description=f"Core skill '{skill}' not assigned to any agent",
-                        )
-                    )
-                else:
-                    issues.append(
-                        Issue(
-                            level="info",
-                            category="unassigned",
-                            description=f"{tier_name.capitalize()} skill '{skill}' not assigned",
-                        )
-                    )
+        )
 
     return issues
 
 
 def cmd_list(args: argparse.Namespace) -> int:
     """List all skills by tier."""
+    catalog = load_skill_catalog()
     available_skills = discover_available_skills()
 
     if args.json:
         print_json(
             {
-                "tiers": SKILL_TIERS,
-                "specialist_assignments": SPECIALIST_SKILL_AGENTS,
+                "catalog": catalog,
                 "available_skills": available_skills,
             }
         )
@@ -294,64 +304,22 @@ def cmd_list(args: argparse.Namespace) -> int:
     print("━" * 70)
     print()
 
-    # Core tier
-    core_config = SKILL_TIERS["core"]
-    print("Core (always available):")
-    print(f"  {core_config['description']}")
-    print()
-    for skill in core_config["skills"]:
-        # Get skill description from SKILL.md if available
-        skill_dir = REPO_ROOT / ".github" / "skills" / skill
-        description = "—"
-        if skill_dir.exists():
-            skill_file = skill_dir / "SKILL.md"
-            if skill_file.exists():
-                # Read first line of description from SKILL.md
-                content = skill_file.read_text(encoding="utf-8")
-                lines = [
-                    line
-                    for line in content.split("\n")
-                    if line.strip() and not line.startswith("#")
-                ]
-                if lines:
-                    description = lines[0][:60] + ("..." if len(lines[0]) > 60 else "")
-
-        print(f"  ✅ {skill:30s} {description}")
-    print()
-
-    # Specialist tier
-    specialist_config = SKILL_TIERS["specialist"]
-    print("Specialist (role-specific):")
-    print(f"  {specialist_config['description']}")
-    print()
-    for skill in specialist_config["skills"]:
-        agents = SPECIALIST_SKILL_AGENTS.get(skill, [])
-        agent_list = ", ".join(agents) if agents else "unassigned"
-        print(f"  🔧 {skill:30s} → {agent_list}")
-    print()
-
-    # Experimental tier
-    experimental_config = SKILL_TIERS["experimental"]
-    print("Experimental:")
-    print(f"  {experimental_config['description']}")
-    print()
-    if experimental_config["skills"]:
-        for skill in experimental_config["skills"]:
-            print(f"  🧪 {skill}")
-    else:
-        print("  (none)")
-    print()
-
-    # Available skills not in tiers
-    all_tier_skills = []
-    for tier_config in SKILL_TIERS.values():
-        all_tier_skills.extend(tier_config["skills"])
-
-    orphaned = [s for s in available_skills if s not in all_tier_skills]
-    if orphaned:
-        print("Available but unclassified:")
-        for skill in orphaned:
-            print(f"  ❓ {skill}")
+    icons = {"core": "✅", "specialist": "🔧", "experimental": "🧪"}
+    labels = {
+        "core": "Core",
+        "specialist": "Specialist",
+        "experimental": "Experimental",
+    }
+    for tier in TIER_NAMES:
+        print(f"{labels[tier]}:")
+        print(f"  {tier_description(catalog, tier)}")
+        print()
+        for item in catalog.get(tier, []):
+            available_to = item.get("available_to", [])
+            route = "all" if available_to == "all" else ", ".join(available_to)
+            print(
+                f"  {icons[tier]} {item['name']:30s} {item.get('description', '—')} [{route}]"
+            )
         print()
 
     return 0
@@ -381,7 +349,7 @@ def cmd_agent(args: argparse.Namespace) -> int:
         if not tier_skills:
             continue
 
-        tier_desc = SKILL_TIERS[tier_name]["description"]
+        tier_desc = tier_description(load_skill_catalog(), tier_name)
         print(f"{tier_name.capitalize()} ({tier_desc}):")
         for skill in tier_skills:
             print(f"  • {skill}")
@@ -403,6 +371,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
         return 1
 
     if args.json:
+        errors = [issue for issue in issues if issue.level == "error"]
         print_json(
             {
                 "issues": [
@@ -416,7 +385,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
                 ],
             }
         )
-        return 0
+        return 1 if errors else 0
 
     print()
     print("🔍 Skill Assignment Validation")

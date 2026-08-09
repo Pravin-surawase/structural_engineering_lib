@@ -1,94 +1,60 @@
 ---
 name: session-management
-description: "Automate AI agent session start and end workflows. Use when beginning a new work session or finishing one. Handles reading priorities, verifying environment, logging changes, updating handoff docs, and committing session artifacts."
+description: "Run the compact project session workflow: one canonical start, task-scoped state updates, one validation ladder, and one normal commit. Use at session start, handoff, or closeout."
 ---
 
-# Session Management Skill
+# Session Management
 
-Automate the mandatory session start and end workflows for the structural_engineering_lib project.
+Use the canonical `run.sh` entry points from the workspace root. Do not repeat their internal reads and checks with separate commands.
 
 ## When to Use
 
 - Starting a new coding session
-- Ending a session (MANDATORY — never skip)
+- Ending or handing off a session
 - Checking session state mid-work
 
 ## Session Start
 
-Run these steps in order:
+Run once, in this order:
 
-1. **Read priorities:**
+```bash
+./run.sh session brief --agent <role>
+./run.sh session start
+```
+
+The brief is the bounded orientation packet; session start verifies the environment and current project state. Use `./run.sh session context` only when the brief does not contain enough information for the task.
+
+Before editing, confirm the branch and working tree shown by session start. Preserve unrelated user changes.
+
+## Session Closeout
+
+1. Run the narrow checks for changed behavior while iterating.
+2. Update `docs/TASKS.md` and `docs/planning/next-session-brief.md` only when their project state actually changed or another agent needs a durable handoff. Update other logs only when the task explicitly owns them.
+3. Run the pre-commit gate once:
+
    ```bash
-   cat docs/planning/next-session-brief.md | head -50
+   ./run.sh check --quick
    ```
 
-2. **Read active tasks:**
+4. Confirm the required Git workflow, then make one normal task commit:
+
    ```bash
-   cat docs/TASKS.md | head -80
+   ./run.sh pr status
+   ./scripts/ai_commit.sh "type(scope): completed outcome"
    ```
 
-3. **Verify environment:**
+5. Validate the clean handoff:
+
    ```bash
-   ./run.sh session start
+   ./run.sh session end --agent <role>
    ```
 
-4. **Quick orientation (optional):**
-   ```bash
-   ./run.sh session context
-   ```
-
-5. **Pre-flight check:**
-   ```bash
-   ./run.sh preflight
-   ```
-
-## Session End (REQUIRED — do NOT skip)
-
-Every step must complete. Skipping has caused 10+ hours of wasted rework.
-
-1. **Commit any uncommitted work:**
-   ```bash
-   ./scripts/ai_commit.sh "type: final changes description"
-   ```
-
-2. **Auto-generate SESSION_LOG entry:**
-   ```bash
-   .venv/bin/python scripts/session.py summary --write
-   ```
-
-3. **Sync stale doc numbers:**
-   ```bash
-   .venv/bin/python scripts/session.py sync --fix
-   ```
-
-4. **P12 burn-in — observe evolution status:**
-   ```bash
-   ./run.sh evolve --status              # P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
-   ```
-
-5. **Update WORKLOG.md** — append one line per change:
-   ```markdown
-   | YYYY-MM-DD | TASK-XXX | Description of what changed | commit_hash |
-   ```
-
-6. **Update next-session-brief.md** — what the NEXT agent should do:
-   - What was completed this session
-   - What's still in progress
-   - Any blockers or decisions needed
-
-7. **Update TASKS.md:**
-   - Mark completed items as ✅ Done
-   - Add any new items discovered
-
-8. **Commit all doc updates:**
-   ```bash
-   ./scripts/ai_commit.sh "docs: session end"
-   ```
+Do not run global doc syncing, index regeneration, evolution fixes, release checks, or a second documentation commit by default. If session end identifies an essential handoff defect, correct only that defect and commit it through the same safe workflow.
 
 ## Session Check (mid-session)
 
 ```bash
-.venv/bin/python scripts/session.py check
+./run.sh session check
 ```
 
 Verifies:
@@ -100,43 +66,22 @@ Verifies:
 
 | File | Purpose |
 |------|---------|
-| `docs/SESSION_LOG.md` | Detailed session history (append-only) |
-| `docs/WORKLOG.md` | Compact one-line-per-change log (append-only) |
+| `docs/SESSION_LOG.md` | Durable session history when a recorded handoff is needed |
+| `docs/WORKLOG.md` | Compact completed-work history when the task changes it |
 | `docs/planning/next-session-brief.md` | Handoff to next session |
 | `docs/TASKS.md` | Active task board |
 | `scripts/session.py` | Session management CLI |
 
 ## Context Checkpoint (save before context overflow)
 
-When a conversation is getting long, save a checkpoint so a new chat can resume:
-
-```bash
-# Ask the agent to write a checkpoint:
-# "Save a checkpoint to next-session-brief.md with:
-#  1. What we completed this session
-#  2. What's currently in progress (with exact file paths and line numbers)
-#  3. What's left to do
-#  4. Any decisions made or blockers found"
-```
-
-The checkpoint goes into `docs/planning/next-session-brief.md`. A new chat can recover by reading it.
+When a task must transfer to another session, update the handoff with: completed outcome, current branch/commit, exact remaining work, verification already run, and blockers. Keep it task-specific; do not copy the conversation.
 
 ## Context Recovery (new chat after overflow)
 
-Paste this into a new Copilot chat to recover:
-```
-Read these to recover context:
-1. docs/planning/next-session-brief.md
-2. docs/TASKS.md (first 60 lines)
-3. .github/copilot-instructions.md
-4. git log --oneline -20
-Then continue from where I left off.
+Use the compact handoff view first:
+
+```bash
+./run.sh session brief --handoff
 ```
 
-## Why This Matters
-
-- **SESSION_LOG.md** is the project memory — gaps mean lost context
-- **next-session-brief.md** is the handoff — without it, the next agent wastes time rediscovering state
-- **WORKLOG.md** is the compact history — one line per change prevents rework
-- **TASKS.md** tracks priorities — unupdated tasks get repeated or lost
-- Empty sessions (no log, no handoff) have caused 10+ hours of wasted rework historically
+Read larger logs only if that brief cannot answer a concrete recovery question.

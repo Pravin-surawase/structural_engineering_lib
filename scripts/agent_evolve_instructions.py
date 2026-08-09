@@ -33,6 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.agent_data import (
     BACKUPS_DIR,
     ensure_dirs,
+    list_sessions,
     load_pending_evolutions,
     save_pending_evolutions,
 )
@@ -46,6 +47,7 @@ EVOLUTION_LOG = REPO_ROOT / "logs" / "agent-performance" / "evolution-log.json"
 # Evolution limits
 MAX_PENDING = 5  # Max pending proposed evolutions
 MAX_WEEKLY_EDITS = 3  # Max edits per agent per week (rolling window)
+MIN_SESSIONS_FOR_PROPOSALS = 15
 
 
 def compute_sha256(filepath: Path) -> str:
@@ -417,6 +419,7 @@ def show_status() -> None:
     print(f"  Pending proposals:    {len(pending)}")
     print(f"  Applied evolutions:   {len(applied)}")
     print(f"  Rolled back:          {len(rolled_back)}")
+    print(f"  Collected sessions:   {len(list_sessions())}")
     print()
 
     # Age of oldest pending
@@ -498,6 +501,13 @@ def main() -> int:
     args = parse_args()
 
     if args.propose:
+        session_count = len(list_sessions())
+        if session_count < MIN_SESSIONS_FOR_PROPOSALS:
+            StatusLine.warn(
+                "Not enough collected sessions to propose instruction changes: "
+                f"{session_count}/{MIN_SESSIONS_FOR_PROPOSALS}. Observe only."
+            )
+            return 1
         StatusLine.info("Analyzing trends and drift patterns...")
         proposals = propose_evolutions()
 

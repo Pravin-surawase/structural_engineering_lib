@@ -1,146 +1,63 @@
 ---
 name: innovation-research
-description: "Run a structured innovation research cycle — discover gaps, propose novel capabilities, prototype and validate breakthrough ideas for structural engineering."
-argument-hint: "Domain: 'sustainability' | 'generative-design' | 'ml-estimator' | 'failure-analysis' | 'knowledge-graph' | 'cross-code' | 'digital-twin' | 'construction-intel'"
+description: "Research an explicitly requested innovation as an isolated, source-backed decision memo; do not prototype, change production code, or expand the task without approval."
+argument-hint: "Research question or proposed capability"
 ---
 
-# Skill: Innovation Research
+# Innovation Research
 
-Run a structured innovation research cycle to discover, validate, and prototype new capabilities for the structural engineering library.
+This experimental skill is opt-in. Use it only when the user explicitly asks for innovation research or evaluation. Do not invoke it during maintenance, review, or delivery of an already-scoped feature.
 
-## When to Use
+## Research Contract
 
-- Starting a research session on a new innovation domain
-- Evaluating feasibility of a proposed innovation
-- Prototyping a new capability
-- Reviewing the innovation backlog
-- Surveying what competitors and open-source tools offer
+Define the decision to support, intended user, current main-process gap, constraints, timebox, and non-goals. Research should answer whether a separate implementation is justified, not create one by momentum.
 
-## Pre-Flight Checks
+## 1. Establish Current Capability
+
+Use targeted indexes and searches:
 
 ```bash
-# 1. Check existing research docs
-ls docs/research/
-
-# 2. Check library coverage gaps
-.venv/bin/python scripts/parity_dashboard.py
-
-# 3. Check existing insights/AI features
-ls Python/structural_lib/insights/
-grep "^def " Python/structural_lib/insights/*.py 2>/dev/null
-
-# 4. Check current API surface
-grep "^def " Python/structural_lib/services/api.py | head -20
-
-# 5. Check innovation backlog in TASKS
-grep -i "innovation\|research\|novel\|prototype" docs/TASKS.md
+./run.sh parity
+rg -n "<capability>" Python/structural_lib fastapi_app react_app/src docs/TASKS.md
+./run.sh find --api <candidate_function>
 ```
 
-## Step-by-Step Cycle
+Do not infer a gap from an old backlog label or hardcoded feature list.
 
-### Step 1: Scan — Survey the Landscape
+## 2. Gather Primary Evidence
 
-Review the Innovation Domains table in `.github/agents/innovator.agent.md`.
-Check what exists in our codebase and what competitors offer.
+Use current primary sources: governing standards available to the user, original research papers, official product/API documentation, and source repositories. Record publication/version dates, assumptions, licensing/data constraints, and what each source actually supports.
 
-```bash
-# What do we already have?
-ls Python/structural_lib/codes/is456/    # Implemented IS 456 modules
-ls Python/structural_lib/insights/       # Existing smart features
-ls Python/structural_lib/services/       # Service layer
+For structural engineering claims, distinguish exploratory evidence from code-compliance interpretation and qualified professional judgment.
 
-# Use web search for competitor analysis (innovator has web access)
-```
+## 3. Compare Bounded Options
 
-### Step 2: Identify — Find the Gap
+For each viable option state:
 
-Pick the highest-impact innovation domain that's still in "🆕 Research" status.
-Consider:
-- Engineering value (does this solve a real problem?)
-- Uniqueness (does any other tool do this well?)
-- Feasibility (can we build it with our stack?)
+- user outcome and integration point;
+- data and dependency requirements;
+- effect on Core, IS 456, Services, API, and UI boundaries;
+- validation and benchmark availability;
+- engineering, product, and maintenance risks;
+- smallest useful vertical slice;
+- explicit reasons to reject or defer it.
 
-### Step 3: Research — Deep Dive
+Prefer a simpler option only when it produces the requested outcome with credible validation.
 
-Use web search to find:
-- Academic papers on the topic
-- Open-source implementations (OpenSees, SAP2000 API, etc.)
-- Industry standards and databases
-- Benchmark data for validation
+## 4. Produce a Decision Memo
 
-Document findings as you go — research without docs is lost.
+Return:
 
-### Step 4: Propose — Write Innovation Document
+1. decision and confidence;
+2. current-state evidence;
+3. sources and their limitations;
+4. recommended bounded slice and non-goals;
+5. validation/qualified-review plan;
+6. estimated affected paths and dependencies;
+7. unanswered owner decisions.
 
-Create `docs/research/innovation-<domain>.md` using the Innovation Proposal Template from `innovator.agent.md`.
+Research stops at the memo. Do not create prototype files, endpoints, tasks, or handoff changes unless the user explicitly approves the next phase.
 
-**Required sections:**
-- Problem Statement
-- Current State (what exists)
-- Proposed Approach
-- Data Requirements
-- Implementation Sketch
-- Validation Plan
-- Impact Assessment
+## Approved Prototype Phase
 
-**Score feasibility** using the 7-criterion framework (must be ≥40/70 to proceed):
-
-| Criterion | Score (1-10) |
-|-----------|-------------|
-| Engineering Value | ? |
-| Uniqueness | ? |
-| Feasibility | ? |
-| Data Availability | ? |
-| User Demand | ? |
-| Code Integration | ? |
-| Safety | ? |
-| **Total** | **?/70** |
-
-### Step 5: Prototype — Build Proof of Concept
-
-Create prototype in `Python/structural_lib/research/` (create directory if needed).
-File naming: `research_<domain>.py`
-
-Delegate implementation to specialist agents:
-- @structural-math — math prototypes, core types
-- @api-developer — API endpoints
-- @frontend — UI/visualizations
-- @tester — validation tests, benchmarks
-
-### Step 6: Validate — Engineering Validation
-
-Hand off to:
-- @structural-engineer — correctness and IS 456 compliance check
-- @library-expert — professional standards review
-- @security — safety and security implications
-
-Run benchmarks against known results where applicable.
-
-## Output
-
-A complete innovation cycle produces:
-- Innovation proposal in `docs/research/` (with feasibility score)
-- Prototype code in `Python/structural_lib/research/` (if feasible)
-- Validation results documented
-- Delegation plan for production implementation
-- TASKS.md updated with any new innovation tasks
-- next-session-brief.md updated with research continuity
-
-## Example Usage
-
-```
-# Research sustainability scoring domain
-1. Check existing: ls Python/structural_lib/insights/
-2. Web search: ICE database, embodied carbon calculation methods
-3. Write proposal: docs/research/innovation-sustainability-scoring.md
-4. Score feasibility: Engineering Value=9, Uniqueness=8, ...
-5. Prototype: Python/structural_lib/research/research_sustainability.py
-6. Validate: delegate to @structural-engineer
-```
-
-## Related Skills
-
-- `/api-discovery` — check existing API before proposing new features
-- `/is456-verification` — validate IS 456 compliance of prototypes
-- `/new-structural-element` — if innovation requires a new element type
-- `/architecture-check` — verify prototype fits 4-layer architecture
+If the user separately approves a prototype, isolate it from production exports, define a disposal/promotion decision, and verify only the research hypothesis. Production integration requires a new implementation plan and the relevant architecture/IS 456 skills.

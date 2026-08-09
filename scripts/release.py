@@ -480,14 +480,25 @@ def _run_check(cmd: list[str], *, cwd: Path | None = None, timeout: int = 600) -
 
 def _find_wheel(wheel_dir: Path, version: str | None) -> Path:
     pattern = (
-        f"structural_lib_is456-{version}*.whl"
+        f"structural_lib_is456-{version}-*.whl"
         if version
         else "structural_lib_is456-*.whl"
     )
     wheels = sorted(wheel_dir.glob(pattern))
     if not wheels:
         raise FileNotFoundError(f"No wheel found in {wheel_dir} (pattern: {pattern})")
-    return wheels[-1]
+    if len(wheels) > 1:
+        candidates = ", ".join(wheel.name for wheel in wheels)
+        if version:
+            raise RuntimeError(
+                f"Multiple wheels match version {version}; remove stale artifacts or "
+                f"select a clean wheel directory: {candidates}"
+            )
+        raise RuntimeError(
+            "Multiple wheel versions found; pass --version to select the exact "
+            f"release artifact: {candidates}"
+        )
+    return wheels[0]
 
 
 def cmd_verify(args: argparse.Namespace) -> int:

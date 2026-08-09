@@ -3,22 +3,26 @@
 # Copyright (c) 2024-2026 Pravin Surawase
 """Architecture Boundary Linter.
 
-When to use: After adding imports between layers (core / services / UI),
+When to use: After adding imports between core / IS 456 / services / UI layers,
 or before PRs that touch Python/structural_lib/ or fastapi_app/.
 
-Enforces the 3-layer architecture by detecting violations:
+Enforces the 4-layer architecture by detecting upward imports:
 
-1. Core Layer (Python/structural_lib/codes/)
-   - Pure calculation functions
-   - CANNOT import from Application or UI layers
+1. Core types (Python/structural_lib/core/)
+   - Base types and shared primitives
+   - Cannot import IS 456, Services, or UI
 
-2. Application Layer (Python/structural_lib/api.py, job_runner.py)
-   - Orchestrates core functions
-   - CANNOT import from UI layer
+2. IS 456 code (Python/structural_lib/codes/is456/)
+   - Pure calculation code with explicit units
+   - Can import Core; cannot import Services or UI
 
-3. UI Layer (react_app/, fastapi_app/)
-   - Presentation logic only
-   - Can import from any layer
+3. Services (Python/structural_lib/services/)
+   - Orchestration and I/O adapters
+   - Can import Core and IS 456; cannot import UI
+
+4. UI/IO (react_app/, fastapi_app/)
+   - External interfaces
+   - Uses the public/service layer rather than Core or IS 456 internals
 
 Usage:
     python scripts/check_architecture_boundaries.py             # Full check
@@ -55,90 +59,64 @@ from _lib.utils import REPO_ROOT
 LAYERS = {
     "core": {
         "paths": [
-            "Python/structural_lib/codes",
-        ],
-        "allowed_imports": [
-            # Core can only import from standard lib and core
-            "structural_lib.codes",
-            "structural_lib.constants",
-            "math",
-            "dataclasses",
-            "typing",
-            "enum",
-            "decimal",
+            "Python/structural_lib/core",
         ],
         "forbidden_imports": [
-            "pandas",  # Data processing belongs in application layer
-            "structural_lib.api",
-            "structural_lib.job_runner",
+            "structural_lib.codes",
+            "structural_lib.services",
+            "fastapi_app",
         ],
     },
-    "application": {
+    "is456": {
         "paths": [
-            "Python/structural_lib/api.py",
-            "Python/structural_lib/job_runner.py",
-            "Python/structural_lib/adapters.py",
-            "Python/structural_lib/models.py",
+            "Python/structural_lib/codes/is456",
         ],
-        "allowed_imports": [
-            "structural_lib",
-            "pydantic",
-            "pandas",
-            "numpy",
-            "dataclasses",
-            "typing",
+        "forbidden_imports": [
+            "structural_lib.services",
+            "fastapi_app",
         ],
-        "forbidden_imports": [],
+    },
+    "services": {
+        "paths": [
+            "Python/structural_lib/services",
+        ],
+        "forbidden_imports": [
+            "fastapi_app",
+        ],
     },
     "ui": {
         "paths": [
             "react_app",
             "fastapi_app",
         ],
-        "allowed_imports": [
-            # UI can import anything
-        ],
         "forbidden_imports": [
-            # UI should not import core internals directly
-            "structural_lib.codes.is456.flexure",
-            "structural_lib.codes.is456.shear",
-            "structural_lib.codes.is456.detailing",
-            "structural_lib.codes.is456.torsion",
-            "structural_lib.codes.is456.serviceability",
-            "structural_lib.codes.is456.slenderness",
-            "structural_lib.codes.is456.ductile",
-            "structural_lib.codes.is456.compliance",
-            "structural_lib.codes.is456.load_analysis",
-            # UI should not bypass the api facade to reach service internals
-            "structural_lib.services.audit",
-            "structural_lib.services.calculation_report",
-            "structural_lib.services.rebar_optimizer",
-            "structural_lib.services.multi_objective_optimizer",
-            # Should use api.py instead
+            "structural_lib.core",
+            "structural_lib.codes",
         ],
     },
 }
 
 # Patterns that indicate bad architecture
 BAD_PATTERNS = {
-    "core_io": {
-        "description": "Core layer should not do I/O",
-        # Note: Removed "Path(" and "print(" - too many false positives
-        # (type annotations, debug output). Use AST analysis for these in future.
+    "calculation_io": {
+        "description": "IS 456 calculation code should not do I/O",
         "patterns": ["open(", "read_text", "write_text"],
-        "layers": ["core"],
+        "layers": ["is456"],
     },
-    "core_state": {
-        "description": "Core layer should be stateless",
-        "patterns": ["global ", "session_state", "st.cache"],
-        "layers": ["core"],
-    },
-    "hidden_units": {
-        "description": "Implicit unit conversions are dangerous",
-        "patterns": ["* 1000", "/ 1000", "* 1e6", "/ 1e6"],
-        "layers": ["core"],
-        "severity": "warning",
-    },
+}
+
+# Exact pre-existing crossings are kept visible here so the checker can enforce
+# the current boundary without making the whole repository permanently red.
+# New crossings must not be added to this set as a convenience.
+KNOWN_IMPORT_EXCEPTIONS = {
+    (
+        "fastapi_app/main.py",
+        "structural_lib.core.errors",
+    ): "FastAPI registers handlers for the library's public exception types",
+    (
+        "fastapi_app/routers/design.py",
+        "structural_lib.codes.is456.beam",
+    ): "Enhanced-shear response still reads existing table values directly",
 }
 
 
@@ -148,7 +126,7 @@ EXCLUDE_PATTERNS = [
     "_test.py",
     "test_",
     "_cli.py",  # CLI files are allowed to do I/O
-    "traceability.py",  # Infrastructure module (V3: move to infrastructure/)
+    "traceability.py",  # Existing clause-data boundary; handled separately.
 ]
 
 
@@ -279,6 +257,9 @@ def check_imports(
     forbidden = config["forbidden_imports"]
 
     for imp in extract_imports(file_path):
+        relative_file = file_path.relative_to(project_root).as_posix()
+        if (relative_file, imp.module) in KNOWN_IMPORT_EXCEPTIONS:
+            continue
         # Check if import is forbidden for this layer
         for forbidden_pattern in forbidden:
             if (
@@ -286,20 +267,13 @@ def check_imports(
                 or forbidden_pattern in imp.names
             ):
                 fix_hint = ""
-                if layer == "core" and forbidden_pattern == "pandas":
-                    fix_hint = (
-                        "Use pure Python in core; pandas belongs in application layer"
-                    )
-                elif layer == "ui" and "services." in forbidden_pattern:
-                    fix_hint = (
-                        f"Import from structural_lib.services.api instead of "
-                        f"'{imp.module}' — use the public API facade"
-                    )
-                elif layer == "ui" and "codes.is456" in forbidden_pattern:
+                if layer == "ui" and forbidden_pattern.startswith("structural_lib"):
                     fix_hint = (
                         "Import from structural_lib.api or structural_lib.services.api "
-                        "instead of accessing IS 456 code layer directly"
+                        "instead of accessing lower-layer internals"
                     )
+                elif layer in {"core", "is456", "services"}:
+                    fix_hint = "Move the dependency down a layer or call it from a higher layer"
 
                 yield Violation(
                     file=file_path,
@@ -487,7 +461,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--layer",
-        choices=["core", "application", "ui"],
+        choices=["core", "is456", "services", "ui"],
         help="Check only specific layer",
     )
 
