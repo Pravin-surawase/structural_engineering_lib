@@ -2102,7 +2102,7 @@
 <blockquote>
 <p><strong>Single source of truth for active work.</strong> Keep it short and current.</p>
 </blockquote>
-<p><strong>Updated:</strong> 2026-08-09 — PR #676 is merged; the isolated MAINT-008 skills control-plane lane is in closeout</p>
+<p><strong>Updated:</strong> 2026-08-09 — PR #689 is merged; Packet A is live on draft PR #690 and awaits the separate required-check decision</p>
 <hr />
 <h2 id="rules-read-first">Rules (read first)<a class="headerlink" href="#rules-read-first" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2182,7 +2182,7 @@ Consolidated evidence: <a href="../audit/maintenance-recovery-audit-2026-08-07/"
 <td>Compact CI, maintenance controls, and agent entry paths</td>
 <td>P0</td>
 <td>🔄 IN PROGRESS</td>
-<td>Isolated skills repair passes; later CI packets complete the <a href="../planning/compact-modernization-plan/">implementation plan</a> with one truthful PR gate and unchanged main-process evidence</td>
+<td>Skills repair is merged; draft PR #690 has one passing truthful PR gate, with the ruleset decision and later packets still approval-gated</td>
 </tr>
 </tbody>
 </table>
@@ -2205,6 +2205,7 @@ Consolidated evidence: <a href="../audit/maintenance-recovery-audit-2026-08-07/"
 <li>MAINT-007 closeout: 32 focused regressions, Ruff/Black, quick 9/9, full 29/29, audit 22/22, and health 100/100 pass; folder indexes and the 282-document global index are current.</li>
 <li>PR #676 was safely squash-merged and synchronized; clean MAINT-008 baseline commit is <code>755ac9fb</code>.</li>
 <li>MAINT-008 skills lane: all 14 skills have valid frontmatter and current commands, <code>skill_tiers.json</code> is the single catalog, registry routing/counts validate, the four-layer architecture checker is green, missing API discovery fails closed, release verification selects exact artifacts, and evolution proposals stop below 15 collected sessions.</li>
+<li>PR #689 was safely squash-merged at <code>b611f6b3</code>; Packet A draft PR #690 now emits one passing <code>PR Gate</code>, and only <code>fast-checks.yml</code> retains a pull-request trigger. Ruleset <code>11390214</code> is unchanged and still requires <code>Quick Validation (Python 3.11 only)</code> pending explicit owner approval.</li>
 </ul>
 <h3 id="recovery-progress">Recovery progress<a class="headerlink" href="#recovery-progress" title="Permanent link">&para;</a></h3>
 <ul>
@@ -2450,7 +2451,7 @@ Detailed specs: <a href="../planning/next-phase-improvements-plan/">next-phase-i
 <td>MAINT-008</td>
 <td>Execute the <a href="../planning/compact-modernization-plan/">compact modernization plan</a></td>
 <td>Main Agent</td>
-<td>🔄 Skills lane in closeout on <code>task/MAINT-008-SKILLS</code>; CI packets not started</td>
+<td>🔄 Packet A implemented on draft PR #690; required-check switch awaits owner approval</td>
 </tr>
 </tbody>
 </table>
@@ -2469,11 +2470,11 @@ Detailed specs: <a href="../planning/next-phase-improvements-plan/">next-phase-i
 <tbody>
 <tr>
 <td>MAINT-008</td>
-<td>Review the isolated skills PR; after separate owner merge approval, start truthful PR Gate packet A from a clean baseline</td>
+<td>Review draft PR #690; separately approve the ruleset switch from <code>Quick Validation (Python 3.11 only)</code> to <code>PR Gate</code> before Packet B</td>
 <td>ops + owner</td>
 <td>bounded packets</td>
 <td>P0</td>
-<td>⏳ AFTER SKILLS PR</td>
+<td>⏳ OWNER DECISION</td>
 </tr>
 <tr>
 <td>v0.21.7</td>

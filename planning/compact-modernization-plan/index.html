@@ -2493,7 +2493,7 @@
 </code></pre></div>
 <h2 id="101-packet-s-isolated-skills-control-plane">10.1 Packet S — Isolated skills control plane<a class="headerlink" href="#101-packet-s-isolated-skills-control-plane" title="Permanent link">&para;</a></h2>
 <p><strong>Branch:</strong> <code>task/MAINT-008-SKILLS</code></p>
-<p><strong>Status:</strong> implemented; local and CI gates green on draft PR #689, pending owner approval</p>
+<p><strong>Status:</strong> completed; approved PR #689 was squash-merged and synchronized at <code>b611f6b3</code></p>
 <p><strong>Files in scope:</strong> the 14 <code>.github/skills/*/SKILL.md</code> entrypoints, <code>.github/skills/skill_tiers.json</code>, cross-agent session instructions, agent skill assignments/metadata, and only the supporting session/discovery/architecture/release/evolution scripts needed to make those instructions truthful.</p>
 <h3 id="objective_1">Objective<a class="headerlink" href="#objective_1" title="Permanent link">&para;</a></h3>
 <p>Make the skill surface safe for lower-cost agents: one canonical catalog, bounded role routing, current executable commands, preview-first destructive operations, exact release artifacts, and no mandatory agent fan-out or duplicated gates.</p>
@@ -2512,6 +2512,7 @@
 <h3 id="gate-and-handoff">Gate and handoff<a class="headerlink" href="#gate-and-handoff" title="Permanent link">&para;</a></h3>
 <p>Run targeted script validation, <code>./run.sh check --quick</code>, and one <code>./run.sh check</code> closeout. Commit and push through the safe wrapper, then open an isolated PR. The worker does not merge it. Packet A begins only after explicit owner approval and synchronization to the merged skills baseline.</p>
 <h2 id="11-packet-a-truthful-pr-gate">11. Packet A — Truthful PR gate<a class="headerlink" href="#11-packet-a-truthful-pr-gate" title="Permanent link">&para;</a></h2>
+<p><strong>Status:</strong> implemented on draft PR #690; the live <code>PR Gate</code> passes, superseded pull-request triggers are removed, and ruleset <code>11390214</code> remains unchanged pending explicit owner approval</p>
 <p><strong>Suggested worker:</strong> Terra, normal implementation reasoning</p>
 <p><strong>Files in scope:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>.github/workflows/fast-checks.yml
