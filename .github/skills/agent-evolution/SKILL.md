@@ -28,6 +28,9 @@ Choose a stable session ID and agent name:
 .venv/bin/python scripts/agent_compliance_checker.py --session <session-id> --agent <agent>
 ```
 
+Drift and compliance checks are read-only. Add `--write` to the drift command
+only when a persisted report is an intentional output of the review.
+
 Do not use nonexistent bulk flags. Manual scores require the scorer's explicit dimension flags and evidence; do not invent values to complete a record.
 
 ## Proposal Gate
@@ -39,6 +42,9 @@ Instruction proposals require at least 15 collected session records. Before that
 .venv/bin/python scripts/agent_evolve_instructions.py --propose
 .venv/bin/python scripts/agent_evolve_instructions.py --list
 ```
+
+Trend analysis is read-only by default; add `--write` only for an intentional
+managed trend artifact.
 
 Review each proposal against the underlying sessions. Correlation or a single bad run is not a root cause.
 

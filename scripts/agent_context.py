@@ -6,6 +6,7 @@ Usage:
     .venv/bin/python scripts/agent_context.py --list
 """
 
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -15,6 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 # ── Agent registry ──────────────────────────────────────────────────────
 
 AGENTS: dict[str, dict] = {}
+AGENT_REGISTRY = ROOT / "agents" / "agent_registry.json"
 
 
 def agent(name: str, description: str):
@@ -25,6 +27,37 @@ def agent(name: str, description: str):
         return func
 
     return decorator
+
+
+def load_agent_registry() -> dict[str, dict]:
+    """Load the canonical agent registry and fail closed on invalid metadata."""
+    try:
+        data = json.loads(AGENT_REGISTRY.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise ValueError(f"Agent registry not found: {AGENT_REGISTRY}") from exc
+    except (json.JSONDecodeError, OSError) as exc:
+        raise ValueError(f"Agent registry is unreadable: {exc}") from exc
+
+    entries = data.get("agents")
+    if not isinstance(entries, list) or not entries:
+        raise ValueError("Agent registry has no agent entries")
+
+    registry: dict[str, dict] = {}
+    for entry in entries:
+        name = entry.get("name") if isinstance(entry, dict) else None
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("Agent registry contains an entry without a valid name")
+        normalized = name.lower().strip()
+        if normalized in registry:
+            raise ValueError(f"Agent registry contains duplicate agent: {normalized}")
+        registry[normalized] = entry
+
+    expected_count = data.get("_meta", {}).get("agent_count")
+    if expected_count is not None and expected_count != len(registry):
+        raise ValueError(
+            f"Agent registry count mismatch: metadata={expected_count}, actual={len(registry)}"
+        )
+    return registry
 
 
 # ── Helpers ─────────────────────────────────────────────────────────────
@@ -160,7 +193,7 @@ def ctx_backend():
 
     section("KEY COMMANDS")
     bullet("API signatures: .venv/bin/python scripts/discover_api_signatures.py <func>")
-    bullet("Tests: cd Python && .venv/bin/python -m pytest tests/ -v")
+    bullet("Tests: .venv/bin/python -m pytest Python/tests/ -v")
     bullet(
         "Import check: .venv/bin/python scripts/validate_imports.py --scope structural_lib"
     )
@@ -286,7 +319,7 @@ def ctx_structural_engineer():
     bullet("beam_to_3d_geometry() — 3D visualization positions")
 
     section("VERIFICATION COMMANDS")
-    bullet("cd Python && .venv/bin/python -m pytest tests/ -v -k 'is456'")
+    bullet(".venv/bin/python -m pytest Python/tests/ -v -k 'is456'")
     bullet(".venv/bin/python scripts/discover_api_signatures.py <func>")
     bullet("Param names: b_mm (not width), fck (not concrete_grade), d_mm (not depth)")
 
@@ -329,8 +362,8 @@ def ctx_reviewer():
     section("COMMANDS")
     bullet(".venv/bin/python scripts/check_architecture_boundaries.py")
     bullet(".venv/bin/python scripts/validate_imports.py --scope structural_lib")
-    bullet("cd react_app && npm run build")
-    bullet("cd Python && .venv/bin/python -m pytest tests/ -v")
+    bullet("./run.sh frontend build")
+    bullet(".venv/bin/python -m pytest Python/tests/ -v")
 
 
 @agent("tester", "Test creation, coverage, regression testing, benchmarks")
@@ -356,7 +389,7 @@ def ctx_tester():
     bullet("Never mock structural_lib internals — test real math")
 
     section("COMMANDS")
-    bullet("cd Python && .venv/bin/python -m pytest tests/ -v")
+    bullet(".venv/bin/python -m pytest Python/tests/ -v")
     bullet(".venv/bin/python -m pytest tests/ --cov=structural_lib --cov-report=term")
     bullet("Skill: /is456-verification — run IS 456 tests by category")
 
@@ -474,7 +507,7 @@ def ctx_governance():
     bullet(
         "Generate indexes: .venv/bin/python scripts/generate_enhanced_index.py --all"
     )
-    bullet("Archive old docs: .venv/bin/python scripts/archive_old_files.sh")
+    bullet("Archive old docs: ./scripts/archive_old_files.sh")
 
     section("SUSTAINABILITY CHECKS")
     bullet("Version consistency: .venv/bin/python scripts/check_doc_versions.py")
@@ -518,32 +551,66 @@ def ctx_ui_designer():
 # ── Main ────────────────────────────────────────────────────────────────
 
 
+def print_registry_context(agent_name: str, metadata: dict) -> None:
+    """Print useful context for a registered agent without a tailored function."""
+    print_status()
+
+    section("ROLE")
+    bullet(metadata.get("description", "No role description provided"))
+    bullet(f"Permission: {metadata.get('permission_level', 'unspecified')}")
+    scope = metadata.get("file_scope")
+    bullet(f"File scope: {scope or 'read-only or unrestricted by registry scope'}")
+
+    section("ASSIGNED SKILLS AND SCRIPTS")
+    skills = metadata.get("skills") or []
+    scripts = metadata.get("scripts") or []
+    bullet("Skills: " + (", ".join(skills) if skills else "none assigned"))
+    bullet("Scripts: " + (", ".join(scripts) if scripts else "none assigned"))
+
+    section("HANDOFF TARGETS")
+    handoffs = metadata.get("handoff_targets") or []
+    bullet(", ".join(handoffs) if handoffs else "Return findings to orchestrator")
+
+
 def main():
+    try:
+        registry = load_agent_registry()
+    except ValueError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        sys.exit(2)
+
     if len(sys.argv) < 2 or sys.argv[1] in ("--help", "-h"):
         print("Usage: .venv/bin/python scripts/agent_context.py <agent_name>")
         print("       .venv/bin/python scripts/agent_context.py --list")
-        print(f"\nAvailable agents: {', '.join(sorted(AGENTS.keys()))}")
+        print(f"\nAvailable agents: {', '.join(sorted(registry))}")
         sys.exit(0)
 
     if sys.argv[1] == "--list":
         print("Available agents:\n")
-        for name in sorted(AGENTS.keys()):
-            desc = AGENTS[name]["description"]
+        for name in sorted(registry):
+            desc = registry[name].get("description", "")
             print(f"  {name:25s} {desc}")
         sys.exit(0)
 
     agent_name = sys.argv[1].lower().strip()
-    if agent_name not in AGENTS:
+    if agent_name not in registry:
         print(f"Unknown agent: {agent_name}")
-        print(f"Available: {', '.join(sorted(AGENTS.keys()))}")
+        print(f"Available: {', '.join(sorted(registry))}")
         sys.exit(1)
+
+    metadata = registry[agent_name]
+    description = metadata.get("description", "")
 
     print(f"╔{'═' * 58}╗")
     print(f"║  Agent: {agent_name:48s} ║")
-    print(f"║  {AGENTS[agent_name]['description']:56s} ║")
+    print(f"║  {description[:56]:56s} ║")
     print(f"╚{'═' * 58}╝")
 
-    AGENTS[agent_name]["func"]()
+    context = AGENTS.get(agent_name)
+    if context:
+        context["func"]()
+    else:
+        print_registry_context(agent_name, metadata)
 
     # Self-evolving system context
     section("PROJECT HEALTH")

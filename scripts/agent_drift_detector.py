@@ -21,7 +21,13 @@ from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _lib.agent_data import DRIFT_DIR, ensure_dirs, list_sessions, load_session
+from _lib.agent_data import (
+    DRIFT_DIR,
+    current_session_ids,
+    ensure_dirs,
+    list_sessions,
+    load_session,
+)
 from _lib.output import StatusLine, print_table
 
 # Drift rules for each agent type
@@ -211,10 +217,16 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Show all-time drift summary",
     )
-    parser.add_argument(
+    write_group = parser.add_mutually_exclusive_group()
+    write_group.add_argument(
+        "--write",
+        action="store_true",
+        help="Write to the managed drift-report directory",
+    )
+    write_group.add_argument(
         "--output",
         type=Path,
-        help="Output path (defaults to logs/agent-performance/drift/<session_id>.json)",
+        help="Write to an explicit output path",
     )
     return parser.parse_args()
 
@@ -322,13 +334,67 @@ def detect_drift(session_data: dict, agent_filter: str | None = None) -> dict:
         Drift analysis dict with events and scores.
     """
     session_id = session_data.get("session_id", "unknown")
-    agents_active = session_data.get("agents_active", [])
+    attributed_agents = session_data.get("agents_active", [])
     commits = session_data.get("commits", [])
     files_changed = session_data.get("files_changed", {})
 
+    if not attributed_agents:
+        return {
+            "session_id": session_id,
+            "analysis_timestamp": datetime.now().isoformat(),
+            "agents_analyzed": [],
+            "unmeasured_agents": [],
+            "drift_events": [],
+            "agent_drift_scores": {},
+            "summary": {"total_events": 0, "critical": 0, "warning": 0},
+            "evidence_available": False,
+            "no_evidence_reason": "Session has no attributed active agents",
+        }
+
     # Filter agents if requested
     if agent_filter:
-        agents_active = [a for a in agents_active if a == agent_filter]
+        if agent_filter not in attributed_agents:
+            return {
+                "session_id": session_id,
+                "analysis_timestamp": datetime.now().isoformat(),
+                "agents_analyzed": [],
+                "unmeasured_agents": [],
+                "drift_events": [],
+                "agent_drift_scores": {},
+                "summary": {"total_events": 0, "critical": 0, "warning": 0},
+                "evidence_available": False,
+                "no_evidence_reason": (
+                    f"Agent '{agent_filter}' is not attributed to this session"
+                ),
+            }
+        attributed_agents = [agent_filter]
+
+    agents_active = []
+    unmeasured_agents = []
+    for agent in attributed_agents:
+        rules = DRIFT_RULES.get(agent)
+        rule_count = 0
+        if rules:
+            rule_count = len(rules.get("prescribed", [])) + len(
+                rules.get("forbidden", [])
+            )
+        if rule_count:
+            agents_active.append(agent)
+        else:
+            unmeasured_agents.append(agent)
+
+    if not agents_active:
+        return {
+            "session_id": session_id,
+            "analysis_timestamp": datetime.now().isoformat(),
+            "agents_analyzed": [],
+            "unmeasured_agents": unmeasured_agents,
+            "drift_events": [],
+            "agent_drift_scores": {},
+            "summary": {"total_events": 0, "critical": 0, "warning": 0},
+            "evidence_available": False,
+            "no_evidence_reason": "No configured drift rules for attributed agents",
+        }
 
     all_drift_events: list[dict] = []
     agent_drift_scores: dict[str, float] = {}
@@ -362,9 +428,12 @@ def detect_drift(session_data: dict, agent_filter: str | None = None) -> dict:
         "session_id": session_id,
         "analysis_timestamp": datetime.now().isoformat(),
         "agents_analyzed": agents_active,
+        "unmeasured_agents": unmeasured_agents,
         "drift_events": all_drift_events,
         "agent_drift_scores": agent_drift_scores,
         "summary": summary,
+        "evidence_available": True,
+        "no_evidence_reason": None,
     }
 
 
@@ -490,14 +559,23 @@ def main() -> int:
         all_sessions = list_sessions()
         sessions_to_analyze = all_sessions[-args.last :]
     else:
-        # Default: analyze latest session
+        # Default means current evidence, not merely the newest historical file.
         all_sessions = list_sessions()
-        if not all_sessions:
-            StatusLine.fail("No sessions found in logs/agent-performance/sessions/")
+        current_sessions = current_session_ids(all_sessions)
+        if not current_sessions:
+            StatusLine.fail(
+                "No current session evidence found; use --session or --last "
+                "for an explicit historical analysis"
+            )
             return 1
-        sessions_to_analyze = [all_sessions[-1]]
+        sessions_to_analyze = [current_sessions[-1]]
+
+    if not sessions_to_analyze:
+        StatusLine.fail("No sessions selected for analysis")
+        return 1
 
     # Analyze each session
+    evidence_failure = False
     for session_id in sessions_to_analyze:
         StatusLine.ok(f"Analyzing session {session_id}...")
 
@@ -505,14 +583,25 @@ def main() -> int:
         session_data = load_session(session_id)
         if not session_data:
             StatusLine.fail(f"Session {session_id} not found")
+            evidence_failure = True
             continue
 
         # Detect drift
         drift_data = detect_drift(session_data, agent_filter=args.agent)
 
-        # Save report
-        output_path = save_drift_report(drift_data, output_path=args.output)
-        StatusLine.ok(f"Drift report saved to {output_path}")
+        if not drift_data.get("evidence_available", False):
+            StatusLine.fail(
+                f"No drift evidence for {session_id}: "
+                f"{drift_data.get('no_evidence_reason', 'unknown reason')}"
+            )
+            evidence_failure = True
+            continue
+
+        if args.output or args.write:
+            output_path = save_drift_report(drift_data, output_path=args.output)
+            StatusLine.ok(f"Drift report saved to {output_path}")
+        else:
+            StatusLine.info("Read-only analysis; pass --write or --output to save")
 
         # Print summary
         summary = drift_data["summary"]
@@ -552,7 +641,7 @@ def main() -> int:
                 rows.append([agent, f"{score:.2f}", status])
             print_table(["Agent", "Score", "Status"], rows)
 
-    return 0
+    return 1 if evidence_failure else 0
 
 
 if __name__ == "__main__":

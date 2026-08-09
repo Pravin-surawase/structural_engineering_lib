@@ -2,8 +2,14 @@
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
   "_updated": "2026-08-09",
   "_usage": "Run: .venv/bin/python scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "106/106 scripts mapped",
+  "_coverage": "107/107 scripts mapped",
   "tasks": {
+    "resolve python runtime": {
+      "group": "Infrastructure",
+      "script": "./scripts/python_runtime.sh --version",
+      "description": "Resolve the approved Python interpreter across primary and linked Git worktrees",
+      "permission": "ReadOnly"
+    },
     "choose codex model": {
       "group": "Agent Infrastructure",
       "script": ".venv/bin/python scripts/model_picker.py \"task description\"",
@@ -31,6 +37,10 @@
       "group": "Quality",
       "script": ".venv/bin/python scripts/check_all.py",
       "description": "Run all 29 validation checks across 8 categories in parallel (also: ./run.sh check)",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--fix": "WorkspaceWrite"
+      },
       "options": {
         "--quick": "Run 9 quick checks only (<30s)",
         "--category X": "Run checks for specific category",
@@ -49,6 +59,10 @@
       "group": "Quality",
       "script": ".venv/bin/python scripts/diagnose_ci.py",
       "description": "Diagnose, reproduce, and auto-fix CI failures locally or for a specific PR",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--local --fix": "WorkspaceWrite"
+      },
       "options": {
         "--pr N": "Check specific PR CI status",
         "--local": "Run checks locally",
@@ -159,17 +173,29 @@
     "end session": {
       "group": "Session",
       "script": ".venv/bin/python scripts/session.py end",
-      "description": "Validate handoff and update session docs"
+      "description": "Validate session closeout without hidden writes",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--fix": "WorkspaceWrite"
+      }
     },
     "session summary": {
       "group": "Session",
-      "script": ".venv/bin/python scripts/session.py summary --write",
-      "description": "Auto-generate session summary from git log — detects new hooks, endpoints, components"
+      "script": ".venv/bin/python scripts/session.py summary",
+      "description": "Preview a session summary from repository history",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--write": "WorkspaceWrite"
+      }
     },
     "sync doc numbers": {
       "group": "Session",
-      "script": ".venv/bin/python scripts/sync_numbers.py --fix",
-      "description": "Scan codebase metrics and update stale counts across 5 doc files",
+      "script": ".venv/bin/python scripts/sync_numbers.py",
+      "description": "Scan codebase metrics and report stale documentation counts",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--fix": "WorkspaceWrite"
+      },
       "options": {
         "(no flag)": "Dry run — scan and report only",
         "--fix": "Apply updates to files",
@@ -189,7 +215,8 @@
     "check git state": {
       "group": "Git",
       "script": "./scripts/validate_git_state.sh",
-      "description": "Validate git state before any git operation"
+      "description": "Validate git state before any git operation",
+      "permission": "ReadOnly"
     },
     "check api signatures": {
       "group": "Discovery",
@@ -581,7 +608,10 @@
       "script": "./run.sh session usage",
       "description": "Record or summarize model, reasoning, elapsed time, agents, manual dashboard usage, verification, and Git state without estimating billing tokens",
       "agent": "doc-master",
-      "permission": "WorkspaceWrite",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--checkpoint start|milestone|closeout": "WorkspaceWrite"
+      },
       "options": {
         "--checkpoint start|milestone|closeout": "Append a local checkpoint",
         "--summary": "Aggregate checkpoints by model/reasoning profile",
@@ -593,6 +623,7 @@
       "group": "Session",
       "script": ".venv/bin/python scripts/agent_context.py <agent_name>",
       "description": "Load tailored startup context for a specific agent",
+      "permission": "ReadOnly",
       "options": {
         "--list": "List available agents"
       }
@@ -609,7 +640,11 @@
     "self evolve": {
       "group": "Evolution",
       "script": ".venv/bin/python scripts/evolve.py",
-      "description": "Self-evolution cycle: health scan + feedback analysis + auto-fixes",
+      "description": "Preview the self-evolution health and feedback analysis cycle",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--fix": "WorkspaceWrite"
+      },
       "options": {
         "--fix": "Apply fixes and commit",
         "--review weekly": "Weekly auto-maintenance review"
@@ -619,6 +654,10 @@
       "group": "Governance",
       "script": ".venv/bin/python scripts/project_health.py",
       "description": "Unified project health scanner across 5 categories (0-100 score)",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--fix": "WorkspaceWrite"
+      },
       "options": {
         "--fix": "Auto-fix fixable issues",
         "--category <name>": "Scan specific category only"
@@ -627,12 +666,18 @@
     "agent compliance check": {
       "group": "Governance",
       "script": ".venv/bin/python scripts/agent_compliance_checker.py",
-      "description": "Verify agents followed their .agent.md rules"
+      "description": "Verify agents followed their .agent.md rules",
+      "permission": "ReadOnly"
     },
     "agent drift detection": {
       "group": "Governance",
       "script": ".venv/bin/python scripts/agent_drift_detector.py",
-      "description": "Detect when agents deviate from prescribed behavior"
+      "description": "Detect when agents deviate from prescribed behavior",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--write": "WorkspaceWrite",
+        "--output": "WorkspaceWrite"
+      }
     },
     "agent evolve instructions": {
       "group": "Evolution",
@@ -652,7 +697,12 @@
     "agent trends": {
       "group": "Evolution",
       "script": ".venv/bin/python scripts/agent_trends.py",
-      "description": "Time series analysis and degradation detection for agent performance"
+      "description": "Time series analysis and degradation detection for agent performance",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--write": "WorkspaceWrite",
+        "--output": "WorkspaceWrite"
+      }
     },
     "export paper data": {
       "group": "Infrastructure",
@@ -667,7 +717,8 @@
     "tool permissions": {
       "group": "Infrastructure",
       "script": ".venv/bin/python scripts/tool_permissions.py",
-      "description": "Manage and validate per-agent tool permission grants"
+      "description": "Resolve and validate explicit per-agent operation permissions",
+      "permission": "ReadOnly"
     },
     "audit permissions": {
       "group": "Infrastructure",

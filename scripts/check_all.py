@@ -34,8 +34,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
 from _lib.output import StatusLine, print_json
 
-VENV_PYTHON = str(REPO_ROOT / ".venv" / "bin" / "python")
 SCRIPTS_DIR = REPO_ROOT / "scripts"
+VENV_PYTHON = str(SCRIPTS_DIR / "python_runtime.sh")
 
 # Detect sensible default workers based on system
 _default_workers = min(4, max(1, (os.cpu_count() or 2)))

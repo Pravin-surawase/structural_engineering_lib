@@ -18,7 +18,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _lib.agent_data import list_sessions, load_session
+from _lib.agent_data import current_session_ids, list_sessions, load_session
 from _lib.output import StatusLine, print_json, print_table
 from _lib.utils import REPO_ROOT
 
@@ -318,11 +318,23 @@ def check_compliance(
             "session_id": session_data.get("session_id", "unknown"),
             "compliance_results": {},
             "overall_compliance_rate": 0.0,
+            "evidence_available": False,
+            "no_evidence_reason": "Session has no attributed active agents",
         }
 
     # Filter to specific agent if requested
     if agent_name:
-        agents_active = [agent_name] if agent_name in agents_active else []
+        if agent_name not in agents_active:
+            return {
+                "session_id": session_data.get("session_id", "unknown"),
+                "compliance_results": {},
+                "overall_compliance_rate": 0.0,
+                "evidence_available": False,
+                "no_evidence_reason": (
+                    f"Agent '{agent_name}' is not attributed to this session"
+                ),
+            }
+        agents_active = [agent_name]
 
     compliance_results = {}
 
@@ -388,6 +400,8 @@ def check_compliance(
         "session_id": session_data.get("session_id", "unknown"),
         "compliance_results": compliance_results,
         "overall_compliance_rate": round(overall_rate, 3),
+        "evidence_available": all_checked > 0,
+        "no_evidence_reason": None if all_checked > 0 else "No applicable rules found",
     }
 
 
@@ -462,26 +476,39 @@ def main() -> int:
     elif args.summary:
         session_ids = list_sessions()
     else:
-        # Default: check most recent session
+        # Default means current evidence, not merely the newest historical file.
         all_sessions = list_sessions()
-        session_ids = [all_sessions[-1]] if all_sessions else []
+        current_sessions = current_session_ids(all_sessions)
+        session_ids = [current_sessions[-1]] if current_sessions else []
 
     if not session_ids:
-        StatusLine.fail("No sessions found")
+        StatusLine.fail(
+            "No current session evidence found; use --session, --last, or "
+            "--summary for an explicit historical analysis"
+        )
         return 1
 
     # Check compliance for each session
     results_list = []
+    evidence_failure = False
     for session_id in session_ids:
         session_data = load_session(session_id)
         if not session_data:
             StatusLine.warn(f"Session not found: {session_id}")
+            evidence_failure = True
             continue
 
         result = check_compliance(session_data, args.agent)
+        if not result.get("evidence_available", False):
+            StatusLine.fail(
+                f"No compliance evidence for {session_id}: "
+                f"{result.get('no_evidence_reason', 'unknown reason')}"
+            )
+            evidence_failure = True
+            continue
         results_list.append(result)
 
-    if not results_list:
+    if evidence_failure or not results_list:
         StatusLine.fail("No valid sessions to check")
         return 1
 

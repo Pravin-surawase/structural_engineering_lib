@@ -26,8 +26,8 @@ set -euo pipefail
 
 # Resolve repo root from this script's location
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-VENV="$REPO_ROOT/.venv/bin/python"
 SCRIPTS="$REPO_ROOT/scripts"
+VENV="$SCRIPTS/python_runtime.sh"
 
 # ── Colors ─────────────────────────────────────────────────────────────────
 RED='\033[0;31m'
@@ -55,7 +55,7 @@ _hint() {
 
 _require_venv() {
     if [[ ! -x "$VENV" ]]; then
-        _error "Python venv not found at $VENV"
+        _error "Python runtime launcher not found at $VENV"
         echo "  Run: python3 -m venv .venv && .venv/bin/pip install -e Python/"
         exit 1
     fi
@@ -315,11 +315,6 @@ _cmd_test() {
             _require_venv
             "$VENV" "$SCRIPTS/test_import_pipeline.py" "${@:2}"
             ;;
-        --vba)
-            _require_venv
-            "$VENV" "$SCRIPTS/run_vba_smoke_tests.py" "${@:2}"
-            "$VENV" "$SCRIPTS/test_vba_adapter.py" "${@:2}"
-            ;;
         --cli)
             _require_venv
             "$VENV" "$SCRIPTS/external_cli_test.py" "${@:2}"
@@ -368,7 +363,6 @@ Options:
   (no args)          Run full pytest suite (default)
   --parity           FastAPI ↔ library parity tests
   --pipeline         Import → Design → 3D integration test
-  --vba              VBA adapter + smoke tests (macOS only)
   --cli              CLI cold-start smoke test
   --benchmark        API endpoint benchmarks
   --ci               Full local CI (black, ruff, mypy, pytest, coverage)
@@ -810,7 +804,7 @@ _run_sh() {
     local -a health_opts=('--fix' '--score' '--quick' '--category' '--json')
     local -a feedback_subs=('log' 'summary' 'pending' 'resolve' 'stats')
     local -a evolve_opts=('--fix' '--review' '--status' '--report' '--json')
-    local -a test_opts=('--parity' '--pipeline' '--vba' '--cli' '--benchmark' '--ci' '--stats')
+    local -a test_opts=('--parity' '--pipeline' '--cli' '--benchmark' '--ci' '--stats')
     local -a audit_opts=('--score' '--errors' '--inputs' '--diagnostics')
     local -a release_subs=('preflight' 'run' 'verify' 'check-docs' 'checklist')
     local -a efficiency_subs=('check' 'prompt')

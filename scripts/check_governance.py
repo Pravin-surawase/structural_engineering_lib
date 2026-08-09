@@ -39,6 +39,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
+from audit_permissions import audit_automation_permission_metadata
 
 # ═══════════════════════════════════════════════════════════════════════════
 # GOVERNANCE RULES
@@ -873,6 +874,20 @@ def check_redirect_stubs(report: GovernanceReport) -> None:
         report.add_pass("No redirect stubs")
 
 
+def check_automation_permissions(report: GovernanceReport) -> None:
+    """Fail when explicitly declared task/mode permissions are malformed."""
+    anomalies = audit_automation_permission_metadata()
+    if not anomalies:
+        report.add_pass("Automation permission metadata")
+        return
+    for anomaly in anomalies:
+        report.add_error(
+            anomaly.message,
+            location="scripts/automation-map.json",
+            rule=f"Permission metadata ({anomaly.agent})",
+        )
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 # CLI & OUTPUT
 # ═══════════════════════════════════════════════════════════════════════════
@@ -897,6 +912,7 @@ def run_compliance(report: GovernanceReport) -> None:
     check_docs_agents_structure(report)
     check_governance_location(report)
     check_redirect_stubs(report)
+    check_automation_permissions(report)
 
 
 def print_report(report: GovernanceReport) -> None:

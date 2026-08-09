@@ -9,6 +9,7 @@ Usage:
     .venv/bin/python scripts/agent_trends.py --monthly
     .venv/bin/python scripts/agent_trends.py --agent ops
     .venv/bin/python scripts/agent_trends.py --alert
+    .venv/bin/python scripts/agent_trends.py --weekly --write
 """
 
 from __future__ import annotations
@@ -122,7 +123,10 @@ def compute_trends(
                 agent_scores[agent].append(composite)
 
     trends: dict[str, dict] = {}
-    all_agents = [agent_name] if agent_name else sorted(agent_scores.keys())
+    if agent_name:
+        all_agents = [agent_name] if agent_name in agent_scores else []
+    else:
+        all_agents = sorted(agent_scores.keys())
 
     for agent in all_agents:
         scores = agent_scores.get(agent, [])
@@ -298,9 +302,13 @@ def main() -> int:
     parser.add_argument(
         "--alert", action="store_true", help="Flag agents with degrading performance"
     )
-    parser.add_argument(
-        "--output", type=Path, help="Save output to file (default: TRENDS_DIR)"
+    write_group = parser.add_mutually_exclusive_group()
+    write_group.add_argument(
+        "--write",
+        action="store_true",
+        help="Write to the managed trends directory",
     )
+    write_group.add_argument("--output", type=Path, help="Write to an explicit path")
     parser.add_argument(
         "--json", action="store_true", help="Output JSON only (no table)"
     )
@@ -309,8 +317,6 @@ def main() -> int:
 
     if not args.weekly and not args.monthly and not args.alert:
         args.weekly = True
-
-    ensure_dirs()
 
     all_sessions = list_sessions()
     if not all_sessions:
@@ -342,13 +348,15 @@ def main() -> int:
         "alerts": alerts,
     }
 
-    # Save to file
+    # Default analysis is read-only. Writes require an explicit mode.
     if args.output:
         args.output.write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
         StatusLine.ok(f"Saved trends to {args.output}")
-    else:
+    elif args.write:
         output_path = save_trends(period, output, agent_name=args.agent)
         StatusLine.ok(f"Saved trends to {output_path.relative_to(Path.cwd())}")
+    else:
+        StatusLine.info("Read-only analysis; pass --write or --output to save")
 
     # Display output
     if args.json:
