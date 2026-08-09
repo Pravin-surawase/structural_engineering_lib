@@ -1553,36 +1553,45 @@
 <h1 id="pre-release-checklist">Pre-Release Checklist<a class="headerlink" href="#pre-release-checklist" title="Permanent link">&para;</a></h1>
 <p><strong>Type:</strong> Reference
 <strong>Audience:</strong> All Agents
-<strong>Status:</strong> Active
+<strong>Status:</strong> Review
 <strong>Importance:</strong> High
 <strong>Created:</strong> 2026-03-31
-<strong>Last Updated:</strong> 2026-04-04</p>
+<strong>Last Updated:</strong> 2026-08-09</p>
 <h2 id="current-state">Current State<a class="headerlink" href="#current-state" title="Permanent link">&para;</a></h2>
-<p>Version: 0.21.6</p>
+<p>Installed metadata version: 0.21.6</p>
 <ul>
-<li><strong>Branch:</strong> main</li>
-<li><strong>CI Status:</strong> All workflows passing</li>
+<li><strong>Branch:</strong> <code>task/LIB-IS456-V1</code></li>
+<li><strong>Draft PR:</strong> #693; PR Gate run <code>31321772342</code> green for implementation commit <code>301ddec7</code></li>
+<li><strong>Release target:</strong> provisional v0.23.0; final version is owner-only</li>
+<li><strong>Publication state:</strong> HOLD until CI artifact evidence and owner approval</li>
 </ul>
 <h2 id="beta-readiness-checklist">Beta Readiness Checklist<a class="headerlink" href="#beta-readiness-checklist" title="Permanent link">&para;</a></h2>
 <h3 id="required-before-beta">Required Before Beta<a class="headerlink" href="#required-before-beta" title="Permanent link">&para;</a></h3>
 <ul>
 <li>[x] Core beam design (flexure, shear, detailing) complete</li>
-<li>[x] IS 456 clause compliance verified with SP:16 benchmarks</li>
-<li>[x] FastAPI REST + WebSocket API operational (60 endpoints)</li>
+<li>[x] Beam supported-route regression evidence retained; no blanket formula-certification claim</li>
+<li>[x] FastAPI public-service adoption demonstrated for beam, column, footing and slab</li>
 <li>[x] React frontend with 3D visualization</li>
 <li>[x] CSV/ETABS import pipeline working</li>
 <li>[x] Export pipeline (BBS, DXF, HTML report)</li>
-<li>[x] 3,401+ tests passing across 3 platforms</li>
-<li>[x] Column design functions fully tested with SP:16 benchmarks</li>
+<li>[ ] Final branch CI green on all required platforms</li>
+<li>[x] Column supported-route correction and focused benchmarks pass</li>
 <li>[x] Column detailing (Cl 26.5.3) and ductile detailing (IS 13920) complete</li>
 <li>[x] IS 13920 seismic ductile detailing integration complete</li>
-<li>[x] Footing design module implemented (Phase 3, 4 modules, 61 tests)</li>
-<li>[ ] Slab design module implemented</li>
-<li>[ ] API stability guarantees documented</li>
+<li>[x] Isolated-footing load-transfer slice and legacy A1 correction implemented</li>
+<li>[x] Bounded one-way and two-way slab workflows implemented</li>
+<li>[x] Canonical API facade, compatibility paths and capability registry documented</li>
+<li>[x] Public <code>clauses.json</code> contains identifiers/project metadata only</li>
+<li>[x] Protected PDFs and extracted clause/table/formula candidates are local, hash-inventoried and Git-ignored</li>
+<li>[x] Wheel/sdist allowlist and exact-artifact UAT encoded in publish CI</li>
+<li>[ ] CI-built artifact manifest, hashes, inventories and SBOM reviewed</li>
+<li>[ ] Exact CI-built wheel UAT evidence reviewed</li>
+<li>[ ] Owner approves TestPyPI upload, if desired</li>
+<li>[ ] Owner approves final version, tag and production PyPI publication</li>
 </ul>
 <h3 id="required-before-10">Required Before 1.0<a class="headerlink" href="#required-before-10" title="Permanent link">&para;</a></h3>
 <ul>
-<li>[ ] All structural elements (beam, column, slab, footing) complete</li>
+<li>[ ] Stable API guarantee for every advertised supported route</li>
 <li>[ ] Professional validation by licensed structural engineer</li>
 <li>[ ] Performance benchmarks published</li>
 <li>[ ] Security audit complete (OWASP compliance)</li>

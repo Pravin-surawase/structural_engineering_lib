@@ -23,7 +23,7 @@
     
     
       
-        <title>GitHub Copilot Agent Quick Start - structural_engineering_lib</title>
+        <title>Agent Quick Start - structural_engineering_lib</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#github-copilot-agent-quick-start" class="md-skip">
+        <a href="#agent-quick-start" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              GitHub Copilot Agent Quick Start
+              Agent Quick Start
             
           </span>
         </div>
@@ -1481,10 +1481,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quick-start-one-command" class="md-nav__link">
+  <a href="#git-and-github" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🚀 Quick Start (One Command)
+        Git and GitHub
       
     </span>
   </a>
@@ -1492,143 +1492,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#git-pager-prevention-handled-by-agent_startsh" class="md-nav__link">
+  <a href="#closeout" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Git Pager Prevention (Handled by agent_start.sh)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quick Commands
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#common-workflows" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Workflows
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Common Workflows">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#safe-commit-and-push-use-ai_commitsh-instead" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Safe Commit and Push (USE ai_commit.sh INSTEAD)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#safe-mergerebase-use-recover_git_statesh-instead" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Safe Merge/Rebase (USE recover_git_state.sh INSTEAD)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-not-to-do" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What NOT to Do
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="What NOT to Do">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#commands-that-lock-terminal" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ❌ Commands That Lock Terminal:
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#interactive-commands" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ❌ Interactive Commands:
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#if-terminal-gets-stuck" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        If Terminal Gets Stuck
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#session-checklist" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Session Checklist
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#useful-aliases-created-by-setup-script" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Useful Aliases (Created by Setup Script)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#additional-resources" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Additional Resources
+        Closeout
       
     </span>
   </a>
@@ -1650,157 +1517,61 @@
                 
                   
 
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <span class="md-tag">codex</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">git</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">setup</span>
+      
+    
+  </nav>
+
 
   
   
 
 
-<h1 id="github-copilot-agent-quick-start">GitHub Copilot Agent Quick Start<a class="headerlink" href="#github-copilot-agent-quick-start" title="Permanent link">&para;</a></h1>
-<p><strong>Type:</strong> Guide
-<strong>Audience:</strong> All Agents
-<strong>Status:</strong> Approved
-<strong>Importance:</strong> High
-<strong>Version:</strong> 2.0.0
-<strong>Created:</strong> 2026-01-08
-<strong>Last Updated:</strong> 2026-03-29</p>
-<hr />
-<blockquote>
-<p><strong>⚠️ CONSOLIDATED:</strong> This document has been simplified.</p>
-<p><strong>Use instead:</strong> <code>./scripts/agent_start.sh</code> (handles everything in one command)</p>
-<p>For detailed instructions: See <a href="../../.github/copilot-instructions.md">copilot-instructions.md</a></p>
-</blockquote>
-<hr />
-<h2 id="quick-start-one-command">🚀 Quick Start (One Command)<a class="headerlink" href="#quick-start-one-command" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># This does everything: git config, env setup, pre-flight, session start</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./scripts/agent_start.sh<span class="w"> </span>--quick
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># With agent-specific guidance:</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>./scripts/agent_start.sh<span class="w"> </span>--agent<span class="w"> </span>governance<span class="w"> </span>--quick<span class="w">   </span><span class="c1"># Governance focus</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>./scripts/agent_start.sh<span class="w"> </span>--agent<span class="w"> </span>ops<span class="w"> </span>--quick<span class="w">          </span><span class="c1"># Git/automation focus</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>./scripts/agent_start.sh<span class="w"> </span>--agent<span class="w"> </span>frontend<span class="w"> </span>--quick<span class="w">     </span><span class="c1"># UI focus</span>
+<h1 id="agent-quick-start">Agent Quick Start<a class="headerlink" href="#agent-quick-start" title="Permanent link">&para;</a></h1>
+<p>Run from the repository root:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>brief<span class="w"> </span>--agent<span class="w"> </span>&lt;role&gt;
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>start
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>git<span class="w"> </span>status<span class="w"> </span>--short
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>git<span class="w"> </span>branch<span class="w"> </span>--show-current
 </code></pre></div>
-<hr />
-<h2 id="git-pager-prevention-handled-by-agent_startsh">Git Pager Prevention (Handled by agent_start.sh)<a class="headerlink" href="#git-pager-prevention-handled-by-agent_startsh" title="Permanent link">&para;</a></h2>
-<p>If you're NOT using the unified script, run manually:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Status</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>git<span class="w"> </span>status<span class="w"> </span>--short<span class="w">              </span><span class="c1"># ✅ Safe</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>git<span class="w"> </span>status<span class="w"> </span>--porcelain<span class="w">          </span><span class="c1"># ✅ Safe</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>git<span class="w"> </span>--no-pager<span class="w"> </span>status<span class="w">           </span><span class="c1"># ✅ Safe</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>git<span class="w"> </span>status<span class="w">                      </span><span class="c1"># ❌ DANGEROUS - May lock terminal</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Log</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>-n<span class="w"> </span><span class="m">20</span><span class="w">         </span><span class="c1"># ✅ Safe</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>git<span class="w"> </span>--no-pager<span class="w"> </span>log<span class="w">              </span><span class="c1"># ✅ Safe</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>git<span class="w"> </span>log<span class="w">                         </span><span class="c1"># ❌ DANGEROUS - Will lock terminal</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1"># Diff</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>git<span class="w"> </span>diff<span class="w"> </span>--stat<span class="w">                 </span><span class="c1"># ✅ Safe</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>git<span class="w"> </span>diff<span class="w"> </span>--name-only<span class="w">            </span><span class="c1"># ✅ Safe</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>git<span class="w"> </span>--no-pager<span class="w"> </span>diff<span class="w">             </span><span class="c1"># ✅ Safe</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>git<span class="w"> </span>diff<span class="w">                        </span><span class="c1"># ❌ DANGEROUS - May lock terminal</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="c1"># Branch</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>git<span class="w"> </span>branch<span class="w"> </span>--list<span class="w">               </span><span class="c1"># ✅ Safe</span>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>git<span class="w"> </span>--no-pager<span class="w"> </span>branch<span class="w"> </span>-a<span class="w">        </span><span class="c1"># ✅ Safe</span>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>git<span class="w"> </span>branch<span class="w"> </span>-a<span class="w">                   </span><span class="c1"># ❌ DANGEROUS - May lock terminal</span>
+<p>Use <code>.venv/bin/python</code> for project Python commands. For validation and discovery:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>./run.sh<span class="w"> </span>check<span class="w"> </span>--quick
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./run.sh<span class="w"> </span><span class="nb">test</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>./run.sh<span class="w"> </span>find<span class="w"> </span><span class="s2">&quot;topic&quot;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>./run.sh<span class="w"> </span>find<span class="w"> </span>--api<span class="w"> </span>function_name
 </code></pre></div>
-<hr />
-<h2 id="quick-commands">Quick Commands<a class="headerlink" href="#quick-commands" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Check status</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>git<span class="w"> </span>status<span class="w"> </span>--short
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># View recent commits</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>-n<span class="w"> </span><span class="m">10</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># See what changed</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>git<span class="w"> </span>diff<span class="w"> </span>--name-only
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1"># Current branch</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>git<span class="w"> </span>rev-parse<span class="w"> </span>--abbrev-ref<span class="w"> </span>HEAD
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="c1"># Commit/push are handled by automation</span>
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;feat: your message&quot;</span>
-</code></pre></div>
-<hr />
-<h2 id="common-workflows">Common Workflows<a class="headerlink" href="#common-workflows" title="Permanent link">&para;</a></h2>
-<blockquote>
-<p><strong>⚠️ USE AUTOMATION INSTEAD OF MANUAL GIT:</strong></p>
-<p>The commands below show the manual process for educational purposes only.
-<strong>Always use <code>./scripts/ai_commit.sh "message"</code> for commits.</strong></p>
-</blockquote>
-<h3 id="safe-commit-and-push-use-ai_commitsh-instead">Safe Commit and Push (USE ai_commit.sh INSTEAD)<a class="headerlink" href="#safe-commit-and-push-use-ai_commitsh-instead" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># ✅ PREFERRED (one command does everything):</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;feat: implement feature&quot;</span>
-</code></pre></div>
-<h3 id="safe-mergerebase-use-recover_git_statesh-instead">Safe Merge/Rebase (USE recover_git_state.sh INSTEAD)<a class="headerlink" href="#safe-mergerebase-use-recover_git_statesh-instead" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># ✅ PREFERRED (handles all recovery automatically):</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>./scripts/recover_git_state.sh
-</code></pre></div>
-<hr />
-<h2 id="what-not-to-do">What NOT to Do<a class="headerlink" href="#what-not-to-do" title="Permanent link">&para;</a></h2>
-<h3 id="commands-that-lock-terminal">❌ Commands That Lock Terminal:<a class="headerlink" href="#commands-that-lock-terminal" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>git<span class="w"> </span>log<span class="w">                    </span><span class="c1"># Opens pager</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>git<span class="w"> </span>diff<span class="w">                   </span><span class="c1"># Opens pager</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>git<span class="w"> </span>status<span class="w">                 </span><span class="c1"># Opens pager if long output</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>git<span class="w"> </span>branch<span class="w"> </span>-a<span class="w">              </span><span class="c1"># Opens pager if many branches</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>git<span class="w"> </span>show<span class="w"> </span><span class="o">[</span>commit<span class="o">]</span><span class="w">          </span><span class="c1"># Opens pager</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>git<span class="w"> </span>blame<span class="w"> </span><span class="o">[</span>file<span class="o">]</span><span class="w">           </span><span class="c1"># Opens pager on large files</span>
-</code></pre></div>
-<h3 id="interactive-commands">❌ Interactive Commands:<a class="headerlink" href="#interactive-commands" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>git<span class="w"> </span>commit<span class="w">                 </span><span class="c1"># Opens editor (use -m flag)</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>git<span class="w"> </span>rebase<span class="w"> </span>-i<span class="w">              </span><span class="c1"># Opens editor (use non-interactive)</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>git<span class="w"> </span>clean<span class="w"> </span>-i<span class="w">               </span><span class="c1"># Prompts for input (use -fd)</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>rm<span class="w"> </span>-i<span class="w"> </span><span class="o">[</span>file<span class="o">]</span><span class="w">              </span><span class="c1"># Prompts for input (use -f)</span>
-</code></pre></div>
-<hr />
-<h2 id="if-terminal-gets-stuck">If Terminal Gets Stuck<a class="headerlink" href="#if-terminal-gets-stuck" title="Permanent link">&para;</a></h2>
-<p><strong>Symptoms:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>&gt; git status
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>The command opened the alternate buffer.
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>[All commands now blocked]
-</code></pre></div></p>
-<p><strong>Recovery:</strong>
-1. User must press <code>q</code> in the terminal to quit pager
-2. Or press <code>Ctrl+C</code> to force quit
-3. Then run: <code>./scripts/agent_start.sh --quick</code> (handles all git pager config)
-4. Continue with safe commands</p>
-<hr />
-<h2 id="session-checklist">Session Checklist<a class="headerlink" href="#session-checklist" title="Permanent link">&para;</a></h2>
-<p>At the start of every Copilot session:</p>
-<ul>
-<li>[ ] Run <code>./scripts/agent_start.sh --quick</code> (handles everything automatically)</li>
-<li>[ ] Verify with <code>git status --short</code> (should work without paging)</li>
-<li>[ ] Check current branch: <code>git rev-parse --abbrev-ref HEAD</code></li>
-<li>[ ] Check for uncommitted changes: <code>git diff --name-only</code></li>
-<li>[ ] Check merge state: <code>test -f .git/MERGE_HEAD &amp;&amp; echo "Merge in progress" || echo "Clean"</code></li>
-</ul>
-<details>
-<summary>🔧 Fallback: Manual pager config (if agent_start.sh unavailable)</summary>
-
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">source</span><span class="w"> </span>scripts/agent_start.sh
-</code></pre></div>
-
-</details>
-
-<hr />
-<h2 id="useful-aliases-created-by-setup-script">Useful Aliases (Created by Setup Script)<a class="headerlink" href="#useful-aliases-created-by-setup-script" title="Permanent link">&para;</a></h2>
-<p>After running <code>./scripts/agent_start.sh</code>, you can use:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>git<span class="w"> </span>st<span class="w">      </span><span class="c1"># Same as: git status --short</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>git<span class="w"> </span>lg<span class="w">      </span><span class="c1"># Same as: git log --oneline -n 20</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>git<span class="w"> </span>df<span class="w">      </span><span class="c1"># Same as: git diff --stat</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>git<span class="w"> </span>br<span class="w">      </span><span class="c1"># Same as: git branch --list</span>
-</code></pre></div>
-<hr />
-<h2 id="additional-resources">Additional Resources<a class="headerlink" href="#additional-resources" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Full pitfalls guide:</strong> <a href="../../reference/agent-automation-pitfalls/">agent-automation-pitfalls.md</a></li>
-<li><strong>Agent 8 automation:</strong> <a href="../../agents/guides/agent-8-automation/">agent-8-automation.md</a> (quick start + script index)</li>
-<li><strong>Agent 8 protocol:</strong> <a href="../../agents/guides/agent-8-git-ops/">agent-8-git-ops.md</a></li>
-<li><strong>Copilot instructions:</strong> <a href="../../.github/copilot-instructions.md">copilot-instructions.md</a></li>
-</ul>
-<hr />
-<p><strong>Last Updated:</strong> 2026-03-29</p>
+<h2 id="git-and-github">Git and GitHub<a class="headerlink" href="#git-and-github" title="Permanent link">&para;</a></h2>
+<p>Codex owns branch inspection, scoped staging, conventional commits, pushes, and
+connected GitHub PR creation or updates. Repository scripts do not perform those
+operations. Follow the
+<a href="../../git-automation/git-workflow-single-source/">canonical workflow</a>.</p>
+<p>Never bypass hooks or required checks, force push, use <code>git rebase --skip</code>, or
+run automated Git recovery. Merge, release, issue closure, and branch deletion
+require explicit user confirmation.</p>
+<h2 id="closeout">Closeout<a class="headerlink" href="#closeout" title="Permanent link">&para;</a></h2>
+<p>Run targeted checks while editing, then one closeout gate. Return the intended
+files and suggested conventional commit to Codex. Preserve unrelated work in a
+dirty worktree.</p>
 
 
 

@@ -2626,16 +2626,14 @@ This guide is designed so an AI agent or developer can follow it end-to-end with
 <hr />
 <h2 id="daily-workflow-commands">Daily Workflow Commands<a class="headerlink" href="#daily-workflow-commands" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>start<span class="w">              </span><span class="c1"># Begin work session</span>
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>./run.sh<span class="w"> </span>commit<span class="w"> </span><span class="s2">&quot;type: message&quot;</span><span class="w">     </span><span class="c1"># Safe commit + push (ALWAYS use this)</span>
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>./run.sh<span class="w"> </span>check<span class="w"> </span>--quick<span class="w">              </span><span class="c1"># Fast validation</span>
-<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>./run.sh<span class="w"> </span><span class="nb">test</span><span class="w">                       </span><span class="c1"># Run pytest suite</span>
-<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>./run.sh<span class="w"> </span>find<span class="w"> </span><span class="s2">&quot;topic&quot;</span><span class="w">               </span><span class="c1"># Find the right script</span>
-<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>./run.sh<span class="w"> </span>find<span class="w"> </span>--api<span class="w"> </span>func_name<span class="w">       </span><span class="c1"># Get exact API parameter names</span>
-<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>./run.sh<span class="w"> </span>pr<span class="w"> </span>create<span class="w"> </span>TASK-XXX<span class="w"> </span><span class="s2">&quot;desc&quot;</span><span class="w">  </span><span class="c1"># Start a PR branch</span>
-<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>./run.sh<span class="w"> </span>pr<span class="w"> </span>finish<span class="w">                  </span><span class="c1"># Ship the PR</span>
-<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>end<span class="w">                </span><span class="c1"># End-of-session logging</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>./run.sh<span class="w"> </span>check<span class="w"> </span>--quick<span class="w">              </span><span class="c1"># Fast validation</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>./run.sh<span class="w"> </span><span class="nb">test</span><span class="w">                       </span><span class="c1"># Run pytest suite</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>./run.sh<span class="w"> </span>find<span class="w"> </span><span class="s2">&quot;topic&quot;</span><span class="w">               </span><span class="c1"># Find the right script</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>./run.sh<span class="w"> </span>find<span class="w"> </span>--api<span class="w"> </span>func_name<span class="w">       </span><span class="c1"># Get exact API parameter names</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>end<span class="w">                </span><span class="c1"># End-of-session logging</span>
 </code></pre></div>
-<p><strong>Git rule:</strong> NEVER use manual <code>git add/commit/push</code>. Always use <code>./scripts/ai_commit.sh</code> or <code>./run.sh commit</code>.</p>
+<p><strong>Git rule:</strong> Codex owns scoped commits, pushes, and connected GitHub PR work.
+Repository lifecycle wrappers are retired.</p>
 <hr />
 <h2 id="architecture-overview">Architecture Overview<a class="headerlink" href="#architecture-overview" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>structural_engineering_lib/

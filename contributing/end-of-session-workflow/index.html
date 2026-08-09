@@ -1949,8 +1949,7 @@
 <h3 id="step-2-review-and-fix-issues">Step 2: Review and Fix Issues 🔧<a class="headerlink" href="#step-2-review-and-fix-issues" title="Permanent link">&para;</a></h3>
 <p><strong>If checks fail, fix them:</strong></p>
 <p><strong>❌ Uncommitted changes detected:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Commit via automation (stages internally)</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;session: document work&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Codex reviews and includes task-owned session records in the scoped commit.</span>
 </code></pre></div></p>
 <p><strong>❌ Session log entry missing:</strong>
 - Script auto-creates entry with <code>--fix</code>
@@ -2111,7 +2110,7 @@
 <h2 id="quick-reference-by-session-type">🔄 Quick Reference by Session Type<a class="headerlink" href="#quick-reference-by-session-type" title="Permanent link">&para;</a></h2>
 <h3 id="session-docs-rule-avoid-the-commit-loop">✅ Session Docs Rule (Avoid the Commit Loop)<a class="headerlink" href="#session-docs-rule-avoid-the-commit-loop" title="Permanent link">&para;</a></h3>
 <p>Update <code>docs/SESSION_LOG.md</code> and <code>docs/planning/next-session-brief.md</code> <strong>in the same PR</strong>
-before running <code>finish_task_pr.sh</code>. Record the <strong>PR number</strong> (not the merge hash) in the
+before asking Codex to close out the PR. Record the <strong>PR number</strong> (not the merge hash) in the
 SESSION_LOG entry so you never need a post-merge log commit.</p>
 <h3 id="routine-bug-fix-1-2-hours">Routine Bug Fix (1-2 hours)<a class="headerlink" href="#routine-bug-fix-1-2-hours" title="Permanent link">&para;</a></h3>
 <ol>

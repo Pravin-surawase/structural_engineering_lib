@@ -1,0 +1,4089 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export">
+      
+      
+      
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/planning/is456-library-first-master-plan/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>IS 456 Library-First Completion and PyPI Master Plan - structural_engineering_lib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lib-is456-v1-is-456-library-first-completion-and-pypi-master-plan" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="structural_engineering_lib" class="md-header__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            structural_engineering_lib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              IS 456 Library-First Completion and PyPI Master Plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/agent-bootstrap/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/copilot-agents-usage-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/api/" class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/project-overview/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
+          
+  
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/" class="md-tabs__link">
+          
+  
+  
+  API Docs
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="structural_engineering_lib" class="md-nav__button md-logo" aria-label="structural_engineering_lib" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    structural_engineering_lib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pravin-surawase/structural_engineering_lib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pravin-surawase/structural_engineering_lib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/agent-bootstrap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/python-quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start (Python)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/beginners-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Beginner's Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/mac-mini-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mac Setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/copilot-agents-usage-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Copilot Agents
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/cost-optimization-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cost Optimization
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/design-suggestions-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Suggestions
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/insights-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Insights
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/is456-formulas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IS 456 Formulas
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/error-codes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Error Codes
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/project-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/data-flow-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/dependencies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dependencies
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Contributing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development Guide
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing Strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Standards
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Docs
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Docs
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    structural_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-executive-decision" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Executive decision
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-relationship-to-current-repository-plans" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Relationship to current repository plans
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-why-this-plan-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Why this plan exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-current-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Current baseline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-program-scope-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Program scope contract
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Program scope contract">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-included-library-outcomes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Included library outcomes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1 Included library outcomes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#beam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beam
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Column
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isolated-footing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Isolated footing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solid-slabs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solid slabs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#public-python-package" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Python package
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-explicit-non-goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Explicit non-goals
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-completion-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Completion definitions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Completion definitions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-function-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Function complete
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-element-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Element complete
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-library-release-candidate-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 Library release candidate complete
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-pypi-release-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.4 PyPI release complete
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-target-architecture-and-dependency-direction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Target architecture and dependency direction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-source-benchmark-and-provenance-foundation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Source, benchmark, and provenance foundation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Source, benchmark, and provenance foundation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-source-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Source hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-protected-content-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Protected-content rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-benchmark-promotion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Benchmark promotion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#84-reuse-from-structproof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.4 Reuse from StructProof
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-agent-operating-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Agent operating model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Agent operating model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-concurrency-and-ownership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Concurrency and ownership
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-role-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 Role map
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-shared-file-locks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 Shared-file locks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-verification-and-gate-ladder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Verification and gate ladder
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Verification and gate ladder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#during-a-calculation-packet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        During a calculation packet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#before-one-packet-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before one packet commit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#at-a-stable-integrated-milestone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        At a stable integrated milestone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#release-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Release only
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-dependency-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Dependency graph
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-phase-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        12. Phase plan
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Phase plan">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-0-activate-a-clean-lane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 0 — Activate a clean lane
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-truth-and-contract-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 1 — Truth and contract baseline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-existing-element-closure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 2 — Existing-element closure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-isolated-footing-closure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 3 — Isolated-footing closure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-slab-foundation-and-one-way-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 4 — Slab foundation and one-way core
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-5-two-way-slab-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 5 — Two-way slab core
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-6-stable-python-surface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 6 — Stable Python surface
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-7-publication-evidence-and-package-content-closeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 7 — Publication evidence and package-content closeout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-8-release-candidate-and-pypi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 8 — Release candidate and PyPI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-9-thin-fastapi-consumer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase 9 — Thin FastAPI consumer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-worker-ready-packets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        13. Worker-ready packets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="13. Worker-ready packets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#p0-owner-scope-source-and-claim-lock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P0 — Owner scope, source, and claim lock
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p1-capability-evidence-and-claims-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P1 — Capability, evidence, and claims matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p2-public-api-and-packaging-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2 — Public API and packaging inventory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p3-beam-closure-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P3 — Beam closure audit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p4-column-closure-audit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P4 — Column closure audit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p5-isolated-footing-dowelbearing-transfer-slice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P5 — Isolated-footing dowel/bearing-transfer slice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p6-slab-contracts-and-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P6 — Slab contracts and classification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p7-one-way-slab-coefficient-and-design-slice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P7 — One-way slab coefficient and design slice
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p8-one-way-slab-detailing-and-serviceability-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P8 — One-way slab detailing and serviceability boundary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p9-two-way-coefficient-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P9 — Two-way coefficient contract
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p10-two-way-slab-design-and-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P10 — Two-way slab design and distribution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p11-stable-python-facade-and-capability-discovery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P11 — Stable Python facade and capability discovery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p12-publication-content-evidence-and-claims-closeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P12 — Publication content, evidence, and claims closeout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#p13-local-prepublication-and-ci-exact-artifact-release-candidate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P13 — Local prepublication and CI exact-artifact release candidate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fapi-1-thin-fastapi-adoption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FAPI-1 — Thin FastAPI adoption
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-safe-parallel-execution-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        14. Safe parallel execution schedule
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-worker-packet-prompt-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        15. Worker packet prompt template
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#16-logs-and-durable-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        16. Logs and durable state
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="16. Logs and durable state">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#execution-ledger-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution ledger template
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#required-handoff-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required handoff content
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#17-public-api-and-version-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        17. Public API and version policy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#18-pypi-release-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        18. PyPI release control
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#19-risk-register-and-containment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        19. Risk register and containment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-immediate-kickoff-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20. Immediate kickoff checklist
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="20. Immediate kickoff checklist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#current-execution-checkpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current execution checkpoint
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#21-final-program-acceptance-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        21. Final program acceptance checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-program-closeout-statement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        22. Program closeout statement
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<p><strong>Type:</strong> Plan
+<strong>Audience:</strong> All Agents
+<strong>Status:</strong> In Progress
+<strong>Importance:</strong> Critical
+<strong>Created:</strong> 2026-08-09
+<strong>Last Updated:</strong> 2026-08-09</p>
+<hr />
+<h1 id="lib-is456-v1-is-456-library-first-completion-and-pypi-master-plan">LIB-IS456-V1 — IS 456 Library-First Completion and PyPI Master Plan<a class="headerlink" href="#lib-is456-v1-is-456-library-first-completion-and-pypi-master-plan" title="Permanent link">&para;</a></h1>
+<h2 id="1-executive-decision">1. Executive decision<a class="headerlink" href="#1-executive-decision" title="Permanent link">&para;</a></h2>
+<p>The Python package is the product. FastAPI, React, command-line workflows,
+reports, ETABS adapters, and future integrations are consumers of that product.</p>
+<p>This program completes a bounded, publishable IS 456 reinforced-concrete core
+before broad FastAPI or React feature work resumes. It does <strong>not</strong> claim to
+implement every provision of IS 456 or every structural element covered by the
+standard.</p>
+<p>The target capability for this program is:</p>
+<ul>
+<li>beam analysis, design, checks, and detailing within the currently supported
+  beam cases;</li>
+<li>column analysis, design, checks, and detailing within the currently supported
+  rectangular/square and documented column cases;</li>
+<li>isolated square/rectangular concentric footing core, including the remaining
+  dowel/bearing-transfer slice;</li>
+<li>solid one-way and two-way slab core for explicitly approved support and load
+  cases;</li>
+<li>one stable, discoverable Python public API;</li>
+<li>explicit units, assumptions, limitations, source identity, and benchmark
+  status at the public boundary;</li>
+<li>a clean wheel and source distribution suitable for PyPI;</li>
+<li>exact-artifact verification before and after publication.</li>
+</ul>
+<p>The target is called <strong>Supported IS 456 RC Core</strong>, not “complete IS 456.” Walls,
+stairs, deep beams, flat slabs, combined/strap/raft/pile-cap footings, specialist
+structures, and other code families remain outside this program unless the
+owner changes scope through a separate decision.</p>
+<h2 id="2-relationship-to-current-repository-plans">2. Relationship to current repository plans<a class="headerlink" href="#2-relationship-to-current-repository-plans" title="Permanent link">&para;</a></h2>
+<p>This document is the immediate execution authority for the library-first IS 456
+lane once activated by the owner.</p>
+<p>It narrows the immediate IS 456 execution order in
+<code>docs/planning/library-expansion-blueprint-v5.md</code>. It does not reverse that
+document's code-first package architecture or decide later ACI/EC2 work.</p>
+<p>The owner activated this plan on 2026-08-09 after the following sequence:</p>
+<ol>
+<li>MAINT-008 Packet B was reviewed, repaired, and squash-merged as PR #691 at
+   <code>056bfad77987ce513f6289fd0fee5068667d6f5d</code>.</li>
+<li>v0.21.7 was explicitly deferred because its publication does not advance the
+   library-first program and <code>clauses.json</code> remains under publication review.</li>
+<li><code>task/LIB-IS456-V1</code> was created from the exact merged main commit.</li>
+<li>P1 and P2 began as read-only audits before calculation work.</li>
+</ol>
+<p>No worker may mix library feature work into <code>task/MAINT-008-B</code>, merge PR #691,
+publish v0.21.7, create tags, change GitHub settings, or close issues.</p>
+<h2 id="3-why-this-plan-exists">3. Why this plan exists<a class="headerlink" href="#3-why-this-plan-exists" title="Permanent link">&para;</a></h2>
+<p>The original architecture direction was sound, but implementation and product
+layers grew at the same time. The project now has strong code and test assets,
+but several signals can be misread:</p>
+<ul>
+<li>a high parity score mainly demonstrates test, hook, and endpoint wiring;</li>
+<li>a large test count demonstrates software regression evidence, not complete
+  engineering coverage;</li>
+<li>clause decorators and clause registries do not prove formula correctness;</li>
+<li>FastAPI and React coverage do not prove that the installed Python package has
+  a coherent public contract;</li>
+<li>a source-checkout test does not prove that the built PyPI artifact works;</li>
+<li>existing benchmark material is not automatically independent or accepted
+  engineering truth.</li>
+</ul>
+<p>This plan repairs those boundaries without a rewrite and without adding a large
+new process framework.</p>
+<h2 id="4-current-baseline">4. Current baseline<a class="headerlink" href="#4-current-baseline" title="Permanent link">&para;</a></h2>
+<p>The 2026-08-09 read-only inventory established this starting point. Refresh the
+facts at packet start if the baseline commit changes.</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Current evidence</th>
+<th>Program treatment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Architecture</td>
+<td>Four-layer boundary scan reported 0 violations across 119 files; library import validation reported 0 broken internal imports</td>
+<td>Preserve; rerun after cross-layer changes</td>
+</tr>
+<tr>
+<td>Beam</td>
+<td>Flexure, shear, torsion, detailing, deflection/crack serviceability implemented</td>
+<td>Capability and evidence closure audit; no broad redesign</td>
+</tr>
+<tr>
+<td>Column</td>
+<td>Axial, uniaxial, biaxial, slender/long, helical, and detailing modules implemented</td>
+<td>Publish the supported-case boundary; close only outcome-changing gaps</td>
+</tr>
+<tr>
+<td>Footing</td>
+<td>Isolated square/rectangular bearing, flexure, one-way shear, punching, and bearing enhancement implemented</td>
+<td>Complete dowel/bearing-transfer slice; defer combined and other footing families</td>
+</tr>
+<tr>
+<td>Slab</td>
+<td>No dedicated <code>codes/is456/slab/</code> package</td>
+<td>New bounded element program: types/classification, one-way, then two-way</td>
+</tr>
+<tr>
+<td>Extended elements</td>
+<td>Walls, stairs, and deep beams are planned/deferred</td>
+<td>Excluded from LIB-IS456-V1</td>
+</tr>
+<tr>
+<td>Public library surface</td>
+<td>Beam and column services exist; footing is exposed through broader services; compatibility shims exist</td>
+<td>Audit and stabilize one intentional facade; no new duplicate shims</td>
+</tr>
+<tr>
+<td>Package</td>
+<td><code>structural-lib-is456</code> v0.21.6 metadata; Python &gt;=3.11; minimal base dependency; optional extras; wheel verification automation</td>
+<td>Preserve the base dependency boundary; inspect distribution contents and claims</td>
+</tr>
+<tr>
+<td>Release automation</td>
+<td>Tag-only production PyPI, manual TestPyPI, OIDC, wheel build/install, SBOM</td>
+<td>Reconcile docs, record exact hashes, add protected-content gate, verify exact public version</td>
+</tr>
+<tr>
+<td>Source data</td>
+<td><code>clauses.json</code> is packaged and includes BIS-attributed <code>text</code> fields</td>
+<td>Publication HOLD until owner/legal protected-content decision</td>
+</tr>
+</tbody>
+</table>
+<p>The parity dashboard's curated 15/17 clause-family result is useful as an
+implementation navigation aid. It is not a whole-standard completion metric.</p>
+<h2 id="5-program-scope-contract">5. Program scope contract<a class="headerlink" href="#5-program-scope-contract" title="Permanent link">&para;</a></h2>
+<h3 id="51-included-library-outcomes">5.1 Included library outcomes<a class="headerlink" href="#51-included-library-outcomes" title="Permanent link">&para;</a></h3>
+<h4 id="beam">Beam<a class="headerlink" href="#beam" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Preserve the existing beam subpackage as the canonical implementation.</li>
+<li>Publish a precise supported-case matrix for rectangular, doubly reinforced,
+  flanged, shear, torsion, detailing, and serviceability behavior.</li>
+<li>Repair only confirmed gaps that change a supported main-process result.</li>
+<li>Retain compatibility shims only as delegating shims; no new math in shims.</li>
+</ul>
+<h4 id="column">Column<a class="headerlink" href="#column" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Publish the exact geometry, reinforcement-layout, slenderness, load, and
+  interaction assumptions supported by each public workflow.</li>
+<li>Preserve implemented short/long, axial/uniaxial/biaxial, helical, and
+  detailing paths when source and benchmark evidence support the stated case.</li>
+<li>Do not silently expand to circular, asymmetric, arbitrary multilayer, or
+  general interaction behavior when current functions exclude those cases.</li>
+</ul>
+<h4 id="isolated-footing">Isolated footing<a class="headerlink" href="#isolated-footing" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Preserve square/rectangular isolated footing workflows for explicitly
+  supported concentric/uniaxial loading.</li>
+<li>Add the approved dowel/bearing-transfer calculation slice.</li>
+<li>Preserve documented exclusions for combined, strap, raft, pile-cap, biaxial,
+  lateral-stability, settlement, and geotechnical-design behavior.</li>
+<li>Do not extract a generic punching framework unless a separate owner decision
+  and source-backed contract justify it.</li>
+</ul>
+<h4 id="solid-slabs">Solid slabs<a class="headerlink" href="#solid-slabs" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Add slab types and validation before adding formulas.</li>
+<li>Add slab classification and the first supported one-way case.</li>
+<li>Add one-way coefficient, design, serviceability boundary, and detailing
+  behavior only for approved cases.</li>
+<li>Add two-way coefficient and design behavior only after the one-way contract is
+  stable and the relevant protected-table/source policy is approved.</li>
+<li>Keep flat slabs, drop panels, ribbed/waffle slabs, yield-line analysis,
+  prestressed slabs, openings, irregular panels, and FEM behavior out of scope.</li>
+</ul>
+<h4 id="public-python-package">Public Python package<a class="headerlink" href="#public-python-package" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Provide one canonical import path for every supported user workflow.</li>
+<li>Keep lower-level expert functions accessible only where intentional.</li>
+<li>Preserve a documented deprecation path for existing public compatibility
+  imports.</li>
+<li>Keep FastAPI, React, filesystem access, environment access, and network access
+  outside pure IS 456 calculations.</li>
+<li>Keep base installation dependencies minimal; optional features remain extras.</li>
+</ul>
+<h3 id="52-explicit-non-goals">5.2 Explicit non-goals<a class="headerlink" href="#52-explicit-non-goals" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Literal whole-standard coverage.</li>
+<li>Exhaustive edge-case and adversarial test campaigns.</li>
+<li>A test-count or coverage-percentage target.</li>
+<li>React feature or visual-design work.</li>
+<li>Broad FastAPI endpoint expansion during calculation phases.</li>
+<li>Multi-code infrastructure, ACI 318, EC2, or new companion-code work.</li>
+<li>Rewriting stable beam or column modules for style consistency.</li>
+<li>Generic framework extraction that is not required by two completed callers.</li>
+<li>Performance optimization without a measured main-process blocker.</li>
+<li>Copying IS/SP clause wording, tables, figures, charts, scans, or protected
+  source material into code, documentation, fixtures, or package data.</li>
+<li>Professional approval, certification, or a claim that the package replaces a
+  qualified structural engineer.</li>
+</ul>
+<h2 id="6-completion-definitions">6. Completion definitions<a class="headerlink" href="#6-completion-definitions" title="Permanent link">&para;</a></h2>
+<h3 id="61-function-complete">6.1 Function complete<a class="headerlink" href="#61-function-complete" title="Permanent link">&para;</a></h3>
+<p>A new or materially changed calculation is complete only when all of these are
+recorded:</p>
+<ol>
+<li>Exact user/calculation outcome in scope.</li>
+<li>Design-code family, edition, amendment state, and clause/table/figure IDs.</li>
+<li>Project-authored symbolic calculation and dimensional reasoning.</li>
+<li>Inputs, outputs, and explicit units.</li>
+<li>Supported domain and fail-closed unsupported conditions.</li>
+<li>Independent benchmark source, inputs, expected result, and justified
+   tolerance.</li>
+<li>Pure implementation in the correct <code>codes/is456/&lt;element&gt;/</code> package.</li>
+<li>One accepted benchmark test and the governing limit that changes the main
+   result.</li>
+<li>Intentional export/public-service decision.</li>
+<li>Focused verification and architecture/import evidence.</li>
+<li>Assumptions, limitations, and engineering-review status.</li>
+</ol>
+<p>If the governing source, amendment impact, units, benchmark, or tolerance is
+ambiguous, the packet returns <code>HOLD</code>; it does not invent a convenient answer.</p>
+<h3 id="62-element-complete">6.2 Element complete<a class="headerlink" href="#62-element-complete" title="Permanent link">&para;</a></h3>
+<p>An element is complete for this program only when:</p>
+<ul>
+<li>every advertised main workflow is implemented through the pure library;</li>
+<li>each workflow has a supported-case and exclusion record;</li>
+<li>its public result shape is stable and uses explicit units;</li>
+<li>benchmark states are visible and are not circularly derived from the same
+  production path;</li>
+<li>imports and architecture boundaries pass;</li>
+<li>public documentation makes no stronger claim than the evidence supports;</li>
+<li>a clean installed wheel can execute at least one main workflow for the
+  element.</li>
+</ul>
+<h3 id="63-library-release-candidate-complete">6.3 Library release candidate complete<a class="headerlink" href="#63-library-release-candidate-complete" title="Permanent link">&para;</a></h3>
+<p>The Python package becomes a release candidate when:</p>
+<ul>
+<li>the approved beam, column, isolated-footing, and slab capability matrix is
+  complete;</li>
+<li>the stable public facade and deprecation decisions are implemented;</li>
+<li>source/provenance and protected-content reviews have no unresolved publication
+  HOLD;</li>
+<li>wheel and sdist content match an approved allowlist;</li>
+<li>the current-commit <code>PR Gate</code> is green;</li>
+<li>one canonical full gate and one release preflight are green;</li>
+<li>the local prepublication wheel is accepted as rehearsal evidence, and the
+  separate CI-built distribution intended for PyPI is identity-bound to its
+  source commit/tag and accepted before protected production upload;</li>
+<li>package README, license/disclaimer, metadata, examples, and limitations match
+  the artifact.</li>
+</ul>
+<h3 id="64-pypi-release-complete">6.4 PyPI release complete<a class="headerlink" href="#64-pypi-release-complete" title="Permanent link">&para;</a></h3>
+<p>Publication is complete only after the owner-approved release is installed from
+PyPI by exact version and passes the canonical installed-package/CLI verification.
+A successful upload job alone is not completion.</p>
+<h2 id="7-target-architecture-and-dependency-direction">7. Target architecture and dependency direction<a class="headerlink" href="#7-target-architecture-and-dependency-direction" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Core types
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  Python/structural_lib/core/
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>      ↓
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Pure IS 456 calculations
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  Python/structural_lib/codes/is456/
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>      ↓
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Library workflows and stable public facade
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  Python/structural_lib/services/
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>      ↓
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>Transport and application consumers
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  fastapi_app/ -&gt; react_app/
+</code></pre></div>
+<p>Rules:</p>
+<ul>
+<li>Core contains code-agnostic types and primitives, not IS 456 formulas.</li>
+<li><code>codes/is456/</code> contains deterministic math with no ordinary I/O.</li>
+<li>Services orchestrate calculations and adapters; they do not own formulas.</li>
+<li>FastAPI validates transport inputs, calls services/public APIs, and serializes
+  results.</li>
+<li>React performs no structural calculations.</li>
+<li>Unit conversions occur only at explicit boundaries.</li>
+<li>The package is tested as an installed wheel, not only through repository
+  imports.</li>
+</ul>
+<h2 id="8-source-benchmark-and-provenance-foundation">8. Source, benchmark, and provenance foundation<a class="headerlink" href="#8-source-benchmark-and-provenance-foundation" title="Permanent link">&para;</a></h2>
+<h3 id="81-source-hierarchy">8.1 Source hierarchy<a class="headerlink" href="#81-source-hierarchy" title="Permanent link">&para;</a></h3>
+<p>Use the following order. A lower level cannot silently replace a higher level.</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Source</th>
+<th>Permitted use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1</td>
+<td>Owner-controlled official IS 456 source basis with confirmed edition, reprint, reaffirmation, and amendment composition</td>
+<td>Governing clause/table/figure identity and route-specific interpretation</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>Official BIS lifecycle/amendment metadata</td>
+<td>Confirm source identity and amendment state; not a formula benchmark</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Independently reviewed project-authored hand calculation or accepted worked example using the same assumptions</td>
+<td>Expected result and tolerance for a narrow benchmark</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>Independent published design aid/textbook/software example with reviewed edition and assumptions</td>
+<td>Candidate comparison or benchmark after acceptance review</td>
+</tr>
+<tr>
+<td>S5</td>
+<td>Existing repository tests, golden vectors, legacy VBA, prior package, or StructProof route</td>
+<td>Regression/comparison evidence only until independently promoted</td>
+</tr>
+</tbody>
+</table>
+<p>Current official public references to verify at source-intake time include:</p>
+<ul>
+<li>IS 456:2000 official BIS source/catalogue identity;</li>
+<li>BIS Amendment No. 6, June 2024:
+  <code>https://www.services.bis.gov.in/tmp/CED19013804_03062024_1.pdf</code>;</li>
+<li>current BIS programme/catalogue metadata for revision and amendment state.</li>
+</ul>
+<p>URLs and public metadata can change. The worker records the access date and does
+not treat a search snippet as engineering evidence.</p>
+<h3 id="82-protected-content-rule">8.2 Protected-content rule<a class="headerlink" href="#82-protected-content-rule" title="Permanent link">&para;</a></h3>
+<p>Repository artifacts may contain:</p>
+<ul>
+<li>source IDs;</li>
+<li>edition/amendment identifiers;</li>
+<li>clause, table, figure, and formula identifiers;</li>
+<li>project-authored summaries and symbolic transformations;</li>
+<li>benchmark IDs and evidence grades;</li>
+<li>input values and computed outputs;</li>
+<li>assumptions, limitations, and review state.</li>
+</ul>
+<p>They must not contain copied standards wording, complete tables, charts,
+figures, scans, or artifacts presented as official standards text.</p>
+<p><code>Python/structural_lib/codes/is456/clauses.json</code> is distributed in the wheel and
+currently contains BIS-attributed <code>text</code> fields. Before the next public release,
+PUB-003 must inventory this content and obtain an owner/legal decision. This
+plan does not conclude whether the existing content is permissible.</p>
+<h3 id="83-benchmark-promotion">8.3 Benchmark promotion<a class="headerlink" href="#83-benchmark-promotion" title="Permanent link">&para;</a></h3>
+<p>Use this evidence progression:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>CANDIDATE EXAMPLE
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    -&gt; independently replayed
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    -&gt; internal regression benchmark
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    -&gt; accepted narrow benchmark
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    -&gt; qualified review, when required for stronger claims
+</code></pre></div>
+<p>Rules:</p>
+<ul>
+<li>the governing code source is not itself an expected-value oracle;</li>
+<li>an implementation's own output cannot validate itself;</li>
+<li>existing tests and golden vectors remain comparison evidence until their
+  derivation and assumptions are independently reviewed;</li>
+<li>tolerances come from the source method, rounding, and table/chart precision;
+  no universal percentage is permitted;</li>
+<li>benchmark acceptance is route-specific and does not promote neighboring
+  functions or a whole element;</li>
+<li>software verification never becomes professional design approval.</li>
+</ul>
+<h3 id="84-reuse-from-structproof">8.4 Reuse from StructProof<a class="headerlink" href="#84-reuse-from-structproof" title="Permanent link">&para;</a></h3>
+<p>The other project at <code>/Users/pravinsurawase/Documents/Structautomate</code> may supply
+patterns, not structural truth. Reusable patterns are:</p>
+<ul>
+<li>route cards separating work, evidence, claim, hold, and next action;</li>
+<li>source IDs with edition/amendment and review state;</li>
+<li>benchmark promotion stages;</li>
+<li>explicit proof/issues/assumptions/limitations;</li>
+<li>fail-closed unsupported conditions;</li>
+<li>private-source preparation outside pure math;</li>
+<li>binding controlled source/provenance identity to a run record.</li>
+</ul>
+<p>Do not copy StructProof expected values, accepted states, private-source
+contents, tolerances, or professional claims into this project. Treat the
+legacy library and StructProof as comparison sources unless independently
+reviewed for the exact route.</p>
+<h2 id="9-agent-operating-model">9. Agent operating model<a class="headerlink" href="#9-agent-operating-model" title="Permanent link">&para;</a></h2>
+<h3 id="91-concurrency-and-ownership">9.1 Concurrency and ownership<a class="headerlink" href="#91-concurrency-and-ownership" title="Permanent link">&para;</a></h3>
+<ul>
+<li>One parent task remains active.</li>
+<li>The parent/integrator owns scope, delegation, decisions, shared-file edits,
+  integration, final review, and acceptance.</li>
+<li>Use no more than two concurrent workers.</li>
+<li>Workers receive only the relevant packet, exact paths, constraints, commands,
+  and return format; never full conversation history.</li>
+<li>Read-only evidence audits may run in parallel when their questions are
+  independent.</li>
+<li>Implementation workers may run in parallel only with exclusive file
+  ownership and no shared public-export/core-type edits.</li>
+<li>The parent independently inspects every result and runs the appropriate gate.</li>
+<li>Workers cannot merge, tag, publish, release, close issues, delete remote
+  branches, or change repository settings.</li>
+</ul>
+<h3 id="92-role-map">9.2 Role map<a class="headerlink" href="#92-role-map" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Primary responsibility</th>
+<th>Mutation boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Main Agent / orchestrator</td>
+<td>Scope, packet selection, dependency order, integration, decisions</td>
+<td>Shared records only when authorized</td>
+</tr>
+<tr>
+<td><code>@library-expert</code></td>
+<td>Public API and source/capability audit</td>
+<td>Read-only</td>
+</tr>
+<tr>
+<td><code>@structural-engineer</code></td>
+<td>Governing source, assumptions, exclusions, benchmark review questions</td>
+<td>Read-only; no formula invention</td>
+</tr>
+<tr>
+<td><code>@structural-math</code></td>
+<td>Core types and deterministic IS 456 implementation</td>
+<td>Approved core/element files only</td>
+</tr>
+<tr>
+<td><code>@backend</code></td>
+<td>Stable library facade and service orchestration</td>
+<td>Services/public exports only</td>
+</tr>
+<tr>
+<td><code>@tester</code></td>
+<td>Narrow benchmark/regression evidence and installed-package checks</td>
+<td>Test/evidence files only; does not choose formulas</td>
+</tr>
+<tr>
+<td><code>@reviewer</code></td>
+<td>Essential main-process and architecture review</td>
+<td>Read-only; no speculative edge-case list</td>
+</tr>
+<tr>
+<td><code>@doc-master</code></td>
+<td>Capability, public API, limitations, task, and handoff records</td>
+<td>Named documentation only</td>
+</tr>
+<tr>
+<td><code>@ops</code></td>
+<td>Safe branch/PR/gates/artifact/release workflow</td>
+<td>No publish/merge/tag without owner approval</td>
+</tr>
+</tbody>
+</table>
+<h3 id="93-shared-file-locks">9.3 Shared-file locks<a class="headerlink" href="#93-shared-file-locks" title="Permanent link">&para;</a></h3>
+<p>The following paths are integrator-owned during parallel work:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Python/structural_lib/core/data_types.py</code></td>
+<td>One structural-math owner at a time</td>
+</tr>
+<tr>
+<td><code>Python/structural_lib/core/errors.py</code></td>
+<td>One structural-math owner at a time</td>
+</tr>
+<tr>
+<td><code>Python/structural_lib/services/api.py</code></td>
+<td>Backend/integrator only</td>
+</tr>
+<tr>
+<td>Any package <code>__init__.py</code></td>
+<td>Integrator adds exports after worker return</td>
+</tr>
+<tr>
+<td><code>Python/pyproject.toml</code> and <code>Python/MANIFEST.in</code></td>
+<td>Packaging/ops packet only</td>
+</tr>
+<tr>
+<td><code>.github/workflows/publish.yml</code></td>
+<td>Ops packet only</td>
+</tr>
+<tr>
+<td><code>docs/TASKS.md</code></td>
+<td>Parent/doc-master after accepted state change</td>
+</tr>
+<tr>
+<td><code>docs/planning/next-session-brief.md</code></td>
+<td>Parent/doc-master at real handoff only</td>
+</tr>
+<tr>
+<td>This master plan's status/ledger</td>
+<td>Parent/integrator only</td>
+</tr>
+</tbody>
+</table>
+<p>Workers must stop if they discover that their required fix touches a locked or
+out-of-packet path. They return the dependency instead of editing it.</p>
+<h2 id="10-verification-and-gate-ladder">10. Verification and gate ladder<a class="headerlink" href="#10-verification-and-gate-ladder" title="Permanent link">&para;</a></h2>
+<p>Use the project's existing skills and commands; do not create a second gate
+system.</p>
+<h3 id="during-a-calculation-packet">During a calculation packet<a class="headerlink" href="#during-a-calculation-packet" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Run the exact affected test module or keyword.</li>
+<li>Independently compare the main result with the approved benchmark and units.</li>
+<li>Run architecture/import validation if imports or layers changed.</li>
+</ol>
+<p>Typical commands:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>.venv/bin/pytest<span class="w"> </span>&lt;exact-test-path&gt;<span class="w"> </span>-q
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>.venv/bin/pytest<span class="w"> </span>Python/tests/<span class="w"> </span>-q<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;&lt;function-or-clause&gt;&quot;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>.venv/bin/python<span class="w"> </span>scripts/check_architecture_boundaries.py
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>.venv/bin/python<span class="w"> </span>scripts/validate_imports.py<span class="w"> </span>--scope<span class="w"> </span>structural_lib
+</code></pre></div>
+<h3 id="before-one-packet-commit">Before one packet commit<a class="headerlink" href="#before-one-packet-commit" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>./run.sh<span class="w"> </span>check<span class="w"> </span>--quick
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># Return packet-owned paths and the suggested conventional commit to Codex.</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Codex stages only those paths and commits with standard validation enabled.</span>
+</code></pre></div>
+<h3 id="at-a-stable-integrated-milestone">At a stable integrated milestone<a class="headerlink" href="#at-a-stable-integrated-milestone" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>./run.sh<span class="w"> </span>check
+</code></pre></div>
+<p>Run the full gate once after the milestone is stable. After a failure, repair
+with the narrow failing command and rerun the full gate only when needed to
+establish the final green result.</p>
+<h3 id="release-only">Release only<a class="headerlink" href="#release-only" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>preflight<span class="w"> </span>&lt;target-version&gt;
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>.venv/bin/python<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>Python
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>verify<span class="w"> </span>--version<span class="w"> </span>&lt;target-version&gt;<span class="w"> </span>--source<span class="w"> </span>wheel
+</code></pre></div>
+<p>After owner-approved publication:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>verify<span class="w"> </span>--version<span class="w"> </span>&lt;target-version&gt;<span class="w"> </span>--source<span class="w"> </span>pypi
+</code></pre></div>
+<p>Do not run release preflight, Docker preflight, or full UAT for ordinary
+calculation packets.</p>
+<h2 id="11-dependency-graph">11. Dependency graph<a class="headerlink" href="#11-dependency-graph" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Owner activation
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  -&gt; MAINT-008 complete
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  -&gt; v0.21.7 release-or-defer decision recorded
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  -&gt; clean LIB-IS456-V1 branch/PR
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>      -&gt; P0 scope/source/claim decisions
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>          -&gt; P1 capability/evidence audit
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>          -&gt; P2 public API/package audit
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>          -&gt; P3 beam closure audit
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>          -&gt; P4 column closure audit
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>          -&gt; P5 footing dowel implementation
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>              -&gt; P6 slab types and classification
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>                  -&gt; P7 one-way coefficients/design
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>                      -&gt; P8 one-way detailing/serviceability boundary
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>                  -&gt; P9 two-way coefficient contract
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>                      -&gt; P10 two-way design/distribution
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>              -&gt; P11 stable facade and capability registry
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>                  -&gt; P12 evidence/public-claim/package-content closeout
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>                      -&gt; P13 exact-artifact release candidate
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>                          -&gt; owner TestPyPI/PyPI decision
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>                              -&gt; FAPI-1 thin FastAPI consumer
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>                                  -&gt; React product work
+</code></pre></div>
+<p>P3 and P4 may run in parallel. P7 and P9 may run in parallel only after P6 is
+accepted and only when they edit separate modules/tests. P8 and P9 may also run
+in parallel under exclusive file ownership. Public exports remain reserved for
+P11.</p>
+<h2 id="12-phase-plan">12. Phase plan<a class="headerlink" href="#12-phase-plan" title="Permanent link">&para;</a></h2>
+<h3 id="phase-0-activate-a-clean-lane">Phase 0 — Activate a clean lane<a class="headerlink" href="#phase-0-activate-a-clean-lane" title="Permanent link">&para;</a></h3>
+<p><strong>Outcome:</strong> no library feature work is mixed into maintenance or an unresolved
+release lane.</p>
+<p>Owner checkpoints:</p>
+<ol>
+<li>Review PR #691 and its live <code>PR Gate</code>.</li>
+<li>Approve or reject its merge through the native Codex Git/GitHub flow.</li>
+<li>Decide whether to publish v0.21.7 or explicitly defer it.</li>
+<li>Approve the Supported IS 456 RC Core definition in Section 5.</li>
+<li>Approve a new task branch/PR for LIB-IS456-V1.</li>
+</ol>
+<p>Recorded native branch command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>git<span class="w"> </span>switch<span class="w"> </span>-c<span class="w"> </span>task/LIB-IS456-V1<span class="w"> </span>origin/main
+</code></pre></div>
+<p><strong>Exit:</strong> clean task branch, baseline commit recorded, no unrelated changes,
+task status activated.</p>
+<p>Activation record:</p>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>State</th>
+<th>Evidence/owner</th>
+<th>Next</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Supported IS 456 RC Core in Section 5</td>
+<td>APPROVED</td>
+<td>Repository owner activation request, 2026-08-09</td>
+<td>Enforce route-specific exclusions in P3-P12</td>
+</tr>
+<tr>
+<td>MAINT-008 Packet B</td>
+<td>APPROVED/MERGED</td>
+<td>PR #691, merge <code>056bfad7</code>, live <code>PR Gate</code> green after OpenAPI baseline repair</td>
+<td>Keep control-plane work outside LIB commits</td>
+</tr>
+<tr>
+<td>v0.21.7</td>
+<td>DEFERRED</td>
+<td>Main Agent decision under the activated plan; no tag or upload</td>
+<td>Target the complete library release instead</td>
+</tr>
+<tr>
+<td>Governing source composition</td>
+<td>APPROVED FOR INTERNAL ENGINEERING INTAKE</td>
+<td>Controlled IS 456:2000 through Amendment 5/reaffirmation 2021, SHA-256 <code>964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264</code>; Amendment 6 June 2024, SHA-256 <code>4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881</code></td>
+<td>Record route-specific amendment relevance without copying protected content</td>
+</tr>
+<tr>
+<td>Benchmark acceptance</td>
+<td>APPROVED PROCESS</td>
+<td>Project-authored S3 hand calculations require independent replay; S4 public examples require assumption review; repository/StructProof outputs remain S5 unless promoted</td>
+<td>Each calculation packet records expected result and justified tolerance</td>
+</tr>
+<tr>
+<td>Public claims before qualified review</td>
+<td>APPROVED WITH LIMITS</td>
+<td>Software evidence only; case-qualified support and exclusions; no certification or professional-approval claim</td>
+<td>P12 cross-checks every public claim</td>
+</tr>
+<tr>
+<td><code>clauses.json</code> publication</td>
+<td>HOLD</td>
+<td>Repository owner/legal-content decision; P12 must inventory/remove protected wording before release</td>
+<td>P12</td>
+</tr>
+<tr>
+<td>Later library version</td>
+<td>PROVISIONAL v0.23.0</td>
+<td>Main Agent; final version remains a P13 release decision</td>
+<td>Confirm after P11/P12</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-1-truth-and-contract-baseline">Phase 1 — Truth and contract baseline<a class="headerlink" href="#phase-1-truth-and-contract-baseline" title="Permanent link">&para;</a></h3>
+<p>Run two read-only workers concurrently:</p>
+<ul>
+<li>P1: capability/source/benchmark matrix for the existing elements;</li>
+<li>P2: public API, dependency, package-content, README, and release automation
+  inventory.</li>
+</ul>
+<p>The parent consolidates their results. No worker edits shared documentation.</p>
+<p><strong>Exit:</strong> one approved support matrix, public surface map, source HOLD list,
+package allowlist draft, and exact implementation order.</p>
+<h3 id="phase-2-existing-element-closure">Phase 2 — Existing-element closure<a class="headerlink" href="#phase-2-existing-element-closure" title="Permanent link">&para;</a></h3>
+<p>Run beam and column audits concurrently. These are essential-only audits, not
+requests to add tests or refactor code.</p>
+<p>Only confirmed supported-main-path defects become implementation packets.
+Documentation gaps are repaired when they make a public claim false.</p>
+<p><strong>Exit:</strong> beam and column supported-case matrices accepted; any blocking defect
+has its own source-backed packet; no undefined “complete” claim remains.</p>
+<h3 id="phase-3-isolated-footing-closure">Phase 3 — Isolated-footing closure<a class="headerlink" href="#phase-3-isolated-footing-closure" title="Permanent link">&para;</a></h3>
+<p>Implement the dowel/bearing-transfer slice only after source and benchmark
+intake. Normalize footing traceability and exports after the calculation is
+accepted.</p>
+<p><strong>Exit:</strong> isolated-footing core supports its declared case end to end through
+the Python package; excluded footing families remain explicit.</p>
+<h3 id="phase-4-slab-foundation-and-one-way-core">Phase 4 — Slab foundation and one-way core<a class="headerlink" href="#phase-4-slab-foundation-and-one-way-core" title="Permanent link">&para;</a></h3>
+<p>Sequence:</p>
+<ol>
+<li>Types, errors, supported-case contract, and classification.</li>
+<li>One-way coefficients/analysis contract.</li>
+<li>One-way design.</li>
+<li>Detailing and serviceability boundary.</li>
+<li>Public export only after all preceding work is accepted.</li>
+</ol>
+<p><strong>Exit:</strong> one supported solid one-way slab workflow runs from public Python
+input to structured result and matches its accepted benchmark.</p>
+<h3 id="phase-5-two-way-slab-core">Phase 5 — Two-way slab core<a class="headerlink" href="#phase-5-two-way-slab-core" title="Permanent link">&para;</a></h3>
+<p>Sequence:</p>
+<ol>
+<li>Approve source/protected-table policy for the coefficient path.</li>
+<li>Implement coefficient lookup/calculation contract.</li>
+<li>Implement approved two-way design case.</li>
+<li>Implement strip/torsion distribution only within the approved case.</li>
+<li>Document unsupported panels, supports, load patterns, and geometry.</li>
+</ol>
+<p><strong>Exit:</strong> one supported solid two-way slab workflow runs from public Python
+input to structured result and matches its accepted benchmark.</p>
+<h3 id="phase-6-stable-python-surface">Phase 6 — Stable Python surface<a class="headerlink" href="#phase-6-stable-python-surface" title="Permanent link">&para;</a></h3>
+<p>The backend/integrator consolidates the library-facing facade after core
+behavior is stable. This phase does not add FastAPI routes.</p>
+<p><strong>Exit:</strong> public API manifest, imports, signatures, result types, explicit
+units, capability discovery, deprecations, examples, and package metadata agree.</p>
+<h3 id="phase-7-publication-evidence-and-package-content-closeout">Phase 7 — Publication evidence and package-content closeout<a class="headerlink" href="#phase-7-publication-evidence-and-package-content-closeout" title="Permanent link">&para;</a></h3>
+<p>Resolve:</p>
+<ul>
+<li><code>clauses.json</code> protected-content/publication decision;</li>
+<li>wheel/sdist allowlist;</li>
+<li>license and engineering-disclaimer inclusion;</li>
+<li>README claims against evidence states;</li>
+<li>release docs versus actual TestPyPI/PyPI workflow;</li>
+<li>exact-artifact evidence contract plus local prepublication filenames and
+  SHA-256 record; the CI publication artifact is recorded in Phase 8;</li>
+<li>SBOM and package metadata evidence;</li>
+<li>exact clean-wheel user workflow.</li>
+</ul>
+<p><strong>Exit:</strong> no publication HOLD remains, but no external publication has occurred.</p>
+<h3 id="phase-8-release-candidate-and-pypi">Phase 8 — Release candidate and PyPI<a class="headerlink" href="#phase-8-release-candidate-and-pypi" title="Permanent link">&para;</a></h3>
+<p>This phase is separately owner-approved.</p>
+<ol>
+<li>Run the current-commit PR Gate and canonical release preflight.</li>
+<li>Prepare the exact version through the release workflow.</li>
+<li>Build and clean-wheel-UAT one local candidate as pre-release evidence; label
+   it <code>local-prepublication</code>, not the published artifact.</li>
+<li>Optionally rehearse on TestPyPI through its owner-approved protected
+   environment and trusted publisher.</li>
+<li>Obtain explicit owner approval for the release PR/tag. The production <code>pypi</code>
+   environment must remain protected so upload approval occurs only after the CI
+   artifact evidence is available.</li>
+<li>When the tag-triggered workflow builds the distributions, record the CI run,
+   source commit/tag, wheel/sdist filenames, SHA-256 hashes, content-allowlist
+   result, SBOM, and exact artifact-download identity.</li>
+<li>Run the canonical installed-package/CLI UAT against the CI-built distribution
+   before production upload, or first complete an approved workflow change that
+   makes the publish job consume that already-UAT-tested artifact.</li>
+<li>Obtain explicit owner approval for the protected production environment and
+   publish only the recorded CI artifact through the tag-only OIDC workflow.</li>
+<li>Install the exact public PyPI version, record its downloaded file identity,
+   compare it with the CI artifact record, and run post-publication UAT.</li>
+<li>Record the artifact and claim evidence; do not call upload success a release
+    success without post-publication verification.</li>
+</ol>
+<h3 id="phase-9-thin-fastapi-consumer">Phase 9 — Thin FastAPI consumer<a class="headerlink" href="#phase-9-thin-fastapi-consumer" title="Permanent link">&para;</a></h3>
+<p>Begin only after the Python surface is accepted or intentionally frozen for the
+release candidate.</p>
+<ul>
+<li>FastAPI imports only stable library/service functions.</li>
+<li>Routers contain no structural formulas.</li>
+<li>Add request/response models for the supported library cases only.</li>
+<li>Verify request -&gt; service -&gt; result -&gt; response for one workflow per element.</li>
+<li>Do not begin React expansion until API schemas are stable.</li>
+</ul>
+<h2 id="13-worker-ready-packets">13. Worker-ready packets<a class="headerlink" href="#13-worker-ready-packets" title="Permanent link">&para;</a></h2>
+<p>Every packet below is bounded. The parent supplies only this section and the
+named files to the worker.</p>
+<h3 id="p0-owner-scope-source-and-claim-lock">P0 — Owner scope, source, and claim lock<a class="headerlink" href="#p0-owner-scope-source-and-claim-lock" title="Permanent link">&para;</a></h3>
+<p><strong>Owner:</strong> repository owner + Main Agent</p>
+<p><strong>Objective:</strong> approve the exact library finish line and evidence boundaries
+before calculations change.</p>
+<p><strong>Inputs:</strong> this plan; <code>docs/TASKS.md</code>; official source inventory; current
+release/maintenance state.</p>
+<p><strong>Decisions required:</strong></p>
+<ul>
+<li>supported beam, column, isolated-footing, one-way-slab, and two-way-slab cases;</li>
+<li>governing IS 456 source composition and amendment review owner;</li>
+<li>independent benchmark sources and who may accept them;</li>
+<li>public wording allowed before qualified review;</li>
+<li><code>clauses.json</code> publication/legal review owner;</li>
+<li>v0.21.7 release or defer decision;</li>
+<li>target version for the later library release.</li>
+</ul>
+<p><strong>Non-goals:</strong> formula implementation, version bump, merge, tag, upload.</p>
+<p><strong>Acceptance:</strong> every unresolved engineering/legal/release decision is marked
+<code>HOLD</code> with an owner; no worker needs to guess.</p>
+<p><strong>Return:</strong> decision table with <code>APPROVED</code>, <code>HOLD</code>, or <code>DEFERRED</code>, owner, and next
+packet.</p>
+<p><strong>Recorded outcome (2026-08-09):</strong> P0 is complete. The activation table in
+Phase 0 is authoritative. The only continuing P0 HOLD is public distribution of
+<code>clauses.json</code>; it does not authorize copying private source content and blocks
+publication until P12 resolves it.</p>
+<h3 id="p1-capability-evidence-and-claims-matrix">P1 — Capability, evidence, and claims matrix<a class="headerlink" href="#p1-capability-evidence-and-claims-matrix" title="Permanent link">&para;</a></h3>
+<p><strong>Role:</strong> <code>@library-expert</code> or <code>@structural-engineer</code>, read-only first</p>
+<p><strong>Objective:</strong> create the truthful baseline for what the Python package supports.</p>
+<p><strong>Paths:</strong></p>
+<ul>
+<li><code>Python/structural_lib/codes/is456/</code></li>
+<li><code>Python/tests/</code></li>
+<li><code>docs/reference/clause-map.md</code></li>
+<li><code>docs/verification/</code></li>
+<li><code>scripts/parity_dashboard.py</code></li>
+<li><code>README.md</code></li>
+<li><code>Python/README.md</code></li>
+</ul>
+<p><strong>Questions:</strong> for each advertised workflow, what geometry/load/material case is
+supported, what source/benchmark state exists, what is excluded, and what public
+wording is justified?</p>
+<p><strong>Non-goals:</strong> code changes, new tests, formula review without source, edge-case
+list, test-count target.</p>
+<p><strong>Commands:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>./run.sh<span class="w"> </span>parity
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>rg<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;@clause|Limitations|unsupported|NotImplemented&quot;</span><span class="w"> </span>Python/structural_lib/codes/is456
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>rg<span class="w"> </span>--files<span class="w"> </span>Python/tests<span class="w"> </span><span class="p">|</span><span class="w"> </span>rg<span class="w"> </span><span class="s2">&quot;beam|column|footing|slab&quot;</span>
+</code></pre></div>
+<p><strong>Acceptance:</strong> matrix covers every public beam/column/footing route and records
+slab as planned; parity is not used as whole-code evidence.</p>
+<p><strong>Return format:</strong> capability -&gt; source state -&gt; benchmark state -&gt; claim state
+-&gt; limitations -&gt; blocking packet. Report only confirmed outcome-changing gaps.</p>
+<h3 id="p2-public-api-and-packaging-inventory">P2 — Public API and packaging inventory<a class="headerlink" href="#p2-public-api-and-packaging-inventory" title="Permanent link">&para;</a></h3>
+<p><strong>Role:</strong> <code>@backend</code> or <code>@library-expert</code>, read-only first</p>
+<p><strong>Objective:</strong> identify the intended public package contract and distribution
+contents before adding new functions.</p>
+<p><strong>Paths:</strong></p>
+<ul>
+<li><code>Python/structural_lib/__init__.py</code></li>
+<li><code>Python/structural_lib/api.py</code></li>
+<li><code>Python/structural_lib/services/api.py</code></li>
+<li><code>Python/structural_lib/services/beam_api.py</code></li>
+<li><code>Python/structural_lib/services/column_api.py</code></li>
+<li>all current IS 456 package <code>__init__.py</code> files</li>
+<li><code>docs/reference/api-manifest.json</code></li>
+<li><code>docs/reference/api-stability.md</code></li>
+<li><code>docs/reference/deprecation-policy.md</code></li>
+<li><code>Python/pyproject.toml</code></li>
+<li><code>Python/MANIFEST.in</code></li>
+</ul>
+<p><strong>Non-goals:</strong> rename functions, remove shims, edit metadata, add slab facade,
+FastAPI work.</p>
+<p><strong>Commands:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>./run.sh<span class="w"> </span>find<span class="w"> </span>--api<span class="w"> </span>&lt;representative-public-function&gt;
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>.venv/bin/python<span class="w"> </span>scripts/discover_api_signatures.py<span class="w"> </span>&lt;representative-public-function&gt;
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>rg<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;__all__|from structural_lib|def design_&quot;</span><span class="w"> </span>Python/structural_lib
+</code></pre></div>
+<p><strong>Acceptance:</strong> one map of canonical, compatibility, internal, and accidental
+exports; one distribution allowlist draft; base versus optional dependencies
+identified.</p>
+<p><strong>Return format:</strong> symbol/path -&gt; current status -&gt; proposed status -&gt; consumers
+-&gt; compatibility risk -&gt; owner decision.</p>
+<h3 id="p3-beam-closure-audit">P3 — Beam closure audit<a class="headerlink" href="#p3-beam-closure-audit" title="Permanent link">&para;</a></h3>
+<p><strong>Role:</strong> <code>@structural-engineer</code>, read-only</p>
+<p><strong>Objective:</strong> determine whether any confirmed defect blocks the declared beam
+scope.</p>
+<p><strong>Paths:</strong></p>
+<ul>
+<li><code>Python/structural_lib/codes/is456/beam/</code></li>
+<li>matching beam tests and approved benchmark records</li>
+<li>current public beam facade and documentation</li>
+</ul>
+<p><strong>Non-goals:</strong> redesign, new beam cases, new tests, style cleanup, compatibility
+removal.</p>
+<p><strong>Acceptance:</strong> supported-case matrix and only outcome-changing blockers; every
+formula concern names the required source and benchmark evidence.</p>
+<p><strong>Return:</strong> <code>PASS FOR STATED SCOPE</code> or bounded follow-up packets with exact paths,
+source question, test command, and acceptance result.</p>
+<p><strong>Recorded outcome (2026-08-09):</strong> <code>PASS FOR STATED COMPUTATION SCOPE</code>, with
+public claims narrowed. The primary combined route is rectangular flexure and
+shear plus optional serviceability; torsion, flanged, doubly reinforced,
+detailing, and other specialist paths are separate bounded utilities. Existing
+tests are regression evidence, not accepted independent engineering benchmarks.</p>
+<h3 id="p4-column-closure-audit">P4 — Column closure audit<a class="headerlink" href="#p4-column-closure-audit" title="Permanent link">&para;</a></h3>
+<p><strong>Role:</strong> <code>@structural-engineer</code>, read-only</p>
+<p><strong>Objective:</strong> establish the exact supported column boundary and confirmed
+blockers for release claims.</p>
+<p><strong>Paths:</strong></p>
+<ul>
+<li><code>Python/structural_lib/codes/is456/column/</code></li>
+<li><code>Python/tests/test_column_*.py</code></li>
+<li><code>Python/tests/codes/is456/column/</code></li>
+<li>current column service/public documentation</li>
+</ul>
+<p><strong>Non-goals:</strong> circular/asymmetric/arbitrary-multilayer expansion, new
+interaction models, edge-case campaign.</p>
+<p><strong>Acceptance:</strong> geometry, reinforcement layout, axial/uniaxial/biaxial,
+short/slender, helical, and detailing boundaries are explicit.</p>
+<p><strong>Return:</strong> <code>PASS FOR STATED SCOPE</code> or bounded blockers, plus public wording and
+unsupported-case text.</p>
+<p><strong>Recorded outcome (2026-08-09):</strong> bounded rectangular/square symmetric
+two-face column utilities accepted after two outcome repairs: the direct
+biaxial route now checks slenderness about both axes and fails closed, while the
+long-column route requires unsupported length and enforces minimum eccentricity
+about both axes. Helical support is documented as an adequacy/capacity-multiplier
+utility, not circular-column design. Independent route benchmarks remain future
+claim evidence, so no professional or general-design claim is authorized.</p>
+<h3 id="p5-isolated-footing-dowelbearing-transfer-slice">P5 — Isolated-footing dowel/bearing-transfer slice<a class="headerlink" href="#p5-isolated-footing-dowelbearing-transfer-slice" title="Permanent link">&para;</a></h3>
+<p><strong>Role:</strong> <code>@structural-math</code></p>
+<p><strong>Prerequisites:</strong> P0 source/benchmark approval; a parent-integrator-approved
+reuse/new core-type decision informed by P1/P2 findings.</p>
+<p><strong>Objective:</strong> implement the approved Cl. 34.4 bearing/reinforcement/dowel
+transfer result for the existing isolated-footing supported case.</p>
+<p><strong>Initial paths:</strong></p>
+<ul>
+<li><code>Python/structural_lib/codes/is456/footing/</code></li>
+<li><code>Python/structural_lib/core/data_types.py</code> only if P1 proves necessary</li>
+<li><code>Python/tests/test_footing.py</code> or a new exact footing test module</li>
+</ul>
+<p><strong>Non-goals:</strong> footing endpoint, combined/strap/raft/pile-cap footing,
+settlement, lateral stability, broad footing refactor.</p>
+<p><strong>Pitfalls:</strong> mixing service and factored actions; hidden N/kN or mm/mm2
+conversion; copying clause wording; choosing development-length policy without
+source; silently accepting unsupported column/footing geometry.</p>
+<p><strong>Narrow checks:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>.venv/bin/pytest<span class="w"> </span>Python/tests/test_footing.py<span class="w"> </span>-q
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>.venv/bin/pytest<span class="w"> </span>Python/tests/<span class="w"> </span>-q<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;footing or dowel&quot;</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>.venv/bin/python<span class="w"> </span>scripts/check_architecture_boundaries.py
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>.venv/bin/python<span class="w"> </span>scripts/validate_imports.py<span class="w"> </span>--scope<span class="w"> </span>structural_lib
+</code></pre></div>
+<p><strong>Acceptance:</strong> pure function, explicit units, source IDs, accepted benchmark and
+governing limit, structured result/failure, canonical element export, stated
+exclusions.</p>
+<p><strong>Return:</strong> supported case; formula/source IDs; benchmark actual/expected with
+units; changed files; checks; limitations; owner/engineer decisions remaining.</p>
+<p><strong>Recorded outcome (2026-08-09):</strong> accepted for concentric square/rectangular
+isolated footings with explicit approved effective A1 and dowels. The result
+governs supported/supporting concrete, excess/minimum transfer steel, bar count,
+diameter, and development into both members. The legacy bearing helper now
+defaults conservatively to no enhancement unless approved A1 is supplied.</p>
+<h3 id="p6-slab-contracts-and-classification">P6 — Slab contracts and classification<a class="headerlink" href="#p6-slab-contracts-and-classification" title="Permanent link">&para;</a></h3>
+<p><strong>Role:</strong> <code>@structural-math</code></p>
+<p><strong>Prerequisites:</strong> P0 approved first slab case; a parent-integrator-approved
+reuse/new core-type decision informed by P1/P2 findings.</p>
+<p><strong>Objective:</strong> establish the smallest stable slab type/error contract and
+classify the approved solid slab geometry without implementing full design.</p>
+<p><strong>Initial paths:</strong></p>
+<ul>
+<li><code>Python/structural_lib/core/data_types.py</code></li>
+<li><code>Python/structural_lib/core/errors.py</code></li>
+<li>new <code>Python/structural_lib/codes/is456/slab/</code></li>
+<li>new focused slab tests</li>
+</ul>
+<p><strong>Non-goals:</strong> one-way design, two-way coefficients, flat slab, API, UI,
+generic element framework.</p>
+<p><strong>Pitfalls:</strong> selecting a design path before validating span/support inputs;
+overloading beam result types; creating result shapes that cannot carry
+assumptions/limitations; editing shared exports during worker execution.</p>
+<p><strong>Acceptance:</strong> supported geometry contract, explicit span/width/thickness
+units, classification result, fail-closed unsupported inputs, focused test,
+architecture/import pass.</p>
+<p><strong>Return:</strong> type map, public-intent recommendation, changed paths, focused
+evidence, exclusions, dependency for P7/P9.</p>
+<p><strong>Recorded outcome (2026-08-09):</strong> accepted package-local frozen geometry,
+classification, result, and error contracts. Effective spans are explicit and
+normalized; <code>Ly/Lx &gt; 2</code> is one-way and <code>&lt;= 2</code> is two-way. No support condition,
+load, coefficient, or design behavior is inferred. Public export remains P11.</p>
+<h3 id="p7-one-way-slab-coefficient-and-design-slice">P7 — One-way slab coefficient and design slice<a class="headerlink" href="#p7-one-way-slab-coefficient-and-design-slice" title="Permanent link">&para;</a></h3>
+<p><strong>Role:</strong> <code>@structural-math</code></p>
+<p><strong>Prerequisites:</strong> P6 accepted; source/table policy and benchmark approved.</p>
+<p><strong>Objective:</strong> deliver one independently verifiable solid one-way slab design
+workflow for the owner-approved support/load case.</p>
+<p><strong>Paths:</strong> new slab modules and exact slab tests; no shared export edits.</p>
+<p><strong>Non-goals:</strong> two-way slabs, flat slabs, general load analysis, punching,
+optimization, API/UI.</p>
+<p><strong>Pitfalls:</strong> protected table reproduction; effective-span assumption drift;
+mixing service and factored loads; beam helper reuse with incompatible slab
+assumptions; universal tolerances.</p>
+<p><strong>Acceptance:</strong> source-backed coefficients/formulas, dimensional reasoning,
+accepted benchmark, governing limit, explicit assumptions, structured result,
+focused tests.</p>
+<p><strong>Return:</strong> public workflow candidate signature, actual/expected result with
+units, limitations, files, checks, HOLD items.</p>
+<p><strong>Recorded outcome (2026-08-09):</strong> accepted the simply supported one-way
+flexure slice. The 3.0 m benchmark gives 11.25 kN m and 260.7266 mm2 required
+steel for the 1 m strip. Continuity, shear and serviceability completion remain
+explicitly outside this slice.</p>
+<h3 id="p8-one-way-slab-detailing-and-serviceability-boundary">P8 — One-way slab detailing and serviceability boundary<a class="headerlink" href="#p8-one-way-slab-detailing-and-serviceability-boundary" title="Permanent link">&para;</a></h3>
+<p><strong>Role:</strong> <code>@structural-math</code></p>
+<p><strong>Prerequisites:</strong> stable P7 result contract.</p>
+<p><strong>Objective:</strong> add the minimum reinforcement/spacing/detailing and approved
+serviceability behavior needed to finish the supported one-way workflow.</p>
+<p><strong>Non-goals:</strong> IS 13920 slab behavior, direct-deflection models without approved
+source/benchmark, arbitrary bar optimization, two-way detailing.</p>
+<p><strong>Acceptance:</strong> main reinforcement, distribution reinforcement, spacing,
+diameter, and serviceability outcome are explicit for the supported case;
+unsupported numerical serviceability behavior fails closed or returns a review
+state as approved by P0.</p>
+<p><strong>Return:</strong> changed files, result fields/units, benchmark/limit evidence,
+warnings/limitations, exact checks.</p>
+<p><strong>Recorded outcome (2026-08-09):</strong> accepted minimum steel, bar diameter,
+provided-bar spacing and the basic <code>Lx/d</code> review boundary. The benchmark
+provided main/distribution steel is adequate; <code>Lx/d = 24</code> returns qualified
+review because modification factors/direct deflection are not implemented.</p>
+<h3 id="p9-two-way-coefficient-contract">P9 — Two-way coefficient contract<a class="headerlink" href="#p9-two-way-coefficient-contract" title="Permanent link">&para;</a></h3>
+<p><strong>Role:</strong> <code>@structural-math</code></p>
+<p><strong>Prerequisites:</strong> P6 accepted; protected-table and interpolation/exact-match
+policy approved.</p>
+<p><strong>Objective:</strong> implement the approved two-way coefficient lookup/calculation
+contract without the full design workflow.</p>
+<p><strong>Non-goals:</strong> full two-way design, flat slabs, uncontrolled interpolation,
+copying full tables, public exports.</p>
+<p><strong>Acceptance:</strong> source identity, panel/support/load classification, lookup
+behavior, bounds, unsupported conditions, and benchmark evidence are explicit.</p>
+<p><strong>Return:</strong> supported coefficient cases, source/provenance handling, files,
+tests, HOLD cases, dependency for P10.</p>
+<p><strong>Recorded outcome (2026-08-09):</strong> accepted a caller-supplied external
+coefficient record with explicit source, approval acknowledgement and
+<code>review_required</code> state. No protected table, lookup or interpolation ships.</p>
+<h3 id="p10-two-way-slab-design-and-distribution">P10 — Two-way slab design and distribution<a class="headerlink" href="#p10-two-way-slab-design-and-distribution" title="Permanent link">&para;</a></h3>
+<p><strong>Role:</strong> <code>@structural-math</code></p>
+<p><strong>Prerequisites:</strong> P7 and P9 accepted.</p>
+<p><strong>Objective:</strong> complete one owner-approved solid two-way slab workflow,
+including only the required distribution/torsion behavior.</p>
+<p><strong>Non-goals:</strong> flat/drop/ribbed slabs, irregular panels, openings, FEM, broad
+punching extraction, API/UI.</p>
+<p><strong>Acceptance:</strong> end-to-end pure-library result matches the approved independent
+benchmark; units, assumptions, strips, torsion conditions, limitations, and
+fail-closed cases are explicit.</p>
+<p><strong>Return:</strong> supported case, benchmark result, changed files, exact tests,
+remaining held cases.</p>
+<p><strong>Recorded outcome (2026-08-09):</strong> accepted the sole interior solid
+rectangular panel with all four edges continuous. For <code>Lx=4 m</code>, <code>Ly=6 m</code>,
+<code>wu=10 kN/m2</code>, <code>alpha_x=.08</code> and <code>alpha_y=.06</code>, the moments are 12.8 and
+9.6 kN m and the required steel is 244.7591 and 195.6828 mm2. Edge/corner
+panels and full detailing remain held.</p>
+<h3 id="p11-stable-python-facade-and-capability-discovery">P11 — Stable Python facade and capability discovery<a class="headerlink" href="#p11-stable-python-facade-and-capability-discovery" title="Permanent link">&para;</a></h3>
+<p><strong>Role:</strong> <code>@backend</code> with parent integration</p>
+<p><strong>Prerequisites:</strong> selected beam, column, footing, and slab cores accepted.</p>
+<p><strong>Objective:</strong> expose one intentional library contract without transport logic
+or duplicate calculations.</p>
+<p><strong>Paths:</strong></p>
+<ul>
+<li><code>Python/structural_lib/services/</code></li>
+<li>intentional package <code>__init__.py</code> files</li>
+<li>API manifest/contract tests</li>
+<li>public API/deprecation documentation</li>
+</ul>
+<p><strong>Non-goals:</strong> FastAPI routers, React hooks, formula changes, removing a public
+shim without approved deprecation.</p>
+<p><strong>Commands:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>./run.sh<span class="w"> </span>find<span class="w"> </span>--api<span class="w"> </span>&lt;each-approved-public-function&gt;
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>.venv/bin/python<span class="w"> </span>scripts/check_architecture_boundaries.py
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>.venv/bin/python<span class="w"> </span>scripts/validate_imports.py<span class="w"> </span>--scope<span class="w"> </span>structural_lib
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>.venv/bin/pytest<span class="w"> </span>Python/tests/integration/test_api_entrypoints_is456.py<span class="w"> </span>-q
+</code></pre></div>
+<p>Use the live matching integration path if that exact test filename changes.</p>
+<p><strong>Acceptance:</strong> canonical imports and signatures are discoverable; services only
+delegate/orchestrate; explicit units and result mappings are stable; accidental
+exports are documented or removed through policy.</p>
+<p><strong>Return:</strong> public symbol table, deprecation decisions, consumers, compatibility
+risks, files, tests.</p>
+<p><strong>Recorded outcome (2026-08-09):</strong> the canonical service facade now contains
+116 intentional symbols, with package-root and <code>structural_lib.api</code>
+compatibility paths delegating to the same objects. Footing transfer, bounded
+slab workflows and capability discovery are public. The missing
+development-length service adapter was restored, eliminating FastAPI fallback
+arithmetic. Integrated facade tests, architecture and import validation pass.</p>
+<h3 id="p12-publication-content-evidence-and-claims-closeout">P12 — Publication content, evidence, and claims closeout<a class="headerlink" href="#p12-publication-content-evidence-and-claims-closeout" title="Permanent link">&para;</a></h3>
+<p><strong>Roles:</strong> <code>@library-expert</code>/<code>@reviewer</code> read-only audit, then <code>@doc-master</code> or
+<code>@ops</code> for approved edits</p>
+<p><strong>Objective:</strong> remove publication ambiguity without changing engineering math.</p>
+<p><strong>Paths:</strong></p>
+<ul>
+<li><code>Python/pyproject.toml</code></li>
+<li><code>Python/MANIFEST.in</code></li>
+<li><code>Python/structural_lib/codes/is456/clauses.json</code></li>
+<li><code>Python/structural_lib/codes/is456/traceability.py</code></li>
+<li><code>README.md</code>, <code>Python/README.md</code></li>
+<li><code>LICENSE</code>, <code>Python/LICENSE</code>, <code>LICENSE_ENGINEERING.md</code></li>
+<li><code>docs/legal/</code></li>
+<li><code>docs/verification/</code></li>
+<li><code>docs/planning/pre-release-checklist.md</code></li>
+<li><code>.github/workflows/publish.yml</code></li>
+<li><code>scripts/release.py</code></li>
+</ul>
+<p><strong>Non-goals:</strong> formula review, version bump, upload, tag, merge.</p>
+<p><strong>Acceptance:</strong> approved wheel/sdist allowlist; protected-content decision;
+engineering disclaimer decision; claim-to-evidence crosswalk; release docs match
+actual commands; exact-artifact evidence template exists; the CI build intended
+for PyPI records artifact identity and passes the canonical installed-package/CLI
+UAT before the protected production upload can be approved.</p>
+<p><strong>Return:</strong> confirmed changes, unresolved owner decisions, and <code>READY</code> or
+<code>PUBLICATION HOLD</code>.</p>
+<p><strong>Recorded outcome (2026-08-09):</strong> <code>READY</code> for owner/CI review. The public
+package has an explicit content allowlist, <code>clauses.json</code> is metadata-only, and
+the 130-page source/extraction corpus is retained only in the Git-ignored
+<code>private_sources/</code> boundary. Public claims are case-qualified. A clean local
+wheel/sdist rehearsal passed installed-package and CLI UAT, and the integrated
+repository gate passed 29/29. Exact CI artifact identity, final version,
+TestPyPI/PyPI, tag and release approval remain P13 owner decisions.</p>
+<h3 id="p13-local-prepublication-and-ci-exact-artifact-release-candidate">P13 — Local prepublication and CI exact-artifact release candidate<a class="headerlink" href="#p13-local-prepublication-and-ci-exact-artifact-release-candidate" title="Permanent link">&para;</a></h3>
+<p><strong>Role:</strong> <code>@ops</code>, with <code>@tester</code> and <code>@reviewer</code></p>
+<p><strong>Prerequisites:</strong> P12 READY; owner authorizes release preparation; clean tree;
+current-commit PR Gate green; exact target version selected.</p>
+<p><strong>Objective:</strong> use a local wheel as prepublication rehearsal, then prove that the
+separate CI-built distribution intended for PyPI is identity-bound, UAT-tested,
+and releasable while preserving publication approval boundaries.</p>
+<p><strong>Commands:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>preflight<span class="w"> </span>&lt;target-version&gt;
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>.venv/bin/python<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>Python
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>verify<span class="w"> </span>--version<span class="w"> </span>&lt;target-version&gt;<span class="w"> </span>--source<span class="w"> </span>wheel
+</code></pre></div>
+<p><strong>Required evidence:</strong> local prepublication wheel identity/UAT; release commit,
+PR, version, and tag; CI workflow run; CI wheel/sdist filenames and SHA-256;
+content allowlist result; metadata/readme/license result; SBOM; canonical UAT on
+the CI-built distribution; protected-environment state; limitations/claim state;
+approvals outstanding.</p>
+<p><strong>Non-goals:</strong> production tag/upload/GitHub Release without explicit approval.</p>
+<p><strong>Acceptance:</strong> the local candidate is clearly labeled prepublication; the
+CI-built distribution that the publish job will download is UAT-tested and
+recorded; production upload remains paused for owner approval. Return <code>READY FOR
+OWNER RELEASE DECISION</code>, never <code>RELEASED</code>.</p>
+<p><strong>Return:</strong> release-preflight report in the maintained skill format plus artifact
+identity and owner-only actions.</p>
+<h3 id="fapi-1-thin-fastapi-adoption">FAPI-1 — Thin FastAPI adoption<a class="headerlink" href="#fapi-1-thin-fastapi-adoption" title="Permanent link">&para;</a></h3>
+<p><strong>Role:</strong> <code>@api-developer</code></p>
+<p><strong>Prerequisites:</strong> stable P11 contract; library release candidate or deliberately
+frozen library commit.</p>
+<p><strong>Objective:</strong> make FastAPI consume the library contract for the supported
+beam/column/footing/slab workflows.</p>
+<p><strong>Non-goals:</strong> UI work, structural calculations in routers, speculative endpoint
+families, backward-incompatible response redesign without approval.</p>
+<p><strong>Acceptance:</strong> request validation -&gt; public/service call -&gt; structured response
+works for one representative path per supported element; no upward import or
+formula duplication.</p>
+<p><strong>Return:</strong> endpoint/contract map, exact request/response evidence, changed files,
+tests, compatibility risks.</p>
+<h2 id="14-safe-parallel-execution-schedule">14. Safe parallel execution schedule<a class="headerlink" href="#14-safe-parallel-execution-schedule" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Wave</th>
+<th>Worker A</th>
+<th>Worker B</th>
+<th>Parent action after return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>No worker</td>
+<td>No worker</td>
+<td>Owner resolves MAINT-008 and v0.21.7 decision</td>
+</tr>
+<tr>
+<td>1</td>
+<td>P1 capability/evidence audit</td>
+<td>P2 public API/package audit</td>
+<td>Consolidate baseline and lock shared types/API decisions</td>
+</tr>
+<tr>
+<td>2</td>
+<td>P3 beam closure audit</td>
+<td>P4 column closure audit</td>
+<td>Accept supported matrices; create only confirmed fix packets</td>
+</tr>
+<tr>
+<td>3</td>
+<td>P5 footing source/readiness or implementation</td>
+<td>P6 slab readiness audit only if it does not edit shared core</td>
+<td>Integrate footing first; lock slab types</td>
+</tr>
+<tr>
+<td>4</td>
+<td>P7 one-way implementation</td>
+<td>P9 two-way coefficient preparation/read-only</td>
+<td>Accept one-way core; decide protected-table path</td>
+</tr>
+<tr>
+<td>5</td>
+<td>P8 one-way detailing</td>
+<td>P9 two-way coefficient implementation, separate files</td>
+<td>Integrate exports only after both return</td>
+</tr>
+<tr>
+<td>6</td>
+<td>P10 two-way design</td>
+<td>P12 package/source audit, read-only</td>
+<td>Integrate library; resolve publication HOLDs</td>
+</tr>
+<tr>
+<td>7</td>
+<td>P11 stable facade</td>
+<td>No second editor</td>
+<td>Freeze public contract and run integrated gate</td>
+</tr>
+<tr>
+<td>8</td>
+<td>P12 approved documentation/package edits</td>
+<td>No second editor</td>
+<td>Establish release-candidate readiness</td>
+</tr>
+<tr>
+<td>9</td>
+<td>P13 local/CI artifact evidence</td>
+<td>Reviewer verifies exact commit, CI artifact, and UAT binding</td>
+<td>Ask owner for protected TestPyPI/PyPI approval</td>
+</tr>
+</tbody>
+</table>
+<p>Never run two implementation workers that both touch <code>core/</code>, <code>services/api.py</code>,
+package exports, the same test module, packaging metadata, or canonical planning
+records.</p>
+<h2 id="15-worker-packet-prompt-template">15. Worker packet prompt template<a class="headerlink" href="#15-worker-packet-prompt-template" title="Permanent link">&para;</a></h2>
+<p>Use this template verbatim and fill every bracket. Lower-context workers should
+not need this entire plan.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Packet: [ID and name]
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>Role: [project role]
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>Objective:
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>[One measurable outcome.]
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>Prerequisites and accepted decisions:
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>[Source/benchmark/public-contract decisions already approved.]
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>Exact files/directories in scope:
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>- [path]
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>- [path]
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>Read first:
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>- AGENTS.md
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>- [relevant folder index]
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>- [one or more exact skills]
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>- [source/evidence packet]
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a>
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>Non-goals:
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>- [explicit adjacent work]
+<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a>- No merge, tag, publish, issue closure, remote-branch deletion, or settings change.
+<a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a>
+<a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a>Constraints:
+<a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a>- Preserve Core -&gt; IS 456 -&gt; Services -&gt; UI.
+<a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a>- Explicit units: mm, mm2, N/mm2, kN, kNm as appropriate.
+<a id="__codelineno-14-27" name="__codelineno-14-27" href="#__codelineno-14-27"></a>- Do not copy protected standards text/tables/figures.
+<a id="__codelineno-14-28" name="__codelineno-14-28" href="#__codelineno-14-28"></a>- Return HOLD rather than choosing a formula, value, tolerance, or claim.
+<a id="__codelineno-14-29" name="__codelineno-14-29" href="#__codelineno-14-29"></a>- Do not edit locked/shared files without parent approval.
+<a id="__codelineno-14-30" name="__codelineno-14-30" href="#__codelineno-14-30"></a>
+<a id="__codelineno-14-31" name="__codelineno-14-31" href="#__codelineno-14-31"></a>Likely pitfalls:
+<a id="__codelineno-14-32" name="__codelineno-14-32" href="#__codelineno-14-32"></a>- [specific unit/assumption/import/compatibility risks]
+<a id="__codelineno-14-33" name="__codelineno-14-33" href="#__codelineno-14-33"></a>
+<a id="__codelineno-14-34" name="__codelineno-14-34" href="#__codelineno-14-34"></a>Required commands:
+<a id="__codelineno-14-35" name="__codelineno-14-35" href="#__codelineno-14-35"></a>- [targeted command]
+<a id="__codelineno-14-36" name="__codelineno-14-36" href="#__codelineno-14-36"></a>- [architecture/import command when relevant]
+<a id="__codelineno-14-37" name="__codelineno-14-37" href="#__codelineno-14-37"></a>
+<a id="__codelineno-14-38" name="__codelineno-14-38" href="#__codelineno-14-38"></a>Acceptance criteria:
+<a id="__codelineno-14-39" name="__codelineno-14-39" href="#__codelineno-14-39"></a>1. [observable outcome]
+<a id="__codelineno-14-40" name="__codelineno-14-40" href="#__codelineno-14-40"></a>2. [source/benchmark evidence]
+<a id="__codelineno-14-41" name="__codelineno-14-41" href="#__codelineno-14-41"></a>3. [supported/unsupported behavior]
+<a id="__codelineno-14-42" name="__codelineno-14-42" href="#__codelineno-14-42"></a>4. [tests/checks]
+<a id="__codelineno-14-43" name="__codelineno-14-43" href="#__codelineno-14-43"></a>
+<a id="__codelineno-14-44" name="__codelineno-14-44" href="#__codelineno-14-44"></a>Return format:
+<a id="__codelineno-14-45" name="__codelineno-14-45" href="#__codelineno-14-45"></a>- Outcome: COMPLETE / HOLD / BLOCKED
+<a id="__codelineno-14-46" name="__codelineno-14-46" href="#__codelineno-14-46"></a>- Supported case and exclusions
+<a id="__codelineno-14-47" name="__codelineno-14-47" href="#__codelineno-14-47"></a>- Files read/changed
+<a id="__codelineno-14-48" name="__codelineno-14-48" href="#__codelineno-14-48"></a>- Source and benchmark IDs used
+<a id="__codelineno-14-49" name="__codelineno-14-49" href="#__codelineno-14-49"></a>- Actual versus expected result with units, when applicable
+<a id="__codelineno-14-50" name="__codelineno-14-50" href="#__codelineno-14-50"></a>- Commands and exact results
+<a id="__codelineno-14-51" name="__codelineno-14-51" href="#__codelineno-14-51"></a>- Assumptions and limitations
+<a id="__codelineno-14-52" name="__codelineno-14-52" href="#__codelineno-14-52"></a>- Shared-file dependencies discovered
+<a id="__codelineno-14-53" name="__codelineno-14-53" href="#__codelineno-14-53"></a>- Owner/qualified-review decisions remaining
+<a id="__codelineno-14-54" name="__codelineno-14-54" href="#__codelineno-14-54"></a>- Terminal issues in the required format
+</code></pre></div>
+<h2 id="16-logs-and-durable-state">16. Logs and durable state<a class="headerlink" href="#16-logs-and-durable-state" title="Permanent link">&para;</a></h2>
+<p>Use existing canonical records. Do not create one log per agent.</p>
+<table>
+<thead>
+<tr>
+<th>Record</th>
+<th>Update rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>This plan</td>
+<td>Parent updates packet state and execution ledger after accepted work</td>
+</tr>
+<tr>
+<td><code>docs/TASKS.md</code></td>
+<td>Update when a packet starts, completes, is held, or priority changes</td>
+</tr>
+<tr>
+<td><code>docs/WORKLOG.md</code></td>
+<td>Add a compact completed-outcome entry after accepted work</td>
+</tr>
+<tr>
+<td><code>docs/planning/next-session-brief.md</code></td>
+<td>Update only at a real handoff/task switch or when the next action changes</td>
+</tr>
+<tr>
+<td><code>docs/SESSION_LOG.md</code></td>
+<td>Update only when a durable session record is required by the task</td>
+</tr>
+<tr>
+<td>PR/commit evidence</td>
+<td>Record exact commit and current PR Gate in the packet closeout</td>
+</tr>
+</tbody>
+</table>
+<h3 id="execution-ledger-template">Execution ledger template<a class="headerlink" href="#execution-ledger-template" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Packet</th>
+<th>Agent/role</th>
+<th>Outcome</th>
+<th>Branch/commit</th>
+<th>Files</th>
+<th>Focused evidence</th>
+<th>Gate</th>
+<th>Holds/owner decisions</th>
+<th>Next</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-08-09</td>
+<td>P0</td>
+<td>Main Agent/owner</td>
+<td>COMPLETE</td>
+<td><code>task/LIB-IS456-V1</code> at <code>056bfad7</code></td>
+<td>This plan</td>
+<td>Controlled-source identity/hash and visual amendment review; owner activation</td>
+<td>Phase 0 only</td>
+<td><code>clauses.json</code> publication HOLD; v0.23.0 provisional</td>
+<td>P1/P2</td>
+</tr>
+<tr>
+<td>2026-08-09</td>
+<td>P1</td>
+<td>library-expert/structural-engineer</td>
+<td>COMPLETE</td>
+<td>Read-only</td>
+<td>Beam/column/footing code, tests, docs, parity</td>
+<td>Capability/source/benchmark/claim matrix; parity 96% treated only as wiring evidence</td>
+<td>Not applicable</td>
+<td>Route-specific independent benchmark acceptance remains</td>
+<td>P3/P4/P5</td>
+</tr>
+<tr>
+<td>2026-08-09</td>
+<td>P2</td>
+<td>backend/library-expert</td>
+<td>COMPLETE WITH PUBLICATION HOLD</td>
+<td>Read-only</td>
+<td>Facades, manifest, packaging, release workflow</td>
+<td>108-symbol service manifest match; wheel/sdist inventory; dependency/public-export map</td>
+<td>Not applicable</td>
+<td>Canonical facade, protected content, artifact hash/allowlist/UAT</td>
+<td>P11/P12/P13</td>
+</tr>
+<tr>
+<td>2026-08-09</td>
+<td>P3</td>
+<td>structural-engineer</td>
+<td>COMPLETE</td>
+<td>Read-only plus parent docs</td>
+<td>Beam code/tests and public claims</td>
+<td>Focused beam suites green; route-specific matrix accepted</td>
+<td>Focused</td>
+<td>Independent beam benchmarks remain claim-limited</td>
+<td>P12</td>
+</tr>
+<tr>
+<td>2026-08-09</td>
+<td>P4</td>
+<td>structural-engineer + Main Agent</td>
+<td>COMPLETE</td>
+<td>Working tree</td>
+<td>Column core/service/FastAPI/tests/docs</td>
+<td>Two-axis slenderness fail-close; long-column minimum eccentricity; full focused column/API slice green</td>
+<td>Focused</td>
+<td>Independent route benchmarks remain claim-limited</td>
+<td>P11/P12</td>
+</tr>
+<tr>
+<td>2026-08-09</td>
+<td>P5</td>
+<td>structural-math + Main Agent</td>
+<td>COMPLETE</td>
+<td>Working tree</td>
+<td>Footing transfer, legacy bearing helper, focused tests</td>
+<td>Independent 3000 kN hand calculation; both-member development checks; footing suite green</td>
+<td>Focused</td>
+<td>Public facade waits for P11</td>
+<td>P11</td>
+</tr>
+<tr>
+<td>2026-08-09</td>
+<td>P6</td>
+<td>structural-math + Main Agent</td>
+<td>COMPLETE</td>
+<td>Working tree</td>
+<td>Slab-local contracts/classification/tests</td>
+<td>13 focused tests; architecture/import checks green</td>
+<td>Focused</td>
+<td>Public facade waits for P11</td>
+<td>P7/P9</td>
+</tr>
+<tr>
+<td>2026-08-09</td>
+<td>P7</td>
+<td>structural-math + Main Agent</td>
+<td>COMPLETE</td>
+<td>Working tree</td>
+<td>One-way slab flexure/tests</td>
+<td>Independent 11.25 kN m and 260.7266 mm2 benchmark</td>
+<td>Focused</td>
+<td>Continuity/shear/detailing held for later packets</td>
+<td>P8</td>
+</tr>
+<tr>
+<td>2026-08-09</td>
+<td>P8</td>
+<td>structural-math + Main Agent</td>
+<td>COMPLETE</td>
+<td>Working tree</td>
+<td>One-way slab detailing/tests</td>
+<td>Provided-bar, spacing, diameter and basic Lx/d evidence</td>
+<td>Focused</td>
+<td>Modification factors/direct deflection require review</td>
+<td>P11</td>
+</tr>
+<tr>
+<td>2026-08-09</td>
+<td>P9</td>
+<td>structural-math + Main Agent</td>
+<td>COMPLETE</td>
+<td>Working tree</td>
+<td>External coefficient contract/tests</td>
+<td>Explicit source/approval/review state; no built-in protected values</td>
+<td>Focused</td>
+<td>Coefficient correctness remains qualified input</td>
+<td>P10</td>
+</tr>
+<tr>
+<td>2026-08-09</td>
+<td>P10</td>
+<td>structural-math + Main Agent</td>
+<td>COMPLETE</td>
+<td>Working tree</td>
+<td>Two-way slab flexure/tests</td>
+<td>Independent 12.8/9.6 kN m benchmark; 70 slab tests green</td>
+<td>Focused</td>
+<td>Edge/corner panels and detailing held</td>
+<td>P11</td>
+</tr>
+<tr>
+<td>2026-08-09</td>
+<td>P11</td>
+<td>backend + Main Agent</td>
+<td>COMPLETE</td>
+<td>Working tree</td>
+<td>Service facade, package exports, manifest, integration tests</td>
+<td>116-symbol manifest; canonical/compatibility identity; architecture/import green</td>
+<td>Focused</td>
+<td>Stable-version promise remains owner release decision</td>
+<td>P12/FAPI-1</td>
+</tr>
+<tr>
+<td>2026-08-09</td>
+<td>FAPI-1</td>
+<td>api-developer + Main Agent</td>
+<td>COMPLETE</td>
+<td>Working tree</td>
+<td>Development-length fix; footing/slab router/models/tests</td>
+<td>Representative beam/column/footing/slab request-to-service evidence</td>
+<td>Focused</td>
+<td>No UI expansion</td>
+<td>P12</td>
+</tr>
+<tr>
+<td>2026-08-09</td>
+<td>P12</td>
+<td>Main Agent</td>
+<td>COMPLETE / READY</td>
+<td><code>task/LIB-IS456-V1</code> at <code>301ddec7</code>; draft PR #693</td>
+<td>Package allowlist, protected-source boundary, claims, publish workflow</td>
+<td>Public clause data sanitized; private 130-page corpus ignored; clean local artifact UAT; quick gate 9/9; full gate 29/29; PR run <code>31321772342</code> green</td>
+<td>Full + PR</td>
+<td>Exact CI publication-artifact identity and owner release decision remain</td>
+<td>P13</td>
+</tr>
+</tbody>
+</table>
+<h3 id="required-handoff-content">Required handoff content<a class="headerlink" href="#required-handoff-content" title="Permanent link">&para;</a></h3>
+<ul>
+<li>completed outcome;</li>
+<li>current branch and commit;</li>
+<li>exact remaining packet;</li>
+<li>files changed;</li>
+<li>focused and gate commands already run;</li>
+<li>source/benchmark evidence used;</li>
+<li>assumptions, limitations, and unsupported cases;</li>
+<li>owner/qualified-review decisions;</li>
+<li>checks intentionally not repeated;</li>
+<li><code>⚠️ TERMINAL ISSUE: [what happened] -&gt; [what worked instead]</code>, when applicable.</li>
+</ul>
+<h2 id="17-public-api-and-version-policy">17. Public API and version policy<a class="headerlink" href="#17-public-api-and-version-policy" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Keep pre-1.0 versions while the library surface is still settling.</li>
+<li>Do not delay all useful releases until literal whole-standard coverage.</li>
+<li>A major version promises public API stability, not support for every IS 456
+  clause.</li>
+<li>Add new supported workflows through intentional public exports.</li>
+<li>Internal helpers may change without deprecation only when they were never
+  public/advertised.</li>
+<li>Existing public behavior follows the repository deprecation policy.</li>
+<li>The package description and README list supported elements and limitations;
+  they do not use an unqualified “IS 456 complete” claim.</li>
+<li>Base dependencies remain limited to what every package user needs. FastAPI,
+  React, CAD, reporting, PDF, and development tools remain outside the base
+  install or in explicit optional extras.</li>
+</ul>
+<p>Recommended release decision sequence, subject to owner approval:</p>
+<ol>
+<li>v0.21.7: release the already-prepared maintenance/security baseline, or
+   explicitly record its deferral.</li>
+<li>v0.22.x: stabilize public contract, source/provenance boundaries, and package
+   claims.</li>
+<li>v0.23.0: publish the supported slab plus isolated-footing completion scope.</li>
+<li>v1.0 later: stable API and qualified/accepted evidence for every advertised
+   production-supported route, not every clause in the standard.</li>
+</ol>
+<h2 id="18-pypi-release-control">18. PyPI release control<a class="headerlink" href="#18-pypi-release-control" title="Permanent link">&para;</a></h2>
+<p>The project already uses modern <code>[project]</code> metadata in <code>Python/pyproject.toml</code>
+and a Trusted Publishing-style OIDC workflow. Preserve these foundations.</p>
+<p>Official packaging/release references:</p>
+<ul>
+<li>Python packaging flow:
+  <code>https://packaging.python.org/en/latest/flow/</code></li>
+<li><code>pyproject.toml</code> specification:
+  <code>https://packaging.python.org/en/latest/specifications/pyproject-toml/</code></li>
+<li>Building and publishing guidance:
+  <code>https://packaging.python.org/en/latest/guides/section-build-and-publish/</code></li>
+<li>PyPI Trusted Publishers:
+  <code>https://docs.pypi.org/trusted-publishers/</code></li>
+<li>Trusted Publisher security model:
+  <code>https://docs.pypi.org/trusted-publishers/security-model/</code></li>
+</ul>
+<p>Release rules:</p>
+<ul>
+<li>The publication job receives job-level <code>id-token: write</code>; other jobs do not.</li>
+<li>Production publication remains tag-only.</li>
+<li>The PyPI environment should retain required owner approval.</li>
+<li>The publish job downloads the CI-built distribution artifact. The release
+  record distinguishes it from any locally built prepublication candidate and
+  binds the published artifact to the CI run, commit/tag, filename, SHA-256,
+  SBOM, allowlist result, and UAT evidence.</li>
+<li>The CI-built distribution intended for PyPI must complete the canonical
+  installed-package/CLI UAT before the protected production upload is approved.</li>
+<li>Inspect wheel and sdist contents for private/protected/unintended files.</li>
+<li>Treat attestations and OIDC as supply-chain identity evidence, not structural
+  correctness evidence.</li>
+<li>TestPyPI is a rehearsal and requires owner approval because it is an external
+  upload.</li>
+<li>PyPI releases are immutable; if a published release is defective, the owner
+  decides whether to yank it and publishes a corrected higher version.</li>
+</ul>
+<h2 id="19-risk-register-and-containment">19. Risk register and containment<a class="headerlink" href="#19-risk-register-and-containment" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Prevention</th>
+<th>Stop/rollback</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>False “complete IS 456” claim</td>
+<td>Supported-capability matrix and claim states</td>
+<td>Block release wording until corrected</td>
+</tr>
+<tr>
+<td>Wrong amendment/source basis</td>
+<td>P0 source lock and route-specific amendment review</td>
+<td>Return HOLD; no formula edit</td>
+</tr>
+<tr>
+<td>Circular benchmark</td>
+<td>Independent benchmark acceptance</td>
+<td>Demote to comparison; do not loosen tolerance</td>
+</tr>
+<tr>
+<td>Protected source text/table ships</td>
+<td>P12 allowlist and <code>clauses.json</code> review</td>
+<td>PUBLICATION HOLD; remove/replace only after owner/legal decision</td>
+</tr>
+<tr>
+<td>Units drift</td>
+<td>Explicit suffixes and dimensional intake</td>
+<td>Stop on unreconciled conversion</td>
+</tr>
+<tr>
+<td>Agent edit collision</td>
+<td>Max two workers, shared-file locks, parent-only exports</td>
+<td>Stop worker; parent resolves on one branch</td>
+</tr>
+<tr>
+<td>Rewrite expands scope</td>
+<td>Essential-only outcome test</td>
+<td>Revert/split unaccepted adjacent edits before commit</td>
+</tr>
+<tr>
+<td>Accidental API break</td>
+<td>P2 map, P11 facade, deprecation policy</td>
+<td>Restore compatibility or obtain owner version decision</td>
+</tr>
+<tr>
+<td>Package contains wrong files</td>
+<td>Wheel/sdist allowlist and archive inspection</td>
+<td>Rebuild before any upload</td>
+</tr>
+<tr>
+<td>Tested artifact differs from published artifact</td>
+<td>Distinguish local rehearsal from CI build; UAT and hash the CI artifact before protected upload; exact-version post-PyPI UAT</td>
+<td>Owner evaluates yank/new version; never overwrite</td>
+</tr>
+<tr>
+<td>Maintenance/release branch contamination</td>
+<td>Phase 0 clean-lane gate</td>
+<td>Do not commit library work on MAINT-008-B</td>
+</tr>
+<tr>
+<td>Full gates waste the day</td>
+<td>Targeted checks, one quick gate, one milestone full gate</td>
+<td>Do not repeat unchanged evidence</td>
+</tr>
+<tr>
+<td>FastAPI/UI reintroduces math</td>
+<td>Architecture checker and thin consumer contract</td>
+<td>Move root calculation back to library before acceptance</td>
+</tr>
+</tbody>
+</table>
+<h2 id="20-immediate-kickoff-checklist">20. Immediate kickoff checklist<a class="headerlink" href="#20-immediate-kickoff-checklist" title="Permanent link">&para;</a></h2>
+<p>The first implementation session begins only after the owner clears Phase 0.</p>
+<h3 id="current-execution-checkpoint">Current execution checkpoint<a class="headerlink" href="#current-execution-checkpoint" title="Permanent link">&para;</a></h3>
+<p>P0-P12 and FAPI-1 are complete on <code>task/LIB-IS456-V1</code>; draft PR #693 is open
+and its PR Gate run <code>31321772342</code> is green. The protected-content
+design keeps the full 130-page source corpus private and Git-ignored while
+shipping metadata-only <code>clauses.json</code>. The clean local candidate UAT, quick
+gate (9/9), and integrated gate (29/29) pass. P13 must build and record its own
+exact publication artifacts after owner authorization; publication actions
+remain owner-only.</p>
+<h2 id="21-final-program-acceptance-checklist">21. Final program acceptance checklist<a class="headerlink" href="#21-final-program-acceptance-checklist" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[x] MAINT-008 is resolved without library scope contamination.</li>
+<li>[x] v0.21.7 has an explicit release/defer decision.</li>
+<li>[x] Supported IS 456 RC Core scope is owner-approved.</li>
+<li>[x] Official source composition and amendment state are recorded.</li>
+<li>[x] Public/protected-source handling is approved.</li>
+<li>[x] Beam supported-case and evidence matrix is accepted.</li>
+<li>[x] Column supported-case and evidence matrix is accepted.</li>
+<li>[x] Isolated-footing core, including dowel/bearing transfer, is accepted.</li>
+<li>[x] One-way slab supported workflow is accepted.</li>
+<li>[x] Two-way slab supported workflow is accepted.</li>
+<li>[x] Unsupported elements/cases fail closed or are not advertised.</li>
+<li>[x] Stable Python public facade and deprecation decisions are documented.</li>
+<li>[x] Base and optional dependency boundaries are intentional.</li>
+<li>[x] Wheel/sdist contents match the approved allowlist.</li>
+<li>[x] Public README, license/disclaimer, examples, and claims match the artifact.</li>
+<li>[x] Targeted checks and architecture/import checks are green per packet.</li>
+<li>[x] Quick gate is green before each accepted commit.</li>
+<li>[x] One integrated full gate is green for each stable milestone.</li>
+<li>[x] Current release-candidate PR Gate is green.</li>
+<li>[ ] Canonical release preflight is green.</li>
+<li>[ ] Local prepublication and CI publication-artifact filenames/SHA-256 values
+      are separately recorded.</li>
+<li>[ ] Local rehearsal UAT and CI publication-artifact clean-install/CLI UAT are
+      green.</li>
+<li>[ ] Owner has separately approved any TestPyPI/PyPI/tag/GitHub Release action.</li>
+<li>[ ] Exact published PyPI version passes post-publication UAT.</li>
+<li>[ ] Handoff and execution ledger identify remaining limitations and review
+      boundaries.</li>
+</ul>
+<h2 id="22-program-closeout-statement">22. Program closeout statement<a class="headerlink" href="#22-program-closeout-statement" title="Permanent link">&para;</a></h2>
+<p>When this checklist is complete, the project may state that the package supports
+the documented beam, column, isolated-footing, and solid-slab cases under IS
+456:2000 and the recorded amendment basis.</p>
+<p>It may not state that all of IS 456 is implemented, that every structural system
+is supported, that passing software tests certifies formula correctness, or that
+the package replaces qualified structural-engineering review.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

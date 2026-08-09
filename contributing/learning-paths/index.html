@@ -1617,8 +1617,8 @@
 - Typo fixes, link repairs, small README updates
 - One-line code fixes with no behavior change</p>
 <p>Checks to run:
-- <code>./scripts/should_use_pr.sh --explain</code>
-- <code>./scripts/ai_commit.sh "docs: ..."</code> or PR workflow if required</p>
+- <code>./run.sh check --quick</code>
+- Return the verified diff and suggested commit to Codex</p>
 <h2 id="path-b-intermediate-feature-work-in-existing-modules">Path B: Intermediate (feature work in existing modules)<a class="headerlink" href="#path-b-intermediate-feature-work-in-existing-modules" title="Permanent link">&para;</a></h2>
 <p>Read in order:
 1. <code>../getting-started/agent-bootstrap.md</code>
@@ -1630,8 +1630,8 @@
 - New CLI flags that do not change existing outputs
 - VBA or Excel work (add <code>vba-guide.md</code>, <code>excel-addin-guide.md</code>)</p>
 <p>Checks to run:
-- <code>./scripts/should_use_pr.sh --explain</code>
-- <code>./scripts/quick_check.sh</code> (for code changes)</p>
+- <code>./run.sh check --quick</code>
+- The targeted tests for the changed behavior</p>
 <h2 id="path-c-advanced-refactor-api-or-release">Path C: Advanced (refactor, API, or release)<a class="headerlink" href="#path-c-advanced-refactor-api-or-release" title="Permanent link">&para;</a></h2>
 <p>Read in order:
 1. <code>../architecture/deep-project-map.md</code>

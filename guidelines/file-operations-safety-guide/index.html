@@ -1882,7 +1882,8 @@
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>.venv/bin/python<span class="w"> </span>scripts/check_links.py
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
 <a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1"># Step 5: Commit</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;refactor: move file.md to new location&quot;</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>git<span class="w"> </span>add<span class="w"> </span>--<span class="w"> </span>docs/old/file.md<span class="w"> </span>docs/new/file.md
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;refactor: move file.md to new location&quot;</span>
 </code></pre></div>
 <h3 id="workflow-2-deleting-a-file">Workflow 2: Deleting a File<a class="headerlink" href="#workflow-2-deleting-a-file" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Step 1: Preview (ALWAYS do this first)</span>
@@ -1904,7 +1905,8 @@
 <a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>.venv/bin/python<span class="w"> </span>scripts/check_links.py
 <a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
 <a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="c1"># Step 5: Commit</span>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;chore: remove obsolete file.md&quot;</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>git<span class="w"> </span>add<span class="w"> </span>--<span class="w"> </span>docs/file.md
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: remove obsolete file.md&quot;</span>
 </code></pre></div>
 <h3 id="workflow-3-archiving-old-files">Workflow 3: Archiving Old Files<a class="headerlink" href="#workflow-3-archiving-old-files" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Step 1: Find archive candidates</span>
@@ -1917,13 +1919,15 @@
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>.venv/bin/python<span class="w"> </span>scripts/check_links.py
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
 <a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1"># Step 4: Commit</span>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;chore: archive old planning docs&quot;</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>git<span class="w"> </span>add<span class="w"> </span>--<span class="w"> </span>docs/planning/old-plan.md<span class="w"> </span>docs/_archive/planning/old-plan.md
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: archive old planning docs&quot;</span>
 </code></pre></div>
 <h3 id="workflow-4-renaming-a-file">Workflow 4: Renaming a File<a class="headerlink" href="#workflow-4-renaming-a-file" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Renaming is just moving to same folder with new name</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_move.py<span class="w"> </span>docs/old-name.md<span class="w"> </span>docs/new-name.md<span class="w"> </span>--dry-run
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_move.py<span class="w"> </span>docs/old-name.md<span class="w"> </span>docs/new-name.md
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;refactor: rename old-name.md to new-name.md&quot;</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>git<span class="w"> </span>add<span class="w"> </span>--<span class="w"> </span>docs/old-name.md<span class="w"> </span>docs/new-name.md
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;refactor: rename old-name.md to new-name.md&quot;</span>
 </code></pre></div>
 <h3 id="workflow-5-batch-archive-multiple-files">Workflow 5: Batch Archive Multiple Files<a class="headerlink" href="#workflow-5-batch-archive-multiple-files" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Step 1: Archive specific files</span>
@@ -1936,7 +1940,8 @@
 <a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>.venv/bin/python<span class="w"> </span>scripts/batch_archive.py<span class="w"> </span>--files<span class="w"> </span>file1.md<span class="w"> </span>file2.md<span class="w"> </span>file3.md
 <a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
 <a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="c1"># Step 4: Commit</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;chore: archive agent completion docs&quot;</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>git<span class="w"> </span>add<span class="w"> </span>--<span class="w"> </span>docs/agents<span class="w"> </span>docs/_archive/agents
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: archive agent completion docs&quot;</span>
 </code></pre></div>
 <h3 id="workflow-6-renaming-a-folder">Workflow 6: Renaming a Folder<a class="headerlink" href="#workflow-6-renaming-a-folder" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Step 1: Preview (finds all references)</span>
@@ -1956,7 +1961,8 @@
 <a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="c1"># (Script warns but doesn&#39;t auto-edit .gitignore)</span>
 <a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
 <a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="c1"># Step 6: Commit</span>
-<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;refactor: rename folder to follow naming convention&quot;</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>git<span class="w"> </span>add<span class="w"> </span>--<span class="w"> </span>docs
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;refactor: rename folder to follow naming convention&quot;</span>
 </code></pre></div>
 <hr />
 <h2 id="pre-operation-checklist">🔍 Pre-Operation Checklist<a class="headerlink" href="#pre-operation-checklist" title="Permanent link">&para;</a></h2>

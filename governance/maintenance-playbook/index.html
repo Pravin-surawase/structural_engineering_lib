@@ -1672,7 +1672,7 @@
 <strong>Status:</strong> Active
 <strong>Importance:</strong> High
 <strong>Created:</strong> 2026-04-02
-<strong>Last Updated:</strong> 2026-04-02</p>
+<strong>Last Updated:</strong> 2026-08-09</p>
 <hr />
 <p>This playbook defines recurring maintenance tasks, quality gates, and governance
 limits for the <strong>structural_engineering_lib</strong> project. Every AI agent and human
@@ -1694,27 +1694,23 @@ contributor should follow these procedures to keep the project healthy.</p>
 <a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>git<span class="w"> </span>branch<span class="w"> </span>--show-current
 </code></pre></div>
 <h3 id="session-end-mandatory-do-not-skip">Session End (MANDATORY — do NOT skip)<a class="headerlink" href="#session-end-mandatory-do-not-skip" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># 1. Commit any remaining work</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;type(scope): message&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># 1. Log agent feedback when a concrete process defect was found</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./run.sh<span class="w"> </span>feedback<span class="w"> </span>log<span class="w"> </span>--agent<span class="w"> </span>&lt;name&gt;
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># 2. Log agent feedback</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>./run.sh<span class="w"> </span>feedback<span class="w"> </span>log<span class="w"> </span>--agent<span class="w"> </span>&lt;name&gt;
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># 2. Generate a session summary only when the task owns that state</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>summary
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># 3. Auto-generate session summary</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>summary
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># 3. Check evolution status</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>./run.sh<span class="w"> </span>evolve<span class="w"> </span>--status
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># 4. Sync stale doc numbers</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>./run.sh<span class="w"> </span>session<span class="w"> </span>sync
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="c1"># 5. Check evolution status (burn-in phase)</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>./run.sh<span class="w"> </span>evolve<span class="w"> </span>--status
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="c1"># 6. Update handoff docs</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1"># Edit: docs/planning/next-session-brief.md</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="c1"># Edit: docs/TASKS.md</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="c1"># 7. Commit doc updates</span>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;docs: session end&quot;</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># 4. Update handoff docs only when project state changed</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># Edit: docs/planning/next-session-brief.md</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1"># Edit: docs/TASKS.md</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1"># 5. Run the quick gate once</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>./run.sh<span class="w"> </span>check<span class="w"> </span>--quick
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1"># 6. Codex reviews and performs the scoped Git/GitHub closeout</span>
 </code></pre></div>
 <blockquote>
 <p><strong>Why this matters:</strong> Skipping session-end steps has historically caused 10+
@@ -1778,7 +1774,7 @@ blind.</p>
 <li><strong>API WIRE</strong> → services/api.py</li>
 <li><strong>ENDPOINT</strong> → FastAPI router</li>
 <li><strong>DOCUMENT</strong> → docs updated</li>
-<li><strong>COMMIT</strong> → via ai_commit.sh</li>
+<li><strong>CLOSEOUT</strong> → Codex-managed commit, push, and PR update</li>
 </ol>
 <h3 id="quality-gates-between-steps">Quality gates between steps<a class="headerlink" href="#quality-gates-between-steps" title="Permanent link">&para;</a></h3>
 <table>

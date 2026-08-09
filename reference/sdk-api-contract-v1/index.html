@@ -23,7 +23,7 @@
     
     
       
-        <title>Structural SDK API Contract — v1.0 - structural_engineering_lib</title>
+        <title>Historical Structural SDK Target Contract — v1.0 - structural_engineering_lib</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#structural-sdk-api-contract-v10" class="md-skip">
+        <a href="#historical-structural-sdk-target-contract-v10" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Structural SDK API Contract — v1.0
+              Historical Structural SDK Target Contract — v1.0
             
           </span>
         </div>
@@ -1882,17 +1882,22 @@
   
 
 
-<h1 id="structural-sdk-api-contract-v10">Structural SDK API Contract — v1.0<a class="headerlink" href="#structural-sdk-api-contract-v10" title="Permanent link">&para;</a></h1>
+<h1 id="historical-structural-sdk-target-contract-v10">Historical Structural SDK Target Contract — v1.0<a class="headerlink" href="#historical-structural-sdk-target-contract-v10" title="Permanent link">&para;</a></h1>
 <p><strong>Type:</strong> Reference
 <strong>Audience:</strong> All Agents, Developers, Testers
-<strong>Status:</strong> Active
+<strong>Status:</strong> Historical target; not the installed package contract
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-01-16
 <strong>Last Updated:</strong> 2026-04-04
 <strong>Related Tasks:</strong> AUTOMATION-PHASE0, LIB-IMPROVEMENT</p>
 <hr />
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>This document defines the public API contract for the Structural SDK. All functions documented here are considered stable and will follow semantic versioning.</p>
+<p>This document records an earlier target architecture. It does not define the
+installed package contract and its <code>structural_sdk</code> examples are not current
+import paths. The implemented canonical facade is
+<code>structural_lib.services.api</code>; see <code>docs/reference/api.md</code> and
+<code>docs/reference/api-manifest.json</code>. Current APIs remain a development preview
+until an owner-approved stable release.</p>
 <p><strong>Namespace:</strong> <code>structural_sdk</code> (aliased as <code>sk</code>)</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">structural_sdk</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sk</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
@@ -2233,32 +2238,33 @@
 <a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="sd">    Design a reinforced concrete beam.</span>
 <a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="sd">    Performs complete beam design including flexure, shear, and</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="sd">    optionally torsion checks per the specified code.</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="sd">    Args:</span>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="sd">        beam: Complete beam specification</span>
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="sd">        include_detailing: If True, compute bar/stirrup arrangements</span>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="sd">        include_3d: If True, compute 3D geometry</span>
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
-<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="sd">        DesignResult with all check results</span>
-<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
-<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="sd">    Raises:</span>
-<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="sd">        ValidationError: If beam input is invalid</span>
-<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="sd">        CodeNotFoundError: If specified code not available</span>
-<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>
-<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="sd">    Example:</span>
-<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="sd">        &gt;&gt;&gt; beam = BeamInput(</span>
-<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="sd">        ...     beam_id=&quot;B1&quot;,</span>
-<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="sd">        ...     geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000),</span>
-<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="sd">        ...     materials=MaterialsInput.M25_FE500(),</span>
-<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="sd">        ...     loads=LoadsInput(mu_knm=200, vu_kn=100)</span>
-<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="sd">        ... )</span>
-<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="sd">        &gt;&gt;&gt; result = sk.engine.design_beam(beam)</span>
-<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="sd">        &gt;&gt;&gt; print(f&quot;Status: {&#39;PASS&#39; if result.is_ok else &#39;FAIL&#39;}&quot;)</span>
-<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="sd">        &gt;&gt;&gt; print(f&quot;Steel required: {result.flexure.ast_required_mm2:.0f} mm²&quot;)</span>
-<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="sd">    Performs the supported primary beam workflow. For IS 456 this is</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="sd">    rectangular flexure and shear, with optional detailing/geometry outputs.</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="sd">    Torsion is a separate bounded utility and is not applied by this route.</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="sd">    Args:</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="sd">        beam: Complete beam specification</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="sd">        include_detailing: If True, compute bar/stirrup arrangements</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="sd">        include_3d: If True, compute 3D geometry</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="sd">        DesignResult with all check results</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="sd">    Raises:</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="sd">        ValidationError: If beam input is invalid</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="sd">        CodeNotFoundError: If specified code not available</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="sd">    Example:</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="sd">        &gt;&gt;&gt; beam = BeamInput(</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="sd">        ...     beam_id=&quot;B1&quot;,</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="sd">        ...     geometry=BeamGeometryInput(b_mm=300, D_mm=500, span_mm=5000),</span>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="sd">        ...     materials=MaterialsInput.M25_FE500(),</span>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="sd">        ...     loads=LoadsInput(mu_knm=200, vu_kn=100)</span>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="sd">        ... )</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="sd">        &gt;&gt;&gt; result = sk.engine.design_beam(beam)</span>
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="sd">        &gt;&gt;&gt; print(f&quot;Status: {&#39;PASS&#39; if result.is_ok else &#39;FAIL&#39;}&quot;)</span>
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="sd">        &gt;&gt;&gt; print(f&quot;Steel required: {result.flexure.ast_required_mm2:.0f} mm²&quot;)</span>
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="sd">    &quot;&quot;&quot;</span>
 </code></pre></div>
 <h3 id="verify_beam"><code>verify_beam</code><a class="headerlink" href="#verify_beam" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">verify_beam</span><span class="p">(</span>

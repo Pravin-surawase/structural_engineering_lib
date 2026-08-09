@@ -2327,9 +2327,9 @@
 <li>Fix confirmed root causes. Do not mask failures with <code>continue-on-error</code>, <code>|| true</code>, broad exclusions, or skipped jobs.</li>
 <li>Use existing tests. Do not add tests as part of this maintenance review.</li>
 <li>Run a targeted check while iterating, <code>./run.sh check --quick</code> once before each commit, the PR gate after push, and the full gate once at closeout.</li>
-<li>Use <code>./scripts/ai_commit.sh</code> or <code>./run.sh commit</code> for every commit. Never use manual Git commit/push commands.</li>
+<li>Codex owns scoped commits, pushes, and connected GitHub PR work; workers return their verified diff to the parent.</li>
 <li>Use <code>scripts/safe_file_delete.py</code> and <code>scripts/safe_file_move.py</code> for repository deletions or moves. Always inspect a dry run first.</li>
-<li>Never bypass hooks, required checks, or safe-push controls.</li>
+<li>Never bypass hooks or required checks, automate Git recovery, or rewrite history.</li>
 <li>Any terminal failure must be returned as <code>WARNING TERMINAL ISSUE: what failed -&gt; what worked instead</code>.</li>
 <li>A worker does not merge, release, close issues, delete remote branches, or change GitHub repository settings.</li>
 </ol>
@@ -2456,22 +2456,22 @@
 <p>Finish the existing maintenance PR safely, then create a dedicated modernization branch so workflow changes are not mixed with the already-green recovery work.</p>
 <h3 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h3>
 <ol>
-<li>Run <code>./scripts/ai_commit.sh --status</code> and <code>./run.sh pr status</code>.</li>
+<li>Have Codex inspect the branch, worktree, existing PR, and connected GitHub check state.</li>
 <li>Confirm PR #676 is still green and its head is the expected commit.</li>
 <li>Ask for explicit merge approval if it has not already been given.</li>
-<li>Merge only through the repository's safe PR flow. Do not release.</li>
-<li>Synchronize the local main branch using the repository workflow.</li>
-<li>Create the MAINT-008 branch and PR:</li>
+<li>Merge only after explicit owner approval and passing required checks. Do not release.</li>
+<li>Have Codex synchronize the local main branch without rewriting history.</li>
+<li>
+<p>Have Codex create the MAINT-008 task branch and connected GitHub PR.</p>
+</li>
+<li>
+<p>Record:</p>
+</li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>./run.sh<span class="w"> </span>pr<span class="w"> </span>create<span class="w"> </span>MAINT-008<span class="w"> </span><span class="s2">&quot;Compact CI and maintenance control plane&quot;</span>
-</code></pre></div>
-<ol>
-<li>Record:</li>
-</ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>git<span class="w"> </span>rev-parse<span class="w"> </span>HEAD
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>git<span class="w"> </span>status<span class="w"> </span>--short
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>find<span class="w"> </span>.github/workflows<span class="w"> </span>-maxdepth<span class="w"> </span><span class="m">1</span><span class="w"> </span>-name<span class="w"> </span><span class="s1">&#39;*.yml&#39;</span><span class="w"> </span>-print<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>gh<span class="w"> </span>api<span class="w"> </span>repos/Pravin-surawase/structural_engineering_lib/rulesets
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git<span class="w"> </span>rev-parse<span class="w"> </span>HEAD
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>git<span class="w"> </span>status<span class="w"> </span>--short
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>find<span class="w"> </span>.github/workflows<span class="w"> </span>-maxdepth<span class="w"> </span><span class="m">1</span><span class="w"> </span>-name<span class="w"> </span><span class="s1">&#39;*.yml&#39;</span><span class="w"> </span>-print<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>gh<span class="w"> </span>api<span class="w"> </span>repos/Pravin-surawase/structural_engineering_lib/rulesets
 </code></pre></div>
 <ol>
 <li>Save the ruleset ID, required-check name, workflow count, PR check count, and baseline commit in the MAINT-008 task note or PR description.</li>
@@ -2484,15 +2484,15 @@
 <li>The safe PR workflow fails.</li>
 </ul>
 <h3 id="return-format">Return format<a class="headerlink" href="#return-format" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Packet: 0
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Branch and PR:
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Baseline commit:
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>PR #676 result:
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>Ruleset ID and current required check:
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>Workflow count:
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>Commands run:
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>Unexpected state:
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>Next packet authorized: yes/no
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Packet: 0
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Branch and PR:
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Baseline commit:
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>PR #676 result:
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Ruleset ID and current required check:
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>Workflow count:
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Commands run:
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>Unexpected state:
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>Next packet authorized: yes/no
 </code></pre></div>
 <h2 id="101-packet-s-isolated-skills-control-plane">10.1 Packet S — Isolated skills control plane<a class="headerlink" href="#101-packet-s-isolated-skills-control-plane" title="Permanent link">&para;</a></h2>
 <p><strong>Branch:</strong> <code>task/MAINT-008-SKILLS</code></p>
@@ -2518,17 +2518,17 @@
 <p><strong>Status:</strong> implemented on draft PR #690; the live <code>PR Gate</code> passes, superseded pull-request triggers are removed, and ruleset <code>11390214</code> remains unchanged pending explicit owner approval</p>
 <p><strong>Suggested worker:</strong> Terra, normal implementation reasoning</p>
 <p><strong>Files in scope:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>.github/workflows/fast-checks.yml
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>.github/workflows/README.md
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>.github/workflows/auto-format.yml (pull_request trigger only)
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>.github/workflows/codeql.yml (pull_request trigger only)
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>.github/workflows/docker-build.yml (pull_request trigger only)
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>.github/workflows/git-workflow-tests.yml (pull_request trigger only)
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>.github/workflows/leading-indicator-alerts.yml (pull_request trigger only)
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>.github/workflows/link-check.yml (pull_request trigger only)
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>.github/workflows/performance.yml (pull_request trigger only)
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>.github/workflows/root-file-limit.yml (pull_request trigger only)
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>.github/workflows/security.yml (pull_request trigger only)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>.github/workflows/fast-checks.yml
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>.github/workflows/README.md
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>.github/workflows/auto-format.yml (pull_request trigger only)
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>.github/workflows/codeql.yml (pull_request trigger only)
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>.github/workflows/docker-build.yml (pull_request trigger only)
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>.github/workflows/git-workflow-tests.yml (pull_request trigger only)
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>.github/workflows/leading-indicator-alerts.yml (pull_request trigger only)
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>.github/workflows/link-check.yml (pull_request trigger only)
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>.github/workflows/performance.yml (pull_request trigger only)
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>.github/workflows/root-file-limit.yml (pull_request trigger only)
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>.github/workflows/security.yml (pull_request trigger only)
 </code></pre></div>
 <p>Other workflow files may have their <code>pull_request</code> triggers removed only after the aggregate gate appears and passes. Do not delete workflow files in this packet.</p>
 <h3 id="objective_2">Objective<a class="headerlink" href="#objective_2" title="Permanent link">&para;</a></h3>
@@ -2537,19 +2537,19 @@
 <ol>
 <li><code>fast-checks.yml</code> must trigger for pull requests whenever any of these surfaces changes:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Python/**
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>fastapi_app/**
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>react_app/**
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>scripts/**
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>docs/**
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>.github/workflows/**
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>.codex/**
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>AGENTS.md
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>run.sh
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>requirements*.txt
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>pyproject.toml
-<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>package-lock.json files
-<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>pre-commit configuration
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Python/**
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>fastapi_app/**
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>react_app/**
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>scripts/**
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>docs/**
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>.github/workflows/**
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>.codex/**
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>AGENTS.md
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>run.sh
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>requirements*.txt
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>pyproject.toml
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>package-lock.json files
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>pre-commit configuration
 </code></pre></div>
 <ol>
 <li>
@@ -2617,19 +2617,19 @@
 <h3 id="rollback">Rollback<a class="headerlink" href="#rollback" title="Permanent link">&para;</a></h3>
 <p>If <code>PR Gate</code> does not appear or reports an incorrect conclusion, restore the prior PR triggers before ending the packet. Do not ask the owner to switch the ruleset.</p>
 <h3 id="worker-return-format">Worker return format<a class="headerlink" href="#worker-return-format" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Packet: A - Truthful PR gate
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Baseline commit:
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>Files changed:
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>Root cause corrected:
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>Old check mapping: retained / scheduled / parked
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>Commands and results:
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>PR Gate URL and conclusion:
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>Superseded PR triggers removed:
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>Acceptance criteria: pass/fail per item
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>Protected paths changed: no
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>Follow-ups strictly outside scope:
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>Terminal issues:
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>Commit:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Packet: A - Truthful PR gate
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Baseline commit:
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Files changed:
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Root cause corrected:
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>Old check mapping: retained / scheduled / parked
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>Commands and results:
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>PR Gate URL and conclusion:
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>Superseded PR triggers removed:
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>Acceptance criteria: pass/fail per item
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>Protected paths changed: no
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>Follow-ups strictly outside scope:
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>Terminal issues:
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>Commit:
 </code></pre></div>
 <h3 id="parent-only-approval-checkpoint">Parent-only approval checkpoint<a class="headerlink" href="#parent-only-approval-checkpoint" title="Permanent link">&para;</a></h3>
 <p>After independently inspecting the YAML and the live PR result, the parent presents the exact old and new required-check names to the owner. With explicit approval:</p>
@@ -2644,12 +2644,12 @@
 <p><strong>Suggested worker:</strong> Terra, normal implementation reasoning</p>
 <p><strong>Start condition:</strong> packet A complete and <code>PR Gate</code> is live</p>
 <p><strong>Files in scope:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>.github/workflows/nightly.yml
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>.github/workflows/publish.yml
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>.github/workflows/deploy-docs.yml
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>.github/workflows/README.md
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>README.md
-<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>superseded .github/workflows/*.yml files approved by the parent
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>.github/workflows/nightly.yml
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>.github/workflows/publish.yml
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>.github/workflows/deploy-docs.yml
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>.github/workflows/README.md
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>README.md
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>superseded .github/workflows/*.yml files approved by the parent
 </code></pre></div>
 <h3 id="objective_3">Objective<a class="headerlink" href="#objective_3" title="Permanent link">&para;</a></h3>
 <p>Reduce 17 workflows to the smallest set that verifies, documents, and releases the main process without daily issue spam or duplicated PR gates.</p>
@@ -2678,19 +2678,19 @@
 <p><code>deploy-docs.yml</code> remains only if the generated documentation is currently published and its failure changes the release/user outcome. Limit it to relevant main-branch changes and manual dispatch. It must not duplicate generic link or Python checks already owned elsewhere.</p>
 <h3 id="workflow-disposition">Workflow disposition<a class="headerlink" href="#workflow-disposition" title="Permanent link">&para;</a></h3>
 <p>The following workflows are candidates for removal after their essential function is mapped:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>auto-format.yml
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>codeql.yml
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>docker-build.yml
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>git-workflow-tests.yml
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>governance-health.yml
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>leading-indicator-alerts.yml
-<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>link-check.yml
-<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>performance.yml
-<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>python-tests.yml
-<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>root-file-limit.yml
-<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>sbom.yml
-<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>scorecard.yml
-<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>security.yml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>auto-format.yml
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>codeql.yml
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>docker-build.yml
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>git-workflow-tests.yml
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>governance-health.yml
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>leading-indicator-alerts.yml
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>link-check.yml
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>performance.yml
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>python-tests.yml
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>root-file-limit.yml
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>sbom.yml
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>scorecard.yml
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>security.yml
 </code></pre></div>
 <p>Do not delete from this list blindly. For each file:</p>
 <ol>
@@ -2702,8 +2702,8 @@
 <li>delete using the safe-delete script and update live references.</li>
 </ol>
 <p>Example safe operation:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>--dry-run<span class="w"> </span>.github/workflows/example.yml
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>.github/workflows/example.yml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>--dry-run<span class="w"> </span>.github/workflows/example.yml
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>.github/workflows/example.yml
 </code></pre></div>
 <h3 id="existing-failure-handling">Existing failure handling<a class="headerlink" href="#existing-failure-handling" title="Permanent link">&para;</a></h3>
 <ul>
@@ -2733,36 +2733,36 @@
 <li>weakening the release lane to compensate for a failing preflight.</li>
 </ul>
 <h3 id="worker-return-format_1">Worker return format<a class="headerlink" href="#worker-return-format_1" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Packet: B - Scheduled and release lanes
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>Baseline commit:
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>Files changed/deleted:
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>Workflow disposition table: file / signal / retained location or reason parked
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>Workflow count before/after:
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>Triggers after change:
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>Permissions after change:
-<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>Commands and results:
-<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>PR Gate URL and conclusion:
-<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>New issues created: 0 or explanation
-<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>Acceptance criteria: pass/fail per item
-<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>Protected paths changed: no
-<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>Owner approvals still required:
-<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>Terminal issues:
-<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>Commit:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Packet: B - Scheduled and release lanes
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>Baseline commit:
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Files changed/deleted:
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>Workflow disposition table: file / signal / retained location or reason parked
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>Workflow count before/after:
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>Triggers after change:
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>Permissions after change:
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>Commands and results:
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>PR Gate URL and conclusion:
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>New issues created: 0 or explanation
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>Acceptance criteria: pass/fail per item
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>Protected paths changed: no
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>Owner approvals still required:
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>Terminal issues:
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>Commit:
 </code></pre></div>
 <h2 id="13-packet-c-compact-supported-local-control-surface">13. Packet C — Compact supported local control surface<a class="headerlink" href="#13-packet-c-compact-supported-local-control-surface" title="Permanent link">&para;</a></h2>
 <p><strong>Suggested worker:</strong> Luna for inventory; Terra for edits</p>
 <p><strong>Start condition:</strong> packet A complete</p>
 <p><strong>Files in scope:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>run.sh
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>.pre-commit-config.yaml
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>scripts/automation-map.json
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>scripts/index.json
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>scripts/index.md
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>AGENTS.md
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>docs/planning/README.md
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>docs/planning/index.json
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>docs/planning/index.md
-<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>only confirmed orphan scripts approved by the parent
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>run.sh
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>.pre-commit-config.yaml
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>scripts/automation-map.json
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>scripts/index.json
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>scripts/index.md
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>AGENTS.md
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>docs/planning/README.md
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>docs/planning/index.json
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>docs/planning/index.md
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>only confirmed orphan scripts approved by the parent
 </code></pre></div>
 <h3 id="objective_4">Objective<a class="headerlink" href="#objective_4" title="Permanent link">&para;</a></h3>
 <p>Make active commands, hooks, automation lookup, and planning entrypoints describe only supported behavior. Preserve historical and vendor evidence while removing confirmed dead control paths.</p>
@@ -2776,9 +2776,9 @@
 <li>change or delete it only if the classification is supported by evidence.</li>
 </ol>
 <p>Confirmed starting candidates to investigate, not automatic deletions:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>scripts/_tmp_add_groups.py
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>scripts/batch_migrate_runner.py
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>scripts/test_sample_endpoint.py
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>scripts/_tmp_add_groups.py
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>scripts/batch_migrate_runner.py
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>scripts/test_sample_endpoint.py
 </code></pre></div>
 <h3 id="required-changes">Required changes<a class="headerlink" href="#required-changes" title="Permanent link">&para;</a></h3>
 <ol>
@@ -2792,9 +2792,9 @@
 <li>Do not mass-rewrite 16 agents, 14 skills, or 16 prompts. File one follow-up if common-instruction consolidation remains valuable after the active path is corrected.</li>
 </ol>
 <h3 id="safe-delete-procedure">Safe-delete procedure<a class="headerlink" href="#safe-delete-procedure" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>rg<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;candidate_name|candidate_path&quot;</span><span class="w"> </span>run.sh<span class="w"> </span>.github<span class="w"> </span>.pre-commit-config.yaml<span class="w"> </span>scripts<span class="w"> </span>docs<span class="w"> </span>AGENTS.md
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>--dry-run<span class="w"> </span>scripts/candidate.py
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>scripts/candidate.py
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>rg<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;candidate_name|candidate_path&quot;</span><span class="w"> </span>run.sh<span class="w"> </span>.github<span class="w"> </span>.pre-commit-config.yaml<span class="w"> </span>scripts<span class="w"> </span>docs<span class="w"> </span>AGENTS.md
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>--dry-run<span class="w"> </span>scripts/candidate.py
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>scripts/candidate.py
 </code></pre></div>
 <p>If the dry run reports an unresolved reference, do not delete the file until the parent confirms whether the reference is active or historical.</p>
 <h3 id="acceptance-criteria_3">Acceptance criteria<a class="headerlink" href="#acceptance-criteria_3" title="Permanent link">&para;</a></h3>
@@ -2816,19 +2816,19 @@
 <li>adding a new automation framework to replace a few stale entries.</li>
 </ul>
 <h3 id="worker-return-format_2">Worker return format<a class="headerlink" href="#worker-return-format_2" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Packet: C - Compact local control surface
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>Baseline commit:
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>Files changed/deleted:
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>Inventory table: item / callers / classification / action
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>Missing-path references before/after:
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>Index and automation validation:
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>Commands and results:
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>PR Gate URL and conclusion:
-<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>Acceptance criteria: pass/fail per item
-<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>Protected paths changed: no
-<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>Follow-up bead proposed, if essential:
-<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>Terminal issues:
-<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>Commit:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Packet: C - Compact local control surface
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>Baseline commit:
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>Files changed/deleted:
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>Inventory table: item / callers / classification / action
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>Missing-path references before/after:
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>Index and automation validation:
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>Commands and results:
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>PR Gate URL and conclusion:
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>Acceptance criteria: pass/fail per item
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>Protected paths changed: no
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>Follow-up bead proposed, if essential:
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>Terminal issues:
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>Commit:
 </code></pre></div>
 <h2 id="14-packet-d-parent-integrated-closeout">14. Packet D — Parent integrated closeout<a class="headerlink" href="#14-packet-d-parent-integrated-closeout" title="Permanent link">&para;</a></h2>
 <p><strong>Owner:</strong> parent/orchestrator only</p>
@@ -2846,22 +2846,22 @@
 </ol>
 <h3 id="142-structural-diff-guard">14.2 Structural diff guard<a class="headerlink" href="#142-structural-diff-guard" title="Permanent link">&para;</a></h3>
 <p>Run against the recorded baseline commit:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>git<span class="w"> </span>diff<span class="w"> </span>--name-only<span class="w"> </span>BASELINE_COMMIT...HEAD<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span>Python/structural_lib/core<span class="w"> </span><span class="se">\</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span>Python/structural_lib/codes/is456
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>git<span class="w"> </span>diff<span class="w"> </span>--name-only<span class="w"> </span>BASELINE_COMMIT...HEAD<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span>Python/structural_lib/core<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span>Python/structural_lib/codes/is456
 </code></pre></div>
 <p>Expected output: empty.</p>
 <h3 id="143-one-time-repository-closeout">14.3 One-time repository closeout<a class="headerlink" href="#143-one-time-repository-closeout" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>./run.sh<span class="w"> </span>check
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>./run.sh<span class="w"> </span>audit
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>./run.sh<span class="w"> </span>health
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>./run.sh<span class="w"> </span>efficiency<span class="w"> </span>check
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>./run.sh<span class="w"> </span>check
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>./run.sh<span class="w"> </span>audit
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>./run.sh<span class="w"> </span>health
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>./run.sh<span class="w"> </span>efficiency<span class="w"> </span>check
 </code></pre></div>
 <p>All must pass or produce only an already-approved, documented exception.</p>
 <h3 id="144-main-process-verification">14.4 Main-process verification<a class="headerlink" href="#144-main-process-verification" title="Permanent link">&para;</a></h3>
 <p>Start the supported stack and exercise the existing import pipeline:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>./run.sh<span class="w"> </span>dev
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>./run.sh<span class="w"> </span><span class="nb">test</span><span class="w"> </span>import
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>./run.sh<span class="w"> </span>dev
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>./run.sh<span class="w"> </span><span class="nb">test</span><span class="w"> </span>import
 </code></pre></div>
 <p>Verify the existing primary user path:</p>
 <ul>
@@ -2876,8 +2876,8 @@
 <p>Do not change formulas or expected quantities to make this pass.</p>
 <h3 id="145-release-preflight">14.5 Release preflight<a class="headerlink" href="#145-release-preflight" title="Permanent link">&para;</a></h3>
 <p>Only when preparing the already-planned v0.21.7 release:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>preflight<span class="w"> </span><span class="m">0</span>.21.7
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>preflight<span class="w"> </span>--docker
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>preflight<span class="w"> </span><span class="m">0</span>.21.7
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>preflight<span class="w"> </span>--docker
 </code></pre></div>
 <p>Preflight evidence authorizes a release decision; it does not authorize publishing. Obtain separate explicit owner approval before <code>./run.sh release run 0.21.7</code>.</p>
 <h3 id="146-final-live-checks">14.6 Final live checks<a class="headerlink" href="#146-final-live-checks" title="Permanent link">&para;</a></h3>
@@ -2889,20 +2889,20 @@
 <li>Working tree is clean after the safe commit flow.</li>
 </ul>
 <h3 id="parent-return-format">Parent return format<a class="headerlink" href="#parent-return-format" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>MAINT-008 closeout
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>Baseline -&gt; final commit:
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>Main-process result and quantities:
-<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>Workflow count before -&gt; after:
-<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>PR workflows/checks before -&gt; after:
-<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>Required check before -&gt; after:
-<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>Scheduled run result and issue count:
-<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>Quick/full/audit/health/efficiency results:
-<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>Release-preflight results, if run:
-<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>Protected calculation diff: empty/non-empty
-<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>Open owner decisions: merge / release / close historical issues
-<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>Known follow-ups outside scope:
-<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>Terminal issues:
-<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a>Recommendation: merge / do not merge
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>MAINT-008 closeout
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>Baseline -&gt; final commit:
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>Main-process result and quantities:
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>Workflow count before -&gt; after:
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>PR workflows/checks before -&gt; after:
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>Required check before -&gt; after:
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>Scheduled run result and issue count:
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>Quick/full/audit/health/efficiency results:
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>Release-preflight results, if run:
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>Protected calculation diff: empty/non-empty
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>Open owner decisions: merge / release / close historical issues
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a>Known follow-ups outside scope:
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a>Terminal issues:
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a>Recommendation: merge / do not merge
 </code></pre></div>
 <h2 id="15-definition-of-done">15. Definition of done<a class="headerlink" href="#15-definition-of-done" title="Permanent link">&para;</a></h2>
 <p>MAINT-008 is complete only when all applicable statements are true:</p>
@@ -2933,15 +2933,16 @@
 <p>Create a follow-up task only if it has a named owner, a concrete outcome, and evidence that it should survive. Do not create generic backlog noise.</p>
 <h2 id="17-copy-ready-assignment-preamble">17. Copy-ready assignment preamble<a class="headerlink" href="#17-copy-ready-assignment-preamble" title="Permanent link">&para;</a></h2>
 <p>Prepend this block to any worker packet:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>You are executing one bounded packet from MAINT-008. Work only in the named files.
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>Read AGENTS.md, docs/TASKS.md, docs/planning/next-session-brief.md, and the assigned
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>packet in docs/planning/compact-modernization-plan.md. Start with targeted rg and
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>folder indexes. Fix confirmed root causes only. Do not change structural formulas,
-<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>tests, product behavior, GitHub settings, releases, issues, or protected paths.
-<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>Do not add adjacent improvements. Run the packet&#39;s narrow checks and one quick gate.
-<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>Commit only through ./scripts/ai_commit.sh or ./run.sh commit. Return exactly the
-<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>packet&#39;s requested report, including commands, results, commit, and any terminal issue.
-<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>If scope or evidence is unclear, stop and return the exact blocker instead of guessing.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>You are executing one bounded packet from MAINT-008. Work only in the named files.
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>Read AGENTS.md, docs/TASKS.md, docs/planning/next-session-brief.md, and the assigned
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>packet in docs/planning/compact-modernization-plan.md. Start with targeted rg and
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>folder indexes. Fix confirmed root causes only. Do not change structural formulas,
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>tests, product behavior, GitHub settings, releases, issues, or protected paths.
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>Do not add adjacent improvements. Run the packet&#39;s narrow checks and one quick gate.
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>Return the verified scoped diff to the parent; Codex owns the commit, push, and PR.
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>Return exactly the packet&#39;s requested report, including commands, results, suggested
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>commit, and any terminal issue.
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>If scope or evidence is unclear, stop and return the exact blocker instead of guessing.
 </code></pre></div>
 
 

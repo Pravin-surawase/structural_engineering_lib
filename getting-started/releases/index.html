@@ -2291,13 +2291,11 @@ Entries here represent "locked" versions that have been verified and approved.
    runs pytest, and ensures no uncommitted changes.</p>
 </li>
 <li>
-<p><strong>Create release branch:</strong>
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>./scripts/ai_commit.sh<span class="w"> </span>--branch<span class="w"> </span>TASK-RELEASE<span class="w"> </span><span class="s2">&quot;Release v0.X.Y&quot;</span>
-</code></pre></div></p>
+<p><strong>Have Codex create the release task branch and connected GitHub PR.</strong></p>
 </li>
 <li>
 <p><strong>Bump version (automated):</strong>
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>.venv/bin/python<span class="w"> </span>scripts/release.py<span class="w"> </span>run<span class="w"> </span><span class="m">0</span>.X.Y<span class="w"> </span>--no-open
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>.venv/bin/python<span class="w"> </span>scripts/release.py<span class="w"> </span>run<span class="w"> </span><span class="m">0</span>.X.Y<span class="w"> </span>--no-open
 </code></pre></div>
    This updates <code>pyproject.toml</code>, <code>package.json</code>, <code>CITATION.cff</code>, and all docs
    with the new version. Includes semver validation, rollback on failure, and
@@ -2310,25 +2308,24 @@ Entries here represent "locked" versions that have been verified and approved.
 <p><strong>Edit docs/getting-started/releases.md</strong> with release entry</p>
 </li>
 <li>
-<p><strong>Commit:</strong>
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;chore: release v0.X.Y&quot;</span>
-</code></pre></div></p>
+<p><strong>Have Codex review and commit the scoped release changes</strong> with
+   <code>chore: release v0.X.Y</code>.</p>
 </li>
 <li>
-<p><strong>Finish PR:</strong>
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>./scripts/ai_commit.sh<span class="w"> </span>--finish<span class="w"> </span><span class="s2">&quot;Release v0.X.Y&quot;</span>
-</code></pre></div></p>
+<p><strong>Have Codex push and update the connected PR.</strong> Merge still requires explicit
+   user confirmation and passing required checks.</p>
 </li>
 <li>
-<p><strong>Tag and push</strong> (triggers <code>publish.yml</code> → validate → build → publish to PyPI):
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>git<span class="w"> </span>tag<span class="w"> </span>v0.X.Y<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v0.X.Y
+<p><strong>After explicit user approval, have Codex tag and push</strong> (triggers
+   <code>publish.yml</code> → validate → build → publish to PyPI):
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>git<span class="w"> </span>tag<span class="w"> </span>v0.X.Y<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v0.X.Y
 </code></pre></div>
    The CI pipeline runs a <code>validate</code> job (tests + tag-version check) before
    building and publishing.</p>
 </li>
 <li>
 <p><strong>Verify published package:</strong>
-   <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>.venv/bin/python<span class="w"> </span>scripts/release.py<span class="w"> </span>verify<span class="w"> </span>--version<span class="w"> </span><span class="m">0</span>.X.Y<span class="w"> </span>--source<span class="w"> </span>pypi<span class="w"> </span>--skip-cli
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>.venv/bin/python<span class="w"> </span>scripts/release.py<span class="w"> </span>verify<span class="w"> </span>--version<span class="w"> </span><span class="m">0</span>.X.Y<span class="w"> </span>--source<span class="w"> </span>pypi<span class="w"> </span>--skip-cli
 </code></pre></div></p>
 </li>
 </ol>

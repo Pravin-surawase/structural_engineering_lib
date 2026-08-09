@@ -1629,15 +1629,13 @@
 <p><strong>Run <code>./scripts/agent_mistakes_report.sh</code> at the start of each session</strong> to see:
 - Pre-commit failures (files changed by hooks after staging)
 - Missing commit messages (empty or placeholder messages)
-- Policy blocks (manual git blocked by hooks)</p>
+- Historical Git-wrapper failures (when present in old logs)</p>
 <p><strong>What to do with this data:</strong>
 1. <strong>High pre-commit failures?</strong> → Run <code>black</code> and <code>ruff</code> before committing
-2. <strong>Policy blocks?</strong> → You or another agent tried manual git - always use <code>ai_commit.sh</code>
+2. <strong>Git workflow issue?</strong> → Codex inspects scope and the exact repository state
 3. <strong>Missing messages?</strong> → Write meaningful commit messages describing the change</p>
-<p><strong>Automatic logging (OPS-01):</strong>
-- Git hooks now log all blocked manual git attempts to <code>logs/git_workflow.log</code>
-- The <code>agent_mistakes_report.sh</code> script parses these logs
-- Review patterns weekly to identify training/documentation gaps</p>
+<p><code>agent_mistakes_report.sh</code> may still summarize historical logs. Current Git and
+GitHub work is Codex-native and does not use repository enforcement hooks.</p>
 <hr />
 <h2 id="2025-12-29-v0110-release">2025-12-29 (v0.11.0 release)<a class="headerlink" href="#2025-12-29-v0110-release" title="Permanent link">&para;</a></h2>
 <h3 id="issues-seen">Issues Seen<a class="headerlink" href="#issues-seen" title="Permanent link">&para;</a></h3>
@@ -1650,7 +1648,7 @@
 <h3 id="fixes-applied">Fixes Applied<a class="headerlink" href="#fixes-applied" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Doc stamp formatting:</strong> switch “Last Updated” lines to <code>...&lt;br&gt;</code> instead of trailing spaces; update <code>scripts/bump_version.py</code> to output <code>&lt;br&gt;</code> (no whitespace).</li>
-<li><strong>Checks timeout:</strong> avoid TUI checks; use <code>./scripts/pr_async_merge.sh status</code> or <code>finish_task_pr.sh --wait</code> (polling).</li>
+<li><strong>Checks timeout:</strong> inspect connected GitHub checks without assuming a timeout is a failure.</li>
 <li><strong>Update-behind PRs:</strong> run <code>gh pr update-branch &lt;num&gt;</code> then re-check CI before merging.</li>
 <li><strong>Clean-venv verify:</strong> use a fresh venv for <code>pip install structural-lib-is456==X.Y.Z</code>.</li>
 </ul>

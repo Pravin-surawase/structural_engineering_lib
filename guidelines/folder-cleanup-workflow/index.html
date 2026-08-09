@@ -2003,7 +2003,7 @@
 </code></pre></div>
 <h3 id="step-33-backup-branch-optional-but-recommended">Step 3.3: Backup Branch (Optional but Recommended)<a class="headerlink" href="#step-33-backup-branch-optional-but-recommended" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># If you want a safety branch, create a task branch first:</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>./scripts/create_task_pr.sh<span class="w"> </span>TASK-XXX<span class="w"> </span><span class="s2">&quot;folder cleanup backup&quot;</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>git<span class="w"> </span>switch<span class="w"> </span>-c<span class="w"> </span>codex/TASK-XXX-folder-cleanup
 </code></pre></div>
 <hr />
 <h2 id="phase-4-execute-apply-changes">Phase 4: Execute (Apply Changes)<a class="headerlink" href="#phase-4-execute-apply-changes" title="Permanent link">&para;</a></h2>
@@ -2023,18 +2023,21 @@
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>docs/file1.md
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>docs/file2.md
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>.venv/bin/python<span class="w"> </span>scripts/check_links.py<span class="w">  </span><span class="c1"># Verify after each batch</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;chore: remove duplicate files&quot;</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1"># Batch 2: Archive old planning</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_move.py<span class="w"> </span>docs/planning/old1.md<span class="w"> </span>docs/_archive/planning/old1.md
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_move.py<span class="w"> </span>docs/planning/old2.md<span class="w"> </span>docs/_archive/planning/old2.md
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>.venv/bin/python<span class="w"> </span>scripts/check_links.py
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;chore: archive old planning docs&quot;</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="c1"># Batch 3: Reorganize</span>
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_move.py<span class="w"> </span>docs/misplaced.md<span class="w"> </span>docs/correct/misplaced.md
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>.venv/bin/python<span class="w"> </span>scripts/check_links.py
-<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;refactor: reorganize documentation&quot;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>git<span class="w"> </span>add<span class="w"> </span>--<span class="w"> </span>docs
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: remove duplicate files&quot;</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c1"># Batch 2: Archive old planning</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_move.py<span class="w"> </span>docs/planning/old1.md<span class="w"> </span>docs/_archive/planning/old1.md
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_move.py<span class="w"> </span>docs/planning/old2.md<span class="w"> </span>docs/_archive/planning/old2.md
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>.venv/bin/python<span class="w"> </span>scripts/check_links.py
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>git<span class="w"> </span>add<span class="w"> </span>--<span class="w"> </span>docs
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: archive old planning docs&quot;</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="c1"># Batch 3: Reorganize</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_move.py<span class="w"> </span>docs/misplaced.md<span class="w"> </span>docs/correct/misplaced.md
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>.venv/bin/python<span class="w"> </span>scripts/check_links.py
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>git<span class="w"> </span>add<span class="w"> </span>--<span class="w"> </span>docs
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;refactor: reorganize documentation&quot;</span>
 </code></pre></div>
 <h3 id="step-43-checkpoint-after-each-batch">Step 4.3: Checkpoint After Each Batch<a class="headerlink" href="#step-43-checkpoint-after-each-batch" title="Permanent link">&para;</a></h3>
 <p>After each commit:
@@ -2063,7 +2066,8 @@
 <li>[ ] Update TASKS.md if cleanup was a task</li>
 </ul>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>.venv/bin/python<span class="w"> </span>scripts/generate_docs_index.py
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;chore: regenerate docs index after cleanup&quot;</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>git<span class="w"> </span>add<span class="w"> </span>--<span class="w"> </span>docs
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: regenerate docs index after cleanup&quot;</span>
 </code></pre></div>
 <h3 id="step-53-document-results">Step 5.3: Document Results<a class="headerlink" href="#step-53-document-results" title="Permanent link">&para;</a></h3>
 <p>Update the cleanup tracking file:</p>
@@ -2081,15 +2085,17 @@
 <h2 id="emergency-rollback-procedures">Emergency: Rollback Procedures<a class="headerlink" href="#emergency-rollback-procedures" title="Permanent link">&para;</a></h2>
 <h3 id="rollback-single-commit">Rollback Single Commit<a class="headerlink" href="#rollback-single-commit" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>git<span class="w"> </span>revert<span class="w"> </span>HEAD
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;revert: undo cleanup - [reason]&quot;</span>
 </code></pre></div>
 <h3 id="rollback-multiple-commits">Rollback Multiple Commits<a class="headerlink" href="#rollback-multiple-commits" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Avoid force-push resets. Prefer revert commits and automation:</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>./scripts/recover_git_state.sh
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Avoid force-push resets. Inspect exact state and stop before selecting recovery:</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>git<span class="w"> </span>status
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>git<span class="w"> </span>reflog
 </code></pre></div>
 <h3 id="restore-from-backup-branch">Restore from Backup Branch<a class="headerlink" href="#restore-from-backup-branch" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Restore specific file via manual review, then commit with ai_commit.sh</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;revert: restore file from backup branch&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Restore a specific file from a known-good commit, review it, then commit</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>git<span class="w"> </span>restore<span class="w"> </span>--source<span class="w"> </span>abc1234<span class="w"> </span>--<span class="w"> </span>path/to/file<span class="w">  </span><span class="c1"># replace abc1234 after review</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>git<span class="w"> </span>add<span class="w"> </span>--<span class="w"> </span>path/to/file
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;revert: restore file from backup branch&quot;</span>
 </code></pre></div>
 <hr />
 <h2 id="quick-reference-checklist">Quick Reference Checklist<a class="headerlink" href="#quick-reference-checklist" title="Permanent link">&para;</a></h2>

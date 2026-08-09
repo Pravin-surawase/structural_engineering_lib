@@ -2,8 +2,8 @@
   "folder": "docs/audit",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-07",
-  "file_count": 8,
+  "last_updated": "2026-08-09",
+  "file_count": 9,
   "files": [
     {
       "name": "README.md",
@@ -18,7 +18,7 @@
       "name": "agent-testing-audit-2026-03-28.md",
       "type": "documentation",
       "size_lines": 292,
-      "last_updated": "2026-08-07",
+      "last_updated": "2026-08-09",
       "description": "> Archived from docs/_active/ on 2026-08-07. Counts and open findings below > describe the March 2026 snapshot; use ./run.sh health, ./run.sh audit, and",
       "content_hash": "7a8da06a3360"
     },
@@ -26,9 +26,17 @@
       "name": "audit-readiness.md",
       "type": "documentation",
       "size_lines": 144,
-      "last_updated": "2026-04-07",
+      "last_updated": "2026-08-09",
       "description": "This checklist defines the minimum evidence requirements for audit readiness. Each release must satisfy all \"Required\" items before deployment to production. | Requirement | Status | Evidence Location",
-      "content_hash": "cdb2670bf1ea"
+      "content_hash": "fa6087eccb0f"
+    },
+    {
+      "name": "automation-scripts-audit-2026-08-09.md",
+      "type": "documentation",
+      "size_lines": 625,
+      "last_updated": "2026-08-09",
+      "description": "The active automation surface was audited one item at a time. The baseline inventory contained **113 top-level scripts**. After the first P0 implementation",
+      "content_hash": "8aeb4d67ea45"
     },
     {
       "name": "comprehensive-library-audit-2026-04-04.md",
@@ -42,9 +50,9 @@
       "name": "evidence-bundle-template.md",
       "type": "documentation",
       "size_lines": 214,
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-08-09",
       "description": "| Field | Value | |-------|-------|",
-      "content_hash": "6985739ac86a"
+      "content_hash": "094002307353"
     },
     {
       "name": "git-workflow-audit-pr436.md",
@@ -58,9 +66,9 @@
       "name": "maintenance-recovery-audit-2026-08-07.md",
       "type": "documentation",
       "size_lines": 159,
-      "last_updated": "2026-08-07",
+      "last_updated": "2026-08-09",
       "description": "The repository and product source survived the Mac laptop → Mac Mini transfer. The main risk was not missing source code; it was a mixture of inherited",
-      "content_hash": "3aa00c6ab469"
+      "content_hash": "1920c97c967a"
     },
     {
       "name": "onboarding-audit-session93.md",
@@ -78,5 +86,5 @@
       "file_count": 1
     }
   ],
-  "content_hash": "e0b2fefef21b1982"
+  "content_hash": "291ad829d4334e02"
 }

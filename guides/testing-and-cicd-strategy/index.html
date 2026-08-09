@@ -1836,7 +1836,7 @@
 <h3 id="14-pre-commit-hooks-25-hooks">1.4 Pre-Commit Hooks (25+ hooks)<a class="headerlink" href="#14-pre-commit-hooks-25-hooks" title="Permanent link">&para;</a></h3>
 <p><strong>File:</strong> <code>.pre-commit-config.yaml</code> (269 lines)</p>
 <ul>
-<li><strong>Formatting:</strong> black, isort</li>
+<li><strong>Formatting:</strong> black; Ruff <code>I</code> rules own import sorting</li>
 <li><strong>Linting:</strong> ruff (7 rule categories), bandit</li>
 <li><strong>Type checking:</strong> mypy (strict mode)</li>
 <li><strong>Custom hooks:</strong> API contracts, circular imports, fragment violations, performance anti-patterns</li>
@@ -1851,8 +1851,8 @@
 </ul>
 <h3 id="16-automation-scripts-140-scripts">1.6 Automation Scripts (140+ scripts)<a class="headerlink" href="#16-automation-scripts-140-scripts" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>scripts/
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>├── ai_commit.sh          # Safe commits
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>├── safe_push.sh          # Pre-push validation
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>├── check_all.py          # Local validation orchestrator
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>├── check_codex_git_workflow.py  # Guard retired wrapper boundary
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>├── ci_local.sh           # Local CI simulation
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>├── check_circular_imports.py
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>├── check_type_annotations.py
@@ -1862,7 +1862,7 @@
 <h3 id="17-git-hooks">1.7 Git Hooks<a class="headerlink" href="#17-git-hooks" title="Permanent link">&para;</a></h3>
 <p><strong>Installed:</strong> <code>.git/hooks/pre-commit</code>, <code>commit-msg</code></p>
 <ul>
-<li>Blocks manual <code>git commit</code> (requires <code>ai_commit.sh</code>)</li>
+<li>Standard pre-commit validates content; Codex owns scoped Git operations</li>
 <li>Enforces automation workflow</li>
 </ul>
 <hr />
@@ -1885,7 +1885,7 @@
 <a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
 <a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="nf">format</span><span class="o">:</span>
 <a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span>black<span class="w"> </span>Python/
-<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span>isort<span class="w"> </span>Python/
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span>ruff<span class="w"> </span>check<span class="w"> </span>--select<span class="w"> </span>I<span class="w"> </span>--fix<span class="w"> </span>Python/
 <a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="nf">coverage</span><span class="o">:</span>
 <a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">    </span><span class="nb">cd</span><span class="w"> </span>Python<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>structural_lib<span class="w"> </span>--cov-report<span class="o">=</span>html<span class="w"> </span>tests/
@@ -1975,7 +1975,7 @@
 <h3 id="code-quality">Code Quality<a class="headerlink" href="#code-quality" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Format</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>black<span class="w"> </span>Python/
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>isort<span class="w"> </span>Python/
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>ruff<span class="w"> </span>check<span class="w"> </span>--select<span class="w"> </span>I<span class="w"> </span>--fix<span class="w"> </span>Python/
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># Lint</span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>ruff<span class="w"> </span>check<span class="w"> </span>--fix<span class="w"> </span>Python/
@@ -1991,10 +1991,10 @@
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>./scripts/ci_local.sh
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Safe commit (use instead of git commit)</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;commit message&quot;</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># Codex reviews and creates the conventional commit.</span>
 <a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
 <a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1"># Safe push with validation</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>./scripts/safe_push.sh
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># Codex pushes without rewriting history and updates the connected PR.</span>
 </code></pre></div>
 <hr />
 <h2 id="4-implementation-checklist">4. Implementation Checklist<a class="headerlink" href="#4-implementation-checklist" title="Permanent link">&para;</a></h2>

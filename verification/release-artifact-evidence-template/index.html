@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/contributing/github-workflow/">
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/verification/release-artifact-evidence-template/">
       
       
       
@@ -23,7 +23,7 @@
     
     
       
-        <title>GitHub Workflow Guide - structural_engineering_lib</title>
+        <title>Release Artifact Evidence Template - structural_engineering_lib</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#github-workflow-guide" class="md-skip">
+        <a href="#release-artifact-evidence-template" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              GitHub Workflow Guide
+              Release Artifact Evidence Template
             
           </span>
         </div>
@@ -326,7 +326,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../development-guide/" class="md-tabs__link">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
           
   
   
@@ -1260,7 +1260,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../development-guide/" class="md-nav__link">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
         
   
   
@@ -1295,7 +1295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../testing-strategy/" class="md-nav__link">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
         
   
   
@@ -1330,7 +1330,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../agent-coding-standards/" class="md-nav__link">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
         
   
   
@@ -1474,58 +1474,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#pull-request-policy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pull request policy
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#normal-flow" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Normal flow
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#failure-handling" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Failure handling
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#ci-evidence" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI evidence
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1539,81 +1487,105 @@
                 
                   
 
-  <nav class="md-tags" >
-    
-      
-      
-      
-      
-        <span class="md-tag">codex</span>
-      
-    
-      
-      
-      
-      
-        <span class="md-tag">git</span>
-      
-    
-      
-      
-      
-      
-        <span class="md-tag">github</span>
-      
-    
-  </nav>
-
 
   
   
 
 
-<h1 id="github-workflow-guide">GitHub Workflow Guide<a class="headerlink" href="#github-workflow-guide" title="Permanent link">&para;</a></h1>
-<p>Codex owns the repository's Git and GitHub lifecycle. The old shell wrappers
-that staged everything, synchronized branches, pushed, created PRs, or attempted
-recovery have been retired.</p>
-<p>Follow the canonical
-<a href="../../git-automation/git-workflow-single-source/">Codex-native Git/GitHub workflow</a>.</p>
-<h2 id="pull-request-policy">Pull request policy<a class="headerlink" href="#pull-request-policy" title="Permanent link">&para;</a></h2>
-<p>Use a task branch and PR for production code, API changes, CI workflows,
-dependencies, release changes, and coordinated multi-module work. A tiny
-documentation-only correction may use the repository's existing branch policy,
-but Codex must still inspect and scope the diff before committing.</p>
-<h2 id="normal-flow">Normal flow<a class="headerlink" href="#normal-flow" title="Permanent link">&para;</a></h2>
-<ol>
-<li>Codex inspects the current branch, worktree, upstream, and any existing PR.</li>
-<li>Codex creates or switches to a <code>codex/&lt;task-slug&gt;</code> branch when a task branch
-   is needed.</li>
-<li>The implementation is verified with targeted checks and the appropriate
-   closeout gate.</li>
-<li>Codex stages only intended paths and creates a conventional commit.</li>
-<li>Codex pushes without force or history rewriting.</li>
-<li>Codex creates or updates a draft PR through the connected GitHub integration.</li>
-<li>Codex reports the PR and CI state. Merge remains an explicit
-   user-confirmation action.</li>
-</ol>
-<h2 id="failure-handling">Failure handling<a class="headerlink" href="#failure-handling" title="Permanent link">&para;</a></h2>
-<p>If the branch is detached, conflicted, diverged, or contains an unfinished
-operation, stop and inspect the exact state. Do not run an automated recovery
-script. Preserve unrelated changes and choose the smallest non-destructive
-recovery path only after the evidence is clear.</p>
-<p>Never bypass hooks or checks, force push, use <code>git rebase --skip</code>, admin-merge,
-close an issue, delete a branch, or publish a release without the authority
-defined in the canonical workflow.</p>
-<h2 id="ci-evidence">CI evidence<a class="headerlink" href="#ci-evidence" title="Permanent link">&para;</a></h2>
-<p>Local tests establish local software evidence. Before a PR is described as
-ready, inspect the connected GitHub check state as well. Fix failing checks at
-their root cause; do not weaken validation to make a lane green.</p>
+<h1 id="release-artifact-evidence-template">Release Artifact Evidence Template<a class="headerlink" href="#release-artifact-evidence-template" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Reference
+<strong>Audience:</strong> Developers
+<strong>Status:</strong> Review
+<strong>Importance:</strong> Critical
+<strong>Created:</strong> 2026-08-09
+<strong>Last Updated:</strong> 2026-08-09</p>
+<p>Complete this record from the CI run that built the exact candidate.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Version</td>
+<td><code>&lt;owner-approved-version&gt;</code></td>
+</tr>
+<tr>
+<td>Source commit SHA</td>
+<td><code>&lt;40-hex-sha&gt;</code></td>
+</tr>
+<tr>
+<td>Source ref/tag</td>
+<td><code>&lt;ref&gt;</code></td>
+</tr>
+<tr>
+<td>GitHub Actions run</td>
+<td><code>&lt;url&gt;</code></td>
+</tr>
+<tr>
+<td>Wheel filename</td>
+<td><code>&lt;filename.whl&gt;</code></td>
+</tr>
+<tr>
+<td>Wheel SHA-256</td>
+<td><code>&lt;sha256&gt;</code></td>
+</tr>
+<tr>
+<td>Wheel size</td>
+<td><code>&lt;bytes&gt;</code></td>
+</tr>
+<tr>
+<td>Sdist filename</td>
+<td><code>&lt;filename.tar.gz&gt;</code></td>
+</tr>
+<tr>
+<td>Sdist SHA-256</td>
+<td><code>&lt;sha256&gt;</code></td>
+</tr>
+<tr>
+<td>Sdist size</td>
+<td><code>&lt;bytes&gt;</code></td>
+</tr>
+<tr>
+<td>Content allowlist</td>
+<td><code>PASS/HOLD</code></td>
+</tr>
+<tr>
+<td>Protected-content gate</td>
+<td><code>PASS/HOLD</code></td>
+</tr>
+<tr>
+<td>Exact-wheel installed UAT</td>
+<td><code>PASS/HOLD</code></td>
+</tr>
+<tr>
+<td>CLI UAT</td>
+<td><code>PASS/HOLD</code></td>
+</tr>
+<tr>
+<td>SBOM</td>
+<td><code>&lt;artifact path and SHA-256&gt;</code></td>
+</tr>
+<tr>
+<td>TestPyPI decision</td>
+<td><code>&lt;owner decision&gt;</code></td>
+</tr>
+<tr>
+<td>Production decision</td>
+<td><code>&lt;owner decision&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>Attach the CI-generated <code>artifact-manifest.json</code>, both inventories and SBOM.
+Never substitute locally rebuilt artifacts after evidence capture.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 

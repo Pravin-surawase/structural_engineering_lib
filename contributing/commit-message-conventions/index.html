@@ -1586,10 +1586,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#multi-line-messages-with-ai_commitsh" class="md-nav__link">
+  <a href="#multi-line-messages" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Multi-Line Messages with ai_commit.sh
+        Multi-Line Messages
       
     </span>
   </a>
@@ -1604,34 +1604,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Enforcement">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#install-commit-message-hook" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Install Commit Message Hook
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bypass-not-recommended" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Bypass (Not Recommended)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1912,47 +1884,40 @@
 <a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>Fixes<span class="w"> </span><span class="c1">#456</span>
 <a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>Co-authored-by:<span class="w"> </span>Team<span class="w"> </span>Member<span class="w"> </span>&lt;team@example.com&gt;
 </code></pre></div>
-<h2 id="multi-line-messages-with-ai_commitsh">Multi-Line Messages with ai_commit.sh<a class="headerlink" href="#multi-line-messages-with-ai_commitsh" title="Permanent link">&para;</a></h2>
-<p>The <code>ai_commit.sh</code> script supports multi-line messages:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Single line (most common)</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;feat(api): add new endpoint&quot;</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># For longer descriptions, edit commit message after:</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>git<span class="w"> </span>commit<span class="w"> </span>--amend<span class="w">  </span><span class="c1"># Opens editor for full message</span>
+<h2 id="multi-line-messages">Multi-Line Messages<a class="headerlink" href="#multi-line-messages" title="Permanent link">&para;</a></h2>
+<p>Codex creates the commit after reviewing the final scoped diff:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>feat<span class="o">(</span>api<span class="o">)</span>:<span class="w"> </span>add<span class="w"> </span>new<span class="w"> </span>endpoint
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Explain<span class="w"> </span>motivation<span class="w"> </span>and<span class="w"> </span>compatibility<span class="w"> </span>effects<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>body<span class="w"> </span>when<span class="w"> </span>needed.
 </code></pre></div>
 <h2 id="enforcement">Enforcement<a class="headerlink" href="#enforcement" title="Permanent link">&para;</a></h2>
-<h3 id="install-commit-message-hook">Install Commit Message Hook<a class="headerlink" href="#install-commit-message-hook" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>./scripts/install_hooks.sh
-</code></pre></div>
-<p>This installs <code>.git/hooks/commit-msg</code> which validates:
+<p>Codex validates that the message has:
 - Subject line length (≤72 chars)
 - Type prefix present
 - No trailing period
 - Body line length (≤72 chars)</p>
-<h3 id="bypass-not-recommended">Bypass (Not Recommended)<a class="headerlink" href="#bypass-not-recommended" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>git<span class="w"> </span>commit<span class="w"> </span>--no-verify<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;emergency fix&quot;</span>
-</code></pre></div>
+<p>Do not bypass validation with <code>--no-verify</code>.</p>
 <h2 id="common-patterns">Common Patterns<a class="headerlink" href="#common-patterns" title="Permanent link">&para;</a></h2>
 <h3 id="feature-with-scope">Feature with Scope<a class="headerlink" href="#feature-with-scope" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>feat<span class="o">(</span>visualization<span class="o">)</span>:<span class="w"> </span>add<span class="w"> </span>3D<span class="w"> </span>beam<span class="w"> </span>preview<span class="w"> </span>component
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>feat<span class="o">(</span>visualization<span class="o">)</span>:<span class="w"> </span>add<span class="w"> </span>3D<span class="w"> </span>beam<span class="w"> </span>preview<span class="w"> </span>component
 </code></pre></div>
 <h3 id="bug-fix-with-issue-reference">Bug Fix with Issue Reference<a class="headerlink" href="#bug-fix-with-issue-reference" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>fix<span class="o">(</span>flexure<span class="o">)</span>:<span class="w"> </span>handle<span class="w"> </span>negative<span class="w"> </span>moment<span class="w"> </span>values
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>The<span class="w"> </span>flexure<span class="w"> </span>calculation<span class="w"> </span>failed<span class="w"> </span>when<span class="w"> </span>moment<span class="w"> </span>values<span class="w"> </span>were
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>negative<span class="w"> </span><span class="o">(</span>indicating<span class="w"> </span>tension<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>opposite<span class="w"> </span>face<span class="o">)</span>.
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>Fixes<span class="w"> </span><span class="c1">#789</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>fix<span class="o">(</span>flexure<span class="o">)</span>:<span class="w"> </span>handle<span class="w"> </span>negative<span class="w"> </span>moment<span class="w"> </span>values
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>The<span class="w"> </span>flexure<span class="w"> </span>calculation<span class="w"> </span>failed<span class="w"> </span>when<span class="w"> </span>moment<span class="w"> </span>values<span class="w"> </span>were
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>negative<span class="w"> </span><span class="o">(</span>indicating<span class="w"> </span>tension<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>opposite<span class="w"> </span>face<span class="o">)</span>.
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>Fixes<span class="w"> </span><span class="c1">#789</span>
 </code></pre></div>
 <h3 id="documentation-update">Documentation Update<a class="headerlink" href="#documentation-update" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docs:<span class="w"> </span>add<span class="w"> </span>API<span class="w"> </span>reference<span class="w"> </span><span class="k">for</span><span class="w"> </span>shear<span class="w"> </span>module
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>docs:<span class="w"> </span>add<span class="w"> </span>API<span class="w"> </span>reference<span class="w"> </span><span class="k">for</span><span class="w"> </span>shear<span class="w"> </span>module
 </code></pre></div>
 <h3 id="breaking-change">Breaking Change<a class="headerlink" href="#breaking-change" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>feat<span class="o">(</span>api<span class="o">)</span>!:<span class="w"> </span>change<span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span>of<span class="w"> </span>design_beam
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>BREAKING<span class="w"> </span>CHANGE:<span class="w"> </span>design_beam<span class="o">()</span><span class="w"> </span>now<span class="w"> </span>returns<span class="w"> </span>BeamDesignResult
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>instead<span class="w"> </span>of<span class="w"> </span>a<span class="w"> </span>dictionary.<span class="w"> </span>Update<span class="w"> </span>all<span class="w"> </span>callers<span class="w"> </span>to<span class="w"> </span>use<span class="w"> </span>the<span class="w"> </span>new
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>result<span class="w"> </span>object.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>feat<span class="o">(</span>api<span class="o">)</span>!:<span class="w"> </span>change<span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span>of<span class="w"> </span>design_beam
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>BREAKING<span class="w"> </span>CHANGE:<span class="w"> </span>design_beam<span class="o">()</span><span class="w"> </span>now<span class="w"> </span>returns<span class="w"> </span>BeamDesignResult
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>instead<span class="w"> </span>of<span class="w"> </span>a<span class="w"> </span>dictionary.<span class="w"> </span>Update<span class="w"> </span>all<span class="w"> </span>callers<span class="w"> </span>to<span class="w"> </span>use<span class="w"> </span>the<span class="w"> </span>new
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>result<span class="w"> </span>object.
 </code></pre></div>
 <h2 id="integration-with-ci">Integration with CI<a class="headerlink" href="#integration-with-ci" title="Permanent link">&para;</a></h2>
 <p>Commit message validation is enforced locally via the commit-msg hook.

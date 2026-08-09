@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/contributing/github-workflow/">
+        <link rel="canonical" href="https://pravin-surawase.github.io/structural_engineering_lib/verification/is456-library-first-evidence/">
       
       
       
@@ -23,7 +23,7 @@
     
     
       
-        <title>GitHub Workflow Guide - structural_engineering_lib</title>
+        <title>IS 456 Library-First Evidence and Claim Crosswalk - structural_engineering_lib</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#github-workflow-guide" class="md-skip">
+        <a href="#is-456-library-first-evidence-and-claim-crosswalk" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              GitHub Workflow Guide
+              IS 456 Library-First Evidence and Claim Crosswalk
             
           </span>
         </div>
@@ -326,7 +326,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../development-guide/" class="md-tabs__link">
+        <a href="../../contributing/development-guide/" class="md-tabs__link">
           
   
   
@@ -1260,7 +1260,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../development-guide/" class="md-nav__link">
+      <a href="../../contributing/development-guide/" class="md-nav__link">
         
   
   
@@ -1295,7 +1295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../testing-strategy/" class="md-nav__link">
+      <a href="../../contributing/testing-strategy/" class="md-nav__link">
         
   
   
@@ -1330,7 +1330,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../agent-coding-standards/" class="md-nav__link">
+      <a href="../../contributing/agent-coding-standards/" class="md-nav__link">
         
   
   
@@ -1481,10 +1481,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#pull-request-policy" class="md-nav__link">
+  <a href="#controlled-sources" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pull request policy
+        Controlled sources
       
     </span>
   </a>
@@ -1492,10 +1492,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#normal-flow" class="md-nav__link">
+  <a href="#claim-to-evidence-crosswalk" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Normal flow
+        Claim-to-evidence crosswalk
       
     </span>
   </a>
@@ -1503,10 +1503,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#failure-handling" class="md-nav__link">
+  <a href="#release-evidence-required-from-ci" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Failure handling
+        Release evidence required from CI
       
     </span>
   </a>
@@ -1514,10 +1514,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ci-evidence" class="md-nav__link">
+  <a href="#local-prepublication-rehearsal" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CI evidence
+        Local prepublication rehearsal
       
     </span>
   </a>
@@ -1539,81 +1539,154 @@
                 
                   
 
-  <nav class="md-tags" >
-    
-      
-      
-      
-      
-        <span class="md-tag">codex</span>
-      
-    
-      
-      
-      
-      
-        <span class="md-tag">git</span>
-      
-    
-      
-      
-      
-      
-        <span class="md-tag">github</span>
-      
-    
-  </nav>
-
 
   
   
 
 
-<h1 id="github-workflow-guide">GitHub Workflow Guide<a class="headerlink" href="#github-workflow-guide" title="Permanent link">&para;</a></h1>
-<p>Codex owns the repository's Git and GitHub lifecycle. The old shell wrappers
-that staged everything, synchronized branches, pushed, created PRs, or attempted
-recovery have been retired.</p>
-<p>Follow the canonical
-<a href="../../git-automation/git-workflow-single-source/">Codex-native Git/GitHub workflow</a>.</p>
-<h2 id="pull-request-policy">Pull request policy<a class="headerlink" href="#pull-request-policy" title="Permanent link">&para;</a></h2>
-<p>Use a task branch and PR for production code, API changes, CI workflows,
-dependencies, release changes, and coordinated multi-module work. A tiny
-documentation-only correction may use the repository's existing branch policy,
-but Codex must still inspect and scope the diff before committing.</p>
-<h2 id="normal-flow">Normal flow<a class="headerlink" href="#normal-flow" title="Permanent link">&para;</a></h2>
-<ol>
-<li>Codex inspects the current branch, worktree, upstream, and any existing PR.</li>
-<li>Codex creates or switches to a <code>codex/&lt;task-slug&gt;</code> branch when a task branch
-   is needed.</li>
-<li>The implementation is verified with targeted checks and the appropriate
-   closeout gate.</li>
-<li>Codex stages only intended paths and creates a conventional commit.</li>
-<li>Codex pushes without force or history rewriting.</li>
-<li>Codex creates or updates a draft PR through the connected GitHub integration.</li>
-<li>Codex reports the PR and CI state. Merge remains an explicit
-   user-confirmation action.</li>
-</ol>
-<h2 id="failure-handling">Failure handling<a class="headerlink" href="#failure-handling" title="Permanent link">&para;</a></h2>
-<p>If the branch is detached, conflicted, diverged, or contains an unfinished
-operation, stop and inspect the exact state. Do not run an automated recovery
-script. Preserve unrelated changes and choose the smallest non-destructive
-recovery path only after the evidence is clear.</p>
-<p>Never bypass hooks or checks, force push, use <code>git rebase --skip</code>, admin-merge,
-close an issue, delete a branch, or publish a release without the authority
-defined in the canonical workflow.</p>
-<h2 id="ci-evidence">CI evidence<a class="headerlink" href="#ci-evidence" title="Permanent link">&para;</a></h2>
-<p>Local tests establish local software evidence. Before a PR is described as
-ready, inspect the connected GitHub check state as well. Fix failing checks at
-their root cause; do not weaken validation to make a lane green.</p>
+<h1 id="is-456-library-first-evidence-and-claim-crosswalk">IS 456 Library-First Evidence and Claim Crosswalk<a class="headerlink" href="#is-456-library-first-evidence-and-claim-crosswalk" title="Permanent link">&para;</a></h1>
+<p><strong>Type:</strong> Reference
+<strong>Audience:</strong> Developers
+<strong>Status:</strong> Review
+<strong>Importance:</strong> Critical
+<strong>Created:</strong> 2026-08-09
+<strong>Last Updated:</strong> 2026-08-09
+<strong>Date:</strong> 2026-08-09
+<strong>State:</strong> software evidence complete for the task branch; engineering review and publication approval remain separate</p>
+<h2 id="controlled-sources">Controlled sources<a class="headerlink" href="#controlled-sources" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>SHA-256</th>
+<th style="text-align: right;">Pages</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IS 456:2000 consolidated through Amendment 5, reaffirmed 2021</td>
+<td><code>964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264</code></td>
+<td style="text-align: right;">127</td>
+<td>Primary controlled calculation source</td>
+</tr>
+<tr>
+<td>IS 456 Amendment 6, June 2024</td>
+<td><code>4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881</code></td>
+<td style="text-align: right;">3</td>
+<td>Route-specific amendment review</td>
+</tr>
+</tbody>
+</table>
+<p>The protected source corpus is local under
+<code>private_sources/is456_library_first/</code>, covered by <code>.gitignore</code>, and excluded
+from package discovery. Its manifest records two PDFs, 130 extracted pages,
+1,208,170 extracted characters, seven imported Structautomate reference
+artifacts, and automated candidates for clauses, tables, formulas and figures.
+Those candidates remain <code>UNREVIEWED_SOURCE_CORPUS</code>; counts do not certify the
+interpretation or completeness of any formula/table normalization.</p>
+<p>The packaged <code>clauses.json</code> contains identifiers and project-authored metadata
+only. It contains no protected standard text or table values.</p>
+<h2 id="claim-to-evidence-crosswalk">Claim-to-evidence crosswalk<a class="headerlink" href="#claim-to-evidence-crosswalk" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Public claim</th>
+<th>Software evidence</th>
+<th>Allowed wording</th>
+<th>Held wording</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Beam</td>
+<td>Existing route tests plus P3 capability audit</td>
+<td>Primary combined route covers rectangular flexure and shear; torsion is separate</td>
+<td>Complete beam design or automatic combined torsion</td>
+</tr>
+<tr>
+<td>Column</td>
+<td>Corrected two-axis slenderness, minimum eccentricity, focused core/service/FastAPI tests</td>
+<td>Bounded rectangular/symmetric workflows</td>
+<td>General circular/asymmetric/arbitrary reinforcement design</td>
+</tr>
+<tr>
+<td>Isolated footing</td>
+<td>Existing bearing/flexure/shear tests plus independent Cl. 34.4 transfer benchmark</td>
+<td>Supported square/rectangular checks and bounded concentric transfer</td>
+<td>Combined/strap/raft/pile-cap, settlement or geotechnical design</td>
+</tr>
+<tr>
+<td>Solid one-way slab</td>
+<td>P6-P8 contracts, flexure and supplied-bar benchmark</td>
+<td>Simply supported solid rectangular one-way strip</td>
+<td>Continuity, direct deflection or modification-factor completion</td>
+</tr>
+<tr>
+<td>Solid two-way slab</td>
+<td>P9-P10 external-coefficient contract and benchmark</td>
+<td>One interior four-edge-continuous flexure case with accepted external coefficients</td>
+<td>Built-in coefficient truth, edge/corner panels or complete detailing</td>
+</tr>
+<tr>
+<td>Public package</td>
+<td>API entrypoint integration, manifest, clean-build inventory and installed-wheel UAT definition</td>
+<td>Supported-case development preview</td>
+<td>Whole-standard compliance or professional approval</td>
+</tr>
+</tbody>
+</table>
+<p>Passing tests and artifact gates establish software evidence only. Construction
+use still requires source-page verification, independent calculations,
+project-specific checks and qualified professional approval.</p>
+<h2 id="release-evidence-required-from-ci">Release evidence required from CI<a class="headerlink" href="#release-evidence-required-from-ci" title="Permanent link">&para;</a></h2>
+<p>The production decision must use the exact CI-built artifacts, not a local
+candidate. The <code>release-evidence</code> artifact must contain:</p>
+<ul>
+<li>source commit SHA and ref;</li>
+<li>wheel and sdist filename, byte size and SHA-256;</li>
+<li>wheel and sdist inventories;</li>
+<li>allowlist and protected-content gate results;</li>
+<li>CycloneDX SBOM;</li>
+<li>installed-site-packages UAT for beam, column, footing, slab, capability
+  discovery and CLI help.</li>
+</ul>
+<p>TestPyPI, the final version, tag, GitHub release and production PyPI upload are
+owner-only actions.</p>
+<h2 id="local-prepublication-rehearsal">Local prepublication rehearsal<a class="headerlink" href="#local-prepublication-rehearsal" title="Permanent link">&para;</a></h2>
+<p>This is local candidate evidence only; it is not the release identity:</p>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>SHA-256</th>
+<th style="text-align: right;">Inventory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>structural_lib_is456-0.21.6-py3-none-any.whl</code></td>
+<td><code>685118b6afc29d4ef49dad91c93ec25ae4c34a186e678636d40b174a016b7e04</code></td>
+<td style="text-align: right;">181 files</td>
+</tr>
+<tr>
+<td><code>structural_lib_is456-0.21.6.tar.gz</code></td>
+<td><code>ef144405b47133a9f7324707e051762472002ab6586d33cf2bc91b8c864b9450</code></td>
+<td style="text-align: right;">206 files</td>
+</tr>
+</tbody>
+</table>
+<p>The clean wheel install passed beam, column, isolated-footing transfer,
+one-way/two-way slab, capability-discovery and CLI UAT. Package inventories
+contained no private sources, research modules, migration fixtures, or empty
+ACI/Eurocode placeholder namespaces. The final release record must replace
+these local hashes with the exact CI-built artifact hashes.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 

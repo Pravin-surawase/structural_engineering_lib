@@ -2034,10 +2034,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3a6-design-torsion-main-entry-point" class="md-nav__link">
+  <a href="#3a6-bounded-torsion-utility" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3A.6 Design Torsion (Main Entry Point)
+        3A.6 Bounded Torsion Utility
       
     </span>
   </a>
@@ -3136,10 +3136,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#design_long_column_is456pu_kn-m1x_knm-m2x_knm-m1y_knm-m2y_knm-b_mm-d_mm-lex_mm-ley_mm-fck-fy-asc_mm2-d_prime_mm-bracedtrue-dict" class="md-nav__link">
+  <a href="#design_long_column_is456pu_kn-m1x_knm-m2x_knm-m1y_knm-m2y_knm-b_mm-d_mm-lex_mm-ley_mm-fck-fy-asc_mm2-d_prime_mm-bracedtrue-l_unsupported_mm-dict" class="md-nav__link">
     <span class="md-ellipsis">
       
-        design_long_column_is456(Pu_kN, M1x_kNm, M2x_kNm, M1y_kNm, M2y_kNm, b_mm, D_mm, lex_mm, ley_mm, fck, fy, Asc_mm2, d_prime_mm, braced=True) → dict
+        design_long_column_is456(Pu_kN, M1x_kNm, M2x_kNm, M1y_kNm, M2y_kNm, b_mm, D_mm, lex_mm, ley_mm, fck, fy, Asc_mm2, d_prime_mm, braced=True, *, l_unsupported_mm) → dict
       
     </span>
   </a>
@@ -5065,10 +5065,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3a6-design-torsion-main-entry-point" class="md-nav__link">
+  <a href="#3a6-bounded-torsion-utility" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3A.6 Design Torsion (Main Entry Point)
+        3A.6 Bounded Torsion Utility
       
     </span>
   </a>
@@ -6167,10 +6167,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#design_long_column_is456pu_kn-m1x_knm-m2x_knm-m1y_knm-m2y_knm-b_mm-d_mm-lex_mm-ley_mm-fck-fy-asc_mm2-d_prime_mm-bracedtrue-dict" class="md-nav__link">
+  <a href="#design_long_column_is456pu_kn-m1x_knm-m2x_knm-m1y_knm-m2y_knm-b_mm-d_mm-lex_mm-ley_mm-fck-fy-asc_mm2-d_prime_mm-bracedtrue-l_unsupported_mm-dict" class="md-nav__link">
     <span class="md-ellipsis">
       
-        design_long_column_is456(Pu_kN, M1x_kNm, M2x_kNm, M1y_kNm, M2y_kNm, b_mm, D_mm, lex_mm, ley_mm, fck, fy, Asc_mm2, d_prime_mm, braced=True) → dict
+        design_long_column_is456(Pu_kN, M1x_kNm, M2x_kNm, M1y_kNm, M2y_kNm, b_mm, D_mm, lex_mm, ley_mm, fck, fy, Asc_mm2, d_prime_mm, braced=True, *, l_unsupported_mm) → dict
       
     </span>
   </a>
@@ -6492,18 +6492,36 @@
 <h1 id="is-456-rc-beam-design-library-api-reference">IS 456 RC Beam Design Library — API Reference<a class="headerlink" href="#is-456-rc-beam-design-library-api-reference" title="Permanent link">&para;</a></h1>
 <p><strong>Type:</strong> Reference
 <strong>Audience:</strong> Developers
-<strong>Status:</strong> Production Ready
+<strong>Status:</strong> Development Preview — Supported Cases Only
 <strong>Importance:</strong> Critical
 <strong>Document Version:</strong> 0.21.6
 <strong>Created:</strong> 2025-01-01
 <strong>Last Updated:</strong> 2026-04-06<br></p>
 <hr />
-<p><strong>Scope:</strong> Contract-tested public APIs for professional-grade Python/VBA implementations (flexure, shear, ductile detailing, integration, reporting, detailing, DXF export, BBS, cutting-stock optimizer, unified CLI, torsion, serviceability Level A/B/C, ETABS import, column design — axial/uniaxial/biaxial/P-M curves/slender/helical/detailing/ductile). All APIs protected against accidental breaking changes.</p>
+<p><strong>Scope:</strong> Contract-tested calculation and checking APIs with route-specific
+geometry, loading, reinforcement, and evidence boundaries. The primary combined
+beam route covers rectangular flexure and shear (plus optional serviceability),
+while torsion and other specialist beam cases remain separate utilities. Column
+interaction workflows are limited to rectangular/square sections with symmetric
+two-face reinforcement idealization. These APIs are design aids for qualified
+review, not professional approval or complete IS 456 coverage.</p>
 <hr />
 <h2 id="api-manifest-public-signatures">API Manifest (Public Signatures)<a class="headerlink" href="#api-manifest-public-signatures" title="Permanent link">&para;</a></h2>
 <p>Machine-readable signatures live in <code>docs/reference/api-manifest.json</code>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>.venv/bin/python<span class="w"> </span>scripts/generate_api_manifest.py
 </code></pre></div>
+<p>The canonical public import path is <code>structural_lib.services.api</code>.
+<code>structural_lib.api</code> and selected package-root imports are compatibility paths
+that delegate to the same objects. Capability boundaries are discoverable with
+<code>get_supported_is456_capabilities()</code>.</p>
+<p>New LIB-IS456-V1 workflows include <code>api.check_isolated_footing_load_transfer</code>,
+<code>api.design_one_way_slab_is456</code>, and <code>api.design_two_way_slab_is456</code>. Their
+result/capability types are <code>api.LoadTransferResult</code>,
+<code>api.OneWaySlabDesignResult</code>, and <code>api.IS456Capability</code>; supported-case
+discovery is available through <code>api.get_supported_is456_capabilities</code>. The
+two-way route accepts only qualified, caller-supplied coefficients and explicit
+literal-true declarations for its single documented interior,
+four-edge-continuous panel case.</p>
 <h2 id="0-unified-cli-v094">0. Unified CLI (v0.9.4+)<a class="headerlink" href="#0-unified-cli-v094" title="Permanent link">&para;</a></h2>
 <p>The library provides a unified command-line interface:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Design beams from CSV/JSON input</span>
@@ -7856,8 +7874,10 @@ may evolve before implementation.</p>
 <a id="__codelineno-65-7" name="__codelineno-65-7" href="#__codelineno-65-7"></a>    <span class="n">sv</span><span class="p">:</span> <span class="nb">float</span>      <span class="c1"># Stirrup spacing (mm)</span>
 <a id="__codelineno-65-8" name="__codelineno-65-8" href="#__codelineno-65-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span>        <span class="c1"># Longitudinal steel Al (mm²)</span>
 </code></pre></div></p>
-<h3 id="3a6-design-torsion-main-entry-point">3A.6 Design Torsion (Main Entry Point)<a class="headerlink" href="#3a6-design-torsion-main-entry-point" title="Permanent link">&para;</a></h3>
-<p>Comprehensive torsion design combining all calculations.</p>
+<h3 id="3a6-bounded-torsion-utility">3A.6 Bounded Torsion Utility<a class="headerlink" href="#3a6-bounded-torsion-utility" title="Permanent link">&para;</a></h3>
+<p>Combines the implemented torsion calculations for the explicit inputs below.
+It is separate from <code>design_beam_is456</code>; callers must not assume the primary
+combined beam route applies torsion automatically.</p>
 <p><strong>Python:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">design_torsion</span><span class="p">(</span>
 <a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>    <span class="n">tu_knm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>       <span class="c1"># Applied torsion (kN·m)</span>
@@ -9362,6 +9382,12 @@ See <a href="../3d-json-contract/">3d-json-contract.md</a> for full TypeScript d
 </code></pre></div>
 <hr />
 <h2 id="16-column-design-module">16. Column Design Module<a class="headerlink" href="#16-column-design-module" title="Permanent link">&para;</a></h2>
+<p>These are bounded calculation/checking utilities. Interaction functions assume
+rectangular/square compression members with symmetric equal reinforcement on
+two faces and a two-layer centroid idealization. The direct biaxial route is for
+short columns and fails closed if either axis is slender; use the long-column
+workflow with an explicit unsupported length in that case. Circular/helical
+support is not complete circular-column design.</p>
 <h3 id="classify_column_is456le_mm-d_mm-str"><code>classify_column_is456(le_mm, D_mm) → str</code><a class="headerlink" href="#classify_column_is456le_mm-d_mm-str" title="Permanent link">&para;</a></h3>
 <p>Classify column as <strong>SHORT</strong> or <strong>SLENDER</strong> based on slenderness ratio.</p>
 <table>
@@ -9800,7 +9826,7 @@ See <a href="../3d-json-contract/">3d-json-contract.md</a> for full TypeScript d
 </code></pre></div></p>
 <p><strong>FastAPI Endpoint:</strong> <code>POST /api/v1/design/column/additional-moment</code></p>
 <hr />
-<h3 id="design_long_column_is456pu_kn-m1x_knm-m2x_knm-m1y_knm-m2y_knm-b_mm-d_mm-lex_mm-ley_mm-fck-fy-asc_mm2-d_prime_mm-bracedtrue-dict"><code>design_long_column_is456(Pu_kN, M1x_kNm, M2x_kNm, M1y_kNm, M2y_kNm, b_mm, D_mm, lex_mm, ley_mm, fck, fy, Asc_mm2, d_prime_mm, braced=True) → dict</code><a class="headerlink" href="#design_long_column_is456pu_kn-m1x_knm-m2x_knm-m1y_knm-m2y_knm-b_mm-d_mm-lex_mm-ley_mm-fck-fy-asc_mm2-d_prime_mm-bracedtrue-dict" title="Permanent link">&para;</a></h3>
+<h3 id="design_long_column_is456pu_kn-m1x_knm-m2x_knm-m1y_knm-m2y_knm-b_mm-d_mm-lex_mm-ley_mm-fck-fy-asc_mm2-d_prime_mm-bracedtrue-l_unsupported_mm-dict"><code>design_long_column_is456(Pu_kN, M1x_kNm, M2x_kNm, M1y_kNm, M2y_kNm, b_mm, D_mm, lex_mm, ley_mm, fck, fy, Asc_mm2, d_prime_mm, braced=True, *, l_unsupported_mm) → dict</code><a class="headerlink" href="#design_long_column_is456pu_kn-m1x_knm-m2x_knm-m1y_knm-m2y_knm-b_mm-d_mm-lex_mm-ley_mm-fck-fy-asc_mm2-d_prime_mm-bracedtrue-l_unsupported_mm-dict" title="Permanent link">&para;</a></h3>
 <p>Design a long (slender) column per IS 456 Cl 39.7. Calculates additional moments (Cl 39.7.1), augments applied moments, and checks biaxial capacity with the Bresler formula.</p>
 <table>
 <thead>
@@ -9857,6 +9883,11 @@ See <a href="../3d-json-contract/">3d-json-contract.md</a> for full TypeScript d
 <td>Effective length about y-axis (mm)</td>
 </tr>
 <tr>
+<td><code>l_unsupported_mm</code></td>
+<td><code>float</code></td>
+<td>Unsupported member length (mm), required for the two-axis minimum-eccentricity envelope</td>
+</tr>
+<tr>
 <td><code>fck</code></td>
 <td><code>float</code></td>
 <td>Concrete strength (N/mm²). IS 456 range: 15–80</td>
@@ -9901,7 +9932,9 @@ See <a href="../3d-json-contract/">3d-json-contract.md</a> for full TypeScript d
 <p><strong>FastAPI Endpoint:</strong> <code>POST /api/v1/design/column/long-column</code></p>
 <hr />
 <h3 id="check_helical_reinforcement_is456d_mm-d_core_mm-fck-fy-d_helix_mm-pitch_mm-pu_axial_kn-dict"><code>check_helical_reinforcement_is456(D_mm, D_core_mm, fck, fy, d_helix_mm, pitch_mm, Pu_axial_kN) → dict</code><a class="headerlink" href="#check_helical_reinforcement_is456d_mm-d_core_mm-fck-fy-d_helix_mm-pitch_mm-pu_axial_kn-dict" title="Permanent link">&para;</a></h3>
-<p>Check helical (spiral) reinforcement for circular column per IS 456 Cl 39.4. Validates pitch, bar diameter, volumetric ratio, and computes enhanced axial capacity with 1.05 factor.</p>
+<p>Check a supplied circular helix and apply the 1.05 multiplier to a caller-supplied
+short-axial capacity. This function does not calculate circular-column capacity
+from longitudinal reinforcement and does not compare an applied axial demand.</p>
 <table>
 <thead>
 <tr>
@@ -9944,11 +9977,13 @@ See <a href="../3d-json-contract/">3d-json-contract.md</a> for full TypeScript d
 <tr>
 <td><code>Pu_axial_kN</code></td>
 <td><code>float</code></td>
-<td>Applied factored axial load (kN). Must be ≥ 0</td>
+<td>Caller-supplied short-column axial capacity (kN); legacy parameter name</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Returns:</strong> <code>dict</code> with keys: <code>is_safe</code>, <code>Pu_capacity_kN</code>, <code>rho_h</code>, <code>Ah_mm2</code>, <code>pitch_ok</code>, <code>d_helix_ok</code>, <code>utilization</code>, <code>clause_ref</code>, <code>warnings</code></p>
+<p><strong>Returns:</strong> <code>HelicalReinforcementResult</code> with helix adequacy, provided/required
+helical ratios, pitch limits, and <code>Pu_enhanced_kN</code>. It has no demand utilization
+or overall circular-column design result.</p>
 <p><strong>Reference:</strong> IS 456 Cl 39.4, Cl 26.5.3.2(c)</p>
 <p><strong>Usage:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-141-1" name="__codelineno-141-1" href="#__codelineno-141-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
@@ -10556,7 +10591,8 @@ See <a href="../3d-json-contract/">3d-json-contract.md</a> for full TypeScript d
 <a id="__codelineno-153-12" name="__codelineno-153-12" href="#__codelineno-153-12"></a>    <span class="n">b_mm</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">D_mm</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">mu_knm</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">vu_kn</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
 <a id="__codelineno-153-13" name="__codelineno-153-13" href="#__codelineno-153-13"></a><span class="p">)</span>
 </code></pre></div>
-<p><strong>Use when:</strong> You want complete beam/column design with all IS 456 checks.
+<p><strong>Use when:</strong> You want the documented combined workflow for its stated geometry,
+load, and reinforcement assumptions. It is not an all-checks or whole-code route.
 <strong>Returns:</strong> Typed dataclasses (<code>ComplianceCaseResult</code>, <code>DesignAndDetailResult</code>).</p>
 <h3 id="level-2-module-level-functions-for-specific-calculations">Level 2: Module-Level Functions — For specific calculations<a class="headerlink" href="#level-2-module-level-functions-for-specific-calculations" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-154-1" name="__codelineno-154-1" href="#__codelineno-154-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.codes.is456.beam.flexure</span><span class="w"> </span><span class="kn">import</span> <span class="n">design_singly_reinforced</span>

@@ -2994,7 +2994,7 @@
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>@ops Docker compose is failing — Colima issue?
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>@ops create a PR for the deflection feature
 </code></pre></div>
-<p><strong>It knows about:</strong> THE ONE RULE (ai_commit.sh), PR workflow, Colima/Docker, port management, emergency recovery.</p>
+<p><strong>It knows about:</strong> the Codex-native Git/GitHub boundary, Colima/Docker, port management, and fail-closed recovery.</p>
 <hr />
 <h2 id="the-10-skills-quick-actions">The 10 Skills — Quick Actions<a class="headerlink" href="#the-10-skills-quick-actions" title="Permanent link">&para;</a></h2>
 <p>Skills are shortcuts for common tasks. Use them inline in any chat.</p>
@@ -3204,7 +3204,7 @@
 <ul>
 <li><strong>Don't skip session end</strong> — it costs 10+ hours of rework for the next session</li>
 <li><strong>Don't guess parameter names</strong> — use <code>/api-discovery</code> (it's <code>b_mm</code> not <code>width</code>)</li>
-<li><strong>Don't use <code>git commit</code> manually</strong> — always <code>./scripts/ai_commit.sh</code></li>
+<li><strong>Return verified scope to Codex</strong> — Codex owns commit, push, and PR work</li>
 <li><strong>Don't create new hooks without checking</strong> — ask <code>@frontend</code> to search first</li>
 <li><strong>Don't edit <code>Python/structural_lib/api.py</code></strong> — it's a stub, real code is in <code>services/api.py</code></li>
 <li><strong>Don't create <code>.css</code> files</strong> — Tailwind only</li>
@@ -3228,8 +3228,7 @@
 <a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a>             #file-move  #is456-verify  #context-recovery
 <a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a>             #master-workflow
 <a id="__codelineno-32-17" name="__codelineno-32-17" href="#__codelineno-32-17"></a>
-<a id="__codelineno-32-18" name="__codelineno-32-18" href="#__codelineno-32-18"></a>GIT:         ./scripts/ai_commit.sh &quot;type: message&quot;    (ALWAYS)
-<a id="__codelineno-32-19" name="__codelineno-32-19" href="#__codelineno-32-19"></a>PR:          ./run.sh pr status → ./run.sh pr create    (when required)
+<a id="__codelineno-32-18" name="__codelineno-32-18" href="#__codelineno-32-18"></a>GIT/GITHUB:  Codex reviews scope, commits, pushes, and updates the connected PR
 </code></pre></div>
 <hr />
 <h2 id="context-management-working-through-long-sessions">Context Management — Working Through Long Sessions<a class="headerlink" href="#context-management-working-through-long-sessions" title="Permanent link">&para;</a></h2>

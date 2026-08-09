@@ -1795,6 +1795,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#library-first-footing-and-slab-apis-development-preview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Library-First Footing and Slab APIs (Development Preview)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2309,6 +2320,21 @@ They are <strong>not available yet</strong>, but will be stable once shipped.</p
 <a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="n">footing</span><span class="o">.</span><span class="n">footing_punching_shear</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </code></pre></div>
 <p><strong>Status:</strong> Preview - Function signatures and return types may change before v1.0.</p>
+<h3 id="library-first-footing-and-slab-apis-development-preview">Library-First Footing and Slab APIs (Development Preview)<a class="headerlink" href="#library-first-footing-and-slab-apis-development-preview" title="Permanent link">&para;</a></h3>
+<p>The bounded LIB-IS456-V1 routes are public for evaluation, but are not yet a
+pre-1.0 stability promise:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib</span><span class="w"> </span><span class="kn">import</span> <span class="n">api</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="n">transfer</span><span class="p">:</span> <span class="n">api</span><span class="o">.</span><span class="n">LoadTransferResult</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">check_isolated_footing_load_transfer</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="n">one_way</span><span class="p">:</span> <span class="n">api</span><span class="o">.</span><span class="n">OneWaySlabDesignResult</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">design_one_way_slab_is456</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="n">two_way</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">design_two_way_slab_is456</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="n">capabilities</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">api</span><span class="o">.</span><span class="n">IS456Capability</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>    <span class="n">api</span><span class="o">.</span><span class="n">get_supported_is456_capabilities</span><span class="p">()</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="p">)</span>
+</code></pre></div>
+<p>The two-way route supports only its documented interior-panel configuration
+with caller-supplied, qualified coefficients. Capability records and result
+types may change before v1.0.</p>
 <hr />
 <h2 id="internal-api-may-change-without-notice">Internal API (May Change Without Notice)<a class="headerlink" href="#internal-api-may-change-without-notice" title="Permanent link">&para;</a></h2>
 <p>These modules are implementation details. Do not depend on them directly.</p>
@@ -2375,16 +2401,16 @@ They are <strong>not available yet</strong>, but will be stable once shipped.</p
 </table>
 <h3 id="how-to-use-internal-modules-safely">How to Use Internal Modules Safely<a class="headerlink" href="#how-to-use-internal-modules-safely" title="Permanent link">&para;</a></h3>
 <p>If you must use an internal module:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># Pin to exact version</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="c1"># requirements.txt</span>
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="n">structural</span><span class="o">-</span><span class="n">lib</span><span class="o">-</span><span class="n">is456</span><span class="o">==</span><span class="mf">0.21.6</span>
-<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>
-<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="c1"># Or wrap with try/except</span>
-<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.tables</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tau_c</span>
-<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>    <span class="c1"># Fallback or error handling</span>
-<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a>    <span class="k">pass</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Pin to exact version</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="c1"># requirements.txt</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="n">structural</span><span class="o">-</span><span class="n">lib</span><span class="o">-</span><span class="n">is456</span><span class="o">==</span><span class="mf">0.21.6</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="c1"># Or wrap with try/except</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>    <span class="kn">from</span><span class="w"> </span><span class="nn">structural_lib.tables</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tau_c</span>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>    <span class="c1"># Fallback or error handling</span>
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>    <span class="k">pass</span>
 </code></pre></div>
 <hr />
 <h2 id="deprecated-api-will-be-removed">Deprecated API (Will Be Removed)<a class="headerlink" href="#deprecated-api-will-be-removed" title="Permanent link">&para;</a></h2>
@@ -2413,37 +2439,37 @@ They are <strong>not available yet</strong>, but will be stable once shipped.</p
 <hr />
 <h2 id="cli-stability">CLI Stability<a class="headerlink" href="#cli-stability" title="Permanent link">&para;</a></h2>
 <p>The CLI interface (<code>python -m structural_lib</code>) is considered <strong>stable</strong>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># These commands are stable</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>design<span class="w"> </span>input.csv<span class="w"> </span>-o<span class="w"> </span>results.json
-<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>bbs<span class="w"> </span>results.json<span class="w"> </span>-o<span class="w"> </span>bbs.csv
-<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>detail<span class="w"> </span>results.json<span class="w"> </span>-o<span class="w"> </span>detailing.json
-<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>dxf<span class="w"> </span>results.json<span class="w"> </span>-o<span class="w"> </span>drawings.dxf
-<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>job<span class="w"> </span>job.json<span class="w"> </span>-o<span class="w"> </span>output/
-<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>validate<span class="w"> </span>job.json
-<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>critical<span class="w"> </span>output/<span class="w"> </span>--top<span class="w"> </span><span class="m">10</span><span class="w"> </span>--format<span class="o">=</span>csv<span class="w"> </span>-o<span class="w"> </span>critical.csv
-<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>report<span class="w"> </span>output/<span class="w"> </span>--format<span class="o">=</span>html<span class="w"> </span>-o<span class="w"> </span>report.html
-<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>mark-diff<span class="w"> </span>--bbs<span class="w"> </span>schedule.csv<span class="w"> </span>--dxf<span class="w"> </span>drawings.dxf
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># These commands are stable</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>design<span class="w"> </span>input.csv<span class="w"> </span>-o<span class="w"> </span>results.json
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>bbs<span class="w"> </span>results.json<span class="w"> </span>-o<span class="w"> </span>bbs.csv
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>detail<span class="w"> </span>results.json<span class="w"> </span>-o<span class="w"> </span>detailing.json
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>dxf<span class="w"> </span>results.json<span class="w"> </span>-o<span class="w"> </span>drawings.dxf
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>job<span class="w"> </span>job.json<span class="w"> </span>-o<span class="w"> </span>output/
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>validate<span class="w"> </span>job.json
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>critical<span class="w"> </span>output/<span class="w"> </span>--top<span class="w"> </span><span class="m">10</span><span class="w"> </span>--format<span class="o">=</span>csv<span class="w"> </span>-o<span class="w"> </span>critical.csv
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>report<span class="w"> </span>output/<span class="w"> </span>--format<span class="o">=</span>html<span class="w"> </span>-o<span class="w"> </span>report.html
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a>python<span class="w"> </span>-m<span class="w"> </span>structural_lib<span class="w"> </span>mark-diff<span class="w"> </span>--bbs<span class="w"> </span>schedule.csv<span class="w"> </span>--dxf<span class="w"> </span>drawings.dxf
 </code></pre></div>
 <p>Output JSON schema is versioned via <code>schema_version</code> field.</p>
 <hr />
 <h2 id="output-schema-stability">Output Schema Stability<a class="headerlink" href="#output-schema-stability" title="Permanent link">&para;</a></h2>
 <h3 id="schema-version-1-current">Schema Version 1 (Current)<a class="headerlink" href="#schema-version-1-current" title="Permanent link">&para;</a></h3>
 <p>The <code>BeamDesignOutput</code> schema is stable:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="p">{</span>
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">&quot;schema_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">  </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span>
-<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">  </span><span class="nt">&quot;units&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span>
-<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">  </span><span class="nt">&quot;beam_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;B1&quot;</span><span class="p">,</span>
-<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="w">  </span><span class="nt">&quot;story&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Story1&quot;</span><span class="p">,</span>
-<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="w">  </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;b_mm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;D_mm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="w">  </span><span class="nt">&quot;materials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;fck_nmm2&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;fy_nmm2&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="w">  </span><span class="nt">&quot;flexure&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;ast_required_mm2&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="w">  </span><span class="nt">&quot;shear&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a><span class="w">  </span><span class="nt">&quot;serviceability&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a><span class="w">  </span><span class="nt">&quot;detailing&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a><span class="w">  </span><span class="nt">&quot;is_ok&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a><span class="w">  </span><span class="nt">&quot;governing_check&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;flexure&quot;</span>
-<a id="__codelineno-26-15" name="__codelineno-26-15" href="#__codelineno-26-15"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="p">{</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">  </span><span class="nt">&quot;schema_version&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">  </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="w">  </span><span class="nt">&quot;units&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IS456&quot;</span><span class="p">,</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w">  </span><span class="nt">&quot;beam_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;B1&quot;</span><span class="p">,</span>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="w">  </span><span class="nt">&quot;story&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Story1&quot;</span><span class="p">,</span>
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="w">  </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;b_mm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;D_mm&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="w">  </span><span class="nt">&quot;materials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;fck_nmm2&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;fy_nmm2&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="w">  </span><span class="nt">&quot;flexure&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;ast_required_mm2&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-27-10" name="__codelineno-27-10" href="#__codelineno-27-10"></a><span class="w">  </span><span class="nt">&quot;shear&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-27-11" name="__codelineno-27-11" href="#__codelineno-27-11"></a><span class="w">  </span><span class="nt">&quot;serviceability&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-27-12" name="__codelineno-27-12" href="#__codelineno-27-12"></a><span class="w">  </span><span class="nt">&quot;detailing&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-27-13" name="__codelineno-27-13" href="#__codelineno-27-13"></a><span class="w">  </span><span class="nt">&quot;is_ok&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-27-14" name="__codelineno-27-14" href="#__codelineno-27-14"></a><span class="w">  </span><span class="nt">&quot;governing_check&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;flexure&quot;</span>
+<a id="__codelineno-27-15" name="__codelineno-27-15" href="#__codelineno-27-15"></a><span class="p">}</span>
 </code></pre></div>
 <p><strong>Guarantees:</strong>
 - Existing fields will not be removed

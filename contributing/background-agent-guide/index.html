@@ -2214,7 +2214,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>./scripts/worktree_manager.sh<span class="w"> </span>create<span class="w"> </span>AGENT_2
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>worktree-AGENT_2-*
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># ... fixes tests ...</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>../scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;test: fix exception types in 8 failing tests&quot;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Return verified changes and suggested commit to the parent Codex task.</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w">  </span><span class="c1"># ✅ All pass</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># Notifies you with handoff message</span>
 </code></pre></div></p>
@@ -2261,7 +2261,7 @@
 - <strong>Blockers:</strong> Dependencies on other tasks</p>
 <h3 id="4-review-git-workflow">4. Review Git Workflow<a class="headerlink" href="#4-review-git-workflow" title="Permanent link">&para;</a></h3>
 <p>Read: <code>docs/git-workflow-ai-agents.md</code></p>
-<p>Key rule: <strong>Never run manual git commands.</strong> Use workflow scripts only.</p>
+<p>Key rule: <strong>Workers do not perform Git/GitHub closeout.</strong> Return verified scope to the parent Codex task.</p>
 <hr />
 <h2 id="task-selection-parallel-safe">Task Selection (Parallel-Safe)<a class="headerlink" href="#task-selection-parallel-safe" title="Permanent link">&para;</a></h2>
 <h3 id="researcher-agent">RESEARCHER Agent<a class="headerlink" href="#researcher-agent" title="Permanent link">&para;</a></h3>
@@ -2321,7 +2321,7 @@
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># ... edit files ...</span>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="c1"># 3. Commit locally (pre-commit hooks run automatically)</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>../scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;feat: describe change&quot;</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="c1"># Return verified changes and suggested commit to the parent Codex task.</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="c1"># 4. Run local checks</span>
 <a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="nb">cd</span><span class="w"> </span>Python<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w">  </span><span class="c1"># All tests</span>
@@ -2347,7 +2347,7 @@
 <p><strong>For non-code changes (research docs, guidelines) - background agents can work on main:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Background agent makes changes on main branch</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># ... edit docs/research/file.md ...</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;docs: add research for topic X&quot;</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># Codex reviews and commits the scoped research.</span>
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># STOP - notify MAIN agent (no manual push)</span>
 </code></pre></div>
@@ -2370,7 +2370,7 @@
 </code></pre></div></p>
 <p><strong>For all changes:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Let pre-commit hooks run automatically</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;type: message&quot;</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># Codex reviews and commits the scoped result.</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Fix any reported issues before retry</span>
 </code></pre></div></p>
@@ -2417,7 +2417,7 @@
 <li><strong>Reproduce locally</strong> with same command</li>
 <li><strong>Fix issue</strong> in your branch</li>
 <li><strong>Re-run checks</strong> locally before push</li>
-<li><strong>Push fix</strong> with <code>./scripts/ai_commit.sh</code></li>
+<li><strong>Return the verified fix</strong> for Codex Git/GitHub closeout</li>
 </ol>
 <h3 id="always-monitor-ci-required">Always Monitor CI (Required)<a class="headerlink" href="#always-monitor-ci-required" title="Permanent link">&para;</a></h3>
 <p>After every push or PR update, monitor checks to completion and report status.</p>
@@ -2599,7 +2599,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nb">cd</span><span class="w"> </span>Python
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>python<span class="w"> </span>-m<span class="w"> </span>black<span class="w"> </span>.
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>python<span class="w"> </span>-m<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>--fix<span class="w"> </span>.
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>./scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;type: message&quot;</span><span class="w">  </span><span class="c1"># Retry</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1"># Return the corrected diff to Codex for closeout.</span>
 </code></pre></div></p>
 <h3 id="issue-test-failures-after-merge">Issue: Test failures after merge<a class="headerlink" href="#issue-test-failures-after-merge" title="Permanent link">&para;</a></h3>
 <p><strong>Cause:</strong> API signature changes not propagated
@@ -2622,7 +2622,7 @@
 <a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="nb">cd</span><span class="w"> </span>worktree-AGENT_NAME-*
 <a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>
 <a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="c1"># Make changes, then commit</span>
-<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>../scripts/ai_commit.sh<span class="w"> </span><span class="s2">&quot;type: message&quot;</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="c1"># Return the verified diff and suggested commit to the parent Codex task.</span>
 <a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>
 <a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="c1"># Run local checks</span>
 <a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="nb">cd</span><span class="w"> </span>Python
