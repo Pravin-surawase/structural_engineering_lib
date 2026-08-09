@@ -53,7 +53,7 @@
       "size_lines": 1471,
       "last_updated": "2026-08-09",
       "description": "The Python package is the product. FastAPI, React, command-line workflows, reports, ETABS adapters, and future integrations are consumers of that product.",
-      "content_hash": "913a950510f6"
+      "content_hash": "d22e7e4c6d10"
     },
     {
       "name": "library-expansion-blueprint-v5.md",
@@ -117,5 +117,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "8b36161ed8ecd8d4"
+  "content_hash": "7a0ec33522ed4f0d"
 }
