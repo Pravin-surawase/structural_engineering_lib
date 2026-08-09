@@ -31,6 +31,7 @@ dependencies = [
 Homepage = "https://github.com/Pravin-surawase/structural_engineering_lib"
 Repository = "https://github.com/Pravin-surawase/structural_engineering_lib"
 Documentation = "https://github.com/Pravin-surawase/structural_engineering_lib/tree/main/docs"
+Release-policy = "https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/getting-started/releases.md"
 Changelog = "https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/CHANGELOG.md"
 Issues = "https://github.com/Pravin-surawase/structural_engineering_lib/issues"
 

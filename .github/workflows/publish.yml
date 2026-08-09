@@ -55,8 +55,9 @@ jobs:
           else
             requested_version="$MANUAL_VERSION"
           fi
-          if [[ ! "$requested_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Invalid release version: $requested_version"
+          if [[ ! "$requested_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+a[0-9]+$ ]]; then
+            echo "Invalid Alpha release version: $requested_version"
+            echo "Expected PEP 440 Alpha format X.Y.ZaN (for example, 0.24.0a1)"
             exit 1
           fi
           if [[ "$requested_version" != "$package_version" ]]; then
@@ -69,10 +70,8 @@ jobs:
           with open("pyproject.toml", "rb") as stream:
               classifiers = tomllib.load(stream)["project"].get("classifiers", [])
 
-          development_statuses = tuple(
-              f"Development Status :: {level}" for level in range(1, 5)
-          )
-          print(str(any(item.startswith(development_statuses) for item in classifiers)).lower())
+          assert "Development Status :: 3 - Alpha" in classifiers
+          print("true")
           PY
           )
           echo "version=$package_version" >> "$GITHUB_OUTPUT"

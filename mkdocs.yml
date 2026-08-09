@@ -1,6 +1,7 @@
 site_name: structural_engineering_lib
-site_description: IS 456 RC Beam Design Library — Flexure, Shear, Detailing, DXF Export
-site_url: https://pravin-surawase.github.io/structural_engineering_lib/
+site_description: Case-qualified IS 456 reinforced-concrete design library and workbench
+# No public site URL is declared while GitHub Pages remains owner-configured and
+# unverified. Restore one only after the owner enables Pages and verifies it.
 repo_url: https://github.com/Pravin-surawase/structural_engineering_lib
 repo_name: Pravin-surawase/structural_engineering_lib
 
@@ -109,6 +110,7 @@ nav:
   - Getting Started:
     - Overview: getting-started/agent-bootstrap.md
     - Quick Start (Python): getting-started/python-quickstart.md
+    - Release Policy: getting-started/releases.md
     - Beginner's Guide: getting-started/beginners-guide.md
     - Mac Setup: getting-started/mac-mini-setup.md
   - Guides:

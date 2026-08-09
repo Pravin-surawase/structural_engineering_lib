@@ -6,6 +6,7 @@ All bump operations use --dry-run to remain non-destructive.
 
 import hashlib
 import importlib
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -59,26 +60,22 @@ class TestBumpVersionCurrent:
     """Tests for the --current flag."""
 
     def test_current_version(self):
-        """--current returns a valid semver string."""
+        """--current returns the legacy release or a PEP 440 Alpha identifier."""
         result = run_script(BUMP_SCRIPT, "--current")
         assert result.returncode == 0
         output = result.stdout.strip()
-        # Output format: "Current version: X.Y.Z"
         assert "Current version:" in output
         version_part = output.split(":")[-1].strip()
-        parts = version_part.split(".")
-        assert len(parts) == 3, f"Expected semver X.Y.Z, got: {version_part}"
-        for p in parts:
-            assert p.isdigit(), f"Non-numeric semver component: {p}"
+        assert re.fullmatch(r"\d+\.\d+\.\d+(?:a\d+)?", version_part), version_part
 
 
 class TestBumpVersionDryRun:
     """Tests for --dry-run ensuring no actual file changes."""
 
     def test_dry_run_no_file_changes(self):
-        """0.99.0 --dry-run makes no actual changes to any files."""
+        """0.99.0a1 --dry-run makes no actual changes to any files."""
         before = _file_checksums()
-        result = run_script(BUMP_SCRIPT, "0.99.0", "--dry-run")
+        result = run_script(BUMP_SCRIPT, "0.99.0a1", "--dry-run")
         after = _file_checksums()
         assert before == after, "Dry-run modified files!"
         assert result.returncode == 0
@@ -86,7 +83,7 @@ class TestBumpVersionDryRun:
 
     def test_dry_run_shows_would_update(self):
         """--dry-run output includes WOULD UPDATE for tracked files."""
-        result = run_script(BUMP_SCRIPT, "0.99.0", "--dry-run")
+        result = run_script(BUMP_SCRIPT, "0.99.0a1", "--dry-run")
         assert result.returncode == 0
         assert "WOULD UPDATE" in result.stdout
 
@@ -101,6 +98,7 @@ class TestBumpVersionValidation:
             "1.2",
             "1.2.3.4",
             "v1.0.0",
+            "1.0.0",
             "1.0.0-beta",
             "1.0",
             "hello",
@@ -119,14 +117,14 @@ class TestBumpVersionValidation:
 
     def test_semver_ordering_rejects_downgrade(self):
         """Bumping to a lower version returns error."""
-        result = run_script(BUMP_SCRIPT, "0.0.1", "--dry-run")
+        result = run_script(BUMP_SCRIPT, "0.0.1a1", "--dry-run")
         assert result.returncode != 0
         assert "must be higher" in result.stdout or "ERROR" in result.stdout
 
     def test_semver_ordering_force_override(self):
         """--force allows downgrade (dry-run to avoid actual changes)."""
         before = _file_checksums()
-        result = run_script(BUMP_SCRIPT, "0.0.1", "--force", "--dry-run")
+        result = run_script(BUMP_SCRIPT, "0.0.1a1", "--force", "--dry-run")
         after = _file_checksums()
         assert result.returncode == 0
         assert before == after, "--force --dry-run should not modify files"
@@ -194,7 +192,7 @@ class TestBumpVersionPatternMatch:
         # missing files should appear in the output.  We can't control
         # which files exist, but the script uses "SKIP (not found)" when
         # a file is missing.  Run the bump and search for that pattern.
-        result = run_script(BUMP_SCRIPT, "0.99.0", "--dry-run")
+        result = run_script(BUMP_SCRIPT, "0.99.0a1", "--dry-run")
         # The script itself handles missing files gracefully.
         # We verify the script ran successfully even if some files are missing.
         assert result.returncode == 0
@@ -251,8 +249,39 @@ class TestPublishWorkflow:
         )
 
         assert "prerelease: ${{ steps.version.outputs.prerelease }}" in workflow
-        assert "Development Status :: {level}" in workflow
+        assert "Development Status :: 3 - Alpha" in workflow
         assert "prerelease: ${{ needs.validate.outputs.prerelease }}" in workflow
+
+    def test_future_publications_require_alpha_identifiers(self):
+        workflow = (REPO_ROOT / ".github" / "workflows" / "publish.yml").read_text(
+            encoding="utf-8"
+        )
+
+        assert "^[0-9]+\\.[0-9]+\\.[0-9]+a[0-9]+$" in workflow
+        assert "Expected PEP 440 Alpha format X.Y.ZaN" in workflow
+
+    def test_alpha_ordering_preserves_legacy_release_history(self):
+        assert release._release_version_key("0.24.0a1") > release._release_version_key(
+            "0.23.0"
+        )
+        assert release._release_version_key("0.24.0a2") > release._release_version_key(
+            "0.24.0a1"
+        )
+        assert release._release_version_key("0.24.0a1") < release._release_version_key(
+            "0.24.0"
+        )
+
+    def test_docs_workflow_is_build_only_until_pages_is_configured(self):
+        workflow = (REPO_ROOT / ".github" / "workflows" / "deploy-docs.yml").read_text(
+            encoding="utf-8"
+        )
+        mkdocs = (REPO_ROOT / "mkdocs.yml").read_text(encoding="utf-8")
+
+        assert "mkdocs build --strict" in workflow
+        assert "gh-deploy" not in workflow
+        assert "contents: write" not in workflow
+        assert "pull_request:" in workflow
+        assert "site_url:" not in mkdocs
 
 
 class TestReleasePreflight:
@@ -312,13 +341,13 @@ class TestReleasePreflight:
 
     @pytest.mark.slow
     def test_preflight_with_version(self):
-        """preflight 0.99.0 validates target version."""
-        result = run_script(RELEASE_SCRIPT, "preflight", "0.99.0")
+        """preflight 0.99.0a1 validates an Alpha target version."""
+        result = run_script(RELEASE_SCRIPT, "preflight", "0.99.0a1")
         assert result.returncode in (0, 1)
         output = result.stdout
         assert "PRE-RELEASE VALIDATION" in output
         # Should mention the target version
-        assert "0.99.0" in output or "Target" in output
+        assert "0.99.0a1" in output or "Target" in output
 
     @pytest.mark.slow
     def test_preflight_detects_version_issues(self):
@@ -351,9 +380,9 @@ class TestReleaseRun:
 
     @pytest.mark.slow
     def test_run_dry_run(self):
-        """run 0.99.0 --dry-run --no-open runs all checks + bump in dry-run mode."""
+        """run 0.99.0a1 --dry-run --no-open runs all checks + bump in dry-run mode."""
         before = _file_checksums()
-        result = run_script(RELEASE_SCRIPT, "run", "0.99.0", "--dry-run", "--no-open")
+        result = run_script(RELEASE_SCRIPT, "run", "0.99.0a1", "--dry-run", "--no-open")
         after = _file_checksums()
         assert before == after, "Dry-run modified files!"
         # Should show the release banner

@@ -27,20 +27,52 @@ Entries here represent "locked" versions that have been verified and approved.
 
 ## Release Process
 
+### Publication policy
+
+`v0.23.0` is the currently published Alpha development preview. It is a
+historical release identifier and remains case-qualified; it does not imply
+complete IS 456 coverage or professional design approval.
+
+All future public Alpha publications use PEP 440 Alpha identifiers:
+
+- Package version: `X.Y.ZaN` (for example, `0.24.0a1`).
+- Git tag: `vX.Y.ZaN` (for example, `v0.24.0a1`).
+- Evaluation install: pin the exact identifier, for example
+  `pip install structural-lib-is456==0.24.0a1`. Pip does not select
+  prereleases by default from a range; use an exact pin (or `--pre` only when
+  that behaviour is intentional).
+
+The current `0.23.0` metadata is not bumped merely to adopt this policy. The
+release tooling rejects a future bare `X.Y.Z` production publication so the
+Alpha status cannot be obscured by a stable-looking version.
+
+GitHub Pages is not configured for this repository as of this policy update.
+The documentation workflow therefore validates a strict local MkDocs build; it
+does not claim to deploy a public site. The owner must enable Pages, choose the
+deployment source, and verify the resulting URL before a Pages URL is added to
+public metadata.
+
+### Owner authorization holds
+
+Only the owner may authorize Pages settings, a tag, TestPyPI or PyPI
+publication, GitHub Release creation, or PR merge. Alpha publication evidence
+does not grant qualified structural-engineering approval; that review remains a
+separate owner and qualified-engineer decision.
+
 ### For maintainers: How to publish a new release
 
 1. **Run preflight checks:**
    ```bash
-   .venv/bin/python scripts/release.py preflight 0.X.Y
+   .venv/bin/python scripts/release.py preflight 0.X.YaN
    ```
-   Validates semver format, checks pyproject.toml/package.json/CITATION.cff consistency,
-   runs pytest, and ensures no uncommitted changes.
+   Validates the Alpha identifier, checks pyproject.toml/package.json/CITATION.cff
+   consistency, runs pytest, and ensures no uncommitted changes.
 
 2. **Have Codex create the release task branch and connected GitHub PR.**
 
 3. **Bump version (automated):**
    ```bash
-   .venv/bin/python scripts/release.py run 0.X.Y --no-open
+   .venv/bin/python scripts/release.py run 0.X.YaN --no-open
    ```
    This updates `pyproject.toml`, `package.json`, `CITATION.cff`, and all docs
    with the new version. Includes semver validation, rollback on failure, and
@@ -51,7 +83,7 @@ Entries here represent "locked" versions that have been verified and approved.
 5. **Edit docs/getting-started/releases.md** with release entry
 
 6. **Have Codex review and commit the scoped release changes** with
-   `chore: release v0.X.Y`.
+   `chore: release v0.X.YaN`.
 
 7. **Have Codex push and update the connected PR.** Merge still requires explicit
    user confirmation and passing required checks.
@@ -59,22 +91,24 @@ Entries here represent "locked" versions that have been verified and approved.
 8. **After explicit user approval, have Codex tag and push** (triggers
    `publish.yml` → validate → build → publish to PyPI):
    ```bash
-   git tag v0.X.Y && git push origin v0.X.Y
+   git tag v0.X.YaN && git push origin v0.X.YaN
    ```
    The CI pipeline runs a `validate` job (tests + tag-version check) before
    building and publishing.
 
 9. **Verify published package:**
    ```bash
-   .venv/bin/python scripts/release.py verify --version 0.X.Y --source pypi --skip-cli
+   .venv/bin/python scripts/release.py verify --version 0.X.YaN --source pypi --skip-cli
    ```
 
 ### TestPyPI (for testing before release)
 
-Use workflow_dispatch with `testpypi` target:
-1. Go to Actions → Publish to PyPI → Run workflow
-2. Select `testpypi` and run
-3. Test: `pip install -i https://test.pypi.org/simple/ structural-lib-is456`
+Use workflow_dispatch for a candidate version in `X.Y.ZaN` format:
+1. Go to Actions → Publish Release → Run workflow.
+2. Enter the exact Alpha version from package metadata; this path publishes to
+   TestPyPI only.
+3. Test with an exact pin: `pip install -i https://test.pypi.org/simple/
+   structural-lib-is456==X.Y.ZaN`.
 
 ---
 
