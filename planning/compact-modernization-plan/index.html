@@ -1680,6 +1680,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#101-packet-s-isolated-skills-control-plane" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10.1 Packet S — Isolated skills control plane
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.1 Packet S — Isolated skills control plane">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#objective_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Objective
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acceptance-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Acceptance criteria
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gate-and-handoff" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gate and handoff
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#11-packet-a-truthful-pr-gate" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1692,7 +1742,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#objective_1" class="md-nav__link">
+  <a href="#objective_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Objective
@@ -1725,7 +1775,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#acceptance-criteria" class="md-nav__link">
+  <a href="#acceptance-criteria_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Acceptance criteria
@@ -1797,7 +1847,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#objective_2" class="md-nav__link">
+  <a href="#objective_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         Objective
@@ -1863,7 +1913,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#acceptance-criteria_1" class="md-nav__link">
+  <a href="#acceptance-criteria_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Acceptance criteria
@@ -1913,7 +1963,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#objective_3" class="md-nav__link">
+  <a href="#objective_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         Objective
@@ -1957,7 +2007,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#acceptance-criteria_2" class="md-nav__link">
+  <a href="#acceptance-criteria_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         Acceptance criteria
@@ -2244,6 +2294,7 @@
 <li>Active pre-commit and command surfaces still contain references to removed Streamlit and VBA paths.</li>
 <li>The repository contains a large agent, script, and documentation surface. It must be made easier to enter and navigate, but historical evidence and ETABS reference material must not be deleted merely to reduce file count.</li>
 <li>The repository-level Codex configuration previously forced a parent model. That override has been removed; user-selected model and reasoning settings are now authoritative.</li>
+<li>The 14 skill entrypoints had conflicting tier/count/assignment sources and several stale or destructive commands. A separately authorized skills lane must repair that control plane before lower-cost agents execute the CI packets.</li>
 </ol>
 <h2 id="5-non-goals-and-protected-areas">5. Non-goals and protected areas<a class="headerlink" href="#5-non-goals-and-protected-areas" title="Permanent link">&para;</a></h2>
 <p>The following are outside MAINT-008 unless a change is strictly required to keep the main process working:</p>
@@ -2254,7 +2305,7 @@
 <li>redesigning the React interface;</li>
 <li>increasing test coverage, adding falsification cases, or adding new tests during review;</li>
 <li>generic security hardening, concurrency hardening, comment cleanup, style cleanup, or speculative edge-case handling;</li>
-<li>rewriting all custom agents, prompts, or skills;</li>
+<li>rewriting custom agents or prompts, or changing skills beyond the separately authorized 14-skill control-plane repair;</li>
 <li>deleting vendor ETABS reference files or historical release evidence;</li>
 <li>closing existing GitHub issues, merging a PR, publishing a package, creating a release, or changing a GitHub ruleset without the required owner approval;</li>
 <li>changing the user's global or project model choice again.</li>
@@ -2382,19 +2433,22 @@
 <h2 id="9-dependency-order">9. Dependency order<a class="headerlink" href="#9-dependency-order" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Owner approves merge of PR #676
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    -&gt; Packet 0: establish MAINT-008 branch and baseline
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        -&gt; Packet A: create truthful PR Gate
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>            -&gt; Owner approves main-ruleset switch
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>                -&gt; Packet B: compact scheduled and release lanes
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>                    -&gt; Packet C: compact supported local control surface
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>                        -&gt; Packet D: integrated closeout
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>                            -&gt; Owner separately approves merge
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>                                -&gt; Owner separately approves release
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        -&gt; Packet S: isolated skills control-plane repair
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>            -&gt; Owner approves skills PR merge
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>                -&gt; Packet A: create truthful PR Gate
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>                    -&gt; Owner approves main-ruleset switch
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>                        -&gt; Packet B: compact scheduled and release lanes
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>                            -&gt; Packet C: compact supported local control surface
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>                                -&gt; Packet D: integrated closeout
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>                                    -&gt; Owner separately approves merge
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>                                        -&gt; Owner separately approves release
 </code></pre></div>
 <p>Packets B and C may run in parallel only after packet A is complete and only if they do not edit the same files. Packet D is always performed by the parent.</p>
 <h2 id="10-packet-0-parentoperations-setup">10. Packet 0 — Parent/operations setup<a class="headerlink" href="#10-packet-0-parentoperations-setup" title="Permanent link">&para;</a></h2>
 <p><strong>Owner:</strong> parent/orchestrator or operations role only</p>
 <p><strong>Start condition:</strong> explicit owner approval to merge PR #676</p>
 <p><strong>End condition:</strong> a clean MAINT-008 task branch/PR with recorded baseline</p>
+<p><strong>Result:</strong> completed; PR #676 was safely merged and baseline <code>755ac9fb</code> was recorded before <code>task/MAINT-008-SKILLS</code> was created.</p>
 <h3 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">&para;</a></h3>
 <p>Finish the existing maintenance PR safely, then create a dedicated modernization branch so workflow changes are not mixed with the already-green recovery work.</p>
 <h3 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h3>
@@ -2437,6 +2491,26 @@
 <a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>Unexpected state:
 <a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>Next packet authorized: yes/no
 </code></pre></div>
+<h2 id="101-packet-s-isolated-skills-control-plane">10.1 Packet S — Isolated skills control plane<a class="headerlink" href="#101-packet-s-isolated-skills-control-plane" title="Permanent link">&para;</a></h2>
+<p><strong>Branch:</strong> <code>task/MAINT-008-SKILLS</code></p>
+<p><strong>Status:</strong> implemented; local and CI gates green on draft PR #689, pending owner approval</p>
+<p><strong>Files in scope:</strong> the 14 <code>.github/skills/*/SKILL.md</code> entrypoints, <code>.github/skills/skill_tiers.json</code>, cross-agent session instructions, agent skill assignments/metadata, and only the supporting session/discovery/architecture/release/evolution scripts needed to make those instructions truthful.</p>
+<h3 id="objective_1">Objective<a class="headerlink" href="#objective_1" title="Permanent link">&para;</a></h3>
+<p>Make the skill surface safe for lower-cost agents: one canonical catalog, bounded role routing, current executable commands, preview-first destructive operations, exact release artifacts, and no mandatory agent fan-out or duplicated gates.</p>
+<h3 id="acceptance-criteria">Acceptance criteria<a class="headerlink" href="#acceptance-criteria" title="Permanent link">&para;</a></h3>
+<ul>
+<li>all 14 skill files have valid frontmatter and a focused trigger;</li>
+<li>catalog, filesystem, registry assignments, and registry count agree;</li>
+<li>safe delete explicitly uses <code>--dry-run</code> and never recommends <code>--force</code>;</li>
+<li>release/UAT uses unique temporary environments and an exact versioned wheel;</li>
+<li>architecture validation enforces Core → IS 456 → Services → UI on a green baseline;</li>
+<li>API discovery exits nonzero for a missing requested function;</li>
+<li>agent evolution uses supported flags, exact evolution IDs, and refuses proposals below 15 collected sessions;</li>
+<li>review skills enforce the essential main-process outcome filter and do not add tests in review-only work;</li>
+<li>no product calculation, test, workflow, ruleset, or release action is changed.</li>
+</ul>
+<h3 id="gate-and-handoff">Gate and handoff<a class="headerlink" href="#gate-and-handoff" title="Permanent link">&para;</a></h3>
+<p>Run targeted script validation, <code>./run.sh check --quick</code>, and one <code>./run.sh check</code> closeout. Commit and push through the safe wrapper, then open an isolated PR. The worker does not merge it. Packet A begins only after explicit owner approval and synchronization to the merged skills baseline.</p>
 <h2 id="11-packet-a-truthful-pr-gate">11. Packet A — Truthful PR gate<a class="headerlink" href="#11-packet-a-truthful-pr-gate" title="Permanent link">&para;</a></h2>
 <p><strong>Suggested worker:</strong> Terra, normal implementation reasoning</p>
 <p><strong>Files in scope:</strong></p>
@@ -2453,7 +2527,7 @@
 <a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>.github/workflows/security.yml (pull_request trigger only)
 </code></pre></div>
 <p>Other workflow files may have their <code>pull_request</code> triggers removed only after the aggregate gate appears and passes. Do not delete workflow files in this packet.</p>
-<h3 id="objective_1">Objective<a class="headerlink" href="#objective_1" title="Permanent link">&para;</a></h3>
+<h3 id="objective_2">Objective<a class="headerlink" href="#objective_2" title="Permanent link">&para;</a></h3>
 <p>Replace the skipped required check with one stable, truthful aggregate check named <code>PR Gate</code> while retaining the existing checks that protect the main process.</p>
 <h3 id="required-design">Required design<a class="headerlink" href="#required-design" title="Permanent link">&para;</a></h3>
 <ol>
@@ -2517,7 +2591,7 @@
 <li>Update <code>.github/workflows/README.md</code> with the actual trigger and job names.</li>
 <li>Only after step 7, remove <code>pull_request</code> triggers from superseded workflows. Leave their scheduled, push, or manual triggers unchanged for packet B.</li>
 </ol>
-<h3 id="acceptance-criteria">Acceptance criteria<a class="headerlink" href="#acceptance-criteria" title="Permanent link">&para;</a></h3>
+<h3 id="acceptance-criteria_1">Acceptance criteria<a class="headerlink" href="#acceptance-criteria_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>PR Gate</code> appears on every pull request update.</li>
 <li><code>PR Gate</code> depends on all essential jobs and cannot pass after an essential failure/cancellation.</li>
@@ -2573,7 +2647,7 @@
 <a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>README.md
 <a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>superseded .github/workflows/*.yml files approved by the parent
 </code></pre></div>
-<h3 id="objective_2">Objective<a class="headerlink" href="#objective_2" title="Permanent link">&para;</a></h3>
+<h3 id="objective_3">Objective<a class="headerlink" href="#objective_3" title="Permanent link">&para;</a></h3>
 <p>Reduce 17 workflows to the smallest set that verifies, documents, and releases the main process without daily issue spam or duplicated PR gates.</p>
 <h3 id="scheduled-lane-requirements">Scheduled lane requirements<a class="headerlink" href="#scheduled-lane-requirements" title="Permanent link">&para;</a></h3>
 <p>Rewrite <code>nightly.yml</code> as weekly plus manual verification:</p>
@@ -2634,7 +2708,7 @@
 <li><code>governance-health.yml</code> is not repaired as a standalone workflow unless its signal is proved essential. Move an essential command into the retained lane using the CI runtime's <code>python</code>, then remove the broken duplicate.</li>
 <li>The old removed <code>--fail-fast</code> problem must not be reintroduced.</li>
 </ul>
-<h3 id="acceptance-criteria_1">Acceptance criteria<a class="headerlink" href="#acceptance-criteria_1" title="Permanent link">&para;</a></h3>
+<h3 id="acceptance-criteria_2">Acceptance criteria<a class="headerlink" href="#acceptance-criteria_2" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Four or fewer active workflow YAML files, unless an owner-approved main-process exception is documented.</li>
 <li>A normal PR creates only the consolidated PR workflow.</li>
@@ -2686,7 +2760,7 @@
 <a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>docs/planning/index.md
 <a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>only confirmed orphan scripts approved by the parent
 </code></pre></div>
-<h3 id="objective_3">Objective<a class="headerlink" href="#objective_3" title="Permanent link">&para;</a></h3>
+<h3 id="objective_4">Objective<a class="headerlink" href="#objective_4" title="Permanent link">&para;</a></h3>
 <p>Make active commands, hooks, automation lookup, and planning entrypoints describe only supported behavior. Preserve historical and vendor evidence while removing confirmed dead control paths.</p>
 <h3 id="required-inventory-method">Required inventory method<a class="headerlink" href="#required-inventory-method" title="Permanent link">&para;</a></h3>
 <p>For every candidate command, hook, or script:</p>
@@ -2719,7 +2793,7 @@
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>scripts/candidate.py
 </code></pre></div>
 <p>If the dry run reports an unresolved reference, do not delete the file until the parent confirms whether the reference is active or historical.</p>
-<h3 id="acceptance-criteria_2">Acceptance criteria<a class="headerlink" href="#acceptance-criteria_2" title="Permanent link">&para;</a></h3>
+<h3 id="acceptance-criteria_3">Acceptance criteria<a class="headerlink" href="#acceptance-criteria_3" title="Permanent link">&para;</a></h3>
 <ul>
 <li>No active <code>run.sh</code> command or pre-commit hook points to a missing path.</li>
 <li><code>./run.sh find</code> and tool discovery return current supported commands.</li>
