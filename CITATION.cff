@@ -1,10 +1,9 @@
 cff-version: 1.2.0
 title: "Structural Engineering Library (IS 456)"
 version: 0.23.0
-message: "If you use this software, please cite it."
+message: "Development candidate on hold; v0.23.0 is not tagged or published and is not approved or usable for engineering decisions."
 repository-code: "https://github.com/Pravin-surawase/structural_engineering_lib"
 url: "https://pypi.org/project/structural-lib-is456/"
-date-released: 2026-08-09
 authors:
   - family-names: "Surawase"
     given-names: "Pravin"

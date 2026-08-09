@@ -46,7 +46,7 @@ Transform the current beam-only IS 456 library into a **production-grade, multi-
 | Centralized Logging | ✅ Done | `get_logger(__name__)` factory with `STRUCTURAL_LIB_LOG_LEVEL` env var |
 | FastAPI Exception Handlers | ✅ Done | 7 handlers mapping structural_lib errors → HTTP status codes with structured JSON |
 | Error Code Registry | ✅ Done | `generate_error_docs.py` auto-generates `error-codes.md` (29 codes, 5 categories) |
-| API Versioning Contract | ✅ Done | `check_api_compat.py` + `api_manifest.json` detect breaking changes |
+| API Versioning Contract | ✅ Done | Canonical manifest validation detects breaking changes |
 | Test Fixtures | ✅ Done | `m25_fe415()`, `m30_fe500()` fixtures + Hypothesis profiles |
 
 ### What Still Needs Improvement
@@ -149,7 +149,7 @@ from structural_lib.services.api import design_column_is456
 # __init__.py re-exports all public design functions
 ```
 
-**CI Gate:** Validate `__init__.py` exports match `api_manifest.json` functions.
+**CI Gate:** Validate `__init__.py` exports match the canonical public API manifest.
 
 ### 3.4 Cross-Element Workflows (v0.25+)
 

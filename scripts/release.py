@@ -16,23 +16,41 @@ USAGE:
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
 import os
 import re
-import shutil
 import signal
 import subprocess
 import sys
 import tempfile
+import tomllib
+import zipfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
+from node_runtime import (
+    node_bin_candidates as _shared_node_bin_candidates,
+    node_runtime_env as _shared_node_runtime_env,
+    required_node_major as _shared_required_node_major,
+)
 
 BUMP_SCRIPT = REPO_ROOT / "scripts" / "bump_version.py"
 CHANGELOG = REPO_ROOT / "CHANGELOG.md"
 RELEASES = REPO_ROOT / "docs" / "getting-started" / "releases.md"
 CHECKLIST_PATH = REPO_ROOT / "docs" / "planning" / "pre-release-checklist.md"
+PYPROJECT = REPO_ROOT / "Python" / "pyproject.toml"
+FASTAPI_INIT = REPO_ROOT / "fastapi_app" / "__init__.py"
+REACT_PACKAGE = REPO_ROOT / "react_app" / "package.json"
+CITATION = REPO_ROOT / "CITATION.cff"
 VERSION_RE = re.compile(r"^##\s*\[?v?(\d+\.\d+\.\d+)\b")
+_EXCLUDED_WHEEL_PREFIXES = (
+    "structural_lib/_migration_fixtures/",
+    "structural_lib/codes/aci318/",
+    "structural_lib/codes/ec2/",
+    "structural_lib/research/",
+)
 
 
 def _semver_tuple(v: str) -> tuple[int, int, int]:
@@ -41,6 +59,205 @@ def _semver_tuple(v: str) -> tuple[int, int, int]:
     if len(parts) != 3:
         return (0, 0, 0)
     return (int(parts[0]), int(parts[1]), int(parts[2]))
+
+
+# ─── Candidate version evidence ────────────────────────────────────────────
+
+
+def _version_from_pyproject(path: Path | None = None) -> str:
+    """Read the authoritative source-candidate version from Python metadata."""
+    path = path or PYPROJECT
+    data = tomllib.loads(path.read_text(encoding="utf-8"))
+    return str(data["project"]["version"])
+
+
+def _version_from_assignment(path: Path, variable: str = "__version__") -> str:
+    match = re.search(
+        rf'^{re.escape(variable)}\s*=\s*["\']([^"\']+)["\']',
+        path.read_text(encoding="utf-8"),
+        re.MULTILINE,
+    )
+    if not match:
+        raise ValueError(f"{variable} is missing from {path.relative_to(REPO_ROOT)}")
+    return match.group(1)
+
+
+def _version_from_cff(path: Path | None = None) -> str:
+    path = path or CITATION
+    match = re.search(r"^version:\s*([^\s#]+)", path.read_text(encoding="utf-8"), re.MULTILINE)
+    if not match:
+        raise ValueError("version is missing from CITATION.cff")
+    return match.group(1)
+
+
+def _latest_documented_version(path: Path) -> str:
+    versions = _parse_versions(path)
+    if not versions:
+        raise ValueError(f"no release version found in {path.relative_to(REPO_ROOT)}")
+    return max(versions, key=_semver_tuple)
+
+
+def _source_surface_version_errors(expected: str) -> list[str]:
+    """Return exact source/doc version contradictions for a release candidate."""
+    try:
+        surfaces = {
+            "Python/pyproject.toml": _version_from_pyproject(),
+            "fastapi_app/__init__.py": _version_from_assignment(FASTAPI_INIT),
+            "react_app/package.json": str(
+                json.loads(REACT_PACKAGE.read_text(encoding="utf-8"))["version"]
+            ),
+            "CITATION.cff": _version_from_cff(),
+            "CHANGELOG.md": _latest_documented_version(CHANGELOG),
+            "docs/getting-started/releases.md": _latest_documented_version(RELEASES),
+        }
+    except (KeyError, OSError, ValueError, tomllib.TOMLDecodeError) as exc:
+        return [f"could not read release surface: {exc}"]
+
+    errors = [
+        f"{path}={actual}, expected {expected}"
+        for path, actual in surfaces.items()
+        if actual != expected
+    ]
+
+    citation_text = CITATION.read_text(encoding="utf-8")
+    if re.search(r"^date-released:", citation_text, re.MULTILINE):
+        errors.append("CITATION.cff declares date-released for an unpublished candidate")
+
+    if expected == "0.23.0":
+        changelog_text = CHANGELOG.read_text(encoding="utf-8").lower()
+        release_text = RELEASES.read_text(encoding="utf-8").lower()
+        if "prepared candidate (unreleased; on hold)" not in changelog_text:
+            errors.append("CHANGELOG.md must label v0.23.0 as prepared/unreleased/on hold")
+        if "not tagged or published" not in release_text:
+            errors.append("release ledger must state v0.23.0 is not tagged or published")
+        if "not tagged or published" not in citation_text.lower():
+            errors.append("CITATION.cff must not imply v0.23.0 is published")
+
+    return errors
+
+
+def _wheel_metadata_version(wheel: Path) -> str:
+    """Read Version from the one METADATA record inside a wheel."""
+    with zipfile.ZipFile(wheel) as archive:
+        metadata_paths = [
+            name for name in archive.namelist() if name.endswith(".dist-info/METADATA")
+        ]
+        if len(metadata_paths) != 1:
+            raise ValueError(f"expected one wheel METADATA record, found {len(metadata_paths)}")
+        metadata = archive.read(metadata_paths[0]).decode("utf-8")
+    match = re.search(r"^Version:\s*(.+)$", metadata, re.MULTILINE)
+    if not match:
+        raise ValueError("wheel METADATA has no Version field")
+    return match.group(1).strip()
+
+
+def _wheel_filename_version(wheel: Path) -> str:
+    match = re.match(r"^structural_lib_is456-([0-9]+\.[0-9]+\.[0-9]+)-.+\.whl$", wheel.name)
+    if not match:
+        raise ValueError(f"unexpected wheel filename: {wheel.name}")
+    return match.group(1)
+
+
+def _wheel_version_errors(wheel: Path, expected: str) -> list[str]:
+    """Return version or excluded-content defects for one candidate wheel."""
+    try:
+        filename_version = _wheel_filename_version(wheel)
+        metadata_version = _wheel_metadata_version(wheel)
+        with zipfile.ZipFile(wheel) as archive:
+            excluded_members = sorted(
+                name
+                for name in archive.namelist()
+                if name.startswith(_EXCLUDED_WHEEL_PREFIXES)
+            )
+    except (OSError, ValueError, zipfile.BadZipFile) as exc:
+        return [f"could not inspect wheel {wheel}: {exc}"]
+
+    errors = []
+    if filename_version != expected:
+        errors.append(f"wheel filename={filename_version}, expected {expected}")
+    if metadata_version != expected:
+        errors.append(f"wheel METADATA={metadata_version}, expected {expected}")
+    if excluded_members:
+        errors.append(
+            "wheel contains excluded package content: " + ", ".join(excluded_members)
+        )
+    return errors
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _clean_wheel_import_version(wheel: Path) -> str:
+    """Install one wheel in a disposable venv and return imported package version."""
+    with tempfile.TemporaryDirectory(prefix="release_candidate_") as tmp:
+        temp_root = Path(tmp)
+        venv_dir = temp_root / "venv"
+        _run_check([sys.executable, "-m", "venv", str(venv_dir)])
+        pip = _bin_path(venv_dir, "pip")
+        python = _bin_path(venv_dir, "python")
+        _run_check([str(pip), "install", "--disable-pip-version-check", str(wheel)])
+        clean_env = {key: value for key, value in os.environ.items() if key != "PYTHONPATH"}
+        result = subprocess.run(
+            [
+                str(python),
+                "-c",
+                "import structural_lib; print(structural_lib.__version__)",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+            cwd=temp_root,
+            env=clean_env,
+            timeout=120,
+        )
+        subprocess.run(
+            [str(python), "-m", "structural_lib", "--help"],
+            check=True,
+            capture_output=True,
+            text=True,
+            cwd=temp_root,
+            env=clean_env,
+            timeout=120,
+        )
+        return result.stdout.strip()
+
+
+def _print_version_errors(errors: list[str]) -> None:
+    for error in errors:
+        print(f"  ✗ {error}")
+
+
+def cmd_candidate_check(args: argparse.Namespace) -> int:
+    """Verify exact source, artifact, and clean-install version evidence."""
+    expected = args.version or _version_from_pyproject()
+    wheel = Path(args.wheel).expanduser().resolve()
+    print(f"Candidate version evidence: {expected}")
+
+    errors = _source_surface_version_errors(expected)
+    errors.extend(_wheel_version_errors(wheel, expected))
+    if errors:
+        _print_version_errors(errors)
+        return 1
+
+    try:
+        imported_version = _clean_wheel_import_version(wheel)
+    except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+        print(f"  ✗ clean wheel import failed: {exc}")
+        return 1
+    if imported_version != expected:
+        print(f"  ✗ clean imported structural_lib={imported_version}, expected {expected}")
+        return 1
+
+    print(f"  ✓ wheel: {wheel.name}")
+    print(f"  ✓ sha256: {_sha256(wheel)}")
+    print(f"  ✓ clean imported structural_lib={imported_version}")
+    print("  ✓ clean structural_lib CLI --help")
+    return 0
 
 
 # ─── Run (bump + checklist) ─────────────────────────────────────────────────
@@ -173,77 +390,29 @@ def _check_available_ram(min_gb: float = 2.0) -> bool:
 
 
 def _required_node_major() -> str | None:
-    nvmrc = REPO_ROOT / ".nvmrc"
-    if not nvmrc.exists():
-        return None
-    match = re.search(r"\d+", nvmrc.read_text(encoding="utf-8"))
-    return match.group(0) if match else None
+    """Compatibility wrapper around the shared Node runtime selector."""
+    return _shared_required_node_major(REPO_ROOT)
 
 
 def _node_bin_candidates(required_major: str) -> list[Path]:
-    candidates: list[Path] = []
-    brew = shutil.which("brew")
-    if brew:
-        result = subprocess.run(
-            [brew, "--prefix", f"node@{required_major}"],
-            capture_output=True,
-            text=True,
-            timeout=10,
-        )
-        if result.returncode == 0 and result.stdout.strip():
-            candidates.append(Path(result.stdout.strip()) / "bin")
-
-    candidates.extend(
-        [
-            Path(f"/opt/homebrew/opt/node@{required_major}/bin"),
-            Path(f"/usr/local/opt/node@{required_major}/bin"),
-        ]
-    )
-    current_node = shutil.which("node")
-    if current_node:
-        candidates.append(Path(current_node).parent)
-    candidates.extend(
-        path / "bin"
-        for path in sorted(
-            (Path.home() / ".nvm" / "versions" / "node").glob(f"v{required_major}.*"),
-            reverse=True,
-        )
-    )
-    return candidates
+    """Compatibility wrapper around the shared Node runtime selector."""
+    return _shared_node_bin_candidates(required_major)
 
 
 def _node_runtime_env(
     candidate_bins: list[Path] | None = None,
 ) -> tuple[dict[str, str] | None, str]:
-    """Select the healthy Node major declared by .nvmrc for release checks."""
+    """Select the shared healthy Node runtime for release checks."""
     required_major = _required_node_major()
-    if not required_major:
-        return dict(os.environ), "Node version not pinned"
-
-    candidates = candidate_bins or _node_bin_candidates(required_major)
-    seen: set[Path] = set()
-    for bin_dir in candidates:
-        resolved = bin_dir.expanduser().resolve()
-        if resolved in seen:
-            continue
-        seen.add(resolved)
-        node = resolved / "node"
-        npm = resolved / "npm"
-        if not node.is_file() or not npm.exists():
-            continue
-        try:
-            result = subprocess.run(
-                [str(node), "--version"], capture_output=True, text=True, timeout=5
-            )
-        except (subprocess.TimeoutExpired, OSError):
-            continue
-        match = re.search(r"v?(\d+)", result.stdout.strip())
-        if result.returncode == 0 and match and match.group(1) == required_major:
-            env = dict(os.environ)
-            env["PATH"] = str(resolved) + os.pathsep + env.get("PATH", "")
-            return env, result.stdout.strip()
-
-    return None, f"Node {required_major}.x from .nvmrc is not available"
+    return _shared_node_runtime_env(
+        repo_root=REPO_ROOT,
+        required_major=required_major,
+        candidate_bins=(
+            _node_bin_candidates(required_major)
+            if required_major and candidate_bins is None
+            else candidate_bins
+        ),
+    )
 
 
 def _print_checklist(version: str) -> None:
@@ -777,6 +946,40 @@ def cmd_preflight(args: argparse.Namespace) -> int:
     )
     print(f"  → Current: {current}")
 
+    source_version_errors = _source_surface_version_errors(current)
+    if source_version_errors:
+        _print_version_errors(source_version_errors)
+        errors += len(source_version_errors)
+    else:
+        print("  ✓ Source, FastAPI, React, CITATION, and release docs agree")
+
+    wheel_arg = getattr(args, "wheel", None)
+    if wheel_arg:
+        wheel_errors = _wheel_version_errors(Path(wheel_arg).expanduser(), current)
+        if wheel_errors:
+            _print_version_errors(wheel_errors)
+            errors += len(wheel_errors)
+        else:
+            print("  ✓ Candidate wheel filename and METADATA agree")
+            try:
+                imported_version = _clean_wheel_import_version(
+                    Path(wheel_arg).expanduser().resolve()
+                )
+            except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+                print(f"  ✗ clean wheel install/library/CLI check failed: {exc}")
+                errors += 1
+            else:
+                if imported_version != current:
+                    print(
+                        f"  ✗ clean imported structural_lib={imported_version}, expected {current}"
+                    )
+                    errors += 1
+                else:
+                    print("  ✓ Clean installed package and structural_lib CLI agree")
+    else:
+        print("  ⚠ No candidate wheel supplied; clean-install evidence is pending")
+        warnings += 1
+
     if args.version:
         if not re.match(r"^\d+\.\d+\.\d+$", args.version):
             print(f"  ✗ Invalid version format: {args.version}")
@@ -1033,6 +1236,20 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Run heavy checks (pytest, npm build) inside Docker containers with memory limits",
     )
+    p_preflight.add_argument(
+        "--wheel",
+        help="Candidate wheel to inspect against the current source version",
+    )
+
+    # candidate-check
+    p_candidate = sub.add_parser(
+        "candidate-check",
+        help="Verify source, wheel METADATA, and clean installed package versions",
+    )
+    p_candidate.add_argument("--wheel", required=True, help="Exact candidate wheel path")
+    p_candidate.add_argument(
+        "--version", help="Expected version (defaults to Python/pyproject.toml)"
+    )
 
     return parser
 
@@ -1051,6 +1268,7 @@ def main() -> int:
         "check-docs": cmd_check_docs,
         "checklist": cmd_checklist,
         "preflight": cmd_preflight,
+        "candidate-check": cmd_candidate_check,
     }
 
     return handlers[args.command](args)

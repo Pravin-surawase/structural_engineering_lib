@@ -1,150 +1,97 @@
 # Next Session Briefing
 
-## Latest Handoff (auto)
+## Latest Handoff
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-09
-- Focus: Review Packet B's four-workflow consolidation and live `PR Gate`; no release or production publication
+- Focus: LIB-IS456-C1 Git integration for the bounded IS 456 product milestone
 <!-- HANDOFF:END -->
 
-**Last Updated:** 2026-08-09<br>
-**Current Session:** Packet A is merged at `ce3a2c5b` with ruleset `11390214`
-requiring `PR Gate`; Packet B is implemented on `task/MAINT-008-B`
-
-## Start Here
-
-1. Review Packet B's draft PR and live `PR Gate`; this packet does not merge itself.
-2. Confirm the retained workflows are exactly PR validation, weekly/manual full
-   verification, controlled publication, and docs deployment.
-3. Keep v0.21.7 release approval and any real TestPyPI/PyPI/GitHub Release run
-   separate from workflow validation.
-4. Preserve the recovered product baseline; Packet B changes automation and its
-   active documentation, not structural calculations or application behavior.
-
-Full evidence and accepted risks are in
-[maintenance-recovery-audit-2026-08-07.md](../audit/maintenance-recovery-audit-2026-08-07.md).
-
-## Current Evidence
-
-- Repository transfer is intact: no corrupt reachable Git objects, broken symlinks, submodule issues, or missing ETABS sample files.
-- Clean post-merge baseline: `755ac9fb`; published package: v0.21.6.
-- Passing baselines: release preflight 5,159 Python passed, 3 skipped, 6 deselected; FastAPI 336; React 146; Node 24 production build.
-- Clean-wheel UAT: 5,120 passed, 41 skipped, 6 deselected plus packaged job, critical-case CSV, and HTML-report CLI workflows.
-- GitHub CLI keyring/API, repository queries, PR access, SSH, and remote Git transport pass. PR #676 was safely squash-merged before the skills branch was created.
-- Docker preflight passes 5,158 Python tests, 8 skips, 6 deselections, plus the Node 24 React production build.
-- MAINT-007 makes PR status terminal-only by default, corrects stale bootstrap/tool counts and active-task briefs, discovers all 14 Copilot skills, and adds honest local model/agent checkpoints through `./run.sh session usage`.
-- MAINT-007 verification is green: 32 focused tests, quick 9/9, full 29/29, audit 22/22, and health 100/100. The first local usage ledger records Sol High, one parent, zero subagents, and no fabricated billing values.
-- MAINT-007 checkpoint `4d5b9eb5` is pushed to PR #676.
-- PR #676 closeout: its required checks were green before the safe squash merge. React coverage remains an accepted follow-up risk.
-- MAINT-008 skills branch: all 14 skill entrypoints were reviewed and repaired; one JSON catalog now drives tier validation, agent routes and metadata agree, and supporting API/architecture/release/evolution commands fail closed on ambiguous or insufficient evidence.
-- Skills commits `5ac70ac1` and `fc4d0249` were merged through approved PR #689 at `b611f6b3`.
-- Skills targeted evidence: tier assignment validation, four-layer architecture scan (119 files, zero violations), API discovery success/missing-function behavior, Python compilation, frontmatter/stale-command scan, and evolution 9/15 burn-in gate pass.
-- Packet A PR #690 was merged at `ce3a2c5b`; ruleset `11390214` was backed up,
-  switched to `PR Gate`, and re-fetched successfully before merge.
-- Packet B reduces 17 workflow files to four. Full Ubuntu tests, coverage, drift,
-  clean-wheel/CLI verification, dependency audits, and Docker health move to a
-  weekly/manual lane with read-only contents and no issue automation.
-- The corrected release lane makes manual dispatch TestPyPI-only; production PyPI
-  and GitHub Release remain tag-only after version, test, build/install, and SBOM
-  verification. No publication was executed.
-- Quick canonical gate: 9/9 green; all 3,248 scanned imports resolve.
-- MAINT-005 checkpoint `6f119132`: 60/60 direct FastAPI route tests, 13/13 API-connected React hooks, and 96% actionable parity.
-- Browser/export evidence: the 153-beam ETABS sample imports, auto-designs, renders in R3F, reaches a 153/153-pass dashboard, and exercises BBS, DXF, single report, building summary, and BOQ exports with no new warnings. Byte-level checks validate CSV/DXF/PDF artifacts; final quantities are 2,663.4 kg steel and 114.8 m³ concrete.
-- Mac launcher evidence: `.nvmrc` Node 24 is selected even when a stale unversioned Node is first on `PATH`; port cleanup targets listeners only and no longer kills connected browser/client helpers.
-- Live-design evidence: WebSocket payloads now retain the complete REST response contract, including real capacities and governing utilization; current and legacy payload shapes are normalized in the frontend.
-- Release evidence: macOS reclaimable-memory and Node-runtime detection are repaired; `./run.sh release preflight 0.21.7` reports READY TO RELEASE with zero warnings.
-
-## Lessons and Repeat Prevention
-
-- Treat `.github/skills/skill_tiers.json` as canonical; validate its projections instead of copying counts or assignments among prose and registries.
-- Session summary, sync, and end are read-only; add `--write`, `--fix`, or `--log-cost` only when the task intentionally owns that mutation.
-- Evidence commands must reject missing, ambiguous, or insufficient proof; never accept a convenient first match.
-- Run from the workspace root. Find docs through indexes or `rg --files`; the compact log is `docs/WORKLOG.md`.
-- Keep `PR Gate` stable while ruleset `11390214` requires it. A real v0.21.7
-  publication remains a separate owner-approved operation.
-
-## Maintenance Sequence
-
-| Order | Task | Outcome |
-|-------|------|---------|
-| 1 | MAINT-001 recovery checkpoint | No inherited work can be lost |
-| 2 | MAINT-002 CI + E2E contract | Nightly stops failing/spamming; live import flow is enforced |
-| 3 | MAINT-003 environment/security | Reproducible Mac Mini baseline and deliberate dependency upgrades |
-| 4 | MAINT-004 canonical automation/docs | One trustworthy project status signal |
-| 5 | MAINT-005 frontend/release scope | Credible v0.21.7 stabilization exit criteria |
-| 6 | MAINT-006 token/model policy | Analytics-calibrated low-token routing with enforced safety limits |
-| 7 | MAINT-007 docs/tool refresh | Current onboarding, complete discovery, local usage evidence, and no surprise PR tabs |
-| 8 | [MAINT-008 compact modernization](compact-modernization-plan.md) | Skills control-plane PR first; then one truthful PR gate, minimal workflow lanes, supported commands, and unchanged product evidence |
-
-## Previous Handoff (2026-04-07)
-
-## What Was Completed (v0.21.7 Session 1)
-- **v0.21.6 version refs fixed** — CHANGELOG.md, Python/README.md, docs/git-automation/README.md
-- **TASK-729: Cross-field plausibility guards** ✅ — 14 @model_validator checks across beam, column, geometry, analysis models
-- **TASK-730: Input validation audit** ✅ — Security audit found 16 gaps, all fixed, 49 tests written
-- **TASK-802: Column API export** ✅ — Column functions already exported; fixed 6 missing contract test assertions
-- **TASK-796: ImportError path leak fix** ✅ — Added sanitize_error_string(), sanitized 4 router response patterns, 15 tests
-- **TASK-CI-FIX: 5 daily CI failures fixed** ✅ (PR #550):
-  - `time.time()` → `time.perf_counter()` in 6 library files (Windows CI timing)
-  - CycloneDX SBOM CLI syntax fixed + version pinned (cyclonedx-bom v7+)
-  - OpenSSF Scorecard permissions narrowed to job-level (least-privilege)
-  - OpenAPI baseline updated for BiaxialCheckRequest description drift
-  - Nightly QA smoke test failure guard added
-
-## Current Version State
-
-| **Current** | v0.23.0 | Released to PyPI |
-| **Next** | v0.21.7 | Security Hardening — in progress (4/14 tasks done) |
-
-- **v0.21.5** = last PyPI release (tag: v0.21.5)
-- **v0.21.6** = Released to PyPI
-- v0.21.6 released on 2026-04-07 with all preflight checks passed (5143 tests, 69 golden vectors, 18 contracts)
-- **v0.21.7** = in progress — 4/14 tasks done (P1–P3)
-
-## Priorities — v0.21.7 Remaining
-
-### P4 — Packaging Gates (next)
-- TASK-790: `check-wheel-contents` + `twine check` in CI
-- TASK-791: TestPyPI dry-run before prod
-- TASK-793: Optional dependency group tests (`.[dxf]`, `.[report]`)
-
-### P5 — CI Hardening
-- TASK-795: OpenAPI drift check in publish workflow
-- TASK-794: Docker base image digest pin
-- TASK-792: Pin Trivy action to SHA
-
-### P6 — API Security
-- TASK-728: JSON body size limit middleware (1MB)
-- TASK-804: Auth auto-enable when JWT secret set
-
-### P7 — Docs & CVE
-- TASK-803: Document negative Mu behavior
-- TASK-731: Dependency CVE scanning (pip-audit)
-### Later — v0.21.8 Performance & Property Testing
-- TASK-732: pytest-benchmark for hot paths
-- TASK-733: Hypothesis test expansion
-- TASK-734: Performance regression baselines
-
-### v0.22.0 — Stabilization
-- ARCH-NEW-12: Split services/api.py god module
-- FE-NEW-01: Three.js dispose() on unmount
-- UX-02: Typed return consistency (column dict → dataclass)
-- IS-NEW-01/02: @clause decorators for ~26 functions (detailing: 11, common: 8, footing: 4, slenderness: 3)
-- T-NEW-01: Remove MagicMock from test files
-- Beam rationalization (TASK-521)
-- CalculationProvenance foundation (TASK-735, includes merged OL-15 audit trail)
-- TASK-797: SLSA provenance + PEP 740 attestations
-- TASK-798: Security event logging (OWASP A09)
-- TASK-799: Multi-stage Dockerfile
-- TASK-800: Verification methodology doc consolidation
-- TASK-801: License compliance scan
-
-## Infrastructure Notes
-- `session_summary.py` doesn't exist — use `scripts/session.py summary`
-- Registry metadata skill_count=10 should be 14 (cosmetic)
-- 3 FastAPI import violations (non-blocking, planned for v0.22.0)
+**Current branch:** `codex/release-v0.23.0`
+**Current commit:** `b1634a5f`
+**Plan:** [is456-library-first-master-plan.md](is456-library-first-master-plan.md)
 
 ## Required Reading
-- [TASKS.md](../TASKS.md) — active task board
-- [agent-bootstrap.md](../getting-started/agent-bootstrap.md) — project rules & architecture
-- [api.md](../reference/api.md) — API reference (19 new symbols added)
+
+- [IS 456 library-first master plan](is456-library-first-master-plan.md)
+- [Professional remediation evidence ledger](professional-library-remediation-plan.md)
+- [Current task board](../TASKS.md)
+
+| Release state | Version | Decision |
+|---|---|---|
+| **Current** | v0.23.0 | Prepared development candidate on release hold; not published |
+| **Next** | v0.24.0 | Future roadmap only; inactive until C0-C4 closeout and owner activation |
+
+## Outcome
+
+T0 and R1-R8 are implemented; do not repeat them. The owner selected the
+bounded IS 456 product milestone, not the v0.24/v1.0 multi-code roadmap. C0
+plan reconciliation is complete. C1 must turn the current mixed worktree into
+reviewable scoped checkpoints and integrate the separately landed automation
+commit `f812eb3f` without reset, rebase, stash, or lost work.
+
+Until that final qualified review is recorded, the repository and every
+candidate artifact are development software: they are not approved or usable
+for engineering decisions. AI code or engineering review may be used during
+development, but it does not satisfy the final professional gate.
+
+## Implemented remediation
+
+- Supported beam and footing entry points reject booleans, non-real values,
+  NaN, and infinities before arithmetic.
+- Batch completion is separate from engineering safety; unsafe shear is FAIL
+  across Python, SSE, React display/export, and apply-to-store behavior.
+- Reports normalize legacy `is_safe` to canonical `is_ok`; missing status is
+  NOT EVALUATED and unsafe sections override stale overall PASS.
+- Footing flexure requires total thickness for minimum steel, and dowel count
+  is a strict positive integer through Python and FastAPI.
+- Two-way slab output explicitly distinguishes bounded flexure computation,
+  coefficient provenance, qualified acceptance, and complete design approval.
+- A machine-readable semantic contract covers every supported capability,
+  unit, field, alias, status, limitation, and v0.24 report-alias removal.
+- `docs/reference/api-manifest.json` is the only Python API manifest. The stale
+  service manifest was safely removed and is recoverable from
+  `tmp/deleted_backups/api_manifest_20260809_222544.json`.
+- Both API validators share the raw OpenAPI baseline; request-validation 422s
+  use the maintained `{success,data,error}` envelope with field detail.
+- Release checks bind source/docs, wheel filename/METADATA/content, clean
+  installed version, and packaged CLI behavior. Published wording and
+  nonexistent tag-install examples were removed.
+
+## Verification evidence
+
+- Python: 5,445 passed, 3 skipped, 6 deselected.
+- FastAPI: 349 passed.
+- React: 147 passed; lint and production build passed on Node 24.
+- Quick gate: 9/9; full gate: 29/29.
+- Readiness audit: 19/19; health: 100/100; parity: 93%.
+- API manifest: 73/73 compatible functions.
+- OpenAPI: 62 endpoints, 65 schemas, no drift.
+- Exact clean-source wheel: 181 members, zero excluded namespaces, imported
+  `structural_lib.__version__ == 0.23.0`, CLI help passed, SHA-256
+  `1414a06acbac36f503c9e18c11461a10d02f722f87f78c95a530336f35063770`.
+
+The wheel was disposable and removed after inspection. A stale source-tree
+`Python/build/lib` was proven to contaminate an ordinary build with excluded
+migration/research/ACI/EC2 files; the release gate now rejects that content.
+
+## Next actions
+
+1. Inspect `git status --short` and preserve the concurrent governance/model
+   policy lanes. Nothing is staged or committed.
+2. Preserve the automation-owned paths from `f812eb3f`; separate product,
+   remediation, policy, terminal, and documentation checkpoints deliberately.
+3. Synchronize `origin/main` only after a clean checkpoint and inspect every
+   overlap. Do not rewrite history or discard uncommitted work.
+4. Continue in order: C2 final product UAT, C3 frozen artifacts, C4 evidence
+   freeze, then final qualified review. Publication remains separately gated.
+
+## Terminal issues recorded
+
+- A contract test initially depended on `PYTHONPATH=Python:.`; it is now
+  repository-root stable under `./run.sh test`.
+- `tool_registry.py --validate` is not a supported flag; the maintained
+  `check_scripts_index.py`, script-reference gate, and full check were used.
+- An unmatched zsh release-doc glob failed before execution; explicit paths
+  and `git diff --name-only | rg` worked.
+- zsh reserves `status`; the deliberate release-failure proof used `rc`.

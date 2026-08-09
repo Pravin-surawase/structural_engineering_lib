@@ -2,13 +2,21 @@
 
 **Type:** Architecture
 **Audience:** All Agents
-**Status:** Active
+**Status:** Future strategic roadmap; not active during bounded IS 456 closeout
 **Importance:** Critical
 **Created:** 2026-03-31
-**Last Updated:** 2026-04-06
+**Last Updated:** 2026-08-09
 **Supersedes:** [library-expansion-blueprint-v4.md](../_archive/planning-completed-2026-03/library-expansion-blueprint-v4.md) (IS 456-only)
 
 > Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with complete companion code support.
+
+> **Execution note (2026-08-09):** Current work is governed by
+> [is456-library-first-master-plan.md](is456-library-first-master-plan.md).
+> Several current-state and Phase 1 tables below predate the implemented
+> bounded slab/footing/facade work and must not be used as task status. The
+> canonical current state is in `docs/TASKS.md`. Phase 2 multi-code work starts
+> only after the bounded milestone completes C0-C4 and the owner activates a
+> separate packet.
 
 ---
 
@@ -459,7 +467,7 @@ class LoadCombination(ABC):
 | 2.10 | Feature flags for experimental codes | `EXPERIMENTAL_CODES = {"ACI318": False, "EC2": False}` |
 | 2.11 | `@deprecated` decorator | Warning system for shim deprecation cycle |
 | 2.12 | API versioning for FastAPI | `/api/v2/{code}/design/beam` alongside `/api/v1/design/beam` |
-| 2.13 | Fix `api_manifest.json` for multi-code | Add `code` field per entry |
+| 2.13 | Extend canonical `docs/reference/api-manifest.json` for multi-code | Add `code` field per entry |
 | 2.14 | Lazy loading for code modules | `__getattr__` in `__init__.py` — load ACI only when accessed |
 | 2.15 | Plausibility guards | fck > 100 for IS 456 → "Did you mean ACI psi?" |
 

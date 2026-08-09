@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.23.0] — 2026-08-09
+## [0.23.0] — Prepared candidate (unreleased; on hold)
+
+This candidate is not tagged or published. The entries below describe the
+prepared source scope and remain subject to the release hold. Development is
+continuing; this candidate is not approved or usable for engineering decisions.
 
 ### Added
 - Bounded simply supported one-way slab flexure/detailing and one interior,
@@ -46,7 +50,7 @@ All notable changes to this project will be documented in this file.
 - Public claims now describe only the supported beam, column, isolated-footing,
   and solid-slab cases and retain qualified-engineer review boundaries.
 
-### Verification
+### Candidate verification snapshot (not release approval)
 - Canonical quick gate 9/9 and full gate 29/29.
 - Release preflight: 5,273 passed, 3 skipped, 6 deselected.
 - React Node 24 lane: 146 tests, zero lint warnings, and production build pass.

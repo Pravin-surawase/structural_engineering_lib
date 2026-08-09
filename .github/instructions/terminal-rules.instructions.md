@@ -22,8 +22,8 @@ If you run `cd react_app`, your NEXT command is still in `react_app/`.
 Always use full paths from root, or prefix with explicit `cd`:
 ```
 SAFE:    .venv/bin/pytest Python/tests/ -v          ← works from root
-SAFE:    cd react_app && npm run build              ← explicit cd
-DANGER:  npm run build                              ← only works if already in react_app/
+SAFE:    ./run.sh frontend build                     ← root-stable, pinned Node
+DANGER:  npm run build                              ← cwd and Node are implicit
 ```
 
 ## run.sh Fallback Chain
@@ -34,14 +34,17 @@ If `./run.sh <cmd>` produces no output or fails:
 
 | run.sh Command | Direct Script Fallback | CLI Fallback |
 |----------------|----------------------|--------------|
-| `./run.sh test` | `.venv/bin/pytest Python/tests/ -v` | — |
+| `./run.sh test` | `.venv/bin/pytest Python/tests/ -v` | Python suite only |
+| `./run.sh test --fastapi` | `.venv/bin/pytest fastapi_app/tests/` | — |
+| `./run.sh test --react` | `.venv/bin/python scripts/node_runtime.py -- npm --prefix react_app test` | — |
+| `./run.sh frontend check` | `.venv/bin/python scripts/node_runtime.py -- npm --prefix react_app test` | Run lint and build through the same wrapper |
 | `./run.sh check --quick` | `.venv/bin/python scripts/check_all.py --quick` | — |
 | `./run.sh find --api func` | `.venv/bin/python scripts/discover_api_signatures.py func` | — |
 | `./run.sh session summary` | `.venv/bin/python scripts/session.py summary` | Add `--write` only intentionally |
 | `./run.sh generate indexes` | `.venv/bin/python scripts/generate_enhanced_index.py --all` | — |
 | `./run.sh dev` | `bash scripts/launch_stack.sh` | `colima start && docker compose up --build` |
 | `./run.sh dev --docker` | `bash scripts/launch_stack.sh --docker` | `colima start && docker compose up --build` |
-| `./run.sh dev --kill-only` | `bash scripts/launch_stack.sh --kill-only` | `lsof -ti :8000 \| xargs kill -9` |
+| `./run.sh dev --kill-only` | `bash scripts/launch_stack.sh --kill-only` | Stop only listeners started for this task; never kill arbitrary port owners |
 
 ## Common Commands Quick Reference
 
@@ -53,11 +56,13 @@ If `./run.sh <cmd>` produces no output or fails:
 .venv/bin/python scripts/validate_imports.py --scope structural_lib    # Check imports
 ```
 
-### React
+### React (pinned `.nvmrc` runtime)
 ```bash
-cd react_app && npm run build                         # Build check
-cd react_app && npm run dev                           # Dev server :5173
-cd react_app && npx vitest run                        # Tests
+./run.sh frontend runtime                             # Selected Node/npm
+./run.sh frontend test                                # Tests
+./run.sh frontend build                               # Build check
+./run.sh frontend check                               # Lint + tests + build
+./run.sh frontend dev                                 # Dev server :5173
 ```
 
 ### Full-Stack Dev Launcher (PREFERRED)

@@ -1,15 +1,15 @@
 ---
 task: LIB-IS456-V1
 title: IS 456 Library-First Completion and PyPI Master Plan
-status: active
+status: active-closeout
 owner: Main Agent and repository owner
 created: 2026-08-09
 last_updated: 2026-08-09
 doc_type: spec
-baseline_commit: 056bfad77987ce513f6289fd0fee5068667d6f5d
+baseline_commit: b1634a5f7f8d
 release_decision: v0.21.7 deferred
 target_version: v0.23.0 provisional
-current_blocker: Owner review and authorization for P13 exact CI artifact evidence
+current_blocker: Integrate the completed worktree, run final product UAT, and freeze exact artifact evidence
 ---
 
 **Type:** Plan
@@ -74,6 +74,56 @@ The owner activated this plan on 2026-08-09 after the following sequence:
 
 No worker may mix library feature work into `task/MAINT-008-B`, merge PR #691,
 publish v0.21.7, create tags, change GitHub settings, or close issues.
+
+### 2.1 Post-remediation execution authority
+
+The owner reconfirmed the finite completion horizon as the **bounded IS 456
+product milestone**. This plan is the single active execution authority until
+that milestone is frozen. The hierarchy is:
+
+1. This plan controls the remaining bounded-product closeout.
+2. `professional-library-remediation-plan.md` is a completed defect/evidence
+   ledger; do not execute T0 or R1-R8 again.
+3. `library-expansion-blueprint-v5.md` and architecture v0.24+ sections are
+   future strategic roadmaps, not current execution authority.
+4. `docs/TASKS.md` holds only the current packet and immediate successors.
+
+The bounded milestone includes:
+
+- the existing supported beam and rectangular/square column workflows;
+- square/rectangular isolated-footing checks and bounded concentric
+  bearing/dowel load transfer;
+- the simply supported one-way slab strip;
+- one interior, four-edge-continuous two-way flexure computation using
+  explicitly accepted external coefficients;
+- the stable Python facade and capability/semantic contract;
+- thin maintained FastAPI consumers, truthful batch/report React behavior,
+  and exact package/CLI evidence.
+
+It explicitly excludes multi-code infrastructure, ACI 318, EC2, combined/
+strap/raft/pile-cap footings, built-in protected two-way coefficient tables,
+complete two-way strip/torsion/detailing design, flat slabs, and new slab React
+feature work. Those items do not block this milestone and must not be pulled
+into its closeout.
+
+No qualified professional review is requested while implementation and
+integration remain active. Until the final frozen-scope review is recorded,
+the repository and every artifact remain development software that is not
+approved or usable for engineering decisions.
+
+### 2.2 Remaining closeout packets
+
+| Packet | Objective | Exit condition |
+|---|---|---|
+| C0 — Plan truth | Reconcile active plans/tasks with the implemented bounded scope | One authority, no stale active v0.23 tasks, exact next packet |
+| C1 — Git integration | Checkpoint intended remediation/product lanes, preserve automation commit `f812eb3f`, and synchronize `origin/main` without rebase/reset/stash | Reviewable commits, clean worktree, no automation work lost |
+| C2 — Final product UAT | Exercise supported Python, FastAPI, React batch/report, footing/slab, and export paths including unsafe negatives | Source-tree and live consumer outcomes agree; all canonical gates green |
+| C3 — Frozen artifact | Build clean wheel/sdist, inspect contents, record hashes, clean-install supported workflows and CLI | Exact artifact evidence is reproducible and bound to the frozen commit |
+| C4 — Evidence freeze | Assemble source IDs, units, benchmarks, limitations, unsafe cases, and unresolved holds without requesting sign-off | Owner declares all intended bounded work complete and freezes the review scope |
+
+Only after C0-C4 are complete does the final qualified-engineering review
+begin. Merge, tag, TestPyPI/PyPI, GitHub Release, issue closure, and branch
+deletion remain separate owner-only actions.
 
 ## 3. Why this plan exists
 
@@ -1362,13 +1412,16 @@ The first implementation session begins only after the owner clears Phase 0.
 
 ### Current execution checkpoint
 
-P0-P12 and FAPI-1 are complete on `task/LIB-IS456-V1`; draft PR #693 is open
-and its PR Gate run `31321772342` is green. The protected-content
-design keeps the full 130-page source corpus private and Git-ignored while
-shipping metadata-only `clauses.json`. The clean local candidate UAT, quick
-gate (9/9), and integrated gate (29/29) pass. P13 must build and record its own
-exact publication artifacts after owner authorization; publication actions
-remain owner-only.
+P0-P12, FAPI-1, and remediation packets T0/R1-R8 are implemented. The latest
+software checkpoint passes 5,445 Python tests (3 skipped, 6 deselected), 349
+FastAPI tests, 147 React tests, frontend lint/build, quick 9/9, full 29/29,
+audit 19/19, and health 100/100. A clean-source v0.23.0 wheel passed package
+version and CLI checks with excluded namespaces absent.
+
+The active sequence is C0 -> C1 -> C2 -> C3 -> C4. The branch must first
+integrate the completed dirty worktree and the separately landed automation
+commit `f812eb3f`; do not begin new calculation or multi-code work before C1.
+Professional review and publication actions remain deferred.
 
 ## 21. Final program acceptance checklist
 

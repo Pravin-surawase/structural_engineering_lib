@@ -3,24 +3,24 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-09",
-  "file_count": 11,
+  "file_count": 13,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 145,
+      "size_lines": 149,
       "last_updated": "2026-08-09",
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
-      "content_hash": "ea88a9130306"
+      "content_hash": "0db5a1d0d1b1"
     },
     {
       "name": "compact-modernization-plan.md",
       "type": "documentation",
-      "size_lines": 754,
+      "size_lines": 789,
       "last_updated": "2026-08-09",
       "description": "Modernize the repository's CI, maintenance controls, and agent-facing workflow without changing the structural-engineering product outcome. The finished repository must have:",
-      "content_hash": "7ae2b0d7735e"
+      "content_hash": "6fa12c1bbb66"
     },
     {
       "name": "democratization-vision.md",
@@ -34,35 +34,43 @@
       "name": "dependency-security-baseline.md",
       "type": "documentation",
       "size_lines": 69,
-      "last_updated": "2026-08-07",
+      "last_updated": "2026-08-09",
       "description": "This record makes MAINT-003 reproducible. It separates confirmed vulnerabilities from transferred-environment residue and records every temporary exception.",
-      "content_hash": "4cf44e4dbfef"
+      "content_hash": "7870e2a5028a"
     },
     {
       "name": "etabs-killer-masterplan.md",
       "type": "documentation",
       "size_lines": 2855,
-      "last_updated": "2026-08-07",
+      "last_updated": "2026-08-09",
       "title": "Project BHEEM: Open-Source Structural Design Software Masterplan",
       "description": "> **BHEEM** — **B**uilding **H**olistic **E**ngineering **E**nvironment with **M**achine-intelligence > An open-source, AI-native structural design platform that aims to surpass ETABS in usability, tr",
       "content_hash": "88e3dfd24f78"
     },
     {
+      "name": "is456-library-first-master-plan.md",
+      "type": "documentation",
+      "size_lines": 1466,
+      "last_updated": "2026-08-09",
+      "description": "The Python package is the product. FastAPI, React, command-line workflows, reports, ETABS adapters, and future integrations are consumers of that product.",
+      "content_hash": "c76e30653d87"
+    },
+    {
       "name": "library-expansion-blueprint-v5.md",
       "type": "documentation",
-      "size_lines": 1131,
-      "last_updated": "2026-04-06",
+      "size_lines": 1139,
+      "last_updated": "2026-08-09",
       "title": "Library Expansion Blueprint v5.0 — Multi-Code, Multi-Element",
       "description": "> Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with comple",
-      "content_hash": "fd8aebb9b551"
+      "content_hash": "ead8ebc9e2eb"
     },
     {
       "name": "memory.md",
       "type": "documentation",
-      "size_lines": 377,
+      "size_lines": 411,
       "last_updated": "2026-08-09",
       "description": "- Development resumed after a four-month pause and a Mac laptop → Mac Mini transfer. - Git history, reachable objects, sample data, package source, and ARM64 Python environment transferred intact.",
-      "content_hash": "050ff60413e0"
+      "content_hash": "5ea34b5b4f3b"
     },
     {
       "name": "next-phase-improvements-plan.md",
@@ -75,20 +83,29 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 137,
+      "size_lines": 98,
       "last_updated": "2026-08-09",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-09",
-      "content_hash": "c6dabf22c848"
+      "content_hash": "43a6875a89ac"
     },
     {
       "name": "pre-release-checklist.md",
       "type": "documentation",
-      "size_lines": 44,
-      "last_updated": "2026-04-07",
+      "size_lines": 53,
+      "last_updated": "2026-08-09",
       "title": "Pre-Release Checklist",
-      "description": "Version: 0.21.6 - **Branch:** main",
-      "content_hash": "a392f9f05b24"
+      "description": "Installed metadata version: 0.23.0 - **Branch:** codex/release-v0.23.0",
+      "content_hash": "efce3ad0aa4e"
+    },
+    {
+      "name": "professional-library-remediation-plan.md",
+      "type": "documentation",
+      "size_lines": 534,
+      "last_updated": "2026-08-09",
+      "title": "Professional Library Remediation Plan",
+      "description": "This document is no longer the active implementation plan. T0 and R1-R8 are complete, and their findings, packet definitions, and verification remain here",
+      "content_hash": "0dde7e43a253"
     },
     {
       "name": "react-ux-improvement-plan.md",
@@ -100,5 +117,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "813220b3a6587b92"
+  "content_hash": "9f19a8a53f370d63"
 }

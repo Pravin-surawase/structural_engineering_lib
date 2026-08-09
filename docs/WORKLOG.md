@@ -326,3 +326,8 @@ tags: []
 | 2026-08-07 | MAINT-006 | Enforced Terra-first low-token defaults, Fast-off mode, a two-subagent cap, focused context packets, and a canonical efficiency check | 6e8e4a31 |
 | 2026-08-07 | MAINT-006 | Added authenticated-analytics-calibrated Luna/Terra/Sol routing, reasoning comparisons, and the advisory `run.sh model` picker | fe55d130 |
 | 2026-08-07 | MAINT-006 | Made Sol High mandatory for main orchestration and added lower-model task-packet and independent-verification requirements | ff6d525d |
+| 2026-08-09 | LIB-PRO-001 | Audited supported calculations, units, professional claims, Python/FastAPI/React/report contracts, release truth, recent commits, and all uncommitted lanes; placed v0.23.0 on release hold and wrote the dependency-ordered remediation plan | — |
+| 2026-08-09 | LIB-PRO-T0 | Consolidated `.nvmrc` Node selection, added root-stable frontend and explicit product-test commands, removed dead VBA/Streamlit control paths and unsafe listener fallback, and restored truthful script discovery | — |
+| 2026-08-09 | LIB-PRO-R1-R8 | Closed the software remediation packets across finite boundaries, batch/report truth, footing/slab contracts, semantic/API manifests, 422 envelopes, and exact clean-wheel evidence; retained the release hold | — |
+| 2026-08-09 | LIB-PRO-GATE | Deferred qualified engineering review until the owner declares all intended work complete; prohibited engineering-usability claims during development and retained the release hold | — |
+| 2026-08-09 | LIB-IS456-C0 | Chose the bounded IS 456 product milestone, made the library-first plan authoritative, converted remediation to an evidence ledger, excluded v0.24+ scope, and defined C1-C4 closeout packets | — |

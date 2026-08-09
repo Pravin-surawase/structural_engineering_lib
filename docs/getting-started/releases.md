@@ -80,11 +80,14 @@ Use workflow_dispatch with `testpypi` target:
 
 ## v0.23.0 — Supported IS 456 RC Core (2026-08-09)
 
-**Status:** 🟡 Prepared on `codex/release-v0.23.0`; not tagged or published
+**Status:** ⛔ Development hold; not tagged or published; not approved or usable for engineering decisions
 **Source basis:** IS 456:2000 consolidated through Amendment 5, reaffirmed
 2021, with Amendment 6 (June 2024) reviewed by route
 **Scope:** Case-qualified beam, rectangular-column, isolated-footing, and solid
 slab workflows; not complete IS 456 coverage or professional approval
+
+Professional review is deliberately deferred until the owner declares all
+intended development complete and freezes the final scope.
 
 **Highlights:**
 - Correct two-axis column slenderness and minimum-eccentricity enforcement.
