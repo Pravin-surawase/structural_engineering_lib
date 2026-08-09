@@ -14,7 +14,9 @@ PUBLIC_COMPLETION_SYMBOLS = (
     "check_isolated_footing_load_transfer",
     "design_one_way_slab_is456",
     "design_two_way_slab_is456",
+    "get_supported_is456_capability_document",
     "get_supported_is456_capabilities",
+    "get_supported_is456_semantic_contract",
 )
 
 
@@ -135,3 +137,23 @@ def test_capability_registry_names_every_supported_core_element():
     assert "externally accepted coefficient, flexure-only supported case" in (
         slab_capability.supported_case
     )
+
+
+def test_capability_document_is_json_native_and_preserves_review_boundaries():
+    document = services_api.get_supported_is456_capability_document()
+
+    assert document["schema_version"] == "1.0"
+    assert document["code_edition"] == "IS 456:2000"
+    assert [item["capability_id"] for item in document["capabilities"]] == [
+        "beam",
+        "column",
+        "isolated_footing",
+        "solid_slab",
+    ]
+    assert all(
+        item["capability_id"] == item["element"]
+        and item["qualified_review_required"]
+        and isinstance(item["held_cases"], list)
+        for item in document["capabilities"]
+    )
+    assert isinstance(document["semantic_contract"]["workflows"], list)

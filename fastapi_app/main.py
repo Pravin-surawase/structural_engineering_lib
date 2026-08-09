@@ -35,6 +35,7 @@ from fastapi_app.config import get_settings
 from fastapi_app.models.response import RequestValidationErrorResponse, error_response
 from fastapi_app.routers import (
     analysis,
+    capabilities,
     column,
     design,
     detailing,
@@ -98,6 +99,10 @@ API_TAGS_METADATA = [
     {
         "name": "design",
         "description": "Beam design calculations for flexure, shear, and combined loading.",
+    },
+    {
+        "name": "library",
+        "description": "Canonical supported/held capability and semantic discovery.",
     },
     {
         "name": "column",
@@ -432,6 +437,10 @@ API_V1_PREFIX = "/api/v1"
 
 app.include_router(
     design.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    capabilities.router,
     prefix=API_V1_PREFIX,
 )
 app.include_router(

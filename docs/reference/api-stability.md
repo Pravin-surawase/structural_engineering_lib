@@ -506,11 +506,14 @@ two_way = api.design_two_way_slab_is456(...)
 capabilities: tuple[api.IS456Capability, ...] = (
     api.get_supported_is456_capabilities()
 )
+semantic_contract = api.get_supported_is456_semantic_contract()
+capability_document = api.get_supported_is456_capability_document()
 ```
 
 The two-way route supports only its documented interior-panel configuration
-with caller-supplied, qualified coefficients. Capability records and result
-types may change before v1.0.
+with caller-supplied, qualified coefficients. The capability document is the
+canonical JSON-safe form used by Python, CLI, and REST discovery. Capability
+records and result types may change before v1.0.
 
 ---
 

@@ -4,7 +4,8 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
+from typing import Any
 
 __all__ = [
     "IS456AdapterContract",
@@ -14,9 +15,13 @@ __all__ = [
     "IS456SemanticContract",
     "IS456StatusContract",
     "IS456WorkflowContract",
+    "get_supported_is456_capability_document",
     "get_supported_is456_capabilities",
     "get_supported_is456_semantic_contract",
 ]
+
+CAPABILITY_SCHEMA_VERSION = "1.0"
+IS456_CODE_EDITION = "IS 456:2000"
 
 
 @dataclass(frozen=True)
@@ -711,3 +716,33 @@ def get_supported_is456_capabilities() -> tuple[IS456Capability, ...]:
 def get_supported_is456_semantic_contract() -> IS456SemanticContract:
     """Return immutable units, aliases, statuses, and limits for supported routes."""
     return _SEMANTIC_CONTRACT
+
+
+def _json_ready(value: Any) -> Any:
+    """Normalize immutable tuple-based records to JSON-native containers."""
+    if isinstance(value, dict):
+        return {key: _json_ready(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_json_ready(item) for item in value]
+    return value
+
+
+def get_supported_is456_capability_document() -> dict[str, Any]:
+    """Return the canonical JSON-safe capability and semantic contract.
+
+    The immutable dataclasses above remain the structural source of truth. This
+    document is the transport contract used by Python callers, the CLI, and
+    FastAPI so those public discovery surfaces cannot silently diverge.
+    """
+    capabilities = []
+    for capability in _CAPABILITIES:
+        serialized = _json_ready(asdict(capability))
+        serialized["capability_id"] = capability.element
+        capabilities.append(serialized)
+
+    return {
+        "schema_version": CAPABILITY_SCHEMA_VERSION,
+        "code_edition": IS456_CODE_EDITION,
+        "capabilities": capabilities,
+        "semantic_contract": _json_ready(asdict(_SEMANTIC_CONTRACT)),
+    }

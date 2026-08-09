@@ -2,7 +2,7 @@
   "generated": "2026-08-09",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 116,
+  "count": 118,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -513,6 +513,16 @@
       "name": "get_supported_is456_capabilities",
       "kind": "function",
       "signature": "() -> 'tuple[IS456Capability, ...]'"
+    },
+    {
+      "name": "get_supported_is456_capability_document",
+      "kind": "function",
+      "signature": "() -> 'dict[str, Any]'"
+    },
+    {
+      "name": "get_supported_is456_semantic_contract",
+      "kind": "function",
+      "signature": "() -> 'IS456SemanticContract'"
     },
     {
       "name": "load_etabs_csv",
