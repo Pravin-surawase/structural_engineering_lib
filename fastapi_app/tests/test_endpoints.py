@@ -496,8 +496,17 @@ class TestImportEndpoints:
             "beams",
             "format_detected",
             "warnings",
+            "dataset",
         }
         assert set(data.keys()) == expected_keys
+        assert data["dataset"] == {
+            "dataset_id": "bundled-etabs-beam-sample",
+            "dataset_version": "etabs-csv-v1",
+            "dataset_sha256": "b95a056c411eeaf4c714713dcf7edfa402ceadb2efdcfd4382f454cc82c5f43e",
+            "hash_algorithm": "sha256-framed-files-v1",
+            "source_files": ["beam_forces.csv", "frames_geometry.csv"],
+            "beam_count": data["beam_count"],
+        }
 
     def test_sample_data_beam_has_3d(self, client):
         """Each sample beam must have point1/point2 for 3D visualization."""

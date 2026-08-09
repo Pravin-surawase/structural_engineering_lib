@@ -152,7 +152,7 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
       stirrup_spacing_start: result.shear?.stirrup_spacing ?? 150,
       stirrup_spacing_mid: result.shear?.stirrup_spacing ?? 200,
       stirrup_spacing_end: result.shear?.stirrup_spacing ?? 150,
-      cover: 40,
+      cover: inputs.clear_cover ?? 40,
       is_seismic: false,
     };
   }, [inputs, length, result]);
@@ -182,7 +182,10 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
       lastInputsRef.current.moment !== inputs.moment ||
       lastInputsRef.current.shear !== inputs.shear ||
       lastInputsRef.current.fck !== inputs.fck ||
-      lastInputsRef.current.fy !== inputs.fy;
+      lastInputsRef.current.fy !== inputs.fy ||
+      lastInputsRef.current.clear_cover !== inputs.clear_cover ||
+      lastInputsRef.current.stirrup_dia_mm !== inputs.stirrup_dia_mm ||
+      lastInputsRef.current.main_bar_dia_mm !== inputs.main_bar_dia_mm;
 
     if (!inputsChanged) return;
     lastInputsRef.current = { ...inputs };

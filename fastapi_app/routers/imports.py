@@ -9,6 +9,7 @@ DO NOT DUPLICATE PARSING LOGIC!
 from __future__ import annotations
 
 import csv
+import hashlib
 import logging
 import math
 from pathlib import Path
@@ -65,6 +66,17 @@ class BeamWith3D(BeamRow):
     point2: Point3D = Field(default_factory=Point3D, description="End point")
 
 
+class SampleDatasetEvidence(BaseModel):
+    """Stable identity for the exact bundled source files."""
+
+    dataset_id: str
+    dataset_version: str
+    dataset_sha256: str
+    hash_algorithm: str
+    source_files: list[str]
+    beam_count: int
+
+
 class SampleDataResponse(BaseModel):
     """Response from sample data endpoint with 3D geometry."""
 
@@ -74,6 +86,7 @@ class SampleDataResponse(BaseModel):
     beams: list[BeamWith3D]
     format_detected: str = "ETABS"
     warnings: list[str] = Field(default_factory=list)
+    dataset: SampleDatasetEvidence
 
 
 class CSVImportResponse(BaseModel):
@@ -836,6 +849,13 @@ async def get_sample_data():
             detail="Sample files not found",
         )
 
+    dataset_hash = hashlib.sha256()
+    for source_path in (forces_path, geometry_path):
+        dataset_hash.update(source_path.name.encode("utf-8"))
+        dataset_hash.update(b"\0")
+        dataset_hash.update(source_path.read_bytes())
+        dataset_hash.update(b"\0")
+
     # Read forces CSV
     forces_data: dict[str, dict[str, str | float]] = {}
     try:
@@ -928,5 +948,13 @@ async def get_sample_data():
             beams=sample_beams,
             format_detected="ETABS",
             warnings=warnings_list,
+            dataset=SampleDatasetEvidence(
+                dataset_id="bundled-etabs-beam-sample",
+                dataset_version="etabs-csv-v1",
+                dataset_sha256=dataset_hash.hexdigest(),
+                hash_algorithm="sha256-framed-files-v1",
+                source_files=[forces_path.name, geometry_path.name],
+                beam_count=len(sample_beams),
+            ),
         )
     )

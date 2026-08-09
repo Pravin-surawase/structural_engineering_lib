@@ -45,11 +45,17 @@ describe('ExportPanel', () => {
     expect(screen.getByText('Report')).toBeInTheDocument();
   });
 
-  it('all three export buttons are enabled by default', () => {
-    render(React.createElement(ExportPanel, { beamParams: defaultParams }));
+  it('all three export buttons are enabled for a passing design', () => {
+    render(React.createElement(ExportPanel, { beamParams: defaultParams, isSafe: true }));
     const buttons = screen.getAllByRole('button');
     buttons.forEach((btn) => {
       expect(btn).not.toBeDisabled();
     });
+  });
+
+  it.each([false, undefined])('holds all exports when safety is %s', (isSafe) => {
+    render(React.createElement(ExportPanel, { beamParams: defaultParams, isSafe }));
+    screen.getAllByRole('button').forEach((button) => expect(button).toBeDisabled());
+    expect(screen.getByRole('status')).toHaveTextContent('Exports held');
   });
 });

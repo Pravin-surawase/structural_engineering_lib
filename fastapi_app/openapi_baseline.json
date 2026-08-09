@@ -3102,6 +3102,104 @@
         "title": "AnchorageCheckResponse",
         "type": "object"
       },
+      "BOQEvidenceResponse": {
+        "description": "Server-generated identity for one BOQ aggregation.",
+        "properties": {
+          "artifact_schema": {
+            "title": "Artifact Schema",
+            "type": "string"
+          },
+          "artifact_schema_version": {
+            "title": "Artifact Schema Version",
+            "type": "string"
+          },
+          "calculation_identity": {
+            "title": "Calculation Identity",
+            "type": "string"
+          },
+          "dataset_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset Id"
+          },
+          "dataset_sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset Sha256"
+          },
+          "dataset_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset Version"
+          },
+          "explicit_units": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Explicit Units",
+            "type": "object"
+          },
+          "generated_at": {
+            "title": "Generated At",
+            "type": "string"
+          },
+          "library_version": {
+            "title": "Library Version",
+            "type": "string"
+          },
+          "normalized_input_hash": {
+            "title": "Normalized Input Hash",
+            "type": "string"
+          },
+          "qualified_review_required": {
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "qualified_review_requirement": {
+            "title": "Qualified Review Requirement",
+            "type": "string"
+          },
+          "unit_system": {
+            "title": "Unit System",
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifact_schema",
+          "artifact_schema_version",
+          "library_version",
+          "calculation_identity",
+          "normalized_input_hash",
+          "dataset_id",
+          "dataset_version",
+          "dataset_sha256",
+          "unit_system",
+          "explicit_units",
+          "generated_at",
+          "qualified_review_required",
+          "qualified_review_requirement"
+        ],
+        "title": "BOQEvidenceResponse",
+        "type": "object"
+      },
       "BarAreasResponse": {
         "description": "Response model for standard bar areas endpoint.",
         "properties": {
@@ -4038,6 +4136,10 @@
             "description": "Actual effective depth used in calculation (mm)",
             "title": "Effective Depth Used"
           },
+          "evidence": {
+            "$ref": "#/components/schemas/EvidenceEnvelopeResponse",
+            "description": "Traceable calculation identity and supported-case boundary"
+          },
           "flexure": {
             "$ref": "#/components/schemas/FlexureResult"
           },
@@ -4082,7 +4184,8 @@
           "message",
           "flexure",
           "ast_total",
-          "utilization_ratio"
+          "utilization_ratio",
+          "evidence"
         ],
         "title": "BeamDesignResponse",
         "type": "object"
@@ -7813,6 +7916,33 @@
         "title": "DashboardResponse",
         "type": "object"
       },
+      "DatasetReference": {
+        "description": "Optional source-dataset identity supplied by an import surface.",
+        "properties": {
+          "dataset_id": {
+            "maxLength": 200,
+            "title": "Dataset Id",
+            "type": "string"
+          },
+          "dataset_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Dataset Sha256",
+            "type": "string"
+          },
+          "dataset_version": {
+            "maxLength": 100,
+            "title": "Dataset Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dataset_id",
+          "dataset_version",
+          "dataset_sha256"
+        ],
+        "title": "DatasetReference",
+        "type": "object"
+      },
       "DeflectionCheckRequest": {
         "description": "Request for deflection span/depth ratio check.",
         "properties": {
@@ -8599,6 +8729,131 @@
         "title": "EnhancedShearResponse",
         "type": "object"
       },
+      "EvidenceEnvelopeResponse": {
+        "description": "Traceable identity metadata, not a professional approval certificate.",
+        "properties": {
+          "artifact_schema": {
+            "title": "Artifact Schema",
+            "type": "string"
+          },
+          "artifact_schema_version": {
+            "title": "Artifact Schema Version",
+            "type": "string"
+          },
+          "calculation_identity": {
+            "title": "Calculation Identity",
+            "type": "string"
+          },
+          "capability_id": {
+            "title": "Capability Id",
+            "type": "string"
+          },
+          "code_amendment_identity": {
+            "title": "Code Amendment Identity",
+            "type": "string"
+          },
+          "code_edition": {
+            "title": "Code Edition",
+            "type": "string"
+          },
+          "exact_utilization": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exact Utilization"
+          },
+          "explicit_units": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Explicit Units",
+            "type": "object"
+          },
+          "generated_at": {
+            "title": "Generated At",
+            "type": "string"
+          },
+          "governing_check": {
+            "title": "Governing Check",
+            "type": "string"
+          },
+          "library_version": {
+            "title": "Library Version",
+            "type": "string"
+          },
+          "margin": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Margin"
+          },
+          "normalized_input_hash": {
+            "title": "Normalized Input Hash",
+            "type": "string"
+          },
+          "qualified_review_required": {
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "qualified_review_requirement": {
+            "title": "Qualified Review Requirement",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "HOLD"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "support_status": {
+            "enum": [
+              "SUPPORTED",
+              "HELD"
+            ],
+            "title": "Support Status",
+            "type": "string"
+          },
+          "unit_system": {
+            "title": "Unit System",
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifact_schema",
+          "artifact_schema_version",
+          "library_version",
+          "code_edition",
+          "code_amendment_identity",
+          "capability_id",
+          "support_status",
+          "unit_system",
+          "explicit_units",
+          "normalized_input_hash",
+          "calculation_identity",
+          "governing_check",
+          "exact_utilization",
+          "margin",
+          "status",
+          "generated_at",
+          "qualified_review_required",
+          "qualified_review_requirement"
+        ],
+        "title": "EvidenceEnvelopeResponse",
+        "type": "object"
+      },
       "ExportBeamRequest": {
         "description": "Beam parameters for generating export artifacts.",
         "properties": {
@@ -8708,10 +8963,44 @@
             "title": "Beam Id",
             "type": "string"
           },
+          "clear_cover": {
+            "default": 25,
+            "description": "Clear cover used by the source calculation (mm)",
+            "maximum": 75.0,
+            "minimum": 20.0,
+            "title": "Clear Cover",
+            "type": "number"
+          },
           "depth": {
             "exclusiveMinimum": 0.0,
             "title": "Depth",
             "type": "number"
+          },
+          "effective_depth": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Effective depth used by the source beam calculation (mm)",
+            "title": "Effective Depth"
+          },
+          "exact_utilization": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Unrounded governing utilization from the source calculation",
+            "title": "Exact Utilization"
           },
           "fck": {
             "exclusiveMinimum": 0.0,
@@ -8729,10 +9018,25 @@
             "title": "Fy",
             "type": "number"
           },
+          "governing_check": {
+            "default": "combined_compliance",
+            "description": "Governing check name from the source calculation",
+            "minLength": 1,
+            "title": "Governing Check",
+            "type": "string"
+          },
           "is_safe": {
             "default": true,
             "title": "Is Safe",
             "type": "boolean"
+          },
+          "main_bar_dia_mm": {
+            "default": 20,
+            "description": "Main bar diameter used by the source calculation (mm)",
+            "maximum": 36.0,
+            "minimum": 8.0,
+            "title": "Main Bar Dia Mm",
+            "type": "number"
           },
           "moment": {
             "default": 0,
@@ -8744,6 +9048,14 @@
             "default": 0,
             "minimum": 0.0,
             "title": "Shear",
+            "type": "number"
+          },
+          "stirrup_dia_mm": {
+            "default": 8,
+            "description": "Stirrup diameter used by the source calculation (mm)",
+            "maximum": 16.0,
+            "minimum": 6.0,
+            "title": "Stirrup Dia Mm",
             "type": "number"
           },
           "utilization": {
@@ -11590,6 +11902,17 @@
             "description": "Concrete costs by grade {fck: \u20b9/m\u00b3}. Defaults: {25: 6000, 30: 7000, 35: 8000, 40: 9500}",
             "title": "Concrete Costs"
           },
+          "dataset": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DatasetReference"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional identity of the source dataset"
+          },
           "project_name": {
             "default": "Project",
             "description": "Display name",
@@ -11629,6 +11952,9 @@
             },
             "title": "Concrete",
             "type": "array"
+          },
+          "evidence": {
+            "$ref": "#/components/schemas/BOQEvidenceResponse"
           },
           "grand_total_concrete_m3": {
             "description": "Total concrete volume in m\u00b3",
@@ -11678,7 +12004,8 @@
           "by_story",
           "grand_total_steel_kg",
           "grand_total_concrete_m3",
-          "grand_total_cost_inr"
+          "grand_total_cost_inr",
+          "evidence"
         ],
         "title": "ProjectBOQResponse",
         "type": "object"
@@ -12223,6 +12550,9 @@
             "title": "Beams",
             "type": "array"
           },
+          "dataset": {
+            "$ref": "#/components/schemas/SampleDatasetEvidence"
+          },
           "format_detected": {
             "default": "ETABS",
             "title": "Format Detected",
@@ -12248,9 +12578,52 @@
           "success",
           "message",
           "beam_count",
-          "beams"
+          "beams",
+          "dataset"
         ],
         "title": "SampleDataResponse",
+        "type": "object"
+      },
+      "SampleDatasetEvidence": {
+        "description": "Stable identity for the exact bundled source files.",
+        "properties": {
+          "beam_count": {
+            "title": "Beam Count",
+            "type": "integer"
+          },
+          "dataset_id": {
+            "title": "Dataset Id",
+            "type": "string"
+          },
+          "dataset_sha256": {
+            "title": "Dataset Sha256",
+            "type": "string"
+          },
+          "dataset_version": {
+            "title": "Dataset Version",
+            "type": "string"
+          },
+          "hash_algorithm": {
+            "title": "Hash Algorithm",
+            "type": "string"
+          },
+          "source_files": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Files",
+            "type": "array"
+          }
+        },
+        "required": [
+          "dataset_id",
+          "dataset_version",
+          "dataset_sha256",
+          "hash_algorithm",
+          "source_files",
+          "beam_count"
+        ],
+        "title": "SampleDatasetEvidence",
         "type": "object"
       },
       "ShearResult": {

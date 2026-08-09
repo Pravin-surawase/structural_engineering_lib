@@ -5,9 +5,12 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-CLIENT_ROOT = Path(__file__).resolve().parents[2] / "clients/python"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+CLIENT_ROOT = REPO_ROOT / "clients/python"
+sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(CLIENT_ROOT))
 
+from scripts.validate_imports import can_resolve_module  # noqa: E402
 from structural_client.client import StructuralDesignClient  # noqa: E402
 
 
@@ -61,3 +64,7 @@ def test_python_client_unwraps_success_envelopes_and_uses_maintained_routes():
 
     assert design.flexure.ast_required == 600.0
     assert geometry["components"] == []
+
+
+def test_import_validator_resolves_checked_in_generated_client():
+    assert can_resolve_module("structural_client.client")
