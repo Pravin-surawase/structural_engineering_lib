@@ -6,6 +6,7 @@ import importlib
 import os
 import subprocess
 import sys
+import tomllib
 import zipfile
 from pathlib import Path
 
@@ -19,6 +20,22 @@ if str(REPO_ROOT) not in sys.path:
 
 release = importlib.import_module("scripts.release")
 node_runtime = importlib.import_module("scripts.node_runtime")
+
+
+def test_mypy_major_upgrade_requires_explicit_migration():
+    """Do not let CI silently cross the Mypy 2.x compatibility boundary."""
+    pyproject = tomllib.loads(
+        (REPO_ROOT / "Python" / "pyproject.toml").read_text(encoding="utf-8")
+    )
+    dev_requirements = pyproject["project"]["optional-dependencies"]["dev"]
+    root_requirements = (REPO_ROOT / "requirements.txt").read_text(encoding="utf-8")
+    locked_requirements = (REPO_ROOT / "requirements-lock.txt").read_text(
+        encoding="utf-8"
+    )
+
+    assert "mypy>=1.19,<2" in dev_requirements
+    assert "mypy>=1.19,<2" in root_requirements.splitlines()
+    assert any(line.startswith("mypy==1.") for line in locked_requirements.splitlines())
 
 
 def test_available_ram_uses_memory_pressure_percentage(
