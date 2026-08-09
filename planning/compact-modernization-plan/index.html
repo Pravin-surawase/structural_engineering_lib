@@ -2775,11 +2775,15 @@
 <li>classify it as active, archive-only, or confirmed orphan;</li>
 <li>change or delete it only if the classification is supported by evidence.</li>
 </ol>
-<p>Confirmed starting candidates to investigate, not automatic deletions:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>scripts/_tmp_add_groups.py
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>scripts/batch_migrate_runner.py
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>scripts/test_sample_endpoint.py
+<p>Completed archive decisions:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>ARCHIVED: scripts/_tmp_add_groups.py — one-time map migration replaced by canonical metadata
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>KEPT/UPDATED: scripts/batch_migrate_runner.py — dry-run and rollback safety repaired
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>ARCHIVED: scripts/test_sample_endpoint.py — covered by test_import_pipeline.py
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>ARCHIVED: scripts/pre_commit_check.sh — duplicate of canonical validation
 </code></pre></div>
+<p>All three archived files passed direct-caller searches and safe-delete previews;
+Git history is the recovery path. The batch runner remained because it has a
+distinct supported migration role after repair.</p>
 <h3 id="required-changes">Required changes<a class="headerlink" href="#required-changes" title="Permanent link">&para;</a></h3>
 <ol>
 <li>Remove active Streamlit hooks or commands when their target tree does not exist.</li>
@@ -2793,8 +2797,8 @@
 </ol>
 <h3 id="safe-delete-procedure">Safe-delete procedure<a class="headerlink" href="#safe-delete-procedure" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>rg<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;candidate_name|candidate_path&quot;</span><span class="w"> </span>run.sh<span class="w"> </span>.github<span class="w"> </span>.pre-commit-config.yaml<span class="w"> </span>scripts<span class="w"> </span>docs<span class="w"> </span>AGENTS.md
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>--dry-run<span class="w"> </span>scripts/candidate.py
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>scripts/candidate.py
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>./scripts/python_runtime.sh<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>--dry-run<span class="w"> </span>scripts/candidate.py
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>./scripts/python_runtime.sh<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>scripts/candidate.py
 </code></pre></div>
 <p>If the dry run reports an unresolved reference, do not delete the file until the parent confirms whether the reference is active or historical.</p>
 <h3 id="acceptance-criteria_3">Acceptance criteria<a class="headerlink" href="#acceptance-criteria_3" title="Permanent link">&para;</a></h3>

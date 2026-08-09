@@ -1536,6 +1536,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#remaining-batches-completion-update-2026-08-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Remaining batches completion update — 2026-08-10
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#snapshot-and-scope" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1631,10 +1642,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#p1-automation-discovery-is-physically-complete-but-semantically-stale" class="md-nav__link">
+  <a href="#p1-automation-discovery-is-physically-and-semantically-complete-resolved" class="md-nav__link">
     <span class="md-ellipsis">
       
-        P1 — Automation discovery is physically complete but semantically stale
+        P1 — Automation discovery is physically and semantically complete — RESOLVED
       
     </span>
   </a>
@@ -1664,10 +1675,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#p1-check_scripts_indexpy-protects-counts-not-supported-behavior" class="md-nav__link">
+  <a href="#p1-check_scripts_indexpy-protects-supported-discovery-behavior-resolved" class="md-nav__link">
     <span class="md-ellipsis">
       
-        P1 — check_scripts_index.py protects counts, not supported behavior
+        P1 — check_scripts_index.py protects supported discovery behavior — RESOLVED
       
     </span>
   </a>
@@ -1680,10 +1691,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#maintenance-quality-findings" class="md-nav__link">
+  <a href="#maintenance-quality-findings-after-completion" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Maintenance-quality findings
+        Maintenance-quality findings after completion
       
     </span>
   </a>
@@ -1958,11 +1969,10 @@
 <h1 id="automation-script-audit-2026-08-09">Automation Script Audit — 2026-08-09<a class="headerlink" href="#automation-script-audit-2026-08-09" title="Permanent link">&para;</a></h1>
 <h2 id="outcome">Outcome<a class="headerlink" href="#outcome" title="Permanent link">&para;</a></h2>
 <p>The active automation surface was audited one item at a time. The baseline
-inventory contained <strong>113 top-level scripts</strong>. After two P0 implementation
-batches, the five-script P1 governance batch, and the worktree-runtime repair,
-the active surface contains <strong>107 top-level scripts</strong>: <strong>89 Python</strong> and <strong>18
-shell</strong>, totaling <strong>40,284
-lines</strong>. The extended control surface also
+inventory contained <strong>113 top-level scripts</strong>. After all implementation,
+governance, discovery, archive, and CLI-normalization batches, the active
+surface contains <strong>104 top-level scripts</strong>: <strong>87 Python</strong> and <strong>17 shell</strong>,
+totaling <strong>40,034 lines</strong>. The extended control surface also
 contains the root <code>run.sh</code> dispatcher, four GitHub Actions workflows, zero
 repository-enforcement Git hook entrypoints, three non-Git Python hook-framework
 modules, and seven shared Python support modules.</p>
@@ -1978,14 +1988,9 @@ disposition is:</p>
 </thead>
 <tbody>
 <tr>
-<td>Keep</td>
-<td style="text-align: right;">62</td>
-<td>Supported role, including the repaired API/reference, agent-governance, permission, and runtime controls</td>
-</tr>
-<tr>
-<td>Update</td>
-<td style="text-align: right;">30</td>
-<td>Active or useful, but a confirmed non-P0 defect, stale contract, or metadata problem still needs repair</td>
+<td>Keep / updated</td>
+<td style="text-align: right;">92</td>
+<td>Supported role; all 30 confirmed update items were repaired in the completed batches</td>
 </tr>
 <tr>
 <td>Review</td>
@@ -1993,14 +1998,14 @@ disposition is:</p>
 <td>Low-use, overlapping, or specialized; prove a current consumer before keeping or archiving</td>
 </tr>
 <tr>
-<td>Archive candidate</td>
+<td>Archived in final batch</td>
 <td style="text-align: right;">3</td>
-<td>Strong evidence of replacement or one-time use; still requires safe-delete preview and owner acceptance</td>
+<td>Proven replacements, reviewed safe-delete previews with no live callers, and Git-recoverable removal</td>
 </tr>
 <tr>
 <td><strong>Total active</strong></td>
-<td style="text-align: right;"><strong>107</strong></td>
-<td>Current inventory after eight retirements and two additions: the Codex workflow guard and Python worktree resolver</td>
+<td style="text-align: right;"><strong>104</strong></td>
+<td>Current inventory after all approved retirements/archives and the two maintained control additions</td>
 </tr>
 </tbody>
 </table>
@@ -2008,7 +2013,9 @@ disposition is:</p>
 pass over five named scripts and directed that Git/GitHub work move to Codex.
 The second authorized P0 batch removed five missing-script control targets and
 closed the remaining P0 finding. The third authorized batch repaired five P1
-agent-governance and permission scripts plus their direct shared controls.
+agent-governance and permission scripts plus their direct shared controls. The
+remaining batches repaired the discovery/control plane, archived only the three
+proven candidates, and normalized the essential CLI and terminal paths.
 No independent commit, push, PR mutation, merge, issue action, release, or
 publication was performed during the bounded implementation passes themselves.
 The follow-up closeout isolated their still-uncommitted changes from concurrent
@@ -2162,6 +2169,53 @@ primary Git worktree's <code>.venv</code>, or an active <code>VIRTUAL_ENV</code>
 with an actionable error. The dispatcher, check orchestrator, smoke suite, and
 pre-commit entries call this resolver. A linked worktree with no local <code>.venv</code>
 now runs repository checks without a temporary link.</p>
+<h2 id="remaining-batches-completion-update-2026-08-10">Remaining batches completion update — 2026-08-10<a class="headerlink" href="#remaining-batches-completion-update-2026-08-10" title="Permanent link">&para;</a></h2>
+<p>Packets C3-C5 are complete:</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Final outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Discovery truth</td>
+<td>Removed the parallel legacy category structure; 113 supported tasks now derive 14 groups from canonical task metadata.</td>
+</tr>
+<tr>
+<td>Registry integrity</td>
+<td><code>check_scripts_index.py</code> validates physical mapping plus legacy groups, missing groups, removed-but-active entries, and temporary targets. Current result: 104/104.</td>
+</tr>
+<tr>
+<td>Gate integration</td>
+<td>CLI smoke is part of the 30-check canonical gate and Repository Validation; an explicitly selected zero-check category fails instead of returning a false green.</td>
+</tr>
+<tr>
+<td>Permission truth</td>
+<td>Stateful/default/mode metadata now covers the remaining migration, index, evolution, session-store, pipeline, routing, preflight, archive, and local-CI commands.</td>
+</tr>
+<tr>
+<td>Terminal/runtime</td>
+<td><code>agent_start.sh</code>, preflight, changed-test, evolution, watch, and session guidance use the worktree-aware runtime. Startup no longer changes global Git config, fetches/prunes refs, or queries GitHub.</td>
+</tr>
+<tr>
+<td>Dry-run/data safety</td>
+<td>Batch migration dry-run writes nothing; generated rollback uses safe file operations. Archive and root-file guidance use link-aware safe moves. External CLI refuses to replace an existing work directory.</td>
+</tr>
+<tr>
+<td>Product cleanup</td>
+<td>Stale Streamlit/VBA/Excel help and version targets were removed from maintained scripts without rewriting historical evidence.</td>
+</tr>
+<tr>
+<td>Archive</td>
+<td><code>_tmp_add_groups.py</code>, <code>pre_commit_check.sh</code>, and <code>test_sample_endpoint.py</code> were removed after direct-caller searches and per-file safe-delete previews. Git history is the recovery path.</td>
+</tr>
+</tbody>
+</table>
+<p>Two bounded read-only reviewers were used for this final batch. Both used
+Terra, received concise packets, and made no workspace edits; no Sol subagent
+was used.</p>
 <h2 id="snapshot-and-scope">Snapshot and scope<a class="headerlink" href="#snapshot-and-scope" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2176,16 +2230,16 @@ now runs repository checks without a temporary link.</p>
 <td><code>structural_engineering_lib</code></td>
 </tr>
 <tr>
-<td>Branch at Batch 3 closeout</td>
-<td><code>codex/automation-governance-batches-2-3</code></td>
+<td>Final-batch branch</td>
+<td><code>codex/automation-remaining-batches</code></td>
 </tr>
 <tr>
-<td>Baseline commit</td>
-<td><code>8bfdac09564995a04bd0fb249b90934cd4c80011</code></td>
+<td>Final-batch baseline commit</td>
+<td><code>f812eb3f6422cba4d883eb81a6d2a9cab47d5c18</code></td>
 </tr>
 <tr>
-<td>Baseline subject</td>
-<td><code>ci(maint-008): consolidate GitHub workflow lanes</code></td>
+<td>Final-batch baseline subject</td>
+<td><code>fix(automation): close governance and control gaps</code></td>
 </tr>
 <tr>
 <td>Audit date</td>
@@ -2197,7 +2251,7 @@ now runs repository checks without a temporary link.</p>
 </tr>
 <tr>
 <td>Current active top-level scripts</td>
-<td>107</td>
+<td>104</td>
 </tr>
 <tr>
 <td>Existing archived scripts</td>
@@ -2225,7 +2279,7 @@ now runs repository checks without a temporary link.</p>
 </tr>
 <tr>
 <td>Subagents used</td>
-<td>2 read-only Terra reviewers in Batch 3; 0 in the earlier audit/P0 batches</td>
+<td>4 bounded read-only Terra reviewers across Batches 3 and final; 0 Sol reviewers</td>
 </tr>
 </tbody>
 </table>
@@ -2411,6 +2465,53 @@ removing its temporary <code>.venv</code> link:</p>
 </tr>
 </tbody>
 </table>
+<p>Final remaining-batch verification:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clean linked-worktree startup without local <code>.venv</code></td>
+<td>pass; primary-worktree Python 3.11.15 resolved</td>
+</tr>
+<tr>
+<td>Script index and automation semantics</td>
+<td>104/104 physical coverage; 0 semantic errors</td>
+</tr>
+<tr>
+<td>Automation discovery</td>
+<td>113 active tasks across 14 canonical groups</td>
+</tr>
+<tr>
+<td>Permission declaration audit</td>
+<td>pass; 0 anomalies</td>
+</tr>
+<tr>
+<td>Focused automation/session/migration tests</td>
+<td>152/152 pass</td>
+</tr>
+<tr>
+<td>CLI smoke</td>
+<td>13/13 pass</td>
+</tr>
+<tr>
+<td>Quick gate</td>
+<td>10/10 pass</td>
+</tr>
+<tr>
+<td>Full gate</td>
+<td>30/30 pass</td>
+</tr>
+<tr>
+<td>Formatting, Ruff, compile, shell syntax</td>
+<td>pass for changed implementation/test paths</td>
+</tr>
+</tbody>
+</table>
 <h3 id="terminal-issues-encountered">Terminal issues encountered<a class="headerlink" href="#terminal-issues-encountered" title="Permanent link">&para;</a></h3>
 <ul>
 <li>⚠️ TERMINAL ISSUE: Homebrew Node 25 could not load <code>libsimdjson.29.dylib</code> → the bundled Codex Node runtime ran the focused Vitest lane successfully.</li>
@@ -2419,7 +2520,13 @@ removing its temporary <code>.venv</code> link:</p>
 <li>⚠️ TERMINAL ISSUE: a diagnostic zsh loop used the reserved <code>path</code> variable and temporarily hid <code>git</code> inside that one process → the verification was rerun in a clean shell with non-reserved names.</li>
 <li>⚠️ TERMINAL ISSUE: an <code>rg</code> command placed <code>--glob</code> filters after the <code>--</code> pattern terminator, so ripgrep treated them as paths → the search was rerun with filters before <code>--</code>.</li>
 <li>⚠️ TERMINAL ISSUE: the first Black check reported that <code>validate_script_refs.py</code> needed formatting → Black was applied and the final format check passed.</li>
+<li>⚠️ TERMINAL ISSUE: clean linked-worktree session startup stopped because <code>agent_start.sh</code> required a local <code>.venv</code> → it now resolves the primary-worktree environment through <code>python_runtime.sh</code>; startup passed without copying or linking an environment.</li>
+<li>⚠️ TERMINAL ISSUE: the first regenerated index check treated <code>python_runtime.sh</code> as the only mapped script in wrapped commands → the checker now collects every script target token; final coverage is 104/104.</li>
+<li>⚠️ TERMINAL ISSUE: focused Ruff found an unused local in the touched type-annotation checker → the dead assignment was removed and the final lint passed.</li>
+<li>⚠️ TERMINAL ISSUE: the first commit attempt stopped when the standard end-of-file hook normalized generated <code>scripts/index.json</code> → the hook-only newline change was inspected, staged, and the commit checks were rerun normally.</li>
+<li>⚠️ TERMINAL ISSUE: the first PR Repository Validation run executed CLI smoke without installing the core package, so package-dependent <code>discover_api</code> failed while 12/13 controls passed → the job now installs editable <code>Python</code> before the full smoke suite, with a regression assertion on step order.</li>
 </ul>
+<p>Baseline audit evidence before the completed remaining batches:</p>
 <table>
 <thead>
 <tr>
@@ -2454,11 +2561,11 @@ removing its temporary <code>.venv</code> link:</p>
 </tr>
 <tr>
 <td>Script index coverage</td>
-<td>113/113 pass at baseline; 107/107 current</td>
+<td>113/113 at baseline; 107/107 after runtime follow-up</td>
 </tr>
 <tr>
 <td>Automation-map physical coverage</td>
-<td>113/113 pass at baseline; 107/107 current</td>
+<td>113/113 at baseline; 107/107 after runtime follow-up</td>
 </tr>
 <tr>
 <td>Canonical full gate</td>
@@ -2502,10 +2609,11 @@ removing its temporary <code>.venv</code> link:</p>
 </tr>
 </tbody>
 </table>
-<p>The green 29/29 gate is useful but incomplete. It now detects missing active
-script targets, vacuous API signature scanning, and malformed declared
-permission metadata, but it does not yet detect automation-map category drift,
-undeclared-operation coverage, or require the standalone CLI smoke suite.</p>
+<p>The final 30/30 gate now detects missing active script targets, vacuous API
+signature scanning, malformed declared permission metadata, automation-map
+semantic drift, and CLI smoke regressions. It still cannot prove runtime side
+effects for every undeclared manual task; such a task must receive explicit
+metadata before permission enforcement treats it as supported.</p>
 <h2 id="highest-priority-confirmed-issues">Highest-priority confirmed issues<a class="headerlink" href="#highest-priority-confirmed-issues" title="Permanent link">&para;</a></h2>
 <h3 id="p0-git-safety-automation-conflicts-with-the-written-safety-policy-resolved">P0 — Git safety automation conflicts with the written safety policy — RESOLVED<a class="headerlink" href="#p0-git-safety-automation-conflicts-with-the-written-safety-policy-resolved" title="Permanent link">&para;</a></h3>
 <p>The scripts described as the safest path contain behavior that can change or
@@ -2584,22 +2692,17 @@ method, and matches path shapes against the live FastAPI OpenAPI schema. It
 fails if the source tree or internal call-site count is zero. The pre-commit
 trigger now covers React and FastAPI files. Current evidence is 24 call sites
 across nine production files matched against 62 OpenAPI paths.</p>
-<h3 id="p1-automation-discovery-is-physically-complete-but-semantically-stale">P1 — Automation discovery is physically complete but semantically stale<a class="headerlink" href="#p1-automation-discovery-is-physically-complete-but-semantically-stale" title="Permanent link">&para;</a></h3>
-<p><code>automation-map.json</code> currently has 119 task entries and 17 legacy categories.
-It maps all 107 physical scripts, but its semantic integrity has drifted:</p>
-<ul>
-<li>13 category members still name retired or otherwise absent tasks;</li>
-<li>15 task entries are not present in any legacy category;</li>
-<li><code>test vba adapter</code> says its target was removed but is not marked deprecated;</li>
-<li>Streamlit and VBA categories still produce removed-product results;</li>
-<li><code>_tmp_add_groups.py</code> is still exposed as a supported tool; and</li>
-<li><code>find_automation.py</code> still claims 87 tasks/16 categories.</li>
-</ul>
-<p>The CLI smoke false failure is resolved: <code>find_automation.py</code> is an
-automation-task finder, so its smoke case now queries the guaranteed registered
-task <code>run tests</code>; product-domain beam routing remains covered separately by
-<code>prompt_router.py</code>. The finder still needs truthful task/category counts and
-stale-category cleanup.</p>
+<h3 id="p1-automation-discovery-is-physically-and-semantically-complete-resolved">P1 — Automation discovery is physically and semantically complete — RESOLVED<a class="headerlink" href="#p1-automation-discovery-is-physically-and-semantically-complete-resolved" title="Permanent link">&para;</a></h3>
+<p><code>automation-map.json</code> now has 113 active task entries in 14 groups derived from
+each task's canonical <code>group</code> field. The parallel legacy-category structure,
+dead Streamlit/VBA tasks, and the temporary map-migration task were removed.
+<code>find_automation.py</code> reports the live counts dynamically and retains
+<code>--category</code> only as an alias for canonical <code>--group</code> lookup.</p>
+<p><code>check_scripts_index.py</code> now fails on physical map/index drift, legacy category
+data, missing task groups, removed-but-active descriptions, and temporary
+targets. Current physical coverage is 104/104. The CLI smoke query uses the
+guaranteed task <code>run tests</code>, while product-domain beam routing remains covered
+separately by <code>prompt_router.py</code>.</p>
 <h3 id="p1-permission-labels-do-not-match-operation-behavior-resolved-for-declared-operations">P1 — Permission labels do not match operation behavior — RESOLVED FOR DECLARED OPERATIONS<a class="headerlink" href="#p1-permission-labels-do-not-match-operation-behavior-resolved-for-declared-operations" title="Permanent link">&para;</a></h3>
 <p>The keyword-based classifier was removed. The resolver now uses explicit task
 and mode metadata, applies the registered agent ceiling and file scope, and
@@ -2631,41 +2734,26 @@ effect.</p>
 <p>Focused tests cover evidence availability, current-session selection, all 16
 agents, root-stable commands, no-write defaults, explicit writes, and missing
 agent behavior.</p>
-<h3 id="p1-check_scripts_indexpy-protects-counts-not-supported-behavior">P1 — <code>check_scripts_index.py</code> protects counts, not supported behavior<a class="headerlink" href="#p1-check_scripts_indexpy-protects-counts-not-supported-behavior" title="Permanent link">&para;</a></h3>
-<p>The index checker passes 107/107 while the semantic discovery P1 finding above
-remains. Expand it or add a narrow control-surface validator that checks:</p>
-<ol>
-<li>every active <code>run.sh</code>, pre-commit, workflow, and hook script target exists;</li>
-<li>every automation category member resolves to a task;</li>
-<li>deprecated/removed descriptions agree with deprecated metadata;</li>
-<li>every destructive operation has a truthful preview/no-write path;</li>
-<li>required CLI smoke cases pass; and</li>
-<li>a validation lane cannot pass after scanning zero applicable files unless
-   zero is the explicitly expected result.</li>
-</ol>
-<h2 id="maintenance-quality-findings">Maintenance-quality findings<a class="headerlink" href="#maintenance-quality-findings" title="Permanent link">&para;</a></h2>
-<p>These are lower priority than the P0/P1 items and should be handled in a compact
-documentation/CLI-contract pass, not as 60 separate rewrites:</p>
+<h3 id="p1-check_scripts_indexpy-protects-supported-discovery-behavior-resolved">P1 — <code>check_scripts_index.py</code> protects supported discovery behavior — RESOLVED<a class="headerlink" href="#p1-check_scripts_indexpy-protects-supported-discovery-behavior-resolved" title="Permanent link">&para;</a></h3>
+<p>The semantic checks and canonical gate integration described above close the
+confirmed discovery false-green. Inventory observations remain useful for
+future disposition work:</p>
+<h2 id="maintenance-quality-findings-after-completion">Maintenance-quality findings after completion<a class="headerlink" href="#maintenance-quality-findings-after-completion" title="Permanent link">&para;</a></h2>
+<p>The 30 scripts with confirmed outcome or operator-contract defects were
+repaired. Current catalog checks still report 20 of 87 Python scripts without a
+“When to use” phrase and 371 legacy bare <code>python scripts/...</code> example lines in
+the broader active tree. Those are informational style/catalog observations,
+not confirmed main-process defects; update them only when the owning script is
+otherwise changed. The essential scripts identified by this audit now use
+root-stable examples and truthful help.</p>
+<p>Inventory observations retained for later archive decisions:</p>
 <ul>
-<li>36 of 89 Python scripts lack the catalog's required “When to use” contract.</li>
-<li>31 of the baseline 113 top-level scripts had no safely recognized <code>--help</code> path, despite
-  the scripts README saying all scripts should support help.</li>
-<li>60 scripts contain 309 bare <code>python scripts/...</code> command examples instead of
-  the root-stable <code>.venv/bin/python</code> or <code>./run.sh</code> entrypoint.</li>
-<li>agent-governance command examples are now root-stable; continue repairing the
-  remaining 309 bare <code>python scripts/...</code> examples in later bounded batches.</li>
-<li><code>check_root_file_count.sh</code> recommends raw <code>git mv</code> instead of
-  <code>safe_file_move.py</code>.</li>
-<li><code>check_circular_imports.py</code> and <code>check_type_annotations.py</code> now scan the
-  Python library correctly, but their titles/help still describe Streamlit.</li>
-<li><code>check_version_consistency.sh</code>, <code>bump_version.py</code>, <code>test_api_parity.py</code>, and
-  <code>watch_tests.sh</code> retain removed VBA/Streamlit framing.</li>
 <li>20 scripts are manual-only: they have no active caller in <code>run.sh</code>, workflows,
   pre-commit, hooks, other scripts, or direct tests. Manual-only is not proof of
   obsolescence, but each should retain a named owner/use case or move to review.</li>
-<li>30 scripts exceed 500 lines and nine exceed 800 lines. The largest are
-  <code>session.py</code> (2,258), <code>release.py</code> (1,053), <code>check_governance.py</code> (1,025),
-  <code>project_health.py</code> (900), and <code>launch_stack.sh</code> (884). Split only when a
+<li>28 scripts exceed 500 lines and eight exceed 800 lines. The largest are
+  <code>session.py</code> (2,261), <code>release.py</code> (1,053), <code>check_governance.py</code> (1,041),
+  <code>project_health.py</code> (902), and <code>launch_stack.sh</code> (884). Split only when a
   confirmed maintenance defect requires it; line count alone is not an archive
   reason.</li>
 </ul>
@@ -2685,8 +2773,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>_tmp_add_groups.py</code></td>
 <td>Infrastructure</td>
-<td>ARCHIVE CANDIDATE</td>
-<td>One-time map migration says delete after use; no active caller.</td>
+<td>ARCHIVED</td>
+<td>One-time map migration was replaced by canonical task <code>group</code> metadata; removed after safe-delete preview.</td>
 </tr>
 <tr>
 <td><code>agent_brief.sh</code></td>
@@ -2746,7 +2834,7 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <td><code>agent_start.sh</code></td>
 <td>Session</td>
 <td>KEEP (UPDATED)</td>
-<td>Its named-agent deep-context dependency now uses the complete canonical registry.</td>
+<td>Uses the canonical registry and worktree-aware runtime; no global Git config, ref pruning, GitHub query, or script-wide chmod remains.</td>
 </tr>
 <tr>
 <td><code>agent_trends.py</code></td>
@@ -2763,8 +2851,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>archive_old_files.sh</code></td>
 <td>Docs</td>
-<td>UPDATE</td>
-<td>Uses raw <code>mv</code> instead of link-aware safe file operations.</td>
+<td>KEEP (UPDATED)</td>
+<td>Live and dry-run paths use <code>safe_file_move.py</code>; dry-run creates no archive directory and counts survive the loop.</td>
 </tr>
 <tr>
 <td><code>audit_error_handling.py</code></td>
@@ -2793,8 +2881,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>batch_migrate_runner.py</code></td>
 <td>Migration</td>
-<td>UPDATE</td>
-<td><code>--dry-run</code> still creates logs; rollback script emits raw <code>rm</code>/<code>cp</code>.</td>
+<td>KEEP (UPDATED)</td>
+<td>Dry-run writes no log tree; live rollback manifests invoke validated safe move/delete operations.</td>
 </tr>
 <tr>
 <td><code>benchmark_api.py</code></td>
@@ -2805,14 +2893,14 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>bump_version.py</code></td>
 <td>Release</td>
-<td>UPDATE</td>
-<td>Remove stale missing Excel/VBA doc targets and normalize commands.</td>
+<td>KEEP (UPDATED)</td>
+<td>Missing Excel/VBA documentation targets were removed and operator commands are root-stable.</td>
 </tr>
 <tr>
 <td><code>check_all.py</code></td>
 <td>Quality</td>
-<td>KEEP</td>
-<td>Canonical 29-check orchestrator works; expand coverage through focused validators, not ad hoc duplication.</td>
+<td>KEEP (UPDATED)</td>
+<td>Canonical 30-check orchestrator includes CLI smoke and fails explicit zero-check selections.</td>
 </tr>
 <tr>
 <td><code>check_api.py</code></td>
@@ -2823,8 +2911,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>check_api_compat.py</code></td>
 <td>Quality</td>
-<td>UPDATE</td>
-<td>Add missing “When to use”/CLI contract; underlying check is distinct and useful.</td>
+<td>KEEP (UPDATED)</td>
+<td>Distinct compatibility check now has a clear use case and root-stable update guidance.</td>
 </tr>
 <tr>
 <td><code>check_architecture_boundaries.py</code></td>
@@ -2841,14 +2929,14 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>check_circular_imports.py</code></td>
 <td>Quality</td>
-<td>UPDATE</td>
-<td>Implementation scans Python core, but title/help still say Streamlit.</td>
+<td>KEEP (UPDATED)</td>
+<td>Title/help now match the Python structural library actually scanned.</td>
 </tr>
 <tr>
 <td><code>check_clause_coverage.py</code></td>
 <td>Quality</td>
-<td>UPDATE</td>
-<td>Add missing “When to use” contract; retain structural coverage role.</td>
+<td>KEEP (UPDATED)</td>
+<td>Structural coverage role now has a clear use case and root-stable examples.</td>
 </tr>
 <tr>
 <td><code>check_cli_reference.py</code></td>
@@ -2883,8 +2971,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>check_function_quality.py</code></td>
 <td>Quality</td>
-<td>UPDATE</td>
-<td>Add missing “When to use” contract; retain specialist use.</td>
+<td>KEEP (UPDATED)</td>
+<td>Specialist quality check now has a clear use case and root-stable examples.</td>
 </tr>
 <tr>
 <td><code>check_codex_git_workflow.py</code></td>
@@ -2919,8 +3007,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>check_new_element_completeness.py</code></td>
 <td>Quality</td>
-<td>UPDATE</td>
-<td>Add missing “When to use” contract; retain specialist use.</td>
+<td>KEEP (UPDATED)</td>
+<td>Cross-layer element check now has a clear use case and root-stable examples.</td>
 </tr>
 <tr>
 <td><code>check_next_session_brief_length.py</code></td>
@@ -2961,14 +3049,14 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>check_root_file_count.sh</code></td>
 <td>Quality</td>
-<td>UPDATE</td>
-<td>Printed remediation uses forbidden raw <code>git mv</code>.</td>
+<td>KEEP (UPDATED)</td>
+<td>Printed remediation previews the link-aware safe move command.</td>
 </tr>
 <tr>
 <td><code>check_scripts_index.py</code></td>
 <td>Quality</td>
-<td>UPDATE</td>
-<td>Does not validate category integrity, active missing targets, help, or behavior.</td>
+<td>KEEP (UPDATED)</td>
+<td>Validates 104/104 physical coverage plus canonical group/active/temp semantic integrity.</td>
 </tr>
 <tr>
 <td><code>check_tasks_format.py</code></td>
@@ -2985,8 +3073,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>check_type_annotations.py</code></td>
 <td>Quality</td>
-<td>UPDATE</td>
-<td>Implementation scans Python core, but title/help still say Streamlit.</td>
+<td>KEEP (UPDATED)</td>
+<td>Title/help now match the Python structural library actually scanned.</td>
 </tr>
 <tr>
 <td><code>check_unfinished_merge.sh</code></td>
@@ -2997,8 +3085,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>check_version_consistency.sh</code></td>
 <td>Quality</td>
-<td>UPDATE</td>
-<td>Still reports optional missing VBA version after product removal.</td>
+<td>KEEP (UPDATED)</td>
+<td>Removed the obsolete optional VBA probe; checks maintained package metadata only.</td>
 </tr>
 <tr>
 <td><code>check_wip_limits.sh</code></td>
@@ -3009,8 +3097,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>ci_local.sh</code></td>
 <td>Git</td>
-<td>UPDATE</td>
-<td>Installs/builds in place, uses <code>python3</code>, and duplicates the canonical gate without preview.</td>
+<td>KEEP (UPDATED)</td>
+<td>Delegates to maintained validation commands; it no longer installs environments or performs Git/GitHub work.</td>
 </tr>
 <tr>
 <td><code>cleanup_stale_branches.py</code></td>
@@ -3033,8 +3121,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>config_precedence.py</code></td>
 <td>Infrastructure</td>
-<td>UPDATE</td>
-<td>Registry says WorkspaceWrite for read-only audit/list operations.</td>
+<td>KEEP (UPDATED)</td>
+<td>Audit/list/show are explicitly ReadOnly with a safe default command.</td>
 </tr>
 <tr>
 <td><code>create_doc.py</code></td>
@@ -3057,8 +3145,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>diagnose_ci.py</code></td>
 <td>Quality</td>
-<td>UPDATE</td>
-<td>Split read-only diagnosis permission from explicit <code>--fix</code>.</td>
+<td>KEEP (UPDATED)</td>
+<td>Read-only diagnosis is separate from explicit WorkspaceWrite <code>--local --fix</code>.</td>
 </tr>
 <tr>
 <td><code>discover_api_signatures.py</code></td>
@@ -3075,8 +3163,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>evolve.py</code></td>
 <td>Evolution</td>
-<td>UPDATE</td>
-<td>Document which report/review modes write evidence; make dry-run side effects explicit.</td>
+<td>KEEP (UPDATED)</td>
+<td>Preview/review is read-only; reports require <code>--report</code> and changes require <code>--fix</code>.</td>
 </tr>
 <tr>
 <td><code>export_paper_data.py</code></td>
@@ -3087,14 +3175,14 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>external_cli_test.py</code></td>
 <td>Testing</td>
-<td>UPDATE</td>
-<td>Document isolated temp behavior/cleanup and correct permission semantics.</td>
+<td>KEEP (UPDATED)</td>
+<td>Uses a unique temp directory by default and refuses to replace an explicit existing directory.</td>
 </tr>
 <tr>
 <td><code>find_automation.py</code></td>
 <td>Discovery</td>
-<td>UPDATE</td>
-<td>Stale counts; beam smoke fails; legacy categories contain dead entries.</td>
+<td>KEEP (UPDATED)</td>
+<td>Reports 113 active tasks/14 canonical groups dynamically and hides removed/temp entries.</td>
 </tr>
 <tr>
 <td><code>finish_task_pr.sh</code></td>
@@ -3135,8 +3223,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>generate_enhanced_index.py</code></td>
 <td>Generation</td>
-<td>UPDATE</td>
-<td>Writes indexes but registry labels it ReadOnly; align permission and preview semantics.</td>
+<td>KEEP (UPDATED)</td>
+<td>Default is WorkspaceWrite while <code>--dry-run</code>/<code>--check</code> are explicitly ReadOnly.</td>
 </tr>
 <tr>
 <td><code>generate_error_docs.py</code></td>
@@ -3183,26 +3271,26 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>parity_dashboard.py</code></td>
 <td>Quality</td>
-<td>UPDATE</td>
-<td>Add missing “When to use” contract; retain cross-stack evidence role.</td>
+<td>KEEP (UPDATED)</td>
+<td>Cross-stack evidence role now has a clear use case and root-stable examples.</td>
 </tr>
 <tr>
 <td><code>pipeline_state.py</code></td>
 <td>Infrastructure</td>
-<td>UPDATE</td>
-<td>State-changing commands are labeled ReadOnly in registry.</td>
+<td>KEEP (UPDATED)</td>
+<td>Read commands and state-changing commands now have explicit distinct permissions.</td>
 </tr>
 <tr>
 <td><code>pre_commit_check.sh</code></td>
 <td>Git</td>
-<td>ARCHIVE CANDIDATE</td>
-<td>Manual-only duplicate of installed pre-commit and canonical quick checks.</td>
+<td>ARCHIVED</td>
+<td>Duplicate manual wrapper removed after safe-delete preview; canonical checks remain.</td>
 </tr>
 <tr>
 <td><code>preflight.py</code></td>
 <td>Session</td>
-<td>UPDATE</td>
-<td>Add <code>--help</code> and “When to use” contract.</td>
+<td>KEEP (UPDATED)</td>
+<td>Has argparse help, a clear use case, runtime resolution, and worktree-safe merge detection.</td>
 </tr>
 <tr>
 <td><code>project_health.py</code></td>
@@ -3213,8 +3301,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>prompt_router.py</code></td>
 <td>Infrastructure</td>
-<td>UPDATE</td>
-<td>Registry labels normal read-only routing as WorkspaceWrite.</td>
+<td>KEEP (UPDATED)</td>
+<td>Normal routing is explicitly ReadOnly and examples are root-stable.</td>
 </tr>
 <tr>
 <td><code>python_runtime.sh</code></td>
@@ -3267,8 +3355,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>session_store.py</code></td>
 <td>Infrastructure</td>
-<td>UPDATE</td>
-<td>State-changing <code>new</code>/<code>end</code> commands are labeled ReadOnly.</td>
+<td>KEEP (UPDATED)</td>
+<td>Read commands and state-changing <code>new</code>/<code>end</code> commands now have explicit distinct permissions.</td>
 </tr>
 <tr>
 <td><code>should_use_pr.sh</code></td>
@@ -3291,32 +3379,32 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>test_api_parity.py</code></td>
 <td>Testing</td>
-<td>UPDATE</td>
-<td>Current parity is useful; remove stale Streamlit/VBA framing and alias.</td>
+<td>KEEP (UPDATED)</td>
+<td>Framing now matches the active React/FastAPI architecture.</td>
 </tr>
 <tr>
 <td><code>test_changed.py</code></td>
 <td>Testing</td>
-<td>UPDATE</td>
-<td>Add help/“When to use” contract and keep root-stable pytest paths.</td>
+<td>KEEP (UPDATED)</td>
+<td>Has a clear use case and uses the worktree-aware runtime with root-stable paths.</td>
 </tr>
 <tr>
 <td><code>test_cli_smoke.py</code></td>
 <td>Testing</td>
-<td>UPDATE</td>
-<td>13/13 pass after using a registered automation query; decide whether to add the standalone suite to a canonical gate.</td>
+<td>KEEP (UPDATED)</td>
+<td>13/13 pass and the standalone suite now runs in the canonical local and PR validation paths.</td>
 </tr>
 <tr>
 <td><code>test_import_pipeline.py</code></td>
 <td>Testing</td>
-<td>UPDATE</td>
-<td>Add help and explicit live-server prerequisite; retain as maintained E2E path.</td>
+<td>KEEP (UPDATED)</td>
+<td>Documents the live FastAPI prerequisite and remains the maintained import E2E path.</td>
 </tr>
 <tr>
 <td><code>test_sample_endpoint.py</code></td>
 <td>Testing</td>
-<td>ARCHIVE CANDIDATE</td>
-<td>Standalone subset of <code>test_import_pipeline.py</code>; no active caller/help.</td>
+<td>ARCHIVED</td>
+<td>Redundant subset removed after safe-delete preview; coverage remains in <code>test_import_pipeline.py</code>.</td>
 </tr>
 <tr>
 <td><code>tool_permissions.py</code></td>
@@ -3327,8 +3415,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>tool_registry.py</code></td>
 <td>Infrastructure</td>
-<td>UPDATE</td>
-<td>Keyword permission inference is gone, but temp/stale discovery aliases still need cleanup.</td>
+<td>KEEP (UPDATED)</td>
+<td>Explicit permission resolution remains and temp/stale discovery aliases were removed from the canonical map.</td>
 </tr>
 <tr>
 <td><code>update_test_stats.py</code></td>
@@ -3369,8 +3457,8 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 <tr>
 <td><code>watch_tests.sh</code></td>
 <td>Testing</td>
-<td>UPDATE</td>
-<td>Uses bare <code>pytest</code>/ambiguous default path and legacy Streamlit message; <code>fswatch</code> is absent locally.</td>
+<td>KEEP (UPDATED)</td>
+<td>Uses the runtime resolver, defaults to <code>Python/tests/</code>, has help that works without <code>fswatch</code>, and no longer prints legacy Streamlit status.</td>
 </tr>
 </tbody>
 </table>
@@ -3397,18 +3485,18 @@ not a certification of every branch or an instruction to skip normal tests.</p>
 </tr>
 <tr>
 <td><code>scripts/automation-map.json</code></td>
-<td>UPDATE</td>
-<td>Operation/mode permissions are explicit for the repaired controls; remove remaining stale categories/aliases/temp tool and align deprecation metadata.</td>
+<td>KEEP (UPDATED)</td>
+<td>104/104 physical coverage, 113 active tasks, 14 canonical groups, and explicit high-value operation/mode permissions.</td>
 </tr>
 <tr>
 <td><code>scripts/index.json</code> / <code>index.md</code></td>
-<td>KEEP/REGENERATE</td>
-<td>Physical inventory is truthful now; regenerate only after approved script changes.</td>
+<td>KEEP (REGENERATED)</td>
+<td>Regenerated after the three approved archives; physical inventory is 104/104.</td>
 </tr>
 <tr>
 <td><code>scripts/README.md</code></td>
-<td>UPDATE</td>
-<td>Replace stale PR/deprecation guidance and make help/dry-run claims match reality.</td>
+<td>KEEP (UPDATED)</td>
+<td>Codex-native Git boundary and worktree-aware runtime guidance now match supported behavior.</td>
 </tr>
 </tbody>
 </table>
@@ -3569,32 +3657,29 @@ issue closure, release, and history rewriting retain explicit approval gates.</p
 <li><strong>Completed:</strong> compliance and drift fail closed on missing/current evidence.</li>
 <li><strong>Completed:</strong> drift and trend analysis is read-only unless writing is
    explicitly requested.</li>
-<li><strong>Completed for permission truth:</strong> declared operation/mode permissions are
-   enforced without keyword guessing. Temp/removed discovery aliases remain in
-   the automation-discovery P1 item.</li>
-<li><strong>Partially completed:</strong> the CLI smoke case is repaired at 13/13; canonical
-   gate integration remains pending.</li>
+<li><strong>Completed:</strong> declared operation/mode permissions are enforced without
+   keyword guessing, and temp/removed discovery aliases are gone.</li>
+<li><strong>Completed:</strong> the CLI smoke case passes 13/13 and runs in the canonical
+   local and Repository Validation gates.</li>
 </ol>
 <h3 id="packet-c4-archiveconsolidate-the-proven-candidates">Packet C4 — Archive/consolidate the proven candidates<a class="headerlink" href="#packet-c4-archiveconsolidate-the-proven-candidates" title="Permanent link">&para;</a></h3>
-<p>Start with only these three:</p>
+<p><strong>Completed:</strong> only these three proven candidates were archived:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>scripts/_tmp_add_groups.py
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>scripts/pre_commit_check.sh
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>scripts/test_sample_endpoint.py
 </code></pre></div>
 <p>For each item:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>rg<span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;candidate_name|candidate_path&quot;</span><span class="w"> </span>run.sh<span class="w"> </span>.github<span class="w"> </span>.pre-commit-config.yaml<span class="w"> </span>scripts<span class="w"> </span>docs<span class="w"> </span>AGENTS.md
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>.venv/bin/python<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>--dry-run<span class="w"> </span>scripts/candidate
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>./scripts/python_runtime.sh<span class="w"> </span>scripts/safe_file_delete.py<span class="w"> </span>--dry-run<span class="w"> </span>scripts/candidate
 </code></pre></div>
-<p>Do not execute deletion until all live references are updated, the parent
-accepts the replacement, and the preview is clean. After deletion, regenerate
-only <code>scripts/index.json</code>, <code>scripts/index.md</code>, and the automation map surfaces
-that actually changed. Then re-run the focused smoke/integrity tests and one
-canonical gate.</p>
+<p>Each file passed a parent-verified dry-run after caller inspection. The files
+were removed through <code>safe_file_delete.py</code>, and the map/index surfaces were
+updated in the same branch. Recovery remains available through Git history.</p>
 <h3 id="packet-c5-low-priority-clidocumentation-normalization">Packet C5 — Low-priority CLI/documentation normalization<a class="headerlink" href="#packet-c5-low-priority-clidocumentation-normalization" title="Permanent link">&para;</a></h3>
-<p>Repair help/“When to use”/root-stable command examples in one surgical pass.
-Do not mass-rewrite working scripts or split large files solely to improve
-counts. Reassess the 13 review items only after C1-C4 establish truthful usage
-and caller data.</p>
+<p><strong>Completed:</strong> repaired the confirmed help/“When to use”/root-stable examples
+in one surgical pass. Working scripts were not mass-rewritten or split solely
+to improve counts. The 12 <code>REVIEW</code> items remain active because the evidence is
+insufficient to archive them safely.</p>
 <h2 id="archive-decision-rules-for-future-sessions">Archive decision rules for future sessions<a class="headerlink" href="#archive-decision-rules-for-future-sessions" title="Permanent link">&para;</a></h2>
 <p>A script may be archived only when all of the following are true:</p>
 <ol>
@@ -3614,20 +3699,20 @@ is not sufficient evidence.</p>
 <p>Key commands used in this audit:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>./run.sh session brief --agent orchestrator
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>./run.sh session start
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>.venv/bin/python scripts/check_scripts_index.py --json
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>.venv/bin/python scripts/validate_script_refs.py --fix
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>./scripts/python_runtime.sh scripts/check_scripts_index.py --json
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>./scripts/python_runtime.sh scripts/validate_script_refs.py
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>bash -n &lt;each active shell script and hook&gt;
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>AST parse &lt;each active Python script and support module&gt;
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>safe --help probe &lt;each script with a recognizable help path&gt;
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>.venv/bin/python scripts/test_cli_smoke.py --json
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>./scripts/python_runtime.sh scripts/test_cli_smoke.py --json
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>./run.sh check
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>.venv/bin/pytest -q &lt;focused script/infrastructure test files&gt;
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>./scripts/python_runtime.sh -m pytest -q &lt;focused script/infrastructure test files&gt;
 <a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>./run.sh efficiency check
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>.venv/bin/python scripts/skill_tiers.py validate
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>./scripts/python_runtime.sh scripts/skill_tiers.py validate
 <a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>gh pr checks 691
 <a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>gh run list --workflow &lt;each retained workflow&gt; --limit 3
 </code></pre></div>
-<p>Current live PR evidence:</p>
+<p>Prior Batch 3 live PR evidence:</p>
 <ul>
 <li><code>PR Gate</code>: pass</li>
 <li><code>Python Validation</code>: pass</li>
@@ -3642,11 +3727,13 @@ is not sufficient evidence.</p>
 <li><code>shellcheck</code> and <code>actionlint</code> are not installed. Shell received syntax
   validation and workflow YAML received parser validation, but not those deeper
   linters.</li>
-<li>Live-server scripts such as <code>test_import_pipeline.py</code> and
-  <code>test_sample_endpoint.py</code> were inspected rather than executed because this
-  audit did not start/alter the development stack.</li>
-<li>Migration, Git, file-operation, release, auto-fix, and archive modes were not
-  executed.</li>
+<li><code>test_import_pipeline.py</code> was inspected rather than executed because this
+  audit did not start/alter the live development stack. Its redundant sample
+  subset was archived only after the maintained test was compared directly.</li>
+<li>A temporary-fixture live batch migration verified rollback manifests; the
+  three approved archive candidates were removed through the safe-delete tool.
+  Git recovery, merge, branch deletion, release, publication, and auto-fix
+  modes were not executed during the implementation batches.</li>
 <li>The baseline audit observed default writes from drift/trends. Batch 3 removed
   that behavior and focused tests prove no output directory is created by the
   default commands.</li>
