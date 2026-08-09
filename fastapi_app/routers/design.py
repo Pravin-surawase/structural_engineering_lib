@@ -20,6 +20,7 @@ from fastapi_app.models.beam import (
     BeamDesignResponse,
     BeamCheckRequest,
     BeamCheckResponse,
+    EvidenceEnvelopeResponse,
     EnhancedShearRequest,
     EnhancedShearResponse,
     FlexureResult,
@@ -80,6 +81,7 @@ async def design_beam(request: BeamDesignRequest):
     """
     try:
         from structural_lib.services.api import design_beam_is456
+        from structural_lib.services.evidence import build_beam_evidence_envelope
 
         # Calculate effective depth if not provided
         effective_depth = request.effective_depth
@@ -142,6 +144,26 @@ async def design_beam(request: BeamDesignRequest):
         # doubly reinforced design is 1.0 rather than Mu/Mu_lim > 1.0 because
         # Mu_lim is only the singly reinforced limit, not the final capacity.
         utilization = result.governing_utilization
+        evidence = build_beam_evidence_envelope(
+            inputs={
+                "units": "IS456",
+                "case_id": "CASE-1",
+                "mu_knm": request.moment,
+                "vu_kn": request.shear if request.shear > 0 else 0.0,
+                "b_mm": request.width,
+                "D_mm": request.depth,
+                "d_mm": effective_depth,
+                "fck_nmm2": request.fck,
+                "fy_nmm2": request.fy,
+                "d_dash_mm": request.clear_cover
+                + request.stirrup_dia_mm
+                + request.main_bar_dia_mm / 2,
+                "asv_mm2": 100.0,
+            },
+            is_ok=result.is_ok,
+            governing_utilization=utilization,
+            utilizations=result.utilizations,
+        )
 
         # Collect warnings
         warnings = []
@@ -168,6 +190,7 @@ async def design_beam(request: BeamDesignRequest):
                 utilization_ratio=min(utilization, 2.0),
                 effective_depth_used=effective_depth,
                 warnings=warnings,
+                evidence=EvidenceEnvelopeResponse.model_validate(evidence),
             )
         )
 

@@ -78,7 +78,40 @@ class ExportReportRequest(BaseModel):
     ast_required: float = Field(default=0, ge=0)
     ast_provided: float = Field(default=0, ge=0)
     utilization: float = Field(default=0, ge=0, le=2)
+    exact_utilization: float | None = Field(
+        default=None,
+        ge=0,
+        description="Unrounded governing utilization from the source calculation",
+    )
+    governing_check: str = Field(
+        default="combined_compliance",
+        min_length=1,
+        description="Governing check name from the source calculation",
+    )
     is_safe: bool = Field(default=True)
+    effective_depth: float | None = Field(
+        default=None,
+        gt=0,
+        description="Effective depth used by the source beam calculation (mm)",
+    )
+    clear_cover: float = Field(
+        default=25,
+        ge=20,
+        le=75,
+        description="Clear cover used by the source calculation (mm)",
+    )
+    stirrup_dia_mm: float = Field(
+        default=8,
+        ge=6,
+        le=16,
+        description="Stirrup diameter used by the source calculation (mm)",
+    )
+    main_bar_dia_mm: float = Field(
+        default=20,
+        ge=8,
+        le=36,
+        description="Main bar diameter used by the source calculation (mm)",
+    )
     format: str = Field(default="html", pattern="^(html|json|pdf)$")
 
 
@@ -227,6 +260,8 @@ async def export_dxf(request: ExportBeamRequest):
 async def export_report(request: ExportReportRequest):
     """Generate and download a design report."""
     try:
+        from structural_lib.services.api import design_beam_is456
+        from structural_lib.services.evidence import build_beam_evidence_envelope
         from structural_lib.services.report import (
             ReportData,
             export_html,
@@ -239,10 +274,56 @@ async def export_report(request: ExportReportRequest):
             detail="Report module not available",
         )
 
+    effective_depth = request.effective_depth
+    if effective_depth is None:
+        effective_depth = (
+            request.depth
+            - request.clear_cover
+            - request.stirrup_dia_mm
+            - request.main_bar_dia_mm / 2
+        )
+    # Re-run the supported calculation from the report inputs.  Evidence must
+    # identify a calculation performed by the server, not a client-supplied
+    # safety flag or rounded utilization value.
+    design_result = design_beam_is456(
+        units="IS456",
+        case_id="CASE-1",
+        mu_knm=request.moment,
+        vu_kn=request.shear,
+        b_mm=request.width,
+        D_mm=request.depth,
+        d_mm=effective_depth,
+        fck_nmm2=request.fck,
+        fy_nmm2=request.fy,
+        d_dash_mm=request.clear_cover
+        + request.stirrup_dia_mm
+        + request.main_bar_dia_mm / 2,
+    )
+    governing_utilization = design_result.governing_utilization
+    evidence = build_beam_evidence_envelope(
+        inputs={
+            "units": "IS456",
+            "case_id": "CASE-1",
+            "mu_knm": request.moment,
+            "vu_kn": request.shear,
+            "b_mm": request.width,
+            "D_mm": request.depth,
+            "d_mm": effective_depth,
+            "fck_nmm2": request.fck,
+            "fy_nmm2": request.fy,
+            "d_dash_mm": request.clear_cover
+            + request.stirrup_dia_mm
+            + request.main_bar_dia_mm / 2,
+            "asv_mm2": 100.0,
+        },
+        is_ok=design_result.is_ok,
+        governing_utilization=governing_utilization,
+        utilizations=design_result.utilizations,
+    )
     beam_geom = {
         "b_mm": request.width,
         "D_mm": request.depth,
-        "d_mm": request.depth - 50.0,
+        "d_mm": effective_depth,
         "fck_nmm2": request.fck,
         "fy_nmm2": request.fy,
     }
@@ -258,7 +339,7 @@ async def export_report(request: ExportReportRequest):
             "ast_required_mm2": request.ast_required,
             "ast_provided_mm2": request.ast_provided,
             "utilization": request.utilization,
-            "is_ok": request.is_safe,
+            "is_ok": design_result.is_ok,
         }
     }
     report_data = ReportData(
@@ -268,8 +349,9 @@ async def export_report(request: ExportReportRequest):
         beam=beam_geom,
         cases=cases,
         results=results,
-        is_ok=request.is_safe,
-        governing_utilization=request.utilization,
+        is_ok=design_result.is_ok,
+        governing_utilization=governing_utilization,
+        evidence=evidence,
     )
 
     if request.format == "pdf":

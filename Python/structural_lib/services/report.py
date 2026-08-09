@@ -275,6 +275,7 @@ class ReportData:
     is_ok: bool = False
     governing_case_id: str = ""
     governing_utilization: float = 0.0
+    evidence: dict[str, Any] | None = None
 
 
 @dataclass
@@ -1063,6 +1064,8 @@ def export_json(data: ReportData, *, indent: int = 2) -> str:
         "stability_scorecard": stability_scorecard,
         "units_sentinel": units_sentinel,
     }
+    if data.evidence is not None:
+        output["evidence"] = data.evidence
     return json.dumps(output, indent=indent, sort_keys=True, ensure_ascii=False)
 
 
@@ -1204,6 +1207,16 @@ def _render_report_sections(data: ReportData) -> str:
     sanity_table = _render_sanity_table(get_input_sanity(data))
     scorecard_table = _render_scorecard_table(get_stability_scorecard(data))
     units_table = _render_units_table(get_units_sentinel(data))
+    evidence_section = ""
+    if data.evidence is not None:
+        evidence_json = html.escape(
+            json.dumps(data.evidence, indent=2, sort_keys=True, ensure_ascii=False)
+        )
+        evidence_section = f"""<div class="section">
+    <h2>Evidence Identity</h2>
+    <pre>{evidence_json}</pre>
+    <p><em>This metadata is software evidence, not professional design approval.</em></p>
+</div>"""
 
     return f"""<div class="summary">
     <p><strong>Job ID:</strong> {job_id}</p>
@@ -1227,7 +1240,8 @@ def _render_report_sections(data: ReportData) -> str:
 <div class="section">
     <h2>Units Sentinel</h2>
     {units_table}
-</div>"""
+</div>
+{evidence_section}"""
 
 
 def _render_beam_section(
@@ -1435,11 +1449,13 @@ def _render_batch_index_table(
         is_ok = bool(beam.get("is_ok", False))
         status = "PASS" if is_ok else "FAIL"
         status_class = "status-pass" if is_ok else "status-fail"
-        rows.append(f"""        <tr>
+        rows.append(
+            f"""        <tr>
             <td><a href="{link_prefix}{slug}{link_suffix}">{label}</a></td>
             <td class="{status_class}">{status}</td>
             <td>{util:.2%}</td>
-        </tr>""")
+        </tr>"""
+        )
 
     rows_joined = "\n".join(rows)
     return f"""<table class="index-table">
