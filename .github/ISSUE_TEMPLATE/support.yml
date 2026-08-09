@@ -8,9 +8,10 @@ body:
   - type: markdown
     attributes:
       value: |
-        Need help with the library? We're happy to assist!
+        Need help with StructLib? Please share enough context to reproduce or understand the question.
 
         **Quick resources:**
+        - [Product Tour](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/getting-started/product-tour.md)
         - [Documentation](https://github.com/Pravin-surawase/structural_engineering_lib/tree/main/docs)
         - [API Reference](https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/reference/api.md)
         - [Examples](https://github.com/Pravin-surawase/structural_engineering_lib/tree/main/Python/examples)
@@ -20,7 +21,7 @@ body:
     attributes:
       label: Question
       description: What do you need help with?
-      placeholder: How do I design a T-beam with the library?
+      placeholder: How do I run the bundled sample through the Building Editor?
     validations:
       required: true
 
@@ -31,10 +32,14 @@ body:
       description: Which part of the library is this about?
       options:
         - Python library (structural_lib)
-        - Excel/VBA
-        - CLI tool
-        - DXF export
+        - Command-line interface
+        - FastAPI / WebSocket / SSE
+        - React workbench
+        - CSV import / batch design
+        - 3D visualization
+        - BBS / DXF / reports / BOQ
         - Installation / Setup
+        - Documentation
         - General usage
     validations:
       required: true
@@ -45,7 +50,7 @@ body:
       label: What I tried
       description: What have you already tried?
       placeholder: |
-        I tried using api.design_beam_is456() but got an error...
+        I followed the Python quick start and then...
     validations:
       required: false
 
@@ -55,10 +60,11 @@ body:
       label: Context
       description: Your environment and what you're trying to achieve
       value: |
-        - Library version: [e.g., 0.17.0]
+        - Library version: [e.g., 0.23.0]
         - Python version: [e.g., 3.11.8]
         - OS: [e.g., Windows 11]
-        - Use case: [e.g., beam design for residential building]
+        - Interface: [Python / CLI / FastAPI / React]
+        - Use case: [brief description]
     validations:
       required: true
 

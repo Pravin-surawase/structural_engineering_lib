@@ -1,8 +1,9 @@
 # Documentation Images
 
-This folder contains images referenced by the documentation (e.g., Excel tutorial screenshots, architecture diagrams).
+This folder contains images referenced by the documentation, including verified
+product captures and architecture diagrams.
 
-**Updated:** 2026-01-11
+**Updated:** 2026-08-10
 
 ---
 
@@ -14,6 +15,7 @@ This folder contains images referenced by the documentation (e.g., Excel tutoria
 | Architecture | `arch-*.png` | `arch-layer-diagram.png` |
 | Workflow | `workflow-*.png` | `workflow-design-process.png` |
 | Screenshots | `screenshot-*.png` | `screenshot-output-example.png` |
+| Product tour | `product/*.jpg` | `product/beam-inspector.jpg` |
 
 ---
 
@@ -45,6 +47,8 @@ The file [screenshot-guide.md](../_internal/screenshot-guide.md) lists target sc
 | Document | Purpose |
 |----------|---------|
 | [Screenshot Guide](../_internal/screenshot-guide.md) | Full screenshot requirements |
+| [Product Screenshots](product/README.md) | Verified public product captures |
+| [Product Tour](../getting-started/product-tour.md) | Visitor-facing application walkthrough |
 
 ---
 

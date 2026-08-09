@@ -1,5 +1,5 @@
 name: 🐛 Bug Report
-description: Report a calculation, integration, or DXF issue
+description: Report a calculation, API, workbench, import, or export issue
 title: "[Bug]: "
 labels: ["bug", "needs-triage"]
 assignees: []
@@ -35,22 +35,27 @@ body:
       description: Which part of the library is affected?
       options:
         - Python library (structural_lib)
-        - Excel/VBA
-        - CLI tool
-        - DXF export
+        - Command-line interface
+        - FastAPI / WebSocket / SSE
+        - React workbench
+        - CSV import / batch design
+        - 3D visualization
+        - BBS / DXF / reports / BOQ
         - Documentation
     validations:
       required: true
 
   - type: dropdown
-    id: beam-type
+    id: element-type
     attributes:
-      label: Beam Type
-      description: What type of beam design?
+      label: Structural Element
+      description: Which supported element or workflow is involved?
       options:
-        - Rectangular
-        - Flanged (T-beam)
-        - L-beam
+        - Beam
+        - Column
+        - Isolated footing
+        - Solid slab
+        - Building / batch workflow
         - Not applicable
     validations:
       required: false
@@ -79,8 +84,8 @@ body:
       value: |
         - OS: [e.g., Windows 11, macOS 14, Ubuntu 22.04]
         - Python version: [e.g., 3.11.8]
-        - Library version: [e.g., 0.17.0]
-        - Excel version (if VBA): [e.g., Microsoft 365]
+        - Library version: [e.g., 0.23.0]
+        - Interface: [Python / CLI / FastAPI / React]
     validations:
       required: true
 

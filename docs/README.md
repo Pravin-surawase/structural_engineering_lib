@@ -1,27 +1,28 @@
 # Docs Index (Start Here)
 
-> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly.
-> Look at the **Type** and **Complexity** columns to decide what to read.
+Guides, references, evidence, and contributor material for the
+`structural-lib-is456` Python package and the React/FastAPI workbench.
 
 ---
 
-## 📋 Quick Navigation (Semantic Index)
+## Start here
 
-### 🚀 Start Here (by role)
+| You want to… | Start with | Type | Description |
+|---|---|---|---|
+| **See the application** | [Product tour](getting-started/product-tour.md) | tour | Real import, 3D review, member inspection, and dashboard screens |
+| **Use the Python package** | [Python quick start](getting-started/python-quickstart.md) | tutorial | Install the package and run a first supported design |
+| **Understand the UI workflow** | [React UI user flow](guides/react-ui-user-flow.md) | guide | Import, design, review, dashboard, and export paths |
+| **Integrate an application** | [Platform guide](developers/platform-guide.md) | guide | Build on the Python and FastAPI interfaces |
+| **Look up a function** | [API reference](reference/api.md) | reference | Public signatures, parameters, units, and results |
+| **Verify supported evidence** | [Evidence crosswalk](verification/is456-library-first-evidence.md) | evidence | Supported cases, sources, unsafe cases, limits, and release evidence |
+| **Contribute code** | [Development guide](contributing/development-guide.md) | guide | Architecture, validation, and pull-request workflow |
+| **Work as a coding agent** | [Agent bootstrap](getting-started/agent-bootstrap.md) | guide | Repository-specific automation and guardrails |
 
-| Role | Start With | Type | Complexity | Description |
-|------|-----------|------|------------|-------------|
-| **AI Agent (new)** | [agent-bootstrap.md](getting-started/agent-bootstrap.md) | guide | beginner | 60-second onboarding checklist |
-| **AI Agent (working)** | [agent-quick-reference.md](agents/guides/agent-quick-reference.md) | reference | intermediate | Commands, scripts, workflows |
-| **AI Agent (coding)** | [ai-agent-coding-guide.md](guides/ai-agent-coding-guide.md) | guide | intermediate | Coding standards, tests, reviews |
-| **Python Developer** | [python-quickstart.md](getting-started/python-quickstart.md) | tutorial | beginner | Install, import, first design |
-| **Contributor** | [development-guide.md](contributing/development-guide.md) | guide | intermediate | PR process, code style, tests |
-| **Researcher** | [research/README.md](README.md) | index | intermediate | Research catalog and findings |
-
-### 📚 By Topic (all docs)
+## Browse by topic
 
 | Topic | Key Docs | Type | Complexity | What You'll Learn |
 |-------|---------|------|------------|-------------------|
+| **Product tour** | [product-tour.md](getting-started/product-tour.md) | tour | beginner | What the complete visual workflow looks like |
 | **API** | [api.md](reference/api.md) | reference | advanced | Full function signatures, parameters |
 | **IS 456 Formulas** | [is456-formulas.md](reference/is456-formulas.md) | reference | intermediate | Clause references, equations |
 | **Architecture** | [project-overview.md](architecture/project-overview.md) | guide | intermediate | Layer structure, data flow |
@@ -46,7 +47,7 @@
 
 ---
 
-## Quick CLI Reference (v0.11.0+)
+## Quick CLI Reference
 
 ```bash
 python -m structural_lib design input.csv -o results.json
@@ -60,14 +61,11 @@ python -m structural_lib validate job.json
 python -m structural_lib critical ./output --top 10 --format=csv -o critical.csv
 python -m structural_lib report ./output --format=html -o report.html
 ```
-For VS Code AI-agent work, start with:
-- **[agent-bootstrap.md](getting-started/agent-bootstrap.md)** - New agent checklist
-- **[AGENT_WORKFLOW_MASTER_GUIDE.md](agents/guides/agent-workflow-master-guide.md)** - Complete automation guide
-- **[AGENT_QUICK_REFERENCE.md](agents/guides/agent-quick-reference.md)** - Essential commands
-- **[ai-agent-coding-guide.md](guides/ai-agent-coding-guide.md)** - Coding standards and quality gates
-- [agent-bootstrap.md](getting-started/agent-bootstrap.md) - Full agent context (canonical)
-- [AI summary](../llms.txt) - LLM-friendly summary
-- [Handoff Quick Start](contributing/handoff.md) - Session handoff
+Agent-specific navigation is available in the
+[agent bootstrap](getting-started/agent-bootstrap.md),
+[agent quick reference](agents/guides/agent-quick-reference.md), and
+[LLM summary](../llms.txt). Human-facing product and API guidance remains the
+default path through this page.
 
 ---
 
