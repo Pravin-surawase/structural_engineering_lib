@@ -13,11 +13,12 @@ from __future__ import annotations
 from structural_lib.codes.is456.beam.flexure import calculate_ast_required
 from structural_lib.codes.is456.footing._common import (
     net_upward_pressure_nmm2,
+    require_finite_real,
     validate_footing_inputs,
 )
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import FootingFlexureResult
-from structural_lib.core.errors import ValidationError
+from structural_lib.core.errors import DimensionError, ValidationError
 
 
 def _design_direction(
@@ -25,6 +26,7 @@ def _design_direction(
     width_mm: float,
     cant_mm: float,
     d_mm: float,
+    overall_thickness_mm: float,
     fck: float,
     fy: float,
     direction_label: str,
@@ -67,8 +69,8 @@ def _design_direction(
     # IS 456 Cl 26.5.2.1: Minimum steel check
     pt_min = 0.12 if fy >= 415 else 0.15
     if pt < pt_min:
-        Ast_mm2 = pt_min * width_mm * d_mm / 100.0
-        pt = pt_min
+        Ast_mm2 = pt_min * width_mm * overall_thickness_mm / 100.0
+        pt = (Ast_mm2 / (width_mm * d_mm)) * 100.0
         warnings.append(
             f"{direction_label}-direction: steel increased to minimum "
             f"{pt_min}% per Cl 26.5.2.1"
@@ -87,6 +89,8 @@ def footing_flexure(
     b_mm: float,
     fck: float,
     fy: float,
+    *,
+    overall_thickness_mm: float,
 ) -> FootingFlexureResult:
     """Calculate bending moment and required steel at column face per IS 456 Cl 34.2.3.1.
 
@@ -105,6 +109,8 @@ def footing_flexure(
         L_mm: Footing length (mm)
         B_mm: Footing width (mm)
         d_mm: Effective depth (mm)
+        overall_thickness_mm: Overall physical footing thickness (mm), used for
+            the slab-type minimum reinforcement area.
         a_mm: Column dimension parallel to L (mm)
         b_mm: Column dimension parallel to B (mm)
         fck: Characteristic concrete strength (N/mm²)
@@ -132,6 +138,16 @@ def footing_flexure(
           biaxial moment effects on steel distribution.
     """
     validate_footing_inputs(L_mm, B_mm, d_mm, a_mm, b_mm)
+    require_finite_real(
+        "overall_thickness_mm", overall_thickness_mm, error_type=DimensionError
+    )
+    if not 0 < d_mm < overall_thickness_mm:
+        raise DimensionError(
+            "Effective depth d_mm must be positive and less than overall thickness",
+            details={"d_mm": d_mm, "overall_thickness_mm": overall_thickness_mm},
+        )
+    require_finite_real("fck", fck)
+    require_finite_real("fy", fy)
 
     if fck <= 0 or fy <= 0:
         raise ValidationError(
@@ -149,11 +165,11 @@ def footing_flexure(
     # IS 456 Cl 34.2.3.1: Design BOTH directions independently
     # L-direction: moment about B-axis, steel runs parallel to L, spread over width B
     Mu_L_kNm, Ast_L_mm2, pt_L, warn_L = _design_direction(
-        qu, B_mm, cant_L, d_mm, fck, fy, "L"
+        qu, B_mm, cant_L, d_mm, overall_thickness_mm, fck, fy, "L"
     )
     # B-direction: moment about L-axis, steel runs parallel to B, spread over width L
     Mu_B_kNm, Ast_B_mm2, pt_B, warn_B = _design_direction(
-        qu, L_mm, cant_B, d_mm, fck, fy, "B"
+        qu, L_mm, cant_B, d_mm, overall_thickness_mm, fck, fy, "B"
     )
 
     warnings = warn_L + warn_B

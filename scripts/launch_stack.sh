@@ -266,39 +266,17 @@ check_python() {
 }
 
 select_node_runtime() {
-    local brew_prefix=""
     local candidate_bin=""
     local candidate_version=""
-    local candidate_major=""
 
-    # Homebrew versioned Node formulae are keg-only, so transferred machines
-    # may still resolve a stale unversioned node first. Prefer the version
-    # declared by .nvmrc when Homebrew provides it.
-    if command -v brew &>/dev/null; then
-        brew_prefix=$(brew --prefix "node@$NODE_REQUIRED_MAJOR" 2>/dev/null || true)
-        if [[ -n "$brew_prefix" ]]; then
-            candidate_bin="$brew_prefix/bin"
-        fi
-    fi
-
+    candidate_bin=$("$REPO_ROOT/.venv/bin/python" \
+        "$REPO_ROOT/scripts/node_runtime.py" --bin-dir 2>/dev/null || true)
     if [[ -n "$candidate_bin" ]] && [[ -x "$candidate_bin/node" ]]; then
         candidate_version=$("$candidate_bin/node" --version 2>/dev/null || true)
-        candidate_major=$(echo "$candidate_version" | grep -oE '[0-9]+' | head -1)
-        if [[ "$candidate_major" == "$NODE_REQUIRED_MAJOR" ]]; then
-            export PATH="$candidate_bin:$PATH"
-            hash -r
-            log_verbose "Selected Node runtime: $candidate_bin ($candidate_version)"
-            return 0
-        fi
-    fi
-
-    # nvm/asdf/Volta users normally already have the requested version on PATH.
-    if command -v node &>/dev/null; then
-        candidate_version=$(node --version 2>/dev/null || true)
-        candidate_major=$(echo "$candidate_version" | grep -oE '[0-9]+' | head -1)
-        if [[ "$candidate_major" == "$NODE_REQUIRED_MAJOR" ]]; then
-            return 0
-        fi
+        export PATH="$candidate_bin:$PATH"
+        hash -r
+        log_verbose "Selected Node runtime: $candidate_bin ($candidate_version)"
+        return 0
     fi
 
     error "Node.js $NODE_REQUIRED_MAJOR.x from .nvmrc is not available"

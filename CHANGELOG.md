@@ -4,12 +4,57 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.23.0] — 2026-08-10
+
+Alpha development preview of the bounded Supported IS 456 RC Core. This is
+case-qualified software evidence, not professional design approval or complete
+IS 456 coverage.
+
+### Added
+- Bounded simply supported one-way slab flexure/detailing and one interior,
+  four-edge-continuous two-way slab flexure workflow with explicit external
+  coefficient provenance and qualified acceptance.
+- Isolated-footing Clause 34.4 bearing, dowel-area, diameter, bar-count, and
+  two-sided development-length transfer check.
+- Public supported-capability registry, stable footing/slab service facades,
+  and thin FastAPI footing/slab endpoints.
+- Exact-artifact release evidence: distribution hashes and inventories,
+  protected-content allowlist, clean-wheel UAT, and CycloneDX SBOM.
+
 ### Fixed
+- Column slenderness is evaluated about both axes; direct short-column checks
+  reject slender members, and long-column design enforces minimum eccentricity
+  about both axes.
+- Legacy footing bearing no longer treats the full footing plan as the
+  effective supporting area without an explicitly approved contained frustum.
+- Two-way slab public calls require explicit interior/four-continuous support
+  declarations instead of asserting that configuration for callers.
+- FastAPI detailing uses the canonical development-length service adapter.
+- Release automation now recognizes native `codex/` branches, selects the
+  repository-pinned Node 24, and uses current release-document paths/patterns.
+- Ruff is the sole import sorter, removing the conflicting isort hook and
+  dependency; the live-design hook now has stable WebSocket dependencies and
+  zero ESLint warnings.
 - Fix Windows CI test failures: `time.time()` → `time.perf_counter()` in 6 library files (#550)
 - Fix CycloneDX SBOM generation: update CLI flags for cyclonedx-bom v7+ (#550)
 - Fix OpenSSF Scorecard: narrow workflow permissions to job-level (#550)
 - Fix OpenAPI baseline drift for BiaxialCheckRequest (#550)
 - Fix Nightly QA: add smoke test failure guard (#550)
+
+### Changed
+- Public `clauses.json` now contains identifiers and project-authored metadata
+  only; protected source PDFs and extracted clause/table/formula candidates
+  remain in a local Git-ignored corpus and are excluded from distributions.
+- Custom Git lifecycle wrappers and repository-enforcement hooks were retired
+  in favor of native Codex Git/GitHub operations and standard pre-commit checks.
+- Public claims now describe only the supported beam, column, isolated-footing,
+  and solid-slab cases and retain qualified-engineer review boundaries.
+
+### Release-candidate verification snapshot
+- Canonical quick gate 9/9 and full gate 29/29.
+- Release preflight: 5,452 passed, 3 skipped, 6 deselected.
+- React Node 24 lane: 147 tests, zero lint warnings, and production build pass.
+- PR #693 aggregate gate passed before merge.
 
 ## [0.21.6] — 2026-04-07
 

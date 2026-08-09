@@ -15,7 +15,7 @@ Open-source IS 456 RC beam design library. Full stack:
 
 The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines/ai-token-efficiency.md); project efficiency defaults are enforced by [`.codex/config.toml`](.codex/config.toml).
 
-- Keep one parent task active. Always respect the parent model and reasoning selected by the user; repository configuration and agents must not switch or override it. If the user asks for a recommendation, prefer Luna for clear repeatable work, Terra for normal implementation, and Sol only for an explicitly approved escalation.
+- Keep one parent task active. An explicit model or reasoning selection by the user controls. When the user explicitly delegates model choice for a task, the orchestrator may choose suitable available parent and subagent profiles in proportion to task risk; repository defaults remain advisory. If the user asks for a recommendation, prefer Luna for clear repeatable work, Terra for normal implementation, and Sol only after explicit selection, case-specific approval, or delegated model-choice authority.
 - Keep Fast mode off unless the user explicitly prioritizes speed over usage.
 - Default to no subagents. Use at most two concurrent subagents, only for independent bounded work that materially benefits from delegation.
 - Never pass full parent history to a subagent. Send a concise packet with the objective, exact files, constraints, question, commands, and expected output.
@@ -24,10 +24,11 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
 - Start with `./run.sh session brief --agent <role>`, folder indexes, and targeted `rg`; do not load full agent files or large logs unless required.
 - Use targeted tests while iterating, `./run.sh check --quick` before commit, and the full gate once at closeout.
 - Use `/status` and Settings → Usage for Codex usage. Run `./run.sh efficiency check` for repository-side policy validation.
-- Run `./run.sh model "task"` only when the user asks for a recommendation or
-  has not selected a model. The picker is advisory and must never change the
-  active parent model: Luna-first for clear repeatable work, Terra for normal
-  or high-risk implementation, and Sol only after explicit approval.
+- Run `./run.sh model "task"` only when the user asks for a recommendation,
+  has not selected a model, or has delegated model choice. The picker is
+  advisory: Luna-first for clear repeatable work, Terra for normal or high-risk
+  implementation, and Sol only after explicit selection, case-specific
+  approval, or delegated model-choice authority.
 
 ## Surgical Work and Essential-Only Review (MANDATORY)
 
@@ -109,7 +110,12 @@ grep -r "@router" fastapi_app/routers/ | head -30               # Existing API r
 ./run.sh session start              # Begin work (verify env, read priorities)
 ./run.sh check --quick              # Fast validation (<30s, 9 checks)
 ./run.sh check                      # Full validation (29 checks, parallel)
-./run.sh test                       # Run pytest suite
+./run.sh test                       # Run Python package pytest suite
+./run.sh test --fastapi             # Run complete FastAPI test suite
+./run.sh test --react               # Run complete React test suite on pinned Node
+./run.sh test --all                 # Run Python + FastAPI + React tests
+./run.sh frontend check             # React lint + tests + production build
+./run.sh frontend runtime           # Show selected .nvmrc Node/npm runtime
 # Git/GitHub lifecycle is handled directly by Codex, not run.sh.
 ./run.sh find "topic"               # Find the right script
 ./run.sh find --api func_name       # Get exact API param names
@@ -145,7 +151,7 @@ Direct scripts (when run.sh doesn't cover it):
 .venv/bin/python scripts/safe_file_move.py a b   # Move files (preserves 870+ links)
 colima start --cpu 4 --memory 4                  # Start Docker runtime (Colima, not Docker Desktop)
 docker compose up --build                        # Full stack at :8000/docs
-cd react_app && npm run build                    # React build check
+./run.sh frontend build                          # React build on pinned Node
 ```
 
 > **Docker:** This project uses **Colima** (not Docker Desktop) as the Docker runtime on Mac. Always run `colima start` before `docker compose`. If `docker ps` gives "permission denied", Colima isn't running. See [agent-bootstrap.md](docs/getting-started/agent-bootstrap.md) §5 for details.

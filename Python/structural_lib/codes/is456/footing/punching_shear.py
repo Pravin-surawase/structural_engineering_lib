@@ -18,6 +18,7 @@ from structural_lib.codes.is456.footing._common import (
     net_upward_pressure_nmm2,
     punching_area_mm2,
     punching_perimeter_mm,
+    require_finite_real,
     validate_footing_inputs,
 )
 from structural_lib.codes.is456.traceability import clause
@@ -82,6 +83,7 @@ def footing_punching_shear(
           punching capacity.
     """
     validate_footing_inputs(L_mm, B_mm, d_mm, a_mm, b_mm)
+    require_finite_real("fck", fck)
 
     if fck <= 0:
         raise ValidationError(

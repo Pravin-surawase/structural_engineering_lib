@@ -6,7 +6,7 @@ Provides a consistent response shape across all API endpoints:
 
 from __future__ import annotations
 
-from typing import Any, Generic, Optional, TypeVar
+from typing import Any, Generic, Literal, Optional, TypeVar
 
 from pydantic import BaseModel
 
@@ -18,7 +18,7 @@ class APIResponse(BaseModel, Generic[T]):
 
     success: bool = True
     data: T
-    error: Optional[str] = None
+    error: Optional[str | dict[str, Any]] = None
     clause_refs: Optional[dict[str, str]] = None
 
     class Config:
@@ -31,6 +31,22 @@ class APIResponse(BaseModel, Generic[T]):
         }
 
 
+class RequestValidationErrorPayload(BaseModel):
+    """Field-preserving Pydantic request validation error."""
+
+    code: Literal["REQUEST_VALIDATION_ERROR"]
+    message: str
+    details: list[dict[str, Any]]
+
+
+class RequestValidationErrorResponse(BaseModel):
+    """Documented 422 form of the maintained response envelope."""
+
+    success: Literal[False] = False
+    data: None = None
+    error: RequestValidationErrorPayload
+
+
 def success_response(data: Any, clause_refs: dict[str, str] | None = None) -> dict:
     """Wrap any response in standardized APIResponse format."""
     result: dict[str, Any] = {"success": True, "data": data}
@@ -39,6 +55,6 @@ def success_response(data: Any, clause_refs: dict[str, str] | None = None) -> di
     return result
 
 
-def error_response(error: str) -> dict:
+def error_response(error: str | dict[str, Any]) -> dict:
     """Wrap error in standardized APIResponse format."""
     return {"success": False, "data": None, "error": error}

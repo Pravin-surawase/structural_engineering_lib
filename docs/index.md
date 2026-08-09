@@ -3,7 +3,7 @@
 > **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly.
 
 **Type:** Documentation
-**Last Updated:** 2026-08-07
+**Last Updated:** 2026-08-10
 **Files:** 6
 
 ## Config Files
@@ -16,9 +16,9 @@
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [README.md](README.md) | Docs Index (Start Here) | > **For AI Agents:** This index uses semantic metadata to he | 254 |
-| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 395 |
-| [TASKS.md](TASKS.md) | Task Board | > **Single source of truth for active work.** Keep it short  | 645 |
-| [WORKLOG.md](WORKLOG.md) |  | > **One line per item. Compact. Append-only.** > Format: DAT | 325 |
+| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 545 |
+| [TASKS.md](TASKS.md) | Task Board | > **Single source of truth for active work.** Keep it short  | 666 |
+| [WORKLOG.md](WORKLOG.md) |  | > **One line per item. Compact. Append-only.** > Format: DAT | 338 |
 
 ## Subfolders
 
@@ -28,13 +28,13 @@
 | [agents/](agents/) | 22 | > **For AI Agents:** Use the semantic registry below to find the right docs quic |
 | [api-reference/](api-reference/) | 1 |  |
 | [architecture/](architecture/) | 16 | Deep dives into project structure, design decisions, and system architecture. |
-| [audit/](audit/) | 11 |  |
+| [audit/](audit/) | 12 |  |
 | [blog-drafts/](blog-drafts/) | 7 | Draft blog posts for publication about structural engineering software and IS 45 |
 | [contributing/](contributing/) | 26 | Guides for developers and maintainers of the structural engineering library. |
 | [cookbook/](cookbook/) | 5 | Task-focused recipes and code snippets for common structural engineering workflo |
 | [developers/](developers/) | 6 | > **For developers building on top of the structural_engineering_lib platform** |
 | [getting-started/](getting-started/) | 20 | Quick onboarding guides for new users of the structural engineering library. |
-| [git-automation/](git-automation/) | 2 |  |
+| [git-automation/](git-automation/) | 2 | owner: Main Agent |
 | [governance/](governance/) | 1 |  |
 | [guidelines/](guidelines/) | 18 |  |
 | [guides/](guides/) | 11 | End-user and developer guides for specific workflows. |
@@ -43,9 +43,9 @@
 | [learning-foundations/](learning-foundations/) | 14 | These are NOT specific to this repo. They are universal concepts every developer |
 | [legal/](legal/) | 6 | Engineering certification templates and usage guidelines. |
 | [migration/](migration/) | 46 |  |
-| [planning/](planning/) | 12 |  |
+| [planning/](planning/) | 15 |  |
 | [publications/](publications/) | 11 | This directory contains blog posts, technical articles, and academic papers docu |
 | [reference/](reference/) | 1793 |  |
 | [research/](research/) | 8 |  |
 | [specs/](specs/) | 6 | Technical specifications for data formats and schemas. |
-| [verification/](verification/) | 8 | Benchmark examples and verification packs for validating library calculations ag |
+| [verification/](verification/) | 10 | Benchmark examples and verification packs for validating library calculations ag |

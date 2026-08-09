@@ -13,6 +13,8 @@ from __future__ import annotations
 
 import html
 import logging
+from collections.abc import Mapping
+from copy import deepcopy
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
@@ -77,7 +79,7 @@ class ReportContext:
     date: str = ""
     inputs: dict[str, Any] = field(default_factory=dict)
     results: dict[str, Any] = field(default_factory=dict)
-    is_ok: bool = False
+    is_ok: bool | None = False
     code_reference: str = "IS 456:2000"
     software_version: str = ""
 
@@ -87,23 +89,99 @@ class ReportContext:
 
     def to_dict(self) -> dict[str, Any]:
         """Convert context to dictionary for template rendering."""
+        return _normalize_report_context(
+            {
+                "beam_id": self.beam_id,
+                "project_name": self.project_name,
+                "project_number": self.project_number,
+                "client_name": self.client_name,
+                "engineer_name": self.engineer_name,
+                "checker_name": self.checker_name,
+                "revision": self.revision,
+                "date": self.date,
+                "inputs": self.inputs,
+                "results": self.results,
+                "is_ok": self.is_ok,
+                "code_reference": self.code_reference,
+                "software_version": self.software_version,
+            }
+        )
+
+
+_SAFETY_SECTIONS = ("flexure", "shear", "deflection", "crack_width")
+
+
+def _status_fields(is_ok: bool | None) -> dict[str, Any]:
+    """Return explicit, fail-closed presentation fields for one status."""
+    if is_ok is True:
         return {
-            "beam_id": self.beam_id,
-            "project_name": self.project_name,
-            "project_number": self.project_number,
-            "client_name": self.client_name,
-            "engineer_name": self.engineer_name,
-            "checker_name": self.checker_name,
-            "revision": self.revision,
-            "date": self.date,
-            "inputs": self.inputs,
-            "results": self.results,
-            "is_ok": self.is_ok,
-            "status_text": "PASS" if self.is_ok else "FAIL",
-            "status_class": "status-pass" if self.is_ok else "status-fail",
-            "code_reference": self.code_reference,
-            "software_version": self.software_version,
+            "is_ok": True,
+            "status_text": "PASS",
+            "status_class": "status-pass",
+            "status_symbol": "✓",
         }
+    if is_ok is False:
+        return {
+            "is_ok": False,
+            "status_text": "FAIL",
+            "status_class": "status-fail",
+            "status_symbol": "✗",
+        }
+    return {
+        "is_ok": None,
+        "status_text": "NOT EVALUATED",
+        "status_class": "status-fail",
+        "status_symbol": "?",
+    }
+
+
+def _section_status(section: Mapping[str, Any]) -> bool | None:
+    """Read a current or supported legacy status without inventing PASS."""
+    for key in ("is_safe", "is_ok"):
+        value = section.get(key)
+        if type(value) is bool:
+            return value
+    return None
+
+
+def _normalize_report_context(context: dict[str, Any]) -> dict[str, Any]:
+    """Build the versioned, safety-aware context consumed by all templates."""
+    normalized = deepcopy(context)
+    raw_results = normalized.get("results", {})
+    results = dict(raw_results) if isinstance(raw_results, Mapping) else {}
+    section_statuses: list[bool | None] = []
+
+    for name in _SAFETY_SECTIONS:
+        raw_section = results.get(name)
+        if not isinstance(raw_section, Mapping):
+            continue
+        section = dict(raw_section)
+        status = _section_status(section)
+        # ``is_safe`` is an accepted legacy input spelling only.  The normalized
+        # report context must expose one canonical serialized outcome: ``is_ok``.
+        section.pop("is_safe", None)
+        section.update(_status_fields(status))
+        results[name] = section
+        section_statuses.append(status)
+
+    explicit_status = normalized.get("is_ok")
+    if type(explicit_status) is not bool:
+        nested_status = results.get("is_ok")
+        explicit_status = nested_status if type(nested_status) is bool else None
+
+    if any(status is False for status in section_statuses):
+        overall_status: bool | None = False
+    elif any(status is None for status in section_statuses):
+        overall_status = None
+    elif section_statuses:
+        overall_status = explicit_status if type(explicit_status) is bool else True
+    else:
+        overall_status = explicit_status if type(explicit_status) is bool else None
+
+    normalized["results"] = results
+    normalized.update(_status_fields(overall_status))
+    normalized["report_context_version"] = "1.0"
+    return normalized
 
 
 # =============================================================================
@@ -187,13 +265,16 @@ def generate_html_report(
         else:
             result_dict = {}
         proj = project_info or {}
-        fallback_ctx = {
-            "beam_id": beam_id,
-            "project_name": proj.get("project_name", ""),
-            "is_ok": result_dict.get(
-                "is_ok", result_dict.get("results", {}).get("is_ok", False)
-            ),
-        }
+        fallback_ctx = _normalize_report_context(
+            {
+                "beam_id": beam_id,
+                "project_name": proj.get("project_name", ""),
+                "results": result_dict.get("results", result_dict),
+                "is_ok": result_dict.get(
+                    "is_ok", result_dict.get("results", {}).get("is_ok", False)
+                ),
+            }
+        )
         return _generate_fallback_html(fallback_ctx)
 
     # Convert design result to dictionary if needed
@@ -249,6 +330,8 @@ def generate_html_report_from_dict(
     Note:
         Falls back to basic HTML if Jinja2 is not installed.
     """
+    context = _normalize_report_context(context)
+
     if not JINJA2_AVAILABLE:
         _logger.warning(
             "Jinja2 not installed — using basic fallback report. "
@@ -301,9 +384,9 @@ def _generate_fallback_html(context: dict[str, Any]) -> str:
 
     beam_id = e(context.get("beam_id", "B1"))
     project_name = e(context.get("project_name", ""))
-    is_ok = context.get("is_ok", False)
-    status = "PASS" if is_ok else "FAIL"
-    status_color = "#28a745" if is_ok else "#dc3545"
+    normalized = _normalize_report_context(context)
+    status = normalized["status_text"]
+    status_color = "#28a745" if normalized["is_ok"] is True else "#dc3545"
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -326,7 +409,7 @@ def _generate_fallback_html(context: dict[str, Any]) -> str:
         <p><em>Note: Install Jinja2 for full report formatting:</em></p>
         <code>pip install structural-lib-is456[report]</code>
         <hr>
-        <pre>{html.escape(str(context.get("results", {})))}</pre>
+        <pre>{html.escape(str(normalized.get("results", {})))}</pre>
     </div>
 </body>
 </html>

@@ -56,6 +56,21 @@ class TestPackageScope:
         # Verify structural_lib itself is importable
         assert hasattr(structural_lib, "__version__") or hasattr(structural_lib, "api")
 
+    @pytest.mark.parametrize(
+        "excluded_dir",
+        [
+            "structural_lib/_migration_fixtures",
+            "structural_lib/research",
+            "structural_lib/codes/aci318",
+            "structural_lib/codes/ec2",
+        ],
+    )
+    def test_manifest_prunes_non_product_namespaces(self, excluded_dir):
+        """Stale egg-info cannot reintroduce excluded namespaces into builds."""
+        manifest = Path(__file__).resolve().parents[1] / "MANIFEST.in"
+        directives = manifest.read_text(encoding="utf-8").splitlines()
+        assert f"prune {excluded_dir}" in directives
+
 
 class TestWheelContents:
     """Build the wheel and verify its contents directly.

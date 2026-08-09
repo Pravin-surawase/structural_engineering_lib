@@ -387,3 +387,24 @@ python -m mypy
   must reject missing or ambiguous proof. Locate current documentation through
   folder indexes or `rg --files`; the canonical compact log is
   `docs/WORKLOG.md`.
+
+## 2026-08-09 — Professional Library Audit and Release Hold
+
+- v0.23.0 is a prepared source candidate, not a published release. No
+  v0.23.0 tag, GitHub Release, or branch PR was found. Keep publication and
+  released wording on hold until LIB-PRO-001 and exact-wheel review complete.
+- Confirmed outcome defects include non-finite beam/footing inputs, unsafe
+  shear reported/applied as batch PASS, report sections defaulting missing
+  status to PASS, footing minimum-steel area/count contracts, and ambiguous
+  bounded two-way slab review semantics.
+- Do not repeat TASK-660 naming migration, TASK-670 calculation-report field
+  repair, TASK-729/730 web validation, MAINT-004 manifest work, or MAINT-005's
+  positive browser sweep. The active plan maps each remaining gap to that
+  history in `professional-library-remediation-plan.md`.
+- The terminal root fix makes `./run.sh test` explicitly Python-only and adds
+  `--fastapi`, `--react`, `--all`, plus `./run.sh frontend ...` on the shared
+  `.nvmrc` runtime selector. Missing executable script targets now fail the
+  control-path validator; dead VBA/Streamlit commands are removed.
+- Next implementation is LIB-PRO-R1 only: a shared finite numeric boundary for
+  supported public beam and footing entry points. Preserve the separate model
+  policy, terminal control, audit/governance, and structural remediation lanes.

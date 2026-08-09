@@ -338,9 +338,24 @@ class CalculationReport:
             return html.escape(str(val))
 
         # Status class
-        is_ok = results.summary.get("is_ok", False)
-        status_class = "status-pass" if is_ok else "status-fail"
-        status_text = "PASS" if is_ok else "FAIL"
+        raw_shear_status = results.shear.get("is_safe")
+        shear_status = raw_shear_status if type(raw_shear_status) is bool else None
+        raw_is_ok = results.summary.get("is_ok")
+        is_ok = raw_is_ok if type(raw_is_ok) is bool else None
+        if shear_status is False:
+            is_ok = False
+        elif shear_status is None:
+            is_ok = None
+        status_class = "status-pass" if is_ok is True else "status-fail"
+        status_text = (
+            "PASS" if is_ok is True else "FAIL" if is_ok is False else "NOT EVALUATED"
+        )
+        shear_status_class = "status-pass" if shear_status is True else "status-fail"
+        shear_status_text = (
+            "PASS"
+            if shear_status is True
+            else "FAIL" if shear_status is False else "NOT EVALUATED"
+        )
 
         html_content = f"""<!DOCTYPE html>
 <html lang="en">
@@ -515,10 +530,8 @@ class CalculationReport:
             <tr><td>Stirrup Spacing</td><td class="number">{
             _format_number(results.shear.get("spacing"))
         }</td><td>mm</td></tr>
-            <tr><td>Shear Check</td><td class="{
-            status_class if results.shear.get("is_safe") else "status-fail"
-        }">{
-            "PASS" if results.shear.get("is_safe", True) else "FAIL"
+            <tr><td>Shear Check</td><td class="{shear_status_class}">{
+            shear_status_text
         }</td><td>-</td></tr>
         </table>
     </div>
@@ -548,8 +561,19 @@ class CalculationReport:
         inputs = self.inputs
         results = self.results
 
-        is_ok = results.summary.get("is_ok", False)
-        status = "✅ PASS" if is_ok else "❌ FAIL"
+        raw_is_ok = results.summary.get("is_ok")
+        is_ok = raw_is_ok if type(raw_is_ok) is bool else None
+        raw_shear_status = results.shear.get("is_safe")
+        shear_status = raw_shear_status if type(raw_shear_status) is bool else None
+        if shear_status is False:
+            is_ok = False
+        elif shear_status is None:
+            is_ok = None
+        status = (
+            "✅ PASS"
+            if is_ok is True
+            else "❌ FAIL" if is_ok is False else "⚠️ NOT EVALUATED"
+        )
 
         md = f"""# Calculation Report: {self.beam_id} @ {self.story}
 

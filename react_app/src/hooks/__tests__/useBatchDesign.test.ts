@@ -118,15 +118,50 @@ describe('useBatchDesign', () => {
     act(() => {
       es.emit('design_result', {
         beam_id: 'B1',
-        flexure: { ast_required: 850, moment_capacity: 165, is_under_reinforced: true },
-        shear: { tau_v: 0.65, tau_c: 0.48, stirrup_spacing: 150 },
+        design_succeeded: true,
+        is_safe: true,
+        status: 'PASS',
+        flexure: { ast_required: 850, asc_required: 0, mu_lim: 165, xu: 120, is_safe: true },
+        shear: { tau_v: 0.65, tau_c: 0.48, tau_c_max: 3.1, vus: 42, stirrup_spacing: 150, is_safe: true },
         utilization_ratio: 0.78,
       });
     });
 
     expect(result.current.results).toHaveLength(1);
     expect(result.current.results[0].beam_id).toBe('B1');
-    expect(result.current.results[0].success).toBe(true);
+    expect(result.current.results[0]).toMatchObject({
+      design_succeeded: true,
+      is_safe: true,
+      status: 'PASS',
+    });
+  });
+
+  it('preserves a completed unsafe design as FAIL', () => {
+    const { result } = renderHook(() => useBatchDesign());
+
+    act(() => {
+      result.current.startBatchDesign([mockBeam('B-UNSAFE-SHEAR')]);
+    });
+
+    const es = MockEventSource.instances[0];
+    act(() => {
+      es.emit('design_result', {
+        beam_id: 'B-UNSAFE-SHEAR',
+        design_succeeded: true,
+        is_safe: false,
+        status: 'FAIL',
+        flexure: { ast_required: 554, asc_required: 0, mu_lim: 205, xu: 89, is_safe: true },
+        shear: { tau_v: 4.42, tau_c: 0, tau_c_max: 3.1, vus: 0, stirrup_spacing: 0, is_safe: false },
+        utilization_ratio: 1.43,
+      });
+    });
+
+    expect(result.current.results[0]).toMatchObject({
+      design_succeeded: true,
+      is_safe: false,
+      status: 'FAIL',
+      shear: { tau_v: 4.42, tau_c_max: 3.1, is_safe: false },
+    });
   });
 
   it('handles progress events', () => {
@@ -179,7 +214,11 @@ describe('useBatchDesign', () => {
     });
 
     expect(result.current.results).toHaveLength(1);
-    expect(result.current.results[0].success).toBe(false);
+    expect(result.current.results[0]).toMatchObject({
+      design_succeeded: false,
+      is_safe: false,
+      status: 'FAIL',
+    });
     expect(result.current.results[0].error).toBe('Invalid dimensions');
   });
 

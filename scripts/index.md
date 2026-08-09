@@ -4,7 +4,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-10
-**Files:** 106
+**Files:** 107
 
 ## Config Files
 
@@ -14,7 +14,7 @@
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [README.md](README.md) | Scripts | > Development, validation, discovery, release-preparation, a | 68 |
+| [README.md](README.md) | Scripts | > Development, validation, discovery, release-preparation, a | 72 |
 
 ## Python Files
 
@@ -34,10 +34,10 @@
 | [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 11 | 783 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 467 |
 | [benchmark_api.py](benchmark_api.py) | API Performance Benchmark Script. | 4 | 9 | 837 |
-| [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 3 | 448 |
+| [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 3 | 444 |
 | [check_all.py](check_all.py) | Unified check orchestrator — runs all validation scripts in  | 3 | 1 | 712 |
 | [check_api.py](check_api.py) | Validate the live React/FastAPI contract and Python API docu | 1 | 4 | 362 |
-| [check_api_compat.py](check_api_compat.py) | Check API backward compatibility. | 0 | 3 | 157 |
+| [check_api_compat.py](check_api_compat.py) | Compatibility wrapper for the canonical public API manifest  | 0 | 1 | 49 |
 | [check_architecture_boundaries.py](check_architecture_boundaries.py) | Architecture Boundary Linter. | 3 | 9 | 495 |
 | [check_bootstrap_freshness.py](check_bootstrap_freshness.py) | Check if bootstrap docs are stale compared to actual codebas | 0 | 4 | 290 |
 | [check_circular_imports.py](check_circular_imports.py) | Circular Import Detector for the Python Structural Library | 5 | 1 | 464 |
@@ -84,12 +84,13 @@
 | [migrate_python_module.py](migrate_python_module.py) | Migrate a Python module to a new location with import update | 0 | 8 | 516 |
 | [migrate_react_component.py](migrate_react_component.py) | Migrate a React component to a new feature-grouped folder. | 0 | 9 | 475 |
 | [model_picker.py](model_picker.py) | Recommend a GPT-5.6 model and reasoning effort for a reposit | 1 | 2 | 295 |
+| [node_runtime.py](node_runtime.py) | Select and run the healthy Node.js major pinned by ``.nvmrc` | 0 | 4 | 205 |
 | [parity_dashboard.py](parity_dashboard.py) | Parity Dashboard — coverage/parity across IS 456, API, endpo | 0 | 6 | 519 |
 | [pipeline_state.py](pipeline_state.py) | Pipeline state tracking for multi-step agent workflows. | 2 | 17 | 868 |
 | [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 203 |
 | [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 903 |
 | [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 3 | 494 |
-| [release.py](release.py) | Unified release management CLI. | 0 | 7 | 1054 |
+| [release.py](release.py) | Unified release management CLI. | 0 | 8 | 1339 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 350 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
 | [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2262 |
@@ -103,7 +104,7 @@
 | [tool_permissions.py](tool_permissions.py) | Tool permission enforcement for agent operations. | 1 | 5 | 437 |
 | [tool_registry.py](tool_registry.py) | Unified tool registry — connects agents, skills, scripts, an | 1 | 12 | 556 |
 | [update_test_stats.py](update_test_stats.py) | Update Test Stats — Dynamic test count updater. | 0 | 5 | 211 |
-| [validate_api_contracts.py](validate_api_contracts.py) | API Contract Validator. | 2 | 9 | 620 |
+| [validate_api_contracts.py](validate_api_contracts.py) | API Contract Validator. | 2 | 9 | 647 |
 | [validate_imports.py](validate_imports.py) | Validate Python imports across the project after migration. | 0 | 6 | 380 |
 | [validate_schema_snapshots.py](validate_schema_snapshots.py) | Schema Snapshot Validator. | 0 | 6 | 257 |
 | [validate_script_refs.py](validate_script_refs.py) | Validate that active control paths reference existing script | 0 | 6 | 235 |

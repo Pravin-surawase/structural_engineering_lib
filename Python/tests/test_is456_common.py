@@ -7,6 +7,8 @@ Related: TASK-612
 
 from __future__ import annotations
 
+from decimal import Decimal
+
 import pytest
 
 from structural_lib.codes.is456.common.constants import (
@@ -36,7 +38,11 @@ from structural_lib.codes.is456.common.validation import (
 )
 from structural_lib.codes.is456.materials import get_ec, get_fcr, get_xu_max_d
 from structural_lib.core.errors import DimensionError, MaterialError
-from structural_lib.services.api import _validate_plausibility, design_beam_is456
+from structural_lib.services.api import (
+    _validate_plausibility,
+    check_beam_is456,
+    design_beam_is456,
+)
 
 # ===========================================================================
 # stress_blocks.py
@@ -718,6 +724,107 @@ class TestDesignBeamDepthValidation:
             fy_nmm2=500,
         )
         assert result is not None
+
+
+class TestBeamFiniteNumericBoundary:
+    """Public beam entrypoints reject invalid numeric inputs before arithmetic."""
+
+    @staticmethod
+    def _design_kwargs() -> dict[str, float | str | None]:
+        return {
+            "units": "IS456",
+            "mu_knm": 100.0,
+            "vu_kn": 50.0,
+            "b_mm": 230.0,
+            "D_mm": 500.0,
+            "d_mm": 450.0,
+            "fck_nmm2": 25.0,
+            "fy_nmm2": 500.0,
+            "d_dash_mm": 50.0,
+            "asv_mm2": 100.0,
+            "pt_percent": None,
+            "ast_mm2_for_shear": None,
+        }
+
+    @pytest.mark.parametrize(
+        "invalid_value", [float("nan"), float("inf"), float("-inf"), True, "25"]
+    )
+    @pytest.mark.parametrize(
+        "field",
+        [
+            "mu_knm",
+            "vu_kn",
+            "b_mm",
+            "D_mm",
+            "d_mm",
+            "fck_nmm2",
+            "fy_nmm2",
+            "d_dash_mm",
+            "asv_mm2",
+            "pt_percent",
+            "ast_mm2_for_shear",
+        ],
+    )
+    def test_design_rejects_non_finite_or_non_real_numeric_inputs(
+        self, field: str, invalid_value: object
+    ) -> None:
+        kwargs = self._design_kwargs()
+        kwargs[field] = invalid_value
+
+        with pytest.raises(ValueError, match=rf"{field} must be a finite real"):
+            design_beam_is456(**kwargs)  # type: ignore[arg-type]
+
+    def test_design_rejects_decimal_as_non_real_numeric_input(self) -> None:
+        kwargs = self._design_kwargs()
+        kwargs["mu_knm"] = Decimal("100")
+
+        with pytest.raises(ValueError, match="mu_knm must be a finite real"):
+            design_beam_is456(**kwargs)  # type: ignore[arg-type]
+
+    def test_design_rejects_none_for_required_numeric_input(self) -> None:
+        kwargs = self._design_kwargs()
+        kwargs["mu_knm"] = None
+
+        with pytest.raises(ValueError, match="mu_knm must be a finite real"):
+            design_beam_is456(**kwargs)  # type: ignore[arg-type]
+
+    @pytest.mark.parametrize(
+        "invalid_value", [float("nan"), float("inf"), float("-inf"), True, "100"]
+    )
+    @pytest.mark.parametrize("field", ["mu_knm", "vu_kn", "ast_mm2_for_shear"])
+    def test_check_rejects_invalid_case_actions_and_optional_steel(
+        self, field: str, invalid_value: object
+    ) -> None:
+        case: dict[str, object] = {
+            "case_id": "ULS",
+            "mu_knm": 100.0,
+            "vu_kn": 50.0,
+            "ast_mm2_for_shear": 1_000.0,
+        }
+        case[field] = invalid_value
+
+        with pytest.raises(ValueError, match=rf"{field} must be a finite real"):
+            check_beam_is456(
+                units="IS456",
+                cases=[case],
+                b_mm=230.0,
+                D_mm=500.0,
+                d_mm=450.0,
+                fck_nmm2=25.0,
+                fy_nmm2=500.0,
+            )
+
+    def test_check_rejects_none_for_required_case_action(self) -> None:
+        with pytest.raises(ValueError, match="mu_knm must be a finite real"):
+            check_beam_is456(
+                units="IS456",
+                cases=[{"case_id": "ULS", "mu_knm": None, "vu_kn": 50.0}],
+                b_mm=230.0,
+                D_mm=500.0,
+                d_mm=450.0,
+                fck_nmm2=25.0,
+                fy_nmm2=500.0,
+            )
 
 
 # ===========================================================================

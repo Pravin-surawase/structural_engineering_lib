@@ -10,6 +10,9 @@ Common calculations used across footing sub-modules:
 
 from __future__ import annotations
 
+import math
+from numbers import Real
+
 from structural_lib.core.errors import (
     E_FOOTING_001,
     E_FOOTING_005,
@@ -17,6 +20,26 @@ from structural_lib.core.errors import (
     DimensionError,
     ValidationError,
 )
+
+
+def require_finite_real(
+    name: str,
+    value: object,
+    *,
+    error_type: type[ValidationError] = ValidationError,
+    clause_ref: str | None = None,
+) -> None:
+    """Require a footing numeric input to be a finite real value."""
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, Real)
+        or not math.isfinite(value)
+    ):
+        raise error_type(
+            f"{name} must be a finite real number",
+            details={name: value},
+            clause_ref=clause_ref,
+        )
 
 
 def validate_footing_inputs(
@@ -39,6 +62,20 @@ def validate_footing_inputs(
         DimensionError: If any dimension is non-positive
         DimensionError: If column larger than footing
     """
+    for name, value in (
+        ("L_mm", L_mm),
+        ("B_mm", B_mm),
+        ("d_mm", d_mm),
+        ("a_mm", a_mm),
+        ("b_mm", b_mm),
+    ):
+        require_finite_real(
+            name,
+            value,
+            error_type=DimensionError,
+            clause_ref=E_FOOTING_001.clause,
+        )
+
     if L_mm <= 0 or B_mm <= 0 or d_mm <= 0:
         raise DimensionError(
             E_FOOTING_001.message,
@@ -75,6 +112,9 @@ def net_upward_pressure_nmm2(Pu_kN: float, L_mm: float, B_mm: float) -> float:
     Returns:
         Uniform net upward pressure (N/mm²)
     """
+    for name, value in (("Pu_kN", Pu_kN), ("L_mm", L_mm), ("B_mm", B_mm)):
+        require_finite_real(name, value)
+
     if Pu_kN <= 0:
         raise ValidationError(
             "Factored load must be positive",
@@ -94,6 +134,9 @@ def punching_perimeter_mm(a_mm: float, b_mm: float, d_mm: float) -> float:
     Returns:
         Perimeter (mm) of the critical section
     """
+    for name, value in (("a_mm", a_mm), ("b_mm", b_mm), ("d_mm", d_mm)):
+        require_finite_real(name, value, error_type=DimensionError)
+
     return 2.0 * ((a_mm + d_mm) + (b_mm + d_mm))
 
 
@@ -108,4 +151,7 @@ def punching_area_mm2(a_mm: float, b_mm: float, d_mm: float) -> float:
     Returns:
         Area (mm²) within critical perimeter
     """
+    for name, value in (("a_mm", a_mm), ("b_mm", b_mm), ("d_mm", d_mm)):
+        require_finite_real(name, value, error_type=DimensionError)
+
     return (a_mm + d_mm) * (b_mm + d_mm)

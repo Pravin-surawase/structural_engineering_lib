@@ -523,7 +523,8 @@ def test_dxf_export_importerror_sets_ezdxf_unavailable(monkeypatch):
     # poison later DXF consumers in the same full-suite process.
     sys.modules.pop("structural_lib.services.dxf_export", None)
     restored = importlib.import_module("structural_lib.services.dxf_export")
-    assert restored.EZDXF_AVAILABLE is True
+    expected_available = importlib.util.find_spec("ezdxf") is not None
+    assert restored.EZDXF_AVAILABLE is expected_available
 
 
 def test_flexure_flanged_bisection_else_branch_with_nan_mu():

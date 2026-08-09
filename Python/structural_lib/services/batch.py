@@ -89,26 +89,42 @@ def _design_single_beam(
         fy_nmm2=float(fy),
     )
 
+    # A completed calculation is not necessarily a safe design.  The public
+    # compliance result already combines every requested check (flexure,
+    # shear, and any supplied serviceability checks); preserve that single
+    # engineering verdict for every batch consumer.
+    is_safe = result.is_ok
+
     return {
         "beam_id": beam_id,
         "index": idx,
         "input": dict(beam_params),
+        "design_succeeded": True,
+        "is_safe": is_safe,
+        "status": "PASS" if is_safe else "FAIL",
         "flexure": {
             "ast_required": result.flexure.Ast_required,
+            "asc_required": result.flexure.Asc_required,
             "mu_lim": result.flexure.Mu_lim,
             "xu": result.flexure.xu,
             "is_safe": result.flexure.is_safe,
         },
         "shear": (
             {
-                "tv": result.shear.tau_v if result.shear else None,
-                "tc": result.shear.tau_c if result.shear else None,
+                "tau_v": result.shear.tau_v,
+                "tau_c": result.shear.tau_c,
+                "tau_c_max": result.shear.tau_c_max,
+                "vus": result.shear.Vus,
+                "stirrup_spacing": result.shear.spacing,
                 "is_safe": result.shear.is_safe if result.shear else None,
             }
             if result.shear
             else None
         ),
-        "status": "PASS" if result.flexure.is_safe else "FAIL",
+        "utilization_ratio": result.governing_utilization,
+        "utilizations": dict(result.utilizations),
+        "failed_checks": list(result.failed_checks),
+        "remarks": result.remarks,
     }
 
 
@@ -120,7 +136,9 @@ def design_beams_iter(
     """Yield design results for each beam input.
 
     Each yielded item is a dict with either:
-    - {"success": True, "data": result_dict}
+    - {"success": True, "data": result_dict} for a completed calculation.
+      The result's ``design_succeeded`` and ``is_safe`` fields distinguish
+      calculation completion from an engineering PASS verdict.
     - {"success": False, "error": {"beam_id", "index", "message"}}
     """
     for idx, beam in enumerate(beams):
@@ -163,6 +181,14 @@ def design_beams(
         "summary": {
             "total": len(results) + len(errors),
             "passed": sum(1 for r in results if r.get("status") == "PASS"),
-            "failed": len(errors),
+            "failed": sum(1 for r in results if r.get("status") == "FAIL")
+            + len(errors),
+            "is_safe": len(errors) == 0
+            and all(r.get("is_safe", False) for r in results),
+            "status": (
+                "PASS"
+                if len(errors) == 0 and all(r.get("is_safe", False) for r in results)
+                else "FAIL"
+            ),
         },
     }

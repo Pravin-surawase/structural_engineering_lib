@@ -3,16 +3,16 @@
   "type": "python-package",
   "description": "> Development, validation, discovery, release-preparation, and maintenance tools.",
   "last_updated": "2026-08-10",
-  "file_count": 106,
+  "file_count": 107,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 68,
-      "last_updated": "2026-08-09",
+      "size_lines": 72,
+      "last_updated": "2026-08-10",
       "title": "Scripts",
       "description": "> Development, validation, discovery, release-preparation, and maintenance tools. > Git/GitHub lifecycle wrappers were retired on 2026-08-09; Codex owns that",
-      "content_hash": "9c8d099f40d8"
+      "content_hash": "f038a0884d21"
     },
     {
       "name": "agent_brief.sh",
@@ -904,7 +904,7 @@
     {
       "name": "automation-map.json",
       "type": "config",
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -912,7 +912,7 @@
         "_coverage",
         "tasks"
       ],
-      "content_hash": "f7a807248ce2"
+      "content_hash": "9fede8c32264"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1050,7 +1050,7 @@
     {
       "name": "bump_version.py",
       "type": "python",
-      "size_lines": 448,
+      "size_lines": 444,
       "last_updated": "2026-08-10",
       "description": "Version Bump Script — Single Source of Truth",
       "functions": [
@@ -1079,7 +1079,7 @@
         "DOC_DATE_FILES",
         "EVERGREEN_NOTES"
       ],
-      "content_hash": "f228d1b81ad7"
+      "content_hash": "4852c0f0bd3e"
     },
     {
       "name": "check_all.py",
@@ -1157,31 +1157,20 @@
     {
       "name": "check_api_compat.py",
       "type": "python",
-      "size_lines": 157,
-      "last_updated": "2026-08-09",
-      "description": "Check API backward compatibility.",
+      "size_lines": 49,
+      "last_updated": "2026-08-10",
+      "description": "Compatibility wrapper for the canonical public API manifest check.",
       "functions": [
         {
-          "name": "get_current_api",
-          "description": "Introspect the current public API surface."
-        },
-        {
-          "name": "check_compat",
-          "description": "Compare saved manifest against current API. Return list of breaking changes.",
-          "params": [
-            "saved",
-            "current"
-          ]
-        },
-        {
-          "name": "main"
+          "name": "main",
+          "description": "Delegate legacy invocations to the canonical manifest generator."
         }
       ],
       "constants": [
         "PROJECT_ROOT",
-        "MANIFEST_PATH"
+        "GENERATOR"
       ],
-      "content_hash": "35baaf8f94f6"
+      "content_hash": "678ce0f1ef39"
     },
     {
       "name": "check_architecture_boundaries.py",
@@ -3388,10 +3377,10 @@
     {
       "name": "launch_stack.sh",
       "type": "shell-script",
-      "size_lines": 885,
-      "last_updated": "2026-08-09",
+      "size_lines": 863,
+      "last_updated": "2026-08-10",
       "description": "launch_stack.sh — Full-stack development launcher for structural_engineering_lib",
-      "content_hash": "954547578d89"
+      "content_hash": "92a45299c7a7"
     },
     {
       "name": "migrate_python_module.py",
@@ -3579,6 +3568,43 @@
         "HIGH_RISK"
       ],
       "content_hash": "f6b2d03eb763"
+    },
+    {
+      "name": "node_runtime.py",
+      "type": "python",
+      "size_lines": 205,
+      "last_updated": "2026-08-10",
+      "description": "Select and run the healthy Node.js major pinned by ``.nvmrc``.",
+      "functions": [
+        {
+          "name": "required_node_major",
+          "description": "Return the Node major pinned by ``.nvmrc``, if present.",
+          "params": [
+            "repo_root"
+          ]
+        },
+        {
+          "name": "node_bin_candidates",
+          "description": "Return plausible binary directories in deterministic preference order.",
+          "params": [
+            "required_major"
+          ]
+        },
+        {
+          "name": "node_runtime_env",
+          "description": "Return an environment using the pinned healthy Node/npm pair."
+        },
+        {
+          "name": "main",
+          "params": [
+            "argv"
+          ]
+        }
+      ],
+      "constants": [
+        "REPO_ROOT"
+      ],
+      "content_hash": "83b822a47279"
     },
     {
       "name": "parity_dashboard.py",
@@ -3985,10 +4011,17 @@
     {
       "name": "release.py",
       "type": "python",
-      "size_lines": 1054,
-      "last_updated": "2026-08-09",
+      "size_lines": 1339,
+      "last_updated": "2026-08-10",
       "description": "Unified release management CLI.",
       "functions": [
+        {
+          "name": "cmd_candidate_check",
+          "description": "Verify exact source, artifact, and clean-install version evidence.",
+          "params": [
+            "args"
+          ]
+        },
         {
           "name": "cmd_run",
           "params": [
@@ -4032,10 +4065,14 @@
         "CHANGELOG",
         "RELEASES",
         "CHECKLIST_PATH",
+        "PYPROJECT",
+        "FASTAPI_INIT",
+        "REACT_PACKAGE",
+        "CITATION",
         "VERSION_RE",
-        "REQUIRED_HEADINGS"
+        "_EXCLUDED_WHEEL_PREFIXES"
       ],
-      "content_hash": "50ad7d4c074e"
+      "content_hash": "604c0509b729"
     },
     {
       "name": "repo_health_check.sh",
@@ -4991,8 +5028,8 @@
     {
       "name": "validate_api_contracts.py",
       "type": "python",
-      "size_lines": 620,
-      "last_updated": "2026-08-09",
+      "size_lines": 647,
+      "last_updated": "2026-08-10",
       "description": "API Contract Validator.",
       "classes": [
         {
@@ -5026,14 +5063,14 @@
         },
         {
           "name": "save_baseline",
-          "description": "Save current schema as baseline.",
+          "description": "Save the canonical raw OpenAPI schema used by every snapshot tool.",
           "params": [
             "schema"
           ]
         },
         {
           "name": "load_baseline",
-          "description": "Load baseline schema if exists."
+          "description": "Load the raw baseline and derive this validator's compact signature."
         },
         {
           "name": "print_comparison",
@@ -5074,7 +5111,7 @@
         "PROJECT_ROOT",
         "PYTHON_DIR"
       ],
-      "content_hash": "b74403b34d0e"
+      "content_hash": "bb35448c3f43"
     },
     {
       "name": "validate_git_state.sh",
@@ -5262,5 +5299,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "1505780801ae211a"
+  "content_hash": "67cd434602579e05"
 }

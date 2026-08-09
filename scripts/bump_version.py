@@ -82,7 +82,10 @@ DOC_VERSION_FILES = {
         (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
     ],
     "docs/planning/pre-release-checklist.md": [
-        (r"^(Version: )[0-9]+\.[0-9]+\.[0-9]+(.*)$", r"\g<1>{version}\g<2>"),
+        (
+            r"^(Installed metadata version: )[0-9]+\.[0-9]+\.[0-9]+(.*)$",
+            r"\g<1>{version}\g<2>",
+        ),
     ],
     "docs/reference/api-stability.md": [
         (
@@ -112,9 +115,6 @@ DOC_VERSION_FILES = {
 
 # Documentation "Last Updated" stamps (normalized to YYYY-MM-DD).
 DOC_DATE_FILES = {
-    "docs/planning/research-ai-enhancements.md": [
-        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}<br>"),
-    ],
     "docs/planning/next-session-brief.md": [
         (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}<br>"),
     ],
@@ -129,21 +129,17 @@ DOC_DATE_FILES = {
         (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}<br>"),
     ],
     "docs/TASKS.md": [
-        (r"^- \*\*Last Updated\*\*: .+", "- **Last Updated**: {date}"),
+        (r"^\*\*Updated:\*\* .+", "**Updated:** {date}"),
     ],
     "docs/getting-started/beginners-guide.md": [
         (r"(Document Version: )[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>{version}"),
         (r"(Last Updated: ).+", r"\g<1>{date}"),
     ],
     "docs/contributing/development-guide.md": [
-        (
-            r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+",
-            "**Document Version:** {version}",
-        ),
         (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}<br>"),
     ],
     "docs/planning/pre-release-checklist.md": [
-        (r"^(Date: ).+", r"\g<1>{date}"),
+        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}"),
     ],
 }
 
@@ -258,7 +254,7 @@ def main():
         print()
         print("Release logs (manual):")
         print("  - CHANGELOG.md")
-        print("  - docs/releases.md")
+        print("  - docs/getting-started/releases.md")
         print("  - docs/SESSION_LOG.md")
         return 0
 

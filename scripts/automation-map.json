@@ -106,7 +106,17 @@
     "run tests": {
       "group": "Testing",
       "script": "./run.sh test",
-      "description": "Run Python test suite (85% coverage gate)"
+      "description": "Run the Python suite by default; use --fastapi, --react, or --all for explicit product-suite scope"
+    },
+    "select frontend node runtime": {
+      "group": "Infrastructure",
+      "script": ".venv/bin/python scripts/node_runtime.py --print",
+      "description": "Select the healthy Node/npm pair pinned by .nvmrc (also: ./run.sh frontend runtime)",
+      "options": {
+        "--print": "Show selected Node and npm versions",
+        "--bin-dir": "Print only the selected binary directory",
+        "-- COMMAND": "Run a command in the selected Node environment"
+      }
     },
     "watch tests": {
       "group": "Testing",

@@ -13,8 +13,10 @@ import ast
 import importlib
 import inspect
 import json
+import math
 import platform as _platform
 from importlib.metadata import PackageNotFoundError, version
+from numbers import Real
 from pathlib import Path
 from typing import Any
 
@@ -30,6 +32,18 @@ from structural_lib.services import beam_pipeline, job_runner
 # ============================================================================
 
 
+def _require_finite_real(name: str, value: object, *, optional: bool = False) -> None:
+    """Require a public numeric input to be a finite real value."""
+    if value is None and optional:
+        return
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, Real)
+        or not math.isfinite(value)
+    ):
+        raise ValueError(f"{name} must be a finite real number.")
+
+
 def _require_is456_units(units: str) -> None:
     beam_pipeline.validate_units(units)
 
@@ -41,6 +55,12 @@ def _validate_plausibility(
     b_mm: float | None = None,
     d_mm: float | None = None,
     D_mm: float | None = None,
+    mu_knm: float | None = None,
+    vu_kn: float | None = None,
+    d_dash_mm: float | None = None,
+    asv_mm2: float | None = None,
+    pt_percent: float | None = None,
+    ast_mm2_for_shear: float | None = None,
 ) -> None:
     """Catch common unit-confusion mistakes at the API boundary.
 
@@ -48,6 +68,21 @@ def _validate_plausibility(
     The goal is to catch Pa-vs-MPa and μm-vs-mm mistakes, not to
     enforce IS 456 material limits.
     """
+    for name, value in (
+        ("fck_nmm2", fck_nmm2),
+        ("fy_nmm2", fy_nmm2),
+        ("b_mm", b_mm),
+        ("d_mm", d_mm),
+        ("D_mm", D_mm),
+        ("mu_knm", mu_knm),
+        ("vu_kn", vu_kn),
+        ("d_dash_mm", d_dash_mm),
+        ("asv_mm2", asv_mm2),
+        ("pt_percent", pt_percent),
+        ("ast_mm2_for_shear", ast_mm2_for_shear),
+    ):
+        _require_finite_real(name, value, optional=True)
+
     if fck_nmm2 is not None and fck_nmm2 <= 0:
         raise ValueError(
             f"fck_nmm2={fck_nmm2} must be positive. "

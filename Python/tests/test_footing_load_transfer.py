@@ -145,3 +145,20 @@ def test_special_large_column_bar_dowel_case_fails_closed():
         check_isolated_footing_load_transfer(
             **_benchmark_kwargs(column_longitudinal_bar_diameter_mm=40.0)
         )
+
+
+@pytest.mark.parametrize("dowel_count", [6.8, True, 0])
+def test_dowel_count_must_be_a_positive_integer_before_arithmetic(
+    dowel_count: object,
+) -> None:
+    with pytest.raises(ValidationError, match="positive integer"):
+        check_isolated_footing_load_transfer(
+            **_benchmark_kwargs(dowel_count=dowel_count)
+        )
+
+
+def test_four_dowels_are_preserved_as_a_valid_integral_count():
+    result = check_isolated_footing_load_transfer(**_benchmark_kwargs(dowel_count=4))
+
+    assert result.provided_bar_count == 4
+    assert result.bar_count_is_safe is True

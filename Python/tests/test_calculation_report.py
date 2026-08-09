@@ -432,6 +432,36 @@ class TestExportFunctions:
             assert "FAIL" in content
             assert "status-fail" in content
 
+    def test_export_html_unsafe_shear_overrides_summary_pass(self, mock_design_result):
+        """Section safety is authoritative over a stale overall PASS."""
+        report = CalculationReport.from_design_result(result=mock_design_result)
+        report.results.shear["is_safe"] = False
+        report.results.summary["is_ok"] = True
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "report.html"
+            report.export_html(path)
+
+            content = path.read_text()
+            assert 'Shear Check</td><td class="status-fail">FAIL' in content
+            assert 'DESIGN STATUS: <span class="status-fail">FAIL' in content
+
+    def test_export_html_missing_shear_status_is_not_evaluated(
+        self, mock_design_result
+    ):
+        """A missing required shear status cannot render as PASS."""
+        report = CalculationReport.from_design_result(result=mock_design_result)
+        report.results.shear.pop("is_safe")
+        report.results.summary["is_ok"] = True
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir) / "report.html"
+            report.export_html(path)
+
+            content = path.read_text()
+            assert 'Shear Check</td><td class="status-fail">NOT EVALUATED' in content
+            assert 'DESIGN STATUS: <span class="status-fail">NOT EVALUATED' in content
+
     def test_export_markdown(self, mock_design_result, sample_project_info):
         """Test exporting report to Markdown file."""
         with tempfile.TemporaryDirectory() as tmpdir:

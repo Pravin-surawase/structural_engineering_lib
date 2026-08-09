@@ -206,8 +206,12 @@ class TestErrorHandling:
         assert response.status_code == 422
         error = response.json()
 
-        # FastAPI validation error format
-        assert "detail" in error
+        assert set(error) == {"success", "data", "error"}
+        assert error["success"] is False
+        assert error["data"] is None
+        assert error["error"]["code"] == "REQUEST_VALIDATION_ERROR"
+        assert isinstance(error["error"]["details"], list)
+        assert error["error"]["details"]
 
     def test_missing_required_fields(self, client: TestClient):
         """Test error when required fields are missing."""

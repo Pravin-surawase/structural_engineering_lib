@@ -11,20 +11,18 @@ Run from the workspace root. Commands use `npm --prefix react_app` so later term
 ## Select the Pinned Runtime
 
 ```bash
-nvm use
-node --version
-npm --version
+./run.sh frontend runtime
 ```
 
-The Node major must match `.nvmrc` and npm must satisfy `react_app/package.json`. If `nvm` is unavailable or the selected binary is broken, follow `docs/getting-started/mac-mini-setup.md`; do not install a different major as an adjacent change.
+The repository selector verifies the `.nvmrc` major without assuming `nvm` is installed. If no healthy pinned runtime is available, follow `docs/getting-started/mac-mini-setup.md`; do not install a different major as an adjacent change.
 
 ## While Editing
 
 Run the narrowest applicable command:
 
 ```bash
-npm --prefix react_app run lint
-npm --prefix react_app run test -- <test-pattern>
+./run.sh frontend lint
+./run.sh frontend test <test-pattern>
 ```
 
 Before adding a hook or component, search the live tree rather than relying on a hardcoded count:
@@ -37,7 +35,7 @@ rg -n "<concept>" react_app/src/hooks react_app/src/components
 ## Stable Frontend Check
 
 ```bash
-npm --prefix react_app run build
+./run.sh frontend build
 ```
 
 The build performs TypeScript compilation and the production Vite build. Do not add a separate `npx tsc` run unless diagnosing the TypeScript phase specifically, and do not download tooling through `npx`.

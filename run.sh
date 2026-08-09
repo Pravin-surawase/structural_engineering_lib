@@ -16,6 +16,7 @@
 #   release   Version bumps and release management
 #   audit     Run readiness/governance audit
 #   test      Run test suites
+#   frontend  Run React commands with the Node version pinned by .nvmrc
 #   generate  Generate indexes, SDKs, manifests
 #   route     Route tasks to the right agent
 #   tools     Tool & script discovery
@@ -334,21 +335,48 @@ _cmd_test() {
             _require_venv
             "$VENV" "$SCRIPTS/update_test_stats.py" "${@:2}"
             ;;
+        --python)
+            _require_venv
+            (
+                cd "$REPO_ROOT/Python"
+                "$VENV" -m pytest tests/ "${@:2}"
+            )
+            ;;
+        --fastapi)
+            _require_venv
+            "$VENV" -m pytest "$REPO_ROOT/fastapi_app/tests" "${@:2}"
+            ;;
+        --react)
+            _cmd_frontend test "${@:2}"
+            ;;
+        --all)
+            _require_venv
+            (
+                cd "$REPO_ROOT/Python"
+                "$VENV" -m pytest tests/
+            )
+            "$VENV" -m pytest "$REPO_ROOT/fastapi_app/tests"
+            _cmd_frontend test
+            ;;
         --help)
             _help_test
             exit 0
             ;;
         "")
-            # Default: run pytest
+            # Backward-compatible default: run the Python package suite.
             _require_venv
-            cd "$REPO_ROOT/Python"
-            "$VENV" -m pytest tests/ -v "$@"
+            (
+                cd "$REPO_ROOT/Python"
+                "$VENV" -m pytest tests/ -v "$@"
+            )
             ;;
         *)
             # Pass all args to pytest
             _require_venv
-            cd "$REPO_ROOT/Python"
-            "$VENV" -m pytest tests/ "$@"
+            (
+                cd "$REPO_ROOT/Python"
+                "$VENV" -m pytest tests/ "$@"
+            )
             ;;
     esac
 }
@@ -360,7 +388,11 @@ Usage: ./run.sh test [options]
 Run test suites.
 
 Options:
-  (no args)          Run full pytest suite (default)
+  (no args)          Run the Python package suite (backward-compatible default)
+  --python           Run the Python package suite explicitly
+  --fastapi          Run the complete FastAPI suite
+  --react            Run the complete React/Vitest suite with pinned Node
+  --all              Run Python, FastAPI, and React test suites
   --parity           FastAPI ↔ library parity tests
   --pipeline         Import → Design → 3D integration test
   --cli              CLI cold-start smoke test
@@ -374,10 +406,84 @@ Any other args are passed directly to pytest:
   ./run.sh test --tb=short -x
 
 Examples:
-  ./run.sh test                     # Run all tests
+  ./run.sh test                     # Run Python package tests
+  ./run.sh test --fastapi           # Run FastAPI tests
+  ./run.sh test --react             # Run React tests with pinned Node
+  ./run.sh test --all               # Run all three product test suites
   ./run.sh test --parity            # API parity check
   ./run.sh test -k "shear" -v      # Run shear tests, verbose
   ./run.sh test --ci                # Full CI locally
+EOF
+}
+
+# ── Command: frontend ──────────────────────────────────────────────────────
+
+_frontend_node() {
+    _require_venv
+    "$VENV" "$SCRIPTS/node_runtime.py" -- "$@"
+}
+
+_cmd_frontend() {
+    local subcmd="${1:-check}"
+    shift 2>/dev/null || true
+
+    case "$subcmd" in
+        runtime)
+            _require_venv
+            "$VENV" "$SCRIPTS/node_runtime.py" --print
+            ;;
+        lint)
+            _frontend_node npm --prefix react_app run lint "$@"
+            ;;
+        test)
+            if [[ "$#" -gt 0 ]]; then
+                _frontend_node npm --prefix react_app test -- "$@"
+            else
+                _frontend_node npm --prefix react_app test
+            fi
+            ;;
+        build)
+            _frontend_node npm --prefix react_app run build "$@"
+            ;;
+        check)
+            _frontend_node npm --prefix react_app run lint
+            _frontend_node npm --prefix react_app test
+            _frontend_node npm --prefix react_app run build
+            ;;
+        dev)
+            _frontend_node npm --prefix react_app run dev "$@"
+            ;;
+        --help|-h|help)
+            _help_frontend
+            ;;
+        *)
+            _error "Unknown frontend command: $subcmd"
+            _help_frontend
+            return 1
+            ;;
+    esac
+}
+
+_help_frontend() {
+    cat <<'EOF'
+Usage: ./run.sh frontend [runtime|lint|test|build|check|dev] [options]
+
+Run React commands with the healthy Node.js major pinned by .nvmrc. The
+selector supports Homebrew, an already-selected runtime, and nvm installs; it
+does not assume that nvm itself is installed.
+
+Commands:
+  runtime            Print the selected Node/npm versions and binary directory
+  lint               Run ESLint
+  test               Run Vitest; remaining arguments are passed to Vitest
+  build              Run TypeScript and the production Vite build
+  check              Run lint, tests, and build in order (default)
+  dev                Start the Vite development server
+
+Examples:
+  ./run.sh frontend runtime
+  ./run.sh frontend test useBatchDesign
+  ./run.sh frontend check
 EOF
 }
 
@@ -721,6 +827,7 @@ _print_usage() {
     echo -e "  ${GREEN}release${NC}     Version bumps and release management"
     echo -e "  ${GREEN}audit${NC}       Run readiness/governance audit"
     echo -e "  ${GREEN}test${NC}        Run test suites"
+    echo -e "  ${GREEN}frontend${NC}    Run React checks with the pinned Node runtime"
     echo -e "  ${GREEN}generate${NC}    Generate indexes, SDKs, manifests"
     echo -e "  ${GREEN}health${NC}      Project health scan (unified checker)"
     echo -e "  ${GREEN}feedback${NC}    Agent feedback collection & analysis"
@@ -755,6 +862,7 @@ _dispatch_help() {
         release)  _help_release ;;
         audit)    _help_audit ;;
         test)     _help_test ;;
+        frontend) _help_frontend ;;
         generate) _help_generate ;;
         health)   _help_health ;;
         feedback) _help_feedback ;;
@@ -786,6 +894,7 @@ _run_sh() {
         'release:Version bumps'
         'audit:Readiness audit'
         'test:Run test suites'
+        'frontend:Run React commands with pinned Node'
         'generate:Generate indexes and SDKs'
         'health:Project health scan'
         'feedback:Agent feedback collection'
@@ -804,7 +913,8 @@ _run_sh() {
     local -a health_opts=('--fix' '--score' '--quick' '--category' '--json')
     local -a feedback_subs=('log' 'summary' 'pending' 'resolve' 'stats')
     local -a evolve_opts=('--fix' '--review' '--status' '--report' '--json')
-    local -a test_opts=('--parity' '--pipeline' '--cli' '--benchmark' '--ci' '--stats')
+    local -a test_opts=('--python' '--fastapi' '--react' '--all' '--parity' '--pipeline' '--cli' '--benchmark' '--ci' '--stats')
+    local -a frontend_subs=('runtime' 'lint' 'test' 'build' 'check' 'dev')
     local -a audit_opts=('--score' '--errors' '--inputs' '--diagnostics')
     local -a release_subs=('preflight' 'run' 'verify' 'check-docs' 'checklist')
     local -a efficiency_subs=('check' 'prompt')
@@ -820,6 +930,7 @@ _run_sh() {
             feedback) _values 'subcommand' $feedback_subs ;;
             evolve) _values 'option' $evolve_opts ;;
             test) _values 'option' $test_opts ;;
+            frontend) _values 'subcommand' $frontend_subs ;;
             audit) _values 'option' $audit_opts ;;
             release) _values 'subcommand' $release_subs ;;
             efficiency) _values 'subcommand' $efficiency_subs ;;
@@ -878,6 +989,7 @@ main() {
         release)  _cmd_release "$@" ;;
         audit)    _cmd_audit "$@" ;;
         test)     _cmd_test "$@" ;;
+        frontend) _cmd_frontend "$@" ;;
         generate) _cmd_generate "$@" ;;
         health)   _cmd_health "$@" ;;
         feedback) _cmd_feedback "$@" ;;

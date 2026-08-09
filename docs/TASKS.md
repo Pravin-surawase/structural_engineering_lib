@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-09 — Packet A is merged with `PR Gate` required; Packet B reduces the workflow surface from 17 files to four on `task/MAINT-008-B`
+**Updated:** 2026-08-10 — v0.23.0 Alpha released; public artifact UAT green
 
 ---
 
@@ -28,7 +28,8 @@
 | MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | ✅ DONE | Live import→design→3D→dashboard→export flow and byte-level artifacts pass; v0.21.7 preflight is ready |
 | MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | User-selected parent model is preserved; Luna/Terra advisory routing, bounded worker packets, two-subagent cap, and quick-gate check pass |
 | MAINT-007 | Refresh onboarding, agents, tools, and usage telemetry | P1 | ✅ DONE | Terminal-only PR status, current bootstrap/counts, complete 14-skill discovery, honest usage checkpoints, and focused regressions pass |
-| MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | 🔄 IN PROGRESS | Skills and Packet A are merged with `PR Gate` required; Packet B's four-lane workflow consolidation is implemented for review |
+| MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | ✅ DONE | Four-lane workflow, truthful `PR Gate`, native Codex Git/GitHub lifecycle, and retired unsafe wrappers are merged |
+| LIB-PRO-001 | Remediate the professional library audit without repeating completed maintenance | P0 | ✅ SOFTWARE COMPLETE | T0 and R1-R8 are retained as evidence; bounded-product closeout continues under LIB-IS456-V1 |
 
 ### Maintenance evidence captured 2026-08-07
 
@@ -68,10 +69,10 @@
 
 ## Current Release
 
-| **Current** | v0.21.6 | ✅ COMPLETE → micro-releases v0.21.7–v0.21.8 → v0.22.0 Stabilization |
+| **Current** | v0.23.0 | ✅ ALPHA RELEASED — exact CI/public artifact evidence recorded |
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
-- **Target:** v0.21.7 next, then v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)
+- **Target:** keep later roadmap work inactive until separately activated
 - **Vision:** [democratization-vision.md](planning/democratization-vision.md) — AI chat, automation, library evolution
 - **Architecture:** [unified-architecture-v1.md](architecture/unified-architecture-v1.md) §20 — complete v0.21.5→v1.0 roadmap
 
@@ -88,7 +89,7 @@
 | **v0.21.7** | Security Hardening | ✅ READY FOR RELEASE | Input validation, error sanitization, packaging gates, CI hardening |
 | **v0.21.8** | Performance & Property Testing | 📋 PLANNED | Benchmarks, Hypothesis, performance baselines |
 | **v0.22.0** | Stabilization Release | 📋 PLANNED | API naming convention (Batch 3), provenance, SP:16 verification |
-| **v0.23** | IS 456 Slabs + Footing Completion | 📋 PLANNED | One-way slab, two-way slab, footing dowels + API, punching shear |
+| **v0.23** | Bounded IS 456 slabs + footing completion | ✅ ALPHA RELEASED | Case-qualified development preview; professional review remains a final stable/engineering-use gate |
 | **v0.24** | Multi-Code Infrastructure | 📋 PLANNED | CodeRegistry activation, DesignEnvelope, units.py, API v2 routes |
 | **v0.25** | ACI 318-19 Beam | 📋 PLANNED | ACI beam flexure + shear, PCA Notes ±0.1% benchmarks |
 | **v1.0** | Production Multi-Code | 📋 PLANNED | IS 456 complete, ACI 318 beam+column, EC2 beam, API stability guarantee |
@@ -125,20 +126,24 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| MAINT-008 | Execute the [compact modernization plan](planning/compact-modernization-plan.md) | Main Agent | 🔄 Packet B implemented on `task/MAINT-008-B`; four retained workflows await live PR review |
+| LIB-IS456-V1 | Finish the bounded [IS 456 product milestone](planning/is456-library-first-master-plan.md) without expanding to multi-code or excluded structural systems | Main Agent + owner | ✅ C0-C4 software/evidence closeout complete; release and engineering-use holds remain |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| MAINT-008 | Review Packet B's live `PR Gate` and four-workflow disposition; keep release execution separate | ops + owner | bounded packet | P0 | 🔄 IN REVIEW |
-| v0.21.7 | Re-run release preflight and obtain a separate release approval after MAINT-008 | ops + owner | <1 session | P1 | ⏸ AFTER MAINT-008 |
+| LIB-IS456-C1 | Create reviewable scoped checkpoints, preserve automation commit `f812eb3f`, and synchronize `origin/main` without history rewriting | Main Agent | 1 packet | P0 | ✅ DONE `d4eb9e9d` |
+| LIB-IS456-C2 | Run final source/live product UAT for supported Python, FastAPI, React batch/report, footing/slab, and export paths | Main Agent | 1 packet | P0 | ✅ DONE |
+| LIB-IS456-C3 | Freeze exact local wheel/sdist evidence and clean-install/CLI UAT for the frozen candidate | Main Agent | 1 packet | P0 | ✅ DONE `9be6eb35` |
+| LIB-IS456-C4 | Assemble the final bounded-scope evidence packet and freeze limitations/review boundaries | Main Agent + owner | 1 packet | P0 | ✅ DONE on PR #696 |
+| LIB-IS456-FINAL-REVIEW | Review only after C4 and owner scope freeze; no engineering-usability claim before it | qualified structural engineer | final gate | P0 | ⏸ READY FOR QUALIFIED REVIEW |
 
 ## Backlog
 
-The version roadmap and detailed v0.21.7+ backlog remain below. Do not start
-feature work until PR #676 is merged, MAINT-008 is complete, and the v0.21.7
-release decision is handled.
+The version roadmap and historical backlog remain below. Planned development
+may continue under LIB-PRO-001, but publication and every engineering-usability
+claim remain prohibited until the final frozen-scope review and separate owner
+release decision.
 
 ## Recently Done
 
@@ -463,7 +468,7 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 | Phase 1 | Foundation Cleanup | TASK-611–625 (15/15) | ✅ Done |
 | Phase 1.5 | IS 456 Beam Restructure | TASK-700–712 (13/13) | ✅ Done |
 | Phase 2 | Column Design | TASK-630–646 (14/14) | ✅ Done |
-| Phase 3 (partial) | Footing Design | TASK-650–654 (5/7) | 🔄 5/7 |
+| Phase 3 | Bounded isolated-footing core | TASK-650–656 (bounded scope) | ✅ Done |
 | Variable Naming | IS 456 convention migration | TASK-660 (1/1) | ✅ Done |
 | Agent Evolver | Self-evolving agent system | TASK-800.P3–P11 | ✅ Done (P12 burn-in) |
 | Agent Infrastructure | claw-code adaptation | TASK-850–872 (23/23) | ✅ Done |
@@ -471,14 +476,16 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 
 > Full details for all completed phases: [tasks-history.md](_archive/tasks-history.md)
 
-### Phase 3: Footing Design (Remaining)
+### Phase 3: Bounded Footing Design (Reconciled)
 
 | ID | Task | Function | IS 456 Clause | Status |
 |----|------|----------|---------------|--------|
-| TASK-655 | Dowel bars | `check_dowel_bars` | Cl 34.2.5 | 📋 |
-| TASK-656 | Footing FastAPI endpoint | `POST /api/v1/design/footing` | — | 📋 |
+| TASK-655 | Bounded bearing/dowel load transfer | `check_isolated_footing_load_transfer` | Cl 34.4 / load transfer | ✅ DONE |
+| TASK-656 | Bounded footing FastAPI consumer | `POST /api/v1/design/footing/load-transfer` | — | ✅ DONE |
 
-> Phase 3: 5/7 tasks done (TASK-650–654 ✅). Covers: types+errors, bearing sizing (Cl 34.1), flexure (Cl 34.2.3.1), one-way shear (Cl 34.2.4.1(a)), punching shear (Cl 31.6.1), bearing pressure (Cl 34.4). 89+ tests. Remaining: TASK-655 (dowel bars), TASK-656 (FastAPI endpoint).
+> The bounded isolated-footing milestone is complete. Combined, strap, raft,
+> pile-cap, settlement, and lateral-stability design remain explicitly outside
+> this milestone.
 
 ---
 
@@ -486,66 +493,69 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 
 **Ref:** Architecture doc §20.6
 
-### Footing Remaining
+### Bounded Footing Status
 
 | ID | Task | Function | IS 456 Clause | Status |
 |----|------|----------|---------------|--------|
-| TASK-655 | Dowel bars | `check_dowel_bars` | Cl 34.2.5 | 📋 |
-| TASK-656 | Footing FastAPI endpoint | `POST /api/v1/design/footing` | — | 📋 |
-| — | Combined footing design | — | — | 📋 |
-| — | Footing `@clause` coverage to 100% | — | — | 📋 |
+| TASK-655 | Bearing/dowel load transfer | `check_isolated_footing_load_transfer` | Cl 34.4 / load transfer | ✅ DONE |
+| TASK-656 | Footing FastAPI consumer | `POST /api/v1/design/footing/load-transfer` | — | ✅ DONE |
+| — | Combined footing design | — | — | ⏸ OUT OF SCOPE |
+| — | Literal footing clause coverage target | — | — | ⏸ NOT A MILESTONE GATE |
 
 ### One-Way Slab Design (IS 456 Cl 24.1–24.2)
 
 | ID | Task | Function | IS 456 Clause | Status |
 |----|------|----------|---------------|--------|
-| TASK-737 | One-way slab design (umbrella) | — | Cl 24.1–24.2 | 📋 |
-| TASK-750 | Slab types + errors | Types (SlabClassification, SlabDesignResult) | — | 📋 |
-| TASK-751 | classify_slab | `classify_slab()` | ly/lx ratio | 📋 |
-| TASK-752 | One-way coefficients | `oneway_coefficients()` | Table 12/13 | 📋 |
-| TASK-753 | Design one-way slab | `design_oneway_slab()` | Cl 24.1–24.2 | 📋 |
-| TASK-754 | Slab detailing | `slab_detailing()` | Cl 26.5 | 📋 |
+| TASK-737 | Bounded one-way slab design umbrella | — | Cl 24.1–24.2 | ✅ DONE |
+| TASK-750 | Slab types + errors | `SolidRectangularSlabGeometry`, result records | — | ✅ DONE |
+| TASK-751 | Slab classification | `classify_solid_rectangular_slab()` | ly/lx ratio | ✅ DONE |
+| TASK-752 | General one-way coefficient tables | — | Table 12/13 | ⏸ OUT OF SCOPE |
+| TASK-753 | Simply supported one-way design | `design_one_way_slab_is456()` | Cl 24.1–24.2 | ✅ DONE |
+| TASK-754 | Bounded slab detailing/serviceability | `check_one_way_slab_detailing()` | Cl 26.5 | ✅ DONE |
 
 ### Two-Way Slab Design (IS 456 Cl 24.3, Annex D)
 
 | ID | Task | Function | IS 456 Clause | Status |
 |----|------|----------|---------------|--------|
-| TASK-738 | Two-way slab design (umbrella) | — | Cl 24.3, Annex D | 📋 |
-| TASK-760 | Two-way moment coefficients | `twoway_moment_coefficients()` | Table 26 | 📋 |
-| TASK-761 | Two-way shear coefficients | `twoway_shear_coefficients()` | Table 27 | 📋 |
-| TASK-762 | Design two-way slab | `design_twoway_slab()` | Annex D-1 | 📋 |
-| TASK-763 | Torsion reinforcement | `torsion_reinforcement()` | Annex D-1.7/D-1.8 | 📋 |
-| TASK-764 | Strip distribution | `strip_distribution()` | Annex D-1.2 | 📋 |
-| — | Flat slab with drop panels | — | IS 456 Cl 31 | 📋 |
+| TASK-738 | Bounded external-coefficient two-way flexure | — | Cl 24.3, Annex D | ✅ DONE |
+| TASK-760 | Built-in protected moment-coefficient lookup | — | Table 26 | ⏸ OUT OF SCOPE |
+| TASK-761 | Two-way shear coefficients | — | Table 27 | ⏸ OUT OF SCOPE |
+| TASK-762 | Interior-panel bounded flexure | `design_two_way_slab_is456()` | Annex D-1 | ✅ DONE |
+| TASK-763 | Complete torsion reinforcement | — | Annex D-1.7/D-1.8 | ⏸ OUT OF SCOPE |
+| TASK-764 | Complete strip distribution | — | Annex D-1.2 | ⏸ OUT OF SCOPE |
+| — | Flat slab with drop panels | — | IS 456 Cl 31 | ⏸ OUT OF SCOPE |
 
 ### Punching Shear (Shared — Slab + Footing)
 
 | ID | Task | Function | IS 456 Clause | Status |
 |----|------|----------|---------------|--------|
-| TASK-770 | General punching shear module | `punching_shear_check()` | Cl 31.6 | 📋 |
+| TASK-770 | Generic shared punching-shear framework | — | Cl 31.6 | ⏸ OUT OF SCOPE; footing-specific check exists |
 
 ### Slab FastAPI + React
 
 | ID | Task | Status |
 |----|------|--------|
-| TASK-780 | Slab API wiring (services/api.py) | 📋 |
-| TASK-781 | Slab FastAPI endpoints | 📋 |
-| TASK-782 | Slab React form + results panel | 📋 |
+| TASK-780 | Bounded slab Python facade wiring | ✅ DONE |
+| TASK-781 | One-way slab FastAPI consumer | ✅ DONE FOR BOUNDED SCOPE |
+| TASK-782 | New slab React form + results panel | ⏸ OUT OF SCOPE |
 
 ### Additional v0.23 Deliverables (from architecture doc §20.6)
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| — | Progress callbacks for batch operations (§13.2) | @backend | 📋 |
-| — | Complete error hierarchy (§13.3) | @backend | 📋 |
-| — | Property-based testing expansion to all modules (§14.1) | @tester | 📋 |
-| — | Performance benchmarks baselined (§14.2) | @tester | 📋 |
+| — | Truthful batch streaming/progress behavior (§13.2) | @backend | ✅ DONE |
+| — | Expanded future error hierarchy (§13.3) | @backend | ⏸ OUT OF SCOPE |
+| — | Property-based testing expansion to all modules (§14.1) | @tester | ⏸ OUT OF SCOPE |
+| — | Additional performance expansion (§14.2) | @tester | ⏸ OUT OF SCOPE |
 
 ---
 
 ## v0.24 — Multi-Code Infrastructure
 
 **Ref:** Architecture doc §20.7 + [library-expansion-blueprint-v5.md](planning/library-expansion-blueprint-v5.md) Phase 2
+
+> Future roadmap only. None of these tasks may start during C0-C4 of the
+> bounded IS 456 milestone without a separate owner scope change.
 
 | ID | Task | Description | Owner | Status |
 |----|------|-------------|-------|--------|

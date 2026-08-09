@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "version": "1.1",
+    "version": "1.2",
     "last_verified": "2026-08-09",
     "source": "https://help.openai.com/en/articles/20001106",
     "note": "Relative rates assume the same input, cached-input, and output token mix. Reasoning effort changes token volume and has no fixed multiplier.",
-    "standing_user_approval": "No repository model override. The parent respects the user's active model and reasoning selection. Sol profiles require explicit user selection or case-specific approval."
+    "standing_user_approval": "Explicit user model selections control. When the user delegates model choice for the current task, the orchestrator may select suitable available parent and subagent profiles. Sol profiles require explicit selection, case-specific approval, or delegated model-choice authority."
   },
   "defaults": {
     "parent_profile": "user-selected",

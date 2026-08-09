@@ -78,6 +78,40 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.23.0 — Supported IS 456 RC Core (2026-08-10)
+
+**Status:** ✅ Alpha development preview published to PyPI and GitHub Releases on 2026-08-10
+**Source basis:** IS 456:2000 consolidated through Amendment 5, reaffirmed
+2021, with Amendment 6 (June 2024) reviewed by route
+**Scope:** Case-qualified beam, rectangular-column, isolated-footing, and solid
+slab workflows; not complete IS 456 coverage or professional approval
+
+Qualified structural-engineering review is deliberately cumulative and deferred
+until the owner declares the stable/engineering-use scope complete. It is not a
+per-packet or Alpha publication gate; this release remains a case-qualified
+development preview without a professional-approval claim.
+
+**Highlights:**
+- Correct two-axis column slenderness and minimum-eccentricity enforcement.
+- Explicit isolated-footing bearing and dowel load transfer.
+- Simply supported one-way slab design/detailing and one accepted-coefficient
+  interior two-way slab flexure case.
+- 116-symbol public service manifest and 62 FastAPI HTTP endpoints.
+- Metadata-only public clause registry with protected sources excluded.
+- Exact-artifact hashes, inventories, clean-install UAT, SBOM, and Trusted
+  Publishing gates in the release workflow.
+- Native Codex Git/GitHub workflow with unsafe custom lifecycle wrappers and
+  enforcement hooks retired.
+
+**Verification:** Production run `31332420554` built from tag `v0.23.0` at
+`3f880d5b`; public PyPI UAT passed 5,406 tests, 51 skipped, 6 deselected plus
+installed CLI workflows. React 147 tests/lint/build and canonical gate 29/29
+passed before release.
+
+**Full changelog:** See [CHANGELOG.md](../../CHANGELOG.md#0230--2026-08-10)
+
+---
+
 ## v0.21.6 — API Quality & Introspection (2026-04-07)
 
 **Highlights:**

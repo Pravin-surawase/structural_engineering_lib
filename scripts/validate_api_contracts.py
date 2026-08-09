@@ -177,20 +177,25 @@ def compare_contracts(
 
 
 def save_baseline(schema: dict[str, Any]) -> None:
-    """Save current schema as baseline."""
-    signature = extract_contract_signature(schema)
+    """Save the canonical raw OpenAPI schema used by every snapshot tool."""
     BASELINE_PATH.parent.mkdir(parents=True, exist_ok=True)
     with open(BASELINE_PATH, "w") as f:
-        json.dump(signature, f, indent=2, sort_keys=True)
+        json.dump(schema, f, indent=2, sort_keys=True)
+        f.write("\n")
     print(f"Baseline saved to: {BASELINE_PATH}")
 
 
 def load_baseline() -> dict[str, Any] | None:
-    """Load baseline schema if exists."""
+    """Load the raw baseline and derive this validator's compact signature."""
     if not BASELINE_PATH.exists():
         return None
     with open(BASELINE_PATH) as f:
-        return json.load(f)
+        baseline = json.load(f)
+    if "paths" in baseline:
+        return extract_contract_signature(baseline)
+    # Compatibility with the short-lived normalized snapshot format. New
+    # writes always use raw OpenAPI so both validators share one source.
+    return baseline
 
 
 def print_comparison(
@@ -454,7 +459,7 @@ def _generate_route_stubs(result: SchemaValidationResult) -> str:
 
 
 def _compare_with_manifest(result: SchemaValidationResult) -> list[str]:
-    """Compare current API with manifest file."""
+    """Compare public functions with the canonical ``symbols`` manifest."""
     issues = []
     if not MANIFEST_PATH.exists():
         issues.append(f"API manifest not found at {MANIFEST_PATH}")
@@ -466,14 +471,35 @@ def _compare_with_manifest(result: SchemaValidationResult) -> list[str]:
     except json.JSONDecodeError:
         issues.append("API manifest is not valid JSON")
         return issues
-    manifest_names = set(manifest.get("functions", {}).keys())
-    current_names = {f.name for f in result.functions}
+    symbols = manifest.get("symbols")
+    if not isinstance(symbols, list):
+        issues.append("API manifest must contain a 'symbols' list")
+        return issues
+
+    manifest_functions = {
+        item["name"]: item
+        for item in symbols
+        if isinstance(item, dict)
+        and item.get("kind") == "function"
+        and isinstance(item.get("name"), str)
+    }
+    current_functions = {function.name: function for function in result.functions}
+    manifest_names = set(manifest_functions)
+    current_names = set(current_functions)
     missing = current_names - manifest_names
     if missing:
-        issues.append(f"Functions in API but not in manifest: {missing}")
+        issues.append(f"Functions in API but not in manifest: {sorted(missing)}")
     removed = manifest_names - current_names
     if removed:
-        issues.append(f"Functions in manifest but not in API: {removed}")
+        issues.append(f"Functions in manifest but not in API: {sorted(removed)}")
+    changed = sorted(
+        name
+        for name in manifest_names & current_names
+        if manifest_functions[name].get("signature")
+        != current_functions[name].signature
+    )
+    if changed:
+        issues.append(f"Function signatures differ from manifest: {changed}")
     return issues
 
 
@@ -536,6 +562,7 @@ def validate_schema(
             print("=" * 60)
             print(routes)
 
+    manifest_issues: list[str] = []
     if manifest:
         manifest_issues = _compare_with_manifest(result)
         if manifest_issues:
@@ -543,9 +570,9 @@ def validate_schema(
             print("Manifest Comparison:")
             print("=" * 60)
             for issue in manifest_issues:
-                print(f"⚠️  {issue}")
+                print(f"❌ {issue}")
 
-    return 1 if result.incompatible_count > 0 else 0
+    return 1 if result.incompatible_count > 0 or manifest_issues else 0
 
 
 def main() -> int:

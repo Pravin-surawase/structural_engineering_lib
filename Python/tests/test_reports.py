@@ -154,6 +154,35 @@ class TestGenerateHtmlReport:
         html = generate_html_report(design_result, beam_id="B1")
         assert "status-fail" in html or "FAIL" in html
 
+    @pytest.mark.parametrize("template", ["beam_design", "summary", "detailed"])
+    def test_current_is_safe_false_overrides_overall_pass(self, template: str) -> None:
+        """An unsafe current result cannot be rendered as an overall PASS."""
+        design_result = {
+            "inputs": {},
+            "results": {
+                "flexure": {"is_safe": True},
+                "shear": {"is_safe": False},
+            },
+            "is_ok": True,
+        }
+
+        html = generate_html_report(design_result, template=template, beam_id="B1")
+
+        assert "FAIL" in html
+
+    @pytest.mark.parametrize("template", ["beam_design", "summary", "detailed"])
+    def test_missing_section_status_is_not_evaluated(self, template: str) -> None:
+        """A populated section without status must never inherit PASS."""
+        design_result = {
+            "inputs": {},
+            "results": {"shear": {"tau_v": 1.2}},
+            "is_ok": True,
+        }
+
+        html = generate_html_report(design_result, template=template, beam_id="B1")
+
+        assert "NOT EVALUATED" in html
+
 
 @requires_jinja2
 class TestGenerateHtmlReportFromDict:

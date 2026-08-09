@@ -1,12 +1,8 @@
 # Services
 
 **Type:** Python Package
-**Last Updated:** 2026-03-29
-**Files:** 28
-
-## Config Files
-
-- [api_manifest.json](api_manifest.json)
+**Last Updated:** 2026-08-09
+**Files:** 34
 
 ## Python Files
 
@@ -14,28 +10,35 @@
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) | structural_lib.services — Auto-generated package. | 0 | 0 | 2 |
 | [adapters.py](adapters.py) | Adapters for converting various input formats to canonical m | 6 | 0 | 2006 |
-| [api.py](api.py) | Module:       api | 0 | 20 | 1985 |
+| [api.py](api.py) | Module:       api | 0 | 0 | 323 |
+| [api_hub.py](api_hub.py) | Module:       api | 0 | 0 | 238 |
 | [api_results.py](api_results.py) | Module:       api_results | 7 | 0 | 439 |
 | [audit.py](audit.py) | Module:       audit | 3 | 3 | 595 |
-| [batch.py](batch.py) | Batch design helpers for streaming and bulk execution. | 0 | 2 | 169 |
-| [bbs.py](bbs.py) | Bar Bending Schedule (BBS) Module — IS 2502:1999 / SP 34:198 | 3 | 19 | 1135 |
-| [beam_pipeline.py](beam_pipeline.py) | beam_pipeline — Unified application-layer pipeline for beam  | 10 | 3 | 586 |
-| [calculation_report.py](calculation_report.py) | Module:       calculation_report | 4 | 1 | 681 |
+| [batch.py](batch.py) | Batch design helpers for streaming and bulk execution. | 0 | 2 | 195 |
+| [bbs.py](bbs.py) | Bar Bending Schedule (BBS) Module — IS 2502:1999 / SP 34:198 | 3 | 19 | 1134 |
+| [beam_api.py](beam_api.py) | Module:       beam_api | 0 | 20 | 2026 |
+| [beam_pipeline.py](beam_pipeline.py) | beam_pipeline — Unified application-layer pipeline for beam  | 10 | 3 | 636 |
+| [boq.py](boq.py) | Project Bill of Quantities (BOQ) — Aggregation Module | 4 | 1 | 209 |
+| [calculation_report.py](calculation_report.py) | Module:       calculation_report | 4 | 1 | 726 |
+| [capabilities.py](capabilities.py) | Discoverable supported-case registry for the IS 456 public l | 7 | 2 | 714 |
+| [column_api.py](column_api.py) | Module:       column_api | 0 | 13 | 1528 |
+| [common_api.py](common_api.py) | Module:       common_api | 0 | 5 | 723 |
 | [costing.py](costing.py) | Cost calculation utilities for structural elements. | 2 | 8 | 376 |
-| [dashboard.py](dashboard.py) | Insights module for dashboard aggregation and live code chec | 4 | 3 | 508 |
-| [dxf_export.py](dxf_export.py) | DXF Export Module — Beam Detail Drawing Generation | 0 | 18 | 1817 |
-| [etabs_import.py](etabs_import.py) | ETABS CSV Import Module. | 3 | 12 | 1015 |
+| [dashboard.py](dashboard.py) | Insights module for dashboard aggregation and live code chec | 4 | 3 | 512 |
+| [dxf_export.py](dxf_export.py) | DXF Export Module — Beam Detail Drawing Generation | 0 | 18 | 1833 |
+| [etabs_import.py](etabs_import.py) | ETABS CSV Import Module. | 3 | 12 | 1018 |
 | [excel_bridge.py](excel_bridge.py) | Excel UDF Bridge - Exposes structural_lib functions to Excel | 0 | 7 | 305 |
 | [excel_integration.py](excel_integration.py) | Excel Integration Module — Bridge between Excel data and Det | 2 | 9 | 489 |
 | [imports.py](imports.py) | Import helpers for multi-format CSV ingestion. | 1 | 3 | 175 |
 | [intelligence.py](intelligence.py) | Compatibility shim for legacy imports. | 0 | 0 | 36 |
 | [job_cli.py](job_cli.py) | job_cli | 0 | 1 | 203 |
 | [job_runner.py](job_runner.py) | job_runner | 0 | 4 | 317 |
-| [multi_objective_optimizer.py](multi_objective_optimizer.py) | Multi-Objective Optimization Module | 2 | 2 | 638 |
-| [optimization.py](optimization.py) | Optimization algorithms for structural design. | 2 | 1 | 309 |
+| [multi_objective_optimizer.py](multi_objective_optimizer.py) | Multi-Objective Optimization Module | 2 | 2 | 642 |
+| [optimization.py](optimization.py) | Optimization algorithms for structural design. | 2 | 1 | 311 |
 | [rebar.py](rebar.py) | Rebar configuration validation and application helpers. | 0 | 2 | 251 |
 | [rebar_optimizer.py](rebar_optimizer.py) | Rebar arrangement optimizer (deterministic). | 1 | 1 | 322 |
-| [report.py](report.py) | Report generation module for beam design results. | 5 | 14 | 1755 |
+| [report.py](report.py) | Report generation module for beam design results. | 5 | 14 | 1758 |
 | [report_svg.py](report_svg.py) | SVG helpers for report visuals (stdlib only). | 0 | 2 | 279 |
 | [serialization.py](serialization.py) | JSON serialization utilities for canonical data models. | 0 | 12 | 449 |
+| [slab_api.py](slab_api.py) | Stable orchestration entry points for the bounded IS 456 sla | 1 | 2 | 162 |
 | [testing_strategies.py](testing_strategies.py) | Module:       testing_strategies | 9 | 2 | 655 |

@@ -27,6 +27,10 @@ export default defineConfig({
           target: backendUrl,
           changeOrigin: true,
         },
+        '/stream': {
+          target: backendUrl,
+          changeOrigin: true,
+        },
         '/ws': {
           target: wsBackendUrl,
           ws: true,
