@@ -96,7 +96,14 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
   const { inputs, length, result, isLoading, setInputs, setLength, setResult, setLoading, setError, reset } = store;
 
   // WebSocket hook
-  const ws = useDesignWebSocket(sessionId, enabled);
+  const {
+    isConnected: wsIsConnected,
+    status: wsStatus,
+    latency: wsLatency,
+    error: wsError,
+    sendDesign: sendWsDesign,
+    reconnect: reconnectWs,
+  } = useDesignWebSocket(sessionId, enabled);
 
   // Debounce ref for auto-design
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -105,7 +112,8 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
   const initialDesignFired = useRef(false);
 
   // REST fallback is active when WS is not connected
-  const isFallbackActive = !ws.isConnected && (ws.status === 'disconnected' || ws.status === 'error');
+  const isFallbackActive =
+    !wsIsConnected && (wsStatus === 'disconnected' || wsStatus === 'error');
 
   // REST fallback design request
   const runRestDesign = useCallback(async () => {
@@ -161,7 +169,7 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
     if (!autoDesign || !enabled || initialDesignFired.current) return;
     initialDesignFired.current = true;
     runRestDesign();
-  }, [autoDesign, enabled]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [autoDesign, enabled, runRestDesign]);
 
   // Auto-design when inputs change (WebSocket or REST fallback)
   useEffect(() => {
@@ -184,10 +192,10 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
       clearTimeout(debounceRef.current);
     }
 
-    if (ws.isConnected) {
+    if (wsIsConnected) {
       // WebSocket path: fast 150ms debounce
       debounceRef.current = setTimeout(() => {
-        ws.sendDesign();
+        sendWsDesign();
       }, debounceMs);
     } else {
       // REST fallback path: slower 300ms debounce
@@ -201,17 +209,17 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
         clearTimeout(debounceRef.current);
       }
     };
-  }, [inputs, autoDesign, enabled, ws.isConnected, ws.sendDesign, debounceMs, runRestDesign]);
+  }, [inputs, autoDesign, enabled, wsIsConnected, sendWsDesign, debounceMs, runRestDesign]);
 
   // Actions
   const triggerDesign = useCallback(() => {
-    if (ws.isConnected) {
-      return ws.sendDesign();
+    if (wsIsConnected) {
+      return sendWsDesign();
     }
     // REST fallback — always available
     runRestDesign();
     return true;
-  }, [ws, runRestDesign]);
+  }, [wsIsConnected, sendWsDesign, runRestDesign]);
 
   const updateInputs = useCallback(
     (newInputs: Partial<typeof inputs>) => {
@@ -236,22 +244,22 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
 
   // Combined state
   const state: LiveDesignState = {
-    isConnected: ws.isConnected,
+    isConnected: wsIsConnected,
     isDesigning: isLoading,
     isLoadingGeometry,
-    latency: ws.latency,
+    latency: wsLatency,
     result,
     geometry: geometry ?? null,
     // Only show WS connection error if there's no successful REST result
-    error: result ? null : (ws.error || (geometryError as Error | null)?.message || null),
-    connectionStatus: ws.status,
+    error: result ? null : (wsError || (geometryError as Error | null)?.message || null),
+    connectionStatus: wsStatus,
     isFallbackActive,
   };
 
   // Combined actions
   const actions: LiveDesignActions = {
     triggerDesign,
-    reconnect: ws.reconnect,
+    reconnect: reconnectWs,
     updateInputs,
     updateLength,
     reset,

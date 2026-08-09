@@ -35,7 +35,6 @@ This repository is primarily standard-library based. Optional and development to
 - `mypy`
 - `pre-commit`
 - `bandit`
-- `isort`
 - `radon`
 - `vulture`
 

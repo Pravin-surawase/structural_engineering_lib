@@ -579,7 +579,7 @@ def main() -> int:
     parser.add_argument(
         "--pre-commit",
         action="store_true",
-        help="Run pre-commit hooks (black, ruff, mypy, isort, bandit)",
+        help="Run pre-commit hooks (black, ruff, mypy, bandit)",
     )
     parser.add_argument(
         "--fix",

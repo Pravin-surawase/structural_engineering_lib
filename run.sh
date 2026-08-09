@@ -78,7 +78,7 @@ Options:
   (no args)            Run ALL checks (parallel by category)
   --quick              Fast subset: links, imports, hygiene (<30s)
   --changed            Only run categories for recently changed files
-  --pre-commit         Run pre-commit hooks (black, ruff, mypy, isort)
+  --pre-commit         Run pre-commit hooks (black, ruff, mypy, bandit)
   --category <name>    Run one category: api|docs|arch|governance|fastapi|git|stale|code
   --fix                Auto-fix what's fixable (sync numbers, etc.)
   --json               Machine-readable JSON output

@@ -407,7 +407,7 @@ Test yourself — can you answer these in one sentence each?
 ## 📎 References
 
 - [pyrightconfig.json](../../../pyrightconfig.json) — type checking config
-- [pyproject.toml](../../../Python/pyproject.toml) — ruff, mypy, bandit, isort config
+- [pyproject.toml](../../../Python/pyproject.toml) — Ruff import sorting, mypy, and bandit config
 - [check_architecture_boundaries.py](../../../scripts/check_architecture_boundaries.py) — layer enforcement
 - [validate_imports.py](../../../scripts/validate_imports.py) — import validation
 - [check_links.py](../../../scripts/check_links.py) — documentation link checking

@@ -69,7 +69,7 @@ markers =
 
 **File:** `.pre-commit-config.yaml` (269 lines)
 
-- **Formatting:** black, isort
+- **Formatting:** black; Ruff `I` rules own import sorting
 - **Linting:** ruff (7 rule categories), bandit
 - **Type checking:** mypy (strict mode)
 - **Custom hooks:** API contracts, circular imports, fragment violations, performance anti-patterns
@@ -129,7 +129,7 @@ lint:
 
 format:
 	black Python/
-	isort Python/
+	ruff check --select I --fix Python/
 
 coverage:
 	cd Python && pytest --cov=structural_lib --cov-report=html tests/
@@ -211,7 +211,7 @@ pytest tests/performance/ -v -m performance
 ```bash
 # Format
 black Python/
-isort Python/
+ruff check --select I --fix Python/
 
 # Lint
 ruff check --fix Python/

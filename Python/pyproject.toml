@@ -45,7 +45,6 @@ dev = [
   "pre-commit",
   "ruff==0.15.8",
   "bandit",
-  "isort",
   "hypothesis>=6.0",
 ]
 dxf = ["ezdxf>=1.0"]  # For DXF drawing generation
@@ -202,8 +201,3 @@ disable_error_code = ["no-any-return"]
 [tool.bandit]
 skips = ["B101"]  # Skip assert_used (common in tests)
 exclude_dirs = ["tests", "examples"]
-
-[tool.isort]
-profile = "black"
-line_length = 88
-skip_gitignore = true
