@@ -4,18 +4,18 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-09
-- Focus: Close the isolated MAINT-008 skills control-plane repair; leave its merge and all CI/ruleset/release work for separate approval
+- Focus: Review Packet A draft PR #690 and obtain the separate required-check decision; do not merge or change the ruleset implicitly
 <!-- HANDOFF:END -->
 
 **Last Updated:** 2026-08-09
-**Current Session:** PR #676 is merged; MAINT-008 skills repair is implemented on `task/MAINT-008-SKILLS` and is in closeout
+**Current Session:** PR #689 is merged at `b611f6b3`; Packet A is implemented on `task/MAINT-008-A` in draft PR #690
 
 ## Start Here
 
-1. Review the MAINT-008 skills PR and its gate evidence; do not merge it without explicit owner approval.
-2. After that skills PR is merged and synchronized, follow [MAINT-008 — Compact Project Modernization Plan](compact-modernization-plan.md) from packet A on a new clean branch.
-3. Obtain separate explicit decisions for the skills merge, GitHub required-check change, later MAINT-008 CI merge, and v0.21.7 release.
-4. Preserve the recovered Mac baseline and accepted main-process results; do not mix workflow compaction or product work into the skills PR.
+1. Review draft PR #690 and its live `PR Gate`; do not merge it without a later explicit owner approval.
+2. Obtain explicit approval before changing ruleset `11390214` from `Quick Validation (Python 3.11 only)` to `PR Gate`.
+3. Begin Packet B only after the new required check is re-fetched and verified; the later MAINT-008 merge and v0.21.7 release remain separate decisions.
+4. Preserve the recovered main-process baseline; do not mix product code or release work into Packet A.
 
 Full evidence and accepted risks are in
 [maintenance-recovery-audit-2026-08-07.md](../audit/maintenance-recovery-audit-2026-08-07.md).
@@ -39,8 +39,10 @@ Full evidence and accepted risks are in
 - MAINT-007 checkpoint `4d5b9eb5` is pushed to PR #676.
 - PR #676 closeout: its required checks were green before the safe squash merge. React coverage remains an accepted follow-up risk.
 - MAINT-008 skills branch: all 14 skill entrypoints were reviewed and repaired; one JSON catalog now drives tier validation, agent routes and metadata agree, and supporting API/architecture/release/evolution commands fail closed on ambiguous or insufficient evidence.
-- Skills commits: `5ac70ac1` repairs the compact control plane; `fc4d0249` removes hidden session writes. Draft PR #689 is open, clean, and has all applicable GitHub checks passing.
+- Skills commits `5ac70ac1` and `fc4d0249` were merged through approved PR #689 at `b611f6b3`.
 - Skills targeted evidence: tier assignment validation, four-layer architecture scan (119 files, zero violations), API discovery success/missing-function behavior, Python compilation, frontmatter/stale-command scan, and evolution 9/15 burn-in gate pass.
+- Packet A draft PR #690 emits one `PR Gate`; its latest run passed with `Repository Validation` successful and the three unchanged product-layer jobs explicitly skipped. Nine superseded PR triggers were then removed, leaving `fast-checks.yml` as the only pull-request workflow.
+- Packet A baseline remains 17 workflow files; deletion and scheduled/release-lane compaction belong to Packet B. Ruleset `11390214` is unchanged pending owner approval.
 - Recovery checkpoint: `b28ee4e3` pushed on `task/MAINT-001`.
 - MAINT-002: complete and validated with 18/18 live E2E checks and zero broken internal links.
 - Quick canonical gate: 9/9 green; all 3,248 scanned imports resolve.
@@ -58,7 +60,7 @@ Full evidence and accepted risks are in
 - Session summary, sync, and end are read-only; add `--write`, `--fix`, or `--log-cost` only when the task intentionally owns that mutation.
 - Evidence commands must reject missing, ambiguous, or insufficient proof; never accept a convenient first match.
 - Run from the workspace root. Find docs through indexes or `rg --files`; the compact log is `docs/WORKLOG.md`.
-- Do not extend draft PR #689. After an owner-approved merge, synchronize and start packet A on a clean branch; ruleset, later merge, and release decisions remain separate.
+- Do not change ruleset `11390214`, merge draft PR #690, or release v0.21.7 without the corresponding separate owner approval.
 
 ## Maintenance Sequence
 
