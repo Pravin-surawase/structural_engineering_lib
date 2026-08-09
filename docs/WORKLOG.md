@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-09
+last_updated: 2026-08-10
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -17,7 +17,7 @@ tags: []
 **Status:** Approved
 **Importance:** Critical
 **Created:** 2026-03-25
-**Last Updated:** 2026-08-09
+**Last Updated:** 2026-08-10
 
 ---
 
@@ -339,3 +339,6 @@ tags: []
 | 2026-08-10 | LIB-IS456-REL-1 | Repaired the release validator state machine so exact-wheel, owner-authorized candidates carry truthful dated metadata while ordinary unpublished candidates still fail closed | — |
 | 2026-08-10 | LIB-IS456-REL-2 | Repaired the publish workflow's runner-local interpreter assumption, merged PRs #696/#697 through green gates, and completed exact TestPyPI rehearsal | 3f880d5b |
 | 2026-08-10 | LIB-IS456-REL-3 | Published v0.23.0 Alpha from tag `v0.23.0`, verified production hashes/SBOM/inventories against PyPI and GitHub assets, and passed exact public-package UAT | 3f880d5b |
+| 2026-08-10 | MAINT-009-A | Merged automation and Actions runtime updates through PRs #695 and #692; removed proven merged/stale branches and PR #548 | 0d01fa1f, fe9383fc |
+| 2026-08-10 | MAINT-009-B | Fixed Weekly Verification's Python 3.11 typing boundary through explicit Mypy and NumPy constraints; exact current-main run passed | 610b404b, 22bc8a45 |
+| 2026-08-10 | MAINT-009-C | Closed 129 obsolete nightly-failure issues, cleared generated repository artifacts, and prepared the dependency-maintenance handoff | — |

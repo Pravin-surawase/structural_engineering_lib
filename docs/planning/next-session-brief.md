@@ -4,85 +4,78 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: v0.23.0 Alpha release complete; later roadmap work remains inactive
+- Focus: post-v0.23.0 maintenance closed; dependency compatibility is next
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` at `3f880d5b`
-**Plan:** [is456-library-first-master-plan.md](is456-library-first-master-plan.md)
+**Maintenance baseline:** `22bc8a45`
+**Task board:** [TASKS.md](../TASKS.md)
 
 ## Required Reading
 
+- [Current task board](../TASKS.md)
 - [IS 456 library-first master plan](is456-library-first-master-plan.md)
 - [Release evidence crosswalk](../verification/is456-library-first-evidence.md)
-- [Current task board](../TASKS.md)
 
-| Release state | Version | Decision |
+| State | Target | Decision |
 |---|---|---|
-| **Current** | v0.23.0 | Alpha development preview released; exact public UAT green |
-| **Next** | v0.24.0 | Inactive until separately activated by the owner |
+| **Current** | v0.23.0 Alpha | Released; public artifact UAT and current-main Weekly Verification are green |
+| **Next** | DEPS-MAINT-001 | Triage the nine fresh dependency PRs; do not activate v0.24 product work |
 
-## Outcome
+## Closed outcome
 
-C0-C4 and the owner-authorized v0.23.0 Alpha release are complete. PR #696
-merged the bounded product/evidence closeout at `71e74a7e`. PR #697 fixed the
-publish runner's interpreter contract and merged at `3f880d5b`.
+- Merged automation recovery PR #695 and GitHub Actions runtime PR #692.
+- Repaired the real Weekly Verification typing failure through PR #699 and the
+  final NumPy `<2.5` compatibility constraint in PR #700.
+- Exact current-main Weekly Verification run `31334828353` passed wheel/CLI,
+  locked audits, Docker health, Python, FastAPI, repository drift, and React.
+- Closed stale PR #548 and all 129 historical `Nightly QA failed` issues after
+  the current-main workflow passed; GitHub now has zero open issues.
+- Removed verified merged release/automation branches, their linked worktree,
+  and the superseded orphan `task/TASK-DOCSYNC` branch. Remote non-Dependabot
+  branches are now only `main` and `gh-pages`.
+- Moved 22 generated release/build artifacts (5.6 MB) out of the repository to
+  recoverable staging at `/private/tmp/structural-lib-maint-20260810.sLuHRf`.
+- Project health, audit readiness, and efficiency baselines were 100/100,
+  19/19, and PASS before this handoff.
 
-The release is available on PyPI and as a GitHub prerelease. It remains a
-case-qualified development preview, not a whole-standard or professional-
-approval claim. Qualified structural-engineering review is cumulative and is
-required only before stable or engineering-use approval, not per development
-packet or Alpha release.
+## Retained release boundary
 
-## Release identity
-
-- Tag/source: `v0.23.0` / `3f880d5bbc338baefc4aec8ed472cafe840a5c99`
-- TestPyPI run: `31332187566`, green before tag creation.
-- Production run: `31332420554`, green for build, UAT, PyPI, and GitHub Release.
-- Wheel: 478,903 bytes, 181 files, SHA-256
-  `cd56a5301160fc7d62154e9d6e567ba8bf9bb8608827c9454b63161276c5408a`.
-- Sdist: 395,422 bytes, 206 files, SHA-256
-  `fe03a86d6c518a5f293c874e825930bb79de984cb53bebaf63a7610c3f042a73`.
-- Manifest SHA-256:
-  `efadd1e6b0b1e8c3c7e242a057ea83a3bbef19059462a5ccd5ccde5ac2ba9ab5`.
-- CycloneDX 1.6 SBOM SHA-256:
-  `8c76f919df65e913d0d507d0ac824bb2c077fbb530a53732bc65bed68f482686`.
-- Both content allowlist and protected-content gates passed.
-- Exact public PyPI UAT: 5,406 passed, 51 skipped, 6 deselected; installed
-  `job`, `critical`, `report`, and CLI-help workflows passed.
-
-## Bounded product evidence retained
-
-- Supported beam, rectangular-column, concentric isolated-footing, one-way
-  slab, and bounded two-way slab paths are recorded in the evidence crosswalk.
-- Unsafe beam shear remains FAIL across Python, SSE, React, apply behavior,
-  and export output.
-- Public package contents exclude protected standards and non-product
-  research/migration/code-family namespaces.
-- Runtime, exact-artifact, status-truth, allowlist, protected-content, OIDC,
-  and post-publication verification gates remain mandatory.
+The v0.23.0 Alpha remains a case-qualified development preview, not a
+whole-standard or professional-approval claim. Retain the accumulated source,
+benchmark, unit, unsafe-case, limitation, and exact-artifact evidence for one
+cumulative qualified structural-engineering review before any stable or
+engineering-use approval.
 
 ## Next action
 
-No new product lane is active. The owner must separately choose the next
-milestone. Retain the accumulated source, benchmark, unit, unsafe-case,
-limitation, and artifact evidence for one final qualified review before any
-stable or engineering-use approval.
+Run one dependency-maintenance parent task and keep ecosystems separate:
+
+1. Rebase and evaluate Python PRs #679 and #686-#688. Start with install/lock
+   consistency; do not merge #679 while Ruff pins disagree across surfaces.
+2. Evaluate React group PR #680 against individual major PRs #681-#684 and
+   retain one coherent upgrade route. #680 and #684 currently fail React CI.
+3. Use focused validation while iterating, then one quick gate and one full
+   final gate. Keep v0.24 and other product-roadmap work inactive.
+
+## GitHub state
+
+- Open issues: 0.
+- Open PRs: nine Dependabot PRs (#679-#684 and #686-#688).
+- Green but still compatibility-sensitive: #679, #681-#683, and #688.
+- Currently failing their relevant lane: #680, #684, #686, and #687.
 
 ## Terminal issues recorded
 
-- `check_links.py --modified` is unsupported; the maintained full link check
-  passed with zero broken links.
-- Index generation rewrote unrelated generated caches; only those cache diffs
-  were surgically reversed.
-- A referenced `check_release_candidate.py` entrypoint does not exist; the
-  maintained `./run.sh release candidate-check` command passed.
-- One cleanup assumed `Python/build` existed; the missing directory produced a
-  harmless diagnostic and the fresh build completed. Future cleanup must test
-  each explicit generated path before moving it.
-- The first TestPyPI run failed before upload because tests hard-coded the
-  repository `.venv`; PR #697 uses the active interpreter and the rerun passed.
-- One artifact download retry found the file already present after the first
-  request completed; explicit hash and manifest inspection succeeded.
-- The first evidence commits used descriptive release-row labels; the session
-  contract requires literal `Current` and `Next`, which were restored before
-  retrying.
+- Finder Trash staging was denied by macOS privacy controls and
+  `/usr/bin/realpath` is absent. `.venv/bin/python` path resolution plus an
+  explicit `/private/tmp` recoverable staging directory worked.
+- The first exact Weekly dispatch was cancelled when `main` changed during the
+  Actions update. The next run exposed Mypy/NumPy stub incompatibility.
+- PR #699 correctly constrained Mypy but did not constrain the unpinned NumPy
+  install surface. CI logs proved NumPy 2.5.2 was the remaining root cause; PR
+  #700 fixed that boundary, and the exact current-main rerun passed.
+- A zsh unmatched-glob lookup for `Python/requirements*.txt` was replaced by
+  an `rg --files` lookup.
+- Newly merged squash commits required an explicit fetch before local tree-ID
+  comparison. Branch cleanup was performed only after equal trees were proven.
