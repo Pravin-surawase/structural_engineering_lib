@@ -4,7 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: post-v0.23.0 maintenance closed; dependency compatibility is next
+- Focus: ADOPT-001 Packet A complete; canonical capability discovery is next
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` at `3f880d5b`
@@ -14,16 +14,36 @@
 ## Required Reading
 
 - [Current task board](../TASKS.md)
+- [Adoption and trust surface plan](adoption-trust-surface-plan.md)
 - [IS 456 library-first master plan](is456-library-first-master-plan.md)
 - [Release evidence crosswalk](../verification/is456-library-first-evidence.md)
 
 | State | Target | Decision |
 |---|---|---|
 | **Current** | v0.23.0 Alpha | Released; public artifact UAT and current-main Weekly Verification are green |
-| **Next** | DEPS-MAINT-001 | Triage the nine fresh dependency PRs; do not activate v0.24 product work |
+| **Next** | ADOPT-001 | Packet A is committed; implement Packet B from the existing capability source |
+| **Queued** | DEPS-MAINT-001 | Keep dependency triage separate from the trust-surface branch |
 
-## Closed outcome
+## Current outcome
 
+- Created `codex/trust-surface-foundation` from clean merged `main` at
+  `44e85587`; Packet A is committed at `88bca3c1`.
+- Added the durable dependency-ordered ADOPT-001 plan with protected calculation
+  paths, non-goals, packet files/commands, acceptance, rollback, and owner-only
+  actions.
+- Repaired the rejected public column example, incorrect aggregate status
+  guidance, wrong REST request fields, stale health versions, and missing REST
+  response envelope.
+- Replaced the long stale REST response inventory with one executable beam
+  contract, an explicit envelope/error boundary, endpoint families, and the live
+  OpenAPI source of truth.
+- Added three focused regressions for the documented Python column workflow,
+  REST beam request/access path, health versions, and known stale guide strings.
+- Focused tests, Ruff, Black, OpenAPI compatibility, 1,067 internal links, and
+  the repository quick gate pass.
+- The generated SDK templates were confirmed to be stale against the envelope
+  and are now truthfully marked development-only until Packet C fixes their
+  generator and typed schemas together.
 - Merged automation recovery PR #695 and GitHub Actions runtime PR #692.
 - Repaired the real Weekly Verification typing failure through PR #699 and the
   final NumPy `<2.5` compatibility constraint in PR #700.
@@ -49,14 +69,16 @@ engineering-use approval.
 
 ## Next action
 
-Run one dependency-maintenance parent task and keep ecosystems separate:
+Implement ADOPT-001 Packet B without widening the engineering scope:
 
-1. Rebase and evaluate Python PRs #679 and #686-#688. Start with install/lock
-   consistency; do not merge #679 while Ruff pins disagree across surfaces.
-2. Evaluate React group PR #680 against individual major PRs #681-#684 and
-   retain one coherent upgrade route. #680 and #684 currently fail React CI.
-3. Use focused validation while iterating, then one quick gate and one full
-   final gate. Keep v0.24 and other product-roadmap work inactive.
+1. Add one explicit JSON serialization contract to the existing frozen
+   capability dataclasses.
+2. Expose the same capability IDs and supported/held cases through Python, CLI
+   JSON, and a typed REST route.
+3. Refresh `llms.txt` from that truth and add focused semantic-equivalence tests.
+4. Do not edit IS 456 calculation modules, generated clients, or production auth
+   in Packet B. Those remain separate Packets C and D.
+5. Keep dependency PR triage queued on a separate branch/session.
 
 ## GitHub state
 
@@ -67,6 +89,14 @@ Run one dependency-maintenance parent task and keep ecosystems separate:
 
 ## Terminal issues recorded
 
+- `scripts/check_links.py --fail-fast` is no longer a supported invocation;
+  `scripts/check_links.py --exclude-archive` completed with zero broken links.
+- `./run.sh generate indexes` refreshed many unrelated stale folder indexes.
+  The exact generator-created spillover was inspected and restored; only the
+  changed planning/reference indexes were retained. Prefer direct targeted
+  `generate_enhanced_index.py <folder>` for later packets.
+- The first Packet A commit stopped because the end-of-file hook repaired two
+  generated JSON files. Restaging only those scoped files made the retry pass.
 - Finder Trash staging was denied by macOS privacy controls and
   `/usr/bin/realpath` is absent. `.venv/bin/python` path resolution plus an
   explicit `/private/tmp` recoverable staging directory worked.

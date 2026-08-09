@@ -34,6 +34,7 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-08-10 | ADOPT-001 | Added the adoption/trust plan, repaired executable Python/REST examples, and added public-contract regressions | 88bca3c1 |
 | 2026-08-09 | MAINT-008 | Added a truthful aggregate PR Gate and removed nine superseded pull-request workflow triggers after the live gate passed | 07ecf357 |
 | 2026-08-09 | MAINT-008 | Removed hidden session mutations so summary, sync, and end are read-only unless an explicit write flag is supplied | fc4d0249 |
 | 2026-08-09 | MAINT-008 | Repaired all 14 skill entrypoints, canonicalized tier/route validation, and made supporting evidence commands fail closed | 5ac70ac1 |

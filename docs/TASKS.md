@@ -126,7 +126,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| ADOPT-001 | Make public examples executable, expose machine-readable capability/API contracts, and add production/evidence trust boundaries | Main Agent | 🚧 PACKET A ACTIVE |
+| ADOPT-001 | Make public examples executable, expose machine-readable capability/API contracts, and add production/evidence trust boundaries | Main Agent | ✅ PACKET A; NEXT: PACKET B |
 | DEPS-MAINT-001 | Triage the nine remaining Dependabot PRs in bounded Python and React compatibility batches | Main Agent | ⏸ NEXT SESSION |
 
 ## Up Next
