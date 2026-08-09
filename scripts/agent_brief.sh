@@ -118,12 +118,12 @@ _handoff_context() {
     last_commit=$(git -C "$REPO_ROOT" --no-pager log -1 --format="%s" 2>/dev/null)
     echo "Last commit: $last_commit"
 
-    # Check for handoff file
-    local handoff="$REPO_ROOT/logs/handoff_latest.md"
-    if [[ -f "$handoff" ]]; then
+    if [[ -f "$BRIEF" ]]; then
         echo ""
-        echo -e "${B}Handoff from previous agent:${N}"
-        head -10 "$handoff"
+        echo -e "${B}Current versioned handoff:${N}"
+        head -20 "$BRIEF"
+    else
+        echo "No versioned handoff found at docs/planning/next-session-brief.md"
     fi
 }
 
