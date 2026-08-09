@@ -134,7 +134,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 ### FastAPI Endpoints (`fastapi_app/routers/`)
 
-60 endpoints across 13 routers (59 REST + 1 WebSocket):
+62 endpoints across 14 routers (59 REST + 1 WebSocket):
 
 | Router | Endpoint | Purpose |
 |--------|----------|---------|
@@ -203,7 +203,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI. Units al
 
 | Module | Key Functions |
 |--------|---------------|
-| `services/api.py` | 68 public API functions; implementations split across `beam_api.py`, `column_api.py`, and `common_api.py` (15 private helpers) |
+| `services/api.py` | 73 public API functions; implementations split across `beam_api.py`, `column_api.py`, and `common_api.py` (16 private helpers) |
 | `api.py` | **Backward-compat stub only** — imports from `services/api.py` |
 | `services/adapters.py` | `GenericCSVAdapter`, `ETABSAdapter`, `SAFEAdapter` |
 | `visualization/geometry_3d.py` | `beam_to_3d_geometry()` — 3D rebar/stirrup positions |

@@ -23,6 +23,11 @@ Before editing, write down:
 
 If the clause source or benchmark needed to establish correctness is unavailable, stop before implementing the formula. Passing repository tests cannot replace that evidence.
 
+Development packets and Alpha releases do not require a separate qualified
+sign-off for each function. Accumulate the source, benchmark, unit, unsafe-case
+and limitation evidence for one qualified review of the final stable or
+engineering-use scope.
+
 ## 1. Locate Existing Behavior
 
 ```bash
@@ -98,7 +103,7 @@ The handoff must state:
 - formula/clause and benchmark source used;
 - exact files and public consumers changed;
 - targeted and closeout commands with results;
-- remaining owner or qualified-engineer decisions;
+- unresolved governing interpretations and owner decisions;
 - explicit statement that software verification is not professional design approval.
 
 Return the verified, scoped diff and a suggested `feat(is456): <outcome>`
@@ -106,4 +111,8 @@ message to Codex for Git/GitHub closeout.
 
 ## Stop Conditions
 
-Stop when the governing source is ambiguous, units cannot be reconciled, the benchmark disagrees, the requested change would require an unapproved broader element scope, or a qualified engineering decision is missing.
+Stop when the governing source is ambiguous, units cannot be reconciled, the
+benchmark disagrees, or the requested change would require an unapproved
+broader element scope. If ambiguity cannot be resolved, narrow or exclude the
+case and carry it to the final qualified-review ledger; do not block unrelated
+bounded development on obtaining a separate review for this packet.

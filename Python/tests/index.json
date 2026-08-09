@@ -2,8 +2,8 @@
   "folder": "Python/tests",
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
-  "last_updated": "2026-08-07",
-  "file_count": 49,
+  "last_updated": "2026-08-09",
+  "file_count": 53,
   "files": [
     {
       "name": "README.md",
@@ -60,6 +60,153 @@
         }
       ],
       "content_hash": "2de3ed45159a"
+    },
+    {
+      "name": "test_agent_governance_automation.py",
+      "type": "python",
+      "size_lines": 279,
+      "last_updated": "2026-08-09",
+      "description": "Regression tests for agent-governance automation controls.",
+      "functions": [
+        {
+          "name": "test_python_runtime_launcher_uses_explicit_interpreter"
+        },
+        {
+          "name": "test_control_paths_use_python_runtime_launcher"
+        },
+        {
+          "name": "test_current_session_ids_uses_injected_date_and_ignores_malformed_ids"
+        },
+        {
+          "name": "test_agent_context_uses_all_registry_agents"
+        },
+        {
+          "name": "test_agent_context_commands_are_root_stable"
+        },
+        {
+          "name": "test_compliance_filter_without_attribution_fails_evidence"
+        },
+        {
+          "name": "test_compliance_default_rejects_stale_latest_session",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_drift_filter_without_attribution_fails_evidence"
+        },
+        {
+          "name": "test_drift_default_is_read_only",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_drift_write_mode_is_explicit",
+          "params": [
+            "monkeypatch",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_trends_default_is_read_only",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_trends_missing_agent_fails_before_write",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_operation_permissions_are_explicit_and_fail_closed",
+          "params": [
+            "operation",
+            "mode",
+            "expected"
+          ]
+        },
+        {
+          "name": "test_abstract_permission_operations_remain_compatible"
+        },
+        {
+          "name": "test_agent_permission_check_uses_declared_task_mode"
+        },
+        {
+          "name": "test_undeclared_operation_is_denied_even_to_danger_level_agent",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_tool_registry_does_not_infer_permission_from_git_text"
+        },
+        {
+          "name": "test_permission_metadata_audit_accepts_current_declarations"
+        },
+        {
+          "name": "test_permission_metadata_audit_rejects_modes_without_default",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "SCRIPTS_DIR"
+      ],
+      "content_hash": "f32a67378f42"
+    },
+    {
+      "name": "test_api_manifest_tools.py",
+      "type": "python",
+      "size_lines": 134,
+      "last_updated": "2026-08-09",
+      "description": "Regression tests for the single canonical public API manifest.",
+      "functions": [
+        {
+          "name": "test_manifest_comparison_reads_symbols_shape",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_manifest_comparison_fails_closed_for_missing_symbol",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_manifest_comparison_fails_closed_for_signature_drift",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_schema_manifest_mode_exits_nonzero_on_manifest_issue",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_openapi_contract_loader_uses_canonical_raw_snapshot",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        }
+      ],
+      "constants": [
+        "_SCRIPT_PATH",
+        "_SPEC"
+      ],
+      "content_hash": "ef8254224c2d"
     },
     {
       "name": "test_api_results.py",
@@ -159,7 +306,7 @@
       "name": "test_api_surface_snapshot.py",
       "type": "python",
       "size_lines": 122,
-      "last_updated": "2026-08-07",
+      "last_updated": "2026-08-09",
       "description": "Snapshot regression tests — assert minimum API surface counts.",
       "classes": [
         {
@@ -353,8 +500,8 @@
     {
       "name": "test_calculation_report.py",
       "type": "python",
-      "size_lines": 715,
-      "last_updated": "2026-04-05",
+      "size_lines": 745,
+      "last_updated": "2026-08-09",
       "description": "Tests for the calculation_report module (TASK-277).",
       "classes": [
         {
@@ -408,6 +555,8 @@
             "test_export_html_contains_structure",
             "test_export_html_status_pass",
             "test_export_html_status_fail",
+            "test_export_html_unsafe_shear_overrides_summary_pass",
+            "test_export_html_missing_shear_status_is_not_evaluated",
             "test_export_markdown",
             "test_export_markdown_tables"
           ]
@@ -474,13 +623,13 @@
           ]
         }
       ],
-      "content_hash": "b71e43aa32b2"
+      "content_hash": "0c5032818d28"
     },
     {
       "name": "test_clause_traceability.py",
       "type": "python",
       "size_lines": 489,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-09",
       "description": "Tests for IS 456 Traceability Module",
       "classes": [
         {
@@ -522,7 +671,7 @@
             "test_get_existing_clause",
             "test_get_nonexistent_clause",
             "test_clause_info_has_keywords",
-            "test_clause_info_has_formula"
+            "test_database_declares_identifier_only_content_policy"
           ]
         },
         {
@@ -592,7 +741,7 @@
           "description": "Create a sample decorated function for testing."
         }
       ],
-      "content_hash": "22b11238c669"
+      "content_hash": "e535f8e80f27"
     },
     {
       "name": "test_column_axial.py",
@@ -669,8 +818,8 @@
     {
       "name": "test_column_biaxial.py",
       "type": "python",
-      "size_lines": 947,
-      "last_updated": "2026-04-01",
+      "size_lines": 958,
+      "last_updated": "2026-08-09",
       "description": "Tests for IS 456 Cl 39.6 biaxial bending check — TASK-635.",
       "classes": [
         {
@@ -773,7 +922,7 @@
             "test_mux1_matches_pm_curve_interpolation",
             "test_muy1_matches_pm_curve_interpolation_swapped",
             "test_full_pipeline_short_column",
-            "test_full_pipeline_slender_column"
+            "test_direct_pipeline_rejects_slender_column"
           ]
         },
         {
@@ -795,7 +944,7 @@
         "_PUZ_CONCRETE_COEFF",
         "_PUZ_STEEL_COEFF"
       ],
-      "content_hash": "faac96a7580c"
+      "content_hash": "d049c9e8a3fc"
     },
     {
       "name": "test_column_helical.py",
@@ -867,8 +1016,8 @@
     {
       "name": "test_column_long.py",
       "type": "python",
-      "size_lines": 640,
-      "last_updated": "2026-04-03",
+      "size_lines": 662,
+      "last_updated": "2026-08-09",
       "description": "Tests for IS 456 Cl 39.7 long (slender) column design.",
       "classes": [
         {
@@ -883,6 +1032,7 @@
           "description": "Tests 2-3: Slender on one axis only.",
           "public_methods": [
             "test_slender_x_only",
+            "test_zero_end_moments_still_enforce_minimum_eccentricity",
             "test_slender_y_only"
           ]
         },
@@ -989,7 +1139,7 @@
       "constants": [
         "_BASE"
       ],
-      "content_hash": "567bf0bd9069"
+      "content_hash": "6247366712d3"
     },
     {
       "name": "test_column_return_types.py",
@@ -1544,8 +1694,8 @@
     {
       "name": "test_footing.py",
       "type": "python",
-      "size_lines": 1564,
-      "last_updated": "2026-04-06",
+      "size_lines": 1750,
+      "last_updated": "2026-08-09",
       "description": "Tests for IS 456 footing design — TASK-650/651/652.",
       "classes": [
         {
@@ -1589,11 +1739,11 @@
             "test_bearing_pressure_enhancement_factor",
             "test_bearing_pressure_edge_zero_load",
             "test_bearing_pressure_utilization",
+            "test_bearing_pressure_defaults_to_no_enhancement_without_approved_a1",
+            "test_bearing_pressure_rejects_unapproved_effective_a1",
             "test_bearing_pressure_invalid_negative_load",
             "test_bearing_pressure_invalid_zero_fck",
-            "test_bearing_pressure_invalid_negative_column",
-            "test_bearing_pressure_invalid_footing_smaller",
-            "test_result_to_dict_and_summary"
+            "test_bearing_pressure_invalid_negative_column"
           ]
         },
         {
@@ -1602,13 +1752,14 @@
           "public_methods": [
             "test_benchmark_concentric_square",
             "test_minimum_steel_check",
+            "test_minimum_steel_uses_explicit_overall_thickness",
+            "test_effective_depth_must_be_less_than_overall_thickness",
             "test_symmetric_footing_equal_directions",
             "test_rectangular_footing_asymmetric",
             "test_validation_negative_fck",
             "test_validation_column_larger_than_footing",
             "test_result_is_frozen",
-            "test_result_to_dict",
-            "test_result_summary"
+            "test_result_to_dict"
           ]
         },
         {
@@ -1654,7 +1805,7 @@
             "test_validate_negative_col_dim",
             "test_validate_min_depth_150mm",
             "test_validate_min_depth_exactly_150_passes",
-            "test_net_pressure_benchmark"
+            "test_validate_footing_inputs_rejects_non_finite_or_non_real_geometry"
           ]
         },
         {
@@ -1705,7 +1856,51 @@
           ]
         }
       ],
-      "content_hash": "633177b42dbe"
+      "functions": [
+        {
+          "name": "test_public_footing_entrypoints_reject_invalid_numeric_inputs",
+          "description": "No public footing result or safety flag is derived from invalid inputs.",
+          "params": [
+            "invalid_value"
+          ]
+        }
+      ],
+      "content_hash": "0bfff275bf68"
+    },
+    {
+      "name": "test_footing_load_transfer.py",
+      "type": "python",
+      "size_lines": 165,
+      "last_updated": "2026-08-09",
+      "description": "Focused independent arithmetic checks for IS 456 Cl. 34.4 load transfer.",
+      "functions": [
+        {
+          "name": "test_project_benchmark_governing_capacity_transfer_steel_and_development_length",
+          "description": "3000 kN, 400x400, approved A1=640000, M20/M25, 8-25 dowels."
+        },
+        {
+          "name": "test_effective_a1_requires_explicit_approved_frustum_basis"
+        },
+        {
+          "name": "test_enhancement_is_capped_and_underprovided_dowels_fail_transfer_check"
+        },
+        {
+          "name": "test_dowel_diameter_and_development_length_boundaries_are_reported"
+        },
+        {
+          "name": "test_special_large_column_bar_dowel_case_fails_closed"
+        },
+        {
+          "name": "test_dowel_count_must_be_a_positive_integer_before_arithmetic",
+          "params": [
+            "dowel_count"
+          ]
+        },
+        {
+          "name": "test_four_dowels_are_preserved_as_a_valid_integral_count"
+        }
+      ],
+      "content_hash": "ee88228af18c"
     },
     {
       "name": "test_inputs.py",
@@ -1801,8 +1996,8 @@
     {
       "name": "test_is456_common.py",
       "type": "python",
-      "size_lines": 747,
-      "last_updated": "2026-08-07",
+      "size_lines": 854,
+      "last_updated": "2026-08-09",
       "description": "Tests for IS 456:2000 common modules - stress_blocks, reinforcement, validation.",
       "classes": [
         {
@@ -1972,7 +2167,7 @@
         "_FE500_POINT1",
         "_FE500_POINT5"
       ],
-      "content_hash": "fe419d3500fb"
+      "content_hash": "5250f92ea06c"
     },
     {
       "name": "test_is456_constants.py",
@@ -2003,8 +2198,8 @@
     {
       "name": "test_model_picker.py",
       "type": "python",
-      "size_lines": 87,
-      "last_updated": "2026-08-07",
+      "size_lines": 92,
+      "last_updated": "2026-08-09",
       "description": "Tests for the deterministic low-token model picker.",
       "functions": [
         {
@@ -2015,10 +2210,10 @@
           ]
         },
         {
-          "name": "test_critical_work_uses_standing_sol_high_approval"
+          "name": "test_critical_work_starts_on_terra_and_approval_gates_sol"
         },
         {
-          "name": "test_substantial_planning_uses_standing_sol_high_approval",
+          "name": "test_substantial_planning_uses_efficient_terra_default",
           "params": [
             "query"
           ]
@@ -2027,7 +2222,7 @@
           "name": "test_mechanical_planning_doc_update_stays_on_luna"
         },
         {
-          "name": "test_main_orchestrator_always_uses_sol_high"
+          "name": "test_main_orchestrator_advises_terra_without_overriding_user_choice"
         },
         {
           "name": "test_low_risk_override_prefers_luna"
@@ -2039,7 +2234,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "a02f55f0ce65"
+      "content_hash": "5263044f7410"
     },
     {
       "name": "test_multi_objective_optimizer.py",
@@ -2157,8 +2352,8 @@
     {
       "name": "test_packaging.py",
       "type": "python",
-      "size_lines": 398,
-      "last_updated": "2026-08-07",
+      "size_lines": 418,
+      "last_updated": "2026-08-09",
       "description": "Tests for package distribution correctness.",
       "classes": [
         {
@@ -2187,6 +2382,7 @@
             "test_no_tests_dir_in_wheel",
             "test_no_examples_dir_in_wheel",
             "test_no_scripts_dir_in_wheel",
+            "test_non_product_namespaces_excluded",
             "test_structural_lib_present"
           ]
         },
@@ -2243,7 +2439,7 @@
           ]
         }
       ],
-      "content_hash": "1d6ccd71c164"
+      "content_hash": "87c54525f7fe"
     },
     {
       "name": "test_pipeline_state.py",
@@ -2323,10 +2519,29 @@
       "content_hash": "a45107645a79"
     },
     {
+      "name": "test_private_source_boundary.py",
+      "type": "python",
+      "size_lines": 40,
+      "last_updated": "2026-08-09",
+      "description": "Protected engineering-source material stays local and outside distributions.",
+      "functions": [
+        {
+          "name": "test_private_sources_directory_is_ignored_and_untracked"
+        },
+        {
+          "name": "test_package_configuration_has_no_private_source_data"
+        }
+      ],
+      "constants": [
+        "ROOT"
+      ],
+      "content_hash": "8545f449826d"
+    },
+    {
       "name": "test_release_environment.py",
       "type": "python",
-      "size_lines": 77,
-      "last_updated": "2026-08-07",
+      "size_lines": 189,
+      "last_updated": "2026-08-09",
       "description": "Regression tests for local release preflight environment selection.",
       "functions": [
         {
@@ -2348,18 +2563,59 @@
             "tmp_path",
             "monkeypatch"
           ]
+        },
+        {
+          "name": "test_shared_node_runtime_reads_repo_pin",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_shared_node_runtime_rejects_missing_npm",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_launcher_delegates_to_shared_node_runtime"
+        },
+        {
+          "name": "test_source_surface_versions_match_prepared_candidate",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_source_surface_versions_fail_on_deliberate_mismatch",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_wheel_versions_fail_on_deliberate_metadata_mismatch",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_wheel_check_rejects_excluded_package_content",
+          "params": [
+            "tmp_path"
+          ]
         }
       ],
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "c76a914d77b1"
+      "content_hash": "6cde32e9477b"
     },
     {
       "name": "test_release_scripts.py",
       "type": "python",
       "size_lines": 404,
-      "last_updated": "2026-08-07",
+      "last_updated": "2026-08-09",
       "description": "Tests for release scripts (bump_version.py, release.py).",
       "classes": [
         {
@@ -2497,8 +2753,8 @@
     {
       "name": "test_report_edge_cases.py",
       "type": "python",
-      "size_lines": 290,
-      "last_updated": "2026-04-06",
+      "size_lines": 303,
+      "last_updated": "2026-08-09",
       "description": "Edge case tests for report generation modules (TASK-520).",
       "classes": [
         {
@@ -2519,6 +2775,7 @@
           "public_methods": [
             "test_fallback_produces_valid_html",
             "test_fallback_fail_status",
+            "test_fallback_missing_section_status_is_not_evaluated",
             "test_fallback_escapes_html",
             "test_fallback_missing_keys",
             "test_fallback_includes_results"
@@ -2552,7 +2809,7 @@
           ]
         }
       ],
-      "content_hash": "a198051acb7e"
+      "content_hash": "780cd03621db"
     },
     {
       "name": "test_report_svg.py",
@@ -2609,8 +2866,8 @@
     {
       "name": "test_reports.py",
       "type": "python",
-      "size_lines": 418,
-      "last_updated": "2026-03-26",
+      "size_lines": 447,
+      "last_updated": "2026-08-09",
       "description": "Tests for the reports module.",
       "classes": [
         {
@@ -2639,7 +2896,9 @@
             "test_detailed_template",
             "test_invalid_template_raises",
             "test_pass_status_in_report",
-            "test_fail_status_in_report"
+            "test_fail_status_in_report",
+            "test_current_is_safe_false_overrides_overall_pass",
+            "test_missing_section_status_is_not_evaluated"
           ]
         },
         {
@@ -2689,13 +2948,13 @@
           ]
         }
       ],
-      "content_hash": "8cc3def509cb"
+      "content_hash": "7fcf49e3358d"
     },
     {
       "name": "test_research_prototypes.py",
       "type": "python",
       "size_lines": 908,
-      "last_updated": "2026-08-07",
+      "last_updated": "2026-08-09",
       "description": "Tests for research prototypes: Sustainability, Generative Design, Design Companion.",
       "classes": [
         {
@@ -2837,8 +3096,8 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 249,
-      "last_updated": "2026-08-07",
+      "size_lines": 327,
+      "last_updated": "2026-08-09",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
         {
@@ -2876,7 +3135,32 @@
           "name": "test_launcher_port_discovery_is_listener_only"
         },
         {
-          "name": "test_pr_status_is_terminal_first_and_browser_is_explicit"
+          "name": "test_run_sh_does_not_own_git_or_github_lifecycle"
+        },
+        {
+          "name": "test_retired_git_lifecycle_paths_stay_absent"
+        },
+        {
+          "name": "test_p0_missing_script_control_paths_stay_removed"
+        },
+        {
+          "name": "test_script_reference_validator_fails_missing_control_target",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_api_endpoint_extraction_stops_before_query_template"
+        },
+        {
+          "name": "test_api_route_shape_matches_dynamic_segments"
+        },
+        {
+          "name": "test_api_contract_scan_fails_closed_without_typescript",
+          "params": [
+            "tmp_path"
+          ]
         },
         {
           "name": "test_usage_checkpoint_records_observable_fields_only",
@@ -2909,7 +3193,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "65215bd3652e"
+      "content_hash": "5fd79d7492ad"
     },
     {
       "name": "test_session_store.py",
@@ -3212,7 +3496,7 @@
       "name": "test_token_efficiency.py",
       "type": "python",
       "size_lines": 82,
-      "last_updated": "2026-08-07",
+      "last_updated": "2026-08-09",
       "description": "Regression tests for repository-side token-efficiency controls.",
       "functions": [
         {
@@ -3234,7 +3518,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "59b2ff3cb516"
+      "content_hash": "42f9c69f73f7"
     },
     {
       "name": "test_visualization_edge_cases.py",
@@ -3521,7 +3805,7 @@
     {
       "name": "codes",
       "path": "codes/",
-      "file_count": 11,
+      "file_count": 16,
       "is_package": true
     },
     {
@@ -3543,7 +3827,7 @@
     {
       "name": "integration",
       "path": "integration/",
-      "file_count": 43,
+      "file_count": 44,
       "is_package": true
     },
     {
@@ -3571,6 +3855,6 @@
       "is_package": true
     }
   ],
-  "content_hash": "a18a3fdaebe8e81f",
+  "content_hash": "01bc7417dcb67ae5",
   "has_init": true
 }

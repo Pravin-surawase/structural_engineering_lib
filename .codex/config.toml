@@ -1,5 +1,6 @@
 # Project-local efficiency defaults. The parent model and reasoning are
-# deliberately unset so the user's active Codex selection always wins.
+# deliberately unset so an explicit user selection or delegated orchestrator
+# choice remains in control.
 model_verbosity = "low"
 
 [agents]

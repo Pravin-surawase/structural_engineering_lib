@@ -169,9 +169,15 @@ def check_isolated_footing_load_transfer(
         available_dowel_development_length_into_supported_member_mm,
         "Cl. 34.4.2",
     )
+    if isinstance(dowel_count, bool) or not isinstance(dowel_count, int):
+        raise ValidationError(
+            "dowel_count must be a positive integer",
+            details={"dowel_count": dowel_count},
+            clause_ref="Cl. 34.4.3",
+        )
     if dowel_count <= 0:
         raise ValidationError(
-            "dowel_count must be positive",
+            "dowel_count must be a positive integer",
             details={"dowel_count": dowel_count},
             clause_ref="Cl. 34.4.3",
         )

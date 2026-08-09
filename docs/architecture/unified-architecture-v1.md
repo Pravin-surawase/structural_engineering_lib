@@ -359,7 +359,7 @@ class DesignEnvelope:
 
 **Additional schemas:**
 - `clauses.json` — Clause database schema (section 12.4 of blueprint)
-- `api_manifest.json` — API function registry
+- `docs/reference/api-manifest.json` — canonical API function registry
 - `index.json` — Folder metadata schema
 
 No separate schema definition language (like Protocol Buffers or GraphQL) is needed. Pydantic provides type safety, validation, and auto-generated documentation.
@@ -1085,7 +1085,7 @@ def test_function_params_have_units(func):
 1. Add `@deprecated(version, remove_version, alternative)` decorator
 2. Function continues to work for 2 minor versions
 3. Migration guide auto-generated from `@deprecated` decorator metadata
-4. API surface diffing in CI: `check_api_surface.py --baseline api_manifest.json`
+4. API surface diffing in CI: `generate_api_manifest.py --check`
 
 **CI enforcement:**
 - New functions: ✅ OK (additive change)

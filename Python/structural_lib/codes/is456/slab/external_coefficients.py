@@ -74,8 +74,9 @@ class ExternalTwoWaySlabCoefficientRecord:
     coefficient_source_is_approved: bool
     source_ids: tuple[str, str]
     policy_status: ExternalCoefficientPolicyStatus
-    review_status: ExternalCoefficientReviewStatus
-    coefficient_correctness_is_verified: bool
+    coefficient_review_status: ExternalCoefficientReviewStatus
+    qualified_acceptance_recorded: bool
+    coefficient_correctness_verified_by_library: bool
     assumptions: tuple[str, ...]
     limitations: tuple[str, ...]
 
@@ -103,11 +104,18 @@ class ExternalTwoWaySlabCoefficientRecord:
             is not ExternalCoefficientPolicyStatus.EXTERNAL_SOURCE_REQUIRED
         ):
             raise SlabContractError("policy_status must be external_source_required")
-        if self.review_status is not ExternalCoefficientReviewStatus.REVIEW_REQUIRED:
-            raise SlabContractError("review_status must be review_required")
-        if self.coefficient_correctness_is_verified is not False:
+        if (
+            self.coefficient_review_status
+            is not ExternalCoefficientReviewStatus.REVIEW_REQUIRED
+        ):
+            raise SlabContractError("coefficient_review_status must be review_required")
+        if self.qualified_acceptance_recorded is not False:
             raise SlabContractError(
-                "coefficient correctness cannot be verified by this contract"
+                "P9 coefficient records cannot record qualified acceptance"
+            )
+        if self.coefficient_correctness_verified_by_library is not False:
+            raise SlabContractError(
+                "coefficient correctness cannot be verified by this library"
             )
 
         object.__setattr__(
@@ -130,6 +138,16 @@ class ExternalTwoWaySlabCoefficientRecord:
         )
         _nonempty_text_tuple(self.assumptions, "assumptions")
         _nonempty_text_tuple(self.limitations, "limitations")
+
+    @property
+    def review_status(self) -> ExternalCoefficientReviewStatus:
+        """Compatibility alias; use ``coefficient_review_status`` in records."""
+        return self.coefficient_review_status
+
+    @property
+    def coefficient_correctness_is_verified(self) -> bool:
+        """Compatibility alias; use the library-specific canonical field."""
+        return self.coefficient_correctness_verified_by_library
 
 
 def _positive_finite_coefficient(value: float, field_name: str) -> float:
@@ -196,15 +214,17 @@ def record_external_two_way_slab_coefficients(
         coefficient_source_is_approved=coefficient_source_is_approved,
         source_ids=(IS456_CONSOLIDATED_SOURCE_ID, AMENDMENT_6_SOURCE_ID),
         policy_status=ExternalCoefficientPolicyStatus.EXTERNAL_SOURCE_REQUIRED,
-        review_status=ExternalCoefficientReviewStatus.REVIEW_REQUIRED,
-        coefficient_correctness_is_verified=False,
+        coefficient_review_status=ExternalCoefficientReviewStatus.REVIEW_REQUIRED,
+        qualified_acceptance_recorded=False,
+        coefficient_correctness_verified_by_library=False,
         assumptions=(
             "Effective spans are caller-supplied in mm and classified by the P6 contract.",
             "support_case_id is caller-defined and is not interpreted by this contract.",
             "alpha_x and alpha_y are caller-supplied external inputs; no table is bundled or queried.",
         ),
         limitations=(
-            "Coefficient correctness, support applicability, and source interpretation are not verified.",
+            "Coefficient correctness, support applicability, and source interpretation are not verified by this library.",
+            "This P9 record does not record qualified acceptance; that provenance belongs to the P10 result.",
             "A qualified review must accept the specific submitted coefficients before later design use.",
             "P10 moment and design calculations depend on an accepted external-coefficient record.",
         ),

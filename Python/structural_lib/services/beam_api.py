@@ -28,6 +28,7 @@ from structural_lib.core.inputs import BeamInput
 from structural_lib.insights import cost_optimization, design_suggestions
 from structural_lib.services import bbs, beam_pipeline, report
 from structural_lib.services.common_api import (
+    _require_finite_real,
     _require_is456_units,
     _validate_plausibility,
 )
@@ -1142,6 +1143,19 @@ def design_beam_is456(
 
     _require_is456_units(units)
 
+    for name, value in (
+        ("mu_knm", mu_knm),
+        ("vu_kn", vu_kn),
+        ("b_mm", b_mm),
+        ("D_mm", D_mm),
+        ("d_mm", d_mm),
+        ("fck_nmm2", fck_nmm2),
+        ("fy_nmm2", fy_nmm2),
+        ("d_dash_mm", d_dash_mm),
+        ("asv_mm2", asv_mm2),
+    ):
+        _require_finite_real(name, value)
+
     # Unit plausibility guards (catch common mistakes)
     _validate_plausibility(
         fck_nmm2=fck_nmm2,
@@ -1149,6 +1163,12 @@ def design_beam_is456(
         b_mm=b_mm,
         d_mm=d_mm,
         D_mm=D_mm,
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+        d_dash_mm=d_dash_mm,
+        asv_mm2=asv_mm2,
+        pt_percent=pt_percent,
+        ast_mm2_for_shear=ast_mm2_for_shear,
     )
 
     return compliance.check_compliance_case(
@@ -1226,6 +1246,17 @@ def check_beam_is456(
 
     _require_is456_units(units)
 
+    for name, value in (
+        ("b_mm", b_mm),
+        ("D_mm", D_mm),
+        ("d_mm", d_mm),
+        ("fck_nmm2", fck_nmm2),
+        ("fy_nmm2", fy_nmm2),
+        ("d_dash_mm", d_dash_mm),
+        ("asv_mm2", asv_mm2),
+    ):
+        _require_finite_real(name, value)
+
     # Unit plausibility guards (catch common mistakes)
     _validate_plausibility(
         fck_nmm2=fck_nmm2,
@@ -1233,7 +1264,20 @@ def check_beam_is456(
         b_mm=b_mm,
         d_mm=d_mm,
         D_mm=D_mm,
+        d_dash_mm=d_dash_mm,
+        asv_mm2=asv_mm2,
+        pt_percent=pt_percent,
     )
+
+    for case in cases:
+        if isinstance(case, dict):
+            _require_finite_real("mu_knm", case.get("mu_knm"))
+            _require_finite_real("vu_kn", case.get("vu_kn"))
+            _validate_plausibility(
+                mu_knm=case.get("mu_knm"),
+                vu_kn=case.get("vu_kn"),
+                ast_mm2_for_shear=case.get("ast_mm2_for_shear"),
+            )
 
     return compliance.check_compliance_report(
         cases=cases,

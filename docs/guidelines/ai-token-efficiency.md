@@ -15,14 +15,16 @@ engineering, test, or Git safety gates.
 
 1. Keep one parent task active for this project. Finish, pause, or stop it
    before starting a separate parent task.
-2. The main orchestrator respects the model and reasoning selected by the user.
-   Neither project configuration nor repository instructions may silently
-   switch the parent model.
+2. An explicit model and reasoning selection by the user controls. When the
+   user explicitly delegates model choice for a task, the main orchestrator may
+   choose suitable available parent and subagent profiles in proportion to task
+   risk. Project defaults remain advisory in either case.
 3. Use Luna, when the active client exposes it, for simple searches, status
    checks, extraction, formatting, and small mechanical edits. Use Terra for
    normal implementation, testing, documentation, and focused worker review.
-4. Sol profiles require explicit user selection or case-specific approval.
-   Escalate only after a concrete quality gap on the active model.
+4. Sol profiles require explicit user selection, case-specific approval, or
+   delegated model-choice authority. Escalate only when the task risk or a
+   concrete quality gap justifies it.
 5. Keep Fast mode off. Enable it only when the user explicitly chooses speed
    over credit efficiency for a time-sensitive task.
 
@@ -66,10 +68,12 @@ Use the deterministic picker before selecting a model for a new bounded task:
 
 The policy is stored in [`agents/model_policy.json`](../../agents/model_policy.json).
 The picker is optional and advisory. Run it only when the user asks for a
-recommendation or has not selected a model. It never overrides the active
-parent model. Sol recommendations are approval-gated. Apply a recommendation
-with `/model` only after the user chooses it. Use a fresh task when changing to
-a genuinely different issue.
+recommendation, has not selected a model, or has delegated model choice. It
+does not override an explicit user selection. Sol recommendations remain
+approval-gated unless the user has delegated model choice for the current task.
+Apply a parent-model recommendation with `/model` when the user chooses it or
+the active client permits the delegated orchestrator to do so. Use a fresh task
+when changing to a genuinely different issue.
 
 ## Orchestrator Contract
 
@@ -91,7 +95,8 @@ equates a subagent's confident report with verified completion.
 
 Project-local efficiency defaults live in
 [`.codex/config.toml`](../../.codex/config.toml). Parent `model` and
-`model_reasoning_effort` are deliberately unset so the user choice wins.
+`model_reasoning_effort` are deliberately unset so an explicit user selection
+or delegated orchestrator choice remains in control.
 
 ## Delegation Budget
 
@@ -186,9 +191,12 @@ Codex routing inputs; Codex Luna/Terra/Sol choices live only in
 ```text
 Work in low-token mode.
 
-Respect the parent model and reasoning selected by the user; never override it
-from repository policy. Keep Fast mode off. Use Luna-low subagents only for
-clear repetitive work and ask before any Sol escalation. Default to no
+Honor an explicit parent model and reasoning selection by the user. If the user
+delegates model choice, select available parent and subagent profiles in
+proportion to task risk. Repository defaults remain advisory. Keep Fast mode
+off. Use Luna-low subagents for clear repetitive work; use Sol only after
+explicit selection, case-specific approval, or delegated model-choice
+authority. Default to no
 subagents; use no more than two only for independent,
 bounded work. Give each a concise packet with objective, exact files, non-goals,
 pitfalls, acceptance criteria, tests, and return format—never full conversation

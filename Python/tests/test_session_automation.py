@@ -19,6 +19,7 @@ if str(REPO_ROOT) not in sys.path:
 
 session = importlib.import_module("scripts.session")
 check_api = importlib.import_module("scripts.check_api")
+validate_script_refs = importlib.import_module("scripts.validate_script_refs")
 
 
 @pytest.mark.parametrize(
@@ -151,6 +152,40 @@ def test_retired_git_lifecycle_paths_stay_absent():
         "scripts/git-hooks/commit-msg",
     )
     assert not [path for path in retired if (REPO_ROOT / path).exists()]
+
+
+def test_p0_missing_script_control_paths_stay_removed():
+    run_sh = (REPO_ROOT / "run.sh").read_text(encoding="utf-8")
+    pre_commit = (REPO_ROOT / ".pre-commit-config.yaml").read_text(encoding="utf-8")
+
+    assert "--vba" not in run_sh
+    assert "run_vba_smoke_tests.py" not in run_sh
+    assert "test_vba_adapter.py" not in run_sh
+    assert "scripts/check_cost_optimizer_issues.py" not in pre_commit
+    assert "scripts/check_streamlit.py" not in pre_commit
+    assert "scripts/check_performance_issues.py" not in pre_commit
+
+
+def test_script_reference_validator_fails_missing_control_target(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    scripts_dir = tmp_path / "scripts"
+    scripts_dir.mkdir()
+    (scripts_dir / "existing.py").write_text("", encoding="utf-8")
+    run_sh = tmp_path / "run.sh"
+    run_sh.write_text(
+        '"$SCRIPTS/existing.py"\n"$SCRIPTS/missing.py"\n', encoding="utf-8"
+    )
+
+    monkeypatch.setattr(validate_script_refs, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(validate_script_refs, "SCRIPTS_DIR", scripts_dir)
+    monkeypatch.setattr(validate_script_refs, "CONTROL_FILES", {run_sh})
+
+    issues = validate_script_refs.check_missing_targets(run_sh)
+
+    assert [(issue["target"], issue["severity"]) for issue in issues] == [
+        ("missing.py", "error")
+    ]
 
 
 def test_api_endpoint_extraction_stops_before_query_template():

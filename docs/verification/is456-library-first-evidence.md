@@ -5,9 +5,9 @@
 **Status:** Review
 **Importance:** Critical
 **Created:** 2026-08-09
-**Last Updated:** 2026-08-09
-**Date:** 2026-08-09
-**State:** software evidence complete for the task branch; engineering review and publication approval remain separate
+**Last Updated:** 2026-08-10
+**Date:** 2026-08-10
+**State:** C0-C4 bounded software/evidence scope frozen; v0.23.0 Alpha release authorized; exact CI publication evidence pending; qualified review deferred to final stable/engineering-use approval
 
 ## Controlled sources
 
@@ -42,6 +42,34 @@ Passing tests and artifact gates establish software evidence only. Construction
 use still requires source-page verification, independent calculations,
 project-specific checks and qualified professional approval.
 
+## C2 final product UAT
+
+The 2026-08-10 C2 UAT exercised the bounded source and live product paths. The
+focused pure-library/service matrix passed, 58 selected FastAPI cases passed,
+16 selected React batch/export cases passed, and the Node 24 production build
+passed. The matrix covered the public facade/capability contract, beam, column,
+isolated-footing transfer, one-way and bounded two-way slabs, batch/report
+status normalization, the maintained 422 envelope, and export endpoints.
+
+The initial live React batch failed before FastAPI because local development
+uses the Vite proxy and `react_app/vite.config.ts` did not proxy `/stream`.
+Adding that missing proxy entry repaired the root cause. The repeated live path
+imported a safe beam and a 600 kN unsafe-shear beam, received coherent SSE
+`PASS`/`FAIL` results, rendered `1 passed`/`1 failed`, and applied only the safe
+result; the unsafe beam remained pending with its original 600 kN shear.
+
+Live requests through port 5173 also proved the maintained column, isolated-
+footing, one-way-slab, and 422-envelope paths. Export response bytes were
+validated rather than inferred from HTTP success:
+
+| Artifact | Size | SHA-256 | Byte evidence |
+|---|---:|---|---|
+| BBS CSV | 959 | `c34cb245d3ead57e5035c19f7590c6c92122b2399da44b5cf7f384779f5f8067` | `bar_mark`, `diameter_mm`, `total_weight_kg` headers |
+| Beam DXF | 48,522 | `037a879e294cac659710530c54c3862ee79421b260dde01da8ea9ac88dc50134` | `SECTION` and `EOF` records |
+| Unsafe HTML report | 8,725 | `1524c1abc27eaa2544f5414c717ba0130e601f9846b1a70baec3f7a12ed77f8a` | overall `FAIL`; no promoted overall PASS |
+
+These are source-tree/live-development artifacts, not C3 release identities.
+
 ## Release evidence required from CI
 
 The production decision must use the exact CI-built artifacts, not a local
@@ -60,15 +88,51 @@ owner-only actions.
 
 ## Local prepublication rehearsal
 
-This is local candidate evidence only; it is not the release identity:
+This is the C3 local candidate built from frozen source commit `9be6eb35` on
+draft PR #696. It is prepublication evidence only; it is not the CI release
+identity:
 
-| Artifact | SHA-256 | Inventory |
-|---|---|---:|
-| `structural_lib_is456-0.21.6-py3-none-any.whl` | `685118b6afc29d4ef49dad91c93ec25ae4c34a186e678636d40b174a016b7e04` | 181 files |
-| `structural_lib_is456-0.21.6.tar.gz` | `ef144405b47133a9f7324707e051762472002ab6586d33cf2bc91b8c864b9450` | 206 files |
+| Artifact | Size | SHA-256 | Inventory |
+|---|---:|---|---:|
+| `structural_lib_is456-0.23.0-py3-none-any.whl` | 478,970 | `08377c11fa63bc01ce1493cfaf0ea5115966c5c3c5f5405782bb85fb032d8875` | 181 files |
+| `structural_lib_is456-0.23.0.tar.gz` | 398,319 | `f3c6da86581c9dc06b2d69baf130095682d0dd09086321167036e466ea4cbac3` | 206 files |
 
-The clean wheel install passed beam, column, isolated-footing transfer,
-one-way/two-way slab, capability-discovery and CLI UAT. Package inventories
-contained no private sources, research modules, migration fixtures, or empty
-ACI/Eurocode placeholder namespaces. The final release record must replace
-these local hashes with the exact CI-built artifact hashes.
+Twine and the maintained candidate checker passed. Both inventories contained
+zero private-source, research, migration-fixture, ACI, Eurocode, test, example,
+script or docs entries. Packaged `clauses.json` records both protected-content
+flags as false and contains no protected `text` or `data` keys.
+
+Exact-wheel verification passed 5,404 tests with 51 optional-dependency skips
+and 6 deselections, then completed the installed `job`, `critical`, `report`
+and CLI-help workflows. The current-candidate preflight passed a clean install,
+5,452 source tests with 3 skips and 6 deselections, the Node 24 React build,
+version surfaces, release docs and release checks with zero preflight warnings.
+
+The local CycloneDX 1.6 environment SBOM contains 196 components, is 239,585
+bytes, and has SHA-256
+`810b1be2f09c34f28358e1c1815a213f8d1ddda8b9adc474be3689701a9f0eb7`.
+CI must regenerate its own SBOM and artifact manifest in the clean publish job;
+the final release record must not substitute these local hashes for exact
+CI-built artifact hashes.
+
+The first clean build attempt was rejected because stale ignored
+`structural_lib_is456.egg-info/SOURCES.txt` reintroduced excluded namespaces
+despite correct package-discovery excludes. C3 fixed the root cause by pruning
+those namespaces in `MANIFEST.in`, regression-checking the directives, and
+updating the release skill to remove generated build, dist and egg-info state
+before the exact build. An optional-DXF test was also corrected to follow the
+installed environment instead of assuming the extra was present.
+
+## C4 frozen review scope
+
+The owner's 2026-08-10 request to finish this named bounded plan is the scope-
+freeze instruction for C4. The frozen packet covers the controlled source IDs,
+documented beam/column/isolated-footing/solid-slab cases, explicit units,
+benchmarks, safe and unsafe outcomes, package boundaries, local artifact
+identities, public claim limits, and unresolved holds recorded here and in the
+master-plan ledger.
+
+No new capability, multi-code namespace, excluded structural system or
+protected source content is part of that scope. C4 does not record qualified
+structural-engineering approval and does not authorize merge, tag, TestPyPI,
+PyPI, GitHub Release, issue closure or branch deletion.

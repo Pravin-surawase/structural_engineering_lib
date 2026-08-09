@@ -39,8 +39,8 @@ export default function BatchDesignPage() {
 
   // Summary stats
   const stats = useMemo(() => {
-    const passed = results.filter(r => r.success).length;
-    const failed = results.filter(r => !r.success).length;
+    const passed = results.filter(r => r.status === 'PASS').length;
+    const failed = results.filter(r => r.status === 'FAIL').length;
     return { passed, failed, total: results.length };
   }, [results]);
 
@@ -55,7 +55,7 @@ export default function BatchDesignPage() {
     const headers = ['Beam ID', 'Status', 'Ast Required (mm²)', 'Utilization', 'Stirrup Spacing (mm)', 'Error'];
     const rows = results.map(r => [
       r.beam_id,
-      r.success ? 'Pass' : 'Fail',
+      r.status,
       r.flexure?.ast_required?.toFixed(1) ?? '',
       r.utilization_ratio?.toFixed(3) ?? '',
       r.shear?.stirrup_spacing?.toFixed(0) ?? '',
@@ -73,7 +73,11 @@ export default function BatchDesignPage() {
 
   // Apply results back to beam store
   const handleApplyResults = () => {
-    const resultMap = new Map(results.filter(r => r.success).map(r => [r.beam_id, r]));
+    const resultMap = new Map(
+      results
+        .filter(r => r.design_succeeded && r.is_safe && r.status === 'PASS')
+        .map(r => [r.beam_id, r])
+    );
     const updated = beams.map(b => {
       const r = resultMap.get(b.id);
       if (!r) return b;
@@ -82,8 +86,8 @@ export default function BatchDesignPage() {
         ast_required: r.flexure?.ast_required,
         utilization: r.utilization_ratio,
         stirrup_spacing: r.shear?.stirrup_spacing,
-        status: r.success ? 'pass' as const : 'fail' as const,
-        is_valid: r.success,
+        status: 'pass' as const,
+        is_valid: true,
       } as BeamCSVRow;
     });
     setBeams(updated);
@@ -356,7 +360,7 @@ function ResultsTable({ results }: { results: BatchResult[] }) {
         {results.map((r, i) => (
           <tr key={i} className="border-b border-white/5">
             <td className="py-2 px-3">
-              {r.success ? (
+              {r.status === 'PASS' ? (
                 <CheckCircle className="w-4 h-4 text-green-400" />
               ) : (
                 <XCircle className="w-4 h-4 text-red-400" />
@@ -373,7 +377,7 @@ function ResultsTable({ results }: { results: BatchResult[] }) {
               {r.shear?.stirrup_spacing?.toFixed(0) ?? '—'}
             </td>
             <td className="py-2 px-3 text-white/50 text-xs">
-              {r.error ?? (r.flexure?.is_under_reinforced ? 'Under-reinforced ✓' : 'Over-reinforced ⚠')}
+              {r.error ?? r.remarks ?? r.failed_checks?.join('; ') ?? '—'}
             </td>
           </tr>
         ))}

@@ -59,13 +59,26 @@ _EXCLUSIONS: tuple[str, ...] = (
     "P10 excludes edge and corner panels, discontinuous edges, flat slabs, ribbed slabs, openings, and FEM analysis.",
     "P10 does not look up, interpolate, verify, or claim correctness of external coefficients.",
 )
+_INCOMPLETE_DESIGN_DEPENDENCIES: tuple[str, ...] = (
+    "Reinforcement selection, minimum steel, bar spacing, anchorage, and detailing.",
+    "Serviceability checks, including deflection and crack-width assessment.",
+    "One-way shear and punching-shear checks.",
+    "Load combinations, load patterning, analysis/model assumptions, and load-path verification.",
+    "All other panel cases, including edge/corner panels, discontinuous edges, openings, flat/drop/ribbed slabs, and FEM analysis.",
+)
 _P11_DEPENDENCY = "P11 dependency: a qualified structural engineer must complete the excluded design and detailing checks before construction use."
 
 
 class TwoWaySlabFlexureStatus(StrEnum):
     """Status for this flexure-only P10 result."""
 
-    FLEXURE_ONLY_PENDING_P11 = "flexure_only_pending_p11"
+    EXTERNALLY_ACCEPTED_COEFFICIENT_FLEXURE_ONLY_SUPPORTED_CASE = (
+        "externally accepted coefficient, flexure-only supported case"
+    )
+    # Compatibility member; serialized status uses the explicit canonical value.
+    FLEXURE_ONLY_PENDING_P11 = (
+        EXTERNALLY_ACCEPTED_COEFFICIENT_FLEXURE_ONLY_SUPPORTED_CASE
+    )
 
 
 class TwoWaySlabCornerTorsionStatus(StrEnum):
@@ -133,11 +146,14 @@ class TwoWaySlabFlexureInput:
             raise SlabContractError(
                 "P10 supports only its exact interior continuous support_case_id"
             )
-        if record.review_status is not ExternalCoefficientReviewStatus.REVIEW_REQUIRED:
+        if (
+            record.coefficient_review_status
+            is not ExternalCoefficientReviewStatus.REVIEW_REQUIRED
+        ):
             raise SlabContractError(
                 "P10 requires the P9 review_required coefficient record"
             )
-        if record.coefficient_correctness_is_verified is not False:
+        if record.coefficient_correctness_verified_by_library is not False:
             raise SlabContractError(
                 "P10 cannot accept a P9 coefficient correctness verification"
             )
@@ -212,7 +228,7 @@ class TwoWaySlabFlexuralDirectionResult:
 
 @dataclass(frozen=True)
 class TwoWaySlabFlexureResult:
-    """P10 two-way flexural output with acceptance provenance and exclusions."""
+    """P10 bounded flexure computation, not a complete two-way slab design."""
 
     input: TwoWaySlabFlexureInput
     effective_short_span_mm: float
@@ -222,16 +238,68 @@ class TwoWaySlabFlexureResult:
     y_direction: TwoWaySlabFlexuralDirectionResult
     coefficient_source_reference: str
     coefficient_source_is_approved: bool
+    coefficient_review_status: ExternalCoefficientReviewStatus
     qualified_coefficient_acceptance_reference: str
-    qualified_coefficient_acceptance_acknowledged: bool
+    qualified_acceptance_recorded: bool
+    coefficient_correctness_verified_by_library: bool
+    complete_engineering_design_approved: bool
     corner_torsion_status: TwoWaySlabCornerTorsionStatus
     status: TwoWaySlabFlexureStatus
     source_refs: tuple[str, ...]
     assumptions: tuple[str, ...]
     exclusions: tuple[str, ...]
+    incomplete_design_dependencies: tuple[str, ...]
     units: tuple[tuple[str, str], ...]
-    is_supported: bool
+    bounded_flexure_computation_supported: bool
     p11_dependency: str
+
+    def __post_init__(self) -> None:
+        """Keep direct construction aligned with the bounded public contract."""
+        if (
+            self.coefficient_review_status
+            is not ExternalCoefficientReviewStatus.REVIEW_REQUIRED
+        ):
+            raise SlabContractError(
+                "coefficient_review_status must be review_required for P10"
+            )
+        if self.qualified_acceptance_recorded is not True:
+            raise SlabContractError(
+                "qualified_acceptance_recorded must be True for P10"
+            )
+        if self.coefficient_correctness_verified_by_library is not False:
+            raise SlabContractError(
+                "coefficient correctness cannot be verified by this library"
+            )
+        if self.complete_engineering_design_approved is not False:
+            raise SlabContractError(
+                "P10 cannot approve a complete engineering slab design"
+            )
+        if self.bounded_flexure_computation_supported is not True:
+            raise SlabContractError(
+                "bounded_flexure_computation_supported must be True for P10"
+            )
+        if (
+            self.status
+            is not TwoWaySlabFlexureStatus.EXTERNALLY_ACCEPTED_COEFFICIENT_FLEXURE_ONLY_SUPPORTED_CASE
+        ):
+            raise SlabContractError(
+                "status must be externally accepted coefficient, flexure-only supported case"
+            )
+
+    @property
+    def qualified_coefficient_acceptance_acknowledged(self) -> bool:
+        """Compatibility alias; use ``qualified_acceptance_recorded``."""
+        return self.qualified_acceptance_recorded
+
+    @property
+    def coefficient_correctness_is_verified(self) -> bool:
+        """Compatibility alias; use the library-specific canonical field."""
+        return self.coefficient_correctness_verified_by_library
+
+    @property
+    def is_supported(self) -> bool:
+        """Compatibility alias; only denotes bounded flexure computation support."""
+        return self.bounded_flexure_computation_supported
 
 
 def _direction_result(
@@ -341,16 +409,21 @@ def design_supported_interior_two_way_slab_flexure(
         y_direction=y_direction,
         coefficient_source_reference=record.coefficient_source_reference,
         coefficient_source_is_approved=record.coefficient_source_is_approved,
+        coefficient_review_status=record.coefficient_review_status,
         qualified_coefficient_acceptance_reference=(
             design_input.qualified_coefficient_acceptance_reference
         ),
-        qualified_coefficient_acceptance_acknowledged=(
+        qualified_acceptance_recorded=(
             design_input.qualified_coefficient_acceptance_acknowledged
         ),
+        coefficient_correctness_verified_by_library=False,
+        complete_engineering_design_approved=False,
         corner_torsion_status=(
             TwoWaySlabCornerTorsionStatus.NOT_REQUIRED_FOR_SUPPORTED_INTERIOR_PANEL
         ),
-        status=TwoWaySlabFlexureStatus.FLEXURE_ONLY_PENDING_P11,
+        status=(
+            TwoWaySlabFlexureStatus.EXTERNALLY_ACCEPTED_COEFFICIENT_FLEXURE_ONLY_SUPPORTED_CASE
+        ),
         source_refs=_SOURCE_REFS + record.source_ids,
         assumptions=(
             "The caller declares a solid rectangular interior panel with all four edges continuous.",
@@ -359,6 +432,7 @@ def design_supported_interior_two_way_slab_flexure(
             "The factored uniform area load is supplied by the caller and is converted to the stated design strip.",
         ),
         exclusions=_EXCLUSIONS,
+        incomplete_design_dependencies=_INCOMPLETE_DESIGN_DEPENDENCIES,
         units=(
             ("effective_short_span", "mm"),
             ("design_strip_width", "mm"),
@@ -370,6 +444,6 @@ def design_supported_interior_two_way_slab_flexure(
             ("steel_strength", "N/mm2"),
             ("coefficient", "dimensionless"),
         ),
-        is_supported=True,
+        bounded_flexure_computation_supported=True,
         p11_dependency=_P11_DEPENDENCY,
     )

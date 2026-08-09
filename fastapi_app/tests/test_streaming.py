@@ -8,10 +8,23 @@ import json
 
 from fastapi.testclient import TestClient
 from fastapi_app.main import app
+from fastapi_app.routers.streaming import job_manager
 
 
 class TestSSEBatchDesign:
     """Test SSE batch design endpoint."""
+
+    @staticmethod
+    def _event_data(events: list[str], event_name: str) -> list[dict]:
+        """Return decoded data records for a named SSE event."""
+        records: list[dict] = []
+        current_event: str | None = None
+        for line in events:
+            if line.startswith("event:"):
+                current_event = line.split(":", 1)[1].strip()
+            elif line.startswith("data:") and current_event == event_name:
+                records.append(json.loads(line[5:].strip()))
+        return records
 
     def test_batch_design_single_beam(self):
         """Test batch design with single beam."""
@@ -37,6 +50,42 @@ class TestSSEBatchDesign:
         assert "start" in event_types
         assert "design_result" in event_types
         assert "complete" in event_types
+
+    def test_batch_design_stream_preserves_unsafe_shear_failure(self):
+        """A completed calculation with unsafe shear must stream as FAIL."""
+        client = TestClient(app)
+        beams = json.dumps(
+            [
+                {
+                    "id": "B-UNSAFE-SHEAR",
+                    "width": 300,
+                    "depth": 500,
+                    "moment": 100,
+                    "shear": 600,
+                    "fck": 25,
+                    "fy": 500,
+                    "cover": 40,
+                }
+            ]
+        )
+
+        with client.stream(
+            "GET", "/stream/batch-design", params={"beams": beams}
+        ) as response:
+            events = list(response.iter_lines())
+
+        result = self._event_data(events, "design_result")[0]
+        progress = self._event_data(events, "progress")[0]
+        complete = self._event_data(events, "complete")[0]
+        assert result["design_succeeded"] is True
+        assert result["is_safe"] is False
+        assert result["status"] == "FAIL"
+        assert result["shear"]["is_safe"] is False
+        for field in ("tau_v", "tau_c", "tau_c_max", "stirrup_spacing"):
+            assert result["shear"][field] is not None
+        assert progress["failed"] == 1
+        assert complete["failed"] == 1
+        assert complete["overall_status"] == "FAIL"
 
     def test_batch_design_multiple_beams(self):
         """Test batch design with multiple beams."""
@@ -125,6 +174,11 @@ class TestSSEBatchDesign:
         assert (
             progress_count >= 2
         ), f"Expected at least 2 progress events, got {progress_count}"
+        progress_events = self._event_data(events, "progress")
+        assert progress_events[0]["is_safe"] is None
+        assert progress_events[0]["overall_status"] == "IN_PROGRESS"
+        assert progress_events[-1]["is_safe"] is True
+        assert progress_events[-1]["overall_status"] == "PASS"
 
 
 class TestJobStatus:
@@ -138,6 +192,25 @@ class TestJobStatus:
         assert response.status_code == 404
         data = response.json()
         assert data["detail"] == "Job not found"
+
+    def test_get_job_status_is_in_progress_until_every_item_completes(self):
+        """A partial batch must not report a provisional engineering PASS."""
+        client = TestClient(app)
+        job_id = job_manager.create_job(total_items=2)
+        job_manager.update_progress(
+            job_id,
+            design_succeeded=True,
+            result={"is_safe": True},
+        )
+
+        response = client.get(f"/stream/job/{job_id}")
+
+        assert response.status_code == 200
+        status = response.json()
+        assert status["status"] == "running"
+        assert status["progress"]["completed"] == 1
+        assert status["is_safe"] is None
+        assert status["overall_status"] == "IN_PROGRESS"
 
     def test_get_job_status_after_batch(self):
         """Test getting job status after running a batch."""
@@ -171,3 +244,5 @@ class TestJobStatus:
             status = response.json()
             assert status["job_id"] == job_id
             assert status["status"] == "complete"
+            assert status["is_safe"] is True
+            assert status["overall_status"] == "PASS"

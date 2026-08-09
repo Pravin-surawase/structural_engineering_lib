@@ -83,6 +83,11 @@ def test_two_way_public_workflow_matches_independent_packet_benchmark():
     assert result.y_direction.factored_moment_knm == pytest.approx(9.6)
     assert result.x_direction.ast_required_mm2 == pytest.approx(244.7591, abs=1e-4)
     assert result.y_direction.ast_required_mm2 == pytest.approx(195.6828, abs=1e-4)
+    assert result.bounded_flexure_computation_supported is True
+    assert result.coefficient_review_status.value == "review_required"
+    assert result.qualified_acceptance_recorded is True
+    assert result.coefficient_correctness_verified_by_library is False
+    assert result.complete_engineering_design_approved is False
 
 
 @pytest.mark.parametrize(
@@ -124,3 +129,9 @@ def test_capability_registry_names_every_supported_core_element():
     )
     assert all(item.qualified_review_required for item in capabilities)
     assert all(item.public_workflows for item in capabilities)
+    slab_capability = next(
+        item for item in capabilities if item.element == "solid_slab"
+    )
+    assert "externally accepted coefficient, flexure-only supported case" in (
+        slab_capability.supported_case
+    )

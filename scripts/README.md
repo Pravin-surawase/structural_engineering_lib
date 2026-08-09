@@ -11,6 +11,9 @@
 ./run.sh check --quick
 ./run.sh check
 ./run.sh test
+./run.sh test --fastapi
+./run.sh test --react
+./run.sh frontend check
 ./run.sh find "topic"
 ./run.sh find --api function_name
 ./run.sh audit
@@ -50,6 +53,7 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 | Sessions | `session.py` | Bounded session lifecycle and usage checkpoints |
 | CI | `diagnose_ci.py` | Diagnose CI failures without managing Git |
 | Release | `release.py` | Authorized release preparation and validation |
+| Frontend runtime | `node_runtime.py` | Select `.nvmrc` Node/npm for root-stable commands |
 
 ## Operating rules
 

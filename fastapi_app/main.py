@@ -22,6 +22,8 @@ import uuid
 
 import jwt
 from fastapi import FastAPI, Request
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -30,6 +32,7 @@ from starlette.responses import JSONResponse as StarletteJSONResponse
 from fastapi_app import __version__
 from fastapi_app.auth import RateLimiter
 from fastapi_app.config import get_settings
+from fastapi_app.models.response import RequestValidationErrorResponse, error_response
 from fastapi_app.routers import (
     analysis,
     column,
@@ -150,7 +153,31 @@ app = FastAPI(
         "name": "Structural Engineering Library",
         "url": "https://github.com/yourusername/structural_engineering_lib",
     },
+    responses={
+        422: {
+            "model": RequestValidationErrorResponse,
+            "description": "Request validation failed",
+        }
+    },
 )
+
+
+@app.exception_handler(RequestValidationError)
+async def request_validation_error_handler(
+    request: Request, exc: RequestValidationError
+) -> JSONResponse:
+    """Map every Pydantic request failure to the maintained API envelope."""
+    return JSONResponse(
+        status_code=422,
+        content=error_response(
+            {
+                "code": "REQUEST_VALIDATION_ERROR",
+                "message": "Request validation failed",
+                "details": jsonable_encoder(exc.errors()),
+            }
+        ),
+    )
+
 
 # =============================================================================
 # Auth Middleware (opt-in via AUTH_ENABLED=True)

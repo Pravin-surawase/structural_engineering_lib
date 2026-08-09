@@ -19,7 +19,10 @@ Define before implementation:
 - required consumers: library only, API, or full UI;
 - non-goals for later cases such as biaxial, slender, seismic, optimization, or export behavior.
 
-Do not imply professional approval. A qualified structural engineer must review governing assumptions and benchmark interpretation.
+Do not imply professional approval. Record governing assumptions and benchmark
+interpretation for cumulative qualified review before the final stable or
+engineering-use approval; a development slice does not need its own separate
+qualified sign-off.
 
 ## 1. Prove It Is New
 
@@ -32,7 +35,10 @@ Read the nearest existing element subpackage and its folder index. Current compl
 
 ## 2. Prepare the Implementation Packet
 
-The packet must contain objective, non-goals, exact initial files, source evidence, pitfalls, acceptance criteria, narrow commands, and return format. Identify owner-only decisions and the point where qualified engineering review is required.
+The packet must contain objective, non-goals, exact initial files, source
+evidence, pitfalls, acceptance criteria, narrow commands, and return format.
+Identify owner-only decisions and evidence that must be retained for the final
+qualified review.
 
 Sequence work by dependency:
 
@@ -82,4 +88,6 @@ The slice is complete only when:
 
 ## Handoff
 
-Return the supported case, source/benchmark, changed files by layer, public signatures, verification evidence, exclusions, and decisions still requiring the owner or qualified engineer.
+Return the supported case, source/benchmark, changed files by layer, public
+signatures, verification evidence, exclusions, owner decisions, and evidence
+deferred to the final qualified review.

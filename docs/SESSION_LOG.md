@@ -5,6 +5,52 @@
 
 ---
 
+## 2026-08-10 — Session: LIB-IS456-C2-C4 Bounded Closeout
+
+**Agent:** Codex
+**Branch:** `codex/release-v0.23.0`
+**Focus:** Complete product UAT, exact local artifact verification, and the bounded IS 456 evidence freeze
+
+### Summary
+
+- Completed the C2 Python, FastAPI, React, live-browser, and export-byte matrix.
+- Fixed the live batch-design root cause: Vite proxied `/api` and `/ws` but
+  omitted the EventSource `/stream` route used by the React batch workflow.
+- Confirmed a safe/unsafe batch renders one PASS and one FAIL and that applying
+  results leaves the unsafe beam unchanged.
+- Completed C3 from source commit `9be6eb35` after preventing stale egg-info
+  from reintroducing protected namespaces into wheel/sdist builds.
+- Completed C4 by freezing source identities, supported cases, units, unsafe
+  outcomes, limitations, local artifact identities, and the remaining
+  qualified-review/publication holds on draft PR #696.
+
+### Verification
+
+- Focused Python/service cases, 58 FastAPI cases, and 16 React cases pass.
+- React production build, quick gate 9/9, and full gate 29/29 pass.
+- Live BBS, DXF, and unsafe-report payloads passed content/signature checks;
+  hashes and sizes are frozen in the IS 456 evidence ledger.
+- Exact-wheel verification passed 5,404 tests with 51 optional skips and all
+  installed CLI workflows. Candidate preflight passed 5,452 source tests,
+  clean install, React build, version/docs, and release checks with no warnings.
+- The final local wheel/sdist contain 181/206 members and zero forbidden
+  entries; their exact hashes are recorded in the evidence ledger.
+
+### Terminal issues
+
+- The first commit attempt was correctly blocked after the date crossed into
+  2026-08-10 because this durable session entry did not yet exist; the session
+  record was added, generated indexes refreshed, and the hook rerun.
+- The positional `release preflight 0.23.0` form correctly rejected an equal
+  already-bumped version; the maintained skill now uses `--wheel` for a frozen
+  current candidate and retains the positional form only for a future bump.
+- A clean build still leaked protected namespaces because stale ignored
+  egg-info overrode package discovery; explicit manifest prunes and generated-
+  metadata cleanup fixed the root cause before the final build.
+- An inventory snippet used backslashes inside an f-string expression and
+  failed to parse; computing the boolean before formatting completed the same
+  read-only inspection.
+
 ## 2026-08-09 — MAINT-008 Skills Control-Plane Closeout
 
 **Agent:** Codex

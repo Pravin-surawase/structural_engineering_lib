@@ -487,7 +487,7 @@
     {
       "name": "footing_flexure",
       "kind": "function",
-      "signature": "(Pu_kN: 'float', L_mm: 'float', B_mm: 'float', d_mm: 'float', a_mm: 'float', b_mm: 'float', fck: 'float', fy: 'float') -> 'FootingFlexureResult'"
+      "signature": "(Pu_kN: 'float', L_mm: 'float', B_mm: 'float', d_mm: 'float', a_mm: 'float', b_mm: 'float', fck: 'float', fy: 'float', *, overall_thickness_mm: 'float') -> 'FootingFlexureResult'"
     },
     {
       "name": "footing_one_way_shear",

@@ -313,13 +313,13 @@
         </table>
 
         <div class="check-item">
-            {% if results.flexure.get('is_ok', True) %}
+            {% if results.flexure.is_ok is sameas true %}
             <div class="check-icon check-pass">✓</div>
             {% else %}
             <div class="check-icon check-fail">✗</div>
             {% endif %}
             <span class="check-label">Flexure Design</span>
-            <span class="check-value">{{ 'PASS' if results.flexure.get('is_ok', True) else 'FAIL' }}</span>
+            <span class="check-value">{{ results.flexure.status_text }}</span>
         </div>
         {% else %}
         <p><em>Flexure results not available</em></p>
@@ -370,13 +370,13 @@
         </table>
 
         <div class="check-item">
-            {% if results.shear.get('is_ok', True) %}
+            {% if results.shear.is_ok is sameas true %}
             <div class="check-icon check-pass">✓</div>
             {% else %}
             <div class="check-icon check-fail">✗</div>
             {% endif %}
             <span class="check-label">Shear Design</span>
-            <span class="check-value">{{ 'PASS' if results.shear.get('is_ok', True) else 'FAIL' }}</span>
+            <span class="check-value">{{ results.shear.status_text }}</span>
         </div>
         {% else %}
         <p><em>Shear results not available</em></p>
@@ -391,7 +391,7 @@
         {% if results.deflection %}
         <h3>Deflection Check</h3>
         <div class="check-item">
-            {% if results.deflection.get('is_ok', True) %}
+            {% if results.deflection.is_ok is sameas true %}
             <div class="check-icon check-pass">✓</div>
             {% else %}
             <div class="check-icon check-fail">✗</div>
@@ -407,7 +407,7 @@
         {% if results.crack_width %}
         <h3>Crack Width Check</h3>
         <div class="check-item">
-            {% if results.crack_width.get('is_ok', True) %}
+            {% if results.crack_width.is_ok is sameas true %}
             <div class="check-icon check-pass">✓</div>
             {% else %}
             <div class="check-icon check-fail">✗</div>
@@ -481,11 +481,7 @@
         <h2>6. Design Summary</h2>
 
         <div class="check-item">
-            {% if is_ok %}
-            <div class="check-icon check-pass">✓</div>
-            {% else %}
-            <div class="check-icon check-fail">✗</div>
-            {% endif %}
+            <div class="check-icon {{ 'check-pass' if is_ok is sameas true else 'check-fail' }}">{{ status_symbol }}</div>
             <span class="check-label"><strong>Overall Design Status</strong></span>
             <span class="check-value"><strong>{{ status_text }}</strong></span>
         </div>
