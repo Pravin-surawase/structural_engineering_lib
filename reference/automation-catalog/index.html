@@ -3675,7 +3675,8 @@ and roadmaps belong in dedicated research or planning docs.</p>
 6. ✅ No warnings after fix
 7. ✅ Step 2.5 runs before commit</p>
 <p><strong>Why This Exists:</strong> Prevents regression of the git hash divergence bug (pre-commit hooks modifying files during commit, causing different SHA-1 hashes).</p>
-<p><strong>CI Integration:</strong> Runs in <code>.github/workflows/git-workflow-tests.yml</code> on every push.</p>
+<p><strong>CI Integration:</strong> Shell syntax and migration-script checks run in the
+<code>Repository Validation</code> job of <code>.github/workflows/fast-checks.yml</code>.</p>
 <p><strong>Related:</strong> <a href="#7-safe_pushsh-mandatory">safe_push.sh</a>, <a href="#8-test_should_use_prsh">test_should_use_pr.sh</a></p>
 <hr />
 <h3 id="11-create_task_prsh">11. <code>create_task_pr.sh</code><a class="headerlink" href="#11-create_task_prsh" title="Permanent link">&para;</a></h3>
@@ -3756,7 +3757,8 @@ and roadmaps belong in dedicated research or planning docs.</p>
 <a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>Tests failed: 0
 <a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>✅ ALL TESTS PASSED!
 </code></pre></div></p>
-<p><strong>CI Integration:</strong> Runs in <code>.github/workflows/git-workflow-tests.yml</code>.</p>
+<p><strong>CI Integration:</strong> Covered by the maintenance-script checks in
+<code>.github/workflows/fast-checks.yml</code>.</p>
 <p><strong>Related:</strong> <a href="#8-should_use_prsh">should_use_pr.sh</a>, <a href="#10-verify_git_fixsh">verify_git_fix.sh</a></p>
 <hr />
 <h3 id="14-test_git_workflowsh">14. <code>test_git_workflow.sh</code><a class="headerlink" href="#14-test_git_workflowsh" title="Permanent link">&para;</a></h3>

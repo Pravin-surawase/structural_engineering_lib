@@ -5366,8 +5366,9 @@ suffixes if units are documented in the docstring.</p>
 <ul>
 <li><strong>VBA:</strong> Use Rubberduck test explorer or a VBA script to run <code>RunAllTests</code>; export modules automatically on build (vba-blocks or custom PowerShell/VBScript).</li>
 <li><strong>Python:</strong> Provide <code>make test</code> or <code>nox/tox</code> sessions for lint + tests (<code>pytest -q</code>).</li>
-<li><strong>CI (active):</strong> GitHub Actions runs on PRs and pushes to <code>main</code>.<ul>
-<li>Workflows: <code>.github/workflows/python-tests.yml</code> and <code>.github/workflows/codeql.yml</code></li>
+<li><strong>CI (active):</strong> GitHub Actions provides PR, weekly/manual, release, and docs lanes.<ul>
+<li>Workflows: <code>.github/workflows/fast-checks.yml</code>, <code>.github/workflows/nightly.yml</code>,
+  <code>.github/workflows/publish.yml</code>, and <code>.github/workflows/deploy-docs.yml</code></li>
 <li>Policy: keep workflow <code>GITHUB_TOKEN</code> permissions least-privilege (jobs can widen only when needed).</li>
 <li>If branch ruleset requires “up to date with main”, update PR branches before merge.</li>
 </ul>

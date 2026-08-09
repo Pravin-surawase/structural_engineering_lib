@@ -3094,7 +3094,7 @@ Every agent, every session, every change must comply with this document.</p>
 </tr>
 <tr>
 <td>Dependency CVE scanning</td>
-<td>pip-audit in CI (<code>security.yml</code>)</td>
+<td>pip-audit in weekly/manual CI (<code>nightly.yml</code>)</td>
 <td>✅ Active</td>
 </tr>
 <tr>
@@ -3524,7 +3524,7 @@ Every agent, every session, every change must comply with this document.</p>
 - 🔲 JSON body size limit (FastAPI middleware, 1MB default)
 - 🔲 Cross-field plausibility guards (e.g., <code>d_mm &gt; b_mm</code> raises warning)
 - 🔲 Input validation audit completion (<code>scripts/audit_input_validation.py</code> exists)
-- ✅ Dependency CVE scanning in CI (<code>pip-audit</code> — active in <code>security.yml</code>)</p>
+- ✅ Dependency CVE scanning in CI (<code>pip-audit</code> — active in <code>nightly.yml</code>)</p>
 <p><strong>Quality Gate:</strong> <code>audit_input_validation.py</code> reports 0 unresolved findings. <code>pip-audit</code> clean.</p>
 <h3 id="95-v0218-performance-property-testing">9.5 v0.21.8 — Performance &amp; Property Testing<a class="headerlink" href="#95-v0218-performance-property-testing" title="Permanent link">&para;</a></h3>
 <p><strong>Theme:</strong> Establish performance baselines and property-based invariants so regressions are caught automatically.</p>
@@ -4536,7 +4536,7 @@ Every agent, every session, every change must comply with this document.</p>
 <tbody>
 <tr>
 <td>CVE scanning</td>
-<td>pip-audit in CI (<code>security.yml</code>)</td>
+<td>pip-audit in weekly/manual CI (<code>nightly.yml</code>)</td>
 <td>✅ Active</td>
 </tr>
 <tr>
@@ -5157,7 +5157,7 @@ Every agent, every session, every change must comply with this document.</p>
 </tr>
 <tr>
 <td>Dependency CVE scanning in CI (<code>pip-audit</code>)</td>
-<td>✅ Active (<code>security.yml</code>)</td>
+<td>✅ Active (<code>nightly.yml</code>)</td>
 <td>@ops</td>
 </tr>
 <tr>

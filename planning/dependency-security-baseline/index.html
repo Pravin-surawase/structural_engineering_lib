@@ -1625,8 +1625,8 @@ long-lived workspace <code>.venv</code>.</p>
 </code></pre></div>
 <h2 id="automation">Automation<a class="headerlink" href="#automation" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>.github/workflows/security.yml</code> audits the exact Python lock and the production
-  npm graph. New findings fail the job.</li>
+<li><code>.github/workflows/nightly.yml</code> audits the exact Python lock and the production
+  npm graph every week and on manual dispatch. New findings fail the job.</li>
 <li><code>.github/dependabot.yml</code> monitors root Python requirements, the distributable
   Python package, npm dependencies, and GitHub Actions every week.</li>
 </ul>

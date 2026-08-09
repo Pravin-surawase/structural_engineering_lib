@@ -1892,10 +1892,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#full-test-matrix-main-only-50-seconds" class="md-nav__link">
+  <a href="#full-verification-weeklymanual" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Full Test Matrix (main only - 50 seconds)
+        Full verification (weekly/manual)
       
     </span>
   </a>
@@ -2975,17 +2975,17 @@
 <a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="c1"># If exceeds 45 seconds → Alert (performance regression)</span>
 <a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="c1"># If fails → Diagnose specific check failure</span>
 </code></pre></div></p>
-<h3 id="full-test-matrix-main-only-50-seconds">Full Test Matrix (main only - 50 seconds)<a class="headerlink" href="#full-test-matrix-main-only-50-seconds" title="Permanent link">&para;</a></h3>
-<p><strong>File:</strong> <code>.github/workflows/python-tests.yml</code></p>
-<p><strong>Runs on:</strong> Push to main (after PR merge)
-<strong>Matrix:</strong>
-- Python 3.9, 3.10, 3.11, 3.12
-- 2,231 tests
+<h3 id="full-verification-weeklymanual">Full verification (weekly/manual)<a class="headerlink" href="#full-verification-weeklymanual" title="Permanent link">&para;</a></h3>
+<p><strong>File:</strong> <code>.github/workflows/nightly.yml</code></p>
+<p><strong>Runs on:</strong> Weekly schedule or explicit manual dispatch
+<strong>Coverage:</strong>
+- Full Python, FastAPI, and React verification
 - Coverage enforcement (85%+)
-- All lint/doc checks</p>
+- Clean-wheel/CLI, dependency, and Docker checks
+- Optional manual macOS/Windows smoke matrix</p>
 <p><strong>GIT Agent Monitoring:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="c1"># After merge to main:</span>
-<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>gh<span class="w"> </span>run<span class="w"> </span>list<span class="w"> </span>-w<span class="w"> </span><span class="s2">&quot;Python Tests&quot;</span><span class="w"> </span>-L<span class="w"> </span><span class="m">1</span><span class="w"> </span>--json<span class="w"> </span>status,conclusion
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="c1"># Inspect the latest full verification:</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>gh<span class="w"> </span>run<span class="w"> </span>list<span class="w"> </span>-w<span class="w"> </span><span class="s2">&quot;Weekly Verification&quot;</span><span class="w"> </span>-L<span class="w"> </span><span class="m">1</span><span class="w"> </span>--json<span class="w"> </span>status,conclusion
 <a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>
 <a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="c1"># Expected: All matrix jobs pass</span>
 <a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="c1"># If any fail → CRITICAL alert to MAIN (main branch broken)</span>

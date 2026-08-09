@@ -2112,20 +2112,18 @@
 <p><strong>How to run the CI-equivalent check locally (includes coverage gate):</strong>
 - From <code>Python/</code>: <code>python -m pytest --cov=structural_lib --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=85</code></p>
 <h3 id="ci-github-actions">CI (GitHub Actions)<a class="headerlink" href="#ci-github-actions" title="Permanent link">&para;</a></h3>
-<p>Workflow: <code>.github/workflows/python-tests.yml</code></p>
+<p>Workflows: <code>.github/workflows/fast-checks.yml</code> and
+<code>.github/workflows/nightly.yml</code></p>
 <ul>
-<li>Lint/typecheck job:</li>
-<li><code>black --check .</code></li>
-<li><code>mypy</code></li>
-<li>Test job:</li>
-<li>Python matrix: 3.9, 3.10, 3.11, 3.12</li>
-<li>Installs: <code>pip install -e ".[dev,dxf]"</code></li>
-<li>Runs: pytest with coverage + uploads <code>coverage.xml</code></li>
-<li>Coverage gate: <code>--cov-fail-under=85</code> (branch coverage)</li>
-<li>Packaging smoke: <code>python -m build</code></li>
+<li>Pull requests receive path-aware format, lint, type, contract, focused test,
+  frontend, API, and repository checks under the required <code>PR Gate</code>.</li>
+<li>Weekly/manual verification runs the full Ubuntu Python/FastAPI/React suite,
+  branch coverage gate, clean-wheel/CLI verification, dependency audits, and
+  Docker health checks.</li>
+<li>macOS and Windows smoke checks are available as an explicit manual option.</li>
 </ul>
 <p><strong>What this gives us:</strong>
-- Cross-version confidence (3.9–3.12)
+- Minimum-version PR confidence plus optional cross-platform smoke evidence
 - Static formatting check
 - Basic typecheck
 - Coverage visibility (artifact)

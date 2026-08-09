@@ -1666,10 +1666,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-fast-checks-prs-only-20-30-seconds" class="md-nav__link">
+  <a href="#1-pr-gate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Fast Checks (PRs only) - ~20-30 seconds
+        1. PR Gate
       
     </span>
   </a>
@@ -1677,10 +1677,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-full-test-matrix-main-branch-only-50-seconds" class="md-nav__link">
+  <a href="#2-weeklymanual-full-verification" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Full Test Matrix (main branch only) - ~50 seconds
+        2. Weekly/manual full verification
       
     </span>
   </a>
@@ -1893,10 +1893,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#i-need-to-test-all-python-versions-before-merge" class="md-nav__link">
+  <a href="#i-need-the-full-or-cross-platform-verification-before-merge" class="md-nav__link">
     <span class="md-ellipsis">
       
-        "I need to test all Python versions before merge"
+        "I need the full or cross-platform verification before merge"
       
     </span>
   </a>
@@ -2047,28 +2047,29 @@
 <h3 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">&para;</a></h3>
 <p>Full CI on PRs takes 45-50 seconds and runs 4 Python versions. This slows down the feedback loop.</p>
 <h3 id="solution-two-tier-ci">Solution: Two-Tier CI<a class="headerlink" href="#solution-two-tier-ci" title="Permanent link">&para;</a></h3>
-<h4 id="1-fast-checks-prs-only-20-30-seconds">1. Fast Checks (PRs only) - ~20-30 seconds<a class="headerlink" href="#1-fast-checks-prs-only-20-30-seconds" title="Permanent link">&para;</a></h4>
+<h4 id="1-pr-gate">1. PR Gate<a class="headerlink" href="#1-pr-gate" title="Permanent link">&para;</a></h4>
 <p><strong>File:</strong> <code>.github/workflows/fast-checks.yml</code></p>
-<p>Runs on Python 3.9 only:
+<p>Runs the minimum supported Python 3.11 lane plus applicable API and React checks:
 - ✅ Format/lint (black, ruff, mypy)
 - ✅ Contract tests (breaking change detection)
 - ✅ Core tests (flexure, shear, detailing)
 - ✅ Doc checks (parallel execution)</p>
 <p><strong>Result:</strong> Quick feedback for PRs</p>
-<h4 id="2-full-test-matrix-main-branch-only-50-seconds">2. Full Test Matrix (main branch only) - ~50 seconds<a class="headerlink" href="#2-full-test-matrix-main-branch-only-50-seconds" title="Permanent link">&para;</a></h4>
-<p><strong>File:</strong> <code>.github/workflows/python-tests.yml</code></p>
-<p>Runs on Python 3.9, 3.10, 3.11, 3.12:
-- ✅ All 2200 tests
+<h4 id="2-weeklymanual-full-verification">2. Weekly/manual full verification<a class="headerlink" href="#2-weeklymanual-full-verification" title="Permanent link">&para;</a></h4>
+<p><strong>File:</strong> <code>.github/workflows/nightly.yml</code></p>
+<p>Runs the supported Ubuntu/Python full lane, with an optional manual macOS/Windows smoke matrix:
+- ✅ Full Python, FastAPI, and React suites
 - ✅ Coverage reporting
 - ✅ All lint/doc checks
-- ✅ Packaging smoke test</p>
-<p><strong>Result:</strong> Comprehensive validation after merge</p>
+- ✅ Clean-wheel/CLI and Docker smoke tests
+- ✅ Locked dependency audits</p>
+<p><strong>Result:</strong> Comprehensive drift detection without duplicating every PR</p>
 <h3 id="why-this-works">Why This Works<a class="headerlink" href="#why-this-works" title="Permanent link">&para;</a></h3>
 <ol>
 <li><strong>Fast feedback</strong>: PR checks complete in 20-30s vs 50s</li>
 <li><strong>Same safety</strong>: Contract tests catch breaking changes</li>
-<li><strong>Full coverage</strong>: After merge, all Python versions tested</li>
-<li><strong>Best practice</strong>: Match Python 3.9 (project minimum version)</li>
+<li><strong>Full coverage</strong>: Weekly/manual validation exercises the complete supported lane</li>
+<li><strong>Best practice</strong>: PR checks use Python 3.11 (project minimum version)</li>
 </ol>
 <hr />
 <h2 id="typical-workflows">📋 Typical Workflows<a class="headerlink" href="#typical-workflows" title="Permanent link">&para;</a></h2>
@@ -2200,15 +2201,16 @@
 <li>If it's a flaky test, rerun the workflow</li>
 <li>If it's real, fix before merging</li>
 </ul>
-<h3 id="i-need-to-test-all-python-versions-before-merge">"I need to test all Python versions before merge"<a class="headerlink" href="#i-need-to-test-all-python-versions-before-merge" title="Permanent link">&para;</a></h3>
+<h3 id="i-need-the-full-or-cross-platform-verification-before-merge">"I need the full or cross-platform verification before merge"<a class="headerlink" href="#i-need-the-full-or-cross-platform-verification-before-merge" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Push to your branch without creating PR</li>
-<li>Manually trigger full tests: <code>gh workflow run python-tests.yml --ref your-branch</code></li>
+<li>Run the local full gate or release preflight first.</li>
+<li>Manually dispatch the weekly lane with cross-platform smoke when necessary:
+  <code>gh workflow run nightly.yml --ref your-branch -f cross_platform=true</code></li>
 </ul>
 <h3 id="ci-is-still-too-slow">"CI is still too slow"<a class="headerlink" href="#ci-is-still-too-slow" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Fast checks: 20-30s is near-optimal (can't parallelize more)</li>
-<li>Full tests: 50s is reasonable for 4 Python versions + 2200 tests</li>
+<li>Weekly verification is intentionally heavier and does not duplicate every PR</li>
 <li>If consistently slow, check GitHub Actions queue time</li>
 </ul>
 <h3 id="merge-conflict-after-using-ai_commitsh">"Merge conflict after using ai_commit.sh"<a class="headerlink" href="#merge-conflict-after-using-ai_commitsh" title="Permanent link">&para;</a></h3>

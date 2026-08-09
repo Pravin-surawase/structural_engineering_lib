@@ -1526,10 +1526,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#13-github-actions-workflows-14-workflows" class="md-nav__link">
+  <a href="#13-github-actions-workflows-4-workflows" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1.3 GitHub Actions Workflows (14 workflows)
+        1.3 GitHub Actions Workflows (4 workflows)
       
     </span>
   </a>
@@ -1801,7 +1801,7 @@
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="na">performance</span><span class="o">:</span><span class="w"> </span><span class="s">Benchmark tests</span>
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="na">slow</span><span class="o">:</span><span class="w"> </span><span class="s">Tests &gt;1 second</span>
 </code></pre></div>
-<h3 id="13-github-actions-workflows-14-workflows">1.3 GitHub Actions Workflows (14 workflows)<a class="headerlink" href="#13-github-actions-workflows-14-workflows" title="Permanent link">&para;</a></h3>
+<h3 id="13-github-actions-workflows-4-workflows">1.3 GitHub Actions Workflows (4 workflows)<a class="headerlink" href="#13-github-actions-workflows-4-workflows" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -1812,39 +1812,24 @@
 </thead>
 <tbody>
 <tr>
-<td><code>python-tests.yml</code></td>
-<td>Full test matrix (3 OS × 2 Python)</td>
-<td>Push to main</td>
-</tr>
-<tr>
 <td><code>fast-checks.yml</code></td>
-<td>Quick PR validation (5 min)</td>
-<td>PR</td>
-</tr>
-<tr>
-<td><code>security.yml</code></td>
-<td>Vulnerability scanning</td>
-<td>Daily + PR</td>
-</tr>
-<tr>
-<td><code>codeql.yml</code></td>
-<td>CodeQL SAST</td>
-<td>Push</td>
+<td>Path-aware validation and required <code>PR Gate</code></td>
+<td>PR + short main verification</td>
 </tr>
 <tr>
 <td><code>nightly.yml</code></td>
-<td>Extended tests (30 min)</td>
-<td>Nightly</td>
+<td>Full tests, coverage, dependency audits, Docker, optional cross-platform smoke</td>
+<td>Weekly + manual</td>
 </tr>
 <tr>
 <td><code>publish.yml</code></td>
-<td>PyPI publishing</td>
-<td>Tag v*</td>
+<td>Verified TestPyPI/PyPI/GitHub release publication and release SBOM</td>
+<td>Manual TestPyPI or tag</td>
 </tr>
 <tr>
-<td><code>streamlit-validation.yml</code></td>
-<td>Streamlit checks</td>
-<td>PR</td>
+<td><code>deploy-docs.yml</code></td>
+<td>MkDocs publication</td>
+<td>Relevant main changes + manual</td>
 </tr>
 </tbody>
 </table>
