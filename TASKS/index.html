@@ -2102,7 +2102,7 @@
 <blockquote>
 <p><strong>Single source of truth for active work.</strong> Keep it short and current.</p>
 </blockquote>
-<p><strong>Updated:</strong> 2026-08-10 — v0.23.0 Alpha released; public artifact UAT green</p>
+<p><strong>Updated:</strong> 2026-08-10 — v0.23.0 Alpha released; post-release maintenance closed</p>
 <hr />
 <h2 id="rules-read-first">Rules (read first)<a class="headerlink" href="#rules-read-first" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2459,10 +2459,10 @@ Detailed specs: <a href="../planning/next-phase-improvements-plan/">next-phase-i
 </thead>
 <tbody>
 <tr>
-<td>LIB-IS456-V1</td>
-<td>Finish the bounded <a href="../planning/is456-library-first-master-plan/">IS 456 product milestone</a> without expanding to multi-code or excluded structural systems</td>
-<td>Main Agent + owner</td>
-<td>✅ C0-C4 software/evidence closeout complete; release and engineering-use holds remain</td>
+<td>DEPS-MAINT-001</td>
+<td>Triage the nine remaining Dependabot PRs in bounded Python and React compatibility batches</td>
+<td>Main Agent</td>
+<td>⏸ NEXT SESSION</td>
 </tr>
 </tbody>
 </table>
@@ -2480,52 +2480,35 @@ Detailed specs: <a href="../planning/next-phase-improvements-plan/">next-phase-i
 </thead>
 <tbody>
 <tr>
-<td>LIB-IS456-C1</td>
-<td>Create reviewable scoped checkpoints, preserve automation commit <code>f812eb3f</code>, and synchronize <code>origin/main</code> without history rewriting</td>
+<td>DEPS-MAINT-PY</td>
+<td>Rebase and evaluate Python PRs #679 and #686-#688; keep lock/install surfaces consistent</td>
 <td>Main Agent</td>
 <td>1 packet</td>
-<td>P0</td>
-<td>✅ DONE <code>d4eb9e9d</code></td>
+<td>P1</td>
+<td>⏸ QUEUED</td>
 </tr>
 <tr>
-<td>LIB-IS456-C2</td>
-<td>Run final source/live product UAT for supported Python, FastAPI, React batch/report, footing/slab, and export paths</td>
+<td>DEPS-MAINT-REACT</td>
+<td>Rebase and evaluate React group PR #680 against individual majors #681-#684; retain one coherent upgrade path</td>
 <td>Main Agent</td>
 <td>1 packet</td>
-<td>P0</td>
-<td>✅ DONE</td>
-</tr>
-<tr>
-<td>LIB-IS456-C3</td>
-<td>Freeze exact local wheel/sdist evidence and clean-install/CLI UAT for the frozen candidate</td>
-<td>Main Agent</td>
-<td>1 packet</td>
-<td>P0</td>
-<td>✅ DONE <code>9be6eb35</code></td>
-</tr>
-<tr>
-<td>LIB-IS456-C4</td>
-<td>Assemble the final bounded-scope evidence packet and freeze limitations/review boundaries</td>
-<td>Main Agent + owner</td>
-<td>1 packet</td>
-<td>P0</td>
-<td>✅ DONE on PR #696</td>
+<td>P1</td>
+<td>⏸ QUEUED</td>
 </tr>
 <tr>
 <td>LIB-IS456-FINAL-REVIEW</td>
-<td>Review only after C4 and owner scope freeze; no engineering-usability claim before it</td>
+<td>Perform the cumulative qualified review before any stable or engineering-use approval</td>
 <td>qualified structural engineer</td>
 <td>final gate</td>
 <td>P0</td>
-<td>⏸ READY FOR QUALIFIED REVIEW</td>
+<td>⏸ DEFERRED UNTIL STABLE GATE</td>
 </tr>
 </tbody>
 </table>
 <h2 id="backlog">Backlog<a class="headerlink" href="#backlog" title="Permanent link">&para;</a></h2>
-<p>The version roadmap and historical backlog remain below. Planned development
-may continue under LIB-PRO-001, but publication and every engineering-usability
-claim remain prohibited until the final frozen-scope review and separate owner
-release decision.</p>
+<p>The version roadmap and historical backlog remain below. The v0.23.0 Alpha is
+published. No new product milestone is active. Stable-release and
+engineering-use approval remain held for the cumulative qualified review.</p>
 <h2 id="recently-done">Recently Done<a class="headerlink" href="#recently-done" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -2537,6 +2520,18 @@ release decision.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>LIB-IS456-V1</td>
+<td>Completed C0-C4, bounded evidence, exact artifacts, public Alpha UAT, and v0.23.0 publication</td>
+<td>Main Agent + owner</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>MAINT-009</td>
+<td>Integrated automation and Actions updates, repaired Weekly Verification compatibility, and cleared obsolete GitHub/session state</td>
+<td>Main Agent</td>
+<td>✅ DONE</td>
+</tr>
 <tr>
 <td>MAINT-001</td>
 <td>Preserve the inherited worktree, recover the Mac baseline, and close PR #676 required checks</td>

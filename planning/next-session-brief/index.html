@@ -1503,10 +1503,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#outcome" class="md-nav__link">
+  <a href="#closed-outcome" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Outcome
+        Closed outcome
       
     </span>
   </a>
@@ -1514,21 +1514,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#release-identity" class="md-nav__link">
+  <a href="#retained-release-boundary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Release identity
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#bounded-product-evidence-retained" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Bounded product evidence retained
+        Retained release boundary
       
     </span>
   </a>
@@ -1540,6 +1529,17 @@
     <span class="md-ellipsis">
       
         Next action
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#github-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitHub state
       
     </span>
   </a>
@@ -1582,99 +1582,94 @@
 <!-- HANDOFF:START -->
 <ul>
 <li>Date: 2026-08-10</li>
-<li>Focus: v0.23.0 Alpha release complete; later roadmap work remains inactive</li>
+<li>Focus: post-v0.23.0 maintenance closed; dependency compatibility is next</li>
 </ul>
 <!-- HANDOFF:END -->
 
 <p><strong>Current release:</strong> <code>v0.23.0</code> at <code>3f880d5b</code>
-<strong>Plan:</strong> <a href="../is456-library-first-master-plan/">is456-library-first-master-plan.md</a></p>
+<strong>Maintenance baseline:</strong> <code>22bc8a45</code>
+<strong>Task board:</strong> <a href="../../TASKS/">TASKS.md</a></p>
 <h2 id="required-reading">Required Reading<a class="headerlink" href="#required-reading" title="Permanent link">&para;</a></h2>
 <ul>
+<li><a href="../../TASKS/">Current task board</a></li>
 <li><a href="../is456-library-first-master-plan/">IS 456 library-first master plan</a></li>
 <li><a href="../../verification/is456-library-first-evidence/">Release evidence crosswalk</a></li>
-<li><a href="../../TASKS/">Current task board</a></li>
 </ul>
 <table>
 <thead>
 <tr>
-<th>Release state</th>
-<th>Version</th>
+<th>State</th>
+<th>Target</th>
 <th>Decision</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>Current</strong></td>
-<td>v0.23.0</td>
-<td>Alpha development preview released; exact public UAT green</td>
+<td>v0.23.0 Alpha</td>
+<td>Released; public artifact UAT and current-main Weekly Verification are green</td>
 </tr>
 <tr>
 <td><strong>Next</strong></td>
-<td>v0.24.0</td>
-<td>Inactive until separately activated by the owner</td>
+<td>DEPS-MAINT-001</td>
+<td>Triage the nine fresh dependency PRs; do not activate v0.24 product work</td>
 </tr>
 </tbody>
 </table>
-<h2 id="outcome">Outcome<a class="headerlink" href="#outcome" title="Permanent link">&para;</a></h2>
-<p>C0-C4 and the owner-authorized v0.23.0 Alpha release are complete. PR #696
-merged the bounded product/evidence closeout at <code>71e74a7e</code>. PR #697 fixed the
-publish runner's interpreter contract and merged at <code>3f880d5b</code>.</p>
-<p>The release is available on PyPI and as a GitHub prerelease. It remains a
-case-qualified development preview, not a whole-standard or professional-
-approval claim. Qualified structural-engineering review is cumulative and is
-required only before stable or engineering-use approval, not per development
-packet or Alpha release.</p>
-<h2 id="release-identity">Release identity<a class="headerlink" href="#release-identity" title="Permanent link">&para;</a></h2>
+<h2 id="closed-outcome">Closed outcome<a class="headerlink" href="#closed-outcome" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Tag/source: <code>v0.23.0</code> / <code>3f880d5bbc338baefc4aec8ed472cafe840a5c99</code></li>
-<li>TestPyPI run: <code>31332187566</code>, green before tag creation.</li>
-<li>Production run: <code>31332420554</code>, green for build, UAT, PyPI, and GitHub Release.</li>
-<li>Wheel: 478,903 bytes, 181 files, SHA-256
-  <code>cd56a5301160fc7d62154e9d6e567ba8bf9bb8608827c9454b63161276c5408a</code>.</li>
-<li>Sdist: 395,422 bytes, 206 files, SHA-256
-  <code>fe03a86d6c518a5f293c874e825930bb79de984cb53bebaf63a7610c3f042a73</code>.</li>
-<li>Manifest SHA-256:
-  <code>efadd1e6b0b1e8c3c7e242a057ea83a3bbef19059462a5ccd5ccde5ac2ba9ab5</code>.</li>
-<li>CycloneDX 1.6 SBOM SHA-256:
-  <code>8c76f919df65e913d0d507d0ac824bb2c077fbb530a53732bc65bed68f482686</code>.</li>
-<li>Both content allowlist and protected-content gates passed.</li>
-<li>Exact public PyPI UAT: 5,406 passed, 51 skipped, 6 deselected; installed
-  <code>job</code>, <code>critical</code>, <code>report</code>, and CLI-help workflows passed.</li>
+<li>Merged automation recovery PR #695 and GitHub Actions runtime PR #692.</li>
+<li>Repaired the real Weekly Verification typing failure through PR #699 and the
+  final NumPy <code>&lt;2.5</code> compatibility constraint in PR #700.</li>
+<li>Exact current-main Weekly Verification run <code>31334828353</code> passed wheel/CLI,
+  locked audits, Docker health, Python, FastAPI, repository drift, and React.</li>
+<li>Closed stale PR #548 and all 129 historical <code>Nightly QA failed</code> issues after
+  the current-main workflow passed; GitHub now has zero open issues.</li>
+<li>Removed verified merged release/automation branches, their linked worktree,
+  and the superseded orphan <code>task/TASK-DOCSYNC</code> branch. Remote non-Dependabot
+  branches are now only <code>main</code> and <code>gh-pages</code>.</li>
+<li>Moved 22 generated release/build artifacts (5.6 MB) out of the repository to
+  recoverable staging at <code>/private/tmp/structural-lib-maint-20260810.sLuHRf</code>.</li>
+<li>Project health, audit readiness, and efficiency baselines were 100/100,
+  19/19, and PASS before this handoff.</li>
 </ul>
-<h2 id="bounded-product-evidence-retained">Bounded product evidence retained<a class="headerlink" href="#bounded-product-evidence-retained" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Supported beam, rectangular-column, concentric isolated-footing, one-way
-  slab, and bounded two-way slab paths are recorded in the evidence crosswalk.</li>
-<li>Unsafe beam shear remains FAIL across Python, SSE, React, apply behavior,
-  and export output.</li>
-<li>Public package contents exclude protected standards and non-product
-  research/migration/code-family namespaces.</li>
-<li>Runtime, exact-artifact, status-truth, allowlist, protected-content, OIDC,
-  and post-publication verification gates remain mandatory.</li>
-</ul>
+<h2 id="retained-release-boundary">Retained release boundary<a class="headerlink" href="#retained-release-boundary" title="Permanent link">&para;</a></h2>
+<p>The v0.23.0 Alpha remains a case-qualified development preview, not a
+whole-standard or professional-approval claim. Retain the accumulated source,
+benchmark, unit, unsafe-case, limitation, and exact-artifact evidence for one
+cumulative qualified structural-engineering review before any stable or
+engineering-use approval.</p>
 <h2 id="next-action">Next action<a class="headerlink" href="#next-action" title="Permanent link">&para;</a></h2>
-<p>No new product lane is active. The owner must separately choose the next
-milestone. Retain the accumulated source, benchmark, unit, unsafe-case,
-limitation, and artifact evidence for one final qualified review before any
-stable or engineering-use approval.</p>
+<p>Run one dependency-maintenance parent task and keep ecosystems separate:</p>
+<ol>
+<li>Rebase and evaluate Python PRs #679 and #686-#688. Start with install/lock
+   consistency; do not merge #679 while Ruff pins disagree across surfaces.</li>
+<li>Evaluate React group PR #680 against individual major PRs #681-#684 and
+   retain one coherent upgrade route. #680 and #684 currently fail React CI.</li>
+<li>Use focused validation while iterating, then one quick gate and one full
+   final gate. Keep v0.24 and other product-roadmap work inactive.</li>
+</ol>
+<h2 id="github-state">GitHub state<a class="headerlink" href="#github-state" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Open issues: 0.</li>
+<li>Open PRs: nine Dependabot PRs (#679-#684 and #686-#688).</li>
+<li>Green but still compatibility-sensitive: #679, #681-#683, and #688.</li>
+<li>Currently failing their relevant lane: #680, #684, #686, and #687.</li>
+</ul>
 <h2 id="terminal-issues-recorded">Terminal issues recorded<a class="headerlink" href="#terminal-issues-recorded" title="Permanent link">&para;</a></h2>
 <ul>
-<li><code>check_links.py --modified</code> is unsupported; the maintained full link check
-  passed with zero broken links.</li>
-<li>Index generation rewrote unrelated generated caches; only those cache diffs
-  were surgically reversed.</li>
-<li>A referenced <code>check_release_candidate.py</code> entrypoint does not exist; the
-  maintained <code>./run.sh release candidate-check</code> command passed.</li>
-<li>One cleanup assumed <code>Python/build</code> existed; the missing directory produced a
-  harmless diagnostic and the fresh build completed. Future cleanup must test
-  each explicit generated path before moving it.</li>
-<li>The first TestPyPI run failed before upload because tests hard-coded the
-  repository <code>.venv</code>; PR #697 uses the active interpreter and the rerun passed.</li>
-<li>One artifact download retry found the file already present after the first
-  request completed; explicit hash and manifest inspection succeeded.</li>
-<li>The first evidence commits used descriptive release-row labels; the session
-  contract requires literal <code>Current</code> and <code>Next</code>, which were restored before
-  retrying.</li>
+<li>Finder Trash staging was denied by macOS privacy controls and
+  <code>/usr/bin/realpath</code> is absent. <code>.venv/bin/python</code> path resolution plus an
+  explicit <code>/private/tmp</code> recoverable staging directory worked.</li>
+<li>The first exact Weekly dispatch was cancelled when <code>main</code> changed during the
+  Actions update. The next run exposed Mypy/NumPy stub incompatibility.</li>
+<li>PR #699 correctly constrained Mypy but did not constrain the unpinned NumPy
+  install surface. CI logs proved NumPy 2.5.2 was the remaining root cause; PR
+  #700 fixed that boundary, and the exact current-main rerun passed.</li>
+<li>A zsh unmatched-glob lookup for <code>Python/requirements*.txt</code> was replaced by
+  an <code>rg --files</code> lookup.</li>
+<li>Newly merged squash commits required an explicit fetch before local tree-ID
+  comparison. Branch cleanup was performed only after equal trees were proven.</li>
 </ul>
 
 
