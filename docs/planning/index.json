@@ -2,7 +2,7 @@
   "folder": "docs/planning",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-09",
+  "last_updated": "2026-08-10",
   "file_count": 13,
   "files": [
     {
@@ -50,10 +50,10 @@
     {
       "name": "is456-library-first-master-plan.md",
       "type": "documentation",
-      "size_lines": 1471,
-      "last_updated": "2026-08-09",
+      "size_lines": 1473,
+      "last_updated": "2026-08-10",
       "description": "The Python package is the product. FastAPI, React, command-line workflows, reports, ETABS adapters, and future integrations are consumers of that product.",
-      "content_hash": "d22e7e4c6d10"
+      "content_hash": "87818feedc6d"
     },
     {
       "name": "library-expansion-blueprint-v5.md",
@@ -83,11 +83,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 100,
-      "last_updated": "2026-08-09",
+      "size_lines": 127,
+      "last_updated": "2026-08-10",
       "title": "Next Session Briefing",
-      "description": "<!-- HANDOFF:START --> - Date: 2026-08-09",
-      "content_hash": "8a1fd3e82666"
+      "description": "<!-- HANDOFF:START --> - Date: 2026-08-10",
+      "content_hash": "77168ef6084c"
     },
     {
       "name": "pre-release-checklist.md",
@@ -117,5 +117,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "7a0ec33522ed4f0d"
+  "content_hash": "42e78d039e79a09b"
 }

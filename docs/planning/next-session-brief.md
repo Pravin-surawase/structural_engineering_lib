@@ -3,8 +3,8 @@
 ## Latest Handoff
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-09
-- Focus: LIB-IS456-C2 final product UAT for the bounded IS 456 product milestone
+- Date: 2026-08-10
+- Focus: LIB-IS456-C3 exact local artifact freeze for the bounded IS 456 product milestone
 <!-- HANDOFF:END -->
 
 **Current branch:** `codex/release-v0.23.0`
@@ -30,6 +30,13 @@ plan reconciliation and C1 Git integration are complete. Product remediation
 is checkpointed at `2ff5a42a`, closeout truth at `fbd24350`, and automation
 commit `f812eb3f` is integrated at `d4eb9e9d` without history rewriting or
 lost work.
+
+C2 source/live product UAT is complete. Focused Python/FastAPI/React suites
+passed, and live Vite-to-FastAPI checks agreed with the source-tree outcomes.
+The UAT found one main-process defect: local development proxied `/api` and
+`/ws` but not the React batch EventSource `/stream` path. The Vite proxy now
+forwards `/stream` to FastAPI. A safe plus unsafe-shear batch then rendered one
+PASS/one FAIL, and applying results left the unsafe beam pending.
 
 Until that final qualified review is recorded, the repository and every
 candidate artifact are development software: they are not approved or usable
@@ -71,6 +78,14 @@ development, but it does not satisfy the final professional gate.
 - Exact clean-source wheel: 181 members, zero excluded namespaces, imported
   `structural_lib.__version__ == 0.23.0`, CLI help passed, SHA-256
   `1414a06acbac36f503c9e18c11461a10d02f722f87f78c95a530336f35063770`.
+- C2 focused matrix: pure-library/service cases green; 58 FastAPI cases green;
+  16 focused React cases green; Node 24 production build green.
+- C2 live evidence: safe/unsafe SSE `PASS`/`FAIL`, 1 passed/1 failed in React,
+  unsafe beam not applied, standard live 422 envelope, and successful live
+  column, footing and one-way-slab responses.
+- C2 export bytes: BBS 959 bytes (`c34cb245...f8067`), DXF 48,522 bytes
+  (`037a879e...0134`), and unsafe HTML report 8,725 bytes
+  (`1524c1ab...7f8a`).
 
 The wheel was disposable and removed after inspection. A stale source-tree
 `Python/build/lib` was proven to contaminate an ordinary build with excluded
@@ -78,13 +93,14 @@ migration/research/ACI/EC2 files; the release gate now rejects that content.
 
 ## Next actions
 
-1. Run C2 source-tree and live product UAT for the explicitly supported beam,
-   column, isolated-footing, one-way slab, bounded two-way slab, batch/report,
-   API-envelope, React, and export paths, including unsafe negative outcomes.
-2. Record exact commands and outcomes without expanding to multi-code or
-   excluded structural systems.
-3. Continue only after C2 passes: C3 frozen artifacts, C4 evidence freeze,
-   then final qualified review. Publication remains separately gated.
+1. Run the canonical v0.23.0 release preflight once on the clean current
+   candidate.
+2. Remove only stale ignored `Python/build`/`Python/dist` artifacts through the
+   maintained safe-delete workflow, then build one exact wheel and sdist.
+3. Record local filenames, sizes, SHA-256 values, inventories, allowlist and
+   protected-content results, SBOM, and exact-wheel clean-install/CLI UAT.
+4. Continue only after C3 passes: C4 evidence freeze, then final qualified
+   review. Publication remains separately gated.
 
 ## Terminal issues recorded
 
@@ -97,3 +113,14 @@ migration/research/ACI/EC2 files; the release gate now rejects that content.
 - zsh reserves `status`; the deliberate release-failure proof used `rc`.
 - Assigning to zsh-reserved `path` removed command lookup during Git
   classification; rerunning with `file_path` restored normal execution.
+- The automation finder had no exact C2 mapping; the maintained UAT,
+  release-preflight and quality-gate skills plus exact test paths were used.
+- An unmatched `scripts/dev.*` zsh glob failed before inspection; `rg --files
+  scripts | rg 'dev|server'` found the maintained launcher safely.
+- A first hidden-input file chooser timed out; the visible labelled CSV drop
+  zone opened the documented chooser and imported the fixture successfully.
+- `rg` was given the nonexistent `react_app/src/pages` path; the live route
+  files under `react_app/src/components/pages` were used instead.
+- The first C2 commit attempt crossed the local date boundary and the session
+  hook correctly rejected the missing 2026-08-10 durable entry; the session
+  log and generated indexes were refreshed before retrying.

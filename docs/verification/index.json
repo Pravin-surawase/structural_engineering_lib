@@ -2,64 +2,77 @@
   "folder": "docs/verification",
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
-  "last_updated": "2026-03-25",
-  "file_count": 6,
+  "last_updated": "2026-08-10",
+  "file_count": 8,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 61,
-      "last_updated": "2026-01-23",
+      "size_lines": 63,
+      "last_updated": "2026-08-09",
       "title": "Verification",
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards. | Document | Description |",
-      "content_hash": "5ce4d23a7483"
+      "content_hash": "f219eb9f97e3"
     },
     {
       "name": "examples.md",
       "type": "documentation",
-      "size_lines": 1541,
-      "last_updated": "2026-03-24",
-      "title": "Verification Examples Pack",
+      "size_lines": 1550,
+      "last_updated": "2026-08-09",
       "description": "This document provides benchmark examples that engineers can use to verify the library's calculations against: - Hand calculations",
-      "content_hash": "7021f9f82e99"
+      "content_hash": "b6ea94ae38e4"
     },
     {
       "name": "external-cli-test.md",
       "type": "documentation",
-      "size_lines": 89,
-      "last_updated": "2026-01-23",
-      "title": "External CLI Test (S-007)",
+      "size_lines": 98,
+      "last_updated": "2026-03-30",
       "description": "Purpose: capture a repeatable, human-run CLI test from a fresh user. Preferred: use the automated smoke script so the output is consistent and easy to share.",
-      "content_hash": "6b0667dd868f"
+      "content_hash": "a81223e8c701"
     },
     {
       "name": "insights-verification-pack.md",
       "type": "documentation",
-      "size_lines": 91,
-      "last_updated": "2026-01-23",
-      "title": "Insights Module Verification Pack",
+      "size_lines": 101,
+      "last_updated": "2026-08-09",
       "description": "This pack provides benchmark test cases for the insights module to ensure accuracy and prevent regressions. Tests are automatically run in CI on every PR. Run all insights benchmark tests:",
-      "content_hash": "661ca5365665"
+      "content_hash": "62116e5ed5fe"
+    },
+    {
+      "name": "is456-library-first-evidence.md",
+      "type": "documentation",
+      "size_lines": 103,
+      "last_updated": "2026-08-10",
+      "title": "IS 456 Library-First Evidence and Claim Crosswalk",
+      "description": "| Source | SHA-256 | Pages | Use | |---|---|---:|---|",
+      "content_hash": "bedd3e578e9d"
     },
     {
       "name": "pack.md",
       "type": "documentation",
-      "size_lines": 47,
-      "last_updated": "2026-01-23",
-      "title": "Verification Pack",
+      "size_lines": 56,
+      "last_updated": "2026-03-30",
       "description": "This repo’s unit tests validate correctness and edge cases, but they don’t always answer the question: **“did the numerical design outputs change?”** The **Verification Pack** is a small set of **pinn",
-      "content_hash": "9ea1a3f1ba47"
+      "content_hash": "fa4fe75b3d05"
+    },
+    {
+      "name": "release-artifact-evidence-template.md",
+      "type": "documentation",
+      "size_lines": 34,
+      "last_updated": "2026-08-09",
+      "title": "Release Artifact Evidence Template",
+      "description": "Complete this record from the CI run that built the exact candidate. | Field | Value |",
+      "content_hash": "2b9ece6532d0"
     },
     {
       "name": "validation-pack.md",
       "type": "documentation",
-      "size_lines": 186,
-      "last_updated": "2026-03-24",
-      "title": "Validation Pack — Benchmark Beams",
-      "description": "This pack provides 5 benchmark beams with IS 456 references that you can use to validate the library's calculations against hand calculations, SP 16 design aids, or other trusted software. Run this co",
-      "content_hash": "53f023bb6f21"
+      "size_lines": 396,
+      "last_updated": "2026-08-09",
+      "description": "This pack provides 5 benchmark beams and 3 benchmark columns with IS 456 references that you can use to validate the library's calculations against hand calculations, SP 16 design aids, or other trust",
+      "content_hash": "6517ce37f6b3"
     }
   ],
   "subfolders": [],
-  "content_hash": "05a49d69717d49c1"
+  "content_hash": "53cd60d269c75f16"
 }

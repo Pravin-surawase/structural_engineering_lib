@@ -5,8 +5,8 @@
 **Status:** Review
 **Importance:** Critical
 **Created:** 2026-08-09
-**Last Updated:** 2026-08-09
-**Date:** 2026-08-09
+**Last Updated:** 2026-08-10
+**Date:** 2026-08-10
 **State:** software evidence complete for the task branch; engineering review and publication approval remain separate
 
 ## Controlled sources
@@ -41,6 +41,34 @@ only. It contains no protected standard text or table values.
 Passing tests and artifact gates establish software evidence only. Construction
 use still requires source-page verification, independent calculations,
 project-specific checks and qualified professional approval.
+
+## C2 final product UAT
+
+The 2026-08-10 C2 UAT exercised the bounded source and live product paths. The
+focused pure-library/service matrix passed, 58 selected FastAPI cases passed,
+16 selected React batch/export cases passed, and the Node 24 production build
+passed. The matrix covered the public facade/capability contract, beam, column,
+isolated-footing transfer, one-way and bounded two-way slabs, batch/report
+status normalization, the maintained 422 envelope, and export endpoints.
+
+The initial live React batch failed before FastAPI because local development
+uses the Vite proxy and `react_app/vite.config.ts` did not proxy `/stream`.
+Adding that missing proxy entry repaired the root cause. The repeated live path
+imported a safe beam and a 600 kN unsafe-shear beam, received coherent SSE
+`PASS`/`FAIL` results, rendered `1 passed`/`1 failed`, and applied only the safe
+result; the unsafe beam remained pending with its original 600 kN shear.
+
+Live requests through port 5173 also proved the maintained column, isolated-
+footing, one-way-slab, and 422-envelope paths. Export response bytes were
+validated rather than inferred from HTTP success:
+
+| Artifact | Size | SHA-256 | Byte evidence |
+|---|---:|---|---|
+| BBS CSV | 959 | `c34cb245d3ead57e5035c19f7590c6c92122b2399da44b5cf7f384779f5f8067` | `bar_mark`, `diameter_mm`, `total_weight_kg` headers |
+| Beam DXF | 48,522 | `037a879e294cac659710530c54c3862ee79421b260dde01da8ea9ac88dc50134` | `SECTION` and `EOF` records |
+| Unsafe HTML report | 8,725 | `1524c1abc27eaa2544f5414c717ba0130e601f9846b1a70baec3f7a12ed77f8a` | overall `FAIL`; no promoted overall PASS |
+
+These are source-tree/live-development artifacts, not C3 release identities.
 
 ## Release evidence required from CI
 

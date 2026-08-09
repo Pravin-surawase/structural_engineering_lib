@@ -4,12 +4,12 @@ title: IS 456 Library-First Completion and PyPI Master Plan
 status: active
 owner: Main Agent and repository owner
 created: 2026-08-09
-last_updated: 2026-08-09
+last_updated: 2026-08-10
 doc_type: spec
 baseline_commit: d4eb9e9dda4a
 release_decision: v0.21.7 deferred
 target_version: v0.23.0 provisional
-current_blocker: Run final product UAT and freeze exact artifact evidence
+current_blocker: Freeze exact local artifact evidence and bounded review packet
 ---
 
 **Type:** Plan
@@ -17,7 +17,7 @@ current_blocker: Run final product UAT and freeze exact artifact evidence
 **Status:** In Progress
 **Importance:** Critical
 **Created:** 2026-08-09
-**Last Updated:** 2026-08-09
+**Last Updated:** 2026-08-10
 
 ---
 
@@ -117,8 +117,8 @@ approved or usable for engineering decisions.
 |---|---|---|---|
 | C0 — Plan truth | Complete | Reconcile active plans/tasks with the implemented bounded scope | One authority, no stale active v0.23 tasks, exact next packet |
 | C1 — Git integration | Complete at `d4eb9e9d` | Checkpoint intended remediation/product lanes, preserve automation commit `f812eb3f`, and synchronize `origin/main` without rebase/reset/stash | Reviewable commits, clean worktree, no automation work lost |
-| C2 — Final product UAT | Next | Exercise supported Python, FastAPI, React batch/report, footing/slab, and export paths including unsafe negatives | Source-tree and live consumer outcomes agree; all canonical gates green |
-| C3 — Frozen artifact | After C2 | Build clean wheel/sdist, inspect contents, record hashes, clean-install supported workflows and CLI | Exact artifact evidence is reproducible and bound to the frozen commit |
+| C2 — Final product UAT | Complete | Exercise supported Python, FastAPI, React batch/report, footing/slab, and export paths including unsafe negatives | Source-tree and live consumer outcomes agree; all canonical gates green |
+| C3 — Frozen artifact | Next | Build clean wheel/sdist, inspect contents, record hashes, clean-install supported workflows and CLI | Exact artifact evidence is reproducible and bound to the frozen commit |
 | C4 — Evidence freeze | After C3 | Assemble source IDs, units, benchmarks, limitations, unsafe cases, and unresolved holds without requesting sign-off | Owner declares all intended bounded work complete and freezes the review scope |
 
 Only after C0-C4 are complete does the final qualified-engineering review
@@ -1311,6 +1311,7 @@ Use existing canonical records. Do not create one log per agent.
 | 2026-08-09 | P11 | backend + Main Agent | COMPLETE | Working tree | Service facade, package exports, manifest, integration tests | 116-symbol manifest; canonical/compatibility identity; architecture/import green | Focused | Stable-version promise remains owner release decision | P12/FAPI-1 |
 | 2026-08-09 | FAPI-1 | api-developer + Main Agent | COMPLETE | Working tree | Development-length fix; footing/slab router/models/tests | Representative beam/column/footing/slab request-to-service evidence | Focused | No UI expansion | P12 |
 | 2026-08-09 | P12 | Main Agent | COMPLETE / READY | `task/LIB-IS456-V1` at `301ddec7`; draft PR #693 | Package allowlist, protected-source boundary, claims, publish workflow | Public clause data sanitized; private 130-page corpus ignored; clean local artifact UAT; quick gate 9/9; full gate 29/29; PR run `31321772342` green | Full + PR | Exact CI publication-artifact identity and owner release decision remain | P13 |
+| 2026-08-10 | C2 | Main Agent with two read-only audits | COMPLETE | `codex/release-v0.23.0`, working tree | Vite proxy, focused source/live product paths, existing evidence records | Focused Python/FastAPI/React green; live safe/unsafe SSE and apply behavior; live column/footing/slab/422/export bytes; frontend build green | Quick 9/9; full 29/29 | Release and professional-review holds remain | C3 |
 
 ### Required handoff content
 
@@ -1418,13 +1419,14 @@ FastAPI tests, 147 React tests, frontend lint/build, quick 9/9, full 29/29,
 audit 19/19, and health 100/100. A clean-source v0.23.0 wheel passed package
 version and CLI checks with excluded namespaces absent.
 
-C0 and C1 are complete. Product remediation is checkpointed at `2ff5a42a`,
+C0-C2 are complete. Product remediation is checkpointed at `2ff5a42a`,
 bounded closeout truth at `fbd24350`, and the separately landed automation
 commit `f812eb3f` is integrated without history rewriting at `d4eb9e9d`. The
 worktree is clean and both Node and Python runtime selectors are retained.
 
-C2 final product UAT is the next and only active packet, followed by C3 exact
-artifact freeze and C4 evidence freeze. Do not begin new calculation,
+C2 final product UAT found and repaired the missing local Vite `/stream` proxy;
+source-tree and live safe/unsafe outcomes now agree. C3 exact artifact freeze
+is the next and only active packet, followed by C4 evidence freeze. Do not begin new calculation,
 multi-code, or excluded structural-system work. Professional review and
 publication actions remain deferred.
 

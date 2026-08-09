@@ -5,6 +5,33 @@
 
 ---
 
+## 2026-08-10 — Session: LIB-IS456-C2 Product UAT Closeout
+
+**Agent:** Codex
+**Branch:** `codex/release-v0.23.0`
+**Focus:** Complete source/live product UAT and advance the bounded IS 456 milestone to C3 artifact freeze
+
+### Summary
+
+- Completed the C2 Python, FastAPI, React, live-browser, and export-byte matrix.
+- Fixed the live batch-design root cause: Vite proxied `/api` and `/ws` but
+  omitted the EventSource `/stream` route used by the React batch workflow.
+- Confirmed a safe/unsafe batch renders one PASS and one FAIL and that applying
+  results leaves the unsafe beam unchanged. Advanced C3 as the next checkpoint.
+
+### Verification
+
+- Focused Python/service cases, 58 FastAPI cases, and 16 React cases pass.
+- React production build, quick gate 9/9, and full gate 29/29 pass.
+- Live BBS, DXF, and unsafe-report payloads passed content/signature checks;
+  hashes and sizes are frozen in the IS 456 evidence ledger.
+
+### Terminal issues
+
+- The first commit attempt was correctly blocked after the date crossed into
+  2026-08-10 because this durable session entry did not yet exist; the session
+  record was added, generated indexes refreshed, and the hook rerun.
+
 ## 2026-08-09 — MAINT-008 Skills Control-Plane Closeout
 
 **Agent:** Codex
