@@ -1,4 +1,23 @@
+---
+owner: Main Agent
+status: active
+last_updated: 2026-08-10
+doc_type: guide
+complexity: beginner
+tags: [react, fastapi, screenshots, product-tour]
+---
+
 # StructLib Product Tour
+
+**Type:** Guide
+**Audience:** Users
+**Status:** Approved
+**Importance:** High
+**Version:** 0.23.0
+**Created:** 2026-08-10
+**Last Updated:** 2026-08-10
+
+---
 
 See the supported workflow before installing anything. These screenshots are
 authentic captures from StructLib v0.23.0 running locally with the bundled
