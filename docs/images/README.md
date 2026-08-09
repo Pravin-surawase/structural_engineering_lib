@@ -16,6 +16,7 @@ product captures and architecture diagrams.
 | Workflow | `workflow-*.png` | `workflow-design-process.png` |
 | Screenshots | `screenshot-*.png` | `screenshot-output-example.png` |
 | Product tour | `product/*.jpg` | `product/beam-inspector.jpg` |
+| Social preview | `social-preview.jpg` | GitHub repository link preview |
 
 ---
 
@@ -39,6 +40,19 @@ The file [screenshot-guide.md](../_internal/screenshot-guide.md) lists target sc
 | `excel-tutorial-01-addin-install.png` | Add-in installation dialog |
 | `excel-tutorial-02-ribbon-tab.png` | Structural Engineering ribbon tab |
 | `excel-tutorial-03-input-form.png` | Beam input form |
+
+---
+
+## 🌐 GitHub Social Preview
+
+`social-preview.jpg` is the 1280×640 repository card uploaded through
+**Settings → General → Social preview** on GitHub. It combines the verified
+beam-inspector and design-dashboard captures listed in
+[product/README.md](product/README.md); it is not used in place of the larger
+README screenshots.
+
+Refresh the uploaded GitHub preview whenever this file changes so link shares
+and the versioned repository asset remain aligned.
 
 ---
 
