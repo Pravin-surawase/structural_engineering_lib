@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-10",
-  "file_count": 8,
+  "file_count": 9,
   "files": [
     {
       "name": "README.md",
@@ -15,10 +15,18 @@
       "content_hash": "f219eb9f97e3"
     },
     {
+      "name": "bundled-sample-boq-evidence.md",
+      "type": "documentation",
+      "size_lines": 58,
+      "last_updated": "2026-08-10",
+      "description": "This is the reproducible software record for the bundled ETABS sample. It is not a bill approved for procurement or construction and is not professional",
+      "content_hash": "78b84b5474bc"
+    },
+    {
       "name": "examples.md",
       "type": "documentation",
       "size_lines": 1550,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "description": "This document provides benchmark examples that engineers can use to verify the library's calculations against: - Hand calculations",
       "content_hash": "b6ea94ae38e4"
     },
@@ -41,11 +49,11 @@
     {
       "name": "is456-library-first-evidence.md",
       "type": "documentation",
-      "size_lines": 139,
+      "size_lines": 162,
       "last_updated": "2026-08-10",
       "title": "IS 456 Library-First Evidence and Claim Crosswalk",
       "description": "| Source | SHA-256 | Pages | Use | |---|---|---:|---|",
-      "content_hash": "9588df319a51"
+      "content_hash": "69f74cdf8518"
     },
     {
       "name": "pack.md",
@@ -68,11 +76,11 @@
       "name": "validation-pack.md",
       "type": "documentation",
       "size_lines": 396,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "description": "This pack provides 5 benchmark beams and 3 benchmark columns with IS 456 references that you can use to validate the library's calculations against hand calculations, SP 16 design aids, or other trust",
       "content_hash": "6517ce37f6b3"
     }
   ],
   "subfolders": [],
-  "content_hash": "530e5ebdc8a7b4c5"
+  "content_hash": "78c2616e3af16f4c"
 }

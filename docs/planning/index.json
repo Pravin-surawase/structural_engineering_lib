@@ -17,10 +17,10 @@
     {
       "name": "adoption-trust-surface-plan.md",
       "type": "documentation",
-      "size_lines": 349,
+      "size_lines": 380,
       "last_updated": "2026-08-10",
       "description": "Make the released Alpha straightforward to evaluate from four perspectives: - a user can copy every public quick start and receive the documented result;",
-      "content_hash": "e36c4dea1f1a"
+      "content_hash": "a2f90f52a72d"
     },
     {
       "name": "compact-modernization-plan.md",
@@ -28,7 +28,7 @@
       "size_lines": 794,
       "last_updated": "2026-08-10",
       "description": "Modernize the repository's CI, maintenance controls, and agent-facing workflow without changing the structural-engineering product outcome. The finished repository must have:",
-      "content_hash": "85788077084b"
+      "content_hash": "b0efe5bf80fd"
     },
     {
       "name": "democratization-vision.md",
@@ -78,7 +78,7 @@
       "size_lines": 411,
       "last_updated": "2026-08-10",
       "description": "- Development resumed after a four-month pause and a Mac laptop → Mac Mini transfer. - Git history, reachable objects, sample data, package source, and ARM64 Python environment transferred intact.",
-      "content_hash": "5ea34b5b4f3b"
+      "content_hash": "78a539f85b53"
     },
     {
       "name": "next-phase-improvements-plan.md",
@@ -91,11 +91,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 112,
+      "size_lines": 83,
       "last_updated": "2026-08-10",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-10",
-      "content_hash": "ba8884722c2d"
+      "content_hash": "971b18d6ea94"
     },
     {
       "name": "pre-release-checklist.md",
@@ -125,5 +125,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "62cdc88c46f08559"
+  "content_hash": "7b863894c2840600"
 }

@@ -1,6 +1,6 @@
 ---
 owner: Main Agent
-status: active
+status: complete
 last_updated: 2026-08-10
 doc_type: spec
 task: ADOPT-001
@@ -316,7 +316,38 @@ release metadata, PyPI classification/versioning policy, and public docs.
 **Owner-only actions:** Pages settings, release/tag/publication decisions, and PR
 merge require owner confirmation.
 
-## 8. Gate ladder
+## 8. Completed implementation
+
+All packets are locally complete on `codex/trust-surface-foundation`:
+
+| Packet | Outcome | Commit |
+|---|---|---|
+| A | Public Python and REST examples execute against the maintained contract | `88bca3c1` |
+| B | Python, CLI, and REST expose one canonical capability inventory | `4f05a85c` |
+| C | All 63 HTTP operations publish typed success or explicit non-JSON contracts | `58a890d0` |
+| D | Production-like startup fails closed without authentication and a real secret | `c1cf0599` |
+| E | Beam REST/report outputs share a canonical evidence identity | `bce01a54` |
+| F | React presents exact trust status; the 153-beam BOQ is dataset/calculation-bound | `0a53f94f` |
+| G | Docs CI is truthful and future public versions must use PEP 440 Alpha identifiers | `e019a7dc` |
+
+The full-suite pass also found and repaired one legacy-report compatibility
+regression: evidence-free HTML remains byte-for-byte unchanged while
+evidence-bearing reports include the identity block (`af528d0f`).
+
+Closeout evidence:
+
+- 5,485 Python, 373 FastAPI, and 152 React tests passed (6,010 total);
+- repository check 30/30, audit 19/19, health 100/100, efficiency PASS;
+- a live browser run proved the bundled 153/153 PASS path, exact BOQ identity,
+  enabled exports, and an overstressed FAIL path with disabled export;
+- protected calculation modules were not changed.
+
+Owner-only holds remain: provision the real production JWT secret; enable and
+verify GitHub Pages if desired; authorize push/PR/merge/tag/publication actions;
+and retain qualified structural-engineering review before stable or
+engineering-use approval.
+
+## 9. Gate ladder
 
 | Stage | Verification |
 |---|---|
@@ -327,7 +358,7 @@ merge require owner confirmation.
 | User flow | clean wheel + CLI + TestClient + live React safe/unsafe paths |
 | Release | separately authorized preflight only |
 
-## 9. Stop conditions
+## 10. Stop conditions
 
 Stop and return to the owner when:
 
@@ -339,7 +370,7 @@ Stop and return to the owner when:
   mutation;
 - a GitHub setting, merge, release, or publication action is required.
 
-## 10. Initial branch and first deliverable
+## 11. Initial branch and first deliverable
 
 - Branch: `codex/trust-surface-foundation`
 - Base: merged `main` commit `44e85587`

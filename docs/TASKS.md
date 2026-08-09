@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — v0.23.0 Alpha released; post-release maintenance closed
+**Updated:** 2026-08-10 — ADOPT-001 Packets A-G locally complete and fully gated
 
 ---
 
@@ -126,7 +126,6 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| ADOPT-001 | Make public examples executable, expose machine-readable capability/API contracts, and add production/evidence trust boundaries | Main Agent | ✅ PACKET A; NEXT: PACKET B |
 | DEPS-MAINT-001 | Triage the nine remaining Dependabot PRs in bounded Python and React compatibility batches | Main Agent | ⏸ NEXT SESSION |
 
 ## Up Next
@@ -147,6 +146,7 @@ engineering-use approval remain held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| ADOPT-001 | Completed executable public truth, capability discovery, typed API contracts, production auth fail-close, evidence identity, React/BOQ trust presentation, and truthful Alpha/docs policy | Main Agent | ✅ PACKETS A-G LOCAL COMPLETE; OWNER HOLDS RETAINED |
 | LIB-IS456-V1 | Completed C0-C4, bounded evidence, exact artifacts, public Alpha UAT, and v0.23.0 publication | Main Agent + owner | ✅ DONE |
 | MAINT-009 | Integrated automation and Actions updates, repaired Weekly Verification compatibility, and cleared obsolete GitHub/session state | Main Agent | ✅ DONE |
 | MAINT-001 | Preserve the inherited worktree, recover the Mac baseline, and close PR #676 required checks | Main Agent | ✅ DONE |
