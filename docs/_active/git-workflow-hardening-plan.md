@@ -2,10 +2,10 @@
 
 **Type:** Architecture
 **Audience:** All Agents
-**Status:** Active
+**Status:** Superseded
 **Importance:** Critical
 **Created:** 2026-04-02
-**Last Updated:** 2026-08-07
+**Last Updated:** 2026-08-09
 **Related Tasks:** TASK-900 through TASK-913
 **Abstract:** Comprehensive improvement plan for git automation infrastructure based on 9-script audit and TASK-640 root-cause analysis
 
@@ -13,6 +13,11 @@
 
 > Comprehensive improvement plan for the git automation infrastructure.
 > Based on audit of 9 scripts (2,408 lines), 4-agent review, and root-cause analysis of the TASK-640 incident.
+
+> **Superseded on 2026-08-09:** the Git lifecycle wrappers and enforcement hooks
+> described below were retired. Current work follows
+> `docs/git-automation/git-workflow-single-source.md`. The remaining content is
+> retained only as incident and design history; none of its commands are active.
 
 ## Executive Summary
 
@@ -31,8 +36,7 @@ This plan addresses 19 identified gaps across 4 severity levels, organized into 
   not part of the current toolchain.
 - The recovery rules and forbidden-command safeguards are present in the agent
   instructions, and the full project readiness audit passes.
-- This document remains active only for TASK-908; archive it after that decision
-  is implemented or formally cancelled.
+- TASK-908 is cancelled because the wrapper layer it would test has been retired.
 
 ---
 

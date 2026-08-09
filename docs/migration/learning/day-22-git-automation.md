@@ -1,8 +1,11 @@
 # Day 22: Git Automation — Why Every Commit Goes Through ONE Script
 
+> **Historical module:** the wrapper layer described below was retired on
+> 2026-08-09. Current work uses Codex and the connected GitHub integration.
+
 **Type:** Learning Module
 **Audience:** Solo developer (coder, not a civil engineer)
-**Status:** Active
+**Status:** Historical
 **Importance:** Critical
 **Created:** 2026-04-08
 **Last Updated:** 2026-04-08

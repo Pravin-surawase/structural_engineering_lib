@@ -28,21 +28,16 @@ from __future__ import annotations
 import math
 
 from structural_lib.codes.is456.column._common import _calculate_puz
-from structural_lib.codes.is456.column.axial import classify_column
+from structural_lib.codes.is456.column.axial import classify_column, min_eccentricity
 from structural_lib.codes.is456.column.biaxial import biaxial_bending_check
 from structural_lib.codes.is456.column.slenderness import _additional_eccentricity
 from structural_lib.codes.is456.column.uniaxial import (
     design_short_column_uniaxial,
     pm_interaction_curve,
 )
-from structural_lib.codes.is456.common.constants import (
-    MAX_SLENDERNESS_RATIO,
-)
+from structural_lib.codes.is456.common.constants import MAX_SLENDERNESS_RATIO
 from structural_lib.codes.is456.traceability import clause
-from structural_lib.core.data_types import (
-    ColumnClassification,
-    LongColumnResult,
-)
+from structural_lib.core.data_types import ColumnClassification, LongColumnResult
 from structural_lib.core.errors import DimensionError, MaterialError
 
 __all__ = [
@@ -69,6 +64,8 @@ def design_long_column(
     Asc_mm2: float,
     d_prime_mm: float,
     braced: bool = True,
+    *,
+    l_unsupported_mm: float,
 ) -> LongColumnResult:
     """Design a long (slender) column per IS 456 Cl 39.7.
 
@@ -102,6 +99,8 @@ def design_long_column(
         Asc_mm2: Total longitudinal steel area (mm²). Must be > 0.
         d_prime_mm: Cover to centroid of reinforcement (mm). Must be > 0.
         braced: True if column is braced against sidesway (default True).
+        l_unsupported_mm: Unsupported member length (mm), required to enforce
+            the minimum eccentricity independently about both axes.
 
     Returns:
         LongColumnResult with augmented design moments and capacity check.
@@ -169,6 +168,12 @@ def design_long_column(
             f"d_prime_mm must be > 0, got {d_prime_mm}",
             details={"d_prime_mm": d_prime_mm},
             clause_ref="Cl. 39.7",
+        )
+    if l_unsupported_mm <= 0:
+        raise DimensionError(
+            f"l_unsupported_mm must be > 0, got {l_unsupported_mm}",
+            details={"l_unsupported_mm": l_unsupported_mm},
+            clause_ref="Cl. 25.4",
         )
 
     warnings: list[str] = []
@@ -292,13 +297,28 @@ def design_long_column(
     Mux_design_raw = Mi_x + Max_reduced_kNm
     Muy_design_raw = Mi_y + May_reduced_kNm
 
-    # IS 456 Cl 39.7: Lower bound — M_design >= M2 (always)
-    Mux_design_kNm = max(Mux_design_raw, M2x_kNm)
-    Muy_design_kNm = max(Muy_design_raw, M2y_kNm)
+    # Enforce both the larger end-moment magnitude and the independent minimum
+    # eccentricity moment.  The unsupported length is intentionally explicit;
+    # effective length cannot safely stand in for it for every end condition.
+    e_min_x_mm = min_eccentricity(l_unsupported_mm, D_mm)
+    e_min_y_mm = min_eccentricity(l_unsupported_mm, b_mm)
+    Mux_min_kNm = Pu_kN * e_min_x_mm / 1000.0
+    Muy_min_kNm = Pu_kN * e_min_y_mm / 1000.0
 
-    # Use absolute values for capacity check (moments are magnitudes)
-    Mux_abs = abs(Mux_design_kNm)
-    Muy_abs = abs(Muy_design_kNm)
+    Mux_abs = max(abs(Mux_design_raw), abs(M2x_kNm), Mux_min_kNm)
+    Muy_abs = max(abs(Muy_design_raw), abs(M2y_kNm), Muy_min_kNm)
+    Mux_design_kNm = Mux_abs
+    Muy_design_kNm = Muy_abs
+    if Mux_min_kNm > max(abs(Mux_design_raw), abs(M2x_kNm)) + _TOL:
+        warnings.append(
+            f"Mux governed by minimum eccentricity e_min_x={e_min_x_mm:.1f} mm "
+            "per Cl 25.4"
+        )
+    if Muy_min_kNm > max(abs(Muy_design_raw), abs(M2y_kNm)) + _TOL:
+        warnings.append(
+            f"Muy governed by minimum eccentricity e_min_y={e_min_y_mm:.1f} mm "
+            "per Cl 25.4"
+        )
 
     # ===========================================================
     # 7. Capacity check via biaxial or uniaxial interaction
@@ -355,6 +375,7 @@ def design_long_column(
             fy=fy,
             Asc_mm2=Asc_mm2,
             d_prime_mm=d_prime_mm,
+            _slender_moments_applied=True,
         )
         interaction_ratio = biaxial_result.interaction_ratio
         is_safe = biaxial_result.is_safe

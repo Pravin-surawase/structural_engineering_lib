@@ -36,24 +36,22 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
 - For every review finding, ask: **Would fixing this change the outcome of the main process?** If not, ignore it. If a non-essential concern needs preservation, file a follow-up bead/task only when necessary; do not expand the current scope.
 - Review only essential main-process behavior. Do not report issues about comments, edge cases, test-coverage or falsification gaps, generic hardening, or adjacent improvements. Do not add tests during review. Reject security or concurrency observations that are merely hardening and do not change the main-process outcome.
 
-## Git — THE ONE RULE
+## Git and GitHub — Codex Native
 
-```bash
-./scripts/ai_commit.sh "type: message"    # ALWAYS use this. NEVER manual git.
-```
-New flags: `--preview`, `--undo`, `--signoff`, `--status`, `--branch TASK-XXX "desc"`, `--finish`, `--pr-check`.
+Codex owns the normal branch, stage, commit, push, pull-request, and check-status
+workflow through its native local-Git and connected GitHub capabilities. Do not
+recreate that lifecycle in repository scripts. The canonical process is
+[docs/git-automation/git-workflow-single-source.md](docs/git-automation/git-workflow-single-source.md).
 
-Full PR lifecycle:
-```bash
-./scripts/ai_commit.sh --status               # Check state first
-./scripts/ai_commit.sh --branch TASK-XXX "d"  # Create task branch + PR
-./scripts/ai_commit.sh "type: message"        # Commit on task branch
-./scripts/ai_commit.sh --finish "description" # CI poll + merge + cleanup
-```
-
-Format: `feat|fix|docs|refactor|test|chore|ci(scope): description`
-
-**PR Enforcement:** Run `./run.sh pr status` before committing. If it says "PR required", create a PR with `./run.sh pr create`. NEVER use `--force` to bypass the PR check — this has caused 10+ hours of wasted rework.
+- Inspect the branch, upstream, worktree, diff, and current PR before mutation.
+- Use a `codex/<task-slug>` branch when a new branch is needed.
+- Stage only intended paths; preserve unrelated staged, unstaged, untracked, and
+  stashed work.
+- Use `feat|fix|docs|refactor|test|chore|ci(scope): description` commits.
+- Push without rewriting history and create/update the PR through connected
+  GitHub. Never bypass required checks.
+- When Git is conflicted, detached, behind, or diverged, inspect first and stop
+  before reset, clean, checkout, stash/drop, rebase, or force push.
 
 **FORBIDDEN commands (all agents):**
 ```
@@ -61,16 +59,10 @@ NEVER: gh pr merge --admin            ← bypasses required CI checks
 NEVER: gh pr merge <N> --squash (with failing CI) ← fix failures first, then merge
 NEVER: gh issue close (without user approval) ← destructive, ask first
 NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py --dry-run
-NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
 NEVER: --no-verify / --force          ← breaks CI, causes rework
 NEVER: git rebase --skip              ← silently drops conflicting commits
-NEVER: git push --force-with-lease (outside --amend) ← bypasses safe_push.sh
+NEVER: git push --force-with-lease     ← rewrites shared history
 ```
-
-**When git operations fail (all agents):**
-1. Run: `./scripts/recover_git_state.sh`
-2. If that fails, report to @ops
-3. NEVER attempt manual `git rebase`, `--skip`, or `--force` push
 
 Destructive GitHub operations (closing issues, deleting branches, merging PRs) require **explicit user confirmation** before execution.
 
@@ -97,7 +89,7 @@ UI/IO        → react_app/, fastapi_app/
 - **Permission Enforcement:** `scripts/tool_permissions.py` — programmatic access control
 - **Session Persistence:** `scripts/session_store.py` — JSON session state in logs/sessions/
 - **Pipeline Resume:** `scripts/pipeline_state.py` — resumable 8-step task pipeline
-- **Hooks Framework:** `scripts/hooks/` — pre/post execution hooks (pre_commit, post_commit, pre_route)
+- **Hooks Framework:** `scripts/hooks/` — non-Git execution hooks such as `pre_route`
 - **Parity Dashboard:** `scripts/parity_dashboard.py` — IS 456 clause/endpoint/test coverage
 - **Skill Tiers:** Core (task-eligible), Specialist (role-based), Experimental (explicit)
 
@@ -115,12 +107,10 @@ grep -r "@router" fastapi_app/routers/ | head -30               # Existing API r
 
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
-./run.sh commit "type: message"     # Safe commit + push (THE ONE RULE)
 ./run.sh check --quick              # Fast validation (<30s, 9 checks)
 ./run.sh check                      # Full validation (29 checks, parallel)
 ./run.sh test                       # Run pytest suite
-./run.sh pr create TASK-XXX "desc"  # Start a PR
-./run.sh pr finish                  # Ship the PR
+# Git/GitHub lifecycle is handled directly by Codex, not run.sh.
 ./run.sh find "topic"               # Find the right script
 ./run.sh find --api func_name       # Get exact API param names
 ./run.sh audit                      # Full readiness audit
@@ -130,7 +120,7 @@ grep -r "@router" fastapi_app/routers/ | head -30               # Existing API r
 ./run.sh feedback log --agent X     # Log concrete feedback when found
 ./run.sh feedback summary           # Feedback trends & recurring issues
 ./run.sh evolve                     # Self-evolution cycle (dry-run)
-./run.sh evolve --fix               # Apply fixes + commit
+./run.sh evolve --fix               # Apply fixes; Codex reviews and commits separately
 ./run.sh evolve --review weekly     # Weekly report-only review
 ./run.sh dev                        # Launch full dev stack (FastAPI + React)
 ./run.sh dev --docker               # Launch with Docker (needs Colima)
@@ -183,8 +173,8 @@ RIGHT: cd react_app && npm run build               ← explicit cd first
 ### run.sh Fallback Chain
 If `./run.sh` produces no output or fails, try these in order:
 1. `bash run.sh <command>` — explicit bash invocation
-2. Direct script (e.g., `./scripts/ai_commit.sh` instead of `./run.sh commit`)
-3. Direct CLI command (e.g., `gh pr create` instead of `./run.sh pr create`)
+2. Direct validation or implementation script
+3. The underlying CLI command for non-GitHub project operations
 
 See `.github/instructions/terminal-rules.instructions.md` for the full fallback table.
 
@@ -200,10 +190,9 @@ This feeds the improvement loop — recurring issues get fixed in agent instruct
 ./run.sh session brief --agent <role>
 ./run.sh session start
 
-# END: update task/handoff only when state changed, then one normal commit
+# END: update task/handoff only when state changed, then use Codex Git/GitHub
 ./run.sh check --quick
-./run.sh pr status
-./run.sh commit "type(scope): completed outcome"
+# Codex stages intended paths, commits, pushes, and creates/updates the PR.
 ./run.sh session end --agent <role>              # Read-only unless --fix is explicit
 ```
 
@@ -305,4 +294,4 @@ the token-efficiency policy justifies one or two bounded subagents.
 - **Library guidance:** orchestrator → library-expert → structural-engineer → backend → tester → doc-master → ops
 - **Agent evolution:** orchestrator → agent-evolver → governance → doc-master → ops
 - **Innovation research:** orchestrator → innovator → structural-engineer (gate) → structural-math → tester → reviewer → doc-master → ops
-- **Release:** orchestrator → tester (UAT) → reviewer (quality gate) → ops (preflight + release) → tester (post-release verify) → doc-master (CHANGELOG + docs) → agent-evolver (metrics) → ops (commit)
+- **Release:** orchestrator → tester (UAT) → reviewer (quality gate) → ops (preflight + release) → tester (post-release verify) → doc-master (CHANGELOG + docs) → agent-evolver (metrics) → Codex Git/GitHub closeout

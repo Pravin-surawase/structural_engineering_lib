@@ -85,7 +85,7 @@ export function useBatchDesign() {
     }));
 
     const beamsJson = encodeURIComponent(JSON.stringify(beamParams));
-    const url = `${API_BASE_URL}/api/v1/stream/batch-design?beams=${beamsJson}`;
+    const url = `${API_BASE_URL}/stream/batch-design?beams=${beamsJson}`;
 
     setState({
       status: 'running',

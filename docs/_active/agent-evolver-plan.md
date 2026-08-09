@@ -1,7 +1,7 @@
 ---
 owner: Orchestrator
-status: active
-last_updated: 2026-04-01
+status: deprecated
+last_updated: 2026-08-09
 doc_type: spec
 complexity: advanced
 tags: [agent-evolver, self-improvement, meta-agent, metrics, paper-data]
@@ -9,12 +9,17 @@ tags: [agent-evolver, self-improvement, meta-agent, metrics, paper-data]
 
 **Type:** Architecture
 **Audience:** All Agents
-**Status:** Active
+**Status:** Superseded
 **Importance:** Critical
 **Created:** 2026-04-01
-**Last Updated:** 2026-04-01
+**Last Updated:** 2026-08-09
 
 # Agent-Evolver: Self-Evolving Meta-Agent — v2.0
+
+> **Superseded for execution:** this pre-implementation plan contains historical
+> Git-wrapper scoring rules that were retired on 2026-08-09. The implemented
+> `agent_drift_detector.py` and Codex-native Git workflow are authoritative.
+> Retain this document as design history only.
 
 **Plan Version:** v2.0
 **Review Status:** All 8 agent reviews incorporated

@@ -2,39 +2,47 @@
 
 **Type:** Reference
 **Audience:** All Agents
-**Status:** Active
+**Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-04-04
+**Last Updated:** 2026-08-09
 
 ## Current State
 
-Version: 0.21.6
+Installed metadata version: 0.21.6
 
-- **Branch:** main
-- **CI Status:** All workflows passing
+- **Branch:** `task/LIB-IS456-V1`
+- **Release target:** provisional v0.23.0; final version is owner-only
+- **Publication state:** HOLD until CI artifact evidence and owner approval
 
 ## Beta Readiness Checklist
 
 ### Required Before Beta
 
 - [x] Core beam design (flexure, shear, detailing) complete
-- [x] IS 456 clause compliance verified with SP:16 benchmarks
-- [x] FastAPI REST + WebSocket API operational (60 endpoints)
+- [x] Beam supported-route regression evidence retained; no blanket formula-certification claim
+- [x] FastAPI public-service adoption demonstrated for beam, column, footing and slab
 - [x] React frontend with 3D visualization
 - [x] CSV/ETABS import pipeline working
 - [x] Export pipeline (BBS, DXF, HTML report)
-- [x] 3,401+ tests passing across 3 platforms
-- [x] Column design functions fully tested with SP:16 benchmarks
+- [ ] Final branch CI green on all required platforms
+- [x] Column supported-route correction and focused benchmarks pass
 - [x] Column detailing (Cl 26.5.3) and ductile detailing (IS 13920) complete
 - [x] IS 13920 seismic ductile detailing integration complete
-- [x] Footing design module implemented (Phase 3, 4 modules, 61 tests)
-- [ ] Slab design module implemented
-- [ ] API stability guarantees documented
+- [x] Isolated-footing load-transfer slice and legacy A1 correction implemented
+- [x] Bounded one-way and two-way slab workflows implemented
+- [x] Canonical API facade, compatibility paths and capability registry documented
+- [x] Public `clauses.json` contains identifiers/project metadata only
+- [x] Protected PDFs and extracted clause/table/formula candidates are local, hash-inventoried and Git-ignored
+- [x] Wheel/sdist allowlist and exact-artifact UAT encoded in publish CI
+- [ ] CI-built artifact manifest, hashes, inventories and SBOM reviewed
+- [ ] Exact CI-built wheel UAT evidence reviewed
+- [ ] Owner approves TestPyPI upload, if desired
+- [ ] Owner approves final version, tag and production PyPI publication
 
 ### Required Before 1.0
 
-- [ ] All structural elements (beam, column, slab, footing) complete
+- [ ] Stable API guarantee for every advertised supported route
 - [ ] Professional validation by licensed structural engineer
 - [ ] Performance benchmarks published
 - [ ] Security audit complete (OWASP compliance)

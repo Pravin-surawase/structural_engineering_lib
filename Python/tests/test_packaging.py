@@ -6,6 +6,7 @@ and does not include test/dev artifacts.
 
 import importlib.resources
 import json
+import shutil
 import subprocess
 import sys
 import zipfile
@@ -68,6 +69,14 @@ class TestWheelContents:
         """Build wheel in a temp directory and return path to .whl file."""
         dist_dir = tmp_path_factory.mktemp("dist")
         project_root = Path(__file__).resolve().parents[1]  # Python/
+        clean_project_root = tmp_path_factory.mktemp("package-source") / "Python"
+        shutil.copytree(
+            project_root,
+            clean_project_root,
+            ignore=shutil.ignore_patterns(
+                "build", "dist", "*.egg-info", "__pycache__", "*.pyc"
+            ),
+        )
         result = subprocess.run(
             [
                 sys.executable,
@@ -76,7 +85,7 @@ class TestWheelContents:
                 "--wheel",
                 "--outdir",
                 str(dist_dir),
-                str(project_root),
+                str(clean_project_root),
             ],
             capture_output=True,
             text=True,
@@ -122,6 +131,20 @@ class TestWheelContents:
         assert (
             len(script_files) == 0
         ), "scripts/ found in wheel — update pyproject.toml packages.find exclude"
+
+    @pytest.mark.parametrize(
+        "excluded_prefix",
+        [
+            "structural_lib/_migration_fixtures/",
+            "structural_lib/research/",
+            "structural_lib/codes/aci318/",
+            "structural_lib/codes/ec2/",
+        ],
+    )
+    def test_non_product_namespaces_excluded(self, wheel_filelist, excluded_prefix):
+        """Migration fixtures, research prototypes, and placeholder codes do not ship."""
+        leaked = [path for path in wheel_filelist if path.startswith(excluded_prefix)]
+        assert leaked == [], f"Non-product namespace leaked into wheel: {leaked}"
 
     def test_structural_lib_present(self, wheel_filelist):
         """structural_lib package must be in the wheel."""
@@ -358,10 +381,7 @@ class TestWheelSmokeTests:
 
     def test_column_design_importable(self):
         """Column design functions are importable."""
-        from structural_lib import (
-            classify_column_is456,
-            design_column_axial_is456,
-        )
+        from structural_lib import classify_column_is456, design_column_axial_is456
 
         assert callable(design_column_axial_is456)
         assert callable(classify_column_is456)

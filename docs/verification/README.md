@@ -15,6 +15,8 @@ Benchmark examples and verification packs for validating library calculations ag
 | [examples.md](examples.md) | Detailed worked examples with hand calculations |
 | [pack.md](pack.md) | Test vectors for regression testing |
 | [external-cli-test.md](external-cli-test.md) | S-007 checklist for a fresh user run |
+| [is456-library-first-evidence.md](is456-library-first-evidence.md) | Supported-core claim crosswalk and controlled-source evidence |
+| [release-artifact-evidence-template.md](release-artifact-evidence-template.md) | Exact CI artifact identity and approval record |
 
 ---
 

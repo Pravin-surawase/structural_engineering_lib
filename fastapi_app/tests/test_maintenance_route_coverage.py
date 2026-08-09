@@ -58,6 +58,7 @@ def test_long_column_route(client: TestClient):
             "D_mm": 450.0,
             "lex_mm": 6000.0,
             "ley_mm": 5000.0,
+            "l_unsupported_mm": 6000.0,
             "fck": 25.0,
             "fy": 415.0,
             "Asc_mm2": 3000.0,

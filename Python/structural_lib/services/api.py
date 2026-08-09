@@ -28,12 +28,16 @@ from structural_lib.codes.is456.footing.bearing import (  # noqa: F401
     size_footing,
 )
 from structural_lib.codes.is456.footing.flexure import footing_flexure  # noqa: F401
-from structural_lib.codes.is456.footing.one_way_shear import (
+from structural_lib.codes.is456.footing.load_transfer import (  # noqa: F401
+    LoadTransferResult,
+    check_isolated_footing_load_transfer,
+)
+from structural_lib.codes.is456.footing.one_way_shear import (  # noqa: F401
     footing_one_way_shear,
-)  # noqa: F401
-from structural_lib.codes.is456.footing.punching_shear import (
+)
+from structural_lib.codes.is456.footing.punching_shear import (  # noqa: F401
     footing_punching_shear,
-)  # noqa: F401
+)
 from structural_lib.codes.is456.load_analysis import compute_bmd_sfd  # noqa: F401
 from structural_lib.core.data_types import (  # noqa: F401  # noqa: F401
     BearingPressureCheckResult,
@@ -60,15 +64,16 @@ from structural_lib.core.inputs import (  # noqa: F401
     LoadsInput,
     MaterialsInput,
 )
-from structural_lib.core.models import (
+from structural_lib.core.models import (  # noqa: F401
     BeamGeometry,
     DesignDefaults,
     FrameType,
-)  # noqa: F401
+)
 from structural_lib.services.beam_api import (  # noqa: F401
     _detailing_result_to_dict,
     _extract_beam_params_from_schema,
     build_detailing_input,
+    calculate_development_length,
     check_anchorage_at_simple_support,
     check_beam_ductility,
     check_beam_is456,
@@ -97,6 +102,10 @@ from structural_lib.services.calculation_report import (  # noqa: F401
     ProjectInfo,
     ResultSection,
     generate_calculation_report,
+)
+from structural_lib.services.capabilities import (  # noqa: F401
+    IS456Capability,
+    get_supported_is456_capabilities,
 )
 from structural_lib.services.column_api import (  # noqa: F401
     biaxial_bending_check_is456,
@@ -131,6 +140,11 @@ from structural_lib.services.multi_objective_optimizer import (  # noqa: F401
     ParetoCandidate,
     ParetoOptimizationResult,
     optimize_pareto_front,
+)
+from structural_lib.services.slab_api import (  # noqa: F401
+    OneWaySlabDesignResult,
+    design_one_way_slab_is456,
+    design_two_way_slab_is456,
 )
 from structural_lib.visualization.geometry_3d import (  # noqa: F401
     Beam3DGeometry,
@@ -205,6 +219,7 @@ __all__ = [
     # Outputs
     "compute_detailing",
     "build_detailing_input",
+    "calculate_development_length",
     "check_anchorage_at_simple_support",
     "compute_bbs",
     "export_bbs",
@@ -295,4 +310,13 @@ __all__ = [
     "FootingFlexureResult",
     "FootingOneWayShearResult",
     "FootingPunchingResult",
+    "check_isolated_footing_load_transfer",
+    "LoadTransferResult",
+    # Solid slab design (bounded supported cases)
+    "design_one_way_slab_is456",
+    "design_two_way_slab_is456",
+    "OneWaySlabDesignResult",
+    # Capability discovery
+    "get_supported_is456_capabilities",
+    "IS456Capability",
 ]

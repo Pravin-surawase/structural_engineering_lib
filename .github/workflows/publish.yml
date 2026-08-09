@@ -89,15 +89,151 @@ jobs:
           python -m build
           python -m twine check dist/*
 
-      - name: Install and import the built wheel
+      - name: Verify distribution contents and record artifact identity
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+          SOURCE_REF: ${{ github.ref }}
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import tarfile
+          import zipfile
+          from pathlib import Path
+
+          dist = Path("dist")
+          artifacts = sorted(path for path in dist.iterdir() if path.is_file())
+          wheels = [path for path in artifacts if path.suffix == ".whl"]
+          sdists = [path for path in artifacts if path.name.endswith(".tar.gz")]
+          assert len(wheels) == 1, f"expected one wheel, found {wheels}"
+          assert len(sdists) == 1, f"expected one sdist, found {sdists}"
+
+          forbidden = (
+              "structural_lib/_migration_fixtures/",
+              "structural_lib/research/",
+              "structural_lib/codes/aci318/",
+              "structural_lib/codes/ec2/",
+              "tests/",
+              "examples/",
+              "scripts/",
+              "docs/",
+          )
+          with zipfile.ZipFile(wheels[0]) as archive:
+              wheel_files = sorted(archive.namelist())
+              leaked = [name for name in wheel_files if name.startswith(forbidden)]
+              assert not leaked, f"forbidden wheel content: {leaked}"
+              clause_name = next(
+                  name for name in wheel_files if name.endswith("codes/is456/clauses.json")
+              )
+              clause_data = json.loads(archive.read(clause_name))
+              assert clause_data["metadata"]["protected_standard_text_included"] is False
+              assert clause_data["metadata"]["protected_table_values_included"] is False
+              serialized = json.dumps(clause_data)
+              assert '"text"' not in serialized and '"data"' not in serialized
+
+          with tarfile.open(sdists[0], "r:gz") as archive:
+              sdist_files = sorted(member.name for member in archive.getmembers())
+              leaked = [
+                  name
+                  for name in sdist_files
+                  if any(f"/{prefix}" in name for prefix in forbidden)
+              ]
+              assert not leaked, f"forbidden sdist content: {leaked}"
+
+          release_assets = Path("release-assets")
+          release_assets.mkdir(exist_ok=True)
+          (release_assets / "wheel-inventory.txt").write_text(
+              "\n".join(wheel_files) + "\n", encoding="utf-8"
+          )
+          (release_assets / "sdist-inventory.txt").write_text(
+              "\n".join(sdist_files) + "\n", encoding="utf-8"
+          )
+          manifest = {
+              "source_sha": os.environ["SOURCE_SHA"],
+              "source_ref": os.environ["SOURCE_REF"],
+              "artifacts": [
+                  {
+                      "filename": path.name,
+                      "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                      "size_bytes": path.stat().st_size,
+                  }
+                  for path in artifacts
+              ],
+              "content_allowlist_passed": True,
+              "protected_content_gate_passed": True,
+          }
+          (release_assets / "artifact-manifest.json").write_text(
+              json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(manifest, indent=2))
+          PY
+
+      - name: Clean-environment UAT on the exact built wheel
         run: |
           mapfile -t wheels < <(find dist -maxdepth 1 -name '*.whl' -print)
           if [[ "${#wheels[@]}" -ne 1 ]]; then
             echo "Expected exactly one wheel, found ${#wheels[@]}"
             exit 1
           fi
-          python -m pip install --force-reinstall "${wheels[0]}[dev]"
-          python -c 'from structural_lib import api; print(api.get_library_version())'
+          uat_root="$(mktemp -d)"
+          test -n "$uat_root"
+          python -m venv "$uat_root/venv"
+          "$uat_root/venv/bin/python" -m pip install --upgrade pip
+          "$uat_root/venv/bin/python" -m pip install "${wheels[0]}"
+          (
+            cd "$uat_root"
+            "$uat_root/venv/bin/python" - <<'PY'
+          from pathlib import Path
+          import structural_lib
+          from structural_lib.services import api
+
+          installed_path = Path(structural_lib.__file__).resolve()
+          assert "site-packages" in str(installed_path), installed_path
+          assert api.get_library_version()
+
+          beam = api.design_beam_is456(
+              units="IS456", b_mm=300, D_mm=500, d_mm=450,
+              fck_nmm2=25, fy_nmm2=415, mu_knm=100, vu_kn=80,
+          )
+          column = api.design_column_axial_is456(
+              fck_nmm2=25, fy_nmm2=415, Ag_mm2=160000, Asc_mm2=3200,
+          )
+          footing = api.check_bearing_pressure(
+              Pu_kN=500, fck=25, column_b_mm=300, column_D_mm=300,
+              footing_B_mm=1500, footing_L_mm=1500,
+          )
+          transfer = api.check_isolated_footing_load_transfer(
+              Pu_kN=3000, loaded_area_A2_mm2=160000,
+              effective_supporting_area_A1_mm2=640000,
+              effective_supporting_area_basis="largest_frustum_1v_2h",
+              effective_supporting_area_is_approved=True,
+              supporting_concrete_fck_nmm2=20,
+              supported_concrete_fck_nmm2=25,
+              steel_fy_nmm2=415, dowel_count=8, dowel_diameter_mm=25,
+              column_longitudinal_bar_diameter_mm=32,
+              available_dowel_development_length_into_footing_mm=1176,
+              available_dowel_development_length_into_supported_member_mm=1010,
+          )
+          slab = api.design_one_way_slab_is456(
+              short_effective_span_mm=3000, long_effective_span_mm=7500,
+              thickness_mm=150, d_mm=125,
+              factored_area_load_kn_per_m2=10,
+              fck_n_per_mm2=20, fy_n_per_mm2=415,
+              main_bar_diameter_mm=10, main_bar_spacing_mm=250,
+              distribution_bar_diameter_mm=8,
+              distribution_bar_spacing_mm=250,
+          )
+          capabilities = api.get_supported_is456_capabilities()
+          assert beam is not None and column["Pu_kN"] > 0 and footing.is_safe
+          assert transfer.is_safe and slab.is_detailing_adequate
+          assert {item.element for item in capabilities} == {
+              "beam", "column", "isolated_footing", "solid_slab"
+          }
+          print(f"installed wheel UAT passed from {installed_path}")
+          PY
+            "$uat_root/venv/bin/python" -m structural_lib --help >/dev/null
+          )
 
       - name: Generate and validate CycloneDX SBOM
         run: |
@@ -124,11 +260,11 @@ jobs:
           name: python-package-distributions
           path: Python/dist/
 
-      - name: Upload release SBOM
+      - name: Upload release evidence
         uses: actions/upload-artifact@v7
         with:
-          name: release-sbom
-          path: Python/release-assets/sbom.json
+          name: release-evidence
+          path: Python/release-assets/
 
   publish-testpypi:
     name: Publish ${{ needs.validate.outputs.version }} to TestPyPI
@@ -146,6 +282,26 @@ jobs:
         with:
           name: python-package-distributions
           path: dist/
+
+      - name: Download release evidence
+        uses: actions/download-artifact@v8
+        with:
+          name: release-evidence
+          path: release-assets/
+
+      - name: Verify downloaded artifact identity
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          manifest = json.loads(Path("release-assets/artifact-manifest.json").read_text())
+          expected = {item["filename"]: item["sha256"] for item in manifest["artifacts"]}
+          actual = {
+              path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+              for path in Path("dist").iterdir() if path.is_file()
+          }
+          assert actual == expected, {"expected": expected, "actual": actual}
+          PY
 
       - name: Publish to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
@@ -169,6 +325,26 @@ jobs:
           name: python-package-distributions
           path: dist/
 
+      - name: Download release evidence
+        uses: actions/download-artifact@v8
+        with:
+          name: release-evidence
+          path: release-assets/
+
+      - name: Verify downloaded artifact identity
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          manifest = json.loads(Path("release-assets/artifact-manifest.json").read_text())
+          expected = {item["filename"]: item["sha256"] for item in manifest["artifacts"]}
+          actual = {
+              path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+              for path in Path("dist").iterdir() if path.is_file()
+          }
+          assert actual == expected, {"expected": expected, "actual": actual}
+          PY
+
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
 
@@ -186,10 +362,10 @@ jobs:
           name: python-package-distributions
           path: dist/
 
-      - name: Download SBOM
+      - name: Download release evidence
         uses: actions/download-artifact@v8
         with:
-          name: release-sbom
+          name: release-evidence
           path: release-assets/
 
       - name: Create GitHub release
@@ -197,6 +373,6 @@ jobs:
         with:
           files: |
             dist/*
-            release-assets/sbom.json
+            release-assets/*
           generate_release_notes: true
           draft: false

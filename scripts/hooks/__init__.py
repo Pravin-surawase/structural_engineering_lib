@@ -6,8 +6,6 @@ Hooks are registered by event name and run in order.
 Each hook is a callable that receives a context dict and returns (proceed: bool, message: str).
 
 Events:
-  pre_commit     — Before ai_commit.sh stages/commits
-  post_commit    — After successful commit
   pre_route      — Before prompt_router routes a task
   pre_file_write — Before file edits in structural_lib
   post_test      — After pytest run completes
@@ -16,7 +14,7 @@ Usage:
     from hooks import HookRunner
     runner = HookRunner()
     runner.load_hooks()
-    proceed, messages = runner.run("pre_commit", {"files": ["api.py"], "message": "feat: X"})
+    proceed, messages = runner.run("pre_route", {"prompt": "review API"})
 """
 
 from __future__ import annotations
@@ -24,7 +22,7 @@ from __future__ import annotations
 import importlib
 import sys
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable
 
@@ -34,13 +32,10 @@ if _SCRIPTS_DIR not in sys.path:
     sys.path.insert(0, _SCRIPTS_DIR)
 
 from _lib.output import StatusLine  # noqa: E402
-from _lib.utils import REPO_ROOT  # noqa: E402
 
 # Valid event names
 VALID_EVENTS = frozenset(
     {
-        "pre_commit",
-        "post_commit",
         "pre_route",
         "pre_file_write",
         "post_test",
@@ -48,7 +43,7 @@ VALID_EVENTS = frozenset(
 )
 
 # Hook modules to auto-discover (basenames without .py)
-_HOOK_MODULES = ("pre_commit", "post_commit", "pre_route")
+_HOOK_MODULES = ("pre_route",)
 
 
 @dataclass

@@ -41,7 +41,7 @@ Repair failures by rerunning only their narrow command, then establish one final
 
 `./run.sh release run <target-version>` changes version-controlled files and is owner-approved release work. Do not run it during a review-only task or without authorization to prepare the release.
 
-After the version change, review the diff and complete the release notes required by the printed checklist. Commit through `./scripts/ai_commit.sh`; do not tag, merge, or publish yet.
+After the version change, review the diff and complete the release notes required by the printed checklist. Codex performs the scoped commit and PR update; do not tag, merge, or publish yet.
 
 ### 3. Build one exact artifact
 

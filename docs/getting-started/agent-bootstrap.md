@@ -21,7 +21,7 @@ tags: []
 |---|-----------------|----------------|
 | 1 | **`api.py` is a STUB** — real code is `services/api.py` | Editing the stub wastes time; changes have no effect |
 | 2 | **Params are `b_mm`, `d_mm`, `fck`** — NOT `width`, `depth`, `grade` | Wrong names = failed tests. Run `./run.sh find --api <func>` to check |
-| 3 | **Never manual git** — always `./scripts/ai_commit.sh "type: msg"` | Manual git causes 10-30 min merge conflicts |
+| 3 | **Codex owns Git/GitHub** — scoped commits, pushes, and PR work | Repository wrappers are retired |
 | 4 | **Search hooks/routes/API before coding** — duplication is the #1 agent mistake | Tables in §4 list everything that exists |
 | 5 | **Session end is MANDATORY** — update SESSION_LOG + next-session-brief + WORKLOG | Skipping breaks continuity; next agent wastes hours rediscovering state |
 | 6 | **Moved modules**: `adapters.py` → `services/adapters.py`, `geometry_3d.py` → `visualization/geometry_3d.py` | Old paths cause import errors |
@@ -40,13 +40,12 @@ Open-source **IS 456 RC beam design library** for structural engineers.
 
 ---
 
-## 2. THE ONE RULE
+## 2. Codex-Native Git/GitHub
 
-```bash
-./scripts/ai_commit.sh "type: message"    # ALL commits
-```
-
-**NEVER** use `git add`, `git commit`, `git push`, `git pull` manually.
+Codex inspects the branch, worktree, diff, and PR; stages only intended paths;
+creates a conventional commit; pushes without rewriting history; and creates or
+updates the PR through the connected GitHub integration. See
+`docs/git-automation/git-workflow-single-source.md`.
 
 ---
 
@@ -473,11 +472,6 @@ Run `./run.sh --help` or `./run.sh <command> --help` for full usage.
 
 ## 7. Git Workflow
 
-```bash
-# Decision: PR or direct commit?
-./run.sh pr status
-```
-
 | Change Type | Strategy |
 |-------------|----------|
 | Production code (`Python/structural_lib/`) | PR required |
@@ -487,31 +481,9 @@ Run `./run.sh --help` or `./run.sh <command> --help` for full usage.
 | Docker config (`Dockerfile*`, `docker-compose*`) | PR required |
 | Docs / tests / scripts (<=150 lines, <=2 files) | Direct commit OK |
 
-### ⚠ PR Enforcement (STRICT — do NOT bypass)
-
-When `./run.sh pr status` or `should_use_pr.sh` says **"PR required"**, you MUST use a PR.
-
-**NEVER use `--force` to bypass the PR check.** The `--force` flag exists for rare human-approved batching only.
-
-Agents have historically:
-- Used `--force` to skip PR checks and push directly to main
-- Invented reasons like "small change" or "just a fix" to avoid PRs
-- Caused merge conflicts, broken CI, and lost work (10+ hours wasted)
-
-**The rule is simple:** If the script says PR, use PR. No exceptions. No `--force`. No excuses.
-
-```bash
-# Direct commit (only when script confirms it's OK)
-./run.sh commit "docs: update guide"
-
-# PR workflow (ALWAYS for production code)
-./run.sh pr create TASK-XXX "description"
-./run.sh commit "feat: implement X"              # Repeat as needed
-./run.sh pr finish                                # Polls CI, auto-merges
-
-# Emergency recovery
-./scripts/recover_git_state.sh
-```
+Production, FastAPI, React, CI, dependency, Docker, and release changes use a
+Codex-managed task branch and PR. Never bypass hooks or checks, automate Git
+recovery, or rewrite history. Merge remains an explicit user-confirmation action.
 
 **Commit format:** `type: description` (subject <=72 chars, no period at end)
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
@@ -526,7 +498,7 @@ START:  □ ./run.sh session context              ← quick orientation (brief +
         □ ./run.sh session usage --checkpoint start --task-id TASK-XXX --task "scope"
         □ ./run.sh preflight                     ← check branch, venv, ports, conflicts
 
-END:    □ ./run.sh commit "type: message"        ← commit all work
+END:    □ Codex reviews the scoped diff and performs Git/GitHub closeout
         □ ./run.sh session usage --checkpoint closeout --elapsed-min N --verification "gate"
         □ ./run.sh session summary               ← auto-log to SESSION_LOG.md
         □ ./run.sh session sync                  ← fix stale doc numbers
@@ -534,7 +506,6 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
         □ Append to WORKLOG.md                   ← one line per change (MANDATORY)
         □ Update next-session-brief.md           ← what NEXT agent should do
         □ Update TASKS.md                        ← mark done, add new
-        □ ./run.sh commit "docs: session end"    ← commit doc updates
 ```
 
 > **Why mandatory?** Skipping session end has caused 10+ hours of wasted rework. SESSION_LOG.md is the project memory — gaps mean lost context.
@@ -548,7 +519,7 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
 | Action | run.sh | Direct script (fallback) |
 |--------|--------|-------------------------|
 | Session start | `./run.sh session start` | `./scripts/agent_start.sh --quick` |
-| Commit | `./run.sh commit "msg"` | `./scripts/ai_commit.sh "msg"` |
+| Git/GitHub closeout | Codex | [canonical workflow](../git-automation/git-workflow-single-source.md) |
 | Full check | `./run.sh check` | N/A (orchestrator) |
 | Quick check | `./run.sh check --quick` | N/A |
 | Run tests | `./run.sh test` | `.venv/bin/pytest Python/tests/ -v` |
@@ -556,7 +527,6 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
 | Pre-flight | `./run.sh preflight` | `.venv/bin/python scripts/preflight.py` |
 | Session context | `./run.sh session context` | `.venv/bin/python scripts/session.py context` |
 | Usage checkpoint | `./run.sh session usage ...` | `.venv/bin/python scripts/session.py usage ...` |
-| PR decision | `./run.sh pr status` | `./scripts/should_use_pr.sh --explain` |
 | Find script | `./run.sh find "task"` | `.venv/bin/python scripts/find_automation.py "task"` |
 | API signatures | `./run.sh find --api <func>` | `.venv/bin/python scripts/discover_api_signatures.py <func>` |
 | Move file | N/A | `.venv/bin/python scripts/safe_file_move.py old new` |
@@ -566,7 +536,7 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
 | Session end | `./run.sh session end` | `.venv/bin/python scripts/session.py end` |
 | Gen indexes | `./run.sh generate indexes` | `./scripts/generate_all_indexes.sh` |
 
-**Never do manually:** `git add/commit/push`, `rm/mv` docs, create docs without metadata.
+**Never do:** automated Git recovery, history rewriting, raw `rm`/`mv` for repository docs, or documents without metadata.
 
 ---
 
@@ -589,8 +559,8 @@ END:    □ ./run.sh commit "type: message"        ← commit all work
 
 | Mistake | Impact | Fix |
 |---------|--------|-----|
-| Manual git commands | 10-30min conflicts | `ai_commit.sh` |
-| Using `--force` to bypass PR | Broken CI, lost work | If script says PR, use PR. Never `--force`. |
+| Unscoped Git changes | Mixed or lost work | Codex stages only intended paths |
+| Using `--force` to bypass PR | Broken CI, lost work | Never bypass required checks |
 | Duplicate React code | Broken features, bugs | Check `hooks/` and `components/` first |
 | Guess API params (`width` vs `b_mm`) | Failed tests | `discover_api_signatures.py` |
 | Import from stub `api.py` | Stale code path | Use `services/api.py` directly |

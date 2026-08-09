@@ -2,7 +2,7 @@
   "folder": "docs/getting-started",
   "type": "mixed",
   "description": "Quick onboarding guides for new users of the structural engineering library.",
-  "last_updated": "2026-08-07",
+  "last_updated": "2026-08-09",
   "file_count": 18,
   "files": [
     {
@@ -25,10 +25,10 @@
     {
       "name": "agent-bootstrap.md",
       "type": "documentation",
-      "size_lines": 768,
-      "last_updated": "2026-08-07",
+      "size_lines": 738,
+      "last_updated": "2026-08-09",
       "description": "> **This is THE canonical bootstrap for all AI agents.** Entry points (CLAUDE.md, .github/copilot-instructions.md) link here. | # | Critical Warning | Why it matters |",
-      "content_hash": "d4d7cf9a632a"
+      "content_hash": "d0512bfd5022"
     },
     {
       "name": "agent-essentials.md",
@@ -65,10 +65,10 @@
     {
       "name": "copilot-quick-start.md",
       "type": "documentation",
-      "size_lines": 204,
-      "last_updated": "2026-03-30",
-      "description": "> **⚠️ CONSOLIDATED:** This document has been simplified. >",
-      "content_hash": "6e01b307e2c3"
+      "size_lines": 46,
+      "last_updated": "2026-08-09",
+      "description": "Run from the repository root: bash",
+      "content_hash": "46d6e9fbd688"
     },
     {
       "name": "cost-optimization-guide.md",
@@ -106,17 +106,17 @@
       "name": "installation-notes.md",
       "type": "documentation",
       "size_lines": 89,
-      "last_updated": "2026-08-07",
+      "last_updated": "2026-08-09",
       "description": "All required packages have been installed successfully: - **Core**: plotly 6.5.2, pandas 2.3.3, numpy 2.4.1, scipy 1.17.0",
       "content_hash": "6deb68f55e9e"
     },
     {
       "name": "mac-mini-setup.md",
       "type": "documentation",
-      "size_lines": 398,
-      "last_updated": "2026-08-07",
+      "size_lines": 396,
+      "last_updated": "2026-08-09",
       "description": "Complete instructions to clone and run the full stack on a fresh Mac Mini (Apple Silicon). This guide is designed so an AI agent or developer can follow it end-to-end without ambiguity.",
-      "content_hash": "144c08ab56c7"
+      "content_hash": "8c4943b0ed59"
     },
     {
       "name": "python-quickstart.md",
@@ -129,10 +129,10 @@
     {
       "name": "releases.md",
       "type": "documentation",
-      "size_lines": 1121,
-      "last_updated": "2026-08-07",
+      "size_lines": 1115,
+      "last_updated": "2026-08-09",
       "description": "This document serves as the **immutable source of truth** for project releases. Entries here represent \"locked\" versions that have been verified and approved.",
-      "content_hash": "21c7c442d6bf"
+      "content_hash": "1cf9fc5d2615"
     },
     {
       "name": "user-guide.md",
@@ -144,5 +144,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "6f33e29d88d6d4b2"
+  "content_hash": "ac54ca14fffcf01d"
 }

@@ -117,14 +117,11 @@ class TestBiaxialCheckEdgeCases:
         assert data["interaction_ratio"] == 0.0
         assert data["is_safe"] is True
 
-    def test_slender_column_warnings(self):
-        """le/D >= 12 should produce slender classification and warnings."""
+    def test_slender_column_fails_closed(self):
+        """Direct route rejects a member slender about either axis."""
         payload = {**SAFE_PAYLOAD, "le_mm": 8000.0}
         resp = client.post(ENDPOINT, json=payload)
-        assert resp.status_code == 200
-        data = unwrap(resp)
-        assert data["classification"] == 2
-        assert len(data["warnings"]) > 0
+        assert resp.status_code == 422
 
     def test_with_l_unsupported(self):
         """Providing optional l_unsupported_mm should still work."""

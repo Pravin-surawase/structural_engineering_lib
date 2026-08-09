@@ -11,8 +11,6 @@
 #
 # Commands:
 #   check     Run validation checks (all, or by category)
-#   commit    Stage, commit, and push safely
-#   pr        Create/finish pull requests
 #   session   Start/end agent sessions
 #   find      Discover scripts and API signatures
 #   release   Version bumps and release management
@@ -102,112 +100,6 @@ Examples:
   ./run.sh check --category api       # API checks only
   ./run.sh check --category docs --fix  # Fix doc issues
   ./run.sh check --json               # CI-friendly output
-EOF
-}
-
-# ── Command: commit ────────────────────────────────────────────────────────
-
-_cmd_commit() {
-    if [[ $# -eq 0 ]]; then
-        _error "Commit message required"
-        echo "  Usage: ./run.sh commit \"type: message\""
-        echo "  Example: ./run.sh commit \"feat: add beam optimization\""
-        exit 1
-    fi
-    "$SCRIPTS/ai_commit.sh" "$@"
-}
-
-_help_commit() {
-    cat <<'EOF'
-Usage: ./run.sh commit "type: message" [options]
-
-Stage, commit, and push safely. Delegates to ai_commit.sh.
-
-Options:
-  --force       Skip PR requirement check
-  --dry-run     Preview what would be committed
-  --amend       Amend the last commit
-  --push        Push-only (no new commit)
-
-Commit types: feat|fix|docs|refactor|test|chore|ci(scope): description
-
-Examples:
-  ./run.sh commit "feat: add beam optimization"
-  ./run.sh commit "fix: stirrup spacing" --force
-  ./run.sh commit "docs: update API reference" --dry-run
-EOF
-}
-
-# ── Command: pr ────────────────────────────────────────────────────────────
-
-_cmd_pr() {
-    local subcmd="${1:-}"
-    shift 2>/dev/null || true
-
-    case "$subcmd" in
-        create)
-            if [[ $# -lt 2 ]]; then
-                _error "Usage: ./run.sh pr create TASK-XXX \"description\""
-                exit 1
-            fi
-            "$SCRIPTS/create_task_pr.sh" "$@"
-            ;;
-        finish)
-            "$SCRIPTS/finish_task_pr.sh" "$@"
-            ;;
-        status)
-            if command -v gh &>/dev/null; then
-                if [[ "${1:-}" == "--web" ]]; then
-                    gh pr view --web
-                    return
-                fi
-
-                local branch
-                branch=$(git branch --show-current 2>/dev/null)
-                if gh pr view \
-                    --json number,title,state,url,headRefName,baseRefName,mergeStateStatus \
-                    --jq '"PR #\(.number) [\(.state)] \(.title)\nBranch: \(.headRefName) -> \(.baseRefName)\nMerge state: \(.mergeStateStatus)\nURL: \(.url)"' \
-                    2>/dev/null; then
-                    return
-                fi
-
-                echo "No pull request is associated with branch: ${branch:-unknown}"
-                if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
-                    "$SCRIPTS/ai_commit.sh" --pr-check
-                else
-                    echo "Working tree clean; no PR decision is needed."
-                fi
-            else
-                _error "GitHub CLI (gh) not installed"
-                echo "  Install: brew install gh"
-                exit 1
-            fi
-            ;;
-        *)
-            _help_pr
-            [[ -n "$subcmd" ]] && _error "Unknown pr subcommand: $subcmd"
-            exit 1
-            ;;
-    esac
-}
-
-_help_pr() {
-    cat <<'EOF'
-Usage: ./run.sh pr <subcommand> [args]
-
-Manage pull requests.
-
-Subcommands:
-  create TASK-XXX "description"    Create a task PR branch
-  finish [args]                    Push, create/merge PR
-  status                           Print current PR status in the terminal
-  status --web                     Open the current PR in a browser
-
-Examples:
-  ./run.sh pr create TASK-501 "Add shear wall support"
-  ./run.sh pr finish
-  ./run.sh pr status
-  ./run.sh pr status --web
 EOF
 }
 
@@ -318,7 +210,7 @@ Options:
   --list           List all mapped automation tasks
 
 Examples:
-  ./run.sh find "commit code"              # Find commit-related scripts
+  ./run.sh find "check api"                # Find API validation scripts
   ./run.sh find --api design_beam_is456    # Get exact API signatures
   ./run.sh find --list                     # Show all mapped tasks
 EOF
@@ -620,7 +512,7 @@ Usage: ./run.sh evolve [options]
 Self-evolution engine — scans, fixes, and evolves the project.
 
 Options:
-  --fix                Apply auto-fixes and commit
+  --fix                Apply auto-fixes for Codex review
   --review weekly      Quick weekly review (numbers, links, feedback)
   --review monthly     Full monthly review (all checks + archive)
   --status             Show last evolution run + recommendations
@@ -629,7 +521,7 @@ Options:
 
 Examples:
   ./run.sh evolve                       # Full dry-run scan
-  ./run.sh evolve --fix                  # Apply fixes + commit
+  ./run.sh evolve --fix                  # Apply fixes for Codex review
   ./run.sh evolve --review weekly        # Weekly report-only review
   ./run.sh evolve --status               # When was last run?
 EOF
@@ -830,8 +722,6 @@ _print_usage() {
     echo ""
     echo -e "${BOLD}Commands:${NC}"
     echo -e "  ${GREEN}check${NC}       Run validation checks (all, or by category)"
-    echo -e "  ${GREEN}commit${NC}      Stage, commit, and push safely"
-    echo -e "  ${GREEN}pr${NC}          Create/finish pull requests"
     echo -e "  ${GREEN}session${NC}     Start/end agent sessions"
     echo -e "  ${GREEN}find${NC}        Discover scripts and API signatures"
     echo -e "  ${GREEN}release${NC}     Version bumps and release management"
@@ -855,7 +745,7 @@ _print_usage() {
     echo -e "${BOLD}Quick Start:${NC}"
     echo -e "  ${DIM}./run.sh session start${NC}              # Begin work"
     echo -e "  ${DIM}./run.sh check --quick${NC}              # Fast validation"
-    echo -e "  ${DIM}./run.sh commit \"feat: description\"${NC}  # Save work"
+    echo -e "  ${DIM}Codex Git/GitHub${NC}                         # Commit, push, and open PR"
     echo -e "  ${DIM}./run.sh session end${NC}                # Wrap up"
     echo ""
     echo -e "${DIM}Run ./run.sh <command> --help for detailed usage.${NC}"
@@ -866,8 +756,6 @@ _dispatch_help() {
     local cmd="$1"
     case "$cmd" in
         check)    _help_check ;;
-        commit)   _help_commit ;;
-        pr)       _help_pr ;;
         session)  _help_session ;;
         find)     _help_find ;;
         release)  _help_release ;;
@@ -899,8 +787,6 @@ _run_sh_completions() {
 _run_sh() {
     local -a commands=(
         'check:Run validation checks'
-        'commit:Stage, commit, and push'
-        'pr:Manage pull requests'
         'session:Manage agent sessions'
         'find:Discover scripts and API'
         'release:Version bumps'
@@ -919,7 +805,6 @@ _run_sh() {
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
-    local -a pr_subs=('create' 'finish' 'status')
     local -a session_subs=('start' 'end' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'costs' 'compact' 'trust')
     local -a generate_subs=('indexes' 'sdk' 'manifest' 'docs-index' 'scaffold')
     local -a health_opts=('--fix' '--score' '--quick' '--category' '--json')
@@ -935,7 +820,6 @@ _run_sh() {
     elif (( CURRENT == 3 )); then
         case "${words[2]}" in
             check) _values 'option' $check_opts ;;
-            pr) _values 'subcommand' $pr_subs ;;
             session) _values 'subcommand' $session_subs ;;
             generate) _values 'subcommand' $generate_subs ;;
             health) _values 'option' $health_opts ;;
@@ -995,8 +879,6 @@ main() {
     # Dispatch
     case "$cmd" in
         check)    _cmd_check "$@" ;;
-        commit)   _cmd_commit "$@" ;;
-        pr)       _cmd_pr "$@" ;;
         session)  _cmd_session "$@" ;;
         find)     _cmd_find "$@" ;;
         release)  _cmd_release "$@" ;;

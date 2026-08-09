@@ -12,8 +12,6 @@ from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
 from fastapi_app.error_utils import sanitize_float
-from fastapi_app.models.response import error_response, success_response
-
 from fastapi_app.models.column import (
     AdditionalMomentRequest,
     AdditionalMomentResponse,
@@ -42,6 +40,7 @@ from fastapi_app.models.column import (
     PMInteractionResponse,
     PMPoint,
 )
+from fastapi_app.models.response import error_response, success_response
 
 logger = logging.getLogger(__name__)
 
@@ -538,6 +537,7 @@ async def design_long_column(request: LongColumnRequest):
             Asc_mm2=request.Asc_mm2,
             d_prime_mm=request.d_prime_mm,
             braced=request.braced,
+            l_unsupported_mm=request.l_unsupported_mm,
         )
         # Convert ColumnClassification enum to string
         result["classification_x"] = str(result.get("classification_x", ""))

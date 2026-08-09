@@ -33,25 +33,23 @@ tags: [agents, governance]
 1. **Clean History** - Linear, readable commit history
 2. **Traceability** - Every change links to a Task or Issue
 3. **Stability** - Main branch is always deployable
-4. **Efficiency** - Use automation to prevent errors
+4. **Efficiency** - Use native Git plus repository checks to prevent errors
 
 ### Recommended Workflow
 
-**For Docs-Only Changes (Any Size):**
+**For All Changes:**
 ```bash
-# Direct commit to main (fastest)
-./scripts/ai_commit.sh "docs: update guide"
-# CI runs automatically
+# Work on a task branch, inspect and stage only reviewed paths
+git switch -c codex/TASK-XXX-description
+git status --short
+git add <reviewed-paths>
+git commit -m "feat: implement X"
+git push -u origin codex/TASK-XXX-description
+# Create and inspect the PR with the connected GitHub integration or gh CLI.
 ```
 
-**For All Other Changes:**
-```bash
-# PR workflow (default)
-./scripts/create_task_pr.sh TASK-XXX "description"
-# Make changes
-./scripts/ai_commit.sh "feat: implement X"
-./scripts/finish_task_pr.sh TASK-XXX "description"
-```
+Merge and branch deletion remain explicit owner-confirmation actions. See
+`docs/git-automation/git-workflow-single-source.md` for the canonical workflow.
 
 ### Commit Message Convention
 
@@ -522,7 +520,7 @@ Agent 9's WIP limits (2 worktrees, 5 PRs, 10 docs, 3 research) prevent context f
 ### ✅ DO
 
 **Git Operations:**
-- Use automation scripts (`ai_commit.sh`, etc.)
+- Use native scoped Git operations and the connected GitHub integration
 - Wait for CI before merging PRs
 - Pull before push (especially after merging PRs)
 - Use feature branches for significant changes
@@ -568,10 +566,12 @@ Agent 9's WIP limits (2 worktrees, 5 PRs, 10 docs, 3 research) prevent context f
 git pull --ff-only
 
 # Commit changes
-./scripts/ai_commit.sh "type: description"
+git add <reviewed-paths>
+git commit -m "type: description"
 
 # Create PR
-./scripts/create_task_pr.sh TASK-XXX "description"
+git push -u origin codex/TASK-XXX-description
+gh pr create --draft --fill
 
 # Wait for CI
 gh pr checks <PR_NUM> --watch
@@ -615,8 +615,9 @@ git fetch --prune
 # Check for stuck states
 ls .git/MERGE_* .git/rebase-*
 
-# Recovery script
-./scripts/recover_git_state.sh
+# Inspect exact recovery state; stop before choosing a destructive action
+git status
+git reflog
 
 # Revert bad commit
 git revert HEAD

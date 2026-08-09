@@ -227,7 +227,7 @@ def get_all_registered_functions() -> dict[str, list[str]]:
 
 
 def search_clauses(keyword: str) -> list[dict[str, Any]]:
-    """Search clauses by keyword in title, text, or keywords.
+    """Search distributable clause identity metadata by title or keywords.
 
     Args:
         keyword: Search term (case-insensitive).
@@ -247,10 +247,6 @@ def search_clauses(keyword: str) -> list[dict[str, Any]]:
     for ref, info in clauses.items():
         # Search in title
         if keyword_lower in info.get("title", "").lower():
-            results.append({"clause_ref": ref, **info})
-            continue
-        # Search in text
-        if keyword_lower in info.get("text", "").lower():
             results.append({"clause_ref": ref, **info})
             continue
         # Search in keywords

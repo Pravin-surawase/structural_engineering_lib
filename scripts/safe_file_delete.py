@@ -40,11 +40,6 @@ def find_references(file_path: Path, project_root: Path) -> list[tuple[Path, str
     """
     filename = file_path.name
 
-    try:
-        relative_path = str(file_path.relative_to(project_root))
-    except ValueError:
-        relative_path = str(file_path)
-
     # Try using git grep for fast search (uses git's index, much faster)
     references = _find_references_git_grep(filename, project_root)
     if references is not None:
@@ -344,7 +339,7 @@ def main():
         print()
         print("Next steps:")
         print("  1. Review: git status")
-        print("  2. Commit: ./scripts/ai_commit.sh 'chore: remove unused file'")
+        print("  2. Have Codex review and include the deletion in the scoped commit")
         if references:
             print("  3. Fix broken references!")
     print("=" * 60)

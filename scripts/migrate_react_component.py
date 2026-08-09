@@ -150,9 +150,6 @@ def find_import_references(
         except (OSError, UnicodeDecodeError):
             continue
 
-        # Compute what the import path would look like from this file
-        expected_import = compute_relative_import(src_file, old_path)
-
         for i, line in enumerate(content.split("\n"), 1):
             # Check for import statements containing the component name
             # from './components/ImportView' or from '../ImportView'
@@ -423,7 +420,7 @@ def run_migration(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
         print("Next steps:")
         print("  1. Verify: cd react_app && npm run build")
         print("  2. Test:   cd react_app && npm test")
-        print("  3. Commit: ./scripts/ai_commit.sh 'refactor: move component'")
+        print("  3. Have Codex review and include the migration in the scoped commit")
     print("=" * 60)
 
     changed_files = set(updated_files)

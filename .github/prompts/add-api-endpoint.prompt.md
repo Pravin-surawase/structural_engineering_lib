@@ -45,6 +45,5 @@ Follow this workflow when adding a new API endpoint to `fastapi_app/`.
 ## Commit
 
 ```bash
-./scripts/should_use_pr.sh --explain    # FastAPI changes require PR
-./scripts/create_task_pr.sh TASK-XXX "feat(fastapi): add endpoint description"
+# FastAPI changes require a Codex-managed task branch and PR.
 ```

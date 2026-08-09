@@ -107,7 +107,8 @@ def ctx_orchestrator():
   Code review needed            → @reviewer
   Tests needed                  → @tester
   Docs/session/archive          → @doc-master
-  Git/Docker/CI                 → @ops
+  Git/GitHub closeout           → Codex
+  Docker/CI diagnosis           → @ops
   Project health/maintenance    → @governance
   UI/UX design (read-only)      → @ui-designer""")
 
@@ -125,7 +126,7 @@ def ctx_orchestrator():
   3. EXECUTE → Delegate to specialist agent
   4. VERIFY  → @reviewer checks changes
   5. DOCUMENT → @doc-master updates docs
-  6. COMMIT  → @ops commits via ai_commit.sh""")
+  6. CLOSEOUT → Codex owns scoped Git/GitHub work""")
 
 
 @agent("backend", "Python structural_lib core — IS 456 math, services, adapters")
@@ -309,7 +310,7 @@ def ctx_reviewer():
   □ Units: explicit mm/N/kN/kNm, no hidden conversions
   □ Duplication: no reinvented hooks/adapters/routes
   □ IS 456: formulas cite clause numbers, correct math
-  □ Git: ./scripts/ai_commit.sh used, conventional commits
+  □ Git: reviewed scope and conventional Codex-managed commit
   □ Tests: 85% branch coverage, edge cases covered
   □ Security: no hardcoded secrets, input validated""")
 
@@ -378,9 +379,8 @@ def ctx_doc_master():
     section("SESSION END WORKFLOW")
     print("""  1. Update TASKS/brief only when project state changed
   2. ./run.sh check --quick
-  3. ./run.sh pr status
-  4. ./run.sh commit "type(scope): completed outcome"
-  5. ./run.sh session end --agent doc-master""")
+  3. Return the scoped diff and suggested commit to Codex
+  4. ./run.sh session end --agent doc-master""")
 
     section("COMMANDS")
     bullet("Safe move: .venv/bin/python scripts/safe_file_move.py a b --dry-run")
@@ -398,20 +398,19 @@ def ctx_doc_master():
     print(f"  Markdown files in docs/: {md_count}")
 
 
-@agent("ops", "Git workflow, CI/CD, Docker, environment management")
+@agent("ops", "CI/CD, Docker, environment diagnosis, Git readiness evidence")
 def ctx_ops():
     print_status()
 
-    section("GIT WORKFLOW — THE ONE RULE")
-    print("""  ./scripts/ai_commit.sh "type: message"    # ALL commits
-  NEVER manual git add/commit/push/pull
-  Format: feat|fix|docs|refactor|test|chore|ci(scope): description""")
+    section("CODEX-NATIVE GIT/GITHUB BOUNDARY")
+    print("""  Codex inspects and scopes the diff, commits, pushes, and manages the PR.
+  Ops supplies CI/Docker diagnosis and read-only Git readiness evidence.
+  Never automate recovery, rewrite history, or bypass required checks.""")
 
-    section("PR WORKFLOW")
-    bullet("./run.sh pr status — check if PR required")
-    bullet("./run.sh pr create TASK-XXX 'desc' — create PR")
-    bullet("./run.sh pr finish — ship the PR")
-    bullet("NEVER use --force to bypass PR check")
+    section("PR READINESS")
+    bullet("Report branch, diff, targeted checks, and connected GitHub check state")
+    bullet("Leave commit, push, and PR creation/update to Codex")
+    bullet("Merge, release, issue closure, and branch deletion need user confirmation")
 
     section("DOCKER (Colima on Mac)")
     colima = run("colima status 2>&1 | head -3")
@@ -444,7 +443,7 @@ def ctx_ops():
     section("ERROR RECOVERY")
     bullet("Pre-commit hook fails → check .pre-commit-config.yaml")
     bullet("Docker permission denied → colima start")
-    bullet("Merge conflicts → resolve, then ai_commit.sh")
+    bullet("Merge conflicts → stop and return exact state to Codex")
     bullet("Terminal stuck in pager → q to exit, or agent_start.sh fixes it")
 
 
@@ -568,8 +567,7 @@ def main():
         + agent_name
         + " --stale-doc '...' --missing '...'"
     )
-    bullet("Commit: ./scripts/ai_commit.sh 'type: message'")
-    bullet("Never manual git add/commit/push/pull")
+    bullet("Return intended files and a suggested conventional commit to Codex")
     bullet("Search before coding — don't duplicate existing code")
     print()
 

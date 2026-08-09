@@ -357,7 +357,8 @@ gh pr list --state open | wc -l  # open PRs
 # Output: RESEARCH_FINDINGS_EXTERNAL.md (partial)
 
 # Commit progress
-./scripts/ai_commit.sh "research: Phase 1 findings (structure + metrics)"
+git add <reviewed-research-paths>
+git commit -m "research: Phase 1 findings (structure + metrics)"
 ```
 
 **Deliverables:**
@@ -387,7 +388,8 @@ gh pr list --state open | wc -l  # open PRs
 # Output: AGENT_9_IMPLEMENTATION_ROADMAP.md
 
 # Commit final research
-./scripts/ai_commit.sh "research: Agent 9 research complete + roadmap"
+git add <reviewed-research-paths>
+git commit -m "research: Agent 9 research complete + roadmap"
 ```
 
 **Deliverables:**

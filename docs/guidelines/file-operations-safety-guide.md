@@ -67,7 +67,8 @@ File operations (delete, move, rename) can break:
 .venv/bin/python scripts/check_links.py
 
 # Step 5: Commit
-./scripts/ai_commit.sh "refactor: move file.md to new location"
+git add -- docs/old/file.md docs/new/file.md
+git commit -m "refactor: move file.md to new location"
 ```
 
 ### Workflow 2: Deleting a File
@@ -92,7 +93,8 @@ File operations (delete, move, rename) can break:
 .venv/bin/python scripts/check_links.py
 
 # Step 5: Commit
-./scripts/ai_commit.sh "chore: remove obsolete file.md"
+git add -- docs/file.md
+git commit -m "chore: remove obsolete file.md"
 ```
 
 ### Workflow 3: Archiving Old Files
@@ -108,7 +110,8 @@ File operations (delete, move, rename) can break:
 .venv/bin/python scripts/check_links.py
 
 # Step 4: Commit
-./scripts/ai_commit.sh "chore: archive old planning docs"
+git add -- docs/planning/old-plan.md docs/_archive/planning/old-plan.md
+git commit -m "chore: archive old planning docs"
 ```
 
 ### Workflow 4: Renaming a File
@@ -117,7 +120,8 @@ File operations (delete, move, rename) can break:
 # Renaming is just moving to same folder with new name
 .venv/bin/python scripts/safe_file_move.py docs/old-name.md docs/new-name.md --dry-run
 .venv/bin/python scripts/safe_file_move.py docs/old-name.md docs/new-name.md
-./scripts/ai_commit.sh "refactor: rename old-name.md to new-name.md"
+git add -- docs/old-name.md docs/new-name.md
+git commit -m "refactor: rename old-name.md to new-name.md"
 ```
 
 ### Workflow 5: Batch Archive Multiple Files
@@ -133,7 +137,8 @@ File operations (delete, move, rename) can break:
 .venv/bin/python scripts/batch_archive.py --files file1.md file2.md file3.md
 
 # Step 4: Commit
-./scripts/ai_commit.sh "chore: archive agent completion docs"
+git add -- docs/agents docs/_archive/agents
+git commit -m "chore: archive agent completion docs"
 ```
 
 ### Workflow 6: Renaming a Folder
@@ -156,7 +161,8 @@ File operations (delete, move, rename) can break:
 # (Script warns but doesn't auto-edit .gitignore)
 
 # Step 6: Commit
-./scripts/ai_commit.sh "refactor: rename folder to follow naming convention"
+git add -- docs
+git commit -m "refactor: rename folder to follow naming convention"
 ```
 
 ---

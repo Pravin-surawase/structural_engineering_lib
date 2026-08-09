@@ -36,12 +36,9 @@ Before editing, confirm the branch and working tree shown by session start. Pres
    ./run.sh check --quick
    ```
 
-4. Confirm the required Git workflow, then make one normal task commit:
-
-   ```bash
-   ./run.sh pr status
-   ./scripts/ai_commit.sh "type(scope): completed outcome"
-   ```
+4. Have Codex inspect the final diff, stage only intended paths, create one
+   conventional commit, push without rewriting history, and create or update the
+   PR through the connected GitHub integration.
 
 5. Validate the clean handoff:
 
@@ -49,7 +46,7 @@ Before editing, confirm the branch and working tree shown by session start. Pres
    ./run.sh session end --agent <role>
    ```
 
-Do not run global doc syncing, index regeneration, evolution fixes, release checks, or a second documentation commit by default. If session end identifies an essential handoff defect, correct only that defect and commit it through the same safe workflow.
+Do not run global doc syncing, index regeneration, evolution fixes, release checks, or a second documentation commit by default. If session end identifies an essential handoff defect, correct only that defect and return it through the same Codex-native workflow.
 
 ## Session Check (mid-session)
 

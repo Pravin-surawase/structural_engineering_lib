@@ -179,14 +179,14 @@ requirement to invoke one agent per line:
 5. TEST      → run the narrow existing checks for changed behavior
 6. VERIFY    → review essential main-process outcomes and architecture
 7. DOCUMENT  → update only task-owned records whose state changed
-8. COMMIT    → @ops commits via ai_commit.sh
+8. CLOSEOUT  → Parent verifies; Codex owns scoped Git and connected GitHub work
 ```
 
 The `@role` labels above are logical quality roles. The parent agent may perform
 all steps sequentially. Delegation is optional and is limited by the efficiency
 override; routine tests, docs, and Git closeout do not justify separate agents.
 
-**Step 8 is autonomous.** The orchestrator delegates to @ops with specific commit type and message — @ops executes immediately via `ai_commit.sh` without needing user approval. Only destructive operations (deleting branches, closing issues) require user confirmation.
+Codex performs ordinary scoped commits, pushes, and PR creation or updates. Destructive operations such as merging, deleting branches, or closing issues require explicit user confirmation.
 
 **CI Failure Delegation:** If CI fails at Step 7 (COMMIT) or Step 8, @ops diagnoses the failure type and delegates the fix to the appropriate specialist (Python failures → @backend/@tester, React failures → @frontend, FastAPI failures → @api-developer, etc.) before retrying. Ops does NOT blindly retry or attempt code fixes outside its domain. See the CI Failure Delegation Protocol in `ops.agent.md` for the full decision table.
 
@@ -211,10 +211,10 @@ When the task involves adding/modifying IS 456 functions (`codes/is456/`), enfor
 6. API WIRE      → @backend adds to services/api.py
 7. ENDPOINT      → @api-developer creates FastAPI route
 8. DOCUMENT      → @doc-master updates all docs
-9. COMMIT        → @ops commits via ai_commit.sh
+9. CLOSEOUT      → Parent verifies; Codex owns scoped Git and connected GitHub work
 ```
 
-**Step 9 is autonomous.** The orchestrator delegates to @ops with specific commit type and message — @ops executes immediately via `ai_commit.sh` without needing user approval. Only destructive operations (deleting branches, closing issues) require user confirmation.
+Codex performs ordinary scoped commits, pushes, and PR creation or updates. Destructive operations require explicit user confirmation.
 
 **CI Failure Delegation:** Same rule as the main pipeline — if CI fails at Step 9, @ops diagnoses and delegates to the right specialist before retrying. See `ops.agent.md` CI Failure Delegation Protocol.
 
@@ -292,7 +292,7 @@ Report back: quality scores, drift violations, recurring patterns, proposed impr
 1. All code work complete
 2. Parent performs the required review and targeted verification
 3. Parent updates only task-owned state and handoff records
-4. Parent runs the quick gate once and commits via ai_commit.sh
+4. Parent runs the quick gate once; Codex reviews and performs the scoped Git/GitHub closeout
 5. Parent validates with `./run.sh session end`
 ```
 
@@ -324,14 +324,14 @@ Report back: quality scores, drift violations, recurring patterns, proposed impr
 
 ### Monthly
 - Review historical mistakes list in ops.agent.md — add any new patterns
-- Check if thresholds in `scripts/should_use_pr.sh` still make sense
+- Check that the Codex-native Git/GitHub workflow remains current
 - Verify documentation is current (bootstrap, agent files, automation catalog)
 
 ## Git Awareness (For Better Handoffs)
 
-When handing off to @ops for commit:
-1. **Specify the commit type** — don't make ops guess: `feat`, `fix`, `docs`, `refactor`, etc.
-2. **Flag PR-likely changes** — if the task touched production code (structural_lib, fastapi_app, react_app), tell ops a PR is likely needed
+When preparing a Codex Git/GitHub closeout:
+1. **Specify the commit type** — `feat`, `fix`, `docs`, `refactor`, etc.
+2. **Flag PR-required changes** — production code should use a task branch and PR
 3. **Report any agent struggles** — if a specialist was confused or made mistakes, note it so the feedback loop can capture it
 
 ## Structured Handoff (Session End)

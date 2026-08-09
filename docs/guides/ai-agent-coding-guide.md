@@ -62,7 +62,7 @@ verification), `publish.yml` (controlled releases), and `deploy-docs.yml`
 
 - Python: 90 scripts
 - Shell: 55 scripts
-- Key scripts: `ai_commit.sh`, `safe_push.sh`, `ci_local.sh`, `agent_start.sh`
+- Key tools: `check_all.py`, `ci_local.sh`, `agent_start.sh`; Codex owns Git/GitHub
 
 ### Library (structural_lib)
 

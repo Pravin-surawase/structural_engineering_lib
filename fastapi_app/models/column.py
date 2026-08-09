@@ -740,6 +740,13 @@ class LongColumnRequest(BaseModel):
         description="Effective length about y (mm)",
         examples=[4500.0],
     )
+    l_unsupported_mm: float = Field(
+        ...,
+        gt=0,
+        le=100000,
+        description="Unsupported member length used for minimum eccentricity (mm)",
+        examples=[6000.0],
+    )
     fck_nmm2: float = Field(
         ...,
         ge=15,

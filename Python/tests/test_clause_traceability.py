@@ -94,7 +94,6 @@ class TestClauseDatabaseLoading:
         db = _CLAUSE_DB
         for clause_ref, info in db["clauses"].items():
             assert "title" in info, f"Clause {clause_ref} missing 'title'"
-            assert "text" in info, f"Clause {clause_ref} missing 'text'"
             assert "category" in info, f"Clause {clause_ref} missing 'category'"
 
 
@@ -234,10 +233,11 @@ class TestGetClauseInfo:
         assert "keywords" in info
         assert isinstance(info["keywords"], list)
 
-    def test_clause_info_has_formula(self):
-        """Verify clauses with formulas include them."""
-        info = get_clause_info("26.2.1")
-        assert "formula" in info or "formulas" in info
+    def test_database_declares_identifier_only_content_policy(self):
+        """Packaged traceability data must not claim to include standard text."""
+        metadata = get_database_metadata()
+        assert metadata["content_policy"] == "identifiers_and_project_metadata_only"
+        assert metadata["protected_standard_text_included"] is False
 
 
 # =============================================================================
@@ -285,7 +285,7 @@ class TestSearchClauses:
         assert len(results) > 0
         # All results should mention shear somewhere
         for r in results:
-            text = f"{r.get('title', '')} {r.get('text', '')} {' '.join(r.get('keywords', []))}".lower()
+            text = f"{r.get('title', '')} {' '.join(r.get('keywords', []))}".lower()
             assert "shear" in text
 
     def test_search_case_insensitive(self):

@@ -43,11 +43,6 @@ def find_references(file_path: Path, project_root: Path) -> list[tuple[Path, str
     """
     filename = file_path.name
 
-    try:
-        relative_path = str(file_path.relative_to(project_root))
-    except ValueError:
-        relative_path = str(file_path)
-
     # Try using git grep for fast search (uses git's index, much faster)
     references = _find_references_git_grep(filename, project_root)
     if references is not None:
@@ -457,7 +452,7 @@ def run_move(args: argparse.Namespace) -> tuple[int, dict[str, object]]:
         print()
         print("Next steps:")
         print("  1. Review changes: git diff")
-        print("  2. Commit: ./scripts/ai_commit.sh 'refactor: move file'")
+        print("  2. Have Codex review and include the move in the scoped commit")
     print("=" * 60)
     result["changed_files"] = sorted(
         set(updated_files)

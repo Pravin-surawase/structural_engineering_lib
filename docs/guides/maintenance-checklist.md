@@ -155,7 +155,7 @@ Run every 5th session or weekly:
 | Stale doc numbers | `./run.sh evolve --fix` | governance |
 | Broken links | Manual fix or `safe_file_move.py` | doc-master |
 | Architecture violations | Fix imports in violating file | backend |
-| Missing git hooks | `bash scripts/install_git_hooks.sh` | ops |
+| Retired wrapper hook path active | Unset `core.hooksPath`; rerun `check_codex_git_workflow.py` | Codex |
 | Stale branches | `cleanup_stale_branches.py --execute` | ops (needs approval) |
 | Import cycle | Refactor module dependencies | backend |
 | Agent instruction drift | Sync instruction files | doc-master |
@@ -171,7 +171,7 @@ orchestrator  → diagnose (./run.sh health, ./run.sh check)
   → tester      → verify no regressions
   → doc-master  → doc fixes (dates, drift, references)
   → reviewer    → verify health score improved
-  → ops         → commit safely (ai_commit.sh)
+  → Codex       → scoped Git/GitHub closeout
 ```
 
 ---

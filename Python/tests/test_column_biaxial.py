@@ -30,10 +30,7 @@ from structural_lib.core.data_types import (
     ColumnClassification,
     PMInteractionResult,
 )
-from structural_lib.core.errors import (
-    DimensionError,
-    MaterialError,
-)
+from structural_lib.core.errors import DimensionError, MaterialError
 
 # ============================================================================
 # Constants reused across tests
@@ -403,22 +400,37 @@ class TestBiaxialBendingCheck:
         # le=3000, max(b,D)=500 -> le/D = 6.0 < 12 -> SHORT
         assert result.classification == ColumnClassification.SHORT
 
-    def test_slender_column_has_warning(self):
-        """le/D >= 12 -> SLENDER classification with warning."""
-        result = biaxial_bending_check(
-            Pu_kN=500,
-            Mux_kNm=20,
-            Muy_kNm=15,
-            b_mm=300,
-            D_mm=500,
-            le_mm=7000,  # le/D = 7000/500 = 14 > 12
-            fck=25,
-            fy=415,
-            Asc_mm2=4000,
-            d_prime_mm=50,
-        )
-        assert result.classification == ColumnClassification.SLENDER
-        assert any("slender" in w.lower() for w in result.warnings)
+    def test_slender_column_fails_closed(self):
+        """A direct short-column interaction check rejects slender members."""
+        with pytest.raises(DimensionError, match="short columns only"):
+            biaxial_bending_check(
+                Pu_kN=500,
+                Mux_kNm=20,
+                Muy_kNm=15,
+                b_mm=300,
+                D_mm=500,
+                le_mm=7000,
+                fck=25,
+                fy=415,
+                Asc_mm2=4000,
+                d_prime_mm=50,
+            )
+
+    def test_one_axis_slender_rectangular_column_fails_closed(self):
+        """Classification checks both directions for an asymmetric rectangle."""
+        with pytest.raises(DimensionError, match="slender about at least one axis"):
+            biaxial_bending_check(
+                Pu_kN=500,
+                Mux_kNm=20,
+                Muy_kNm=15,
+                b_mm=300,
+                D_mm=600,
+                le_mm=5000,  # le/D=8.33 short; le/b=16.67 slender
+                fck=25,
+                fy=415,
+                Asc_mm2=4000,
+                d_prime_mm=50,
+            )
 
     def test_different_materials_m30_fe500(self):
         """M30/Fe500 column should compute without errors."""
@@ -751,25 +763,24 @@ class TestBiaxialIntegration:
         assert result.classification == ColumnClassification.SHORT
         assert isinstance(result.interaction_ratio, float)
 
-    def test_full_pipeline_slender_column(self):
-        """Full pipeline: classify -> biaxial for slender column (le/D >= 12)."""
+    def test_direct_pipeline_rejects_slender_column(self):
+        """Direct biaxial route must hand a slender member to long design."""
         b, D, le = 300, 400, 5000
-        classification = classify_column(le, max(b, D))
-        assert classification == ColumnClassification.SLENDER
+        assert classify_column(le, D) == ColumnClassification.SLENDER
 
-        result = biaxial_bending_check(
-            Pu_kN=400,
-            Mux_kNm=30,
-            Muy_kNm=20,
-            b_mm=b,
-            D_mm=D,
-            le_mm=le,
-            fck=25,
-            fy=415,
-            Asc_mm2=3600,
-            d_prime_mm=50,
-        )
-        assert result.classification == ColumnClassification.SLENDER
+        with pytest.raises(DimensionError, match="Use design_long_column"):
+            biaxial_bending_check(
+                Pu_kN=400,
+                Mux_kNm=30,
+                Muy_kNm=20,
+                b_mm=b,
+                D_mm=D,
+                le_mm=le,
+                fck=25,
+                fy=415,
+                Asc_mm2=3600,
+                d_prime_mm=50,
+            )
 
 
 # ============================================================================

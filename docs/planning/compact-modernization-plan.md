@@ -115,9 +115,9 @@ If a packet unexpectedly needs to edit either protected path, stop the packet an
 5. Fix confirmed root causes. Do not mask failures with `continue-on-error`, `|| true`, broad exclusions, or skipped jobs.
 6. Use existing tests. Do not add tests as part of this maintenance review.
 7. Run a targeted check while iterating, `./run.sh check --quick` once before each commit, the PR gate after push, and the full gate once at closeout.
-8. Use `./scripts/ai_commit.sh` or `./run.sh commit` for every commit. Never use manual Git commit/push commands.
+8. Codex owns scoped commits, pushes, and connected GitHub PR work; workers return their verified diff to the parent.
 9. Use `scripts/safe_file_delete.py` and `scripts/safe_file_move.py` for repository deletions or moves. Always inspect a dry run first.
-10. Never bypass hooks, required checks, or safe-push controls.
+10. Never bypass hooks or required checks, automate Git recovery, or rewrite history.
 11. Any terminal failure must be returned as `WARNING TERMINAL ISSUE: what failed -> what worked instead`.
 12. A worker does not merge, release, close issues, delete remote branches, or change GitHub repository settings.
 
@@ -210,16 +210,12 @@ Finish the existing maintenance PR safely, then create a dedicated modernization
 
 ### Steps
 
-1. Run `./scripts/ai_commit.sh --status` and `./run.sh pr status`.
+1. Have Codex inspect the branch, worktree, existing PR, and connected GitHub check state.
 2. Confirm PR #676 is still green and its head is the expected commit.
 3. Ask for explicit merge approval if it has not already been given.
-4. Merge only through the repository's safe PR flow. Do not release.
-5. Synchronize the local main branch using the repository workflow.
-6. Create the MAINT-008 branch and PR:
-
-   ```bash
-   ./run.sh pr create MAINT-008 "Compact CI and maintenance control plane"
-   ```
+4. Merge only after explicit owner approval and passing required checks. Do not release.
+5. Have Codex synchronize the local main branch without rewriting history.
+6. Have Codex create the MAINT-008 task branch and connected GitHub PR.
 
 7. Record:
 
@@ -785,7 +781,8 @@ packet in docs/planning/compact-modernization-plan.md. Start with targeted rg an
 folder indexes. Fix confirmed root causes only. Do not change structural formulas,
 tests, product behavior, GitHub settings, releases, issues, or protected paths.
 Do not add adjacent improvements. Run the packet's narrow checks and one quick gate.
-Commit only through ./scripts/ai_commit.sh or ./run.sh commit. Return exactly the
-packet's requested report, including commands, results, commit, and any terminal issue.
+Return the verified scoped diff to the parent; Codex owns the commit, push, and PR.
+Return exactly the packet's requested report, including commands, results, suggested
+commit, and any terminal issue.
 If scope or evidence is unclear, stop and return the exact blocker instead of guessing.
 ```

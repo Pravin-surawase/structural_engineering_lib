@@ -331,6 +331,7 @@ def test_long_column_design_golden(vector: dict):
         Asc_mm2=inp["Asc_mm2"],
         d_prime_mm=inp["d_prime_mm"],
         braced=inp.get("braced", True),
+        l_unsupported_mm=inp.get("l_unsupported_mm", max(inp["lex_mm"], inp["ley_mm"])),
     )
     exp = vector["expected"]
     tol = vector.get("tolerance", 0.01)

@@ -36,10 +36,7 @@ Entries here represent "locked" versions that have been verified and approved.
    Validates semver format, checks pyproject.toml/package.json/CITATION.cff consistency,
    runs pytest, and ensures no uncommitted changes.
 
-2. **Create release branch:**
-   ```bash
-   ./scripts/ai_commit.sh --branch TASK-RELEASE "Release v0.X.Y"
-   ```
+2. **Have Codex create the release task branch and connected GitHub PR.**
 
 3. **Bump version (automated):**
    ```bash
@@ -53,17 +50,14 @@ Entries here represent "locked" versions that have been verified and approved.
 
 5. **Edit docs/getting-started/releases.md** with release entry
 
-6. **Commit:**
-   ```bash
-   ./scripts/ai_commit.sh "chore: release v0.X.Y"
-   ```
+6. **Have Codex review and commit the scoped release changes** with
+   `chore: release v0.X.Y`.
 
-7. **Finish PR:**
-   ```bash
-   ./scripts/ai_commit.sh --finish "Release v0.X.Y"
-   ```
+7. **Have Codex push and update the connected PR.** Merge still requires explicit
+   user confirmation and passing required checks.
 
-8. **Tag and push** (triggers `publish.yml` → validate → build → publish to PyPI):
+8. **After explicit user approval, have Codex tag and push** (triggers
+   `publish.yml` → validate → build → publish to PyPI):
    ```bash
    git tag v0.X.Y && git push origin v0.X.Y
    ```

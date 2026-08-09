@@ -20,6 +20,7 @@ Internal planning documents and research notes.
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
 | [MAINT-008 Compact Modernization Plan](compact-modernization-plan.md) | Dependency-ordered implementation packets for CI and maintenance modernization |
+| [IS 456 Library-First Master Plan](is456-library-first-master-plan.md) | Worker-ready plan for completing the supported Python library, evidence, packaging, and PyPI flow before broad API/UI work |
 | [Folder Audit](../_archive/planning-completed-2026-03/folder-audit.md) | Complete repo audit (Session 91) |
 | [AI Agent Efficiency Plan](../_archive/planning-completed-2026-03/ai-agent-efficiency-and-git-workflow-plan.md) | Agent infra improvements (Session 92) |
 
@@ -30,6 +31,7 @@ Internal planning documents and research notes.
 |----------|-------------|--------|
 | `next-session-brief.md` | 2026-08-09 | ✅ Current handoff |
 | `compact-modernization-plan.md` | 2026-08-09 | 📋 Ready after PR #676 |
+| `is456-library-first-master-plan.md` | 2026-08-09 | 🔄 P0-P11/FAPI-1 complete; P12 local artifact/full-gate evidence in progress |
 | `folder-audit.md` | 2026-03-24 | ✅ Complete (11 batches) |
 | `ai-agent-efficiency-and-git-workflow-plan.md` | 2026-03-24 | ✅ Partially implemented |
 | `agent-workflow-improvements.md` | 2026-03-23 | ✅ Active |

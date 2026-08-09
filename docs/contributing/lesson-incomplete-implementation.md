@@ -1,13 +1,15 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-09
 doc_type: guide
 complexity: intermediate
 tags: []
 ---
 
 # Lesson Learned: Incomplete Implementation (2026-01-09)
+
+> Historical incident lesson. Wrapper commands below were retired on 2026-08-09.
 
 **Type:** Guide
 **Audience:** All Agents

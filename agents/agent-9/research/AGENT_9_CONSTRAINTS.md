@@ -328,7 +328,7 @@ Inventoried all project operations, categorized by domain, assigned authority le
 
 | Operation | Authority | Rationale |
 |-----------|-----------|-----------|
-| Commit governance changes | ✅ AUTONOMOUS | Using ai_commit.sh |
+| Commit governance changes | ✅ AUTONOMOUS | Native Git with reviewed, scoped staging |
 | Create governance PRs | ✅ AUTONOMOUS | For propose-level changes |
 | Merge own PRs (governance only) | ✅ AUTONOMOUS | If CI passes |
 | Archive branches (after merge) | ✅ AUTONOMOUS | Cleanup |
@@ -559,7 +559,7 @@ See agents/agent-9/ESCALATIONS.md for details
 4. Generate health reports and dashboards
 5. Update agents/agent-9/ documentation
 6. Add governance tasks to TASKS.md
-7. Commit governance changes (via ai_commit.sh)
+7. Commit governance changes through native Git with reviewed, scoped staging
 8. Set alert thresholds for leading indicators
 9. Run pre-release governance checks
 10. Merge own governance PRs (if CI passes)

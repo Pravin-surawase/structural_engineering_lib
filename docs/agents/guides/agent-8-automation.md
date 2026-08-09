@@ -1,13 +1,16 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-09
 doc_type: guide
 complexity: intermediate
 tags: []
 ---
 
 # Agent 8 Automation - Scripts & Tools Index
+
+> Historical only. The wrapper scripts below were retired on 2026-08-09; use
+> `docs/git-automation/git-workflow-single-source.md` for current work.
 
 **Complete reference for all Agent 8 automation scripts.**
 **Last Updated:** 2026-01-11

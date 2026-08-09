@@ -150,7 +150,7 @@ CATEGORIES: list[Category] = [
             Check("Git state", _sh("validate_git_state.sh")),
             Check("Unfinished merge", _sh("check_unfinished_merge.sh")),
             Check("Version consistency", _sh("check_version_consistency.sh")),
-            Check("Script line budget", _py("check_git_script_budget.py")),
+            Check("Codex-native Git workflow", _py("check_codex_git_workflow.py")),
         ],
     ),
     Category(

@@ -371,7 +371,7 @@ grep -r "0.19" docs/reference/ -l             # Should return nothing (except hi
 ./run.sh session sync
 # Update: docs/planning/next-session-brief.md
 # Update: docs/TASKS.md
-./scripts/ai_commit.sh "docs: post-maintenance session end"
+# Codex reviews and performs the scoped Git/GitHub closeout.
 ```
 
 ---
@@ -380,6 +380,6 @@ grep -r "0.19" docs/reference/ -l             # Should return nothing (except hi
 
 - **DO NOT implement during this planning phase** — this document is the plan only
 - Each workstream can be executed independently (except noted dependencies)
-- All production code changes require PRs — `./run.sh pr status` before committing
+- All production code changes require Codex-managed task branches and PRs
 - After each workstream, update WORKLOG.md with one line per change
 - The Phase 2 column work (TASK-630+) should NOT start until Phase 1 Batch 4 is complete

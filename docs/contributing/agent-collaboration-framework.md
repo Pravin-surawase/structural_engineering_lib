@@ -273,7 +273,7 @@ checks each result before accepting or integrating it.
 # MAIN: "Start TASK-XXX: Research topic Y, output docs/research/topic-y.md"
 
 # 2. Create research branch (optional for large research)
-./scripts/create_task_pr.sh TASK-XXX "research: topic Y"
+# Parent Codex task creates the task branch/PR when required.
 
 # 3. Conduct research
 - Web search for latest patterns (2026)
@@ -291,7 +291,7 @@ checks each result before accepting or integrating it.
 - References
 
 # 5. Commit directly (if allowed) or via PR
-./scripts/ai_commit.sh "docs: add research for topic Y (TASK-XXX)"
+# Return research for Codex review and closeout.
 
 # 6. Handoff to MAIN
 - Update docs/research/README.md
@@ -312,7 +312,7 @@ checks each result before accepting or integrating it.
 # MAIN: "Implement TASK-XXX per guidelines in docs/research/feature.md"
 
 # 2. Create feature branch
-./scripts/create_task_pr.sh TASK-XXX "feat: feature name"
+# Parent Codex task creates the feature branch/PR.
 
 # 3. Read guidelines and requirements
 - Review research docs
@@ -337,8 +337,7 @@ checks each result before accepting or integrating it.
 .venv/bin/python -m pytest
 
 # 7. Commit and create PR
-./scripts/ai_commit.sh "feat: implement feature X (TASK-XXX)"
-./scripts/finish_task_pr.sh TASK-XXX "feature X implemented"
+# Return implementation and evidence for Codex commit/push/PR update.
 
 # 8. Handoff to MAIN for review
 ```
@@ -357,7 +356,7 @@ checks each result before accepting or integrating it.
 # MAIN: "Add tests for module X, target 90% coverage (TASK-XXX)"
 
 # 2. Create test branch
-./scripts/create_task_pr.sh TASK-XXX "test: comprehensive tests for module X"
+# Parent Codex task creates the task branch/PR when required.
 
 # 3. Analyze current coverage
 cd Python
@@ -378,8 +377,7 @@ python -m pytest --cov=structural_lib.module --cov-report=term
 python -m pytest
 
 # 7. Commit and create PR
-./scripts/ai_commit.sh "test: comprehensive tests for module X (TASK-XXX)"
-./scripts/finish_task_pr.sh TASK-XXX "module X test coverage improved"
+# Return tests and evidence for Codex commit/push/PR update.
 
 # 8. Handoff with coverage metrics
 ```
@@ -398,7 +396,7 @@ python -m pytest
 # MAIN: "Create automation for X (TASK-XXX)"
 
 # 2. Create automation branch
-./scripts/create_task_pr.sh TASK-XXX "ci: automate X"
+# Parent Codex task creates the CI task branch/PR.
 
 # 3. Design automation
 - Identify manual steps
@@ -419,8 +417,7 @@ python -m pytest
 ./scripts/new_automation.sh --test
 
 # 7. Commit and create PR
-./scripts/ai_commit.sh "ci: add automation for X (TASK-XXX)"
-./scripts/finish_task_pr.sh TASK-XXX "X automation complete"
+# Return CI changes and evidence for Codex commit/push/PR update.
 
 # 8. Handoff with usage documentation
 ```
@@ -459,7 +456,7 @@ docs/planning/feature-x-implementation-plan.md
 - Success metrics
 
 # 5. Commit planning doc directly
-./scripts/ai_commit.sh "docs: feature X implementation plan"
+# Return the plan for Codex review and closeout.
 
 # 6. Handoff to MAIN with task IDs
 ```
@@ -645,7 +642,7 @@ Each agent should:
 git fetch origin
 git rebase origin/main
 # Resolve conflicts
-./scripts/ai_commit.sh "fix: resolve merge conflicts"
+# Return the resolved, verified diff to Codex.
 ```
 
 **Issue:** Two agents editing same file
@@ -655,7 +652,7 @@ git rebase origin/main
 **Solution:** Check Python version, dependencies, environment variables
 
 **Issue:** Pre-commit hook blocks commit
-**Solution:** Fix reported issue, run `./scripts/ai_commit.sh` again
+**Solution:** Fix the reported issue and return the corrected diff to Codex
 
 ### 6.2 Emergency Procedures
 

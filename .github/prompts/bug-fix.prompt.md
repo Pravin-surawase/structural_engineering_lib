@@ -40,6 +40,5 @@ description: "Bug fix workflow — reproduce, diagnose, fix, test, commit"
 ## 5. Commit
 
 ```bash
-./scripts/should_use_pr.sh --explain
-./scripts/ai_commit.sh "fix(scope): description of fix"
+# Codex reviews the final diff and performs the scoped Git/GitHub closeout.
 ```

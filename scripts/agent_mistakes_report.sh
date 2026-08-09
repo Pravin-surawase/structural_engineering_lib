@@ -69,13 +69,13 @@ echo "Common Mistakes (and fixes)"
 echo "---------------------------"
 
 if [[ "$COMMIT_FAILS" -gt 0 ]]; then
-    echo "- Pre-commit failures (${COMMIT_FAILS} logged): use the hook output file and re-run ./scripts/ai_commit.sh"
+    echo "- Historical pre-commit failures (${COMMIT_FAILS} logged): inspect the hook output before Codex retries"
 else
     echo "- Pre-commit failures: none logged recently"
 fi
 
 if [[ "$NO_MESSAGE" -gt 0 ]]; then
-    echo "- Missing commit message (${NO_MESSAGE} logged): always call ./scripts/ai_commit.sh \"message\""
+    echo "- Historical missing commit messages (${NO_MESSAGE} logged): Codex must use a conventional message"
 else
     echo "- Missing commit message: none logged recently"
 fi
@@ -129,6 +129,6 @@ fi
 echo ""
 echo "Quick reminders"
 echo "--------------"
-echo "- Manual git is blocked by hooks; use ./scripts/ai_commit.sh or ./scripts/safe_push.sh"
-echo "- When unsure, run: git status && git log --oneline -3"
-echo "- If git feels broken, run: ./scripts/recover_git_state.sh"
+echo "- Codex owns scoped commits, pushes, and connected GitHub PR operations"
+echo "- Inspect first with: git status --short && git diff"
+echo "- If Git state is unclear, stop; do not run automated recovery or rewrite history"

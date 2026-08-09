@@ -29,11 +29,7 @@ from structural_lib.core.data_types import (
     ColumnClassification,
     PMInteractionResult,
 )
-from structural_lib.core.errors import (
-    CalculationError,
-    DimensionError,
-    MaterialError,
-)
+from structural_lib.core.errors import CalculationError, DimensionError, MaterialError
 from structural_lib.core.numerics import clamp, safe_divide
 
 __all__ = [
@@ -149,6 +145,8 @@ def biaxial_bending_check(
     Asc_mm2: float,
     d_prime_mm: float,
     l_unsupported_mm: float | None = None,
+    *,
+    _slender_moments_applied: bool = False,
 ) -> ColumnBiaxialResult:
     """Check column under biaxial bending per IS 456 Cl 39.6.
 
@@ -181,6 +179,10 @@ def biaxial_bending_check(
             Must be > 0 and less than half the smaller dimension.
         l_unsupported_mm: Unsupported length (mm) for slenderness warning.
             If None, slenderness is checked using le_mm only.
+        _slender_moments_applied: Internal-only confirmation that the caller
+            has already applied Cl. 39.7 slenderness moments. Public callers
+            must use the long-column workflow for a member slender about
+            either axis.
 
     Returns:
         ColumnBiaxialResult with interaction ratio and safety status.
@@ -286,13 +288,32 @@ def biaxial_bending_check(
     # ===========================================================
     # 2. Column classification
     # ===========================================================
-    # IS 456 Cl 25.1.2: use the larger lateral dimension for classification
-    classification = classify_column(le_mm, max(b_mm, D_mm))
+    # IS 456 Cl 25.1.2 applies independently about both section axes.  Using
+    # max(b, D) can incorrectly call a rectangular member short when the
+    # smaller dimension makes the other direction slender.
+    classification_x = classify_column(le_mm, D_mm)
+    classification_y = classify_column(le_mm, b_mm)
+    classification = (
+        ColumnClassification.SLENDER
+        if ColumnClassification.SLENDER in (classification_x, classification_y)
+        else ColumnClassification.SHORT
+    )
     if classification == ColumnClassification.SLENDER:
+        if not _slender_moments_applied:
+            raise DimensionError(
+                "Direct biaxial check supports short columns only; the member is "
+                "slender about at least one axis. Use design_long_column so Cl. "
+                "39.7 moments are applied before the interaction check.",
+                details={
+                    "le_mm": le_mm,
+                    "slenderness_x": le_mm / D_mm,
+                    "slenderness_y": le_mm / b_mm,
+                },
+                clause_ref="Cl. 25.1.2, 39.7",
+            )
         warnings.append(
-            "Column classified as slender (le/D >= 12). "
-            "Additional moment per Cl 39.7 required. "
-            "This function does NOT apply the slenderness moment."
+            "Column is slender about at least one axis; Cl. 39.7 moments were "
+            "applied by the enclosing long-column workflow."
         )
 
     # ===========================================================

@@ -23,7 +23,7 @@ FIRST: Read docs/getting-started/agent-bootstrap.md — this is your single onbo
 
 THEN: Check docs/TASKS.md for current work priorities.
 
-CRITICAL RULE: Always use ./scripts/ai_commit.sh "message" for commits (never manual git).
+CRITICAL RULE: Codex owns scoped commits, pushes, and connected GitHub PR work.
 
 What would you like me to work on?
 ```
@@ -35,7 +35,7 @@ What would you like me to work on?
 1. **Single entry point** — `agent-bootstrap.md` contains everything (architecture, hooks, endpoints, rules)
 2. **No confusion** — One document instead of 6 competing "read me first" files
 3. **Progressive** — Bootstrap links to detailed references only when needed
-4. **Safety** — THE ONE RULE (ai_commit.sh) prevents 90% of errors
+4. **Safety** — the Codex-native workflow preserves scope and fails closed
 
 ---
 

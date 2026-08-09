@@ -87,8 +87,8 @@ markers =
 
 ```
 scripts/
-├── ai_commit.sh          # Safe commits
-├── safe_push.sh          # Pre-push validation
+├── check_all.py          # Local validation orchestrator
+├── check_codex_git_workflow.py  # Guard retired wrapper boundary
 ├── ci_local.sh           # Local CI simulation
 ├── check_circular_imports.py
 ├── check_type_annotations.py
@@ -100,7 +100,7 @@ scripts/
 
 **Installed:** `.git/hooks/pre-commit`, `commit-msg`
 
-- Blocks manual `git commit` (requires `ai_commit.sh`)
+- Standard pre-commit validates content; Codex owns scoped Git operations
 - Enforces automation workflow
 
 ---
@@ -230,10 +230,10 @@ pre-commit run --all-files
 ./scripts/ci_local.sh
 
 # Safe commit (use instead of git commit)
-./scripts/ai_commit.sh "commit message"
+# Codex reviews and creates the conventional commit.
 
 # Safe push with validation
-./scripts/safe_push.sh
+# Codex pushes without rewriting history and updates the connected PR.
 ```
 
 ---

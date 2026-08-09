@@ -45,8 +45,8 @@ Use this path for:
 - One-line code fixes with no behavior change
 
 Checks to run:
-- `./scripts/should_use_pr.sh --explain`
-- `./scripts/ai_commit.sh "docs: ..."` or PR workflow if required
+- `./run.sh check --quick`
+- Return the verified diff and suggested commit to Codex
 
 ## Path B: Intermediate (feature work in existing modules)
 
@@ -62,8 +62,8 @@ Use this path for:
 - VBA or Excel work (add `vba-guide.md`, `excel-addin-guide.md`)
 
 Checks to run:
-- `./scripts/should_use_pr.sh --explain`
-- `./scripts/quick_check.sh` (for code changes)
+- `./run.sh check --quick`
+- The targeted tests for the changed behavior
 
 ## Path C: Advanced (refactor, API, or release)
 

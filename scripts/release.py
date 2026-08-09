@@ -265,7 +265,7 @@ def _print_checklist(version: str) -> None:
     )
     print("  [ ] 2. Edit docs/getting-started/releases.md — Add release entry")
     print("  [ ] 3. Review changes: git diff")
-    print(f"  [ ] 4. Commit: ./scripts/ai_commit.sh 'chore: release v{version}'")
+    print(f"  [ ] 4. Codex commit and PR update: 'chore: release v{version}'")
     print(f"  [ ] 5. Tag and push: git tag v{version} && git push origin v{version}")
     print("  [ ] 6. Monitor GitHub Actions → Publish to PyPI workflow")
     print()

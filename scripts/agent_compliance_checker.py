@@ -239,7 +239,7 @@ def check_no_raw_file_ops(session_data: dict) -> bool:
     # Check if safe scripts were used (heuristic: check for git history of safe script usage)
     # For now, we pass if there were no deletions/renames, or assume compliance
     # A more sophisticated check would parse git log --name-status for R/D operations
-    # and cross-check against ai_commit.sh usage
+    # and cross-check against the recorded conventional commit
 
     return True  # Conservative: assume compliant unless proven otherwise
 

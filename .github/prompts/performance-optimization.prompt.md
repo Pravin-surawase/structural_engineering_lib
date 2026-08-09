@@ -84,5 +84,5 @@ cd react_app && npm run build
 ## 6. Commit
 
 ```bash
-./scripts/ai_commit.sh "perf: optimize {{what}} — {{improvement}}"
+# Suggest to Codex: perf: optimize {{what}} — {{improvement}}
 ```

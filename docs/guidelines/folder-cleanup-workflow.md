@@ -138,7 +138,7 @@ Create a script or checklist:
 
 ```bash
 # If you want a safety branch, create a task branch first:
-./scripts/create_task_pr.sh TASK-XXX "folder cleanup backup"
+git switch -c codex/TASK-XXX-folder-cleanup
 ```
 
 ---
@@ -167,18 +167,21 @@ git branch --show-current
 .venv/bin/python scripts/safe_file_delete.py docs/file1.md
 .venv/bin/python scripts/safe_file_delete.py docs/file2.md
 .venv/bin/python scripts/check_links.py  # Verify after each batch
-./scripts/ai_commit.sh "chore: remove duplicate files"
+git add -- docs
+git commit -m "chore: remove duplicate files"
 
 # Batch 2: Archive old planning
 .venv/bin/python scripts/safe_file_move.py docs/planning/old1.md docs/_archive/planning/old1.md
 .venv/bin/python scripts/safe_file_move.py docs/planning/old2.md docs/_archive/planning/old2.md
 .venv/bin/python scripts/check_links.py
-./scripts/ai_commit.sh "chore: archive old planning docs"
+git add -- docs
+git commit -m "chore: archive old planning docs"
 
 # Batch 3: Reorganize
 .venv/bin/python scripts/safe_file_move.py docs/misplaced.md docs/correct/misplaced.md
 .venv/bin/python scripts/check_links.py
-./scripts/ai_commit.sh "refactor: reorganize documentation"
+git add -- docs
+git commit -m "refactor: reorganize documentation"
 ```
 
 ### Step 4.3: Checkpoint After Each Batch
@@ -216,7 +219,8 @@ After each commit:
 
 ```bash
 .venv/bin/python scripts/generate_docs_index.py
-./scripts/ai_commit.sh "chore: regenerate docs index after cleanup"
+git add -- docs
+git commit -m "chore: regenerate docs index after cleanup"
 ```
 
 ### Step 5.3: Document Results
@@ -243,21 +247,23 @@ Update the cleanup tracking file:
 
 ```bash
 git revert HEAD
-./scripts/ai_commit.sh "revert: undo cleanup - [reason]"
 ```
 
 ### Rollback Multiple Commits
 
 ```bash
-# Avoid force-push resets. Prefer revert commits and automation:
-./scripts/recover_git_state.sh
+# Avoid force-push resets. Inspect exact state and stop before selecting recovery:
+git status
+git reflog
 ```
 
 ### Restore from Backup Branch
 
 ```bash
-# Restore specific file via manual review, then commit with ai_commit.sh
-./scripts/ai_commit.sh "revert: restore file from backup branch"
+# Restore a specific file from a known-good commit, review it, then commit
+git restore --source abc1234 -- path/to/file  # replace abc1234 after review
+git add -- path/to/file
+git commit -m "revert: restore file from backup branch"
 ```
 
 ---

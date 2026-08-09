@@ -61,5 +61,5 @@ Known benchmark problems (Pillai & Menon, Ramamrutham):
 ## Step 6: Commit with Clause Reference
 
 ```bash
-./scripts/ai_commit.sh "fix: correct IS 456 Cl {{clause}} implementation"
+# Suggest to Codex: fix(is456): correct Cl {{clause}} implementation
 ```

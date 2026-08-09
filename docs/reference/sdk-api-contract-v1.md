@@ -1,17 +1,17 @@
 ---
 owner: Main Agent
-status: active
+status: deprecated
 last_updated: 2026-03-30
 doc_type: reference
 complexity: intermediate
 tags: []
 ---
 
-# Structural SDK API Contract — v1.0
+# Historical Structural SDK Target Contract — v1.0
 
 **Type:** Reference
 **Audience:** All Agents, Developers, Testers
-**Status:** Active
+**Status:** Historical target; not the installed package contract
 **Importance:** Critical
 **Created:** 2026-01-16
 **Last Updated:** 2026-04-04
@@ -21,7 +21,12 @@ tags: []
 
 ## Overview
 
-This document defines the public API contract for the Structural SDK. All functions documented here are considered stable and will follow semantic versioning.
+This document records an earlier target architecture. It does not define the
+installed package contract and its `structural_sdk` examples are not current
+import paths. The implemented canonical facade is
+`structural_lib.services.api`; see `docs/reference/api.md` and
+`docs/reference/api-manifest.json`. Current APIs remain a development preview
+until an owner-approved stable release.
 
 **Namespace:** `structural_sdk` (aliased as `sk`)
 
@@ -385,8 +390,9 @@ def design_beam(
     """
     Design a reinforced concrete beam.
 
-    Performs complete beam design including flexure, shear, and
-    optionally torsion checks per the specified code.
+    Performs the supported primary beam workflow. For IS 456 this is
+    rectangular flexure and shear, with optional detailing/geometry outputs.
+    Torsion is a separate bounded utility and is not applied by this route.
 
     Args:
         beam: Complete beam specification

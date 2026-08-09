@@ -18,8 +18,7 @@ Use this once after the scoped work and its narrow checks are complete.
    ```
 3. Confirm the required Git path and make one normal task commit:
    ```bash
-   ./run.sh pr status
-   ./scripts/ai_commit.sh "type(scope): completed outcome"
+   # Codex reviews, stages intended paths, commits, pushes, and updates the PR.
    ```
 4. Validate the clean handoff without hidden mutations:
    ```bash

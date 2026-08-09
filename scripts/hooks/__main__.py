@@ -3,7 +3,7 @@
 
 Usage:
     python -m scripts.hooks list                    # List all registered hooks
-    python -m scripts.hooks run pre_commit          # Run hooks for event (dry-run)
+    python -m scripts.hooks run pre_route           # Run hooks for event (dry-run)
     python -m scripts.hooks test                    # Run all hooks as self-test
 """
 
@@ -53,8 +53,6 @@ def cmd_run(args: argparse.Namespace) -> int:
 
     runner = _get_runner()
     context: dict = {}
-    if args.message:
-        context["message"] = args.message
 
     all_passed, results = runner.run(event, context)
 
@@ -100,9 +98,6 @@ def main() -> int:
 
     run_p = sub.add_parser("run", help="Run hooks for an event (dry-run)")
     run_p.add_argument("event", help=f"Event name: {sorted(VALID_EVENTS)}")
-    run_p.add_argument(
-        "--message", "-m", default="", help="Commit message (for pre_commit)"
-    )
 
     sub.add_parser("test", help="Run all hooks as self-test")
 

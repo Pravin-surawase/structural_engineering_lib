@@ -1,13 +1,15 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-09
 doc_type: guide
 complexity: intermediate
 tags: []
 ---
 
 # Agent 8 Multi-Agent Coordination
+
+> Historical only. Codex now owns scoped Git/GitHub closeout.
 
 **Version:** 0.16.0
 **Last Updated:** 2026-01-09

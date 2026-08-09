@@ -1,10 +1,9 @@
 #!/bin/bash
-# Git workflow validator - run before any git operation
-# Validates git state and prevents common issues
+# Read-only Git workflow validator for Codex
+# Reports state without attempting recovery or synchronization
 #
 # Usage:
 #   ./scripts/validate_git_state.sh           # Run all checks
-#   ./scripts/validate_git_state.sh --fix     # Auto-fix issues
 #   ./scripts/validate_git_state.sh --strict  # Fail on any warning
 
 set -e
@@ -17,12 +16,14 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 # Get options
-FIX_MODE=false
 STRICT_MODE=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --fix) FIX_MODE=true; shift ;;
+        --fix)
+            echo "ERROR: --fix was retired. Codex must inspect and apply Git changes explicitly."
+            exit 2
+            ;;
         --strict) STRICT_MODE=true; shift ;;
         *) shift ;;
     esac
@@ -75,15 +76,7 @@ if [[ -f .git/MERGE_HEAD ]]; then
     log_info "Complete the merge with: git commit --no-edit"
     log_info "Or abort with: git merge --abort"
 
-    if [[ "$FIX_MODE" == "true" ]]; then
-        if ! git status | grep -q "Unmerged paths"; then
-            log_info "Auto-completing merge..."
-            git commit --no-edit
-            log_ok "Merge completed"
-        else
-            log_error "Cannot auto-fix: merge has conflicts"
-        fi
-    fi
+    log_info "Stop and have Codex inspect the exact merge state"
 else
     log_ok "No unfinished merge"
 fi
@@ -108,12 +101,8 @@ else
         if [[ "$LOCAL" == "$REMOTE" ]]; then
             log_ok "Branch up to date with remote"
         elif [[ "$LOCAL" == "$BASE" ]]; then
-            log_warn "Branch behind remote (need to pull)"
-            if [[ "$FIX_MODE" == "true" ]]; then
-                log_info "Pulling latest changes..."
-                git pull --ff-only
-                log_ok "Pulled successfully"
-            fi
+            log_warn "Branch behind remote"
+            log_info "Codex must inspect the diff before synchronizing"
         elif [[ "$REMOTE" == "$BASE" ]]; then
             log_ok "Branch ahead of remote (unpushed commits)"
         else

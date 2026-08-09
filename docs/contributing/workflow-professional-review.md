@@ -1,13 +1,15 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-09
 doc_type: guide
 complexity: intermediate
 tags: []
 ---
 
 # Git Workflow Professional Review & Recommendations
+
+> Historical review of the retired wrapper design. It is not current guidance.
 
 **Type:** Research
 **Audience:** Developers

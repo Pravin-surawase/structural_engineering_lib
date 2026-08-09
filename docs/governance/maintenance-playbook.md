@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** High
 **Created:** 2026-04-02
-**Last Updated:** 2026-04-02
+**Last Updated:** 2026-08-09
 
 ---
 
@@ -37,27 +37,23 @@ git branch --show-current
 ### Session End (MANDATORY — do NOT skip)
 
 ```bash
-# 1. Commit any remaining work
-./scripts/ai_commit.sh "type(scope): message"
-
-# 2. Log agent feedback
+# 1. Log agent feedback when a concrete process defect was found
 ./run.sh feedback log --agent <name>
 
-# 3. Auto-generate session summary
+# 2. Generate a session summary only when the task owns that state
 ./run.sh session summary
 
-# 4. Sync stale doc numbers
-./run.sh session sync
-
-# 5. Check evolution status (burn-in phase)
+# 3. Check evolution status
 ./run.sh evolve --status
 
-# 6. Update handoff docs
+# 4. Update handoff docs only when project state changed
 # Edit: docs/planning/next-session-brief.md
 # Edit: docs/TASKS.md
 
-# 7. Commit doc updates
-./scripts/ai_commit.sh "docs: session end"
+# 5. Run the quick gate once
+./run.sh check --quick
+
+# 6. Codex reviews and performs the scoped Git/GitHub closeout
 ```
 
 > **Why this matters:** Skipping session-end steps has historically caused 10+
@@ -131,7 +127,7 @@ Every new IS 456 function must pass the 9-step pipeline
 6. **API WIRE** → services/api.py
 7. **ENDPOINT** → FastAPI router
 8. **DOCUMENT** → docs updated
-9. **COMMIT** → via ai_commit.sh
+9. **CLOSEOUT** → Codex-managed commit, push, and PR update
 
 ### Quality gates between steps
 

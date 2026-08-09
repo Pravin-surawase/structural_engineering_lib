@@ -21,7 +21,6 @@ import traceback
 import uuid
 
 import jwt
-
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -41,6 +40,7 @@ from fastapi_app.routers import (
     health,
     imports,
     insights,
+    library_core,
     optimization,
     rebar,
     streaming,
@@ -57,12 +57,16 @@ API_TITLE = "Structural Engineering API"
 API_DESCRIPTION = """
 ## IS 456:2000 Compliant Structural Engineering Library
 
-This API provides comprehensive structural engineering calculations following
-the Indian Standard IS 456:2000 for reinforced concrete design.
+This API exposes the library's route-specific supported IS 456:2000 reinforced
+concrete calculations. Each result remains subject to the documented case
+boundary and qualified engineering review.
 
 ### Features
 
 - **Beam Design**: Flexure, shear, and combined design calculations
+- **Column Design**: Bounded rectangular short/long-column workflows
+- **Footing Design**: Isolated-footing checks and concentric load transfer
+- **Slab Design**: Bounded simply supported one-way slab strip
 - **Detailing**: Reinforcement layout, spacing, and development lengths
 - **Optimization**: Cost-optimized beam cross-section selection
 - **Smart Analysis**: AI-assisted design suggestions and insights
@@ -433,6 +437,10 @@ app.include_router(
 )
 app.include_router(
     insights.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    library_core.router,
     prefix=API_V1_PREFIX,
 )
 app.include_router(

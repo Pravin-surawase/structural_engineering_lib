@@ -15,7 +15,7 @@ Step 2: TRACE      → inspect the existing process and confirm the root cause
 Step 3: EXECUTE    → make the smallest complete correction
 Step 4: VERIFY     → narrow checks plus essential-only review
 Step 5: RECORD     → update only task-owned state and handoff records
-Step 6: COMMIT     → quick gate once, then ai_commit.sh
+Step 6: CLOSEOUT   → quick gate once, then Codex-managed Git/GitHub work
 ```
 
 ## Step 1: Scope
@@ -65,12 +65,11 @@ improvements. Do not add tests during review.
 - Update the brief only for a durable continuation or ownership handoff.
 - Do not create global log churn or a second docs commit by default.
 
-## Step 6: Commit
+## Step 6: Closeout
 
 ```bash
 ./run.sh check --quick
-./run.sh pr status
-./scripts/ai_commit.sh "type(scope): description"
+# Codex reviews, stages intended paths, commits, pushes, and creates/updates the PR.
 ```
 
 Reports: commit hash, branch, PR status, pipeline complete.

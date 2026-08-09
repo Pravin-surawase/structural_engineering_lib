@@ -47,7 +47,7 @@ tags: []
 ./scripts/worktree_manager.sh create AGENT_2
 cd worktree-AGENT_2-*
 # ... fixes tests ...
-../scripts/ai_commit.sh "test: fix exception types in 8 failing tests"
+# Return verified changes and suggested commit to the parent Codex task.
 python -m pytest  # ✅ All pass
 # Notifies you with handoff message
 ```
@@ -116,7 +116,7 @@ With MAIN agent, confirm:
 
 Read: `docs/git-workflow-ai-agents.md`
 
-Key rule: **Never run manual git commands.** Use workflow scripts only.
+Key rule: **Workers do not perform Git/GitHub closeout.** Return verified scope to the parent Codex task.
 
 ---
 
@@ -194,7 +194,7 @@ cd worktree-AGENT_NAME-*
 # ... edit files ...
 
 # 3. Commit locally (pre-commit hooks run automatically)
-../scripts/ai_commit.sh "feat: describe change"
+# Return verified changes and suggested commit to the parent Codex task.
 
 # 4. Run local checks
 cd Python && python -m pytest  # All tests
@@ -228,7 +228,7 @@ gh pr merge --squash
 ```bash
 # Background agent makes changes on main branch
 # ... edit docs/research/file.md ...
-./scripts/ai_commit.sh "docs: add research for topic X"
+# Codex reviews and commits the scoped research.
 
 # STOP - notify MAIN agent (no manual push)
 ```
@@ -259,7 +259,7 @@ gh pr merge --squash
 **For all changes:**
 ```bash
 # Let pre-commit hooks run automatically
-./scripts/ai_commit.sh "type: message"
+# Codex reviews and commits the scoped result.
 
 # Fix any reported issues before retry
 ```
@@ -280,7 +280,7 @@ gh pr merge --squash
 2. **Reproduce locally** with same command
 3. **Fix issue** in your branch
 4. **Re-run checks** locally before push
-5. **Push fix** with `./scripts/ai_commit.sh`
+5. **Return the verified fix** for Codex Git/GitHub closeout
 
 ### Always Monitor CI (Required)
 
@@ -505,7 +505,7 @@ See [Agent Collaboration Framework](agent-collaboration-framework.md) for detail
 cd Python
 python -m black .
 python -m ruff check --fix .
-./scripts/ai_commit.sh "type: message"  # Retry
+# Return the corrected diff to Codex for closeout.
 ```
 
 ### Issue: Test failures after merge
@@ -539,7 +539,7 @@ cat docs/TASKS.md
 cd worktree-AGENT_NAME-*
 
 # Make changes, then commit
-../scripts/ai_commit.sh "type: message"
+# Return the verified diff and suggested commit to the parent Codex task.
 
 # Run local checks
 cd Python

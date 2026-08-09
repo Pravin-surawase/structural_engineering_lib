@@ -23,10 +23,7 @@ from __future__ import annotations
 import pytest
 
 from structural_lib.codes.is456.column.long_column import design_long_column
-from structural_lib.core.data_types import (
-    ColumnClassification,
-    LongColumnResult,
-)
+from structural_lib.core.data_types import ColumnClassification, LongColumnResult
 from structural_lib.core.errors import DimensionError
 
 # ============================================================================
@@ -40,6 +37,7 @@ _BASE = dict(
     fy=415,
     Asc_mm2=3000,
     d_prime_mm=50,
+    l_unsupported_mm=5000,
 )
 
 
@@ -102,6 +100,27 @@ class TestSlenderSingleAxis:
         assert result.eadd_y_mm == pytest.approx(0.0)
         assert result.Max_kNm > 0
         assert result.May_kNm == pytest.approx(0.0)
+
+    def test_zero_end_moments_still_enforce_minimum_eccentricity(self):
+        """Cl 25.4: a slender member cannot return a zero design moment."""
+        result = design_long_column(
+            Pu_kN=800,
+            M1x_kNm=0,
+            M2x_kNm=0,
+            M1y_kNm=0,
+            M2y_kNm=0,
+            b_mm=300,
+            D_mm=600,
+            lex_mm=5000,
+            ley_mm=5000,
+            fck=25,
+            fy=415,
+            Asc_mm2=3600,
+            d_prime_mm=50,
+            l_unsupported_mm=5000,
+        )
+        assert result.Mux_design_kNm >= 800 * 20 / 1000
+        assert result.Muy_design_kNm >= 800 * 20 / 1000
 
     def test_slender_y_only(self):
         """IS 456 Cl 39.7: le_x/D = 5500/500 = 11.0 → SHORT on x.
@@ -429,6 +448,7 @@ class TestInputValidation:
                 fy=415,
                 Asc_mm2=3000,
                 d_prime_mm=50,
+                l_unsupported_mm=5000,
             )
 
     def test_zero_D_raises(self):
@@ -448,6 +468,7 @@ class TestInputValidation:
                 fy=415,
                 Asc_mm2=3000,
                 d_prime_mm=50,
+                l_unsupported_mm=5000,
             )
 
     def test_slenderness_exceeds_60_raises(self):
@@ -483,6 +504,7 @@ class TestInputValidation:
                 fy=415,
                 Asc_mm2=0,
                 d_prime_mm=50,
+                l_unsupported_mm=5000,
             )
 
 
