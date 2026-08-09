@@ -6,10 +6,10 @@ owner: Main Agent and repository owner
 created: 2026-08-09
 last_updated: 2026-08-09
 doc_type: spec
-baseline_commit: b1634a5f7f8d
+baseline_commit: d4eb9e9dda4a
 release_decision: v0.21.7 deferred
 target_version: v0.23.0 provisional
-current_blocker: Integrate the completed worktree, run final product UAT, and freeze exact artifact evidence
+current_blocker: Run final product UAT and freeze exact artifact evidence
 ---
 
 **Type:** Plan
@@ -113,13 +113,13 @@ approved or usable for engineering decisions.
 
 ### 2.2 Remaining closeout packets
 
-| Packet | Objective | Exit condition |
-|---|---|---|
-| C0 — Plan truth | Reconcile active plans/tasks with the implemented bounded scope | One authority, no stale active v0.23 tasks, exact next packet |
-| C1 — Git integration | Checkpoint intended remediation/product lanes, preserve automation commit `f812eb3f`, and synchronize `origin/main` without rebase/reset/stash | Reviewable commits, clean worktree, no automation work lost |
-| C2 — Final product UAT | Exercise supported Python, FastAPI, React batch/report, footing/slab, and export paths including unsafe negatives | Source-tree and live consumer outcomes agree; all canonical gates green |
-| C3 — Frozen artifact | Build clean wheel/sdist, inspect contents, record hashes, clean-install supported workflows and CLI | Exact artifact evidence is reproducible and bound to the frozen commit |
-| C4 — Evidence freeze | Assemble source IDs, units, benchmarks, limitations, unsafe cases, and unresolved holds without requesting sign-off | Owner declares all intended bounded work complete and freezes the review scope |
+| Packet | State | Objective | Exit condition |
+|---|---|---|---|
+| C0 — Plan truth | Complete | Reconcile active plans/tasks with the implemented bounded scope | One authority, no stale active v0.23 tasks, exact next packet |
+| C1 — Git integration | Complete at `d4eb9e9d` | Checkpoint intended remediation/product lanes, preserve automation commit `f812eb3f`, and synchronize `origin/main` without rebase/reset/stash | Reviewable commits, clean worktree, no automation work lost |
+| C2 — Final product UAT | Next | Exercise supported Python, FastAPI, React batch/report, footing/slab, and export paths including unsafe negatives | Source-tree and live consumer outcomes agree; all canonical gates green |
+| C3 — Frozen artifact | After C2 | Build clean wheel/sdist, inspect contents, record hashes, clean-install supported workflows and CLI | Exact artifact evidence is reproducible and bound to the frozen commit |
+| C4 — Evidence freeze | After C3 | Assemble source IDs, units, benchmarks, limitations, unsafe cases, and unresolved holds without requesting sign-off | Owner declares all intended bounded work complete and freezes the review scope |
 
 Only after C0-C4 are complete does the final qualified-engineering review
 begin. Merge, tag, TestPyPI/PyPI, GitHub Release, issue closure, and branch
@@ -1418,10 +1418,15 @@ FastAPI tests, 147 React tests, frontend lint/build, quick 9/9, full 29/29,
 audit 19/19, and health 100/100. A clean-source v0.23.0 wheel passed package
 version and CLI checks with excluded namespaces absent.
 
-The active sequence is C0 -> C1 -> C2 -> C3 -> C4. The branch must first
-integrate the completed dirty worktree and the separately landed automation
-commit `f812eb3f`; do not begin new calculation or multi-code work before C1.
-Professional review and publication actions remain deferred.
+C0 and C1 are complete. Product remediation is checkpointed at `2ff5a42a`,
+bounded closeout truth at `fbd24350`, and the separately landed automation
+commit `f812eb3f` is integrated without history rewriting at `d4eb9e9d`. The
+worktree is clean and both Node and Python runtime selectors are retained.
+
+C2 final product UAT is the next and only active packet, followed by C3 exact
+artifact freeze and C4 evidence freeze. Do not begin new calculation,
+multi-code, or excluded structural-system work. Professional review and
+publication actions remain deferred.
 
 ## 21. Final program acceptance checklist
 

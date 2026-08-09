@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-09 — bounded IS 456 closeout activated; C0 plan truth complete and C1 Git integration next
+**Updated:** 2026-08-09 — bounded IS 456 closeout active; C0/C1 complete and C2 final product UAT next
 
 ---
 
@@ -126,14 +126,14 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| LIB-IS456-V1 | Finish the bounded [IS 456 product milestone](planning/is456-library-first-master-plan.md) without expanding to multi-code or excluded structural systems | Main Agent + owner | 🔄 C0 plan truth complete; C1 Git integration next; final review deferred until C4 |
+| LIB-IS456-V1 | Finish the bounded [IS 456 product milestone](planning/is456-library-first-master-plan.md) without expanding to multi-code or excluded structural systems | Main Agent + owner | 🔄 C0/C1 complete; C2 final product UAT next; final review deferred until C4 |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-IS456-C1 | Create reviewable scoped checkpoints, preserve automation commit `f812eb3f`, and synchronize `origin/main` without history rewriting | Main Agent | 1 packet | P0 | 📋 NEXT |
-| LIB-IS456-C2 | Run final source/live product UAT for supported Python, FastAPI, React batch/report, footing/slab, and export paths | Main Agent | 1 packet | P0 | ⏸ AFTER C1 |
+| LIB-IS456-C1 | Create reviewable scoped checkpoints, preserve automation commit `f812eb3f`, and synchronize `origin/main` without history rewriting | Main Agent | 1 packet | P0 | ✅ DONE `d4eb9e9d` |
+| LIB-IS456-C2 | Run final source/live product UAT for supported Python, FastAPI, React batch/report, footing/slab, and export paths | Main Agent | 1 packet | P0 | 📋 NEXT |
 | LIB-IS456-C3/C4 | Freeze exact wheel/sdist evidence and assemble the final bounded-scope evidence packet | Main Agent + owner | 2 packets | P0 | ⏸ AFTER C2 |
 | LIB-IS456-FINAL-REVIEW | Review only after C4 and owner scope freeze; no engineering-usability claim before it | qualified structural engineer | final gate | P0 | ⏸ DEFERRED |
 

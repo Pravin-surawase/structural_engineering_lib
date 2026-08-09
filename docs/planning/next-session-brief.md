@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-09
-- Focus: LIB-IS456-C1 Git integration for the bounded IS 456 product milestone
+- Focus: LIB-IS456-C2 final product UAT for the bounded IS 456 product milestone
 <!-- HANDOFF:END -->
 
 **Current branch:** `codex/release-v0.23.0`
-**Current commit:** `b1634a5f`
+**Integrated baseline:** `d4eb9e9d`
 **Plan:** [is456-library-first-master-plan.md](is456-library-first-master-plan.md)
 
 ## Required Reading
@@ -26,9 +26,10 @@
 
 T0 and R1-R8 are implemented; do not repeat them. The owner selected the
 bounded IS 456 product milestone, not the v0.24/v1.0 multi-code roadmap. C0
-plan reconciliation is complete. C1 must turn the current mixed worktree into
-reviewable scoped checkpoints and integrate the separately landed automation
-commit `f812eb3f` without reset, rebase, stash, or lost work.
+plan reconciliation and C1 Git integration are complete. Product remediation
+is checkpointed at `2ff5a42a`, closeout truth at `fbd24350`, and automation
+commit `f812eb3f` is integrated at `d4eb9e9d` without history rewriting or
+lost work.
 
 Until that final qualified review is recorded, the repository and every
 candidate artifact are development software: they are not approved or usable
@@ -77,14 +78,13 @@ migration/research/ACI/EC2 files; the release gate now rejects that content.
 
 ## Next actions
 
-1. Inspect `git status --short` and preserve the concurrent governance/model
-   policy lanes. Nothing is staged or committed.
-2. Preserve the automation-owned paths from `f812eb3f`; separate product,
-   remediation, policy, terminal, and documentation checkpoints deliberately.
-3. Synchronize `origin/main` only after a clean checkpoint and inspect every
-   overlap. Do not rewrite history or discard uncommitted work.
-4. Continue in order: C2 final product UAT, C3 frozen artifacts, C4 evidence
-   freeze, then final qualified review. Publication remains separately gated.
+1. Run C2 source-tree and live product UAT for the explicitly supported beam,
+   column, isolated-footing, one-way slab, bounded two-way slab, batch/report,
+   API-envelope, React, and export paths, including unsafe negative outcomes.
+2. Record exact commands and outcomes without expanding to multi-code or
+   excluded structural systems.
+3. Continue only after C2 passes: C3 frozen artifacts, C4 evidence freeze,
+   then final qualified review. Publication remains separately gated.
 
 ## Terminal issues recorded
 
@@ -95,3 +95,5 @@ migration/research/ACI/EC2 files; the release gate now rejects that content.
 - An unmatched zsh release-doc glob failed before execution; explicit paths
   and `git diff --name-only | rg` worked.
 - zsh reserves `status`; the deliberate release-failure proof used `rc`.
+- Assigning to zsh-reserved `path` removed command lookup during Git
+  classification; rerunning with `file_path` restored normal execution.

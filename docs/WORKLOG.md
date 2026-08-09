@@ -331,3 +331,4 @@ tags: []
 | 2026-08-09 | LIB-PRO-R1-R8 | Closed the software remediation packets across finite boundaries, batch/report truth, footing/slab contracts, semantic/API manifests, 422 envelopes, and exact clean-wheel evidence; retained the release hold | — |
 | 2026-08-09 | LIB-PRO-GATE | Deferred qualified engineering review until the owner declares all intended work complete; prohibited engineering-usability claims during development and retained the release hold | — |
 | 2026-08-09 | LIB-IS456-C0 | Chose the bounded IS 456 product milestone, made the library-first plan authoritative, converted remediation to an evidence ledger, excluded v0.24+ scope, and defined C1-C4 closeout packets | — |
+| 2026-08-09 | LIB-IS456-C1 | Checkpointed remediation and plan truth, preserved automation commit `f812eb3f`, reconciled Node/Python runtime controls and generated indexes, and integrated `origin/main` without reset, rebase, stash, or lost work | d4eb9e9d |
