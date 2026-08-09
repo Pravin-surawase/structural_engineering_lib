@@ -12,10 +12,10 @@
 
 ## Testing
 
-- [ ] Python: `.venv/bin/pytest Python/tests/ -v`
-- [ ] React: `cd react_app && npm run build`
-- [ ] Docker: `docker compose up --build` (if FastAPI changed)
-- [ ] VBA: ran relevant tests in `VBA/Tests/` (manual, if VBA changed)
+- [ ] Targeted checks for the changed behavior
+- [ ] Repository quick gate: `./run.sh check --quick`
+- [ ] React validation: `./run.sh frontend check` (if the workbench changed)
+- [ ] Full gate: `./run.sh check` (when required by scope/risk)
 
 ## Checklist
 
@@ -24,4 +24,4 @@
 - [ ] Units explicit in all parameters (mm, N/mm², kN, kNm)
 - [ ] No duplicate hooks/components/routes (searched before coding)
 - [ ] Docs updated if public API changed
-- [ ] Python + VBA parity maintained (if formula changed)
+- [ ] Supported-case, limitation, and professional-review claims remain accurate

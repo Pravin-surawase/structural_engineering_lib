@@ -4,16 +4,18 @@ Thanks for helping improve **structural_engineering_lib**.
 
 ## Quick Start
 
-### Python
-- Install (editable) with dev tools:
-  - `cd Python`
-  - `python3 -m pip install -e ".[dev]"`
-- Run tests:
-  - `python3 -m pytest -q`
+```bash
+python3.11 -m venv .venv
+.venv/bin/python -m pip install --upgrade pip
+.venv/bin/python -m pip install -e "Python/[dev]"
 
-### VBA
-- VBA modules live in `VBA/Modules/`.
-- Tests live in `VBA/Tests/` and are currently **manual-run**.
+./run.sh session start
+./run.sh check --quick
+```
+
+Run focused tests while iterating. Use `./run.sh test`,
+`./run.sh test --fastapi`, or `./run.sh test --react` for the maintained test
+surfaces, and run the full gate once when the scope requires it.
 
 ## Workflow
 
@@ -24,8 +26,8 @@ Thanks for helping improve **structural_engineering_lib**.
 - Stop on unclear Git state; do not automate recovery or rewrite history.
 
 ### For Repository Maintainer (Pravin)
-- **Direct push** to main allowed for routine changes (docs, fixes, tests, minor updates)
-- **Use PRs** for significant features, breaking changes, or when you want self-review
+- Reserve direct pushes to `main` for explicitly chosen, very small maintainer changes.
+- Use a branch and pull request for product, behavior, workflow, or multi-file changes.
 - CI runs on every push — watch for failures and fix immediately
 - Rule of thumb: <20 lines and low-risk → direct push; >20 lines or risky → use PR
 
@@ -236,7 +238,7 @@ External contributors can request a release by opening an issue titled `release:
 When filing a bug, include:
 - What you expected vs what happened
 - Input parameters (b, D, span, fck, fy, Mu/Vu)
-- Whether you used Python or Excel/VBA
+- Whether you used Python, CLI, FastAPI, or the React workbench
 - Any files (CSV) you can share
 
 ## Code of Conduct

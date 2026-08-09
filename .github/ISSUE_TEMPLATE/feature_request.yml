@@ -15,7 +15,7 @@ body:
     attributes:
       label: What problem are you trying to solve?
       description: Clear description of the use case or pain point
-      placeholder: I need to design beams with torsion, but the library doesn't support it...
+      placeholder: I need a clearer way to compare governing results across a large imported batch...
     validations:
       required: true
 
@@ -25,10 +25,10 @@ body:
       label: Proposed Solution
       description: How you think this should work
       placeholder: |
-        Add a `design_torsion()` function that calculates:
-        - Torsional shear stress (τt)
-        - Equivalent shear (Ve = Vu + 1.6*Tu/b)
-        - Required transverse reinforcement
+        Add a filtered comparison view that:
+        - groups members by story
+        - exposes governing utilization
+        - exports the selected comparison set
     validations:
       required: true
 
@@ -38,10 +38,13 @@ body:
       label: Component
       description: Which part of the library should this affect?
       options:
-        - Core library (structural_lib)
-        - Excel/VBA parity
-        - CLI tool
-        - DXF export
+        - Python library (structural_lib)
+        - Command-line interface
+        - FastAPI / WebSocket / SSE
+        - React workbench
+        - Import / batch workflow
+        - 3D visualization
+        - BBS / DXF / reports / BOQ
         - Documentation
         - Other
     validations:
@@ -88,7 +91,6 @@ body:
       value: |
         - [ ] Feature implemented in Python library
         - [ ] Tests added (coverage maintained)
-        - [ ] VBA parity implemented (if applicable)
         - [ ] Documentation updated
         - [ ] Example added
     validations:

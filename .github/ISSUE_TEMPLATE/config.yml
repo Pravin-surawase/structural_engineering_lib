@@ -1,11 +1,14 @@
 blank_issues_enabled: false
 contact_links:
   - name: 📚 Documentation
-    url: https://github.com/Pravin-surawase/structural_engineering_lib/tree/main/docs
-    about: Read the documentation for usage guides and API reference
+    url: https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/README.md
+    about: Browse user guides, API reference, evidence, and contributor docs
+  - name: 🖥️ Product Tour
+    url: https://github.com/Pravin-surawase/structural_engineering_lib/blob/main/docs/getting-started/product-tour.md
+    about: See the real import, 3D review, member inspection, and dashboard workflow
   - name: 💬 Discussions
     url: https://github.com/Pravin-surawase/structural_engineering_lib/discussions
     about: Ask questions and share ideas with the community
-  - name:  PyPI Package
+  - name: 📦 PyPI Package
     url: https://pypi.org/project/structural-lib-is456/
     about: View package on PyPI
