@@ -44,9 +44,11 @@ response generation, and use the snapshot to detect unintended contract drift.
 
 ## Authentication boundary
 
-Local development currently defaults to open mode. JWT authentication is
-available, but callers must not assume it is enabled merely because a JWT secret
-exists.
+Local development defaults to open mode. Production-like profiles
+(`production`, `prod`, or `staging`) fail during application construction unless
+`AUTH_ENABLED=true` and `JWT_SECRET_KEY` is a non-placeholder value of at least
+32 characters. The production Compose profile declares both requirements;
+direct local development keeps the current open default.
 
 When authentication is enabled, send:
 
@@ -54,9 +56,8 @@ When authentication is enabled, send:
 Authorization: Bearer <jwt-token>
 ```
 
-Do not place the default Docker/local configuration directly on the public
-internet. The production fail-closed profile is tracked separately in
-`ADOPT-001` Packet D.
+Do not place the local development configuration directly on the public
+internet.
 
 ## Response envelope
 

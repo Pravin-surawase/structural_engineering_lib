@@ -6,7 +6,21 @@ Settings can be overridden via environment variables or .env file.
 """
 
 from functools import lru_cache
+from pydantic import model_validator
 from pydantic_settings import BaseSettings
+
+
+_PRODUCTION_ENVIRONMENTS = frozenset({"production", "prod", "staging"})
+_INSECURE_JWT_SECRET_MARKERS = ("change", "dev-secret")
+MINIMUM_JWT_SECRET_LENGTH = 32
+
+
+def is_insecure_jwt_secret(secret: str) -> bool:
+    """Return whether a JWT secret is empty, short, or a known placeholder."""
+    normalized = secret.strip()
+    return len(normalized) < MINIMUM_JWT_SECRET_LENGTH or any(
+        marker in normalized.lower() for marker in _INSECURE_JWT_SECRET_MARKERS
+    )
 
 
 class Settings(BaseSettings):
@@ -25,6 +39,11 @@ class Settings(BaseSettings):
     debug: bool = False
     reload: bool = False
 
+    # Deployment Profile
+    # Development and tests keep their existing unauthenticated local defaults.
+    # Production-like profiles must opt into authentication below.
+    environment: str = "development"
+
     # CORS Settings
     cors_origins: list[str] = [
         "http://localhost:3000",
@@ -42,8 +61,9 @@ class Settings(BaseSettings):
     ]
 
     # Authentication
-    # WARNING: Set AUTH_ENABLED=true in production deployments
+    # Production-like environments require this to be True.
     auth_enabled: bool = False
+    jwt_secret_key: str = "dev-secret-key-change-in-production"
 
     # Rate Limiting
     rate_limit_per_minute: int = 120  # Global API rate limit per client IP
@@ -57,6 +77,25 @@ class Settings(BaseSettings):
 
     # Logging
     log_level: str = "INFO"
+
+    @model_validator(mode="after")
+    def validate_production_security(self) -> "Settings":
+        """Refuse public deployment profiles without usable authentication."""
+        if self.environment.lower() not in _PRODUCTION_ENVIRONMENTS:
+            return self
+
+        if not self.auth_enabled:
+            raise ValueError(
+                "AUTH_ENABLED=true is required when ENVIRONMENT is production, prod, or staging."
+            )
+
+        if is_insecure_jwt_secret(self.jwt_secret_key):
+            raise ValueError(
+                "JWT_SECRET_KEY must be non-default and at least 32 characters "
+                "when ENVIRONMENT is production, prod, or staging."
+            )
+
+        return self
 
     class Config:
         """Pydantic settings configuration."""
