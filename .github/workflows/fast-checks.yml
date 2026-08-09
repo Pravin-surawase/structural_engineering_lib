@@ -1,62 +1,53 @@
-name: Fast PR Checks
+name: PR Validation
 
 on:
   pull_request:
+    branches: [main]
   push:
-    branches: [ main ]
-
-# Quick checks for PRs - run only essential validations
-# Full test matrix runs after merge to main
-#
-# EFFICIENCY OPTIMIZATION (added 2026-01-24):
-# - Uses dorny/paths-filter to detect what changed
-# - Docs-only changes skip Python tests
-# - Python changes skip doc checks (separate workflow)
-# - Keeps PR feedback under 3-5 minutes
+    branches: [main]
 
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  # Detect what files changed to optimize job selection
   changes:
     name: Detect Changes
     runs-on: ubuntu-latest
     outputs:
       python: ${{ steps.filter.outputs.python }}
-      docs: ${{ steps.filter.outputs.docs }}
-      scripts: ${{ steps.filter.outputs.scripts }}
       fastapi: ${{ steps.filter.outputs.fastapi }}
       react: ${{ steps.filter.outputs.react }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: dorny/paths-filter@v4
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Classify changed paths
+        uses: dorny/paths-filter@v4
         id: filter
         with:
           filters: |
             python:
               - 'Python/**'
-              - 'pyproject.toml'
-              - 'setup.cfg'
-            docs:
-              - 'docs/**'
-              - '*.md'
-              - 'agents/**'
-            scripts:
-              - 'scripts/**'
+              - 'Python/pyproject.toml'
             fastapi:
               - 'fastapi_app/**'
-              - 'requirements.txt'
+              - 'requirements*.txt'
+              - 'Dockerfile.fastapi'
+              - 'docker-compose*.yml'
             react:
               - 'react_app/**'
+              - '**/package-lock.json'
 
-  # Python validation - only when Python code changes
   python-validation:
     name: Python Validation
     needs: changes
     if: needs.changes.outputs.python == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -64,57 +55,44 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@v6
         with:
-          python-version: "3.11"
-          cache: 'pip'
+          python-version: '3.11'
+          cache: pip
           cache-dependency-path: Python/pyproject.toml
 
-      - name: Install package (dev)
-        working-directory: Python
+      - name: Install package
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[dev]"
+          python -m pip install -e 'Python/[dev]'
 
-      - name: Format check (black)
-        working-directory: Python
-        run: python -m black --check .
-
-      - name: Lint check (ruff)
-        working-directory: Python
-        run: python -m ruff check .
-
-      - name: Type check (mypy)
-        working-directory: Python
-        run: python -m mypy
-
-      - name: Contract tests (breaking change detection)
-        working-directory: Python
-        run: python -m pytest tests/integration/test_contracts.py -m contract -v
-
-      - name: Core tests (fast subset)
-        working-directory: Python
-        run: python -m pytest tests/integration/test_flexure_edges_additional.py tests/unit/test_shear.py tests/unit/test_detailing.py -v --strict-markers
-
-      - name: Code quality checks
+      - name: Format and lint
         run: |
-          python scripts/check_type_annotations.py --fail-threshold 50 --json > /dev/null || \
-            (echo "❌ Type annotation rate below 50%" && exit 1)
-          python scripts/check_circular_imports.py || \
-            (echo "❌ Circular imports detected" && exit 1)
-          python scripts/check_performance_issues.py || true
-          echo "✅ Code quality checks passed"
+          python -m black --check Python
+          python -m ruff check Python
 
-      - name: Governance structure gate (stub-only root modules)
+      - name: Type check
+        run: python -m mypy Python/structural_lib
+
+      - name: Contract and core tests
         run: |
+          python -m pytest Python/tests/integration/test_contracts.py -m contract -v
+          python -m pytest \
+            Python/tests/integration/test_flexure_edges_additional.py \
+            Python/tests/unit/test_shear.py \
+            Python/tests/unit/test_detailing.py \
+            -v --strict-markers
+
+      - name: Architecture and code-quality policy
+        run: |
+          python scripts/check_type_annotations.py --fail-threshold 50 --json > /dev/null
+          python scripts/check_circular_imports.py
           python scripts/check_governance.py --structure --json > /tmp/governance-structure.json
-          echo "✅ Governance structure gate passed"
 
-  # FastAPI validation - only when FastAPI code changes
   fastapi-validation:
     name: FastAPI Validation
     needs: changes
     if: needs.changes.outputs.fastapi == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -122,103 +100,39 @@ jobs:
       - name: Set up Python 3.11
         uses: actions/setup-python@v6
         with:
-          python-version: "3.11"
-          cache: 'pip'
-          cache-dependency-path: Python/pyproject.toml
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: |
+            Python/pyproject.toml
+            requirements*.txt
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e "Python/[dev]"
-          python -m pip install fastapi uvicorn httpx websockets sse-starlette PyJWT[crypto] pytest-asyncio python-multipart pydantic-settings
+          python -m pip install -e 'Python/[dev]'
+          python -m pip install -r requirements.txt
 
-      - name: Format check (black)
-        run: python -m black --check fastapi_app/
-
-      - name: Lint check (ruff)
-        run: python -m ruff check fastapi_app/
-
-      - name: Type check (mypy)
-        run: python -m mypy fastapi_app/ --ignore-missing-imports || echo "⚠️ mypy has warnings (non-blocking)"
-
-      - name: Run FastAPI tests
-        run: python -m pytest fastapi_app/tests/ -v --tb=short
-
-      - name: Security checks
+      - name: Format and lint
         run: |
-          python -m bandit -r fastapi_app/ -ll || true
-          echo "✅ FastAPI security scan complete"
+          python -m black --check fastapi_app
+          python -m ruff check fastapi_app
 
-      - name: API contract tests
+      - name: FastAPI tests
+        run: python -m pytest fastapi_app/tests -v --tb=short
+
+      - name: API and deployment contracts
         run: |
-          if [ -f "scripts/validate_api_contracts.py" ]; then
-            python scripts/validate_api_contracts.py || true
-          fi
-          echo "✅ FastAPI validation passed"
+          python scripts/validate_api_contracts.py
+          python scripts/check_fastapi_issues.py
+          python scripts/check_docker_config.py
+          python scripts/check_openapi_snapshot.py
 
-      - name: API performance benchmarks
-        run: |
-          python scripts/benchmark_api.py --quick --threshold 50
-          echo "✅ FastAPI performance benchmarks passed"
-
-  # Doc validation - only when docs change
-  docs-validation:
-    name: Docs Validation
-    needs: changes
-    if: needs.changes.outputs.docs == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.11"
-
-      - name: Doc checks (parallel)
-        run: |
-          python scripts/check_doc_versions.py --ci &
-          python scripts/check_tasks_format.py &
-          python scripts/check_api.py --sync &
-          python scripts/generate_api_manifest.py --check &
-          python scripts/check_links.py &
-          wait
-
-      - name: Governance checks
-        run: |
-          python scripts/check_governance.py
-
-  # Scripts validation - only when scripts change
-  scripts-validation:
-    name: Scripts Validation
-    needs: changes
-    if: needs.changes.outputs.scripts == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 6
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.11"
-
-      - name: Scripts checks
-        run: |
-          python scripts/check_scripts_index.py
-          python -m pip install --upgrade pip pytest
-          python -m pytest tests/integration/test_migration_scripts.py -q
-
-  # React validation - only when React code changes
   react-validation:
     name: React Validation
     needs: changes
     if: needs.changes.outputs.react == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -227,57 +141,128 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '24'
-          cache: 'npm'
-          cache-dependency-path: 'react_app/package-lock.json'
+          cache: npm
+          cache-dependency-path: react_app/package-lock.json
 
       - name: Install dependencies
         working-directory: react_app
         run: npm ci
 
-      - name: Lint
+      - name: Lint, build, and test
         working-directory: react_app
-        run: npm run lint
+        run: |
+          npm run lint
+          npm run build
+          npx vitest run
 
-      - name: Type check and Build
-        working-directory: react_app
-        run: npm run build
-
-      - name: Run tests
-        working-directory: react_app
-        run: npx vitest run
-
-  # Always-run minimal check (for status reporting)
-  quick-validation:
-    name: Quick Validation (Python 3.11 only)
-    needs: changes
-    # Run if nothing specific triggered, or as a safety net
-    if: |
-      needs.changes.outputs.python != 'true' &&
-      needs.changes.outputs.docs != 'true' &&
-      needs.changes.outputs.scripts != 'true' &&
-      needs.changes.outputs.fastapi != 'true' &&
-      needs.changes.outputs.react != 'true'
+  repository-validation:
+    name: Repository Validation
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 6
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-      - name: Minimal validation
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: requirements-lock.txt
+
+      - name: Install validation dependencies
+        run: python -m pip install pytest PyYAML
+
+      - name: Validate YAML syntax
         run: |
-          echo "✅ No code/docs changes detected"
-          echo "📝 Running minimal checks..."
-          # Just verify repo is healthy
-          python --version
-          test -f README.md
-          echo "✅ Minimal validation passed"
+          python - <<'PY'
+          from pathlib import Path
+          import yaml
 
-  full-tests-notification:
-    name: Full Test Info
+          for path in sorted(Path('.').rglob('*.yml')) + sorted(Path('.').rglob('*.yaml')):
+              if any(part in {'.venv', 'node_modules'} for part in path.parts):
+                  continue
+              with path.open(encoding='utf-8') as stream:
+                  yaml.safe_load(stream)
+              print(path)
+          PY
+
+      - name: Validate repository policy
+        run: |
+          python scripts/check_doc_versions.py --ci
+          python scripts/check_tasks_format.py
+          python scripts/check_links.py
+          python scripts/check_scripts_index.py
+          python scripts/validate_script_refs.py
+          python scripts/check_token_efficiency.py
+          python scripts/check_architecture_boundaries.py
+          python scripts/skill_tiers.py validate
+
+      - name: Validate maintenance scripts
+        run: |
+          bash -n scripts/safe_push.sh
+          bash -n scripts/ai_commit.sh
+          bash -n scripts/create_task_pr.sh
+          bash -n scripts/finish_task_pr.sh
+          bash -n scripts/validate_git_state.sh
+          bash -n scripts/recover_git_state.sh
+          python -m pytest tests/integration/test_migration_scripts.py -q
+
+  pr-gate:
+    name: PR Gate
+    if: always()
+    needs:
+      - changes
+      - python-validation
+      - fastapi-validation
+      - react-validation
+      - repository-validation
     runs-on: ubuntu-latest
     steps:
-      - name: Info
+      - name: Verify every applicable validation
+        env:
+          CHANGES_RESULT: ${{ needs.changes.result }}
+          PYTHON_CHANGED: ${{ needs.changes.outputs.python }}
+          PYTHON_RESULT: ${{ needs.python-validation.result }}
+          FASTAPI_CHANGED: ${{ needs.changes.outputs.fastapi }}
+          FASTAPI_RESULT: ${{ needs.fastapi-validation.result }}
+          REACT_CHANGED: ${{ needs.changes.outputs.react }}
+          REACT_RESULT: ${{ needs.react-validation.result }}
+          REPOSITORY_RESULT: ${{ needs.repository-validation.result }}
         run: |
-          echo "✅ Quick checks passed!"
-          echo "📝 Full test matrix (Python 3.11-3.12) will run after merge to main"
-          echo "⚡ This workflow optimizes PR feedback speed"
+          failed=0
+
+          require_success() {
+            local name="$1"
+            local result="$2"
+            if [[ "$result" != 'success' ]]; then
+              echo "ERROR: $name concluded '$result'"
+              failed=1
+            fi
+          }
+
+          require_component() {
+            local name="$1"
+            local changed="$2"
+            local result="$3"
+            if [[ "$changed" == 'true' ]]; then
+              require_success "$name" "$result"
+            elif [[ "$result" != 'skipped' ]]; then
+              echo "ERROR: $name should be skipped for this change set, got '$result'"
+              failed=1
+            fi
+          }
+
+          require_success 'Detect Changes' "$CHANGES_RESULT"
+          require_success 'Repository Validation' "$REPOSITORY_RESULT"
+          require_component 'Python Validation' "$PYTHON_CHANGED" "$PYTHON_RESULT"
+          require_component 'FastAPI Validation' "$FASTAPI_CHANGED" "$FASTAPI_RESULT"
+          require_component 'React Validation' "$REACT_CHANGED" "$REACT_RESULT"
+
+          if [[ "$failed" -ne 0 ]]; then
+            exit 1
+          fi
+
+          echo 'All required and applicable validation jobs passed.'
