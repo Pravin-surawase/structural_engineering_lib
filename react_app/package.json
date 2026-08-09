@@ -1,7 +1,7 @@
 {
   "name": "react_app",
   "private": true,
-  "version": "0.21.6",
+  "version": "0.23.0",
   "type": "module",
   "engines": {
     "node": "24.x",

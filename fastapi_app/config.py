@@ -14,11 +14,13 @@ class Settings(BaseSettings):
 
     # API Configuration
     api_title: str = "Structural Engineering API"
-    api_version: str = "0.21.6"
+    api_version: str = "0.23.0"
     api_prefix: str = "/api/v1"
 
     # Server Configuration
-    host: str = "0.0.0.0"
+    # Keep local/library execution private by default. Container entrypoints opt in
+    # to external binding explicitly with ``--host 0.0.0.0``.
+    host: str = "127.0.0.1"
     port: int = 8000
     debug: bool = False
     reload: bool = False

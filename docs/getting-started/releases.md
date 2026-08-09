@@ -78,6 +78,33 @@ Use workflow_dispatch with `testpypi` target:
 
 ---
 
+## v0.23.0 — Supported IS 456 RC Core (2026-08-09)
+
+**Status:** 🟡 Prepared on `codex/release-v0.23.0`; not tagged or published
+**Source basis:** IS 456:2000 consolidated through Amendment 5, reaffirmed
+2021, with Amendment 6 (June 2024) reviewed by route
+**Scope:** Case-qualified beam, rectangular-column, isolated-footing, and solid
+slab workflows; not complete IS 456 coverage or professional approval
+
+**Highlights:**
+- Correct two-axis column slenderness and minimum-eccentricity enforcement.
+- Explicit isolated-footing bearing and dowel load transfer.
+- Simply supported one-way slab design/detailing and one accepted-coefficient
+  interior two-way slab flexure case.
+- 116-symbol public service manifest and 62 FastAPI HTTP endpoints.
+- Metadata-only public clause registry with protected sources excluded.
+- Exact-artifact hashes, inventories, clean-install UAT, SBOM, and Trusted
+  Publishing gates in the release workflow.
+- Native Codex Git/GitHub workflow with unsafe custom lifecycle wrappers and
+  enforcement hooks retired.
+
+**Verification:** 5,273 release-preflight tests passed, 3 skipped, 6 deselected;
+React 146 tests/lint/build passed; canonical gate 29/29; PR #693 gate passed.
+
+**Full changelog:** See [CHANGELOG.md](../../CHANGELOG.md#0230--2026-08-09)
+
+---
+
 ## v0.21.6 — API Quality & Introspection (2026-04-07)
 
 **Highlights:**

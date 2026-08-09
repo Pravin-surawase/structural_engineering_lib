@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-09 — Packet A is merged with `PR Gate` required; Packet B reduces the workflow surface from 17 files to four on `task/MAINT-008-B`
+**Updated:** 2026-08-09 — MAINT-008 and LIB-IS456-V1 are merged; v0.23.0 release preparation is active
 
 ---
 
@@ -28,7 +28,7 @@
 | MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | ✅ DONE | Live import→design→3D→dashboard→export flow and byte-level artifacts pass; v0.21.7 preflight is ready |
 | MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | User-selected parent model is preserved; Luna/Terra advisory routing, bounded worker packets, two-subagent cap, and quick-gate check pass |
 | MAINT-007 | Refresh onboarding, agents, tools, and usage telemetry | P1 | ✅ DONE | Terminal-only PR status, current bootstrap/counts, complete 14-skill discovery, honest usage checkpoints, and focused regressions pass |
-| MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | 🔄 IN PROGRESS | Skills and Packet A are merged with `PR Gate` required; Packet B's four-lane workflow consolidation is implemented for review |
+| MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | ✅ DONE | Four-lane workflow, truthful `PR Gate`, native Codex Git/GitHub lifecycle, and retired unsafe wrappers are merged |
 
 ### Maintenance evidence captured 2026-08-07
 
@@ -68,7 +68,7 @@
 
 ## Current Release
 
-| **Current** | v0.21.6 | ✅ COMPLETE → micro-releases v0.21.7–v0.21.8 → v0.22.0 Stabilization |
+| **Current** | v0.23.0 | ✅ COMPLETE → micro-releases v0.21.7–v0.21.8 → v0.22.0 Stabilization |
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
 - **Target:** v0.21.7 next, then v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)

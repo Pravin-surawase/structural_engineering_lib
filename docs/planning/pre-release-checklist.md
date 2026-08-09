@@ -9,12 +9,12 @@
 
 ## Current State
 
-Installed metadata version: 0.21.6
+Installed metadata version: 0.23.0
 
-- **Branch:** `task/LIB-IS456-V1`
-- **Draft PR:** #693; PR Gate run `31321772342` green for implementation commit `301ddec7`
-- **Release target:** provisional v0.23.0; final version is owner-only
-- **Publication state:** HOLD until CI artifact evidence and owner approval
+- **Branch:** `codex/release-v0.23.0`
+- **Implementation PR:** #693 merged at `cc99e610`
+- **Release target:** v0.23.0 selected; publication paused by the owner before tag or upload
+- **Publication state:** In progress; exact CI artifact evidence and post-PyPI UAT pending
 
 ## Beta Readiness Checklist
 
@@ -39,7 +39,7 @@ Installed metadata version: 0.21.6
 - [ ] CI-built artifact manifest, hashes, inventories and SBOM reviewed
 - [ ] Exact CI-built wheel UAT evidence reviewed
 - [ ] Owner approves TestPyPI upload, if desired
-- [ ] Owner approves final version, tag and production PyPI publication
+- [ ] Owner re-authorizes the final tag and production PyPI publication
 
 ### Required Before 1.0
 

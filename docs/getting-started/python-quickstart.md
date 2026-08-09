@@ -37,7 +37,7 @@ python3 -m pip install structural-lib-is456
 python3 -m pip install "structural-lib-is456[dxf]"
 
 # Pin to a specific release
-python3 -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.21.6#subdirectory=Python"
+python3 -m pip install "structural-lib-is456 @ git+https://github.com/Pravin-surawase/structural_engineering_lib.git@v0.23.0#subdirectory=Python"
 ```
 
 Engineering note: this library is a calculation aid; final responsibility for code-compliant design and detailing remains with the qualified engineer.

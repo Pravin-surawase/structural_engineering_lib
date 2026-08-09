@@ -13,9 +13,9 @@ tags: []
 **Audience:** Developers
 **Status:** Development Preview — Supported Cases Only
 **Importance:** Critical
-**Document Version:** 0.21.6
+**Document Version:** 0.23.0
 **Created:** 2025-01-01
-**Last Updated:** 2026-04-06<br>
+**Last Updated:** 2026-08-09<br>
 
 ---
 

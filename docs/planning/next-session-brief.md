@@ -7,7 +7,7 @@
 - Focus: Review Packet B's four-workflow consolidation and live `PR Gate`; no release or production publication
 <!-- HANDOFF:END -->
 
-**Last Updated:** 2026-08-09
+**Last Updated:** 2026-08-09<br>
 **Current Session:** Packet A is merged at `ce3a2c5b` with ruleset `11390214`
 requiring `PR Gate`; Packet B is implemented on `task/MAINT-008-B`
 
@@ -93,7 +93,7 @@ Full evidence and accepted risks are in
 
 ## Current Version State
 
-| **Current** | v0.21.6 | Released to PyPI |
+| **Current** | v0.23.0 | Released to PyPI |
 | **Next** | v0.21.7 | Security Hardening — in progress (4/14 tasks done) |
 
 - **v0.21.5** = last PyPI release (tag: v0.21.5)

@@ -261,7 +261,7 @@ def _print_checklist(version: str) -> None:
     print()
     print("Manual steps (you must do these):")
     print(
-        "  [ ] 1. Edit CHANGELOG.md — Add release notes under [Unreleased] → [{version}]"
+        f"  [ ] 1. Edit CHANGELOG.md — Add release notes under [Unreleased] → [{version}]"
     )
     print("  [ ] 2. Edit docs/getting-started/releases.md — Add release entry")
     print("  [ ] 3. Review changes: git diff")
@@ -335,6 +335,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         branch != "main"
         and not branch.startswith("release/")
         and not branch.startswith("task/")
+        and not branch.startswith("codex/")
     ):
         print(
             f"  WARNING: On branch '{branch}', expected 'main' or release/task branch"
@@ -408,12 +409,18 @@ def cmd_run(args: argparse.Namespace) -> int:
     react_dir = REPO_ROOT / "react_app"
     if react_dir.exists():
         print("  Checking React build...")
+        node_env, node_version = _node_runtime_env()
+        if node_env is None:
+            print(f"  ERROR: {node_version}")
+            return 1
+        node_env["NODE_OPTIONS"] = "--max-old-space-size=1536"
+        print(f"  → Selected {node_version}")
         try:
             react_result = _run_with_timeout(
                 ["npm", "run", "build"],
                 timeout=300,
                 cwd=react_dir,
-                env={**os.environ, "NODE_OPTIONS": "--max-old-space-size=1536"},
+                env=node_env,
             )
         except subprocess.TimeoutExpired:
             print("  ERROR: React build TIMED OUT (>300s)")
@@ -453,7 +460,7 @@ def cmd_run(args: argparse.Namespace) -> int:
     if not args.no_open and not dry_run:
         print("Opening files for editing...")
         _open_file_in_editor(REPO_ROOT / "CHANGELOG.md")
-        _open_file_in_editor(REPO_ROOT / "docs" / "releases.md")
+        _open_file_in_editor(RELEASES)
         print()
 
     if dry_run:
