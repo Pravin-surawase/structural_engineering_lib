@@ -34,6 +34,7 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-08-10 | ADOPT-001 | Closed Packets A-G with 6,010 tests, full repository gates, browser evidence, owner holds, and current indexes | 3bda5072 |
 | 2026-08-10 | ADOPT-001-B | Exposed one canonical supported/held capability inventory through Python, CLI JSON, REST, and public AI metadata | 4f05a85c |
 | 2026-08-10 | ADOPT-001-C | Added typed success contracts across all 63 HTTP operations while preserving runtime envelopes | 58a890d0 |
 | 2026-08-10 | ADOPT-001-D | Made production-like startup fail closed without authentication and a non-placeholder JWT secret | c1cf0599 |
