@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 import tomllib
 from pathlib import Path
 
@@ -26,7 +27,7 @@ def test_project_codex_defaults_are_low_token() -> None:
 def test_token_efficiency_checker_passes() -> None:
     result = subprocess.run(
         [
-            str(REPO_ROOT / ".venv" / "bin" / "python"),
+            sys.executable,
             "scripts/check_token_efficiency.py",
         ],
         cwd=REPO_ROOT,
@@ -43,7 +44,7 @@ def test_token_efficiency_checker_passes() -> None:
 def test_low_token_prompt_is_bounded_and_actionable() -> None:
     result = subprocess.run(
         [
-            str(REPO_ROOT / ".venv" / "bin" / "python"),
+            sys.executable,
             "scripts/check_token_efficiency.py",
             "--prompt",
         ],
