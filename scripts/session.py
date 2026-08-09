@@ -8,14 +8,14 @@ to auto-generate SESSION_LOG entries, and `sync` to update stale doc numbers.
 Consolidates: start_session.py, end_session.py, update_handoff.py, check_session_docs.py
 
 USAGE:
-    python scripts/session.py start [--quick] [--no-add]
-    python scripts/session.py end [--fix] [--quick]
-    python scripts/session.py handoff
-    python scripts/session.py check
-    python scripts/session.py summary [--write]
-    python scripts/session.py sync [--fix] [--json]
-    python scripts/session.py usage [--checkpoint start|milestone|closeout] [...]
-    python scripts/session.py compact [--keep-last N] [--dry-run]
+    ./scripts/python_runtime.sh scripts/session.py start [--quick] [--no-add]
+    ./scripts/python_runtime.sh scripts/session.py end [--fix] [--quick]
+    ./scripts/python_runtime.sh scripts/session.py handoff
+    ./scripts/python_runtime.sh scripts/session.py check
+    ./scripts/python_runtime.sh scripts/session.py summary [--write]
+    ./scripts/python_runtime.sh scripts/session.py sync [--fix] [--json]
+    ./scripts/python_runtime.sh scripts/session.py usage [--checkpoint start|milestone|closeout] [...]
+    ./scripts/python_runtime.sh scripts/session.py compact [--keep-last N] [--dry-run]
 """
 
 from __future__ import annotations
@@ -452,7 +452,7 @@ def cmd_start(args: argparse.Namespace) -> int:
         print("Ready to work! Pick a task from Active or Up Next.")
     print()
     print(
-        '🧭 Automation lookup: .venv/bin/python scripts/find_automation.py "your task"'
+        '🧭 Automation lookup: ./scripts/python_runtime.sh scripts/find_automation.py "your task"'
     )
     print("📚 Context routing: scripts/automation-map.json (context_docs per task)")
     print(
@@ -1098,7 +1098,10 @@ def cmd_end(args: argparse.Namespace) -> int:
             print("   Run with --fix to auto-fix what's possible.")
         print()
         print("💡 Tip: Collect diagnostics for troubleshooting:")
-        print("   .venv/bin/python scripts/collect_diagnostics.py > diagnostics.txt")
+        print(
+            "   ./scripts/python_runtime.sh scripts/collect_diagnostics.py "
+            "> diagnostics.txt"
+        )
     print("=" * 60)
     print()
 
@@ -1349,7 +1352,7 @@ def cmd_check(args: argparse.Namespace) -> int:
     handoff_date = _handoff_date(next_lines)
     if not handoff_date:
         print("ERROR: next-session-brief.md missing Latest Handoff block")
-        print("Run: python scripts/session.py handoff")
+        print("Run: ./scripts/python_runtime.sh scripts/session.py handoff")
         return 1
     if handoff_date != date_str:
         print("ERROR: Latest Handoff date does not match next-session-brief Date field")

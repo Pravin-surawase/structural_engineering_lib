@@ -5,14 +5,14 @@ Pipeline state tracking for multi-step agent workflows.
 Enables interrupted workflows to resume from the exact step they left off,
 with full context about what was completed and what remains.
 
+When to use: only for an explicitly tracked multi-step pipeline that must resume later.
+
 USAGE:
-    python scripts/pipeline_state.py new --task TASK-857 --agent backend [--steps PLAN,GATHER,EXECUTE]
-    python scripts/pipeline_state.py advance <pipeline_id> [--notes "completed X"] [--artifacts file1.py,file2.py]
-    python scripts/pipeline_state.py advance-parallel <pipeline_id> --steps TEST,DOCUMENT [--notes "parallel work"]
-    python scripts/pipeline_state.py fail <pipeline_id> --reason "test failed"
-    python scripts/pipeline_state.py show <pipeline_id>
-    python scripts/pipeline_state.py list [--status running]
-    python scripts/pipeline_state.py resume <pipeline_id>
+    ./scripts/python_runtime.sh scripts/pipeline_state.py new --task TASK-857 --agent backend
+    ./scripts/python_runtime.sh scripts/pipeline_state.py advance <pipeline_id>
+    ./scripts/python_runtime.sh scripts/pipeline_state.py show <pipeline_id>
+    ./scripts/python_runtime.sh scripts/pipeline_state.py list
+    ./scripts/python_runtime.sh scripts/pipeline_state.py resume <pipeline_id>
 """
 
 from __future__ import annotations

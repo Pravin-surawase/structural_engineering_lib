@@ -197,6 +197,7 @@ jobs:
           python scripts/check_links.py
           python scripts/check_scripts_index.py
           python scripts/validate_script_refs.py
+          STRUCTURAL_LIB_PYTHON="$(command -v python)" python scripts/test_cli_smoke.py
           python scripts/check_token_efficiency.py
           python scripts/check_architecture_boundaries.py
           python scripts/skill_tiers.py validate

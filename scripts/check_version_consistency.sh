@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # check_version_consistency.sh - Verify version strings are consistent
-# Purpose: Ensure version numbers match across pyproject.toml, docs, and VBA
+# Purpose: Ensure maintained package and release-document versions agree
 # Helps catch drift before releases
 
 set -e
@@ -23,13 +23,11 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 PYPROJECT_VERSION=$(grep -m1 '^version = ' Python/pyproject.toml | sed 's/version = "\(.*\)"/\1/')
 CHANGELOG_VERSION=$(head -20 CHANGELOG.md | grep -m1 '^## \[' | sed 's/.*\[\(.*\)\].*/\1/')
 CITATION_VERSION=$(grep 'version:' CITATION.cff | head -1 | sed 's/.*: //')
-VBA_VERSION=$(grep -m1 'Const VERSION' VBA/*.bas 2>/dev/null | grep -o '"[^"]*"' | head -1 | tr -d '"' || echo "NOT_FOUND")
 
 echo -e "\n📦 Version Strings Found:"
 echo -e "  Python (pyproject.toml):     ${BLUE}$PYPROJECT_VERSION${NC}"
 echo -e "  Changelog (CHANGELOG.md):    ${BLUE}$CHANGELOG_VERSION${NC}"
 echo -e "  Citation (CITATION.cff):     ${BLUE}$CITATION_VERSION${NC}"
-echo -e "  VBA (*.bas):                 ${BLUE}$VBA_VERSION${NC}"
 
 # Check consistency (allow known exceptions)
 MISMATCHES=0
@@ -47,10 +45,6 @@ if [ -n "$CITATION_VERSION" ]; then
   echo -e "\n${YELLOW}ℹ️  Citation has independent versioning (OK)${NC}"
 fi
 
-# Check VBA only if found
-if [ "$VBA_VERSION" != "NOT_FOUND" ] && [ -n "$VBA_VERSION" ] && [ "$PYPROJECT_VERSION" != "$VBA_VERSION" ]; then
-  echo -e "\n${YELLOW}⚠️  VBA version differs (check if intentional)${NC}"
-fi
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -60,6 +54,6 @@ if [ "$MISMATCHES" -eq 0 ]; then
   exit 0
 else
   echo -e "${RED}⚠️  Found $MISMATCHES version mismatch(es)${NC}"
-  echo -e "\nRun ${BLUE}scripts/check_doc_versions.py --fix${NC} to auto-fix"
+  echo -e "\nRun ${BLUE}./scripts/python_runtime.sh scripts/check_doc_versions.py --fix${NC} to auto-fix"
   exit 1
 fi

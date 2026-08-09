@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-09
+last_updated: 2026-08-10
 doc_type: spec
 task: MAINT-008
 title: MAINT-008 Compact Project Modernization Plan
@@ -574,13 +574,18 @@ For every candidate command, hook, or script:
 4. classify it as active, archive-only, or confirmed orphan;
 5. change or delete it only if the classification is supported by evidence.
 
-Confirmed starting candidates to investigate, not automatic deletions:
+Completed archive decisions:
 
 ```text
-scripts/_tmp_add_groups.py
-scripts/batch_migrate_runner.py
-scripts/test_sample_endpoint.py
+ARCHIVED: scripts/_tmp_add_groups.py — one-time map migration replaced by canonical metadata
+KEPT/UPDATED: scripts/batch_migrate_runner.py — dry-run and rollback safety repaired
+ARCHIVED: scripts/test_sample_endpoint.py — covered by test_import_pipeline.py
+ARCHIVED: scripts/pre_commit_check.sh — duplicate of canonical validation
 ```
+
+All three archived files passed direct-caller searches and safe-delete previews;
+Git history is the recovery path. The batch runner remained because it has a
+distinct supported migration role after repair.
 
 ### Required changes
 
@@ -597,8 +602,8 @@ scripts/test_sample_endpoint.py
 
 ```bash
 rg -n "candidate_name|candidate_path" run.sh .github .pre-commit-config.yaml scripts docs AGENTS.md
-.venv/bin/python scripts/safe_file_delete.py --dry-run scripts/candidate.py
-.venv/bin/python scripts/safe_file_delete.py scripts/candidate.py
+./scripts/python_runtime.sh scripts/safe_file_delete.py --dry-run scripts/candidate.py
+./scripts/python_runtime.sh scripts/safe_file_delete.py scripts/candidate.py
 ```
 
 If the dry run reports an unresolved reference, do not delete the file until the parent confirms whether the reference is active or historical.

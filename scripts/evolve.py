@@ -5,13 +5,15 @@ The brain of the self-evolving system. Combines health scanning, feedback
 analysis, and auto-fixing into a single evolution cycle. Run periodically
 or on-demand to keep the project self-maintaining.
 
+When to use: for an explicit governance review; preview by default and request
+`--report` or `--fix` only when persistent output is intended.
+
 Usage:
-    python scripts/evolve.py                        # Full evolution cycle (dry-run)
-    python scripts/evolve.py --fix                  # Apply auto-fixes; Codex reviews Git changes
-    python scripts/evolve.py --report               # Generate evolution report only
-    python scripts/evolve.py --review weekly         # Quick weekly review
-    python scripts/evolve.py --review monthly        # Comprehensive monthly review
-    python scripts/evolve.py --status                # Last run + next review dates
+    ./scripts/python_runtime.sh scripts/evolve.py                  # Read-only preview
+    ./scripts/python_runtime.sh scripts/evolve.py --report         # Write report only
+    ./scripts/python_runtime.sh scripts/evolve.py --fix            # Apply fixes + report
+    ./scripts/python_runtime.sh scripts/evolve.py --review weekly  # Read-only review
+    ./scripts/python_runtime.sh scripts/evolve.py --status         # Prior report status
 
 Part of the Self-Evolving System (docs/architecture/self-evolving-system.md).
 """
@@ -36,7 +38,7 @@ from _lib.output import StatusLine, print_json
 
 # ─── Config ──────────────────────────────────────────────────────────────────
 
-VENV_PYTHON = REPO_ROOT / ".venv" / "bin" / "python"
+VENV_PYTHON = SCRIPTS_DIR / "python_runtime.sh"
 EVOLUTION_DIR = REPO_ROOT / "logs" / "evolution"
 FEEDBACK_DIR = REPO_ROOT / "logs" / "feedback"
 TASKS_MD = REPO_ROOT / "docs" / "TASKS.md"
@@ -329,7 +331,7 @@ def review_monthly(fix: bool = False) -> dict:
 # ─── Full Evolution Cycle ────────────────────────────────────────────────────
 
 
-def run_evolution(fix: bool = False, report_only: bool = False) -> dict:
+def run_evolution(fix: bool = False, write_report: bool = False) -> dict:
     """Run full evolution cycle."""
     print("\n\033[1m\033[36m━━━ Evolution Cycle ━━━\033[0m")
     print(f"  Mode: {'FIX' if fix else 'DRY-RUN'}")
@@ -371,8 +373,7 @@ def run_evolution(fix: bool = False, report_only: bool = False) -> dict:
     elapsed = time.time() - start
     evolution["duration_seconds"] = round(elapsed, 1)
 
-    # Save report
-    report_path = _save_evolution_report(evolution)
+    report_path = _save_evolution_report(evolution) if (fix or write_report) else None
 
     # Apply tasks
     if fix and todos:
@@ -390,7 +391,7 @@ def run_evolution(fix: bool = False, report_only: bool = False) -> dict:
     return evolution
 
 
-def _print_evolution_summary(evolution: dict, report_path: Path) -> None:
+def _print_evolution_summary(evolution: dict, report_path: Path | None) -> None:
     """Print evolution summary."""
     print()
     print("\033[1m\033[36m━━━ Evolution Summary ━━━\033[0m")
@@ -413,7 +414,10 @@ def _print_evolution_summary(evolution: dict, report_path: Path) -> None:
     print(f"  Stale Docs:       {archive.get('stale_count', 0)}")
     print(f"  TODOs Generated:  {len(todos)}")
     print(f"  Duration:         {evolution.get('duration_seconds', '?')}s")
-    print(f"  Report:           {report_path.relative_to(REPO_ROOT)}")
+    if report_path is None:
+        print("  Report:           not written (preview mode)")
+    else:
+        print(f"  Report:           {report_path.relative_to(REPO_ROOT)}")
 
     if todos:
         print("\n  Auto-Discovered TODOs:")
@@ -524,14 +528,18 @@ Examples:
         else:
             result = review_monthly(fix=args.fix)
 
-        report_path = _save_evolution_report(result)
+        report_path = (
+            _save_evolution_report(result) if (args.fix or args.report) else None
+        )
         if args.json:
             print_json(result)
-        else:
+        elif report_path is not None:
             print(f"\n  Report saved: {report_path.relative_to(REPO_ROOT)}\n")
+        else:
+            print("\n  Report not written (preview mode)\n")
         return 0
 
-    result = run_evolution(fix=args.fix, report_only=args.report)
+    result = run_evolution(fix=args.fix, write_report=args.report)
 
     if args.json:
         print_json(result)

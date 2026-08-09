@@ -7,9 +7,14 @@
 #   ./scripts/archive_old_files.sh --scan-all   # Scan all of docs/ (skip _archive/)
 #   ./scripts/archive_old_files.sh --help       # Show help
 #
-# Runs monthly via CI cron job (defined in .github/workflows/monthly-maintenance.yml)
+# Manual maintenance command; no scheduled workflow invokes live archival.
 
 set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+PYTHON_RUNTIME="$SCRIPT_DIR/python_runtime.sh"
+cd "$PROJECT_ROOT"
 
 # Configuration
 ACTIVE_DIR="docs/_active"
@@ -80,12 +85,6 @@ else
     fi
 fi
 
-# Create archive directory if needed
-if [ ! -d "$ARCHIVE_DIR" ]; then
-    echo -e "${YELLOW}⚠️  Creating $ARCHIVE_DIR/ ...${NC}"
-    mkdir -p "$ARCHIVE_DIR"
-fi
-
 # Header
 echo -e "${BLUE}🗂️  Auto-Archival System${NC}"
 echo -e "${BLUE}════════════════════════${NC}"
@@ -132,7 +131,7 @@ if [ -z "$OLD_FILES" ]; then
     exit 0
 fi
 
-echo "$OLD_FILES" | while IFS= read -r file; do
+while IFS= read -r file; do
     if [ -z "$file" ]; then
         continue
     fi
@@ -163,12 +162,10 @@ echo "$OLD_FILES" | while IFS= read -r file; do
     # Archive file
     if [ "$DRY_RUN" = true ]; then
         echo -e "${YELLOW}  📦 [DRY RUN] Would archive: $file → $archive_path${NC}"
+        "$PYTHON_RUNTIME" "$SCRIPT_DIR/safe_file_move.py" \
+            "$file" "$archive_path" --dry-run >/dev/null
     else
-        # Create archive folder if needed
-        mkdir -p "$archive_folder"
-
-        # Move file
-        mv "$file" "$archive_path"
+        "$PYTHON_RUNTIME" "$SCRIPT_DIR/safe_file_move.py" "$file" "$archive_path"
         echo -e "${GREEN}  ✅ Archived: $filename → $year_month/${NC}"
 
         [ "$VERBOSE" = true ] && echo "     From: $file"
@@ -176,7 +173,7 @@ echo "$OLD_FILES" | while IFS= read -r file; do
     fi
 
     archived_count=$((archived_count + 1))
-done
+done < <(printf '%s\n' "$OLD_FILES")
 
 # Summary
 echo ""
@@ -198,8 +195,8 @@ else
         echo -e "${GREEN}✅ Archival complete${NC}"
         echo ""
         echo "Next steps:"
-        echo "  1. Regenerate indexes: .venv/bin/python scripts/generate_enhanced_index.py scripts/"
-        echo "  2. Check for phantom entries: .venv/bin/python scripts/check_scripts_index.py"
+        echo "  1. Regenerate indexes: ./scripts/python_runtime.sh scripts/generate_enhanced_index.py scripts/"
+        echo "  2. Check for phantom entries: ./scripts/python_runtime.sh scripts/check_scripts_index.py"
         echo "  3. Have Codex review and include the archive in the scoped commit"
     else
         echo -e "${GREEN}✅ No files archived (all up to date)${NC}"

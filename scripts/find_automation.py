@@ -2,15 +2,14 @@
 """
 Find the right automation script for a task.
 
-When to use: When you need a script but don't know which one. Searches the
-automation-map.json (87 tasks, 16 categories) using fuzzy text matching.
+When to use: When you need a script but do not know which one. Searches the
+current non-deprecated automation tasks and derives categories from their
+canonical `group` metadata.
 
 Usage:
-    python scripts/find_automation.py "commit code"
-    python scripts/find_automation.py "move file"
-    python scripts/find_automation.py --list
-    python scripts/find_automation.py --group Git
-    python scripts/find_automation.py --category git_workflow
+    ./scripts/python_runtime.sh scripts/find_automation.py "move file"
+    ./scripts/python_runtime.sh scripts/find_automation.py --list
+    ./scripts/python_runtime.sh scripts/find_automation.py --group Docs
 """
 
 from __future__ import annotations
@@ -35,9 +34,18 @@ def load_automation_map() -> dict:
         return json.load(f)
 
 
+def active_tasks(automation_map: dict) -> dict[str, dict]:
+    """Return discoverable tasks; deprecated migration aliases stay hidden."""
+    return {
+        name: info
+        for name, info in automation_map.get("tasks", {}).items()
+        if not info.get("deprecated", False)
+    }
+
+
 def find_task(query: str, automation_map: dict) -> list[tuple[str, dict]]:
     """Find tasks matching the query."""
-    tasks = automation_map.get("tasks", {})
+    tasks = active_tasks(automation_map)
     query_lower = query.lower()
 
     # Direct match
@@ -80,36 +88,9 @@ def print_task(task_name: str, task_info: dict):
     print()
 
 
-def list_category(category: str, automation_map: dict):
-    """List all tasks in a category."""
-    categories = automation_map.get("categories", {})
-    tasks = automation_map.get("tasks", {})
-
-    if category not in categories:
-        print(f"❌ Unknown category: {category}")
-        print(f"   Available: {', '.join(categories.keys())}")
-        sys.exit(1)
-
-    print(f"\n📂 Category: {category}\n")
-    for task_name in categories[category]:
-        if task_name in tasks:
-            print_task(task_name, tasks[task_name])
-
-
-def list_all_categories(automation_map: dict):
-    """List all categories and their tasks."""
-    categories = automation_map.get("categories", {})
-
-    print("\n📚 Available Automation Categories\n")
-    for cat_name, task_list in categories.items():
-        print(f"  {cat_name}: {len(task_list)} tasks")
-    print()
-    print("Use: python scripts/find_automation.py --category <name>")
-
-
 def get_tasks_by_group(automation_map: dict) -> dict[str, list[tuple[str, dict]]]:
     """Group tasks by their 'group' field."""
-    tasks = automation_map.get("tasks", {})
+    tasks = active_tasks(automation_map)
     groups: dict[str, list[tuple[str, dict]]] = {}
     for task_name, task_info in tasks.items():
         group = task_info.get("group", "Ungrouped")
@@ -146,7 +127,7 @@ def list_all_groups(automation_map: dict):
         for task_name, task_info in task_list:
             print(f"  • {task_name}: {task_info.get('description', '')[:80]}")
         print()
-    print("Use: python scripts/find_automation.py --group <name>")
+    print("Use: ./scripts/python_runtime.sh scripts/find_automation.py --group <name>")
 
 
 def main():
@@ -155,9 +136,11 @@ def main():
     )
     parser.add_argument("query", nargs="?", help="Task description to search for")
     parser.add_argument("--list", action="store_true", help="List all categories")
-    parser.add_argument("--category", help="List tasks in a specific category")
     parser.add_argument(
-        "--group", help="List tasks in a specific group (e.g. Git, Quality, Session)"
+        "--group",
+        "--category",
+        dest="group",
+        help="List tasks in a canonical group; --category is a compatibility alias",
     )
     parser.add_argument("--json", action="store_true", help="Output as JSON")
 
@@ -173,10 +156,6 @@ def main():
         list_group(args.group, automation_map)
         return
 
-    if args.category:
-        list_category(args.category, automation_map)
-        return
-
     if not args.query:
         parser.print_help()
         sys.exit(1)
@@ -190,7 +169,7 @@ def main():
 
     if not matches:
         print(f'\n❌ No automation found for: "{args.query}"')
-        print("   Try: python scripts/find_automation.py --list")
+        print("   Try: ./scripts/python_runtime.sh scripts/find_automation.py --list")
         sys.exit(1)
 
     print(f'\n🔍 Automation for: "{args.query}"\n')

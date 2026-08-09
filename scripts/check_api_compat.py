@@ -8,9 +8,11 @@ Compares the current public API surface of services/api.py against the
 saved manifest to detect breaking changes (removed functions, renamed
 params, changed param order).
 
+When to use: before a PR or release that changes the public Python service API.
+
 Usage:
-    .venv/bin/python scripts/check_api_compat.py              # Check for breaking changes
-    .venv/bin/python scripts/check_api_compat.py --update      # Update the manifest
+    ./scripts/python_runtime.sh scripts/check_api_compat.py
+    ./scripts/python_runtime.sh scripts/check_api_compat.py --update
 """
 
 from __future__ import annotations
@@ -120,7 +122,9 @@ def main() -> int:
 
     if not MANIFEST_PATH.exists():
         print(f"⚠️  No manifest found at {MANIFEST_PATH.relative_to(PROJECT_ROOT)}")
-        print("   Run: .venv/bin/python scripts/check_api_compat.py --update")
+        print(
+            "   Run: ./scripts/python_runtime.sh scripts/check_api_compat.py --update"
+        )
         return 1
 
     saved = json.loads(MANIFEST_PATH.read_text())
@@ -139,7 +143,8 @@ def main() -> int:
         for issue in issues:
             print(f"   {issue}")
         print(
-            "\n   If intentional, bump the version and run: .venv/bin/python scripts/check_api_compat.py --update"
+            "\n   If intentional, bump the version and run: "
+            "./scripts/python_runtime.sh scripts/check_api_compat.py --update"
         )
         return 1
 

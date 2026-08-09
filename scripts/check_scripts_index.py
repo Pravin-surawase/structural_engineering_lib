@@ -54,6 +54,34 @@ def _scan_script_files() -> set[str]:
     return scripts
 
 
+def _automation_semantic_issues(data: dict) -> dict[str, list[str]]:
+    """Validate the single-source task/group discovery contract."""
+    tasks = data.get("tasks", {})
+    legacy_categories = sorted(data.get("categories", {}))
+    missing_group: list[str] = []
+    removed_without_deprecation: list[str] = []
+    temporary_targets: list[str] = []
+
+    for task_name, info in tasks.items():
+        if info.get("deprecated", False):
+            continue
+        group = info.get("group")
+        if not isinstance(group, str) or not group.strip():
+            missing_group.append(task_name)
+        description = str(info.get("description", "")).lower()
+        if "(removed)" in description:
+            removed_without_deprecation.append(task_name)
+        if "scripts/_tmp_" in str(info.get("script", "")):
+            temporary_targets.append(task_name)
+
+    return {
+        "legacy_categories": legacy_categories,
+        "missing_group": sorted(missing_group),
+        "removed_without_deprecation": sorted(removed_without_deprecation),
+        "temporary_targets": sorted(temporary_targets),
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -112,7 +140,6 @@ def main() -> int:
             for part in script.split():
                 if "scripts/" in part:
                     mapped_scripts.add(os.path.basename(part))
-                    break
         unmapped = sorted(actual - mapped_scripts)
         phantom = sorted(mapped_scripts - actual)
         report["checks"]["automation_map"] = {
@@ -140,6 +167,22 @@ def main() -> int:
             print(
                 f"✓ automation-map.json: {len(mapped_scripts)}/{len(actual)} scripts covered"
             )
+
+        semantic_issues = _automation_semantic_issues(data)
+        semantic_failed = any(semantic_issues.values())
+        report["checks"]["automation_semantics"] = {
+            "status": "fail" if semantic_failed else "pass",
+            **semantic_issues,
+        }
+        if semantic_failed:
+            errors += 1
+            if not args.json:
+                print("ERROR: automation discovery metadata is inconsistent.")
+                for issue_name, values in semantic_issues.items():
+                    if values:
+                        print(f"  {issue_name}: {', '.join(values)}")
+        elif not args.json:
+            print(f"✓ automation discovery: {len(data.get('tasks', {}))} grouped tasks")
 
     # Check "When to use:" in Python script docstrings
     py_scripts = sorted(s for s in actual if s.endswith(".py"))

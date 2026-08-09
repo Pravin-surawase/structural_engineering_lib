@@ -2,28 +2,28 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2024-2026 Pravin Surawase
 """
-API Parity Testing Script (V3 Preparation)
-============================================
+API Parity Testing Script
+=========================
 
-When to use: After adding new API versions or V3 endpoints. Verifies old/new API output parity.
+When to use: after changing a library service or its FastAPI endpoint.
 
 Tests that FastAPI endpoints return identical results to direct library calls.
-This ensures the V3 React frontend gets the same results as the current Streamlit UI.
+This ensures the React client receives the same engineering results as the library.
 
 Usage:
-    python scripts/test_api_parity.py                    # Run all parity tests
-    python scripts/test_api_parity.py --function design_beam_is456
-    python scripts/test_api_parity.py --generate-cases   # Generate test cases
-    python scripts/test_api_parity.py --verbose          # Detailed output
+    ./scripts/python_runtime.sh scripts/test_api_parity.py
+    ./scripts/python_runtime.sh scripts/test_api_parity.py --function design_beam_is456
+    ./scripts/python_runtime.sh scripts/test_api_parity.py --generate-cases
+    ./scripts/python_runtime.sh scripts/test_api_parity.py --verbose
 
 Exit Codes:
     0 - All parity tests passed
     1 - Parity issues found
     2 - Test infrastructure error
 
-V3 Context:
-    This script is critical for V3 migration because:
-    1. React frontend will call FastAPI instead of direct Python
+Cross-layer context:
+    This script protects the active React/FastAPI architecture because:
+    1. React calls FastAPI instead of direct Python
     2. Results MUST match for user trust
     3. Serialization can lose precision - this catches that
     4. Response structure must be identical

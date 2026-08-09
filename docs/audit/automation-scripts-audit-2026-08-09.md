@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-09
+last_updated: 2026-08-10
 doc_type: reference
 complexity: advanced
 tags: [automation, scripts, audit, maintenance, archive, maint-008]
@@ -12,11 +12,10 @@ tags: [automation, scripts, audit, maintenance, archive, maint-008]
 ## Outcome
 
 The active automation surface was audited one item at a time. The baseline
-inventory contained **113 top-level scripts**. After two P0 implementation
-batches, the five-script P1 governance batch, and the worktree-runtime repair,
-the active surface contains **107 top-level scripts**: **89 Python** and **18
-shell**, totaling **40,284
-lines**. The extended control surface also
+inventory contained **113 top-level scripts**. After all implementation,
+governance, discovery, archive, and CLI-normalization batches, the active
+surface contains **104 top-level scripts**: **87 Python** and **17 shell**,
+totaling **40,034 lines**. The extended control surface also
 contains the root `run.sh` dispatcher, four GitHub Actions workflows, zero
 repository-enforcement Git hook entrypoints, three non-Git Python hook-framework
 modules, and seven shared Python support modules.
@@ -26,17 +25,18 @@ disposition is:
 
 | Disposition | Count | Meaning |
 |---|---:|---|
-| Keep | 62 | Supported role, including the repaired API/reference, agent-governance, permission, and runtime controls |
-| Update | 30 | Active or useful, but a confirmed non-P0 defect, stale contract, or metadata problem still needs repair |
+| Keep / updated | 92 | Supported role; all 30 confirmed update items were repaired in the completed batches |
 | Review | 12 | Low-use, overlapping, or specialized; prove a current consumer before keeping or archiving |
-| Archive candidate | 3 | Strong evidence of replacement or one-time use; still requires safe-delete preview and owner acceptance |
-| **Total active** | **107** | Current inventory after eight retirements and two additions: the Codex workflow guard and Python worktree resolver |
+| Archived in final batch | 3 | Proven replacements, reviewed safe-delete previews with no live callers, and Git-recoverable removal |
+| **Total active** | **104** | Current inventory after all approved retirements/archives and the two maintained control additions |
 
 The original audit was read-only. The user then authorized a P0 implementation
 pass over five named scripts and directed that Git/GitHub work move to Codex.
 The second authorized P0 batch removed five missing-script control targets and
 closed the remaining P0 finding. The third authorized batch repaired five P1
-agent-governance and permission scripts plus their direct shared controls.
+agent-governance and permission scripts plus their direct shared controls. The
+remaining batches repaired the discovery/control plane, archived only the three
+proven candidates, and normalized the essential CLI and terminal paths.
 No independent commit, push, PR mutation, merge, issue action, release, or
 publication was performed during the bounded implementation passes themselves.
 The follow-up closeout isolated their still-uncommitted changes from concurrent
@@ -120,24 +120,43 @@ with an actionable error. The dispatcher, check orchestrator, smoke suite, and
 pre-commit entries call this resolver. A linked worktree with no local `.venv`
 now runs repository checks without a temporary link.
 
+## Remaining batches completion update — 2026-08-10
+
+Packets C3-C5 are complete:
+
+| Area | Final outcome |
+|---|---|
+| Discovery truth | Removed the parallel legacy category structure; 113 supported tasks now derive 14 groups from canonical task metadata. |
+| Registry integrity | `check_scripts_index.py` validates physical mapping plus legacy groups, missing groups, removed-but-active entries, and temporary targets. Current result: 104/104. |
+| Gate integration | CLI smoke is part of the 30-check canonical gate and Repository Validation; an explicitly selected zero-check category fails instead of returning a false green. |
+| Permission truth | Stateful/default/mode metadata now covers the remaining migration, index, evolution, session-store, pipeline, routing, preflight, archive, and local-CI commands. |
+| Terminal/runtime | `agent_start.sh`, preflight, changed-test, evolution, watch, and session guidance use the worktree-aware runtime. Startup no longer changes global Git config, fetches/prunes refs, or queries GitHub. |
+| Dry-run/data safety | Batch migration dry-run writes nothing; generated rollback uses safe file operations. Archive and root-file guidance use link-aware safe moves. External CLI refuses to replace an existing work directory. |
+| Product cleanup | Stale Streamlit/VBA/Excel help and version targets were removed from maintained scripts without rewriting historical evidence. |
+| Archive | `_tmp_add_groups.py`, `pre_commit_check.sh`, and `test_sample_endpoint.py` were removed after direct-caller searches and per-file safe-delete previews. Git history is the recovery path. |
+
+Two bounded read-only reviewers were used for this final batch. Both used
+Terra, received concise packets, and made no workspace edits; no Sol subagent
+was used.
+
 ## Snapshot and scope
 
 | Field | Value |
 |---|---|
 | Repository | `structural_engineering_lib` |
-| Branch at Batch 3 closeout | `codex/automation-governance-batches-2-3` |
-| Baseline commit | `8bfdac09564995a04bd0fb249b90934cd4c80011` |
-| Baseline subject | `ci(maint-008): consolidate GitHub workflow lanes` |
+| Final-batch branch | `codex/automation-remaining-batches` |
+| Final-batch baseline commit | `f812eb3f6422cba4d883eb81a6d2a9cab47d5c18` |
+| Final-batch baseline subject | `fix(automation): close governance and control gaps` |
 | Audit date | 2026-08-09 |
 | Baseline active top-level scripts | 113 |
-| Current active top-level scripts | 107 |
+| Current active top-level scripts | 104 |
 | Existing archived scripts | 101: 68 Python and 33 shell |
 | Shared support modules | 7 under `scripts/_lib/` |
 | Hook framework modules | 3 non-Git modules under `scripts/hooks/` |
 | Repository-enforcement Git hook entrypoints | 0 under `scripts/git-hooks/` |
 | Active workflows | 4 under `.github/workflows/` |
 | Root dispatcher | `run.sh` |
-| Subagents used | 2 read-only Terra reviewers in Batch 3; 0 in the earlier audit/P0 batches |
+| Subagents used | 4 bounded read-only Terra reviewers across Batches 3 and final; 0 Sol reviewers |
 
 The 101 files already under `scripts/_archive/` were not re-reviewed as active
 automation. Their boundary was checked instead: `validate_script_refs.py`
@@ -219,6 +238,20 @@ removing its temporary `.venv` link:
 | Quick gate without local `.venv` | 9/9 pass |
 | Full gate without local `.venv` | 29/29 pass |
 
+Final remaining-batch verification:
+
+| Check | Result |
+|---|---|
+| Clean linked-worktree startup without local `.venv` | pass; primary-worktree Python 3.11.15 resolved |
+| Script index and automation semantics | 104/104 physical coverage; 0 semantic errors |
+| Automation discovery | 113 active tasks across 14 canonical groups |
+| Permission declaration audit | pass; 0 anomalies |
+| Focused automation/session/migration tests | 152/152 pass |
+| CLI smoke | 13/13 pass |
+| Quick gate | 10/10 pass |
+| Full gate | 30/30 pass |
+| Formatting, Ruff, compile, shell syntax | pass for changed implementation/test paths |
+
 ### Terminal issues encountered
 
 - ⚠️ TERMINAL ISSUE: Homebrew Node 25 could not load `libsimdjson.29.dylib` → the bundled Codex Node runtime ran the focused Vitest lane successfully.
@@ -227,6 +260,12 @@ removing its temporary `.venv` link:
 - ⚠️ TERMINAL ISSUE: a diagnostic zsh loop used the reserved `path` variable and temporarily hid `git` inside that one process → the verification was rerun in a clean shell with non-reserved names.
 - ⚠️ TERMINAL ISSUE: an `rg` command placed `--glob` filters after the `--` pattern terminator, so ripgrep treated them as paths → the search was rerun with filters before `--`.
 - ⚠️ TERMINAL ISSUE: the first Black check reported that `validate_script_refs.py` needed formatting → Black was applied and the final format check passed.
+- ⚠️ TERMINAL ISSUE: clean linked-worktree session startup stopped because `agent_start.sh` required a local `.venv` → it now resolves the primary-worktree environment through `python_runtime.sh`; startup passed without copying or linking an environment.
+- ⚠️ TERMINAL ISSUE: the first regenerated index check treated `python_runtime.sh` as the only mapped script in wrapped commands → the checker now collects every script target token; final coverage is 104/104.
+- ⚠️ TERMINAL ISSUE: focused Ruff found an unused local in the touched type-annotation checker → the dead assignment was removed and the final lint passed.
+- ⚠️ TERMINAL ISSUE: the first commit attempt stopped when the standard end-of-file hook normalized generated `scripts/index.json` → the hook-only newline change was inspected, staged, and the commit checks were rerun normally.
+
+Baseline audit evidence before the completed remaining batches:
 
 | Check | Result |
 |---|---|
@@ -236,8 +275,8 @@ removing its temporary `.venv` link:
 | Installed Git hook shell syntax | 3/3 pass |
 | Safe help probes | 82/82 pass |
 | Static-only scripts without recognized safe help path | 31 |
-| Script index coverage | 113/113 pass at baseline; 107/107 current |
-| Automation-map physical coverage | 113/113 pass at baseline; 107/107 current |
+| Script index coverage | 113/113 at baseline; 107/107 after runtime follow-up |
+| Automation-map physical coverage | 113/113 at baseline; 107/107 after runtime follow-up |
 | Canonical full gate | 29/29 pass |
 | Focused script/infrastructure tests | 218/218 pass |
 | CLI smoke suite | 13/13 pass |
@@ -249,10 +288,11 @@ removing its temporary `.venv` link:
 | ShellCheck | not installed; syntax only |
 | actionlint | not installed; YAML parse only |
 
-The green 29/29 gate is useful but incomplete. It now detects missing active
-script targets, vacuous API signature scanning, and malformed declared
-permission metadata, but it does not yet detect automation-map category drift,
-undeclared-operation coverage, or require the standalone CLI smoke suite.
+The final 30/30 gate now detects missing active script targets, vacuous API
+signature scanning, malformed declared permission metadata, automation-map
+semantic drift, and CLI smoke regressions. It still cannot prove runtime side
+effects for every undeclared manual task; such a task must receive explicit
+metadata before permission enforcement treats it as supported.
 
 ## Highest-priority confirmed issues
 
@@ -312,23 +352,19 @@ fails if the source tree or internal call-site count is zero. The pre-commit
 trigger now covers React and FastAPI files. Current evidence is 24 call sites
 across nine production files matched against 62 OpenAPI paths.
 
-### P1 — Automation discovery is physically complete but semantically stale
+### P1 — Automation discovery is physically and semantically complete — RESOLVED
 
-`automation-map.json` currently has 119 task entries and 17 legacy categories.
-It maps all 107 physical scripts, but its semantic integrity has drifted:
+`automation-map.json` now has 113 active task entries in 14 groups derived from
+each task's canonical `group` field. The parallel legacy-category structure,
+dead Streamlit/VBA tasks, and the temporary map-migration task were removed.
+`find_automation.py` reports the live counts dynamically and retains
+`--category` only as an alias for canonical `--group` lookup.
 
-- 13 category members still name retired or otherwise absent tasks;
-- 15 task entries are not present in any legacy category;
-- `test vba adapter` says its target was removed but is not marked deprecated;
-- Streamlit and VBA categories still produce removed-product results;
-- `_tmp_add_groups.py` is still exposed as a supported tool; and
-- `find_automation.py` still claims 87 tasks/16 categories.
-
-The CLI smoke false failure is resolved: `find_automation.py` is an
-automation-task finder, so its smoke case now queries the guaranteed registered
-task `run tests`; product-domain beam routing remains covered separately by
-`prompt_router.py`. The finder still needs truthful task/category counts and
-stale-category cleanup.
+`check_scripts_index.py` now fails on physical map/index drift, legacy category
+data, missing task groups, removed-but-active descriptions, and temporary
+targets. Current physical coverage is 104/104. The CLI smoke query uses the
+guaranteed task `run tests`, while product-domain beam routing remains covered
+separately by `prompt_router.py`.
 
 ### P1 — Permission labels do not match operation behavior — RESOLVED FOR DECLARED OPERATIONS
 
@@ -366,43 +402,30 @@ Focused tests cover evidence availability, current-session selection, all 16
 agents, root-stable commands, no-write defaults, explicit writes, and missing
 agent behavior.
 
-### P1 — `check_scripts_index.py` protects counts, not supported behavior
+### P1 — `check_scripts_index.py` protects supported discovery behavior — RESOLVED
 
-The index checker passes 107/107 while the semantic discovery P1 finding above
-remains. Expand it or add a narrow control-surface validator that checks:
+The semantic checks and canonical gate integration described above close the
+confirmed discovery false-green. Inventory observations remain useful for
+future disposition work:
 
-1. every active `run.sh`, pre-commit, workflow, and hook script target exists;
-2. every automation category member resolves to a task;
-3. deprecated/removed descriptions agree with deprecated metadata;
-4. every destructive operation has a truthful preview/no-write path;
-5. required CLI smoke cases pass; and
-6. a validation lane cannot pass after scanning zero applicable files unless
-   zero is the explicitly expected result.
+## Maintenance-quality findings after completion
 
-## Maintenance-quality findings
+The 30 scripts with confirmed outcome or operator-contract defects were
+repaired. Current catalog checks still report 20 of 87 Python scripts without a
+“When to use” phrase and 371 legacy bare `python scripts/...` example lines in
+the broader active tree. Those are informational style/catalog observations,
+not confirmed main-process defects; update them only when the owning script is
+otherwise changed. The essential scripts identified by this audit now use
+root-stable examples and truthful help.
 
-These are lower priority than the P0/P1 items and should be handled in a compact
-documentation/CLI-contract pass, not as 60 separate rewrites:
+Inventory observations retained for later archive decisions:
 
-- 36 of 89 Python scripts lack the catalog's required “When to use” contract.
-- 31 of the baseline 113 top-level scripts had no safely recognized `--help` path, despite
-  the scripts README saying all scripts should support help.
-- 60 scripts contain 309 bare `python scripts/...` command examples instead of
-  the root-stable `.venv/bin/python` or `./run.sh` entrypoint.
-- agent-governance command examples are now root-stable; continue repairing the
-  remaining 309 bare `python scripts/...` examples in later bounded batches.
-- `check_root_file_count.sh` recommends raw `git mv` instead of
-  `safe_file_move.py`.
-- `check_circular_imports.py` and `check_type_annotations.py` now scan the
-  Python library correctly, but their titles/help still describe Streamlit.
-- `check_version_consistency.sh`, `bump_version.py`, `test_api_parity.py`, and
-  `watch_tests.sh` retain removed VBA/Streamlit framing.
 - 20 scripts are manual-only: they have no active caller in `run.sh`, workflows,
   pre-commit, hooks, other scripts, or direct tests. Manual-only is not proof of
   obsolescence, but each should retain a named owner/use case or move to review.
-- 30 scripts exceed 500 lines and nine exceed 800 lines. The largest are
-  `session.py` (2,258), `release.py` (1,053), `check_governance.py` (1,025),
-  `project_health.py` (900), and `launch_stack.sh` (884). Split only when a
+- 28 scripts exceed 500 lines and eight exceed 800 lines. The largest are
+  `session.py` (2,261), `release.py` (1,053), `check_governance.py` (1,041),
+  `project_health.py` (902), and `launch_stack.sh` (884). Split only when a
   confirmed maintenance defect requires it; line count alone is not an archive
   reason.
 
@@ -413,7 +436,7 @@ not a certification of every branch or an instruction to skip normal tests.
 
 | Script | Group | Disposition | Evidence and next action |
 |---|---|---|---|
-| `_tmp_add_groups.py` | Infrastructure | ARCHIVE CANDIDATE | One-time map migration says delete after use; no active caller. |
+| `_tmp_add_groups.py` | Infrastructure | ARCHIVED | One-time map migration was replaced by canonical task `group` metadata; removed after safe-delete preview. |
 | `agent_brief.sh` | Session | KEEP | Dynamic agent brief handled all five newer agents; retain as the compact entrypoint. |
 | `agent_compliance_checker.py` | Governance | KEEP (UPDATED) | Current-session selection and explicit historical selectors now fail closed on missing session, attribution, or evidence. |
 | `agent_context.py` | Session | KEEP (UPDATED) | Canonical registry validation exposes all 16 agents and emits root-stable commands. |
@@ -423,72 +446,72 @@ not a certification of every branch or an instruction to skip normal tests.
 | `agent_mistakes_report.sh` | Governance | KEEP | Session-start consumer works; no outcome-changing defect found. |
 | `agent_scorer.py` | Governance | REVIEW | Review fallback scoring and stale-session inputs before operational use. |
 | `agent_session_collector.py` | Governance | REVIEW | Manual-only collector; verify current Codex session source before keeping. |
-| `agent_start.sh` | Session | KEEP (UPDATED) | Its named-agent deep-context dependency now uses the complete canonical registry. |
+| `agent_start.sh` | Session | KEEP (UPDATED) | Uses the canonical registry and worktree-aware runtime; no global Git config, ref pruning, GitHub query, or script-wide chmod remains. |
 | `agent_trends.py` | Evolution | KEEP (UPDATED) | Historical analysis is read-only by default; absent agents fail and output writes are explicit. |
 | `ai_commit.sh` | Git | RETIRED | Codex owns scoped commit, push, and connected GitHub PR work. |
-| `archive_old_files.sh` | Docs | UPDATE | Uses raw `mv` instead of link-aware safe file operations. |
+| `archive_old_files.sh` | Docs | KEEP (UPDATED) | Live and dry-run paths use `safe_file_move.py`; dry-run creates no archive directory and counts survive the loop. |
 | `audit_error_handling.py` | Quality | KEEP | Safe audit/help path passed; retain. |
 | `audit_input_validation.py` | Quality | KEEP | Safe audit/help path passed; retain. |
 | `audit_permissions.py` | Infrastructure | KEEP (UPDATED) | Validates explicit automation permission levels and mode declarations; static metadata is not runtime side-effect proof. |
 | `audit_readiness_report.py` | Generation | KEEP | Canonical audit consumer works; retain. |
-| `batch_migrate_runner.py` | Migration | UPDATE | `--dry-run` still creates logs; rollback script emits raw `rm`/`cp`. |
+| `batch_migrate_runner.py` | Migration | KEEP (UPDATED) | Dry-run writes no log tree; live rollback manifests invoke validated safe move/delete operations. |
 | `benchmark_api.py` | Testing | KEEP | Supported benchmark with explicit modes; retain. |
-| `bump_version.py` | Release | UPDATE | Remove stale missing Excel/VBA doc targets and normalize commands. |
-| `check_all.py` | Quality | KEEP | Canonical 29-check orchestrator works; expand coverage through focused validators, not ad hoc duplication. |
+| `bump_version.py` | Release | KEEP (UPDATED) | Missing Excel/VBA documentation targets were removed and operator commands are root-stable. |
+| `check_all.py` | Quality | KEEP (UPDATED) | Canonical 30-check orchestrator includes CLI smoke and fails explicit zero-check selections. |
 | `check_api.py` | Discovery | KEEP (UPDATED) | Validates 24 production React call sites against 62 live OpenAPI paths and fails closed on zero coverage. |
-| `check_api_compat.py` | Quality | UPDATE | Add missing “When to use”/CLI contract; underlying check is distinct and useful. |
+| `check_api_compat.py` | Quality | KEEP (UPDATED) | Distinct compatibility check now has a clear use case and root-stable update guidance. |
 | `check_architecture_boundaries.py` | Quality | KEEP | Focused and canonical architecture check passed. |
 | `check_bootstrap_freshness.py` | Quality | KEEP | Canonical freshness check passed. |
-| `check_circular_imports.py` | Quality | UPDATE | Implementation scans Python core, but title/help still say Streamlit. |
-| `check_clause_coverage.py` | Quality | UPDATE | Add missing “When to use” contract; retain structural coverage role. |
+| `check_circular_imports.py` | Quality | KEEP (UPDATED) | Title/help now match the Python structural library actually scanned. |
+| `check_clause_coverage.py` | Quality | KEEP (UPDATED) | Structural coverage role now has a clear use case and root-stable examples. |
 | `check_cli_reference.py` | Quality | KEEP | Canonical check passed. |
 | `check_doc_versions.py` | Quality | KEEP | Canonical check passed. |
 | `check_docker_config.py` | Infrastructure | KEEP | Canonical check passed. |
 | `check_docs.py` | Docs | KEEP | Consolidated doc validation passed. |
 | `check_fastapi_issues.py` | Infrastructure/Quality | KEEP | Active FastAPI scanner passed; remove only stale Streamlit aliases around it. |
-| `check_function_quality.py` | Quality | UPDATE | Add missing “When to use” contract; retain specialist use. |
+| `check_function_quality.py` | Quality | KEEP (UPDATED) | Specialist quality check now has a clear use case and root-stable examples. |
 | `check_codex_git_workflow.py` | Quality | KEEP (NEW) | Prevents retired lifecycle wrappers/hooks from returning and validates the canonical boundary. |
 | `check_git_script_budget.py` | Quality | RETIRED | Wrapper line-budget control was replaced by the Codex-native boundary guard. |
 | `check_governance.py` | Quality | KEEP | Canonical governance check passed. |
 | `check_instruction_drift.py` | Quality | KEEP | Canonical drift check passed. |
 | `check_links.py` | Docs | KEEP | Canonical link check passed. |
-| `check_new_element_completeness.py` | Quality | UPDATE | Add missing “When to use” contract; retain specialist use. |
+| `check_new_element_completeness.py` | Quality | KEEP (UPDATED) | Cross-layer element check now has a clear use case and root-stable examples. |
 | `check_next_session_brief_length.py` | Quality | KEEP | Canonical check passed. |
 | `check_not_main.sh` | Git | REVIEW | Manual-only guard duplicated in active Git wrappers. |
 | `check_openapi_drift.py` | CI | REVIEW | Overlaps snapshot checker; retain only with documented exact-deep nightly distinction. |
 | `check_openapi_snapshot.py` | Quality | REVIEW | Overlaps drift checker; retain only with documented PR-summary distinction. |
 | `check_python_version.py` | Quality | KEEP | Canonical check passed. |
 | `check_repo_hygiene.py` | Quality | KEEP | Canonical check passed. |
-| `check_root_file_count.sh` | Quality | UPDATE | Printed remediation uses forbidden raw `git mv`. |
-| `check_scripts_index.py` | Quality | UPDATE | Does not validate category integrity, active missing targets, help, or behavior. |
+| `check_root_file_count.sh` | Quality | KEEP (UPDATED) | Printed remediation previews the link-aware safe move command. |
+| `check_scripts_index.py` | Quality | KEEP (UPDATED) | Validates 104/104 physical coverage plus canonical group/active/temp semantic integrity. |
 | `check_tasks_format.py` | Quality | KEEP | Canonical check passed. |
 | `check_token_efficiency.py` | Agent Infrastructure | KEEP | Policy check passed. |
-| `check_type_annotations.py` | Quality | UPDATE | Implementation scans Python core, but title/help still say Streamlit. |
+| `check_type_annotations.py` | Quality | KEEP (UPDATED) | Title/help now match the Python structural library actually scanned. |
 | `check_unfinished_merge.sh` | Git | KEEP | Small active guard; canonical check passed. |
-| `check_version_consistency.sh` | Quality | UPDATE | Still reports optional missing VBA version after product removal. |
+| `check_version_consistency.sh` | Quality | KEEP (UPDATED) | Removed the obsolete optional VBA probe; checks maintained package metadata only. |
 | `check_wip_limits.sh` | Quality | REVIEW | Manual-only and likely overlaps `check_tasks_format.py`/`check_governance.py`. |
-| `ci_local.sh` | Git | UPDATE | Installs/builds in place, uses `python3`, and duplicates the canonical gate without preview. |
+| `ci_local.sh` | Git | KEEP (UPDATED) | Delegates to maintained validation commands; it no longer installs environments or performs Git/GitHub work. |
 | `cleanup_stale_branches.py` | Infrastructure | KEEP | Default is dry review; deletion remains explicit. |
 | `collect_diagnostics.py` | Infrastructure | KEEP | Purpose is distinct; retain with explicit output expectations. |
 | `collect_metrics.sh` | Infrastructure | REVIEW | Manual-only metrics writer; prove a scheduled/report consumer. |
-| `config_precedence.py` | Infrastructure | UPDATE | Registry says WorkspaceWrite for read-only audit/list operations. |
+| `config_precedence.py` | Infrastructure | KEEP (UPDATED) | Audit/list/show are explicitly ReadOnly with a safe default command. |
 | `create_doc.py` | Docs | KEEP | Explicit creation tool with clear target; retain. |
 | `create_task_pr.sh` | Git | RETIRED | PR creation/update moved to Codex and the connected GitHub integration. |
 | `create_test_scaffold.py` | Testing | KEEP | Explicit generator with required target; retain. |
-| `diagnose_ci.py` | Quality | UPDATE | Split read-only diagnosis permission from explicit `--fix`. |
+| `diagnose_ci.py` | Quality | KEEP (UPDATED) | Read-only diagnosis is separate from explicit WorkspaceWrite `--local --fix`. |
 | `discover_api_signatures.py` | Discovery | KEEP | Focused lookup and tests passed. |
 | `dxf_render.py` | Infrastructure | KEEP | Distinct product-support utility; retain. |
-| `evolve.py` | Evolution | UPDATE | Document which report/review modes write evidence; make dry-run side effects explicit. |
+| `evolve.py` | Evolution | KEEP (UPDATED) | Preview/review is read-only; reports require `--report` and changes require `--fix`. |
 | `export_paper_data.py` | Infrastructure | REVIEW | Research-only exporter with no active caller; move to research tooling or archive. |
-| `external_cli_test.py` | Testing | UPDATE | Document isolated temp behavior/cleanup and correct permission semantics. |
-| `find_automation.py` | Discovery | UPDATE | Stale counts; beam smoke fails; legacy categories contain dead entries. |
+| `external_cli_test.py` | Testing | KEEP (UPDATED) | Uses a unique temp directory by default and refuses to replace an explicit existing directory. |
+| `find_automation.py` | Discovery | KEEP (UPDATED) | Reports 113 active tasks/14 canonical groups dynamically and hides removed/temp entries. |
 | `finish_task_pr.sh` | Git | RETIRED | Removed automatic merge/clean/reset/delete behavior. |
 | `fix_broken_links.py` | Docs | REVIEW | One-time removed-product cleanup; archive after remaining cleanup is complete. |
 | `generate_all_indexes.sh` | Generation | KEEP | Canonical explicit generator; retain. |
 | `generate_api_manifest.py` | Discovery | KEEP | Check/generate modes are explicit and canonical. |
 | `generate_client_sdks.py` | Generation | KEEP | Explicit generator; retain. |
 | `generate_docs_index.py` | Generation | KEEP | Preview/write split is clear; retain. |
-| `generate_enhanced_index.py` | Generation | UPDATE | Writes indexes but registry labels it ReadOnly; align permission and preview semantics. |
+| `generate_enhanced_index.py` | Generation | KEEP (UPDATED) | Default is WorkspaceWrite while `--dry-run`/`--check` are explicitly ReadOnly. |
 | `generate_error_docs.py` | Generation | KEEP | Check/generate role is distinct; retain. |
 | `governance_health_score.py` | Quality | REVIEW | Overlaps `project_health.py` and uses fallback metrics; define one canonical score. |
 | `install_git_hooks.sh` | Git | RETIRED | Custom `core.hooksPath` enforcement was removed locally and globally. |
@@ -496,12 +519,12 @@ not a certification of every branch or an instruction to skip normal tests.
 | `migrate_python_module.py` | Migration | KEEP | Dry-run is tested; retain. |
 | `migrate_react_component.py` | Migration | KEEP | Dry-run is tested; retain. |
 | `model_picker.py` | Agent Infrastructure | KEEP | Advisory-only behavior and focused tests passed. |
-| `parity_dashboard.py` | Quality | UPDATE | Add missing “When to use” contract; retain cross-stack evidence role. |
-| `pipeline_state.py` | Infrastructure | UPDATE | State-changing commands are labeled ReadOnly in registry. |
-| `pre_commit_check.sh` | Git | ARCHIVE CANDIDATE | Manual-only duplicate of installed pre-commit and canonical quick checks. |
-| `preflight.py` | Session | UPDATE | Add `--help` and “When to use” contract. |
+| `parity_dashboard.py` | Quality | KEEP (UPDATED) | Cross-stack evidence role now has a clear use case and root-stable examples. |
+| `pipeline_state.py` | Infrastructure | KEEP (UPDATED) | Read commands and state-changing commands now have explicit distinct permissions. |
+| `pre_commit_check.sh` | Git | ARCHIVED | Duplicate manual wrapper removed after safe-delete preview; canonical checks remain. |
+| `preflight.py` | Session | KEEP (UPDATED) | Has argparse help, a clear use case, runtime resolution, and worktree-safe merge detection. |
 | `project_health.py` | Governance | KEEP (UPDATED) | Canonical role retained; automation metadata now declares read-only default versus WorkspaceWrite `--fix`. |
-| `prompt_router.py` | Infrastructure | UPDATE | Registry labels normal read-only routing as WorkspaceWrite. |
+| `prompt_router.py` | Infrastructure | KEEP (UPDATED) | Normal routing is explicitly ReadOnly and examples are root-stable. |
 | `python_runtime.sh` | Infrastructure | KEEP (NEW) | Resolves an approved Python interpreter across primary and linked Git worktrees without creating or copying environments. |
 | `recover_git_state.sh` | Git | RETIRED | Unclear Git state now stops for Codex inspection; no automated destructive recovery. |
 | `release.py` | Release | KEEP | Canonical release CLI and focused tests passed; publishing still requires approval. |
@@ -510,24 +533,24 @@ not a certification of every branch or an instruction to skip normal tests.
 | `safe_file_move.py` | Docs | KEEP | Tested dry-run and link-aware behavior; retain. |
 | `safe_push.sh` | Git | RETIRED | Removed automatic checkout/stash/drop/rebase behavior. |
 | `session.py` | Session | KEEP | Canonical session CLI and focused tests passed. |
-| `session_store.py` | Infrastructure | UPDATE | State-changing `new`/`end` commands are labeled ReadOnly. |
+| `session_store.py` | Infrastructure | KEEP (UPDATED) | Read commands and state-changing `new`/`end` commands now have explicit distinct permissions. |
 | `should_use_pr.sh` | Git | RETIRED | Codex applies the documented PR policy from actual task scope. |
 | `skill_tiers.py` | Infrastructure | KEEP | Canonical validation passed. |
 | `sync_numbers.py` | Session | KEEP | Preview versus `--fix` is explicit; retain. |
-| `test_api_parity.py` | Testing | UPDATE | Current parity is useful; remove stale Streamlit/VBA framing and alias. |
-| `test_changed.py` | Testing | UPDATE | Add help/“When to use” contract and keep root-stable pytest paths. |
-| `test_cli_smoke.py` | Testing | UPDATE | 13/13 pass after using a registered automation query; decide whether to add the standalone suite to a canonical gate. |
-| `test_import_pipeline.py` | Testing | UPDATE | Add help and explicit live-server prerequisite; retain as maintained E2E path. |
-| `test_sample_endpoint.py` | Testing | ARCHIVE CANDIDATE | Standalone subset of `test_import_pipeline.py`; no active caller/help. |
+| `test_api_parity.py` | Testing | KEEP (UPDATED) | Framing now matches the active React/FastAPI architecture. |
+| `test_changed.py` | Testing | KEEP (UPDATED) | Has a clear use case and uses the worktree-aware runtime with root-stable paths. |
+| `test_cli_smoke.py` | Testing | KEEP (UPDATED) | 13/13 pass and the standalone suite now runs in the canonical local and PR validation paths. |
+| `test_import_pipeline.py` | Testing | KEEP (UPDATED) | Documents the live FastAPI prerequisite and remains the maintained import E2E path. |
+| `test_sample_endpoint.py` | Testing | ARCHIVED | Redundant subset removed after safe-delete preview; coverage remains in `test_import_pipeline.py`. |
 | `tool_permissions.py` | Infrastructure | KEEP (UPDATED) | Explicit operation/mode resolver applies agent ceilings and file scope and fails closed on undeclared input. |
-| `tool_registry.py` | Infrastructure | UPDATE | Keyword permission inference is gone, but temp/stale discovery aliases still need cleanup. |
+| `tool_registry.py` | Infrastructure | KEEP (UPDATED) | Explicit permission resolution remains and temp/stale discovery aliases were removed from the canonical map. |
 | `update_test_stats.py` | Testing | KEEP | Report versus write modes are explicit; retain. |
 | `validate_api_contracts.py` | Quality | KEEP | Canonical contract check passed. |
 | `validate_git_state.sh` | Git | KEEP | Canonical read-only validation passed. |
 | `validate_imports.py` | Quality | KEEP | Canonical import validation passed. |
 | `validate_schema_snapshots.py` | Quality | KEEP | Canonical snapshot validation passed. |
 | `validate_script_refs.py` | Quality | KEEP (UPDATED) | Scans active CLI, pre-commit, workflow, and script surfaces and fails on any executable missing target. |
-| `watch_tests.sh` | Testing | UPDATE | Uses bare `pytest`/ambiguous default path and legacy Streamlit message; `fswatch` is absent locally. |
+| `watch_tests.sh` | Testing | KEEP (UPDATED) | Uses the runtime resolver, defaults to `Python/tests/`, has help that works without `fswatch`, and no longer prints legacy Streamlit status. |
 
 ## Extended control-surface disposition
 
@@ -537,9 +560,9 @@ not a certification of every branch or an instruction to skip normal tests.
 |---|---|---|
 | `run.sh` | KEEP (UPDATED) | Broken `test --vba` dispatch/help/completion entries removed; supported test lanes retained. |
 | `.pre-commit-config.yaml` | KEEP (UPDATED) | Missing-target Streamlit hooks removed; current React/FastAPI/Python hooks retained. |
-| `scripts/automation-map.json` | UPDATE | Operation/mode permissions are explicit for the repaired controls; remove remaining stale categories/aliases/temp tool and align deprecation metadata. |
-| `scripts/index.json` / `index.md` | KEEP/REGENERATE | Physical inventory is truthful now; regenerate only after approved script changes. |
-| `scripts/README.md` | UPDATE | Replace stale PR/deprecation guidance and make help/dry-run claims match reality. |
+| `scripts/automation-map.json` | KEEP (UPDATED) | 104/104 physical coverage, 113 active tasks, 14 canonical groups, and explicit high-value operation/mode permissions. |
+| `scripts/index.json` / `index.md` | KEEP (REGENERATED) | Regenerated after the three approved archives; physical inventory is 104/104. |
+| `scripts/README.md` | KEEP (UPDATED) | Codex-native Git boundary and worktree-aware runtime guidance now match supported behavior. |
 
 ### Git hook entrypoints
 
@@ -608,15 +631,14 @@ issue closure, release, and history rewriting retain explicit approval gates.
 2. **Completed:** compliance and drift fail closed on missing/current evidence.
 3. **Completed:** drift and trend analysis is read-only unless writing is
    explicitly requested.
-4. **Completed for permission truth:** declared operation/mode permissions are
-   enforced without keyword guessing. Temp/removed discovery aliases remain in
-   the automation-discovery P1 item.
-5. **Partially completed:** the CLI smoke case is repaired at 13/13; canonical
-   gate integration remains pending.
+4. **Completed:** declared operation/mode permissions are enforced without
+   keyword guessing, and temp/removed discovery aliases are gone.
+5. **Completed:** the CLI smoke case passes 13/13 and runs in the canonical
+   local and Repository Validation gates.
 
 ### Packet C4 — Archive/consolidate the proven candidates
 
-Start with only these three:
+**Completed:** only these three proven candidates were archived:
 
 ```text
 scripts/_tmp_add_groups.py
@@ -628,21 +650,19 @@ For each item:
 
 ```bash
 rg -n "candidate_name|candidate_path" run.sh .github .pre-commit-config.yaml scripts docs AGENTS.md
-.venv/bin/python scripts/safe_file_delete.py --dry-run scripts/candidate
+./scripts/python_runtime.sh scripts/safe_file_delete.py --dry-run scripts/candidate
 ```
 
-Do not execute deletion until all live references are updated, the parent
-accepts the replacement, and the preview is clean. After deletion, regenerate
-only `scripts/index.json`, `scripts/index.md`, and the automation map surfaces
-that actually changed. Then re-run the focused smoke/integrity tests and one
-canonical gate.
+Each file passed a parent-verified dry-run after caller inspection. The files
+were removed through `safe_file_delete.py`, and the map/index surfaces were
+updated in the same branch. Recovery remains available through Git history.
 
 ### Packet C5 — Low-priority CLI/documentation normalization
 
-Repair help/“When to use”/root-stable command examples in one surgical pass.
-Do not mass-rewrite working scripts or split large files solely to improve
-counts. Reassess the 13 review items only after C1-C4 establish truthful usage
-and caller data.
+**Completed:** repaired the confirmed help/“When to use”/root-stable examples
+in one surgical pass. Working scripts were not mass-rewritten or split solely
+to improve counts. The 12 `REVIEW` items remain active because the evidence is
+insufficient to archive them safely.
 
 ## Archive decision rules for future sessions
 
@@ -668,21 +688,21 @@ Key commands used in this audit:
 ```text
 ./run.sh session brief --agent orchestrator
 ./run.sh session start
-.venv/bin/python scripts/check_scripts_index.py --json
-.venv/bin/python scripts/validate_script_refs.py --fix
+./scripts/python_runtime.sh scripts/check_scripts_index.py --json
+./scripts/python_runtime.sh scripts/validate_script_refs.py
 bash -n <each active shell script and hook>
 AST parse <each active Python script and support module>
 safe --help probe <each script with a recognizable help path>
-.venv/bin/python scripts/test_cli_smoke.py --json
+./scripts/python_runtime.sh scripts/test_cli_smoke.py --json
 ./run.sh check
-.venv/bin/pytest -q <focused script/infrastructure test files>
+./scripts/python_runtime.sh -m pytest -q <focused script/infrastructure test files>
 ./run.sh efficiency check
-.venv/bin/python scripts/skill_tiers.py validate
+./scripts/python_runtime.sh scripts/skill_tiers.py validate
 gh pr checks 691
 gh run list --workflow <each retained workflow> --limit 3
 ```
 
-Current live PR evidence:
+Prior Batch 3 live PR evidence:
 
 - `PR Gate`: pass
 - `Python Validation`: pass
@@ -698,11 +718,13 @@ No release or publication workflow was triggered.
 - `shellcheck` and `actionlint` are not installed. Shell received syntax
   validation and workflow YAML received parser validation, but not those deeper
   linters.
-- Live-server scripts such as `test_import_pipeline.py` and
-  `test_sample_endpoint.py` were inspected rather than executed because this
-  audit did not start/alter the development stack.
-- Migration, Git, file-operation, release, auto-fix, and archive modes were not
-  executed.
+- `test_import_pipeline.py` was inspected rather than executed because this
+  audit did not start/alter the live development stack. Its redundant sample
+  subset was archived only after the maintained test was compared directly.
+- A temporary-fixture live batch migration verified rollback manifests; the
+  three approved archive candidates were removed through the safe-delete tool.
+  Git recovery, merge, branch deletion, release, publication, and auto-fix
+  modes were not executed during the implementation batches.
 - The baseline audit observed default writes from drift/trends. Batch 3 removed
   that behavior and focused tests prove no output directory is created by the
   default commands.

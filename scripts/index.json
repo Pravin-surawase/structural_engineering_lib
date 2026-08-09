@@ -2,8 +2,8 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> Development, validation, discovery, release-preparation, and maintenance tools.",
-  "last_updated": "2026-08-09",
-  "file_count": 109,
+  "last_updated": "2026-08-10",
+  "file_count": 106,
   "files": [
     {
       "name": "README.md",
@@ -12,18 +12,7 @@
       "last_updated": "2026-08-09",
       "title": "Scripts",
       "description": "> Development, validation, discovery, release-preparation, and maintenance tools. > Git/GitHub lifecycle wrappers were retired on 2026-08-09; Codex owns that",
-      "content_hash": "d6f9e725a121"
-    },
-    {
-      "name": "_tmp_add_groups.py",
-      "type": "python",
-      "size_lines": 168,
-      "last_updated": "2026-08-09",
-      "description": "Temporary script to add group fields to automation-map.json. Delete after use.",
-      "constants": [
-        "GROUP_MAP"
-      ],
-      "content_hash": "0bff21f77141"
+      "content_hash": "9c8d099f40d8"
     },
     {
       "name": "agent_brief.sh",
@@ -589,10 +578,10 @@
     {
       "name": "agent_start.sh",
       "type": "shell-script",
-      "size_lines": 319,
+      "size_lines": 253,
       "last_updated": "2026-08-09",
       "description": "Unified Agent Start Script",
-      "content_hash": "3af5b2c38ca3"
+      "content_hash": "ae0ce865bc01"
     },
     {
       "name": "agent_trends.py",
@@ -656,10 +645,10 @@
     {
       "name": "archive_old_files.sh",
       "type": "shell-script",
-      "size_lines": 210,
+      "size_lines": 207,
       "last_updated": "2026-08-09",
       "description": "Auto-archive files older than 90 days from docs/_active/",
-      "content_hash": "bef86934102a"
+      "content_hash": "b1d9a5db1a99"
     },
     {
       "name": "audit_error_handling.py",
@@ -921,15 +910,14 @@
         "_updated",
         "_usage",
         "_coverage",
-        "tasks",
-        "categories"
+        "tasks"
       ],
-      "content_hash": "e9cbe6b9c577"
+      "content_hash": "f7a807248ce2"
     },
     {
       "name": "batch_migrate_runner.py",
       "type": "python",
-      "size_lines": 442,
+      "size_lines": 467,
       "last_updated": "2026-08-09",
       "description": "Batch migration runner with per-operation rollback logs.",
       "classes": [
@@ -952,7 +940,7 @@
         "REPO_ROOT",
         "TOOL_SCRIPTS"
       ],
-      "content_hash": "fea4cc5c2b43"
+      "content_hash": "c80f0058e937"
     },
     {
       "name": "benchmark_api.py",
@@ -1062,8 +1050,8 @@
     {
       "name": "bump_version.py",
       "type": "python",
-      "size_lines": 451,
-      "last_updated": "2026-08-09",
+      "size_lines": 448,
+      "last_updated": "2026-08-10",
       "description": "Version Bump Script — Single Source of Truth",
       "functions": [
         {
@@ -1091,13 +1079,13 @@
         "DOC_DATE_FILES",
         "EVERGREEN_NOTES"
       ],
-      "content_hash": "986fdb4ceb01"
+      "content_hash": "f228d1b81ad7"
     },
     {
       "name": "check_all.py",
       "type": "python",
-      "size_lines": 715,
-      "last_updated": "2026-08-09",
+      "size_lines": 712,
+      "last_updated": "2026-08-10",
       "description": "Unified check orchestrator — runs all validation scripts in parallel.",
       "classes": [
         {
@@ -1122,7 +1110,7 @@
         "SCRIPTS_DIR",
         "VENV_PYTHON"
       ],
-      "content_hash": "b6fb6466b69f"
+      "content_hash": "9b1aa3dbd1fe"
     },
     {
       "name": "check_api.py",
@@ -1169,7 +1157,7 @@
     {
       "name": "check_api_compat.py",
       "type": "python",
-      "size_lines": 152,
+      "size_lines": 157,
       "last_updated": "2026-08-09",
       "description": "Check API backward compatibility.",
       "functions": [
@@ -1193,7 +1181,7 @@
         "PROJECT_ROOT",
         "MANIFEST_PATH"
       ],
-      "content_hash": "ff818dab6241"
+      "content_hash": "35baaf8f94f6"
     },
     {
       "name": "check_architecture_boundaries.py",
@@ -1341,7 +1329,7 @@
       "type": "python",
       "size_lines": 464,
       "last_updated": "2026-08-09",
-      "description": "Circular Import Detector for Streamlit Application",
+      "description": "Circular Import Detector for the Python Structural Library",
       "classes": [
         {
           "name": "ImportInfo",
@@ -1389,12 +1377,12 @@
           "name": "main"
         }
       ],
-      "content_hash": "3d4aa89ded47"
+      "content_hash": "d560919d7e67"
     },
     {
       "name": "check_clause_coverage.py",
       "type": "python",
-      "size_lines": 486,
+      "size_lines": 488,
       "last_updated": "2026-08-09",
       "description": "IS 456 clause coverage gap detection.",
       "functions": [
@@ -1465,7 +1453,7 @@
         "COLOR_RESET",
         "COLOR_BOLD"
       ],
-      "content_hash": "859e0d53bb45"
+      "content_hash": "528bd8b95fd0"
     },
     {
       "name": "check_cli_reference.py",
@@ -1692,7 +1680,7 @@
     {
       "name": "check_function_quality.py",
       "type": "python",
-      "size_lines": 668,
+      "size_lines": 670,
       "last_updated": "2026-08-09",
       "description": "12-point quality checklist for IS 456 functions.",
       "classes": [
@@ -1773,7 +1761,7 @@
         "UNIT_SUFFIXES",
         "ADVISORY_CHECKS"
       ],
-      "content_hash": "1f3dde142c2d"
+      "content_hash": "4971f9bf9372"
     },
     {
       "name": "check_governance.py",
@@ -1994,7 +1982,7 @@
     {
       "name": "check_new_element_completeness.py",
       "type": "python",
-      "size_lines": 622,
+      "size_lines": 624,
       "last_updated": "2026-08-09",
       "description": "Check structural element completeness across all 7 layers.",
       "functions": [
@@ -2102,7 +2090,7 @@
         "REPO_ROOT",
         "KNOWN_ELEMENTS"
       ],
-      "content_hash": "997c664a60a7"
+      "content_hash": "c45ca382a032"
     },
     {
       "name": "check_next_session_brief_length.py",
@@ -2247,15 +2235,15 @@
     {
       "name": "check_root_file_count.sh",
       "type": "shell-script",
-      "size_lines": 58,
+      "size_lines": 60,
       "last_updated": "2026-08-09",
       "description": "Check Root File Count",
-      "content_hash": "f47b4c4c9802"
+      "content_hash": "1a707d6030ab"
     },
     {
       "name": "check_scripts_index.py",
       "type": "python",
-      "size_lines": 180,
+      "size_lines": 223,
       "last_updated": "2026-08-09",
       "description": "Ensure scripts/index.json and automation-map.json match the scripts folder contents.",
       "functions": [
@@ -2270,7 +2258,7 @@
         "AUTOMATION_MAP_PATH",
         "SCRIPT_EXTENSIONS"
       ],
-      "content_hash": "51b27a57dcc1"
+      "content_hash": "1531f18bde50"
     },
     {
       "name": "check_tasks_format.py",
@@ -2318,9 +2306,9 @@
     {
       "name": "check_type_annotations.py",
       "type": "python",
-      "size_lines": 543,
+      "size_lines": 542,
       "last_updated": "2026-08-09",
-      "description": "Type Annotation Checker for Streamlit Application",
+      "description": "Type Annotation Checker for the Python Structural Library",
       "classes": [
         {
           "name": "AnnotationIssue",
@@ -2364,7 +2352,7 @@
           "name": "main"
         }
       ],
-      "content_hash": "b8985a27f6ba"
+      "content_hash": "e5d3d17f1d7c"
     },
     {
       "name": "check_unfinished_merge.sh",
@@ -2377,10 +2365,10 @@
     {
       "name": "check_version_consistency.sh",
       "type": "shell-script",
-      "size_lines": 66,
+      "size_lines": 60,
       "last_updated": "2026-08-09",
       "description": "check_version_consistency.sh - Verify version strings are consistent",
-      "content_hash": "a53b8cf40cc9"
+      "content_hash": "5419e66e1973"
     },
     {
       "name": "check_wip_limits.sh",
@@ -2393,10 +2381,10 @@
     {
       "name": "ci_local.sh",
       "type": "shell-script",
-      "size_lines": 41,
+      "size_lines": 20,
       "last_updated": "2026-08-09",
-      "description": "shellcheck source=/dev/null",
-      "content_hash": "ced9df5e7129"
+      "description": "Local equivalent of the maintained PR validation lanes.",
+      "content_hash": "be2f4a7bfc38"
     },
     {
       "name": "cleanup_stale_branches.py",
@@ -2484,7 +2472,7 @@
     {
       "name": "config_precedence.py",
       "type": "python",
-      "size_lines": 562,
+      "size_lines": 564,
       "last_updated": "2026-08-09",
       "description": "Configuration precedence auditing for instruction files.",
       "classes": [
@@ -2556,7 +2544,7 @@
           "description": "CLI entry point."
         }
       ],
-      "content_hash": "690ffba3d9b2"
+      "content_hash": "c584f427c308"
     },
     {
       "name": "create_doc.py",
@@ -2810,7 +2798,7 @@
     {
       "name": "evolve.py",
       "type": "python",
-      "size_lines": 544,
+      "size_lines": 552,
       "last_updated": "2026-08-09",
       "description": "Self-evolution engine — orchestrates project health, feedback, and auto-fixes.",
       "functions": [
@@ -2876,7 +2864,7 @@
           "description": "Run full evolution cycle.",
           "params": [
             "fix",
-            "report_only"
+            "write_report"
           ]
         },
         {
@@ -2896,7 +2884,7 @@
         "FEEDBACK_DIR",
         "TASKS_MD"
       ],
-      "content_hash": "733cc776eb1b"
+      "content_hash": "a10e646abd7a"
     },
     {
       "name": "export_paper_data.py",
@@ -2967,7 +2955,7 @@
     {
       "name": "external_cli_test.py",
       "type": "python",
-      "size_lines": 385,
+      "size_lines": 401,
       "last_updated": "2026-08-09",
       "description": "External CLI smoke test (S-007).",
       "classes": [
@@ -2984,18 +2972,25 @@
         "SAMPLE_JOB_IS456_JSON",
         "SAMPLE_BEAM_DESIGN_CSV"
       ],
-      "content_hash": "0050b2a8997c"
+      "content_hash": "1f19ec4cb835"
     },
     {
       "name": "find_automation.py",
       "type": "python",
-      "size_lines": 208,
+      "size_lines": 187,
       "last_updated": "2026-08-09",
       "description": "Find the right automation script for a task.",
       "functions": [
         {
           "name": "load_automation_map",
           "description": "Load the automation map."
+        },
+        {
+          "name": "active_tasks",
+          "description": "Return discoverable tasks; deprecated migration aliases stay hidden.",
+          "params": [
+            "automation_map"
+          ]
         },
         {
           "name": "find_task",
@@ -3011,21 +3006,6 @@
           "params": [
             "task_name",
             "task_info"
-          ]
-        },
-        {
-          "name": "list_category",
-          "description": "List all tasks in a category.",
-          "params": [
-            "category",
-            "automation_map"
-          ]
-        },
-        {
-          "name": "list_all_categories",
-          "description": "List all categories and their tasks.",
-          "params": [
-            "automation_map"
           ]
         },
         {
@@ -3054,7 +3034,7 @@
           "name": "main"
         }
       ],
-      "content_hash": "67ec2cc6a605"
+      "content_hash": "8fa8ce0d5f54"
     },
     {
       "name": "fix_broken_links.py",
@@ -3603,7 +3583,7 @@
     {
       "name": "parity_dashboard.py",
       "type": "python",
-      "size_lines": 517,
+      "size_lines": 519,
       "last_updated": "2026-08-09",
       "description": "Parity Dashboard — coverage/parity across IS 456, API, endpoints, and React hooks.",
       "functions": [
@@ -3641,7 +3621,7 @@
         "HOOKS_DIR",
         "LOCAL_ONLY_HOOKS"
       ],
-      "content_hash": "ffd1b4f96d2d"
+      "content_hash": "447d5ea2c617"
     },
     {
       "name": "pipeline_state.py",
@@ -3796,21 +3776,13 @@
         "IS456_STEPS",
         "PARALLEL_GROUPS"
       ],
-      "content_hash": "a796f81c8d9a"
-    },
-    {
-      "name": "pre_commit_check.sh",
-      "type": "shell-script",
-      "size_lines": 36,
-      "last_updated": "2026-08-09",
-      "description": "Pre-flight checks before committing",
-      "content_hash": "3d2f4a8c9b58"
+      "content_hash": "df0db0480f8f"
     },
     {
       "name": "preflight.py",
       "type": "python",
-      "size_lines": 200,
-      "last_updated": "2026-08-09",
+      "size_lines": 203,
+      "last_updated": "2026-08-10",
       "description": "Pre-flight check — catch common mistakes BEFORE they happen.",
       "functions": [
         {
@@ -3822,8 +3794,8 @@
           "description": "Warn about uncommitted changes."
         },
         {
-          "name": "check_venv",
-          "description": "Ensure .venv exists and Python is correct."
+          "name": "check_python_runtime",
+          "description": "Ensure this checkout can resolve an approved Python interpreter."
         },
         {
           "name": "check_merge_conflicts",
@@ -3855,6 +3827,7 @@
       ],
       "constants": [
         "REPO_ROOT",
+        "PYTHON_RUNTIME",
         "GREEN",
         "RED",
         "YELLOW",
@@ -3862,7 +3835,7 @@
         "BOLD",
         "NC"
       ],
-      "content_hash": "45d1c3f2fe45"
+      "content_hash": "0743bdc001d2"
     },
     {
       "name": "project_health.py",
@@ -3968,7 +3941,7 @@
     {
       "name": "prompt_router.py",
       "type": "python",
-      "size_lines": 492,
+      "size_lines": 494,
       "last_updated": "2026-08-09",
       "description": "Prompt router — routes natural language queries to the best agent + skills.",
       "classes": [
@@ -3999,7 +3972,7 @@
       "constants": [
         "STOPWORDS"
       ],
-      "content_hash": "cb3f2a21c85e"
+      "content_hash": "9f19e22b2467"
     },
     {
       "name": "python_runtime.sh",
@@ -4172,7 +4145,7 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 2259,
+      "size_lines": 2262,
       "last_updated": "2026-08-09",
       "description": "Unified session management CLI.",
       "functions": [
@@ -4276,12 +4249,12 @@
         "HANDOFF_DATE_RE",
         "COMMIT_HASH_RE"
       ],
-      "content_hash": "0bb25b2255a4"
+      "content_hash": "3e4fb0368d76"
     },
     {
       "name": "session_store.py",
       "type": "python",
-      "size_lines": 372,
+      "size_lines": 374,
       "last_updated": "2026-08-09",
       "description": "JSON-based session state persistence for AI agent sessions.",
       "classes": [
@@ -4389,7 +4362,7 @@
       "constants": [
         "SESSIONS_DIR"
       ],
-      "content_hash": "c25fde05cef7"
+      "content_hash": "a37680439053"
     },
     {
       "name": "skill_tiers.py",
@@ -4557,7 +4530,7 @@
       "type": "python",
       "size_lines": 457,
       "last_updated": "2026-08-09",
-      "description": "API Parity Testing Script (V3 Preparation)",
+      "description": "API Parity Testing Script",
       "classes": [
         {
           "name": "ParityTestCase",
@@ -4641,12 +4614,12 @@
         "TEST_CASES_PATH",
         "STANDARD_TEST_CASES"
       ],
-      "content_hash": "d740c42560a1"
+      "content_hash": "df3407456994"
     },
     {
       "name": "test_changed.py",
       "type": "python",
-      "size_lines": 216,
+      "size_lines": 219,
       "last_updated": "2026-08-09",
       "description": "Smart test runner — run only tests related to changed files.",
       "functions": [
@@ -4674,13 +4647,13 @@
         "SOURCE_TO_TEST_MAP",
         "VERBOSE"
       ],
-      "content_hash": "a9e377c53ec5"
+      "content_hash": "eb2c8f050454"
     },
     {
       "name": "test_cli_smoke.py",
       "type": "python",
-      "size_lines": 294,
-      "last_updated": "2026-08-09",
+      "size_lines": 298,
+      "last_updated": "2026-08-10",
       "description": "CLI Smoke Tests — validate all key scripts work correctly.",
       "functions": [
         {
@@ -4706,12 +4679,12 @@
         "REPO_ROOT",
         "VENV"
       ],
-      "content_hash": "874696adcb60"
+      "content_hash": "348f8775eae6"
     },
     {
       "name": "test_import_pipeline.py",
       "type": "python",
-      "size_lines": 406,
+      "size_lines": 412,
       "last_updated": "2026-08-09",
       "description": "End-to-end test of all import paths.",
       "functions": [
@@ -4808,24 +4781,7 @@
         "PASS",
         "FAIL"
       ],
-      "content_hash": "8e1fe2f9cf0c"
-    },
-    {
-      "name": "test_sample_endpoint.py",
-      "type": "python",
-      "size_lines": 72,
-      "last_updated": "2026-08-09",
-      "description": "Quick test of the sample data endpoint.",
-      "functions": [
-        {
-          "name": "unwrap_response",
-          "description": "Return data from the standard API envelope, or a direct response.",
-          "params": [
-            "payload"
-          ]
-        }
-      ],
-      "content_hash": "d831d03229a4"
+      "content_hash": "cf516aa9f8a0"
     },
     {
       "name": "tool_permissions.py",
@@ -5292,10 +5248,10 @@
     {
       "name": "watch_tests.sh",
       "type": "shell-script",
-      "size_lines": 87,
+      "size_lines": 102,
       "last_updated": "2026-08-09",
       "description": "Watch Mode (Solution 5 - Dev Automation)",
-      "content_hash": "2de61ff23fb0"
+      "content_hash": "3bb194383b11"
     }
   ],
   "subfolders": [
@@ -5306,5 +5262,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "61538440bbe0cbff"
+  "content_hash": "1505780801ae211a"
 }

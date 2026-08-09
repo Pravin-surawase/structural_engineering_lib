@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Smart test runner — run only tests related to changed files.
 
+When to use: After a bounded change when mapped Python/FastAPI tests provide a
+faster feedback loop than the complete suite.
+
 Usage:
-    .venv/bin/python scripts/test_changed.py              # Test files changed vs main
-    .venv/bin/python scripts/test_changed.py --staged      # Test staged files only
-    .venv/bin/python scripts/test_changed.py --last-commit  # Test files from last commit
-    .venv/bin/python scripts/test_changed.py --verbose      # Show mapping decisions
+    ./scripts/python_runtime.sh scripts/test_changed.py               # Uncommitted files
+    ./scripts/python_runtime.sh scripts/test_changed.py --staged      # Staged files only
+    ./scripts/python_runtime.sh scripts/test_changed.py --last-commit # Last commit
+    ./scripts/python_runtime.sh scripts/test_changed.py --verbose     # Mapping decisions
 
 Maps changed source files to their test files:
     Python/structural_lib/codes/is456/flexure.py  →  tests/test_flexure.py
@@ -22,7 +25,7 @@ import sys
 import glob
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VENV_PYTHON = os.path.join(REPO_ROOT, ".venv", "bin", "python")
+VENV_PYTHON = os.path.join(REPO_ROOT, "scripts", "python_runtime.sh")
 
 # Map source directories/patterns to test directories/patterns
 SOURCE_TO_TEST_MAP = [

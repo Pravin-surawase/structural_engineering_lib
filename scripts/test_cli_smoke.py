@@ -4,11 +4,14 @@
 Runs actual CLI commands via subprocess and checks exit codes / output.
 Standalone script (not pytest) — can run in CI.
 
+When to use: in the canonical validation gate after changing agent-facing CLI
+entrypoints, registry metadata, or their runtime launcher.
+
 Usage:
-    python scripts/test_cli_smoke.py              # Run all smoke tests
-    python scripts/test_cli_smoke.py --json        # JSON output
-    python scripts/test_cli_smoke.py --filter session  # Run matching tests
-    python scripts/test_cli_smoke.py --verbose     # Show stdout/stderr
+    ./scripts/python_runtime.sh scripts/test_cli_smoke.py
+    ./scripts/python_runtime.sh scripts/test_cli_smoke.py --json
+    ./scripts/python_runtime.sh scripts/test_cli_smoke.py --filter session
+    ./scripts/python_runtime.sh scripts/test_cli_smoke.py --verbose
 """
 
 from __future__ import annotations

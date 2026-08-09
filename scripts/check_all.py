@@ -5,14 +5,10 @@ When to use: When you want a single command to validate the entire codebase.
 Called by `./run.sh check` or directly.
 
 USAGE:
-    python scripts/check_all.py                      # Run ALL checks
-    python scripts/check_all.py --quick              # Fast subset (<30s)
-    python scripts/check_all.py --category api       # One category only
-    python scripts/check_all.py --fix                # Auto-fix what's possible
-    python scripts/check_all.py --json               # Machine-readable output
-    python scripts/check_all.py --list               # Show categories and scripts
-    python scripts/check_all.py --changed            # Only categories for changed files
-    python scripts/check_all.py --pre-commit         # Run pre-commit hooks
+    ./scripts/python_runtime.sh scripts/check_all.py                      # All
+    ./scripts/python_runtime.sh scripts/check_all.py --quick              # Fast
+    ./scripts/python_runtime.sh scripts/check_all.py --category api       # One category
+    ./scripts/python_runtime.sh scripts/check_all.py --changed            # Changed paths
 
 Exit Codes:
     0: All checks passed (or warnings only)
@@ -159,6 +155,7 @@ CATEGORIES: list[Category] = [
         description="Stale script references, instruction drift, bootstrap freshness",
         checks=[
             Check("Script references", _py("validate_script_refs.py")),
+            Check("CLI smoke", _py("test_cli_smoke.py")),
             Check("Instruction drift", _py("check_instruction_drift.py")),
             Check("Bootstrap freshness", _py("check_bootstrap_freshness.py")),
         ],
@@ -179,7 +176,7 @@ QUICK_CHECKS: dict[str, list[str]] = {
     "arch": ["Import validation"],
     "governance": ["Repo hygiene", "Token efficiency"],
     "git": ["Git state", "Unfinished merge"],
-    "stale": ["Script references"],
+    "stale": ["Script references", "CLI smoke"],
 }
 
 # File path patterns → categories for --changed mode
@@ -188,7 +185,7 @@ _PATH_TO_CATEGORIES: list[tuple[str, list[str]]] = [
     ("Python/structural_lib/", ["arch", "code"]),
     ("fastapi_app/", ["api", "fastapi"]),
     ("docs/", ["docs", "stale"]),
-    ("scripts/", ["stale", "governance"]),
+    ("scripts/", ["docs", "stale", "governance"]),
     (".codex/", ["governance"]),
     ("react_app/", []),  # No script-based checks for React yet
     (".pre-commit", ["governance"]),
@@ -548,14 +545,14 @@ def main() -> int:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "Examples:\n"
-            "  python scripts/check_all.py                    # Run all checks\n"
-            "  python scripts/check_all.py --quick            # Fast subset\n"
-            "  python scripts/check_all.py --category api     # API checks only\n"
-            "  python scripts/check_all.py --changed          # Only categories for changed files\n"
-            "  python scripts/check_all.py --pre-commit       # Run pre-commit hooks\n"
-            "  python scripts/check_all.py --fix              # Auto-fix issues\n"
-            "  python scripts/check_all.py --json             # CI output\n"
-            "  python scripts/check_all.py --list             # Show categories\n"
+            "  ./run.sh check                       # Run all checks\n"
+            "  ./run.sh check --quick               # Fast subset\n"
+            "  ./run.sh check --category api        # API checks only\n"
+            "  ./run.sh check --changed             # Changed paths only\n"
+            "  ./run.sh check --pre-commit          # Run pre-commit hooks\n"
+            "  ./run.sh check --fix                 # Auto-fix issues\n"
+            "  ./run.sh check --json                # CI output\n"
+            "  ./run.sh check --list                # Show categories\n"
         ),
     )
     parser.add_argument(
@@ -636,7 +633,7 @@ def main() -> int:
             StatusLine.warn(f"No checks found for category: {args.category}")
         else:
             StatusLine.warn("No checks to run")
-        return 0
+        return 1
 
     if not args.json:
         if args.changed and changed_cats:

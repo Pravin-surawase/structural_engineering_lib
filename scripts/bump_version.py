@@ -7,9 +7,9 @@ When to use: At release time. Bumps version in pyproject.toml and all version st
 This script updates version numbers across the codebase from ONE location.
 
 USAGE:
-    python scripts/bump_version.py 0.9.2
-    python scripts/bump_version.py 0.10.0 --dry-run
-    python scripts/bump_version.py --sync-docs
+    ./scripts/python_runtime.sh scripts/bump_version.py 0.9.2
+    ./scripts/python_runtime.sh scripts/bump_version.py 0.10.0 --dry-run
+    ./scripts/python_runtime.sh scripts/bump_version.py --sync-docs
 
 The single source of truth is Python/pyproject.toml.
 This script updates all other files that need the version.
@@ -135,13 +135,6 @@ DOC_DATE_FILES = {
         (r"(Document Version: )[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>{version}"),
         (r"(Last Updated: ).+", r"\g<1>{date}"),
     ],
-    "docs/getting-started/excel-tutorial.md": [
-        (r"(Document Version: )[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>{version}"),
-        (r"(Last Updated: ).+", r"\g<1>{date}"),
-    ],
-    "docs/contributing/vba-testing-guide.md": [
-        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}<br>"),
-    ],
     "docs/contributing/development-guide.md": [
         (
             r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+",
@@ -161,7 +154,7 @@ Version is managed in these files:
   - react_app/package.json (React app)
   - CITATION.cff (academic citation)
 
-Doc references are synced via: python scripts/bump_version.py --sync-docs
+Doc references are synced via: ./scripts/python_runtime.sh scripts/bump_version.py --sync-docs
 """
 
 
@@ -284,7 +277,9 @@ def main():
         print()
         if changes:
             print(f"Found {changes} doc file(s) with stale version references.")
-            print("Run: python scripts/bump_version.py --sync-docs")
+            print(
+                "Run: ./scripts/python_runtime.sh scripts/bump_version.py --sync-docs"
+            )
             return 1
         print("All doc version references are up to date.")
         return 0
@@ -332,8 +327,10 @@ def main():
 
     if not args.version:
         print(f"Current version: {current}")
-        print("\nUsage: python scripts/bump_version.py <new_version>")
-        print("Example: python scripts/bump_version.py 0.9.2")
+        print(
+            "\nUsage: ./scripts/python_runtime.sh scripts/bump_version.py <new_version>"
+        )
+        print("Example: ./scripts/python_runtime.sh scripts/bump_version.py 0.9.2")
         return 1
 
     new_version = args.version

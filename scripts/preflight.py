@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Pre-flight check — catch common mistakes BEFORE they happen.
 
+When to use: Before implementation when you need a read-only environment,
+branch, merge-state, dependency, and local-port diagnostic.
+
 Usage:
-    .venv/bin/python scripts/preflight.py          # Run all checks
-    .venv/bin/python scripts/preflight.py --fix     # Auto-fix what's possible
+    ./scripts/python_runtime.sh scripts/preflight.py
 
 Checks:
     1. On correct branch (not detached HEAD)
@@ -14,12 +16,14 @@ Checks:
     6. Port conflicts (8000, 5173)
 """
 
+import argparse
 import os
 import subprocess
 import sys
 import socket
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PYTHON_RUNTIME = os.path.join(REPO_ROOT, "scripts", "python_runtime.sh")
 
 GREEN = "\033[32m"
 RED = "\033[31m"
@@ -65,7 +69,9 @@ def check_branch() -> None:
     if rc != 0:
         _fail("Not a git repository")
     elif branch == "HEAD":
-        _fail("Detached HEAD — not on a branch", "git checkout main")
+        _fail(
+            "Detached HEAD — not on a branch", "Stop and have Codex inspect Git state"
+        )
     else:
         _pass(f"On branch: {branch}")
 
@@ -80,27 +86,22 @@ def check_uncommitted() -> None:
         _pass("Working tree clean")
 
 
-def check_venv() -> None:
-    """Ensure .venv exists and Python is correct."""
-    venv_python = os.path.join(REPO_ROOT, ".venv", "bin", "python")
-    if not os.path.isfile(venv_python):
-        _fail(
-            ".venv/bin/python not found",
-            "python3 -m venv .venv && .venv/bin/pip install -e Python/",
-        )
-        return
-
-    rc, version = _run([venv_python, "--version"])
+def check_python_runtime() -> None:
+    """Ensure this checkout can resolve an approved Python interpreter."""
+    rc, version = _run([PYTHON_RUNTIME, "--version"])
     if rc == 0:
-        _pass(f".venv active: {version}")
+        _pass(f"Python runtime resolved: {version}")
     else:
-        _fail(".venv/bin/python broken", "rm -rf .venv && python3 -m venv .venv")
+        _fail(
+            "Python runtime unavailable",
+            "Create .venv in the primary checkout or set STRUCTURAL_LIB_PYTHON",
+        )
 
 
 def check_merge_conflicts() -> None:
     """Detect unresolved merge conflicts."""
-    merge_head = os.path.join(REPO_ROOT, ".git", "MERGE_HEAD")
-    if os.path.exists(merge_head):
+    merge_rc, _merge_head = _run(["git", "rev-parse", "-q", "--verify", "MERGE_HEAD"])
+    if merge_rc == 0:
         _fail("Unfinished merge in progress", "Stop and have Codex inspect git status")
         return
     rc, output = _run(["git", "diff", "--check"])
@@ -168,11 +169,13 @@ def check_stub_not_modified() -> None:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.parse_args()
     print(f"\n{BOLD}Pre-flight Check{NC}\n")
 
     check_branch()
     check_uncommitted()
-    check_venv()
+    check_python_runtime()
     check_merge_conflicts()
     check_key_files()
     check_port(8000, "FastAPI")

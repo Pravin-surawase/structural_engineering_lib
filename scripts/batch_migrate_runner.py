@@ -198,26 +198,51 @@ def _write_file_rollback_manifest(op_dir: Path, backups: list[dict[str, Any]]) -
 
 def _write_rollback_script(op_dir: Path, backups: list[dict[str, Any]]) -> Path:
     script_path = op_dir / "rollback.sh"
+    runtime = REPO_ROOT / "scripts" / "python_runtime.sh"
+    safe_move = REPO_ROOT / "scripts" / "safe_file_move.py"
+    safe_delete = REPO_ROOT / "scripts" / "safe_file_delete.py"
     lines = [
         "#!/usr/bin/env bash",
         "set -euo pipefail",
         f"cd {shlex.quote(str(REPO_ROOT))}",
         "",
-        "echo 'Restoring files for operation rollback...'",
+        "echo 'Restoring files through validated file-operation tools...'",
     ]
     for entry in backups:
         rel = str(entry["path"])
         backup_rel = str(entry["backup"])
         backup_abs = op_dir / backup_rel
         if entry["existed"]:
-            lines.extend(
-                [
-                    f"mkdir -p {shlex.quote(str(Path(rel).parent))}",
-                    f"cp {shlex.quote(str(backup_abs))} {shlex.quote(rel)}",
-                ]
+            lines.append(
+                " ".join(
+                    shlex.quote(str(part))
+                    for part in (
+                        runtime,
+                        safe_move,
+                        backup_abs,
+                        rel,
+                        "--force",
+                    )
+                )
             )
         else:
-            lines.append(f"rm -f {shlex.quote(rel)}")
+            lines.extend(
+                [
+                    f"if [[ -f {shlex.quote(rel)} ]]; then",
+                    "  "
+                    + " ".join(
+                        shlex.quote(str(part))
+                        for part in (
+                            runtime,
+                            safe_delete,
+                            rel,
+                            "--force",
+                            "--no-backup",
+                        )
+                    ),
+                    "fi",
+                ]
+            )
     lines.append("echo 'Rollback complete.'")
     script_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     current_mode = script_path.stat().st_mode
@@ -229,7 +254,8 @@ def run_batch(args: argparse.Namespace) -> tuple[int, dict[str, Any]]:
     operations = _load_plan(Path(args.plan))
     run_id = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
     run_root = Path(args.rollback_dir) / run_id
-    run_root.mkdir(parents=True, exist_ok=True)
+    if not args.dry_run:
+        run_root.mkdir(parents=True, exist_ok=True)
 
     summary: dict[str, Any] = {
         "tool": "batch_migrate_runner",
@@ -244,7 +270,7 @@ def run_batch(args: argparse.Namespace) -> tuple[int, dict[str, Any]]:
     print(f"Batch migration run: {run_id}")
     print(f"Plan: {args.plan}")
     print(f"Operations: {len(operations)}")
-    print(f"Rollback logs: {run_root}")
+    print(f"Rollback logs: {run_root if not args.dry_run else 'not written (dry-run)'}")
 
     for idx, op in enumerate(operations, start=1):
         tool_raw = str(op.get("tool", "python_module"))
@@ -254,7 +280,8 @@ def run_batch(args: argparse.Namespace) -> tuple[int, dict[str, Any]]:
         extra_args = _normalize_args(op.get("args"))
         op_name = _safe_slug(f"{idx:03d}-{tool}-{Path(source).name}")
         op_dir = run_root / op_name
-        op_dir.mkdir(parents=True, exist_ok=True)
+        if not args.dry_run:
+            op_dir.mkdir(parents=True, exist_ok=True)
 
         op_log: dict[str, Any] = {
             "index": idx,
@@ -304,9 +331,10 @@ def run_batch(args: argparse.Namespace) -> tuple[int, dict[str, Any]]:
             op_log["error"] = "Planning dry-run failed"
             summary["operations"].append(op_log)
             summary["success"] = False
-            (op_dir / "operation-log.json").write_text(
-                json.dumps(op_log, indent=2), encoding="utf-8"
-            )
+            if not args.dry_run:
+                (op_dir / "operation-log.json").write_text(
+                    json.dumps(op_log, indent=2), encoding="utf-8"
+                )
             if not args.continue_on_error:
                 break
             continue
@@ -330,9 +358,6 @@ def run_batch(args: argparse.Namespace) -> tuple[int, dict[str, Any]]:
         if args.dry_run:
             op_log["status"] = "dry-run"
             summary["operations"].append(op_log)
-            (op_dir / "operation-log.json").write_text(
-                json.dumps(op_log, indent=2), encoding="utf-8"
-            )
             continue
 
         live_cmd = _build_command(
@@ -380,10 +405,10 @@ def run_batch(args: argparse.Namespace) -> tuple[int, dict[str, Any]]:
     summary["operations_failed"] = sum(
         1 for op in summary["operations"] if op.get("status") == "failed"
     )
-    summary["summary_file"] = str((run_root / "run-summary.json"))
-    (run_root / "run-summary.json").write_text(
-        json.dumps(summary, indent=2), encoding="utf-8"
-    )
+    summary_path = run_root / "run-summary.json"
+    summary["summary_file"] = None if args.dry_run else str(summary_path)
+    if not args.dry_run:
+        summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
     return (0 if summary["success"] else 1), summary
 
 
@@ -433,7 +458,7 @@ def main() -> int:
         f"  Completed: {payload['operations_completed']}/{payload['operations_total']}"
     )
     print(f"  Failed: {payload['operations_failed']}")
-    print(f"  Summary: {payload['summary_file']}")
+    print(f"  Summary: {payload['summary_file'] or 'not written (dry-run)'}")
     return exit_code
 
 

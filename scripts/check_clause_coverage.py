@@ -4,6 +4,8 @@
 Scans clauses.json and compares against @clause() decorated functions
 to find unimplemented clauses.
 
+When to use: after changing IS 456 clause registrations or before a coverage review.
+
 This script:
 1. Loads all 119 defined clauses from clauses.json
 2. Imports all IS 456 modules to populate the @clause() registry
@@ -11,12 +13,12 @@ This script:
 4. Generates coverage reports by category
 
 Usage:
-    python scripts/check_clause_coverage.py                  # Full report
-    python scripts/check_clause_coverage.py --gaps-only      # Only unimplemented
-    python scripts/check_clause_coverage.py --category flexure
-    python scripts/check_clause_coverage.py --json           # Machine-readable
-    python scripts/check_clause_coverage.py --summary        # Just totals
-    python scripts/check_clause_coverage.py --implemented    # Only implemented clauses
+    ./scripts/python_runtime.sh scripts/check_clause_coverage.py
+    ./scripts/python_runtime.sh scripts/check_clause_coverage.py --gaps-only
+    ./scripts/python_runtime.sh scripts/check_clause_coverage.py --category flexure
+    ./scripts/python_runtime.sh scripts/check_clause_coverage.py --json
+    ./scripts/python_runtime.sh scripts/check_clause_coverage.py --summary
+    ./scripts/python_runtime.sh scripts/check_clause_coverage.py --implemented
 
 Exit Codes:
     0 - Success

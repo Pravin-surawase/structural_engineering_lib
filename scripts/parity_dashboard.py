@@ -7,11 +7,13 @@ Scans actual source files to measure four parity dimensions:
   3. Endpoint → Test Coverage — FastAPI endpoints with tests
   4. React Hook → API Coverage — hooks connected to API endpoints
 
+When to use: after cross-layer API changes or before parity planning and release review.
+
 Usage:
-    python scripts/parity_dashboard.py              # Full dashboard
-    python scripts/parity_dashboard.py --json        # Machine-readable JSON
-    python scripts/parity_dashboard.py --section clauses  # Single section
-    python scripts/parity_dashboard.py --missing     # Show only gaps
+    ./scripts/python_runtime.sh scripts/parity_dashboard.py
+    ./scripts/python_runtime.sh scripts/parity_dashboard.py --json
+    ./scripts/python_runtime.sh scripts/parity_dashboard.py --section clauses
+    ./scripts/python_runtime.sh scripts/parity_dashboard.py --missing
 """
 
 from __future__ import annotations
