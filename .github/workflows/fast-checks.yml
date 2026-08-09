@@ -185,7 +185,7 @@ jobs:
               if any(part in {'.venv', 'node_modules'} for part in path.parts):
                   continue
               with path.open(encoding='utf-8') as stream:
-                  yaml.safe_load(stream)
+                  yaml.compose(stream)
               print(path)
           PY
 
