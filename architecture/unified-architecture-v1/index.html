@@ -3246,7 +3246,7 @@ Every agent, every session, every change must comply with this document.</p>
 3. <strong>JSON schema</strong> — <code>model.model_json_schema()</code> exports standard JSON Schema</p>
 <p><strong>Additional schemas:</strong>
 - <code>clauses.json</code> — Clause database schema (section 12.4 of blueprint)
-- <code>api_manifest.json</code> — API function registry
+- <code>docs/reference/api-manifest.json</code> — canonical API function registry
 - <code>index.json</code> — Folder metadata schema</p>
 <p>No separate schema definition language (like Protocol Buffers or GraphQL) is needed. Pydantic provides type safety, validation, and auto-generated documentation.</p>
 <hr />
@@ -4384,7 +4384,7 @@ Every agent, every session, every change must comply with this document.</p>
 1. Add <code>@deprecated(version, remove_version, alternative)</code> decorator
 2. Function continues to work for 2 minor versions
 3. Migration guide auto-generated from <code>@deprecated</code> decorator metadata
-4. API surface diffing in CI: <code>check_api_surface.py --baseline api_manifest.json</code></p>
+4. API surface diffing in CI: <code>generate_api_manifest.py --check</code></p>
 <p><strong>CI enforcement:</strong>
 - New functions: ✅ OK (additive change)
 - Removed functions: ❌ BLOCK merge (breaking change)

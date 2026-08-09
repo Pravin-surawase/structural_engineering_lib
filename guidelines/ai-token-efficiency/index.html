@@ -1618,14 +1618,16 @@ engineering, test, or Git safety gates.</p>
 <ol>
 <li>Keep one parent task active for this project. Finish, pause, or stop it
    before starting a separate parent task.</li>
-<li>The main orchestrator respects the model and reasoning selected by the user.
-   Neither project configuration nor repository instructions may silently
-   switch the parent model.</li>
+<li>An explicit model and reasoning selection by the user controls. When the
+   user explicitly delegates model choice for a task, the main orchestrator may
+   choose suitable available parent and subagent profiles in proportion to task
+   risk. Project defaults remain advisory in either case.</li>
 <li>Use Luna, when the active client exposes it, for simple searches, status
    checks, extraction, formatting, and small mechanical edits. Use Terra for
    normal implementation, testing, documentation, and focused worker review.</li>
-<li>Sol profiles require explicit user selection or case-specific approval.
-   Escalate only after a concrete quality gap on the active model.</li>
+<li>Sol profiles require explicit user selection, case-specific approval, or
+   delegated model-choice authority. Escalate only when the task risk or a
+   concrete quality gap justifies it.</li>
 <li>Keep Fast mode off. Enable it only when the user explicitly chooses speed
    over credit efficiency for a time-sensitive task.</li>
 </ol>
@@ -1710,10 +1712,12 @@ uses 2.5x the standard credits for currently documented GPT-5.6/5.5 models.</p>
 </code></pre></div>
 <p>The policy is stored in <a href="../../agents/model_policy.json"><code>agents/model_policy.json</code></a>.
 The picker is optional and advisory. Run it only when the user asks for a
-recommendation or has not selected a model. It never overrides the active
-parent model. Sol recommendations are approval-gated. Apply a recommendation
-with <code>/model</code> only after the user chooses it. Use a fresh task when changing to
-a genuinely different issue.</p>
+recommendation, has not selected a model, or has delegated model choice. It
+does not override an explicit user selection. Sol recommendations remain
+approval-gated unless the user has delegated model choice for the current task.
+Apply a parent-model recommendation with <code>/model</code> when the user chooses it or
+the active client permits the delegated orchestrator to do so. Use a fresh task
+when changing to a genuinely different issue.</p>
 <h2 id="orchestrator-contract">Orchestrator Contract<a class="headerlink" href="#orchestrator-contract" title="Permanent link">&para;</a></h2>
 <p>The user-selected orchestrator owns decomposition and acceptance, not just routing.
 Before handing work to Luna or Terra, it provides a compact task packet with:</p>
@@ -1732,7 +1736,8 @@ either accepts the result or returns a precise correction packet. It never
 equates a subagent's confident report with verified completion.</p>
 <p>Project-local efficiency defaults live in
 <a href="../../.codex/config.toml"><code>.codex/config.toml</code></a>. Parent <code>model</code> and
-<code>model_reasoning_effort</code> are deliberately unset so the user choice wins.</p>
+<code>model_reasoning_effort</code> are deliberately unset so an explicit user selection
+or delegated orchestrator choice remains in control.</p>
 <h2 id="delegation-budget">Delegation Budget<a class="headerlink" href="#delegation-budget" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Default to no subagents for routine work.</li>
@@ -1815,14 +1820,17 @@ Codex routing inputs; Codex Luna/Terra/Sol choices live only in
 <h2 id="reusable-task-preamble">Reusable Task Preamble<a class="headerlink" href="#reusable-task-preamble" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Work in low-token mode.
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Respect the parent model and reasoning selected by the user; never override it
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>from repository policy. Keep Fast mode off. Use Luna-low subagents only for
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>clear repetitive work and ask before any Sol escalation. Default to no
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>subagents; use no more than two only for independent,
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>bounded work. Give each a concise packet with objective, exact files, non-goals,
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>pitfalls, acceptance criteria, tests, and return format—never full conversation
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>history. Verify every result before accepting it. Run targeted tests during
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>development and the full gate once at closeout. Close subagents and stop when done.
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Honor an explicit parent model and reasoning selection by the user. If the user
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>delegates model choice, select available parent and subagent profiles in
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>proportion to task risk. Repository defaults remain advisory. Keep Fast mode
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>off. Use Luna-low subagents for clear repetitive work; use Sol only after
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>explicit selection, case-specific approval, or delegated model-choice
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>authority. Default to no
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>subagents; use no more than two only for independent,
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>bounded work. Give each a concise packet with objective, exact files, non-goals,
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>pitfalls, acceptance criteria, tests, and return format—never full conversation
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>history. Verify every result before accepting it. Run targeted tests during
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>development and the full gate once at closeout. Close subagents and stop when done.
 </code></pre></div>
 <h2 id="official-references">Official References<a class="headerlink" href="#official-references" title="Permanent link">&para;</a></h2>
 <ul>

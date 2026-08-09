@@ -1481,6 +1481,56 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#2026-08-10-session-lib-is456-c2-c4-bounded-closeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2026-08-10 — Session: LIB-IS456-C2-C4 Bounded Closeout
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2026-08-10 — Session: LIB-IS456-C2-C4 Bounded Closeout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terminal-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terminal issues
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#2026-08-09-maint-008-skills-control-plane-closeout" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1493,7 +1543,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
+  <a href="#summary_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Summary
@@ -1515,7 +1565,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#verification" class="md-nav__link">
+  <a href="#verification_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Verification
@@ -1537,7 +1587,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#terminal-issues" class="md-nav__link">
+  <a href="#terminal-issues_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Terminal issues
@@ -1565,7 +1615,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#summary_1" class="md-nav__link">
+  <a href="#summary_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Summary
@@ -1626,7 +1676,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#summary_2" class="md-nav__link">
+  <a href="#summary_3" class="md-nav__link">
     <span class="md-ellipsis">
       
         Summary
@@ -1670,7 +1720,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#terminal-issues_1" class="md-nav__link">
+  <a href="#terminal-issues_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Terminal issues
@@ -1826,7 +1876,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#summary_3" class="md-nav__link">
+  <a href="#summary_4" class="md-nav__link">
     <span class="md-ellipsis">
       
         Summary
@@ -1887,7 +1937,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#summary_4" class="md-nav__link">
+  <a href="#summary_5" class="md-nav__link">
     <span class="md-ellipsis">
       
         Summary
@@ -1948,7 +1998,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#summary_5" class="md-nav__link">
+  <a href="#summary_6" class="md-nav__link">
     <span class="md-ellipsis">
       
         Summary
@@ -2109,7 +2159,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#summary_6" class="md-nav__link">
+  <a href="#summary_7" class="md-nav__link">
     <span class="md-ellipsis">
       
         Summary
@@ -2161,11 +2211,55 @@
 Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/">SESSION_LOG_through_session_100.md</a></p>
 </blockquote>
 <hr />
+<h2 id="2026-08-10-session-lib-is456-c2-c4-bounded-closeout">2026-08-10 — Session: LIB-IS456-C2-C4 Bounded Closeout<a class="headerlink" href="#2026-08-10-session-lib-is456-c2-c4-bounded-closeout" title="Permanent link">&para;</a></h2>
+<p><strong>Agent:</strong> Codex
+<strong>Branch:</strong> <code>codex/release-v0.23.0</code>
+<strong>Focus:</strong> Complete product UAT, exact local artifact verification, and the bounded IS 456 evidence freeze</p>
+<h3 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Completed the C2 Python, FastAPI, React, live-browser, and export-byte matrix.</li>
+<li>Fixed the live batch-design root cause: Vite proxied <code>/api</code> and <code>/ws</code> but
+  omitted the EventSource <code>/stream</code> route used by the React batch workflow.</li>
+<li>Confirmed a safe/unsafe batch renders one PASS and one FAIL and that applying
+  results leaves the unsafe beam unchanged.</li>
+<li>Completed C3 from source commit <code>9be6eb35</code> after preventing stale egg-info
+  from reintroducing protected namespaces into wheel/sdist builds.</li>
+<li>Completed C4 by freezing source identities, supported cases, units, unsafe
+  outcomes, limitations, local artifact identities, and the remaining
+  qualified-review/publication holds on draft PR #696.</li>
+</ul>
+<h3 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Focused Python/service cases, 58 FastAPI cases, and 16 React cases pass.</li>
+<li>React production build, quick gate 9/9, and full gate 29/29 pass.</li>
+<li>Live BBS, DXF, and unsafe-report payloads passed content/signature checks;
+  hashes and sizes are frozen in the IS 456 evidence ledger.</li>
+<li>Exact-wheel verification passed 5,404 tests with 51 optional skips and all
+  installed CLI workflows. Candidate preflight passed 5,452 source tests,
+  clean install, React build, version/docs, and release checks with no warnings.</li>
+<li>The final local wheel/sdist contain 181/206 members and zero forbidden
+  entries; their exact hashes are recorded in the evidence ledger.</li>
+</ul>
+<h3 id="terminal-issues">Terminal issues<a class="headerlink" href="#terminal-issues" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The first commit attempt was correctly blocked after the date crossed into
+  2026-08-10 because this durable session entry did not yet exist; the session
+  record was added, generated indexes refreshed, and the hook rerun.</li>
+<li>The positional <code>release preflight 0.23.0</code> form correctly rejected an equal
+  already-bumped version; the maintained skill now uses <code>--wheel</code> for a frozen
+  current candidate and retains the positional form only for a future bump.</li>
+<li>A clean build still leaked protected namespaces because stale ignored
+  egg-info overrode package discovery; explicit manifest prunes and generated-
+  metadata cleanup fixed the root cause before the final build.</li>
+<li>An inventory snippet used backslashes inside an f-string expression and
+  failed to parse; computing the boolean before formatting completed the same
+  read-only inspection.</li>
+</ul>
 <h2 id="2026-08-09-maint-008-skills-control-plane-closeout">2026-08-09 — MAINT-008 Skills Control-Plane Closeout<a class="headerlink" href="#2026-08-09-maint-008-skills-control-plane-closeout" title="Permanent link">&para;</a></h2>
 <p><strong>Agent:</strong> Codex
 <strong>Branch:</strong> <code>task/MAINT-008-SKILLS</code>
 <strong>Focus:</strong> Repair the isolated agent-skill control plane, prove its main process, and hand off the remaining MAINT-008 packets without merging or expanding scope</p>
-<h3 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>
+<h3 id="summary_1">Summary<a class="headerlink" href="#summary_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Completed the bounded MAINT-008 skills lane in commits <code>5ac70ac1</code> and
   <code>fc4d0249</code>: 41 files changed, with 1,107 insertions and 2,100 deletions.</li>
@@ -2194,7 +2288,7 @@ Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/"
   delegation optional, preserve the active parent selection, and run one
   proportionate closeout gate.</li>
 </ul>
-<h3 id="verification">Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h3>
+<h3 id="verification_1">Verification<a class="headerlink" href="#verification_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Skill catalog/filesystem/registry agreement and frontmatter checks pass for
   all 14 skill entrypoints.</li>
@@ -2221,7 +2315,7 @@ Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/"
   start MAINT-008 packet A from a clean branch; do not add CI, product,
   ruleset, merge, or release work to PR #689.</li>
 </ul>
-<h3 id="terminal-issues">Terminal issues<a class="headerlink" href="#terminal-issues" title="Permanent link">&para;</a></h3>
+<h3 id="terminal-issues_1">Terminal issues<a class="headerlink" href="#terminal-issues_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>⚠️ TERMINAL ISSUE: A guessed worklog path
   <code>docs/task_logs/structural_engineering_lib_worklog.md</code> did not exist →
@@ -2234,7 +2328,7 @@ Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/"
 </ul>
 <h2 id="2026-08-09-session">2026-08-09 — Session<a class="headerlink" href="#2026-08-09-session" title="Permanent link">&para;</a></h2>
 <p><strong>Focus:</strong> Complete MAINT-001, verify PR #676, and leave merge/release for explicit owner approval</p>
-<h3 id="summary_1">Summary<a class="headerlink" href="#summary_1" title="Permanent link">&para;</a></h3>
+<h3 id="summary_2">Summary<a class="headerlink" href="#summary_2" title="Permanent link">&para;</a></h3>
 <p><strong>1 commits</strong>, <strong>14 files changed</strong></p>
 <p><strong>Bug Fixes:</strong>
 - close CI root causes and narrow reviews</p>
@@ -2274,7 +2368,7 @@ Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/"
 <p><strong>Agent:</strong> Codex
 <strong>Branch:</strong> <code>task/MAINT-001</code>
 <strong>Focus:</strong> Preserve inherited work, restore the Mac Mini baseline, complete product/repository maintenance, and establish a trustworthy v0.21.7 release boundary</p>
-<h3 id="summary_2">Summary<a class="headerlink" href="#summary_2" title="Permanent link">&para;</a></h3>
+<h3 id="summary_3">Summary<a class="headerlink" href="#summary_3" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Resumed v0.21.7 work after a four-month pause and Mac Mini transfer.</li>
 <li>Completed a repository, migration, architecture, test, packaging, CI,
@@ -2353,7 +2447,7 @@ Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/"
 <li><code>scripts/_tmp_write_days.py</code> was a tracked placeholder and was removed with the safe-delete tool; a recoverable copy remains under ignored <code>tmp/deleted_backups/</code>.</li>
 <li>Session-end evolution status was observed without applying changes: health trend is 48 → 100, and the monthly review is 124 days overdue.</li>
 </ul>
-<h3 id="terminal-issues_1">Terminal issues<a class="headerlink" href="#terminal-issues_1" title="Permanent link">&para;</a></h3>
+<h3 id="terminal-issues_2">Terminal issues<a class="headerlink" href="#terminal-issues_2" title="Permanent link">&para;</a></h3>
 <ul>
 <li>⚠️ TERMINAL ISSUE: The transferred unversioned Homebrew Node 25 failed at startup because <code>libsimdjson.29.dylib</code> was missing → <code>scripts/launch_stack.sh</code> now selects the <code>.nvmrc</code> Node 24 keg and enforces the required major.</li>
 <li>⚠️ TERMINAL ISSUE: macOS port discovery used <code>lsof -ti :PORT</code> and included connected clients, terminating a Codex browser helper → listener discovery is now restricted to <code>-sTCP:LISTEN</code>.</li>
@@ -2452,7 +2546,7 @@ Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/"
 </ol>
 <hr />
 <h2 id="2026-04-05-session">2026-04-05 — Session<a class="headerlink" href="#2026-04-05-session" title="Permanent link">&para;</a></h2>
-<h3 id="summary_3">Summary<a class="headerlink" href="#summary_3" title="Permanent link">&para;</a></h3>
+<h3 id="summary_4">Summary<a class="headerlink" href="#summary_4" title="Permanent link">&para;</a></h3>
 <p><strong>21 commits</strong>, <strong>145 files changed</strong></p>
 <p><strong>Chores:</strong>
 - release v0.21.2 — packaging fixes from external audit (#524)
@@ -2499,7 +2593,7 @@ Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/"
 <h3 id="notes_2">Notes<a class="headerlink" href="#notes_2" title="Permanent link">&para;</a></h3>
 <p>-</p>
 <h2 id="2026-04-04-session">2026-04-04 — Session<a class="headerlink" href="#2026-04-04-session" title="Permanent link">&para;</a></h2>
-<h3 id="summary_4">Summary<a class="headerlink" href="#summary_4" title="Permanent link">&para;</a></h3>
+<h3 id="summary_5">Summary<a class="headerlink" href="#summary_5" title="Permanent link">&para;</a></h3>
 <p><strong>61 commits</strong>, <strong>419 files changed</strong></p>
 <p><strong>Chores:</strong>
 - maintenance session — security fixes, frontend cleanup, test infra, dep updates (#505)
@@ -2559,7 +2653,7 @@ Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/"
 <p>-</p>
 <h2 id="2026-03-31-session-106">2026-03-31 — Session 106<a class="headerlink" href="#2026-03-31-session-106" title="Permanent link">&para;</a></h2>
 <p><strong>Focus:</strong> Fix CI failures, Windows Unicode encoding, README badges, doc version sync</p>
-<h3 id="summary_5">Summary<a class="headerlink" href="#summary_5" title="Permanent link">&para;</a></h3>
+<h3 id="summary_6">Summary<a class="headerlink" href="#summary_6" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Fixed all 3 failing GitHub Actions CI workflows (Python tests, Deploy Docs, OpenSSF Scorecard)</li>
 <li>Fixed Windows Unicode encoding error in bump_version.py (→ replaced with -&gt;)</li>
@@ -2654,7 +2748,7 @@ Earlier sessions (1-100): <a href="../_archive/SESSION_LOG_through_session_100/"
 <hr />
 <h2 id="2026-03-27-session-103-mac-mini-sync-ipv6-fix">2026-03-27 — Session 103 (Mac Mini sync + IPv6 fix)<a class="headerlink" href="#2026-03-27-session-103-mac-mini-sync-ipv6-fix" title="Permanent link">&para;</a></h2>
 <p><strong>Focus:</strong> Post-migration sync, pull PR #440, fix "Cannot connect to backend" on Sample Building</p>
-<h3 id="summary_6">Summary<a class="headerlink" href="#summary_6" title="Permanent link">&para;</a></h3>
+<h3 id="summary_7">Summary<a class="headerlink" href="#summary_7" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Pulled PR #440 to Mac Mini (82 files, Streamlit cleanup, TASK-101/102 fixes)</li>
 <li>Restored <code>Etabs_CSV/</code> directory (5 CSV files) via <code>git checkout HEAD</code></li>

@@ -2041,6 +2041,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#2026-08-09-professional-library-audit-and-release-hold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2026-08-09 — Professional Library Audit and Release Hold
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2400,6 +2411,27 @@
   must reject missing or ambiguous proof. Locate current documentation through
   folder indexes or <code>rg --files</code>; the canonical compact log is
   <code>docs/WORKLOG.md</code>.</li>
+</ul>
+<h2 id="2026-08-09-professional-library-audit-and-release-hold">2026-08-09 — Professional Library Audit and Release Hold<a class="headerlink" href="#2026-08-09-professional-library-audit-and-release-hold" title="Permanent link">&para;</a></h2>
+<ul>
+<li>v0.23.0 is a prepared source candidate, not a published release. No
+  v0.23.0 tag, GitHub Release, or branch PR was found. Keep publication and
+  released wording on hold until LIB-PRO-001 and exact-wheel review complete.</li>
+<li>Confirmed outcome defects include non-finite beam/footing inputs, unsafe
+  shear reported/applied as batch PASS, report sections defaulting missing
+  status to PASS, footing minimum-steel area/count contracts, and ambiguous
+  bounded two-way slab review semantics.</li>
+<li>Do not repeat TASK-660 naming migration, TASK-670 calculation-report field
+  repair, TASK-729/730 web validation, MAINT-004 manifest work, or MAINT-005's
+  positive browser sweep. The active plan maps each remaining gap to that
+  history in <code>professional-library-remediation-plan.md</code>.</li>
+<li>The terminal root fix makes <code>./run.sh test</code> explicitly Python-only and adds
+  <code>--fastapi</code>, <code>--react</code>, <code>--all</code>, plus <code>./run.sh frontend ...</code> on the shared
+  <code>.nvmrc</code> runtime selector. Missing executable script targets now fail the
+  control-path validator; dead VBA/Streamlit commands are removed.</li>
+<li>Next implementation is LIB-PRO-R1 only: a shared finite numeric boundary for
+  supported public beam and footing entry points. Preserve the separate model
+  policy, terminal control, audit/governance, and structural remediation lanes.</li>
 </ul>
 
 

@@ -1503,6 +1503,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#c2-final-product-uat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C2 final product UAT
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#release-evidence-required-from-ci" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1518,6 +1529,17 @@
     <span class="md-ellipsis">
       
         Local prepublication rehearsal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#c4-frozen-review-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        C4 frozen review scope
       
     </span>
   </a>
@@ -1550,9 +1572,9 @@
 <strong>Status:</strong> Review
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-08-09
-<strong>Last Updated:</strong> 2026-08-09
-<strong>Date:</strong> 2026-08-09
-<strong>State:</strong> software evidence complete for the task branch; engineering review and publication approval remain separate</p>
+<strong>Last Updated:</strong> 2026-08-10
+<strong>Date:</strong> 2026-08-10
+<strong>State:</strong> C0-C4 bounded software/evidence scope frozen; v0.23.0 Alpha release authorized; exact CI publication evidence pending; qualified review deferred to final stable/engineering-use approval</p>
 <h2 id="controlled-sources">Controlled sources<a class="headerlink" href="#controlled-sources" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1639,6 +1661,53 @@ only. It contains no protected standard text or table values.</p>
 <p>Passing tests and artifact gates establish software evidence only. Construction
 use still requires source-page verification, independent calculations,
 project-specific checks and qualified professional approval.</p>
+<h2 id="c2-final-product-uat">C2 final product UAT<a class="headerlink" href="#c2-final-product-uat" title="Permanent link">&para;</a></h2>
+<p>The 2026-08-10 C2 UAT exercised the bounded source and live product paths. The
+focused pure-library/service matrix passed, 58 selected FastAPI cases passed,
+16 selected React batch/export cases passed, and the Node 24 production build
+passed. The matrix covered the public facade/capability contract, beam, column,
+isolated-footing transfer, one-way and bounded two-way slabs, batch/report
+status normalization, the maintained 422 envelope, and export endpoints.</p>
+<p>The initial live React batch failed before FastAPI because local development
+uses the Vite proxy and <code>react_app/vite.config.ts</code> did not proxy <code>/stream</code>.
+Adding that missing proxy entry repaired the root cause. The repeated live path
+imported a safe beam and a 600 kN unsafe-shear beam, received coherent SSE
+<code>PASS</code>/<code>FAIL</code> results, rendered <code>1 passed</code>/<code>1 failed</code>, and applied only the safe
+result; the unsafe beam remained pending with its original 600 kN shear.</p>
+<p>Live requests through port 5173 also proved the maintained column, isolated-
+footing, one-way-slab, and 422-envelope paths. Export response bytes were
+validated rather than inferred from HTTP success:</p>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th style="text-align: right;">Size</th>
+<th>SHA-256</th>
+<th>Byte evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BBS CSV</td>
+<td style="text-align: right;">959</td>
+<td><code>c34cb245d3ead57e5035c19f7590c6c92122b2399da44b5cf7f384779f5f8067</code></td>
+<td><code>bar_mark</code>, <code>diameter_mm</code>, <code>total_weight_kg</code> headers</td>
+</tr>
+<tr>
+<td>Beam DXF</td>
+<td style="text-align: right;">48,522</td>
+<td><code>037a879e294cac659710530c54c3862ee79421b260dde01da8ea9ac88dc50134</code></td>
+<td><code>SECTION</code> and <code>EOF</code> records</td>
+</tr>
+<tr>
+<td>Unsafe HTML report</td>
+<td style="text-align: right;">8,725</td>
+<td><code>1524c1abc27eaa2544f5414c717ba0130e601f9846b1a70baec3f7a12ed77f8a</code></td>
+<td>overall <code>FAIL</code>; no promoted overall PASS</td>
+</tr>
+</tbody>
+</table>
+<p>These are source-tree/live-development artifacts, not C3 release identities.</p>
 <h2 id="release-evidence-required-from-ci">Release evidence required from CI<a class="headerlink" href="#release-evidence-required-from-ci" title="Permanent link">&para;</a></h2>
 <p>The production decision must use the exact CI-built artifacts, not a local
 candidate. The <code>release-evidence</code> artifact must contain:</p>
@@ -1654,33 +1723,66 @@ candidate. The <code>release-evidence</code> artifact must contain:</p>
 <p>TestPyPI, the final version, tag, GitHub release and production PyPI upload are
 owner-only actions.</p>
 <h2 id="local-prepublication-rehearsal">Local prepublication rehearsal<a class="headerlink" href="#local-prepublication-rehearsal" title="Permanent link">&para;</a></h2>
-<p>This is local candidate evidence only; it is not the release identity:</p>
+<p>This is the C3 local candidate built from frozen source commit <code>9be6eb35</code> on
+draft PR #696. It is prepublication evidence only; it is not the CI release
+identity:</p>
 <table>
 <thead>
 <tr>
 <th>Artifact</th>
+<th style="text-align: right;">Size</th>
 <th>SHA-256</th>
 <th style="text-align: right;">Inventory</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>structural_lib_is456-0.21.6-py3-none-any.whl</code></td>
-<td><code>685118b6afc29d4ef49dad91c93ec25ae4c34a186e678636d40b174a016b7e04</code></td>
+<td><code>structural_lib_is456-0.23.0-py3-none-any.whl</code></td>
+<td style="text-align: right;">478,970</td>
+<td><code>08377c11fa63bc01ce1493cfaf0ea5115966c5c3c5f5405782bb85fb032d8875</code></td>
 <td style="text-align: right;">181 files</td>
 </tr>
 <tr>
-<td><code>structural_lib_is456-0.21.6.tar.gz</code></td>
-<td><code>ef144405b47133a9f7324707e051762472002ab6586d33cf2bc91b8c864b9450</code></td>
+<td><code>structural_lib_is456-0.23.0.tar.gz</code></td>
+<td style="text-align: right;">398,319</td>
+<td><code>f3c6da86581c9dc06b2d69baf130095682d0dd09086321167036e466ea4cbac3</code></td>
 <td style="text-align: right;">206 files</td>
 </tr>
 </tbody>
 </table>
-<p>The clean wheel install passed beam, column, isolated-footing transfer,
-one-way/two-way slab, capability-discovery and CLI UAT. Package inventories
-contained no private sources, research modules, migration fixtures, or empty
-ACI/Eurocode placeholder namespaces. The final release record must replace
-these local hashes with the exact CI-built artifact hashes.</p>
+<p>Twine and the maintained candidate checker passed. Both inventories contained
+zero private-source, research, migration-fixture, ACI, Eurocode, test, example,
+script or docs entries. Packaged <code>clauses.json</code> records both protected-content
+flags as false and contains no protected <code>text</code> or <code>data</code> keys.</p>
+<p>Exact-wheel verification passed 5,404 tests with 51 optional-dependency skips
+and 6 deselections, then completed the installed <code>job</code>, <code>critical</code>, <code>report</code>
+and CLI-help workflows. The current-candidate preflight passed a clean install,
+5,452 source tests with 3 skips and 6 deselections, the Node 24 React build,
+version surfaces, release docs and release checks with zero preflight warnings.</p>
+<p>The local CycloneDX 1.6 environment SBOM contains 196 components, is 239,585
+bytes, and has SHA-256
+<code>810b1be2f09c34f28358e1c1815a213f8d1ddda8b9adc474be3689701a9f0eb7</code>.
+CI must regenerate its own SBOM and artifact manifest in the clean publish job;
+the final release record must not substitute these local hashes for exact
+CI-built artifact hashes.</p>
+<p>The first clean build attempt was rejected because stale ignored
+<code>structural_lib_is456.egg-info/SOURCES.txt</code> reintroduced excluded namespaces
+despite correct package-discovery excludes. C3 fixed the root cause by pruning
+those namespaces in <code>MANIFEST.in</code>, regression-checking the directives, and
+updating the release skill to remove generated build, dist and egg-info state
+before the exact build. An optional-DXF test was also corrected to follow the
+installed environment instead of assuming the extra was present.</p>
+<h2 id="c4-frozen-review-scope">C4 frozen review scope<a class="headerlink" href="#c4-frozen-review-scope" title="Permanent link">&para;</a></h2>
+<p>The owner's 2026-08-10 request to finish this named bounded plan is the scope-
+freeze instruction for C4. The frozen packet covers the controlled source IDs,
+documented beam/column/isolated-footing/solid-slab cases, explicit units,
+benchmarks, safe and unsafe outcomes, package boundaries, local artifact
+identities, public claim limits, and unresolved holds recorded here and in the
+master-plan ledger.</p>
+<p>No new capability, multi-code namespace, excluded structural system or
+protected source content is part of that scope. C4 does not record qualified
+structural-engineering approval and does not authorize merge, tag, TestPyPI,
+PyPI, GitHub Release, issue closure or branch deletion.</p>
 
 
 

@@ -1891,10 +1891,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#phase-3-footing-design-remaining" class="md-nav__link">
+  <a href="#phase-3-bounded-footing-design-reconciled" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Phase 3: Footing Design (Remaining)
+        Phase 3: Bounded Footing Design (Reconciled)
       
     </span>
   </a>
@@ -1919,10 +1919,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#footing-remaining" class="md-nav__link">
+  <a href="#bounded-footing-status" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Footing Remaining
+        Bounded Footing Status
       
     </span>
   </a>
@@ -2102,7 +2102,7 @@
 <blockquote>
 <p><strong>Single source of truth for active work.</strong> Keep it short and current.</p>
 </blockquote>
-<p><strong>Updated:</strong> 2026-08-09 — Packet A is merged with <code>PR Gate</code> required; Packet B reduces the workflow surface from 17 files to four on <code>task/MAINT-008-B</code></p>
+<p><strong>Updated:</strong> 2026-08-10 — bounded IS 456 C0-C4 closeout complete; owner-authorized v0.23.0 Alpha release in progress</p>
 <hr />
 <h2 id="rules-read-first">Rules (read first)<a class="headerlink" href="#rules-read-first" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2181,8 +2181,15 @@ Consolidated evidence: <a href="../audit/maintenance-recovery-audit-2026-08-07/"
 <td>MAINT-008</td>
 <td>Compact CI, maintenance controls, and agent entry paths</td>
 <td>P0</td>
-<td>🔄 IN PROGRESS</td>
-<td>Skills and Packet A are merged with <code>PR Gate</code> required; Packet B's four-lane workflow consolidation is implemented for review</td>
+<td>✅ DONE</td>
+<td>Four-lane workflow, truthful <code>PR Gate</code>, native Codex Git/GitHub lifecycle, and retired unsafe wrappers are merged</td>
+</tr>
+<tr>
+<td>LIB-PRO-001</td>
+<td>Remediate the professional library audit without repeating completed maintenance</td>
+<td>P0</td>
+<td>✅ SOFTWARE COMPLETE</td>
+<td>T0 and R1-R8 are retained as evidence; bounded-product closeout continues under LIB-IS456-V1</td>
 </tr>
 </tbody>
 </table>
@@ -2222,10 +2229,10 @@ Consolidated evidence: <a href="../audit/maintenance-recovery-audit-2026-08-07/"
 </ul>
 <hr />
 <h2 id="current-release">Current Release<a class="headerlink" href="#current-release" title="Permanent link">&para;</a></h2>
-<p>| <strong>Current</strong> | v0.21.6 | ✅ COMPLETE → micro-releases v0.21.7–v0.21.8 → v0.22.0 Stabilization |
+<p>| <strong>Current candidate</strong> | v0.23.0 | 🚀 ALPHA RELEASE AUTHORIZED — exact CI artifact and publication pending |
 - <strong>Strategy:</strong> Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - <strong>Focus:</strong> API introspection → security hardening → performance baselines → stabilization
-- <strong>Target:</strong> v0.21.7 next, then v0.21.8, then v0.22.0, then v0.23 (Slabs + Footing completion)
+- <strong>Target:</strong> publish v0.23.0 Alpha, then activate later roadmap work separately
 - <strong>Vision:</strong> <a href="../planning/democratization-vision/">democratization-vision.md</a> — AI chat, automation, library evolution
 - <strong>Architecture:</strong> <a href="../architecture/unified-architecture-v1/">unified-architecture-v1.md</a> §20 — complete v0.21.5→v1.0 roadmap</p>
 <h3 id="release-roadmap">Release Roadmap<a class="headerlink" href="#release-roadmap" title="Permanent link">&para;</a></h3>
@@ -2295,9 +2302,9 @@ Consolidated evidence: <a href="../audit/maintenance-recovery-audit-2026-08-07/"
 </tr>
 <tr>
 <td><strong>v0.23</strong></td>
-<td>IS 456 Slabs + Footing Completion</td>
-<td>📋 PLANNED</td>
-<td>One-way slab, two-way slab, footing dowels + API, punching shear</td>
+<td>Bounded IS 456 slabs + footing completion</td>
+<td>🚀 ALPHA RELEASE IN PROGRESS</td>
+<td>Case-qualified development preview; professional review remains a final stable/engineering-use gate</td>
 </tr>
 <tr>
 <td><strong>v0.24</strong></td>
@@ -2452,10 +2459,10 @@ Detailed specs: <a href="../planning/next-phase-improvements-plan/">next-phase-i
 </thead>
 <tbody>
 <tr>
-<td>MAINT-008</td>
-<td>Execute the <a href="../planning/compact-modernization-plan/">compact modernization plan</a></td>
-<td>Main Agent</td>
-<td>🔄 Packet B implemented on <code>task/MAINT-008-B</code>; four retained workflows await live PR review</td>
+<td>LIB-IS456-V1</td>
+<td>Finish the bounded <a href="../planning/is456-library-first-master-plan/">IS 456 product milestone</a> without expanding to multi-code or excluded structural systems</td>
+<td>Main Agent + owner</td>
+<td>✅ C0-C4 software/evidence closeout complete; release and engineering-use holds remain</td>
 </tr>
 </tbody>
 </table>
@@ -2473,27 +2480,52 @@ Detailed specs: <a href="../planning/next-phase-improvements-plan/">next-phase-i
 </thead>
 <tbody>
 <tr>
-<td>MAINT-008</td>
-<td>Review Packet B's live <code>PR Gate</code> and four-workflow disposition; keep release execution separate</td>
-<td>ops + owner</td>
-<td>bounded packet</td>
+<td>LIB-IS456-C1</td>
+<td>Create reviewable scoped checkpoints, preserve automation commit <code>f812eb3f</code>, and synchronize <code>origin/main</code> without history rewriting</td>
+<td>Main Agent</td>
+<td>1 packet</td>
 <td>P0</td>
-<td>🔄 IN REVIEW</td>
+<td>✅ DONE <code>d4eb9e9d</code></td>
 </tr>
 <tr>
-<td>v0.21.7</td>
-<td>Re-run release preflight and obtain a separate release approval after MAINT-008</td>
-<td>ops + owner</td>
-<td>&lt;1 session</td>
-<td>P1</td>
-<td>⏸ AFTER MAINT-008</td>
+<td>LIB-IS456-C2</td>
+<td>Run final source/live product UAT for supported Python, FastAPI, React batch/report, footing/slab, and export paths</td>
+<td>Main Agent</td>
+<td>1 packet</td>
+<td>P0</td>
+<td>✅ DONE</td>
+</tr>
+<tr>
+<td>LIB-IS456-C3</td>
+<td>Freeze exact local wheel/sdist evidence and clean-install/CLI UAT for the frozen candidate</td>
+<td>Main Agent</td>
+<td>1 packet</td>
+<td>P0</td>
+<td>✅ DONE <code>9be6eb35</code></td>
+</tr>
+<tr>
+<td>LIB-IS456-C4</td>
+<td>Assemble the final bounded-scope evidence packet and freeze limitations/review boundaries</td>
+<td>Main Agent + owner</td>
+<td>1 packet</td>
+<td>P0</td>
+<td>✅ DONE on PR #696</td>
+</tr>
+<tr>
+<td>LIB-IS456-FINAL-REVIEW</td>
+<td>Review only after C4 and owner scope freeze; no engineering-usability claim before it</td>
+<td>qualified structural engineer</td>
+<td>final gate</td>
+<td>P0</td>
+<td>⏸ READY FOR QUALIFIED REVIEW</td>
 </tr>
 </tbody>
 </table>
 <h2 id="backlog">Backlog<a class="headerlink" href="#backlog" title="Permanent link">&para;</a></h2>
-<p>The version roadmap and detailed v0.21.7+ backlog remain below. Do not start
-feature work until PR #676 is merged, MAINT-008 is complete, and the v0.21.7
-release decision is handled.</p>
+<p>The version roadmap and historical backlog remain below. Planned development
+may continue under LIB-PRO-001, but publication and every engineering-usability
+claim remain prohibited until the final frozen-scope review and separate owner
+release decision.</p>
 <h2 id="recently-done">Recently Done<a class="headerlink" href="#recently-done" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3730,10 +3762,10 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <td>✅ Done</td>
 </tr>
 <tr>
-<td>Phase 3 (partial)</td>
-<td>Footing Design</td>
-<td>TASK-650–654 (5/7)</td>
-<td>🔄 5/7</td>
+<td>Phase 3</td>
+<td>Bounded isolated-footing core</td>
+<td>TASK-650–656 (bounded scope)</td>
+<td>✅ Done</td>
 </tr>
 <tr>
 <td>Variable Naming</td>
@@ -3764,7 +3796,7 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <blockquote>
 <p>Full details for all completed phases: <a href="../_archive/tasks-history/">tasks-history.md</a></p>
 </blockquote>
-<h3 id="phase-3-footing-design-remaining">Phase 3: Footing Design (Remaining)<a class="headerlink" href="#phase-3-footing-design-remaining" title="Permanent link">&para;</a></h3>
+<h3 id="phase-3-bounded-footing-design-reconciled">Phase 3: Bounded Footing Design (Reconciled)<a class="headerlink" href="#phase-3-bounded-footing-design-reconciled" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -3778,27 +3810,29 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <tbody>
 <tr>
 <td>TASK-655</td>
-<td>Dowel bars</td>
-<td><code>check_dowel_bars</code></td>
-<td>Cl 34.2.5</td>
-<td>📋</td>
+<td>Bounded bearing/dowel load transfer</td>
+<td><code>check_isolated_footing_load_transfer</code></td>
+<td>Cl 34.4 / load transfer</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-656</td>
-<td>Footing FastAPI endpoint</td>
-<td><code>POST /api/v1/design/footing</code></td>
+<td>Bounded footing FastAPI consumer</td>
+<td><code>POST /api/v1/design/footing/load-transfer</code></td>
 <td>—</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 </tbody>
 </table>
 <blockquote>
-<p>Phase 3: 5/7 tasks done (TASK-650–654 ✅). Covers: types+errors, bearing sizing (Cl 34.1), flexure (Cl 34.2.3.1), one-way shear (Cl 34.2.4.1(a)), punching shear (Cl 31.6.1), bearing pressure (Cl 34.4). 89+ tests. Remaining: TASK-655 (dowel bars), TASK-656 (FastAPI endpoint).</p>
+<p>The bounded isolated-footing milestone is complete. Combined, strap, raft,
+pile-cap, settlement, and lateral-stability design remain explicitly outside
+this milestone.</p>
 </blockquote>
 <hr />
 <h2 id="v023-is-456-slabs-footing-completion">v0.23 — IS 456 Slabs &amp; Footing Completion<a class="headerlink" href="#v023-is-456-slabs-footing-completion" title="Permanent link">&para;</a></h2>
 <p><strong>Ref:</strong> Architecture doc §20.6</p>
-<h3 id="footing-remaining">Footing Remaining<a class="headerlink" href="#footing-remaining" title="Permanent link">&para;</a></h3>
+<h3 id="bounded-footing-status">Bounded Footing Status<a class="headerlink" href="#bounded-footing-status" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -3812,31 +3846,31 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <tbody>
 <tr>
 <td>TASK-655</td>
-<td>Dowel bars</td>
-<td><code>check_dowel_bars</code></td>
-<td>Cl 34.2.5</td>
-<td>📋</td>
+<td>Bearing/dowel load transfer</td>
+<td><code>check_isolated_footing_load_transfer</code></td>
+<td>Cl 34.4 / load transfer</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-656</td>
-<td>Footing FastAPI endpoint</td>
-<td><code>POST /api/v1/design/footing</code></td>
+<td>Footing FastAPI consumer</td>
+<td><code>POST /api/v1/design/footing/load-transfer</code></td>
 <td>—</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>—</td>
 <td>Combined footing design</td>
 <td>—</td>
 <td>—</td>
-<td>📋</td>
+<td>⏸ OUT OF SCOPE</td>
 </tr>
 <tr>
 <td>—</td>
-<td>Footing <code>@clause</code> coverage to 100%</td>
+<td>Literal footing clause coverage target</td>
 <td>—</td>
 <td>—</td>
-<td>📋</td>
+<td>⏸ NOT A MILESTONE GATE</td>
 </tr>
 </tbody>
 </table>
@@ -3854,45 +3888,45 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <tbody>
 <tr>
 <td>TASK-737</td>
-<td>One-way slab design (umbrella)</td>
+<td>Bounded one-way slab design umbrella</td>
 <td>—</td>
 <td>Cl 24.1–24.2</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-750</td>
 <td>Slab types + errors</td>
-<td>Types (SlabClassification, SlabDesignResult)</td>
+<td><code>SolidRectangularSlabGeometry</code>, result records</td>
 <td>—</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-751</td>
-<td>classify_slab</td>
-<td><code>classify_slab()</code></td>
+<td>Slab classification</td>
+<td><code>classify_solid_rectangular_slab()</code></td>
 <td>ly/lx ratio</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-752</td>
-<td>One-way coefficients</td>
-<td><code>oneway_coefficients()</code></td>
+<td>General one-way coefficient tables</td>
+<td>—</td>
 <td>Table 12/13</td>
-<td>📋</td>
+<td>⏸ OUT OF SCOPE</td>
 </tr>
 <tr>
 <td>TASK-753</td>
-<td>Design one-way slab</td>
-<td><code>design_oneway_slab()</code></td>
+<td>Simply supported one-way design</td>
+<td><code>design_one_way_slab_is456()</code></td>
 <td>Cl 24.1–24.2</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-754</td>
-<td>Slab detailing</td>
-<td><code>slab_detailing()</code></td>
+<td>Bounded slab detailing/serviceability</td>
+<td><code>check_one_way_slab_detailing()</code></td>
 <td>Cl 26.5</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 </tbody>
 </table>
@@ -3910,52 +3944,52 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <tbody>
 <tr>
 <td>TASK-738</td>
-<td>Two-way slab design (umbrella)</td>
+<td>Bounded external-coefficient two-way flexure</td>
 <td>—</td>
 <td>Cl 24.3, Annex D</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-760</td>
-<td>Two-way moment coefficients</td>
-<td><code>twoway_moment_coefficients()</code></td>
+<td>Built-in protected moment-coefficient lookup</td>
+<td>—</td>
 <td>Table 26</td>
-<td>📋</td>
+<td>⏸ OUT OF SCOPE</td>
 </tr>
 <tr>
 <td>TASK-761</td>
 <td>Two-way shear coefficients</td>
-<td><code>twoway_shear_coefficients()</code></td>
+<td>—</td>
 <td>Table 27</td>
-<td>📋</td>
+<td>⏸ OUT OF SCOPE</td>
 </tr>
 <tr>
 <td>TASK-762</td>
-<td>Design two-way slab</td>
-<td><code>design_twoway_slab()</code></td>
+<td>Interior-panel bounded flexure</td>
+<td><code>design_two_way_slab_is456()</code></td>
 <td>Annex D-1</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-763</td>
-<td>Torsion reinforcement</td>
-<td><code>torsion_reinforcement()</code></td>
+<td>Complete torsion reinforcement</td>
+<td>—</td>
 <td>Annex D-1.7/D-1.8</td>
-<td>📋</td>
+<td>⏸ OUT OF SCOPE</td>
 </tr>
 <tr>
 <td>TASK-764</td>
-<td>Strip distribution</td>
-<td><code>strip_distribution()</code></td>
+<td>Complete strip distribution</td>
+<td>—</td>
 <td>Annex D-1.2</td>
-<td>📋</td>
+<td>⏸ OUT OF SCOPE</td>
 </tr>
 <tr>
 <td>—</td>
 <td>Flat slab with drop panels</td>
 <td>—</td>
 <td>IS 456 Cl 31</td>
-<td>📋</td>
+<td>⏸ OUT OF SCOPE</td>
 </tr>
 </tbody>
 </table>
@@ -3973,10 +4007,10 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <tbody>
 <tr>
 <td>TASK-770</td>
-<td>General punching shear module</td>
-<td><code>punching_shear_check()</code></td>
+<td>Generic shared punching-shear framework</td>
+<td>—</td>
 <td>Cl 31.6</td>
-<td>📋</td>
+<td>⏸ OUT OF SCOPE; footing-specific check exists</td>
 </tr>
 </tbody>
 </table>
@@ -3992,18 +4026,18 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <tbody>
 <tr>
 <td>TASK-780</td>
-<td>Slab API wiring (services/api.py)</td>
-<td>📋</td>
+<td>Bounded slab Python facade wiring</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>TASK-781</td>
-<td>Slab FastAPI endpoints</td>
-<td>📋</td>
+<td>One-way slab FastAPI consumer</td>
+<td>✅ DONE FOR BOUNDED SCOPE</td>
 </tr>
 <tr>
 <td>TASK-782</td>
-<td>Slab React form + results panel</td>
-<td>📋</td>
+<td>New slab React form + results panel</td>
+<td>⏸ OUT OF SCOPE</td>
 </tr>
 </tbody>
 </table>
@@ -4020,33 +4054,37 @@ Use <code>/function-quality-pipeline</code> skill for every new function.</p>
 <tbody>
 <tr>
 <td>—</td>
-<td>Progress callbacks for batch operations (§13.2)</td>
+<td>Truthful batch streaming/progress behavior (§13.2)</td>
 <td>@backend</td>
-<td>📋</td>
+<td>✅ DONE</td>
 </tr>
 <tr>
 <td>—</td>
-<td>Complete error hierarchy (§13.3)</td>
+<td>Expanded future error hierarchy (§13.3)</td>
 <td>@backend</td>
-<td>📋</td>
+<td>⏸ OUT OF SCOPE</td>
 </tr>
 <tr>
 <td>—</td>
 <td>Property-based testing expansion to all modules (§14.1)</td>
 <td>@tester</td>
-<td>📋</td>
+<td>⏸ OUT OF SCOPE</td>
 </tr>
 <tr>
 <td>—</td>
-<td>Performance benchmarks baselined (§14.2)</td>
+<td>Additional performance expansion (§14.2)</td>
 <td>@tester</td>
-<td>📋</td>
+<td>⏸ OUT OF SCOPE</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2 id="v024-multi-code-infrastructure">v0.24 — Multi-Code Infrastructure<a class="headerlink" href="#v024-multi-code-infrastructure" title="Permanent link">&para;</a></h2>
 <p><strong>Ref:</strong> Architecture doc §20.7 + <a href="../planning/library-expansion-blueprint-v5/">library-expansion-blueprint-v5.md</a> Phase 2</p>
+<blockquote>
+<p>Future roadmap only. None of these tasks may start during C0-C4 of the
+bounded IS 456 milestone without a separate owner scope change.</p>
+</blockquote>
 <table>
 <thead>
 <tr>

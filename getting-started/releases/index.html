@@ -1520,6 +1520,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#v0230-supported-is-456-rc-core-2026-08-10" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v0.23.0 — Supported IS 456 RC Core (2026-08-10)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#v0216-api-quality-introspection-2026-04-07" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2334,6 +2345,31 @@ Entries here represent "locked" versions that have been verified and approved.
 1. Go to Actions → Publish to PyPI → Run workflow
 2. Select <code>testpypi</code> and run
 3. Test: <code>pip install -i https://test.pypi.org/simple/ structural-lib-is456</code></p>
+<hr />
+<h2 id="v0230-supported-is-456-rc-core-2026-08-10">v0.23.0 — Supported IS 456 RC Core (2026-08-10)<a class="headerlink" href="#v0230-supported-is-456-rc-core-2026-08-10" title="Permanent link">&para;</a></h2>
+<p><strong>Status:</strong> 🚀 Alpha release authorized on 2026-08-10; publication evidence pending
+<strong>Source basis:</strong> IS 456:2000 consolidated through Amendment 5, reaffirmed
+2021, with Amendment 6 (June 2024) reviewed by route
+<strong>Scope:</strong> Case-qualified beam, rectangular-column, isolated-footing, and solid
+slab workflows; not complete IS 456 coverage or professional approval</p>
+<p>Qualified structural-engineering review is deliberately cumulative and deferred
+until the owner declares the stable/engineering-use scope complete. It is not a
+per-packet or Alpha publication gate; this release remains a case-qualified
+development preview without a professional-approval claim.</p>
+<p><strong>Highlights:</strong>
+- Correct two-axis column slenderness and minimum-eccentricity enforcement.
+- Explicit isolated-footing bearing and dowel load transfer.
+- Simply supported one-way slab design/detailing and one accepted-coefficient
+  interior two-way slab flexure case.
+- 116-symbol public service manifest and 62 FastAPI HTTP endpoints.
+- Metadata-only public clause registry with protected sources excluded.
+- Exact-artifact hashes, inventories, clean-install UAT, SBOM, and Trusted
+  Publishing gates in the release workflow.
+- Native Codex Git/GitHub workflow with unsafe custom lifecycle wrappers and
+  enforcement hooks retired.</p>
+<p><strong>Verification:</strong> 5,452 release-preflight tests passed, 3 skipped, 6 deselected;
+React 147 tests/lint/build passed; canonical gate 29/29; PR #693 gate passed.</p>
+<p><strong>Full changelog:</strong> See <a href="../../CHANGELOG.md#0230--2026-08-10">CHANGELOG.md</a></p>
 <hr />
 <h2 id="v0216-api-quality-introspection-2026-04-07">v0.21.6 — API Quality &amp; Introspection (2026-04-07)<a class="headerlink" href="#v0216-api-quality-introspection-2026-04-07" title="Permanent link">&para;</a></h2>
 <p><strong>Highlights:</strong>

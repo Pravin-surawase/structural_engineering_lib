@@ -1556,14 +1556,16 @@
 <strong>Status:</strong> Review
 <strong>Importance:</strong> High
 <strong>Created:</strong> 2026-03-31
-<strong>Last Updated:</strong> 2026-08-09</p>
+<strong>Last Updated:</strong> 2026-08-10</p>
 <h2 id="current-state">Current State<a class="headerlink" href="#current-state" title="Permanent link">&para;</a></h2>
-<p>Installed metadata version: 0.21.6</p>
+<p>Installed metadata version: 0.23.0</p>
 <ul>
-<li><strong>Branch:</strong> <code>task/LIB-IS456-V1</code></li>
-<li><strong>Draft PR:</strong> #693; PR Gate run <code>31321772342</code> green for implementation commit <code>301ddec7</code></li>
-<li><strong>Release target:</strong> provisional v0.23.0; final version is owner-only</li>
-<li><strong>Publication state:</strong> HOLD until CI artifact evidence and owner approval</li>
+<li><strong>Branch:</strong> <code>codex/release-v0.23.0</code></li>
+<li><strong>Implementation PR:</strong> #693 merged at <code>cc99e610</code></li>
+<li><strong>Closeout PR:</strong> draft #696; C3 artifact source commit <code>9be6eb35</code></li>
+<li><strong>Release target:</strong> v0.23.0 Alpha; publication sequence authorized by the owner on 2026-08-10</li>
+<li><strong>Publication state:</strong> C0-C4 bounded software/evidence scope frozen; exact CI artifact evidence and post-PyPI UAT pending</li>
+<li><strong>Review policy:</strong> qualified structural-engineering review is required before stable/engineering-use approval, not before this Alpha release</li>
 </ul>
 <h2 id="beta-readiness-checklist">Beta Readiness Checklist<a class="headerlink" href="#beta-readiness-checklist" title="Permanent link">&para;</a></h2>
 <h3 id="required-before-beta">Required Before Beta<a class="headerlink" href="#required-before-beta" title="Permanent link">&para;</a></h3>
@@ -1574,7 +1576,7 @@
 <li>[x] React frontend with 3D visualization</li>
 <li>[x] CSV/ETABS import pipeline working</li>
 <li>[x] Export pipeline (BBS, DXF, HTML report)</li>
-<li>[ ] Final branch CI green on all required platforms</li>
+<li>[x] C3 source commit PR Gate green on all required validation lanes</li>
 <li>[x] Column supported-route correction and focused benchmarks pass</li>
 <li>[x] Column detailing (Cl 26.5.3) and ductile detailing (IS 13920) complete</li>
 <li>[x] IS 13920 seismic ductile detailing integration complete</li>
@@ -1584,10 +1586,12 @@
 <li>[x] Public <code>clauses.json</code> contains identifiers/project metadata only</li>
 <li>[x] Protected PDFs and extracted clause/table/formula candidates are local, hash-inventoried and Git-ignored</li>
 <li>[x] Wheel/sdist allowlist and exact-artifact UAT encoded in publish CI</li>
+<li>[x] Exact local wheel/sdist hashes, inventories, protected-content result and SBOM recorded</li>
+<li>[x] Exact local wheel clean-install tests and CLI UAT pass</li>
 <li>[ ] CI-built artifact manifest, hashes, inventories and SBOM reviewed</li>
 <li>[ ] Exact CI-built wheel UAT evidence reviewed</li>
-<li>[ ] Owner approves TestPyPI upload, if desired</li>
-<li>[ ] Owner approves final version, tag and production PyPI publication</li>
+<li>[x] Owner authorizes the TestPyPI rehearsal</li>
+<li>[x] Owner authorizes the v0.23.0 tag, production PyPI publication, and GitHub Release after exact CI evidence passes</li>
 </ul>
 <h3 id="required-before-10">Required Before 1.0<a class="headerlink" href="#required-before-10" title="Permanent link">&para;</a></h3>
 <ul>

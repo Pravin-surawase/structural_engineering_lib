@@ -1500,6 +1500,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="2. Relationship to current repository plans">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-post-remediation-execution-authority" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Post-remediation execution authority
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-remaining-closeout-packets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Remaining closeout packets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2354,10 +2382,10 @@
 
 <p><strong>Type:</strong> Plan
 <strong>Audience:</strong> All Agents
-<strong>Status:</strong> In Progress
+<strong>Status:</strong> C0-C4 Bounded Closeout Complete — Alpha Release Authorized
 <strong>Importance:</strong> Critical
 <strong>Created:</strong> 2026-08-09
-<strong>Last Updated:</strong> 2026-08-09</p>
+<strong>Last Updated:</strong> 2026-08-10</p>
 <hr />
 <h1 id="lib-is456-v1-is-456-library-first-completion-and-pypi-master-plan">LIB-IS456-V1 — IS 456 Library-First Completion and PyPI Master Plan<a class="headerlink" href="#lib-is456-v1-is-456-library-first-completion-and-pypi-master-plan" title="Permanent link">&para;</a></h1>
 <h2 id="1-executive-decision">1. Executive decision<a class="headerlink" href="#1-executive-decision" title="Permanent link">&para;</a></h2>
@@ -2388,8 +2416,12 @@ stairs, deep beams, flat slabs, combined/strap/raft/pile-cap footings, specialis
 structures, and other code families remain outside this program unless the
 owner changes scope through a separate decision.</p>
 <h2 id="2-relationship-to-current-repository-plans">2. Relationship to current repository plans<a class="headerlink" href="#2-relationship-to-current-repository-plans" title="Permanent link">&para;</a></h2>
-<p>This document is the immediate execution authority for the library-first IS 456
-lane once activated by the owner.</p>
+<p>This document is the execution authority and frozen evidence boundary for the
+library-first IS 456 lane activated by the owner. C0-C4 are complete; the
+remaining release gates are exact CI publication-artifact evidence and
+owner-authorized release work. Qualified structural-engineering review is a
+cumulative final gate before stable/engineering-use approval, not a blocker for
+each development packet or Alpha release.</p>
 <p>It narrows the immediate IS 456 execution order in
 <code>docs/planning/library-expansion-blueprint-v5.md</code>. It does not reverse that
 document's code-first package architecture or decide later ACI/EC2 work.</p>
@@ -2404,6 +2436,86 @@ document's code-first package architecture or decide later ACI/EC2 work.</p>
 </ol>
 <p>No worker may mix library feature work into <code>task/MAINT-008-B</code>, merge PR #691,
 publish v0.21.7, create tags, change GitHub settings, or close issues.</p>
+<h3 id="21-post-remediation-execution-authority">2.1 Post-remediation execution authority<a class="headerlink" href="#21-post-remediation-execution-authority" title="Permanent link">&para;</a></h3>
+<p>The owner reconfirmed the finite completion horizon as the <strong>bounded IS 456
+product milestone</strong>. This plan is the single active execution authority until
+that milestone is frozen. The hierarchy is:</p>
+<ol>
+<li>This plan controls the remaining bounded-product closeout.</li>
+<li><code>professional-library-remediation-plan.md</code> is a completed defect/evidence
+   ledger; do not execute T0 or R1-R8 again.</li>
+<li><code>library-expansion-blueprint-v5.md</code> and architecture v0.24+ sections are
+   future strategic roadmaps, not current execution authority.</li>
+<li><code>docs/TASKS.md</code> holds only the current packet and immediate successors.</li>
+</ol>
+<p>The bounded milestone includes:</p>
+<ul>
+<li>the existing supported beam and rectangular/square column workflows;</li>
+<li>square/rectangular isolated-footing checks and bounded concentric
+  bearing/dowel load transfer;</li>
+<li>the simply supported one-way slab strip;</li>
+<li>one interior, four-edge-continuous two-way flexure computation using
+  explicitly accepted external coefficients;</li>
+<li>the stable Python facade and capability/semantic contract;</li>
+<li>thin maintained FastAPI consumers, truthful batch/report React behavior,
+  and exact package/CLI evidence.</li>
+</ul>
+<p>It explicitly excludes multi-code infrastructure, ACI 318, EC2, combined/
+strap/raft/pile-cap footings, built-in protected two-way coefficient tables,
+complete two-way strip/torsion/detailing design, flat slabs, and new slab React
+feature work. Those items do not block this milestone and must not be pulled
+into its closeout.</p>
+<p>No qualified professional review is requested while implementation and
+integration remain active. Until the final frozen-scope review is recorded,
+the repository and every artifact remain development software that is not
+approved or usable for engineering decisions.</p>
+<h3 id="22-remaining-closeout-packets">2.2 Remaining closeout packets<a class="headerlink" href="#22-remaining-closeout-packets" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Packet</th>
+<th>State</th>
+<th>Objective</th>
+<th>Exit condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C0 — Plan truth</td>
+<td>Complete</td>
+<td>Reconcile active plans/tasks with the implemented bounded scope</td>
+<td>One authority, no stale active v0.23 tasks, exact next packet</td>
+</tr>
+<tr>
+<td>C1 — Git integration</td>
+<td>Complete at <code>d4eb9e9d</code></td>
+<td>Checkpoint intended remediation/product lanes, preserve automation commit <code>f812eb3f</code>, and synchronize <code>origin/main</code> without rebase/reset/stash</td>
+<td>Reviewable commits, clean worktree, no automation work lost</td>
+</tr>
+<tr>
+<td>C2 — Final product UAT</td>
+<td>Complete</td>
+<td>Exercise supported Python, FastAPI, React batch/report, footing/slab, and export paths including unsafe negatives</td>
+<td>Source-tree and live consumer outcomes agree; all canonical gates green</td>
+</tr>
+<tr>
+<td>C3 — Frozen artifact</td>
+<td>Complete at <code>9be6eb35</code></td>
+<td>Build clean wheel/sdist, inspect contents, record hashes, clean-install supported workflows and CLI</td>
+<td>Exact local artifact evidence is reproducible and bound to the frozen source commit</td>
+</tr>
+<tr>
+<td>C4 — Evidence freeze</td>
+<td>Complete on draft PR #696</td>
+<td>Assemble source IDs, units, benchmarks, limitations, unsafe cases, and unresolved holds without requesting sign-off</td>
+<td>The owner's request to finish this bounded plan freezes the intended review scope without authorizing release or professional-use claims</td>
+</tr>
+</tbody>
+</table>
+<p>C0-C4 are complete, so the frozen packet is ready for final qualified-
+engineering review. That review has not been performed. Merge, tag,
+TestPyPI/PyPI, GitHub Release, issue closure, and branch deletion remain
+separate owner-only actions.</p>
 <h2 id="3-why-this-plan-exists">3. Why this plan exists<a class="headerlink" href="#3-why-this-plan-exists" title="Permanent link">&para;</a></h2>
 <p>The original architecture direction was sound, but implementation and product
 layers grew at the same time. The project now has strong code and test assets,
@@ -2885,10 +2997,14 @@ system.</p>
 with the narrow failing command and rerun the full gate only when needed to
 establish the final green result.</p>
 <h3 id="release-only">Release only<a class="headerlink" href="#release-only" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>preflight<span class="w"> </span>&lt;target-version&gt;
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>.venv/bin/python<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>Python
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>.venv/bin/python<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>Python
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>preflight<span class="w"> </span>--wheel<span class="w"> </span>Python/dist/structural_lib_is456-&lt;target-version&gt;-py3-none-any.whl
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>verify<span class="w"> </span>--version<span class="w"> </span>&lt;target-version&gt;<span class="w"> </span>--source<span class="w"> </span>wheel
 </code></pre></div>
+<p>The positional <code>release preflight &lt;target-version&gt;</code> form is only for validating
+a future version before mutation. When the branch already reports the frozen
+target, use the exact-wheel form above; passing an equal positional version is
+correctly rejected as a non-upgrade.</p>
 <p>After owner-approved publication:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>./run.sh<span class="w"> </span>release<span class="w"> </span>verify<span class="w"> </span>--version<span class="w"> </span>&lt;target-version&gt;<span class="w"> </span>--source<span class="w"> </span>pypi
 </code></pre></div>
@@ -3814,6 +3930,54 @@ not need this entire plan.</p>
 <td>Exact CI publication-artifact identity and owner release decision remain</td>
 <td>P13</td>
 </tr>
+<tr>
+<td>2026-08-10</td>
+<td>C2</td>
+<td>Main Agent with two read-only audits</td>
+<td>COMPLETE</td>
+<td><code>codex/release-v0.23.0</code>, working tree</td>
+<td>Vite proxy, focused source/live product paths, existing evidence records</td>
+<td>Focused Python/FastAPI/React green; live safe/unsafe SSE and apply behavior; live column/footing/slab/422/export bytes; frontend build green</td>
+<td>Quick 9/9; full 29/29</td>
+<td>Release and professional-review holds remain</td>
+<td>C3</td>
+</tr>
+<tr>
+<td>2026-08-10</td>
+<td>C3</td>
+<td>Main Agent</td>
+<td>COMPLETE</td>
+<td><code>codex/release-v0.23.0</code> at <code>9be6eb35</code>; draft PR #696</td>
+<td>Package manifest boundary, release skill, optional-DXF test, exact local wheel/sdist</td>
+<td>Twine and candidate checks; 181/206 members; zero forbidden/protected content; exact-wheel 5,404 passed; candidate preflight 5,452 passed plus React build</td>
+<td>Focused + quick + current-commit PR Gate</td>
+<td>Local evidence is not CI publication identity; no upload authorized</td>
+<td>C4</td>
+</tr>
+<tr>
+<td>2026-08-10</td>
+<td>C4</td>
+<td>Main Agent + owner scope instruction</td>
+<td>COMPLETE / FROZEN</td>
+<td>Draft PR #696; artifact source <code>9be6eb35</code></td>
+<td>Master plan, task/session/handoff records, evidence crosswalk and release checklist</td>
+<td>Controlled source IDs, units/claims, unsafe cases, limitations, local artifact hashes/SBOM, and held gates reconciled</td>
+<td>Documentation/session checks; final PR Gate required on evidence commit</td>
+<td>Qualified review and every merge/tag/publish action remain held</td>
+<td>Qualified review / owner release decision</td>
+</tr>
+<tr>
+<td>2026-08-10</td>
+<td>REL-0</td>
+<td>Repository owner + Main Agent</td>
+<td>APPROVED</td>
+<td>Draft PR #696</td>
+<td>Release policy, maintained skills and current release records</td>
+<td>Per-packet qualified-review gates removed; technical evidence retained; v0.23.0 remains an Alpha development preview</td>
+<td>Documentation + quick + PR Gate</td>
+<td>Qualified review remains required before stable/engineering-use approval</td>
+<td>P13 release execution</td>
+</tr>
 </tbody>
 </table>
 <h3 id="required-handoff-content">Required handoff content<a class="headerlink" href="#required-handoff-content" title="Permanent link">&para;</a></h3>
@@ -3970,13 +4134,24 @@ and a Trusted Publishing-style OIDC workflow. Preserve these foundations.</p>
 <h2 id="20-immediate-kickoff-checklist">20. Immediate kickoff checklist<a class="headerlink" href="#20-immediate-kickoff-checklist" title="Permanent link">&para;</a></h2>
 <p>The first implementation session begins only after the owner clears Phase 0.</p>
 <h3 id="current-execution-checkpoint">Current execution checkpoint<a class="headerlink" href="#current-execution-checkpoint" title="Permanent link">&para;</a></h3>
-<p>P0-P12 and FAPI-1 are complete on <code>task/LIB-IS456-V1</code>; draft PR #693 is open
-and its PR Gate run <code>31321772342</code> is green. The protected-content
-design keeps the full 130-page source corpus private and Git-ignored while
-shipping metadata-only <code>clauses.json</code>. The clean local candidate UAT, quick
-gate (9/9), and integrated gate (29/29) pass. P13 must build and record its own
-exact publication artifacts after owner authorization; publication actions
-remain owner-only.</p>
+<p>P0-P12, FAPI-1, and remediation packets T0/R1-R8 are implemented. The latest
+source preflight passes 5,452 Python tests (3 skipped, 6 deselected), 349
+FastAPI tests, 147 React tests, frontend lint/build, quick 9/9, full 29/29,
+audit 19/19, and health 100/100. A clean-source v0.23.0 wheel passed package
+version and CLI checks with excluded namespaces absent. Exact-wheel UAT passed
+5,404 tests (51 optional skips, 6 deselected) plus job, critical and report CLI
+workflows.</p>
+<p>C0-C4 are complete. Product remediation is checkpointed at <code>2ff5a42a</code>,
+bounded closeout truth at <code>fbd24350</code>, and the separately landed automation
+commit <code>f812eb3f</code> is integrated without history rewriting at <code>d4eb9e9d</code>. The
+worktree is clean and both Node and Python runtime selectors are retained.</p>
+<p>C2 final product UAT found and repaired the missing local Vite <code>/stream</code> proxy;
+source-tree and live safe/unsafe outcomes now agree. C3 froze the exact local
+wheel/sdist at source commit <code>9be6eb35</code>, and C4 froze the final bounded evidence
+and limitations on draft PR #696. Do not begin new calculation, multi-code, or
+excluded structural-system work. The owner authorized the v0.23.0 Alpha release
+sequence on 2026-08-10. Exact CI publication-artifact evidence remains required;
+qualified review is deferred to the final stable/engineering-use gate.</p>
 <h2 id="21-final-program-acceptance-checklist">21. Final program acceptance checklist<a class="headerlink" href="#21-final-program-acceptance-checklist" title="Permanent link">&para;</a></h2>
 <ul>
 <li>[x] MAINT-008 is resolved without library scope contamination.</li>
@@ -3998,14 +4173,18 @@ remain owner-only.</p>
 <li>[x] Quick gate is green before each accepted commit.</li>
 <li>[x] One integrated full gate is green for each stable milestone.</li>
 <li>[x] Current release-candidate PR Gate is green.</li>
-<li>[ ] Canonical release preflight is green.</li>
-<li>[ ] Local prepublication and CI publication-artifact filenames/SHA-256 values
-      are separately recorded.</li>
-<li>[ ] Local rehearsal UAT and CI publication-artifact clean-install/CLI UAT are
-      green.</li>
-<li>[ ] Owner has separately approved any TestPyPI/PyPI/tag/GitHub Release action.</li>
+<li>[x] Canonical current-candidate release preflight is green.</li>
+<li>[x] Local prepublication filenames, sizes, SHA-256 values and inventories are
+      recorded against source commit <code>9be6eb35</code>.</li>
+<li>[ ] CI publication-artifact filenames/SHA-256 values are separately recorded.</li>
+<li>[x] Local rehearsal clean-install/CLI UAT is green on the exact wheel.</li>
+<li>[ ] CI publication-artifact clean-install/CLI UAT is green.</li>
+<li>[x] Owner approved the PR #696 merge, TestPyPI rehearsal, v0.23.0 tag, PyPI
+      upload, and GitHub Release sequence on 2026-08-10.</li>
 <li>[ ] Exact published PyPI version passes post-publication UAT.</li>
-<li>[ ] Handoff and execution ledger identify remaining limitations and review
+<li>[ ] Qualified structural-engineering review is recorded before any stable or
+      engineering-use approval; this is not an Alpha publication gate.</li>
+<li>[x] Handoff and execution ledger identify remaining limitations and review
       boundaries.</li>
 </ul>
 <h2 id="22-program-closeout-statement">22. Program closeout statement<a class="headerlink" href="#22-program-closeout-statement" title="Permanent link">&para;</a></h2>
