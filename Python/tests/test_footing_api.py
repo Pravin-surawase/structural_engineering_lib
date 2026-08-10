@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import math
+
 import pytest
 
+from structural_lib.codes.is456.footing.one_way_shear import footing_one_way_shear
 from structural_lib.core.data_types import FootingType
 from structural_lib.core.errors import ValidationError
 from structural_lib.services.footing_api import (
@@ -70,6 +73,21 @@ def _benchmark_input(**overrides: object) -> ConcentricIsolatedFootingInput:
     return _input(**values)
 
 
+def _detailed_benchmark_input(**overrides: object) -> ConcentricIsolatedFootingInput:
+    values: dict[str, object] = {
+        "nominal_cover_mm": 50.0,
+        "cover_exposure_basis": "approved severe footing schedule",
+        "cover_exposure_basis_is_approved": True,
+        "nominal_max_aggregate_size_mm": 20.0,
+        "lower_bottom_bar_direction": "L",
+        "upper_bottom_bar_direction": "B",
+        "permitted_bottom_bar_diameters_mm": (12, 16, 20, 25, 32),
+        "footing_bottom_bar_type": "deformed",
+    }
+    values.update(overrides)
+    return _benchmark_input(**values)
+
+
 def test_review_benchmark_freezes_plan_structural_and_transfer_evidence():
     result = design_concentric_isolated_footing_is456(_benchmark_input())
 
@@ -97,6 +115,109 @@ def test_review_benchmark_freezes_plan_structural_and_transfer_evidence():
     assert result.calculations_are_safe is True
 
 
+def test_maintained_detailing_closes_square_benchmark_to_aggregate_pass():
+    result = design_concentric_isolated_footing_is456(_detailed_benchmark_input())
+
+    assert (
+        result.calculation_status == result.detailing_status == result.status == "PASS"
+    )
+    assert result.is_ok and result.calculations_are_safe
+    assert result.detailing_hold_reason is None and result.hold_reasons == ()
+    assert result.detailing is not None
+    assert result.detailing.lower is not None and result.detailing.upper is not None
+    assert result.detailing.lower.layer == "lower"
+    assert result.detailing.upper.layer == "upper"
+    assert result.detailing.lower.diameter_mm == 12
+    assert result.detailing.upper.diameter_mm == 12
+    assert result.detailing.lower.bar_count == 13
+    assert result.detailing.upper.bar_count == 13
+    assert result.detailing.dowel_schedule_link.bar_count == 4
+    assert all(
+        demand.detailing_status == "PASS" for demand in result.reinforcement_demands
+    )
+    assert result.provenance.clause_bases["detailing"].startswith(
+        "Cl. 34.3/34.3.1 and Cl. 34.5.1"
+    )
+    assert (
+        "structural_lib.codes.is456.footing.detailing."
+        "detail_isolated_footing_bottom_steel"
+    ) in result.provenance.core_function_ids
+
+
+def test_actual_provided_pt_closes_the_detailing_to_shear_acceptance_loop():
+    defective_area_mm2 = 11 * math.pi * 12**2 / 4
+    defective_pt_percent = defective_area_mm2 / (2_000 * 400) * 100
+    reproduced_defect = footing_one_way_shear(
+        Pu_kN=1_200,
+        L_mm=2_000,
+        B_mm=2_000,
+        d_mm=400,
+        a_mm=400,
+        b_mm=400,
+        fck=25,
+        pt_L_percent=defective_pt_percent,
+        pt_B_percent=12 * math.pi * 12**2 / 4 / (2_000 * 400) * 100,
+    )
+    result = design_concentric_isolated_footing_is456(_detailed_benchmark_input())
+
+    assert defective_pt_percent == pytest.approx(0.1555088364)
+    assert reproduced_defect.utilization_ratio == pytest.approx(1.0209076)
+    assert not reproduced_defect.is_safe
+    assert result.status == "PASS"
+    assert result.one_way_shear_basis == "actual_provided_pt_final"
+    assert result.one_way_shear is not None and result.one_way_shear.is_safe
+    assert result.one_way_shear.utilization_ratio == pytest.approx(0.95648558)
+    assert result.one_way_shear_screening is not None
+    assert result.one_way_shear_screening.utilization_ratio == pytest.approx(0.9842895)
+    assert result.screening_pt_passed_to_one_way_shear_percent == {
+        "L": pytest.approx(0.1711262355),
+        "B": pytest.approx(0.1711262355),
+    }
+    assert result.detailing is not None
+    selected = {
+        item.direction: item
+        for item in (result.detailing.lower, result.detailing.upper)
+        if item is not None
+    }
+    expected_actual_pt = {
+        "L": selected["L"].provided_area_mm2 / (2_000 * 400) * 100,
+        "B": selected["B"].provided_area_mm2 / (2_000 * 400) * 100,
+    }
+    assert result.pt_passed_to_one_way_shear_percent == pytest.approx(
+        expected_actual_pt
+    )
+    for demand in result.reinforcement_demands:
+        assert demand.provided_steel_area_mm2 is not None
+        assert demand.provided_steel_area_mm2 >= demand.required_steel_area_mm2
+        assert demand.provided_steel_percent == pytest.approx(
+            result.pt_passed_to_one_way_shear_percent[demand.direction]
+        )
+
+
+def test_detailing_failure_fails_aggregate_without_reclassifying_calculations():
+    result = design_concentric_isolated_footing_is456(
+        _detailed_benchmark_input(nominal_cover_mm=20.0)
+    )
+
+    assert result.calculation_status == "PASS"
+    assert result.detailing_status == result.status == "FAIL"
+    assert result.failed_checks == ("detailing",)
+    assert result.detailing is not None
+    assert result.detailing.lower is None and result.detailing.upper is None
+
+
+def test_unapproved_exposure_holds_aggregate_with_calculations_safe():
+    result = design_concentric_isolated_footing_is456(
+        _detailed_benchmark_input(cover_exposure_basis_is_approved=False)
+    )
+
+    assert result.calculation_status == "PASS"
+    assert result.detailing_status == result.status == "HOLD"
+    assert result.detailing is not None
+    assert result.detailing_hold_reason == result.detailing.reasons[0]
+    assert result.hold_reasons == result.detailing.reasons
+
+
 def test_rectangular_sizing_and_provenance_keep_load_and_soil_roles_explicit():
     result = design_concentric_isolated_footing_is456(_input())
 
@@ -116,8 +237,9 @@ def test_rectangular_sizing_and_provenance_keep_load_and_soil_roles_explicit():
     )
     assert result.provenance.clause_bases["one_way_shear"] == (
         "Cl. 34.2.4.1(a) and IS 456 Table 19; factored axial action using "
-        "directional required pt as a conservative screening input pending "
-        "provided detailing"
+        "actual selected provided directional pt for a completed detailed "
+        "result; required directional pt remains explicitly labelled screening "
+        "evidence while detailing is pending"
     )
     assert result.provenance.qualified_review_requirement
 

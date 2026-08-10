@@ -5,11 +5,11 @@
 
 ---
 
-## 2026-08-10 — Session: FOOT-ISO-RC-V1 Phase A
+## 2026-08-10 — Session: FOOT-ISO-RC-V1 Phases A-B2
 
 **Agent:** Codex
 **Branch:** `codex/footing-isolated-v1`
-**Focus:** Correct footing inputs and add concentric isolated-footing service orchestration
+**Focus:** Correct footing inputs and complete concentric isolated-footing orchestration/detailing
 
 ### Summary
 
@@ -23,6 +23,10 @@
   footings with explicit service/factored actions, external allowable-pressure
   provenance, deterministic uniform-depth selection, structural checks,
   approved-A1 load transfer, and qualified-review/detailing HOLD boundaries.
+- Added maintained two-layer bottom-reinforcement detailing with physical
+  directional depths, deterministic bar selection, buildable rectangular
+  central/outer-band schedules, straight anchorage, approved dowel linkage,
+  normalized provenance, and service-level PASS/FAIL/HOLD aggregation.
 
 ### Issues encountered
 
@@ -46,6 +50,25 @@
   worktree module.
 - A normal import-following single-file mypy probe traversed unrelated existing
   `core/models.py` property-decorator errors and optional `weasyprint` typing.
+- The first B2 draft reported rectangular central/outer bar counts while
+  retaining an unrelated uniform-grid spacing, so its count, spacing and
+  provided-area fields did not describe one buildable physical layout.
+- The first B2 draft treated every exhausted bar search as `FAIL`, including a
+  numerically feasible layout that needed unsupported hooks/bends, and it used
+  the rounded development length as the anchorage acceptance threshold.
+- The first B2 draft silently excluded 10 mm bars and imposed a hidden minimum
+  of 12 bars per direction. That made the independent square benchmark appear
+  as 12/12 bars; removing the floor then exposed an 11/12 area/spacing schedule.
+- Initial B2 evidence used a new unverified source label, allowed unsupported
+  steel/bar-type pairings, and did not reject a stale load-transfer receipt.
+- The initial B2 PASS still passed required-steel percentages from the analysis
+  screen to one-way shear while selecting fewer bars from physical-depth
+  flexure. The 11-T12 lower layer provided only 0.1555088364% at the maintained
+  400 mm analysis depth, reproducing an unsafe 1.0209076 shear utilization
+  despite the aggregate PASS label.
+- The B2 decorator used exact clause bases absent from `clauses.json`, causing
+  normal maintained imports to emit five unknown-clause warnings even though
+  those exact bases remained valid result/provenance evidence.
 
 ### Root causes and resolutions
 
@@ -70,11 +93,49 @@
   `PYTHONPATH="$PWD/Python" ./scripts/python_runtime.sh ...`; owned isolated
   typing evidence uses `mypy --follow-imports=skip`, leaving unrelated shared
   typing findings untouched.
+- Central-band counts were originally calculated after uniform spacing and did
+  not regenerate a physical zone layout. The maintained selector now assigns
+  boundary bars once, calculates exact central and symmetric outer-zone counts,
+  spacings, clear spacings and areas, and verifies each zone independently.
+- A single generic no-candidate branch conflated numerical/codal failure with
+  unsupported anchorage geometry. Candidate disposition is now explicit:
+  numerical depth/cover/spacing/diameter failures return `FAIL`, while an
+  otherwise feasible arrangement needing hooks/bends returns `HOLD`; exact
+  unrounded development length governs and the rounded helper value is report
+  evidence only.
+- The hidden 12-bar floor and T10 skip had no clause/contract basis. Counts now
+  come only from required area and maximum spacing, all six bounded diameters
+  are evaluated when permitted, and deterministic selection uses least
+  provided steel, then count, maximum diameter and lexical pair.
+- Candidate selection originally stopped after physical-depth flexure/minimum
+  steel and never closed the Table 19 screening loop. Each candidate now also
+  covers the maintained analysis-depth directional flexural demand, derives
+  directional `pt` from actual provided area at that analysis depth, and reruns
+  one-way shear before PASS. The corrected T12-and-above benchmark is 13-T12
+  in each direction, 1470.265 mm2 and 0.1837831702%, with final utilization
+  0.9564856. Top-level shear/pt are this final evidence; the earlier
+  0.1711262355%/0.9842895 screen remains explicitly labelled.
+- Exact clause bases remain in result/provenance evidence, while the decorator
+  now uses only recognized exact/parent IDs already in `clauses.json`. A fresh
+  import/call emits no unknown-clause warning; no clause database was edited.
+- B2 now inherits the existing consolidated/amendment source identities,
+  accepts only Fe250/plain or Fe415/Fe500 deformed pairs, checks the retained
+  load-transfer load/column-area/source identity, and links rather than
+  redesigns the accepted dowel schedule.
+- B1 intentionally ended at a detailing HOLD. Optional explicit detailing
+  inputs now invoke the pure B2 selector after a passing structural depth:
+  detailing PASS closes the aggregate to PASS, detailing FAIL fails only the
+  aggregate/detailing status, and missing/unsupported engineering inputs remain
+  fail-closed HOLD.
 - Evidence: the 182-case footing/core/public-contract matrix passed, the
   12-test FastAPI library-core/capability baseline passed, the 4-case footing
   contract selection passed, the 167-case B1/core/load-transfer matrix passed,
   Black/Ruff and the isolated mypy gate passed, the architecture scan checked
   143 files with zero violations, and `git diff --check` passed.
+- B2 evidence: the 199-case footing/detailing/service/load-transfer/golden-vector
+  matrix passed; focused Black, Ruff, isolated mypy and import checks passed;
+  the architecture scan checked 144 files with zero violations; and
+  `git diff --check` passed.
 
 ---
 

@@ -9,6 +9,10 @@ from dataclasses import dataclass
 from typing import Literal
 
 from structural_lib.codes.is456.footing.bearing import size_footing
+from structural_lib.codes.is456.footing.detailing import (
+    FootingDetailingResult,
+    detail_isolated_footing_bottom_steel,
+)
 from structural_lib.codes.is456.footing.flexure import footing_flexure
 from structural_lib.codes.is456.footing.load_transfer import (
     LoadTransferResult,
@@ -38,10 +42,14 @@ __all__ = [
 _A1_BASIS = "largest_frustum_1v_2h"
 _SERVICE_LOAD_BASIS = "includes_footing_self_weight_and_overburden"
 _SUPPORTED_CASE = "concentric_centred_isolated_square_or_rectangular_footing"
-_DETAILING_HOLD_REASON = (
-    "PROVIDED_REBAR_LAYOUT_AND_DETAILING_NOT_SUPPORTED: required directional "
-    "steel is reported, but bar selection, spacing, anchorage and a buildable "
-    "layout require a separate maintained detailing check."
+_DETAILING_INPUT_HOLD_REASON = (
+    "DETAILING_INPUTS_NOT_PROVIDED: explicit inputs for bar selection, "
+    "cover/exposure approval, aggregate size, layer order and bar type are "
+    "required before the maintained footing detailing check can run."
+)
+_DETAILING_NOT_EVALUATED_REASON = (
+    "DETAILING_NOT_EVALUATED: a selected passing structural thickness and "
+    "directional analysis depths are required first."
 )
 _EXCLUSIONS = (
     "Eccentric, partial-contact and moment-transfer cases are excluded.",
@@ -91,6 +99,14 @@ class ConcentricIsolatedFootingInput:
     available_dowel_development_length_into_footing_mm: float
     available_dowel_development_length_into_column_mm: float
     dowel_bar_type: Literal["deformed", "plain"] = "deformed"
+    nominal_cover_mm: float | None = None
+    cover_exposure_basis: str | None = None
+    cover_exposure_basis_is_approved: bool = False
+    nominal_max_aggregate_size_mm: float | None = None
+    lower_bottom_bar_direction: Literal["L", "B"] | None = None
+    upper_bottom_bar_direction: Literal["L", "B"] | None = None
+    permitted_bottom_bar_diameters_mm: tuple[int, ...] = ()
+    footing_bottom_bar_type: Literal["deformed", "plain"] | None = None
 
 
 @dataclass(frozen=True)
@@ -116,7 +132,10 @@ class FootingDirectionalReinforcementDemand:
     required_steel_area_mm2: float
     required_steel_percent: float
     central_band_fraction: float | None
-    detailing_status: Literal["HOLD"] = "HOLD"
+    required_steel_basis: str
+    provided_steel_area_mm2: float | None
+    provided_steel_percent: float | None
+    detailing_status: Literal["PASS", "FAIL", "HOLD"] = "HOLD"
 
 
 @dataclass(frozen=True)
@@ -146,8 +165,8 @@ class ConcentricIsolatedFootingResult:
     case_id: str
     status: Literal["PASS", "FAIL", "HOLD"]
     calculation_status: Literal["PASS", "FAIL", "NOT_EVALUATED"]
-    detailing_status: Literal["HOLD"]
-    detailing_hold_reason: str
+    detailing_status: Literal["PASS", "FAIL", "HOLD"]
+    detailing_hold_reason: str | None
     qualified_review_required: bool
     supported_case: str
     exclusions: tuple[str, ...]
@@ -160,8 +179,14 @@ class ConcentricIsolatedFootingResult:
     bearing: FootingBearingResult
     flexure: FootingFlexureResult | None
     one_way_shear: FootingOneWayShearResult | None
+    one_way_shear_basis: Literal[
+        "not_evaluated", "required_pt_screening", "actual_provided_pt_final"
+    ]
+    one_way_shear_screening: FootingOneWayShearResult | None
+    screening_pt_passed_to_one_way_shear_percent: dict[str, float]
     punching: FootingPunchingResult | None
     load_transfer: LoadTransferResult
+    detailing: FootingDetailingResult | None
     reinforcement_demands: tuple[FootingDirectionalReinforcementDemand, ...]
     pt_passed_to_one_way_shear_percent: dict[str, float]
     failed_checks: tuple[str, ...]
@@ -325,6 +350,8 @@ def _provenance(
             "structural_lib.codes.is456.footing.punching_shear.footing_punching_shear",
             "structural_lib.codes.is456.footing.load_transfer."
             "check_isolated_footing_load_transfer",
+            "structural_lib.codes.is456.footing.detailing."
+            "detail_isolated_footing_bottom_steel",
         ),
         clause_bases={
             "plan_sizing": "Cl. 34.1; service action and external allowable pressure",
@@ -334,11 +361,17 @@ def _provenance(
             ),
             "one_way_shear": (
                 "Cl. 34.2.4.1(a) and IS 456 Table 19; factored axial action "
-                "using directional required pt as a conservative screening input "
-                "pending provided detailing"
+                "using actual selected provided directional pt for a completed "
+                "detailed result; required directional pt remains explicitly "
+                "labelled screening evidence while detailing is pending"
             ),
             "punching": "Cl. 31.6.1 and Cl. 34.2.4.1(b); factored axial action",
             "load_transfer": "Cl. 34.4/34.4.1-34.4.3 and Cl. 26.2.1",
+            "detailing": (
+                "Cl. 34.3/34.3.1 and Cl. 34.5.1 through Cl. 26.5.2.1, "
+                "Cl. 26.5.2.2, Cl. 26.3.2, Cl. 26.3.3(b), Cl. 26.4 and "
+                "Cl. 26.2.1; physical directional bar-layer depths"
+            ),
         },
         source_ids=load_transfer.source_ids,
         qualified_review_requirement=(
@@ -354,6 +387,8 @@ def _reinforcement_demands(
     d_b_mm: float | None,
     footing_l_mm: float,
     footing_b_mm: float,
+    detailing_status: Literal["PASS", "FAIL", "HOLD"],
+    detailing: FootingDetailingResult | None,
 ) -> tuple[FootingDirectionalReinforcementDemand, ...]:
     if flexure is None or d_l_mm is None or d_b_mm is None:
         return ()
@@ -364,6 +399,15 @@ def _reinforcement_demands(
         abs_tol=1.0,
     )
     short_direction = "B" if footing_b_mm < footing_l_mm else "L"
+    provided_by_direction = (
+        {item.direction: item for item in (detailing.lower, detailing.upper)}
+        if detailing is not None
+        and detailing.lower is not None
+        and detailing.upper is not None
+        else {}
+    )
+    provided_l = provided_by_direction.get("L")
+    provided_b = provided_by_direction.get("B")
     return (
         FootingDirectionalReinforcementDemand(
             direction="L",
@@ -376,6 +420,16 @@ def _reinforcement_demands(
                 if is_rectangular and short_direction == "L"
                 else None
             ),
+            required_steel_basis="selected_analysis_depth_flexure_and_Table_19_screening",
+            provided_steel_area_mm2=(
+                provided_l.provided_area_mm2 if provided_l is not None else None
+            ),
+            provided_steel_percent=(
+                detailing.actual_provided_pt_percent.get("L")
+                if detailing is not None
+                else None
+            ),
+            detailing_status=detailing_status,
         ),
         FootingDirectionalReinforcementDemand(
             direction="B",
@@ -388,7 +442,59 @@ def _reinforcement_demands(
                 if is_rectangular and short_direction == "B"
                 else None
             ),
+            required_steel_basis="selected_analysis_depth_flexure_and_Table_19_screening",
+            provided_steel_area_mm2=(
+                provided_b.provided_area_mm2 if provided_b is not None else None
+            ),
+            provided_steel_percent=(
+                detailing.actual_provided_pt_percent.get("B")
+                if detailing is not None
+                else None
+            ),
+            detailing_status=detailing_status,
         ),
+    )
+
+
+def _run_detailing(
+    request: ConcentricIsolatedFootingInput,
+    bearing: FootingBearingResult,
+    selected_overall_mm: float,
+    selected_d_l_mm: float,
+    selected_d_b_mm: float,
+    load_transfer: LoadTransferResult,
+) -> FootingDetailingResult | None:
+    """Run B2 only when every required engineering/detailing input is explicit."""
+    if (
+        request.nominal_cover_mm is None
+        or request.cover_exposure_basis is None
+        or request.nominal_max_aggregate_size_mm is None
+        or request.lower_bottom_bar_direction is None
+        or request.upper_bottom_bar_direction is None
+        or not request.permitted_bottom_bar_diameters_mm
+        or request.footing_bottom_bar_type is None
+    ):
+        return None
+    return detail_isolated_footing_bottom_steel(
+        Pu_kN=request.factored_axial_load_kN,
+        L_mm=bearing.L_mm,
+        B_mm=bearing.B_mm,
+        column_L_mm=request.column_L_mm,
+        column_B_mm=request.column_B_mm,
+        D_mm=selected_overall_mm,
+        analysis_d_L_mm=selected_d_l_mm,
+        analysis_d_B_mm=selected_d_b_mm,
+        fck=request.footing_concrete_fck_nmm2,
+        fy=request.steel_fy_nmm2,
+        nominal_cover_mm=request.nominal_cover_mm,
+        exposure_basis=request.cover_exposure_basis,
+        exposure_is_approved=request.cover_exposure_basis_is_approved,
+        aggregate_size_mm=request.nominal_max_aggregate_size_mm,
+        lower_direction=request.lower_bottom_bar_direction,
+        upper_direction=request.upper_bottom_bar_direction,
+        permitted_diameters_mm=request.permitted_bottom_bar_diameters_mm,
+        bar_type=request.footing_bottom_bar_type,
+        load_transfer_result=load_transfer,
     )
 
 
@@ -464,7 +570,7 @@ def design_concentric_isolated_footing_is456(
             status="HOLD",
             calculation_status="NOT_EVALUATED",
             detailing_status="HOLD",
-            detailing_hold_reason=_DETAILING_HOLD_REASON,
+            detailing_hold_reason=_DETAILING_NOT_EVALUATED_REASON,
             qualified_review_required=True,
             supported_case=_SUPPORTED_CASE,
             exclusions=_EXCLUSIONS,
@@ -477,14 +583,18 @@ def design_concentric_isolated_footing_is456(
             bearing=bearing,
             flexure=None,
             one_way_shear=None,
+            one_way_shear_basis="not_evaluated",
+            one_way_shear_screening=None,
+            screening_pt_passed_to_one_way_shear_percent={},
             punching=None,
             load_transfer=load_transfer,
+            detailing=None,
             reinforcement_demands=(),
             pt_passed_to_one_way_shear_percent={},
             failed_checks=(),
             hold_reasons=(
                 "DIRECTIONAL_EFFECTIVE_DEPTH_NOT_SUPPORTED_BY_CURRENT_CORE",
-                _DETAILING_HOLD_REASON,
+                _DETAILING_NOT_EVALUATED_REASON,
             ),
             provenance=provenance,
         )
@@ -584,22 +694,85 @@ def design_concentric_isolated_footing_is456(
     calculation_status: Literal["PASS", "FAIL", "NOT_EVALUATED"] = (
         "PASS" if not failed_checks else "FAIL"
     )
-    status: Literal["PASS", "FAIL", "HOLD"] = (
-        "FAIL" if calculation_status == "FAIL" else "HOLD"
+    detailing: FootingDetailingResult | None = None
+    detailing_status: Literal["PASS", "FAIL", "HOLD"] = "HOLD"
+    detailing_hold_reason: str | None = _DETAILING_NOT_EVALUATED_REASON
+    hold_reasons: tuple[str, ...] = ()
+    status: Literal["PASS", "FAIL", "HOLD"] = "FAIL"
+    screening_pt_percent = (
+        {
+            "L": selected_flexure.pt_L_percent,
+            "B": selected_flexure.pt_B_percent,
+        }
+        if selected_flexure is not None
+        else {}
     )
+    authoritative_one_way = selected_one_way
+    authoritative_pt_percent = dict(screening_pt_percent)
+    one_way_shear_basis: Literal[
+        "not_evaluated", "required_pt_screening", "actual_provided_pt_final"
+    ] = ("required_pt_screening" if selected_one_way is not None else "not_evaluated")
+
+    if calculation_status == "PASS":
+        assert selected_overall is not None
+        assert selected_d_l is not None
+        assert selected_d_b is not None
+        detailing = _run_detailing(
+            request,
+            bearing,
+            selected_overall,
+            selected_d_l,
+            selected_d_b,
+            load_transfer,
+        )
+        if detailing is None:
+            status = "HOLD"
+            detailing_hold_reason = _DETAILING_INPUT_HOLD_REASON
+            hold_reasons = (_DETAILING_INPUT_HOLD_REASON,)
+        else:
+            detailing_status = detailing.status
+            if detailing.status == "PASS":
+                if (
+                    detailing.final_one_way_shear is None
+                    or not detailing.final_one_way_shear.is_safe
+                    or set(detailing.actual_provided_pt_percent) != {"L", "B"}
+                ):
+                    status = "FAIL"
+                    detailing_status = "FAIL"
+                    detailing_hold_reason = None
+                    failed_checks.append("detailing")
+                else:
+                    status = "PASS"
+                    detailing_hold_reason = None
+                    authoritative_one_way = detailing.final_one_way_shear
+                    authoritative_pt_percent = dict(
+                        detailing.actual_provided_pt_percent
+                    )
+                    one_way_shear_basis = "actual_provided_pt_final"
+            elif detailing.status == "HOLD":
+                status = "HOLD"
+                detailing_hold_reason = detailing.reasons[0]
+                hold_reasons = detailing.reasons
+            else:
+                status = "FAIL"
+                detailing_hold_reason = None
+                failed_checks.append("detailing")
+
     reinforcement_demands = _reinforcement_demands(
         selected_flexure,
         selected_d_l,
         selected_d_b,
         bearing.L_mm,
         bearing.B_mm,
+        detailing_status,
+        detailing,
     )
     return ConcentricIsolatedFootingResult(
         case_id=request.case_id,
         status=status,
         calculation_status=calculation_status,
-        detailing_status="HOLD",
-        detailing_hold_reason=_DETAILING_HOLD_REASON,
+        detailing_status=detailing_status,
+        detailing_hold_reason=detailing_hold_reason,
         qualified_review_required=True,
         supported_case=_SUPPORTED_CASE,
         exclusions=_EXCLUSIONS,
@@ -611,19 +784,16 @@ def design_concentric_isolated_footing_is456(
         depth_candidates=tuple(candidates),
         bearing=bearing,
         flexure=selected_flexure,
-        one_way_shear=selected_one_way,
+        one_way_shear=authoritative_one_way,
+        one_way_shear_basis=one_way_shear_basis,
+        one_way_shear_screening=selected_one_way,
+        screening_pt_passed_to_one_way_shear_percent=screening_pt_percent,
         punching=selected_punching,
         load_transfer=load_transfer,
+        detailing=detailing,
         reinforcement_demands=reinforcement_demands,
-        pt_passed_to_one_way_shear_percent=(
-            {
-                "L": selected_flexure.pt_L_percent,
-                "B": selected_flexure.pt_B_percent,
-            }
-            if selected_flexure is not None
-            else {}
-        ),
+        pt_passed_to_one_way_shear_percent=authoritative_pt_percent,
         failed_checks=tuple(failed_checks),
-        hold_reasons=(_DETAILING_HOLD_REASON,) if status == "HOLD" else (),
+        hold_reasons=hold_reasons,
         provenance=provenance,
     )
