@@ -13,6 +13,7 @@ Guides, references, evidence, and contributor material for the
 | **Use the Python package** | [Python quick start](getting-started/python-quickstart.md) | tutorial | Install the package and run a first supported design |
 | **Understand the UI workflow** | [React UI user flow](guides/react-ui-user-flow.md) | guide | Import, design, review, dashboard, and export paths |
 | **Integrate an application** | [Platform guide](developers/platform-guide.md) | guide | Build on the Python and FastAPI interfaces |
+| **Inspect tool readiness** | [Beam tool manifest](reference/beam-tool-manifest.md) | reference | Catalogue-derived schema and review boundary without AI activation |
 | **Look up a function** | [API reference](reference/api.md) | reference | Public signatures, parameters, units, and results |
 | **Verify supported evidence** | [Evidence crosswalk](verification/is456-library-first-evidence.md) | evidence | Supported cases, sources, unsafe cases, limits, and release evidence |
 | **Contribute code** | [Development guide](contributing/development-guide.md) | guide | Architecture, validation, and pull-request workflow |

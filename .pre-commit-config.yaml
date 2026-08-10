@@ -172,6 +172,13 @@ repos:
         pass_filenames: false
         files: ^Python/structural_lib/api\.py$
         verbose: true
+      - id: check-beam-tool-manifest
+        name: Check catalogue-derived beam tool manifest
+        entry: ./scripts/python_runtime.sh scripts/generate_beam_tool_manifest.py --check
+        language: system
+        pass_filenames: false
+        files: ^(Python/structural_lib/services/(workflow_catalog|tool_manifest)\.py|scripts/generate_beam_tool_manifest\.py|docs/reference/beam-tool-manifest\.json)$
+        verbose: true
       - id: check-next-session-brief-length
         name: Check next-session brief length
         entry: ./scripts/python_runtime.sh scripts/check_next_session_brief_length.py

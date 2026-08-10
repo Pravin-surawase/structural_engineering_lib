@@ -35,6 +35,7 @@ Comprehensive lookup documentation for APIs, formulas, contracts, and troublesho
 | [insights-api.md](insights-api.md) | Insights API for smart analysis features |
 | [api-stability.md](api-stability.md) | API versioning and stability guarantees |
 | [deprecation-policy.md](deprecation-policy.md) | Deprecation timeline and migration paths |
+| [beam-tool-manifest.md](beam-tool-manifest.md) | Catalogue-derived beam tool descriptor and execution boundary |
 
 ## Contracts & Standards
 

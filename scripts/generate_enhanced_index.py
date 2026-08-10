@@ -550,6 +550,7 @@ def generate_json(index: dict, output_path: Path) -> None:
     json_path = output_path / "index.json"
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(index, f, indent=2, ensure_ascii=False)
+        f.write("\n")
     print(f"  ✅ {json_path.relative_to(PROJECT_ROOT)}")
 
 

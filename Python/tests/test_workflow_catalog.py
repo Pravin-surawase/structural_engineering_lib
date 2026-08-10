@@ -66,6 +66,11 @@ def test_catalog_rejects_unknown_semantics_and_example_fields() -> None:
         validate_catalog(replace(catalog, capabilities=(stale,)))
     with pytest.raises(CatalogValidationError, match="Unknown example fields"):
         validate_example_input(capability, {"invented": 1.0})
+    with pytest.raises(CatalogValidationError, match="Missing required fields"):
+        validate_example_input(
+            capability,
+            {"shear": 75.0, "fck": 25.0, "fy": 500.0},
+        )
 
 
 def test_additive_fixture_migrates_and_breaking_version_fails() -> None:

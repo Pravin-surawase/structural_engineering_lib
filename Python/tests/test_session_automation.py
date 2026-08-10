@@ -293,6 +293,19 @@ def test_generated_indexes_do_not_emit_trailing_space_hard_breaks():
     assert "f\"**Last Updated:** {index['last_updated']}  \"" not in generator
 
 
+def test_generated_json_indexes_end_with_newline(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    generator = importlib.import_module("scripts.generate_enhanced_index")
+    output = tmp_path / "scripts"
+    output.mkdir()
+    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
+
+    generator.generate_json({"folder": "scripts"}, output)
+
+    assert (output / "index.json").read_bytes().endswith(b"\n")
+
+
 def test_session_end_preserves_current_same_day_handoff(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):

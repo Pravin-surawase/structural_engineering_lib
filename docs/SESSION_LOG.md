@@ -19,6 +19,12 @@
 - P11 adds a curated catalogue field/widget registry to the accepted quick-beam
   result/3D/export surface, with visible unknown-contract failure and a reviewed
   manual-form escape route.
+- P12 provides one fixed beam workflow, default-disabled execution transport,
+  bounded/idempotent active cancellation, local draft persistence, review stops,
+  and an ordered development composer.
+- P13 generates one provider-neutral beam tool descriptor from the catalogue,
+  preserves schema/units/limitations/review boundaries, and activates no model,
+  chat, autonomous execution, or external integration.
 
 ### Issues encountered
 
@@ -60,6 +66,21 @@
   fixer on 1,770 previously clean vendor/index/fixture files.
 - The first P12 commit stopped after the repository Black hooks reformatted four
   new Python/FastAPI files that had passed Ruff but were not yet Black-normalized.
+- P13 format checks found the new generator/service and then the touched
+  catalogue file not yet Black-normalized, while strict mypy found a redundant
+  cast in the canonical input validator.
+- P13 inspection exposed a P9 truth mismatch: all six catalogue fields were
+  marked required even though the FastAPI request requires only width, depth,
+  and moment; catalogue validation also treated required fields with UI defaults
+  as optional.
+- The first P13 React command was launched from the repository root, so npm
+  could not find the package located under `react_app/`; the next combined
+  command made the inverse mistake and looked for root `.venv` beneath React.
+- The initial drift test tried to import `scripts/` as a package, but maintained
+  pytest paths expose it as an executable tool directory rather than a library.
+- The first P13 commit found that the maintained enhanced-index generator writes
+  JSON without a final newline, so every legitimate regeneration is changed by
+  the EOF pre-commit hook.
 
 ### Root causes and resolutions
 
@@ -116,6 +137,20 @@
   used during packet iteration.
 - The formatter output was retained, the four files were restaged, and the
   focused runner/API tests plus format hooks are rerun before the commit retry.
+- Black output was applied to the P13 files and the redundant cast removed; five
+  manifest tests, Ruff, Black, and the maintained mypy hook pass.
+- Catalogue `required` flags now match `BeamDesignRequest`: width/depth/moment
+  are required and shear/fck/fy use transport defaults. Required validation no
+  longer depends on whether the curated UI provides a default. Catalogue,
+  manifest JSON Schema, runner, FastAPI, and React focused tests pass together.
+- React commands now run in `react_app/`, while Python formatter/test commands
+  run from the repository root. The corrected component test and full lint pass.
+- The drift test now invokes the documented generator CLI in a temporary path,
+  proving `--write --check` succeeds and a one-byte-contract replacement fails;
+  no script-directory import contract was invented.
+- `generate_enhanced_index.py` now writes newline-terminated JSON itself. A
+  functional regression checks the emitted bytes, and two consecutive scripts-
+  index generations remain hook-clean.
 
 ### Verification
 
@@ -127,6 +162,9 @@
 - P12: 15 focused Python/FastAPI tests, 8 focused React tests, scoped Ruff,
   maintained mypy, React lint/build, 69-operation OpenAPI snapshot, and the
   live 29-call React/FastAPI signature scan.
+- P13: 27 combined catalogue/manifest/runner/API tests plus 2 catalogue React
+  tests, deterministic write/check drift proof, JSON Schema validation, scoped
+  Ruff/Black/mypy, scripts-index coverage, React lint, and link validation.
 
 ## 2026-08-10 — Session: UIX-001 Session 1 P4-P8 Closeout
 

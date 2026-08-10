@@ -155,7 +155,7 @@ _BEAM_FIELDS = (
         "Design forces",
         "number",
         "kN",
-        True,
+        False,
         75.0,
         0.0,
         1000.0,
@@ -168,7 +168,7 @@ _BEAM_FIELDS = (
         "Materials",
         "select",
         "N/mm2",
-        True,
+        False,
         25.0,
         choices=(20.0, 25.0, 30.0, 35.0, 40.0, 45.0, 50.0),
     ),
@@ -180,7 +180,7 @@ _BEAM_FIELDS = (
         "Materials",
         "select",
         "N/mm2",
-        True,
+        False,
         500.0,
         choices=(415.0, 500.0, 550.0),
     ),
@@ -264,9 +264,7 @@ def validate_example_input(
     if unknown:
         raise CatalogValidationError(f"Unknown example fields: {', '.join(unknown)}")
     missing = sorted(
-        name
-        for name, field in fields.items()
-        if field.required and name not in values and field.default is None
+        name for name, field in fields.items() if field.required and name not in values
     )
     if missing:
         raise CatalogValidationError(f"Missing required fields: {', '.join(missing)}")

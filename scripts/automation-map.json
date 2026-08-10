@@ -2,7 +2,7 @@
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
   "_updated": "2026-08-09",
   "_usage": "Run: ./scripts/python_runtime.sh scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "104/104 scripts mapped",
+  "_coverage": "106/106 scripts mapped",
   "tasks": {
     "resolve python runtime": {
       "group": "Infrastructure",
@@ -245,6 +245,11 @@
       "group": "Discovery",
       "script": "./scripts/python_runtime.sh scripts/generate_api_manifest.py",
       "description": "Regenerate API manifest (public function inventory)"
+    },
+    "generate beam tool manifest": {
+      "group": "Discovery",
+      "script": "./scripts/python_runtime.sh scripts/generate_beam_tool_manifest.py --write --check",
+      "description": "Regenerate and byte-check the catalogue-derived beam tool descriptor without activating AI execution"
     },
     "check architecture boundaries": {
       "group": "Quality",
