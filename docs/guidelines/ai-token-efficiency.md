@@ -13,8 +13,11 @@ engineering, test, or Git safety gates.
 
 ## Defaults
 
-1. Keep one parent task active for this project. Finish, pause, or stop it
-   before starting a separate parent task.
+1. Default to one write task. Parallel parent tasks are allowed only under the
+   [parallel-task policy](parallel-task-policy.md): at most two independent
+   implementation tasks plus one coordinator/integration lane, with separate
+   worktrees, unique branches, exact bases, disjoint path ownership, and a
+   single integration order.
 2. An explicit model and reasoning selection by the user controls. When the
    user explicitly delegates model choice for a task, the main orchestrator may
    choose suitable available parent and subagent profiles in proportion to task
@@ -124,7 +127,9 @@ bounded read set once:
 ```
 
 This command is read-only and does not replace Codex-native branch/worktree
-isolation. Then run the smallest orientation pack once:
+isolation. When another write task is active, create a dedicated Codex worktree
+and follow [parallel-task-policy.md](parallel-task-policy.md). Then run the
+smallest orientation pack once:
 
 ```bash
 ./run.sh session brief --agent <role>

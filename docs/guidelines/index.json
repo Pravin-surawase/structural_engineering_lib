@@ -3,24 +3,24 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-10",
-  "file_count": 16,
+  "file_count": 17,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 74,
+      "size_lines": 81,
       "last_updated": "2026-08-10",
       "title": "Guidelines Index",
       "description": "Development standards and best practices for the structural engineering library. | Need To... | Read This |",
-      "content_hash": "33a845020aca"
+      "content_hash": "3d8a9e4e8258"
     },
     {
       "name": "ai-token-efficiency.md",
       "type": "documentation",
-      "size_lines": 219,
+      "size_lines": 224,
       "last_updated": "2026-08-10",
       "description": "This is the canonical low-token operating policy for AI-assisted work in this repository. It controls avoidable context and agent fan-out without weakening",
-      "content_hash": "16a4fb0ada3e"
+      "content_hash": "a06da173ad8a"
     },
     {
       "name": "api-design-guidelines.md",
@@ -131,6 +131,14 @@
       "content_hash": "a74a52ab1238"
     },
     {
+      "name": "parallel-task-policy.md",
+      "type": "documentation",
+      "size_lines": 156,
+      "last_updated": "2026-08-10",
+      "description": "This policy allows independent Codex tasks to run at the same time without sharing a checkout, branch, path owner, or integration decision.",
+      "content_hash": "7c1e66486000"
+    },
+    {
       "name": "result-object-standard.md",
       "type": "documentation",
       "size_lines": 1437,
@@ -140,5 +148,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "a36deb6d2de2ee7a"
+  "content_hash": "09b2fe15de697adc"
 }

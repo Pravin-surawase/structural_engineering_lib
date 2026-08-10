@@ -113,7 +113,7 @@ Run every 5th session or weekly:
 .venv/bin/python scripts/check_bootstrap_freshness.py
 
 # 7. Stale branch cleanup (dry-run first)
-.venv/bin/python scripts/cleanup_stale_branches.py --dry-run
+./scripts/python_runtime.sh scripts/cleanup_stale_branches.py
 
 # 8. Instruction drift check
 # Compare .github/instructions/*.instructions.md with .claude/rules/*.md
@@ -156,7 +156,7 @@ Run every 5th session or weekly:
 | Broken links | Manual fix or `safe_file_move.py` | doc-master |
 | Architecture violations | Fix imports in violating file | backend |
 | Retired wrapper hook path active | Unset `core.hooksPath`; rerun `check_codex_git_workflow.py` | Codex |
-| Stale branches | `cleanup_stale_branches.py --execute` | ops (needs approval) |
+| Stale branches | `./scripts/python_runtime.sh scripts/cleanup_stale_branches.py --delete` | ops (needs explicit approval) |
 | Import cycle | Refactor module dependencies | backend |
 | Agent instruction drift | Sync instruction files | doc-master |
 

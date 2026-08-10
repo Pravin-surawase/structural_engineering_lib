@@ -5,13 +5,13 @@
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-03-29
+**Last Updated:** 2026-08-10
 
 ---
 
 Development standards and best practices for the structural engineering library.
 
-**Files:** 14 | **Updated:** 2026-01-23
+**Files:** 17 | **Updated:** 2026-08-10
 
 ---
 
@@ -24,6 +24,7 @@ Development standards and best practices for the structural engineering library.
 | Return results from functions | [result-object-standard.md](result-object-standard.md) |
 | Move/delete files safely | [file-operations-safety-guide.md](file-operations-safety-guide.md) |
 | Migrate a module | [migration-workflow-guide.md](migration-workflow-guide.md) |
+| Run independent tasks in parallel | [parallel-task-policy.md](parallel-task-policy.md) |
 
 ---
 
@@ -57,6 +58,12 @@ Development standards and best practices for the structural engineering library.
 | [migration-preflight-checklist.md](migration-preflight-checklist.md) | Pre-migration checklist | Before any migration |
 | [file-operations-safety-guide.md](file-operations-safety-guide.md) | Safe file operations | Moving, deleting any files |
 | [folder-cleanup-workflow.md](folder-cleanup-workflow.md) | Folder cleanup process | Reorganizing documentation |
+
+## Parallel Work
+
+| File | Description | Key Takeaway |
+|------|-------------|--------------|
+| [parallel-task-policy.md](parallel-task-policy.md) | Codex task/worktree isolation and integration | One task, one worktree, one branch, disjoint paths |
 
 ---
 

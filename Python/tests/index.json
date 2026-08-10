@@ -3172,7 +3172,7 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 482,
+      "size_lines": 483,
       "last_updated": "2026-08-10",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
@@ -3272,7 +3272,7 @@
           ]
         },
         {
-          "name": "test_generated_index_hash_ignores_checkout_file_mtime",
+          "name": "test_generated_index_preserves_date_across_checkout_file_mtime",
           "params": [
             "tmp_path",
             "monkeypatch"
@@ -3282,7 +3282,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "43d2f6d02f6c"
+      "content_hash": "1c088a5f65b4"
     },
     {
       "name": "test_session_store.py",
@@ -4040,5 +4040,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "30f6afb75b055418"
+  "content_hash": "78aac8082b715b44"
 }

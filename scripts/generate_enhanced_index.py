@@ -395,6 +395,20 @@ def analyze_shell_file(file_path: Path) -> dict[str, Any]:
 def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
     """Scan folder and generate enhanced index data."""
     folder_rel = str(folder_path.relative_to(PROJECT_ROOT))
+    scan_date = datetime.now().strftime("%Y-%m-%d")
+
+    previous_files: dict[str, dict[str, Any]] = {}
+    previous_index_path = folder_path / "index.json"
+    if previous_index_path.exists():
+        try:
+            previous_index = json.loads(previous_index_path.read_text(encoding="utf-8"))
+            previous_files = {
+                item["name"]: item
+                for item in previous_index.get("files", [])
+                if isinstance(item, dict) and isinstance(item.get("name"), str)
+            }
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+            previous_files = {}
 
     # Categorize files
     all_files = sorted(
@@ -446,7 +460,7 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
         "folder": folder_rel,
         "type": folder_type,
         "description": folder_description,
-        "last_updated": datetime.now().strftime("%Y-%m-%d"),
+        "last_updated": scan_date,
         "file_count": len(all_files),
         "files": [],
         "subfolders": [],
@@ -463,6 +477,25 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
                 file_info["content_hash"] = file_hash
             except OSError:
                 pass
+
+            previous = previous_files.get(f.name)
+            if previous:
+                previous_projection = {
+                    key: value
+                    for key, value in previous.items()
+                    if key != "last_updated"
+                }
+                current_projection = {
+                    key: value
+                    for key, value in file_info.items()
+                    if key != "last_updated"
+                }
+                if previous_projection == current_projection:
+                    file_info["last_updated"] = previous.get(
+                        "last_updated", file_info.get("last_updated", scan_date)
+                    )
+                elif "last_updated" in file_info:
+                    file_info["last_updated"] = scan_date
             index["files"].append(file_info)
 
     # Analyze subfolders

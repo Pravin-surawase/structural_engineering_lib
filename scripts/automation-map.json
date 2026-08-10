@@ -181,6 +181,7 @@
       "description": "Build a read-only lane, role, skill, automation, and context brief for a concrete task (also: ./run.sh task brief)",
       "permission": "ReadOnly",
       "context_docs": [
+        "docs/guidelines/parallel-task-policy.md",
         "docs/guidelines/ai-token-efficiency.md",
         "docs/git-automation/git-workflow-single-source.md"
       ],

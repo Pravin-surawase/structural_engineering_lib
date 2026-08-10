@@ -16,7 +16,7 @@ Guides, references, evidence, and contributor material for the
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [README.md](README.md) | Docs Index (Start Here) | Guides, references, evidence, and contributor material for t | 253 |
-| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 1038 |
+| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 1151 |
 | [TASKS.md](TASKS.md) | Task Board | > **Single source of truth for active work.** Keep it short  | 669 |
 | [WORKLOG.md](WORKLOG.md) |  | > **One line per item. Compact. Append-only.** > Format: DAT | 354 |
 
@@ -36,7 +36,7 @@ Guides, references, evidence, and contributor material for the
 | [getting-started/](getting-started/) | 21 | Quick onboarding guides for new users of the structural engineering library. |
 | [git-automation/](git-automation/) | 2 | owner: Main Agent |
 | [governance/](governance/) | 1 |  |
-| [guidelines/](guidelines/) | 18 |  |
+| [guidelines/](guidelines/) | 19 |  |
 | [guides/](guides/) | 11 | End-user and developer guides for specific workflows. |
 | [images/](images/) | 7 | This folder contains images referenced by the documentation, including verified |
 | [learning/](learning/) | 6 | A guided learning path for engineers new to this codebase. Written for those who |

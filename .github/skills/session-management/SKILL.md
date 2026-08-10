@@ -31,9 +31,17 @@ Inspect every lane warning before editing. When isolation is needed, Codex owns
 the native Git/worktree operation and must preserve dirty lanes. Do not add a
 repository Git lifecycle wrapper.
 
+For concurrent parent tasks, follow
+`docs/guidelines/parallel-task-policy.md`: use one task per worktree and unique
+branch, allow no overlapping owned path, and name one integration owner. The
+default ceiling is two independent implementation tasks plus the integration
+lane. Shared task boards, handoffs, generated artifacts, lock files, and public
+registries stay single-writer surfaces.
+
 Before editing, define one compact task contract:
 
 - objective and explicit non-goals;
+- exact base, owned paths, and integration owner;
 - exact files and existing patterns to reuse;
 - likely pitfalls and architecture/Git constraints;
 - measurable acceptance criteria and narrow verification commands.

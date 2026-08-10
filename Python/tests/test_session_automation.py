@@ -326,7 +326,7 @@ def test_generated_index_hash_tracks_subfolder_projection(
     assert initial["content_hash"] != updated["content_hash"]
 
 
-def test_generated_index_hash_ignores_checkout_file_mtime(
+def test_generated_index_preserves_date_across_checkout_file_mtime(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):
     generator = importlib.import_module("scripts.generate_enhanced_index")
@@ -337,11 +337,12 @@ def test_generated_index_hash_ignores_checkout_file_mtime(
     monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
 
     initial = generator.scan_folder_enhanced(folder)
+    (folder / "index.json").write_text(json.dumps(initial), encoding="utf-8")
     later = script.stat().st_mtime + (2 * 24 * 60 * 60)
     os.utime(script, (later, later))
     updated = generator.scan_folder_enhanced(folder)
 
-    assert initial["files"][0]["last_updated"] != updated["files"][0]["last_updated"]
+    assert initial["files"][0]["last_updated"] == updated["files"][0]["last_updated"]
     assert initial["content_hash"] == updated["content_hash"]
 
 

@@ -584,6 +584,7 @@ def _initial_context(
     """Build a bounded initial read set from existing authoritative metadata."""
     context = [
         "AGENTS.md",
+        "docs/guidelines/parallel-task-policy.md",
         "docs/TASKS.md",
         "docs/planning/next-session-brief.md",
     ]
@@ -626,6 +627,7 @@ def build_task_brief(query: str) -> dict[str, Any]:
         "task_contract": [
             "one objective",
             "explicit non-goals",
+            "exact base, owned paths, and integration owner",
             "exact files and patterns to reuse",
             "likely pitfalls",
             "measurable acceptance criteria",
@@ -643,6 +645,8 @@ def build_task_brief(query: str) -> dict[str, Any]:
             ],
             "pipeline_rule": "Use ./run.sh pipeline only when the task must resume across sessions.",
             "git_rule": "Codex owns Git/worktree/PR operations; repository scripts stay read-only for Git.",
+            "lane_rule": "Parallel writes require separate worktrees, unique branches, disjoint paths, and one integration owner.",
+            "parallel_policy": "docs/guidelines/parallel-task-policy.md",
         },
     }
 
@@ -694,6 +698,8 @@ def _print_task_brief(brief: dict[str, Any]) -> None:
     print(f"Close: {' -> '.join(brief['workflow']['close'])}")
     print(f"Note: {brief['workflow']['pipeline_rule']}")
     print(f"Git: {brief['workflow']['git_rule']}\n")
+    print(f"Parallel: {brief['workflow']['lane_rule']}")
+    print(f"Policy: {brief['workflow']['parallel_policy']}\n")
 
 
 def _print_result(result: RoutingResult, query: str) -> None:

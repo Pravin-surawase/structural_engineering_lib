@@ -13,15 +13,16 @@ Open-source IS 456 RC beam design library. Full stack:
 
 ## Token-Efficiency Policy (MANDATORY)
 
-The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines/ai-token-efficiency.md); project efficiency defaults are enforced by [`.codex/config.toml`](.codex/config.toml).
+The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines/ai-token-efficiency.md); project efficiency defaults are enforced by [`.codex/config.toml`](.codex/config.toml). Parallel parent tasks also follow [docs/guidelines/parallel-task-policy.md](docs/guidelines/parallel-task-policy.md).
 
-- Keep one parent task active. An explicit model or reasoning selection by the user controls. When the user explicitly delegates model choice for a task, the orchestrator may choose suitable available parent and subagent profiles in proportion to task risk; repository defaults remain advisory. If the user asks for a recommendation, prefer Luna for clear repeatable work, Terra for normal implementation, and Sol only after explicit selection, case-specific approval, or delegated model-choice authority.
+- Default to one write task. Allow at most two independent implementation tasks plus one coordinator/integration lane, and only when every task has a separate worktree, unique branch, exact base, disjoint path ownership, and explicit integration order.
+- An explicit model or reasoning selection by the user controls. When the user explicitly delegates model choice for a task, the orchestrator may choose suitable available parent and subagent profiles in proportion to task risk; repository defaults remain advisory. If the user asks for a recommendation, use Terra Low for clear repeatable work and Terra Medium/High in proportion to implementation risk. Sol remains approval-gated unless explicitly selected or delegated.
 - Keep Fast mode off unless the user explicitly prioritizes speed over usage.
 - Default to no subagents. Use at most two concurrent subagents, only for independent bounded work that materially benefits from delegation.
 - Never pass full parent history to a subagent. Send a concise packet with the objective, exact files, constraints, question, commands, and expected output.
 - The orchestrator must add non-goals, likely pitfalls, measurable acceptance criteria, narrow tests, and a return format to each packet, then independently inspect and verify the result before acceptance.
 - Named handoff chains below are quality roles, not mandatory agent processes. The parent normally performs implementation, testing, documentation, and operations passes itself.
-- Start with `./run.sh session brief --agent <role>`, folder indexes, and targeted `rg`; do not load full agent files or large logs unless required.
+- Start a nontrivial task with `./run.sh task brief "task"`, then `./run.sh session brief --agent <role>`, folder indexes, and targeted `rg`; do not load full agent files or large logs unless required.
 - Use targeted tests while iterating, `./run.sh check --quick` before commit, and the full gate once at closeout.
 - Use `/status` and Settings → Usage for Codex usage. Run `./run.sh efficiency check` for repository-side policy validation.
 - Run `./run.sh model "task"` only when the user asks for a recommendation,
@@ -79,7 +80,7 @@ recreate that lifecycle in repository scripts. The canonical process is
 NEVER: gh pr merge --admin            ← bypasses required CI checks
 NEVER: gh pr merge <N> --squash (with failing CI) ← fix failures first, then merge
 NEVER: gh issue close (without user approval) ← destructive, ask first
-NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py --dry-run
+NEVER: git push origin --delete (without user approval) ← use ./scripts/python_runtime.sh scripts/cleanup_stale_branches.py
 NEVER: --no-verify / --force          ← breaks CI, causes rework
 NEVER: git rebase --skip              ← silently drops conflicting commits
 NEVER: git push --force-with-lease     ← rewrites shared history

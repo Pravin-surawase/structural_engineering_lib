@@ -5,6 +5,119 @@
 
 ---
 
+## 2026-08-10 — Session: Parallel Task Policy and Maintenance
+
+**Agent:** Codex
+**Branch:** `codex/parallel-task-policy`
+**Focus:** Reconcile outstanding work, run preservation-first maintenance, and establish collision-safe concurrent task lanes
+
+### Summary
+
+- Reconciled the live task board, Codex task list, local branches, all registered
+  worktrees, GitHub PRs, checks, processes, stashes, and remote-branch cleanup
+  state before classifying completion.
+- Confirmed the slab software scope and UIX program are complete, while three
+  local branches still contain unique unintegrated commits and seven dependency
+  PRs remain open. No branch, worktree, PR, or user artifact was deleted.
+- Built this task on a new worktree and `codex/parallel-task-policy` branch from
+  the already verified task-intake commit `aeb24a6f`, preserving the slab,
+  column, Excel audit, social preview, and workflow lanes.
+- Added the canonical parallel-task policy: at most two independent
+  implementation tasks plus one integration lane, with one task/worktree/branch,
+  exact base, disjoint path ownership, single-writer shared surfaces, explicit
+  integration order, runtime/process isolation, and preservation-first cleanup.
+- Made the policy part of `AGENTS.md`, the token-efficiency guide, session skill,
+  Git workflow, task-brief output, automation context, and guidelines indexes.
+- Piloted the model by returning a three-line count repair to the existing slab
+  task while this task edited only the policy worktree. The slab lane committed
+  `75051954`, returned health 100/100 and quick gate 10/10, and remained clean;
+  this lane saw no foreign write.
+- Maintenance found no stale remote branches, stale worktree metadata, stash,
+  or project listener on ports 8000/8001/5173/5174. Generated dependencies and
+  active-task caches were preserved; no destructive cleanup was justified.
+
+### Issues encountered
+
+- The task ledger said no implementation packet was active, but local Git and
+  GitHub still contained unique unintegrated commits and seven open dependency
+  PRs, so “all work done” was ambiguous.
+- Active maintenance instructions called
+  `cleanup_stale_branches.py --dry-run`, but the script rejected that option and
+  stopped the first read-only maintenance chain.
+- A direct `.venv/bin/python` command failed in the linked policy worktree even
+  though session startup and `run.sh` commands worked.
+- The efficiency policy required one active parent task, preventing the bounded
+  parallel workflow requested by the owner.
+- The slab lane initially reported health 94/100 because three public endpoint
+  and API counts were stale after the completed slab expansion.
+- Regenerating all indexes initially rewrote checkout-specific modification
+  dates across otherwise unchanged files, producing broad noisy diffs.
+- The first Codex task-list call requested 100 entries even though the current
+  tool contract permits at most 50.
+- The first health closeout rejected the new policy's `doc_type: policy` value
+  and remained at 94/100.
+
+### Root causes and resolutions
+
+- Completion state was represented at different layers: the task board covered
+  the current product packet, while Git branches/worktrees and GitHub tracked
+  integration and dependency work. The closeout now reports those layers
+  separately instead of collapsing them into one completion claim.
+- `cleanup_stale_branches.py` is read-only by default and exposes `--delete` as
+  its only mutation flag. All active instructions now use the lane-aware runtime
+  wrapper with no invented dry-run option; the corrected command reported no
+  stale branch.
+- Linked worktrees share the primary virtual environment but do not contain a
+  local `.venv` path. Active parallel guidance now requires `./run.sh` or
+  `./scripts/python_runtime.sh`, whose existing lane-binding fix imports Python
+  sources from the invoking worktree.
+- The one-parent rule combined safety and scheduling into one blanket
+  restriction. It is replaced by a bounded WIP model: two disjoint write tasks
+  at most, plus one integration lane, with exact ownership and serialization of
+  shared surfaces.
+- The slab implementation added five endpoints and five public functions after
+  the three public counts were last synchronized. The owning slab task updated
+  exactly those counts, recorded its cause/evidence, and proved the corrected
+  health and quick-gate outcomes on its own branch.
+- File metadata used checkout mtimes, so a fresh worktree made unchanged files
+  appear newly updated whenever indexes were written. The generator now
+  preserves the prior `last_updated` date when all non-date metadata and content
+  hashes match, while assigning the scan date to genuinely changed/new files.
+  Existing semantic watermarks were regenerated once under the stable scheme.
+- The task-list limit was an incorrect caller assumption, not missing task data.
+  Retrying with the documented maximum of 50 returned the required project task
+  inventory.
+- The documentation schema accepts `guide`, `reference`, `tutorial`, `index`,
+  `spec`, or `log`, but not the descriptive `policy` label. The policy now uses
+  `doc_type: spec`; focused front-matter validation and health 100/100 pass.
+
+### Verification
+
+- `./run.sh task brief` human and JSON modes include the parallel policy, exact
+  base/path/integration contract, every worktree, dirty state, role, skills,
+  tools, and read-only Git boundary.
+- The parallel slab repair completed in its separate lane at `75051954`; its
+  session sync, health 100/100, quick 10/10, session closeout, and clean status
+  passed without cross-lane mutation.
+- `./scripts/python_runtime.sh scripts/cleanup_stale_branches.py` reported no
+  stale remote branches; `git worktree prune --dry-run --verbose` found no stale
+  metadata.
+- Focused Ruff, the 29 session-automation tests, and all 15 CLI smoke cases pass.
+- All generated indexes pass semantic freshness checking and documentation
+  links report zero broken links.
+- Focused front-matter validation reports zero invalid documents and project
+  health reports 100/100.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: direct `.venv/bin/python` was absent in the linked worktree
+  -> `./scripts/python_runtime.sh` resolved the shared interpreter and bound it
+  to this worktree.
+- ⚠️ TERMINAL ISSUE: the documented stale-branch `--dry-run` flag was unsupported
+  -> the corrected default read-only invocation completed successfully.
+- ⚠️ TERMINAL ISSUE: the first task-list request exceeded the 50-entry tool cap
+  -> retrying with `limit: 50` returned the live inventory.
+
 ## 2026-08-10 — Session: Efficient Task Workflow V1
 
 **Agent:** Codex

@@ -45,6 +45,19 @@ checkout, clean, stash, delete branches, or mutate GitHub state.
 - A green software gate is evidence about the software, not structural design
   approval or formula certification.
 
+## Parallel worktrees
+
+Concurrent tasks follow the canonical
+[parallel-task policy](../guidelines/parallel-task-policy.md). Each write task
+uses a dedicated worktree and unique `codex/` branch from an exact base, owns
+disjoint paths, and names one integration owner. The Local checkout should
+normally remain the foreground/integration lane.
+
+Git worktrees isolate working files, `HEAD`, and index state; they do not make
+overlapping logical changes safe. Treat task boards, session handoffs, lock
+files, generated indexes, API manifests, and public registries as single-writer
+surfaces. Never bypass Git's one-branch-per-worktree safeguard with `--force`.
+
 ## Fail-closed recovery
 
 When Git is detached, behind, diverged, conflicted, or in the middle of a merge,

@@ -50,9 +50,9 @@
       "name": "maintenance-checklist.md",
       "type": "documentation",
       "size_lines": 190,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "description": "| Frequency | Command | What It Does | Time | |-----------|---------|-------------|------|",
-      "content_hash": "fd02d0b104d2"
+      "content_hash": "fe744152d670"
     },
     {
       "name": "react-ui-user-flow.md",
@@ -80,5 +80,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "90055d1eeb31fa48"
+  "content_hash": "1030fddc86349c6f"
 }

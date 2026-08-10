@@ -112,7 +112,7 @@ require explicit user approval.
 ```
 NEVER: gh pr merge --admin            ← bypasses required CI checks
 NEVER: gh issue close (without user approval) ← destructive, ask first
-NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py --dry-run
+NEVER: git push origin --delete (without user approval) ← use ./scripts/python_runtime.sh scripts/cleanup_stale_branches.py
 ```
 
 Closing issues or pull requests and deleting branches require **explicit user

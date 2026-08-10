@@ -912,7 +912,7 @@
         "_coverage",
         "tasks"
       ],
-      "content_hash": "f1b0a4008c13"
+      "content_hash": "f514c83284b9"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -3266,7 +3266,7 @@
     {
       "name": "generate_enhanced_index.py",
       "type": "python",
-      "size_lines": 839,
+      "size_lines": 872,
       "last_updated": "2026-08-10",
       "description": "Generate enhanced index.json + index.md for ANY folder type.",
       "functions": [
@@ -3344,7 +3344,7 @@
         "SKIP_DIRS",
         "KEY_FOLDERS"
       ],
-      "content_hash": "d4db2e89b877"
+      "content_hash": "7a7909d10eae"
     },
     {
       "name": "generate_error_docs.py",
@@ -4010,7 +4010,7 @@
     {
       "name": "prompt_router.py",
       "type": "python",
-      "size_lines": 776,
+      "size_lines": 782,
       "last_updated": "2026-08-10",
       "description": "Prompt router — routes natural language queries to the best agent + skills.",
       "classes": [
@@ -4054,7 +4054,7 @@
         "STOPWORDS",
         "GENERIC_TASK_WORDS"
       ],
-      "content_hash": "088e78d00ba0"
+      "content_hash": "3a5b5aed6ff5"
     },
     {
       "name": "python_runtime.sh",
@@ -5356,5 +5356,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "19d57619b84b9fc3"
+  "content_hash": "ce5fa7cedc399f72"
 }
