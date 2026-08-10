@@ -5,11 +5,11 @@
 
 ---
 
-## 2026-08-10 — Session: FOOT-ISO-RC-V1 Phases A-B2
+## 2026-08-10 — Session: FOOT-ISO-RC-V1 Phases A-C1
 
 **Agent:** Codex
 **Branch:** `codex/footing-isolated-v1`
-**Focus:** Correct footing inputs and complete concentric isolated-footing orchestration/detailing
+**Focus:** Correct footing inputs and complete concentric isolated-footing orchestration/detailing/API
 
 ### Summary
 
@@ -27,6 +27,10 @@
   directional depths, deterministic bar selection, buildable rectangular
   central/outer-band schedules, straight anchorage, approved dowel linkage,
   normalized provenance, and service-level PASS/FAIL/HOLD aggregation.
+- Added one typed FastAPI route for the same concentric square/rectangular
+  service authority, including calculation/detailing/aggregate status,
+  screening-versus-final shear evidence, provenance, exclusions, qualified
+  review, and canonical validation errors.
 
 ### Issues encountered
 
@@ -69,6 +73,12 @@
 - The B2 decorator used exact clause bases absent from `clauses.json`, causing
   normal maintained imports to emit five unknown-clause warnings even though
   those exact bases remained valid result/provenance evidence.
+- The core `FootingType` enum uses implementation-valued members and FastAPI is
+  forbidden from importing core/code layers, so exposing that enum directly
+  would make the transport contract unstable and violate the dependency rule.
+- If service validation escaped the footing router, the existing global
+  `StructuralLibError` path would return a legacy non-envelope body instead of
+  the maintained request-validation response shape.
 
 ### Root causes and resolutions
 
@@ -127,6 +137,15 @@
   detailing PASS closes the aggregate to PASS, detailing FAIL fails only the
   aggregate/detailing status, and missing/unsupported engineering inputs remain
   fail-closed HOLD.
+- The C1 request model exposes stable `ISOLATED_SQUARE` and
+  `ISOLATED_RECTANGULAR` wire names and the router maps them through the service
+  module before invoking the single accepted service; FastAPI imports no
+  core/code module and contains no engineering formula.
+- The router now catches service `ValidationError` explicitly and returns the
+  canonical `success=false`, `data=null`, structured 422 error envelope with
+  sanitized detail. Pydantic omissions, extra fields, non-finite values,
+  invalid footing names, and non-integral dowel counts use the main app's same
+  documented 422 envelope.
 - Evidence: the 182-case footing/core/public-contract matrix passed, the
   12-test FastAPI library-core/capability baseline passed, the 4-case footing
   contract selection passed, the 167-case B1/core/load-transfer matrix passed,
@@ -136,6 +155,11 @@
   matrix passed; focused Black, Ruff, isolated mypy and import checks passed;
   the architecture scan checked 144 files with zero violations; and
   `git diff --check` passed.
+- C1 evidence: 37 focused FastAPI/service/typed-contract tests passed; Black and
+  Ruff passed; isolated mypy passed for five owned/integration Python files;
+  the architecture scan checked 146 files with zero violations; the maintained
+  OpenAPI snapshot now records exactly one added endpoint and 15 footing schemas
+  (70 endpoints, 263 schemas); import validation and `git diff --check` passed.
 
 ---
 

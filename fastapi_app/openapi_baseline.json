@@ -1130,6 +1130,58 @@
         "title": "APIResponse[ComplianceReportResponse]",
         "type": "object"
       },
+      "APIResponse_ConcentricIsolatedFootingResponse_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ConcentricIsolatedFootingResponse"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[ConcentricIsolatedFootingResponse]",
+        "type": "object"
+      },
       "APIResponse_CostOptimizationResponse_": {
         "example": {
           "data": {
@@ -7541,6 +7593,530 @@
         "title": "ComplianceReportResponse",
         "type": "object"
       },
+      "ConcentricIsolatedFootingRequest": {
+        "additionalProperties": false,
+        "description": "Explicit inputs for the sole supported concentric isolated footing case.",
+        "properties": {
+          "allowable_soil_pressure_is_externally_approved": {
+            "const": true,
+            "title": "Allowable Soil Pressure Is Externally Approved",
+            "type": "boolean"
+          },
+          "allowable_soil_pressure_kPa": {
+            "exclusiveMinimum": 0.0,
+            "title": "Allowable Soil Pressure Kpa",
+            "type": "number"
+          },
+          "allowable_soil_pressure_source_reference": {
+            "minLength": 1,
+            "title": "Allowable Soil Pressure Source Reference",
+            "type": "string"
+          },
+          "available_dowel_development_length_into_column_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Available Dowel Development Length Into Column Mm",
+            "type": "number"
+          },
+          "available_dowel_development_length_into_footing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Available Dowel Development Length Into Footing Mm",
+            "type": "number"
+          },
+          "case_id": {
+            "minLength": 1,
+            "title": "Case Id",
+            "type": "string"
+          },
+          "column_B_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Column B Mm",
+            "type": "number"
+          },
+          "column_L_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Column L Mm",
+            "type": "number"
+          },
+          "column_concrete_fck_nmm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Column Concrete Fck Nmm2",
+            "type": "number"
+          },
+          "column_longitudinal_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Column Longitudinal Bar Diameter Mm",
+            "type": "number"
+          },
+          "cover_exposure_basis": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cover Exposure Basis"
+          },
+          "cover_exposure_basis_is_approved": {
+            "default": false,
+            "title": "Cover Exposure Basis Is Approved",
+            "type": "boolean"
+          },
+          "dowel_bar_type": {
+            "default": "deformed",
+            "enum": [
+              "deformed",
+              "plain"
+            ],
+            "title": "Dowel Bar Type",
+            "type": "string"
+          },
+          "dowel_count": {
+            "exclusiveMinimum": 0.0,
+            "title": "Dowel Count",
+            "type": "integer"
+          },
+          "dowel_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Dowel Diameter Mm",
+            "type": "number"
+          },
+          "effective_depth_offset_B_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Effective Depth Offset B Mm",
+            "type": "number"
+          },
+          "effective_depth_offset_L_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Effective Depth Offset L Mm",
+            "type": "number"
+          },
+          "effective_supporting_area_A1_mm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Effective Supporting Area A1 Mm2",
+            "type": "number"
+          },
+          "effective_supporting_area_basis": {
+            "const": "largest_frustum_1v_2h",
+            "title": "Effective Supporting Area Basis",
+            "type": "string"
+          },
+          "effective_supporting_area_is_approved": {
+            "const": true,
+            "title": "Effective Supporting Area Is Approved",
+            "type": "boolean"
+          },
+          "factored_axial_load_kN": {
+            "exclusiveMinimum": 0.0,
+            "title": "Factored Axial Load Kn",
+            "type": "number"
+          },
+          "factored_load_combination_id": {
+            "minLength": 1,
+            "title": "Factored Load Combination Id",
+            "type": "string"
+          },
+          "footing_bottom_bar_type": {
+            "anyOf": [
+              {
+                "enum": [
+                  "deformed",
+                  "plain"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Footing Bottom Bar Type"
+          },
+          "footing_concrete_fck_nmm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Footing Concrete Fck Nmm2",
+            "type": "number"
+          },
+          "footing_type": {
+            "$ref": "#/components/schemas/FootingPlanType"
+          },
+          "lower_bottom_bar_direction": {
+            "anyOf": [
+              {
+                "enum": [
+                  "L",
+                  "B"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lower Bottom Bar Direction"
+          },
+          "maximum_overall_thickness_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Maximum Overall Thickness Mm",
+            "type": "number"
+          },
+          "minimum_overall_thickness_mm": {
+            "minimum": 150.0,
+            "title": "Minimum Overall Thickness Mm",
+            "type": "number"
+          },
+          "nominal_cover_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nominal Cover Mm"
+          },
+          "nominal_max_aggregate_size_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nominal Max Aggregate Size Mm"
+          },
+          "permitted_bottom_bar_diameters_mm": {
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "title": "Permitted Bottom Bar Diameters Mm",
+            "type": "array"
+          },
+          "service_axial_load_kN": {
+            "exclusiveMinimum": 0.0,
+            "title": "Service Axial Load Kn",
+            "type": "number"
+          },
+          "service_load_basis": {
+            "const": "includes_footing_self_weight_and_overburden",
+            "title": "Service Load Basis",
+            "type": "string"
+          },
+          "service_load_combination_id": {
+            "minLength": 1,
+            "title": "Service Load Combination Id",
+            "type": "string"
+          },
+          "steel_fy_nmm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Steel Fy Nmm2",
+            "type": "number"
+          },
+          "thickness_increment_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Thickness Increment Mm",
+            "type": "number"
+          },
+          "upper_bottom_bar_direction": {
+            "anyOf": [
+              {
+                "enum": [
+                  "L",
+                  "B"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Upper Bottom Bar Direction"
+          }
+        },
+        "required": [
+          "case_id",
+          "service_axial_load_kN",
+          "service_load_combination_id",
+          "service_load_basis",
+          "factored_axial_load_kN",
+          "factored_load_combination_id",
+          "allowable_soil_pressure_kPa",
+          "allowable_soil_pressure_source_reference",
+          "allowable_soil_pressure_is_externally_approved",
+          "footing_type",
+          "column_L_mm",
+          "column_B_mm",
+          "minimum_overall_thickness_mm",
+          "maximum_overall_thickness_mm",
+          "thickness_increment_mm",
+          "effective_depth_offset_L_mm",
+          "effective_depth_offset_B_mm",
+          "footing_concrete_fck_nmm2",
+          "column_concrete_fck_nmm2",
+          "steel_fy_nmm2",
+          "effective_supporting_area_A1_mm2",
+          "effective_supporting_area_basis",
+          "effective_supporting_area_is_approved",
+          "dowel_count",
+          "dowel_diameter_mm",
+          "column_longitudinal_bar_diameter_mm",
+          "available_dowel_development_length_into_footing_mm",
+          "available_dowel_development_length_into_column_mm"
+        ],
+        "title": "ConcentricIsolatedFootingRequest",
+        "type": "object"
+      },
+      "ConcentricIsolatedFootingResponse": {
+        "description": "Typed evidence returned by the bounded C1 design service.",
+        "properties": {
+          "bearing": {
+            "$ref": "#/components/schemas/FootingBearingResponse"
+          },
+          "calculation_status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "NOT_EVALUATED"
+            ],
+            "title": "Calculation Status",
+            "type": "string"
+          },
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "depth_candidates": {
+            "items": {
+              "$ref": "#/components/schemas/FootingDepthCandidateResponse"
+            },
+            "title": "Depth Candidates",
+            "type": "array"
+          },
+          "detailing": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FootingDetailingResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "detailing_hold_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detailing Hold Reason"
+          },
+          "detailing_status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "HOLD"
+            ],
+            "title": "Detailing Status",
+            "type": "string"
+          },
+          "exclusions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Exclusions",
+            "type": "array"
+          },
+          "factored_axial_load_kN": {
+            "title": "Factored Axial Load Kn",
+            "type": "number"
+          },
+          "failed_checks": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Failed Checks",
+            "type": "array"
+          },
+          "flexure": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FootingFlexureResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hold_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Hold Reasons",
+            "type": "array"
+          },
+          "load_transfer": {
+            "$ref": "#/components/schemas/FootingLoadTransferResponse"
+          },
+          "one_way_shear": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FootingOneWayShearResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "one_way_shear_basis": {
+            "enum": [
+              "not_evaluated",
+              "required_pt_screening",
+              "actual_provided_pt_final"
+            ],
+            "title": "One Way Shear Basis",
+            "type": "string"
+          },
+          "one_way_shear_screening": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FootingOneWayShearResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/FootingProvenanceResponse"
+          },
+          "pt_passed_to_one_way_shear_percent": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Pt Passed To One Way Shear Percent",
+            "type": "object"
+          },
+          "punching": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FootingPunchingResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "qualified_review_required": {
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "reinforcement_demands": {
+            "items": {
+              "$ref": "#/components/schemas/FootingReinforcementDemandResponse"
+            },
+            "title": "Reinforcement Demands",
+            "type": "array"
+          },
+          "screening_pt_passed_to_one_way_shear_percent": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Screening Pt Passed To One Way Shear Percent",
+            "type": "object"
+          },
+          "selected_effective_depth_B_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Effective Depth B Mm"
+          },
+          "selected_effective_depth_L_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Effective Depth L Mm"
+          },
+          "selected_overall_thickness_mm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Overall Thickness Mm"
+          },
+          "service_axial_load_kN": {
+            "title": "Service Axial Load Kn",
+            "type": "number"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "HOLD"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "supported_case": {
+            "title": "Supported Case",
+            "type": "string"
+          }
+        },
+        "required": [
+          "case_id",
+          "status",
+          "calculation_status",
+          "detailing_status",
+          "detailing_hold_reason",
+          "qualified_review_required",
+          "supported_case",
+          "exclusions",
+          "service_axial_load_kN",
+          "factored_axial_load_kN",
+          "selected_overall_thickness_mm",
+          "selected_effective_depth_L_mm",
+          "selected_effective_depth_B_mm",
+          "depth_candidates",
+          "bearing",
+          "flexure",
+          "one_way_shear",
+          "one_way_shear_basis",
+          "one_way_shear_screening",
+          "screening_pt_passed_to_one_way_shear_percent",
+          "punching",
+          "load_transfer",
+          "detailing",
+          "reinforcement_demands",
+          "pt_passed_to_one_way_shear_percent",
+          "failed_checks",
+          "hold_reasons",
+          "provenance"
+        ],
+        "title": "ConcentricIsolatedFootingResponse",
+        "type": "object"
+      },
       "ConcreteSummaryResponse": {
         "description": "Concrete quantities for one grade.",
         "properties": {
@@ -9599,6 +10175,547 @@
         "title": "FlexureResult",
         "type": "object"
       },
+      "FootingBearingResponse": {
+        "properties": {
+          "B_mm": {
+            "title": "B Mm",
+            "type": "number"
+          },
+          "L_mm": {
+            "title": "L Mm",
+            "type": "number"
+          },
+          "clause_ref": {
+            "title": "Clause Ref",
+            "type": "string"
+          },
+          "is_safe": {
+            "title": "Is Safe",
+            "type": "boolean"
+          },
+          "pressure_type": {
+            "title": "Pressure Type",
+            "type": "string"
+          },
+          "q_max_kPa": {
+            "title": "Q Max Kpa",
+            "type": "number"
+          },
+          "q_min_kPa": {
+            "title": "Q Min Kpa",
+            "type": "number"
+          },
+          "q_safe_kPa": {
+            "title": "Q Safe Kpa",
+            "type": "number"
+          },
+          "utilization_ratio": {
+            "title": "Utilization Ratio",
+            "type": "number"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "L_mm",
+          "B_mm",
+          "q_max_kPa",
+          "q_min_kPa",
+          "q_safe_kPa",
+          "pressure_type",
+          "utilization_ratio",
+          "is_safe",
+          "clause_ref",
+          "warnings"
+        ],
+        "title": "FootingBearingResponse",
+        "type": "object"
+      },
+      "FootingDepthCandidateResponse": {
+        "properties": {
+          "effective_depth_B_mm": {
+            "title": "Effective Depth B Mm",
+            "type": "number"
+          },
+          "effective_depth_L_mm": {
+            "title": "Effective Depth L Mm",
+            "type": "number"
+          },
+          "one_way_shear_utilization": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "One Way Shear Utilization"
+          },
+          "overall_thickness_mm": {
+            "title": "Overall Thickness Mm",
+            "type": "number"
+          },
+          "punching_shear_utilization": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Punching Shear Utilization"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "structural_status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "HOLD"
+            ],
+            "title": "Structural Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "overall_thickness_mm",
+          "effective_depth_L_mm",
+          "effective_depth_B_mm",
+          "structural_status",
+          "one_way_shear_utilization",
+          "punching_shear_utilization",
+          "reasons"
+        ],
+        "title": "FootingDepthCandidateResponse",
+        "type": "object"
+      },
+      "FootingDetailingResponse": {
+        "properties": {
+          "accepted_load_transfer": {
+            "$ref": "#/components/schemas/FootingLoadTransferResponse"
+          },
+          "actual_provided_pt_percent": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Actual Provided Pt Percent",
+            "type": "object"
+          },
+          "clause_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "contract_version": {
+            "title": "Contract Version",
+            "type": "string"
+          },
+          "dowel_schedule_link": {
+            "$ref": "#/components/schemas/FootingDowelScheduleLinkResponse"
+          },
+          "exclusions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Exclusions",
+            "type": "array"
+          },
+          "final_one_way_shear": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FootingOneWayShearResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lower": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FootingDirectionDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lower_direction": {
+            "enum": [
+              "L",
+              "B"
+            ],
+            "title": "Lower Direction",
+            "type": "string"
+          },
+          "qualified_review_required": {
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "source_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Ids",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "HOLD"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "supported_case": {
+            "title": "Supported Case",
+            "type": "string"
+          },
+          "units": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Units",
+            "type": "object"
+          },
+          "upper": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FootingDirectionDetailResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "upper_direction": {
+            "enum": [
+              "L",
+              "B"
+            ],
+            "title": "Upper Direction",
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "qualified_review_required",
+          "reasons",
+          "contract_version",
+          "supported_case",
+          "exclusions",
+          "units",
+          "source_ids",
+          "clause_refs",
+          "lower_direction",
+          "upper_direction",
+          "lower",
+          "upper",
+          "actual_provided_pt_percent",
+          "final_one_way_shear",
+          "dowel_schedule_link",
+          "accepted_load_transfer"
+        ],
+        "title": "FootingDetailingResponse",
+        "type": "object"
+      },
+      "FootingDirectionDetailResponse": {
+        "properties": {
+          "Mu_kNm": {
+            "title": "Mu Knm",
+            "type": "number"
+          },
+          "analysis_effective_depth_mm": {
+            "title": "Analysis Effective Depth Mm",
+            "type": "number"
+          },
+          "analysis_screening_area_mm2": {
+            "title": "Analysis Screening Area Mm2",
+            "type": "number"
+          },
+          "bar_count": {
+            "title": "Bar Count",
+            "type": "integer"
+          },
+          "clear_spacing_mm": {
+            "title": "Clear Spacing Mm",
+            "type": "number"
+          },
+          "development_length_mm": {
+            "title": "Development Length Mm",
+            "type": "number"
+          },
+          "development_length_unrounded_mm": {
+            "title": "Development Length Unrounded Mm",
+            "type": "number"
+          },
+          "diameter_mm": {
+            "title": "Diameter Mm",
+            "type": "integer"
+          },
+          "direction": {
+            "enum": [
+              "L",
+              "B"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "flexure_result_area_mm2": {
+            "title": "Flexure Result Area Mm2",
+            "type": "number"
+          },
+          "layer": {
+            "enum": [
+              "lower",
+              "upper"
+            ],
+            "title": "Layer",
+            "type": "string"
+          },
+          "layout": {
+            "enum": [
+              "uniform",
+              "central_band"
+            ],
+            "title": "Layout",
+            "type": "string"
+          },
+          "max_diameter_mm": {
+            "title": "Max Diameter Mm",
+            "type": "number"
+          },
+          "max_spacing_mm": {
+            "title": "Max Spacing Mm",
+            "type": "number"
+          },
+          "minimum_area_mm2": {
+            "title": "Minimum Area Mm2",
+            "type": "number"
+          },
+          "minimum_clear_spacing_mm": {
+            "title": "Minimum Clear Spacing Mm",
+            "type": "number"
+          },
+          "physical_effective_depth_mm": {
+            "title": "Physical Effective Depth Mm",
+            "type": "number"
+          },
+          "provided_area_mm2": {
+            "title": "Provided Area Mm2",
+            "type": "number"
+          },
+          "required_area_mm2": {
+            "title": "Required Area Mm2",
+            "type": "number"
+          },
+          "spacing_mm": {
+            "title": "Spacing Mm",
+            "type": "number"
+          },
+          "straight_anchorage_available_each_end_mm": {
+            "title": "Straight Anchorage Available Each End Mm",
+            "type": "number"
+          },
+          "straight_bar_length_mm": {
+            "title": "Straight Bar Length Mm",
+            "type": "number"
+          },
+          "zones": {
+            "items": {
+              "$ref": "#/components/schemas/FootingReinforcementZoneResponse"
+            },
+            "title": "Zones",
+            "type": "array"
+          }
+        },
+        "required": [
+          "direction",
+          "layer",
+          "layout",
+          "diameter_mm",
+          "physical_effective_depth_mm",
+          "analysis_effective_depth_mm",
+          "Mu_kNm",
+          "flexure_result_area_mm2",
+          "analysis_screening_area_mm2",
+          "minimum_area_mm2",
+          "required_area_mm2",
+          "provided_area_mm2",
+          "bar_count",
+          "spacing_mm",
+          "clear_spacing_mm",
+          "max_spacing_mm",
+          "minimum_clear_spacing_mm",
+          "max_diameter_mm",
+          "development_length_mm",
+          "development_length_unrounded_mm",
+          "straight_anchorage_available_each_end_mm",
+          "straight_bar_length_mm",
+          "zones"
+        ],
+        "title": "FootingDirectionDetailResponse",
+        "type": "object"
+      },
+      "FootingDowelScheduleLinkResponse": {
+        "properties": {
+          "available_development_length_into_footing_mm": {
+            "title": "Available Development Length Into Footing Mm",
+            "type": "number"
+          },
+          "available_development_length_into_supported_member_mm": {
+            "title": "Available Development Length Into Supported Member Mm",
+            "type": "number"
+          },
+          "bar_count": {
+            "title": "Bar Count",
+            "type": "integer"
+          },
+          "diameter_mm": {
+            "title": "Diameter Mm",
+            "type": "number"
+          },
+          "is_safe": {
+            "title": "Is Safe",
+            "type": "boolean"
+          },
+          "provided_area_mm2": {
+            "title": "Provided Area Mm2",
+            "type": "number"
+          },
+          "required_area_mm2": {
+            "title": "Required Area Mm2",
+            "type": "number"
+          },
+          "required_development_length_into_footing_mm": {
+            "title": "Required Development Length Into Footing Mm",
+            "type": "number"
+          },
+          "required_development_length_into_supported_member_mm": {
+            "title": "Required Development Length Into Supported Member Mm",
+            "type": "number"
+          },
+          "source_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "bar_count",
+          "diameter_mm",
+          "required_area_mm2",
+          "provided_area_mm2",
+          "required_development_length_into_footing_mm",
+          "available_development_length_into_footing_mm",
+          "required_development_length_into_supported_member_mm",
+          "available_development_length_into_supported_member_mm",
+          "is_safe",
+          "source_ids"
+        ],
+        "title": "FootingDowelScheduleLinkResponse",
+        "type": "object"
+      },
+      "FootingFlexureResponse": {
+        "properties": {
+          "Ast_B_mm2": {
+            "title": "Ast B Mm2",
+            "type": "number"
+          },
+          "Ast_L_mm2": {
+            "title": "Ast L Mm2",
+            "type": "number"
+          },
+          "Mu_B_kNm": {
+            "title": "Mu B Knm",
+            "type": "number"
+          },
+          "Mu_L_kNm": {
+            "title": "Mu L Knm",
+            "type": "number"
+          },
+          "cantilever_B_mm": {
+            "title": "Cantilever B Mm",
+            "type": "number"
+          },
+          "cantilever_L_mm": {
+            "title": "Cantilever L Mm",
+            "type": "number"
+          },
+          "central_band_fraction": {
+            "title": "Central Band Fraction",
+            "type": "number"
+          },
+          "clause_ref": {
+            "title": "Clause Ref",
+            "type": "string"
+          },
+          "d_mm": {
+            "title": "D Mm",
+            "type": "number"
+          },
+          "is_safe": {
+            "title": "Is Safe",
+            "type": "boolean"
+          },
+          "pt_B_percent": {
+            "title": "Pt B Percent",
+            "type": "number"
+          },
+          "pt_L_percent": {
+            "title": "Pt L Percent",
+            "type": "number"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "Mu_L_kNm",
+          "Ast_L_mm2",
+          "pt_L_percent",
+          "cantilever_L_mm",
+          "Mu_B_kNm",
+          "Ast_B_mm2",
+          "pt_B_percent",
+          "cantilever_B_mm",
+          "d_mm",
+          "is_safe",
+          "central_band_fraction",
+          "clause_ref",
+          "warnings"
+        ],
+        "title": "FootingFlexureResponse",
+        "type": "object"
+      },
       "FootingLoadTransferRequest": {
         "description": "Explicit inputs for the bounded concentric isolated-footing transfer check.",
         "properties": {
@@ -9973,6 +11090,368 @@
           "reasons"
         ],
         "title": "FootingLoadTransferResponse",
+        "type": "object"
+      },
+      "FootingOneWayShearResponse": {
+        "properties": {
+          "Vu_kN": {
+            "title": "Vu Kn",
+            "type": "number"
+          },
+          "clause_ref": {
+            "title": "Clause Ref",
+            "type": "string"
+          },
+          "critical_section_mm": {
+            "title": "Critical Section Mm",
+            "type": "number"
+          },
+          "d_mm": {
+            "title": "D Mm",
+            "type": "number"
+          },
+          "governing_direction": {
+            "title": "Governing Direction",
+            "type": "string"
+          },
+          "is_safe": {
+            "title": "Is Safe",
+            "type": "boolean"
+          },
+          "tau_c_nmm2": {
+            "title": "Tau C Nmm2",
+            "type": "number"
+          },
+          "tau_v_nmm2": {
+            "title": "Tau V Nmm2",
+            "type": "number"
+          },
+          "utilization_ratio": {
+            "title": "Utilization Ratio",
+            "type": "number"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "tau_v_nmm2",
+          "tau_c_nmm2",
+          "Vu_kN",
+          "d_mm",
+          "critical_section_mm",
+          "utilization_ratio",
+          "is_safe",
+          "governing_direction",
+          "clause_ref",
+          "warnings"
+        ],
+        "title": "FootingOneWayShearResponse",
+        "type": "object"
+      },
+      "FootingPlanType": {
+        "description": "Stable public footing-plan identifiers; mapped by the router.",
+        "enum": [
+          "ISOLATED_SQUARE",
+          "ISOLATED_RECTANGULAR"
+        ],
+        "title": "FootingPlanType",
+        "type": "string"
+      },
+      "FootingProvenanceResponse": {
+        "properties": {
+          "allowable_soil_pressure_role": {
+            "title": "Allowable Soil Pressure Role",
+            "type": "string"
+          },
+          "allowable_soil_pressure_source_reference": {
+            "title": "Allowable Soil Pressure Source Reference",
+            "type": "string"
+          },
+          "clause_bases": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Clause Bases",
+            "type": "object"
+          },
+          "code_edition": {
+            "title": "Code Edition",
+            "type": "string"
+          },
+          "core_function_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Core Function Ids",
+            "type": "array"
+          },
+          "effective_supporting_area_basis": {
+            "title": "Effective Supporting Area Basis",
+            "type": "string"
+          },
+          "factored_load_combination_id": {
+            "title": "Factored Load Combination Id",
+            "type": "string"
+          },
+          "loaded_area_A2_basis": {
+            "title": "Loaded Area A2 Basis",
+            "type": "string"
+          },
+          "qualified_review_requirement": {
+            "title": "Qualified Review Requirement",
+            "type": "string"
+          },
+          "schema_version": {
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "service_load_basis": {
+            "title": "Service Load Basis",
+            "type": "string"
+          },
+          "service_load_combination_id": {
+            "title": "Service Load Combination Id",
+            "type": "string"
+          },
+          "source_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Ids",
+            "type": "array"
+          },
+          "units": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Units",
+            "type": "object"
+          }
+        },
+        "required": [
+          "schema_version",
+          "code_edition",
+          "units",
+          "service_load_combination_id",
+          "service_load_basis",
+          "factored_load_combination_id",
+          "allowable_soil_pressure_source_reference",
+          "allowable_soil_pressure_role",
+          "loaded_area_A2_basis",
+          "effective_supporting_area_basis",
+          "core_function_ids",
+          "clause_bases",
+          "source_ids",
+          "qualified_review_requirement"
+        ],
+        "title": "FootingProvenanceResponse",
+        "type": "object"
+      },
+      "FootingPunchingResponse": {
+        "properties": {
+          "Vu_punch_kN": {
+            "title": "Vu Punch Kn",
+            "type": "number"
+          },
+          "beta_c": {
+            "title": "Beta C",
+            "type": "number"
+          },
+          "clause_ref": {
+            "title": "Clause Ref",
+            "type": "string"
+          },
+          "d_mm": {
+            "title": "D Mm",
+            "type": "number"
+          },
+          "is_safe": {
+            "title": "Is Safe",
+            "type": "boolean"
+          },
+          "ks": {
+            "title": "Ks",
+            "type": "number"
+          },
+          "perimeter_mm": {
+            "title": "Perimeter Mm",
+            "type": "number"
+          },
+          "tau_c_nmm2": {
+            "title": "Tau C Nmm2",
+            "type": "number"
+          },
+          "tau_v_nmm2": {
+            "title": "Tau V Nmm2",
+            "type": "number"
+          },
+          "utilization_ratio": {
+            "title": "Utilization Ratio",
+            "type": "number"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "tau_v_nmm2",
+          "tau_c_nmm2",
+          "perimeter_mm",
+          "Vu_punch_kN",
+          "d_mm",
+          "beta_c",
+          "ks",
+          "utilization_ratio",
+          "is_safe",
+          "clause_ref",
+          "warnings"
+        ],
+        "title": "FootingPunchingResponse",
+        "type": "object"
+      },
+      "FootingReinforcementDemandResponse": {
+        "properties": {
+          "central_band_fraction": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Central Band Fraction"
+          },
+          "detailing_status": {
+            "enum": [
+              "PASS",
+              "FAIL",
+              "HOLD"
+            ],
+            "title": "Detailing Status",
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "L",
+              "B"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "effective_depth_mm": {
+            "title": "Effective Depth Mm",
+            "type": "number"
+          },
+          "moment_kNm": {
+            "title": "Moment Knm",
+            "type": "number"
+          },
+          "provided_steel_area_mm2": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provided Steel Area Mm2"
+          },
+          "provided_steel_percent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provided Steel Percent"
+          },
+          "required_steel_area_mm2": {
+            "title": "Required Steel Area Mm2",
+            "type": "number"
+          },
+          "required_steel_basis": {
+            "title": "Required Steel Basis",
+            "type": "string"
+          },
+          "required_steel_percent": {
+            "title": "Required Steel Percent",
+            "type": "number"
+          }
+        },
+        "required": [
+          "direction",
+          "effective_depth_mm",
+          "moment_kNm",
+          "required_steel_area_mm2",
+          "required_steel_percent",
+          "central_band_fraction",
+          "required_steel_basis",
+          "provided_steel_area_mm2",
+          "provided_steel_percent",
+          "detailing_status"
+        ],
+        "title": "FootingReinforcementDemandResponse",
+        "type": "object"
+      },
+      "FootingReinforcementZoneResponse": {
+        "properties": {
+          "bar_count": {
+            "title": "Bar Count",
+            "type": "integer"
+          },
+          "clear_spacing_mm": {
+            "title": "Clear Spacing Mm",
+            "type": "number"
+          },
+          "provided_area_mm2": {
+            "title": "Provided Area Mm2",
+            "type": "number"
+          },
+          "required_area_mm2": {
+            "title": "Required Area Mm2",
+            "type": "number"
+          },
+          "spacing_mm": {
+            "title": "Spacing Mm",
+            "type": "number"
+          },
+          "width_mm": {
+            "title": "Width Mm",
+            "type": "number"
+          },
+          "zone": {
+            "enum": [
+              "full_width",
+              "central_band",
+              "outer_band_each"
+            ],
+            "title": "Zone",
+            "type": "string"
+          }
+        },
+        "required": [
+          "zone",
+          "width_mm",
+          "required_area_mm2",
+          "provided_area_mm2",
+          "bar_count",
+          "spacing_mm",
+          "clear_spacing_mm"
+        ],
+        "title": "FootingReinforcementZoneResponse",
         "type": "object"
       },
       "Geometry3DRequest": {
@@ -15933,6 +17412,48 @@
         ]
       }
     },
+    "/api/v1/design/footing/isolated/concentric": {
+      "post": {
+        "description": "Validate transport inputs and delegate all calculation to the service.",
+        "operationId": "design_concentric_isolated_footing_api_v1_design_footing_isolated_concentric_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConcentricIsolatedFootingRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_ConcentricIsolatedFootingResponse_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Design a bounded concentric isolated footing",
+        "tags": [
+          "footing"
+        ]
+      }
+    },
     "/api/v1/design/footing/load-transfer": {
       "post": {
         "description": "Validate a request, call the public library service, and map its result.",
@@ -17672,6 +19193,10 @@
     {
       "description": "Column design: classification, eccentricity, and axial capacity per IS 456.",
       "name": "column"
+    },
+    {
+      "description": "Bounded isolated-footing design and maintained evidence.",
+      "name": "footing"
     },
     {
       "description": "Reinforcement detailing including bar layout, spacing, and anchorage.",
