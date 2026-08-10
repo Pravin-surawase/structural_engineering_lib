@@ -10,6 +10,10 @@ import {
   viewportStatusCounts,
 } from './inspectionModel';
 import type { RebarPreviewGeometry } from './renderPrimitives';
+import {
+  ViewportMetricsProbe,
+  type ViewportRendererMetrics,
+} from './ViewportMetricsProbe';
 import { ViewportOverlay } from './ViewportOverlay';
 
 export type { RebarPreviewGeometry } from './renderPrimitives';
@@ -126,12 +130,7 @@ export function Viewport3D({
     }
     setFocusRequest((request) => request + 1);
   }, [selectFloor, selectedInspection]);
-  const handleCanvasCreated = useCallback(({ gl }: { gl: {
-    info: {
-      memory: { geometries: number; textures: number };
-      render: { calls: number };
-    };
-  } }) => {
+  const handleCanvasCreated = useCallback(() => {
     const usableAt = performance.now();
     const startedAt = startedAtRef.current || usableAt;
     const durationMs = usableAt - startedAt;
@@ -139,14 +138,17 @@ export function Viewport3D({
       start: startedAt,
       end: usableAt,
     });
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      const container = containerRef.current;
-      if (!container) return;
-      container.dataset.viewportUsableMs = durationMs.toFixed(1);
-      container.dataset.viewportDrawCalls = String(gl.info.render.calls);
-      container.dataset.viewportGeometries = String(gl.info.memory.geometries);
-      container.dataset.viewportTextures = String(gl.info.memory.textures);
-    }));
+    const container = containerRef.current;
+    if (container) container.dataset.viewportUsableMs = durationMs.toFixed(1);
+  }, []);
+  const handleRendererMetrics = useCallback((metrics: ViewportRendererMetrics) => {
+    const container = containerRef.current;
+    if (!container) return;
+    container.dataset.viewportAverageFrameMs = metrics.averageFrameMs.toFixed(1);
+    container.dataset.viewportMaxFrameMs = metrics.maxFrameMs.toFixed(1);
+    container.dataset.viewportDrawCalls = String(metrics.drawCalls);
+    container.dataset.viewportGeometries = String(metrics.geometries);
+    container.dataset.viewportTextures = String(metrics.textures);
   }, []);
 
   const geometryFailure = contract && !contract.ok ? contract.reason : null;
@@ -205,6 +207,7 @@ export function Viewport3D({
         <Viewport3DErrorBoundary fallback={<CanvasFailure />}>
           <Canvas shadows className="!h-full !w-full" onCreated={handleCanvasCreated}>
             <Suspense fallback={null}>
+              <ViewportMetricsProbe onSample={handleRendererMetrics} />
               {buildingScene ?? (
                 <DesignScene
                   overrideGeometry={overrideGeometry}

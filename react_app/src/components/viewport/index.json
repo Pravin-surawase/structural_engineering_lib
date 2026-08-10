@@ -3,7 +3,7 @@
   "type": "react-source",
   "description": "",
   "last_updated": "2026-08-10",
-  "file_count": 14,
+  "file_count": 15,
   "files": [
     {
       "name": "BeamDetailLayer.tsx",
@@ -61,7 +61,7 @@
     {
       "name": "Viewport3D.tsx",
       "type": "react-component",
-      "size_lines": 227,
+      "size_lines": 230,
       "last_updated": "2026-08-10",
       "exports": [
         "Viewport3DMode",
@@ -69,18 +69,29 @@
         "Viewport3D"
       ],
       "props_type": "Viewport3DProps",
-      "content_hash": "e5adaff58f85"
+      "content_hash": "11757bf688dd"
+    },
+    {
+      "name": "ViewportMetricsProbe.tsx",
+      "type": "react-component",
+      "size_lines": 41,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "ViewportRendererMetrics",
+        "ViewportMetricsProbe"
+      ],
+      "content_hash": "013af14a6aab"
     },
     {
       "name": "ViewportOverlay.tsx",
       "type": "react-component",
-      "size_lines": 188,
+      "size_lines": 201,
       "last_updated": "2026-08-10",
       "exports": [
         "ViewportOverlay"
       ],
       "props_type": "ViewportOverlayProps",
-      "content_hash": "5f066f67fe88"
+      "content_hash": "8b0ae50d9714"
     },
     {
       "name": "WorkspaceLayout.tsx",
@@ -184,5 +195,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "0a1610685e4d1ff9"
+  "content_hash": "767e0dd0f04d32f9"
 }

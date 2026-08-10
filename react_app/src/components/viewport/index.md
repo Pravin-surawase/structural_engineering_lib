@@ -2,7 +2,7 @@
 
 **Type:** React Source
 **Last Updated:** 2026-08-10
-**Files:** 14
+**Files:** 15
 
 ## React Component Files
 
@@ -13,8 +13,9 @@
 | [BuildingScene.tsx](BuildingScene.tsx) | ViewportFrameFilter, BuildingScene | 206 |
 | [DesignScene.tsx](DesignScene.tsx) | DesignScene | 112 |
 | [LandingView.tsx](LandingView.tsx) | LandingView | 171 |
-| [Viewport3D.tsx](Viewport3D.tsx) | Viewport3DMode, Viewport3DProps, Viewport3D | 227 |
-| [ViewportOverlay.tsx](ViewportOverlay.tsx) | ViewportOverlay | 188 |
+| [Viewport3D.tsx](Viewport3D.tsx) | Viewport3DMode, Viewport3DProps, Viewport3D | 230 |
+| [ViewportMetricsProbe.tsx](ViewportMetricsProbe.tsx) | ViewportRendererMetrics, ViewportMetricsProbe | 41 |
+| [ViewportOverlay.tsx](ViewportOverlay.tsx) | ViewportOverlay | 201 |
 | [WorkspaceLayout.tsx](WorkspaceLayout.tsx) | WorkspaceLayout | 83 |
 | [renderPrimitives.tsx](renderPrimitives.tsx) | MM_TO_M, RebarPreviewGeometry, BeamMesh, RebarLayer, StirrupLayer | 133 |
 

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { ViewportFrameFilter } from './BuildingScene';
 import {
   VIEWPORT_STATUS_STYLE,
@@ -56,58 +57,70 @@ export function ViewportOverlay({
   onShowUtilizationChange,
   onFit,
 }: ViewportOverlayProps) {
+  const [mobileControlsOpen, setMobileControlsOpen] = useState(false);
+
   return (
     <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between p-2 text-zinc-100">
-      <div className="pointer-events-auto flex max-h-[48%] flex-wrap items-start gap-1.5 overflow-auto rounded-lg border border-white/10 bg-zinc-950/88 p-2 shadow-xl backdrop-blur-sm sm:w-fit sm:max-w-[calc(100%-1rem)]">
-        <label className="flex items-center gap-1 text-[10px] text-zinc-400">
-          Floor
-          <select
-            aria-label="Viewport floor"
-            className={selectClassName}
-            value={selectedFloor ?? 'all'}
-            onChange={(event) => onFloorChange(event.target.value === 'all' ? null : event.target.value)}
-          >
-            <option value="all">All</option>
-            {floors.map((floor) => <option key={floor} value={floor}>{floor}</option>)}
-          </select>
-        </label>
-        <label className="flex items-center gap-1 text-[10px] text-zinc-400">
-          Frame
-          <select
-            aria-label="Viewport frame type"
-            className={selectClassName}
-            value={frameFilter}
-            onChange={(event) => onFrameFilterChange(event.target.value as ViewportFrameFilter)}
-          >
-            <option value="all">All</option>
-            {frameTypes.map((frameType) => (
-              <option key={frameType} value={frameType}>{frameType}</option>
-            ))}
-          </select>
-        </label>
-        <Toggle
-          label="Isolate"
-          checked={isolateSelection}
-          disabled={!selected}
-          onChange={onIsolateSelectionChange}
-        />
-        <Toggle label="Status" checked={showStatus} onChange={onShowStatusChange} />
-        <Toggle
-          label="Utilization"
-          checked={showUtilization}
-          disabled={!hasCurrentUtilization}
-          onChange={onShowUtilizationChange}
-        />
+      <div className="shrink-0">
         <button
           type="button"
-          className="min-h-8 rounded-md border border-sky-400/30 bg-sky-400/10 px-2 text-[11px] text-sky-100 hover:bg-sky-400/20 focus:outline-none focus:ring-2 focus:ring-sky-400"
-          onClick={onFit}
+          className="pointer-events-auto min-h-8 rounded-md border border-white/10 bg-zinc-950/88 px-3 text-[11px] text-zinc-100 shadow-lg backdrop-blur-sm sm:hidden"
+          aria-expanded={mobileControlsOpen}
+          onClick={() => setMobileControlsOpen((open) => !open)}
         >
-          {selected ? 'Fit selected' : 'Fit building'}
+          {mobileControlsOpen ? 'Hide 3D controls' : 'Show 3D controls'}
         </button>
+        <div className={`${mobileControlsOpen ? 'grid' : 'hidden'} pointer-events-auto mt-1.5 max-h-[55%] shrink-0 grid-cols-2 items-start gap-1.5 overflow-auto rounded-lg border border-white/10 bg-zinc-950/88 p-2 shadow-xl backdrop-blur-sm sm:mt-0 sm:flex sm:max-h-[48%] sm:w-fit sm:max-w-[calc(100%-1rem)] sm:flex-wrap`}>
+          <label className="flex items-center gap-1 text-[10px] text-zinc-400">
+            Floor
+            <select
+              aria-label="Viewport floor"
+              className={selectClassName}
+              value={selectedFloor ?? 'all'}
+              onChange={(event) => onFloorChange(event.target.value === 'all' ? null : event.target.value)}
+            >
+              <option value="all">All</option>
+              {floors.map((floor) => <option key={floor} value={floor}>{floor}</option>)}
+            </select>
+          </label>
+          <label className="flex items-center gap-1 text-[10px] text-zinc-400">
+            Frame
+            <select
+              aria-label="Viewport frame type"
+              className={selectClassName}
+              value={frameFilter}
+              onChange={(event) => onFrameFilterChange(event.target.value as ViewportFrameFilter)}
+            >
+              <option value="all">All</option>
+              {frameTypes.map((frameType) => (
+                <option key={frameType} value={frameType}>{frameType}</option>
+              ))}
+            </select>
+          </label>
+          <Toggle
+            label="Isolate"
+            checked={isolateSelection}
+            disabled={!selected}
+            onChange={onIsolateSelectionChange}
+          />
+          <Toggle label="Status" checked={showStatus} onChange={onShowStatusChange} />
+          <Toggle
+            label="Utilization"
+            checked={showUtilization}
+            disabled={!hasCurrentUtilization}
+            onChange={onShowUtilizationChange}
+          />
+          <button
+            type="button"
+            className="min-h-8 rounded-md border border-sky-400/30 bg-sky-400/10 px-2 text-[11px] text-sky-100 hover:bg-sky-400/20 focus:outline-none focus:ring-2 focus:ring-sky-400"
+            onClick={onFit}
+          >
+            {selected ? 'Fit selected' : 'Fit building'}
+          </button>
+        </div>
       </div>
 
-      <div className="flex items-end justify-between gap-2">
+      <div className={`${mobileControlsOpen ? 'hidden sm:flex' : 'flex'} shrink-0 items-end justify-between gap-2`}>
         <div
           className="pointer-events-auto max-w-[70%] rounded-lg border border-white/10 bg-zinc-950/88 px-2.5 py-2 text-[11px] shadow-lg backdrop-blur-sm sm:max-w-md"
           aria-live="polite"
@@ -136,12 +149,12 @@ export function ViewportOverlay({
         {showStatus ? (
           <section
             aria-label="Current member status legend"
-            className="pointer-events-auto max-h-[42%] overflow-auto rounded-lg border border-white/10 bg-zinc-950/88 p-2 text-[10px] shadow-lg backdrop-blur-sm"
+            className="pointer-events-auto max-h-20 overflow-auto rounded-lg border border-white/10 bg-zinc-950/88 p-2 text-[10px] shadow-lg backdrop-blur-sm sm:max-h-24"
           >
             <p className="mb-1 font-medium text-zinc-300">Current evidence</p>
             <ul className="space-y-0.5">
               {STATUS_ORDER.map((status) => (
-                <li key={status} className="flex items-center justify-between gap-3 whitespace-nowrap">
+                <li key={status} className="flex items-center justify-between gap-1.5">
                   <span className="flex items-center gap-1.5">
                     <span
                       aria-hidden="true"
