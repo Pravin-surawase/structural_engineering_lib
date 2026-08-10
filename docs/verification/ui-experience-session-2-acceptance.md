@@ -37,6 +37,7 @@ not activate AI chat, autonomous execution, or an external integration.
 | Catalogue mode showed duplicate engineering inputs | The schema renderer was added alongside, rather than instead of, the manual input surface | Catalogue/manual render boundary now permits one input owner; component and live locator checks find one shear and one concrete control |
 | Direct canonical results reload entered recovery | Route guards redirected while persistence was still `idle`, before the bridge entered `loading` | Guards treat idle/loading as hydration; focused route test and fresh live reload preserve results |
 | Full gate rejected P9 public API/doc state | Generated API manifest was stale and frontmatter used a semantic phrase outside the validator vocabulary | Regenerated the canonical manifest and used `active` frontmatter while retaining development-preview limits in the body |
+| Clean CI lint rejected the initial Strict Mode correction | The correction mutated a ref during render; stale local react-hooks 7.0.1 did not enforce the lockfile 7.1.1 rule | React 19 `useEffectEvent` carries the current runner; pinned Node 24 `npm ci`, lint, 239 tests, and build pass |
 
 ## Verification matrix
 

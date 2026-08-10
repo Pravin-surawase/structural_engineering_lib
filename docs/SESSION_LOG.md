@@ -111,6 +111,8 @@
   on the interactive shell PATH.
 - The first rewritten next-session table used `Complete` instead of the literal
   `Current` row required by session-document automation.
+- PR #721 React Validation rejected a render-time ref assignment that the first
+  local lint run had accepted.
 
 ### Root causes and resolutions
 
@@ -224,6 +226,12 @@
 - The handoff checker treats `Current` and `Next` as a stable machine interface,
   independent of whether the current task is complete. The row now reads
   `Current: UIX-001 P0-P15 complete`; the session-document hook passes.
+- The implementation stored the latest initial-design callback by mutating a ref
+  during render. Local `node_modules` still contained react-hooks 7.0.1 even
+  though the lockfile requires 7.1.1, so only the clean CI install enforced the
+  new refs rule. React 19 `useEffectEvent` now provides the latest callback to
+  the mount effect without render-time ref mutation or input-change duplication.
+  A pinned Node 24 `npm ci`, lint, all 239 React tests, and production build pass.
 
 ### Verification
 
@@ -266,6 +274,10 @@
 - ⚠️ TERMINAL ISSUE: `check-session-docs` rejected a missing literal
   `Current` row -> the handoff restored the maintained label while preserving
   the completed state in the row value.
+- ⚠️ TERMINAL ISSUE: The interactive shell exposed Node 26 and stale
+  react-hooks 7.0.1, masking the clean-install lint rule ->
+  `.venv/bin/python scripts/node_runtime.py -- npm --prefix react_app ci` rebuilt
+  the lockfile-exact tree under Node 24 before the frontend gate reran.
 
 ## 2026-08-10 — Session: UIX-001 Session 1 P4-P8 Closeout
 
