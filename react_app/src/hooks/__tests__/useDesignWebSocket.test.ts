@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { normalizeWebSocketDesignResult } from '../useDesignWebSocket';
+import { normalizeWebSocketDesignResult, requiresCanonicalHttp } from '../useDesignWebSocket';
 
 describe('normalizeWebSocketDesignResult', () => {
   it('preserves the complete design response contract', () => {
@@ -39,6 +39,8 @@ describe('normalizeWebSocketDesignResult', () => {
     expect(result.effective_depth_used).toBe(402);
     expect(result.shear?.tau_c_max).toBe(3.1);
     expect(result.shear?.shear_capacity).toBe(92);
+    expect(result.shear?.asv_required_unit).toBe('mm²/mm');
+    expect(result.holds).toContain('WEBSOCKET_EVIDENCE_IDENTITY_MISSING');
   });
 
   it('continues to read legacy WebSocket field names', () => {
@@ -51,5 +53,11 @@ describe('normalizeWebSocketDesignResult', () => {
     expect(result.flexure.moment_capacity).toBe(140);
     expect(result.shear?.tau_v).toBe(0.7);
     expect(result.shear?.stirrup_spacing).toBe(250);
+  });
+
+  it('requires canonical HTTP for torsion or serviceability inputs', () => {
+    expect(requiresCanonicalHttp({ torsion: 10 })).toBe(true);
+    expect(requiresCanonicalHttp({ include_serviceability: true })).toBe(true);
+    expect(requiresCanonicalHttp({ torsion: 0, include_serviceability: false })).toBe(false);
   });
 });

@@ -28,6 +28,8 @@ def test_catalog_is_deterministic_and_semantically_bound() -> None:
     assert capability.capability_id == "is456.beam.design"
     assert capability.semantic_workflow_id == "design_beam_is456"
     assert capability.qualified_review_required is True
+    assert "catalogue adapter exposes" in capability.summary.lower()
+    assert any("held for Tu > 0" in item for item in capability.limitations)
     assert serialize_workflow_catalog() == serialize_workflow_catalog("1.0")
 
 

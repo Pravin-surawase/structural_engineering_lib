@@ -106,13 +106,58 @@ export function ResultsPanel() {
               <span className="text-sm font-semibold text-white">{shear.tau_c.toFixed(2)} N/mm²</span>
             </div>
             <div className="flex flex-col gap-0.5 p-2 bg-[#2d2d2d] rounded">
-              <span className="text-[11px] text-zinc-400">Stirrup Asv</span>
-              <span className="text-sm font-semibold text-white">{shear.asv_required.toFixed(0)} mm²</span>
+              <span className="text-[11px] text-zinc-400">Stirrup Asv/s</span>
+              <span className="text-sm font-semibold text-white">{shear.asv_required.toFixed(4)} {shear.asv_required_unit}</span>
             </div>
             <div className="flex flex-col gap-0.5 p-2 bg-[#2d2d2d] rounded">
               <span className="text-[11px] text-zinc-400">Spacing</span>
               <span className="text-sm font-semibold text-white">{shear.stirrup_spacing.toFixed(0)} mm</span>
             </div>
+          </div>
+        </div>
+      )}
+
+      {result.combined_actions && result.torsion && (
+        <div className="mb-4">
+          <h3 className="m-0 mb-2 text-[13px] text-zinc-400 uppercase tracking-wide">Combined actions and torsion</h3>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="p-2 bg-[#2d2d2d] rounded text-sm">
+              <p className="text-[11px] text-zinc-400">Original Mu / Vu / Tu</p>
+              <p>{result.combined_actions.mu_knm.toFixed(1)} kN·m / {result.combined_actions.vu_kn.toFixed(1)} kN / {result.combined_actions.tu_knm.toFixed(1)} kN·m</p>
+            </div>
+            <div className="p-2 bg-[#2d2d2d] rounded text-sm">
+              <p className="text-[11px] text-zinc-400">Equivalent Me / Ve</p>
+              <p>{result.combined_actions.me_knm.toFixed(1)} kN·m / {result.combined_actions.ve_kn.toFixed(1)} kN</p>
+            </div>
+            <div className="p-2 bg-[#2d2d2d] rounded text-sm">
+              <p className="text-[11px] text-zinc-400">Combined Asv/s · Al</p>
+              <p>{result.torsion.asv_total.toFixed(4)} mm²/mm · {result.torsion.al_torsion.toFixed(1)} mm²</p>
+            </div>
+            <div className="p-2 bg-[#2d2d2d] rounded text-sm">
+              <p className="text-[11px] text-zinc-400">Closed stirrups</p>
+              <p>{result.torsion.requires_closed_stirrups ? 'Required' : 'Not required'}</p>
+            </div>
+            <p className="col-span-2 text-[11px] text-zinc-400">{result.torsion.source} · {Object.values(result.torsion.clause_refs).join(' · ')}</p>
+          </div>
+        </div>
+      )}
+
+      {(result.deflection_check || result.crack_width_check) && (
+        <div className="mb-4">
+          <h3 className="m-0 mb-2 text-[13px] text-zinc-400 uppercase tracking-wide">Serviceability</h3>
+          <div className="grid grid-cols-2 gap-2">
+            {result.deflection_check && (
+              <div className="p-2 bg-[#2d2d2d] rounded text-sm">
+                <p className="text-[11px] text-zinc-400">Deflection</p>
+                <p>{result.deflection_check.is_ok ? 'PASS' : 'FAIL'} · L/d {result.deflection_check.span_depth_actual?.toFixed(2) ?? '—'} / {result.deflection_check.span_depth_allowable?.toFixed(2) ?? '—'}</p>
+              </div>
+            )}
+            {result.crack_width_check && (
+              <div className="p-2 bg-[#2d2d2d] rounded text-sm">
+                <p className="text-[11px] text-zinc-400">Crack width</p>
+                <p>{result.crack_width_check.is_ok ? 'PASS' : 'FAIL'} · {result.crack_width_check.crack_width_mm?.toFixed(3) ?? '—'} / {result.crack_width_check.crack_width_limit_mm?.toFixed(3) ?? '—'} mm</p>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -163,6 +208,12 @@ export function ResultsPanel() {
               <li key={i} className="text-[13px] text-[#ccc] mb-1">{w}</li>
             ))}
           </ul>
+        </div>
+      )}
+      {result.holds && result.holds.length > 0 && (
+        <div className="mt-3 bg-amber-500/10 p-3 rounded border-l-[3px] border-amber-500">
+          <h3 className="m-0 mb-2 text-[13px] text-amber-500 uppercase tracking-wide">Holds</h3>
+          {result.holds.map((hold) => <p key={hold} className="text-[13px] text-[#ccc]">{hold}</p>)}
         </div>
       )}
     </div>
