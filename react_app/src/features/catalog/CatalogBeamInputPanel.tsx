@@ -10,16 +10,19 @@ export interface CatalogBeamInputPanelProps {
   values: CatalogBeamValues;
   onChange: (name: CatalogBeamTransportName, value: number) => void;
   onUseManual: () => void;
+  disabled?: boolean;
 }
 
 function FieldControl({
   field,
   value,
   onChange,
+  disabled,
 }: {
   field: CatalogField;
   value: number;
   onChange: (value: number) => void;
+  disabled: boolean;
 }) {
   const inputId = `catalog-field-${field.field_id}`;
   return (
@@ -33,6 +36,7 @@ function FieldControl({
           id={inputId}
           aria-label={`${field.label} in ${field.unit}`}
           value={value}
+          disabled={disabled}
           onChange={(event) => onChange(Number(event.target.value))}
           className="w-full rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 text-sm text-white outline-none focus:border-blue-400"
         >
@@ -52,6 +56,7 @@ function FieldControl({
           max={field.maximum ?? undefined}
           step="any"
           required={field.required}
+          disabled={disabled}
           onChange={(event) => onChange(Number(event.target.value))}
           className="w-full rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 text-sm text-white outline-none focus:border-blue-400"
         />
@@ -64,6 +69,7 @@ export function CatalogBeamInputPanel({
   values,
   onChange,
   onUseManual,
+  disabled = false,
 }: CatalogBeamInputPanelProps) {
   const { catalog, error, loading } = useWorkflowCatalog();
 
@@ -118,6 +124,7 @@ export function CatalogBeamInputPanel({
               key={field.field_id}
               field={field}
               value={values[field.transport_name]}
+              disabled={disabled}
               onChange={(value) => onChange(field.transport_name, value)}
             />
           ))}

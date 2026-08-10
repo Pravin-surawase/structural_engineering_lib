@@ -1,9 +1,10 @@
-import { ArrowRight, Boxes, Calculator, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Boxes, Calculator, ShieldCheck, Workflow } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { WorkbenchHeader } from '../workbench/WorkbenchHeader';
 import { WorkbenchPanel } from '../workbench/WorkbenchPanel';
 import { WorkbenchShell } from '../workbench/WorkbenchShell';
 import { useWorkspaceStore } from '../../workspace/workspaceStore';
+import { WORKFLOW_RUNNER_ENABLED } from '../../features/automation/config';
 
 export interface WorkbenchHomePageProps {
   initialView?: 'workbench' | 'projects';
@@ -93,6 +94,33 @@ export function WorkbenchHomePage({
             </div>
           </div>
         </WorkbenchPanel>
+
+        {WORKFLOW_RUNNER_ENABLED ? (
+          <WorkbenchPanel
+            title="Beam workflow"
+            description="Build and run the one approved development workflow."
+          >
+            <div className="flex items-start gap-3">
+              <span className="rounded-xl bg-cyan-500/10 p-2.5 text-cyan-300">
+                <Workflow className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm leading-6 text-zinc-400">
+                  Ordered input, validation, beam design, review stop and evidence
+                  export with fixed handlers and bounded execution.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => navigate('/workbench/automation')}
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200"
+                >
+                  Open workflow
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          </WorkbenchPanel>
+        ) : null}
 
         <WorkbenchPanel
           title="Project workflow"

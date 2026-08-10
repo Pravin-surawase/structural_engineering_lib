@@ -42,6 +42,24 @@
   API documentation gate directly.
 - The next commit attempt found that public catalogue symbols were documented in
   the API reference but not projected into the API-stability classification.
+- The first P12 lint pass required runtime collection protocols to come from
+  `collections.abc` under the aligned Ruff rules.
+- The first P12 transport lint pass found a redundant local `WorkflowRunner`
+  import after the singleton type moved to module scope.
+- The initial green cancellation test pre-cancelled an unknown run ID; it did
+  not prove that the async API could service cancellation during CPU work, and
+  unknown IDs plus completed runs could grow process memory without a limit.
+- The React/API signature checker assigned the next function's `POST` method to
+  the preceding workflow-template `GET` because it scanned a fixed 500-character
+  tail instead of the current `fetch(...)` expression.
+- Two continuation commands mixed repository-root paths with a `react_app/`
+  working directory, first missing the workbench file and then stopping before
+  lint when `react_app/src` could not exist beneath itself.
+- A guessed `validate-api-contracts` pre-commit hook ID did not exist.
+- Running every pre-commit hook against every tracked file activated the EOF
+  fixer on 1,770 previously clean vendor/index/fixture files.
+- The first P12 commit stopped after the repository Black hooks reformatted four
+  new Python/FastAPI files that had passed Ruff but were not yet Black-normalized.
 
 ### Root causes and resolutions
 
@@ -73,6 +91,31 @@
 - The API and stability documents are a synchronized pair. The catalogue is now
   explicitly classified as development preview in `api-stability.md`, so the
   sync gate passes without overstating a pre-1.0 stability promise.
+- `Callable` and `Mapping` now import from `collections.abc`; the P12 scoped Ruff
+  and maintained mypy hooks pass without an ignore.
+- The route keeps one module-scope runner import and removes the duplicate local
+  import; focused workflow tests still pass and scoped Ruff is clean.
+- The runner now executes through FastAPI's thread pool, accepts cancellation
+  only for a tracked active run, checks the stop after bounded design work, and
+  caps the idempotency cache at 128 ordered records. A concurrent service test
+  and a concurrent TestClient request prove active cancellation; the composer
+  disables state-changing controls while running and cancels on unmount.
+- The signature scanner now finds the balanced close parenthesis for each fetch
+  call before looking for its method. Its two-adjacent-fetch regression proves
+  the template remains `GET` and the run remains `POST`; the live signature gate
+  matches all 29 React calls.
+- Commands now use either root-relative paths from the repository root or
+  `src/...` beneath the explicit React working directory. The corrected three-
+  file component selection, lint, and build all pass.
+- Hook IDs are read from `.pre-commit-config.yaml`; the maintained contract hook
+  is `check-api-signatures`, and its underlying command passes.
+- After the all-files hook completed with the expected legacy failures, its
+  exact diff was inspected. A reverse patch restored only the 1,770 hook-created
+  paths to their captured clean
+  state while preserving all 12 intentional tracked paths; targeted hooks are
+  used during packet iteration.
+- The formatter output was retained, the four files were restaged, and the
+  focused runner/API tests plus format hooks are rerun before the commit retry.
 
 ### Verification
 
@@ -81,6 +124,9 @@
 - P9/P10: 7 focused Python/FastAPI tests, scoped Ruff, mypy, OpenAPI snapshot,
   API documentation and API/client contract hooks.
 - P11: 9 focused React tests, full React lint, and production build.
+- P12: 15 focused Python/FastAPI tests, 8 focused React tests, scoped Ruff,
+  maintained mypy, React lint/build, 69-operation OpenAPI snapshot, and the
+  live 29-call React/FastAPI signature scan.
 
 ## 2026-08-10 — Session: UIX-001 Session 1 P4-P8 Closeout
 

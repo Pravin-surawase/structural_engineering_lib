@@ -72,6 +72,32 @@ def _extract_endpoint(expression: str) -> str | None:
     return re.sub(r"\$\{[^}]+\}", "{dynamic}", endpoint)
 
 
+def _call_expression_end(source: str, open_paren: int) -> int:
+    """Return the matching close parenthesis without crossing into the next call."""
+    depth = 0
+    quote: str | None = None
+    escaped = False
+    for index in range(open_paren, len(source)):
+        character = source[index]
+        if quote is not None:
+            if escaped:
+                escaped = False
+            elif character == "\\":
+                escaped = True
+            elif character == quote:
+                quote = None
+            continue
+        if character in "'\"`":
+            quote = character
+        elif character == "(":
+            depth += 1
+        elif character == ")":
+            depth -= 1
+            if depth == 0:
+                return index
+    return len(source)
+
+
 def _extract_call_sites(path: Path) -> tuple[list[CallSite], list[str]]:
     """Extract internal HTTP/SSE call sites and unresolved internal targets."""
     source = path.read_text(encoding="utf-8")
@@ -101,7 +127,9 @@ def _extract_call_sites(path: Path) -> tuple[list[CallSite], list[str]]:
 
         method = "GET"
         if kind == "fetch":
-            tail = source[match.end() : match.end() + 500]
+            open_paren = source.find("(", match.start(), match.end())
+            call_end = _call_expression_end(source, open_paren)
+            tail = source[match.end() : call_end]
             if tail.lstrip().startswith(","):
                 method_match = re.search(
                     r"\bmethod\s*:\s*['\"](?P<method>[A-Za-z]+)['\"]", tail

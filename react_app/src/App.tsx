@@ -14,6 +14,7 @@ import { TopBar } from './components/layout/TopBar';
 import { FloatingDock } from './components/ui/FloatingDock';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { ToastContainer } from './components/ui/Toast';
+import { WORKFLOW_RUNNER_ENABLED } from './features/automation/config';
 
 // Lazy-load route components for code splitting
 const HomePage = lazy(() => import('./components/pages/HomePage').then(m => ({ default: m.HomePage })));
@@ -26,6 +27,7 @@ const BuildingEditorPage = lazy(() => import('./components/pages/BuildingEditorP
 const BeamDetailPage = lazy(() => import('./components/pages/BeamDetailPage').then(m => ({ default: m.BeamDetailPage })));
 const DashboardPage = lazy(() => import('./components/pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
 const BatchDesignPage = lazy(() => import('./components/pages/BatchDesignPage'));
+const WorkflowComposerPage = lazy(() => import('./features/automation/WorkflowComposerPage').then(m => ({ default: m.WorkflowComposerPage })));
 
 function RouteLoadingFallback() {
   return (
@@ -106,6 +108,7 @@ function App() {
                   <Route path="/editor" element={<BuildingEditorPage />} />
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/batch" element={<BatchDesignPage />} />
+                  {WORKFLOW_RUNNER_ENABLED ? <Route path="/workbench/automation" element={<WorkflowComposerPage />} /> : null}
                 </Routes>
               </Suspense>
             </main>

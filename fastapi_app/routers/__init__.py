@@ -20,6 +20,7 @@ from fastapi_app.routers import (
     rebar,
     streaming,
     websocket,
+    workflows,
 )
 
 __all__ = [
@@ -38,4 +39,5 @@ __all__ = [
     "rebar",
     "streaming",
     "websocket",
+    "workflows",
 ]

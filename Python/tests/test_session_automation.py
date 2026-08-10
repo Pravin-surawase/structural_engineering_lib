@@ -195,6 +195,32 @@ def test_api_endpoint_extraction_stops_before_query_template():
     assert check_api._extract_endpoint(expression) == "/api/v1/import/dual-csv"
 
 
+def test_api_call_method_extraction_stops_at_each_fetch(tmp_path: Path):
+    client = tmp_path / "client.ts"
+    client.write_text(
+        """export async function load() {
+  return fetch(`${API_BASE_URL}/api/v1/workflows/beam-template`, {
+    headers: { Accept: 'application/json' },
+  });
+}
+export async function run() {
+  return fetch(`${API_BASE_URL}/api/v1/workflows/run`, {
+    method: 'POST',
+  });
+}
+""",
+        encoding="utf-8",
+    )
+
+    calls, unresolved = check_api._extract_call_sites(client)
+
+    assert unresolved == []
+    assert [(call.endpoint, call.method) for call in calls] == [
+        ("/api/v1/workflows/beam-template", "GET"),
+        ("/api/v1/workflows/run", "POST"),
+    ]
+
+
 def test_api_route_shape_matches_dynamic_segments():
     assert check_api._same_route_shape(
         "/api/v1/export/{dynamic}", "/api/v1/export/{format}"

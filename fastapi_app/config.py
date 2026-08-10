@@ -71,6 +71,10 @@ class Settings(BaseSettings):
     # Batch Processing
     max_batch_size: int = 500
 
+    # Bounded workflow execution remains unreachable unless a local/test process
+    # opts in explicitly. This is not enabled by the production compose profile.
+    workflow_runner_enabled: bool = False
+
     # Upload Limits
     max_upload_size_bytes: int = 10 * 1024 * 1024  # 10 MB
 
