@@ -4,7 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: UIX-001 Session 1 Wave 1 foundation checkpoint in progress
+- Focus: UIX-001 Session 1 P2/P3 accepted; P4 quick-design migration ready
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
@@ -16,8 +16,8 @@
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | UIX-001 Session 1 Wave 1 | Validate and integrate the P2/P3 foundation contracts and accepted 3D fixture |
-| **Next** | UIX-001 P4 handoff | Start quick migration only after P2/P3 live integration and parent acceptance |
+| **Current** | UIX-001 P4 | Migrate quick design onto the accepted workbench and latest-request-wins contracts |
+| **Next** | UIX-001 P5/P6 | Connect project intake, design, results, and export to durable revision truth |
 | **Held** | Stable/engineering use | Requires cumulative qualified structural-engineering review |
 
 ## Required Reading
@@ -47,23 +47,25 @@
 
 ## Session 1 Wave 1 checkpoint
 
-Wave 0 is accepted in master-plan section 22. Wave 1 now has typed navigation,
-presentation-only workbench primitives, WorkspaceSnapshotV1 identity and
-IndexedDB boundaries, latest-request cancellation, AbortSignal-aware REST calls,
-and the two-frame GeometrySpaceV1 golden fixture. The Wave 0 checkpoint froze the
-route map, three-width
-wireframes, quantitative simplification targets, IndexedDB project persistence,
-revision-bound result/export lifecycle, one AbortSignal-aware React transport
-facade, GeometrySpaceV1, essential 3D layers, and the browser/scene baselines.
+Wave 0 and the P2/P3 foundation checkpoint are accepted in master-plan section
+22. P2 provides the live two-destination shell, typed four-stage project
+navigation, restrained landing route, responsive reachability, and lazy heavy
+visualization delivery. P3 provides WorkspaceSnapshotV1, exact revision-bound
+evidence, fail-closed migration, atomic IndexedDB persistence and recovery,
+undo/revert invalidation, autosave, and multi-tab conflict detection. The
+AbortSignal-aware REST facade and two-frame GeometrySpaceV1 fixture are also in
+place.
 
-1. **Parent:** finish schema migration/recovery, autosave/conflict integration,
-   and truthful lifecycle/export selectors against the existing contracts.
-2. **Frontend flow:** integrate the shell and typed navigation without exposing a
-   second route hierarchy; prove critical actions remain reachable at 390 px.
-3. **3D foundation:** the two-frame fixture is implemented and focused tests pass;
-   P7 decomposition and P8 layers remain out of this checkpoint.
-4. **Checkpoint:** accept reload/recovery, narrow-shell reachability, and live
-   request/result settlement before the P4 follow-up.
+1. **P4:** connect quick design to the accepted latest-request coordinator and
+   workspace lifecycle; cancelled, delayed, and edit-stale responses must not
+   become current or exportable.
+2. **P5/P6:** remain out of the P4 packet. Imported-project resume and complete
+   project result/export parity are not yet accepted.
+3. **P7:** the frame fixture is ready; viewport decomposition remains separate.
+4. **Checkpoint evidence:** 197 React tests, lint, production build, and the
+   canonical quick gate pass. Chromium UAT passed at 1440, 1024, and 390 px and
+   proved real IndexedDB save/reload/delete plus BroadcastChannel conflict
+   notification without leaving synthetic data.
 
 ## Open dependency holds
 

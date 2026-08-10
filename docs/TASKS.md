@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — UIX-001 Session 1 Wave 1 foundation checkpoint in progress
+**Updated:** 2026-08-10 — UIX-001 P2/P3 accepted; P4 quick-design migration ready
 
 ---
 
@@ -10,7 +10,7 @@
 - **WIP = 2** (max 2 active tasks at once)
 - **Done = tests pass + docs updated + scanner passes**
 - **Archive rule:** Move completed items to [tasks-history.md](_archive/tasks-history.md) after 20+ items
-- **No new Streamlit work** — all new features go to React. Bug fixes only for Streamlit-only features.
+- **Streamlit is retired** — React is the only active UI. Do not restore its runtime, dependencies, hooks, or feature work; legacy files are reference-only until removal.
 
 ---
 
@@ -94,21 +94,21 @@
 | **v0.25** | ACI 318-19 Beam | 📋 PLANNED | ACI beam flexure + shear, PCA Notes ±0.1% benchmarks |
 | **v1.0** | Production Multi-Code | 📋 PLANNED | IS 456 complete, ACI 318 beam+column, EC2 beam, API stability guarantee |
 
-### Migration Status (React vs Streamlit)
+### React migration status
 
-| Feature | Streamlit | React | API Ready | Priority |
-|---------|-----------|-------|-----------|----------|
-| Single beam design | ✅ | ✅ | ✅ | Done |
-| CSV import (40+ cols) | ✅ | ✅ | ✅ | Done |
-| 3D visualization | ✅ | ✅ R3F | ✅ | Done |
-| Export (BBS/DXF/Report) | ✅ | ✅ | ✅ | Done |
-| Dashboard insights | ✅ | ✅ | ✅ | Done |
-| Rebar suggestions | ✅ | ✅ | ✅ | Done |
-| **Batch design UI** | ✅ | ✅ | ✅ streaming.py | Done |
-| **Compliance checker** | ✅ | ✅ DesignView panel | ✅ insights.py | Done |
-| **Cost optimizer** | ✅ | ✅ DesignView rebar | ✅ optimization.py | Done |
-| **AI Assistant** | ✅ | -- | Partial | ⏸ Deferred |
-| Learning center | ✅ | -- | -- | 🟢 Low |
+| Feature | React | API Ready | Priority |
+|---------|-------|-----------|----------|
+| Single beam design | ✅ | ✅ | Done |
+| CSV import (40+ cols) | ✅ | ✅ | Done |
+| 3D visualization | ✅ R3F | ✅ | Done |
+| Export (BBS/DXF/Report) | ✅ | ✅ | Done |
+| Dashboard insights | ✅ | ✅ | Done |
+| Rebar suggestions | ✅ | ✅ | Done |
+| **Batch design UI** | ✅ | ✅ streaming.py | Done |
+| **Compliance checker** | ✅ DesignView panel | ✅ insights.py | Done |
+| **Cost optimizer** | ✅ DesignView rebar | ✅ optimization.py | Done |
+| **AI Assistant** | -- | Partial | ⏸ Deferred |
+| Learning center | -- | -- | 🟢 Low |
 
 ### v0.21 Remaining Items (Library Expansion)
 
@@ -126,7 +126,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| UIX-001 | Build one compact 3D-first structural workbench and a schema-driven no-code foundation | Main Agent | 🚧 [SESSION 1 WAVE 1 — FOUNDATION CHECKPOINT](planning/ui-experience-foundation-master-plan.md) |
+| UIX-001 | Build one compact 3D-first structural workbench and a schema-driven no-code foundation | Main Agent | 🚧 [SESSION 1 P4 — QUICK-DESIGN MIGRATION](planning/ui-experience-foundation-master-plan.md) |
 
 ## Up Next
 
@@ -138,7 +138,7 @@
 
 The version roadmap and historical backlog remain below. The v0.23.0 Alpha is
 published. UIX-001 is owner-accepted; its Wave 0 evidence/route/state/3D lock is
-accepted and Session 1 Wave 1 foundations are in progress. Stable-release and
+accepted, P2/P3 foundations are accepted, and P4 is ready. Stable-release and
 engineering-use approval remain held for the cumulative qualified review.
 
 ## Recently Done

@@ -30,7 +30,7 @@
       "last_updated": "2026-08-10",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "58758573f161"
+      "content_hash": "5869b0078fe2"
     },
     {
       "name": "WORKLOG.md",
@@ -212,5 +212,5 @@
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "5c22306c15184684"
+  "content_hash": "d5c304628b3b90b6"
 }

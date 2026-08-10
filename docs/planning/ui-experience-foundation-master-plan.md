@@ -20,8 +20,7 @@ current_wave: 1
 
 **Type:** Master Plan
 **Audience:** Product owner, frontend, backend, API, structural-library, 3D, reviewer, and tester roles
-**Status:** Active — Session 1 Wave 0 accepted; Wave 1 foundation checkpoint is
-in progress, with live shell/persistence integration still pending
+**Status:** Active — Session 1 P0-P3 accepted; P4 quick-design migration ready
 **Importance:** Critical
 **Created:** 2026-08-10
 **Last Updated:** 2026-08-10
@@ -1882,16 +1881,16 @@ these tables only after the parent reviews evidence.
 
 | Macro session | Scope | State | Required exit |
 |---|---|---|---|
-| Session 1 | P0-P8 compact workbench and essential 3D | Wave 1 foundation checkpoint in progress | Session 1 exit gate in section 12.2 |
+| Session 1 | P0-P8 compact workbench and essential 3D | P2/P3 accepted; P4 ready | Session 1 exit gate in section 12.2 |
 | Session 2 | P9-P15 capability platform and cutover | Blocked on Session 1 | Session 2 exit gate in section 12.3 |
 
 | Session | Packet | State | Evidence/commit | Notes |
 |---|---|---|---|---|
 | 1 | P0 | Accepted | Section 22 | Live baseline, usefulness, browser, API/state, and 3D lock |
 | 1 | P1 | Accepted | Section 22 | Route map, targets, and three-width wireframes frozen |
-| 1 | P2 | In progress | Current branch | Typed navigation and presentation primitives implemented; live route/shell integration pending |
-| 1 | P3 | In progress | Current branch | Revision identity, store, persistence, sync, and request foundations implemented; live autosave/recovery integration pending |
-| 1 | P4 | Blocked on P2/P3 handoff | — | Quick-design migration |
+| 1 | P2 | Accepted | `d336803c` | Live shell and typed navigation; three-width reachability and lazy-delivery browser gates pass |
+| 1 | P3 | Accepted | `c270b6c1`, `0ccda406` | Durable revisioned state, recovery, autosave, and multi-tab conflict integration pass |
+| 1 | P4 | Ready | P2/P3 handoff | Quick-design migration is the next bounded packet |
 | 1 | P5 | Not started | — | Project intake/review |
 | 1 | P6 | Not started | — | Project design/results/export |
 | 1 | P7 | Ready | Current branch | Two-frame GeometrySpaceV1 fixture implemented; viewport decomposition not started |
@@ -2243,13 +2242,35 @@ Wave 1 starts with these confirmed blockers:
 9. `useGeometryAdvanced`, `useCSVTextImport`, serviceability UI fields, and SSE
    batch semantics are not live-contract ready.
 
-Wave 1 has implemented the P2/P3 contract foundations and the GeometrySpaceV1
-golden fixture. P4 remains blocked until live shell, autosave/recovery, request,
-status, and export integration proves those boundaries. P7 is ready for a later
-bounded decomposition packet; P8 remains blocked on P6 revision truth and P7.
-Wave 2 remains blocked on the P4 checkpoint and the later P5/P6 project-result
-handoff. No parallel worker owns App.tsx, shared contracts, stores, API client,
-public viewport contract, or this ledger without a fresh disjoint packet.
+### 22.10 Accepted P2/P3 foundation evidence
+
+The parent accepted P2 at `d336803c` and P3 at `c270b6c1` plus `0ccda406` after
+independent diff review and integration. The other active UI task first shared
+the root checkout; the parent stopped overlapping writes, assigned its P3 work to
+an isolated worktree/branch, reviewed its bounded commit, and then cherry-picked
+it. Future parallel UI work must retain disjoint worktrees and path ownership.
+
+- P2 exposes only Workbench and Projects globally, preserves the four typed
+  project stages, keeps critical actions reachable at 1440, 1024, and 390 px,
+  and removes eager Three/R3F, AG Grid, and Framer assets from the production
+  landing request path.
+- P3 persists WorkspaceSnapshotV1 atomically in IndexedDB, fails closed on an
+  unknown schema, recovers the last known good revision, invalidates evidence on
+  edits and undo/revert, autosaves dirty revisions, and blocks a higher external
+  revision through BroadcastChannel conflict state.
+- Focused and full React verification passed 197 tests plus lint and production
+  build; `./run.sh check --quick` passed all 10 checks.
+- Live Chromium UAT used real IndexedDB and BroadcastChannel behavior to prove
+  save, reload/load, conflict notification, and deletion. The synthetic proof
+  project was removed after validation.
+
+P4 is now ready against these accepted contracts. P5/P6 remain unstarted: the
+existing imported-project adapter has not yet proved full project resume or
+revision-matched project results/exports. P7 is ready for a separate bounded
+decomposition packet; P8 remains blocked on P6 revision truth and P7. Wave 2
+remains blocked on the P4 checkpoint and the later P5/P6 project-result handoff.
+No parallel worker owns App.tsx, shared contracts, stores, API client, public
+viewport contract, or this ledger without a fresh disjoint packet.
 
 ## 23. Immediate kickoff checklist
 
