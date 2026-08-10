@@ -4,7 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: post-v0.23.0 maintenance closed; dependency compatibility is next
+- Focus: UIX-001 Session 1 Wave 0 active; implementation edits remain contract-gated
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` at `3f880d5b`
@@ -14,13 +14,15 @@
 ## Required Reading
 
 - [Current task board](../TASKS.md)
+- [UI experience foundation master plan](ui-experience-foundation-master-plan.md)
 - [IS 456 library-first master plan](is456-library-first-master-plan.md)
 - [Release evidence crosswalk](../verification/is456-library-first-evidence.md)
 
 | State | Target | Decision |
 |---|---|---|
 | **Current** | v0.23.0 Alpha | Released; public artifact UAT and current-main Weekly Verification are green |
-| **Next** | DEPS-MAINT-001 | Triage the nine fresh dependency PRs; do not activate v0.24 product work |
+| **Active work** | UIX-001 Session 1 Wave 0 | Run parent plus two Terra read-only audits and freeze shared contracts |
+| **Next** | UIX-001 Session 1 Wave 1 | Starts only after the Wave 0 contract lock is accepted |
 
 ## Closed outcome
 
@@ -49,14 +51,14 @@ engineering-use approval.
 
 ## Next action
 
-Run one dependency-maintenance parent task and keep ecosystems separate:
-
-1. Rebase and evaluate Python PRs #679 and #686-#688. Start with install/lock
-   consistency; do not merge #679 while Ruff pins disagree across surfaces.
-2. Evaluate React group PR #680 against individual major PRs #681-#684 and
-   retain one coherent upgrade route. #680 and #684 currently fail React CI.
-3. Use focused validation while iterating, then one quick gate and one full
-   final gate. Keep v0.24 and other product-roadmap work inactive.
+1. Continue Session 1 Wave 0 on `codex/ui-experience-foundation`: parent
+   journey/IA baseline, Terra application/API/state audit, and Terra 3D/browser
+   audit. Freeze contracts before Wave 1 implementation.
+2. Respect external worktree locks: do not edit AGENTS.md; do not edit React
+   package manifests, ImportView, or BuildingEditorPage until their parallel
+   branches are owner-merged and this branch is updated normally.
+3. Keep DEPS-MAINT-001 separate and queued. Do not mix dependency upgrades into
+   the UI branch.
 
 ## GitHub state
 
@@ -66,6 +68,10 @@ Run one dependency-maintenance parent task and keep ecosystems separate:
 - Currently failing their relevant lane: #680, #684, #686, and #687.
 
 ## Terminal issues recorded
+
+- The documented active path `scripts/generate_folder_index.py` no longer exists;
+  it is archived. `.venv/bin/python scripts/generate_enhanced_index.py
+  docs/planning` is the current targeted replacement and completed successfully.
 
 - Finder Trash staging was denied by macOS privacy controls and
   `/usr/bin/realpath` is absent. `.venv/bin/python` path resolution plus an

@@ -21,6 +21,7 @@ Internal planning documents and research notes.
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
 | [MAINT-008 Compact Modernization Plan](compact-modernization-plan.md) | Dependency-ordered implementation packets for CI and maintenance modernization |
 | [IS 456 Library-First Master Plan](is456-library-first-master-plan.md) | Worker-ready plan for completing the supported Python library, evidence, packaging, and PyPI flow before broad API/UI work |
+| [UI Experience Foundation Master Plan](ui-experience-foundation-master-plan.md) | Two-session worker plan for one compact 3D-first workbench, schema-driven capabilities, and a constrained no-code foundation |
 | [Professional Library Remediation Plan](professional-library-remediation-plan.md) | Release-blocking audit findings, recent-work reconciliation, and dependency-ordered worker packets |
 | [Folder Audit](../_archive/planning-completed-2026-03/folder-audit.md) | Complete repo audit (Session 91) |
 | [AI Agent Efficiency Plan](../_archive/planning-completed-2026-03/ai-agent-efficiency-and-git-workflow-plan.md) | Agent infra improvements (Session 92) |
@@ -30,7 +31,8 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `next-session-brief.md` | 2026-08-10 | ✅ Post-release handoff |
+| `next-session-brief.md` | 2026-08-10 | 📋 UIX-001 owner-review handoff |
+| `ui-experience-foundation-master-plan.md` | 2026-08-10 | 🚧 Owner accepted; Session 1 Wave 0 active; edits contract-gated |
 | `compact-modernization-plan.md` | 2026-08-09 | 📋 Ready after PR #676 |
 | `is456-library-first-master-plan.md` | 2026-08-10 | ✅ C0-C4 and v0.23.0 Alpha release complete |
 | `professional-library-remediation-plan.md` | 2026-08-10 | ✅ Software remediation evidence ledger; final professional review deferred |
@@ -54,6 +56,7 @@ Internal planning documents and research notes.
 | `folder-migration-progress.md` | Module migration tracking (completed) |
 | `streamlit-phase-3-implementation-plan.md` | Streamlit phases (v3 supersedes) |
 | `ui-layout-implementation-plan.md` | Implemented in React v3 |
+| `react-ux-improvement-plan.md` | Superseded by `ui-experience-foundation-master-plan.md`; retained as implementation history |
 
 ---
 
