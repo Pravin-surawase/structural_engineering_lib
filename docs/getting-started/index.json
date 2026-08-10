@@ -2,7 +2,7 @@
   "folder": "docs/getting-started",
   "type": "mixed",
   "description": "Quick onboarding guides for new users of the structural engineering library.",
-  "last_updated": "2026-08-10",
+  "last_updated": "2026-08-11",
   "file_count": 19,
   "files": [
     {
@@ -28,7 +28,7 @@
       "size_lines": 738,
       "last_updated": "2026-08-10",
       "description": "> **This is THE canonical bootstrap for all AI agents.** Entry points (CLAUDE.md, .github/copilot-instructions.md) link here. | # | Critical Warning | Why it matters |",
-      "content_hash": "762fd878bac4"
+      "content_hash": "b130e892ca77"
     },
     {
       "name": "agent-essentials.md",
@@ -152,5 +152,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "cf9a2d1f5b6f41a2"
+  "content_hash": "952d1362b9eec3ef"
 }

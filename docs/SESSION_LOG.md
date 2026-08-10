@@ -5,6 +5,92 @@
 
 ---
 
+## 2026-08-11 — Recent-Work Maintenance and Cleaning Session
+
+**Agent:** Codex
+**Branch:** `codex/is456-slabs-plan`
+**Focus:** Reconcile the recent parallel RC-core lanes, repair generated truth,
+and leave the root checkout clean without disturbing owned worktrees
+
+### Summary
+
+- Reconciled all eight registered worktrees and the current GitHub PR surface.
+  Slab, column, beam, workflow-policy, PMM-experimental and Excel-planning
+  worktrees were clean; the footing worktree contained an active uncommitted
+  React slice and was explicitly excluded from cleanup.
+- Confirmed four recent draft feature/workflow PRs plus seven Dependabot PRs.
+  PR #723 is green; PRs #724, #725 and #726 are merge-blocked only by the same
+  FastAPI timing assertion, not by their individual feature suites.
+- Corrected all five maintained instruction references that passed the invalid
+  `--dry-run` flag to `cleanup_stale_branches.py`; the script is already dry-run
+  by default and reported no stale remote branch.
+- Regenerated the public API manifest and all 32 canonical folder indexes, then
+  removed 43 validated generated cache/build targets (about 180,196 KB) while
+  preserving environments, dependencies, logs, benchmarks, Hypothesis state,
+  recovery data, branches and every other worktree.
+
+### PRs Merged
+
+- None.
+
+### Key Deliverables
+
+- Current local health, audit, efficiency, quick and integrated gates are green.
+- Git object integrity, worktree metadata, stash state and maintained ports were
+  clean; no server, branch deletion, push, PR mutation, merge or release occurred.
+- PRs #724-#726 retain an explicit shared-CI hold pending approval for a focused
+  PR-gate correction; their exact reviewed heads remain unchanged.
+
+### Issues encountered
+
+- The documented stale-branch dry-run command failed because the script rejects
+  the unsupported `--dry-run` option.
+- Fourteen of 32 generated folder indexes were stale even though project health
+  still reported 100/100.
+- The first integrated gate passed 29/30 because `check_crack_width` and
+  `check_deflection_span_depth` had stale return-signature strings in the public
+  API manifest.
+- PRs #724, #725 and #726 each failed the same hosted-runner FastAPI load test:
+  measured average latency was 158.4 ms, 206.9 ms and 161.5 ms against an
+  absolute 150.0 ms threshold.
+
+### Root causes and resolutions
+
+- Dry-run behavior is the script default; five authority and maintenance files
+  had retained an invented flag even after an earlier session diagnosed it.
+  Those references now use the executable command and state its default mode;
+  the corrected dry run found no deletion candidate.
+- Recent API/docs work changed child-folder projections after their checked-in
+  index hashes were generated. The canonical all-folder generator refreshed the
+  projections and its 32/32 check now passes.
+- The beam-service wrappers changed return annotations from module-qualified
+  names to directly imported result types, but the generated manifest retained
+  the old strings. Regenerating the manifest synchronized those two signatures;
+  the integrated gate then passed 30/30.
+- Absolute wall-clock performance was mixed into the ordinary FastAPI PR gate,
+  so hosted-runner variability blocked three unrelated feature branches. The
+  feature diffs do not touch that test and the exact test passed locally three
+  times in 0.07–0.12 seconds. No feature-branch workaround or CI mutation was
+  made; a focused gate-classification change requires explicit approval.
+
+### Verification
+
+- `./run.sh health` — 100/100.
+- `./run.sh audit` — 19/19 passed with no warnings.
+- `./run.sh efficiency check` — passed.
+- `./run.sh check --quick` — 10/10 passed.
+- `./run.sh check` — 30/30 passed after manifest synchronization.
+- `generate_enhanced_index.py --all --check` — 32/32 current.
+- `git fsck --no-dangling`, `git diff --check` and worktree-prune dry run passed;
+  no stash or listener on ports 8000/5173 was present.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `cleanup_stale_branches.py --dry-run` was rejected as
+  an unknown option -> the maintained no-flag command ran in default dry-run
+  mode, and all stale documentation references were corrected.
+
+
 ## 2026-08-10 — Session: IS 456 Solid Slabs Implementation Closeout
 
 **Agent:** Codex

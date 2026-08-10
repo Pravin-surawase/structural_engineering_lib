@@ -1,7 +1,7 @@
 # Guides
 
 **Type:** Documentation
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 **Files:** 14
 
 ## Documentation Files

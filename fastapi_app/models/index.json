@@ -2,7 +2,7 @@
   "folder": "fastapi_app/models",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-10",
+  "last_updated": "2026-08-11",
   "file_count": 15,
   "files": [
     {
@@ -518,7 +518,7 @@
     {
       "name": "library_core.py",
       "type": "python",
-      "size_lines": 178,
+      "size_lines": 367,
       "last_updated": "2026-08-10",
       "description": "Requests for the bounded footing and slab public-library workflows.",
       "classes": [
@@ -529,6 +529,30 @@
         {
           "name": "OneWaySlabDesignRequest",
           "description": "Explicit inputs for the supported simply supported one-way slab strip."
+        },
+        {
+          "name": "SlabServiceabilityCarrierRequest",
+          "description": "Reviewed external serviceability-limit carrier; no silent defaults."
+        },
+        {
+          "name": "CompleteOneWaySlabDesignRequest",
+          "description": "Simply supported one-way flexure/detailing plus shear/serviceability."
+        },
+        {
+          "name": "ContinuousOneWaySlabDesignRequest",
+          "description": "Explicit continuous one-way coefficient-method request."
+        },
+        {
+          "name": "BuiltinContinuousOneWaySlabDesignRequest",
+          "description": "Continuous one-way request resolved from built-in Tables 12 and 13."
+        },
+        {
+          "name": "TwoWaySlabPanelDesignRequest",
+          "description": "Common oriented two-way panel with reviewed external coefficients."
+        },
+        {
+          "name": "BuiltinTwoWaySlabPanelDesignRequest",
+          "description": "Two-way request resolved from built-in Table 26 or 27."
         },
         {
           "name": "FootingLoadTransferResponse",
@@ -557,13 +581,9 @@
         {
           "name": "OneWaySlabDetailingResponse",
           "description": "Provided-bar checks and the serviceability review boundary."
-        },
-        {
-          "name": "OneWaySlabDesignResponse",
-          "description": "Complete bounded one-way slab flexure and detailing response."
         }
       ],
-      "content_hash": "fdfc89990b5d"
+      "content_hash": "9e02fd5d5195"
     },
     {
       "name": "metadata.py",
@@ -767,5 +787,5 @@
     "DuctilityCheckRequest",
     "DuctilityCheckResponse"
   ],
-  "content_hash": "04cafbd7ed3c78a3"
+  "content_hash": "05dc88a1c3e5abe0"
 }

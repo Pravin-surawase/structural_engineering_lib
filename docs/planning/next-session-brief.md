@@ -3,22 +3,23 @@
 ## Latest Handoff
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-10
-- Focus: IS456-SLAB-001 bounded software implementation is complete and locally verified; no calculation/UI work remains in the approved solid-slab scope
+- Date: 2026-08-11
+- Focus: Recent RC-core work is reconciled; the local maintenance baseline is green and cleaned, with active footing work protected and one shared PR-CI hold recorded
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
 
 **Planning branch:** `codex/is456-slabs-plan`
 
-**Base:** implementation branch from `a0e115e1`; planning checkpoint `8c558abc`; implementation closeout is committed locally in this session and discoverable from `git log`
+**Base:** planning branch from `a0e115e1`; slab implementation and the latest
+maintenance checkpoint are discoverable from `git log`
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | IS456-SLAB-001 software complete | Pure calculations, public facade, 74-endpoint OpenAPI snapshot, FastAPI and React slab workbench are verified |
-| **Next** | Owner/GitHub handoff | Review the local commit and authorize push/PR when desired; no release was performed |
-| **Held** | Launch/stable/engineering use | Formal source/licensing permission before public production distribution plus cumulative qualified structural-engineering review |
+| **Current** | Local maintenance baseline ready | Health 100/100, audit 19/19, indexes 32/32 and integrated gate 30/30; generated caches are cleaned |
+| **Next** | Owner-selected isolated work | Start from `origin/main` or an explicitly approved stacked base; do not reuse the active footing worktree |
+| **Held** | PRs #724-#726 and launch/engineering use | Shared PR timing gate needs an approved focused correction; formal source/licensing permission and qualified structural-engineering review remain separate gates |
 
 ## Required Reading
 
@@ -28,6 +29,21 @@
 - [Session 2 acceptance](../verification/ui-experience-session-2-acceptance.md)
 - [Current task board](../TASKS.md)
 - [Release policy](../getting-started/releases.md)
+
+## Recent-work maintenance closeout
+
+- Eight registered worktrees were reconciled. Seven were clean; the footing lane
+  contains an active uncommitted React slice and was left untouched.
+- Draft PR #723 is green. Draft PRs #724, #725 and #726 are merge-blocked only by
+  the same hosted-runner average-latency assertion; their reviewed feature heads
+  were not changed or rerun during maintenance.
+- The stale-branch helper found no deletion candidate. No stash, maintained-port
+  listener, Git object-integrity problem or prunable worktree metadata was found.
+- Invalid stale-branch command references, two API-manifest signature strings and
+  14 stale folder-index projections were repaired through maintained generators.
+- Forty-three generated cache/build targets (about 180,196 KB) were removed while
+  environments, dependencies, logs, benchmarks, recovery data, branches and user
+  worktrees were preserved.
 
 ## IS456-SLAB-001 implementation outcome
 

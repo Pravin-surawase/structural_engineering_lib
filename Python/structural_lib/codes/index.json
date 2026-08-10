@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib/codes",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-10",
+  "last_updated": "2026-08-11",
   "file_count": 1,
   "files": [
     {
@@ -42,7 +42,7 @@
     {
       "name": "is456",
       "path": "is456/",
-      "file_count": 55,
+      "file_count": 63,
       "is_package": true
     }
   ],
@@ -50,5 +50,5 @@
   "public_api": [
     "is456"
   ],
-  "content_hash": "7990797f7098b83c"
+  "content_hash": "3eb83a6d3e27b69a"
 }
