@@ -16,6 +16,7 @@ import {
 } from './types';
 
 export type MemberRecordKind = 'result' | 'geometry' | 'alternatives' | 'metrics';
+export type WorkspaceLoadState = 'idle' | 'loading' | 'ready' | 'error';
 
 export interface MemberInputState {
   inputHash: string;
@@ -37,6 +38,8 @@ export interface NewWorkspaceMember {
 interface WorkspaceState {
   snapshot: WorkspaceSnapshotV1 | null;
   memberInputHistory: Record<string, MemberInputState[]>;
+  loadState: WorkspaceLoadState;
+  loadError: string | null;
   createProject: (projectId: string, projectName: string, now?: string) => void;
   loadSnapshot: (snapshot: WorkspaceSnapshotV1) => void;
   replaceMembers: (members: NewWorkspaceMember[], now?: string) => void;
@@ -47,6 +50,10 @@ interface WorkspaceState {
     memberId: string,
     inputs: { [key: string]: JsonValue },
     inputHash: string,
+    now?: string,
+  ) => void;
+  updateMembersInputs: (
+    updates: Array<{ memberId: string; inputs: { [key: string]: JsonValue }; inputHash: string }>,
     now?: string,
   ) => void;
   undoMemberInputs: (memberId: string, now?: string) => boolean;
@@ -68,6 +75,7 @@ interface WorkspaceState {
     now?: string,
   ) => boolean;
   setSaveState: (saveState: WorkspaceSnapshotV1['saveState']) => void;
+  setLoadState: (loadState: WorkspaceLoadState, loadError?: string | null) => void;
   markSaved: (savedAt?: string) => void;
   reset: () => void;
 }
@@ -152,6 +160,8 @@ function appendInputHistory(
 export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   snapshot: null,
   memberInputHistory: {},
+  loadState: 'idle',
+  loadError: null,
 
   createProject: (projectId, projectName, now) => {
     const normalizedProjectId = projectId.trim();
@@ -178,6 +188,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         migrationOrigin: null,
       },
       memberInputHistory: {},
+      loadState: 'ready',
+      loadError: null,
     });
   },
 
@@ -185,7 +197,12 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
     if (!isWorkspaceSnapshotV1(snapshot)) {
       throw new Error('Cannot load an invalid workspace snapshot.');
     }
-    set({ snapshot, memberInputHistory: {} });
+    set({
+      snapshot,
+      memberInputHistory: {},
+      loadState: 'ready',
+      loadError: null,
+    });
   },
 
   replaceMembers: (members, now) => {
@@ -259,6 +276,61 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
             { inputHash: existing.inputHash, inputs: cloneInputs(existing.inputs) },
           ),
         },
+      };
+    });
+  },
+
+  updateMembersInputs: (updates, now) => {
+    if (updates.some((update) => !update.inputHash.trim())) {
+      throw new Error('A normalized input hash is required for every member update.');
+    }
+    const updateByMember = new Map(updates.map((update) => [update.memberId, update]));
+    if (updateByMember.size !== updates.length) {
+      throw new Error('Bulk member updates require unique member IDs.');
+    }
+    set((state) => {
+      if (!state.snapshot) return state;
+      const memberIds = new Set(state.snapshot.members.map((member) => member.memberId));
+      if (updates.some((update) => !memberIds.has(update.memberId))) {
+        throw new Error('Bulk member updates cannot reference an unknown member.');
+      }
+      const changedMembers = state.snapshot.members.filter((member) => {
+        const update = updateByMember.get(member.memberId);
+        return update !== undefined && update.inputHash !== member.inputHash;
+      });
+      if (changedMembers.length === 0) return state;
+
+      const nextHistory = { ...state.memberInputHistory };
+      for (const member of changedMembers) {
+        nextHistory[member.memberId] = appendInputHistory(
+          nextHistory[member.memberId] ?? [],
+          { inputHash: member.inputHash, inputs: cloneInputs(member.inputs) },
+        );
+      }
+      const members = state.snapshot.members.map((member) => {
+        const update = updateByMember.get(member.memberId);
+        return invalidateMemberRecords(
+          update && update.inputHash !== member.inputHash
+            ? {
+              ...member,
+              inputs: cloneInputs(update.inputs),
+              inputHash: update.inputHash,
+              inputRevision: member.inputRevision + 1,
+              memberRevision: member.memberRevision + 1,
+            }
+            : member,
+        );
+      });
+      return {
+        snapshot: {
+          ...state.snapshot,
+          members,
+          projectRevision: state.snapshot.projectRevision + 1,
+          dirty: true,
+          saveState: 'dirty',
+          updatedAt: timestamp(now),
+        },
+        memberInputHistory: nextHistory,
       };
     });
   },
@@ -360,6 +432,8 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         : state
     )),
 
+  setLoadState: (loadState, loadError = null) => set({ loadState, loadError }),
+
   markSaved: (savedAt) =>
     set((state) => {
       if (!state.snapshot) return state;
@@ -375,5 +449,10 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       };
     }),
 
-  reset: () => set({ snapshot: null, memberInputHistory: {} }),
+  reset: () => set({
+    snapshot: null,
+    memberInputHistory: {},
+    loadState: 'idle',
+    loadError: null,
+  }),
 }));

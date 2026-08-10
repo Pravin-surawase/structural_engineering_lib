@@ -16,6 +16,25 @@ interface WorkspaceRuntime {
   persistence: WorkspacePersistence;
 }
 
+export const LAST_WORKSPACE_PROJECT_KEY = 'structlib-workbench-last-project';
+
+function readLastProjectId(): string | null {
+  try {
+    return localStorage.getItem(LAST_WORKSPACE_PROJECT_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function writeLastProjectId(projectId: string | null): void {
+  try {
+    if (projectId) localStorage.setItem(LAST_WORKSPACE_PROJECT_KEY, projectId);
+    else localStorage.removeItem(LAST_WORKSPACE_PROJECT_KEY);
+  } catch {
+    // IndexedDB remains authoritative; the pointer is only a small preference.
+  }
+}
+
 export interface WorkspacePersistenceBridgeProps {
   autosaveDelayMs?: number;
   createPersistence?: () => WorkspacePersistence;
@@ -40,12 +59,14 @@ export function WorkspacePersistenceBridge({
   const snapshot = useWorkspaceStore((state) => state.snapshot);
   const [runtime, setRuntime] = useState<WorkspaceRuntime | null>(null);
   const syncRef = useRef<WorkspaceRevisionSync | null>(null);
+  const persistenceFactoryRef = useRef(createPersistence);
+  const revisionSyncFactoryRef = useRef(createRevisionSync);
 
   useEffect(() => {
     let active = true;
     let autosave: WorkspaceAutosaveCoordinator | null = null;
     try {
-      const persistence = createPersistence();
+      const persistence = persistenceFactoryRef.current();
       autosave = new WorkspaceAutosaveCoordinator(
         persistence,
         autosaveDelayMs,
@@ -56,6 +77,7 @@ export function WorkspacePersistenceBridge({
             if (state === 'saving') store.setSaveState('saving');
             if (state === 'saved') {
               store.markSaved(savedSnapshot.updatedAt);
+              writeLastProjectId(savedSnapshot.projectId);
               syncRef.current?.announce(savedSnapshot);
             }
             if (state === 'error' || state === 'conflict') {
@@ -65,8 +87,42 @@ export function WorkspacePersistenceBridge({
         },
       );
       if (active) setRuntime({ autosave, persistence });
-    } catch {
-      useWorkspaceStore.getState().setSaveState('error');
+
+      const workspaceStore = useWorkspaceStore.getState();
+      if (workspaceStore.snapshot) {
+        workspaceStore.setLoadState('ready');
+      } else {
+        workspaceStore.setLoadState('loading');
+        const lastProjectId = readLastProjectId();
+        if (!lastProjectId) {
+          workspaceStore.setLoadState('ready');
+        } else {
+          void persistence.load(lastProjectId)
+            .then((loaded) => {
+              if (!active) return;
+              if (!loaded) {
+                writeLastProjectId(null);
+                useWorkspaceStore.getState().setLoadState('ready');
+                return;
+              }
+              useWorkspaceStore.getState().loadSnapshot(loaded);
+            })
+            .catch((error: unknown) => {
+              if (!active) return;
+              useWorkspaceStore.getState().setLoadState(
+                'error',
+                error instanceof Error ? error.message : 'Saved project could not be restored.',
+              );
+            });
+        }
+      }
+    } catch (error) {
+      const store = useWorkspaceStore.getState();
+      store.setSaveState('error');
+      store.setLoadState(
+        'error',
+        error instanceof Error ? error.message : 'Project storage could not be initialized.',
+      );
     }
 
     return () => {
@@ -75,7 +131,11 @@ export function WorkspacePersistenceBridge({
       syncRef.current?.close();
       syncRef.current = null;
     };
-  }, [autosaveDelayMs, createPersistence]);
+  }, [autosaveDelayMs]);
+
+  useEffect(() => {
+    if (snapshot?.projectId) writeLastProjectId(snapshot.projectId);
+  }, [snapshot?.projectId]);
 
   useEffect(() => {
     syncRef.current?.close();
@@ -88,7 +148,7 @@ export function WorkspacePersistenceBridge({
       current.savedAt === null ? null : current.projectRevision,
     );
     try {
-      syncRef.current = createRevisionSync(
+      syncRef.current = revisionSyncFactoryRef.current(
         crypto.randomUUID(),
         (notice) => {
           runtime.autosave.noteExternalRevision(notice);
@@ -106,7 +166,7 @@ export function WorkspacePersistenceBridge({
       syncRef.current?.close();
       syncRef.current = null;
     };
-  }, [createRevisionSync, runtime, snapshot?.projectId, snapshot?.savedAt]);
+  }, [runtime, snapshot?.projectId, snapshot?.savedAt]);
 
   useEffect(() => {
     if (

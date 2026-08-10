@@ -239,6 +239,7 @@ export interface Point3D {
  */
 export interface SampleBeam {
   id: string;
+  source_id: string;
   story: string;
   width_mm: number;
   depth_mm: number;

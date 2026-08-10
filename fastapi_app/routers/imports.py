@@ -48,6 +48,11 @@ class BeamRow(BaseModel):
     """Individual beam data from CSV import."""
 
     id: str = Field(..., max_length=200, description="Beam identifier")
+    source_id: str | None = Field(
+        None,
+        max_length=200,
+        description="Stable source-system identity, such as ETABS UniqueName; import responses always populate it",
+    )
     story: str | None = Field(None, max_length=200, description="Story/floor level")
     width_mm: float = Field(..., description="Beam width in mm")
     depth_mm: float = Field(..., description="Beam overall depth in mm")
@@ -292,6 +297,7 @@ async def import_csv(
                         beams_out.append(
                             BeamRow(
                                 id=geom.id,
+                                source_id=geom.source_id or geom.id,
                                 story=geom.story,
                                 width_mm=geom.section.width_mm,
                                 depth_mm=geom.section.depth_mm,
@@ -317,6 +323,7 @@ async def import_csv(
                             beams_out.append(
                                 BeamRow(
                                     id=forces.id,
+                                    source_id=forces.id,
                                     story=None,
                                     width_mm=300.0,  # Default
                                     depth_mm=500.0,  # Default
@@ -517,6 +524,7 @@ async def import_dual_csv(
                 beams_out.append(
                     BeamWith3D(
                         id=beam.id,
+                        source_id=beam.source_id or beam.id,
                         story=beam.story,
                         width_mm=beam.section.width_mm,
                         depth_mm=beam.section.depth_mm,
@@ -918,6 +926,7 @@ async def get_sample_data():
 
         beam = BeamWith3D(
             id=f"{force['label']}_{force['story']}",
+            source_id=unique_name,
             story=str(force["story"]),
             width_mm=force["width_mm"],
             depth_mm=force["depth_mm"],

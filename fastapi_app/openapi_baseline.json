@@ -4762,6 +4762,19 @@
             "title": "Mu Knm",
             "type": "number"
           },
+          "source_id": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Stable source-system identity, such as ETABS UniqueName; import responses always populate it",
+            "title": "Source Id"
+          },
           "span_mm": {
             "default": 5000.0,
             "description": "Span length in mm",
@@ -4846,6 +4859,19 @@
           "point2": {
             "$ref": "#/components/schemas/Point3D",
             "description": "End point"
+          },
+          "source_id": {
+            "anyOf": [
+              {
+                "maxLength": 200,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Stable source-system identity, such as ETABS UniqueName; import responses always populate it",
+            "title": "Source Id"
           },
           "span_mm": {
             "default": 5000.0,

@@ -7,6 +7,7 @@ export function mapSampleBeamsToRows(
 ): BeamCSVRow[] {
   return beams.map((beam) => ({
     id: beam.id,
+    source_id: beam.source_id,
     story: beam.story,
     b: beam.width_mm,
     D: beam.depth_mm,

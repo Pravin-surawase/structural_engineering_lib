@@ -41,6 +41,7 @@ import type { BeamCSVRow } from "../../types/csv";
 import { deriveBeamStatus } from "../../utils/beamStatus";
 import { WorkflowHint } from "../ui/WorkflowHint";
 import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
+import { useWorkspaceStore } from "../../workspace/workspaceStore";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
@@ -87,15 +88,37 @@ function deriveBarLayout(astRequired: number): { count: number; dia: number } {
 
 export function BuildingEditorPage() {
   const navigate = useNavigate();
-  const { beams, selectedId, selectBeam, selectFloor, setBeams, setError } = useImportedBeamsStore();
+  const {
+    beams,
+    selectedId,
+    selectBeam,
+    selectFloor,
+    setBeams,
+    setError,
+    restoreFromWorkspace,
+  } = useImportedBeamsStore();
+  const workspaceSnapshot = useWorkspaceStore((state) => state.snapshot);
+  const workspaceLoadState = useWorkspaceStore((state) => state.loadState);
+  const workspaceLoadError = useWorkspaceStore((state) => state.loadError);
   const [sidebarClosedForId, setSidebarClosedForId] = useState<string | null>(null);
   const [floorFilter, setFloorFilter] = useState<string>("all");
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const autoDesignTriggeredRef = useRef(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const gridRef = useRef<AgGridReact>(null);
   const { runBatchDesign, isDesigning } = useSimpleBatchDesign();
   const { mutate: exportBuilding, isPending: exportPending } = useExportBuildingSummary();
+
+  useEffect(() => {
+    if (beams.length === 0 && workspaceSnapshot?.members.length) {
+      restoreFromWorkspace(workspaceSnapshot);
+    }
+  }, [beams.length, restoreFromWorkspace, workspaceSnapshot]);
+
+  useEffect(() => {
+    if (workspaceSnapshot && workspaceSnapshot.selectedStage !== "review") {
+      useWorkspaceStore.getState().setStage("review");
+    }
+  }, [workspaceSnapshot]);
 
   // Global material settings
   const [globalFck, setGlobalFck] = useState(25);
@@ -243,18 +266,6 @@ export function BuildingEditorPage() {
       },
     });
   }, [beams, globalFck, globalFy, globalCover, runBatchDesign, setBeams, setError]);
-
-  // Auto-design on first load if forces present but no results
-  useEffect(() => {
-    if (autoDesignTriggeredRef.current) return;
-    if (beams.length === 0) return;
-    const hasForces = beams.some((b) => getEnvelopeMu(b) > 0 || getEnvelopeVu(b) > 0);
-    const hasResults = beams.some((b) => typeof b.ast_required === "number");
-    if (hasForces && !hasResults) {
-      autoDesignTriggeredRef.current = true;
-      handleDesignAll();
-    }
-  }, [beams, handleDesignAll]);
 
   const handleBuildingExport = useCallback(
     (format: "html" | "pdf" | "csv") => {
@@ -422,10 +433,23 @@ export function BuildingEditorPage() {
   );
 
   if (beams.length === 0) {
+    if (workspaceLoadState === "loading") {
+      return (
+        <div className="flex h-screen items-center justify-center bg-zinc-950 pt-14" role="status">
+          <RefreshCw className="mr-2 h-4 w-4 animate-spin text-blue-300" />
+          <p className="text-zinc-300">Restoring the last project…</p>
+        </div>
+      );
+    }
     return (
       <div className="h-screen pt-14 flex items-center justify-center bg-zinc-950">
         <div className="text-center">
           <p className="text-zinc-400 mb-4">No beams loaded</p>
+          {workspaceLoadState === "error" && workspaceLoadError ? (
+            <p className="mb-4 max-w-md text-sm text-rose-300" role="alert">
+              {workspaceLoadError}
+            </p>
+          ) : null}
           <button onClick={() => navigate("/import")}
             className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium">
             Import Beams
@@ -441,8 +465,8 @@ export function BuildingEditorPage() {
       <WorkflowBreadcrumb />
 
       {/* Toolbar */}
-      <div className="h-11 flex items-center justify-between px-4 border-b border-white/5 shrink-0">
-        <div className="flex items-center gap-3">
+      <div className="flex min-h-11 shrink-0 flex-wrap items-center justify-between gap-2 border-b border-white/5 px-4 py-2">
+        <div className="flex min-w-0 flex-wrap items-center gap-3">
           <button onClick={() => navigate("/import")} className="p-1.5 rounded-lg hover:bg-white/5 text-white/50 hover:text-white/80 transition-colors">
             <ArrowLeft className="w-4 h-4" />
           </button>
@@ -453,7 +477,7 @@ export function BuildingEditorPage() {
           {isDesigning && <span className="text-xs text-blue-300 animate-pulse">Designing…</span>}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center gap-1.5">
             <Layers className="w-3.5 h-3.5 text-zinc-400" />
             <select value={floorFilter} onChange={(e) => handleFloorChange(e.target.value)}
@@ -531,8 +555,8 @@ export function BuildingEditorPage() {
       </div>
 
       {/* Material strip + progress */}
-      <div className="px-4 py-2 border-b border-white/5 bg-zinc-950/80 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/5 bg-zinc-950/80 px-4 py-2">
+        <div className="flex flex-wrap items-center gap-3">
           <MaterialSelect label="Concrete" value={globalFck} onChange={(v) => handleGlobalMaterialChange("fck", v)}
             options={[20, 25, 30, 35, 40, 45, 50]} format={(v) => `M${v}`} />
           <MaterialSelect label="Steel" value={globalFy} onChange={(v) => handleGlobalMaterialChange("fy", v)}
@@ -557,10 +581,10 @@ export function BuildingEditorPage() {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 flex overflow-hidden">
-        <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto lg:flex-row lg:overflow-hidden">
+        <div className="flex min-h-[40rem] min-w-0 flex-1 flex-col lg:min-h-0">
           {/* 3D Building View (top 30%) */}
-          <div className="h-[30%] min-h-[200px] border-b border-white/5 relative">
+          <div className="relative h-72 min-h-[200px] border-b border-white/5 lg:h-[30%]">
             <Suspense fallback={<div className="flex items-center justify-center h-full bg-zinc-900"><p className="text-zinc-400 animate-pulse">Loading 3D...</p></div>}>
               <Viewport3D mode="building" forceMode />
             </Suspense>
@@ -581,7 +605,7 @@ export function BuildingEditorPage() {
           </div>
 
           {/* AG Grid Editor (bottom 70%) */}
-          <div className="flex-1 ag-theme-alpine-dark" style={{
+          <div className="min-h-[26rem] flex-1 ag-theme-alpine-dark" style={{
             "--ag-background-color": "rgb(9 9 11)",
             "--ag-header-background-color": "rgb(24 24 27)",
             "--ag-odd-row-background-color": "rgb(9 9 11)",
@@ -612,7 +636,7 @@ export function BuildingEditorPage() {
 
         {/* Beam Detail Panel — slides in when a beam is selected */}
         {showSidebar && selectedBeam && (
-          <div className="w-[420px] shrink-0 border-l border-white/5 bg-zinc-950 overflow-y-auto">
+          <div className="w-full shrink-0 overflow-y-auto border-t border-white/5 bg-zinc-950 lg:w-[420px] lg:border-t-0 lg:border-l">
             <BeamDetailPanel
               beam={selectedBeam}
               onClose={() => { selectBeam(null); setSidebarClosedForId(null); }}
