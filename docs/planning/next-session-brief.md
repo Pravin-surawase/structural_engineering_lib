@@ -4,20 +4,20 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: UIX-001 Session 1 Wave 0 active; implementation remains contract-gated
+- Focus: UIX-001 Session 1 Wave 1 P2/P3 foundations active
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
 
-**Branch:** `codex/ui-experience-foundation`
+**Branch:** codex/ui-workbench-session-1
 
-**Base:** `origin/main` at `fa0ee995`
+**Base:** origin/main at 32b9f33b
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | UIX-001 Session 1 Wave 0 | Run the parent baseline and two read-only audits, then freeze shared contracts |
-| **Next** | UIX-001 Session 1 Waves 1-2 | Begin implementation only after the Wave 0 contract lock passes |
+| **Current** | UIX-001 Session 1 Wave 1 | Implement P2 shell/primitives and P3 revisioned workspace/persistence boundaries |
+| **Next** | UIX-001 P4 handoff | Start quick migration only after parent acceptance of P2/P3 contracts |
 | **Held** | Stable/engineering use | Requires cumulative qualified structural-engineering review |
 
 ## Required Reading
@@ -45,20 +45,21 @@
   maintained runtime.
 - No GitHub Pages deployment or release action was performed.
 
-## Session 1 Wave 0
+## Session 1 Wave 1
 
-1. **Parent:** capture the live landing, sample, quick-design, import/project,
-   result, and export journeys; classify exposed/dormant features; confirm the
-   route/IA target; produce three-width wireframes and measurable baselines.
-2. **Application-truth audit:** reconcile React clients/hooks/stores with current
-   FastAPI/OpenAPI shapes; map revisions, latest-request-wins behavior, storage,
-   status truth, and export truth. Evidence only; no edits.
-3. **3D/browser audit:** freeze source/canonical/renderer axes, units, member IDs,
-   and schema versions; capture browser, bundle, scene, fallback, and performance
-   evidence. Evidence only; no edits.
-4. **Checkpoint:** freeze the route model, workspace/result revision contract,
-   API-client approach, storage decision inputs, authoritative 3D contract,
-   essential layer list, owned paths, and P0/P1 acceptance ledger before Wave 1.
+Wave 0 is accepted in master-plan section 22. It froze the route map, three-width
+wireframes, quantitative simplification targets, IndexedDB project persistence,
+revision-bound result/export lifecycle, one AbortSignal-aware React transport
+facade, GeometrySpaceV1, essential 3D layers, and the browser/scene baselines.
+
+1. **Parent:** own typed routes/navigation, WorkspaceSnapshotV1, result/request
+   identity, persistence/migrations, status/export truth, and shared integration.
+2. **Frontend flow:** implement only the approved visual tokens, repeated
+   primitives, and shell presentation against parent-owned contracts.
+3. **3D foundation:** implement GeometrySpaceV1 contract/golden fixture and return
+   the decomposition map; no P8 layers yet.
+4. **Checkpoint:** accept P2/P3, stale/out-of-order negatives, reload/recovery,
+   narrow-shell reachability, and the 3D fixture before the P4 follow-up.
 
 ## Open dependency holds
 
@@ -84,5 +85,11 @@
 - Updating the old UIX branch from current `main` produced documentation-only
   conflicts in `TASKS.md`, the planning indexes, and this briefing. Resolution
   retained the accepted UIX plan and current merged dependency/adoption evidence.
+- During Wave 0 another task merged the planning branch and switched the shared
+  root checkout. Work resumed only after PR #718 reached main and the dedicated
+  codex/ui-workbench-session-1 branch was created. Parallel tasks must use
+  separate worktrees and must never switch this checkout.
+- The optional agent-browser CLI was unavailable, so the maintained in-app
+  Chromium browser was used for the live three-width baseline.
 - The archived `scripts/generate_folder_index.py` path was replaced by the
   maintained targeted `scripts/generate_enhanced_index.py` command.
