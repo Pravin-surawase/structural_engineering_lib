@@ -103,7 +103,10 @@ NEVER: git rebase --skip                              ← can silently drop comm
 NEVER: cat > file << 'EOF' ... EOF   ← heredoc fails in agent terminals; use editFiles tool
 ```
 
-Routine Git writes are performed intentionally by Codex after inspecting scope. Destructive or history-rewriting actions require explicit user approval.
+Routine Git writes are performed intentionally by Codex after inspecting scope.
+Codex may merge an in-scope PR after verifying its reviewed head, required
+checks, conflicts, and blockers. Other destructive or history-rewriting actions
+require explicit user approval.
 
 **FORBIDDEN GitHub operations (all agents):**
 ```
@@ -112,7 +115,9 @@ NEVER: gh issue close (without user approval) ← destructive, ask first
 NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py --dry-run
 ```
 
-Destructive GitHub operations (closing issues, deleting branches, merging PRs) require **explicit user confirmation** before execution.
+Closing issues or pull requests and deleting branches require **explicit user
+confirmation**. In-scope PR merges do not require additional confirmation once
+the reviewed head and required checks are verified.
 
 ## File Creation (IMPORTANT)
 

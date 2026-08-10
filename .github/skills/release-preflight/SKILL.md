@@ -95,7 +95,11 @@ After publication, verify the exact public version separately:
 
 ### 5. Owner-only actions
 
-Merging the release PR, creating/pushing a tag, publishing to PyPI, creating the GitHub release, and closing release issues require explicit user approval. A green preflight does not authorize any of them.
+Codex may merge the in-scope release PR without additional approval after
+verifying its reviewed head, required checks, conflicts, and blockers.
+Creating or pushing a tag, publishing to PyPI, creating the GitHub release, and
+closing release issues still require explicit user approval. A green preflight
+does not authorize those release actions.
 
 ## Report Format
 
@@ -111,7 +115,7 @@ Merging the release PR, creating/pushing a tag, publishing to PyPI, creating the
 
 **Verdict:** READY / NOT READY
 **Blockers:** [confirmed release-outcome failures only]
-**Owner approval still required:** [merge/tag/publish actions]
+**Owner approval still required:** [tag/publish/release/issue-close actions]
 ```
 
 ## Integration

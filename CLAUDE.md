@@ -28,7 +28,10 @@ NEVER: git rebase --skip              ← silently drops conflicting commits
 NEVER: git push --force-with-lease     ← rewrites shared history
 ```
 
-Destructive GitHub operations (closing issues, deleting branches, merging PRs) require **explicit user confirmation** before execution.
+Codex may mark an in-scope PR ready and merge it without additional user
+confirmation when the reviewed head commit is unchanged, required checks pass,
+and there are no conflicts or unresolved blockers. Closing issues or pull
+requests and deleting branches still require **explicit user confirmation**.
 
 **Permission enforcement:** Agent permissions are now programmatically enforced via `tool_permissions.py`. Each agent has a `permission_level` (ReadOnly, WorkspaceWrite, DangerFullAccess) defined in `agents/agent_registry.json`.
 

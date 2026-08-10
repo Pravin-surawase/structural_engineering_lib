@@ -186,7 +186,10 @@ The `@role` labels above are logical quality roles. The parent agent may perform
 all steps sequentially. Delegation is optional and is limited by the efficiency
 override; routine tests, docs, and Git closeout do not justify separate agents.
 
-Codex performs ordinary scoped commits, pushes, and PR creation or updates. Destructive operations such as merging, deleting branches, or closing issues require explicit user confirmation.
+Codex performs ordinary scoped commits, pushes, and PR creation or updates. It
+may merge an in-scope PR after verifying the reviewed head, required checks,
+conflicts, and blockers. Deleting branches and closing issues still require
+explicit user confirmation.
 
 **CI Failure Delegation:** If CI fails at Step 7 (COMMIT) or Step 8, @ops diagnoses the failure type and delegates the fix to the appropriate specialist (Python failures → @backend/@tester, React failures → @frontend, FastAPI failures → @api-developer, etc.) before retrying. Ops does NOT blindly retry or attempt code fixes outside its domain. See the CI Failure Delegation Protocol in `ops.agent.md` for the full decision table.
 
@@ -214,7 +217,10 @@ When the task involves adding/modifying IS 456 functions (`codes/is456/`), enfor
 9. CLOSEOUT      → Parent verifies; Codex owns scoped Git and connected GitHub work
 ```
 
-Codex performs ordinary scoped commits, pushes, and PR creation or updates. Destructive operations require explicit user confirmation.
+Codex performs ordinary scoped commits, pushes, and PR creation or updates. It
+may merge an in-scope PR after verifying the reviewed head, required checks,
+conflicts, and blockers. Other destructive operations require explicit user
+confirmation.
 
 **CI Failure Delegation:** Same rule as the main pipeline — if CI fails at Step 9, @ops diagnoses and delegates to the right specialist before retrying. See `ops.agent.md` CI Failure Delegation Protocol.
 

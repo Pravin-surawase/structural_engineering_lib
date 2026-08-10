@@ -14,7 +14,7 @@ Current focus: See [TASKS.md](../docs/TASKS.md) for active work and priorities.
 
 Codex owns the Git/GitHub lifecycle directly. Follow [AGENTS.md](../AGENTS.md) and the canonical [Codex-native workflow](../docs/git-automation/git-workflow-single-source.md): inspect state, stage only intended files, use a conventional commit, push without rewriting history, and create or update the PR through the connected GitHub integration.
 
-Do not add repository wrappers that commit, push, create PRs, merge PRs, or recover Git state. Merge, issue closure, branch deletion, release, and history rewriting remain explicit user-confirmation actions.
+Do not add repository wrappers that commit, push, create PRs, merge PRs, or recover Git state. Issue closure, branch deletion, release, and history rewriting remain explicit user-confirmation actions. Codex may merge an in-scope PR once its reviewed head and required checks are verified.
 
 **FORBIDDEN commands (all agents):**
 ```
@@ -26,7 +26,10 @@ NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
 NEVER: --no-verify / --force          ← breaks CI, causes rework
 ```
 
-Destructive GitHub operations (closing issues, deleting branches, merging PRs) require **explicit user confirmation** before execution.
+Codex may mark an in-scope PR ready and merge it without additional user
+confirmation when the reviewed head commit is unchanged, required checks pass,
+and there are no conflicts or unresolved blockers. Closing issues or pull
+requests and deleting branches still require **explicit user confirmation**.
 
 **Permission enforcement:** Agent permissions are now programmatically enforced via `tool_permissions.py`. Each agent has a `permission_level` (ReadOnly, WorkspaceWrite, DangerFullAccess) defined in `agents/agent_registry.json`.
 
