@@ -88,10 +88,10 @@ function deriveBarLayout(astRequired: number): { count: number; dia: number } {
 export function BuildingEditorPage() {
   const navigate = useNavigate();
   const { beams, selectedId, selectBeam, selectFloor, setBeams, setError } = useImportedBeamsStore();
-  const [showSidebar, setShowSidebar] = useState(false);
+  const [sidebarClosedForId, setSidebarClosedForId] = useState<string | null>(null);
   const [floorFilter, setFloorFilter] = useState<string>("all");
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [autoDesignTriggered, setAutoDesignTriggered] = useState(false);
+  const autoDesignTriggeredRef = useRef(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const gridRef = useRef<AgGridReact>(null);
   const { runBatchDesign, isDesigning } = useSimpleBatchDesign();
@@ -116,12 +116,7 @@ export function BuildingEditorPage() {
     () => beams.find((b) => b.id === selectedId),
     [beams, selectedId]
   );
-
-  // Auto-open sidebar when a beam is selected
-  useEffect(() => {
-    if (selectedId && !showSidebar) setShowSidebar(true);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedId]);
+  const showSidebar = selectedId !== null && sidebarClosedForId !== selectedId;
 
   const statusCounts = useMemo(() => {
     const counts = { pass: 0, fail: 0, warning: 0, pending: 0, designing: 0 };
@@ -251,15 +246,15 @@ export function BuildingEditorPage() {
 
   // Auto-design on first load if forces present but no results
   useEffect(() => {
-    if (autoDesignTriggered) return;
+    if (autoDesignTriggeredRef.current) return;
     if (beams.length === 0) return;
     const hasForces = beams.some((b) => getEnvelopeMu(b) > 0 || getEnvelopeVu(b) > 0);
     const hasResults = beams.some((b) => typeof b.ast_required === "number");
     if (hasForces && !hasResults) {
-      setAutoDesignTriggered(true);
+      autoDesignTriggeredRef.current = true;
       handleDesignAll();
     }
-  }, [autoDesignTriggered, beams, handleDesignAll]);
+  }, [beams, handleDesignAll]);
 
   const handleBuildingExport = useCallback(
     (format: "html" | "pdf" | "csv") => {
@@ -511,7 +506,7 @@ export function BuildingEditorPage() {
               </div>
             )}
           </div>
-          <button onClick={() => setShowSidebar(!showSidebar)}
+          <button onClick={() => setSidebarClosedForId(showSidebar ? selectedId : null)}
             className={`p-1.5 rounded-lg transition-colors ${showSidebar ? "bg-blue-500/20 text-blue-400" : "hover:bg-white/5 text-zinc-400 hover:text-zinc-200"}`}
             title="Toggle checks panel">
             {showSidebar ? <PanelRightClose className="w-4 h-4" /> : <PanelRightOpen className="w-4 h-4" />}
@@ -620,7 +615,7 @@ export function BuildingEditorPage() {
           <div className="w-[420px] shrink-0 border-l border-white/5 bg-zinc-950 overflow-y-auto">
             <BeamDetailPanel
               beam={selectedBeam}
-              onClose={() => { selectBeam(null); setShowSidebar(false); }}
+              onClose={() => { selectBeam(null); setSidebarClosedForId(null); }}
             />
           </div>
         )}
