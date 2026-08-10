@@ -1,6 +1,6 @@
 ---
 name: session-management
-description: "Run the compact project session workflow: one canonical start, task-scoped state updates, one validation ladder, and one normal commit. Use at session start, handoff, or closeout."
+description: "Run the compact project task/session workflow: lane-safe intake, one canonical start, bounded work, one validation ladder, and one normal commit. Use at task intake, session start, handoff, or closeout."
 ---
 
 # Session Management
@@ -10,8 +10,36 @@ Use the canonical `run.sh` entry points from the workspace root. Do not repeat t
 ## When to Use
 
 - Starting a new coding session
+- Starting a nontrivial task in a repository with active worktrees
 - Ending or handing off a session
 - Checking session state mid-work
+
+## Efficient Task Intake
+
+For a new nontrivial task, run once from the workspace root:
+
+```bash
+./run.sh task brief "concrete task description"
+```
+
+The command is read-only. It composes live worktree state, the existing role
+router, skill assignments, automation registry, and a bounded initial read set.
+It does not create or switch branches, stage, commit, stash, reset, push, or
+change GitHub state.
+
+Inspect every lane warning before editing. When isolation is needed, Codex owns
+the native Git/worktree operation and must preserve dirty lanes. Do not add a
+repository Git lifecycle wrapper.
+
+Before editing, define one compact task contract:
+
+- objective and explicit non-goals;
+- exact files and existing patterns to reuse;
+- likely pitfalls and architecture/Git constraints;
+- measurable acceptance criteria and narrow verification commands.
+
+Use `./run.sh pipeline` only for an explicitly tracked multi-session workflow
+that must resume later. Routine tasks do not need pipeline state.
 
 ## Session Start
 
@@ -25,6 +53,18 @@ Run once, in this order:
 The brief is the bounded orientation packet; session start verifies the environment and current project state. Use `./run.sh session context` only when the brief does not contain enough information for the task.
 
 Before editing, confirm the branch and working tree shown by session start. Preserve unrelated user changes.
+
+## Bounded Work Loop
+
+```text
+inspect the affected index and files
+-> change one coherent outcome
+-> run focused verification
+-> record material issue, root cause, resolution, and evidence
+```
+
+Do not repeat task intake, session start, unchanged checks, or broad context
+reads inside the loop.
 
 ## Session Closeout
 

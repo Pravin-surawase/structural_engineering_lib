@@ -532,12 +532,27 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
             except (OSError, UnicodeDecodeError):
                 pass
 
-    # Hash every deterministic projection written to the index. Exclude the
-    # generation date so an unchanged folder remains current across days.
+    index["content_hash"] = _stable_projection_hash(index)
+
+    return index
+
+
+def _stable_projection_hash(index: dict[str, Any]) -> str:
+    """Hash index meaning without checkout-specific modification times."""
+
+    def normalize(value: Any) -> Any:
+        if isinstance(value, dict):
+            return {
+                key: normalize(item)
+                for key, item in value.items()
+                if key != "last_updated"
+            }
+        if isinstance(value, list):
+            return [normalize(item) for item in value]
+        return value
+
     hash_payload = {
-        key: value
-        for key, value in index.items()
-        if key not in {"content_hash", "last_updated"}
+        key: normalize(value) for key, value in index.items() if key != "content_hash"
     }
     serialized_payload = json.dumps(
         hash_payload,
@@ -545,11 +560,7 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
         separators=(",", ":"),
         sort_keys=True,
     )
-    index["content_hash"] = hashlib.sha256(
-        serialized_payload.encode("utf-8")
-    ).hexdigest()[:16]
-
-    return index
+    return hashlib.sha256(serialized_payload.encode("utf-8")).hexdigest()[:16]
 
 
 # ─── Output Generators ──────────────────────────────────────────
@@ -769,12 +780,13 @@ def main():
                 continue
             try:
                 stored = json.loads(idx_path.read_text(encoding="utf-8"))
-                stored_hash = stored.get("content_hash")
-                if not stored_hash:
+                if not stored.get("content_hash"):
                     continue  # No hash watermark, skip
-                # Regenerate hash from current files
+                # Compare stable projections rather than checkout-specific
+                # filesystem timestamps embedded for human display.
                 current = scan_folder_enhanced(folder)
-                current_hash = current.get("content_hash", "")
+                stored_hash = _stable_projection_hash(stored)
+                current_hash = _stable_projection_hash(current)
                 checked += 1
                 if stored_hash != current_hash:
                     print(f"  ⚠️  STALE: {rel}/index.json (hash mismatch)")

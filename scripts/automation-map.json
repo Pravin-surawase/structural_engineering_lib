@@ -7,7 +7,7 @@
     "resolve python runtime": {
       "group": "Infrastructure",
       "script": "./scripts/python_runtime.sh --version",
-      "description": "Resolve the approved Python interpreter across primary and linked Git worktrees",
+      "description": "Resolve the approved Python interpreter while keeping package imports bound to the current Git worktree",
       "permission": "ReadOnly"
     },
     "choose codex model": {
@@ -174,6 +174,19 @@
       "group": "Session",
       "script": "./scripts/agent_start.sh --quick",
       "description": "Resolve the approved runtime, run preflight, and start a session without Git/GitHub lifecycle actions"
+    },
+    "task brief": {
+      "group": "Session",
+      "script": "./scripts/python_runtime.sh scripts/prompt_router.py --brief \"task description\"",
+      "description": "Build a read-only lane, role, skill, automation, and context brief for a concrete task (also: ./run.sh task brief)",
+      "permission": "ReadOnly",
+      "context_docs": [
+        "docs/guidelines/ai-token-efficiency.md",
+        "docs/git-automation/git-workflow-single-source.md"
+      ],
+      "options": {
+        "--json": "Machine-readable task brief"
+      }
     },
     "end session": {
       "group": "Session",

@@ -7,6 +7,7 @@
 ## Preferred entry points
 
 ```bash
+./run.sh task brief "concrete task"
 ./run.sh session start
 ./run.sh check --quick
 ./run.sh check
@@ -51,6 +52,7 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 | Files | `safe_file_delete.py` | Delete files after a dry run and reference scan |
 | Indexes | `generate_enhanced_index.py` | Regenerate folder indexes |
 | Sessions | `session.py` | Bounded session lifecycle and usage checkpoints |
+| Task intake | `prompt_router.py --brief` | Read-only lane, role, skill, automation, and context brief |
 | CI | `diagnose_ci.py` | Diagnose CI failures without managing Git |
 | Release | `release.py` | Authorized release preparation and validation |
 | Frontend runtime | `node_runtime.py` | Select `.nvmrc` Node/npm for root-stable commands |

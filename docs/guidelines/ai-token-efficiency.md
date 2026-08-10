@@ -116,12 +116,19 @@ for the bounded exceptions above.
 
 ## Context Budget
 
-Start with the smallest orientation pack:
+For a new nontrivial task, compose the live lane, role, skills, automations, and
+bounded read set once:
+
+```bash
+./run.sh task brief "concrete task description"
+```
+
+This command is read-only and does not replace Codex-native branch/worktree
+isolation. Then run the smallest orientation pack once:
 
 ```bash
 ./run.sh session brief --agent <role>
-sed -n '1,80p' docs/TASKS.md
-git status --short --branch
+./run.sh session start
 ```
 
 Then:

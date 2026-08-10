@@ -7,7 +7,7 @@
       "model": "Claude Opus 4.6",
       "permission_level": "ReadOnly",
       "skills": ["session-management"],
-      "scripts": ["find_automation.py", "discover_api_signatures.py", "agent_context.py"],
+      "scripts": ["prompt_router.py", "find_automation.py", "discover_api_signatures.py", "agent_context.py"],
       "keywords": ["plan", "delegate", "triage", "session", "orchestrate", "prioritize", "task", "assign"],
       "handoff_targets": ["frontend", "backend", "structural-math", "api-developer", "structural-engineer", "tester", "governance", "doc-master"],
       "can_edit_files": false,

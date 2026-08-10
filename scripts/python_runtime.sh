@@ -13,6 +13,11 @@ run_python_candidate() {
     local candidate="$1"
     shift
     if [[ -n "$candidate" && -x "$candidate" ]]; then
+        local lane_python_path="$REPO_ROOT/Python"
+        case ":${PYTHONPATH:-}:" in
+            *":$lane_python_path:"*) ;;
+            *) export PYTHONPATH="$lane_python_path${PYTHONPATH:+:$PYTHONPATH}" ;;
+        esac
         exec "$candidate" "$@"
     fi
 }

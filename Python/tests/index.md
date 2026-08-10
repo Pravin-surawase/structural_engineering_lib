@@ -60,7 +60,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_reports.py](test_reports.py) | Tests for the reports module. | 8 | 0 | 447 |
 | [test_research_prototypes.py](test_research_prototypes.py) | Tests for research prototypes: Sustainability, Generative De | 4 | 0 | 908 |
 | [test_result_base.py](test_result_base.py) | Tests for result_base module. | 7 | 0 | 217 |
-| [test_session_automation.py](test_session_automation.py) | Regression tests for maintenance session automation. | 0 | 20 | 462 |
+| [test_session_automation.py](test_session_automation.py) | Regression tests for maintenance session automation. | 0 | 20 | 482 |
 | [test_session_store.py](test_session_store.py) | Tests for scripts/session_store.py — JSON session persistenc | 7 | 0 | 287 |
 | [test_slenderness.py](test_slenderness.py) | Unit tests for slenderness module. | 5 | 0 | 360 |
 | [test_testing_strategies.py](test_testing_strategies.py) | Tests for the testing_strategies module (TASK-279). | 12 | 0 | 681 |

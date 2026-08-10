@@ -14,7 +14,7 @@
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [README.md](README.md) | Scripts | > Development, validation, discovery, release-preparation, a | 72 |
+| [README.md](README.md) | Scripts | > Development, validation, discovery, release-preparation, a | 74 |
 
 ## Python Files
 
@@ -79,7 +79,7 @@
 | [generate_beam_tool_manifest.py](generate_beam_tool_manifest.py) | Generate and byte-check the catalogue-derived beam tool mani | 0 | 4 | 64 |
 | [generate_client_sdks.py](generate_client_sdks.py) | Generate client SDKs from FastAPI OpenAPI specification. | 0 | 6 | 560 |
 | [generate_docs_index.py](generate_docs_index.py) | Generate machine-readable JSON index of documentation. | 0 | 7 | 246 |
-| [generate_enhanced_index.py](generate_enhanced_index.py) | Generate enhanced index.json + index.md for ANY folder type. | 0 | 10 | 827 |
+| [generate_enhanced_index.py](generate_enhanced_index.py) | Generate enhanced index.json + index.md for ANY folder type. | 0 | 10 | 839 |
 | [generate_error_docs.py](generate_error_docs.py) | Generate docs/reference/error-codes.md from core/errors.py. | 0 | 4 | 139 |
 | [governance_health_score.py](governance_health_score.py) | Governance Health Score - TASK-289 | 3 | 1 | 515 |
 | [migrate_python_module.py](migrate_python_module.py) | Migrate a Python module to a new location with import update | 0 | 8 | 516 |
@@ -90,7 +90,7 @@
 | [pipeline_state.py](pipeline_state.py) | Pipeline state tracking for multi-step agent workflows. | 2 | 17 | 868 |
 | [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 203 |
 | [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 908 |
-| [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 3 | 494 |
+| [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 5 | 776 |
 | [release.py](release.py) | Unified release management CLI. | 0 | 8 | 1353 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 350 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
@@ -100,7 +100,7 @@
 | [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 502 |
 | [test_api_parity.py](test_api_parity.py) | API Parity Testing Script | 2 | 10 | 457 |
 | [test_changed.py](test_changed.py) | Smart test runner — run only tests related to changed files. | 0 | 3 | 219 |
-| [test_cli_smoke.py](test_cli_smoke.py) | CLI Smoke Tests — validate all key scripts work correctly. | 0 | 3 | 298 |
+| [test_cli_smoke.py](test_cli_smoke.py) | CLI Smoke Tests — validate all key scripts work correctly. | 0 | 3 | 315 |
 | [test_import_pipeline.py](test_import_pipeline.py) | End-to-end test of all import paths. | 0 | 20 | 412 |
 | [tool_permissions.py](tool_permissions.py) | Tool permission enforcement for agent operations. | 1 | 5 | 437 |
 | [tool_registry.py](tool_registry.py) | Unified tool registry — connects agents, skills, scripts, an | 1 | 12 | 556 |

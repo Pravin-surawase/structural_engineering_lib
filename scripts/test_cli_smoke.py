@@ -37,6 +37,17 @@ VENV = str(SCRIPT_DIR / "python_runtime.sh")
 # ---------------------------------------------------------------------------
 
 SMOKE_TESTS: list[dict[str, Any]] = [
+    # Worktree-aware Python runtime
+    {
+        "name": "runtime_import_lane",
+        "cmd": [
+            VENV,
+            "-c",
+            "import structural_lib; print(structural_lib.__file__)",
+        ],
+        "expect_rc": 0,
+        "expect_output": str(REPO_ROOT / "Python" / "structural_lib"),
+    },
     # Session commands
     {
         "name": "session_start_fast",
@@ -111,6 +122,12 @@ SMOKE_TESTS: list[dict[str, Any]] = [
         "cmd": [VENV, "scripts/find_automation.py", "run tests"],
         "expect_rc": 0,
         "expect_output": "run tests",
+    },
+    {
+        "name": "task_brief_json",
+        "cmd": [str(REPO_ROOT / "run.sh"), "task", "brief", "--json", "fix csv import"],
+        "expect_rc": 0,
+        "expect_output": '"initial_context"',
     },
     {
         "name": "discover_api",

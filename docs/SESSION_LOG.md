@@ -5,6 +5,96 @@
 
 ---
 
+## 2026-08-10 — Session: Efficient Task Workflow V1
+
+**Agent:** Codex
+**Branch:** `codex/workflow-efficiency-audit`
+**Focus:** Create a lane-safe, low-repetition task-intake workflow from recent-session evidence and existing project controls
+
+### Summary
+
+- Created a clean sibling worktree from fetched `origin/main` at `a0e115e1`
+  without switching, stashing, resetting, or editing the active slab and other
+  named worktrees.
+- Reviewed the recent UIX and maintenance session records, Chronicle context,
+  the 14-skill catalog, 115 automation tasks, prompt router, tool registry,
+  session workflow, pipeline state, and Codex-native Git boundary.
+- Added `./run.sh task brief "description"` as a read-only composition mode on
+  the existing prompt router. It reports every worktree and dirty-file count,
+  routes the task to the existing role and skills, deduplicates matching
+  automations, bounds the initial read set, and prints the task-contract,
+  verification, pipeline, and Git boundaries.
+- Extended the existing `session-management` skill instead of creating a
+  fifteenth skill or a Git lifecycle wrapper. Routine pipeline tracking remains
+  opt-in only when work must resume across sessions.
+- Made generated-index freshness portable across linked worktrees by excluding
+  nested filesystem modification timestamps from the semantic projection hash
+  while retaining file content hashes and subfolder projections.
+
+### Issues encountered
+
+- The original checkout contained an active slab lane with many uncommitted
+  files, so creating or switching a branch there could have collided with
+  concurrent work.
+- The exact natural-language intake query returned no result from
+  `./run.sh find`, even though separate role, skill, automation, and session
+  primitives existed.
+- The first task-brief prototype was a new physical script. An all-index check
+  then reported 29/32 unrelated indexes stale in the fresh linked worktree;
+  removing the new file did not clear the result and disproved script count as
+  the cause.
+- The first full gate passed 29/30 but API validation reported slab symbols
+  that were committed only on the separate active slab branch and were absent
+  from this isolated worktree.
+- A targeted `jq` inspection assumed every generated-index file entry had a
+  string `path`; nullable entries stopped that inspection command.
+
+### Root causes and resolutions
+
+- Active lanes shared one Git repository but required separate working
+  directories. A fetched-main sibling worktree and `codex/` branch established
+  physical and ref-level isolation; repeated live lane inspection confirmed the
+  other worktrees were not mutated.
+- Task intake was split across `session brief`, `prompt_router.py`,
+  `tool_registry.py`, `find_automation.py`, and manual Git inspection. The new
+  prompt-router brief mode composes those read-only sources behind one
+  `run.sh` command without duplicating their authority.
+- Generated index hashes excluded only the top-level generation date while
+  retaining each file's checkout-specific `last_updated` value. Fresh worktree
+  mtimes therefore produced false drift. Stable projection hashing now removes
+  `last_updated` recursively, preserves nested content hashes, and compares the
+  stored and current semantic projections. Focused tests prove mtime-only
+  changes are ignored while child-file-count changes still alter the hash.
+- `python_runtime.sh` correctly found the primary checkout's shared virtual
+  environment, but that environment's editable package path still pointed at
+  the primary slab lane. The launcher now prepends the invoking worktree's
+  `Python/` directory before executing any approved interpreter. Direct import
+  evidence resolves `structural_lib` to this worktree, and the same API check
+  passes without modifying or suppressing the slab branch.
+- The failed `jq` query was an audit-command schema assumption, not repository
+  corruption. Subsequent queries normalized nullable paths with `// ""`; no
+  generated data was changed to accommodate the probe.
+
+### Verification
+
+- Human and JSON `./run.sh task brief` runs returned the routed role, skills,
+  deduplicated tools, bounded context, all five live worktrees, and explicit Git
+  boundaries; before/after `git status --porcelain` output was identical.
+- Focused Ruff check/format and `bash -n run.sh` pass.
+- Focused generated-index/session automation tests pass, including semantic
+  child-projection drift and linked-worktree mtime portability.
+- The task-brief CLI smoke case passes through the public `run.sh` dispatcher.
+- The runtime smoke case proves the shared interpreter imports
+  `Python/structural_lib` from the invoking linked worktree.
+- Targeted index regeneration followed by `generate_enhanced_index.py --all
+  --check` is the closeout freshness authority.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: a nullable `scripts/index.json` path caused the first
+  `jq test(...)` inventory query to fail -> the corrected query used
+  `(.path // "")` and the audit continued without repository mutation.
+
 ## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
 
 **Agent:** Codex

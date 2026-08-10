@@ -19,14 +19,19 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import subprocess
 import sys
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
+from typing import Any
 
 # Add _lib to path
 sys.path.insert(0, str(Path(__file__).parent))
 from _lib.output import StatusLine, print_json
 from _lib.utils import REPO_ROOT
+from tool_registry import ToolEntry, find_tools, load_registry
+
+AUTOMATION_MAP_PATH = REPO_ROOT / "scripts" / "automation-map.json"
 
 
 @dataclass
@@ -204,6 +209,22 @@ STOPWORDS = {
     "help",
     "using",
     "use",
+}
+
+GENERIC_TASK_WORDS = {
+    "add",
+    "change",
+    "create",
+    "efficient",
+    "faster",
+    "fix",
+    "make",
+    "new",
+    "smart",
+    "task",
+    "update",
+    "without",
+    "work",
 }
 
 
@@ -427,6 +448,254 @@ def route_all(query: str) -> list[RoutingResult]:
     return routing_results
 
 
+def _git(args: list[str], *, cwd: Path = REPO_ROOT) -> str | None:
+    """Run one read-only Git query and return stripped stdout."""
+    try:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=cwd,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=10,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if result.returncode != 0:
+        return None
+    return result.stdout.strip()
+
+
+def _parse_worktrees(raw: str) -> list[dict[str, str]]:
+    """Parse ``git worktree list --porcelain`` records."""
+    records: list[dict[str, str]] = []
+    current: dict[str, str] = {}
+    for line in [*raw.splitlines(), ""]:
+        if not line:
+            if current:
+                records.append(current)
+                current = {}
+            continue
+        key, _, value = line.partition(" ")
+        current[key] = value
+    return records
+
+
+def collect_lane_state() -> dict[str, Any]:
+    """Collect current and sibling worktree state without mutating Git."""
+    branch = _git(["branch", "--show-current"]) or "DETACHED"
+    head = _git(["rev-parse", "--short", "HEAD"]) or "unknown"
+    status = _git(["status", "--porcelain=v1"])
+    current_dirty = len(status.splitlines()) if status else 0
+    raw_worktrees = _git(["worktree", "list", "--porcelain"]) or ""
+    current_root = REPO_ROOT.resolve()
+    worktrees: list[dict[str, Any]] = []
+
+    for record in _parse_worktrees(raw_worktrees):
+        worktree_path = Path(record.get("worktree", ""))
+        worktree_status = _git(["status", "--porcelain=v1"], cwd=worktree_path)
+        dirty_count = (
+            len(worktree_status.splitlines()) if worktree_status is not None else None
+        )
+        branch_name = record.get("branch", "DETACHED").removeprefix("refs/heads/")
+        try:
+            is_current = worktree_path.resolve() == current_root
+        except OSError:
+            is_current = False
+        worktrees.append(
+            {
+                "path": str(worktree_path),
+                "branch": branch_name,
+                "head": record.get("HEAD", "unknown")[:8],
+                "dirty_files": dirty_count,
+                "current": is_current,
+            }
+        )
+
+    attention: list[str] = []
+    if branch == "DETACHED":
+        attention.append(
+            "Current worktree is detached; inspect Git state before editing."
+        )
+    elif branch in {"main", "master"}:
+        attention.append(
+            "Current worktree is on the default branch; use Codex-native Git to isolate the task."
+        )
+    if current_dirty:
+        attention.append(
+            f"Current worktree has {current_dirty} changed file(s); confirm task ownership before editing."
+        )
+    other_dirty = [
+        item
+        for item in worktrees
+        if not item["current"] and (item["dirty_files"] or 0) > 0
+    ]
+    if other_dirty:
+        attention.append(
+            f"{len(other_dirty)} other worktree(s) contain changes; preserve those active lanes."
+        )
+
+    return {
+        "root": str(REPO_ROOT),
+        "branch": branch,
+        "head": head,
+        "dirty_files": current_dirty,
+        "worktrees": worktrees,
+        "attention": attention,
+    }
+
+
+def _task_tokens(text: str) -> set[str]:
+    """Tokenize task/tool text while excluding generic request words."""
+    return {
+        token
+        for token in re.split(r"[^a-z0-9]+", text.lower())
+        if len(token) > 2 and token not in STOPWORDS | GENERIC_TASK_WORDS
+    }
+
+
+def _relevant_tools(query: str, *, limit: int = 4) -> list[tuple[ToolEntry, float]]:
+    """Return the strongest domain-relevant existing tools for the task."""
+    registry = load_registry()
+    meaningful_query_tokens = _task_tokens(query)
+    ranked = find_tools(query, registry, limit=25)
+    relevant: list[tuple[ToolEntry, float]] = []
+    seen_commands: set[str] = set()
+    for tool, score in ranked:
+        if not tool.script:
+            continue
+        searchable_tokens = _task_tokens(
+            f"{tool.name} {tool.description} {' '.join(tool.keywords)}"
+        )
+        if meaningful_query_tokens and not meaningful_query_tokens & searchable_tokens:
+            continue
+        if tool.script in seen_commands:
+            continue
+        relevant.append((tool, score))
+        seen_commands.add(tool.script)
+        if len(relevant) >= limit:
+            break
+    return relevant
+
+
+def _initial_context(
+    skills: list[str], tools: list[tuple[ToolEntry, float]]
+) -> list[str]:
+    """Build a bounded initial read set from existing authoritative metadata."""
+    context = [
+        "AGENTS.md",
+        "docs/TASKS.md",
+        "docs/planning/next-session-brief.md",
+    ]
+    for skill in skills:
+        path = f".github/skills/{skill}/SKILL.md"
+        if (REPO_ROOT / path).exists():
+            context.append(path)
+
+    automation_map = json.loads(AUTOMATION_MAP_PATH.read_text(encoding="utf-8"))
+    task_map = automation_map.get("tasks", {})
+    for tool, _score in tools:
+        for path in task_map.get(tool.name, {}).get("context_docs", []):
+            if path not in context and (REPO_ROOT / path).exists():
+                context.append(path)
+            if len(context) >= 7:
+                return context
+    return context
+
+
+def build_task_brief(query: str) -> dict[str, Any]:
+    """Compose lane, routing, discovery, and workflow guidance for ``query``."""
+    routing = route(query)
+    tools = _relevant_tools(query)
+    tool_data = [
+        {
+            "name": tool.name,
+            "description": tool.description,
+            "command": tool.script,
+            "permission": tool.permission or "Unspecified",
+            "score": score,
+        }
+        for tool, score in tools
+    ]
+    return {
+        "task": query,
+        "lane": collect_lane_state(),
+        "route": asdict(routing),
+        "matching_tools": tool_data,
+        "initial_context": _initial_context(routing.skills, tools),
+        "task_contract": [
+            "one objective",
+            "explicit non-goals",
+            "exact files and patterns to reuse",
+            "likely pitfalls",
+            "measurable acceptance criteria",
+            "narrow verification commands",
+        ],
+        "workflow": {
+            "start": [
+                f"./run.sh session brief --agent {routing.agent}",
+                "./run.sh session start",
+            ],
+            "loop": "inspect -> bounded change -> focused verification -> issue/root-cause record",
+            "close": [
+                "./run.sh check --quick",
+                f"./run.sh session end --agent {routing.agent}",
+            ],
+            "pipeline_rule": "Use ./run.sh pipeline only when the task must resume across sessions.",
+            "git_rule": "Codex owns Git/worktree/PR operations; repository scripts stay read-only for Git.",
+        },
+    }
+
+
+def _print_task_brief(brief: dict[str, Any]) -> None:
+    """Print a compact human-readable task brief."""
+    lane = brief["lane"]
+    routing = brief["route"]
+    print("\nEfficient Task Brief")
+    print("=" * 60)
+    print(f"Task: {brief['task']}")
+    print(
+        f"Lane: {lane['branch']} @ {lane['head']} | "
+        f"{lane['dirty_files']} changed | {len(lane['worktrees'])} worktrees"
+    )
+    for item in lane["worktrees"]:
+        marker = "*" if item["current"] else " "
+        dirty = "unknown" if item["dirty_files"] is None else item["dirty_files"]
+        print(f" {marker} {item['branch']} | dirty={dirty} | {item['path']}")
+    for warning in lane["attention"]:
+        print(f" ! {warning}")
+
+    skills = ", ".join(routing["skills"]) if routing["skills"] else "none"
+    scripts = ", ".join(routing["scripts"]) if routing["scripts"] else "none"
+    print(f"\nRoute: @{routing['agent']} ({routing['confidence']:.2f})")
+    print(f"Skills: {skills}")
+    print(f"Role scripts: {scripts}")
+
+    print("\nExisting tools:")
+    if brief["matching_tools"]:
+        for item in brief["matching_tools"]:
+            command = f" -> {item['command']}" if item["command"] else ""
+            print(f" - {item['name']} [{item['permission']}]{command}")
+    else:
+        print(
+            " - No task-specific automation match; inspect the affected folder index."
+        )
+
+    print("\nInitial read set:")
+    for path in brief["initial_context"]:
+        print(f" - {path}")
+
+    print("\nBefore editing, define:")
+    print(" - " + "; ".join(brief["task_contract"]))
+    print("\nRun once:")
+    for command in brief["workflow"]["start"]:
+        print(f" - {command}")
+    print(f"Loop: {brief['workflow']['loop']}")
+    print(f"Close: {' -> '.join(brief['workflow']['close'])}")
+    print(f"Note: {brief['workflow']['pipeline_rule']}")
+    print(f"Git: {brief['workflow']['git_rule']}\n")
+
+
 def _print_result(result: RoutingResult, query: str) -> None:
     """Print a routing result in human-readable format."""
     print(f'\n🎯 Routing: "{query}"')
@@ -467,15 +736,28 @@ def main() -> None:
   ./scripts/python_runtime.sh scripts/prompt_router.py "design beam 300x500 with IS 456"
   ./scripts/python_runtime.sh scripts/prompt_router.py --json "fix csv import bug"
   ./scripts/python_runtime.sh scripts/prompt_router.py --all "security audit"
+  ./scripts/python_runtime.sh scripts/prompt_router.py --brief "fix csv import bug"
 """,
     )
     parser.add_argument("query", help="Natural language query to route")
     parser.add_argument("--json", action="store_true", help="Output as JSON")
-    parser.add_argument("--all", action="store_true", help="Show all candidates ranked")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--all", action="store_true", help="Show all candidates ranked")
+    mode.add_argument(
+        "--brief",
+        action="store_true",
+        help="Build a read-only lane, role, skill, automation, and context brief",
+    )
 
     args = parser.parse_args()
 
-    if args.all:
+    if args.brief:
+        brief = build_task_brief(args.query)
+        if args.json:
+            print_json(brief)
+        else:
+            _print_task_brief(brief)
+    elif args.all:
         results = route_all(args.query)
         if args.json:
             print_json([asdict(r) for r in results])
