@@ -635,6 +635,29 @@ describe('API Response Contract — unwrap enforcement', () => {
     expect((result as any).data).toBeUndefined();
   });
 
+  it('designBeam() forwards AbortSignal through the transport boundary', async () => {
+    const innerData = {
+      success: true,
+      message: 'OK',
+      flexure: { ast_required: 850 },
+      ast_total: 850,
+      asc_total: 0,
+      utilization_ratio: 0.87,
+    };
+    const fetchSpy = mockFetch({ success: true, data: innerData });
+    const controller = new AbortController();
+
+    await designBeam(
+      { width: 300, depth: 500, moment: 150, fck: 25, fy: 500 },
+      { signal: controller.signal },
+    );
+
+    expect(fetchSpy).toHaveBeenCalledWith(
+      `${API}/api/v1/design/beam`,
+      expect.objectContaining({ signal: controller.signal }),
+    );
+  });
+
   it('loadSampleData() unwraps response envelope', async () => {
     const innerData = {
       success: true,

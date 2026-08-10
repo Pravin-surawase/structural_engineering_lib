@@ -20,8 +20,8 @@ current_wave: 1
 
 **Type:** Master Plan
 **Audience:** Product owner, frontend, backend, API, structural-library, 3D, reviewer, and tester roles
-**Status:** Active — owner accepted; Session 1 Wave 0 contract lock accepted;
-Wave 1 foundations are active
+**Status:** Active — Session 1 Wave 0 accepted; Wave 1 foundation checkpoint is
+in progress, with live shell/persistence integration still pending
 **Importance:** Critical
 **Created:** 2026-08-10
 **Last Updated:** 2026-08-10
@@ -1882,20 +1882,20 @@ these tables only after the parent reviews evidence.
 
 | Macro session | Scope | State | Required exit |
 |---|---|---|---|
-| Session 1 | P0-P8 compact workbench and essential 3D | Wave 1 active after Wave 0 lock | Session 1 exit gate in section 12.2 |
+| Session 1 | P0-P8 compact workbench and essential 3D | Wave 1 foundation checkpoint in progress | Session 1 exit gate in section 12.2 |
 | Session 2 | P9-P15 capability platform and cutover | Blocked on Session 1 | Session 2 exit gate in section 12.3 |
 
 | Session | Packet | State | Evidence/commit | Notes |
 |---|---|---|---|---|
 | 1 | P0 | Accepted | Section 22 | Live baseline, usefulness, browser, API/state, and 3D lock |
 | 1 | P1 | Accepted | Section 22 | Route map, targets, and three-width wireframes frozen |
-| 1 | P2 | Active | — | Visual foundation and shell |
-| 1 | P3 | Active | — | Workspace state/persistence |
+| 1 | P2 | In progress | Current branch | Typed navigation and presentation primitives implemented; live route/shell integration pending |
+| 1 | P3 | In progress | Current branch | Revision identity, store, persistence, sync, and request foundations implemented; live autosave/recovery integration pending |
 | 1 | P4 | Blocked on P2/P3 handoff | — | Quick-design migration |
 | 1 | P5 | Not started | — | Project intake/review |
 | 1 | P6 | Not started | — | Project design/results/export |
-| 1 | P7 | Not started | — | Viewport decomposition |
-| 1 | P8 | Not started | — | Essential 3D expansion/performance |
+| 1 | P7 | Ready | Current branch | Two-frame GeometrySpaceV1 fixture implemented; viewport decomposition not started |
+| 1 | P8 | Blocked on P6/P7 | — | Essential 3D layers require revision-matched result truth |
 | 2 | P9 | Not started | — | Workflow catalogue |
 | 2 | P10 | Not started | — | Catalogue API |
 | 2 | P11 | Not started | — | React schema vertical slice |
@@ -1917,38 +1917,44 @@ are already fixed.
 |---|---|
 | Session 1 base | origin/main and the current branch started at 32b9f33b after PR #718 |
 | Runtime | Python 3.11; Node 24.19.0; npm 11.17.0; Vite 7.3.6 |
-| Primary live browser | In-app Chromium 151 on macOS, DPR 1, reduced motion off |
-| P0 viewports | 1440 x 1000, 1024 x 768, and 390 x 844 |
-| API route/method audit | 23 React call sites across 9 files matched 63 OpenAPI paths; this does not prove response shapes |
-| Focused application checks | 17 Terra-routing/policy tests passed; existing API route/method check passed |
-| Focused 3D checks | Python building/detail geometry suites passed; useBeamGeometry had 4 passing React tests |
-| Production build | 2,778 modules transformed in 3.56 seconds; build passed |
-| Maintained sample | 153 members across 6 stories; sample API payload was 36,634 bytes before results and saved-state metadata |
+| Primary live browser | Codex in-app Chromium 151 on macOS, DPR 1; no error/warning entries, with two informational WebGL context-loss notices during repeated route changes |
+| P0 viewports | 1440 x 900, 1024 x 768, and 390 x 844 |
+| API/client audit | Complete-shape inspection of exposed and dormant React clients/hooks against FastAPI models and OpenAPI; route/method coincidence was not treated as shape proof |
+| Focused application evidence | Read-only source audit plus live quick, sample, editor, member-selection, empty-deep-link, and recovery journeys |
+| Focused 3D checks | 12 Python geometry/sample tests and 4 useBeamGeometry React tests passed |
+| Production build | 2,778 modules transformed in 5.14 seconds; TypeScript and Vite build passed |
+| Maintained sample | 153 members across 6 stories; API payload 36,634 bytes; proposed minimal WorkspaceSnapshotV1 payload 36,319 bytes before results/history |
+| Batch transport/control | Direct 153-member batch returned HTTP 200, 153/153 PASS, and 27,285 bytes in 10.6 ms; the live editor still displayed Designing after more than 34 seconds |
 
 Production gzip baselines from the P0 build are:
 
-- application index JavaScript 36.31 kB and shared CSS 12.77 kB;
+- application index JavaScript 36.30 kB and shared CSS 13.12 kB;
 - DesignView 11.52 kB;
 - BuildingEditorPage JavaScript 9.44 kB and route CSS 32.16 kB;
 - Three.js 185.67 kB and React Three Fiber/Drei 136.86 kB;
 - AG Grid 224.11 kB.
 
-The large Three.js and AG Grid chunks remain lazy route dependencies. P2 must not
-pull them into the landing shell. P7/P8 compare the final route delivery against
-this baseline; no percentage improvement is claimed before profiling.
+The production landing route currently loads the application index, HomePage,
+Framer Motion, React Three Fiber/Drei, and Three.js: about 1,394.8 kB raw and
+404.2 kB gzip of JavaScript, plus the shared CSS. AG Grid remains route-lazy, but
+the decorative landing canvas makes the 3D runtime eager. P2 must remove that
+landing cost or defer it behind an intentional workbench action. P7/P8 compare
+final route delivery against this baseline; no percentage improvement is claimed
+before profiling.
 
 ### 22.2 Live task-flow and simplicity baseline
 
 | Surface | Current live evidence | Main-process decision |
 |---|---|---|
-| Landing to quick result | Start Designing reached an already calculated PASS result in one intentional action | Preserve a one- or two-action quick path, but bind the result to current inputs |
+| Landing to quick result | Start Designing reached a visible PASS in one intentional action and 3.052 seconds in the warm local journey | Preserve a one- or two-action quick path, but bind the result to current inputs |
 | Quick design desktop | 16 buttons, 11 form controls, 7 links, one Canvas, inputs/result/3D/alternatives/export simultaneously visible | Recompose into Input, Review, and Export states with one emphasized action per state |
-| Quick design at 1024 | No document overflow was reported, but the beam was visibly clipped and lower results competed with a fixed dock | Use collapsible input rail and contextual result tray |
 | Quick design at 390 | The document reported no horizontal scroll while the right workspace was visibly outside the viewport; the fixed shell prevented recovery | Narrow review is a blocking P2/P4 requirement; dense editing may remain desktop-first |
 | Import entry | 14 buttons, 4 controls, 7 links, and three overlapping progress/navigation presentations | Keep single/dual/sample intake, but show one stage model and one next action |
-| Sample to editor | Sample Building then Open Building Editor loaded 153 members in two actions from import | Preserve; landing to sample review target is at most three intentional actions |
+| Sample to editor | `/import?sample=true` reached the 153-member preview in 406 ms; Open Building Editor produced a visible Canvas in 1.766 seconds | Preserve; landing to sample review target is at most three intentional actions |
 | Project editor | 15 buttons, 16 controls, 7 links, one Canvas, 153-row grid, materials, export, stage bar, toolbar, and dock in one fixed viewport | Make 3D/grid/inspector contextual regions inside one workbench |
-| Sample batch completion | On a stable rerun the batch endpoint returned HTTP 200, while after 8 seconds the header and all visible rows still said Designing | Confirm root cause in P3/P6; do not accept project result or export parity before it visibly settles |
+| Project editor at 1024 | Canvas, grid, and actions remained present with no document overflow, but the grid exposed only a clipped subset of columns | Keep review usable; dense editing remains desktop-first |
+| Project editor at 390 | No document overflow was reported, but the toolbar and critical actions were clipped by an overflow-hidden fixed workspace | P2 must keep save/recovery/status/next action reachable; do not promise dense grid editing |
+| Sample batch completion | The batch API settled 153/153 PASS in 10.6 ms, while the live header and visible rows remained Designing for more than 34 seconds | Treat as a frontend state-settlement blocker in P3/P6; project result and export parity are unaccepted |
 | Reload/resume | Reloading the populated editor retained the URL but produced No beams loaded; only a small Hub summary is persisted | Full project resume is absent and P3-blocking |
 | Empty deep links | editor, batch, dashboard, and design/results remain on their URLs and provide a recovery CTA | Retain recoverability, then replace with typed stage guards and canonical redirects |
 | Current navigation | TopBar and floating dock each expose the same five destinations; project pages add another four-step bar and import adds a second three-step signal | One typed global group plus one contextual project stage group |
@@ -1983,6 +1989,7 @@ The quantitative simplification targets are:
 | Beam detail page | Compatibility/deep-link candidate | Keep behind a shareable current-result identity or redirect |
 | useAutoDesign duplicate hook | Internal/dormant | Do not expose; consolidate behind the P4 request coordinator |
 | SSE useBatchDesign | Dormant/hold | Cannot truthfully represent HOLD, stale, unsupported, or not evaluated |
+| useCSVTextImport | Dormant/hold | Sends a JSON body while the endpoint declares query input; reconcile or retire before exposure |
 | Serviceability request/response fields | Dormant/hold | React contract is incomplete; no Session 1 UI exposure |
 | useGeometryAdvanced | Dormant/hold | Request and response shapes do not match the current API |
 | geometry/beam/3d | Legacy/hold | Do not use for the workbench; detailed beam uses geometry/beam/full |
@@ -2164,22 +2171,34 @@ not retained.
 
 ### 22.8 Frozen 3D contract and essential layers
 
-GeometrySpaceV1 has one renderer-bound unit and axis contract:
+GeometrySpaceV1 freezes two explicit coordinate frames rather than pretending
+the current building and local-detail paths share one universal transform:
 
-- canonical source points remain metres as x plan/east, y plan/north, z elevation/up;
-- transport points are millimetres and declare schemaVersion, units, axes,
-  memberId, sourceId, label, story, frameType, section, and relevant revisions;
-- the renderer boundary applies R(mm) = (0.001 x, 0.001 z, -0.001 y) exactly once;
-- local detail origin is left support, center width, and soffit;
-- geometry/beam/full is the sole detailed beam contract for P7;
-- building transport must preserve label/section and fail closed rather than
+- `GlobalSourceSpaceV1` uses metres with x = plan east, y = plan north, and
+  z = elevation/up. Its only renderer boundary is
+  `G(x, y, z) = (x, z, -y)` in Three.js world metres.
+- `LocalBeamSpaceV1` uses millimetres with x = left support to right support,
+  y = section width from center, and z = soffit upward. Its only local renderer
+  boundary is `L(x, y, z) = (0.001x, 0.001z, 0.001y)`; placement then uses the
+  selected member's global origin and basis. A global negative-y mapping must
+  never be applied again to local detail coordinates.
+- every transport declares `schemaVersion`, frame, units, axes, `memberId`,
+  stable `sourceId`, display label, story, frame type, section, project/member/
+  input revisions, and geometry input hash;
+- `memberId` is the imported source `UniqueName`, not the current derived
+  `Label_Story`. Grid row, selection, result, geometry, inspector, and overlay
+  keys use that same identity; production payloads have no generated fallback;
+- `geometry/beam/full` is the sole detailed beam contract for P7 and must receive
+  the selected `memberId` instead of falling back to `B1/GF`;
+- building transport must preserve identity/section and fail closed rather than
   silently skip malformed members before it becomes authoritative.
 
 The golden fixture contains two canonical source members, their normalized
-millimetre payload, exact renderer coordinates, and one known detailed beam with
-outline, rebar, and stirrup positions. Assertions cover ID preservation, one
-metre-to-millimetre conversion, transform, bounds/center, selection, member count,
-detail placement, schema rejection, and visible fallback.
+global and local payloads, exact renderer coordinates, and one known detailed
+beam with outline, rebar, and stirrup positions. Assertions cover stable source
+ID preservation, exactly one conversion per boundary, both transforms,
+bounds/center, selection, member count, detail placement, revision/hash matching,
+unknown-schema rejection, and visible fallback.
 
 P8 must ship only selection synchronization, floor/frame filtering,
 fit-to-selection, deterministic camera, non-WebGL access, and a truthful status
@@ -2188,40 +2207,49 @@ revision-matched join. Loads, building dimensions, new cross-section inspection,
 before/after comparison, decorative effects, and unprofiled instancing are
 deferred.
 
-The scene baselines are the maintained 153-member sample and a render-only
-612-member fixture made by four deterministic copies of that sample, each with a
-stable prefixed ID and a fixed 20 m source-space x offset. It never feeds
-engineering calculations. P8 records load-to-usable time, frame interaction,
-resource counts available from the renderer, route/project switching, context
-loss/recovery, and memory trend before accepting optimizations.
+The scene baselines are the maintained 153-member sample and a synthetic,
+render-only 1,530-member fixture made by ten deterministic copies of that sample.
+Each copy has `perf:<tile>:<source-id>` identity and a fixed source-metre offset;
+it never feeds engineering calculations. P8 records load-to-usable time, frame
+interaction, draw/resource counts available from the renderer, five project
+switches, context loss/recovery, and memory trend before accepting optimizations.
 
 ### 22.9 Browser gate and known blockers
 
-Chromium is the maintained primary gate at all three P0 widths. Current Safari on
-macOS receives desktop and 390 px review/recovery smoke coverage at the Session 1
-exit. Firefox/WebKit automation and broader browser support are held, not claimed,
-until evidence exists. The in-app browser remains the smallest repeatable live
-mechanism; no broad browser framework is added in Wave 1.
+Chromium 151 is the maintained primary gate at all three P0 widths. Current
+Safari on macOS receives 1440 x 900, 1024 x 768, and 390 px review/recovery smoke
+coverage at the Session 1 exit. Firefox support is held, not claimed, until the
+same deterministic sample replay exists. The in-app browser remains the smallest
+repeatable Chromium mechanism; Safari uses a bounded manual/Web Inspector pass,
+and no broad browser framework is added in Wave 1. WebGL loss currently has only
+code-path evidence, so live fallback evidence remains an exit-gate requirement.
 
 Wave 1 starts with these confirmed blockers:
 
-1. quick requests do not have effective transport cancellation or latest-result-
-   wins identity;
-2. current input edits can coexist with retained quick/project results and exports;
-3. the stable sample run can remain visually Designing after HTTP 200;
-4. full project reload/resume is absent;
-5. status records cannot represent every non-exportable lifecycle explicitly;
-6. the 390 px quick workspace clips critical content without a recovery scroll;
-7. building 3D uses a second scale/axis path and its API may silently omit invalid
-   members;
-8. useGeometryAdvanced, serviceability UI fields, and SSE batch semantics are not
-   live-contract ready.
+1. REST quick hooks create abort controllers but do not pass their signals to
+   `designBeam`; older responses and finalizers can replace newer state;
+2. WebSocket, SSE, and project batch results carry no request/project/member/input
+   revision identity, so delayed output cannot be rejected correctly;
+3. current input edits can coexist with retained quick/project results and exports;
+4. the stable sample run can remain visually Designing after its HTTP 200 response;
+5. full project reload/resume is absent and status records cannot represent every
+   non-exportable lifecycle explicitly;
+6. the 390 px quick and project workspaces clip critical content without a
+   recovery path;
+7. imported source `UniqueName` is dropped, selected detail requests can default
+   to `B1/GF`, and current building/local geometry use two undocumented frames;
+8. the landing route eagerly loads Framer Motion, React Three Fiber/Drei, and
+   Three.js for a decorative canvas;
+9. `useGeometryAdvanced`, `useCSVTextImport`, serviceability UI fields, and SSE
+   batch semantics are not live-contract ready.
 
-Wave 1 may now implement P2/P3 foundations. P4 remains blocked until the parent
-publishes the navigation, workspace, request, status, and export boundaries.
+Wave 1 has implemented the P2/P3 contract foundations and the GeometrySpaceV1
+golden fixture. P4 remains blocked until live shell, autosave/recovery, request,
+status, and export integration proves those boundaries. P7 is ready for a later
+bounded decomposition packet; P8 remains blocked on P6 revision truth and P7.
 Wave 2 remains blocked on the P4 checkpoint and the later P5/P6 project-result
 handoff. No parallel worker owns App.tsx, shared contracts, stores, API client,
-public viewport contract, or this ledger.
+public viewport contract, or this ledger without a fresh disjoint packet.
 
 ## 23. Immediate kickoff checklist
 

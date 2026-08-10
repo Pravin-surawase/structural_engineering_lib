@@ -2,7 +2,7 @@
   "folder": "react_app/src/components",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-10",
   "file_count": 2,
   "files": [
     {
@@ -67,7 +67,12 @@
     {
       "name": "viewport",
       "path": "viewport/",
-      "file_count": 6
+      "file_count": 8
+    },
+    {
+      "name": "workbench",
+      "path": "workbench/",
+      "file_count": 8
     }
   ],
   "content_hash": "3265f2879e94f70b"

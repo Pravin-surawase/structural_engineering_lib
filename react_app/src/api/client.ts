@@ -132,6 +132,10 @@ export interface Geometry3DResponse {
 
 import { API_BASE_URL } from '../config';
 
+export interface RequestOptions {
+  signal?: AbortSignal;
+}
+
 /**
  * Unwrap FastAPI's standard response envelope.
  * All /api/v1/* endpoints return: {"success": true, "data": <actual payload>}
@@ -166,13 +170,20 @@ export async function checkHealth(): Promise<HealthResponse> {
 /**
  * Design a reinforced concrete beam.
  */
+export function designBeam(params: BeamDesignRequest): Promise<BeamDesignResponse>;
+export function designBeam(
+  params: BeamDesignRequest,
+  options: RequestOptions,
+): Promise<BeamDesignResponse>;
 export async function designBeam(
-  params: BeamDesignRequest
+  params: BeamDesignRequest,
+  options?: RequestOptions,
 ): Promise<BeamDesignResponse> {
   const response = await fetch(`${API_BASE_URL}/api/v1/design/beam`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(params),
+    ...(options?.signal ? { signal: options.signal } : {}),
   });
 
   if (!response.ok) {
@@ -187,12 +198,14 @@ export async function designBeam(
  * Generate 3D beam geometry for visualization.
  */
 export async function generateBeamGeometry(
-  request: Geometry3DRequest
+  request: Geometry3DRequest,
+  options?: RequestOptions,
 ): Promise<Geometry3DResponse> {
   const response = await fetch(`${API_BASE_URL}/api/v1/geometry/beam/3d`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(request),
+    ...(options?.signal ? { signal: options.signal } : {}),
   });
 
   if (!response.ok) {

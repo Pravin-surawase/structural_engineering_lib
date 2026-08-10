@@ -2,7 +2,7 @@
   "folder": "react_app/src",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-10",
   "file_count": 5,
   "files": [
     {
@@ -54,6 +54,11 @@
       "file_count": 2
     },
     {
+      "name": "app",
+      "path": "app/",
+      "file_count": 4
+    },
+    {
       "name": "assets",
       "path": "assets/",
       "file_count": 1
@@ -61,12 +66,12 @@
     {
       "name": "components",
       "path": "components/",
-      "file_count": 56
+      "file_count": 66
     },
     {
       "name": "hooks",
       "path": "hooks/",
-      "file_count": 23
+      "file_count": 24
     },
     {
       "name": "lib",
@@ -91,7 +96,12 @@
     {
       "name": "utils",
       "path": "utils/",
-      "file_count": 5
+      "file_count": 10
+    },
+    {
+      "name": "workspace",
+      "path": "workspace/",
+      "file_count": 12
     }
   ],
   "content_hash": "85b284cebe12a7c7"

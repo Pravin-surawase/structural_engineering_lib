@@ -2,67 +2,85 @@
   "folder": "react_app/src/components/viewport",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-02-10",
-  "file_count": 6,
+  "last_updated": "2026-08-10",
+  "file_count": 5,
   "files": [
     {
       "name": "LandingView.tsx",
       "type": "react-component",
       "size_lines": 171,
-      "last_updated": "2026-01-26",
+      "last_updated": "2026-03-26",
       "exports": [
         "LandingView"
       ],
       "props_type": "LandingViewProps",
-      "description": "LandingView - Hero landing page with quick actions."
-    },
-    {
-      "name": "Viewport3D.css",
-      "type": "stylesheet",
-      "size_lines": 24,
-      "last_updated": "2026-01-25"
+      "description": "LandingView - Hero landing page with quick actions.",
+      "content_hash": "237b258682b5"
     },
     {
       "name": "Viewport3D.tsx",
       "type": "react-component",
-      "size_lines": 1038,
-      "last_updated": "2026-02-10",
+      "size_lines": 1025,
+      "last_updated": "2026-04-05",
       "exports": [
         "RebarPreviewGeometry",
         "Viewport3DMode",
         "Viewport3D"
       ],
       "props_type": "BeamMeshProps",
-      "description": "Viewport3D Component"
-    },
-    {
-      "name": "WorkspaceLayout.css",
-      "type": "stylesheet",
-      "size_lines": 29,
-      "last_updated": "2026-01-25"
+      "description": "Viewport3D Component",
+      "content_hash": "a5aab45d042a"
     },
     {
       "name": "WorkspaceLayout.tsx",
       "type": "react-component",
-      "size_lines": 84,
-      "last_updated": "2026-02-10",
+      "size_lines": 83,
+      "last_updated": "2026-03-26",
       "exports": [
         "WorkspaceLayout"
       ],
-      "description": "WorkspaceLayout Component"
+      "description": "WorkspaceLayout Component",
+      "content_hash": "3ac605129456"
+    },
+    {
+      "name": "geometrySpace.ts",
+      "type": "typescript",
+      "size_lines": 128,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "GEOMETRY_SPACE_V1",
+        "GLOBAL_SOURCE_SPACE_V1",
+        "LOCAL_BEAM_SPACE_V1",
+        "GEOMETRY_SPACE_FALLBACK",
+        "GlobalSourcePointM",
+        "LocalBeamPointMm",
+        "RendererPointM",
+        "GeometryMemberV1",
+        "GeometrySpaceV1",
+        "GeometrySpaceValidation",
+        "globalSourcePointToRendererM",
+        "localBeamPointToRendererM",
+        "boundsForMembers",
+        "centerForBounds",
+        "validateGeometrySpaceV1"
+      ],
+      "description": "GeometrySpaceV1 owns the two renderer boundaries frozen for P7.",
+      "content_hash": "d814be9e0b23"
     },
     {
       "name": "index.ts",
       "type": "typescript",
       "size_lines": 7,
-      "last_updated": "2026-02-10",
+      "last_updated": "2026-03-26",
       "exports": [
         "Viewport3D",
         "WorkspaceLayout",
         "LandingView"
       ],
-      "description": "Viewport feature group — 3D visualization components"
+      "description": "Viewport feature group — 3D visualization components",
+      "content_hash": "746199c4a785"
     }
   ],
-  "subfolders": []
+  "subfolders": [],
+  "content_hash": "6c130bc33b378281"
 }

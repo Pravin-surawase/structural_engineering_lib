@@ -1,0 +1,30 @@
+{
+  "folder": "react_app/src/app",
+  "type": "react-source",
+  "description": "",
+  "last_updated": "2026-08-10",
+  "file_count": 1,
+  "files": [
+    {
+      "name": "navigation.ts",
+      "type": "typescript",
+      "size_lines": 109,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "ProjectStage",
+        "GlobalDestination",
+        "ProjectStageDefinition",
+        "LegacyRouteDecision",
+        "GLOBAL_DESTINATIONS",
+        "PROJECT_STAGES",
+        "LEGACY_ROUTE_DECISIONS",
+        "projectStagePath",
+        "stageIsReachable",
+        "resolveLegacyDestination"
+      ],
+      "content_hash": "bbe97bc3e1b0"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "ad9f29d8bbba1110"
+}

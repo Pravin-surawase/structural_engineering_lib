@@ -91,11 +91,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 96,
+      "size_lines": 105,
       "last_updated": "2026-08-10",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-10",
-      "content_hash": "533dd8bd30d2"
+      "content_hash": "dbb90f1667b7"
     },
     {
       "name": "pre-release-checklist.md",
@@ -126,12 +126,12 @@
     {
       "name": "ui-experience-foundation-master-plan.md",
       "type": "documentation",
-      "size_lines": 2284,
+      "size_lines": 2312,
       "last_updated": "2026-08-10",
       "description": "The product will move from a collection of equally weighted pages to one compact, professional structural workbench.",
-      "content_hash": "a2d3cf170555"
+      "content_hash": "542b67d4a860"
     }
   ],
   "subfolders": [],
-  "content_hash": "4e1504d051cad2bd"
+  "content_hash": "3be64815d283d8b3"
 }

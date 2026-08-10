@@ -1,0 +1,101 @@
+{
+  "folder": "react_app/src/workspace",
+  "type": "react-source",
+  "description": "",
+  "last_updated": "2026-08-10",
+  "file_count": 6,
+  "files": [
+    {
+      "name": "identity.ts",
+      "type": "typescript",
+      "size_lines": 98,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "recordMatchesIdentity",
+        "recordIsCurrent",
+        "recordCanExport",
+        "memberIdentity",
+        "staleRecord",
+        "invalidateMemberRecords",
+        "pendingRecord"
+      ],
+      "content_hash": "4d71f0086704"
+    },
+    {
+      "name": "persistence.ts",
+      "type": "typescript",
+      "size_lines": 213,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "WorkspacePersistenceError",
+        "WorkspaceRecoveryRequiredError",
+        "WorkspacePersistence",
+        "createIndexedDbWorkspacePersistence",
+        "serializeWorkspaceSnapshot",
+        "parseWorkspaceSnapshot"
+      ],
+      "content_hash": "64b783432d76"
+    },
+    {
+      "name": "requestCoordinator.ts",
+      "type": "typescript",
+      "size_lines": 79,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "RequestToken",
+        "LatestRequestCoordinator"
+      ],
+      "content_hash": "e44582152d65"
+    },
+    {
+      "name": "sync.ts",
+      "type": "typescript",
+      "size_lines": 69,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "WorkspaceRevisionNotice",
+        "WorkspaceRevisionSync",
+        "createWorkspaceRevisionSync"
+      ],
+      "content_hash": "2fe30e7919b1"
+    },
+    {
+      "name": "types.ts",
+      "type": "typescript",
+      "size_lines": 223,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "WORKSPACE_SCHEMA_VERSION",
+        "JsonPrimitive",
+        "JsonValue",
+        "ResultLifecycle",
+        "EvidenceDecision",
+        "SupportStatus",
+        "SaveState",
+        "RevisionIdentity",
+        "RecordError",
+        "EvidenceRecord",
+        "WorkspaceMember",
+        "WorkspaceSnapshotV1",
+        "PersistedWorkspaceRecord",
+        "WorkspaceProjectSummary",
+        "isWorkspaceSnapshotV1"
+      ],
+      "content_hash": "6ef8a74edc66"
+    },
+    {
+      "name": "workspaceStore.ts",
+      "type": "typescript",
+      "size_lines": 279,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "MemberRecordKind",
+        "NewWorkspaceMember",
+        "useWorkspaceStore"
+      ],
+      "content_hash": "2595462ef92b"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "888e804123b0af40"
+}

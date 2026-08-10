@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — UIX-001 Session 1 Wave 0 locked; Wave 1 foundations active
+**Updated:** 2026-08-10 — UIX-001 Session 1 Wave 1 foundation checkpoint in progress
 
 ---
 
@@ -126,7 +126,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| UIX-001 | Build one compact 3D-first structural workbench and a schema-driven no-code foundation | Main Agent | 🚧 [SESSION 1 WAVE 1 — P2/P3 FOUNDATIONS](planning/ui-experience-foundation-master-plan.md) |
+| UIX-001 | Build one compact 3D-first structural workbench and a schema-driven no-code foundation | Main Agent | 🚧 [SESSION 1 WAVE 1 — FOUNDATION CHECKPOINT](planning/ui-experience-foundation-master-plan.md) |
 
 ## Up Next
 
@@ -138,7 +138,7 @@
 
 The version roadmap and historical backlog remain below. The v0.23.0 Alpha is
 published. UIX-001 is owner-accepted; its Wave 0 evidence/route/state/3D lock is
-accepted and Session 1 Wave 1 foundations are active. Stable-release and
+accepted and Session 1 Wave 1 foundations are in progress. Stable-release and
 engineering-use approval remain held for the cumulative qualified review.
 
 ## Recently Done

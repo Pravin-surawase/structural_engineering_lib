@@ -4,7 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: UIX-001 Session 1 Wave 1 P2/P3 foundations active
+- Focus: UIX-001 Session 1 Wave 1 foundation checkpoint in progress
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
@@ -16,8 +16,8 @@
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | UIX-001 Session 1 Wave 1 | Implement P2 shell/primitives and P3 revisioned workspace/persistence boundaries |
-| **Next** | UIX-001 P4 handoff | Start quick migration only after parent acceptance of P2/P3 contracts |
+| **Current** | UIX-001 Session 1 Wave 1 | Validate and integrate the P2/P3 foundation contracts and accepted 3D fixture |
+| **Next** | UIX-001 P4 handoff | Start quick migration only after P2/P3 live integration and parent acceptance |
 | **Held** | Stable/engineering use | Requires cumulative qualified structural-engineering review |
 
 ## Required Reading
@@ -45,21 +45,25 @@
   maintained runtime.
 - No GitHub Pages deployment or release action was performed.
 
-## Session 1 Wave 1
+## Session 1 Wave 1 checkpoint
 
-Wave 0 is accepted in master-plan section 22. It froze the route map, three-width
+Wave 0 is accepted in master-plan section 22. Wave 1 now has typed navigation,
+presentation-only workbench primitives, WorkspaceSnapshotV1 identity and
+IndexedDB boundaries, latest-request cancellation, AbortSignal-aware REST calls,
+and the two-frame GeometrySpaceV1 golden fixture. The Wave 0 checkpoint froze the
+route map, three-width
 wireframes, quantitative simplification targets, IndexedDB project persistence,
 revision-bound result/export lifecycle, one AbortSignal-aware React transport
 facade, GeometrySpaceV1, essential 3D layers, and the browser/scene baselines.
 
-1. **Parent:** own typed routes/navigation, WorkspaceSnapshotV1, result/request
-   identity, persistence/migrations, status/export truth, and shared integration.
-2. **Frontend flow:** implement only the approved visual tokens, repeated
-   primitives, and shell presentation against parent-owned contracts.
-3. **3D foundation:** implement GeometrySpaceV1 contract/golden fixture and return
-   the decomposition map; no P8 layers yet.
-4. **Checkpoint:** accept P2/P3, stale/out-of-order negatives, reload/recovery,
-   narrow-shell reachability, and the 3D fixture before the P4 follow-up.
+1. **Parent:** finish schema migration/recovery, autosave/conflict integration,
+   and truthful lifecycle/export selectors against the existing contracts.
+2. **Frontend flow:** integrate the shell and typed navigation without exposing a
+   second route hierarchy; prove critical actions remain reachable at 390 px.
+3. **3D foundation:** the two-frame fixture is implemented and focused tests pass;
+   P7 decomposition and P8 layers remain out of this checkpoint.
+4. **Checkpoint:** accept reload/recovery, narrow-shell reachability, and live
+   request/result settlement before the P4 follow-up.
 
 ## Open dependency holds
 
@@ -91,5 +95,10 @@ facade, GeometrySpaceV1, essential 3D layers, and the browser/scene baselines.
   separate worktrees and must never switch this checkout.
 - The optional agent-browser CLI was unavailable, so the maintained in-app
   Chromium browser was used for the live three-width baseline.
+- The in-app browser does not support `networkidle`; `domcontentloaded` plus an
+  explicit meaningful-element wait produced the repeatable live timings.
+- The first 3D source inspection used the obsolete `services/geometry_3d.py`
+  assumption; targeted file discovery found the maintained module at
+  `Python/structural_lib/visualization/geometry_3d.py`.
 - The archived `scripts/generate_folder_index.py` path was replaced by the
   maintained targeted `scripts/generate_enhanced_index.py` command.
