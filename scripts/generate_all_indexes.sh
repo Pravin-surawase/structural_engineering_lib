@@ -4,6 +4,7 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PYTHON_RUNTIME="$PROJECT_ROOT/scripts/python_runtime.sh"
 cd "$PROJECT_ROOT"
 
 echo "🔍 Generating hierarchical indexes for navigation study..."
@@ -33,9 +34,9 @@ for folder in "${FOLDERS[@]}"; do
         echo ""
         echo "📂 Processing: $folder"
         if [ "$folder" == "docs" ]; then
-            .venv/bin/python scripts/generate_enhanced_index.py --json-only "$folder"
+            "$PYTHON_RUNTIME" scripts/generate_enhanced_index.py --json-only "$folder"
         else
-            .venv/bin/python scripts/generate_enhanced_index.py "$folder"
+            "$PYTHON_RUNTIME" scripts/generate_enhanced_index.py "$folder"
         fi
     else
         echo "⚠️  Skipping (not found): $folder"

@@ -35,6 +35,16 @@
 - Maintenance found no stale remote branches, stale worktree metadata, stash,
   or project listener on ports 8000/8001/5173/5174. Generated dependencies and
   active-task caches were preserved; no destructive cleanup was justified.
+- After explicit owner approval, pushed `codex/parallel-task-policy` as a
+  recoverability checkpoint, re-audited every local/remote branch and PR, and
+  removed three clean redundant worktrees, fourteen proven-integrated or
+  superseded local branches, and eleven remote branches whose PRs were merged
+  with no open head/base dependency. The slab, column experiment, and policy
+  lanes remain as the three worktrees containing pending work.
+- Expanded the canonical Git workflow into a practical project-specific guide
+  for task branches, commits, base synchronization, PRs, merge-method choice,
+  parallel worktrees, recovery, and evidence-gated cleanup. It records the live
+  `main_branch_rule1` ruleset and repository merge settings as dated facts.
 
 ### Issues encountered
 
@@ -56,6 +66,15 @@
   tool contract permits at most 50.
 - The first health closeout rejected the new policy's `doc_type: policy` value
   and remained at 94/100.
+- The canonical `./run.sh generate indexes` command failed in the linked policy
+  worktree even though the standard Python runtime resolver worked elsewhere.
+- The first final commit attempt stopped after Black reformatted the modified
+  governance test.
+- The legacy branch-protection API returned HTTP 404 even though `main` was
+  visibly governed, so that endpoint could not establish the actual policy.
+- `codex/ui-workspace-p3` appeared to contain three unique commits despite the
+  UI program and PR #719 being merged, making deletion unsafe from ancestry or
+  age evidence alone.
 
 ### Root causes and resolutions
 
@@ -90,6 +109,23 @@
 - The documentation schema accepts `guide`, `reference`, `tutorial`, `index`,
   `spec`, or `log`, but not the descriptive `policy` label. The policy now uses
   `doc_type: spec`; focused front-matter validation and health 100/100 pass.
+- `scripts/generate_all_indexes.sh` bypassed the lane-aware runtime and invoked
+  the checkout-relative `.venv/bin/python` directly. It now calls
+  `scripts/python_runtime.sh`; the existing governance test covers this control,
+  and the same `./run.sh generate indexes` command succeeds in the linked
+  worktree. Regeneration also removed phantom research-index entries for files
+  no longer present and refreshed other genuinely stale folder counts.
+- The test formatting differed from the repository's Black output. The hook
+  applied the deterministic format; the affected indexes were regenerated and
+  the normal commit was retried without bypassing validation.
+- This repository protects `main` through the active repository ruleset API,
+  not the legacy per-branch protection endpoint. Querying ruleset `11390214`
+  confirmed deletion/non-fast-forward controls and the strict required
+  `PR Gate`; no ruleset or bypass setting was mutated.
+- PR #719 was squash-merged, so its component branch was not an ancestor of
+  `main`. `git range-diff` showed all three `ui-workspace-p3` commits as exact
+  matches in the six-commit reviewed PR head. That evidence made its local
+  pointer safe to remove without losing unique work.
 
 ### Verification
 
@@ -107,6 +143,10 @@
   links report zero broken links.
 - Focused front-matter validation reports zero invalid documents and project
   health reports 100/100.
+- All eleven deleted remote heads had a merged PR and zero open PRs using them
+  as head or base. GitHub retains those merged PRs as restoration evidence.
+- Final local Git inventory contains only `main` plus the slab, column, and
+  policy branches; worktree inventory contains exactly those three task lanes.
 
 ### Terminal issues
 
@@ -117,6 +157,17 @@
   -> the corrected default read-only invocation completed successfully.
 - ⚠️ TERMINAL ISSUE: the first task-list request exceeded the 50-entry tool cap
   -> retrying with `limit: 50` returned the live inventory.
+- ⚠️ TERMINAL ISSUE: `./run.sh generate indexes` could not find
+  `.venv/bin/python` in the linked worktree -> the generator now uses the shared
+  lane-aware runtime resolver and the unchanged command succeeds.
+- ⚠️ TERMINAL ISSUE: the legacy `branches/main/protection` API returned HTTP
+  404 -> the repository rulesets endpoint returned the active governing rule.
+- ⚠️ TERMINAL ISSUE: a zsh ancestry probe treated each space-separated ref pair
+  as one argument -> direct, explicitly named `merge-base --is-ancestor` calls
+  produced the required evidence.
+- ⚠️ TERMINAL ISSUE: the first final commit stopped after Black reformatted the
+  modified test -> the formatter output and regenerated indexes were staged and
+  the commit was retried normally.
 
 ## 2026-08-10 — Session: Efficient Task Workflow V1
 

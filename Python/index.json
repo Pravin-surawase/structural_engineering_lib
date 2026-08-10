@@ -2,29 +2,29 @@
   "folder": "Python",
   "type": "mixed",
   "description": "IS 456 RC Beam Design Library (Python package).",
-  "last_updated": "2026-04-04",
-  "file_count": 5,
+  "last_updated": "2026-08-10",
+  "file_count": 6,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 108,
-      "last_updated": "2026-04-01",
+      "size_lines": 243,
+      "last_updated": "2026-08-10",
       "title": "structural-lib-is456",
       "description": "IS 456 RC Beam Design Library (Python package). > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.",
-      "content_hash": "3ccc66e37214"
+      "content_hash": "7063d966b1fc"
     },
     {
       "name": "pyproject.toml",
       "type": "config",
-      "last_updated": "2026-04-04",
+      "last_updated": "2026-08-10",
       "description": ".TOML configuration file",
-      "content_hash": "55ccb4ec74c7"
+      "content_hash": "add62c8949d9"
     },
     {
       "name": "test_stats.json",
       "type": "config",
-      "last_updated": "2026-03-31",
+      "last_updated": "2026-08-10",
       "top_level_keys": [
         "passed",
         "skipped",
@@ -33,15 +33,15 @@
         "total",
         "date"
       ],
-      "content_hash": "7e65dc019130"
+      "content_hash": "913bb0c4568d"
     }
   ],
   "subfolders": [
     {
       "name": "examples",
       "path": "examples/",
-      "file_count": 19,
-      "description": "> **Purpose:** Example scripts demonstrating library usage"
+      "file_count": 20,
+      "description": "> **Purpose:** Example scripts demonstrating structural_lib usage"
     },
     {
       "name": "scripts",
@@ -51,16 +51,17 @@
     {
       "name": "structural_lib",
       "path": "structural_lib/",
-      "file_count": 184,
+      "file_count": 209,
       "description": "> **Purpose:** IS 456:2000 RC beam design calculations",
       "is_package": true
     },
     {
       "name": "tests",
       "path": "tests/",
-      "file_count": 156,
-      "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite."
+      "file_count": 195,
+      "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
+      "is_package": true
     }
   ],
-  "content_hash": "39664b827606939b"
+  "content_hash": "14c6268b24450cb2"
 }

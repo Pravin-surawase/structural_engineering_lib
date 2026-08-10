@@ -3092,10 +3092,10 @@
     {
       "name": "generate_all_indexes.sh",
       "type": "shell-script",
-      "size_lines": 51,
+      "size_lines": 52,
       "last_updated": "2026-08-10",
       "description": "Generate index.json + index.md for all research-relevant folders",
-      "content_hash": "32dbf76b936d"
+      "content_hash": "31d690dd8141"
     },
     {
       "name": "generate_api_manifest.py",
@@ -5356,5 +5356,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "ce5fa7cedc399f72"
+  "content_hash": "f9050c665fce7e4e"
 }

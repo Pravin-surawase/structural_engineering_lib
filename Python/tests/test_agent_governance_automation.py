@@ -66,9 +66,20 @@ def test_control_paths_use_python_runtime_launcher():
     assert 'VENV="$SCRIPTS/python_runtime.sh"' in run_sh
     assert all(".venv/bin/python" not in line for line in entry_lines)
 
-    for name in ("agent_start.sh", "preflight.py", "test_changed.py", "evolve.py"):
+    for name in (
+        "agent_start.sh",
+        "generate_all_indexes.sh",
+        "preflight.py",
+        "test_changed.py",
+        "evolve.py",
+    ):
         source = (SCRIPTS_DIR / name).read_text(encoding="utf-8")
         assert "python_runtime.sh" in source
+
+    index_generator_source = (SCRIPTS_DIR / "generate_all_indexes.sh").read_text(
+        encoding="utf-8"
+    )
+    assert ".venv/bin/python" not in index_generator_source
 
     agent_start_source = (SCRIPTS_DIR / "agent_start.sh").read_text(encoding="utf-8")
     assert ".venv/bin/python" not in agent_start_source

@@ -17,11 +17,11 @@
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 1151,
+      "size_lines": 1202,
       "last_updated": "2026-08-10",
       "title": "Session Log",
       "description": "> Append-only decision log for AI agent sessions. > Earlier sessions (1-100): SESSION_LOG_through_session_100.md",
-      "content_hash": "1ed65d72f049"
+      "content_hash": "a0928b083052"
     },
     {
       "name": "TASKS.md",
@@ -212,5 +212,5 @@
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "49bb69c57a5ac85e"
+  "content_hash": "638aae66d642e3c1"
 }
