@@ -8,6 +8,7 @@ from collections.abc import Iterable, Mapping
 from typing import Any
 
 from . import api
+from .evidence import build_beam_evidence_envelope
 
 
 def _to_float(value: Any, default: float) -> float:
@@ -88,6 +89,24 @@ def _design_single_beam(
         fck_nmm2=float(fck),
         fy_nmm2=float(fy),
     )
+    evidence = build_beam_evidence_envelope(
+        inputs={
+            "units": units,
+            "case_id": "CASE-1",
+            "mu_knm": moment,
+            "vu_kn": shear,
+            "b_mm": width,
+            "D_mm": depth,
+            "d_mm": d_mm,
+            "fck_nmm2": fck,
+            "fy_nmm2": fy,
+            "d_dash_mm": 50.0,
+            "asv_mm2": 100.0,
+        },
+        is_ok=result.is_ok,
+        governing_utilization=result.governing_utilization,
+        utilizations=result.utilizations,
+    )
 
     # A completed calculation is not necessarily a safe design.  The public
     # compliance result already combines every requested check (flexure,
@@ -125,6 +144,7 @@ def _design_single_beam(
         "utilizations": dict(result.utilizations),
         "failed_checks": list(result.failed_checks),
         "remarks": result.remarks,
+        "evidence": evidence,
     }
 
 

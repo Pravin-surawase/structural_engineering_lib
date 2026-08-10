@@ -618,8 +618,12 @@ class TestImportEndpoints:
             "is_safe",
             "utilization_ratio",
             "error",
+            "evidence",
         }
         assert set(result.keys()) == expected_keys
+        assert result["evidence"]["status"] == "PASS"
+        assert result["evidence"]["support_status"] == "SUPPORTED"
+        assert result["evidence"]["calculation_identity"]
         assert result["ast_required"] > 0
         assert 0 < result["utilization_ratio"] < 5
 

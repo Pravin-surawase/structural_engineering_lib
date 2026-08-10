@@ -3502,6 +3502,16 @@
             ],
             "title": "Error"
           },
+          "evidence": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EvidenceEnvelopeResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "is_safe": {
             "default": false,
             "title": "Is Safe",

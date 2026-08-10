@@ -7,6 +7,9 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { useBatchDesign } from '../../hooks/useBatchDesign';
 import type { BeamCSVRow } from '../../types/csv';
+import { useImportedBeamsStore } from '../../store/importedBeamsStore';
+import { projectExportReadiness } from '../../workspace/resultRecords';
+import { useWorkspaceStore } from '../../workspace/workspaceStore';
 
 // ── EventSource Mock ────────────────────────────────────────────────
 type SSEHandler = (e: MessageEvent) => void;
@@ -56,12 +59,37 @@ const mockBeam = (id: string): BeamCSVRow =>
     fck: 25,
     fy: 500,
     cover: 40,
+    Mu_mid: 100,
+    Vu_start: 50,
   }) as BeamCSVRow;
+
+const evidence = {
+  artifact_schema: 'structural_lib.beam-evidence',
+  artifact_schema_version: '1.0',
+  library_version: '0.23.0',
+  code_edition: 'IS 456:2000',
+  code_amendment_identity: 'not-declared-in-artifact',
+  capability_id: 'design_beam_is456',
+  support_status: 'SUPPORTED' as const,
+  unit_system: 'IS456',
+  explicit_units: { length: 'mm' },
+  normalized_input_hash: 'server-sha256',
+  calculation_identity: 'calculation-identity',
+  governing_check: 'flexure',
+  exact_utilization: 0.78,
+  margin: 0.22,
+  status: 'PASS' as const,
+  generated_at: '2026-08-10T00:00:00.000Z',
+  qualified_review_required: true,
+  qualified_review_requirement: 'Qualified review required.',
+};
 
 describe('useBatchDesign', () => {
   beforeEach(() => {
     MockEventSource.instances = [];
     vi.stubGlobal('EventSource', MockEventSource);
+    useWorkspaceStore.getState().reset();
+    useImportedBeamsStore.setState({ beams: [], selectedId: null, selectedFloor: null });
   });
 
   afterEach(() => {
@@ -217,7 +245,7 @@ describe('useBatchDesign', () => {
     expect(result.current.results[0]).toMatchObject({
       design_succeeded: false,
       is_safe: false,
-      status: 'FAIL',
+      status: 'HOLD',
     });
     expect(result.current.results[0].error).toBe('Invalid dimensions');
   });
@@ -271,5 +299,103 @@ describe('useBatchDesign', () => {
 
     expect(firstES.closed).toBe(true);
     expect(MockEventSource.instances).toHaveLength(2);
+  });
+
+  it('stores evidence only when the exact workspace revision is still current', () => {
+    const beam = { ...mockBeam('Label B1'), source_id: 'ETABS-101' };
+    useImportedBeamsStore.getState().setBeams([beam]);
+    const { result } = renderHook(() => useBatchDesign());
+
+    act(() => result.current.startBatchDesign([beam]));
+    const es = MockEventSource.instances[0];
+    act(() => {
+      es.emit('start', { job_id: 'job-123' });
+      es.emit('design_result', {
+        beam_id: 'ETABS-101',
+        design_succeeded: true,
+        is_safe: true,
+        status: 'PASS',
+        flexure: { ast_required: 850, asc_required: 0, mu_lim: 165, xu: 120, is_safe: true },
+        shear: { tau_v: 0.65, tau_c: 0.48, tau_c_max: 3.1, vus: 42, stirrup_spacing: 150, is_safe: true },
+        utilization_ratio: 0.78,
+        evidence,
+      });
+    });
+
+    const snapshot = useWorkspaceStore.getState().snapshot!;
+    expect(snapshot.members[0].result).toMatchObject({
+      lifecycle: 'current',
+      runId: 'job-123',
+      calculationIdentity: 'calculation-identity',
+      libraryVersion: '0.23.0',
+      decision: 'PASS',
+      supportStatus: 'SUPPORTED',
+    });
+    expect(projectExportReadiness(snapshot).eligible).toBe(true);
+    expect(useImportedBeamsStore.getState().beams[0]).toMatchObject({
+      source_id: 'ETABS-101',
+      ast_required: 850,
+      status: 'pass',
+    });
+  });
+
+  it('rejects a late result after the member input revision changes', () => {
+    const beam = { ...mockBeam('Label B1'), source_id: 'ETABS-101' };
+    useImportedBeamsStore.getState().setBeams([beam]);
+    const { result } = renderHook(() => useBatchDesign());
+
+    act(() => result.current.startBatchDesign([beam]));
+    const es = MockEventSource.instances[0];
+    const member = useWorkspaceStore.getState().snapshot!.members[0];
+    act(() => {
+      useWorkspaceStore.getState().updateMemberInputs(
+        member.memberId,
+        { ...member.inputs, widthMm: 350 },
+        'changed-input-hash',
+      );
+      es.emit('start', { job_id: 'old-job' });
+      es.emit('design_result', {
+        beam_id: 'ETABS-101',
+        design_succeeded: true,
+        is_safe: true,
+        status: 'PASS',
+        utilization_ratio: 0.78,
+        evidence,
+      });
+    });
+
+    expect(result.current.results).toEqual([]);
+    expect(useWorkspaceStore.getState().snapshot!.members[0].result?.lifecycle).toBe('stale');
+    expect(projectExportReadiness(useWorkspaceStore.getState().snapshot).eligible).toBe(false);
+  });
+
+  it('keeps a completed result on HOLD when canonical evidence is missing', () => {
+    const beam = { ...mockBeam('Label B1'), source_id: 'ETABS-101' };
+    useImportedBeamsStore.getState().setBeams([beam]);
+    const { result } = renderHook(() => useBatchDesign());
+
+    act(() => result.current.startBatchDesign([beam]));
+    act(() => {
+      MockEventSource.instances[0].emit('design_result', {
+        beam_id: 'ETABS-101',
+        design_succeeded: true,
+        is_safe: true,
+        status: 'PASS',
+      });
+    });
+
+    const snapshot = useWorkspaceStore.getState().snapshot!;
+    expect(snapshot.members[0].result).toMatchObject({
+      lifecycle: 'unsupported',
+      decision: 'HOLD',
+      supportStatus: 'HELD',
+      error: { code: 'EVIDENCE_MISSING' },
+    });
+    expect(result.current.results[0]).toMatchObject({ status: 'HOLD' });
+    expect(useImportedBeamsStore.getState().beams[0]).toMatchObject({
+      status: 'pending',
+      is_valid: false,
+    });
+    expect(projectExportReadiness(snapshot).eligible).toBe(false);
   });
 });

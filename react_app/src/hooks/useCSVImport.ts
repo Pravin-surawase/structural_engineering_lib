@@ -17,6 +17,7 @@ import { applyMaterialOverrides, type MaterialOverrides } from "../utils/materia
 import { toast } from "../components/ui/Toast";
 import type { BeamCSVRow } from '../types/csv';
 import { unwrapResponse } from '../api/client';
+import type { EvidenceEnvelope } from '../api/client';
 
 import { API_BASE_URL } from '../config';
 
@@ -94,6 +95,7 @@ interface BatchDesignResult {
   is_safe: boolean;
   utilization_ratio: number;
   error: string | null;
+  evidence: EvidenceEnvelope | null;
 }
 
 interface BatchDesignResponse {

@@ -80,6 +80,9 @@ class TestSSEBatchDesign:
         assert result["design_succeeded"] is True
         assert result["is_safe"] is False
         assert result["status"] == "FAIL"
+        assert result["evidence"]["status"] == "FAIL"
+        assert result["evidence"]["support_status"] == "SUPPORTED"
+        assert result["evidence"]["calculation_identity"]
         assert result["shear"]["is_safe"] is False
         for field in ("tau_v", "tau_c", "tau_c_max", "stirrup_spacing"):
             assert result["shear"][field] is not None

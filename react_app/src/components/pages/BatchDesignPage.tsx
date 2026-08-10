@@ -19,10 +19,17 @@ import {
 import { useImportedBeamsStore } from '../../store/importedBeamsStore';
 import { useBatchDesign, type BatchResult } from '../../hooks/useBatchDesign';
 import { WorkflowBreadcrumb } from '../ui/WorkflowBreadcrumb';
+import { projectExportReadiness } from '../../workspace/resultRecords';
+import { useWorkspaceStore } from '../../workspace/workspaceStore';
+
+function beamSourceId(beam: BeamCSVRow): string {
+  return beam.source_id ?? beam.id;
+}
 
 export default function BatchDesignPage() {
   const navigate = useNavigate();
-  const { beams, setBeams } = useImportedBeamsStore();
+  const { beams } = useImportedBeamsStore();
+  const workspaceSnapshot = useWorkspaceStore((state) => state.snapshot);
   const {
     status,
     progress,
@@ -34,24 +41,30 @@ export default function BatchDesignPage() {
   } = useBatchDesign();
 
   const [selectedBeamIds, setSelectedBeamIds] = useState<Set<string>>(
-    () => new Set(beams.map(b => b.id))
+    () => new Set(beams.map(beamSourceId))
+  );
+  const exportReadiness = useMemo(
+    () => projectExportReadiness(workspaceSnapshot, selectedBeamIds),
+    [selectedBeamIds, workspaceSnapshot],
   );
 
   // Summary stats
   const stats = useMemo(() => {
     const passed = results.filter(r => r.status === 'PASS').length;
     const failed = results.filter(r => r.status === 'FAIL').length;
-    return { passed, failed, total: results.length };
+    const held = results.filter(r => r.status === 'HOLD').length;
+    return { passed, failed, held, total: results.length };
   }, [results]);
 
   const handleStart = () => {
-    const selectedBeams = beams.filter(b => selectedBeamIds.has(b.id));
+    const selectedBeams = beams.filter((beam) => selectedBeamIds.has(beamSourceId(beam)));
     if (selectedBeams.length === 0) return;
     startBatchDesign(selectedBeams);
   };
 
   const handleExportCSV = () => {
-    if (results.length === 0) return;
+    const current = useWorkspaceStore.getState().snapshot;
+    if (results.length === 0 || !projectExportReadiness(current, selectedBeamIds).eligible) return;
     const headers = ['Beam ID', 'Status', 'Ast Required (mm²)', 'Utilization', 'Stirrup Spacing (mm)', 'Error'];
     const rows = results.map(r => [
       r.beam_id,
@@ -69,28 +82,6 @@ export default function BatchDesignPage() {
     a.download = 'batch_design_results.csv';
     a.click();
     URL.revokeObjectURL(url);
-  };
-
-  // Apply results back to beam store
-  const handleApplyResults = () => {
-    const resultMap = new Map(
-      results.map(r => [r.beam_id, r])
-    );
-    const updated = beams.map(b => {
-      const r = resultMap.get(b.id);
-      if (!r) return b;
-      const isPass = r.design_succeeded && r.is_safe && r.status === 'PASS';
-      return {
-        ...b,
-        ast_required: r.flexure?.ast_required,
-        utilization: r.utilization_ratio,
-        stirrup_spacing: r.shear?.stirrup_spacing,
-        status: isPass ? 'pass' as const : 'fail' as const,
-        is_valid: isPass,
-        remarks: r.error ? [r.error] : r.failed_checks,
-      } as BeamCSVRow;
-    });
-    setBeams(updated);
   };
 
   if (beams.length === 0) {
@@ -154,19 +145,26 @@ export default function BatchDesignPage() {
           {status === 'complete' && (
             <>
               <button
-                onClick={handleApplyResults}
+                onClick={() => navigate('/dashboard')}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition-colors"
               >
                 <CheckCircle className="w-4 h-4" />
-                Apply to Beams
+                Open Results
               </button>
               <button
                 onClick={handleExportCSV}
-                className="flex items-center gap-2 px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/15 transition-colors"
+                disabled={!exportReadiness.eligible}
+                title={exportReadiness.eligible ? 'Export current supported PASS results' : `Export held for ${exportReadiness.heldMemberIds.length} members`}
+                className="flex items-center gap-2 px-4 py-2 bg-white/10 text-white rounded-lg hover:bg-white/15 disabled:cursor-not-allowed disabled:opacity-40 transition-colors"
               >
                 <Download className="w-4 h-4" />
                 Export CSV
               </button>
+              {!exportReadiness.eligible ? (
+                <span className="text-xs text-amber-300" role="status">
+                  Export held · {exportReadiness.heldMemberIds.length} non-current or non-PASS
+                </span>
+              ) : null}
             </>
           )}
         </div>
@@ -210,6 +208,12 @@ export default function BatchDesignPage() {
                 {stats.failed} failed
               </div>
             )}
+            {stats.held > 0 && (
+              <div className="flex items-center gap-1.5 text-amber-300">
+                <AlertTriangle className="w-4 h-4" />
+                {stats.held} held
+              </div>
+            )}
             {duration != null && (
               <span className="text-zinc-400">
                 Completed in {duration.toFixed(1)}s
@@ -243,7 +247,7 @@ export default function BatchDesignPage() {
                 return next;
               });
             }}
-            onSelectAll={() => setSelectedBeamIds(new Set(beams.map(b => b.id)))}
+            onSelectAll={() => setSelectedBeamIds(new Set(beams.map(beamSourceId)))}
             onSelectNone={() => setSelectedBeamIds(new Set())}
           />
         ) : (
@@ -263,7 +267,7 @@ function BeamSelectionTable({
   onSelectAll,
   onSelectNone,
 }: {
-  beams: { id: string; story?: string; b: number; D: number; mu_envelope?: number; vu_envelope?: number }[];
+  beams: BeamCSVRow[];
   selectedIds: Set<string>;
   onToggle: (id: string) => void;
   onSelectAll: () => void;
@@ -300,17 +304,17 @@ function BeamSelectionTable({
         <tbody>
           {beams.map(b => (
             <tr
-              key={b.id}
+              key={beamSourceId(b)}
               className={`border-b border-white/5 cursor-pointer transition-colors ${
-                selectedIds.has(b.id) ? 'bg-blue-500/10' : 'hover:bg-white/5'
+                selectedIds.has(beamSourceId(b)) ? 'bg-blue-500/10' : 'hover:bg-white/5'
               }`}
-              onClick={() => onToggle(b.id)}
+              onClick={() => onToggle(beamSourceId(b))}
             >
               <td className="py-2 px-3">
                 <input
                   type="checkbox"
-                  checked={selectedIds.has(b.id)}
-                  onChange={() => onToggle(b.id)}
+                  checked={selectedIds.has(beamSourceId(b))}
+                  onChange={() => onToggle(beamSourceId(b))}
                   className="accent-blue-500"
                 />
               </td>
@@ -362,9 +366,9 @@ function ResultsTable({ results }: { results: BatchResult[] }) {
             <td className="py-2 px-3">
               {r.status === 'PASS' ? (
                 <CheckCircle className="w-4 h-4 text-green-400" />
-              ) : (
+              ) : r.status === 'FAIL' ? (
                 <XCircle className="w-4 h-4 text-red-400" />
-              )}
+              ) : <AlertTriangle className="w-4 h-4 text-amber-300" />}
             </td>
             <td className="py-2 px-3 font-mono text-white/80">{r.beam_id}</td>
             <td className="py-2 px-3 text-right text-white/70">

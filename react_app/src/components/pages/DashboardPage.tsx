@@ -8,41 +8,100 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   BarChart3, CheckCircle, AlertCircle, ArrowLeft,
-  Loader2, AlertTriangle, Download, FileText, Ruler, Package,
+  Loader2, AlertTriangle, Download, FileText, Package,
 } from "lucide-react";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 import { useDashboardInsights, useProjectBOQ } from "../../hooks/useInsights";
-import { useExportBBS, useExportDXF, useExportReport } from "../../hooks";
+import { useExportBuildingSummary } from "../../hooks/useExport";
 import { BentoGrid, BentoCard, BentoCardHeader } from "../ui/BentoGrid";
 import { ProjectBOQPanel } from "../design/ProjectBOQPanel";
 import type { DashboardData, StoryStats } from "../../hooks/useInsights";
 import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
 import { calculateSteelWeightKg } from "../../utils/quantities";
+import {
+  currentBatchResult,
+  projectExportReadiness,
+} from "../../workspace/resultRecords";
+import type { WorkspaceSnapshotV1 } from "../../workspace/types";
+import { useWorkspaceStore } from "../../workspace/workspaceStore";
+
+function getEnvelopeMu(beam: ReturnType<typeof useImportedBeamsStore.getState>['beams'][number]): number {
+  return Math.max(
+    Math.abs(beam.Mu_start ?? 0),
+    Math.abs(beam.Mu_mid ?? 0),
+    Math.abs(beam.Mu_end ?? 0),
+    Math.abs(beam.mu_envelope ?? 0),
+  );
+}
+
+function getEnvelopeVu(beam: ReturnType<typeof useImportedBeamsStore.getState>['beams'][number]): number {
+  return Math.max(
+    Math.abs(beam.Vu_start ?? 0),
+    Math.abs(beam.Vu_end ?? 0),
+    Math.abs(beam.vu_envelope ?? 0),
+  );
+}
+
+function projectExportRows(
+  snapshot: WorkspaceSnapshotV1,
+  beams: ReturnType<typeof useImportedBeamsStore.getState>['beams'],
+) {
+  return snapshot.members.flatMap((member) => {
+    const beam = beams.find((candidate) => (candidate.source_id ?? candidate.id) === member.memberId);
+    const result = currentBatchResult(snapshot, member.memberId);
+    if (!beam || !result) return [];
+    return [{
+      beam_id: member.sourceId,
+      story: beam.story ?? '',
+      width: beam.b,
+      depth: beam.D,
+      span_length: beam.span,
+      fck: beam.fck ?? 25,
+      fy: beam.fy ?? 500,
+      moment: getEnvelopeMu(beam),
+      shear: getEnvelopeVu(beam),
+      ast_required: result.flexure?.ast_required ?? 0,
+      ast_provided: beam.ast_provided ?? 0,
+      asc_required: result.flexure?.asc_required ?? 0,
+      bar_count: beam.bar_count,
+      bar_diameter: beam.bar_diameter,
+      stirrup_diameter: beam.stirrup_diameter ?? 8,
+      stirrup_spacing: result.shear?.stirrup_spacing,
+      utilization: result.utilization_ratio ?? 0,
+      is_safe: result.status === 'PASS' && result.is_safe,
+      status: result.status,
+    }];
+  });
+}
 
 export function DashboardPage() {
   const navigate = useNavigate();
   const { beams } = useImportedBeamsStore();
+  const workspaceSnapshot = useWorkspaceStore((state) => state.snapshot);
   const dashboard = useDashboardInsights();
   const boq = useProjectBOQ();
 
-  const { mutate: exportBBS, isPending: bbsPending } = useExportBBS();
-  const { mutate: exportDXF, isPending: dxfPending } = useExportDXF();
-  const { mutate: exportReport, isPending: reportPending } = useExportReport();
+  const { mutate: exportBuilding, isPending: exportPending } = useExportBuildingSummary();
+  const exportReadiness = projectExportReadiness(workspaceSnapshot);
 
   // Auto-fetch dashboard when beams are available
   useEffect(() => {
-    if (beams.length === 0) return;
-    const results = beams.map((b) => ({
-      beam_id: b.id,
-      story: b.story ?? "Unknown",
-      is_valid: b.is_valid === true,
-      utilization: b.utilization ?? 0,
-      ast_provided: b.ast_provided ?? 0,
-      b_mm: b.b,
-      D_mm: b.D,
-      span_mm: b.span,
-      warnings: [],
-    }));
+    if (beams.length === 0 || !workspaceSnapshot) return;
+    const results = workspaceSnapshot.members.map((member) => {
+      const beam = beams.find((candidate) => (candidate.source_id ?? candidate.id) === member.memberId);
+      const result = currentBatchResult(workspaceSnapshot, member.memberId);
+      return {
+        beam_id: member.sourceId,
+        story: member.story ?? "Unknown",
+        is_valid: result?.status === 'PASS' && result.is_safe,
+        utilization: result?.utilization_ratio ?? 0,
+        ast_provided: beam?.ast_provided ?? 0,
+        b_mm: beam?.b ?? 0,
+        D_mm: beam?.D ?? 0,
+        span_mm: beam?.span ?? 0,
+        warnings: member.result?.error ? [member.result.error.message] : [],
+      };
+    });
     dashboard.mutate({ results });
 
     // Trigger BOQ calculation
@@ -65,19 +124,20 @@ export function DashboardPage() {
       : undefined;
     boq.mutate({ beams: boqBeams, dataset });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [beams]);
+  }, [beams, workspaceSnapshot]);
 
-  // Derive a representative beam for export params (first designed beam)
-  const designedBeam = beams.find((b) => b.ast_required != null);
-  const exportParams = designedBeam ? {
-    width: designedBeam.b,
-    depth: designedBeam.D,
-    fck: designedBeam.fck ?? 25,
-    fy: designedBeam.fy ?? 500,
-    ast_required: designedBeam.ast_required ?? 0,
-  } : null;
-  const heldBeamCount = beams.filter((beam) => beam.is_valid !== true).length;
-  const exportsHeld = heldBeamCount > 0;
+  const heldBeamCount = exportReadiness.heldMemberIds.length;
+  const exportsHeld = !exportReadiness.eligible;
+
+  const handleProjectExport = (format: 'html' | 'pdf' | 'csv') => {
+    const snapshot = useWorkspaceStore.getState().snapshot;
+    if (!snapshot || !projectExportReadiness(snapshot).eligible) return;
+    exportBuilding({
+      project_name: snapshot.projectName,
+      beams: projectExportRows(snapshot, useImportedBeamsStore.getState().beams),
+      format,
+    });
+  };
 
   if (beams.length === 0) {
     return (
@@ -102,7 +162,7 @@ export function DashboardPage() {
       <div className="max-w-6xl mx-auto px-6 py-6 space-y-6">
 
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <button onClick={() => navigate(-1)} className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
               <ArrowLeft className="w-4 h-4 text-white/60" />
@@ -113,34 +173,25 @@ export function DashboardPage() {
             </div>
           </div>
 
-          {/* Export buttons — front and center */}
-          {exportParams && (
-            <div className="flex items-center gap-2">
-              <ExportBtn
-                label="BBS" icon={<Download className="w-3.5 h-3.5" />}
-                loading={bbsPending}
-                disabled={exportsHeld}
-                onClick={() => exportBBS(exportParams)}
-              />
-              <ExportBtn
-                label="DXF" icon={<Ruler className="w-3.5 h-3.5" />}
-                loading={dxfPending}
-                disabled={exportsHeld}
-                onClick={() => exportDXF(exportParams)}
-              />
-              <ExportBtn
-                label="Report" icon={<FileText className="w-3.5 h-3.5" />}
-                loading={reportPending}
-                disabled={exportsHeld}
-                onClick={() => exportReport({ ...exportParams, utilization: designedBeam?.utilization, is_safe: designedBeam?.is_valid })}
-              />
-              {exportsHeld && (
-                <span className="text-[10px] text-amber-400" role="status">
-                  Exports held: {heldBeamCount} FAIL/HOLD
-                </span>
-              )}
-            </div>
-          )}
+          <div className="flex flex-wrap items-center gap-2">
+            <ExportBtn
+              label="Project HTML" icon={<FileText className="w-3.5 h-3.5" />}
+              loading={exportPending}
+              disabled={exportsHeld}
+              onClick={() => handleProjectExport('html')}
+            />
+            <ExportBtn
+              label="Project CSV" icon={<Download className="w-3.5 h-3.5" />}
+              loading={exportPending}
+              disabled={exportsHeld}
+              onClick={() => handleProjectExport('csv')}
+            />
+            {exportsHeld ? (
+              <span className="text-[10px] text-amber-400" role="status">
+                Exports held: {heldBeamCount} stale, FAIL, HOLD, or not evaluated
+              </span>
+            ) : null}
+          </div>
         </div>
 
         {dashboard.isPending ? (

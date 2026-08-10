@@ -36,12 +36,14 @@ import {
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 import { Viewport3D } from "../viewport/Viewport3D";
 import { BeamDetailPanel } from "../design/BeamDetailPanel";
-import { useSimpleBatchDesign, useExportBuildingSummary } from "../../hooks";
+import { useBatchDesign } from "../../hooks/useBatchDesign";
+import { useExportBuildingSummary } from "../../hooks/useExport";
 import type { BeamCSVRow } from "../../types/csv";
 import { deriveBeamStatus } from "../../utils/beamStatus";
 import { WorkflowHint } from "../ui/WorkflowHint";
 import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
 import { useWorkspaceStore } from "../../workspace/workspaceStore";
+import { projectExportReadiness } from "../../workspace/resultRecords";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
@@ -72,18 +74,6 @@ function getEnvelopeVu(beam: BeamCSVRow): number {
   );
 }
 
-/** Pick standard bar diameter and count for given Ast */
-function deriveBarLayout(astRequired: number): { count: number; dia: number } {
-  const standardDias = [12, 16, 20, 25, 32];
-  for (const dia of standardDias) {
-    const barArea = Math.PI * (dia / 2) ** 2;
-    const count = Math.ceil(astRequired / barArea);
-    if (count >= 2 && count <= 8) return { count, dia };
-  }
-  const barArea = Math.PI * (25 / 2) ** 2;
-  return { count: Math.max(2, Math.ceil(astRequired / barArea)), dia: 25 };
-}
-
 /* ---- Main Component ---- */
 
 export function BuildingEditorPage() {
@@ -94,10 +84,10 @@ export function BuildingEditorPage() {
     selectBeam,
     selectFloor,
     setBeams,
-    setError,
     restoreFromWorkspace,
   } = useImportedBeamsStore();
   const workspaceSnapshot = useWorkspaceStore((state) => state.snapshot);
+  const workspaceProjectId = workspaceSnapshot?.projectId;
   const workspaceLoadState = useWorkspaceStore((state) => state.loadState);
   const workspaceLoadError = useWorkspaceStore((state) => state.loadError);
   const [sidebarClosedForId, setSidebarClosedForId] = useState<string | null>(null);
@@ -105,7 +95,8 @@ export function BuildingEditorPage() {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const gridRef = useRef<AgGridReact>(null);
-  const { runBatchDesign, isDesigning } = useSimpleBatchDesign();
+  const { startBatchDesign, status: batchStatus } = useBatchDesign();
+  const isDesigning = batchStatus === "running";
   const { mutate: exportBuilding, isPending: exportPending } = useExportBuildingSummary();
 
   useEffect(() => {
@@ -115,10 +106,10 @@ export function BuildingEditorPage() {
   }, [beams.length, restoreFromWorkspace, workspaceSnapshot]);
 
   useEffect(() => {
-    if (workspaceSnapshot && workspaceSnapshot.selectedStage !== "review") {
+    if (workspaceProjectId) {
       useWorkspaceStore.getState().setStage("review");
     }
-  }, [workspaceSnapshot]);
+  }, [workspaceProjectId]);
 
   // Global material settings
   const [globalFck, setGlobalFck] = useState(25);
@@ -149,8 +140,12 @@ export function BuildingEditorPage() {
 
   const completedCount = statusCounts.pass + statusCounts.fail + statusCounts.warning;
   const progressPct = beams.length > 0 ? (completedCount / beams.length) * 100 : 0;
-  const heldBeamCount = beams.filter((beam) => beam.is_valid !== true).length;
-  const exportsHeld = heldBeamCount > 0;
+  const exportReadiness = useMemo(
+    () => projectExportReadiness(workspaceSnapshot),
+    [workspaceSnapshot],
+  );
+  const heldBeamCount = exportReadiness.heldMemberIds.length;
+  const exportsHeld = !exportReadiness.eligible;
 
   const handleRowClicked = useCallback(
     (event: RowClickedEvent<BeamCSVRow>) => {
@@ -185,91 +180,12 @@ export function BuildingEditorPage() {
 
   const handleDesignAll = useCallback(() => {
     if (beams.length === 0) return;
-
-    // Mark beams with forces as "designing"
-    const marked = beams.map((beam) => {
-      const mu = getEnvelopeMu(beam);
-      const vu = getEnvelopeVu(beam);
-      return {
-        ...beam,
-        status: (mu > 0 || vu > 0) ? "designing" as const : beam.status ?? "pending" as const,
-      };
-    });
-    setBeams(marked);
-
-    // Build payload matching API's BatchDesignRequest (list of BeamRow)
-    const payload = beams.map((b) => ({
-      id: b.id,
-      story: b.story ?? null,
-      width_mm: b.b,
-      depth_mm: b.D,
-      span_mm: b.span,
-      mu_knm: getEnvelopeMu(b),
-      vu_kn: getEnvelopeVu(b),
-      fck_mpa: b.fck ?? globalFck,
-      fy_mpa: b.fy ?? globalFy,
-      cover_mm: b.cover ?? globalCover,
-    }));
-
-    runBatchDesign(payload, {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onSuccess: (data: Record<string, any>) => {
-        if (!data.success) {
-          setError(data.message || "Batch design failed");
-          return;
-        }
-        const resultMap = new Map(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (data.results as Record<string, any>[]).map((r) => [r.beam_id, r])
-        );
-        const updated = beams.map((beam) => {
-          const result = resultMap.get(beam.id);
-          if (!result || !result.success) {
-            return {
-              ...beam,
-              is_valid: false,
-              status: result ? "fail" as const : beam.status,
-            };
-          }
-
-          const astReq = result.ast_required ?? beam.ast_required ?? 0;
-          const layout = deriveBarLayout(astReq);
-          const isSafe = result.is_safe ?? false;
-          // Prefer Mu/Mu_cap from API; fall back to Ast/Ast_max for legacy responses
-          const utilization = result.utilization_ratio != null && result.utilization_ratio > 0
-            ? result.utilization_ratio
-            : (0.04 * beam.b * beam.D) > 0 ? astReq / (0.04 * beam.b * beam.D) : 0;
-
-          return {
-            ...beam,
-            ast_required: astReq,
-            asc_required: result.asc_required ?? 0,
-            stirrup_spacing: result.stirrup_spacing ?? beam.stirrup_spacing,
-            stirrup_diameter: beam.stirrup_diameter ?? 8,
-            bar_count: layout.count,
-            bar_diameter: layout.dia,
-            ast_provided: layout.count * Math.PI * (layout.dia / 2) ** 2,
-            utilization,
-            is_valid: isSafe,
-            status: isSafe ? "pass" as const : "fail" as const,
-          } as BeamCSVRow;
-        });
-        setBeams(updated);
-      },
-      onError: (error: Error) => {
-        setError(error.message);
-        const reset = beams.map((b) => ({
-          ...b,
-          status: b.status === "designing" ? "pending" as const : b.status,
-        }));
-        setBeams(reset);
-      },
-    });
-  }, [beams, globalFck, globalFy, globalCover, runBatchDesign, setBeams, setError]);
+    startBatchDesign(beams);
+  }, [beams, startBatchDesign]);
 
   const handleBuildingExport = useCallback(
     (format: "html" | "pdf" | "csv") => {
-      if (exportsHeld) return;
+      if (!projectExportReadiness(useWorkspaceStore.getState().snapshot).eligible) return;
       setShowExportMenu(false);
       const payload = beams.map((b) => ({
         beam_id: b.id,
@@ -294,7 +210,7 @@ export function BuildingEditorPage() {
       }));
       exportBuilding({ project_name: "Building Project", beams: payload, format });
     },
-    [beams, globalFck, globalFy, exportBuilding, exportsHeld]
+    [beams, globalFck, globalFy, exportBuilding]
   );
 
   const handleCellValueChanged = useCallback(

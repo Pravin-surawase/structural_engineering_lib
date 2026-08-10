@@ -2,6 +2,7 @@ import type { BeamCSVRow, Point3D } from '../types/csv';
 import type { JsonValue, WorkspaceMember, WorkspaceSnapshotV1 } from './types';
 import type { NewWorkspaceMember } from './workspaceStore';
 import { useWorkspaceStore } from './workspaceStore';
+import { applyBatchResultToBeam, currentBatchResult } from './resultRecords';
 
 function stableJsonValue(value: JsonValue): JsonValue {
   if (Array.isArray(value)) return value.map(stableJsonValue);
@@ -143,30 +144,34 @@ function pointFromInput(value: JsonValue | undefined): Point3D | undefined {
 
 /** Restore the imported-beam compatibility view from durable canonical inputs. */
 export function workspaceSnapshotToBeamRows(snapshot: WorkspaceSnapshotV1): BeamCSVRow[] {
-  return snapshot.members.map((member) => ({
-    id: member.label,
-    source_id: member.sourceId,
-    story: member.story ?? undefined,
-    b: numericInput(member, 'widthMm', 0),
-    D: numericInput(member, 'depthMm', 0),
-    span: numericInput(member, 'spanMm', 0),
-    fck: numericInput(member, 'fckMpa', 25),
-    fy: numericInput(member, 'fyMpa', 500),
-    cover: numericInput(member, 'coverMm', 40),
-    Mu_start: optionalNumericInput(member, 'muStartKnm'),
-    Mu_mid: optionalNumericInput(member, 'muMidKnm'),
-    Mu_end: optionalNumericInput(member, 'muEndKnm'),
-    Vu_start: optionalNumericInput(member, 'vuStartKn'),
-    Vu_end: optionalNumericInput(member, 'vuEndKn'),
-    mu_envelope: optionalNumericInput(member, 'muEnvelopeKnm'),
-    vu_envelope: optionalNumericInput(member, 'vuEnvelopeKn'),
-    point1: pointFromInput(member.inputs.point1),
-    point2: pointFromInput(member.inputs.point2),
-    dataset_id: typeof member.inputs.datasetId === 'string' ? member.inputs.datasetId : undefined,
-    dataset_version: typeof member.inputs.datasetVersion === 'string' ? member.inputs.datasetVersion : undefined,
-    dataset_sha256: typeof member.inputs.datasetSha256 === 'string' ? member.inputs.datasetSha256 : undefined,
-    status: member.result?.lifecycle === 'current'
-      ? member.result.decision === 'PASS' ? 'pass' : 'fail'
-      : 'pending',
-  }));
+  return snapshot.members.map((member) => {
+    const beam: BeamCSVRow = {
+      id: member.label,
+      source_id: member.sourceId,
+      story: member.story ?? undefined,
+      b: numericInput(member, 'widthMm', 0),
+      D: numericInput(member, 'depthMm', 0),
+      span: numericInput(member, 'spanMm', 0),
+      fck: numericInput(member, 'fckMpa', 25),
+      fy: numericInput(member, 'fyMpa', 500),
+      cover: numericInput(member, 'coverMm', 40),
+      Mu_start: optionalNumericInput(member, 'muStartKnm'),
+      Mu_mid: optionalNumericInput(member, 'muMidKnm'),
+      Mu_end: optionalNumericInput(member, 'muEndKnm'),
+      Vu_start: optionalNumericInput(member, 'vuStartKn'),
+      Vu_end: optionalNumericInput(member, 'vuEndKn'),
+      mu_envelope: optionalNumericInput(member, 'muEnvelopeKnm'),
+      vu_envelope: optionalNumericInput(member, 'vuEnvelopeKn'),
+      point1: pointFromInput(member.inputs.point1),
+      point2: pointFromInput(member.inputs.point2),
+      dataset_id: typeof member.inputs.datasetId === 'string' ? member.inputs.datasetId : undefined,
+      dataset_version: typeof member.inputs.datasetVersion === 'string' ? member.inputs.datasetVersion : undefined,
+      dataset_sha256: typeof member.inputs.datasetSha256 === 'string' ? member.inputs.datasetSha256 : undefined,
+      status: member.result?.lifecycle === 'current'
+        ? member.result.decision === 'PASS' ? 'pass' : 'fail'
+        : 'pending',
+    };
+    const result = currentBatchResult(snapshot, member.memberId);
+    return result ? applyBatchResultToBeam(beam, result) : beam;
+  });
 }

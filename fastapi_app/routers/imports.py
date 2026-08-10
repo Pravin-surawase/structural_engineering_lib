@@ -20,6 +20,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from fastapi_app.config import get_settings
+from fastapi_app.models.beam import EvidenceEnvelopeResponse
 from fastapi_app.models.metadata import ImportFormatsResponse
 from fastapi_app.models.response import APIResponse, error_response, success_response
 
@@ -138,6 +139,7 @@ class BatchDesignResult(BaseModel):
     # current FlexureResult does not expose its final reinforced capacity.
     utilization_ratio: float = 0.0
     error: str | None = None
+    evidence: EvidenceEnvelopeResponse | None = None
 
 
 class BatchDesignResponse(BaseModel):
@@ -666,6 +668,7 @@ async def batch_design(
 
     try:
         from structural_lib.services.api import design_beam_is456
+        from structural_lib.services.evidence import build_beam_evidence_envelope
 
         results: list[BatchDesignResult] = []
         passed = 0
@@ -690,6 +693,24 @@ async def batch_design(
 
                 is_safe = result.is_ok
                 utilization_ratio = min(result.governing_utilization, 2.0)
+                evidence = build_beam_evidence_envelope(
+                    inputs={
+                        "units": "IS456",
+                        "case_id": beam.id,
+                        "mu_knm": beam.mu_knm,
+                        "vu_kn": beam.vu_kn,
+                        "b_mm": beam.width_mm,
+                        "D_mm": beam.depth_mm,
+                        "d_mm": d_mm,
+                        "fck_nmm2": beam.fck_mpa,
+                        "fy_nmm2": beam.fy_mpa,
+                        "d_dash_mm": 50.0,
+                        "asv_mm2": 100.0,
+                    },
+                    is_ok=result.is_ok,
+                    governing_utilization=result.governing_utilization,
+                    utilizations=result.utilizations,
+                )
 
                 results.append(
                     BatchDesignResult(
@@ -700,6 +721,7 @@ async def batch_design(
                         stirrup_spacing=result.shear.spacing if result.shear else 0.0,
                         is_safe=is_safe,
                         utilization_ratio=utilization_ratio,
+                        evidence=EvidenceEnvelopeResponse.model_validate(evidence),
                     )
                 )
 
