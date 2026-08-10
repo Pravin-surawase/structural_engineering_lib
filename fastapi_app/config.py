@@ -9,7 +9,6 @@ from functools import lru_cache
 from pydantic import model_validator
 from pydantic_settings import BaseSettings
 
-
 _PRODUCTION_ENVIRONMENTS = frozenset({"production", "prod", "staging"})
 _INSECURE_JWT_SECRET_MARKERS = ("change", "dev-secret")
 MINIMUM_JWT_SECRET_LENGTH = 32

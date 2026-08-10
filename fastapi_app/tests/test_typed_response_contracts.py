@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-
 _SUCCESS_RESPONSE_SCHEMAS = {
     "/api/v1/design/column": "APIResponse_ColumnDesignResponse_",
     "/api/v1/design/column/additional-moment": "APIResponse_AdditionalMomentResponse_",

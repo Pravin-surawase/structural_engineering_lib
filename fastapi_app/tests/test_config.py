@@ -10,7 +10,6 @@ from pydantic import ValidationError
 
 from fastapi_app.config import Settings
 
-
 _REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 _VALID_PRODUCTION_SECRET = (  # nosec B105 - non-sensitive test fixture
     "production-secret-0123456789-abcdef"

@@ -41,7 +41,7 @@ dev = [
   "pytest-asyncio>=1.3,<2.0",
   "pytest-cov",
   "pytest-benchmark",
-  "black",
+  "black==26.5.1",
   "mypy>=1.19,<2",
   "numpy>=2.0,<2.5",
   "pre-commit",
