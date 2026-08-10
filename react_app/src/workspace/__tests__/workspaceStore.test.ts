@@ -163,4 +163,73 @@ describe('workspace revision contract', () => {
       useWorkspaceStore.getState().snapshot!.members[1].result?.lifecycle,
     ).toBe('stale');
   });
+
+  it('undoes member inputs as a new revision and invalidates retained evidence', () => {
+    const pending = useWorkspaceStore.getState().beginMemberRequest(
+      'beam-1',
+      'result',
+      'request-before-edit',
+    )!;
+    expect(useWorkspaceStore.getState().applyMemberRecord(
+      'beam-1',
+      'result',
+      settledResult(pending),
+    )).toBe(true);
+
+    useWorkspaceStore.getState().updateMemberInputs(
+      'beam-1',
+      { widthMm: 350, depthMm: 500 },
+      'hash-2',
+      '2026-08-10T00:03:00.000Z',
+    );
+    expect(useWorkspaceStore.getState().undoMemberInputs(
+      'beam-1',
+      '2026-08-10T00:04:00.000Z',
+    )).toBe(true);
+
+    const snapshot = useWorkspaceStore.getState().snapshot!;
+    const member = snapshot.members[0];
+    expect(member.inputs).toEqual({ widthMm: 300, depthMm: 450 });
+    expect(member.inputHash).toBe('hash-1');
+    expect(member.inputRevision).toBe(3);
+    expect(member.memberRevision).toBe(3);
+    expect(snapshot.projectRevision).toBe(4);
+    expect(member.result?.lifecycle).toBe('stale');
+    expect(recordCanExport(member.result, memberIdentity(snapshot, member))).toBe(false);
+    expect(useWorkspaceStore.getState().undoMemberInputs('beam-1')).toBe(false);
+  });
+
+  it('reverts to explicit prior inputs without restoring prior currentness', () => {
+    useWorkspaceStore.getState().updateMemberInputs(
+      'beam-1',
+      { widthMm: 350, depthMm: 450 },
+      'hash-2',
+    );
+    const pending = useWorkspaceStore.getState().beginMemberRequest(
+      'beam-1',
+      'result',
+      'request-after-edit',
+    )!;
+    expect(useWorkspaceStore.getState().applyMemberRecord(
+      'beam-1',
+      'result',
+      settledResult(pending),
+    )).toBe(true);
+
+    expect(useWorkspaceStore.getState().revertMemberInputs(
+      'beam-1',
+      {
+        inputs: { widthMm: 325, depthMm: 475 },
+        inputHash: 'hash-reviewed',
+      },
+      '2026-08-10T00:05:00.000Z',
+    )).toBe(true);
+
+    const snapshot = useWorkspaceStore.getState().snapshot!;
+    const member = snapshot.members[0];
+    expect(member.inputs).toEqual({ widthMm: 325, depthMm: 475 });
+    expect(member.inputHash).toBe('hash-reviewed');
+    expect(member.result?.lifecycle).toBe('stale');
+    expect(recordCanExport(member.result, memberIdentity(snapshot, member))).toBe(false);
+  });
 });

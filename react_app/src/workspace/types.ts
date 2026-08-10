@@ -187,12 +187,39 @@ function isWorkspaceMember(value: unknown): value is WorkspaceMember {
   );
 }
 
+function nonStaleRecordMatchesMember(
+  record: EvidenceRecord | null,
+  projectId: string,
+  projectRevision: number,
+  member: WorkspaceMember,
+): boolean {
+  if (!record || record.lifecycle === 'stale') return true;
+  return (
+    record.projectId === projectId
+    && record.projectRevision === projectRevision
+    && record.memberId === member.memberId
+    && record.inputHash === member.inputHash
+    && record.inputRevision === member.inputRevision
+    && record.memberRevision === member.memberRevision
+  );
+}
+
 export function isWorkspaceSnapshotV1(value: unknown): value is WorkspaceSnapshotV1 {
   if (!isRecord(value)) return false;
   const candidate = value as Partial<WorkspaceSnapshotV1>;
   const members = candidate.members;
   if (!Array.isArray(members) || !members.every(isWorkspaceMember)) return false;
   const memberIds = members.map((member) => member.memberId);
+  const projectId = candidate.projectId;
+  const projectRevision = candidate.projectRevision;
+  const hasConsistentNonStaleRecords = typeof projectId === 'string'
+    && isPositiveRevision(projectRevision)
+    && members.every((member) => (
+      nonStaleRecordMatchesMember(member.result, projectId, projectRevision, member)
+      && nonStaleRecordMatchesMember(member.geometry, projectId, projectRevision, member)
+      && nonStaleRecordMatchesMember(member.alternatives, projectId, projectRevision, member)
+      && nonStaleRecordMatchesMember(member.metrics, projectId, projectRevision, member)
+    ));
   return (
     candidate.schemaVersion === WORKSPACE_SCHEMA_VERSION
     && typeof candidate.projectId === 'string'
@@ -201,6 +228,7 @@ export function isWorkspaceSnapshotV1(value: unknown): value is WorkspaceSnapsho
     && candidate.projectName.length > 0
     && isPositiveRevision(candidate.projectRevision)
     && new Set(memberIds).size === memberIds.length
+    && hasConsistentNonStaleRecords
     && typeof candidate.selectedStage === 'string'
     && PROJECT_STAGES.has(candidate.selectedStage as ProjectStage)
     && (

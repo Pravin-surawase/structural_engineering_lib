@@ -8,6 +8,7 @@ import {
 } from './identity';
 import {
   WORKSPACE_SCHEMA_VERSION,
+  isWorkspaceSnapshotV1,
   type EvidenceRecord,
   type JsonValue,
   type WorkspaceMember,
@@ -15,6 +16,13 @@ import {
 } from './types';
 
 export type MemberRecordKind = 'result' | 'geometry' | 'alternatives' | 'metrics';
+
+export interface MemberInputState {
+  inputHash: string;
+  inputs: { [key: string]: JsonValue };
+}
+
+const MAX_MEMBER_INPUT_HISTORY = 20;
 
 export interface NewWorkspaceMember {
   memberId: string;
@@ -28,6 +36,7 @@ export interface NewWorkspaceMember {
 
 interface WorkspaceState {
   snapshot: WorkspaceSnapshotV1 | null;
+  memberInputHistory: Record<string, MemberInputState[]>;
   createProject: (projectId: string, projectName: string, now?: string) => void;
   loadSnapshot: (snapshot: WorkspaceSnapshotV1) => void;
   replaceMembers: (members: NewWorkspaceMember[], now?: string) => void;
@@ -40,6 +49,12 @@ interface WorkspaceState {
     inputHash: string,
     now?: string,
   ) => void;
+  undoMemberInputs: (memberId: string, now?: string) => boolean;
+  revertMemberInputs: (
+    memberId: string,
+    prior: MemberInputState,
+    now?: string,
+  ) => boolean;
   beginMemberRequest: (
     memberId: string,
     kind: MemberRecordKind,
@@ -91,8 +106,51 @@ function normalizeMembers(members: NewWorkspaceMember[]): WorkspaceMember[] {
   return normalized;
 }
 
+function cloneInputs(inputs: { [key: string]: JsonValue }): { [key: string]: JsonValue } {
+  return structuredClone(inputs);
+}
+
+function changedSnapshotForMemberInputs(
+  snapshot: WorkspaceSnapshotV1,
+  memberId: string,
+  next: MemberInputState,
+  now?: string,
+): WorkspaceSnapshotV1 | null {
+  const memberIndex = snapshot.members.findIndex((member) => member.memberId === memberId);
+  if (memberIndex < 0 || !next.inputHash.trim()) return null;
+  const existing = snapshot.members[memberIndex];
+  if (existing.inputHash === next.inputHash) return null;
+  const members = snapshot.members.map((member, index) => (
+    index === memberIndex
+      ? invalidateMemberRecords({
+        ...existing,
+        inputs: cloneInputs(next.inputs),
+        inputHash: next.inputHash,
+        inputRevision: existing.inputRevision + 1,
+        memberRevision: existing.memberRevision + 1,
+      })
+      : invalidateMemberRecords(member)
+  ));
+  return {
+    ...snapshot,
+    members,
+    projectRevision: snapshot.projectRevision + 1,
+    dirty: true,
+    saveState: 'dirty',
+    updatedAt: timestamp(now),
+  };
+}
+
+function appendInputHistory(
+  history: MemberInputState[],
+  state: MemberInputState,
+): MemberInputState[] {
+  return [...history, state].slice(-MAX_MEMBER_INPUT_HISTORY);
+}
+
 export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
   snapshot: null,
+  memberInputHistory: {},
 
   createProject: (projectId, projectName, now) => {
     const normalizedProjectId = projectId.trim();
@@ -118,10 +176,16 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         savedAt: null,
         migrationOrigin: null,
       },
+      memberInputHistory: {},
     });
   },
 
-  loadSnapshot: (snapshot) => set({ snapshot }),
+  loadSnapshot: (snapshot) => {
+    if (!isWorkspaceSnapshotV1(snapshot)) {
+      throw new Error('Cannot load an invalid workspace snapshot.');
+    }
+    set({ snapshot, memberInputHistory: {} });
+  },
 
   replaceMembers: (members, now) => {
     const normalizedMembers = normalizeMembers(members);
@@ -138,6 +202,7 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
           saveState: 'dirty',
           updatedAt,
         },
+        memberInputHistory: {},
       };
     });
   },
@@ -175,35 +240,63 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
     if (!inputHash.trim()) throw new Error('A normalized input hash is required.');
     set((state) => {
       if (!state.snapshot) return state;
-      const memberIndex = state.snapshot.members.findIndex(
-        (member) => member.memberId === memberId,
+      const existing = state.snapshot.members.find((member) => member.memberId === memberId);
+      if (!existing) return state;
+      const snapshot = changedSnapshotForMemberInputs(
+        state.snapshot,
+        memberId,
+        { inputs, inputHash },
+        now,
       );
-      if (memberIndex < 0) return state;
-
-      const updatedAt = timestamp(now);
-      const existing = state.snapshot.members[memberIndex];
-      const members = state.snapshot.members.map((member, index) => (
-        index === memberIndex
-          ? invalidateMemberRecords({
-            ...existing,
-            inputs,
-            inputHash,
-            inputRevision: existing.inputRevision + 1,
-            memberRevision: existing.memberRevision + 1,
-          })
-          : invalidateMemberRecords(member)
-      ));
+      if (!snapshot) return state;
       return {
-        snapshot: {
-          ...state.snapshot,
-          members,
-          projectRevision: state.snapshot.projectRevision + 1,
-          dirty: true,
-          saveState: 'dirty',
-          updatedAt,
+        snapshot,
+        memberInputHistory: {
+          ...state.memberInputHistory,
+          [memberId]: appendInputHistory(
+            state.memberInputHistory[memberId] ?? [],
+            { inputHash: existing.inputHash, inputs: cloneInputs(existing.inputs) },
+          ),
         },
       };
     });
+  },
+
+  undoMemberInputs: (memberId, now) => {
+    const state = get();
+    const history = state.memberInputHistory[memberId] ?? [];
+    const prior = history.at(-1);
+    if (!state.snapshot || !prior) return false;
+    const snapshot = changedSnapshotForMemberInputs(state.snapshot, memberId, prior, now);
+    if (!snapshot) return false;
+    set({
+      snapshot,
+      memberInputHistory: {
+        ...state.memberInputHistory,
+        [memberId]: history.slice(0, -1),
+      },
+    });
+    return true;
+  },
+
+  revertMemberInputs: (memberId, prior, now) => {
+    if (!prior.inputHash.trim()) throw new Error('A normalized input hash is required.');
+    const state = get();
+    const existing = state.snapshot?.members.find((member) => member.memberId === memberId);
+    if (!state.snapshot || !existing) return false;
+    const snapshot = changedSnapshotForMemberInputs(state.snapshot, memberId, prior, now);
+    if (!snapshot) return false;
+    set({
+      snapshot,
+      memberInputHistory: {
+        ...state.memberInputHistory,
+        [memberId]: appendInputHistory(
+          state.memberInputHistory[memberId] ?? [],
+          { inputHash: existing.inputHash, inputs: cloneInputs(existing.inputs) },
+        ),
+      },
+    });
+    return true;
   },
 
   beginMemberRequest: (memberId, kind, requestId, now) => {
@@ -274,5 +367,5 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
       };
     }),
 
-  reset: () => set({ snapshot: null }),
+  reset: () => set({ snapshot: null, memberInputHistory: {} }),
 }));
