@@ -64,6 +64,33 @@ const SAFE_BUNDLE: ColumnReviewBundle = {
   },
 };
 
+const SLENDER_BUNDLE: ColumnReviewBundle = {
+  ...SAFE_BUNDLE,
+  design: {
+    ...SAFE_BUNDLE.design,
+    Mux_design_kNm: 142.5,
+    Muy_design_kNm: 54.25,
+    Ma_x_kNm: 22.5,
+    Ma_y_kNm: 14.25,
+    classification: 'SLENDER',
+    classification_x: 'SLENDER',
+    classification_y: 'SLENDER',
+    le_x_mm: 6000,
+    le_y_mm: 6000,
+    slenderness_x: 13.333,
+    slenderness_y: 20,
+    governing_check: 'long_column',
+    checks: {
+      long_column: {
+        interaction_ratio: 0.82,
+        is_safe: true,
+        clause_ref: 'Cl. 39.7',
+      },
+    },
+    clause_refs: [...SAFE_BUNDLE.design.clause_refs, 'Cl. 39.7'],
+  },
+};
+
 beforeEach(() => {
   reviewRectangularColumnMock.mockReset();
 });
@@ -76,6 +103,8 @@ describe('ColumnReviewWorkspace', () => {
     expect(screen.getByText(/Supplied-section adequacy check only/)).toBeInTheDocument();
     expect(screen.getByText(/symmetric two-face, two-layer reinforcement/)).toBeInTheDocument();
     expect(screen.getByText(/does not automatically design the member or reinforcement/)).toBeInTheDocument();
+    expect(screen.getByText(/Leaving both values for an axis blank uses the maintained equal-end-moment fallback/)).toBeInTheDocument();
+    expect(screen.getByLabelText('End moment M1x')).toHaveValue(null);
   });
 
   it('shows review-complete classification, eccentricity, detailing, and revision identity', async () => {
@@ -85,6 +114,12 @@ describe('ColumnReviewWorkspace', () => {
 
     await user.click(screen.getByRole('button', { name: 'Check supplied column' }));
 
+    expect(reviewRectangularColumnMock).toHaveBeenCalledWith(expect.objectContaining({
+      M1x_kNm: null,
+      M2x_kNm: null,
+      M1y_kNm: null,
+      M2y_kNm: null,
+    }));
     expect(await screen.findByText('CHECK PASSED')).toBeInTheDocument();
     expect(screen.getByText('x SHORT · y SHORT')).toBeInTheDocument();
     expect(screen.getByText('x 26.00 mm · y 20.00 mm')).toBeInTheDocument();
@@ -92,6 +127,34 @@ describe('ColumnReviewWorkspace', () => {
     expect(screen.getByText(/Qualified structural-engineering review is required/)).toBeInTheDocument();
     expect(screen.getAllByText(/column-v1-/)).toHaveLength(2);
     expect(screen.getByRole('button', { name: 'Export current review packet' })).toBeEnabled();
+  });
+
+  it('submits explicit slender end moments and reviews returned additional moments', async () => {
+    const user = userEvent.setup();
+    const onExport = vi.fn();
+    reviewRectangularColumnMock.mockResolvedValue(SLENDER_BUNDLE);
+    render(<ColumnReviewWorkspace onExport={onExport} />);
+
+    await user.type(screen.getByLabelText('End moment M1x'), '30');
+    await user.type(screen.getByLabelText('End moment M2x'), '80');
+    await user.type(screen.getByLabelText('End moment M1y'), '20');
+    await user.type(screen.getByLabelText('End moment M2y'), '60');
+    await user.click(screen.getByRole('button', { name: 'Check supplied column' }));
+
+    expect(reviewRectangularColumnMock).toHaveBeenCalledWith(expect.objectContaining({
+      M1x_kNm: 30,
+      M2x_kNm: 80,
+      M1y_kNm: 20,
+      M2y_kNm: 60,
+    }));
+    expect(await screen.findByText('CHECK PASSED')).toBeInTheDocument();
+    expect(screen.getByText('Slender-column check with additional moments')).toBeInTheDocument();
+    expect(screen.getByText('x 22.50 · y 14.25 kN·m')).toBeInTheDocument();
+    const exportButton = screen.getByRole('button', { name: 'Export current review packet' });
+    expect(exportButton).toBeEnabled();
+
+    await user.click(exportButton);
+    expect(onExport).toHaveBeenCalledWith(expect.objectContaining({ decision: 'PASS' }));
   });
 
   it('keeps an inadequate result explicit and holds export', async () => {

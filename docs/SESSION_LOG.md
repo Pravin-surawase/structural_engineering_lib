@@ -51,6 +51,10 @@
   five slab symbols that are not present in this worktree's public API.
 - The first closeout React command was launched from the repository root, where
   no `package.json` exists, so it stopped before any full-gate command ran.
+- Independent review found that the feature state and API carried all four
+  slender-column end moments, but the editor exposed none of them. Every UI
+  request therefore submitted `null` and silently selected the equal-end-moment
+  fallback even when the engineer had known end moments.
 
 ### Root causes and resolutions
 
@@ -93,6 +97,14 @@
 - npm was invoked from the wrong directory in the first closeout chain. Running
   the focused command with `react_app/` as its working directory passed 6/6 and
   lint passed; the failed chain never reached `./run.sh check`.
+- The first UI slice preserved backend end-moment fields in types, hashing, and
+  transport but omitted their editor controls, hiding a material maintained-route
+  assumption. The editor now provides four optional signed kN·m inputs. Empty
+  strings map explicitly to `null`; visible copy explains that blank axis values
+  use the minimum-eccentricity-adjusted equal-end-moment fallback. Focused React
+  evidence proves all four explicit values reach the API mock, blank values remain
+  null, the slender/additional-moment disposition is rendered, returned additional
+  moments are visible, and PASS/export semantics are unchanged.
 
 ### Verification
 
@@ -101,7 +113,10 @@
   baseline (535 maintained ordinary tests plus 5 new review-contract tests; the
   9 experimental PMM tests remain held with the excluded experiment).
 - Focused runtime-launcher regressions: 3 passed.
-- Focused React column feature plus WorkbenchHomePage reachability: 7 passed.
+- Focused React column feature: 7 passed; combined with WorkbenchHomePage
+  reachability: 8 passed across 3 files.
+- Focused slender end-moment correction: blank-as-null and explicit four-value
+  transport, slender disposition, additional moments, and current export passed.
 - React ESLint: passed. TypeScript plus Vite production build: passed.
 - OpenAPI snapshot: no endpoint/schema drift after the reviewed update; 69
   endpoints and 248 schemas.
@@ -111,6 +126,8 @@
 - Initial full gate before shared integration: 28/30, exposing the runtime-binding
   and expected OpenAPI-snapshot root causes. Final plain `./run.sh check`, with no
   caller `PYTHONPATH` override: 30/30 passed from this linked worktree.
+- Post-review slender end-moment correction: React lint, TypeScript, production
+  build, `./run.sh check --quick` 10/10, and plain `./run.sh check` 30/30 passed.
 - `git diff --check` and exact changed-path audit passed before closeout.
 
 ### Terminal issues

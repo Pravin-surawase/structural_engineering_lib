@@ -17,6 +17,14 @@ interface NumberInputProps {
   onChange: (value: number) => void;
 }
 
+interface OptionalNumberInputProps {
+  label: string;
+  unit: string;
+  value: number | null;
+  step?: number;
+  onChange: (value: number | null) => void;
+}
+
 function NumberInput({ label, unit, value, min = 0, step = 1, onChange }: NumberInputProps) {
   return (
     <label className="grid gap-1 text-xs text-zinc-300">
@@ -28,6 +36,31 @@ function NumberInput({ label, unit, value, min = 0, step = 1, onChange }: Number
         step={step}
         value={value}
         onChange={(event) => onChange(Number(event.target.value))}
+        className="rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-white"
+      />
+    </label>
+  );
+}
+
+function OptionalNumberInput({
+  label,
+  unit,
+  value,
+  step = 1,
+  onChange,
+}: OptionalNumberInputProps) {
+  return (
+    <label className="grid gap-1 text-xs text-zinc-300">
+      <span>{label} <span className="text-zinc-500">({unit})</span></span>
+      <input
+        aria-label={label}
+        type="number"
+        step={step}
+        value={value ?? ''}
+        onChange={(event) => {
+          const rawValue = event.target.value;
+          onChange(rawValue === '' ? null : Number(rawValue));
+        }}
         className="rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-sm text-white"
       />
     </label>
@@ -72,6 +105,17 @@ export function ColumnInputEditor({
         <NumberInput label="Factored axial load" unit="kN" value={inputs.Pu_kN} onChange={(Pu_kN) => onChange({ Pu_kN })} />
         <NumberInput label="Applied Mux" unit="kN·m" value={inputs.Mux_kNm} step={0.1} onChange={(Mux_kNm) => onChange({ Mux_kNm })} />
         <NumberInput label="Applied Muy" unit="kN·m" value={inputs.Muy_kNm} step={0.1} onChange={(Muy_kNm) => onChange({ Muy_kNm })} />
+      </fieldset>
+
+      <fieldset className="grid grid-cols-2 gap-3 rounded-xl border border-white/10 p-3">
+        <legend className="px-1 text-xs font-semibold text-zinc-200">Slender-column end moments</legend>
+        <p className="col-span-2 text-xs leading-5 text-zinc-400">
+          Optional values in kN·m. Leaving both values for an axis blank uses the maintained equal-end-moment fallback: M1 = M2 = that axis&apos;s minimum-eccentricity-adjusted design moment. Any individual blank uses that same adjusted moment.
+        </p>
+        <OptionalNumberInput label="End moment M1x" unit="kN·m" value={inputs.M1x_kNm} step={0.1} onChange={(M1x_kNm) => onChange({ M1x_kNm })} />
+        <OptionalNumberInput label="End moment M2x" unit="kN·m" value={inputs.M2x_kNm} step={0.1} onChange={(M2x_kNm) => onChange({ M2x_kNm })} />
+        <OptionalNumberInput label="End moment M1y" unit="kN·m" value={inputs.M1y_kNm} step={0.1} onChange={(M1y_kNm) => onChange({ M1y_kNm })} />
+        <OptionalNumberInput label="End moment M2y" unit="kN·m" value={inputs.M2y_kNm} step={0.1} onChange={(M2y_kNm) => onChange({ M2y_kNm })} />
       </fieldset>
 
       <fieldset className="grid grid-cols-2 gap-3 rounded-xl border border-white/10 p-3">
