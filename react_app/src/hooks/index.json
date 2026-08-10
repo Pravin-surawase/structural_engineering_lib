@@ -2,7 +2,7 @@
   "folder": "react_app/src/hooks",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-10",
   "file_count": 16,
   "files": [
     {
@@ -33,19 +33,19 @@
     {
       "name": "useAutoDesign.ts",
       "type": "react-hook",
-      "size_lines": 69,
-      "last_updated": "2026-03-26",
+      "size_lines": 73,
+      "last_updated": "2026-08-10",
       "exports": [
         "useAutoDesign"
       ],
       "description": "useAutoDesign Hook",
-      "content_hash": "f9b4fa29b58c"
+      "content_hash": "6006b8641723"
     },
     {
       "name": "useBatchDesign.ts",
       "type": "react-hook",
-      "size_lines": 180,
-      "last_updated": "2026-04-05",
+      "size_lines": 557,
+      "last_updated": "2026-08-10",
       "exports": [
         "BatchProgress",
         "BatchResult",
@@ -53,14 +53,13 @@
         "BatchDesignState",
         "useBatchDesign"
       ],
-      "description": "useBatchDesign Hook",
-      "content_hash": "50a45ffdc661"
+      "content_hash": "3fc776a20e93"
     },
     {
       "name": "useBeamGeometry.ts",
       "type": "react-hook",
-      "size_lines": 162,
-      "last_updated": "2026-04-06",
+      "size_lines": 180,
+      "last_updated": "2026-08-10",
       "exports": [
         "Point3D",
         "RebarSegment",
@@ -68,16 +67,18 @@
         "StirrupLoop",
         "Beam3DGeometry",
         "BeamGeometryRequest",
+        "BEAM_GEOMETRY_SCHEMA_VERSION",
+        "BeamGeometryIdentity",
         "useBeamGeometry"
       ],
       "description": "useBeamGeometry Hook",
-      "content_hash": "c2d0c337e75b"
+      "content_hash": "cb922a18a712"
     },
     {
       "name": "useCSVImport.ts",
       "type": "react-hook",
-      "size_lines": 450,
-      "last_updated": "2026-04-06",
+      "size_lines": 456,
+      "last_updated": "2026-08-10",
       "exports": [
         "ImportedBeam",
         "BeamDesignPayload",
@@ -88,20 +89,21 @@
         "useSimpleBatchDesign"
       ],
       "description": "useCSVImport Hook",
-      "content_hash": "818b77c89936"
+      "content_hash": "39d8d4d4dfab"
     },
     {
       "name": "useDesignWebSocket.ts",
       "type": "react-hook",
-      "size_lines": 235,
-      "last_updated": "2026-04-04",
+      "size_lines": 249,
+      "last_updated": "2026-08-10",
       "exports": [
         "ConnectionStatus",
         "WebSocketState",
+        "normalizeWebSocketDesignResult",
         "useDesignWebSocket"
       ],
       "description": "useDesignWebSocket Hook",
-      "content_hash": "2d61149cab04"
+      "content_hash": "df7214e52ed8"
     },
     {
       "name": "useExport.ts",
@@ -143,8 +145,8 @@
     {
       "name": "useInsights.ts",
       "type": "react-hook",
-      "size_lines": 324,
-      "last_updated": "2026-04-06",
+      "size_lines": 346,
+      "last_updated": "2026-08-10",
       "exports": [
         "BeamResult",
         "StoryStats",
@@ -160,21 +162,22 @@
         "ProjectBOQConcreteEntry",
         "ProjectBOQStoryEntry",
         "ProjectBOQResponse",
-        "useProjectBOQ"
+        "ProjectBOQEvidence"
       ],
       "description": "useInsights Hook",
-      "content_hash": "cea3ad5b185f"
+      "content_hash": "3dc79f2036a4"
     },
     {
       "name": "useLiveDesign.ts",
       "type": "react-hook",
-      "size_lines": 264,
-      "last_updated": "2026-03-27",
+      "size_lines": 349,
+      "last_updated": "2026-08-10",
       "exports": [
+        "createQuickDesignIdentity",
         "useLiveDesign"
       ],
       "description": "useLiveDesign Hook",
-      "content_hash": "3d78d5f18487"
+      "content_hash": "6da01da9b033"
     },
     {
       "name": "useLoadAnalysis.ts",
@@ -248,5 +251,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "8a92a28c89451298"
+  "content_hash": "cf597cb1a564cf96"
 }

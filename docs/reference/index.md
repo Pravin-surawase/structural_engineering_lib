@@ -2,11 +2,12 @@
 
 **Type:** Mixed
 **Last Updated:** 2026-08-10
-**Files:** 28
+**Files:** 30
 
 ## Config Files
 
 - [api-manifest.json](api-manifest.json)
+- [beam-tool-manifest.json](beam-tool-manifest.json)
 - [clause-map.json](clause-map.json)
 
 ## Documentation Files
@@ -15,13 +16,14 @@
 |------|-------|-------------|-------|
 | [3d-json-contract.md](3d-json-contract.md) |  | For the P7 workbench migration, GeometrySpaceV1 is the rende | 481 |
 | [3d-visualization-performance.md](3d-visualization-performance.md) |  | This document provides performance benchmarks for the 3D bea | 172 |
-| [README.md](README.md) | Reference Documentation | Comprehensive lookup documentation for APIs, formulas, contr | 80 |
+| [README.md](README.md) | Reference Documentation | Comprehensive lookup documentation for APIs, formulas, contr | 81 |
 | [agent-automation-pitfalls.md](agent-automation-pitfalls.md) |  | <!-- lint-ignore-git --> > ⚠️ **Note:** This document includ | 634 |
 | [api-levels.md](api-levels.md) |  | structural_lib exposes three API levels. Pick the one that m | 117 |
-| [api-stability.md](api-stability.md) |  | > This document defines which parts of the library are safe  | 639 |
-| [api.md](api.md) |  | geometry, loading, reinforcement, and evidence boundaries. T | 3956 |
+| [api-stability.md](api-stability.md) |  | > This document defines which parts of the library are safe  | 647 |
+| [api.md](api.md) |  | geometry, loading, reinforcement, and evidence boundaries. T | 3962 |
 | [automation-catalog.md](automation-catalog.md) |  | The exhaustive machine-generated script inventory is scripts | 61 |
 | [bbs-dxf-contract.md](bbs-dxf-contract.md) |  | This document defines the stable contracts for Bar Bending S | 116 |
+| [beam-tool-manifest.md](beam-tool-manifest.md) |  | The generated beam tool manifest describes the one approved  | 32 |
 | [clause-map.md](clause-map.md) | IS 456 Clause-to-Function Mapping | Maps IS 456:2000 (and IS 13920:2016) clauses to their implem | 189 |
 | [deferred-integrations.md](deferred-integrations.md) |  | - Uses conservative default (0.7) in comparison scoring - Fu | 150 |
 | [deprecation-policy.md](deprecation-policy.md) |  | This document defines the deprecation policy for the structu | 368 |

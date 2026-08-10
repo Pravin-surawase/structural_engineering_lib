@@ -2,8 +2,8 @@
   "folder": "Python/tests",
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
-  "last_updated": "2026-08-09",
-  "file_count": 53,
+  "last_updated": "2026-08-10",
+  "file_count": 58,
   "files": [
     {
       "name": "README.md",
@@ -64,8 +64,8 @@
     {
       "name": "test_agent_governance_automation.py",
       "type": "python",
-      "size_lines": 279,
-      "last_updated": "2026-08-09",
+      "size_lines": 428,
+      "last_updated": "2026-08-10",
       "description": "Regression tests for agent-governance automation controls.",
       "functions": [
         {
@@ -73,6 +73,9 @@
         },
         {
           "name": "test_control_paths_use_python_runtime_launcher"
+        },
+        {
+          "name": "test_watch_help_does_not_require_fswatch"
         },
         {
           "name": "test_current_session_ids_uses_injected_date_and_ignores_malformed_ids"
@@ -144,27 +147,28 @@
           "name": "test_tool_registry_does_not_infer_permission_from_git_text"
         },
         {
-          "name": "test_permission_metadata_audit_accepts_current_declarations"
+          "name": "test_remaining_automation_permissions_match_modes",
+          "params": [
+            "operation",
+            "mode",
+            "expected"
+          ]
         },
         {
-          "name": "test_permission_metadata_audit_rejects_modes_without_default",
-          "params": [
-            "tmp_path",
-            "monkeypatch"
-          ]
+          "name": "test_automation_discovery_metadata_is_single_source"
         }
       ],
       "constants": [
         "REPO_ROOT",
         "SCRIPTS_DIR"
       ],
-      "content_hash": "f32a67378f42"
+      "content_hash": "108dc1b66ce7"
     },
     {
       "name": "test_api_manifest_tools.py",
       "type": "python",
       "size_lines": 134,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "description": "Regression tests for the single canonical public API manifest.",
       "functions": [
         {
@@ -501,7 +505,7 @@
       "name": "test_calculation_report.py",
       "type": "python",
       "size_lines": 745,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "description": "Tests for the calculation_report module (TASK-277).",
       "classes": [
         {
@@ -1639,6 +1643,28 @@
       "content_hash": "6da4ea61aebb"
     },
     {
+      "name": "test_evidence.py",
+      "type": "python",
+      "size_lines": 108,
+      "last_updated": "2026-08-10",
+      "description": "Focused tests for the supported IS 456 beam evidence envelope.",
+      "functions": [
+        {
+          "name": "test_beam_evidence_hash_uses_normalized_consumed_inputs"
+        },
+        {
+          "name": "test_beam_evidence_hash_changes_for_relevant_input"
+        },
+        {
+          "name": "test_held_beam_evidence_does_not_present_a_pass_or_fail"
+        },
+        {
+          "name": "test_beam_report_exports_evidence_without_approval_claim"
+        }
+      ],
+      "content_hash": "ea52787db35d"
+    },
+    {
       "name": "test_exception_hierarchy.py",
       "type": "python",
       "size_lines": 278,
@@ -1695,7 +1721,7 @@
       "name": "test_footing.py",
       "type": "python",
       "size_lines": 1750,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "description": "Tests for IS 456 footing design — TASK-650/651/652.",
       "classes": [
         {
@@ -1871,7 +1897,7 @@
       "name": "test_footing_load_transfer.py",
       "type": "python",
       "size_lines": 165,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "description": "Focused independent arithmetic checks for IS 456 Cl. 34.4 load transfer.",
       "functions": [
         {
@@ -1901,6 +1927,26 @@
         }
       ],
       "content_hash": "ee88228af18c"
+    },
+    {
+      "name": "test_generated_clients.py",
+      "type": "python",
+      "size_lines": 71,
+      "last_updated": "2026-08-10",
+      "description": "Contract checks for the checked-in basic generated clients.",
+      "functions": [
+        {
+          "name": "test_python_client_unwraps_success_envelopes_and_uses_maintained_routes"
+        },
+        {
+          "name": "test_import_validator_resolves_checked_in_generated_client"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "CLIENT_ROOT"
+      ],
+      "content_hash": "5f72938f65a1"
     },
     {
       "name": "test_inputs.py",
@@ -1997,7 +2043,7 @@
       "name": "test_is456_common.py",
       "type": "python",
       "size_lines": 854,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "description": "Tests for IS 456:2000 common modules - stress_blocks, reinforcement, validation.",
       "classes": [
         {
@@ -2198,8 +2244,8 @@
     {
       "name": "test_model_picker.py",
       "type": "python",
-      "size_lines": 92,
-      "last_updated": "2026-08-09",
+      "size_lines": 94,
+      "last_updated": "2026-08-10",
       "description": "Tests for the deterministic low-token model picker.",
       "functions": [
         {
@@ -2219,13 +2265,13 @@
           ]
         },
         {
-          "name": "test_mechanical_planning_doc_update_stays_on_luna"
+          "name": "test_mechanical_planning_doc_update_uses_terra_low"
         },
         {
           "name": "test_main_orchestrator_advises_terra_without_overriding_user_choice"
         },
         {
-          "name": "test_low_risk_override_prefers_luna"
+          "name": "test_low_risk_override_prefers_terra_low"
         },
         {
           "name": "test_model_policy_profiles_are_unique_and_complete"
@@ -2234,7 +2280,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "5263044f7410"
+      "content_hash": "b8d50bb1968e"
     },
     {
       "name": "test_multi_objective_optimizer.py",
@@ -2352,8 +2398,8 @@
     {
       "name": "test_packaging.py",
       "type": "python",
-      "size_lines": 418,
-      "last_updated": "2026-08-09",
+      "size_lines": 452,
+      "last_updated": "2026-08-10",
       "description": "Tests for package distribution correctness.",
       "classes": [
         {
@@ -2369,7 +2415,8 @@
           "name": "TestPackageScope",
           "description": "Verify no test/dev packages leak into the distribution.",
           "public_methods": [
-            "test_no_tests_in_top_level"
+            "test_no_tests_in_top_level",
+            "test_manifest_prunes_non_product_namespaces"
           ]
         },
         {
@@ -2435,11 +2482,12 @@
           "description": "Verify README code examples actually work.",
           "public_methods": [
             "test_readme_beam_design_snippet",
-            "test_readme_csv_adapter_snippet"
+            "test_readme_csv_adapter_snippet",
+            "test_api_levels_column_workflow_snippet"
           ]
         }
       ],
-      "content_hash": "87c54525f7fe"
+      "content_hash": "9dfa7df6929e"
     },
     {
       "name": "test_pipeline_state.py",
@@ -2540,10 +2588,14 @@
     {
       "name": "test_release_environment.py",
       "type": "python",
-      "size_lines": 189,
-      "last_updated": "2026-08-09",
+      "size_lines": 263,
+      "last_updated": "2026-08-10",
       "description": "Regression tests for local release preflight environment selection.",
       "functions": [
+        {
+          "name": "test_type_check_toolchain_requires_explicit_migration",
+          "description": "Do not let CI silently cross known Mypy/NumPy stub boundaries."
+        },
         {
           "name": "test_available_ram_uses_memory_pressure_percentage",
           "params": [
@@ -2587,6 +2639,20 @@
           ]
         },
         {
+          "name": "test_source_surface_versions_match_owner_authorized_release",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_release_ready_metadata_requires_recorded_owner_authorization",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
           "name": "test_source_surface_versions_fail_on_deliberate_mismatch",
           "params": [
             "tmp_path",
@@ -2609,13 +2675,13 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "6cde32e9477b"
+      "content_hash": "3df5715a4d03"
     },
     {
       "name": "test_release_scripts.py",
       "type": "python",
-      "size_lines": 404,
-      "last_updated": "2026-08-09",
+      "size_lines": 446,
+      "last_updated": "2026-08-10",
       "description": "Tests for release scripts (bump_version.py, release.py).",
       "classes": [
         {
@@ -2688,6 +2754,16 @@
           ]
         },
         {
+          "name": "TestPublishWorkflow",
+          "description": "The release workflow must preserve package maturity on GitHub.",
+          "public_methods": [
+            "test_development_status_controls_github_prerelease",
+            "test_future_publications_require_alpha_identifiers",
+            "test_alpha_ordering_preserves_legacy_release_history",
+            "test_docs_workflow_is_build_only_until_pages_is_configured"
+          ]
+        },
+        {
           "name": "TestReleasePreflight",
           "description": "Tests for the preflight subcommand.",
           "public_methods": [
@@ -2748,13 +2824,13 @@
         "RELEASE_SCRIPT",
         "VERSION_TRACKED_FILES"
       ],
-      "content_hash": "5ea6f3fef8c8"
+      "content_hash": "a1f6041c020d"
     },
     {
       "name": "test_report_edge_cases.py",
       "type": "python",
       "size_lines": 303,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "description": "Edge case tests for report generation modules (TASK-520).",
       "classes": [
         {
@@ -2867,7 +2943,7 @@
       "name": "test_reports.py",
       "type": "python",
       "size_lines": 447,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "description": "Tests for the reports module.",
       "classes": [
         {
@@ -3096,8 +3172,8 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 327,
-      "last_updated": "2026-08-09",
+      "size_lines": 462,
+      "last_updated": "2026-08-10",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
         {
@@ -3154,6 +3230,12 @@
           "name": "test_api_endpoint_extraction_stops_before_query_template"
         },
         {
+          "name": "test_api_call_method_extraction_stops_at_each_fetch",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
           "name": "test_api_route_shape_matches_dynamic_segments"
         },
         {
@@ -3176,14 +3258,21 @@
           "name": "test_generated_indexes_do_not_emit_trailing_space_hard_breaks"
         },
         {
-          "name": "test_session_end_preserves_current_same_day_handoff",
+          "name": "test_generated_json_indexes_end_with_newline",
           "params": [
             "tmp_path",
             "monkeypatch"
           ]
         },
         {
-          "name": "test_legacy_activity_log_uses_local_midnight_and_no_billing_estimate",
+          "name": "test_generated_index_hash_tracks_subfolder_projection",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_session_end_preserves_current_same_day_handoff",
           "params": [
             "tmp_path",
             "monkeypatch"
@@ -3193,7 +3282,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "5fd79d7492ad"
+      "content_hash": "90e3edeef907"
     },
     {
       "name": "test_session_store.py",
@@ -3495,8 +3584,8 @@
     {
       "name": "test_token_efficiency.py",
       "type": "python",
-      "size_lines": 82,
-      "last_updated": "2026-08-09",
+      "size_lines": 83,
+      "last_updated": "2026-08-10",
       "description": "Regression tests for repository-side token-efficiency controls.",
       "functions": [
         {
@@ -3518,7 +3607,39 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "42f9c69f73f7"
+      "content_hash": "78b907e92a49"
+    },
+    {
+      "name": "test_tool_manifest.py",
+      "type": "python",
+      "size_lines": 101,
+      "last_updated": "2026-08-10",
+      "description": "Focused gates for the catalogue-derived beam tool manifest.",
+      "functions": [
+        {
+          "name": "test_manifest_is_deterministic_and_catalogue_derived"
+        },
+        {
+          "name": "test_manifest_preserves_units_limitations_and_review_boundary"
+        },
+        {
+          "name": "test_manifest_schema_and_catalogue_validate_the_same_input"
+        },
+        {
+          "name": "test_unknown_capability_fails_closed"
+        },
+        {
+          "name": "test_committed_artifact_check_detects_byte_drift",
+          "params": [
+            "tmp_path"
+          ]
+        }
+      ],
+      "constants": [
+        "SAFE_INPUTS",
+        "REPO_ROOT"
+      ],
+      "content_hash": "a64b113ce718"
     },
     {
       "name": "test_visualization_edge_cases.py",
@@ -3799,6 +3920,69 @@
         }
       ],
       "content_hash": "96711c05fa04"
+    },
+    {
+      "name": "test_workflow_catalog.py",
+      "type": "python",
+      "size_lines": 87,
+      "last_updated": "2026-08-10",
+      "description": "Focused contract tests for the one-beam application workflow catalogue.",
+      "functions": [
+        {
+          "name": "test_catalog_is_deterministic_and_semantically_bound"
+        },
+        {
+          "name": "test_catalog_rejects_duplicate_and_unknown_registry_ids"
+        },
+        {
+          "name": "test_catalog_rejects_unknown_semantics_and_example_fields"
+        },
+        {
+          "name": "test_additive_fixture_migrates_and_breaking_version_fails"
+        }
+      ],
+      "content_hash": "9c4dcf16fa46"
+    },
+    {
+      "name": "test_workflow_runner.py",
+      "type": "python",
+      "size_lines": 189,
+      "last_updated": "2026-08-10",
+      "description": "Bounded-runner tests for the approved beam workflow only.",
+      "functions": [
+        {
+          "name": "test_template_is_deterministic_and_exactly_allowlisted"
+        },
+        {
+          "name": "test_tampered_definition_cannot_execute",
+          "params": [
+            "mutation",
+            "message"
+          ]
+        },
+        {
+          "name": "test_safe_run_stops_for_review_then_completes_with_acknowledgement"
+        },
+        {
+          "name": "test_unsafe_run_stops_before_export"
+        },
+        {
+          "name": "test_timeout_and_idempotency_are_deterministic"
+        },
+        {
+          "name": "test_active_run_can_be_cancelled_and_concurrency_stays_bounded",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_invalid_run_identity_and_oversized_input_fail_closed"
+        }
+      ],
+      "constants": [
+        "SAFE_INPUTS"
+      ],
+      "content_hash": "84c6cce1cff4"
     }
   ],
   "subfolders": [
@@ -3851,10 +4035,10 @@
     {
       "name": "unit",
       "path": "unit/",
-      "file_count": 33,
+      "file_count": 34,
       "is_package": true
     }
   ],
-  "content_hash": "01bc7417dcb67ae5",
-  "has_init": true
+  "has_init": true,
+  "content_hash": "26b08e5568daa17e"
 }

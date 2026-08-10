@@ -2,14 +2,14 @@
   "folder": "Python/structural_lib/codes/is456",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-10",
   "file_count": 14,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
       "size_lines": 148,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-09",
       "description": "IS 456:2000 - Indian Standard for Plain and Reinforced Concrete.",
       "classes": [
         {
@@ -26,12 +26,12 @@
           ]
         }
       ],
-      "content_hash": "248d2465c012"
+      "content_hash": "eab49c0651c4"
     },
     {
       "name": "clauses.json",
       "type": "config",
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-09",
       "top_level_keys": [
         "$schema",
         "metadata",
@@ -40,7 +40,7 @@
         "figures",
         "annexures"
       ],
-      "content_hash": "f974f3f59732"
+      "content_hash": "abee8e3dbffd"
     },
     {
       "name": "compliance.py",
@@ -316,8 +316,8 @@
     {
       "name": "traceability.py",
       "type": "python",
-      "size_lines": 354,
-      "last_updated": "2026-04-05",
+      "size_lines": 350,
+      "last_updated": "2026-08-09",
       "description": "IS 456 Traceability Module",
       "functions": [
         {
@@ -351,7 +351,7 @@
         },
         {
           "name": "search_clauses",
-          "description": "Search clauses by keyword in title, text, or keywords.",
+          "description": "Search distributable clause identity metadata by title or keywords.",
           "params": [
             "keyword"
           ]
@@ -375,7 +375,7 @@
       "constants": [
         "F"
       ],
-      "content_hash": "499eb980fe5f"
+      "content_hash": "036880ae4b70"
     }
   ],
   "subfolders": [
@@ -400,23 +400,29 @@
     {
       "name": "footing",
       "path": "footing/",
+      "file_count": 9,
+      "is_package": true
+    },
+    {
+      "name": "slab",
+      "path": "slab/",
       "file_count": 8,
       "is_package": true
     }
   ],
-  "content_hash": "d55ef1ae53680252",
   "has_init": true,
   "public_api": [
     "IS456Code",
     "beam",
     "column",
+    "footing",
+    "slab",
     "tables",
     "shear",
     "flexure",
     "detailing",
     "serviceability",
     "compliance",
-    "ductile",
     "slenderness",
     "torsion",
     "traceability",
@@ -425,5 +431,6 @@
     "get_clause_info",
     "list_clauses_by_category",
     "search_clauses"
-  ]
+  ],
+  "content_hash": "c43647f7ac0dc25a"
 }

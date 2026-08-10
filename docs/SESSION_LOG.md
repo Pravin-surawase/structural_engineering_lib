@@ -5,6 +5,82 @@
 
 ---
 
+## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
+
+**Agent:** Codex
+**Branch:** `codex/maintenance-fresh-start`
+**Focus:** Synchronize merged main, retire disposable worktrees, repair generated truth, and leave a clean next-work baseline
+
+### Summary
+
+- Fast-forwarded local `main` from stale commit `44e85587` to merged UIX commit
+  `64e33627`, then created one bounded maintenance branch.
+- Removed five clean `/private/tmp/structlib-*` worktrees after verifying exact
+  directories, zero uncommitted files, no owning process, and retained branches.
+  The named Excel audit and social-preview worktrees remain untouched.
+- Confirmed no project server on ports 8000/5173, no stash, no stale remote branch
+  under the maintained 30-day policy, and no Git object-integrity failure.
+- Removed only generated root coverage/test/type/lint caches, React build output,
+  and Python bytecode. Preserved `.env`, `.venv`, fresh `node_modules`, logs,
+  benchmarks, Hypothesis state, P14 recovery backups, branches, and user worktrees.
+- Synchronized five public counts, regenerated all 32 canonical folder indexes,
+  and fixed index watermarking so future drift checks cover subfolder projections.
+
+### Issues encountered
+
+- The stale-branch helper rejected a guessed `--dry-run` flag and stopped the
+  first chained inspection before the later read-only probes ran.
+- Initial project health was 94/100: five public counts described the older
+  63-endpoint/15-router/75-public-function surface, and 25 index hashes were stale.
+- Regenerating all indexes changed some parent indexes that `--check` had called
+  current because their direct files were unchanged while subfolder counts moved.
+- The first focused formatter check requested normalization of the new index-hash
+  regression before the verification chain could continue.
+- A broad search guessed root and Python `Makefile` paths that do not exist.
+
+### Root causes and resolutions
+
+- `cleanup_stale_branches.py` is dry-run by default and exposes only `--delete`
+  for mutation. The maintained command was rerun without the invented flag and
+  reported no stale branch; no remote branch was deleted.
+- UIX added catalogue/workflow routers and public functions without refreshing
+  every generated count and folder index. `sync_numbers.py --fix` applied the
+  exact dry-run projection, and the enhanced-index generator refreshed the
+  canonical 32-folder set. Health now reports 100/100.
+- The index watermark was computed before subfolders were analyzed and covered
+  only direct file hashes, so parent projection drift could pass `--check`.
+  Watermarking now hashes the complete deterministic index payload except the
+  generation date. A focused regression proves a child-file-count change alters
+  the parent hash; two-pass generation/check reports all 32 current.
+- Ruff formatting, not a logic failure, blocked the first combined command. The
+  formatter output was retained and the focused 28-test/Ruff chain passed.
+- The repository has no Makefile maintenance entrypoint. Subsequent discovery
+  used `run.sh` and `scripts/automation-map.json`, which identified the canonical
+  cleanup script without adding another wrapper.
+
+### Verification
+
+- `./run.sh health` — 100/100 across docs, code, agents, infrastructure, and feedback.
+- `./run.sh efficiency check` — passed.
+- `scripts/generate_enhanced_index.py --all --check` — 32/32 current.
+- `scripts/sync_numbers.py` — 5,520 tests, 106 scripts, 26 hooks, 69 endpoints
+  across 17 routers, 78 public API functions, and 55 components; zero drift.
+- `pytest Python/tests/test_session_automation.py -q` — 28 passed.
+- Scoped Ruff check/format, Git diff check, Git object integrity, worktree prune
+  dry run, and the repository quick gate pass.
+- Final integrated `./run.sh check` — 30/30 passed.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `cleanup_stale_branches.py --dry-run` is unsupported
+  because dry run is already the default -> rerunning without the flag returned
+  the intended read-only result.
+- ⚠️ TERMINAL ISSUE: Guessed `Makefile` and `Python/Makefile` search roots
+  do not exist -> `run.sh` plus the automation registry provided the maintained
+  commands.
+- ⚠️ TERMINAL ISSUE: The first Ruff format check stopped a chained command
+  -> the formatter normalized the focused test and the full chain passed on retry.
+
 ## 2026-08-10 — Session: UIX-001 Session 2 P9-P15
 
 **Agent:** Codex

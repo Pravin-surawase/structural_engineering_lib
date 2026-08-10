@@ -2,8 +2,8 @@
   "folder": "fastapi_app/models",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-04-07",
-  "file_count": 10,
+  "last_updated": "2026-08-10",
+  "file_count": 15,
   "files": [
     {
       "name": "__init__.py",
@@ -16,8 +16,8 @@
     {
       "name": "analysis.py",
       "type": "python",
-      "size_lines": 254,
-      "last_updated": "2026-04-04",
+      "size_lines": 264,
+      "last_updated": "2026-04-07",
       "description": "Smart Analysis Pydantic Models.",
       "classes": [
         {
@@ -38,7 +38,10 @@
         },
         {
           "name": "SmartAnalysisRequest",
-          "description": "Request model for smart design analysis."
+          "description": "Request model for smart design analysis.",
+          "public_methods": [
+            "validate_cross_fields"
+          ]
         },
         {
           "name": "Suggestion",
@@ -61,13 +64,13 @@
           "description": "Response model for smart analysis."
         }
       ],
-      "content_hash": "5cfa55411c2e"
+      "content_hash": "26dc50c893b8"
     },
     {
       "name": "beam.py",
       "type": "python",
-      "size_lines": 618,
-      "last_updated": "2026-04-05",
+      "size_lines": 679,
+      "last_updated": "2026-08-10",
       "description": "Beam Design and Detailing Pydantic Models.",
       "classes": [
         {
@@ -83,11 +86,21 @@
         },
         {
           "name": "BeamCheckRequest",
-          "description": "Request model for checking existing beam with provided reinforcement."
+          "description": "Request model for checking existing beam with provided reinforcement.",
+          "public_methods": [
+            "validate_cross_fields"
+          ]
         },
         {
           "name": "BeamDetailingRequest",
-          "description": "Request model for beam reinforcement detailing."
+          "description": "Request model for beam reinforcement detailing.",
+          "public_methods": [
+            "validate_cross_fields"
+          ]
+        },
+        {
+          "name": "EvidenceEnvelopeResponse",
+          "description": "Traceable identity metadata, not a professional approval certificate."
         },
         {
           "name": "FlexureResult",
@@ -131,21 +144,21 @@
           "public_methods": [
             "validate_depth_relationships"
           ]
-        },
-        {
-          "name": "TorsionDesignResponse",
-          "description": "Response model for torsion design."
         }
       ],
-      "content_hash": "b866ec0fd49a"
+      "content_hash": "15ef555cacf0"
     },
     {
       "name": "boq.py",
       "type": "python",
-      "size_lines": 77,
-      "last_updated": "2026-04-04",
+      "size_lines": 107,
+      "last_updated": "2026-08-10",
       "description": "Pydantic models for Project BOQ endpoint.",
       "classes": [
+        {
+          "name": "DatasetReference",
+          "description": "Optional source-dataset identity supplied by an import surface."
+        },
         {
           "name": "BeamMetadata",
           "description": "Per-beam metadata for BOQ aggregation."
@@ -153,6 +166,10 @@
         {
           "name": "ProjectBOQRequest",
           "description": "Request for project BOQ aggregation."
+        },
+        {
+          "name": "BOQEvidenceResponse",
+          "description": "Server-generated identity for one BOQ aggregation."
         },
         {
           "name": "SteelSummaryResponse",
@@ -171,13 +188,77 @@
           "description": "BOQ response with aggregated quantities and costs."
         }
       ],
-      "content_hash": "3d1a134375d0"
+      "content_hash": "cb7a0115d118"
+    },
+    {
+      "name": "capabilities.py",
+      "type": "python",
+      "size_lines": 79,
+      "last_updated": "2026-08-10",
+      "description": "Typed transport models for canonical IS 456 capability discovery.",
+      "classes": [
+        {
+          "name": "IS456FieldAliasModel",
+          "description": "One intentional compatibility spelling."
+        },
+        {
+          "name": "IS456FieldContractModel",
+          "description": "Units and domain of one canonical public quantity."
+        },
+        {
+          "name": "IS456StatusContractModel",
+          "description": "Meaning and limits of one public status field."
+        },
+        {
+          "name": "IS456WorkflowContractModel",
+          "description": "Semantic contract for a supported public workflow."
+        },
+        {
+          "name": "IS456AdapterContractModel",
+          "description": "Semantic contract for a supported transport boundary."
+        },
+        {
+          "name": "IS456SemanticContractModel",
+          "description": "Units, aliases, statuses, and limitations for supported routes."
+        },
+        {
+          "name": "IS456CapabilityModel",
+          "description": "One supported capability plus its held boundary."
+        },
+        {
+          "name": "IS456CapabilityDocumentModel",
+          "description": "Versioned capability discovery document shared by all public surfaces."
+        }
+      ],
+      "content_hash": "bb33ef5d0171"
+    },
+    {
+      "name": "catalog.py",
+      "type": "python",
+      "size_lines": 56,
+      "last_updated": "2026-08-10",
+      "description": "Typed transport models for the application workflow catalogue.",
+      "classes": [
+        {
+          "name": "CatalogFieldModel"
+        },
+        {
+          "name": "CatalogExampleModel"
+        },
+        {
+          "name": "WorkflowCapabilityModel"
+        },
+        {
+          "name": "WorkflowCatalogDocumentModel"
+        }
+      ],
+      "content_hash": "6279d6ba7bad"
     },
     {
       "name": "column.py",
       "type": "python",
-      "size_lines": 1005,
-      "last_updated": "2026-04-04",
+      "size_lines": 1174,
+      "last_updated": "2026-08-10",
       "description": "Column Design Pydantic Models.",
       "classes": [
         {
@@ -198,7 +279,10 @@
         },
         {
           "name": "ColumnAxialRequest",
-          "description": "Request model for short column axial capacity calculation."
+          "description": "Request model for short column axial capacity calculation.",
+          "public_methods": [
+            "validate_cross_fields"
+          ]
         },
         {
           "name": "ColumnClassifyResponse",
@@ -214,7 +298,10 @@
         },
         {
           "name": "ColumnUniaxialRequest",
-          "description": "Request model for short column uniaxial bending design per IS 456 Cl 39.5."
+          "description": "Request model for short column uniaxial bending design per IS 456 Cl 39.5.",
+          "public_methods": [
+            "validate_cross_fields"
+          ]
         },
         {
           "name": "ColumnUniaxialResponse",
@@ -222,7 +309,10 @@
         },
         {
           "name": "PMInteractionRequest",
-          "description": "Request model for P-M interaction curve generation."
+          "description": "Request model for P-M interaction curve generation.",
+          "public_methods": [
+            "validate_cross_fields"
+          ]
         },
         {
           "name": "PMPoint",
@@ -234,20 +324,23 @@
         },
         {
           "name": "BiaxialCheckRequest",
-          "description": "Request model for biaxial bending check per IS 456 Cl 39.6 (Bresler load contour)."
+          "description": "Request model for biaxial bending check per IS 456 Cl 39.6 (Bresler load contour).",
+          "public_methods": [
+            "validate_cross_fields"
+          ]
         },
         {
           "name": "BiaxialCheckResponse",
           "description": "Response model for biaxial bending check per IS 456 Cl 39.6."
         }
       ],
-      "content_hash": "e75eb4b2fec1"
+      "content_hash": "2b81a2987ad9"
     },
     {
       "name": "common.py",
       "type": "python",
-      "size_lines": 150,
-      "last_updated": "2026-03-26",
+      "size_lines": 137,
+      "last_updated": "2026-08-10",
       "description": "Common Pydantic Models.",
       "classes": [
         {
@@ -267,18 +360,11 @@
           "description": "Design code and assumptions."
         },
         {
-          "name": "APIResponse",
-          "description": "Standard API response wrapper."
-        },
-        {
           "name": "ErrorResponse",
           "description": "Error response model."
         }
       ],
-      "constants": [
-        "T"
-      ],
-      "content_hash": "840c108953f3"
+      "content_hash": "1a0e8f668f88"
     },
     {
       "name": "compliance.py",
@@ -356,8 +442,8 @@
     {
       "name": "geometry.py",
       "type": "python",
-      "size_lines": 394,
-      "last_updated": "2026-04-04",
+      "size_lines": 412,
+      "last_updated": "2026-08-09",
       "description": "3D Geometry Pydantic Models.",
       "classes": [
         {
@@ -382,7 +468,10 @@
         },
         {
           "name": "BeamGeometryRequest",
-          "description": "Request model for beam 3D geometry generation using library API."
+          "description": "Request model for beam 3D geometry generation using library API.",
+          "public_methods": [
+            "validate_cross_fields"
+          ]
         },
         {
           "name": "BeamGeometryResponse",
@@ -402,7 +491,10 @@
         },
         {
           "name": "CrossSectionRequest",
-          "description": "Request model for 2D cross-section geometry."
+          "description": "Request model for 2D cross-section geometry.",
+          "public_methods": [
+            "validate_cross_fields"
+          ]
         },
         {
           "name": "CrossSectionResponse",
@@ -421,7 +513,103 @@
           "description": "Axis-aligned bounding box."
         }
       ],
-      "content_hash": "d9972f91b99f"
+      "content_hash": "74e7662984d5"
+    },
+    {
+      "name": "library_core.py",
+      "type": "python",
+      "size_lines": 178,
+      "last_updated": "2026-08-10",
+      "description": "Requests for the bounded footing and slab public-library workflows.",
+      "classes": [
+        {
+          "name": "FootingLoadTransferRequest",
+          "description": "Explicit inputs for the bounded concentric isolated-footing transfer check."
+        },
+        {
+          "name": "OneWaySlabDesignRequest",
+          "description": "Explicit inputs for the supported simply supported one-way slab strip."
+        },
+        {
+          "name": "FootingLoadTransferResponse",
+          "description": "Bounded isolated-footing bearing and dowel-transfer result."
+        },
+        {
+          "name": "SlabGeometryResponse",
+          "description": "Normalized one-way slab geometry used by the service."
+        },
+        {
+          "name": "OneWaySlabFlexureInputResponse",
+          "description": "Inputs retained with a one-way slab flexure result."
+        },
+        {
+          "name": "SlabGoverningCheckResponse",
+          "description": "One explicit flexure or detailing comparison."
+        },
+        {
+          "name": "OneWaySlabFlexureResponse",
+          "description": "Bounded one-way slab flexure result."
+        },
+        {
+          "name": "OneWaySlabDetailingInputResponse",
+          "description": "Inputs retained with a one-way slab detailing result."
+        },
+        {
+          "name": "OneWaySlabDetailingResponse",
+          "description": "Provided-bar checks and the serviceability review boundary."
+        },
+        {
+          "name": "OneWaySlabDesignResponse",
+          "description": "Complete bounded one-way slab flexure and detailing response."
+        }
+      ],
+      "content_hash": "fdfc89990b5d"
+    },
+    {
+      "name": "metadata.py",
+      "type": "python",
+      "size_lines": 97,
+      "last_updated": "2026-08-10",
+      "description": "Typed payload models for maintained static JSON metadata routes.",
+      "classes": [
+        {
+          "name": "APIInfoResponse",
+          "description": "Root API discovery payload."
+        },
+        {
+          "name": "DesignLimitsResponse",
+          "description": "Named IS 456 design-limit groups."
+        },
+        {
+          "name": "CostRatesResponse",
+          "description": "Default optimization rate groups and their context."
+        },
+        {
+          "name": "CodeClausesResponse",
+          "description": "IS 456/IS 13920 references grouped by check type."
+        },
+        {
+          "name": "MaterialAppearance",
+          "description": "Visualization material metadata."
+        },
+        {
+          "name": "MaterialAppearancesResponse",
+          "description": "Named visualization material appearances."
+        },
+        {
+          "name": "ImportFormatDescription",
+          "description": "One supported CSV input shape."
+        },
+        {
+          "name": "ImportFormatsResponse",
+          "description": "Supported CSV formats and auto-detection metadata."
+        },
+        {
+          "name": "DevelopmentLengthResponse",
+          "description": "One development-length calculation with explicit inputs and clause."
+        }
+      ],
+      "content_hash": "c85cead534dd"
     },
     {
       "name": "optimization.py",
@@ -472,13 +660,21 @@
     {
       "name": "response.py",
       "type": "python",
-      "size_lines": 45,
-      "last_updated": "2026-04-05",
+      "size_lines": 71,
+      "last_updated": "2026-08-10",
       "description": "Standardized API response wrappers.",
       "classes": [
         {
           "name": "APIResponse",
           "description": "Standardized response wrapper for all API endpoints."
+        },
+        {
+          "name": "RequestValidationErrorPayload",
+          "description": "Field-preserving Pydantic request validation error."
+        },
+        {
+          "name": "RequestValidationErrorResponse",
+          "description": "Documented 422 form of the maintained response envelope."
         }
       ],
       "functions": [
@@ -501,11 +697,53 @@
       "constants": [
         "T"
       ],
-      "content_hash": "6da6039abfee"
+      "content_hash": "303815ec1f8d"
+    },
+    {
+      "name": "workflows.py",
+      "type": "python",
+      "size_lines": 99,
+      "last_updated": "2026-08-10",
+      "description": "Typed models for the default-disabled bounded beam workflow transport.",
+      "classes": [
+        {
+          "name": "WorkflowStepDefinitionModel"
+        },
+        {
+          "name": "WorkflowBindingModel"
+        },
+        {
+          "name": "WorkflowLimitsModel"
+        },
+        {
+          "name": "WorkflowDefinitionModel"
+        },
+        {
+          "name": "WorkflowValidateRequest"
+        },
+        {
+          "name": "WorkflowRunRequest"
+        },
+        {
+          "name": "WorkflowValidationResponse"
+        },
+        {
+          "name": "WorkflowStepResultModel"
+        },
+        {
+          "name": "WorkflowAuditModel"
+        },
+        {
+          "name": "WorkflowRunResponse"
+        },
+        {
+          "name": "WorkflowCancellationResponse"
+        }
+      ],
+      "content_hash": "2dda37f6f900"
     }
   ],
   "subfolders": [],
-  "content_hash": "87f2b9f5c0d2c08c",
   "has_init": true,
   "public_api": [
     "BeamDesignRequest",
@@ -528,5 +766,6 @@
     "ErrorResponse",
     "DuctilityCheckRequest",
     "DuctilityCheckResponse"
-  ]
+  ],
+  "content_hash": "04cafbd7ed3c78a3"
 }

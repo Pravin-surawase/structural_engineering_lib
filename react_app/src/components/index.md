@@ -22,8 +22,8 @@
 |--------|-------|-------------|
 | [design/](design/) | 11 |  |
 | [import/](import/) | 6 |  |
-| [layout/](layout/) | 3 |  |
-| [pages/](pages/) | 8 |  |
+| [layout/](layout/) | 2 |  |
+| [pages/](pages/) | 4 |  |
 | [ui/](ui/) | 10 |  |
-| [viewport/](viewport/) | 8 |  |
+| [viewport/](viewport/) | 20 |  |
 | [workbench/](workbench/) | 8 |  |

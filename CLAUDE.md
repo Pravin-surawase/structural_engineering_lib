@@ -80,7 +80,7 @@ Agents keep duplicating code. Check what exists BEFORE writing new code:
 
 ```bash
 ls react_app/src/hooks/                                         # React hooks (CSV, geometry, export, insights)
-grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI endpoints (15 routers)
+grep -r "@router" fastapi_app/routers/ | head -30               # FastAPI endpoints (17 routers)
 ./run.sh find --api <func>                                   # Public API exact signature (68 functions)
 .venv/bin/python scripts/discover_api_signatures.py <func>      # Get exact param names (b_mm not width)
 ```

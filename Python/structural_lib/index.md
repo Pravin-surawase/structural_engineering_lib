@@ -3,7 +3,7 @@
 > **Purpose:** IS 456:2000 RC beam design calculations
 
 **Type:** Python Package
-**Last Updated:** 2026-04-07
+**Last Updated:** 2026-08-10
 **Files:** 51
 
 ## Public API
@@ -39,8 +39,8 @@
 
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
-| [__init__.py](__init__.py) | Package:      structural_lib | 0 | 0 | 372 |
-| [__main__.py](__main__.py) | Unified CLI entrypoint for structural_lib. | 0 | 11 | 1533 |
+| [__init__.py](__init__.py) | Package:      structural_lib | 0 | 0 | 377 |
+| [__main__.py](__main__.py) | Unified CLI entrypoint for structural_lib. | 0 | 12 | 1573 |
 | [adapters.py](adapters.py) | Backward compatibility stub. | 0 | 0 | 17 |
 | [api.py](api.py) | Backward compatibility stub. | 0 | 0 | 14 |
 | [api_results.py](api_results.py) | Backward compatibility stub. | 0 | 0 | 18 |
@@ -94,10 +94,10 @@
 | Folder | Files | Description |
 |--------|-------|-------------|
 | [cli/](cli/) 📦 | 2 |  |
-| [codes/](codes/) 📦 | 56 |  |
+| [codes/](codes/) 📦 | 65 |  |
 | [core/](core/) 📦 | 20 |  |
 | [insights/](insights/) 📦 | 12 |  |
 | [reports/](reports/) 📦 | 7 |  |
 | [research/](research/) 📦 | 4 |  |
-| [services/](services/) 📦 | 35 |  |
+| [services/](services/) 📦 | 40 |  |
 | [visualization/](visualization/) 📦 | 4 |  |

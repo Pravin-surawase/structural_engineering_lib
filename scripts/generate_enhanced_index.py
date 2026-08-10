@@ -453,7 +453,6 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
     }
 
     # Analyze files
-    file_hashes = []
     for f in all_files:
         file_info = analyze_file(f)
         if file_info:
@@ -462,15 +461,9 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
                 file_bytes = f.read_bytes()
                 file_hash = hashlib.sha256(file_bytes).hexdigest()[:12]
                 file_info["content_hash"] = file_hash
-                file_hashes.append(file_hash)
             except OSError:
                 pass
             index["files"].append(file_info)
-
-    # Add overall content hash watermark (hash of all file hashes)
-    if file_hashes:
-        combined = "|".join(sorted(file_hashes))
-        index["content_hash"] = hashlib.sha256(combined.encode()).hexdigest()[:16]
 
     # Analyze subfolders
     for d in subfolders:
@@ -538,6 +531,23 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
                     pass
             except (OSError, UnicodeDecodeError):
                 pass
+
+    # Hash every deterministic projection written to the index. Exclude the
+    # generation date so an unchanged folder remains current across days.
+    hash_payload = {
+        key: value
+        for key, value in index.items()
+        if key not in {"content_hash", "last_updated"}
+    }
+    serialized_payload = json.dumps(
+        hash_payload,
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    )
+    index["content_hash"] = hashlib.sha256(
+        serialized_payload.encode("utf-8")
+    ).hexdigest()[:16]
 
     return index
 

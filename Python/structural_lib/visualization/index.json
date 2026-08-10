@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib/visualization",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-10",
   "file_count": 2,
   "files": [
     {
@@ -17,7 +17,7 @@
       "name": "geometry_3d.py",
       "type": "python",
       "size_lines": 940,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-04-07",
       "description": "3D Geometry Module — Coordinate Computation for Visualization",
       "classes": [
         {
@@ -141,11 +141,10 @@
           ]
         }
       ],
-      "content_hash": "64e24763fb0f"
+      "content_hash": "fa3055d04cdf"
     }
   ],
   "subfolders": [],
-  "content_hash": "0a80080160dafaea",
   "has_init": true,
   "public_api": [
     "Point3D",
@@ -153,5 +152,6 @@
     "RebarPath",
     "StirrupLoop",
     "Beam3DGeometry"
-  ]
+  ],
+  "content_hash": "73b8ffaad45fe53a"
 }

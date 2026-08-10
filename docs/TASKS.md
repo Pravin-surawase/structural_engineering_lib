@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — UIX-001 P0-P15 accepted; verified-green merge in progress
+**Updated:** 2026-08-10 — UIX-001 merged; fresh-start maintenance complete; no active implementation packet
 
 ---
 
@@ -147,7 +147,7 @@ held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| UIX-001 | Built one compact 3D-first structural workbench and schema-driven bounded workflow foundation | Main Agent | ✅ DONE — P0-P15 accepted; Pages/release/public runner remain held |
+| UIX-001 | Built one compact 3D-first structural workbench and schema-driven bounded workflow foundation | Main Agent | ✅ DONE — PR #721 merged; Pages/release/public runner remain held |
 | DEPS-MAINT-001 | Replaced incompatible Python and React dependency PRs with coherent Python 3.11/Node 24 packets and added recurrence guards | Main Agent | ✅ DONE — PRs #708, #709, and #712 merged |
 | ADOPT-001 | Completed executable public truth, capability discovery, typed API contracts, production auth fail-close, evidence identity, React/BOQ trust presentation, and truthful Alpha/docs policy | Main Agent | ✅ DONE — PR #707 merged; release holds retained |
 | LIB-IS456-V1 | Completed C0-C4, bounded evidence, exact artifacts, public Alpha UAT, and v0.23.0 publication | Main Agent + owner | ✅ DONE |

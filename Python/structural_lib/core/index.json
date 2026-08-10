@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib/core",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-10",
   "file_count": 18,
   "files": [
     {
@@ -80,8 +80,8 @@
     {
       "name": "data_types.py",
       "type": "python",
-      "size_lines": 1965,
-      "last_updated": "2026-04-07",
+      "size_lines": 1964,
+      "last_updated": "2026-08-09",
       "description": "Module:       types",
       "classes": [
         {
@@ -150,7 +150,7 @@
           "description": "Critical point on BMD/SFD diagram (max, min, zero crossing)."
         }
       ],
-      "content_hash": "b03d2d10ab27"
+      "content_hash": "d81a3b155344"
     },
     {
       "name": "deprecation.py",
@@ -1023,7 +1023,6 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "19848c548493a316",
   "has_init": true,
   "public_api": [
     "DesignCode",
@@ -1038,5 +1037,6 @@
     "TSection",
     "LSection",
     "CodeRegistry"
-  ]
+  ],
+  "content_hash": "243fe7627491a1b0"
 }

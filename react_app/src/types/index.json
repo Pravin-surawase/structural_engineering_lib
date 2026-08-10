@@ -2,14 +2,14 @@
   "folder": "react_app/src/types",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-10",
   "file_count": 2,
   "files": [
     {
       "name": "csv.ts",
       "type": "typescript",
-      "size_lines": 86,
-      "last_updated": "2026-03-26",
+      "size_lines": 93,
+      "last_updated": "2026-08-10",
       "exports": [
         "Point3D",
         "BeamCSVRow",
@@ -17,7 +17,7 @@
         "parseBeamCSV"
       ],
       "description": "CSV Import Types",
-      "content_hash": "eea7c03999cd"
+      "content_hash": "fb1f936c56ee"
     },
     {
       "name": "index.ts",
@@ -29,5 +29,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "8f46988d4ba4a389"
+  "content_hash": "3104fa9ead9755f8"
 }

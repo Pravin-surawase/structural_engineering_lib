@@ -8,10 +8,10 @@
     {
       "name": "App.tsx",
       "type": "react-component",
-      "size_lines": 119,
+      "size_lines": 128,
       "last_updated": "2026-08-10",
       "description": "Structural Engineering App",
-      "content_hash": "5432b97c7c91"
+      "content_hash": "67f4330a7917"
     },
     {
       "name": "config.ts",
@@ -42,9 +42,9 @@
     {
       "name": "vite-env.d.ts",
       "type": "typescript",
-      "size_lines": 11,
-      "last_updated": "2026-03-26",
-      "content_hash": "8141849c8465"
+      "size_lines": 13,
+      "last_updated": "2026-08-10",
+      "content_hash": "d7a28b553c40"
     }
   ],
   "subfolders": [
@@ -56,7 +56,7 @@
     {
       "name": "app",
       "path": "app/",
-      "file_count": 4
+      "file_count": 6
     },
     {
       "name": "assets",
@@ -66,12 +66,17 @@
     {
       "name": "components",
       "path": "components/",
-      "file_count": 69
+      "file_count": 76
+    },
+    {
+      "name": "features",
+      "path": "features/",
+      "file_count": 17
     },
     {
       "name": "hooks",
       "path": "hooks/",
-      "file_count": 24
+      "file_count": 25
     },
     {
       "name": "lib",
@@ -101,8 +106,8 @@
     {
       "name": "workspace",
       "path": "workspace/",
-      "file_count": 17
+      "file_count": 20
     }
   ],
-  "content_hash": "e62c89c582894afc"
+  "content_hash": "d11345466e738ce7"
 }

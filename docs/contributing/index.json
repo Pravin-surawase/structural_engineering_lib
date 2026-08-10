@@ -2,7 +2,7 @@
   "folder": "docs/contributing",
   "type": "documentation",
   "description": "Guides for developers and maintainers of the structural engineering library.",
-  "last_updated": "2026-08-09",
+  "last_updated": "2026-08-10",
   "file_count": 24,
   "files": [
     {
@@ -66,9 +66,9 @@
       "name": "development-guide.md",
       "type": "documentation",
       "size_lines": 1522,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "description": "1. Overview 2. Project Structure",
-      "content_hash": "46aa16e2389d"
+      "content_hash": "22ca5108a9df"
     },
     {
       "name": "doc-template.md",
@@ -200,5 +200,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "a1cc661b7e310854"
+  "content_hash": "37c6118169caacab"
 }

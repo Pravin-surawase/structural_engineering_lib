@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib/insights",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-10",
   "file_count": 10,
   "files": [
     {
@@ -109,7 +109,7 @@
       "name": "design_suggestions.py",
       "type": "python",
       "size_lines": 686,
-      "last_updated": "2026-03-28",
+      "last_updated": "2026-04-07",
       "description": "Design suggestion engine for beam design optimization.",
       "classes": [
         {
@@ -152,7 +152,7 @@
       "constants": [
         "_ENGINE_VERSION"
       ],
-      "content_hash": "856f2929389d"
+      "content_hash": "008d3ebcd44a"
     },
     {
       "name": "precheck.py",
@@ -204,7 +204,7 @@
       "name": "smart_designer.py",
       "type": "python",
       "size_lines": 636,
-      "last_updated": "2026-03-28",
+      "last_updated": "2026-04-07",
       "description": "Smart Designer — Unified intelligent design analysis dashboard.",
       "classes": [
         {
@@ -256,7 +256,7 @@
           ]
         }
       ],
-      "content_hash": "7228e2c532b6"
+      "content_hash": "2774f91c9cb0"
     },
     {
       "name": "types.py",
@@ -312,7 +312,6 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "162ba4bdc93c95d1",
   "has_init": true,
   "public_api": [
     "calculate_constructability_score",
@@ -335,5 +334,6 @@
     "ConstructabilityScore",
     "DashboardReport",
     "DesignAlternative"
-  ]
+  ],
+  "content_hash": "714d3bcbcd4b82a5"
 }

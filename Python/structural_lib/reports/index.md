@@ -1,7 +1,7 @@
 # Reports
 
 **Type:** Python Package
-**Last Updated:** 2026-04-07
+**Last Updated:** 2026-08-10
 **Files:** 2
 
 ## Public API
@@ -17,7 +17,7 @@
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) | Reports Package — Professional Report Generation with Jinja2 | 0 | 0 | 47 |
-| [generator.py](generator.py) | Report Generator — Jinja2-based HTML report generation. | 1 | 3 | 348 |
+| [generator.py](generator.py) | Report Generator — Jinja2-based HTML report generation. | 1 | 3 | 452 |
 
 ## Subfolders
 
