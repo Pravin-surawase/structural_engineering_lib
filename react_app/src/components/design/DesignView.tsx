@@ -25,6 +25,8 @@ import { formatPercent, formatRatio, formatSignedRatio, getTrustPresentation } f
 import { WorkbenchHeader } from "../workbench/WorkbenchHeader";
 import { WorkbenchShell } from "../workbench/WorkbenchShell";
 import { ResultLifecycleBadge } from "../workbench/ResultLifecycleBadge";
+import { CatalogBeamInputPanel } from "../../features/catalog/CatalogBeamInputPanel";
+import type { CatalogBeamTransportName } from "../../features/catalog/types";
 
 /** Collapsible accordion section */
 function AccordionSection({ title, children, defaultOpen = true }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
@@ -43,7 +45,11 @@ function AccordionSection({ title, children, defaultOpen = true }: { title: stri
   );
 }
 
-export function DesignView() {
+export interface DesignViewProps {
+  inputMode?: "manual" | "catalog";
+}
+
+export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   const navigate = useNavigate();
   const { inputs, length } = useDesignStore();
   const [autoDesign, setAutoDesign] = useState(true);
@@ -85,6 +91,9 @@ export function DesignView() {
   const loadAnalysis = useLoadAnalysis();
 
   const spanMeters = Number((length / 1000).toFixed(2));
+  const updateCatalogInput = (name: CatalogBeamTransportName, value: number) => {
+    actions.updateInputs({ [name]: value });
+  };
 
   // Auto-trigger code checks + rebar suggestions when design result changes
   useEffect(() => {
@@ -202,12 +211,29 @@ export function DesignView() {
             {state.isDesigning && <Loader2 className="w-3.5 h-3.5 text-blue-400 animate-spin" />}
           </div>
 
+          {inputMode === "catalog" ? (
+            <CatalogBeamInputPanel
+              values={{
+                width: inputs.width,
+                depth: inputs.depth,
+                moment: inputs.moment,
+                shear: inputs.shear ?? 0,
+                fck: inputs.fck,
+                fy: inputs.fy,
+              }}
+              onChange={updateCatalogInput}
+              onUseManual={() => navigate("/workbench/quick/manual")}
+            />
+          ) : (
+          <>
           <AccordionSection title="Dimensions">
             <InputField label="Width" value={inputs.width} onChange={(v) => actions.updateInputs({ width: v })} unit="mm" min={150} max={600} />
             <InputField label="Depth" value={inputs.depth} onChange={(v) => actions.updateInputs({ depth: v })} unit="mm" min={300} max={1200} />
             <InputField label="Span" value={spanMeters} onChange={(v) => actions.updateLength(v * 1000)} unit="m" min={1} max={15} step={0.5} />
             <InputField label="Cover" value={inputs.clear_cover ?? 40} onChange={(v) => actions.updateInputs({ clear_cover: v })} unit="mm" min={20} max={75} />
           </AccordionSection>
+          </>
+          )}
 
           <AccordionSection title="Materials">
             <DropdownField label="Concrete" value={inputs.fck} onChange={(v) => actions.updateInputs({ fck: v })} options={[20, 25, 30, 35, 40, 45, 50]} format={(v) => `M${v}`} />

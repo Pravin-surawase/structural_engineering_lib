@@ -20,6 +20,7 @@ const HomePage = lazy(() => import('./components/pages/HomePage').then(m => ({ d
 const HubPage = lazy(() => import('./components/pages/HubPage').then(m => ({ default: m.HubPage })));
 const WorkbenchHomePage = lazy(() => import('./components/pages/WorkbenchHomePage').then(m => ({ default: m.WorkbenchHomePage })));
 const DesignView = lazy(() => import('./components/design/DesignView').then(m => ({ default: m.DesignView })));
+const CatalogDesignView = lazy(() => import('./features/workflows/CatalogDesignView').then(m => ({ default: m.CatalogDesignView })));
 const ImportView = lazy(() => import('./components/import/ImportView').then(m => ({ default: m.ImportView })));
 const BuildingEditorPage = lazy(() => import('./components/pages/BuildingEditorPage').then(m => ({ default: m.BuildingEditorPage })));
 const BeamDetailPage = lazy(() => import('./components/pages/BeamDetailPage').then(m => ({ default: m.BeamDetailPage })));
@@ -95,6 +96,8 @@ function App() {
                   <Route path="/start" element={<HubPage />} />
                   <Route path="/workbench" element={<WorkbenchHomePage />} />
                   <Route path="/workbench/quick" element={<DesignView />} />
+                  <Route path="/workbench/quick/catalog" element={<CatalogDesignView />} />
+                  <Route path="/workbench/quick/manual" element={<DesignView />} />
                   <Route path="/workbench/projects" element={<WorkbenchHomePage initialView="projects" />} />
                   <Route path="/workbench/projects/new" element={<ImportView />} />
                   <Route path="/design" element={<DesignView />} />

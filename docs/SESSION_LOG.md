@@ -14,6 +14,11 @@
 ### Summary
 
 - Session 2 is active from merged Session 1 commit `49d7780e`.
+- P9/P10 provide one immutable, semantically validated beam catalogue and a thin
+  typed discovery API with explicit compatibility and cache identity.
+- P11 adds a curated catalogue field/widget registry to the accepted quick-beam
+  result/3D/export surface, with visible unknown-contract failure and a reviewed
+  manual-form escape route.
 
 ### Issues encountered
 
@@ -73,6 +78,9 @@
 
 - `.venv/bin/pytest Python/tests/test_session_automation.py -q`
 - `.venv/bin/ruff check scripts/session.py Python/tests/test_session_automation.py`
+- P9/P10: 7 focused Python/FastAPI tests, scoped Ruff, mypy, OpenAPI snapshot,
+  API documentation and API/client contract hooks.
+- P11: 9 focused React tests, full React lint, and production build.
 
 ## 2026-08-10 — Session: UIX-001 Session 1 P4-P8 Closeout
 
