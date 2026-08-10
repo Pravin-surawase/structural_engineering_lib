@@ -20,7 +20,7 @@
       "size_lines": 380,
       "last_updated": "2026-08-10",
       "description": "Make the released Alpha straightforward to evaluate from four perspectives: - a user can copy every public quick start and receive the documented result;",
-      "content_hash": "a2f90f52a72d"
+      "content_hash": "ce4b11ed46d5"
     },
     {
       "name": "compact-modernization-plan.md",
@@ -125,5 +125,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "7b863894c2840600"
+  "content_hash": "1523364fe9fe7d3e"
 }

@@ -1,6 +1,6 @@
 ---
 owner: Main Agent
-status: complete
+status: archived
 last_updated: 2026-08-10
 doc_type: spec
 task: ADOPT-001
