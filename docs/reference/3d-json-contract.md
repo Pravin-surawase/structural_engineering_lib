@@ -30,6 +30,21 @@ It supersedes any ambiguous use of the legacy examples below at the boundary:
 - malformed or duplicate members fail closed with a visible fallback marker. No
   fallback IDs, inferred section data, or second scaling step are permitted.
 
+`sourceRevision` is the revision of the canonical member input that owns the
+source-metre endpoints. `geometryRevision` is the revision of the geometry being
+rendered. Imported global geometry is canonical input, so both values advance
+with the owning member revision; detailed reinforcement remains a separately
+versioned `1.0.0` response from `/api/v1/geometry/beam/full`.
+
+The React viewport is decomposed into contract, scene, camera, detail, primitive,
+inspection, and DOM-overlay boundaries. The building scene consumes only a
+validated `GeometrySpaceV1`. The selected-detail request carries the stable
+source `memberId` and uses project revision, member revision, and input hash in
+its query identity. A response with an unknown schema or a different `beamId`
+is rejected instead of being attached to the selected member. Status and
+utilization come only from revision-current workspace evidence; critical member
+identity and evidence remain available in the DOM when WebGL is unavailable.
+
 The checked golden fixture is `tests/fixtures/geometry-space-v1.json`. It fixes
 global source transport, both renderer transforms, bounds/centre, and one
 local-detail placement so P7 can decompose `Viewport3D` without changing

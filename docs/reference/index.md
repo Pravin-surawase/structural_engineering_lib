@@ -13,13 +13,13 @@
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [3d-json-contract.md](3d-json-contract.md) |  | > **Version:** 1.0.0 > **Purpose:** Defines the JSON schema  | 443 |
+| [3d-json-contract.md](3d-json-contract.md) |  | For the P7 workbench migration, GeometrySpaceV1 is the rende | 481 |
 | [3d-visualization-performance.md](3d-visualization-performance.md) |  | This document provides performance benchmarks for the 3D bea | 172 |
 | [README.md](README.md) | Reference Documentation | Comprehensive lookup documentation for APIs, formulas, contr | 80 |
 | [agent-automation-pitfalls.md](agent-automation-pitfalls.md) |  | <!-- lint-ignore-git --> > ⚠️ **Note:** This document includ | 634 |
 | [api-levels.md](api-levels.md) |  | structural_lib exposes three API levels. Pick the one that m | 117 |
-| [api-stability.md](api-stability.md) |  | > This document defines which parts of the library are safe  | 636 |
-| [api.md](api.md) |  | geometry, loading, reinforcement, and evidence boundaries. T | 3952 |
+| [api-stability.md](api-stability.md) |  | > This document defines which parts of the library are safe  | 639 |
+| [api.md](api.md) |  | geometry, loading, reinforcement, and evidence boundaries. T | 3956 |
 | [automation-catalog.md](automation-catalog.md) |  | The exhaustive machine-generated script inventory is scripts | 61 |
 | [bbs-dxf-contract.md](bbs-dxf-contract.md) |  | This document defines the stable contracts for Bar Bending S | 116 |
 | [clause-map.md](clause-map.md) | IS 456 Clause-to-Function Mapping | Maps IS 456:2000 (and IS 13920:2016) clauses to their implem | 189 |
@@ -28,7 +28,7 @@
 | [dxf-layer-standards.md](dxf-layer-standards.md) |  | This document defines CAD layer standards used in DXF drawin | 469 |
 | [error-codes.md](error-codes.md) |  | > Auto-generated from Python/structural_lib/core/errors.py.  | 87 |
 | [error-schema.md](error-schema.md) |  | *Structured error format for machine-readable and human-frie | 269 |
-| [fastapi-rest-api.md](fastapi-rest-api.md) |  | The FastAPI application exposes the maintained Python calcul | 260 |
+| [fastapi-rest-api.md](fastapi-rest-api.md) |  | The FastAPI application exposes the maintained Python calcul | 262 |
 | [insights-api.md](insights-api.md) |  | > **Status:** Preview (v0.13.0+) > **Stability:** Experiment | 994 |
 | [is456-formulas.md](is456-formulas.md) |  | $$d = D - c_{clear} - \phi_{stirrup} - \frac{\phi_{main}}{2} | 243 |
 | [known-pitfalls.md](known-pitfalls.md) |  | Use this as a checklist to avoid common mistakes when implem | 135 |

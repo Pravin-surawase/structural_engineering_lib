@@ -8,10 +8,10 @@
     {
       "name": "3d-json-contract.md",
       "type": "documentation",
-      "size_lines": 443,
-      "last_updated": "2026-03-26",
-      "description": "> **Version:** 1.0.0 > **Purpose:** Defines the JSON schema for exchanging 3D beam geometry between Python (structural_lib) and JavaScript/TypeScript (Three.js viewer).",
-      "content_hash": "804e0fa7267c"
+      "size_lines": 481,
+      "last_updated": "2026-08-10",
+      "description": "For the P7 workbench migration, GeometrySpaceV1 is the renderer-bound contract. It supersedes any ambiguous use of the legacy examples below at the boundary:",
+      "content_hash": "5d88c5159ea9"
     },
     {
       "name": "3d-visualization-performance.md",
@@ -57,23 +57,23 @@
         "count",
         "symbols"
       ],
-      "content_hash": "37046eac2fd0"
+      "content_hash": "b256f694202a"
     },
     {
       "name": "api-stability.md",
       "type": "documentation",
-      "size_lines": 636,
+      "size_lines": 639,
       "last_updated": "2026-08-10",
       "description": "> This document defines which parts of the library are safe to depend on and which may change. This library follows Semantic Versioning:",
-      "content_hash": "d65581c794ec"
+      "content_hash": "4b02ab138fca"
     },
     {
       "name": "api.md",
       "type": "documentation",
-      "size_lines": 3952,
+      "size_lines": 3956,
       "last_updated": "2026-08-10",
       "description": "geometry, loading, reinforcement, and evidence boundaries. The primary combined beam route covers rectangular flexure and shear (plus optional serviceability),",
-      "content_hash": "cb94512a58a8"
+      "content_hash": "ba138dde89b7"
     },
     {
       "name": "automation-catalog.md",
@@ -154,10 +154,10 @@
     {
       "name": "fastapi-rest-api.md",
       "type": "documentation",
-      "size_lines": 260,
+      "size_lines": 262,
       "last_updated": "2026-08-10",
-      "description": "The FastAPI application exposes the maintained Python calculation services to the React workbench and external clients. The current v0.23.0 application has 62",
-      "content_hash": "1ab065febe6c"
+      "description": "The FastAPI application exposes the maintained Python calculation services to the React workbench and external clients. The current v0.23.0 application has 63",
+      "content_hash": "abd09495541a"
     },
     {
       "name": "insights-api.md",
@@ -239,5 +239,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "cb1c0f1820480c14"
+  "content_hash": "ebdcc17cd63e6c43"
 }

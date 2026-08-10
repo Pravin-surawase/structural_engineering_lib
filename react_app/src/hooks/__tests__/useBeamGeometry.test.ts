@@ -62,7 +62,7 @@ describe('useBeamGeometry', () => {
       rebars: [],
       stirrups: [],
       metadata: { cover: 40, ldTension: 600, ldCompression: 400, lapLength: 500, isSeismic: false, isValid: true, remarks: [] },
-      version: '1.0',
+      version: '1.0.0',
     };
 
     vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
@@ -100,5 +100,27 @@ describe('useBeamGeometry', () => {
 
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error?.message).toContain('Invalid dimensions');
+  });
+
+  it('fails closed when the selected member identity does not match the geometry', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(
+      new Response(JSON.stringify({
+        success: true,
+        message: 'ok',
+        geometry: {
+          beamId: 'OTHER', story: 'GF', dimensions: { b: 300, D: 450, span: 4000 },
+          concreteOutline: [], rebars: [], stirrups: [], metadata: {}, version: '1.0.0',
+        },
+        warnings: [],
+      }), { status: 200, headers: { 'Content-Type': 'application/json' } }),
+    );
+
+    const { result } = renderHook(
+      () => useBeamGeometry({ ...mockParams, beam_id: 'ETABS-101' }),
+      { wrapper: createWrapper() },
+    );
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    expect(result.current.error?.message).toContain('Geometry identity mismatch');
   });
 });
