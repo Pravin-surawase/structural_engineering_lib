@@ -1,8 +1,8 @@
 {
-  "generated": "2026-08-09",
+  "generated": "2026-08-10",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 118,
+  "count": 122,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -218,6 +218,11 @@
       "name": "VersionInfo",
       "kind": "class",
       "signature": "(library_version: 'str', python_version: 'str', platform: 'str', design_codes: 'tuple[str, ...]', dependencies: 'dict[str, str | None]') -> None"
+    },
+    {
+      "name": "WorkflowCatalog",
+      "kind": "class",
+      "signature": "(schema_version: 'str', catalog_version: 'str', code_edition: 'str', compatible_versions: 'tuple[str, ...]', capabilities: 'tuple[WorkflowCapability, ...]') -> None"
     },
     {
       "name": "beam_to_3d_geometry",
@@ -525,6 +530,16 @@
       "signature": "() -> 'IS456SemanticContract'"
     },
     {
+      "name": "get_workflow_catalog",
+      "kind": "function",
+      "signature": "() -> 'WorkflowCatalog'"
+    },
+    {
+      "name": "get_workflow_catalog_document",
+      "kind": "function",
+      "signature": "(version: 'str | None' = None) -> 'dict[str, Any]'"
+    },
+    {
       "name": "load_etabs_csv",
       "kind": "function",
       "signature": "(csv_path: 'str | Path', *, station_multiplier: 'float' = 1.0) -> 'list[ETABSForceRow]'"
@@ -553,6 +568,11 @@
       "name": "pm_interaction_curve_is456",
       "kind": "function",
       "signature": "(b_mm: 'float', D_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, n_points: 'int' = 50, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'PMInteractionResult'"
+    },
+    {
+      "name": "serialize_workflow_catalog",
+      "kind": "function",
+      "signature": "(version: 'str | None' = None) -> 'str'"
     },
     {
       "name": "show_versions",

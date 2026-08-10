@@ -162,7 +162,7 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
   const lastInputsRef = useRef(inputs);
   const coordinatorRef = useRef(new LatestRequestCoordinator());
   const requestSequenceRef = useRef(0);
-  const initialDesignFired = useRef(false);
+  const initialDesignRunnerRef = useRef<() => Promise<void>>(() => Promise.resolve());
 
   // Quick design deliberately uses the AbortSignal-aware REST facade until the
   // WebSocket contract carries a request/input revision that can be echoed back.
@@ -196,6 +196,7 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
       }
     }
   }, [inputRevision, inputs, length, setError, setLoading, setResult]);
+  initialDesignRunnerRef.current = runRestDesign;
 
   // Build geometry request from current state
   const geometryParams = useMemo<BeamGeometryRequest | null>(() => {
@@ -230,10 +231,9 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
 
   // Initial design on mount — fire REST immediately so user sees a result
   useEffect(() => {
-    if (!autoDesign || !enabled || initialDesignFired.current) return;
-    initialDesignFired.current = true;
-    runRestDesign();
-  }, [autoDesign, enabled, runRestDesign]);
+    if (!autoDesign || !enabled) return;
+    void initialDesignRunnerRef.current();
+  }, [autoDesign, enabled]);
 
   // Auto-design when inputs change. One debounced REST transport keeps request
   // ownership explicit and prevents the previous duplicate WS + REST dispatch.

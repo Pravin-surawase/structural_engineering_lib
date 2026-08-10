@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { LegacyRouteRedirect, ProjectStageRoute } from '../RouteGuards';
@@ -44,6 +44,7 @@ describe('route cutover guards', () => {
   });
 
   it('recovers a project route without identity and maps one with identity', () => {
+    useWorkspaceStore.getState().setLoadState('ready');
     const missing = renderLegacy('/editor', '/editor');
     expect(screen.getByText('/workbench?recovery=project-required')).toBeInTheDocument();
     missing.unmount();
@@ -51,6 +52,27 @@ describe('route cutover guards', () => {
     useWorkspaceStore.getState().createProject('project 01', 'Project 01');
     renderLegacy('/editor', '/editor');
     expect(screen.getByText('/workbench/projects/project%2001/review')).toBeInTheDocument();
+  });
+
+  it('waits for initial persistence hydration before deciding a project route', () => {
+    render(
+      <MemoryRouter initialEntries={['/workbench/projects/project-1/review']}>
+        <Routes>
+          <Route
+            path="/workbench/projects/:projectId/review"
+            element={<ProjectStageRoute stage="review"><p>Review</p></ProjectStageRoute>}
+          />
+          <Route path="*" element={<LocationProbe />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(screen.getByRole('status')).toHaveTextContent('Restoring project');
+
+    act(() => {
+      useWorkspaceStore.getState().createProject('project-1', 'Project 1');
+      useWorkspaceStore.getState().setStage('review');
+    });
+    expect(screen.getByText('Review')).toBeInTheDocument();
   });
 
   it('rejects a mismatched project and a stage beyond durable progress', () => {

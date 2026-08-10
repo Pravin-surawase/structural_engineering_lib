@@ -241,8 +241,6 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
             <InputField label="Span" value={spanMeters} onChange={(v) => actions.updateLength(v * 1000)} unit="m" min={1} max={15} step={0.5} />
             <InputField label="Cover" value={inputs.clear_cover ?? 40} onChange={(v) => actions.updateInputs({ clear_cover: v })} unit="mm" min={20} max={75} />
           </AccordionSection>
-          </>
-          )}
 
           <AccordionSection title="Materials">
             <DropdownField label="Concrete" value={inputs.fck} onChange={(v) => actions.updateInputs({ fck: v })} options={[20, 25, 30, 35, 40, 45, 50]} format={(v) => `M${v}`} />
@@ -323,6 +321,8 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
               <InputField label="Torsion (Tu)" value={torsionMoment} onChange={setTorsionMoment} unit="kN·m" min={0.1} max={200} step={0.5} />
             )}
           </AccordionSection>
+          </>
+          )}
         </div>
 
         {/* Bottom actions */}

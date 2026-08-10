@@ -76,6 +76,24 @@ describe('useLiveDesign request truth', () => {
     expect(result.current.state.exportEligible).toBe(true);
   });
 
+  it('replaces the Strict Mode probe request instead of leaving loading stuck', async () => {
+    const first = deferred<BeamDesignResponse>();
+    mocks.designBeam
+      .mockReturnValueOnce(first.promise)
+      .mockResolvedValueOnce(designResult('strict-mode-current'));
+
+    const { result } = renderHook(
+      () => useLiveDesign({ autoDesign: true }),
+      { reactStrictMode: true },
+    );
+
+    await waitFor(() => expect(mocks.designBeam).toHaveBeenCalledTimes(2));
+    expect((mocks.designBeam.mock.calls[0][1].signal as AbortSignal).aborted).toBe(true);
+    await waitFor(() => expect(result.current.state.result?.message).toBe('strict-mode-current'));
+    expect(result.current.state.isDesigning).toBe(false);
+    expect(result.current.state.exportEligible).toBe(true);
+  });
+
   it('ignores a cancelled older response and its finalizer while a newer request runs', async () => {
     const first = deferred<BeamDesignResponse>();
     const second = deferred<BeamDesignResponse>();

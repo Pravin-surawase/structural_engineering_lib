@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Versioned beam workflow catalogue, thin discovery API, curated schema-driven
+  quick inputs, one default-disabled bounded workflow, and a generated
+  provider-neutral beam tool manifest.
+- Canonical quick/project workbench routes with explicit legacy recovery and
+  revision-bound import, design, resume, 3D inspection, and export journeys.
+
+### Fixed
+
+- Initial quick design now completes under React Strict Mode instead of leaving
+  the UI in Calculating after the first effect-owned request is cancelled.
+- Catalogue mode has one authoritative input surface instead of duplicating
+  schema-driven and manual engineering controls.
+- Direct project-result links wait for IndexedDB hydration before deciding that
+  recovery is required.
+
 ## [0.23.0] — 2026-08-10
 
 Alpha development preview of the bounded Supported IS 456 RC Core. This is

@@ -12,7 +12,12 @@ import { useWorkspaceStore } from '../workspace/workspaceStore';
 export function LegacyRouteRedirect({ legacyPath }: { legacyPath: string }) {
   const location = useLocation();
   const projectId = useWorkspaceStore((state) => state.snapshot?.projectId);
+  const workspaceLoadState = useWorkspaceStore((state) => state.loadState);
   const resultLifecycle = useDesignStore((state) => state.resultLifecycle);
+  const needsProject = ['/editor', '/batch', '/dashboard'].includes(legacyPath);
+  if (needsProject && !projectId && ['idle', 'loading'].includes(workspaceLoadState)) {
+    return <p className="p-6 text-sm text-zinc-400" role="status">Restoring project…</p>;
+  }
   const destination = resolveLegacyDestination(legacyPath, projectId) ?? '/workbench';
   const search = new URLSearchParams(location.search);
   if (legacyPath === '/design/results' && resultLifecycle !== 'current') {
@@ -33,7 +38,7 @@ export function ProjectStageRoute({
   const snapshot = useWorkspaceStore((state) => state.snapshot);
   const loadState = useWorkspaceStore((state) => state.loadState);
 
-  if (loadState === 'loading') {
+  if (loadState === 'idle' || loadState === 'loading') {
     return <p className="p-6 text-sm text-zinc-400" role="status">Restoring project…</p>;
   }
   if (!projectId || !snapshot || snapshot.projectId !== projectId) {

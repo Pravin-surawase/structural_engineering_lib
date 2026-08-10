@@ -28,6 +28,9 @@
 - P14 cuts canonical journeys over to one guarded project-stage route model,
   preserves legacy bookmarks with explicit recovery, keeps a build-time quick-
   route rollback, and safely retires five duplicate/dead page shells.
+- P15 closes the integrated product story with live safe/unsafe quick design,
+  153-member import/design/results/export, durable direct-link recovery, bounded
+  workflow stops, three-width responsive evidence, and WebGL-loss fallback.
 
 ### Issues encountered
 
@@ -90,6 +93,24 @@
 - The frozen `/design/results` contract required an explicit explanation for an
   empty or stale result, but the first redirect preserved only the destination
   and query string.
+- The first live catalogue quick-design request returned HTTP 200 but remained
+  visually stuck in Calculating under React Strict Mode.
+- Catalogue mode rendered the six schema-driven fields beside the old manual
+  materials, force, load-calculator, and torsion controls, creating two editable
+  sources for the same design request.
+- A direct reload of the canonical project results URL briefly redirected to
+  recovery even though the IndexedDB snapshot restored milliseconds later.
+- The first integrated full gate rejected four missing public catalogue symbols
+  in the generated API manifest and an unsupported documentation status value.
+- The P15 documentation check rejected `complete` as master-plan frontmatter
+  even though the plan's human-facing execution state is complete.
+- Browser automation could not use `networkidle`, navigation-regex waits, or its
+  high-level viewport setter reliably for this Vite/WebGL flow; emulated
+  screenshots also tiled while exact DOM metrics remained correct.
+- The first closeout hook command used bare `pre-commit`, which is not installed
+  on the interactive shell PATH.
+- The first rewritten next-session table used `Complete` instead of the literal
+  `Current` row required by session-document automation.
 
 ### Root causes and resolutions
 
@@ -169,6 +190,40 @@
   now adds `recovery=result-required` whenever the result is not `current`, and
   the quick workbench renders the reason instead of silently presenting inputs.
   Route tests prove bookmark query preservation and the explicit recovery state.
+- Strict Mode deliberately runs effect setup, cleanup, and setup again. The
+  first setup owned the request, cleanup cancelled it, and a one-shot ref blocked
+  the replacement setup, leaving Zustand loading state active. The hook now
+  retains the latest runner rather than the one-shot flag; its Strict Mode
+  regression proves the first signal aborts and the replacement result becomes
+  current and exportable.
+- P11 added the catalogue panel without making it the sole input owner. The
+  catalog/manual render boundary now exposes exactly one source: catalogue mode
+  renders only curated schema inputs, while the reviewed escape route owns the
+  legacy load/torsion controls. Component and live locator checks prove no
+  duplicate shear or concrete-strength control remains.
+- Project guards evaluated `idle` before the persistence bridge effect could
+  enter `loading`, so valid deep links were treated as missing data. Idle and
+  loading are now explicit hydration states; focused route regressions and a
+  fresh live results URL prove the restored project remains on canonical results.
+- The generated API manifest had not been refreshed after P9 exports, and the
+  frontmatter validator accepts a controlled status vocabulary rather than the
+  semantic phrase used in the body. Regeneration records the four exports and
+  frontmatter now uses `active`; the manifest drift and complete docs gates pass.
+- Frontmatter status represents document lifecycle, not task execution. The
+  canonical plan remains machine-`active` and discoverable while its visible
+  status, ledger, and acceptance checklist record completed execution; the
+  frontmatter gate passes without archiving current authority.
+- The browser limitations were observer/tooling mismatches, not application
+  failures. Acceptance used `domcontentloaded` plus semantic waits, direct URL
+  and DOM inspection, scoped CDP device metrics that were cleared afterward,
+  exact overflow measurements, and server HTTP 200 evidence for programmatic
+  Blob exports. No product gate was waived on a screenshot artifact.
+- The repository-local tool lives at `.venv/bin/pre-commit`, consistent with the
+  pinned Python runtime. The closeout reran the same explicit-file hook command
+  through that executable rather than changing PATH or bypassing hooks.
+- The handoff checker treats `Current` and `Next` as a stable machine interface,
+  independent of whether the current task is complete. The row now reads
+  `Current: UIX-001 P0-P15 complete`; the session-document hook passes.
 
 ### Verification
 
@@ -185,6 +240,32 @@
   Ruff/Black/mypy, scripts-index coverage, React lint, and link validation.
 - P14: 22 focused route/workbench/catalogue tests, full React lint, production
   build, and 1,079-link validation with zero broken links.
+- P15: 91 focused Python/FastAPI catalogue, workflow, evidence, and API tests;
+  87 focused React tests; 76 geometry/streaming tests; 29 live React/API call
+  signatures; 239 total React tests with lint and production build; quick 10/10.
+- Live Chromium: safe/unsafe/stale/recalculate quick flow; 153/153 project PASS,
+  direct results restore, calculation identity
+  `daf4db29b14ad439c34c9a941e086d878c0dcdfbfd0829a30c49e811986361ac`,
+  report/export HTTP 200, bounded workflow safe completion and unsafe STOP,
+  390/1024/1440 px without horizontal overflow, and WebGL-loss DOM fallback.
+- Final stable-milestone `./run.sh check`: 30/30 passed.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: Two guessed probe URLs, `/api/health` and
+  `/api/v1/catalogue`, returned 404 -> route inspection identified the maintained
+  `/health` and `/api/v1/catalog/workflows` contracts; later probes used them.
+- ⚠️ TERMINAL ISSUE: Browser `networkidle`, regex navigation waiting,
+  viewport setting, screenshots under emulation, and programmatic-download
+  observation were unreliable -> semantic DOM waits, direct URL inspection,
+  temporary CDP metrics with cleanup, exact DOM widths, and server 200 evidence
+  supplied the maintained proof. These limitations remain recorded rather than
+  being mistaken for product defects.
+- ⚠️ TERMINAL ISSUE: Bare `pre-commit` was not on PATH -> the maintained
+  `.venv/bin/pre-commit` executable ran the identical scoped hook set.
+- ⚠️ TERMINAL ISSUE: `check-session-docs` rejected a missing literal
+  `Current` row -> the handoff restored the maintained label while preserving
+  the completed state in the row value.
 
 ## 2026-08-10 — Session: UIX-001 Session 1 P4-P8 Closeout
 

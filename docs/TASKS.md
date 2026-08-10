@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — UIX-001 Session 1 P0-P8 accepted; Session 2 P9 is next
+**Updated:** 2026-08-10 — UIX-001 P0-P15 accepted; verified-green merge in progress
 
 ---
 
@@ -126,7 +126,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| UIX-001 | Build one compact 3D-first structural workbench and a schema-driven no-code foundation | Main Agent | 🚧 [SESSION 2 P9 — CAPABILITY CATALOGUE](planning/ui-experience-foundation-master-plan.md) |
+| — | No implementation task is active after UIX-001 closeout | — | Await the next owner-selected packet |
 
 ## Up Next
 
@@ -137,15 +137,17 @@
 ## Backlog
 
 The version roadmap and historical backlog remain below. The v0.23.0 Alpha is
-published. UIX-001 Session 1 P0-P8 is accepted, including revision-safe design,
-durable project identity, revision-bound batch evidence, and authoritative 3D
-inspection. Session 2 begins at P9 after this green merge. Stable-release and
-engineering-use approval remain held for the cumulative qualified review.
+published. UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
+3D inspection, versioned capability catalogue, curated renderer, bounded
+development workflow, generated beam manifest, canonical routes, and integrated
+live acceptance are complete. Stable-release and engineering-use approval remain
+held for the cumulative qualified review.
 
 ## Recently Done
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| UIX-001 | Built one compact 3D-first structural workbench and schema-driven bounded workflow foundation | Main Agent | ✅ DONE — P0-P15 accepted; Pages/release/public runner remain held |
 | DEPS-MAINT-001 | Replaced incompatible Python and React dependency PRs with coherent Python 3.11/Node 24 packets and added recurrence guards | Main Agent | ✅ DONE — PRs #708, #709, and #712 merged |
 | ADOPT-001 | Completed executable public truth, capability discovery, typed API contracts, production auth fail-close, evidence identity, React/BOQ trust presentation, and truthful Alpha/docs policy | Main Agent | ✅ DONE — PR #707 merged; release holds retained |
 | LIB-IS456-V1 | Completed C0-C4, bounded evidence, exact artifacts, public Alpha UAT, and v0.23.0 publication | Main Agent + owner | ✅ DONE |
