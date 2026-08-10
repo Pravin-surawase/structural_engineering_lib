@@ -40,6 +40,9 @@ const DEFAULT_INPUTS: BeamDesignRequest = {
   shear: 80, // kN
   fck: 25.0, // N/mm² (M25)
   fy: 500.0, // N/mm² (Fe500)
+  clear_cover: 40, // mm
+  stirrup_dia_mm: 8, // mm
+  main_bar_dia_mm: 20, // mm
 };
 
 const DEFAULT_LENGTH = 4000; // mm

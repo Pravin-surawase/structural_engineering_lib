@@ -51,8 +51,8 @@ The current maintenance branch has already produced the following accepted evide
 | Evidence | Baseline |
 |---|---:|
 | Imported/designed beams | 153 / 153 passing |
-| Reinforcement steel | 2,663.4 kg |
-| Concrete | 114.8 m3 |
+| Reinforcement steel | 1,928.49 kg (identity-bound ADOPT-001 record; older 2,663.4 kg checkpoint superseded) |
+| Concrete | 48.7319 m3 (actual tracked dimensions/spans; older 114.8 m3 fallback checkpoint superseded) |
 | Quick gate | 9 / 9 |
 | Full gate | 29 / 29 |
 | Audit | 22 / 22 |
@@ -699,7 +699,7 @@ Verify the existing primary user path:
 
 - import the accepted ETABS/CSV sample;
 - confirm 153/153 beam design success;
-- confirm 2,663.4 kg steel and 114.8 m3 concrete;
+- confirm the identity-bound 1,928.49 kg steel and 48.7319 m3 concrete record;
 - open the editor/dashboard and confirm the response renders;
 - request the supported BBS/DXF/HTML/PDF/BOQ exports;
 - confirm successful status and non-empty downloaded bytes;

@@ -203,6 +203,12 @@ class WSDesignParams(BaseModel):
         default=500, ge=250, le=600, description="Steel yield strength fy in N/mm²"
     )
     cover: float = Field(default=40, ge=20, le=75, description="Clear cover in mm")
+    stirrup_dia_mm: float = Field(
+        default=8, ge=6, le=16, description="Stirrup diameter in mm"
+    )
+    main_bar_dia_mm: float = Field(
+        default=20, ge=8, le=36, description="Main bar diameter in mm"
+    )
 
 
 class WSCheckParams(BaseModel):
@@ -251,8 +257,11 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
         )
         return
 
-    # Calculate effective depth
-    d_mm = validated.depth - validated.cover - 8  # Assuming 8mm stirrup + half bar
+    # Use the same declared section inputs as the REST beam route.
+    d_dash_mm = (
+        validated.cover + validated.stirrup_dia_mm + validated.main_bar_dia_mm / 2
+    )
+    d_mm = validated.depth - d_dash_mm
 
     # Run design calculation in thread pool (non-blocking)
     result = await asyncio.to_thread(
@@ -265,6 +274,7 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
         vu_kn=float(validated.shear),
         fck_nmm2=float(validated.fck),
         fy_nmm2=float(validated.fy),
+        d_dash_mm=float(d_dash_mm),
     )
 
     # Calculate response time
@@ -281,6 +291,27 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
         )
     if flexure.xu > flexure.xu_max:
         warnings.append("Section is over-reinforced - consider increasing depth")
+
+    from structural_lib.services.evidence import build_beam_evidence_envelope
+
+    evidence = build_beam_evidence_envelope(
+        inputs={
+            "units": "IS456",
+            "case_id": "CASE-1",
+            "mu_knm": validated.moment,
+            "vu_kn": validated.shear,
+            "b_mm": validated.width,
+            "D_mm": validated.depth,
+            "d_mm": d_mm,
+            "fck_nmm2": validated.fck,
+            "fy_nmm2": validated.fy,
+            "d_dash_mm": d_dash_mm,
+            "asv_mm2": 100.0,
+        },
+        is_ok=result.is_ok,
+        governing_utilization=result.governing_utilization,
+        utilizations=result.utilizations,
+    )
 
     # Keep the WebSocket payload aligned with the REST BeamDesignResponse.
     # The frontend can then switch transports without silently losing fields.
@@ -332,6 +363,7 @@ async def handle_design_beam(session_id: str, params: dict[str, Any]) -> None:
                 "utilization_ratio": min(result.governing_utilization, 2.0),
                 "effective_depth_used": d_mm,
                 "warnings": warnings,
+                "evidence": evidence,
             },
         },
     )

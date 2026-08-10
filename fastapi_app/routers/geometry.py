@@ -11,7 +11,7 @@ from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
 from fastapi_app.error_utils import sanitize_error
-from fastapi_app.models.response import error_response, success_response
+from fastapi_app.models.response import APIResponse, error_response, success_response
 from fastapi_app.models.geometry import (
     Geometry3DRequest,
     Geometry3DResponse,
@@ -31,6 +31,7 @@ from fastapi_app.models.geometry import (
     CrossSectionRequest,
     CrossSectionResponse,
 )
+from fastapi_app.models.metadata import MaterialAppearancesResponse
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +48,7 @@ router = APIRouter(
 
 @router.post(
     "/beam/3d",
+    response_model=APIResponse[Geometry3DResponse],
     summary="Generate 3D Beam Geometry",
     description="Generate 3D mesh geometry for beam visualization.",
 )
@@ -246,6 +248,7 @@ def _generate_fallback_geometry(request: Geometry3DRequest):
 
 @router.post(
     "/beam/full",
+    response_model=APIResponse[BeamGeometryResponse],
     summary="Generate Full Beam 3D Geometry",
     description="""
 Generate complete 3D geometry with rebars and stirrups using structural_lib.
@@ -386,6 +389,7 @@ async def generate_full_beam_geometry(
 
 @router.get(
     "/materials",
+    response_model=APIResponse[MaterialAppearancesResponse],
     summary="Get Material Appearance",
     description="Get material colors and properties for visualization.",
 )
@@ -432,6 +436,7 @@ async def get_materials():
 
 @router.post(
     "/building",
+    response_model=APIResponse[BuildingGeometryResponse],
     summary="Generate Building 3D Geometry",
     description="""
 Generate 3D line geometry for a multi-beam building view.
@@ -565,6 +570,7 @@ async def generate_building_geometry(
 
 @router.post(
     "/cross-section",
+    response_model=APIResponse[CrossSectionResponse],
     summary="Generate 2D Cross-Section Geometry",
     description="""
 Generate 2D cross-section geometry for beam section view.

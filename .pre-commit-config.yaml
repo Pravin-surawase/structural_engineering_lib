@@ -9,6 +9,9 @@ repos:
     hooks:
       - id: check-yaml
         files: \.(yml|yaml)$  # Only run on YAML files
+        # MkDocs uses a Python callable tag for Mermaid fences. Its config is
+        # validated by the strict MkDocs workflow instead of the safe YAML loader.
+        exclude: ^mkdocs\.yml$
       - id: check-toml
         files: \.toml$  # Only run on TOML files
       - id: check-json
@@ -24,7 +27,7 @@ repos:
 
   # Python formatting
   - repo: https://github.com/psf/black
-    rev: 25.9.0
+    rev: 26.5.1
     hooks:
       - id: black
         language_version: python3

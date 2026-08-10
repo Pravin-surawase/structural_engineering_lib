@@ -55,6 +55,12 @@ class ScanResult:
 class FastAPIIssueScanner(ast.NodeVisitor):
     """AST visitor that detects FastAPI anti-patterns."""
 
+    NON_JSON_RESPONSE_CLASSES = {
+        "EventSourceResponse",
+        "FileResponse",
+        "StreamingResponse",
+    }
+
     def __init__(self, filename: str):
         self.filename = filename
         self.issues: list[Issue] = []
@@ -100,6 +106,7 @@ class FastAPIIssueScanner(ast.NodeVisitor):
         is_route = False
         is_websocket = False
         has_response_model = False
+        has_non_json_response_class = False
 
         for decorator in node.decorator_list:
             decorator_name = self._get_decorator_name(decorator)
@@ -110,6 +117,11 @@ class FastAPIIssueScanner(ast.NodeVisitor):
                     for keyword in decorator.keywords:
                         if keyword.arg == "response_model":
                             has_response_model = True
+                        elif keyword.arg == "response_class":
+                            response_class = self._get_expression_name(keyword.value)
+                            has_non_json_response_class = (
+                                response_class in self.NON_JSON_RESPONSE_CLASSES
+                            )
             elif decorator_name == "websocket":
                 is_websocket = True
 
@@ -117,11 +129,10 @@ class FastAPIIssueScanner(ast.NodeVisitor):
         self.in_websocket_handler = is_websocket
 
         # Check for missing response_model on non-trivial routes
-        if is_route and not has_response_model:
-            # Only warn for POST/PUT/PATCH which typically return data
+        if is_route and not has_response_model and not has_non_json_response_class:
             for decorator in node.decorator_list:
                 decorator_name = self._get_decorator_name(decorator)
-                if decorator_name in ("post", "put", "patch"):
+                if decorator_name in ("get", "post", "put", "delete", "patch"):
                     self.add_issue(
                         node,
                         "medium",
@@ -158,6 +169,14 @@ class FastAPIIssueScanner(ast.NodeVisitor):
                 return decorator.func.attr
             elif isinstance(decorator.func, ast.Name):
                 return decorator.func.id
+        return ""
+
+    def _get_expression_name(self, expression: ast.expr) -> str:
+        """Return the terminal name for a response-class expression."""
+        if isinstance(expression, ast.Name):
+            return expression.id
+        if isinstance(expression, ast.Attribute):
+            return expression.attr
         return ""
 
     def _check_bare_except(self, node: ast.FunctionDef | ast.AsyncFunctionDef) -> None:
@@ -251,7 +270,6 @@ class FastAPIIssueScanner(ast.NodeVisitor):
         if isinstance(node.func, ast.Attribute):
             if node.func.attr in ("send_json", "receive_json", "accept", "close"):
                 # These should be awaited
-                parent = node
                 # Check if parent is Await
                 # This is tricky - we'd need to track parent nodes
                 pass

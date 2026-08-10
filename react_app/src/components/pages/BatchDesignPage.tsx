@@ -74,20 +74,20 @@ export default function BatchDesignPage() {
   // Apply results back to beam store
   const handleApplyResults = () => {
     const resultMap = new Map(
-      results
-        .filter(r => r.design_succeeded && r.is_safe && r.status === 'PASS')
-        .map(r => [r.beam_id, r])
+      results.map(r => [r.beam_id, r])
     );
     const updated = beams.map(b => {
       const r = resultMap.get(b.id);
       if (!r) return b;
+      const isPass = r.design_succeeded && r.is_safe && r.status === 'PASS';
       return {
         ...b,
         ast_required: r.flexure?.ast_required,
         utilization: r.utilization_ratio,
         stirrup_spacing: r.shear?.stirrup_spacing,
-        status: 'pass' as const,
-        is_valid: true,
+        status: isPass ? 'pass' as const : 'fail' as const,
+        is_valid: isPass,
+        remarks: r.error ? [r.error] : r.failed_checks,
       } as BeamCSVRow;
     });
     setBeams(updated);

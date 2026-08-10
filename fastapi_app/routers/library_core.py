@@ -12,16 +12,22 @@ from fastapi.responses import JSONResponse
 from fastapi_app.error_utils import sanitize_error
 from fastapi_app.models.library_core import (
     FootingLoadTransferRequest,
+    FootingLoadTransferResponse,
     OneWaySlabDesignRequest,
+    OneWaySlabDesignResponse,
 )
-from fastapi_app.models.response import error_response, success_response
+from fastapi_app.models.response import APIResponse, error_response, success_response
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/design", tags=["footing", "slab"])
 
 
-@router.post("/footing/load-transfer", summary="Check isolated-footing load transfer")
+@router.post(
+    "/footing/load-transfer",
+    response_model=APIResponse[FootingLoadTransferResponse],
+    summary="Check isolated-footing load transfer",
+)
 async def check_footing_load_transfer(request: FootingLoadTransferRequest):
     """Validate a request, call the public library service, and map its result."""
     try:
@@ -42,7 +48,11 @@ async def check_footing_load_transfer(request: FootingLoadTransferRequest):
         )
 
 
-@router.post("/slab/one-way", summary="Design a simply supported one-way slab strip")
+@router.post(
+    "/slab/one-way",
+    response_model=APIResponse[OneWaySlabDesignResponse],
+    summary="Design a simply supported one-way slab strip",
+)
 async def design_one_way_slab(request: OneWaySlabDesignRequest):
     """Validate a request, call the public slab service, and map its result."""
     try:

@@ -9,6 +9,7 @@ DO NOT DUPLICATE PARSING LOGIC!
 from __future__ import annotations
 
 import csv
+import hashlib
 import logging
 import math
 from pathlib import Path
@@ -19,7 +20,8 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from fastapi_app.config import get_settings
-from fastapi_app.models.response import error_response, success_response
+from fastapi_app.models.metadata import ImportFormatsResponse
+from fastapi_app.models.response import APIResponse, error_response, success_response
 
 router = APIRouter(
     prefix="/import",
@@ -64,6 +66,17 @@ class BeamWith3D(BeamRow):
     point2: Point3D = Field(default_factory=Point3D, description="End point")
 
 
+class SampleDatasetEvidence(BaseModel):
+    """Stable identity for the exact bundled source files."""
+
+    dataset_id: str
+    dataset_version: str
+    dataset_sha256: str
+    hash_algorithm: str
+    source_files: list[str]
+    beam_count: int
+
+
 class SampleDataResponse(BaseModel):
     """Response from sample data endpoint with 3D geometry."""
 
@@ -73,6 +86,7 @@ class SampleDataResponse(BaseModel):
     beams: list[BeamWith3D]
     format_detected: str = "ETABS"
     warnings: list[str] = Field(default_factory=list)
+    dataset: SampleDatasetEvidence
 
 
 class CSVImportResponse(BaseModel):
@@ -139,6 +153,7 @@ class BatchDesignResponse(BaseModel):
 
 @router.post(
     "/csv",
+    response_model=APIResponse[CSVImportResponse],
     summary="Import CSV File",
     description="Import beam data from CSV using structural_lib adapters.",
 )
@@ -368,6 +383,7 @@ async def import_csv(
 
 @router.post(
     "/dual-csv",
+    response_model=APIResponse[DualCSVImportResponse],
     summary="Import Dual CSV Files",
     description="Import beam geometry + forces from separate CSV files.",
 )
@@ -563,6 +579,7 @@ async def import_dual_csv(
 
 @router.post(
     "/csv/text",
+    response_model=APIResponse[CSVImportResponse],
     summary="Import CSV Text",
     description="Import beam data from CSV text content.",
 )
@@ -617,6 +634,7 @@ async def import_csv_text(
 
 @router.post(
     "/batch-design",
+    response_model=APIResponse[BatchDesignResponse],
     summary="Batch Design Beams",
     description="Design multiple beams from imported data.",
 )
@@ -730,6 +748,8 @@ async def batch_design(
 
 @router.get(
     "/formats",
+    response_model=APIResponse[ImportFormatsResponse],
+    response_model_exclude_unset=True,
     summary="Get Supported Formats",
     description="Get list of supported CSV import formats.",
 )
@@ -785,6 +805,7 @@ async def get_supported_formats():
 
 @router.get(
     "/sample",
+    response_model=APIResponse[SampleDataResponse],
     summary="Get Sample Data with 3D Geometry",
     description="Load the bundled ETABS sample building with 3D positions for visualization.",
 )
@@ -827,6 +848,13 @@ async def get_sample_data():
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Sample files not found",
         )
+
+    dataset_hash = hashlib.sha256()
+    for source_path in (forces_path, geometry_path):
+        dataset_hash.update(source_path.name.encode("utf-8"))
+        dataset_hash.update(b"\0")
+        dataset_hash.update(source_path.read_bytes())
+        dataset_hash.update(b"\0")
 
     # Read forces CSV
     forces_data: dict[str, dict[str, str | float]] = {}
@@ -920,5 +948,13 @@ async def get_sample_data():
             beams=sample_beams,
             format_detected="ETABS",
             warnings=warnings_list,
+            dataset=SampleDatasetEvidence(
+                dataset_id="bundled-etabs-beam-sample",
+                dataset_version="etabs-csv-v1",
+                dataset_sha256=dataset_hash.hexdigest(),
+                hash_algorithm="sha256-framed-files-v1",
+                source_files=[forces_path.name, geometry_path.name],
+                beam_count=len(sample_beams),
+            ),
         )
     )

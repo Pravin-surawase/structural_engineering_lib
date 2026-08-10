@@ -74,7 +74,7 @@ tags: []
 - Project health is 100/100 with 22 of 23 feedback records resolved. Only the tester-output watch at occurrence two of three remains pending.
 - MAINT-005 checkpoint `6f119132` raises actionable parity to 96%: 15/17 curated clause areas, 60/60 direct route tests, and 13/13 connected hooks.
 - The live 153-beam sample import, auto-design, R3F editor, dashboard, and export path passes. WebSocket designs preserve the full REST result; valid doubly reinforced beams report governing utilization and real capacities.
-- BBS, DXF, single HTML/PDF report, building HTML/PDF/CSV summary, and BOQ CSV actions reach the live API; byte-level artifact checks confirm valid CSV structure, DXF sections/EOF, and PDF signatures. Final quantities are 2,663.4 kg steel and 114.8 m³ concrete.
+- BBS, DXF, single HTML/PDF report, building HTML/PDF/CSV summary, and BOQ CSV actions reach the live API; byte-level artifact checks confirm valid CSV structure, DXF sections/EOF, and PDF signatures. ADOPT-001 later superseded the unbound 2,663.4 kg / 114.8 m³ checkpoint with the dataset- and calculation-bound 1,928.49 kg / 48.7319 m³ record in `docs/verification/bundled-sample-boq-evidence.md`.
 - MAINT-005 is complete. `./run.sh release preflight 0.21.7` is green with zero warnings; v0.21.7 is ready but has not been released.
 - MAINT-001 remains blocked only on GitHub CLI browser authorization and a macOS restart before non-destructive Colima recovery. SSH push works; do not delete the transferred VM disk.
 

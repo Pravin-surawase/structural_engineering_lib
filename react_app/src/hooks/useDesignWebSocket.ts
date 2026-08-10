@@ -71,6 +71,7 @@ export function normalizeWebSocketDesignResult(data: WebSocketDesignData): BeamD
     utilization_ratio: data.utilization_ratio ?? 0,
     effective_depth_used: data.effective_depth_used,
     warnings: data.warnings ?? [],
+    evidence: data.evidence,
   };
 }
 
@@ -201,6 +202,9 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
           shear: inputs.shear,
           fck: inputs.fck,
           fy: inputs.fy,
+          cover: inputs.clear_cover ?? 40,
+          stirrup_dia_mm: inputs.stirrup_dia_mm ?? 8,
+          main_bar_dia_mm: inputs.main_bar_dia_mm ?? 20,
           length: length,
         },
       })

@@ -11,6 +11,7 @@ import { useDesignStore } from "../../store/designStore";
 import { Viewport3D } from "../viewport/Viewport3D";
 import { CrossSectionView } from "../design/CrossSectionView";
 import { ExportPanel } from "../design/ExportPanel";
+import { formatPercent, formatSignedRatio, getTrustPresentation } from "../../utils/trustPresentation";
 
 type ViewTab = "3d" | "section";
 
@@ -35,6 +36,7 @@ export function BeamDetailPage() {
       </div>
     );
   }
+  const trust = getTrustPresentation(result);
 
   return (
     <div className="h-screen pt-14 flex flex-col bg-zinc-950">
@@ -47,8 +49,8 @@ export function BeamDetailPage() {
           <span className="text-sm font-medium text-white">
             Beam {inputs.width}x{inputs.depth} — {(length / 1000).toFixed(1)}m span
           </span>
-          <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${result.success ? "bg-green-500/20 text-green-400" : "bg-red-500/20 text-red-400"}`}>
-            {result.success ? "SAFE" : "FAIL"}
+          <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${trust.status === "PASS" ? "bg-green-500/20 text-green-400" : trust.status === "HOLD" ? "bg-amber-500/20 text-amber-400" : "bg-red-500/20 text-red-400"}`}>
+            {trust.status}
           </span>
         </div>
 
@@ -112,9 +114,10 @@ export function BeamDetailPage() {
               ]} />
               <FloatingCard title="Summary" items={[
                 { l: "Ast total", v: `${result.ast_total?.toFixed(0) || "-"} mm²` },
-                { l: "Utilization", v: `${(result.utilization_ratio * 100).toFixed(0)}%` },
-                { l: "Status", v: result.success ? "SAFE" : "FAIL" },
-              ]} accent={result.success ? "green" : "red"} />
+                { l: "Utilization", v: formatPercent(trust.exactUtilization) },
+                { l: "Margin", v: formatSignedRatio(trust.margin) },
+                { l: "Governing", v: trust.governingCheck },
+              ]} accent={trust.status === "PASS" ? "green" : "red"} />
             </div>
             <ExportPanel
               beamParams={{
@@ -130,7 +133,7 @@ export function BeamDetailPage() {
                 shear: inputs.shear,
               }}
               utilization={result.utilization_ratio}
-              isSafe={result.success}
+              isSafe={trust.canExport}
               astProvided={result.ast_total}
             />
           </div>

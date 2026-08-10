@@ -15,6 +15,16 @@ import pytest
 from structural_lib import __main__ as cli_main
 
 
+def test_capabilities_json_matches_python_contract(capsys):
+    """CLI discovery must serialize the canonical Python document unchanged."""
+    rc = cli_main.main(["capabilities", "--json"])
+
+    assert rc == 0
+    assert json.loads(capsys.readouterr().out) == (
+        cli_main.api.get_supported_is456_capability_document()
+    )
+
+
 @pytest.fixture
 def sample_csv_file(tmp_path):
     """Create a sample CSV file for testing design command."""

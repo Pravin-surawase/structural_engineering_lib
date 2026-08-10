@@ -4,6 +4,7 @@
  * Displays beam design results from the API.
  */
 import { useDesignStore } from '../../store/designStore';
+import { formatPercent, formatRatio, formatSignedRatio, getTrustPresentation } from '../../utils/trustPresentation';
 
 export function ResultsPanel() {
   const { result, error, isLoading } = useDesignStore();
@@ -37,7 +38,9 @@ export function ResultsPanel() {
     );
   }
 
-  const { flexure, shear, ast_total, asc_total, utilization_ratio, warnings } = result;
+  const { flexure, shear, ast_total, asc_total, warnings } = result;
+  const trust = getTrustPresentation(result);
+  const isPass = trust.status === 'PASS';
 
   return (
     <div className="p-4 h-full overflow-y-auto bg-[#1e1e1e] text-[#e0e0e0]">
@@ -45,11 +48,13 @@ export function ResultsPanel() {
 
       {/* Status */}
       <div className={`p-2 px-3 rounded font-semibold mb-4 text-center ${
-        result.success
+        isPass
           ? 'bg-green-500/20 text-green-500 border border-green-500'
-          : 'bg-red-500/20 text-red-500 border border-red-500'
+          : trust.status === 'HOLD'
+            ? 'bg-amber-500/20 text-amber-400 border border-amber-500'
+            : 'bg-red-500/20 text-red-500 border border-red-500'
       }`}>
-        {result.success ? '✓ Design OK' : '✗ Design Failed'}
+        {isPass ? '✓ Design PASS' : trust.status === 'HOLD' ? '◼ Design HOLD' : '✗ Design FAIL'}
       </div>
 
       {/* Flexure Results */}
@@ -128,10 +133,22 @@ export function ResultsPanel() {
             <span className="text-[11px] text-zinc-400">Utilization</span>
             <span
               className={`text-sm font-semibold ${
-                utilization_ratio < 0.9 ? 'text-green-500' : utilization_ratio < 1.0 ? 'text-amber-500' : 'text-red-500'
+                trust.exactUtilization < 0.9 ? 'text-green-500' : trust.exactUtilization <= 1.0 ? 'text-amber-500' : 'text-red-500'
               }`}
             >
-              {(utilization_ratio * 100).toFixed(1)}%
+              {formatPercent(trust.exactUtilization)}
+            </span>
+          </div>
+          <div className="flex flex-col gap-0.5 p-2 bg-[#2d2d2d] rounded">
+            <span className="text-[11px] text-zinc-400">Exact Ratio / Margin</span>
+            <span className="text-xs font-semibold text-white font-mono">
+              {formatRatio(trust.exactUtilization)} / {formatSignedRatio(trust.margin)}
+            </span>
+          </div>
+          <div className="col-span-2 flex flex-col gap-0.5 p-2 bg-[#2d2d2d] rounded">
+            <span className="text-[11px] text-zinc-400">Governing Check / Calculation</span>
+            <span className="text-xs font-semibold text-white font-mono break-all">
+              {trust.governingCheck} · {trust.calculationIdentity?.slice(0, 16) ?? 'evidence unavailable'}
             </span>
           </div>
         </div>

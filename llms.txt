@@ -1,8 +1,9 @@
 structural_engineering_lib
 
 Purpose
-- IS 456 RC beam design library with Python + VBA parity.
-- Design -> compliance -> detailing -> DXF/BBS outputs.
+- Route-specific IS 456:2000 reinforced-concrete design and checking library.
+- Supported beam, column, isolated-footing, and bounded solid-slab workflows.
+- Design -> compliance -> detailing -> DXF/BBS/report outputs.
 - Full-stack: React 19 frontend + FastAPI backend + Python core library.
 
 Install
@@ -13,6 +14,7 @@ Python import
 - from structural_lib import api
 
 CLI (python -m structural_lib)
+- capabilities : show supported/held workflows, units, and review boundaries
 - design  : design beams from CSV/JSON -> results JSON
 - bbs     : generate bar bending schedule from results JSON
 - dxf     : generate DXF drawings from results JSON (requires ezdxf)
@@ -25,7 +27,8 @@ V3 Stack
 - Python structural_lib core (Python/structural_lib/)
 - Docker deployment (docker-compose.yml)
 
-Key API Endpoints (FastAPI) — 62 endpoints across 14 routers
+Key API Endpoints (FastAPI) — 63 endpoints across 15 routers
+- GET /api/v1/library/capabilities - Canonical supported/held contract
 - POST /api/v1/design/beam - Beam design (Mu, Vu, Ast)
 - POST /api/v1/design/beam/check - Check existing design
 - POST /api/v1/detailing/beam - Rebar detailing
@@ -55,5 +58,7 @@ Examples
 
 Notes
 - Units: mm, N/mm^2, kN, kN-m (convert at boundaries)
+- Run python -m structural_lib capabilities --json for the canonical capability contract.
+- Every listed design capability retains its declared held cases and qualified-review requirement.
 - 4-layer architecture: Core types -> IS 456 Code (pure math) -> Services (orchestration) -> UI/IO (interfaces)
 - Python/structural_lib/api.py is a backward-compat stub — real code is in services/api.py

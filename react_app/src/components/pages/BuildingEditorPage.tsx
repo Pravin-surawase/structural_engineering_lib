@@ -131,6 +131,8 @@ export function BuildingEditorPage() {
 
   const completedCount = statusCounts.pass + statusCounts.fail + statusCounts.warning;
   const progressPct = beams.length > 0 ? (completedCount / beams.length) * 100 : 0;
+  const heldBeamCount = beams.filter((beam) => beam.is_valid !== true).length;
+  const exportsHeld = heldBeamCount > 0;
 
   const handleRowClicked = useCallback(
     (event: RowClickedEvent<BeamCSVRow>) => {
@@ -152,7 +154,12 @@ export function BuildingEditorPage() {
       if (field === "fck") setGlobalFck(value);
       else if (field === "fy") setGlobalFy(value);
       else setGlobalCover(value);
-      const updated = beams.map((b) => ({ ...b, [field]: value, status: "pending" as const }));
+      const updated = beams.map((b) => ({
+        ...b,
+        [field]: value,
+        status: "pending" as const,
+        is_valid: false,
+      }));
       setBeams(updated);
     },
     [beams, setBeams]
@@ -200,7 +207,11 @@ export function BuildingEditorPage() {
         const updated = beams.map((beam) => {
           const result = resultMap.get(beam.id);
           if (!result || !result.success) {
-            return { ...beam, status: result ? "fail" as const : beam.status };
+            return {
+              ...beam,
+              is_valid: false,
+              status: result ? "fail" as const : beam.status,
+            };
           }
 
           const astReq = result.ast_required ?? beam.ast_required ?? 0;
@@ -252,6 +263,7 @@ export function BuildingEditorPage() {
 
   const handleBuildingExport = useCallback(
     (format: "html" | "pdf" | "csv") => {
+      if (exportsHeld) return;
       setShowExportMenu(false);
       const payload = beams.map((b) => ({
         beam_id: b.id,
@@ -276,7 +288,7 @@ export function BuildingEditorPage() {
       }));
       exportBuilding({ project_name: "Building Project", beams: payload, format });
     },
-    [beams, globalFck, globalFy, exportBuilding]
+    [beams, globalFck, globalFy, exportBuilding, exportsHeld]
   );
 
   const handleCellValueChanged = useCallback(
@@ -286,7 +298,7 @@ export function BuildingEditorPage() {
         const currentBeams = useImportedBeamsStore.getState().beams;
         const updatedBeams = currentBeams.map((b) =>
           b.id === event.data!.id
-            ? { ...b, ...event.data, status: "pending" as const }
+            ? { ...b, ...event.data, status: "pending" as const, is_valid: false }
             : b
         );
         useImportedBeamsStore.getState().setBeams(updatedBeams);
@@ -469,14 +481,19 @@ export function BuildingEditorPage() {
           </button>
           <div className="relative">
             <button
-              onClick={() => setShowExportMenu(!showExportMenu)}
-              disabled={exportPending}
+              onClick={() => !exportsHeld && setShowExportMenu(!showExportMenu)}
+              disabled={exportPending || exportsHeld}
               className="p-1.5 rounded-lg hover:bg-white/5 text-zinc-400 hover:text-zinc-200 transition-colors disabled:opacity-40 flex items-center gap-1"
-              title="Export building summary"
+              title={exportsHeld ? `Exports held: ${heldBeamCount} beams are FAIL or not designed` : "Export building summary"}
             >
               <Download className={`w-4 h-4 ${exportPending ? "animate-pulse" : ""}`} />
               <ChevronDown className="w-3 h-3" />
             </button>
+            {exportsHeld && (
+              <span className="sr-only" role="status">
+                Exports held: {heldBeamCount} beams are FAIL or HOLD.
+              </span>
+            )}
             {showExportMenu && (
               <div className="absolute right-0 top-full mt-1 w-52 bg-zinc-900 border border-white/10 rounded-xl shadow-2xl z-50 py-1 overflow-hidden">
                 <button onClick={() => handleBuildingExport("html")}

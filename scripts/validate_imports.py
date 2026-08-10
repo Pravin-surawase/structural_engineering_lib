@@ -40,6 +40,14 @@ SEARCH_DIRS = {
     "scripts": ["scripts"],
 }
 
+# Import roots owned by this repository.  Generated Python clients are checked
+# in below ``clients/python`` and are intentionally imported by contract tests.
+MODULE_ROOTS = (
+    PROJECT_ROOT / "Python",
+    PROJECT_ROOT / "clients" / "python",
+    PROJECT_ROOT,
+)
+
 # Known external packages (don't report these as broken)
 EXTERNAL_PACKAGES = {
     "numpy",
@@ -168,38 +176,15 @@ def can_resolve_module(module_str: str) -> bool:
     if top in EXTERNAL_PACKAGES:
         return True
 
-    # Try to find it as a file
+    # Try to find it as a checked-in package or module.
     parts = module_str.split(".")
-
-    # Check relative to Python/
-    python_dir = PROJECT_ROOT / "Python"
-
-    # Try as package dir
-    candidate = python_dir / Path(*parts)
-    if candidate.is_dir() and (candidate / "__init__.py").exists():
-        return True
-
-    # Try as module file
-    candidate = (
-        python_dir / Path(*parts[:-1]) / (parts[-1] + ".py")
-        if len(parts) > 1
-        else python_dir / (parts[0] + ".py")
-    )
-    if candidate.exists():
-        return True
-
-    # Try as module file directly
-    candidate = python_dir / Path(*parts).with_suffix(".py")
-    if candidate.exists():
-        return True
-
-    # Check relative to project root
-    candidate = PROJECT_ROOT / Path(*parts)
-    if candidate.is_dir() and (candidate / "__init__.py").exists():
-        return True
-    candidate = PROJECT_ROOT / Path(*parts).with_suffix(".py")
-    if candidate.exists():
-        return True
+    for module_root in MODULE_ROOTS:
+        candidate = module_root / Path(*parts)
+        if candidate.is_dir() and (candidate / "__init__.py").exists():
+            return True
+        candidate = module_root / Path(*parts).with_suffix(".py")
+        if candidate.exists():
+            return True
 
     # Try importlib (for installed packages)
     try:

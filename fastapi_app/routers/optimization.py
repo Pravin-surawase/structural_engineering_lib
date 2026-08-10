@@ -10,7 +10,7 @@ from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
 from fastapi_app.error_utils import sanitize_error, sanitize_float
-from fastapi_app.models.response import error_response, success_response
+from fastapi_app.models.response import APIResponse, error_response, success_response
 from fastapi_app.models.optimization import (
     CostOptimizationRequest,
     CostOptimizationResponse,
@@ -20,6 +20,7 @@ from fastapi_app.models.optimization import (
     ParetoResponse,
     ParetoCandidateResponse,
 )
+from fastapi_app.models.metadata import CostRatesResponse
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +37,7 @@ router = APIRouter(
 
 @router.post(
     "/beam/cost",
+    response_model=APIResponse[CostOptimizationResponse],
     summary="Optimize Beam Cost",
     description="Find the most cost-effective beam section for given loading.",
 )
@@ -196,6 +198,7 @@ def _parse_optimal_design(data: dict, rank: int):
 
 @router.get(
     "/cost-rates",
+    response_model=APIResponse[CostRatesResponse],
     summary="Get Default Cost Rates",
     description="Get default material and labor cost rates.",
 )
@@ -245,6 +248,7 @@ async def get_cost_rates():
 
 @router.post(
     "/beam/pareto",
+    response_model=APIResponse[ParetoResponse],
     summary="Pareto Multi-Objective Beam Optimization",
     description="Find Pareto-optimal beam designs balancing cost, weight, and utilization using NSGA-II inspired algorithm.",
 )

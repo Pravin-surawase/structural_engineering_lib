@@ -1146,3 +1146,28 @@ class ColumnDuctileDetailingRequest(BaseModel):
         description="Confined core area to hoop centerline (mm²). Estimated if omitted.",
         examples=[102400.0],
     )
+
+
+class ColumnDuctileDetailingError(BaseModel):
+    """A structured IS 13920 column-detailing finding."""
+
+    code: str
+    severity: str
+    message: str
+    field: str | None = None
+    hint: str | None = None
+    clause: str | None = None
+    recovery: str | None = None
+
+
+class ColumnDuctileDetailingResponse(BaseModel):
+    """IS 13920:2016 Cl. 7 column ductile-detailing result."""
+
+    is_geometry_valid: bool
+    min_pt: float
+    max_pt: float
+    confining_spacing_mm: float
+    confining_length_mm: float
+    ash_required_mm2: float
+    is_compliant: bool
+    errors: list[ColumnDuctileDetailingError]

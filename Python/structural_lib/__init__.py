@@ -138,6 +138,8 @@ from .services.api import (  # Audit & Verification; Input dataclasses; Calculat
     generate_calculation_report,
     get_library_version,
     get_supported_is456_capabilities,
+    get_supported_is456_capability_document,
+    get_supported_is456_semantic_contract,
     load_etabs_csv,
     min_eccentricity_is456,
     normalize_etabs_forces,
@@ -356,7 +358,9 @@ __all__ = [
     "design_two_way_slab_is456",
     "OneWaySlabDesignResult",
     # Capability discovery
+    "get_supported_is456_capability_document",
     "get_supported_is456_capabilities",
+    "get_supported_is456_semantic_contract",
     "IS456Capability",
     # Self-validation (TASK-724)
     "check_code",

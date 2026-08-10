@@ -35,7 +35,7 @@ export function DashboardPage() {
     const results = beams.map((b) => ({
       beam_id: b.id,
       story: b.story ?? "Unknown",
-      is_valid: b.is_valid ?? true,
+      is_valid: b.is_valid === true,
       utilization: b.utilization ?? 0,
       ast_provided: b.ast_provided ?? 0,
       b_mm: b.b,
@@ -55,7 +55,15 @@ export function DashboardPage() {
       fck: b.fck ?? 25,
       steel_weight_kg: calculateSteelWeightKg(b.ast_provided ?? 0, b.span),
     }));
-    boq.mutate({ beams: boqBeams });
+    const first = beams[0];
+    const dataset = first?.dataset_id && first.dataset_version && first.dataset_sha256
+      ? {
+          dataset_id: first.dataset_id,
+          dataset_version: first.dataset_version,
+          dataset_sha256: first.dataset_sha256,
+        }
+      : undefined;
+    boq.mutate({ beams: boqBeams, dataset });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [beams]);
 
@@ -68,6 +76,8 @@ export function DashboardPage() {
     fy: designedBeam.fy ?? 500,
     ast_required: designedBeam.ast_required ?? 0,
   } : null;
+  const heldBeamCount = beams.filter((beam) => beam.is_valid !== true).length;
+  const exportsHeld = heldBeamCount > 0;
 
   if (beams.length === 0) {
     return (
@@ -109,18 +119,26 @@ export function DashboardPage() {
               <ExportBtn
                 label="BBS" icon={<Download className="w-3.5 h-3.5" />}
                 loading={bbsPending}
+                disabled={exportsHeld}
                 onClick={() => exportBBS(exportParams)}
               />
               <ExportBtn
                 label="DXF" icon={<Ruler className="w-3.5 h-3.5" />}
                 loading={dxfPending}
+                disabled={exportsHeld}
                 onClick={() => exportDXF(exportParams)}
               />
               <ExportBtn
                 label="Report" icon={<FileText className="w-3.5 h-3.5" />}
                 loading={reportPending}
+                disabled={exportsHeld}
                 onClick={() => exportReport({ ...exportParams, utilization: designedBeam?.utilization, is_safe: designedBeam?.is_valid })}
               />
+              {exportsHeld && (
+                <span className="text-[10px] text-amber-400" role="status">
+                  Exports held: {heldBeamCount} FAIL/HOLD
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -185,7 +203,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
       <BentoCard colSpan={3} variant="default">
         <BentoCardHeader title="Avg Utilization" icon={<BarChart3 className="w-4 h-4" />} />
         <p className={`text-4xl font-bold tabular-nums mt-1 ${utilColor}`}>
-          {(data.avg_utilization * 100).toFixed(0)}%
+          {(data.avg_utilization * 100).toFixed(3)}%
         </p>
         <div className="mt-2 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
           <div
@@ -193,7 +211,9 @@ function DashboardContent({ data }: { data: DashboardData }) {
             style={{ width: `${Math.min(data.avg_utilization * 100, 100)}%` }}
           />
         </div>
-        <p className="text-[10px] text-zinc-500 mt-1">max {(data.max_utilization * 100).toFixed(0)}%</p>
+        <p className="text-[10px] text-zinc-500 mt-1 font-mono">
+          avg ratio {data.avg_utilization.toFixed(6)} · max {(data.max_utilization * 100).toFixed(3)}% ({data.max_utilization.toFixed(6)})
+        </p>
       </BentoCard>
 
       {/* Pass / Fail visual bar */}
@@ -303,17 +323,18 @@ function DashboardContent({ data }: { data: DashboardData }) {
 }
 
 function ExportBtn({
-  label, icon, loading, onClick,
+  label, icon, loading, disabled = false, onClick,
 }: {
   label: string;
   icon: React.ReactNode;
   loading: boolean;
+  disabled?: boolean;
   onClick: () => void;
 }) {
   return (
     <button
       onClick={onClick}
-      disabled={loading}
+      disabled={loading || disabled}
       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg
         bg-white/5 border border-white/8 text-xs text-white/60
         hover:bg-white/10 hover:text-white/90 hover:border-white/15

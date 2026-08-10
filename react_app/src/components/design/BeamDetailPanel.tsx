@@ -20,6 +20,9 @@ import { CrossSectionView } from "./CrossSectionView";
 import { Viewport3D } from "../viewport/Viewport3D";
 import { deriveBeamStatus } from "../../utils/beamStatus";
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
+import { designBeam, unwrapResponse } from "../../api/client";
+import type { BeamDesignResponse } from "../../api/client";
+import { formatPercent, formatRatio, getTrustPresentation } from "../../utils/trustPresentation";
 
 import { API_BASE_URL } from '../../config';
 
@@ -30,16 +33,7 @@ interface BeamDetailPanelProps {
 
 // ── Single-beam design hook ──────────────────────────────────────────────────
 
-interface SingleDesignResult {
-  success: boolean;
-  ast_total: number;
-  asc_total: number;
-  utilization_ratio: number;
-  shear?: { stirrup_spacing: number; sv_max: number };
-  flexure?: { ast_required: number; asc_required: number };
-}
-
-async function designSingleBeam(beam: BeamCSVRow): Promise<SingleDesignResult> {
+async function designSingleBeam(beam: BeamCSVRow): Promise<BeamDesignResponse> {
   const mu = Math.max(
     Math.abs(beam.Mu_start ?? 0), Math.abs(beam.Mu_mid ?? 0),
     Math.abs(beam.Mu_end ?? 0), Math.abs(beam.mu_envelope ?? 0)
@@ -48,18 +42,15 @@ async function designSingleBeam(beam: BeamCSVRow): Promise<SingleDesignResult> {
     Math.abs(beam.Vu_start ?? 0), Math.abs(beam.Vu_end ?? 0),
     Math.abs(beam.vu_envelope ?? 0)
   );
-  const res = await fetch(`${API_BASE_URL}/api/v1/design/beam`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      width: beam.b, depth: beam.D,
-      moment: mu, shear: vu,
-      fck: beam.fck ?? 25, fy: beam.fy ?? 500,
-      clear_cover: beam.cover ?? 40,
-    }),
+  return designBeam({
+    width: beam.b,
+    depth: beam.D,
+    moment: mu,
+    shear: vu,
+    fck: beam.fck ?? 25,
+    fy: beam.fy ?? 500,
+    clear_cover: beam.cover ?? 40,
   });
-  if (!res.ok) throw new Error("Design failed");
-  return res.json();
 }
 
 // ── Bar layout helper (mirrors deriveBarLayout in BuildingEditorPage) ─────────
@@ -80,7 +71,8 @@ function deriveBarLayout(astRequired: number): { count: number; dia: number } {
 export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
   const { setBeams } = useImportedBeamsStore();
   const status = deriveBeamStatus(beam);
-  const utilPct = beam.utilization != null ? Math.round(beam.utilization * 100) : null;
+  const utilPct = beam.utilization != null ? beam.utilization * 100 : null;
+  const exportHeld = beam.is_valid !== true;
 
   // Track backend-computed sv_max from design response
   const [designSvMax, setDesignSvMax] = useState<number | null>(null);
@@ -89,7 +81,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
   const { mutate: redesign, isPending: redesigning } = useMutation({
     mutationFn: () => designSingleBeam(beam),
     onSuccess: async (data) => {
-      if (!data.success) return;
+      const trust = getTrustPresentation(data);
       const astReq = data.flexure?.ast_required ?? data.ast_total;
       const ascReq = data.flexure?.asc_required ?? data.asc_total;
       const layout = deriveBarLayout(astReq);
@@ -106,7 +98,9 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
           }),
         });
         if (rebarRes.ok) {
-          const rebarData = await rebarRes.json();
+          const rebarData = await rebarRes.json().then(
+            unwrapResponse<{ ast_provided_mm2: number | null }>
+          );
           astProvided = rebarData.ast_provided_mm2 ?? 0;
         }
       } catch {
@@ -126,9 +120,9 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
           bar_count: layout.count,
           bar_diameter: layout.dia,
           stirrup_spacing: data.shear?.stirrup_spacing ?? b.stirrup_spacing,
-          utilization: data.utilization_ratio,
-          is_valid: data.success && data.utilization_ratio <= 1.0,
-          status: data.utilization_ratio <= 1.0 ? "pass" : "fail",
+          utilization: trust.exactUtilization,
+          is_valid: trust.status === "PASS",
+          status: trust.status === "PASS" ? "pass" : "fail",
         }
       ));
     },
@@ -354,7 +348,9 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
             {statusConfig[status]?.label ?? status.toUpperCase()}
           </span>
           {utilPct != null && (
-            <span className="text-xs text-zinc-400 tabular-nums">{utilPct}% Mu/Mu_cap</span>
+            <span className="text-xs text-zinc-400 tabular-nums">
+              {formatPercent(beam.utilization ?? 0)} · ratio {formatRatio(beam.utilization ?? 0)}
+            </span>
           )}
         </div>
         {utilPct != null && (
@@ -424,11 +420,16 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
         <div className="px-4 py-3 shrink-0">
           <p className="text-[10px] text-zinc-500 uppercase tracking-widest mb-2.5">Export</p>
           <div className="flex gap-2">
-            <ExportBtn label="BBS" icon={<Download className="w-3.5 h-3.5" />} loading={bbsPending} onClick={() => exportBBS(exportParams)} />
-            <ExportBtn label="DXF" icon={<Ruler className="w-3.5 h-3.5" />} loading={dxfPending} onClick={() => exportDXF(exportParams)} />
-            <ExportBtn label="Report" icon={<FileText className="w-3.5 h-3.5" />} loading={reportPending}
+            <ExportBtn label="BBS" icon={<Download className="w-3.5 h-3.5" />} loading={bbsPending} disabled={exportHeld} onClick={() => exportBBS(exportParams)} />
+            <ExportBtn label="DXF" icon={<Ruler className="w-3.5 h-3.5" />} loading={dxfPending} disabled={exportHeld} onClick={() => exportDXF(exportParams)} />
+            <ExportBtn label="Report" icon={<FileText className="w-3.5 h-3.5" />} loading={reportPending} disabled={exportHeld}
               onClick={() => exportReport({ ...exportParams, ast_provided: beam.ast_provided, utilization: beam.utilization, is_safe: beam.is_valid })} />
           </div>
+          {exportHeld && (
+            <p className="mt-2 text-[10px] text-amber-400/80" role="status">
+              Exports held until this beam has a PASS result.
+            </p>
+          )}
         </div>
       )}
     </div>
@@ -479,11 +480,11 @@ function CheckRow({ label, clause, status, detail, warn }: {
   );
 }
 
-function ExportBtn({ label, icon, loading, onClick }: {
-  label: string; icon: React.ReactNode; loading: boolean; onClick: () => void;
+function ExportBtn({ label, icon, loading, disabled = false, onClick }: {
+  label: string; icon: React.ReactNode; loading: boolean; disabled?: boolean; onClick: () => void;
 }) {
   return (
-    <button onClick={onClick} disabled={loading}
+    <button onClick={onClick} disabled={loading || disabled}
       className="flex-1 flex items-center justify-center gap-1.5 px-2 py-2 rounded-lg
         bg-white/[0.04] border border-white/[0.08] text-xs text-white/60
         hover:bg-white/[0.07] hover:text-white/90 hover:border-white/15

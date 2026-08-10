@@ -7,12 +7,16 @@ Endpoints for dashboard aggregation, code checks, and optimization suggestions.
 Uses structural_lib.dashboard for canonical computations.
 """
 
+import hashlib
+import json
 import logging
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from fastapi_app.models.boq import (
+    BOQEvidenceResponse,
     ConcreteSummaryResponse,
     ProjectBOQRequest,
     ProjectBOQResponse,
@@ -20,7 +24,7 @@ from fastapi_app.models.boq import (
     StorySummaryResponse,
 )
 
-from fastapi_app.models.response import error_response, success_response
+from fastapi_app.models.response import APIResponse, error_response, success_response
 
 logger = logging.getLogger(__name__)
 
@@ -186,6 +190,7 @@ class RebarSuggestResponse(BaseModel):
 
 @router.post(
     "/dashboard",
+    response_model=APIResponse[DashboardResponse],
     summary="Generate Dashboard Summary",
     description="Generate aggregated statistics from multiple beam design results.",
 )
@@ -251,6 +256,7 @@ async def generate_dashboard(request: DashboardRequest):
 
 @router.post(
     "/code-checks",
+    response_model=APIResponse[CodeChecksResponse],
     summary="Live IS 456 Code Checks",
     description="Perform fast code checks for real-time UI updates during editing.",
 )
@@ -322,6 +328,7 @@ async def code_checks_live(request: CodeChecksRequest):
 
 @router.post(
     "/rebar-suggest",
+    response_model=APIResponse[RebarSuggestResponse],
     summary="Suggest Rebar Optimizations",
     description="Generate optimized rebar configuration suggestions for a beam.",
 )
@@ -393,6 +400,7 @@ async def suggest_rebar_options(request: RebarSuggestRequest):
 
 @router.post(
     "/project-boq",
+    response_model=APIResponse[ProjectBOQResponse],
     summary="Project Bill of Quantities",
     description="Aggregate project BOQ from beam metadata with steel/concrete costs.",
 )
@@ -404,6 +412,7 @@ async def project_boq(request: ProjectBOQRequest):
     """
     try:
         from structural_lib.services.boq import DEFAULT_CONCRETE_COSTS
+        from structural_lib.services.common_api import get_library_version
 
         concrete_costs = (
             request.concrete_costs
@@ -411,6 +420,26 @@ async def project_boq(request: ProjectBOQRequest):
             else dict(DEFAULT_CONCRETE_COSTS)
         )
         steel_rate = request.steel_cost_per_kg
+        normalized_input = {
+            "algorithm": "project-boq-v1",
+            "beams": sorted(
+                (beam.model_dump(mode="json") for beam in request.beams),
+                key=lambda beam: json.dumps(
+                    beam, sort_keys=True, separators=(",", ":")
+                ),
+            ),
+            "steel_cost_per_kg": steel_rate,
+            "concrete_costs": concrete_costs,
+            "dataset": (
+                request.dataset.model_dump(mode="json") if request.dataset else None
+            ),
+        }
+        normalized_json = json.dumps(
+            normalized_input, allow_nan=False, sort_keys=True, separators=(",", ":")
+        )
+        normalized_input_hash = hashlib.sha256(
+            normalized_json.encode("utf-8")
+        ).hexdigest()
 
         # Accumulators
         story_acc: dict[str, dict] = {}
@@ -485,6 +514,26 @@ async def project_boq(request: ProjectBOQRequest):
             for s, d in sorted(story_acc.items())
         ]
 
+        library_version = get_library_version()
+        calculation_payload = json.dumps(
+            {
+                "artifact_schema": "structural_lib.project-boq-evidence",
+                "artifact_schema_version": "1.0",
+                "library_version": library_version,
+                "normalized_input_hash": normalized_input_hash,
+                "grand_total_steel_kg": round(total_steel, 2),
+                "grand_total_concrete_m3": round(total_concrete, 4),
+                "grand_total_cost_inr": round(total_cost, 2),
+            },
+            allow_nan=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        calculation_identity = hashlib.sha256(
+            calculation_payload.encode("utf-8")
+        ).hexdigest()
+        dataset = request.dataset
+
         return success_response(
             ProjectBOQResponse(
                 success=True,
@@ -496,6 +545,29 @@ async def project_boq(request: ProjectBOQRequest):
                 grand_total_steel_kg=round(total_steel, 2),
                 grand_total_concrete_m3=round(total_concrete, 4),
                 grand_total_cost_inr=round(total_cost, 2),
+                evidence=BOQEvidenceResponse(
+                    artifact_schema="structural_lib.project-boq-evidence",
+                    artifact_schema_version="1.0",
+                    library_version=library_version,
+                    calculation_identity=calculation_identity,
+                    normalized_input_hash=normalized_input_hash,
+                    dataset_id=dataset.dataset_id if dataset else None,
+                    dataset_version=dataset.dataset_version if dataset else None,
+                    dataset_sha256=dataset.dataset_sha256 if dataset else None,
+                    unit_system="IS456",
+                    explicit_units={
+                        "length": "mm",
+                        "steel_weight": "kg",
+                        "concrete_volume": "m³",
+                        "cost": "INR",
+                    },
+                    generated_at=datetime.now(UTC).isoformat(),
+                    qualified_review_required=True,
+                    qualified_review_requirement=(
+                        "Quantity outputs require independent review before procurement, "
+                        "engineering, or construction use."
+                    ),
+                ),
             )
         )
     except (RuntimeError, KeyError, ImportError):

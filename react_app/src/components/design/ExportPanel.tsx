@@ -21,6 +21,8 @@ export function ExportPanel({ beamParams, utilization, isSafe, astProvided }: Ex
   const report = useExportReport();
 
   const anyLoading = bbs.isPending || dxf.isPending || report.isPending;
+  const exportHeld = isSafe !== true;
+  const exportDisabled = anyLoading || exportHeld;
 
   return (
     <div className="rounded-xl bg-white/[0.03] border border-white/8 p-3">
@@ -30,21 +32,21 @@ export function ExportPanel({ beamParams, utilization, isSafe, astProvided }: Ex
           label="BBS"
           icon={<FileSpreadsheet className="w-3.5 h-3.5" />}
           loading={bbs.isPending}
-          disabled={anyLoading}
+          disabled={exportDisabled}
           onClick={() => bbs.mutate(beamParams)}
         />
         <ExportButton
           label="DXF"
           icon={<Download className="w-3.5 h-3.5" />}
           loading={dxf.isPending}
-          disabled={anyLoading}
+          disabled={exportDisabled}
           onClick={() => dxf.mutate(beamParams)}
         />
         <ExportButton
           label="Report"
           icon={<FileText className="w-3.5 h-3.5" />}
           loading={report.isPending}
-          disabled={anyLoading}
+          disabled={exportDisabled}
           onClick={() =>
             report.mutate({
               beam_id: beamParams.beam_id,
@@ -63,6 +65,11 @@ export function ExportPanel({ beamParams, utilization, isSafe, astProvided }: Ex
           }
         />
       </div>
+      {exportHeld && (
+        <p className="mt-2 text-[10px] text-amber-400/80" role="status">
+          Exports held until the outer design result is PASS.
+        </p>
+      )}
       {(bbs.error || dxf.error || report.error) && (
         <p className="mt-2 text-[10px] text-red-400/70">
           Export failed — check API connection

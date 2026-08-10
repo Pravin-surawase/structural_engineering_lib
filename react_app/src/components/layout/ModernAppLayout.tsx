@@ -38,7 +38,7 @@ export function ModernAppLayout() {
     try {
       const data = await loadSampleData();
       if (data.success) {
-        const storeBeams: BeamCSVRow[] = mapSampleBeamsToRows(data.beams);
+        const storeBeams: BeamCSVRow[] = mapSampleBeamsToRows(data.beams, data.dataset);
         setBeams(storeBeams);
         setViewMode("results");
       } else {

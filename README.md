@@ -89,6 +89,11 @@ pip install structural-lib-is456
 The package is installed as `structural-lib-is456` and imported as
 `structural_lib`.
 
+`0.23.0` is the current published Alpha preview. Pin it when reproducing an
+evaluation; future Alpha publications use PEP 440 identifiers such as
+`0.24.0a1`. See the [release policy](docs/getting-started/releases.md) before
+selecting a prerelease.
+
 ```python
 from structural_lib import api
 

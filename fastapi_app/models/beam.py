@@ -5,7 +5,7 @@ Models for beam design, checking, and detailing API endpoints.
 All dimensions in mm, forces in kN, moments in kN·m, stresses in N/mm².
 """
 
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -288,6 +288,29 @@ class BeamDetailingRequest(BaseModel):
 # =============================================================================
 
 
+class EvidenceEnvelopeResponse(BaseModel):
+    """Traceable identity metadata, not a professional approval certificate."""
+
+    artifact_schema: str
+    artifact_schema_version: str
+    library_version: str
+    code_edition: str
+    code_amendment_identity: str
+    capability_id: str
+    support_status: Literal["SUPPORTED", "HELD"]
+    unit_system: str
+    explicit_units: dict[str, str]
+    normalized_input_hash: str
+    calculation_identity: str
+    governing_check: str
+    exact_utilization: float | None
+    margin: float | None
+    status: Literal["PASS", "FAIL", "HOLD"]
+    generated_at: str
+    qualified_review_required: bool
+    qualified_review_requirement: str
+
+
 class FlexureResult(BaseModel):
     """Flexure design result."""
 
@@ -365,6 +388,9 @@ class BeamDesignResponse(BaseModel):
 
     # Warnings
     warnings: list[str] = Field(default_factory=list, description="Design warnings")
+    evidence: EvidenceEnvelopeResponse = Field(
+        description="Traceable calculation identity and supported-case boundary"
+    )
 
 
 class BeamCheckResponse(BaseModel):

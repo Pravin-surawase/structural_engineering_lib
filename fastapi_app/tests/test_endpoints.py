@@ -5,6 +5,7 @@ Tests all API endpoints using FastAPI TestClient.
 """
 
 from fastapi import status
+import pytest
 
 from fastapi_app.tests.conftest import unwrap
 
@@ -89,6 +90,137 @@ class TestDesignEndpoints:
         assert data["asc_total"] > 0
         assert 0 < data["utilization_ratio"] <= 1.0
         assert any("Doubly reinforced" in item for item in data["warnings"])
+
+    def test_design_and_report_share_beam_evidence_identity(self, client):
+        """The report carries the design route's normalized identity metadata."""
+        design_payload = {
+            "width": 300,
+            "depth": 500,
+            "moment": 120,
+            "shear": 80,
+            "fck": 25,
+            "fy": 500,
+            "clear_cover": 25,
+        }
+        design_response = client.post("/api/v1/design/beam", json=design_payload)
+        assert design_response.status_code == status.HTTP_200_OK
+        design = unwrap(design_response)
+        evidence = design["evidence"]
+
+        report_response = client.post(
+            "/api/v1/export/report",
+            json={
+                **design_payload,
+                "beam_id": "B1",
+                "ast_required": design["ast_total"],
+                "ast_provided": design["ast_total"],
+                "utilization": evidence["exact_utilization"],
+                "governing_check": evidence["governing_check"],
+                "is_safe": evidence["status"] == "PASS",
+                "format": "json",
+            },
+        )
+        assert report_response.status_code == status.HTTP_200_OK
+        report_evidence = report_response.json()["evidence"]
+
+        for field in (
+            "artifact_schema",
+            "artifact_schema_version",
+            "library_version",
+            "code_edition",
+            "code_amendment_identity",
+            "capability_id",
+            "unit_system",
+            "normalized_input_hash",
+            "calculation_identity",
+            "exact_utilization",
+            "margin",
+            "status",
+            "qualified_review_required",
+        ):
+            assert report_evidence[field] == evidence[field]
+        assert report_evidence["qualified_review_required"] is True
+
+    def test_unsafe_beam_evidence_is_explicitly_failed(self, client):
+        payload = {
+            "width": 230,
+            "depth": 450,
+            "moment": 600,
+            "shear": 186,
+            "fck": 25,
+            "fy": 500,
+            "clear_cover": 40,
+        }
+        response = client.post(
+            "/api/v1/design/beam",
+            json=payload,
+        )
+        assert response.status_code == status.HTTP_200_OK
+        evidence = unwrap(response)["evidence"]
+
+        assert evidence["support_status"] == "SUPPORTED"
+        assert evidence["status"] == "FAIL"
+        assert evidence["exact_utilization"] > 1.0
+        assert evidence["qualified_review_required"] is True
+
+        report_response = client.post(
+            "/api/v1/export/report",
+            json={
+                **payload,
+                "beam_id": "B-UNSAFE",
+                "ast_required": 1,
+                "ast_provided": 1,
+                "utilization": 2.0,
+                "exact_utilization": evidence["exact_utilization"],
+                "governing_check": evidence["governing_check"],
+                "is_safe": False,
+                "format": "json",
+            },
+        )
+        assert report_response.status_code == status.HTTP_200_OK
+        report_evidence = report_response.json()["evidence"]
+        assert (
+            report_evidence["normalized_input_hash"]
+            == evidence["normalized_input_hash"]
+        )
+        assert (
+            report_evidence["calculation_identity"] == evidence["calculation_identity"]
+        )
+        assert report_evidence["status"] == "FAIL"
+
+    def test_report_evidence_ignores_client_safety_claims(self, client):
+        payload = {
+            "width": 300,
+            "depth": 500,
+            "moment": 120,
+            "shear": 80,
+            "fck": 25,
+            "fy": 500,
+            "clear_cover": 25,
+        }
+        design = unwrap(client.post("/api/v1/design/beam", json=payload))
+        report = client.post(
+            "/api/v1/export/report",
+            json={
+                **payload,
+                "beam_id": "B-CLIENT-CLAIM",
+                "ast_required": design["ast_total"],
+                "ast_provided": design["ast_total"],
+                "utilization": 2.0,
+                "exact_utilization": 9.0,
+                "governing_check": "client_claim",
+                "is_safe": False,
+                "format": "json",
+            },
+        )
+
+        assert report.status_code == status.HTTP_200_OK
+        evidence = report.json()["evidence"]
+        assert evidence["status"] == "PASS"
+        assert evidence["exact_utilization"] == pytest.approx(
+            design["evidence"]["exact_utilization"]
+        )
+        assert evidence["governing_check"] == design["evidence"]["governing_check"]
 
     def test_design_beam_validation_error(self, client):
         """Test validation error for invalid request."""
@@ -364,8 +496,17 @@ class TestImportEndpoints:
             "beams",
             "format_detected",
             "warnings",
+            "dataset",
         }
         assert set(data.keys()) == expected_keys
+        assert data["dataset"] == {
+            "dataset_id": "bundled-etabs-beam-sample",
+            "dataset_version": "etabs-csv-v1",
+            "dataset_sha256": "b95a056c411eeaf4c714713dcf7edfa402ceadb2efdcfd4382f454cc82c5f43e",
+            "hash_algorithm": "sha256-framed-files-v1",
+            "source_files": ["beam_forces.csv", "frames_geometry.csv"],
+            "beam_count": data["beam_count"],
+        }
 
     def test_sample_data_beam_has_3d(self, client):
         """Each sample beam must have point1/point2 for 3D visualization."""

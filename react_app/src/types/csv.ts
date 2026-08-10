@@ -57,6 +57,11 @@ export interface BeamCSVRow {
   stirrup_spacing?: number;
   is_valid?: boolean;
   remarks?: string[];
+
+  // Source identity for the bundled acceptance sample.
+  dataset_id?: string;
+  dataset_version?: string;
+  dataset_sha256?: string;
 }
 
 export interface ImportedBeamsState {

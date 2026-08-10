@@ -19,6 +19,7 @@ import { ConnectionStatus } from "../ui/ConnectionStatus";
 import { Viewport3D } from "../viewport/Viewport3D";
 import { WorkflowHint } from "../ui/WorkflowHint";
 import { ParetoPanel } from "./ParetoPanel";
+import { formatPercent, formatRatio, formatSignedRatio, getTrustPresentation } from "../../utils/trustPresentation";
 
 /** Collapsible accordion section */
 function AccordionSection({ title, children, defaultOpen = true }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
@@ -54,7 +55,7 @@ export function DesignView() {
     width: inputs.width,
     depth: inputs.depth,
     span_length: length,
-    clear_cover: 40,
+    clear_cover: inputs.clear_cover ?? 40,
     fck: inputs.fck,
     fy: inputs.fy,
     ast_required: 0, // filled below when result exists
@@ -69,6 +70,7 @@ export function DesignView() {
     autoDesign,
     enabled: true,
   });
+  const trust = state.result ? getTrustPresentation(state.result) : null;
 
   const codeChecks = useCodeChecks();
   const rebarSuggestions = useRebarSuggestions();
@@ -158,7 +160,7 @@ export function DesignView() {
             <InputField label="Width" value={inputs.width} onChange={(v) => actions.updateInputs({ width: v })} unit="mm" min={150} max={600} />
             <InputField label="Depth" value={inputs.depth} onChange={(v) => actions.updateInputs({ depth: v })} unit="mm" min={300} max={1200} />
             <InputField label="Span" value={spanMeters} onChange={(v) => actions.updateLength(v * 1000)} unit="m" min={1} max={15} step={0.5} />
-            <InputField label="Cover" value={40} onChange={() => {}} unit="mm" disabled />
+            <InputField label="Cover" value={inputs.clear_cover ?? 40} onChange={(v) => actions.updateInputs({ clear_cover: v })} unit="mm" min={20} max={75} />
           </AccordionSection>
 
           <AccordionSection title="Materials">
@@ -286,10 +288,12 @@ export function DesignView() {
             title={state.result ? "Review Results" : "Enter Beam Dimensions"}
             description={
               state.result
-                ? "Check the design results above. Adjust inputs if needed, or export BBS/DXF."
+                ? trust?.canExport
+                  ? "Check the exact governing result and evidence identity before exporting."
+                  : "Export and detailing are held until the outer result is PASS."
                 : "Fill in dimensions, materials, and forces in the left panel, then click 'Design Beam'."
             }
-            nextAction={state.result ? "Export → BBS/DXF/Report" : "Design Beam"}
+            nextAction={state.result ? (trust?.canExport ? "Export → BBS/DXF/Report" : "Resolve FAIL/HOLD") : "Design Beam"}
             storageKey="workflow_hint_design_view"
           />
         </div>
@@ -298,8 +302,10 @@ export function DesignView() {
         {state.result && (
           <div className="absolute top-3 right-3 z-10">
             <button
-              onClick={() => setShowExportMenu(!showExportMenu)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900/80 backdrop-blur border border-white/10 text-xs text-white/60 hover:text-white/90 hover:border-white/20 transition-all"
+              onClick={() => trust?.canExport && setShowExportMenu(!showExportMenu)}
+              disabled={!trust?.canExport}
+              title={trust?.canExport ? "Export passing design" : "Exports held until the outer result is PASS"}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900/80 backdrop-blur border border-white/10 text-xs text-white/60 hover:text-white/90 hover:border-white/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <Download className="w-3.5 h-3.5" />
               Export
@@ -313,7 +319,7 @@ export function DesignView() {
                   { label: "HTML Report", icon: <FileText className="w-3.5 h-3.5" />, loading: reportPending, onClick: () => { exportReport({ ...exportParams, ast_required: state.result?.flexure?.ast_required, ast_provided: state.result?.ast_total, utilization: state.result?.utilization_ratio, is_safe: state.result?.success }); setShowExportMenu(false); } },
                   { label: "PDF Report", icon: <FileText className="w-3.5 h-3.5" />, loading: reportPending, onClick: () => { exportReport({ ...exportParams, ast_required: state.result?.flexure?.ast_required, ast_provided: state.result?.ast_total, utilization: state.result?.utilization_ratio, is_safe: state.result?.success, format: "pdf" }); setShowExportMenu(false); } },
                 ].map((item) => (
-                  <button key={item.label} onClick={item.onClick} disabled={item.loading}
+                  <button key={item.label} onClick={item.onClick} disabled={item.loading || !trust?.canExport}
                     className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-xs text-white/60 hover:bg-white/5 hover:text-white/90 transition-colors disabled:opacity-40">
                     {item.loading ? <div className="w-3.5 h-3.5 rounded-full border border-white/30 border-t-white/70 animate-spin" /> : item.icon}
                     {item.label}
@@ -399,19 +405,20 @@ export function DesignView() {
 /** Compact results display */
 /** Single-line summary bar shown when results panel is collapsed */
 function CompactResultsBar({ result }: { result: BeamDesignResponse }) {
-  const pct = Math.round((result.utilization_ratio ?? 0) * 100);
-  const isOk = result.success;
-  const barColor = pct > 100 ? "bg-rose-500" : pct > 90 ? "bg-amber-400" : "bg-emerald-400";
+  const trust = getTrustPresentation(result);
+  const pct = trust.exactUtilization * 100;
+  const isOk = trust.status === "PASS";
+  const barColor = trust.exactUtilization > 1 ? "bg-rose-500" : trust.exactUtilization > 0.9 ? "bg-amber-400" : "bg-emerald-400";
   return (
     <div className="flex items-center gap-3 flex-1 min-w-0">
       <span className={`text-xs font-semibold ${isOk ? "text-emerald-400" : "text-rose-400"}`}>
-        {isOk ? "✓ SAFE" : "✕ FAIL"}
+        {isOk ? "✓ PASS" : trust.status === "HOLD" ? "◼ HOLD" : "✕ FAIL"}
       </span>
       <div className="flex items-center gap-1.5 flex-1 min-w-0">
         <div className="w-20 h-1.5 bg-zinc-800 rounded-full overflow-hidden shrink-0">
           <div className={`h-full rounded-full ${barColor}`} style={{ width: `${Math.min(pct, 100)}%` }} />
         </div>
-        <span className="text-xs text-zinc-400 tabular-nums">{pct}%</span>
+        <span className="text-xs text-zinc-400 tabular-nums">{formatPercent(trust.exactUtilization)}</span>
       </div>
       {result.flexure?.ast_required && (
         <span className="text-xs text-zinc-400 tabular-nums shrink-0">
@@ -428,7 +435,8 @@ function CompactResultsBar({ result }: { result: BeamDesignResponse }) {
 }
 
 function CompactResults({ result }: { result: BeamDesignResponse }) {
-  const isSuccess = result.success;
+  const trust = getTrustPresentation(result);
+  const isSuccess = trust.status === "PASS";
   return (
     <div className="space-y-3">
       {/* Status */}
@@ -436,14 +444,22 @@ function CompactResults({ result }: { result: BeamDesignResponse }) {
         {isSuccess ? <CheckCircle className="w-5 h-5 text-green-400" /> : <AlertCircle className="w-5 h-5 text-red-400" />}
         <div>
           <p className={`font-semibold text-sm ${isSuccess ? "text-green-400" : "text-red-400"}`}>
-            {isSuccess ? "Design Safe" : "Requires Revision"}
+            {isSuccess ? "Design PASS" : trust.status === "HOLD" ? "Design HOLD" : "Requires Revision"}
           </p>
           <p className="text-[11px] text-white/50">{result.message || "IS 456:2000"}</p>
         </div>
         <div className="ml-auto text-right">
-          <p className="text-lg font-bold text-white">{(result.utilization_ratio * 100).toFixed(0)}%</p>
-          <p className="text-[10px] text-zinc-400">utilization</p>
+          <p className="text-lg font-bold text-white">{formatPercent(trust.exactUtilization)}</p>
+          <p className="text-[10px] text-zinc-400">ratio {formatRatio(trust.exactUtilization)}</p>
         </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2 text-[10px] text-zinc-400 font-mono">
+        <span>Governing: {trust.governingCheck}</span>
+        <span>Margin: {formatSignedRatio(trust.margin)}</span>
+        <span title={trust.calculationIdentity ?? "Evidence unavailable"}>
+          Calc: {trust.calculationIdentity?.slice(0, 12) ?? "unavailable"}
+        </span>
       </div>
 
       {/* Cards row */}

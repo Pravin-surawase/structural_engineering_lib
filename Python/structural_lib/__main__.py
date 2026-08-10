@@ -12,6 +12,7 @@ Usage:
     python -m structural_lib validate job.json
     python -m structural_lib report ./output/ --format=html
     python -m structural_lib critical ./output/ --top=10 --format=csv
+    python -m structural_lib capabilities --json
     python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
 
 This module provides a unified command-line interface with subcommands
@@ -1132,6 +1133,29 @@ def cmd_critical(args: argparse.Namespace) -> int:
         return 1
 
 
+def cmd_capabilities(args: argparse.Namespace) -> int:
+    """Print the canonical supported/held IS 456 capability contract."""
+    document = api.get_supported_is456_capability_document()
+    if args.as_json:
+        json.dump(document, sys.stdout, indent=2, sort_keys=True)
+        sys.stdout.write("\n")
+        return 0
+
+    print(f"Code edition: {document['code_edition']}")
+    print(f"Capability schema: {document['schema_version']}")
+    for capability in document["capabilities"]:
+        review = (
+            "qualified review required"
+            if capability["qualified_review_required"]
+            else "no qualified review flag"
+        )
+        print(f"- {capability['capability_id']}: {capability['supported_case']}")
+        for held_case in capability["held_cases"]:
+            print(f"  held: {held_case}")
+        print(f"  boundary: {review}")
+    return 0
+
+
 def _build_parser() -> argparse.ArgumentParser:
     """Build the main argument parser with subcommands."""
 
@@ -1144,6 +1168,22 @@ def _build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(
         dest="command", required=True, help="Available commands"
     )
+
+    capabilities_parser = subparsers.add_parser(
+        "capabilities",
+        help="Show the supported and held IS 456 capability contract",
+        description=(
+            "Show the canonical supported/held workflow, unit, limitation, and "
+            "qualified-review contract for this library version."
+        ),
+    )
+    capabilities_parser.add_argument(
+        "--json",
+        dest="as_json",
+        action="store_true",
+        help="Emit the canonical machine-readable JSON contract",
+    )
+    capabilities_parser.set_defaults(func=cmd_capabilities)
 
     # Design subcommand
     design_parser = subparsers.add_parser(

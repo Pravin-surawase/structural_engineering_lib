@@ -4,78 +4,79 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: post-v0.23.0 maintenance closed; dependency compatibility is next
+- Focus: ADOPT-001 Packets A-G are locally complete; owner decides publication workflow
 <!-- HANDOFF:END -->
 
-**Current release:** `v0.23.0` at `3f880d5b`
-**Maintenance baseline:** `22bc8a45`
+**Current release:** `v0.23.0` Alpha
+**Branch:** `codex/trust-surface-foundation`
+**Base:** `origin/main` at `44e85587`
 **Task board:** [TASKS.md](../TASKS.md)
-
-## Required Reading
-
-- [Current task board](../TASKS.md)
-- [IS 456 library-first master plan](is456-library-first-master-plan.md)
-- [Release evidence crosswalk](../verification/is456-library-first-evidence.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | v0.23.0 Alpha | Released; public artifact UAT and current-main Weekly Verification are green |
-| **Next** | DEPS-MAINT-001 | Triage the nine fresh dependency PRs; do not activate v0.24 product work |
+| **Current** | v0.23.0 Alpha | Released; this branch adds local adoption/trust improvements only |
+| **Next** | Owner review | Decide whether to push and open a draft PR |
+| **Held** | Stable/engineering use | Requires cumulative qualified structural-engineering review |
 
-## Closed outcome
+## Required Reading
 
-- Merged automation recovery PR #695 and GitHub Actions runtime PR #692.
-- Repaired the real Weekly Verification typing failure through PR #699 and the
-  final NumPy `<2.5` compatibility constraint in PR #700.
-- Exact current-main Weekly Verification run `31334828353` passed wheel/CLI,
-  locked audits, Docker health, Python, FastAPI, repository drift, and React.
-- Closed stale PR #548 and all 129 historical `Nightly QA failed` issues after
-  the current-main workflow passed; GitHub now has zero open issues.
-- Removed verified merged release/automation branches, their linked worktree,
-  and the superseded orphan `task/TASK-DOCSYNC` branch. Remote non-Dependabot
-  branches are now only `main` and `gh-pages`.
-- Moved 22 generated release/build artifacts (5.6 MB) out of the repository to
-  recoverable staging at `/private/tmp/structural-lib-maint-20260810.sLuHRf`.
-- Project health, audit readiness, and efficiency baselines were 100/100,
-  19/19, and PASS before this handoff.
+- [Adoption and trust surface plan](adoption-trust-surface-plan.md)
+- [Bundled sample BOQ evidence](../verification/bundled-sample-boq-evidence.md)
+- [Release policy](../getting-started/releases.md)
 
-## Retained release boundary
+## Completed outcome
 
-The v0.23.0 Alpha remains a case-qualified development preview, not a
-whole-standard or professional-approval claim. Retain the accumulated source,
-benchmark, unit, unsafe-case, limitation, and exact-artifact evidence for one
-cumulative qualified structural-engineering review before any stable or
-engineering-use approval.
+- Packet A made public Python/REST examples executable.
+- Packet B exposed one canonical capability inventory through Python, CLI, and REST.
+- Packet C typed all 63 HTTP operations without changing JSON envelopes.
+- Packet D made production-like startup fail closed when auth or its secret is unsafe.
+- Packet E added canonical beam calculation evidence to REST and report outputs.
+- Packet F added exact PASS/FAIL/HOLD presentation, export holds, REST/WebSocket
+  parity, and the dataset-bound bundled-sample BOQ record.
+- Packet G made documentation CI build-only until Pages is configured and
+  restricted future public releases to PEP 440 Alpha identifiers.
+- The full-suite report regression found during closeout was fixed without
+  refreshing legacy goldens: evidence-free HTML remains byte-identical.
+
+## Verification
+
+- Tests: 5,485 Python + 373 FastAPI + 152 React = 6,010 passed.
+- Repository controls: check 30/30, audit 19/19, health 100/100, efficiency PASS.
+- OpenAPI: 63 endpoints, 228 schemas, no breaking drift.
+- Browser happy path: bundled dataset, 153/153 PASS, 1,928.5 kg steel,
+  48.7 m³ concrete, exact dataset/calculation identities, exports enabled.
+- Browser negative path: ratio 6.494420, margin -5.494420, FAIL, export disabled.
+- Live public state: `v0.23.0` is a GitHub prerelease and current PyPI artifact;
+  GitHub Pages is not configured.
+
+## Owner-only holds
+
+- Provision and manage the real production JWT secret.
+- Decide whether to enable GitHub Pages and verify its resulting URL.
+- Authorize any push, pull request, merge, tag, TestPyPI/PyPI publication, or
+  GitHub Release action.
+- Retain cumulative qualified structural-engineering review before any stable
+  or engineering-use approval.
 
 ## Next action
 
-Run one dependency-maintenance parent task and keep ecosystems separate:
-
-1. Rebase and evaluate Python PRs #679 and #686-#688. Start with install/lock
-   consistency; do not merge #679 while Ruff pins disagree across surfaces.
-2. Evaluate React group PR #680 against individual major PRs #681-#684 and
-   retain one coherent upgrade route. #680 and #684 currently fail React CI.
-3. Use focused validation while iterating, then one quick gate and one full
-   final gate. Keep v0.24 and other product-roadmap work inactive.
-
-## GitHub state
-
-- Open issues: 0.
-- Open PRs: nine Dependabot PRs (#679-#684 and #686-#688).
-- Green but still compatibility-sensitive: #679, #681-#683, and #688.
-- Currently failing their relevant lane: #680, #684, #686, and #687.
+If the owner approves publication of this branch, inspect the final diff, push
+`codex/trust-surface-foundation`, open a draft PR, and wait for all required
+checks. Do not merge or publish without a separate explicit confirmation.
+Dependency maintenance remains a separate queued task.
 
 ## Terminal issues recorded
 
-- Finder Trash staging was denied by macOS privacy controls and
-  `/usr/bin/realpath` is absent. `.venv/bin/python` path resolution plus an
-  explicit `/private/tmp` recoverable staging directory worked.
-- The first exact Weekly dispatch was cancelled when `main` changed during the
-  Actions update. The next run exposed Mypy/NumPy stub incompatibility.
-- PR #699 correctly constrained Mypy but did not constrain the unpinned NumPy
-  install surface. CI logs proved NumPy 2.5.2 was the remaining root cause; PR
-  #700 fixed that boundary, and the exact current-main rerun passed.
-- A zsh unmatched-glob lookup for `Python/requirements*.txt` was replaced by
-  an `rg --files` lookup.
-- Newly merged squash commits required an explicit fetch before local tree-ID
-  comparison. Branch cleanup was performed only after equal trees were proven.
+- The stale `check_api_drift.py` handoff path was replaced by the maintained
+  `check_openapi_drift.py` command.
+- `check_links.py --fail-fast` is unsupported here; the default checker passed
+  all 1,069 internal links.
+- `mkdocs` was not on the shell PATH; `.venv/bin/python -m mkdocs` passed strict
+  builds.
+- The generic safe-YAML hook could not parse MkDocs' callable tag; `mkdocs.yml`
+  is now validated by strict PR/main workflow builds while ordinary YAML keeps
+  the safe loader.
+- `agent-browser` was not globally installed; the pinned `npx --yes
+  agent-browser` path completed the browser verification.
+- The first full suite exposed optional-evidence whitespace in report HTML; the
+  renderer boundary was fixed and all four goldens now pass unchanged.

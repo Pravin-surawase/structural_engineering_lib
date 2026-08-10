@@ -310,6 +310,54 @@ class TestProjectBOQ:
         assert data["grand_total_concrete_m3"] > 0
         assert data["grand_total_cost_inr"] > 0
         assert len(data["by_story"]) == 2
+        assert data["evidence"]["artifact_schema"] == (
+            "structural_lib.project-boq-evidence"
+        )
+        assert data["evidence"]["library_version"] == "0.23.0"
+        assert data["evidence"]["qualified_review_required"] is True
+
+    def test_project_boq_identity_binds_dataset_and_normalized_inputs(self, client):
+        beams = [
+            {
+                "beam_id": "B1",
+                "story": "GF",
+                "b_mm": 230.0,
+                "D_mm": 450.0,
+                "span_mm": 2750.0,
+                "fck": 25,
+                "steel_weight_kg": 25.0,
+            },
+            {
+                "beam_id": "B2",
+                "story": "GF",
+                "b_mm": 230.0,
+                "D_mm": 450.0,
+                "span_mm": 5180.0,
+                "fck": 25,
+                "steel_weight_kg": 40.0,
+            },
+        ]
+        dataset = {
+            "dataset_id": "bundled-etabs-beam-sample",
+            "dataset_version": "etabs-csv-v1",
+            "dataset_sha256": "b95a056c411eeaf4c714713dcf7edfa402ceadb2efdcfd4382f454cc82c5f43e",
+        }
+        first = unwrap(
+            client.post(
+                "/api/v1/insights/project-boq",
+                json={"beams": beams, "dataset": dataset},
+            )
+        )["evidence"]
+        reordered = unwrap(
+            client.post(
+                "/api/v1/insights/project-boq",
+                json={"beams": list(reversed(beams)), "dataset": dataset},
+            )
+        )["evidence"]
+
+        assert first["dataset_sha256"] == dataset["dataset_sha256"]
+        assert first["normalized_input_hash"] == reordered["normalized_input_hash"]
+        assert first["calculation_identity"] == reordered["calculation_identity"]
 
     def test_project_boq_custom_costs(self, client):
         """BOQ with custom concrete costs."""

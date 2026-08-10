@@ -14,12 +14,13 @@ from fastapi_app.error_utils import (
     sanitize_error_string,
     sanitize_float,
 )
-from fastapi_app.models.response import error_response, success_response
+from fastapi_app.models.response import APIResponse, error_response, success_response
 from fastapi_app.models.beam import (
     BeamDesignRequest,
     BeamDesignResponse,
     BeamCheckRequest,
     BeamCheckResponse,
+    EvidenceEnvelopeResponse,
     EnhancedShearRequest,
     EnhancedShearResponse,
     FlexureResult,
@@ -40,6 +41,7 @@ from fastapi_app.models.compliance import (
     ComplianceReportResponse,
     ComplianceCaseOutput,
 )
+from fastapi_app.models.metadata import DesignLimitsResponse
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +63,7 @@ router = APIRouter(
 
 @router.post(
     "/beam",
+    response_model=APIResponse[BeamDesignResponse],
     summary="Design Beam Section",
     description="Calculate required reinforcement for a beam section under given loading.",
 )
@@ -78,6 +81,7 @@ async def design_beam(request: BeamDesignRequest):
     """
     try:
         from structural_lib.services.api import design_beam_is456
+        from structural_lib.services.evidence import build_beam_evidence_envelope
 
         # Calculate effective depth if not provided
         effective_depth = request.effective_depth
@@ -140,6 +144,26 @@ async def design_beam(request: BeamDesignRequest):
         # doubly reinforced design is 1.0 rather than Mu/Mu_lim > 1.0 because
         # Mu_lim is only the singly reinforced limit, not the final capacity.
         utilization = result.governing_utilization
+        evidence = build_beam_evidence_envelope(
+            inputs={
+                "units": "IS456",
+                "case_id": "CASE-1",
+                "mu_knm": request.moment,
+                "vu_kn": request.shear if request.shear > 0 else 0.0,
+                "b_mm": request.width,
+                "D_mm": request.depth,
+                "d_mm": effective_depth,
+                "fck_nmm2": request.fck,
+                "fy_nmm2": request.fy,
+                "d_dash_mm": request.clear_cover
+                + request.stirrup_dia_mm
+                + request.main_bar_dia_mm / 2,
+                "asv_mm2": 100.0,
+            },
+            is_ok=result.is_ok,
+            governing_utilization=utilization,
+            utilizations=result.utilizations,
+        )
 
         # Collect warnings
         warnings = []
@@ -166,6 +190,7 @@ async def design_beam(request: BeamDesignRequest):
                 utilization_ratio=min(utilization, 2.0),
                 effective_depth_used=effective_depth,
                 warnings=warnings,
+                evidence=EvidenceEnvelopeResponse.model_validate(evidence),
             )
         )
 
@@ -190,6 +215,7 @@ async def design_beam(request: BeamDesignRequest):
 
 @router.post(
     "/beam/check",
+    response_model=APIResponse[BeamCheckResponse],
     summary="Check Beam Adequacy",
     description="Check if a beam with given reinforcement is adequate for the applied loads.",
 )
@@ -302,6 +328,7 @@ async def check_beam(request: BeamCheckRequest):
 
 @router.get(
     "/limits",
+    response_model=APIResponse[DesignLimitsResponse],
     summary="Get Design Limits",
     description="Get IS 456 design limits and constraints.",
 )
@@ -362,6 +389,7 @@ async def get_design_limits():
 
 @router.post(
     "/beam/torsion",
+    response_model=APIResponse[TorsionDesignResponse],
     summary="Design Beam for Torsion",
     description="Design a beam for combined torsion, shear, and bending per IS 456 Cl 41.",
 )
@@ -462,6 +490,7 @@ async def design_beam_torsion(
 
 @router.post(
     "/beam/enhanced-shear",
+    response_model=APIResponse[EnhancedShearResponse],
     summary="Enhanced Shear Strength Near Supports",
     description=(
         "Calculate enhanced design shear strength τc' for sections close to supports "
@@ -542,6 +571,7 @@ async def enhanced_shear(
 
 @router.post(
     "/beam/ductility-check",
+    response_model=APIResponse[DuctilityCheckResponse],
     summary="Beam Ductility Check (IS 13920)",
     description=(
         "Run IS 13920 beam ductility checks for a single section. "
@@ -609,6 +639,7 @@ async def check_ductility(
 
 @router.post(
     "/beam/slenderness-check",
+    response_model=APIResponse[SlendernessCheckResponse],
     summary="Beam Slenderness Check (IS 456 Cl 23.3)",
     description=(
         "Check beam slenderness for lateral stability per IS 456:2000 Cl 23.3. "
@@ -675,6 +706,7 @@ async def check_slenderness(
 
 @router.post(
     "/beam/deflection-check",
+    response_model=APIResponse[DeflectionCheckResponse],
     summary="Deflection Span/Depth Check (IS 456 Cl 23.2)",
     description=(
         "Check deflection using span/depth ratio (Level A) per IS 456:2000 Cl 23.2. "
@@ -739,6 +771,7 @@ async def check_deflection(
 
 @router.post(
     "/beam/crack-width-check",
+    response_model=APIResponse[CrackWidthCheckResponse],
     summary="Crack Width Check (IS 456 Annex F)",
     description=(
         "Check crack width using an Annex-F-style estimate per IS 456:2000. "
@@ -805,6 +838,7 @@ async def check_crack_width_endpoint(
 
 @router.post(
     "/beam/compliance",
+    response_model=APIResponse[ComplianceReportResponse],
     summary="Multi-case Compliance Report",
     description=(
         "Run a multi-case IS 456 compliance report. "
