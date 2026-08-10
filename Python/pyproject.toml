@@ -45,7 +45,7 @@ dev = [
   "mypy>=1.19,<2",
   "numpy>=2.0,<2.5",
   "pre-commit",
-  "ruff==0.15.8",
+  "ruff==0.16.1",
   "bandit",
   "hypothesis>=6.0",
 ]
@@ -54,7 +54,7 @@ render = ["ezdxf>=1.0", "matplotlib>=3.5"]  # DXF render to PNG/PDF
 report = ["jinja2>=3.1"]  # Optional HTML templating for reports
 pdf = ["reportlab>=4.0", "weasyprint>=62.0"]  # PDF report generation
 validation = ["jsonschema>=4.21"]  # Optional input/output schema validation
-cad = ["pyvista>=0.43", "stpyvista>=0.1.4"]  # CAD-quality 3D export (STL, screenshots)
+cad = ["pyvista>=0.43"]  # CAD-quality 3D export (STL, screenshots)
 docs = [
     "mkdocs-material>=9.5",
     "mkdocstrings[python]>=0.25",
