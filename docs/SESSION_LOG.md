@@ -5,6 +5,53 @@
 
 ---
 
+## 2026-08-10 — Session: FOOT-ISO-RC-V1 Phase A
+
+**Agent:** Codex
+**Branch:** `codex/footing-isolated-v1`
+**Focus:** Correct isolated-footing depth validation and directional one-way-shear inputs
+
+### Summary
+
+- Corrected the footing input boundary so the IS 456 edge-thickness minimum is
+  checked against overall thickness, not effective depth.
+- Added directional reinforcement percentages to one-way shear while retaining
+  the legacy scalar input as a backward-compatible fallback.
+- Preserved the existing footing public functions and verified the focused
+  footing, core/public-contract, and FastAPI capability baselines.
+
+### Issues encountered
+
+- The shared footing validator applied the 150 mm edge-thickness rule to
+  `d_mm`, rejecting structurally representable cases whose overall thickness
+  satisfied the rule but whose effective depth was below 150 mm.
+- One-way shear used the same reinforcement percentage for both orthogonal
+  directions, so directional Table 19 shear capacities could not be represented.
+- Negative reinforcement percentages passed finite-value validation and could
+  reach the Table 19 lower-bound interpolation behavior instead of failing
+  closed.
+- The first commit attempt stopped at Ruff C408 because one new test fixture
+  used `dict(...)` where the repository requires a literal.
+
+### Root causes and resolutions
+
+- Overall thickness and effective depth were conflated in the shared validator.
+  The validator now accepts an explicit optional `overall_thickness_mm`, applies
+  the 150 mm rule only to that quantity, and flexure supplies it while preserving
+  the separate `0 < d < overall thickness` check.
+- The one-way-shear API had only the legacy scalar `pt` input. It now accepts
+  keyword-only `pt_L_percent` and `pt_B_percent`, uses them directionally, and
+  falls back to `pt` when either directional value is omitted.
+- Directional and legacy reinforcement percentages are now rejected when
+  negative before the IS 456 Table 19 lookup.
+- The test fixture was rewritten as a dictionary literal; the commit hooks were
+  rerun without bypassing validation.
+- Evidence: the 182-case footing/core/public-contract matrix passed, the
+  12-test FastAPI library-core/capability baseline passed, the 4-case footing
+  contract selection passed, and `git diff --check` passed.
+
+---
+
 ## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
 
 **Agent:** Codex
