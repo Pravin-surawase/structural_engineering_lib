@@ -38,8 +38,15 @@ from . import (
     types,
 )
 
-# Import EndCondition enum (needed for calculate_effective_length_is456)
-from .core.data_types import EndCondition
+# Import column types used to construct and consume explicit reinforcement layouts.
+from .core.data_types import (
+    ColumnReinforcementBar,
+    ColumnReinforcementLayout,
+    EndCondition,
+    PMMInteractionPoint,
+    PMMInteractionSlice,
+    PMMInteractionSurface,
+)
 
 # Import geometry and frame types from core.models
 from .core.models import BeamGeometry, DesignDefaults, FrameType
@@ -81,6 +88,7 @@ from .services.api import (  # Audit & Verification; Input dataclasses; Calculat
     ParetoOptimizationResult,
     ProjectInfo,
     ResultSection,
+    Steel,
     TorsionResult,
     ValidationReport,
     VersionInfo,
@@ -118,6 +126,7 @@ from .services.api import (  # Audit & Verification; Input dataclasses; Calculat
     create_calculation_certificate,
     create_job_from_etabs,
     create_jobs_from_etabs_csv,
+    create_symmetric_column_layout_is456,
     design_and_detail_beam_is456,
     design_beam_is456,
     design_column_axial_is456,
@@ -131,6 +140,7 @@ from .services.api import (  # Audit & Verification; Input dataclasses; Calculat
     detail_beam_is456,
     detail_column_is456,
     enhanced_shear_strength_is456,
+    experimental_pmm_interaction_surface_is456,
     export_bbs,
     footing_flexure,
     footing_one_way_shear,
@@ -146,6 +156,7 @@ from .services.api import (  # Audit & Verification; Input dataclasses; Calculat
     optimize_beam_cost,
     optimize_pareto_front,
     pm_interaction_curve_is456,
+    pm_interaction_slice_for_layout_is456,
     show_versions,
     size_footing,
     smart_analyze_design,
@@ -333,6 +344,15 @@ __all__ = [
     "design_short_column_uniaxial_is456",
     "pm_interaction_curve_is456",
     "biaxial_bending_check_is456",
+    "create_symmetric_column_layout_is456",
+    "pm_interaction_slice_for_layout_is456",
+    "experimental_pmm_interaction_surface_is456",
+    "ColumnReinforcementBar",
+    "ColumnReinforcementLayout",
+    "Steel",
+    "PMMInteractionPoint",
+    "PMMInteractionSlice",
+    "PMMInteractionSurface",
     "check_helical_reinforcement_is456",
     "detail_column_is456",
     "EndCondition",

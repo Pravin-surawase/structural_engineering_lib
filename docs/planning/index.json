@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-10",
-  "file_count": 15,
+  "file_count": 16,
   "files": [
     {
       "name": "README.md",
@@ -21,6 +21,14 @@
       "last_updated": "2026-08-10",
       "description": "Make the released Alpha straightforward to evaluate from four perspectives: - a user can copy every public quick start and receive the documented result;",
       "content_hash": "ce4b11ed46d5"
+    },
+    {
+      "name": "column-generalized-reinforcement-pmm-plan.md",
+      "type": "documentation",
+      "size_lines": 84,
+      "last_updated": "2026-08-10",
+      "description": "Implement a library-only rectangular section-analysis capability on a dedicated branch. Preserve the existing symmetric Cl. 39.5 P-M API as a compatibility",
+      "content_hash": "62b278ef4611"
     },
     {
       "name": "compact-modernization-plan.md",
@@ -133,5 +141,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "923de532575a35d7"
+  "content_hash": "01c39a0a0a6e684c"
 }

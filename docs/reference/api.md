@@ -22,10 +22,12 @@ tags: []
 **Scope:** Contract-tested calculation and checking APIs with route-specific
 geometry, loading, reinforcement, and evidence boundaries. The primary combined
 beam route covers rectangular flexure and shear (plus optional serviceability),
-while torsion and other specialist beam cases remain separate utilities. Column
-interaction workflows are limited to rectangular/square sections with symmetric
-two-face reinforcement idealization. These APIs are design aids for qualified
-review, not professional approval or complete IS 456 coverage.
+while torsion and other specialist beam cases remain separate utilities. The
+supported column interaction workflows remain limited to rectangular/square
+sections with symmetric two-face reinforcement. A separate experimental
+strain-compatibility surface accepts explicit bar coordinates but is not a
+production design check. These APIs are design aids for qualified review, not
+professional approval or complete IS 456 coverage.
 
 ---
 
@@ -3213,12 +3215,14 @@ api.beam_to_3d_geometry(detailing, is_seismic=False)
 
 ## 16. Column Design Module
 
-These are bounded calculation/checking utilities. Interaction functions assume
-rectangular/square compression members with symmetric equal reinforcement on
-two faces and a two-layer centroid idealization. The direct biaxial route is for
-short columns and fails closed if either axis is slender; use the long-column
-workflow with an explicit unsupported length in that case. Circular/helical
-support is not complete circular-column design.
+These are bounded calculation/checking utilities. Supported interaction
+functions assume rectangular/square compression members with symmetric equal
+reinforcement on two faces and a two-layer centroid idealization. The direct
+biaxial route is for short columns and fails closed if either axis is slender;
+use the long-column workflow with an explicit unsupported length in that case.
+The explicit-bar P-M-M functions below are marked experimental and do not
+replace that route. Circular/helical support is not complete circular-column
+design.
 
 ### `classify_column_is456(le_mm, D_mm) → str`
 
@@ -3343,6 +3347,77 @@ print(f"Points: {len(curve['points'])}, Pu_max: {curve['Pu_max_kN']:.1f} kN")
 ```
 
 **FastAPI Endpoint:** `POST /api/v1/design/column/interaction-curve`
+
+---
+
+### Experimental explicit-bar P-M-M analysis
+
+The experimental section solver represents each longitudinal bar with
+`api.ColumnReinforcementBar(x_mm, y_mm, area_mm2, material)`. Coordinates are
+measured from the gross-section centroid: `+x` points toward the right face and
+`+y` toward the top face. `api.ColumnReinforcementLayout` retains every bar,
+including intermediate and multilayer bars.
+
+`api.create_symmetric_column_layout_is456(...)` adapts the legacy total-area
+input into four equal corner bars while preserving `Asc_mm2 / 2` on each
+opposing y face. It does not alter `api.pm_interaction_curve_is456` or
+`api.biaxial_bending_check_is456`.
+
+```python
+from structural_lib import api
+
+# Compatibility adapter for the existing symmetric input contract.
+symmetric = api.create_symmetric_column_layout_is456(
+    b_mm=300.0,
+    D_mm=500.0,
+    Asc_mm2=3000.0,
+    d_prime_mm=75.0,
+    fy_nmm2=415.0,
+)
+
+# Arbitrary layout with an intermediate bar retained explicitly.
+steel = api.Steel(fy=415.0, steel_type="Fe415")
+layout = api.ColumnReinforcementLayout(
+    bars=(
+        api.ColumnReinforcementBar(-80.0, 180.0, 900.0, steel),
+        api.ColumnReinforcementBar(80.0, 180.0, 900.0, steel),
+        api.ColumnReinforcementBar(0.0, 100.0, 700.0, steel),
+        api.ColumnReinforcementBar(0.0, -180.0, 500.0, steel),
+    ),
+    layout_id="EDGE-COLUMN-A",
+)
+```
+
+#### `create_symmetric_column_layout_is456(b_mm, D_mm, Asc_mm2, d_prime_mm, fy_nmm2, *, steel_grade=None, layout_id="SYMMETRIC-TWO-FACE") → ColumnReinforcementLayout`
+
+Returns the explicit four-bar compatibility layout. All dimensions and areas
+are in mm and mm²; steel strengths are in N/mm².
+
+#### `pm_interaction_slice_for_layout_is456(b_mm, D_mm, fck_nmm2, reinforcement, *, theta_deg=0, n_fibers_x=24, n_fibers_y=32, n_depths=64) → PMMInteractionSlice`
+
+`api.pm_interaction_slice_for_layout_is456` generates one experimental
+strain-compatibility slice. `theta_deg=0` varies strain along y and returns the
+Mx slice; `theta_deg=90` varies strain along x and returns the My slice. The
+`api.PMMInteractionSlice` result contains discrete
+`api.PMMInteractionPoint` values with `Pu_kN`, `Mx_kNm`, `My_kNm`, neutral-axis
+depth, and strain extrema.
+
+#### `experimental_pmm_interaction_surface_is456(b_mm, D_mm, fck_nmm2, reinforcement, *, n_angles=24, n_fibers_x=24, n_fibers_y=32, n_depths=64) → PMMInteractionSurface`
+
+`api.experimental_pmm_interaction_surface_is456` samples the neutral-axis
+orientation through 360 degrees and returns a JSON-ready
+`api.PMMInteractionSurface`. The result has `experimental=True`, explicit
+warnings, per-angle slices, and the empirical Cl. 39.3 nominal axial point.
+
+**Boundary:** rectangular short-column sections only. Slenderness, confinement,
+second-order effects, circular sections, and detailing are excluded. Retain
+`api.biaxial_bending_check_is456` as the supported Cl. 39.6 production check.
+The fiber surface has been regression-compared with the current uniaxial solver
+but still requires independent benchmark review before any supported status.
+There is intentionally no FastAPI or React exposure in this phase.
+
+**Reference:** IS 456 Cl. 38.1, 39.3, and 39.5; existing SP:16-backed uniaxial
+solver used as a regression comparator.
 
 ---
 

@@ -21,6 +21,7 @@ from structural_lib.codes.is456.column import (
     detailing,  # noqa: E402
     helical,  # noqa: E402
     long_column,  # noqa: E402
+    pmm,  # noqa: E402
     slenderness,  # noqa: E402
     uniaxial,  # noqa: E402
 )
@@ -28,6 +29,11 @@ from structural_lib.codes.is456.column.biaxial import biaxial_bending_check
 from structural_lib.codes.is456.column.detailing import create_column_detailing
 from structural_lib.codes.is456.column.helical import check_helical_reinforcement
 from structural_lib.codes.is456.column.long_column import design_long_column
+from structural_lib.codes.is456.column.pmm import (
+    create_symmetric_two_face_layout,
+    experimental_pmm_interaction_surface,
+    pm_interaction_slice_for_layout,
+)
 from structural_lib.codes.is456.column.slenderness import calculate_additional_moment
 from structural_lib.codes.is456.column.uniaxial import (
     design_short_column_uniaxial,
@@ -41,12 +47,16 @@ __all__ = [
     "calculate_additional_moment",
     "check_helical_reinforcement",
     "create_column_detailing",
+    "create_symmetric_two_face_layout",
     "design_long_column",
     "design_short_column_uniaxial",
     "detailing",
     "helical",
     "long_column",
     "pm_interaction_curve",
+    "pm_interaction_slice_for_layout",
+    "pmm",
+    "experimental_pmm_interaction_surface",
     "slenderness",
     "uniaxial",
 ]

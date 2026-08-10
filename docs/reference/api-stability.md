@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-04-04
+last_updated: 2026-08-10
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-04-04
+**Last Updated:** 2026-08-10
 
 ---
 
@@ -522,6 +522,31 @@ The application workflow catalogue is likewise a development-preview discovery
 surface. Its version/compatibility rules are explicit, but its records may change
 before v1.0; consumers must reject unknown major versions rather than silently
 ignoring them.
+
+---
+
+### Generalized Column P-M-M API (Experimental)
+
+These symbols support explicit longitudinal-bar coordinates and discrete
+strain-compatibility surface development. Their signatures, sampling behavior,
+and result schemas may change before independent benchmarking is complete.
+They do not replace the stable symmetric P-M or Bresler Cl. 39.6 checks.
+
+```python
+from structural_lib import api
+
+api.Steel(fy=415.0, steel_type="Fe415")
+api.ColumnReinforcementBar(x_mm, y_mm, area_mm2, material)
+api.ColumnReinforcementLayout(bars, layout_id="COLUMN-LAYOUT")
+api.create_symmetric_column_layout_is456(...)
+api.pm_interaction_slice_for_layout_is456(...)
+api.experimental_pmm_interaction_surface_is456(...)
+
+# Experimental result types
+api.PMMInteractionPoint
+api.PMMInteractionSlice
+api.PMMInteractionSurface
+```
 
 ---
 

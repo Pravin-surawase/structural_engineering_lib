@@ -1678,7 +1678,7 @@
     {
       "name": "check_function_quality.py",
       "type": "python",
-      "size_lines": 670,
+      "size_lines": 673,
       "last_updated": "2026-08-10",
       "description": "12-point quality checklist for IS 456 functions.",
       "classes": [
@@ -1759,7 +1759,7 @@
         "UNIT_SUFFIXES",
         "ADVISORY_CHECKS"
       ],
-      "content_hash": "4971f9bf9372"
+      "content_hash": "d7fdf6eda999"
     },
     {
       "name": "check_governance.py",
@@ -3092,10 +3092,10 @@
     {
       "name": "generate_all_indexes.sh",
       "type": "shell-script",
-      "size_lines": 51,
-      "last_updated": "2026-03-26",
+      "size_lines": 52,
+      "last_updated": "2026-08-10",
       "description": "Generate index.json + index.md for all research-relevant folders",
-      "content_hash": "32dbf76b936d"
+      "content_hash": "fc7185d095b8"
     },
     {
       "name": "generate_api_manifest.py",
@@ -3266,7 +3266,7 @@
     {
       "name": "generate_enhanced_index.py",
       "type": "python",
-      "size_lines": 827,
+      "size_lines": 856,
       "last_updated": "2026-08-10",
       "description": "Generate enhanced index.json + index.md for ANY folder type.",
       "functions": [
@@ -3344,7 +3344,7 @@
         "SKIP_DIRS",
         "KEY_FOLDERS"
       ],
-      "content_hash": "102cdd8402b4"
+      "content_hash": "fc081b073d80"
     },
     {
       "name": "generate_error_docs.py",
@@ -5343,5 +5343,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "786eb026437f4245"
+  "content_hash": "7cff41f5dee783b0"
 }

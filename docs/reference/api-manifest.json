@@ -2,7 +2,7 @@
   "generated": "2026-08-10",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 122,
+  "count": 131,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -58,6 +58,16 @@
       "name": "CheckCodeReport",
       "kind": "class",
       "signature": "(code_id: 'str', all_importable: 'bool', all_decorated: 'bool', all_frozen: 'bool', all_results_valid: 'bool', all_params_named: 'bool', no_boundary_violations: 'bool', issues: 'tuple[str, ...]' = ()) -> None"
+    },
+    {
+      "name": "ColumnReinforcementBar",
+      "kind": "class",
+      "signature": "(x_mm: 'float', y_mm: 'float', area_mm2: 'float', material: 'Steel') -> None"
+    },
+    {
+      "name": "ColumnReinforcementLayout",
+      "kind": "class",
+      "signature": "(bars: 'tuple[ColumnReinforcementBar, ...]', layout_id: 'str' = 'COLUMN-LAYOUT') -> None"
     },
     {
       "name": "CostProfile",
@@ -165,6 +175,21 @@
       "signature": "(flexure: 'OneWaySlabFlexureResult', detailing: 'OneWaySlabDetailingResult') -> None"
     },
     {
+      "name": "PMMInteractionPoint",
+      "kind": "class",
+      "signature": "(theta_deg: 'float', neutral_axis_depth_mm: 'float | None', Pu_kN: 'float', Mx_kNm: 'float', My_kNm: 'float', max_concrete_strain: 'float', min_steel_strain: 'float', max_steel_strain: 'float') -> None"
+    },
+    {
+      "name": "PMMInteractionSlice",
+      "kind": "class",
+      "signature": "(theta_deg: 'float', points: 'tuple[PMMInteractionPoint, ...]') -> None"
+    },
+    {
+      "name": "PMMInteractionSurface",
+      "kind": "class",
+      "signature": "(b_mm: 'float', D_mm: 'float', fck_nmm2: 'float', reinforcement: 'ColumnReinforcementLayout', slices: 'tuple[PMMInteractionSlice, ...]', nominal_axial_point: 'PMMInteractionPoint', n_fibers_x: 'int', n_fibers_y: 'int', n_depths: 'int', method: 'str' = 'IS456_STRAIN_COMPATIBILITY_FIBER_V1', clause_refs: 'tuple[str, ...]' = ('Cl. 38.1', 'Cl. 39.3', 'Cl. 39.5'), experimental: 'bool' = True, warnings: 'tuple[str, ...]' = ()) -> None"
+    },
+    {
       "name": "ParetoCandidate",
       "kind": "class",
       "signature": "(b_mm: 'int', D_mm: 'int', d_mm: 'int', fck_nmm2: 'int', fy_nmm2: 'int', ast_required: 'float', ast_provided: 'float', bar_config: 'str', cost: 'float', steel_weight_kg: 'float', utilization: 'float', is_safe: 'bool', governing_clauses: 'list[str]' = <factory>, rank: 'int' = 0, crowding_distance: 'float' = 0.0) -> None"
@@ -198,6 +223,11 @@
       "name": "ResultSection",
       "kind": "class",
       "signature": "(flexure: 'dict[str, Any]' = <factory>, shear: 'dict[str, Any]' = <factory>, serviceability: 'dict[str, Any]' = <factory>, detailing: 'dict[str, Any]' = <factory>, summary: 'dict[str, Any]' = <factory>) -> None"
+    },
+    {
+      "name": "Steel",
+      "kind": "class",
+      "signature": "(fy: 'float', Es: 'float' = 200000.0, steel_type: 'str' = 'Fe500') -> None"
     },
     {
       "name": "StirrupLoop",
@@ -420,6 +450,11 @@
       "signature": "(csv_path: 'str | Path', geometry: 'dict[str, dict[str, float]]', *, output_dir: 'str | Path | None' = None, default_fck: 'float' = 25.0, default_fy: 'float' = 500.0, station_multiplier: 'float' = 1.0) -> 'list[dict[str, Any]]'"
     },
     {
+      "name": "create_symmetric_column_layout_is456",
+      "kind": "function",
+      "signature": "(b_mm: 'float', D_mm: 'float', Asc_mm2: 'float', d_prime_mm: 'float', fy_nmm2: 'float', *, steel_grade: 'str | None' = None, layout_id: 'str' = 'SYMMETRIC-TWO-FACE') -> 'ColumnReinforcementLayout'"
+    },
+    {
       "name": "design_and_detail_beam_is456",
       "kind": "function",
       "signature": "(*, units: 'str', beam_id: 'str', story: 'str', span_mm: 'float', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float | None' = None, cover_mm: 'float' = 40.0, fck_nmm2: 'float' = 25.0, fy_nmm2: 'float' = 500.0, d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_support_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, is_seismic: 'bool' = False) -> 'DesignAndDetailResult'"
@@ -483,6 +518,11 @@
       "name": "enhanced_shear_strength_is456",
       "kind": "function",
       "signature": "(fck_nmm2: 'float', pt_percent: 'float', d_mm: 'float', av_mm: 'float') -> 'float'"
+    },
+    {
+      "name": "experimental_pmm_interaction_surface_is456",
+      "kind": "function",
+      "signature": "(b_mm: 'float', D_mm: 'float', fck_nmm2: 'float', reinforcement: 'ColumnReinforcementLayout', *, n_angles: 'int' = 24, n_fibers_x: 'int' = 24, n_fibers_y: 'int' = 32, n_depths: 'int' = 64) -> 'PMMInteractionSurface'"
     },
     {
       "name": "export_bbs",
@@ -568,6 +608,11 @@
       "name": "pm_interaction_curve_is456",
       "kind": "function",
       "signature": "(b_mm: 'float', D_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, n_points: 'int' = 50, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'PMInteractionResult'"
+    },
+    {
+      "name": "pm_interaction_slice_for_layout_is456",
+      "kind": "function",
+      "signature": "(b_mm: 'float', D_mm: 'float', fck_nmm2: 'float', reinforcement: 'ColumnReinforcementLayout', *, theta_deg: 'float' = 0.0, n_fibers_x: 'int' = 24, n_fibers_y: 'int' = 32, n_depths: 'int' = 64) -> 'PMMInteractionSlice'"
     },
     {
       "name": "serialize_workflow_catalog",

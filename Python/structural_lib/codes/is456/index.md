@@ -53,7 +53,7 @@
 | Folder | Files | Description |
 |--------|-------|-------------|
 | [beam/](beam/) 📦 | 6 |  |
-| [column/](column/) 📦 | 11 |  |
+| [column/](column/) 📦 | 12 |  |
 | [common/](common/) 📦 | 5 |  |
 | [footing/](footing/) 📦 | 9 |  |
 | [slab/](slab/) 📦 | 8 |  |

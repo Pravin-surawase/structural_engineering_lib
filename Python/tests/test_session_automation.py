@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib
 import json
+import os
 import subprocess
 import sys
 from datetime import date
@@ -323,6 +324,28 @@ def test_generated_index_hash_tracks_subfolder_projection(
     assert initial["subfolders"][0]["file_count"] == 1
     assert updated["subfolders"][0]["file_count"] == 2
     assert initial["content_hash"] != updated["content_hash"]
+
+
+def test_generated_index_preserves_dates_when_only_checkout_mtime_changes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    generator = importlib.import_module("scripts.generate_enhanced_index")
+    folder = tmp_path / "package"
+    folder.mkdir()
+    source = folder / "module.py"
+    source.write_text("VALUE = 1\n", encoding="utf-8")
+    old_timestamp = 1_577_836_800.0  # 2020-01-01 UTC
+    os.utime(source, (old_timestamp, old_timestamp))
+    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
+
+    initial = generator.scan_folder_enhanced(folder)
+    generator.generate_json(initial, folder)
+    source.touch()
+    refreshed = generator.scan_folder_enhanced(folder)
+
+    assert refreshed["files"][0]["last_updated"] == "2020-01-01"
+    assert refreshed["last_updated"] == initial["last_updated"]
+    assert refreshed["content_hash"] == initial["content_hash"]
 
 
 def test_session_end_preserves_current_same_day_handoff(

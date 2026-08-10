@@ -388,7 +388,7 @@
     {
       "name": "column",
       "path": "column/",
-      "file_count": 11,
+      "file_count": 12,
       "is_package": true
     },
     {
@@ -432,5 +432,5 @@
     "list_clauses_by_category",
     "search_clauses"
   ],
-  "content_hash": "c43647f7ac0dc25a"
+  "content_hash": "b8dc5e52b1eff33a"
 }

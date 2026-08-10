@@ -396,6 +396,21 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
     """Scan folder and generate enhanced index data."""
     folder_rel = str(folder_path.relative_to(PROJECT_ROOT))
 
+    existing_index: dict[str, Any] = {}
+    existing_index_path = folder_path / "index.json"
+    if existing_index_path.exists():
+        try:
+            loaded_index = json.loads(existing_index_path.read_text(encoding="utf-8"))
+            if isinstance(loaded_index, dict):
+                existing_index = loaded_index
+        except (json.JSONDecodeError, OSError):
+            pass
+    existing_files = {
+        item.get("name"): item
+        for item in existing_index.get("files", [])
+        if isinstance(item, dict) and isinstance(item.get("name"), str)
+    }
+
     # Categorize files
     all_files = sorted(
         f
@@ -461,6 +476,16 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
                 file_bytes = f.read_bytes()
                 file_hash = hashlib.sha256(file_bytes).hexdigest()[:12]
                 file_info["content_hash"] = file_hash
+                previous = existing_files.get(f.name)
+                if (
+                    previous
+                    and previous.get("content_hash") == file_hash
+                    and isinstance(previous.get("last_updated"), str)
+                ):
+                    # A fresh checkout changes filesystem mtimes without
+                    # changing source. Preserve the content-backed date so
+                    # index generation does not rewrite unrelated entries.
+                    file_info["last_updated"] = previous["last_updated"]
             except OSError:
                 pass
             index["files"].append(file_info)
@@ -548,6 +573,10 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
     index["content_hash"] = hashlib.sha256(
         serialized_payload.encode("utf-8")
     ).hexdigest()[:16]
+    if existing_index.get("content_hash") == index["content_hash"] and isinstance(
+        existing_index.get("last_updated"), str
+    ):
+        index["last_updated"] = existing_index["last_updated"]
 
     return index
 

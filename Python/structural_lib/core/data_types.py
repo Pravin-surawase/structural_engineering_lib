@@ -16,6 +16,7 @@ from .utilities import deprecated_field
 
 if TYPE_CHECKING:
     from .errors import DesignError
+    from .materials import Steel
 
 
 # =============================================================================
@@ -1060,6 +1061,86 @@ class EndCondition(Enum):
 
 
 @dataclass(frozen=True)
+class ColumnReinforcementBar:
+    """One discrete longitudinal bar in a column cross-section.
+
+    The gross-section centroid is the coordinate origin. ``x_mm`` is positive
+    toward the right face and ``y_mm`` is positive toward the top face. The
+    bar is represented by its centroid and area; bar diameter and detailing
+    checks remain outside the section-analysis contract.
+
+    Attributes:
+        x_mm: Bar-centroid x coordinate from the gross-section centroid (mm).
+        y_mm: Bar-centroid y coordinate from the gross-section centroid (mm).
+        area_mm2: Bar area (mm²).
+        material: Reinforcement material, normally :class:`core.materials.Steel`.
+    """
+
+    x_mm: float
+    y_mm: float
+    area_mm2: float
+    material: Steel
+
+    def __post_init__(self) -> None:
+        values = {
+            "x_mm": self.x_mm,
+            "y_mm": self.y_mm,
+            "area_mm2": self.area_mm2,
+            "material.fy": self.material.fy,
+            "material.Es": self.material.Es,
+        }
+        for name, value in values.items():
+            if not math.isfinite(value):
+                raise ValueError(f"{name} must be finite, got {value}")
+        if self.area_mm2 <= 0:
+            raise ValueError(f"area_mm2 must be positive, got {self.area_mm2}")
+        if self.material.fy <= 0:
+            raise ValueError(f"material.fy must be positive, got {self.material.fy}")
+        if self.material.Es <= 0:
+            raise ValueError(f"material.Es must be positive, got {self.material.Es}")
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert the bar and material to explicit-unit dictionary fields."""
+        return {
+            "x_mm": self.x_mm,
+            "y_mm": self.y_mm,
+            "area_mm2": self.area_mm2,
+            "material": {
+                "fy_nmm2": self.material.fy,
+                "es_nmm2": self.material.Es,
+                "grade": self.material.steel_type,
+            },
+        }
+
+
+@dataclass(frozen=True)
+class ColumnReinforcementLayout:
+    """Discrete longitudinal reinforcement for a column section."""
+
+    bars: tuple[ColumnReinforcementBar, ...]
+    layout_id: str = "COLUMN-LAYOUT"
+
+    def __post_init__(self) -> None:
+        if not self.bars:
+            raise ValueError("Column reinforcement layout requires at least one bar")
+        if not self.layout_id.strip():
+            raise ValueError("layout_id must not be empty")
+
+    @property
+    def total_area_mm2(self) -> float:
+        """Return total longitudinal reinforcement area (mm²)."""
+        return sum(bar.area_mm2 for bar in self.bars)
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert the layout to a JSON-ready dictionary."""
+        return {
+            "layout_id": self.layout_id,
+            "total_area_mm2": self.total_area_mm2,
+            "bars": [bar.to_dict() for bar in self.bars],
+        }
+
+
+@dataclass(frozen=True)
 class ColumnAxialResult(DictCompatMixin):
     """Result of short column axial capacity check per IS 456 Cl 39.3.
 
@@ -1221,6 +1302,97 @@ class PMInteractionResult(DictCompatMixin):
             f"Pu_0={self.Pu_0_kN:.1f}kN, Mu_0={self.Mu_0_kNm:.1f}kNm, "
             f"Balanced=({self.Pu_bal_kN:.1f}kN, {self.Mu_bal_kNm:.1f}kNm)"
         )
+
+
+@dataclass(frozen=True)
+class PMMInteractionPoint(DictCompatMixin):
+    """One discrete strain-compatibility point on a column P-M-M surface."""
+
+    theta_deg: float
+    neutral_axis_depth_mm: float | None
+    Pu_kN: float
+    Mx_kNm: float
+    My_kNm: float
+    max_concrete_strain: float
+    min_steel_strain: float
+    max_steel_strain: float
+
+    @property
+    def resultant_moment_kNm(self) -> float:  # noqa: N802
+        """Return ``sqrt(Mx² + My²)`` in kN·m."""
+        return math.hypot(self.Mx_kNm, self.My_kNm)
+
+    def to_dict(self) -> dict[str, float | None]:
+        """Convert the point to a JSON-ready dictionary."""
+        return {
+            "theta_deg": self.theta_deg,
+            "neutral_axis_depth_mm": self.neutral_axis_depth_mm,
+            "Pu_kN": self.Pu_kN,
+            "Mx_kNm": self.Mx_kNm,
+            "My_kNm": self.My_kNm,
+            "resultant_moment_kNm": self.resultant_moment_kNm,
+            "max_concrete_strain": self.max_concrete_strain,
+            "min_steel_strain": self.min_steel_strain,
+            "max_steel_strain": self.max_steel_strain,
+        }
+
+
+@dataclass(frozen=True)
+class PMMInteractionSlice(DictCompatMixin):
+    """A constant-neutral-axis-angle P-M-M surface slice."""
+
+    theta_deg: float
+    points: tuple[PMMInteractionPoint, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert the slice to a JSON-ready dictionary."""
+        return {
+            "theta_deg": self.theta_deg,
+            "points": [point.to_dict() for point in self.points],
+        }
+
+
+@dataclass(frozen=True)
+class PMMInteractionSurface(DictCompatMixin):
+    """Experimental discrete P-M-M surface for one rectangular section."""
+
+    b_mm: float
+    D_mm: float
+    fck_nmm2: float
+    reinforcement: ColumnReinforcementLayout
+    slices: tuple[PMMInteractionSlice, ...]
+    nominal_axial_point: PMMInteractionPoint
+    n_fibers_x: int
+    n_fibers_y: int
+    n_depths: int
+    method: str = "IS456_STRAIN_COMPATIBILITY_FIBER_V1"
+    clause_refs: tuple[str, ...] = ("Cl. 38.1", "Cl. 39.3", "Cl. 39.5")
+    experimental: bool = True
+    warnings: tuple[str, ...] = ()
+
+    @property
+    def point_count(self) -> int:
+        """Return the number of sampled surface points, excluding the apex."""
+        return sum(len(slice_.points) for slice_ in self.slices)
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert the surface to a JSON-ready dictionary."""
+        return {
+            "b_mm": self.b_mm,
+            "D_mm": self.D_mm,
+            "fck_nmm2": self.fck_nmm2,
+            "reinforcement": self.reinforcement.to_dict(),
+            "slices": [slice_.to_dict() for slice_ in self.slices],
+            "nominal_axial_point": self.nominal_axial_point.to_dict(),
+            "point_count": self.point_count,
+            "n_fibers_x": self.n_fibers_x,
+            "n_fibers_y": self.n_fibers_y,
+            "n_depths": self.n_depths,
+            "method": self.method,
+            "clause_refs": list(self.clause_refs),
+            "experimental": self.experimental,
+            "warnings": list(self.warnings),
+        }
 
 
 @dataclass(frozen=True)

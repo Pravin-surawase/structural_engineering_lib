@@ -5,6 +5,104 @@
 
 ---
 
+## 2026-08-10 — Session: Generalized Column Reinforcement and Experimental P-M-M
+
+**Agent:** structural-math / Codex
+**Branch:** `codex/column-pmm-experimental`
+**Worktree:** `/Users/pravinsurawase/VS_code_project/structural_engineering_lib-column-pmm`
+**Focus:** Add explicit column bar coordinates and a bounded experimental fiber P-M-M surface without changing the supported Bresler route
+
+### Summary
+
+- Created the branch from `origin/main` in a dedicated linked worktree after
+  finding active slab work in the primary checkout. No slab source, staging,
+  stash, branch, or process was changed by this session.
+- Added explicit immutable bar/layout records with centroidal `(x, y)`
+  coordinates, area, and per-bar steel material, plus JSON-ready P-M-M point,
+  slice, and surface records.
+- Added a four-corner compatibility adapter that preserves the legacy
+  `Asc_mm2 / 2` steel area on each opposing face. Existing symmetric P-M and
+  Bresler Cl. 39.6 functions remain unchanged.
+- Added a NumPy-vectorized rectangular concrete-fiber solver with discrete bar
+  forces, both principal-axis slices, arbitrary neutral-axis orientations, a
+  360-degree sampled surface, and an exact Cl. 39.3 nominal axial cap.
+- Kept the new public APIs library-only and explicitly experimental. FastAPI,
+  React, slenderness, second-order effects, confinement, circular sections,
+  detailing, and production replacement of Bresler remain excluded.
+- Documented the scope, formulas, public signatures, stability boundary, and
+  two-axis comparison evidence. Updated the API manifest and relevant indexes.
+
+### Issues encountered
+
+- The linked worktree had no local `.venv/bin/python`; the shared runtime's
+  editable `structural_lib` import resolved to the active slab checkout, so the
+  first import could not see the new `column.pmm` module.
+- The first full-compression fiber implementation applied the ordinary 0.0035
+  extreme strain profile for every neutral-axis depth, increasing divergence
+  from the existing P-M solver near the axial cap.
+- The strict function-quality script rejected canonical `fck_nmm2`, angle,
+  sampling-count, and reinforcement-object parameters and did not recognize a
+  private `_validate_*` call.
+- `./run.sh generate indexes` failed in the linked worktree because its helper
+  invoked `.venv/bin/python` directly. Once invoked through the shared runtime,
+  the index generator rewrote unrelated dates because fresh-checkout filesystem
+  mtimes were treated as source modification dates.
+- A guessed `scripts/check_api_docs.py` command did not exist and stopped that
+  validation chain before the maintained API documentation check ran.
+
+### Root causes and resolutions
+
+- The shared virtual environment is editable-installed against
+  `/Users/pravinsurawase/VS_code_project/structural_engineering_lib/Python`, not
+  the linked worktree. New-code commands now use
+  `PYTHONPATH="$PWD/Python" ./scripts/python_runtime.sh`; import evidence resolves
+  both `structural_lib` and `column.pmm` from the isolated worktree.
+- The initial strain equation did not branch when the neutral axis moved beyond
+  the far face. The section response now applies the modified Cl. 38.1
+  whole-section-compression profile used by the existing uniaxial implementation.
+  Both principal slices pass their supported-solver regression gates.
+- The quality validator's suffix and bare-parameter allowlists predated the
+  repository's exact public naming convention. It now recognizes `_nmm2`,
+  `_deg`, dimensionless `n_*` controls, reinforcement objects, and private
+  validation helpers. Strict `column/pmm` quality validation reports 2/2
+  functions passing.
+- `generate_all_indexes.sh` now delegates to `scripts/python_runtime.sh`.
+  `generate_enhanced_index.py` now preserves prior dates when file content
+  hashes are unchanged, preventing cross-worktree mtime churn; its 29 focused
+  automation tests and all index hash checks pass.
+- Repository automation discovery identified `scripts/check_api.py --docs` and
+  `--sync` as the maintained checks. Both pass, as does the generated manifest
+  check.
+
+### Verification
+
+- `pytest Python/tests/codes/is456/column -q` — all column module tests passed,
+  including nine new generalized-layout/P-M-M tests.
+- `pytest Python/tests/test_column_biaxial.py Python/tests/test_column_return_types.py Python/tests/regression/test_golden_vectors_column.py -q` — existing supported
+  column/Bresler and golden-vector regressions passed.
+- Reference-section slice comparison at Pu = 0 to 1600 kN differs from the
+  existing P-M solver by at most 1.39%; at Pu = 2000 kN the bounded experimental
+  difference is 4.21% about x and 3.11% about y.
+- Cl. 39.3 reference axial capacity — exactly 2304.15 kN.
+- `scripts/check_function_quality.py --module column/pmm --strict` — 2/2 pass.
+- Architecture-boundary and `structural_lib` import validation — zero errors.
+- API documentation, API stability parity, manifest, formatting, Ruff, and
+  enhanced-index checks — passed.
+- Final repository quick gate — 10/10 passed; full integrated gate — 30/30
+  passed.
+- Full Python suite — 5521 passed, 3 skipped, and 6 deselected.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: Linked worktree `.venv/bin/python` was absent and the
+  shared editable import targeted the slab checkout -> explicit worktree
+  `PYTHONPATH` plus `scripts/python_runtime.sh` loaded and tested the new code.
+- ⚠️ TERMINAL ISSUE: `./run.sh generate indexes` called a hard-coded local venv
+  -> the maintained helper now uses `scripts/python_runtime.sh` and completes in
+  linked worktrees.
+- ⚠️ TERMINAL ISSUE: `scripts/check_api_docs.py` does not exist -> automation
+  discovery identified `scripts/check_api.py --docs` and `--sync`, which pass.
+
 ## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
 
 **Agent:** Codex

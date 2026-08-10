@@ -58,6 +58,7 @@ BARE_PARAMS = {
     "cls",
     "section",
     "materials",
+    "reinforcement",
     "loads",
     "geometry",
     "config",
@@ -79,6 +80,8 @@ UNIT_SUFFIXES = {
     "_mpa",
     "_MPa",
     "_percent",
+    "_nmm2",
+    "_deg",
 }
 
 # Advisory checks (warnings, not failures in --warn mode)
@@ -321,7 +324,7 @@ class FunctionChecker(ast.NodeVisitor):
         if (
             self.statement_index < 5
             and isinstance(node.func, ast.Name)
-            and node.func.id.startswith("validate")
+            and node.func.id.lstrip("_").startswith("validate")
         ):
             self.has_validate_call = True
 
@@ -370,8 +373,8 @@ class FunctionChecker(ast.NodeVisitor):
 
         missing_units = []
         for arg_name in all_args:
-            # Skip if in bare params
-            if arg_name in BARE_PARAMS:
+            # Skip objects and dimensionless sample/count controls.
+            if arg_name in BARE_PARAMS or arg_name.startswith("n_"):
                 continue
             # Check if has unit suffix
             if not any(arg_name.endswith(suffix) for suffix in UNIT_SUFFIXES):

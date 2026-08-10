@@ -20,6 +20,11 @@ from structural_lib.codes.is456.column.axial import (
 )
 from structural_lib.codes.is456.column.biaxial import biaxial_bending_check
 from structural_lib.codes.is456.column.detailing import create_column_detailing
+from structural_lib.codes.is456.column.pmm import (
+    create_symmetric_two_face_layout,
+    experimental_pmm_interaction_surface,
+    pm_interaction_slice_for_layout,
+)
 from structural_lib.codes.is456.column.uniaxial import (
     design_short_column_uniaxial,
     pm_interaction_curve,
@@ -30,12 +35,16 @@ from structural_lib.core.data_types import (
     ColumnAxialResult,
     ColumnBiaxialResult,
     ColumnDetailingResult,
+    ColumnReinforcementLayout,
     ColumnUniaxialResult,
     EndCondition,
     HelicalReinforcementResult,
     LongColumnResult,
     PMInteractionResult,
+    PMMInteractionSlice,
+    PMMInteractionSurface,
 )
+from structural_lib.core.materials import Steel
 
 # ============================================================================
 # Deprecated-parameter resolution helper
@@ -504,6 +513,110 @@ def pm_interaction_curve_is456(
         n_points=n_points,
     )
     return result
+
+
+def create_symmetric_column_layout_is456(
+    b_mm: float,
+    D_mm: float,  # noqa: N803
+    Asc_mm2: float,  # noqa: N803
+    d_prime_mm: float,
+    fy_nmm2: float,
+    *,
+    steel_grade: str | None = None,
+    layout_id: str = "SYMMETRIC-TWO-FACE",
+) -> ColumnReinforcementLayout:
+    """Adapt legacy symmetric column inputs to explicit bar coordinates.
+
+    Four equal-area corner bars preserve ``Asc_mm2 / 2`` on each opposing
+    face. The existing :func:`pm_interaction_curve_is456` and
+    :func:`biaxial_bending_check_is456` signatures and behavior are unchanged.
+
+    Args:
+        b_mm: Gross section width along x (mm).
+        D_mm: Gross section depth along y (mm).
+        Asc_mm2: Total longitudinal reinforcement area (mm²).
+        d_prime_mm: Bar-centroid distance from each face (mm).
+        fy_nmm2: Characteristic steel strength (N/mm²).
+        steel_grade: Optional material label, such as ``"Fe415"``.
+        layout_id: Stable caller-defined layout identifier.
+
+    Returns:
+        Explicit four-bar :class:`ColumnReinforcementLayout`.
+    """
+    material = Steel(
+        fy=fy_nmm2,
+        Es=200_000.0,
+        steel_type=steel_grade or f"Fe{int(fy_nmm2)}",
+    )
+    return create_symmetric_two_face_layout(
+        b_mm=b_mm,
+        D_mm=D_mm,
+        Asc_mm2=Asc_mm2,
+        d_prime_mm=d_prime_mm,
+        material=material,
+        layout_id=layout_id,
+    )
+
+
+def pm_interaction_slice_for_layout_is456(
+    b_mm: float,
+    D_mm: float,  # noqa: N803
+    fck_nmm2: float,
+    reinforcement: ColumnReinforcementLayout,
+    *,
+    theta_deg: float = 0.0,
+    n_fibers_x: int = 24,
+    n_fibers_y: int = 32,
+    n_depths: int = 64,
+) -> PMMInteractionSlice:
+    """Generate one experimental uniaxial slice for an explicit bar layout.
+
+    ``theta_deg=0`` varies strain along y and produces the Mx interaction
+    slice. ``theta_deg=90`` varies strain along x and produces the My slice.
+    This API is intended for comparison and experimental development; it does
+    not replace the supported scalar P-M or Bresler routes.
+    """
+    return pm_interaction_slice_for_layout(
+        b_mm=b_mm,
+        D_mm=D_mm,
+        fck_nmm2=fck_nmm2,
+        reinforcement=reinforcement,
+        theta_deg=theta_deg,
+        n_fibers_x=n_fibers_x,
+        n_fibers_y=n_fibers_y,
+        n_depths=n_depths,
+    )
+
+
+def experimental_pmm_interaction_surface_is456(
+    b_mm: float,
+    D_mm: float,  # noqa: N803
+    fck_nmm2: float,
+    reinforcement: ColumnReinforcementLayout,
+    *,
+    n_angles: int = 24,
+    n_fibers_x: int = 24,
+    n_fibers_y: int = 32,
+    n_depths: int = 64,
+) -> PMMInteractionSurface:
+    """Generate an explicitly experimental 360° column P-M-M surface.
+
+    The result uses IS 456 Cl. 38.1 strain compatibility and the Cl. 39.3
+    nominal axial cap for a rectangular short-column section. Slenderness,
+    confinement, second-order effects, circular sections, and detailing are
+    excluded. Continue to use :func:`biaxial_bending_check_is456` for the
+    supported IS 456 Cl. 39.6 design check.
+    """
+    return experimental_pmm_interaction_surface(
+        b_mm=b_mm,
+        D_mm=D_mm,
+        fck_nmm2=fck_nmm2,
+        reinforcement=reinforcement,
+        n_angles=n_angles,
+        n_fibers_x=n_fibers_x,
+        n_fibers_y=n_fibers_y,
+        n_depths=n_depths,
+    )
 
 
 def biaxial_bending_check_is456(

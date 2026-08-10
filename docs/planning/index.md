@@ -2,7 +2,7 @@
 
 **Type:** Documentation
 **Last Updated:** 2026-08-10
-**Files:** 15
+**Files:** 16
 
 ## Documentation Files
 
@@ -10,6 +10,7 @@
 |------|-------|-------------|-------|
 | [README.md](README.md) | Planning | Internal planning documents and research notes. | Document | | 152 |
 | [adoption-trust-surface-plan.md](adoption-trust-surface-plan.md) |  | Make the released Alpha straightforward to evaluate from fou | 380 |
+| [column-generalized-reinforcement-pmm-plan.md](column-generalized-reinforcement-pmm-plan.md) |  | Implement a library-only rectangular section-analysis capabi | 84 |
 | [compact-modernization-plan.md](compact-modernization-plan.md) |  | Modernize the repository's CI, maintenance controls, and age | 794 |
 | [democratization-vision.md](democratization-vision.md) |  | > **"What was not possible few years back, or only possible  | 273 |
 | [dependency-security-baseline.md](dependency-security-baseline.md) |  | This record makes MAINT-003 reproducible. It separates confi | 69 |
