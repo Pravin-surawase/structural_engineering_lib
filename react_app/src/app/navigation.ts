@@ -119,6 +119,7 @@ export function activeGlobalDestination(pathname: string): GlobalDestinationId |
   if (
     pathname === '/workbench'
     || pathname.startsWith('/workbench/quick')
+    || pathname.startsWith('/workbench/footing')
     || pathname === '/start'
     || pathname.startsWith('/design')
   ) {

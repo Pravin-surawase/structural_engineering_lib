@@ -54,6 +54,7 @@ describe('workbench navigation contract', () => {
 
   it('maps canonical and compatibility paths to one global destination', () => {
     expect(activeGlobalDestination('/workbench/quick')).toBe('workbench');
+    expect(activeGlobalDestination('/workbench/footing/isolated/concentric')).toBe('workbench');
     expect(activeGlobalDestination('/design/results')).toBe('workbench');
     expect(activeGlobalDestination('/workbench/projects/new')).toBe('projects');
     expect(activeGlobalDestination('/editor')).toBe('projects');

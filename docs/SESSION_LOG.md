@@ -5,11 +5,11 @@
 
 ---
 
-## 2026-08-10 — Session: FOOT-ISO-RC-V1 Phases A-C1
+## 2026-08-11 — Session: FOOT-ISO-RC-V1 Phases A-D1
 
 **Agent:** Codex
 **Branch:** `codex/footing-isolated-v1`
-**Focus:** Correct footing inputs and complete concentric isolated-footing orchestration/detailing/API
+**Focus:** Correct footing inputs and complete concentric isolated-footing orchestration/detailing/API/workbench
 
 ### Summary
 
@@ -31,6 +31,10 @@
   service authority, including calculation/detailing/aggregate status,
   screening-versus-final shear evidence, provenance, exclusions, qualified
   review, and canonical validation errors.
+- Added one React workbench surface for that route with explicit external
+  approvals and units, optional atomic detailing inputs, separate calculation /
+  detailing / aggregate status, complete returned evidence, and request-revision
+  invalidation. Report/export and catalogue closeout remain deliberately absent.
 
 ### Issues encountered
 
@@ -79,6 +83,28 @@
 - If service validation escaped the footing router, the existing global
   `StructuralLibError` path would return a legacy non-envelope body instead of
   the maintained request-validation response shape.
+- The first C1 commit attempt imported `structural_lib` from an older checkout
+  during hooks because this worktree has no local `.venv`; the new footing
+  service could not be resolved and no commit was created.
+- This worktree also had no React `node_modules`. Calling the shared Vitest
+  binary by absolute path could not resolve Vite from the worktree and created
+  one ignored `.vite` cache receipt before stopping.
+- The first D1 feature draft silently converted unapproved soil/A1 inputs to
+  approved request literals, showed an impossible PASS fixture with missing
+  detailing evidence, and omitted material returned checks and schedules.
+- The first detailing toggle displayed fallback values without placing the
+  complete detailing group into draft state. The response type also modelled
+  punching as one-way shear and could hide contract drift.
+- A shell inspection loop used zsh's special `path` variable name, temporarily
+  replacing `PATH` for that shell and making its final Git probe unavailable.
+- The resumed full repository gate initially reported 27/30 because the public
+  API manifest still described the pre-directional one-way-shear signature and
+  the shared virtual environment imported a different checkout when the
+  worktree source was not placed first on `PYTHONPATH`.
+- `./run.sh generate indexes` stopped because its shell implementation requires
+  a worktree-local `.venv/bin/python`; the documented shared-runtime fallback is
+  not wired into that generator. Retrying through a temporary environment link
+  also produced broad, non-footing index churn on this older branch.
 
 ### Root causes and resolutions
 
@@ -146,6 +172,32 @@
   sanitized detail. Pydantic omissions, extra fields, non-finite values,
   invalid footing names, and non-integral dowel counts use the main app's same
   documented 422 envelope.
+- The accepted C1 commit was retried with `PYTHONPATH="$PWD/Python"`; all hooks
+  passed against the current worktree and produced `b4b64d56` without bypassing
+  validation. No push or GitHub action was taken.
+- React validation reused the existing dependency installation through one
+  exact, validated worktree-local `node_modules` symlink. The generated cache
+  receipt was removed and the symlink was unlinked after validation; the shared
+  dependency directory was never modified or deleted.
+- D1 now requires the user to affirm both external approvals and transmits the
+  literal approvals only after validation. Detailing is initialized and sent as
+  one complete optional group; absent detailing remains a visible server HOLD.
+- The UI types and evidence panels now preserve bearing, flexure, screening and
+  final actual-provided-pt shear, punching, depth candidates, directional demand
+  and zone schedules, anchorage, dowel linkage, provenance, exclusions and the
+  qualified-review requirement. Full request revisions abort and invalidate
+  stale results; late responses cannot restore authority.
+- Subsequent shell commands use task-specific variable names; a fresh shell
+  confirmed the branch/status normally.
+- Regenerated `docs/reference/api-manifest.json` from the footing worktree so it
+  records the keyword-only directional reinforcement percentages. The full
+  gate is now run with `PYTHONPATH="$PWD/Python"`, which binds validation to this
+  branch instead of the primary checkout's editable package.
+- A validated temporary `.venv` link allowed the generator to be diagnosed and
+  was removed immediately with its shared target preserved. All 31 generator-
+  only index diffs were then reversed as one inspected mechanical patch because
+  they were unrelated to the footing outcome; no user-owned index change was
+  present before that command.
 - Evidence: the 182-case footing/core/public-contract matrix passed, the
   12-test FastAPI library-core/capability baseline passed, the 4-case footing
   contract selection passed, the 167-case B1/core/load-transfer matrix passed,
@@ -160,6 +212,16 @@
   the architecture scan checked 146 files with zero violations; the maintained
   OpenAPI snapshot now records exactly one added endpoint and 15 footing schemas
   (70 endpoints, 263 schemas); import validation and `git diff --check` passed.
+- D1 evidence: 13 focused feature/client/workbench/navigation tests passed;
+  ESLint and the TypeScript/Vite production build passed, including a separate
+  34.78 kB lazy footing chunk; the architecture scan checked 146 files with zero
+  violations. Component-state tests prove approval gating, exact request
+  omission/inclusion, PASS evidence, retained HOLD, canonical 422 messaging,
+  transport failure, stale-result marking and late-response rejection.
+- Resume closeout evidence: 206 focused footing/core/service/load-transfer/
+  golden-vector/FastAPI tests passed; the complete React gate passed 246 tests,
+  ESLint and the production build with a 34.84 kB lazy footing chunk; the quick
+  repository gate passed 10/10 and the source-bound full gate passed 30/30.
 
 ---
 

@@ -27,6 +27,7 @@ const ImportView = lazy(() => import('./components/import/ImportView').then(m =>
 const BuildingEditorPage = lazy(() => import('./components/pages/BuildingEditorPage').then(m => ({ default: m.BuildingEditorPage })));
 const DashboardPage = lazy(() => import('./components/pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
 const WorkflowComposerPage = lazy(() => import('./features/automation/WorkflowComposerPage').then(m => ({ default: m.WorkflowComposerPage })));
+const ConcentricIsolatedFootingPage = lazy(() => import('./features/footing/ConcentricIsolatedFootingPage').then(m => ({ default: m.ConcentricIsolatedFootingPage })));
 
 function RouteLoadingFallback() {
   return (
@@ -99,6 +100,7 @@ function App() {
                   <Route path="/workbench/quick" element={CATALOGUE_QUICK_ENABLED ? <CatalogDesignView /> : <DesignView />} />
                   <Route path="/workbench/quick/catalog" element={<Navigate to="/workbench/quick" replace />} />
                   <Route path="/workbench/quick/manual" element={<DesignView />} />
+                  <Route path="/workbench/footing/isolated/concentric" element={<ConcentricIsolatedFootingPage />} />
                   <Route path="/workbench/projects" element={<WorkbenchHomePage initialView="projects" />} />
                   <Route path="/workbench/projects/new" element={<ImportView />} />
                   <Route path="/workbench/projects/:projectId/import" element={<ProjectStageRoute stage="import"><ImportView /></ProjectStageRoute>} />
