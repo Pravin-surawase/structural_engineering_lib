@@ -39,6 +39,8 @@ export function ImportView() {
   const { beams, isImporting, error, setBeams, setError, setImporting } =
     useImportedBeamsStore();
   const materialOverrides = { fck, fy, cover };
+  const initialMaterialOverridesRef = useRef(materialOverrides);
+  const autoLoadSampleRef = useRef(searchParams.get("sample") === "true");
   const sampleLoadedRef = useRef(false);
 
   const handleLoadSample = async () => {
@@ -68,18 +70,47 @@ export function ImportView() {
     }
   };
 
-  // Auto-load sample data when navigated with ?sample=true
-  // Guard with ref to prevent React StrictMode double-execution
+  // Auto-load sample data when navigated with ?sample=true. State changes stay
+  // in promise callbacks so the effect only synchronizes with the URL/API.
   useEffect(() => {
-    if (sampleLoadedRef.current) return;
-    if (searchParams.get("sample") === "true") {
-      sampleLoadedRef.current = true;
-      searchParams.delete("sample");
-      setSearchParams(searchParams, { replace: true });
-      handleLoadSample();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (!autoLoadSampleRef.current || sampleLoadedRef.current) return;
+    sampleLoadedRef.current = true;
+
+    void Promise.resolve()
+      .then(() => {
+        setImporting(true);
+        setError(null);
+        return loadSampleData();
+      })
+      .then((data) => {
+        if (data.success && data.beams?.length) {
+          const storeBeams: BeamCSVRow[] = applyMaterialOverrides(
+            mapSampleBeamsToRows(data.beams, data.dataset),
+            initialMaterialOverridesRef.current
+          );
+          setBeams(storeBeams);
+          setStep("preview");
+        } else {
+          setError(data.message);
+        }
+      })
+      .catch((err: unknown) => {
+        const msg = err instanceof Error ? err.message : "Failed to load sample data";
+        setError(
+          msg.includes("fetch") || msg.includes("network")
+            ? "Cannot connect to backend server. Start it with: ./run.sh dev"
+            : msg
+        );
+      })
+      .finally(() => {
+        setImporting(false);
+        setSearchParams((current) => {
+          const next = new URLSearchParams(current);
+          next.delete("sample");
+          return next;
+        }, { replace: true });
+      });
+  }, [setBeams, setError, setImporting, setSearchParams]);
 
   const handleFileImported = (count: number) => {
     if (count > 0) setStep("preview");
