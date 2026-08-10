@@ -154,40 +154,83 @@ def test_builtin_continuous_service_marks_coefficients_verified_by_library() -> 
     assert result.flexure.input.coefficients.table_id == "IS456_TABLE_12_13"
 
 
-def test_builtin_two_way_service_retains_table_case_and_interpolation() -> None:
-    result = design_two_way_slab_panel_builtin_is456(
-        x_effective_span_mm=4000,
-        y_effective_span_mm=6000,
-        thickness_mm=160,
-        x_min_edge="discontinuous",
-        x_max_edge="continuous",
-        y_min_edge="discontinuous",
-        y_max_edge="continuous",
-        corner_lift_condition="restrained",
-        factored_area_load_kn_per_m2=15.5,
-        d_x_mm=135,
-        d_y_mm=125,
-        fck_n_per_mm2=20,
-        fy_n_per_mm2=415,
-        x_positive_bar_diameter_mm=10,
-        x_positive_bar_spacing_mm=200,
-        x_negative_bar_diameter_mm=10,
-        x_negative_bar_spacing_mm=200,
-        y_positive_bar_diameter_mm=8,
-        y_positive_bar_spacing_mm=200,
-        y_negative_bar_diameter_mm=8,
-        y_negative_bar_spacing_mm=200,
-        edge_strip_bar_diameter_mm=8,
-        edge_strip_bar_spacing_mm=250,
-        torsion_bar_diameter_mm=8,
-        torsion_bar_spacing_mm=200,
-        reviewed_base_span_depth_limit=30,
-        reviewed_aggregate_modification_factor=1,
-        serviceability_limit_source_reference="IS456_CL24_REVIEWED",
-        serviceability_limit_source_is_approved=True,
-        qualified_serviceability_acceptance_reference="review:B04-SLS",
-        qualified_serviceability_acceptance_acknowledged=True,
-    )
+def _builtin_two_way(**overrides: object):
+    values: dict[str, object] = {
+        "x_effective_span_mm": 4000,
+        "y_effective_span_mm": 6000,
+        "thickness_mm": 160,
+        "x_min_edge": "discontinuous",
+        "x_max_edge": "continuous",
+        "y_min_edge": "discontinuous",
+        "y_max_edge": "continuous",
+        "corner_lift_condition": "restrained",
+        "factored_area_load_kn_per_m2": 15.5,
+        "d_x_mm": 135,
+        "d_y_mm": 125,
+        "fck_n_per_mm2": 20,
+        "fy_n_per_mm2": 415,
+        "x_positive_bar_diameter_mm": 10,
+        "x_positive_bar_spacing_mm": 200,
+        "x_negative_bar_diameter_mm": 10,
+        "x_negative_bar_spacing_mm": 200,
+        "y_positive_bar_diameter_mm": 8,
+        "y_positive_bar_spacing_mm": 200,
+        "y_negative_bar_diameter_mm": 8,
+        "y_negative_bar_spacing_mm": 200,
+        "edge_strip_bar_diameter_mm": 8,
+        "edge_strip_bar_spacing_mm": 250,
+        "torsion_bar_diameter_mm": 8,
+        "torsion_bar_spacing_mm": 200,
+        "reviewed_base_span_depth_limit": 30,
+        "reviewed_aggregate_modification_factor": 1,
+        "serviceability_limit_source_reference": "IS456_CL24_REVIEWED",
+        "serviceability_limit_source_is_approved": True,
+        "qualified_serviceability_acceptance_reference": "review:B04-SLS",
+        "qualified_serviceability_acceptance_acknowledged": True,
+    }
+    values.update(overrides)
+    return design_two_way_slab_panel_builtin_is456(**values)  # type: ignore[arg-type]
+
+
+def test_builtin_two_way_service_retains_table_case_and_composed_truth() -> None:
+    result = _builtin_two_way()
     assert result.panel.x_negative.factored_moment_knm_per_m == pytest.approx(18.6)
     assert result.panel.coefficient_correctness_verified_by_library is True
     assert result.panel.input.coefficients.case_id == "table_26_case_4"
+    assert (
+        result.panel.serviceability_dependency
+        == "evaluated_by_composed_workflow_with_reviewed_limit_carrier"
+    )
+    assert not any(
+        "built-in coefficient" in item.lower() for item in result.panel.held_scope
+    )
+
+
+def test_builtin_table_27_free_corner_workflow_has_no_torsion_or_false_hold() -> None:
+    result = _builtin_two_way(
+        x_max_edge="discontinuous",
+        y_max_edge="discontinuous",
+        corner_lift_condition="free_to_lift",
+    )
+    assert result.panel.input.coefficients.table_id == "IS456_TABLE_27"
+    assert result.panel.x_negative.coefficient == 0.0
+    assert result.panel.y_negative.coefficient == 0.0
+    assert all(
+        corner.torsion_class.value == "not_applicable_free_to_lift"
+        and corner.required_each_of_four_layers_mm2_per_m == 0.0
+        for corner in result.panel.corner_torsion
+    )
+    assert not any(
+        "built-in coefficient" in item.lower() for item in result.panel.held_scope
+    )
+
+
+def test_builtin_four_edge_continuous_restrained_topology_resolves_case_one() -> None:
+    result = _builtin_two_way(
+        x_min_edge="continuous",
+        y_min_edge="continuous",
+    )
+    assert result.panel.input.coefficients.case_id == "table_26_case_1"
+    assert all(
+        corner.torsion_class.value == "none" for corner in result.panel.corner_torsion
+    )

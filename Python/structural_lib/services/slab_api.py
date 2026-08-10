@@ -26,6 +26,7 @@ from structural_lib.codes.is456.slab.models import SolidRectangularSlabGeometry
 from structural_lib.codes.is456.slab.one_way import (
     OneWaySlabFlexureInput,
     OneWaySlabFlexureResult,
+    OneWaySlabFlexureStatus,
     design_simply_supported_one_way_slab_flexure,
 )
 from structural_lib.codes.is456.slab.one_way_continuous import (
@@ -80,6 +81,21 @@ __all__ = [
     "design_two_way_slab_panel_builtin_is456",
     "design_two_way_slab_is456",
 ]
+
+
+_COMPLETE_ONE_WAY_FLEXURE_LIMITATIONS = (
+    "COMPOSED WORKFLOW: minimum reinforcement, provided-bar detailing, reviewed "
+    "span/depth serviceability, and ordinary one-way shear are evaluated in this result.",
+    "HOLD: load combinations, support moments, continuity, cantilevers, and load "
+    "patterns are not inferred.",
+)
+_COMPLETE_ONE_WAY_DETAILING_LIMITATIONS = (
+    "COMPOSED WORKFLOW: provided-bar detailing, reviewed span/depth serviceability, "
+    "and ordinary one-way shear are evaluated in this result.",
+    "HOLD: direct deflection and crack-width calculations are not implemented.",
+    "HOLD: automatic slab shear reinforcement is not designed.",
+    "REVIEW LIMITATION: qualified structural-engineering review remains required.",
+)
 
 
 @dataclass(frozen=True)
@@ -249,6 +265,25 @@ def design_complete_one_way_slab_is456(
                 qualified_serviceability_acceptance_acknowledged
             ),
         )
+    )
+    completed_flexure = replace(
+        reinforcement.flexure,
+        status=OneWaySlabFlexureStatus.COMPLETE_WORKFLOW_CHECKS_COMPOSED,
+        limitations=_COMPLETE_ONE_WAY_FLEXURE_LIMITATIONS,
+    )
+    completed_detailing_input = replace(
+        reinforcement.detailing.input,
+        flexure_result=completed_flexure,
+    )
+    completed_detailing = replace(
+        reinforcement.detailing,
+        input=completed_detailing_input,
+        limitations=_COMPLETE_ONE_WAY_DETAILING_LIMITATIONS,
+    )
+    reinforcement = replace(
+        reinforcement,
+        flexure=completed_flexure,
+        detailing=completed_detailing,
     )
     return CompleteOneWaySlabDesignResult(
         reinforcement=reinforcement,
@@ -623,6 +658,12 @@ def design_two_way_slab_panel_is456(
                 qualified_serviceability_acceptance_acknowledged
             ),
         )
+    )
+    panel = replace(
+        panel,
+        serviceability_dependency=(
+            "evaluated_by_composed_workflow_with_reviewed_limit_carrier"
+        ),
     )
     return TwoWaySlabPanelWorkflowResult(panel=panel, serviceability=serviceability)
 

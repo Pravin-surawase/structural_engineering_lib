@@ -134,12 +134,12 @@ class OneWaySlabDetailingInput:
             raise SlabContractError(
                 "flexure_result must be an accepted OneWaySlabFlexureResult"
             )
-        if (
-            self.flexure_result.status
-            is not OneWaySlabFlexureStatus.FLEXURE_ONLY_PENDING_P8
+        if self.flexure_result.status not in (
+            OneWaySlabFlexureStatus.FLEXURE_ONLY_PENDING_P8,
+            OneWaySlabFlexureStatus.COMPLETE_WORKFLOW_CHECKS_COMPOSED,
         ):
             raise SlabContractError(
-                "flexure_result must have P7 FLEXURE_ONLY_PENDING_P8 status"
+                "flexure_result must retain a recognized one-way workflow status"
             )
         object.__setattr__(
             self,

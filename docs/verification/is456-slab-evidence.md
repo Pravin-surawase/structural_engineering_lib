@@ -78,3 +78,31 @@ pre-launch permission gate passes.
 - This evidence supports the bounded software behavior only. Public production
   distribution still requires the pre-launch source/licensing gate, and project
   use still requires qualified structural-engineering review.
+
+## IS456-SLAB-001A closeout evidence — 2026-08-10
+
+- Complete simply supported one-way service and FastAPI results retain the B01
+  arithmetic while reporting `complete_workflow_checks_composed`; their nested
+  limitations no longer claim that detailing, serviceability, or shear are
+  pending. The original compatibility flexure function retains
+  `flexure_only_pending_p8`.
+- External and built-in two-way workflows retain B04/Table 26 provenance and
+  ordinary checks without the contradictory built-in-coefficient hold. The
+  Table 27 free-corner workflow returns zero negative coefficients and no
+  restrained-corner torsion; an all-edge-continuous restrained panel resolves
+  Table 26 case 1.
+- The React workbench covers B02 action-location selection, the B04 coefficient/
+  strip/torsion review surface, Table 27 free-corner topology, another restrained
+  topology, ordinary shear and explicit punching boundaries, and an inadequate/
+  review-required result. Stale input still disables passport export.
+- Focused slab/capability semantics passed; focused slab FastAPI transport passed
+  5 tests with 12 deselected; focused React passed 5 tests. Frontend lint, all
+  244 React tests, TypeScript, and the production build passed. The quick gate
+  passed 10/10.
+- The initial full repository gate passed 29/30; its sole failure was traced to
+  the two beam return-annotation changes introduced by slab-lineage commit
+  `7bb1512f`. After the explicitly authorized surgical restoration to the
+  origin/main module-qualified annotations, the narrow manifest check and final
+  full repository gate passed 30/30 without editing the generated manifest.
+- These are software and interface results only. The source/licensing pre-launch
+  gate and qualified structural-engineering review remain unchanged.

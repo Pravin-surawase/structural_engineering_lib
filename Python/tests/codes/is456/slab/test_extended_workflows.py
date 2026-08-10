@@ -7,6 +7,7 @@ from __future__ import annotations
 import pytest
 
 from structural_lib.codes.is456.slab.models import SlabContractError
+from structural_lib.codes.is456.slab.one_way import OneWaySlabFlexureStatus
 from structural_lib.codes.is456.slab.serviceability import (
     SlabServiceabilityInput,
 )
@@ -208,6 +209,11 @@ def test_b04_two_way_moments_strips_shear_and_corner_torsion() -> None:
     assert panel.coefficient_correctness_verified_by_library is False
     assert panel.complete_engineering_design_approved is False
     assert "not_applicable" in panel.punching_shear_disposition
+    assert (
+        panel.serviceability_dependency
+        == "evaluated_by_composed_workflow_with_reviewed_limit_carrier"
+    )
+    assert not any("built-in coefficient" in item.lower() for item in panel.held_scope)
 
 
 def test_two_way_topology_and_coefficient_case_must_match() -> None:
@@ -252,6 +258,22 @@ def test_complete_simply_supported_route_adds_shear_and_strict_serviceability() 
         qualified_serviceability_acceptance_acknowledged=True,
     )
     assert result.reinforcement.flexure.factored_moment_knm == 11.25
+    assert (
+        result.reinforcement.flexure.status
+        is OneWaySlabFlexureStatus.COMPLETE_WORKFLOW_CHECKS_COMPOSED
+    )
+    assert (
+        result.reinforcement.detailing.input.flexure_result.status
+        is OneWaySlabFlexureStatus.COMPLETE_WORKFLOW_CHECKS_COMPOSED
+    )
+    serialized_limitations = (
+        result.reinforcement.flexure.limitations
+        + result.reinforcement.detailing.limitations
+    )
+    assert not any("pending" in item.lower() for item in serialized_limitations)
+    assert not any(
+        "shear design is pending" in item.lower() for item in serialized_limitations
+    )
     assert result.shear.is_safe_without_shear_reinforcement is True
     assert result.serviceability.is_satisfied is True
     assert result.complete_engineering_design_approved is False

@@ -14,17 +14,15 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any, TypeVar
 
-from structural_lib.codes.is456 import compliance, serviceability, slenderness
-from structural_lib.codes.is456.beam import detailing
+from structural_lib.codes.is456 import compliance, slenderness
+from structural_lib.codes.is456.beam import detailing, serviceability
 from structural_lib.codes.is456.beam.shear import enhanced_shear_strength
 from structural_lib.codes.is13920 import beam as ductile
 from structural_lib.core.data_types import (
     ComplianceCaseResult,
     ComplianceReport,
     CrackWidthParams,
-    CrackWidthResult,
     DeflectionParams,
-    DeflectionResult,
 )
 from structural_lib.core.inputs import BeamInput
 from structural_lib.insights import cost_optimization, design_suggestions
@@ -901,7 +899,7 @@ def check_deflection_span_depth(
     mf_tension_steel: float | None = None,
     mf_compression_steel: float | None = None,
     mf_flanged: float | None = None,
-) -> DeflectionResult:
+) -> serviceability.DeflectionResult:
     """Check deflection using span/depth ratio (Level A).
 
     Args:
@@ -938,7 +936,7 @@ def check_crack_width(
     epsilon_m: float | None = None,
     fs_service_nmm2: float | None = None,
     es_nmm2: float = 200000.0,
-) -> CrackWidthResult:
+) -> serviceability.CrackWidthResult:
     """Check crack width using an Annex-F-style estimate.
 
     Args:

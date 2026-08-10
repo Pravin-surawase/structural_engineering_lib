@@ -355,8 +355,8 @@ def design_two_way_slab_panel(
             "not_applicable_to_supported_beam_or_wall_supported_udl_panel"
         ),
         held_scope=(
-            "Built-in coefficient lookup and interpolation are held.",
             "Direct deflection and crack-width calculations are held.",
+            "Automatic slab shear reinforcement design is held.",
             "Openings, concentrated loads, irregular geometry, and FEM are held.",
             "Flat slabs, drops, column strips, and punching shear require separate approval.",
         ),

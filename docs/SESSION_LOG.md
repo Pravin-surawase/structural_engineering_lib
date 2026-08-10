@@ -5,6 +5,128 @@
 
 ---
 
+## 2026-08-10 — Session: IS456-SLAB-001A Workflow Truth and React Closeout
+
+**Agent:** Codex (`structural-engineer`)
+**Branch:** `codex/is456-slabs-closeout`
+**Focus:** Correct complete-workflow semantics and close the existing common-case
+React slab editor/reviewer without adding slab formulas or flat-slab scope
+
+### Summary
+
+- Preserved compatibility-route arithmetic while making complete one-way results
+  report composed detailing, reviewed span/depth serviceability, and ordinary
+  one-way shear instead of obsolete pending-P8 claims.
+- Removed the false built-in-coefficient hold from complete two-way results and
+  made their serviceability dependency reflect the check already evaluated by
+  the service wrapper.
+- Added continuous Table 12/13 action-location controls, physical two-way edge/
+  corner controls, coefficient provenance, reinforcement/check dispositions,
+  strip widths, per-corner torsion, truthful holds, and explicit redesign/review
+  outcomes to the existing React slab workbench. Stale-export blocking remains.
+
+### Issues encountered
+
+- Complete one-way API/passport results embedded legacy flexure/detailing records
+  that still said reinforcement, serviceability, and shear were pending.
+- Built-in two-way results simultaneously reported verified built-in coefficients
+  and serialized a hold saying built-in lookup/interpolation was unavailable.
+- The React workbench described common coefficient/topology handling but exposed
+  only fixed B02/B04 presets and summary moments; returned adequacy, torsion,
+  strip, shear, serviceability, and hold records were not reviewable.
+- The final UI audit found that the returned punching-shear disposition was not
+  rendered and the ordinary slab shear row was labeled as one-way in every mode.
+- The first focused Python run failed when the composed flexure status was copied
+  into the retained detailing input.
+- This isolated worktree initially had no React dependencies, and the ambient
+  shell selected Node 26 rather than the repository's pinned Node 24.
+- The first authorized full closeout gate stopped at 29/30 because two unrelated
+  beam serviceability return annotations disagreed with the API manifest.
+- The required read-only session-end command returned non-zero while the scoped
+  changes remained intentionally uncommitted and suggested generated index
+  updates that this lane is not authorized to make.
+- The first commit attempt was stopped by mypy because the restored qualified
+  annotations referenced result types through the deprecated compatibility shim.
+
+### Root causes and resolutions
+
+- The complete one-way wrapper reused slice-level dataclasses without replacing
+  their legacy lifecycle metadata. The wrapper now replaces the retained status
+  and limitations only after all calculations complete, including the nested
+  detailing-input copy; the direct compatibility function remains unchanged.
+- `TwoWayPanelDesignResult.held_scope` was frozen before built-in Tables 26/27
+  were implemented, and the service returned the pure-core serviceability
+  dependency unchanged. The obsolete hold was removed, the real automatic-shear
+  hold was retained, and the wrapper records completed reviewed-limit evaluation.
+- React input ownership lived entirely in numeric `EDITABLE` fields while action
+  locations and physical edges lived only in sample objects. Select controls now
+  mutate the same revisioned request, enforce the free-corner topology contract,
+  and render returned result truth rather than recomputing engineering outcomes.
+- The reviewer check list omitted the existing mode-specific punching field and
+  used a fixed one-way shear label. It now reads the top-level one-way or nested
+  two-way punching disposition, displays that boundary, and uses the accurate
+  ordinary-slab-shear label; the focused React test, lint, and build passed.
+- `OneWaySlabDetailingInput.__post_init__` accepted only the pre-composition
+  status even though the calculation validator separately enforces that status
+  before detailing. The retained carrier now accepts both recognized lifecycle
+  states; the calculation validator remains strict. The focused rerun passed.
+- Installed the pinned lockfile dependencies only in this ignored worktree and
+  used `./run.sh frontend runtime` to select Node 24 for focused tests, lint,
+  TypeScript, and production build. No other worktree was changed.
+- Git history confirmed that slab-lineage commit `7bb1512f` changed
+  `check_crack_width` and `check_deflection_span_depth` from the origin/main
+  module-qualified return annotations to imported unqualified symbols, without
+  updating the API manifest. Under the orchestrator's one-path authorization,
+  `beam_api.py` now restores `serviceability.CrackWidthResult` and
+  `serviceability.DeflectionResult` and removes the two unnecessary imports.
+  The generated manifest remains untouched; the narrow manifest check provides
+  direct proof of the repaired public signature.
+- The branch's direct core-result imports had masked that `beam_api.py` still
+  imported `serviceability` through a wildcard compatibility shim whose static
+  interface does not expose `DeflectionResult` or `CrackWidthResult`. The same
+  authorized file now imports the canonical beam serviceability module directly;
+  runtime behavior and manifest spelling are unchanged, while mypy can resolve
+  both qualified annotations.
+- `./run.sh session end --agent structural-engineer` reported that handoff,
+  session-log, link, and governance checks all passed, then returned non-zero
+  because 13 intended files were still uncommitted and folder indexes could be
+  refreshed. This is the expected pre-commit state after the green gates, and
+  generated indexes are an explicit non-owned surface, so no index was mutated.
+
+### Verification
+
+- Focused slab calculations and capability semantics: passed.
+- Focused slab FastAPI transport: 5 passed, 12 deselected.
+- Focused React slab workbench: 5 passed.
+- `./run.sh frontend check`: lint, 244 React tests, TypeScript, and production
+  build passed.
+- `./run.sh check --quick`: 10/10 passed.
+- Initial `./run.sh check`: 29/30 passed; only the beam API-manifest signature
+  mismatch introduced at `7bb1512f` failed before the authorized reversal.
+- `./scripts/python_runtime.sh scripts/generate_api_manifest.py --check`: passed
+  after the module-qualified return annotations were restored; the manifest was
+  not regenerated or edited.
+- Post-repair `./run.sh check --quick`: 10/10 passed.
+- Post-repair `./run.sh check`: 30/30 passed, including API manifest, API
+  contracts, API validation, type annotations, and OpenAPI snapshot.
+- The first commit attempt was correctly blocked by the mypy hook on the
+  compatibility-shim type surface; after importing the canonical beam module,
+  the exact hook command passed with no issues in 191 source files. The narrow
+  manifest check, final quick gate (10/10), and final full gate (30/30) then all
+  passed against the corrected source state.
+- `./run.sh session end --agent structural-engineer`: handoff, session-log,
+  links, and governance passed; command exited 1 on the intentional uncommitted
+  13-file state and non-owned index-refresh suggestion.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: the isolated worktree lacked `react_app/node_modules`, and
+  ambient `npm ci` reported Node 26 against the required Node 24 engine -> local
+  lockfile dependencies were installed, `./run.sh frontend runtime` resolved
+  Node 24.19.0/npm 11.17.0, and all frontend acceptance checks ran on that runtime.
+
+---
+
 ## 2026-08-10 — Session: IS 456 Solid Slabs Implementation Closeout
 
 **Agent:** Codex

@@ -1090,3 +1090,26 @@ revision identity and disables passport export after inputs become stale.
 Final acceptance still requires focused and repository-wide gates plus this
 session's issue/root-cause record. Flat slabs remain under FS0 and are not
 authorized by this checkpoint.
+
+## 19. IS456-SLAB-001A workflow-truth and React closeout
+
+The closeout keeps all compatibility-route arithmetic unchanged while correcting
+the semantics serialized by complete workflows. A complete one-way result now
+marks its retained flexure/detailing records as composed and removes obsolete
+claims that reinforcement, serviceability, or shear remain pending. Complete
+two-way workflows retain actual coefficient provenance and no longer describe
+implemented built-in lookup/interpolation as held; their returned serviceability
+dependency records that the reviewed-limit check was evaluated by the wrapper.
+
+The existing React workbench now exposes the supported Table 12/13 action
+locations and physical two-way edge/corner topology. Its review surface displays
+coefficient source/case/interpolation bounds, provided-reinforcement adequacy,
+strip widths, each corner-torsion zone, shear and serviceability dispositions,
+and truthful remaining holds. Inadequate or exceeded checks produce a redesign/
+qualified-review outcome. Revision-bound results and stale-export blocking remain
+unchanged.
+
+This closeout adds no slab formula, analysis method, element type, or professional
+approval claim. Direct deflection, crack width, automatic slab shear
+reinforcement, irregular/concentrated-load panels, flat slabs, column-supported
+punching, and the other Section 3.4 non-goals remain held.

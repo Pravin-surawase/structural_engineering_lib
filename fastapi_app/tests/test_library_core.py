@@ -119,6 +119,44 @@ def test_one_way_slab_endpoint_rejects_two_way_geometry(client):
     assert response.json()["success"] is False
 
 
+def test_complete_one_way_slab_endpoint_serializes_composed_workflow_truth(client):
+    response = client.post(
+        "/api/v1/design/slab/one-way/complete",
+        json={
+            "short_effective_span_mm": 3000,
+            "long_effective_span_mm": 7500,
+            "thickness_mm": 150,
+            "d_mm": 125,
+            "factored_area_load_kn_per_m2": 10,
+            "fck_n_per_mm2": 20,
+            "fy_n_per_mm2": 415,
+            "main_bar_diameter_mm": 10,
+            "main_bar_spacing_mm": 250,
+            "distribution_bar_diameter_mm": 8,
+            "distribution_bar_spacing_mm": 250,
+            "reviewed_base_span_depth_limit": 20,
+            "reviewed_aggregate_modification_factor": 1.2,
+            "serviceability_limit_source_reference": "IS456_CL23_REVIEWED",
+            "serviceability_limit_source_is_approved": True,
+            "qualified_serviceability_acceptance_reference": "review:B01-SLS",
+            "qualified_serviceability_acceptance_acknowledged": True,
+        },
+    )
+    assert response.status_code == 200, response.json()
+    data = _unwrap(response)
+    assert (
+        data["reinforcement"]["flexure"]["status"]
+        == "complete_workflow_checks_composed"
+    )
+    serialized_limitations = (
+        data["reinforcement"]["flexure"]["limitations"]
+        + data["reinforcement"]["detailing"]["limitations"]
+    )
+    assert not any("pending" in item.lower() for item in serialized_limitations)
+    assert data["shear"]["status"] == "concrete_capacity_satisfied"
+    assert data["serviceability"]["status"] == "satisfied_with_reviewed_limit"
+
+
 def _continuous_slab_payload(**overrides):
     payload = {
         "short_effective_span_mm": 3000,
@@ -307,6 +345,12 @@ def test_builtin_two_way_endpoint_resolves_table_26_case_4(client):
     assert coefficients["case_id"] == "table_26_case_4"
     assert coefficients["method"] == "built_in_exact"
     assert data["panel"]["coefficient_correctness_verified_by_library"] is True
+    assert data["panel"]["serviceability_dependency"] == (
+        "evaluated_by_composed_workflow_with_reviewed_limit_carrier"
+    )
+    assert not any(
+        "built-in coefficient" in item.lower() for item in data["panel"]["held_scope"]
+    )
 
 
 def test_library_core_pydantic_422_uses_standard_envelope(client):
