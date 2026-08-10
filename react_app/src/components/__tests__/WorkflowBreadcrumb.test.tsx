@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { WorkflowBreadcrumb } from '../ui/WorkflowBreadcrumb';
+import { useWorkspaceStore } from '../../workspace/workspaceStore';
 
 // Mock react-router-dom
 const mockNavigate = vi.fn();
@@ -21,6 +22,7 @@ vi.mock('../../store/importedBeamsStore', () => ({
 beforeEach(() => {
   mockNavigate.mockClear();
   mockBeams.length = 0;
+  useWorkspaceStore.getState().reset();
 });
 
 describe('WorkflowBreadcrumb', () => {
@@ -70,5 +72,19 @@ describe('WorkflowBreadcrumb', () => {
     expect(results).toBeDisabled();
     fireEvent.click(results);
     expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
+  it('unlocks results when the revisioned workspace completes design', () => {
+    mockBeams.push({ id: 'B1', ast_required: 500 });
+    mockUseLocation.mockReturnValue({ pathname: '/editor' });
+    useWorkspaceStore.getState().createProject('project-1', 'Project 1');
+    useWorkspaceStore.getState().setStage('results');
+
+    render(React.createElement(WorkflowBreadcrumb));
+
+    const results = screen.getByRole('button', { name: /results/i });
+    expect(results).not.toBeDisabled();
+    fireEvent.click(results);
+    expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
   });
 });

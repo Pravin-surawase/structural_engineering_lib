@@ -76,13 +76,19 @@ function projectExportRows(
 
 export function DashboardPage() {
   const navigate = useNavigate();
-  const { beams } = useImportedBeamsStore();
+  const { beams, restoreFromWorkspace } = useImportedBeamsStore();
   const workspaceSnapshot = useWorkspaceStore((state) => state.snapshot);
   const dashboard = useDashboardInsights();
   const boq = useProjectBOQ();
 
   const { mutate: exportBuilding, isPending: exportPending } = useExportBuildingSummary();
   const exportReadiness = projectExportReadiness(workspaceSnapshot);
+
+  useEffect(() => {
+    if (beams.length === 0 && workspaceSnapshot?.members.length) {
+      restoreFromWorkspace(workspaceSnapshot);
+    }
+  }, [beams.length, restoreFromWorkspace, workspaceSnapshot]);
 
   // Auto-fetch dashboard when beams are available
   useEffect(() => {

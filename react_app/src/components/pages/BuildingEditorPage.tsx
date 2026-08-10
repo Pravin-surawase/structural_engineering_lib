@@ -88,6 +88,7 @@ export function BuildingEditorPage() {
   } = useImportedBeamsStore();
   const workspaceSnapshot = useWorkspaceStore((state) => state.snapshot);
   const workspaceProjectId = workspaceSnapshot?.projectId;
+  const workspaceStage = workspaceSnapshot?.selectedStage;
   const workspaceLoadState = useWorkspaceStore((state) => state.loadState);
   const workspaceLoadError = useWorkspaceStore((state) => state.loadError);
   const [sidebarClosedForId, setSidebarClosedForId] = useState<string | null>(null);
@@ -106,10 +107,10 @@ export function BuildingEditorPage() {
   }, [beams.length, restoreFromWorkspace, workspaceSnapshot]);
 
   useEffect(() => {
-    if (workspaceProjectId) {
+    if (workspaceProjectId && workspaceStage === "import") {
       useWorkspaceStore.getState().setStage("review");
     }
-  }, [workspaceProjectId]);
+  }, [workspaceProjectId, workspaceStage]);
 
   // Global material settings
   const [globalFck, setGlobalFck] = useState(25);

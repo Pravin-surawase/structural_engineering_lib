@@ -133,6 +133,30 @@ class TestSSEBatchDesign:
             result_count >= 3
         ), f"Expected at least 3 design_result events, got {result_count}"
 
+    def test_batch_design_post_accepts_maintained_sample_size(self):
+        """Large browser batches use a body so the request target stays bounded."""
+        client = TestClient(app)
+        beams = [
+            {
+                "beam_id": f"B{index}",
+                "width": 300,
+                "depth": 500,
+                "moment": 100,
+                "shear": 50,
+                "fck": 25,
+                "fy": 500,
+            }
+            for index in range(153)
+        ]
+
+        with client.stream("POST", "/stream/batch-design", json=beams) as response:
+            events = list(response.iter_lines())
+
+        assert response.status_code == 200
+        assert len(self._event_data(events, "design_result")) == 153
+        complete = self._event_data(events, "complete")[0]
+        assert complete["completed"] == 153
+
     def test_batch_design_invalid_json(self):
         """Test batch design with invalid JSON."""
         client = TestClient(app)

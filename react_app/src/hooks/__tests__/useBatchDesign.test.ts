@@ -120,6 +120,26 @@ describe('useBatchDesign', () => {
     expect(result.current.progress.total).toBe(2);
   });
 
+  it('posts a maintained-size batch instead of placing it in the request URL', () => {
+    const fetchMock = vi.fn<
+      (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
+    >(() => new Promise<Response>(() => {}));
+    vi.stubGlobal('fetch', fetchMock);
+    const { result } = renderHook(() => useBatchDesign());
+    const beams = Array.from({ length: 153 }, (_, index) => mockBeam(`B-${index}`));
+
+    act(() => {
+      result.current.startBatchDesign(beams);
+    });
+
+    expect(MockEventSource.instances).toHaveLength(0);
+    expect(fetchMock).toHaveBeenCalledOnce();
+    const [url, options] = fetchMock.mock.calls[0];
+    expect(String(url)).toMatch(/\/stream\/batch-design$/);
+    expect(options).toMatchObject({ method: 'POST' });
+    expect(JSON.parse(String(options?.body))).toHaveLength(153);
+  });
+
   it('handles start event with job_id', () => {
     const { result } = renderHook(() => useBatchDesign());
 

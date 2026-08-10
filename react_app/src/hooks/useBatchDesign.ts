@@ -80,6 +80,83 @@ interface ActiveBatchRun {
   receivedMemberIds: Set<string>;
 }
 
+const SAFE_EVENT_SOURCE_URL_LENGTH = 7_000;
+
+type BatchStreamHandler = (event: MessageEvent) => void;
+
+/** EventSource-compatible POST transport for payloads too large for a request URL. */
+class PostBatchEventStream {
+  private readonly controller = new AbortController();
+  private readonly listeners = new Map<string, Set<BatchStreamHandler>>();
+  private closed = false;
+
+  constructor(beams: unknown[]) {
+    void this.connect(beams);
+  }
+
+  addEventListener(event: string, handler: BatchStreamHandler): void {
+    const handlers = this.listeners.get(event) ?? new Set<BatchStreamHandler>();
+    handlers.add(handler);
+    this.listeners.set(event, handlers);
+  }
+
+  close(): void {
+    this.closed = true;
+    this.controller.abort();
+  }
+
+  private dispatch(event: string, data = ''): void {
+    for (const handler of this.listeners.get(event) ?? []) {
+      handler({ data } as MessageEvent);
+    }
+  }
+
+  private consumeBlock(block: string): void {
+    let event = 'message';
+    const data: string[] = [];
+    for (const line of block.split('\n')) {
+      if (line.startsWith('event:')) event = line.slice(6).trim();
+      if (line.startsWith('data:')) data.push(line.slice(5).trimStart());
+    }
+    if (data.length > 0) this.dispatch(event, data.join('\n'));
+  }
+
+  private async connect(beams: unknown[]): Promise<void> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/stream/batch-design`, {
+        method: 'POST',
+        headers: {
+          Accept: 'text/event-stream',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(beams),
+        signal: this.controller.signal,
+      });
+      if (!response.ok || !response.body) throw new Error(`Batch stream returned ${response.status}`);
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      while (!this.closed) {
+        const { done, value } = await reader.read();
+        buffer = (buffer + decoder.decode(value, { stream: !done })).replaceAll('\r\n', '\n');
+        let boundary = buffer.indexOf('\n\n');
+        while (boundary >= 0) {
+          this.consumeBlock(buffer.slice(0, boundary));
+          buffer = buffer.slice(boundary + 2);
+          boundary = buffer.indexOf('\n\n');
+        }
+        if (done) break;
+      }
+      if (!this.closed && buffer.trim()) this.consumeBlock(buffer.trim());
+    } catch (error) {
+      if (!this.closed && !(error instanceof DOMException && error.name === 'AbortError')) {
+        this.dispatch('error');
+      }
+    }
+  }
+}
+
 function uniqueId(prefix: string): string {
   return `${prefix}-${crypto.randomUUID()}`;
 }
@@ -157,7 +234,7 @@ export function useBatchDesign() {
     duration: null,
   });
 
-  const eventSourceRef = useRef<EventSource | null>(null);
+  const eventSourceRef = useRef<{ close: () => void } | null>(null);
   const activeRunRef = useRef<ActiveBatchRun | null>(null);
 
   const closeActiveRun = useCallback((
@@ -288,7 +365,10 @@ export function useBatchDesign() {
     activeRunRef.current = run;
 
     const beamsJson = encodeURIComponent(JSON.stringify(beamParams));
-    const es = new EventSource(`${API_BASE_URL}/stream/batch-design?beams=${beamsJson}`);
+    const eventSourceUrlLength = `${API_BASE_URL}/stream/batch-design?beams=${beamsJson}`.length;
+    const es = eventSourceUrlLength <= SAFE_EVENT_SOURCE_URL_LENGTH
+      ? new EventSource(`${API_BASE_URL}/stream/batch-design?beams=${beamsJson}`)
+      : new PostBatchEventStream(beamParams);
     eventSourceRef.current = es;
 
     setState({
