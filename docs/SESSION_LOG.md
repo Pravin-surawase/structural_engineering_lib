@@ -9,7 +9,7 @@
 
 **Agent:** Codex
 **Branch:** `codex/footing-isolated-v1`
-**Focus:** Correct isolated-footing depth validation and directional one-way-shear inputs
+**Focus:** Correct footing inputs and add concentric isolated-footing service orchestration
 
 ### Summary
 
@@ -19,6 +19,10 @@
   the legacy scalar input as a backward-compatible fallback.
 - Preserved the existing footing public functions and verified the focused
   footing, core/public-contract, and FastAPI capability baselines.
+- Added a fail-closed service for concentric square/rectangular isolated
+  footings with explicit service/factored actions, external allowable-pressure
+  provenance, deterministic uniform-depth selection, structural checks,
+  approved-A1 load transfer, and qualified-review/detailing HOLD boundaries.
 
 ### Issues encountered
 
@@ -32,6 +36,16 @@
   closed.
 - The first commit attempt stopped at Ruff C408 because one new test fixture
   used `dict(...)` where the repository requires a literal.
+- Failed depth candidates initially populated the top-level flexure, one-way
+  shear, punching, and directional-pt fields even when no passing depth was
+  selected, making the last failed candidate look like a maintained result.
+- Initial service provenance omitted the Table 19 basis for directional shear
+  screening and Cl. 34.3.1 for rectangular-footing central-band distribution.
+- The worktree has no local `.venv`; a direct runtime probe through the shared
+  wrapper initially resolved the installed package instead of the untracked
+  worktree module.
+- A normal import-following single-file mypy probe traversed unrelated existing
+  `core/models.py` property-decorator errors and optional `weasyprint` typing.
 
 ### Root causes and resolutions
 
@@ -46,9 +60,21 @@
   negative before the IS 456 Table 19 lookup.
 - The test fixture was rewritten as a dictionary literal; the commit hooks were
   rerun without bypassing validation.
+- Selected-result variables are now assigned only inside the passing-candidate
+  branch. Exhausted ranges retain status, utilizations, and reasons solely in
+  `depth_candidates`; all top-level selected-result fields remain empty.
+- Provenance now identifies Cl. 34.2.3.1 with Cl. 34.3.1 and identifies
+  Cl. 34.2.4.1(a) with IS 456 Table 19, explicitly describing required
+  directional `pt` as conservative screening pending provided detailing.
+- Direct worktree probes use
+  `PYTHONPATH="$PWD/Python" ./scripts/python_runtime.sh ...`; owned isolated
+  typing evidence uses `mypy --follow-imports=skip`, leaving unrelated shared
+  typing findings untouched.
 - Evidence: the 182-case footing/core/public-contract matrix passed, the
   12-test FastAPI library-core/capability baseline passed, the 4-case footing
-  contract selection passed, and `git diff --check` passed.
+  contract selection passed, the 167-case B1/core/load-transfer matrix passed,
+  Black/Ruff and the isolated mypy gate passed, the architecture scan checked
+  143 files with zero violations, and `git diff --check` passed.
 
 ---
 
