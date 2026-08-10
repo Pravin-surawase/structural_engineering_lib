@@ -7,20 +7,20 @@ created: 2026-08-10
 last_updated: 2026-08-10
 doc_type: spec
 baseline_commit: 32b9f33b204f5175efdf0d3e8d4d99e3634cf46c
-branch: codex/ui-workbench-session-1
+branch: codex/ui-quick-design-p4
 implementation_started: true
 second_audit_integrated: true
 execution_sessions: 2
 max_concurrent_subagents: 2
 subagent_model: gpt-5.6-terra
 owner_accepted: 2026-08-10
-current_session: 1
-current_wave: 1
+current_session: 2
+current_wave: 0
 ---
 
 **Type:** Master Plan
 **Audience:** Product owner, frontend, backend, API, structural-library, 3D, reviewer, and tester roles
-**Status:** Active — Session 1 P0-P3 accepted; P4 quick-design migration ready
+**Status:** Active — Session 1 P0-P8 accepted; Session 2 P9 is next
 **Importance:** Critical
 **Created:** 2026-08-10
 **Last Updated:** 2026-08-10
@@ -61,10 +61,10 @@ acceptance. The program does not change IS 456 formulas merely to serve the UI.
 
 The repository owner accepted this document on 2026-08-10. It is the execution
 authority for UIX-001. Planning and Terra routing merged to `main` through PR
-#718. The fresh branch `codex/ui-workbench-session-1` owns Session 1; Session 2
-uses another fresh branch after the Session 1 verified green merge. Execution
-remains exactly two implementation sessions under sections 12 and 16.1; the
-already-merged planning branch does not count as an implementation session.
+#718. Session 1 finished on `codex/ui-quick-design-p4`; Session 2 uses another
+fresh branch after the Session 1 verified green merge. Execution remains exactly
+two implementation sessions under sections 12 and 16.1; the already-merged
+planning branch does not count as an implementation session.
 
 It supersedes the execution status in
 `docs/planning/react-ux-improvement-plan.md`, while preserving that document as
@@ -1881,8 +1881,8 @@ these tables only after the parent reviews evidence.
 
 | Macro session | Scope | State | Required exit |
 |---|---|---|---|
-| Session 1 | P0-P8 compact workbench and essential 3D | P2/P3 accepted; P4 ready | Session 1 exit gate in section 12.2 |
-| Session 2 | P9-P15 capability platform and cutover | Blocked on Session 1 | Session 2 exit gate in section 12.3 |
+| Session 1 | P0-P8 compact workbench and essential 3D | Accepted | Session 1 exit gate in section 12.2 |
+| Session 2 | P9-P15 capability platform and cutover | Ready after Session 1 green merge | Session 2 exit gate in section 12.3 |
 
 | Session | Packet | State | Evidence/commit | Notes |
 |---|---|---|---|---|
@@ -1890,11 +1890,11 @@ these tables only after the parent reviews evidence.
 | 1 | P1 | Accepted | Section 22 | Route map, targets, and three-width wireframes frozen |
 | 1 | P2 | Accepted | `d336803c` | Live shell and typed navigation; three-width reachability and lazy-delivery browser gates pass |
 | 1 | P3 | Accepted | `c270b6c1`, `0ccda406` | Durable revisioned state, recovery, autosave, and multi-tab conflict integration pass |
-| 1 | P4 | Ready | P2/P3 handoff | Quick-design migration is the next bounded packet |
-| 1 | P5 | Not started | — | Project intake/review |
-| 1 | P6 | Not started | — | Project design/results/export |
-| 1 | P7 | Ready | Current branch | Two-frame GeometrySpaceV1 fixture implemented; viewport decomposition not started |
-| 1 | P8 | Blocked on P6/P7 | — | Essential 3D layers require revision-matched result truth |
+| 1 | P4 | Accepted | `2314bb1f` | Quick design is latest-request-wins and revision safe |
+| 1 | P5 | Accepted | `616666f7` | Imported-project identity and durable resume are preserved |
+| 1 | P6 | Accepted | `d56eae7c`, `322648f9` | Batch results, stage progression, dashboard, BOQ, and export are revision bound |
+| 1 | P7 | Accepted | `024002ca` | GeometrySpaceV1 adapter and viewport decomposition preserve behavior |
+| 1 | P8 | Accepted | `024002ca`, `bb5e8958` | Inspection, responsive fallback, resource metrics, and browser gates pass |
 | 2 | P9 | Not started | — | Workflow catalogue |
 | 2 | P10 | Not started | — | Catalogue API |
 | 2 | P11 | Not started | — | React schema vertical slice |
@@ -2264,13 +2264,52 @@ it. Future parallel UI work must retain disjoint worktrees and path ownership.
   save, reload/load, conflict notification, and deletion. The synthetic proof
   project was removed after validation.
 
-P4 is now ready against these accepted contracts. P5/P6 remain unstarted: the
-existing imported-project adapter has not yet proved full project resume or
-revision-matched project results/exports. P7 is ready for a separate bounded
-decomposition packet; P8 remains blocked on P6 revision truth and P7. Wave 2
-remains blocked on the P4 checkpoint and the later P5/P6 project-result handoff.
-No parallel worker owns App.tsx, shared contracts, stores, API client, public
-viewport contract, or this ledger without a fresh disjoint packet.
+P4-P8 are accepted in section 22.11. Session 2 remains a fresh-branch packet and
+must not begin until the Session 1 reviewed head is merged green. No parallel
+worker owns App.tsx, shared contracts, stores, API client, public viewport
+contract, or this ledger without a fresh disjoint packet.
+
+### 22.11 Accepted Session 1 P4-P8 closeout evidence
+
+The parent accepted P4-P8 after integrated diff review, focused negative cases,
+maintained-browser UAT, and repository gates. Session 1 retains logically
+separable commits for quick design, import identity, project evidence, viewport
+decomposition, inspection, and the final live-workflow root-cause repairs.
+
+- P4 binds quick-design responses and exports to the exact input revision;
+  cancelled, delayed, and superseded responses cannot become current.
+- P5 preserves source/project identity through import, IndexedDB recovery, and
+  route reload. P6 settles every member against its request, input, member, and
+  project revision before enabling dashboard, BOQ, or export.
+- The live 153-member batch exposed HTTP 431 because the former EventSource GET
+  serialized the whole batch into a 60 KB request target. Large batches now use
+  a JSON-body POST while retaining the same SSE event contract; the maintained
+  sample settles 153/153 PASS and enables a current-revision 11,330-byte CSV.
+- The same live pass found that route position overrode durable stage truth, the
+  editor downgraded a restored results workspace to review, and the dashboard
+  did not restore its compatibility rows. Navigation now derives completion
+  from `WorkspaceSnapshotV1`, never regresses a later stage, and restores the
+  153-member results/dashboard/BOQ after a direct reload.
+- P7 freezes GeometrySpaceV1 source IDs, axes, units, and schema, fails closed on
+  malformed/mismatched detail geometry, and decomposes the previous monolithic
+  viewport without changing the public adapter. P8 synchronizes grid and 3D
+  selection, floor/frame filtering, isolate, fit, status/utilization legend,
+  deterministic camera, and non-WebGL DOM inspection.
+- Chromium production UAT passed 1440, 1024, and 390 px with no horizontal
+  clipping. The mobile control tray stays collapsed until requested while the
+  critical selection and status overlay remains visible. Safari completed the
+  desktop sample/editor smoke; exact responsive-width authority remains
+  Chromium until Safari responsive automation is available.
+- WebGL context loss exposed a truthful interruption state while DOM inspection
+  remained available, then recovered one canvas. Five route cycles retained one
+  canvas, 155 draw calls, 165 geometries, four textures, and returned to a
+  27.4 MB heap after idle collection. The deterministic 1,530-member fixture
+  remained interactive at 117.3 ms load-to-usable, 14.8 ms average frame time,
+  1,226 draw calls, 1,236 geometries, and four textures.
+- Validation passed 222 React tests, 374 FastAPI tests, React lint and production
+  build, `./run.sh frontend check`, the 10/10 quick gate, and the integrated full
+  repository gate. Optional loads/dimensions/comparison layers, Firefox support,
+  GitHub Pages, release actions, and professional-use claims remain held.
 
 ## 23. Immediate kickoff checklist
 

@@ -4,20 +4,20 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: UIX-001 Session 1 P2/P3 accepted; P4 quick-design migration ready
+- Focus: UIX-001 Session 1 P0-P8 accepted; prepare fresh Session 2 P9 packet
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
 
-**Branch:** codex/ui-workbench-session-1
+**Branch:** codex/ui-quick-design-p4
 
-**Base:** origin/main at 32b9f33b
+**Base:** origin/main at c10ac736
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | UIX-001 P4 | Migrate quick design onto the accepted workbench and latest-request-wins contracts |
-| **Next** | UIX-001 P5/P6 | Connect project intake, design, results, and export to durable revision truth |
+| **Current** | UIX-001 P9 | Start the capability catalogue on a fresh Session 2 branch from updated main |
+| **Next** | UIX-001 P10 | Expose the accepted catalogue through the thin API contract |
 | **Held** | Stable/engineering use | Requires cumulative qualified structural-engineering review |
 
 ## Required Reading
@@ -45,27 +45,27 @@
   maintained runtime.
 - No GitHub Pages deployment or release action was performed.
 
-## Session 1 Wave 1 checkpoint
+## Session 1 accepted closeout
 
-Wave 0 and the P2/P3 foundation checkpoint are accepted in master-plan section
-22. P2 provides the live two-destination shell, typed four-stage project
-navigation, restrained landing route, responsive reachability, and lazy heavy
-visualization delivery. P3 provides WorkspaceSnapshotV1, exact revision-bound
-evidence, fail-closed migration, atomic IndexedDB persistence and recovery,
-undo/revert invalidation, autosave, and multi-tab conflict detection. The
-AbortSignal-aware REST facade and two-frame GeometrySpaceV1 fixture are also in
-place.
+Master-plan section 22 now accepts P0-P8. Quick design is latest-request-wins;
+imported projects preserve stable source identity; batch evidence, dashboard,
+BOQ, and export are revision bound; and the decomposed viewport provides
+selection, filtering, fit/isolate, truthful status/utilization, deterministic
+camera behavior, and non-WebGL inspection.
 
-1. **P4:** connect quick design to the accepted latest-request coordinator and
-   workspace lifecycle; cancelled, delayed, and edit-stale responses must not
-   become current or exportable.
-2. **P5/P6:** remain out of the P4 packet. Imported-project resume and complete
-   project result/export parity are not yet accepted.
-3. **P7:** the frame fixture is ready; viewport decomposition remains separate.
-4. **Checkpoint evidence:** 197 React tests, lint, production build, and the
-   canonical quick gate pass. Chromium UAT passed at 1440, 1024, and 390 px and
-   proved real IndexedDB save/reload/delete plus BroadcastChannel conflict
-   notification without leaving synthetic data.
+The final live pass fixed three coupled root causes. Large EventSource GET URLs
+hit HTTP 431 at the maintained 153-member sample, so large batches now stream
+from a JSON-body POST. Project navigation now follows durable workspace stage
+truth instead of route position, and results/dashboard reload restores the
+workspace without downgrading it to review. The live sample settles 153/153 PASS,
+reloads the dashboard and BOQ, and produces a current-revision CSV.
+
+Closeout evidence: 222 React tests, 374 FastAPI tests, React lint/build,
+`./run.sh frontend check`, quick 10/10, and the integrated full gate pass.
+Chromium production UAT passed 1440/1024/390 px, context loss/recovery, five
+resource-stable route cycles, and an interactive 1,530-member fixture. Safari
+desktop smoke passed; exact responsive authority remains Chromium. No GitHub
+Pages, release, tag, package publication, or professional-use action occurred.
 
 ## Open dependency holds
 

@@ -16326,7 +16326,7 @@
     },
     "/stream/batch-design": {
       "get": {
-        "description": "Stream batch beam design results.\n\nAccepts JSON array of beam parameters and streams results as they complete.\n\nEvents:\n    - start: Job started with job_id and total count\n    - progress: Current progress (completed/total)\n    - design_result: Individual beam result\n    - error: Individual beam error\n    - complete: All beams processed\n\nExample:\n    ```javascript\n    const beams = JSON.stringify([\n        {width: 300, depth: 500, moment: 100, fck: 25, fy: 500},\n        {width: 300, depth: 500, moment: 150, fck: 25, fy: 500}\n    ]);\n    const es = new EventSource(`/stream/batch-design?beams=${encodeURIComponent(beams)}`);\n\n    es.addEventListener('design_result', (e) => {\n        const result = JSON.parse(e.data);\n        console.log('Beam completed:', result);\n    });\n\n    es.addEventListener('complete', (e) => {\n        console.log('All done!');\n        es.close();\n    });\n    ```",
+        "description": "Stream a small legacy batch supplied through the query string.",
         "operationId": "stream_batch_design_stream_batch_design_get",
         "parameters": [
           {
@@ -16357,6 +16357,44 @@
           }
         },
         "summary": "Stream Batch Design",
+        "tags": [
+          "streaming"
+        ]
+      },
+      "post": {
+        "description": "Stream a batch from a request body without request-target size limits.",
+        "operationId": "stream_batch_design_post_stream_batch_design_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Beams",
+                "type": "array"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Stream Batch Design Post",
         "tags": [
           "streaming"
         ]

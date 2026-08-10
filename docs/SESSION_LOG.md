@@ -5,6 +5,59 @@
 
 ---
 
+## 2026-08-10 — Session: UIX-001 Session 1 P4-P8 Closeout
+
+**Agent:** Codex
+**Branch:** `codex/ui-quick-design-p4`
+**Focus:** Finish the revision-safe workbench and authoritative 3D inspection, then close Session 1 from maintained browser evidence
+
+### Summary
+
+- Completed P4-P8 as separable commits: latest-request-wins quick design,
+  durable imported-project identity, revision-bound project evidence, and the
+  decomposed GeometrySpaceV1 viewport with synchronized inspection.
+- Fixed the live 153-member batch at its root. EventSource encoded the whole
+  batch into a 60 KB request target and received HTTP 431; large batches now use
+  a JSON-body POST while preserving the SSE event contract and legacy small GET.
+- Fixed the coupled project-resume causes: workflow progress now derives from
+  durable workspace stage truth, editor reload cannot regress results to review,
+  and dashboard reload restores the imported compatibility rows.
+- Updated the OpenAPI baseline for the intentional POST streaming surface. No
+  GitHub Pages, release, tag, package publication, or professional-use action
+  was performed.
+
+### Verification
+
+- All 222 React tests, lint, and production build pass through
+  `./run.sh frontend check`; all 374 FastAPI tests passed in the focused suite.
+- The canonical quick gate passes 10/10 and the full integrated gate passes
+  30/30, including the 64-endpoint OpenAPI snapshot.
+- Chromium production UAT passed 1440/1024/390 px, WebGL loss/recovery, five
+  resource-stable route cycles, direct results reload, and a 1,530-member stress
+  fixture. The maintained sample settled 153/153 PASS and preserved dashboard,
+  BOQ, and current-revision CSV evidence.
+- Safari desktop sample/editor smoke passed. Exact responsive-width authority
+  remains Chromium because the available Safari automation could not enter its
+  responsive-design mode.
+
+### Terminal issues
+
+- The initial live batch failed with HTTP 431; network inspection proved the
+  request-target-size cause, and the maintained POST body path fixed it.
+- A React-directory command could not find the root `.venv` or a guessed API
+  signature script; rerunning the maintained root command
+  `./scripts/python_runtime.sh scripts/check_api.py --signatures` passed.
+- The first full gate correctly rejected the stale 63-endpoint OpenAPI
+  baseline; the maintained snapshot updater recorded the reviewed POST contract,
+  after which the full gate passed 30/30.
+- The original backend stopped during live reload, so a temporary local Uvicorn
+  process completed UAT; that process and the temporary production preview were
+  stopped during closeout.
+- Read-only `session end` reported the five intentional closeout files as
+  uncommitted and exited nonzero before the chained status command; direct Git
+  inspection was used, and no broad `--fix` index rewrite was requested because
+  the canonical 30/30 gate already accepted the reviewed documents.
+
 ## 2026-08-10 — Session: LIB-IS456-C2-C4 Bounded Closeout
 
 **Agent:** Codex
