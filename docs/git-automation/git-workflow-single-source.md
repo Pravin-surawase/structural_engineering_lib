@@ -60,14 +60,16 @@ work.
 
 The following require explicit user confirmation immediately before execution:
 
-- merging a pull request;
 - closing an issue or pull request;
 - deleting a local or remote branch;
 - publishing a release or package;
 - rewriting pushed history.
 
-Required checks must pass before merge. Never use administrator bypasses,
-`--no-verify`, `--force`, or an equivalent escape hatch.
+Codex may mark an in-scope pull request ready and merge it without additional
+user confirmation when the reviewed head commit is unchanged, required checks
+pass, and there are no conflicts or unresolved blockers. Re-inspect the PR if
+its head or base changes. Never use administrator bypasses, `--no-verify`,
+`--force`, or an equivalent escape hatch.
 
 ## Local hooks
 
