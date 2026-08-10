@@ -4,20 +4,20 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: UIX-001 Session 1 Wave 0 active; implementation remains contract-gated
+- Focus: UIX-001 Session 1 P2/P3 accepted; P4 quick-design migration ready
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
 
-**Branch:** `codex/ui-experience-foundation`
+**Branch:** codex/ui-workbench-session-1
 
-**Base:** `origin/main` at `fa0ee995`
+**Base:** origin/main at 32b9f33b
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | UIX-001 Session 1 Wave 0 | Run the parent baseline and two read-only audits, then freeze shared contracts |
-| **Next** | UIX-001 Session 1 Waves 1-2 | Begin implementation only after the Wave 0 contract lock passes |
+| **Current** | UIX-001 P4 | Migrate quick design onto the accepted workbench and latest-request-wins contracts |
+| **Next** | UIX-001 P5/P6 | Connect project intake, design, results, and export to durable revision truth |
 | **Held** | Stable/engineering use | Requires cumulative qualified structural-engineering review |
 
 ## Required Reading
@@ -45,20 +45,27 @@
   maintained runtime.
 - No GitHub Pages deployment or release action was performed.
 
-## Session 1 Wave 0
+## Session 1 Wave 1 checkpoint
 
-1. **Parent:** capture the live landing, sample, quick-design, import/project,
-   result, and export journeys; classify exposed/dormant features; confirm the
-   route/IA target; produce three-width wireframes and measurable baselines.
-2. **Application-truth audit:** reconcile React clients/hooks/stores with current
-   FastAPI/OpenAPI shapes; map revisions, latest-request-wins behavior, storage,
-   status truth, and export truth. Evidence only; no edits.
-3. **3D/browser audit:** freeze source/canonical/renderer axes, units, member IDs,
-   and schema versions; capture browser, bundle, scene, fallback, and performance
-   evidence. Evidence only; no edits.
-4. **Checkpoint:** freeze the route model, workspace/result revision contract,
-   API-client approach, storage decision inputs, authoritative 3D contract,
-   essential layer list, owned paths, and P0/P1 acceptance ledger before Wave 1.
+Wave 0 and the P2/P3 foundation checkpoint are accepted in master-plan section
+22. P2 provides the live two-destination shell, typed four-stage project
+navigation, restrained landing route, responsive reachability, and lazy heavy
+visualization delivery. P3 provides WorkspaceSnapshotV1, exact revision-bound
+evidence, fail-closed migration, atomic IndexedDB persistence and recovery,
+undo/revert invalidation, autosave, and multi-tab conflict detection. The
+AbortSignal-aware REST facade and two-frame GeometrySpaceV1 fixture are also in
+place.
+
+1. **P4:** connect quick design to the accepted latest-request coordinator and
+   workspace lifecycle; cancelled, delayed, and edit-stale responses must not
+   become current or exportable.
+2. **P5/P6:** remain out of the P4 packet. Imported-project resume and complete
+   project result/export parity are not yet accepted.
+3. **P7:** the frame fixture is ready; viewport decomposition remains separate.
+4. **Checkpoint evidence:** 197 React tests, lint, production build, and the
+   canonical quick gate pass. Chromium UAT passed at 1440, 1024, and 390 px and
+   proved real IndexedDB save/reload/delete plus BroadcastChannel conflict
+   notification without leaving synthetic data.
 
 ## Open dependency holds
 
@@ -84,5 +91,16 @@
 - Updating the old UIX branch from current `main` produced documentation-only
   conflicts in `TASKS.md`, the planning indexes, and this briefing. Resolution
   retained the accepted UIX plan and current merged dependency/adoption evidence.
+- During Wave 0 another task merged the planning branch and switched the shared
+  root checkout. Work resumed only after PR #718 reached main and the dedicated
+  codex/ui-workbench-session-1 branch was created. Parallel tasks must use
+  separate worktrees and must never switch this checkout.
+- The optional agent-browser CLI was unavailable, so the maintained in-app
+  Chromium browser was used for the live three-width baseline.
+- The in-app browser does not support `networkidle`; `domcontentloaded` plus an
+  explicit meaningful-element wait produced the repeatable live timings.
+- The first 3D source inspection used the obsolete `services/geometry_3d.py`
+  assumption; targeted file discovery found the maintained module at
+  `Python/structural_lib/visualization/geometry_3d.py`.
 - The archived `scripts/generate_folder_index.py` path was replaced by the
   maintained targeted `scripts/generate_enhanced_index.py` command.

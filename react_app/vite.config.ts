@@ -42,26 +42,16 @@ export default defineConfig({
     rollupOptions: {
       maxParallelFileOps: 2,
       output: {
-        manualChunks: {
-          // Split Three.js into separate chunk (~600KB gzipped)
-          three: ['three'],
-          // React Three Fiber ecosystem
-          'react-three': [
-            '@react-three/fiber',
-            '@react-three/drei',
-          ],
-          // React core
-          react: ['react', 'react-dom'],
-          // UI framework
-          dockview: ['dockview'],
-          // AG Grid — only needed by /editor and /import routes
-          'ag-grid': [
-            '@ag-grid-community/core',
-            '@ag-grid-community/react',
-            '@ag-grid-community/client-side-row-model',
-          ],
-          // Animation library
-          'framer-motion': ['framer-motion'],
+        onlyExplicitManualChunks: true,
+        manualChunks(id) {
+          const moduleId = id.replaceAll('\\', '/');
+          if (moduleId.includes('/node_modules/three/')) return 'three';
+          if (moduleId.includes('/node_modules/@react-three/')) return 'react-three';
+          if (moduleId.includes('/node_modules/framer-motion/')) return 'framer-motion';
+          if (moduleId.includes('/node_modules/zustand/')) return 'zustand';
+          if (moduleId.includes('/node_modules/dockview/')) return 'dockview';
+          if (moduleId.includes('/node_modules/@ag-grid-community/')) return 'ag-grid';
+          return undefined;
         },
       },
     },

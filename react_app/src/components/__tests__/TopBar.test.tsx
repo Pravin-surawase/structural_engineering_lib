@@ -31,11 +31,9 @@ describe('TopBar', () => {
 
   it('renders navigation links', () => {
     render(React.createElement(TopBar));
-    expect(screen.getByText('Design')).toBeInTheDocument();
-    expect(screen.getByText('Import')).toBeInTheDocument();
-    expect(screen.getByText('Batch')).toBeInTheDocument();
-    expect(screen.getByText('Editor')).toBeInTheDocument();
-    expect(screen.getByText('Dashboard')).toBeInTheDocument();
+    expect(screen.getByText('Workbench')).toBeInTheDocument();
+    expect(screen.getByText('Projects')).toBeInTheDocument();
+    expect(screen.queryByText('Dashboard')).not.toBeInTheDocument();
   });
 
   it('renders home link pointing to /', () => {

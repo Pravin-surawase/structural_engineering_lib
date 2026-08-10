@@ -1,7 +1,7 @@
 # Components
 
 **Type:** React Source
-**Last Updated:** 2026-04-07
+**Last Updated:** 2026-08-10
 **Files:** 2
 
 ## React Component Files
@@ -23,6 +23,7 @@
 | [design/](design/) | 11 |  |
 | [import/](import/) | 6 |  |
 | [layout/](layout/) | 3 |  |
-| [pages/](pages/) | 7 |  |
+| [pages/](pages/) | 8 |  |
 | [ui/](ui/) | 10 |  |
-| [viewport/](viewport/) | 6 |  |
+| [viewport/](viewport/) | 8 |  |
+| [workbench/](workbench/) | 8 |  |

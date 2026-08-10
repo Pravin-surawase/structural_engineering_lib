@@ -2,7 +2,6 @@
  * SettingsPanel - Slide-over settings panel with theme, API, and version info.
  */
 import { X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 
 interface SettingsPanelProps {
@@ -22,26 +21,19 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
     return () => window.removeEventListener("keydown", handleEscape);
   }, [isOpen, onClose]);
 
+  if (!isOpen) return null;
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
+    <>
           {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <div
             onClick={onClose}
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
             aria-hidden="true"
           />
 
           {/* Slide-over panel */}
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 30, stiffness: 300 }}
+          <div
             className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-zinc-900 border-l border-white/10 z-50 flex flex-col"
             role="dialog"
             aria-modal="true"
@@ -115,9 +107,7 @@ export function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                 structural_engineering_lib © {new Date().getFullYear()}
               </p>
             </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+          </div>
+    </>
   );
 }

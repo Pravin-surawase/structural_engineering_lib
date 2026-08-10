@@ -1,0 +1,57 @@
+{
+  "global": {
+    "schemaVersion": "GeometrySpaceV1",
+    "frame": "GlobalSourceSpaceV1",
+    "units": "m",
+    "axes": "x=east,y=north,z=up",
+    "members": [
+      {
+        "memberId": "ETABS-Frame-101",
+        "sourceId": "ETABS-Frame-101",
+        "label": "B1",
+        "story": "GF",
+        "frameType": "beam",
+        "section": { "widthMm": 300, "depthMm": 500 },
+        "inputHash": "input-b1",
+        "projectRevision": 3,
+        "memberRevision": 7,
+        "sourceRevision": 7,
+        "geometryRevision": 7,
+        "start": { "x": 0, "y": 0, "z": 0 },
+        "end": { "x": 6, "y": 0, "z": 0 }
+      },
+      {
+        "memberId": "ETABS-Frame-201",
+        "sourceId": "ETABS-Frame-201",
+        "label": "C1",
+        "story": "GF",
+        "frameType": "column",
+        "section": { "widthMm": 450, "depthMm": 450 },
+        "inputHash": "input-c1",
+        "projectRevision": 3,
+        "memberRevision": 7,
+        "sourceRevision": 7,
+        "geometryRevision": 7,
+        "start": { "x": 6, "y": 0, "z": 0 },
+        "end": { "x": 6, "y": 0, "z": 3 }
+      }
+    ],
+    "bounds": { "minX": 0, "maxX": 6, "minY": 0, "maxY": 0, "minZ": 0, "maxZ": 3 },
+    "center": { "x": 3, "y": 0, "z": 1.5 },
+    "rendererCoordinates": {
+      "ETABS-Frame-101": { "start": [0, 0, 0], "end": [6, 0, 0] },
+      "ETABS-Frame-201": { "start": [6, 0, 0], "end": [6, 3, 0] }
+    }
+  },
+  "detail": {
+    "route": "/api/v1/geometry/beam/full",
+    "schemaVersion": "1.0.0",
+    "frame": "LocalBeamSpaceV1",
+    "units": "mm",
+    "origin": "left-support,center-width,soffit",
+    "beamId": "ETABS-Frame-101",
+    "outline": [{ "x": 0, "y": -150, "z": 0 }, { "x": 6000, "y": 150, "z": 500 }],
+    "rebar": { "start": { "x": 0, "y": -96, "z": 56 }, "end": { "x": 6000, "y": -96, "z": 56 }, "diameterMm": 16 },
+    "stirrup": { "positionX": 150, "path": [{ "x": 150, "y": -106, "z": 44 }, { "x": 150, "y": 106, "z": 44 }] }
+  }
+}

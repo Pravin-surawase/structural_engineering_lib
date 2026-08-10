@@ -1,0 +1,132 @@
+{
+  "folder": "react_app/src/workspace",
+  "type": "react-source",
+  "description": "",
+  "last_updated": "2026-08-10",
+  "file_count": 8,
+  "files": [
+    {
+      "name": "WorkspacePersistenceBridge.tsx",
+      "type": "react-component",
+      "size_lines": 125,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "WorkspacePersistenceBridgeProps",
+        "WorkspacePersistenceBridge"
+      ],
+      "props_type": "WorkspacePersistenceBridgeProps",
+      "content_hash": "dd1735c561e8"
+    },
+    {
+      "name": "autosave.ts",
+      "type": "typescript",
+      "size_lines": 123,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "WorkspaceAutosaveState",
+        "WorkspaceAutosaveCallbacks",
+        "WorkspaceAutosaveCoordinator"
+      ],
+      "description": "Debounces durable saves while keeping the persisted revision explicit.",
+      "content_hash": "f3ecd55959d8"
+    },
+    {
+      "name": "identity.ts",
+      "type": "typescript",
+      "size_lines": 98,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "recordMatchesIdentity",
+        "recordIsCurrent",
+        "recordCanExport",
+        "memberIdentity",
+        "staleRecord",
+        "invalidateMemberRecords",
+        "pendingRecord"
+      ],
+      "content_hash": "4d71f0086704"
+    },
+    {
+      "name": "persistence.ts",
+      "type": "typescript",
+      "size_lines": 437,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "WorkspaceSaveOptions",
+        "WorkspacePersistenceError",
+        "WorkspaceRecoveryRequiredError",
+        "WorkspaceSchemaVersionError",
+        "WorkspaceConflictError",
+        "WorkspacePersistence",
+        "migrateWorkspaceSnapshot",
+        "normalizeWorkspaceSnapshotForPersistence",
+        "createIndexedDbWorkspacePersistence",
+        "serializeWorkspaceSnapshot",
+        "parseWorkspaceSnapshot"
+      ],
+      "content_hash": "f927fe01b915"
+    },
+    {
+      "name": "requestCoordinator.ts",
+      "type": "typescript",
+      "size_lines": 79,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "RequestToken",
+        "LatestRequestCoordinator"
+      ],
+      "content_hash": "e44582152d65"
+    },
+    {
+      "name": "sync.ts",
+      "type": "typescript",
+      "size_lines": 69,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "WorkspaceRevisionNotice",
+        "WorkspaceRevisionSync",
+        "createWorkspaceRevisionSync"
+      ],
+      "content_hash": "2fe30e7919b1"
+    },
+    {
+      "name": "types.ts",
+      "type": "typescript",
+      "size_lines": 251,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "WORKSPACE_SCHEMA_VERSION",
+        "JsonPrimitive",
+        "JsonValue",
+        "ResultLifecycle",
+        "EvidenceDecision",
+        "SupportStatus",
+        "SaveState",
+        "RevisionIdentity",
+        "RecordError",
+        "EvidenceRecord",
+        "WorkspaceMember",
+        "WorkspaceSnapshotV1",
+        "PersistedWorkspaceRecord",
+        "WorkspaceProjectSummary",
+        "isWorkspaceSnapshotV1"
+      ],
+      "content_hash": "999a88673288"
+    },
+    {
+      "name": "workspaceStore.ts",
+      "type": "typescript",
+      "size_lines": 380,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "MemberRecordKind",
+        "MemberInputState",
+        "NewWorkspaceMember",
+        "useWorkspaceStore"
+      ],
+      "content_hash": "c9d615e94c2a"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "ea82fbc12bdad40d"
+}

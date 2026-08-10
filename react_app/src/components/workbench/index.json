@@ -1,0 +1,81 @@
+{
+  "folder": "react_app/src/components/workbench",
+  "type": "react-source",
+  "description": "",
+  "last_updated": "2026-08-10",
+  "file_count": 6,
+  "files": [
+    {
+      "name": "ResultLifecycleBadge.tsx",
+      "type": "react-component",
+      "size_lines": 35,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "ResultLifecycleBadgeProps",
+        "ResultLifecycleBadge"
+      ],
+      "props_type": "ResultLifecycleBadgeProps",
+      "content_hash": "fec401abcda0"
+    },
+    {
+      "name": "StageNavigation.tsx",
+      "type": "react-component",
+      "size_lines": 54,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "WorkbenchStageState",
+        "WorkbenchStage",
+        "StageNavigationProps",
+        "StageNavigation"
+      ],
+      "props_type": "StageNavigationProps",
+      "content_hash": "221e857476e3"
+    },
+    {
+      "name": "Workbench.test.tsx",
+      "type": "react-component",
+      "size_lines": 59,
+      "last_updated": "2026-08-10",
+      "content_hash": "2b4dec35b8dc"
+    },
+    {
+      "name": "WorkbenchHeader.tsx",
+      "type": "react-component",
+      "size_lines": 64,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "WorkbenchHeaderProps",
+        "WorkbenchHeader"
+      ],
+      "props_type": "WorkbenchHeaderProps",
+      "content_hash": "d751b5a413ae"
+    },
+    {
+      "name": "WorkbenchPanel.tsx",
+      "type": "react-component",
+      "size_lines": 32,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "WorkbenchPanelProps",
+        "WorkbenchPanel"
+      ],
+      "props_type": "WorkbenchPanelProps",
+      "content_hash": "380cf556d619"
+    },
+    {
+      "name": "WorkbenchShell.tsx",
+      "type": "react-component",
+      "size_lines": 49,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "WorkbenchShellProps",
+        "WorkbenchShell"
+      ],
+      "props_type": "WorkbenchShellProps",
+      "description": "Structural layout only. Route, selection, and status ownership stay with the",
+      "content_hash": "4a923c7cb60e"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "9cdfc147a5ce1b8a"
+}

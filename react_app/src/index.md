@@ -1,14 +1,14 @@
 # Src
 
 **Type:** React Source
-**Last Updated:** 2026-04-07
+**Last Updated:** 2026-08-10
 **Files:** 5
 
 ## React Component Files
 
 | File | Exports | Lines |
 |------|---------|-------|
-| [App.tsx](App.tsx) |  | 164 |
+| [App.tsx](App.tsx) |  | 119 |
 | [main.tsx](main.tsx) |  | 11 |
 
 ## Stylesheet Files
@@ -27,11 +27,13 @@
 | Folder | Files | Description |
 |--------|-------|-------------|
 | [api/](api/) | 2 |  |
+| [app/](app/) | 4 |  |
 | [assets/](assets/) | 1 |  |
-| [components/](components/) | 56 |  |
-| [hooks/](hooks/) | 23 |  |
+| [components/](components/) | 69 |  |
+| [hooks/](hooks/) | 24 |  |
 | [lib/](lib/) | 1 |  |
 | [store/](store/) | 6 |  |
 | [test/](test/) | 2 |  |
 | [types/](types/) | 4 |  |
-| [utils/](utils/) | 5 |  |
+| [utils/](utils/) | 10 |  |
+| [workspace/](workspace/) | 17 |  |

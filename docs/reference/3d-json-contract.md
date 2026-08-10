@@ -12,6 +12,29 @@ related_tasks: "TASK-3D-02, TASK-3D-03"
 
 # 3D JSON Contract — Beam Geometry Data Format
 
+## GeometrySpaceV1 workbench boundary
+
+For the P7 workbench migration, `GeometrySpaceV1` is the renderer-bound contract.
+It supersedes any ambiguous use of the legacy examples below at the boundary:
+
+- global source points are metres: `x=east`, `y=north`, `z=up`;
+- `GlobalSourceSpaceV1` transport remains in source metres with `schemaVersion`,
+  `frame`, `units`, `axes`, stable `memberId`/`sourceId`, `label`, `story`,
+  `frameType`, `section`, `inputHash`,
+  `projectRevision`, `memberRevision`, source revision, and geometry revision;
+- the global renderer boundary maps those source-metre points as `(x, z, -y)`;
+- `LocalBeamSpaceV1` remains a separate millimetre frame, origin left support /
+  centre width / soffit, with its own renderer mapping
+  `(0.001*x, 0.001*z, 0.001*y)` before global member placement;
+- `/api/v1/geometry/beam/full` is the sole detailed-beam P7 route;
+- malformed or duplicate members fail closed with a visible fallback marker. No
+  fallback IDs, inferred section data, or second scaling step are permitted.
+
+The checked golden fixture is `tests/fixtures/geometry-space-v1.json`. It fixes
+global source transport, both renderer transforms, bounds/centre, and one
+local-detail placement so P7 can decompose `Viewport3D` without changing
+coordinate behavior.
+
 > **Version:** 1.0.0
 > **Purpose:** Defines the JSON schema for exchanging 3D beam geometry between Python (structural_lib) and JavaScript/TypeScript (Three.js viewer).
 

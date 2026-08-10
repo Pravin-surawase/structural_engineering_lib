@@ -12,7 +12,7 @@
       "last_updated": "2026-08-10",
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
-      "content_hash": "4c7a2cbce979"
+      "content_hash": "22d91bbd6af5"
     },
     {
       "name": "adoption-trust-surface-plan.md",
@@ -91,11 +91,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 89,
+      "size_lines": 107,
       "last_updated": "2026-08-10",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-10",
-      "content_hash": "60fd73c75e1a"
+      "content_hash": "4378f6d1abdc"
     },
     {
       "name": "pre-release-checklist.md",
@@ -126,12 +126,12 @@
     {
       "name": "ui-experience-foundation-master-plan.md",
       "type": "documentation",
-      "size_lines": 1961,
+      "size_lines": 2333,
       "last_updated": "2026-08-10",
       "description": "The product will move from a collection of equally weighted pages to one compact, professional structural workbench.",
-      "content_hash": "e6040a34c9dd"
+      "content_hash": "1fc1e3709971"
     }
   ],
   "subfolders": [],
-  "content_hash": "9045d2563f2081a9"
+  "content_hash": "bbcf6b0346b2c0c4"
 }

@@ -6,8 +6,8 @@ owner: Main Agent and repository owner
 created: 2026-08-10
 last_updated: 2026-08-10
 doc_type: spec
-baseline_commit: fa0ee99548b82242f8c75056c76c097400a11350
-branch: codex/ui-experience-foundation
+baseline_commit: 32b9f33b204f5175efdf0d3e8d4d99e3634cf46c
+branch: codex/ui-workbench-session-1
 implementation_started: true
 second_audit_integrated: true
 execution_sessions: 2
@@ -15,13 +15,12 @@ max_concurrent_subagents: 2
 subagent_model: gpt-5.6-terra
 owner_accepted: 2026-08-10
 current_session: 1
-current_wave: 0
+current_wave: 1
 ---
 
 **Type:** Master Plan
 **Audience:** Product owner, frontend, backend, API, structural-library, 3D, reviewer, and tester roles
-**Status:** Active — owner accepted; Session 1 Wave 0 started; implementation
-edits remain gated on the Wave 0 contract lock
+**Status:** Active — Session 1 P0-P3 accepted; P4 quick-design migration ready
 **Importance:** Critical
 **Created:** 2026-08-10
 **Last Updated:** 2026-08-10
@@ -61,10 +60,11 @@ acceptance. The program does not change IS 456 formulas merely to serve the UI.
 ## 2. Plan authority and relationship to existing work
 
 The repository owner accepted this document on 2026-08-10. It is the execution
-authority for UIX-001. By explicit owner decision, the current branch owns
-planning plus Session 1; Session 2 uses a fresh branch after the Session 1
-verified green merge. Execution remains exactly two outcome-gated sessions under
-sections 12 and 16.1.
+authority for UIX-001. Planning and Terra routing merged to `main` through PR
+#718. The fresh branch `codex/ui-workbench-session-1` owns Session 1; Session 2
+uses another fresh branch after the Session 1 verified green merge. Execution
+remains exactly two implementation sessions under sections 12 and 16.1; the
+already-merged planning branch does not count as an implementation session.
 
 It supersedes the execution status in
 `docs/planning/react-ux-improvement-plan.md`, while preserving that document as
@@ -153,10 +153,11 @@ approval.
 
 ## 4. Verified current baseline
 
-The original UI observations were captured at `67b85302`. Session 1 now starts
-from `fa0ee995`, which includes ADOPT-001, the Python/React compatibility packets,
-the merge-policy update, and the Dependabot Python 3.11 guard. P0 must refresh
-every quantitative or contract-sensitive row before the Wave 0 checkpoint.
+The original UI observations were captured at `67b85302`. Session 1 starts from
+`32b9f33b`, which includes ADOPT-001, the Python/React compatibility packets, the
+merge-policy update, the Dependabot Python 3.11 guard, and the accepted UIX plan.
+Section 22 refreshes the quantitative and contract-sensitive baseline at that
+checkpoint.
 
 | Area | Verified baseline at `67b85302` | Program treatment |
 |---|---|---|
@@ -783,9 +784,10 @@ design, import, 3D review, project design, issue resolution, current-revision
 results, resume, and truthful export. Essential 3D inspection is integrated and
 the previous routes remain available for rollback until the exit gate passes.
 
-**Entry:** this plan is accepted and committed on the current UI branch before
-Wave 0 evidence changes. The branch started from the current origin/main baseline;
-dependency upgrades remain out and external-worktree locks in section 16.2 apply.
+**Entry:** this plan and Terra routing were accepted and merged through PR #718.
+Session 1 started on `codex/ui-workbench-session-1` from `origin/main` at
+`32b9f33b`. Dependency upgrades remain out and external-worktree locks in section
+16.2 apply.
 
 **Wave 0 — parallel read-only contract lock**
 
@@ -1678,15 +1680,14 @@ Rollback is packet-scoped:
 
 ### 16.1 Two execution branches and wave commits
 
-The owner explicitly accepted using the current
-`codex/ui-experience-foundation` branch for Session 1. Commit the accepted
-planning and Terra-routing changes before recording Wave 0 evidence. A planning
-merge is not required before this read-only wave.
+The accepted planning branch `codex/ui-experience-foundation` merged through PR
+#718 at `32b9f33b`. The fresh implementation branch
+`codex/ui-workbench-session-1` was then created from that exact `origin/main`
+head. The planning branch is history, not one of the two implementation sessions.
 
-1. **Session 1 branch:** continue on `codex/ui-experience-foundation`. Use
-   separate conventional commits for accepted plan/routing, Wave 0 evidence,
-   Wave 1 foundations, Wave 2 product flow, and integrated evidence where changes
-   are logically separable.
+1. **Session 1 branch:** continue on `codex/ui-workbench-session-1`. Use separate
+   conventional commits for Wave 0 evidence, Wave 1 foundations, Wave 2 product
+   flow, and integrated evidence where changes are logically separable.
 2. **Session 2 branch:** only after the Session 1 exit gate and verified green merge,
    create `codex/ui-platform-session-2` from updated main. Use separate commits
    for catalogue/API/renderer, bounded workflow/manifest, cutover, and evidence.
@@ -1705,10 +1706,12 @@ repository controls.
 
 ### 16.2 Parallel worktree isolation
 
-Parallel branches are safe only because each is checked out in a separate Git
+Parallel branches are safe only when each is checked out in a separate Git
 worktree. A branch is never checked out, staged, committed, merged, rebased, or
-cleaned from another branch's worktree. Before every implementation wave, the
-parent rechecks worktree status and changed-path overlap.
+cleaned from another branch's worktree. No parallel task may switch the root
+checkout away from `codex/ui-workbench-session-1`; it must create or reuse a
+separate worktree. Before every implementation wave, the parent rechecks current
+branch identity, worktree status, process/port ownership, and changed-path overlap.
 
 The former merge-policy, Python-dependency, and React-dependency locks were
 resolved on `main` before the Wave 0 baseline. `codex/social-preview` owns only
@@ -1878,20 +1881,20 @@ these tables only after the parent reviews evidence.
 
 | Macro session | Scope | State | Required exit |
 |---|---|---|---|
-| Session 1 | P0-P8 compact workbench and essential 3D | Not started | Session 1 exit gate in section 12.2 |
+| Session 1 | P0-P8 compact workbench and essential 3D | P2/P3 accepted; P4 ready | Session 1 exit gate in section 12.2 |
 | Session 2 | P9-P15 capability platform and cutover | Blocked on Session 1 | Session 2 exit gate in section 12.3 |
 
 | Session | Packet | State | Evidence/commit | Notes |
 |---|---|---|---|---|
-| 1 | P0 | Not started | — | Baseline and usefulness lock |
-| 1 | P1 | Not started | — | Information architecture |
-| 1 | P2 | Not started | — | Visual foundation and shell |
-| 1 | P3 | Not started | — | Workspace state/persistence |
-| 1 | P4 | Not started | — | Quick-design migration |
+| 1 | P0 | Accepted | Section 22 | Live baseline, usefulness, browser, API/state, and 3D lock |
+| 1 | P1 | Accepted | Section 22 | Route map, targets, and three-width wireframes frozen |
+| 1 | P2 | Accepted | `d336803c` | Live shell and typed navigation; three-width reachability and lazy-delivery browser gates pass |
+| 1 | P3 | Accepted | `c270b6c1`, `0ccda406` | Durable revisioned state, recovery, autosave, and multi-tab conflict integration pass |
+| 1 | P4 | Ready | P2/P3 handoff | Quick-design migration is the next bounded packet |
 | 1 | P5 | Not started | — | Project intake/review |
 | 1 | P6 | Not started | — | Project design/results/export |
-| 1 | P7 | Not started | — | Viewport decomposition |
-| 1 | P8 | Not started | — | Essential 3D expansion/performance |
+| 1 | P7 | Ready | Current branch | Two-frame GeometrySpaceV1 fixture implemented; viewport decomposition not started |
+| 1 | P8 | Blocked on P6/P7 | — | Essential 3D layers require revision-matched result truth |
 | 2 | P9 | Not started | — | Workflow catalogue |
 | 2 | P10 | Not started | — | Catalogue API |
 | 2 | P11 | Not started | — | React schema vertical slice |
@@ -1900,7 +1903,376 @@ these tables only after the parent reviews evidence.
 | 2 | P14 | Not started | — | Route cutover/retirement |
 | 2 | P15 | Not started | — | Integrated closeout |
 
-## 22. Immediate kickoff checklist
+## 22. Session 1 Wave 0 evidence and contract lock
+
+This section is the accepted P0/P1 handoff for Wave 1. It consolidates the
+parent live-browser baseline and the two read-only Terra audits. It freezes
+product and transport boundaries; it does not claim that the confirmed defects
+are already fixed.
+
+### 22.1 Evidence basis
+
+| Evidence | Result |
+|---|---|
+| Session 1 base | origin/main and the current branch started at 32b9f33b after PR #718 |
+| Runtime | Python 3.11; Node 24.19.0; npm 11.17.0; Vite 7.3.6 |
+| Primary live browser | Codex in-app Chromium 151 on macOS, DPR 1; no error/warning entries, with two informational WebGL context-loss notices during repeated route changes |
+| P0 viewports | 1440 x 900, 1024 x 768, and 390 x 844 |
+| API/client audit | Complete-shape inspection of exposed and dormant React clients/hooks against FastAPI models and OpenAPI; route/method coincidence was not treated as shape proof |
+| Focused application evidence | Read-only source audit plus live quick, sample, editor, member-selection, empty-deep-link, and recovery journeys |
+| Focused 3D checks | 12 Python geometry/sample tests and 4 useBeamGeometry React tests passed |
+| Production build | 2,778 modules transformed in 5.14 seconds; TypeScript and Vite build passed |
+| Maintained sample | 153 members across 6 stories; API payload 36,634 bytes; proposed minimal WorkspaceSnapshotV1 payload 36,319 bytes before results/history |
+| Batch transport/control | Direct 153-member batch returned HTTP 200, 153/153 PASS, and 27,285 bytes in 10.6 ms; the live editor still displayed Designing after more than 34 seconds |
+
+Production gzip baselines from the P0 build are:
+
+- application index JavaScript 36.30 kB and shared CSS 13.12 kB;
+- DesignView 11.52 kB;
+- BuildingEditorPage JavaScript 9.44 kB and route CSS 32.16 kB;
+- Three.js 185.67 kB and React Three Fiber/Drei 136.86 kB;
+- AG Grid 224.11 kB.
+
+The production landing route currently loads the application index, HomePage,
+Framer Motion, React Three Fiber/Drei, and Three.js: about 1,394.8 kB raw and
+404.2 kB gzip of JavaScript, plus the shared CSS. AG Grid remains route-lazy, but
+the decorative landing canvas makes the 3D runtime eager. P2 must remove that
+landing cost or defer it behind an intentional workbench action. P7/P8 compare
+final route delivery against this baseline; no percentage improvement is claimed
+before profiling.
+
+### 22.2 Live task-flow and simplicity baseline
+
+| Surface | Current live evidence | Main-process decision |
+|---|---|---|
+| Landing to quick result | Start Designing reached a visible PASS in one intentional action and 3.052 seconds in the warm local journey | Preserve a one- or two-action quick path, but bind the result to current inputs |
+| Quick design desktop | 16 buttons, 11 form controls, 7 links, one Canvas, inputs/result/3D/alternatives/export simultaneously visible | Recompose into Input, Review, and Export states with one emphasized action per state |
+| Quick design at 390 | The document reported no horizontal scroll while the right workspace was visibly outside the viewport; the fixed shell prevented recovery | Narrow review is a blocking P2/P4 requirement; dense editing may remain desktop-first |
+| Import entry | 14 buttons, 4 controls, 7 links, and three overlapping progress/navigation presentations | Keep single/dual/sample intake, but show one stage model and one next action |
+| Sample to editor | `/import?sample=true` reached the 153-member preview in 406 ms; Open Building Editor produced a visible Canvas in 1.766 seconds | Preserve; landing to sample review target is at most three intentional actions |
+| Project editor | 15 buttons, 16 controls, 7 links, one Canvas, 153-row grid, materials, export, stage bar, toolbar, and dock in one fixed viewport | Make 3D/grid/inspector contextual regions inside one workbench |
+| Project editor at 1024 | Canvas, grid, and actions remained present with no document overflow, but the grid exposed only a clipped subset of columns | Keep review usable; dense editing remains desktop-first |
+| Project editor at 390 | No document overflow was reported, but the toolbar and critical actions were clipped by an overflow-hidden fixed workspace | P2 must keep save/recovery/status/next action reachable; do not promise dense grid editing |
+| Sample batch completion | The batch API settled 153/153 PASS in 10.6 ms, while the live header and visible rows remained Designing for more than 34 seconds | Treat as a frontend state-settlement blocker in P3/P6; project result and export parity are unaccepted |
+| Reload/resume | Reloading the populated editor retained the URL but produced No beams loaded; only a small Hub summary is persisted | Full project resume is absent and P3-blocking |
+| Empty deep links | editor, batch, dashboard, and design/results remain on their URLs and provide a recovery CTA | Retain recoverability, then replace with typed stage guards and canonical redirects |
+| Current navigation | TopBar and floating dock each expose the same five destinations; project pages add another four-step bar and import adds a second three-step signal | One typed global group plus one contextual project stage group |
+
+The quantitative simplification targets are:
+
+1. reduce five duplicated persistent destinations and ten duplicate entries to
+   at most two primary global destinations in Session 1: Workbench and Projects;
+2. render Import, Review, Design, and Results exactly once as project context;
+3. show at most one emphasized primary action in each workbench state;
+4. keep landing to quick useful result at two actions or fewer and landing to
+   sample project review at three actions or fewer;
+5. make selected failed/held member inspection a direct issue-queue or 3D/grid
+   selection, not a route hunt;
+6. make 390 px review, recovery, status, and next action fully reachable with no
+   clipped critical content; dense grid editing remains desktop-first;
+7. restore the last accepted project snapshot after reload and never display a
+   retained result as current after inputs change.
+
+### 22.3 Feature usefulness decisions
+
+| Capability/surface | Classification | Wave decision |
+|---|---|---|
+| Landing orientation, quick entry, sample entry, real resume | Exposed; merge | One restrained landing/workbench entry |
+| Quick beam design, checks, selected 3D detail, alternatives, export | Exposed; migrate | Preserve within the quick workbench after freshness repair |
+| Single CSV, dual CSV, sample import, material overrides | Exposed; migrate | One project intake stage |
+| Building 3D, grid, floor selection, selected member | Exposed; migrate | Core review/design workbench |
+| Batch progress, issue resolution, project results, BOQ/export | Exposed; migrate | Contextual Design and Results stages |
+| Load calculator and torsion | Exposed only in quick input | Progressive disclosure; no separate destination |
+| TopBar, FloatingDock, workflow breadcrumb arrays | Superseded duplication | Replace with one typed navigation source after parity |
+| Settings | Secondary exposed action | Retain only settings with an immediate visible effect |
+| Beam detail page | Compatibility/deep-link candidate | Keep behind a shareable current-result identity or redirect |
+| useAutoDesign duplicate hook | Internal/dormant | Do not expose; consolidate behind the P4 request coordinator |
+| SSE useBatchDesign | Dormant/hold | Cannot truthfully represent HOLD, stale, unsupported, or not evaluated |
+| useCSVTextImport | Dormant/hold | Sends a JSON body while the endpoint declares query input; reconcile or retire before exposure |
+| Serviceability request/response fields | Dormant/hold | React contract is incomplete; no Session 1 UI exposure |
+| useGeometryAdvanced | Dormant/hold | Request and response shapes do not match the current API |
+| geometry/beam/3d | Legacy/hold | Do not use for the workbench; detailed beam uses geometry/beam/full |
+| Cross-section endpoint | Contextual existing utility | No new layer until member/revision identity is proven |
+| ModeSelectPage | Superseded/retire after redirects | No independent destination |
+| ModernAppLayout | Superseded/retire or mine | Must not become a competing shell |
+| Decorative effects, loads layer, comparison layer | Deferred | No Session 1 scope without authoritative data and performance evidence |
+
+No implementation worker may turn a dormant item into a visible feature without a
+new live contract and usefulness review.
+
+### 22.4 Frozen route and navigation contract
+
+| Current route | Session 1 canonical destination | Compatibility behavior |
+|---|---|---|
+| / | / | Keep as restrained landing |
+| /start | /workbench | Redirect and preserve history/back behavior |
+| /design | /workbench/quick | Delegate first, redirect after parity |
+| /design/results | /workbench/quick with current result panel | Empty or stale result goes to quick input with an explicit message |
+| /import | /workbench/projects/new | Delegate first, redirect after parity |
+| /editor | /workbench/projects/:projectId/review | Missing project uses typed recovery, not an unlabelled empty editor |
+| /batch | /workbench/projects/:projectId/design | Guard on imported project and current revision |
+| /dashboard | /workbench/projects/:projectId/results | Guard on a settled run; never infer completion |
+
+The stage order is Import -> Review -> Design -> Results. Export is an action in
+Results, not a global destination. A selected member, floor, open inspector, and
+result/run identity are addressable route or workspace state. Desktop and narrow
+navigation consume the same typed configuration. Browser back/forward and refresh
+must restore or fail closed through the same guards.
+
+### 22.5 Accepted three-width wireframes
+
+Landing and workbench entry:
+
+~~~text
+1440 / 1024
++---------------------------------------------------------------+
+| StructLib                         Projects          Settings   |
++---------------------------------------------------------------+
+| Structural workbench                                         |
+| [Continue last project]  [New project]  [Quick beam]          |
+| Recent project: name, saved time, stage, truthful status      |
+| Supported scope and evidence statement                        |
++---------------------------------------------------------------+
+
+390
++----------------------------------+
+| StructLib              Settings  |
++----------------------------------+
+| Continue last project            |
+| [Continue]                       |
+| [New project] [Quick beam]       |
+| Supported scope / recovery note  |
++----------------------------------+
+~~~
+
+Quick workbench:
+
+~~~text
+1440
++---------------------------------------------------------------+
+| Quick beam | save/current state | support/evidence | Export   |
++--------------------+-----------------------------+------------+
+| Input groups       | 3D / section               | Result     |
+| dimensions         | selected detail             | status     |
+| materials          |                             | governing  |
+| forces             |                             | checks     |
+| [Design]           |                             | next action|
++--------------------+-----------------------------+------------+
+| Alternatives or export tray opens only on request              |
++---------------------------------------------------------------+
+
+1024
++---------------------------------------------------------------+
+| Quick beam | state | primary action                             |
++--------------------+------------------------------------------+
+| Collapsible input  | 3D / result                              |
++--------------------+------------------------------------------+
+| Contextual result/check tray                                  |
++---------------------------------------------------------------+
+
+390
++----------------------------------+
+| Quick beam | state              |
+| Input summary [Edit]            |
+| [Design / Recalculate]          |
+| Result status + governing check |
+| Selected 3D or table fallback   |
+| Checks [Open]  Export [Open]    |
++----------------------------------+
+~~~
+
+Project workbench:
+
+~~~text
+1440
++----------------------------------------------------------------+
+| Project | Import Review Design Results | saved | primary action |
++--------+-------------------------------------------+-------------+
+| Stage  | 3D / main canvas                          | Inspector   |
+| rail   | selection, floor, truthful status layer   | member      |
+|        |                                            | checks      |
++--------+-------------------------------------------+-------------+
+| Issue queue / grid / run progress / results / export tray       |
++----------------------------------------------------------------+
+
+1024
++---------------------------------------------------------------+
+| Project | stage | saved | primary action                      |
++---------------------------------------------------------------+
+| 3D / main review                                               |
++-------------------------------+-------------------------------+
+| Issue/grid summary            | Selected-member inspector     |
++-------------------------------+-------------------------------+
+
+390 review/recovery
++----------------------------------+
+| Project | Review | saved state   |
+| Floor/filter [Open]              |
+| 3D summary or list fallback      |
+| Selected member + status         |
+| Governing issue / next action    |
+| [Open checks] [Continue]         |
++----------------------------------+
+~~~
+
+The narrow layout does not promise dense 153-row editing. It does promise project
+identity, save/recovery state, selection, status, critical issue review, and the
+next safe action.
+
+### 22.6 Workspace, result, and latest-request-wins contract
+
+P3 owns WorkspaceSnapshotV1 with:
+
+- schema version, project ID, project name, selected stage/member/floor;
+- stable source/member IDs, normalized explicit-unit inputs, project revision,
+  member revision, and input revision;
+- dirty/save state, current snapshot metadata, last-known-good metadata, and
+  migration origin;
+- explicit member lifecycle: current, stale, pending, error, unsupported, or
+  not_evaluated.
+
+Every result, geometry, alternative, metric, and export record carries:
+
+- input hash, input/member/project revision, request/run ID;
+- calculation identity and library version;
+- evidence and supported-case status;
+- its explicit lifecycle and settled decision state.
+
+An engineering input edit atomically makes all dependent records non-current
+before a new request starts. A response or finalizer applies only when request ID,
+input hash, and all relevant revisions still equal the active workspace. Older
+responses may be retained only as labelled history. Every exposed fetch accepts
+AbortSignal; abort is an optimization, while identity equality is the correctness
+gate.
+
+Export requires a current revision plus supported PASS evidence. Pending, stale,
+error, unsupported, not_evaluated, HOLD, and FAIL all fail closed. The server
+receives result identity and rejects mismatches; presentation fields alone never
+establish exportability.
+
+### 22.7 API-client and persistence decisions
+
+FastAPI Pydantic/OpenAPI remains transport authority. Session 1 keeps one React
+transport facade and adds only the exact quick, sample/import, batch, geometry,
+and export contracts needed by the maintained journeys. Each migrated method
+accepts AbortSignal and crosses a runtime-normalizing boundary with focused
+request/response fixtures. The stale standalone generated TypeScript client and
+dormant hooks are not treated as current truth. P10 may later replace the narrow
+facade with a fully generated client after generator parity is proven.
+
+Full project persistence uses native IndexedDB. The 36,634-byte raw sample is not
+the upper bound because results, geometry references, revision history, and
+last-known-good metadata must also be stored atomically. localStorage is limited
+to small UI preferences and a last-project pointer. P3 uses one versioned project
+record transaction, migration functions, a last-known-good record, portable
+export/import, and BroadcastChannel conflict notices. Raw uploaded file bytes are
+not retained.
+
+### 22.8 Frozen 3D contract and essential layers
+
+GeometrySpaceV1 freezes two explicit coordinate frames rather than pretending
+the current building and local-detail paths share one universal transform:
+
+- `GlobalSourceSpaceV1` uses metres with x = plan east, y = plan north, and
+  z = elevation/up. Its only renderer boundary is
+  `G(x, y, z) = (x, z, -y)` in Three.js world metres.
+- `LocalBeamSpaceV1` uses millimetres with x = left support to right support,
+  y = section width from center, and z = soffit upward. Its only local renderer
+  boundary is `L(x, y, z) = (0.001x, 0.001z, 0.001y)`; placement then uses the
+  selected member's global origin and basis. A global negative-y mapping must
+  never be applied again to local detail coordinates.
+- every transport declares `schemaVersion`, frame, units, axes, `memberId`,
+  stable `sourceId`, display label, story, frame type, section, project/member/
+  input revisions, and geometry input hash;
+- `memberId` is the imported source `UniqueName`, not the current derived
+  `Label_Story`. Grid row, selection, result, geometry, inspector, and overlay
+  keys use that same identity; production payloads have no generated fallback;
+- `geometry/beam/full` is the sole detailed beam contract for P7 and must receive
+  the selected `memberId` instead of falling back to `B1/GF`;
+- building transport must preserve identity/section and fail closed rather than
+  silently skip malformed members before it becomes authoritative.
+
+The golden fixture contains two canonical source members, their normalized
+global and local payloads, exact renderer coordinates, and one known detailed
+beam with outline, rebar, and stirrup positions. Assertions cover stable source
+ID preservation, exactly one conversion per boundary, both transforms,
+bounds/center, selection, member count, detail placement, revision/hash matching,
+unknown-schema rejection, and visible fallback.
+
+P8 must ship only selection synchronization, floor/frame filtering,
+fit-to-selection, deterministic camera, non-WebGL access, and a truthful status
+overlay after P6 revision binding. Utilization is conditional on a proven
+revision-matched join. Loads, building dimensions, new cross-section inspection,
+before/after comparison, decorative effects, and unprofiled instancing are
+deferred.
+
+The scene baselines are the maintained 153-member sample and a synthetic,
+render-only 1,530-member fixture made by ten deterministic copies of that sample.
+Each copy has `perf:<tile>:<source-id>` identity and a fixed source-metre offset;
+it never feeds engineering calculations. P8 records load-to-usable time, frame
+interaction, draw/resource counts available from the renderer, five project
+switches, context loss/recovery, and memory trend before accepting optimizations.
+
+### 22.9 Browser gate and known blockers
+
+Chromium 151 is the maintained primary gate at all three P0 widths. Current
+Safari on macOS receives 1440 x 900, 1024 x 768, and 390 px review/recovery smoke
+coverage at the Session 1 exit. Firefox support is held, not claimed, until the
+same deterministic sample replay exists. The in-app browser remains the smallest
+repeatable Chromium mechanism; Safari uses a bounded manual/Web Inspector pass,
+and no broad browser framework is added in Wave 1. WebGL loss currently has only
+code-path evidence, so live fallback evidence remains an exit-gate requirement.
+
+Wave 1 starts with these confirmed blockers:
+
+1. REST quick hooks create abort controllers but do not pass their signals to
+   `designBeam`; older responses and finalizers can replace newer state;
+2. WebSocket, SSE, and project batch results carry no request/project/member/input
+   revision identity, so delayed output cannot be rejected correctly;
+3. current input edits can coexist with retained quick/project results and exports;
+4. the stable sample run can remain visually Designing after its HTTP 200 response;
+5. full project reload/resume is absent and status records cannot represent every
+   non-exportable lifecycle explicitly;
+6. the 390 px quick and project workspaces clip critical content without a
+   recovery path;
+7. imported source `UniqueName` is dropped, selected detail requests can default
+   to `B1/GF`, and current building/local geometry use two undocumented frames;
+8. the landing route eagerly loads Framer Motion, React Three Fiber/Drei, and
+   Three.js for a decorative canvas;
+9. `useGeometryAdvanced`, `useCSVTextImport`, serviceability UI fields, and SSE
+   batch semantics are not live-contract ready.
+
+### 22.10 Accepted P2/P3 foundation evidence
+
+The parent accepted P2 at `d336803c` and P3 at `c270b6c1` plus `0ccda406` after
+independent diff review and integration. The other active UI task first shared
+the root checkout; the parent stopped overlapping writes, assigned its P3 work to
+an isolated worktree/branch, reviewed its bounded commit, and then cherry-picked
+it. Future parallel UI work must retain disjoint worktrees and path ownership.
+
+- P2 exposes only Workbench and Projects globally, preserves the four typed
+  project stages, keeps critical actions reachable at 1440, 1024, and 390 px,
+  and removes eager Three/R3F, AG Grid, and Framer assets from the production
+  landing request path.
+- P3 persists WorkspaceSnapshotV1 atomically in IndexedDB, fails closed on an
+  unknown schema, recovers the last known good revision, invalidates evidence on
+  edits and undo/revert, autosaves dirty revisions, and blocks a higher external
+  revision through BroadcastChannel conflict state.
+- Focused and full React verification passed 197 tests plus lint and production
+  build; `./run.sh check --quick` passed all 10 checks.
+- Live Chromium UAT used real IndexedDB and BroadcastChannel behavior to prove
+  save, reload/load, conflict notification, and deletion. The synthetic proof
+  project was removed after validation.
+
+P4 is now ready against these accepted contracts. P5/P6 remain unstarted: the
+existing imported-project adapter has not yet proved full project resume or
+revision-matched project results/exports. P7 is ready for a separate bounded
+decomposition packet; P8 remains blocked on P6 revision truth and P7. Wave 2
+remains blocked on the P4 checkpoint and the later P5/P6 project-result handoff.
+No parallel worker owns App.tsx, shared contracts, stores, API client, public
+viewport contract, or this ledger without a fresh disjoint packet.
+
+## 23. Immediate kickoff checklist
 
 Implementation must not start until the owner accepts this plan or supplies edits.
 After acceptance:
@@ -1922,7 +2294,7 @@ After acceptance:
 10. do not release, delete branches, or make professional-use claims without the
     required owner approval.
 
-## 23. Final acceptance checklist
+## 24. Final acceptance checklist
 
 - [ ] Session 1 P0-P8 exit gate passed before Session 2 began.
 - [ ] Exactly two implementation sessions/branches were used; wave commits retain

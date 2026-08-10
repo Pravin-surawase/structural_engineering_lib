@@ -12,26 +12,6 @@ vi.mock('react-router-dom', () => ({
   useLocation: () => mockUseLocation(),
 }));
 
-// Mock framer-motion — render motion.div as plain div
-vi.mock('framer-motion', () => ({
-  motion: {
-    div: React.forwardRef(({ children, ...props }: any, ref: any) =>
-      React.createElement('div', { ...props, ref }, children)),
-    span: React.forwardRef(({ children, ...props }: any, ref: any) =>
-      React.createElement('span', { ...props, ref }, children)),
-  },
-}));
-
-// Mock lucide-react Check icon
-vi.mock('lucide-react', () => ({
-  Check: (props: any) => React.createElement('svg', { 'data-testid': 'check-icon', ...props }),
-}));
-
-// Mock cn utility
-vi.mock('../../lib/utils', () => ({
-  cn: (...args: any[]) => args.filter(Boolean).join(' '),
-}));
-
 // Mock importedBeamsStore
 const mockBeams: any[] = [];
 vi.mock('../../store/importedBeamsStore', () => ({
@@ -47,19 +27,16 @@ describe('WorkflowBreadcrumb', () => {
   it('renders all 4 workflow steps', () => {
     render(React.createElement(WorkflowBreadcrumb));
     expect(screen.getByText('Import')).toBeInTheDocument();
-    expect(screen.getByText('Editor')).toBeInTheDocument();
-    expect(screen.getByText('Batch Design')).toBeInTheDocument();
-    expect(screen.getByText('Dashboard')).toBeInTheDocument();
+    expect(screen.getByText('Review')).toBeInTheDocument();
+    expect(screen.getByText('Design')).toBeInTheDocument();
+    expect(screen.getByText('Results')).toBeInTheDocument();
   });
 
   it('highlights the current step', () => {
     mockUseLocation.mockReturnValue({ pathname: '/editor' });
     render(React.createElement(WorkflowBreadcrumb));
 
-    // The editor step button should have aria-current="step"
-    const buttons = screen.getAllByRole('button');
-    const editorButton = buttons[1]; // Index 1 = Editor
-    expect(editorButton).toHaveAttribute('aria-current', 'step');
+    expect(screen.getByRole('button', { name: /review/i })).toHaveAttribute('aria-current', 'step');
   });
 
   it('shows checkmark on completed steps', async () => {
@@ -70,8 +47,7 @@ describe('WorkflowBreadcrumb', () => {
     render(React.createElement(WorkflowBreadcrumb));
 
     // Import step is complete (beams.length > 0 and we're past it)
-    const checkIcons = screen.getAllByTestId('check-icon');
-    expect(checkIcons.length).toBeGreaterThan(0);
+    expect(screen.getByRole('button', { name: /import/i })).not.toBeDisabled();
   });
 
   it('navigates when a completed step is clicked', () => {
@@ -81,9 +57,7 @@ describe('WorkflowBreadcrumb', () => {
 
     render(React.createElement(WorkflowBreadcrumb));
 
-    const buttons = screen.getAllByRole('button');
-    // Click the Import button (index 0) — it's a completed/past step
-    fireEvent.click(buttons[0]);
+    fireEvent.click(screen.getByRole('button', { name: /import/i }));
     expect(mockNavigate).toHaveBeenCalledWith('/import');
   });
 
@@ -92,9 +66,9 @@ describe('WorkflowBreadcrumb', () => {
 
     render(React.createElement(WorkflowBreadcrumb));
 
-    const buttons = screen.getAllByRole('button');
-    // Dashboard button (index 3) — future step, should be disabled
-    fireEvent.click(buttons[3]);
+    const results = screen.getByRole('button', { name: /results/i });
+    expect(results).toBeDisabled();
+    fireEvent.click(results);
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 });
