@@ -67,6 +67,7 @@ interface WorkspaceState {
     record: EvidenceRecord,
     now?: string,
   ) => boolean;
+  setSaveState: (saveState: WorkspaceSnapshotV1['saveState']) => void;
   markSaved: (savedAt?: string) => void;
   reset: () => void;
 }
@@ -351,6 +352,13 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
     });
     return true;
   },
+
+  setSaveState: (saveState) =>
+    set((state) => (
+      state.snapshot
+        ? { snapshot: { ...state.snapshot, saveState } }
+        : state
+    )),
 
   markSaved: (savedAt) =>
     set((state) => {

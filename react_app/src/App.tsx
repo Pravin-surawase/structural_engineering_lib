@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Boxes, PanelsTopLeft } from 'lucide-react';
 import { activeGlobalDestination, GLOBAL_DESTINATIONS } from './app/navigation';
+import { WorkspacePersistenceBridge } from './workspace/WorkspacePersistenceBridge';
 import { TopBar } from './components/layout/TopBar';
 import { FloatingDock } from './components/ui/FloatingDock';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
@@ -78,6 +79,7 @@ function App() {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
+          <WorkspacePersistenceBridge />
           <div className="h-screen w-screen bg-zinc-950 flex flex-col">
             <a
               href="#main-content"

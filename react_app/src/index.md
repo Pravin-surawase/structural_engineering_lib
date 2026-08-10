@@ -8,7 +8,7 @@
 
 | File | Exports | Lines |
 |------|---------|-------|
-| [App.tsx](App.tsx) |  | 117 |
+| [App.tsx](App.tsx) |  | 119 |
 | [main.tsx](main.tsx) |  | 11 |
 
 ## Stylesheet Files
@@ -36,4 +36,4 @@
 | [test/](test/) | 2 |  |
 | [types/](types/) | 4 |  |
 | [utils/](utils/) | 10 |  |
-| [workspace/](workspace/) | 12 |  |
+| [workspace/](workspace/) | 17 |  |

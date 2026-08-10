@@ -8,10 +8,10 @@
     {
       "name": "App.tsx",
       "type": "react-component",
-      "size_lines": 117,
+      "size_lines": 119,
       "last_updated": "2026-08-10",
       "description": "Structural Engineering App",
-      "content_hash": "52da26bffa41"
+      "content_hash": "5432b97c7c91"
     },
     {
       "name": "config.ts",
@@ -101,8 +101,8 @@
     {
       "name": "workspace",
       "path": "workspace/",
-      "file_count": 12
+      "file_count": 17
     }
   ],
-  "content_hash": "e06bd909110238eb"
+  "content_hash": "e62c89c582894afc"
 }
