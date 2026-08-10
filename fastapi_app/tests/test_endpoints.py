@@ -458,6 +458,7 @@ class TestImportEndpoints:
         beam = unwrap(response)["beams"][0]
         required = [
             "id",
+            "source_id",
             "width_mm",
             "depth_mm",
             "span_mm",
@@ -469,6 +470,7 @@ class TestImportEndpoints:
         ]
         for field in required:
             assert field in beam, f"Missing field: {field}"
+        assert beam["source_id"] == "B1"
 
     def test_sample_data_endpoint(self, client):
         """Test sample data endpoint returns beams with 3D positions."""
@@ -520,6 +522,7 @@ class TestImportEndpoints:
             assert beam["point1"] is not None
             required = [
                 "id",
+                "source_id",
                 "story",
                 "width_mm",
                 "depth_mm",
@@ -532,6 +535,7 @@ class TestImportEndpoints:
             ]
             for field in required:
                 assert field in beam, f"Beam {beam['id']} missing {field}"
+            assert beam["source_id"]
 
     def test_batch_design(self, client):
         """Test batch design endpoint returns correct results."""
@@ -614,8 +618,12 @@ class TestImportEndpoints:
             "is_safe",
             "utilization_ratio",
             "error",
+            "evidence",
         }
         assert set(result.keys()) == expected_keys
+        assert result["evidence"]["status"] == "PASS"
+        assert result["evidence"]["support_status"] == "SUPPORTED"
+        assert result["evidence"]["calculation_identity"]
         assert result["ast_required"] > 0
         assert 0 < result["utilization_ratio"] < 5
 

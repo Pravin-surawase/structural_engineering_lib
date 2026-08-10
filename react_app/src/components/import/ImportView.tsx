@@ -225,7 +225,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
   const displayError = error || dualError?.message;
 
   return (
-    <div className="flex-1 flex items-start justify-center px-6 pt-8 gap-6 overflow-y-auto">
+    <div className="flex flex-1 flex-col items-stretch justify-start gap-6 overflow-y-auto px-4 pt-6 sm:px-6 lg:flex-row lg:items-start lg:justify-center lg:pt-8">
       {/* Left: Upload zones */}
       <div className="flex-1 max-w-2xl space-y-5">
         <div>
@@ -261,7 +261,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
 
         {importMode === "single" ? (
           /* Single CSV mode */
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <p className="text-xs text-white/50 mb-2">Geometry + Forces (Single CSV)</p>
               <FileDropZone
@@ -294,7 +294,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
         ) : (
           /* Dual CSV mode */
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {/* Geometry file */}
               <DualFileZone
                 label="1. Geometry CSV"
@@ -358,7 +358,7 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
       </div>
 
       {/* Right: Material settings */}
-      <div className="w-64 shrink-0">
+      <div className="w-full shrink-0 lg:w-64">
         <div className="p-5 rounded-xl bg-white/[0.03] border border-white/8">
           <h3 className="text-sm text-white font-semibold mb-1">Material Settings</h3>
           <p className="text-[10px] text-zinc-400 mb-4">Applied to all imported beams</p>
@@ -388,11 +388,21 @@ interface PreviewStepProps {
 
 function PreviewStep({ beams, onBack, onProceed }: PreviewStepProps) {
   const stories = [...new Set(beams.map((b) => b.story).filter(Boolean))];
+  const invalidGeometry = beams.filter((beam) => beam.b <= 0 || beam.D <= 0 || beam.span <= 0);
+  const missingForces = beams.filter((beam) => {
+    const moments = [beam.Mu_start, beam.Mu_mid, beam.Mu_end, beam.mu_envelope];
+    const shears = [beam.Vu_start, beam.Vu_end, beam.vu_envelope];
+    return !moments.some((value) => typeof value === "number" && Math.abs(value) > 0)
+      && !shears.some((value) => typeof value === "number" && Math.abs(value) > 0);
+  });
+  const sourceIds = beams.map((beam) => beam.source_id ?? beam.id);
+  const duplicateSourceCount = sourceIds.length - new Set(sourceIds).size;
+  const reviewBlocked = invalidGeometry.length > 0 || duplicateSourceCount > 0;
 
   return (
-    <div className="flex-1 flex flex-col px-6 py-4 overflow-hidden">
+    <div className="flex flex-1 flex-col overflow-hidden px-4 py-4 sm:px-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="text-xl font-bold text-white">Preview Import</h2>
           <p className="text-sm text-zinc-400">
@@ -405,28 +415,46 @@ function PreviewStep({ beams, onBack, onProceed }: PreviewStepProps) {
           </button>
           <button
             onClick={onProceed}
-            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl transition-colors flex items-center gap-2"
+            disabled={reviewBlocked}
+            className="flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Play className="w-4 h-4" />
-            Open Building Editor
+            Open review
           </button>
         </div>
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-4 gap-3 mb-4">
+      <div className="mb-4 grid grid-cols-2 gap-3 md:grid-cols-4">
         <SummaryCard label="Total Beams" value={beams.length.toString()} />
         <SummaryCard label="Stories" value={stories.length.toString()} />
         <SummaryCard label="With 3D Pos" value={beams.filter((b: BeamCSVRow) => b.point1).length.toString()} />
         <SummaryCard label="Format" value="ETABS" />
       </div>
 
+      {(reviewBlocked || missingForces.length > 0) ? (
+        <div
+          className={`mb-4 rounded-xl border p-3 text-sm ${
+            reviewBlocked
+              ? "border-rose-500/30 bg-rose-500/10 text-rose-200"
+              : "border-amber-500/30 bg-amber-500/10 text-amber-100"
+          }`}
+          role={reviewBlocked ? "alert" : "status"}
+        >
+          {invalidGeometry.length > 0 ? `${invalidGeometry.length} members have invalid dimensions. ` : null}
+          {duplicateSourceCount > 0 ? `${duplicateSourceCount} duplicate source identities must be corrected. ` : null}
+          {missingForces.length > 0
+            ? `${missingForces.length} members have no non-zero design forces; they may be reviewed but remain not evaluated.`
+            : null}
+        </div>
+      ) : null}
+
       {/* Preview table */}
       <div className="flex-1 overflow-auto rounded-xl border border-white/8 bg-white/[0.02]">
         <table className="w-full text-xs">
           <thead className="sticky top-0 bg-zinc-900/95 backdrop-blur">
             <tr className="border-b border-white/8">
-              {["ID", "Story", "Width", "Depth", "Span", "Mu_mid", "Vu_start", "fck", "fy"].map((h) => (
+              {["Source ID", "Label", "Story", "Width", "Depth", "Span", "Mu_mid", "Vu_start", "fck", "fy"].map((h) => (
                 <th key={h} className="px-3 py-2.5 text-left text-white/50 font-medium">{h}</th>
               ))}
             </tr>
@@ -434,7 +462,8 @@ function PreviewStep({ beams, onBack, onProceed }: PreviewStepProps) {
           <tbody>
             {beams.slice(0, 50).map((b: BeamCSVRow, i: number) => (
               <tr key={b.id || i} className="border-b border-white/5 hover:bg-white/[0.03] transition-colors">
-                <td className="px-3 py-2 text-white/80 font-mono">{b.id}</td>
+                <td className="px-3 py-2 text-white/80 font-mono">{b.source_id ?? b.id}</td>
+                <td className="px-3 py-2 text-white/70 font-mono">{b.id}</td>
                 <td className="px-3 py-2 text-white/60">{b.story || "-"}</td>
                 <td className="px-3 py-2 text-white/60">{b.b} mm</td>
                 <td className="px-3 py-2 text-white/60">{b.D} mm</td>

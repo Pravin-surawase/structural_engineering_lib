@@ -36,11 +36,14 @@ import {
 import { useImportedBeamsStore } from "../../store/importedBeamsStore";
 import { Viewport3D } from "../viewport/Viewport3D";
 import { BeamDetailPanel } from "../design/BeamDetailPanel";
-import { useSimpleBatchDesign, useExportBuildingSummary } from "../../hooks";
+import { useBatchDesign } from "../../hooks/useBatchDesign";
+import { useExportBuildingSummary } from "../../hooks/useExport";
 import type { BeamCSVRow } from "../../types/csv";
 import { deriveBeamStatus } from "../../utils/beamStatus";
 import { WorkflowHint } from "../ui/WorkflowHint";
 import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
+import { useWorkspaceStore } from "../../workspace/workspaceStore";
+import { projectExportReadiness } from "../../workspace/resultRecords";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
@@ -71,31 +74,43 @@ function getEnvelopeVu(beam: BeamCSVRow): number {
   );
 }
 
-/** Pick standard bar diameter and count for given Ast */
-function deriveBarLayout(astRequired: number): { count: number; dia: number } {
-  const standardDias = [12, 16, 20, 25, 32];
-  for (const dia of standardDias) {
-    const barArea = Math.PI * (dia / 2) ** 2;
-    const count = Math.ceil(astRequired / barArea);
-    if (count >= 2 && count <= 8) return { count, dia };
-  }
-  const barArea = Math.PI * (25 / 2) ** 2;
-  return { count: Math.max(2, Math.ceil(astRequired / barArea)), dia: 25 };
-}
-
 /* ---- Main Component ---- */
 
 export function BuildingEditorPage() {
   const navigate = useNavigate();
-  const { beams, selectedId, selectBeam, selectFloor, setBeams, setError } = useImportedBeamsStore();
+  const {
+    beams,
+    selectedId,
+    selectBeam,
+    selectFloor,
+    setBeams,
+    restoreFromWorkspace,
+  } = useImportedBeamsStore();
+  const workspaceSnapshot = useWorkspaceStore((state) => state.snapshot);
+  const workspaceProjectId = workspaceSnapshot?.projectId;
+  const workspaceStage = workspaceSnapshot?.selectedStage;
+  const workspaceLoadState = useWorkspaceStore((state) => state.loadState);
+  const workspaceLoadError = useWorkspaceStore((state) => state.loadError);
   const [sidebarClosedForId, setSidebarClosedForId] = useState<string | null>(null);
   const [floorFilter, setFloorFilter] = useState<string>("all");
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const autoDesignTriggeredRef = useRef(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const gridRef = useRef<AgGridReact>(null);
-  const { runBatchDesign, isDesigning } = useSimpleBatchDesign();
+  const { startBatchDesign, status: batchStatus } = useBatchDesign();
+  const isDesigning = batchStatus === "running";
   const { mutate: exportBuilding, isPending: exportPending } = useExportBuildingSummary();
+
+  useEffect(() => {
+    if (beams.length === 0 && workspaceSnapshot?.members.length) {
+      restoreFromWorkspace(workspaceSnapshot);
+    }
+  }, [beams.length, restoreFromWorkspace, workspaceSnapshot]);
+
+  useEffect(() => {
+    if (workspaceProjectId && workspaceStage === "import") {
+      useWorkspaceStore.getState().setStage("review");
+    }
+  }, [workspaceProjectId, workspaceStage]);
 
   // Global material settings
   const [globalFck, setGlobalFck] = useState(25);
@@ -126,8 +141,12 @@ export function BuildingEditorPage() {
 
   const completedCount = statusCounts.pass + statusCounts.fail + statusCounts.warning;
   const progressPct = beams.length > 0 ? (completedCount / beams.length) * 100 : 0;
-  const heldBeamCount = beams.filter((beam) => beam.is_valid !== true).length;
-  const exportsHeld = heldBeamCount > 0;
+  const exportReadiness = useMemo(
+    () => projectExportReadiness(workspaceSnapshot),
+    [workspaceSnapshot],
+  );
+  const heldBeamCount = exportReadiness.heldMemberIds.length;
+  const exportsHeld = !exportReadiness.eligible;
 
   const handleRowClicked = useCallback(
     (event: RowClickedEvent<BeamCSVRow>) => {
@@ -162,103 +181,12 @@ export function BuildingEditorPage() {
 
   const handleDesignAll = useCallback(() => {
     if (beams.length === 0) return;
-
-    // Mark beams with forces as "designing"
-    const marked = beams.map((beam) => {
-      const mu = getEnvelopeMu(beam);
-      const vu = getEnvelopeVu(beam);
-      return {
-        ...beam,
-        status: (mu > 0 || vu > 0) ? "designing" as const : beam.status ?? "pending" as const,
-      };
-    });
-    setBeams(marked);
-
-    // Build payload matching API's BatchDesignRequest (list of BeamRow)
-    const payload = beams.map((b) => ({
-      id: b.id,
-      story: b.story ?? null,
-      width_mm: b.b,
-      depth_mm: b.D,
-      span_mm: b.span,
-      mu_knm: getEnvelopeMu(b),
-      vu_kn: getEnvelopeVu(b),
-      fck_mpa: b.fck ?? globalFck,
-      fy_mpa: b.fy ?? globalFy,
-      cover_mm: b.cover ?? globalCover,
-    }));
-
-    runBatchDesign(payload, {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onSuccess: (data: Record<string, any>) => {
-        if (!data.success) {
-          setError(data.message || "Batch design failed");
-          return;
-        }
-        const resultMap = new Map(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (data.results as Record<string, any>[]).map((r) => [r.beam_id, r])
-        );
-        const updated = beams.map((beam) => {
-          const result = resultMap.get(beam.id);
-          if (!result || !result.success) {
-            return {
-              ...beam,
-              is_valid: false,
-              status: result ? "fail" as const : beam.status,
-            };
-          }
-
-          const astReq = result.ast_required ?? beam.ast_required ?? 0;
-          const layout = deriveBarLayout(astReq);
-          const isSafe = result.is_safe ?? false;
-          // Prefer Mu/Mu_cap from API; fall back to Ast/Ast_max for legacy responses
-          const utilization = result.utilization_ratio != null && result.utilization_ratio > 0
-            ? result.utilization_ratio
-            : (0.04 * beam.b * beam.D) > 0 ? astReq / (0.04 * beam.b * beam.D) : 0;
-
-          return {
-            ...beam,
-            ast_required: astReq,
-            asc_required: result.asc_required ?? 0,
-            stirrup_spacing: result.stirrup_spacing ?? beam.stirrup_spacing,
-            stirrup_diameter: beam.stirrup_diameter ?? 8,
-            bar_count: layout.count,
-            bar_diameter: layout.dia,
-            ast_provided: layout.count * Math.PI * (layout.dia / 2) ** 2,
-            utilization,
-            is_valid: isSafe,
-            status: isSafe ? "pass" as const : "fail" as const,
-          } as BeamCSVRow;
-        });
-        setBeams(updated);
-      },
-      onError: (error: Error) => {
-        setError(error.message);
-        const reset = beams.map((b) => ({
-          ...b,
-          status: b.status === "designing" ? "pending" as const : b.status,
-        }));
-        setBeams(reset);
-      },
-    });
-  }, [beams, globalFck, globalFy, globalCover, runBatchDesign, setBeams, setError]);
-
-  // Auto-design on first load if forces present but no results
-  useEffect(() => {
-    if (autoDesignTriggeredRef.current) return;
-    if (beams.length === 0) return;
-    const hasForces = beams.some((b) => getEnvelopeMu(b) > 0 || getEnvelopeVu(b) > 0);
-    const hasResults = beams.some((b) => typeof b.ast_required === "number");
-    if (hasForces && !hasResults) {
-      autoDesignTriggeredRef.current = true;
-      handleDesignAll();
-    }
-  }, [beams, handleDesignAll]);
+    startBatchDesign(beams);
+  }, [beams, startBatchDesign]);
 
   const handleBuildingExport = useCallback(
     (format: "html" | "pdf" | "csv") => {
-      if (exportsHeld) return;
+      if (!projectExportReadiness(useWorkspaceStore.getState().snapshot).eligible) return;
       setShowExportMenu(false);
       const payload = beams.map((b) => ({
         beam_id: b.id,
@@ -283,7 +211,7 @@ export function BuildingEditorPage() {
       }));
       exportBuilding({ project_name: "Building Project", beams: payload, format });
     },
-    [beams, globalFck, globalFy, exportBuilding, exportsHeld]
+    [beams, globalFck, globalFy, exportBuilding]
   );
 
   const handleCellValueChanged = useCallback(
@@ -422,10 +350,23 @@ export function BuildingEditorPage() {
   );
 
   if (beams.length === 0) {
+    if (workspaceLoadState === "loading") {
+      return (
+        <div className="flex h-screen items-center justify-center bg-zinc-950 pt-14" role="status">
+          <RefreshCw className="mr-2 h-4 w-4 animate-spin text-blue-300" />
+          <p className="text-zinc-300">Restoring the last project…</p>
+        </div>
+      );
+    }
     return (
       <div className="h-screen pt-14 flex items-center justify-center bg-zinc-950">
         <div className="text-center">
           <p className="text-zinc-400 mb-4">No beams loaded</p>
+          {workspaceLoadState === "error" && workspaceLoadError ? (
+            <p className="mb-4 max-w-md text-sm text-rose-300" role="alert">
+              {workspaceLoadError}
+            </p>
+          ) : null}
           <button onClick={() => navigate("/import")}
             className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium">
             Import Beams
@@ -441,8 +382,8 @@ export function BuildingEditorPage() {
       <WorkflowBreadcrumb />
 
       {/* Toolbar */}
-      <div className="h-11 flex items-center justify-between px-4 border-b border-white/5 shrink-0">
-        <div className="flex items-center gap-3">
+      <div className="flex min-h-11 shrink-0 flex-wrap items-center justify-between gap-2 border-b border-white/5 px-4 py-2">
+        <div className="flex min-w-0 flex-wrap items-center gap-3">
           <button onClick={() => navigate("/import")} className="p-1.5 rounded-lg hover:bg-white/5 text-white/50 hover:text-white/80 transition-colors">
             <ArrowLeft className="w-4 h-4" />
           </button>
@@ -453,7 +394,7 @@ export function BuildingEditorPage() {
           {isDesigning && <span className="text-xs text-blue-300 animate-pulse">Designing…</span>}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center gap-1.5">
             <Layers className="w-3.5 h-3.5 text-zinc-400" />
             <select value={floorFilter} onChange={(e) => handleFloorChange(e.target.value)}
@@ -531,8 +472,8 @@ export function BuildingEditorPage() {
       </div>
 
       {/* Material strip + progress */}
-      <div className="px-4 py-2 border-b border-white/5 bg-zinc-950/80 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-white/5 bg-zinc-950/80 px-4 py-2">
+        <div className="flex flex-wrap items-center gap-3">
           <MaterialSelect label="Concrete" value={globalFck} onChange={(v) => handleGlobalMaterialChange("fck", v)}
             options={[20, 25, 30, 35, 40, 45, 50]} format={(v) => `M${v}`} />
           <MaterialSelect label="Steel" value={globalFy} onChange={(v) => handleGlobalMaterialChange("fy", v)}
@@ -557,10 +498,10 @@ export function BuildingEditorPage() {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 flex overflow-hidden">
-        <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto lg:flex-row lg:overflow-hidden">
+        <div className="flex min-h-[40rem] min-w-0 flex-1 flex-col lg:min-h-0">
           {/* 3D Building View (top 30%) */}
-          <div className="h-[30%] min-h-[200px] border-b border-white/5 relative">
+          <div className="relative h-72 min-h-[200px] border-b border-white/5 lg:h-[30%]">
             <Suspense fallback={<div className="flex items-center justify-center h-full bg-zinc-900"><p className="text-zinc-400 animate-pulse">Loading 3D...</p></div>}>
               <Viewport3D mode="building" forceMode />
             </Suspense>
@@ -581,7 +522,7 @@ export function BuildingEditorPage() {
           </div>
 
           {/* AG Grid Editor (bottom 70%) */}
-          <div className="flex-1 ag-theme-alpine-dark" style={{
+          <div className="min-h-[26rem] flex-1 ag-theme-alpine-dark" style={{
             "--ag-background-color": "rgb(9 9 11)",
             "--ag-header-background-color": "rgb(24 24 27)",
             "--ag-odd-row-background-color": "rgb(9 9 11)",
@@ -612,7 +553,7 @@ export function BuildingEditorPage() {
 
         {/* Beam Detail Panel — slides in when a beam is selected */}
         {showSidebar && selectedBeam && (
-          <div className="w-[420px] shrink-0 border-l border-white/5 bg-zinc-950 overflow-y-auto">
+          <div className="w-full shrink-0 overflow-y-auto border-t border-white/5 bg-zinc-950 lg:w-[420px] lg:border-t-0 lg:border-l">
             <BeamDetailPanel
               beam={selectedBeam}
               onClose={() => { selectBeam(null); setSidebarClosedForId(null); }}

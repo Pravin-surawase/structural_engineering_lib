@@ -4,6 +4,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useImportedBeamsStore } from '../../store/importedBeamsStore';
 import type { BeamCSVRow } from '../../types/csv';
+import { useWorkspaceStore } from '../../workspace/workspaceStore';
 
 const mockBeam = (overrides: Partial<BeamCSVRow> = {}): BeamCSVRow => ({
   id: 'B1',
@@ -19,6 +20,7 @@ const mockBeam = (overrides: Partial<BeamCSVRow> = {}): BeamCSVRow => ({
 
 describe('useImportedBeamsStore', () => {
   beforeEach(() => {
+    useWorkspaceStore.getState().reset();
     // Reset store between tests
     useImportedBeamsStore.setState({
       beams: [],
@@ -47,6 +49,10 @@ describe('useImportedBeamsStore', () => {
     const state = useImportedBeamsStore.getState();
     expect(state.beams).toHaveLength(2);
     expect(state.error).toBeNull();
+    expect(useWorkspaceStore.getState().snapshot).toMatchObject({
+      selectedStage: 'review',
+      members: [{ memberId: 'B1' }, { memberId: 'B2' }],
+    });
   });
 
   it('addBeam appends a single beam', () => {
@@ -67,6 +73,7 @@ describe('useImportedBeamsStore', () => {
     const state = useImportedBeamsStore.getState();
     expect(state.selectedId).toBe('B2');
     expect(state.selectedFloor).toBe('1F');
+    expect(useWorkspaceStore.getState().snapshot?.selectedMemberId).toBe('B2');
   });
 
   it('selectBeam with null clears selection but keeps floor', () => {

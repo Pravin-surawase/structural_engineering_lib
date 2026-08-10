@@ -10,6 +10,7 @@ import {
   StageNavigation,
   type WorkbenchStage,
 } from '../workbench/StageNavigation';
+import { useWorkspaceStore } from '../../workspace/workspaceStore';
 
 const LEGACY_STAGE_ROUTES: Record<ProjectStage, string> = {
   import: '/import',
@@ -29,13 +30,21 @@ export function WorkflowBreadcrumb() {
   const navigate = useNavigate();
   const location = useLocation();
   const { beams } = useImportedBeamsStore();
+  const workspaceStage = useWorkspaceStore((state) => state.snapshot?.selectedStage);
   const currentStage = stageForPath(location.pathname);
   const currentOrder = PROJECT_STAGES.find((stage) => stage.id === currentStage)?.order ?? -1;
   const completed = new Set<ProjectStage>();
 
   if (beams.length > 0) completed.add('import');
-  if (currentOrder > 1) completed.add('review');
-  if (beams.some((beam) => beam.ast_required !== undefined)) completed.add('design');
+  if (workspaceStage) {
+    const workspaceOrder = PROJECT_STAGES.find((stage) => stage.id === workspaceStage)?.order ?? 0;
+    for (const stage of PROJECT_STAGES) {
+      if (stage.order < workspaceOrder) completed.add(stage.id);
+    }
+  } else {
+    if (currentOrder > 1) completed.add('review');
+    if (beams.some((beam) => beam.ast_required !== undefined)) completed.add('design');
+  }
 
   const stages: WorkbenchStage[] = PROJECT_STAGES.map((stage) => {
     const isCurrent = stage.id === currentStage;

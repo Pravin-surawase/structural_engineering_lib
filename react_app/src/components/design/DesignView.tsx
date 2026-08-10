@@ -1,12 +1,14 @@
 /**
  * DesignView - Compact single beam design with live 3D preview.
  *
- * Layout: Left 340px compact form | Right: 3D viewport + results
+ * Responsive workbench: common inputs, 3D review, truthful results, and
+ * contextual advanced actions.
  */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Calculator, CheckCircle, AlertCircle, Loader2, Eye, ChevronDown, ChevronRight, Shield, Lightbulb, Download, FileText, Ruler, ChevronUp, RotateCcw, ArrowRight, Activity } from "lucide-react";
-import { useExportBBS, useExportDXF, useExportReport, useLoadAnalysis } from "../../hooks";
+import { useExportBBS, useExportDXF, useExportReport } from "../../hooks/useExport";
+import { useLoadAnalysis } from "../../hooks/useLoadAnalysis";
 import type { LoadAnalysisResponse } from "../../api/client";
 import { useTorsionDesign } from "../../hooks/useTorsionDesign";
 import type { TorsionDesignResponse } from "../../hooks/useTorsionDesign";
@@ -20,6 +22,9 @@ import { Viewport3D } from "../viewport/Viewport3D";
 import { WorkflowHint } from "../ui/WorkflowHint";
 import { ParetoPanel } from "./ParetoPanel";
 import { formatPercent, formatRatio, formatSignedRatio, getTrustPresentation } from "../../utils/trustPresentation";
+import { WorkbenchHeader } from "../workbench/WorkbenchHeader";
+import { WorkbenchShell } from "../workbench/WorkbenchShell";
+import { ResultLifecycleBadge } from "../workbench/ResultLifecycleBadge";
 
 /** Collapsible accordion section */
 function AccordionSection({ title, children, defaultOpen = true }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
@@ -44,6 +49,7 @@ export function DesignView() {
   const [autoDesign, setAutoDesign] = useState(true);
   const [resultsCollapsed, setResultsCollapsed] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [showCompare, setShowCompare] = useState(false);
   const [torsionEnabled, setTorsionEnabled] = useState(false);
   const [torsionMoment, setTorsionMoment] = useState(10); // kN·m
   const [loadCalcEnabled, setLoadCalcEnabled] = useState(false);
@@ -71,17 +77,18 @@ export function DesignView() {
     enabled: true,
   });
   const trust = state.result ? getTrustPresentation(state.result) : null;
+  const canExport = Boolean(state.exportEligible && trust?.canExport);
 
   const codeChecks = useCodeChecks();
   const rebarSuggestions = useRebarSuggestions();
   const torsionDesign = useTorsionDesign();
   const loadAnalysis = useLoadAnalysis();
 
-  const spanMeters = useMemo(() => Number((length / 1000).toFixed(2)), [length]);
+  const spanMeters = Number((length / 1000).toFixed(2));
 
   // Auto-trigger code checks + rebar suggestions when design result changes
   useEffect(() => {
-    if (!state.result) return;
+    if (!state.result || state.resultLifecycle !== "current") return;
     const r = state.result;
     codeChecks.mutate({
       beam: {
@@ -104,11 +111,11 @@ export function DesignView() {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.result]);
+  }, [state.result, state.resultLifecycle]);
 
   // Auto-trigger torsion design when enabled and flexure result exists
   useEffect(() => {
-    if (!torsionEnabled || !state.result) return;
+    if (!torsionEnabled || !state.result || state.resultLifecycle !== "current") return;
     torsionDesign.mutate({
       width: inputs.width,
       depth: inputs.depth,
@@ -119,29 +126,68 @@ export function DesignView() {
       fy: inputs.fy,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [torsionEnabled, torsionMoment, state.result]);
+  }, [torsionEnabled, torsionMoment, state.result, state.resultLifecycle]);
 
   return (
-    <div className="flex h-screen pt-14">
+    <div className="h-screen pt-14">
+      <WorkbenchShell
+        header={(
+          <WorkbenchHeader
+            title="Quick beam design"
+            projectName="IS 456:2000 · current input revision shown explicitly"
+            primaryAction={(
+              <button
+                onClick={actions.triggerDesign}
+                disabled={state.isDesigning}
+                className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {state.isDesigning ? <Loader2 className="h-4 w-4 animate-spin" /> : <Calculator className="h-4 w-4" />}
+                {state.isDesigning ? "Calculating…" : state.result ? "Recalculate" : "Design beam"}
+              </button>
+            )}
+            secondaryActions={(
+              <>
+                <button
+                  onClick={() => setShowCompare((visible) => !visible)}
+                  disabled={!state.exportEligible}
+                  aria-pressed={showCompare}
+                  className="rounded-lg border border-white/10 px-3 py-2 text-xs text-zinc-300 hover:bg-white/5 disabled:opacity-40"
+                >
+                  Compare options
+                </button>
+                <button
+                  onClick={actions.reset}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-2 text-xs text-zinc-300 hover:bg-white/5"
+                >
+                  <RotateCcw className="h-3.5 w-3.5" /> Reset
+                </button>
+              </>
+            )}
+          >
+            <ResultLifecycleBadge lifecycle={state.resultLifecycle} />
+            <ConnectionStatus
+              status={state.connectionStatus}
+              latency={state.latency}
+              error={state.error}
+              onReconnect={actions.reconnect}
+              isFallbackActive={state.isFallbackActive}
+            />
+          </WorkbenchHeader>
+        )}
+      >
+      <div className="grid min-h-full min-w-0 grid-cols-1 lg:grid-cols-[20rem_minmax(0,1fr)]">
       {/* Left: Compact Input Form */}
-      <div className="w-[340px] min-w-[300px] flex flex-col border-r border-white/5 bg-zinc-950">
+      <div className="min-w-0 flex flex-col border-b border-white/5 bg-zinc-950 lg:border-r lg:border-b-0">
         {/* Header strip */}
         <div className="px-4 py-3 border-b border-white/5 flex items-center justify-between">
           <div>
-            <h2 className="text-sm font-bold text-white">Beam Design</h2>
-            <p className="text-[10px] text-zinc-400">IS 456:2000</p>
+            <h2 className="text-sm font-bold text-white">Beam inputs</h2>
+            <p className="text-[10px] text-zinc-400">Common values stay visible; optional analysis is disclosed in place.</p>
           </div>
-          <ConnectionStatus
-            status={state.connectionStatus}
-            latency={state.latency}
-            error={state.error}
-            onReconnect={actions.reconnect}
-            isFallbackActive={state.isFallbackActive}
-          />
         </div>
 
         {/* Form body */}
-        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-2.5">
+        <div className="flex-1 space-y-2.5 px-3 py-3 lg:max-h-[calc(100vh-13rem)] lg:overflow-y-auto">
           {/* Auto design toggle */}
           <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-white/[0.03] border border-white/8">
             <label className="flex items-center gap-2 text-xs text-white/60">
@@ -246,25 +292,8 @@ export function DesignView() {
 
         {/* Bottom actions */}
         <div className="px-3 pb-3 space-y-2">
-          <button
-            onClick={actions.triggerDesign}
-            disabled={state.isDesigning}
-            className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-40"
-          >
-            {state.isDesigning ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Calculating...
-              </>
-            ) : (
-              <>
-                <Calculator className="w-4 h-4" />
-                Design Beam
-              </>
-            )}
-          </button>
           {state.isFallbackActive && (
-            <p className="text-[10px] text-amber-400/60 text-center">Using REST API (WebSocket unavailable)</p>
+            <p className="text-center text-[10px] text-zinc-400">Verified REST request mode · cancelled and stale responses are ignored</p>
           )}
           {state.result && (
             <button
@@ -279,7 +308,7 @@ export function DesignView() {
       </div>
 
       {/* Right: 3D Viewport + Results — dynamic layout */}
-      <div className="flex-1 flex flex-col bg-zinc-900/30 relative">
+      <div className="relative flex min-h-[34rem] min-w-0 flex-col bg-zinc-900/30">
         {/* Workflow hint */}
         <div className="px-4 pt-3 pb-2">
           <WorkflowHint
@@ -288,12 +317,12 @@ export function DesignView() {
             title={state.result ? "Review Results" : "Enter Beam Dimensions"}
             description={
               state.result
-                ? trust?.canExport
+                ? canExport
                   ? "Check the exact governing result and evidence identity before exporting."
                   : "Export and detailing are held until the outer result is PASS."
                 : "Fill in dimensions, materials, and forces in the left panel, then click 'Design Beam'."
             }
-            nextAction={state.result ? (trust?.canExport ? "Export → BBS/DXF/Report" : "Resolve FAIL/HOLD") : "Design Beam"}
+            nextAction={state.result ? (canExport ? "Export → BBS/DXF/Report" : "Recalculate or resolve FAIL/HOLD") : "Design Beam"}
             storageKey="workflow_hint_design_view"
           />
         </div>
@@ -302,9 +331,9 @@ export function DesignView() {
         {state.result && (
           <div className="absolute top-3 right-3 z-10">
             <button
-              onClick={() => trust?.canExport && setShowExportMenu(!showExportMenu)}
-              disabled={!trust?.canExport}
-              title={trust?.canExport ? "Export passing design" : "Exports held until the outer result is PASS"}
+              onClick={() => canExport && setShowExportMenu(!showExportMenu)}
+              disabled={!canExport}
+              title={canExport ? "Export current passing design" : "Exports require a current-revision PASS result"}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900/80 backdrop-blur border border-white/10 text-xs text-white/60 hover:text-white/90 hover:border-white/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <Download className="w-3.5 h-3.5" />
@@ -319,7 +348,7 @@ export function DesignView() {
                   { label: "HTML Report", icon: <FileText className="w-3.5 h-3.5" />, loading: reportPending, onClick: () => { exportReport({ ...exportParams, ast_required: state.result?.flexure?.ast_required, ast_provided: state.result?.ast_total, utilization: state.result?.utilization_ratio, is_safe: state.result?.success }); setShowExportMenu(false); } },
                   { label: "PDF Report", icon: <FileText className="w-3.5 h-3.5" />, loading: reportPending, onClick: () => { exportReport({ ...exportParams, ast_required: state.result?.flexure?.ast_required, ast_provided: state.result?.ast_total, utilization: state.result?.utilization_ratio, is_safe: state.result?.success, format: "pdf" }); setShowExportMenu(false); } },
                 ].map((item) => (
-                  <button key={item.label} onClick={item.onClick} disabled={item.loading || !trust?.canExport}
+                  <button key={item.label} onClick={item.onClick} disabled={item.loading || !canExport}
                     className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-xs text-white/60 hover:bg-white/5 hover:text-white/90 transition-colors disabled:opacity-40">
                     {item.loading ? <div className="w-3.5 h-3.5 rounded-full border border-white/30 border-t-white/70 animate-spin" /> : item.icon}
                     {item.label}
@@ -384,7 +413,7 @@ export function DesignView() {
                 {torsionDesign.data && <TorsionResultsPanel data={torsionDesign.data} isPending={torsionDesign.isPending} />}
                 <CodeChecksPanel data={codeChecks.data} isPending={codeChecks.isPending} />
                 <RebarSuggestionsPanel data={rebarSuggestions.data} isPending={rebarSuggestions.isPending} />
-                <ParetoPanel spanMm={length} muKnm={inputs.moment} vuKn={inputs.shear ?? 0} />
+                {showCompare ? <ParetoPanel spanMm={length} muKnm={inputs.moment} vuKn={inputs.shear ?? 0} /> : null}
               </div>
             </div>
           )
@@ -398,6 +427,8 @@ export function DesignView() {
           </div>
         ) : null}
       </div>
+      </div>
+      </WorkbenchShell>
     </div>
   );
 }

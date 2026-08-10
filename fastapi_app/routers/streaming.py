@@ -8,7 +8,7 @@ This module provides SSE endpoints for streaming batch operations:
 Week 3 Priority 3 Implementation (V3 Migration)
 
 Usage:
-    GET /stream/batch-design?beams=[{...}]
+    POST /stream/batch-design with a JSON array body
     Returns: Event stream with design_result, progress, complete events
 
 Client Example:
@@ -161,55 +161,11 @@ job_manager = BatchJobManager()
 # =============================================================================
 
 
-@router.get("/batch-design", response_class=EventSourceResponse)
-async def stream_batch_design(
+def _stream_batch_response(
     request: Request,
-    beams: str = Query(..., description="JSON array of beam parameters"),
-    _: None = Depends(check_rate_limit),
+    beam_list: list[Any],
 ) -> EventSourceResponse:
-    """
-    Stream batch beam design results.
-
-    Accepts JSON array of beam parameters and streams results as they complete.
-
-    Events:
-        - start: Job started with job_id and total count
-        - progress: Current progress (completed/total)
-        - design_result: Individual beam result
-        - error: Individual beam error
-        - complete: All beams processed
-
-    Example:
-        ```javascript
-        const beams = JSON.stringify([
-            {width: 300, depth: 500, moment: 100, fck: 25, fy: 500},
-            {width: 300, depth: 500, moment: 150, fck: 25, fy: 500}
-        ]);
-        const es = new EventSource(`/stream/batch-design?beams=${encodeURIComponent(beams)}`);
-
-        es.addEventListener('design_result', (e) => {
-            const result = JSON.parse(e.data);
-            console.log('Beam completed:', result);
-        });
-
-        es.addEventListener('complete', (e) => {
-            console.log('All done!');
-            es.close();
-        });
-        ```
-    """
-    try:
-        beam_list = json.loads(beams)
-    except json.JSONDecodeError:
-
-        async def error_generator():
-            yield {
-                "event": "error",
-                "data": json.dumps({"message": "Invalid JSON in beams parameter"}),
-            }
-
-        return EventSourceResponse(error_generator())
-
+    """Build one SSE response after the transport has decoded the beam list."""
     if not isinstance(beam_list, list) or len(beam_list) == 0:
 
         async def error_generator():
@@ -323,6 +279,38 @@ async def stream_batch_design(
             }
 
     return EventSourceResponse(event_generator())
+
+
+@router.get("/batch-design", response_class=EventSourceResponse)
+async def stream_batch_design(
+    request: Request,
+    beams: str = Query(..., description="JSON array of beam parameters"),
+    _: None = Depends(check_rate_limit),
+) -> EventSourceResponse:
+    """Stream a small legacy batch supplied through the query string."""
+    try:
+        beam_list = json.loads(beams)
+    except json.JSONDecodeError:
+
+        async def error_generator():
+            yield {
+                "event": "error",
+                "data": json.dumps({"message": "Invalid JSON in beams parameter"}),
+            }
+
+        return EventSourceResponse(error_generator())
+
+    return _stream_batch_response(request, beam_list)
+
+
+@router.post("/batch-design", response_class=EventSourceResponse)
+async def stream_batch_design_post(
+    request: Request,
+    beams: list[dict[str, Any]],
+    _: None = Depends(check_rate_limit),
+) -> EventSourceResponse:
+    """Stream a batch from a request body without request-target size limits."""
+    return _stream_batch_response(request, beams)
 
 
 @router.get("/job/{job_id}", response_model=BatchJobStatusResponse)

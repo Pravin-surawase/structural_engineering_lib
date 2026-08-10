@@ -5,6 +5,7 @@
  */
 import { create } from 'zustand';
 import type { BeamDesignRequest, BeamDesignResponse } from '../api/client';
+import type { ResultLifecycle } from '../workspace/types';
 
 export interface DesignState {
   // Input parameters
@@ -13,6 +14,9 @@ export interface DesignState {
 
   // Result from API
   result: BeamDesignResponse | null;
+  inputRevision: number;
+  resultRevision: number | null;
+  resultLifecycle: ResultLifecycle;
   isLoading: boolean;
   error: string | null;
 
@@ -24,9 +28,9 @@ export interface DesignState {
   // Actions
   setInputs: (inputs: Partial<BeamDesignRequest>) => void;
   setLength: (length: number) => void;
-  setResult: (result: BeamDesignResponse | null) => void;
-  setLoading: (loading: boolean) => void;
-  setError: (error: string | null) => void;
+  setResult: (result: BeamDesignResponse | null, inputRevision?: number) => boolean;
+  setLoading: (loading: boolean, inputRevision?: number) => boolean;
+  setError: (error: string | null, inputRevision?: number) => boolean;
   setAutoDesign: (enabled: boolean) => void;
   setUseWebSocket: (enabled: boolean) => void;
   setWsLatency: (latency: number | null) => void;
@@ -51,6 +55,9 @@ export const useDesignStore = create<DesignState>((set) => ({
   inputs: DEFAULT_INPUTS,
   length: DEFAULT_LENGTH,
   result: null,
+  inputRevision: 1,
+  resultRevision: null,
+  resultLifecycle: 'not_evaluated',
   isLoading: false,
   error: null,
   autoDesign: true, // Enable by default
@@ -58,17 +65,77 @@ export const useDesignStore = create<DesignState>((set) => ({
   wsLatency: null,
 
   setInputs: (inputs) =>
-    set((state) => ({
-      inputs: { ...state.inputs, ...inputs },
-    })),
+    set((state) => {
+      const changed = Object.entries(inputs).some(
+        ([key, value]) => state.inputs[key as keyof BeamDesignRequest] !== value,
+      );
+      if (!changed) return state;
+      return {
+        inputs: { ...state.inputs, ...inputs },
+        inputRevision: state.inputRevision + 1,
+        resultLifecycle: state.result ? 'stale' : 'not_evaluated',
+        isLoading: false,
+        error: null,
+      };
+    }),
 
-  setLength: (length) => set({ length }),
+  setLength: (length) =>
+    set((state) => {
+      if (state.length === length) return state;
+      return {
+        length,
+        inputRevision: state.inputRevision + 1,
+        resultLifecycle: state.result ? 'stale' : 'not_evaluated',
+        isLoading: false,
+        error: null,
+      };
+    }),
 
-  setResult: (result) => set({ result, error: null }),
+  setResult: (result, inputRevision) => {
+    let accepted = false;
+    set((state) => {
+      const targetRevision = inputRevision ?? state.inputRevision;
+      if (targetRevision !== state.inputRevision) return state;
+      accepted = true;
+      return {
+        result,
+        resultRevision: result ? targetRevision : null,
+        resultLifecycle: result ? 'current' : 'not_evaluated',
+        isLoading: false,
+        error: null,
+      };
+    });
+    return accepted;
+  },
 
-  setLoading: (isLoading) => set({ isLoading }),
+  setLoading: (isLoading, inputRevision) => {
+    let accepted = false;
+    set((state) => {
+      const targetRevision = inputRevision ?? state.inputRevision;
+      if (targetRevision !== state.inputRevision) return state;
+      accepted = true;
+      return {
+        isLoading,
+        resultLifecycle: isLoading ? 'pending' : state.resultLifecycle,
+      };
+    });
+    return accepted;
+  },
 
-  setError: (error) => set({ error, isLoading: false }),
+  setError: (error, inputRevision) => {
+    let accepted = false;
+    set((state) => {
+      const targetRevision = inputRevision ?? state.inputRevision;
+      if (targetRevision !== state.inputRevision) return state;
+      accepted = true;
+      return {
+        error,
+        isLoading: false,
+        resultLifecycle: error ? 'error' : state.resultLifecycle,
+      };
+    });
+    return accepted;
+  },
 
   setAutoDesign: (autoDesign) => set({ autoDesign }),
 
@@ -77,14 +144,17 @@ export const useDesignStore = create<DesignState>((set) => ({
   setWsLatency: (wsLatency) => set({ wsLatency }),
 
   reset: () =>
-    set({
+    set((state) => ({
       inputs: DEFAULT_INPUTS,
       length: DEFAULT_LENGTH,
       result: null,
+      inputRevision: state.inputRevision + 1,
+      resultRevision: null,
+      resultLifecycle: 'not_evaluated',
       isLoading: false,
       error: null,
       autoDesign: true,
       useWebSocket: false,
       wsLatency: null,
-    }),
+    })),
 }));

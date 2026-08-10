@@ -17,6 +17,7 @@ interface ValidationErrors {
 export function BeamForm() {
   const {
     inputs,
+    inputRevision,
     length,
     setInputs,
     setLength,
@@ -113,19 +114,19 @@ export function BeamForm() {
   useAutoDesign(autoDesign);
 
   const designMutation = useMutation({
-    mutationFn: designBeam,
-    onMutate: () => {
-      setLoading(true);
-      setError(null);
+    mutationFn: ({ params }: { params: typeof inputs; revision: number }) => designBeam(params),
+    onMutate: ({ revision }) => {
+      setLoading(true, revision);
+      setError(null, revision);
     },
-    onSuccess: (data) => {
-      setResult(data);
+    onSuccess: (data, { revision }) => {
+      setResult(data, revision);
     },
-    onError: (error: Error) => {
-      setError(error.message);
+    onError: (error: Error, { revision }) => {
+      setError(error.message, revision);
     },
-    onSettled: () => {
-      setLoading(false);
+    onSettled: (_data, _error, { revision }) => {
+      setLoading(false, revision);
     },
   });
 
@@ -155,9 +156,9 @@ export function BeamForm() {
     // Validate all fields before submission
     const isValid = validate();
     if (isValid) {
-      designMutation.mutate(inputs);
+      designMutation.mutate({ params: { ...inputs }, revision: inputRevision });
     }
-  }, [inputs, designMutation, validate]);
+  }, [inputRevision, inputs, designMutation, validate]);
 
   return (
     <div className="p-4 flex flex-col gap-4 h-full overflow-y-auto bg-[#1e1e1e] text-[#e0e0e0]">

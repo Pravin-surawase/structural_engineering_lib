@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { WorkbenchHeader } from '../workbench/WorkbenchHeader';
 import { WorkbenchPanel } from '../workbench/WorkbenchPanel';
 import { WorkbenchShell } from '../workbench/WorkbenchShell';
+import { useWorkspaceStore } from '../../workspace/workspaceStore';
 
 export interface WorkbenchHomePageProps {
   initialView?: 'workbench' | 'projects';
@@ -12,6 +13,9 @@ export function WorkbenchHomePage({
   initialView = 'workbench',
 }: WorkbenchHomePageProps) {
   const navigate = useNavigate();
+  const workspace = useWorkspaceStore((state) => state.snapshot);
+  const loadState = useWorkspaceStore((state) => state.loadState);
+  const loadError = useWorkspaceStore((state) => state.loadError);
   const title = initialView === 'projects' ? 'Projects' : 'Structural workbench';
 
   return (
@@ -35,6 +39,36 @@ export function WorkbenchHomePage({
       )}
     >
       <div className="mx-auto grid max-w-5xl gap-4 p-4 pb-24 sm:p-6 md:grid-cols-2 md:pb-8">
+        {workspace ? (
+          <WorkbenchPanel
+            title="Continue project"
+            description={`${workspace.projectName} · ${workspace.members.length} members · ${workspace.selectedStage}`}
+            className="md:col-span-2"
+          >
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-sm text-zinc-400">
+                Revision {workspace.projectRevision} · {workspace.saveState === 'clean' ? 'saved locally' : workspace.saveState}
+              </p>
+              <button
+                type="button"
+                onClick={() => navigate('/editor')}
+                className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
+              >
+                Resume review
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          </WorkbenchPanel>
+        ) : loadState === 'loading' ? (
+          <div className="rounded-xl border border-white/10 bg-zinc-900/60 p-4 text-sm text-zinc-400 md:col-span-2" role="status">
+            Restoring the last local project…
+          </div>
+        ) : loadState === 'error' && loadError ? (
+          <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-4 text-sm text-rose-200 md:col-span-2" role="alert">
+            Saved project needs recovery: {loadError}
+          </div>
+        ) : null}
+
         <WorkbenchPanel
           title="Quick beam"
           description="One focused calculation without creating a project."

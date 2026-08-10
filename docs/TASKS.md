@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — UIX-001 P2/P3 accepted; P4 quick-design migration ready
+**Updated:** 2026-08-10 — UIX-001 Session 1 P0-P8 accepted; Session 2 P9 is next
 
 ---
 
@@ -126,7 +126,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| UIX-001 | Build one compact 3D-first structural workbench and a schema-driven no-code foundation | Main Agent | 🚧 [SESSION 1 P4 — QUICK-DESIGN MIGRATION](planning/ui-experience-foundation-master-plan.md) |
+| UIX-001 | Build one compact 3D-first structural workbench and a schema-driven no-code foundation | Main Agent | 🚧 [SESSION 2 P9 — CAPABILITY CATALOGUE](planning/ui-experience-foundation-master-plan.md) |
 
 ## Up Next
 
@@ -137,8 +137,9 @@
 ## Backlog
 
 The version roadmap and historical backlog remain below. The v0.23.0 Alpha is
-published. UIX-001 is owner-accepted; its Wave 0 evidence/route/state/3D lock is
-accepted, P2/P3 foundations are accepted, and P4 is ready. Stable-release and
+published. UIX-001 Session 1 P0-P8 is accepted, including revision-safe design,
+durable project identity, revision-bound batch evidence, and authoritative 3D
+inspection. Session 2 begins at P9 after this green merge. Stable-release and
 engineering-use approval remain held for the cumulative qualified review.
 
 ## Recently Done

@@ -92,6 +92,14 @@ interface GeometryResponse {
   warnings: string[];
 }
 
+export const BEAM_GEOMETRY_SCHEMA_VERSION = '1.0.0' as const;
+
+export interface BeamGeometryIdentity {
+  projectRevision: number;
+  memberRevision: number;
+  inputHash: string;
+}
+
 /**
  * Fetch full 3D geometry from the API.
  *
@@ -99,12 +107,14 @@ interface GeometryResponse {
  * accurate bar positions based on IS 456 detailing rules.
  */
 async function fetchBeamGeometry(
-  params: BeamGeometryRequest
+  params: BeamGeometryRequest,
+  signal?: AbortSignal,
 ): Promise<Beam3DGeometry> {
   const response = await fetch(`${API_BASE_URL}/api/v1/geometry/beam/full`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(params),
+    signal,
   });
 
   if (!response.ok) {
@@ -116,6 +126,14 @@ async function fetchBeamGeometry(
 
   if (!data.success || !data.geometry) {
     throw new Error(data.message || "Failed to generate geometry");
+  }
+  if (data.geometry.version !== BEAM_GEOMETRY_SCHEMA_VERSION) {
+    throw new Error(`Unsupported beam geometry schema: ${data.geometry.version}`);
+  }
+  if (params.beam_id && data.geometry.beamId !== params.beam_id) {
+    throw new Error(
+      `Geometry identity mismatch: requested ${params.beam_id}, received ${data.geometry.beamId}`,
+    );
   }
 
   return data.geometry;
@@ -147,11 +165,11 @@ async function fetchBeamGeometry(
  */
 export function useBeamGeometry(
   params: BeamGeometryRequest | null,
-  options?: { enabled?: boolean }
+  options?: { enabled?: boolean; identity?: BeamGeometryIdentity }
 ) {
   return useQuery({
-    queryKey: ["beamGeometry", params],
-    queryFn: () => fetchBeamGeometry(params!),
+    queryKey: ["beamGeometry", BEAM_GEOMETRY_SCHEMA_VERSION, options?.identity, params],
+    queryFn: ({ signal }) => fetchBeamGeometry(params!, signal),
     enabled: Boolean(params) && (options?.enabled ?? true),
     staleTime: 1000 * 60 * 5, // 5 minutes - geometry doesn't change
     gcTime: 1000 * 60 * 30, // Keep in cache for 30 minutes

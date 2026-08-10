@@ -12,10 +12,12 @@ const mockSetResult = vi.fn();
 const mockSetLoading = vi.fn();
 const mockSetError = vi.fn();
 const mockInputs = { width: 300, depth: 450, moment: 150, fck: 25, fy: 500 };
+const mockInputRevision = 7;
 
 vi.mock('../../store/designStore', () => ({
   useDesignStore: vi.fn(() => ({
     inputs: mockInputs,
+    inputRevision: mockInputRevision,
     setResult: mockSetResult,
     setLoading: mockSetLoading,
     setError: mockSetError,
@@ -60,7 +62,11 @@ describe('useAutoDesign', () => {
       vi.advanceTimersByTime(350);
     });
 
-    expect(designBeam).toHaveBeenCalledWith(mockInputs);
+    expect(designBeam).toHaveBeenCalledWith(
+      mockInputs,
+      { signal: expect.any(AbortSignal) },
+    );
+    expect(mockSetResult).toHaveBeenCalledWith(mockResponse, mockInputRevision);
   });
 
   it('does not trigger when disabled', () => {
@@ -86,7 +92,8 @@ describe('useAutoDesign', () => {
       vi.advanceTimersByTime(350);
     });
 
-    expect(mockSetLoading).toHaveBeenCalledWith(true);
+    expect(mockSetLoading).toHaveBeenCalledWith(true, mockInputRevision);
+    expect(mockSetLoading).toHaveBeenLastCalledWith(false, mockInputRevision);
   });
 
   it('handles API errors gracefully', async () => {
@@ -104,6 +111,6 @@ describe('useAutoDesign', () => {
       await vi.runAllTimersAsync();
     });
 
-    expect(mockSetError).toHaveBeenCalledWith('Network error');
+    expect(mockSetError).toHaveBeenCalledWith('Network error', mockInputRevision);
   });
 });

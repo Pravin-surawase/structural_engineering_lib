@@ -164,6 +164,33 @@ describe('workspace revision contract', () => {
     ).toBe('stale');
   });
 
+  it('applies bulk input edits in one project revision', () => {
+    useWorkspaceStore.getState().replaceMembers([
+      {
+        memberId: 'beam-1', sourceId: 'B1', label: 'B1', story: '1',
+        inputHash: 'hash-1', inputs: { widthMm: 300, depthMm: 450 },
+      },
+      {
+        memberId: 'beam-2', sourceId: 'B2', label: 'B2', story: '1',
+        inputHash: 'hash-2', inputs: { widthMm: 300, depthMm: 450 },
+      },
+    ]);
+    const before = useWorkspaceStore.getState().snapshot!.projectRevision;
+
+    useWorkspaceStore.getState().updateMembersInputs([
+      { memberId: 'beam-1', inputHash: 'hash-1-next', inputs: { widthMm: 325, depthMm: 450 } },
+      { memberId: 'beam-2', inputHash: 'hash-2-next', inputs: { widthMm: 350, depthMm: 450 } },
+    ]);
+
+    const snapshot = useWorkspaceStore.getState().snapshot!;
+    expect(snapshot.projectRevision).toBe(before + 1);
+    expect(snapshot.members.map((member) => member.inputRevision)).toEqual([2, 2]);
+    expect(snapshot.members.map((member) => member.inputHash)).toEqual([
+      'hash-1-next',
+      'hash-2-next',
+    ]);
+  });
+
   it('undoes member inputs as a new revision and invalidates retained evidence', () => {
     const pending = useWorkspaceStore.getState().beginMemberRequest(
       'beam-1',

@@ -39,6 +39,9 @@ def test_design_beams_iter_success() -> None:
         "is_safe",
     }
     assert data["shear"]["is_safe"] is True
+    assert data["evidence"]["status"] == "PASS"
+    assert data["evidence"]["support_status"] == "SUPPORTED"
+    assert data["evidence"]["calculation_identity"]
 
 
 def test_design_beams_iter_unsafe_shear_is_a_completed_failure() -> None:
@@ -68,6 +71,8 @@ def test_design_beams_iter_unsafe_shear_is_a_completed_failure() -> None:
     assert data["shear"]["is_safe"] is False
     assert data["is_safe"] is False
     assert data["status"] == "FAIL"
+    assert data["evidence"]["status"] == "FAIL"
+    assert data["evidence"]["support_status"] == "SUPPORTED"
     assert all(
         data["shear"][field] is not None
         for field in ("tau_v", "tau_c", "tau_c_max", "stirrup_spacing")

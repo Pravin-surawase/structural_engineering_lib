@@ -17,11 +17,13 @@ import { applyMaterialOverrides, type MaterialOverrides } from "../utils/materia
 import { toast } from "../components/ui/Toast";
 import type { BeamCSVRow } from '../types/csv';
 import { unwrapResponse } from '../api/client';
+import type { EvidenceEnvelope } from '../api/client';
 
 import { API_BASE_URL } from '../config';
 
 export interface ImportedBeam {
   id: string;
+  source_id: string;
   story: string;
   width_mm: number;
   depth_mm: number;
@@ -93,6 +95,7 @@ interface BatchDesignResult {
   is_safe: boolean;
   utilization_ratio: number;
   error: string | null;
+  evidence: EvidenceEnvelope | null;
 }
 
 interface BatchDesignResponse {
@@ -258,6 +261,7 @@ export function useCSVFileImport() {
         // Convert to store format
         const beams: BeamCSVRow[] = data.beams.map((b) => ({
           id: b.id,
+          source_id: b.source_id,
           story: b.story,
           b: b.width_mm,
           D: b.depth_mm,
@@ -320,6 +324,7 @@ export function useCSVTextImport() {
       if (data.success && data.beams?.length) {
         const beams: BeamCSVRow[] = data.beams.map((b) => ({
           id: b.id,
+          source_id: b.source_id,
           story: b.story,
           b: b.width_mm,
           D: b.depth_mm,
@@ -379,6 +384,7 @@ export function useDualCSVImport() {
       if (data.success && data.beams?.length) {
         const beams: BeamCSVRow[] = data.beams.map((b) => ({
           id: b.id,
+          source_id: b.source_id,
           story: b.story,
           b: b.width_mm,
           D: b.depth_mm,

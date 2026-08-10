@@ -7,7 +7,13 @@ import { useWorkspaceStore } from '../workspaceStore';
 import { FakeIndexedDbFactory } from './fakeIndexedDb';
 
 describe('WorkspacePersistenceBridge', () => {
-  beforeEach(() => useWorkspaceStore.getState().reset());
+  beforeEach(() => {
+    localStorage.clear();
+    vi.mocked(localStorage.getItem).mockReset();
+    vi.mocked(localStorage.setItem).mockReset();
+    vi.mocked(localStorage.removeItem).mockReset();
+    useWorkspaceStore.getState().reset();
+  });
 
   it('persists a dirty project and reports a newer external revision', async () => {
     const factory = new FakeIndexedDbFactory();
@@ -51,5 +57,37 @@ describe('WorkspacePersistenceBridge', () => {
       updatedAt: '2026-08-10T00:01:00.000Z',
     });
     expect(useWorkspaceStore.getState().snapshot?.saveState).toBe('error');
+  });
+
+  it('restores the last saved project from the small local preference pointer', async () => {
+    const factory = new FakeIndexedDbFactory();
+    const persistence = createIndexedDbWorkspacePersistence(
+      factory as unknown as IDBFactory,
+    );
+    useWorkspaceStore.getState().createProject(
+      'project-restore',
+      'Restored Project',
+      '2026-08-10T00:00:00.000Z',
+    );
+    const snapshot = useWorkspaceStore.getState().snapshot!;
+    await persistence.save(snapshot, { expectedProjectRevision: null });
+    useWorkspaceStore.getState().reset();
+    vi.mocked(localStorage.getItem).mockReturnValue('project-restore');
+    await expect(persistence.load('project-restore')).resolves.toMatchObject({
+      projectId: 'project-restore',
+    });
+
+    render(
+      <WorkspacePersistenceBridge
+        autosaveDelayMs={0}
+        createPersistence={() => persistence}
+        createRevisionSync={() => ({ announce: vi.fn(), close: vi.fn() })}
+      />,
+    );
+
+    await waitFor(() => {
+      expect(useWorkspaceStore.getState().snapshot?.projectId).toBe('project-restore');
+    });
+    expect(useWorkspaceStore.getState().loadState).toBe('ready');
   });
 });

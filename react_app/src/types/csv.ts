@@ -22,6 +22,8 @@ export interface Point3D {
 
 export interface BeamCSVRow {
   id: string;
+  /** Stable source-system identity (for example ETABS UniqueName). */
+  source_id?: string;
   story?: string;
   b: number;      // width in mm
   D: number;      // depth in mm
