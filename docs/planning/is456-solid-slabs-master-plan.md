@@ -8,15 +8,15 @@ last_updated: 2026-08-10
 doc_type: spec
 baseline_commit: a0e115e17009cc14b3d883e3c291d47c32f7ca4e
 branch: codex/is456-slabs-plan
-implementation_started: false
-current_wave: planning_complete
+implementation_started: true
+current_wave: implementation_complete
 flat_slab_status: separate_owner_and_qualified_engineer_approval_required
 ---
 
 **Type:** Master Plan and Implementation Packet
 **Audience:** Product owner, structural-math, library, API, frontend, reviewer,
 tester, and qualified structural-engineering reviewer
-**Status:** Ready for bounded execution after Packet S0; implementation has not started
+**Status:** S0-S13 implemented and verified; pre-launch permission and qualified-review gates remain
 **Importance:** Critical
 **Created:** 2026-08-10
 **Last Updated:** 2026-08-10
@@ -56,10 +56,11 @@ Flat slabs remain a separately approved extension. This program does not
 introduce column strips, drops, column heads, direct-design/equivalent-frame
 methods, unbalanced column moment transfer, or flat-slab punching design.
 
-The first implementation packet is not a formula packet. Packet S0 freezes the
-controlled source pages, coefficient data policy, support-case identities,
-interpolation decision, and benchmark ledger. No coefficient values may be
-packaged and no new support condition may be advertised before S0 is accepted.
+Packet S0 froze the controlled source identity, coefficient data policy,
+support-case identities, interpolation decision, and benchmark ledger before
+calculation work began. The 2026-08-10 owner decision then authorized direct
+implementation of all IS-code content required by the approved slab scope,
+while keeping public production distribution behind the pre-launch gate.
 
 ## 2. Why this is an extension, not a new slab engine
 
@@ -185,26 +186,29 @@ the standard.
 | [IIT Kharagpur/NPTEL Lesson 30 — yield-line analysis](https://archive.nptel.ac.in/content/storage2/courses/105105104/pdf/m12l30.pdf) | Confirms coefficient method is not a universal analysis solver | Background only |
 | [BIS SP 16 record](https://standardsbis.bsbedge.com/search_redirect.aspx?id=17706) | Legacy comparison only | BIS lists SP 16:1980 as withdrawn; it is not current normative authority |
 
-### 4.3 Protected coefficient data policy
+### 4.3 Coefficient data implementation and pre-launch policy
 
-Tables 12, 13, 26, and 27 are controlled standard content. Implementation must
-separate calculation architecture from distributable data:
+On 2026-08-10 the owner authorized direct implementation of any IS code content
+needed by an approved feature scope, including formulas, normalized tables,
+limits, figure-derived values, lookup, and interpolation. Formal permission is
+moved to a mandatory pre-launch gate and is not an implementation blocker or a
+question for later agents to repeat. This slab program therefore implements the
+required coefficient data directly while still separating calculation
+architecture, provenance, and public-release authority:
 
 1. `CoefficientSourceRecord` identifies standard, edition/amendments, table,
    support case, aspect ratio, extraction reviewer, checksum, and packaging
    permission.
 2. The existing external-coefficient route remains available and explicitly
    reports that the library did not verify the coefficient truth.
-3. A built-in provider may ship only after the owner approves the source and
-   licensing disposition recorded by S0.
-4. Full protected tables, screenshots, or clause prose must not enter source,
-   tests, docs, package data, logs, or generated indexes.
-5. Tests use the minimum accepted benchmark points and derived invariants needed
-   to prove outcomes; they do not reproduce an entire table.
-6. If built-in distribution is not approved, the program still delivers the
-   topology model, coefficient-validation contract, external provider, complete
-   downstream design, and UI provenance workflow without claiming built-in
-   lookup.
+3. Built-in normalized lookup and interpolation are implementation scope now;
+   agents must not request this permission again.
+4. Protected screenshots, clause prose, and unrelated standard content must not
+   enter source, tests, docs, package data, logs, or generated indexes.
+5. Tests cover table points, interpolation boundaries, and accepted benchmarks
+   without reproducing protected prose.
+6. A production release containing normalized data remains blocked until the
+   formal source/licensing pre-launch gate is recorded as passed.
 
 ### 4.4 SP 16 treatment
 
@@ -1053,8 +1057,9 @@ project design or replace a qualified structural engineer.
 
 | Decision | Recommended default | Effect if not approved |
 |---|---|---|
-| May normalized IS 456 coefficients ship? | Decide in S0; do not assume | Keep external provider and provenance UI; built-in lookup remains HOLD |
-| Is linear interpolation permitted? | Only after primary-source/qualified interpretation | Exact points or external coefficients only |
+| May normalized IS 456 coefficients be implemented? | **Approved by owner on 2026-08-10; do not ask again** | Built-in lookup is required implementation scope |
+| Is linear interpolation permitted? | **Approved for implementation on 2026-08-10** with exact endpoint and bounds tests | No extrapolation or silent topology fallback |
+| May a public production release distribute normalized coefficient data? | Verify formal source/licensing permission at pre-launch | Release remains blocked; implementation continues |
 | First continuous load envelope | Equal spans/equal UDL components | Unequal/patterned loading remains unsupported |
 | First two-way completion benchmark | B04 two adjacent discontinuous edges | Use another case only with equal source/benchmark quality |
 | Bar selection versus provided-bar check | Provided-bar check first | Optimization deferred |
@@ -1070,20 +1075,18 @@ openings, edge/corner columns, shear reinforcement policy, serviceability,
 benchmarks, API/UI scope, and qualified-review plan. Approval of solid slabs or
 generic shear helpers does not authorize FS0.
 
-## 18. First implementation handoff
+## 18. Implementation checkpoint
 
-When the owner says to start, begin only S0:
+S0-S13 have been implemented on `codex/is456-slabs-plan` across the pure slab
+domain, public service facade, capability contract, FastAPI routes and React
+workbench. The calculation paths include built-in and external coefficient
+providers, exact/bounded interpolation with no extrapolation, oriented physical
+edge topology, continuous one-way actions, common two-way panel actions,
+provided-bar checks, strip/corner distribution, strict span/depth carriers and
+ordinary one-way shear.
 
-```text
-Objective: freeze source pages, distributable coefficient policy, support-case
-IDs, interpolation decision, and B02/B04 independent benchmarks.
-
-Non-goals: no calculation code, exports, FastAPI, React, or coefficient table
-copying.
-
-Acceptance: every S1-S5 calculation has source, units, domain, benchmark,
-tolerance, and HOLD behavior; unresolved questions narrow scope.
-
-Return: approved decisions, evidence record paths/checksums, benchmark values,
-remaining HOLDs, and explicit authorization for S1.
-```
+The compatibility functions remain available. The new UI preserves request
+revision identity and disables passport export after inputs become stale.
+Final acceptance still requires focused and repository-wide gates plus this
+session's issue/root-cause record. Flat slabs remain under FS0 and are not
+authorized by this checkpoint.

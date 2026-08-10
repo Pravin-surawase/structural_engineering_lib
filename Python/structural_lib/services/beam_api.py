@@ -22,7 +22,9 @@ from structural_lib.core.data_types import (
     ComplianceCaseResult,
     ComplianceReport,
     CrackWidthParams,
+    CrackWidthResult,
     DeflectionParams,
+    DeflectionResult,
 )
 from structural_lib.core.inputs import BeamInput
 from structural_lib.insights import cost_optimization, design_suggestions
@@ -899,7 +901,7 @@ def check_deflection_span_depth(
     mf_tension_steel: float | None = None,
     mf_compression_steel: float | None = None,
     mf_flanged: float | None = None,
-) -> serviceability.DeflectionResult:
+) -> DeflectionResult:
     """Check deflection using span/depth ratio (Level A).
 
     Args:
@@ -936,7 +938,7 @@ def check_crack_width(
     epsilon_m: float | None = None,
     fs_service_nmm2: float | None = None,
     es_nmm2: float = 200000.0,
-) -> serviceability.CrackWidthResult:
+) -> CrackWidthResult:
     """Check crack width using an Annex-F-style estimate.
 
     Args:

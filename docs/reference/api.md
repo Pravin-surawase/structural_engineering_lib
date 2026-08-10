@@ -15,7 +15,7 @@ tags: []
 **Importance:** Critical
 **Document Version:** 0.23.0
 **Created:** 2025-01-01
-**Last Updated:** 2026-08-09<br>
+**Last Updated:** 2026-08-10<br>
 
 ---
 
@@ -44,16 +44,41 @@ that delegate to the same objects. Capability boundaries are discoverable with
 `api.get_supported_is456_semantic_contract()`, and the canonical JSON-safe form
 with `api.get_supported_is456_capability_document()`.
 
-New LIB-IS456-V1 workflows include `api.check_isolated_footing_load_transfer`,
-`api.design_one_way_slab_is456`, and `api.design_two_way_slab_is456`. Their
-result/capability types are `api.LoadTransferResult`,
-`api.OneWaySlabDesignResult`, and `api.IS456Capability`; supported-case
-discovery is available through `api.get_supported_is456_capabilities`. CLI and
-REST consumers use `api.get_supported_is456_capability_document` so the public
-supported/held boundary is serialized from the same registry. The two-way route
-accepts only qualified, caller-supplied coefficients and explicit literal-true
-declarations for its single documented interior, four-edge-continuous panel
-case.
+LIB-IS456 workflows include `api.check_isolated_footing_load_transfer` and the
+slab compatibility and complete-workflow functions below. Result/capability
+types include `api.LoadTransferResult`, `api.OneWaySlabDesignResult`,
+`api.CompleteOneWaySlabDesignResult`,
+`api.ContinuousOneWaySlabDesignResult`,
+`api.TwoWaySlabPanelWorkflowResult`, and `api.IS456Capability`.
+
+```python
+from structural_lib import api
+
+# Compatibility routes retained unchanged.
+simple = api.design_one_way_slab_is456(...)
+interior_flexure = api.design_two_way_slab_is456(...)
+
+# Complete bounded workflows.
+simple_complete = api.design_complete_one_way_slab_is456(...)
+continuous_builtin = api.design_continuous_one_way_slab_builtin_is456(...)
+continuous_external = api.design_continuous_one_way_slab_is456(...)
+two_way_builtin = api.design_two_way_slab_panel_builtin_is456(...)
+two_way_external = api.design_two_way_slab_panel_is456(...)
+```
+
+The built-in continuous route resolves normalized IS 456 Tables 12/13 values
+from action/load locations. The built-in two-way route derives its Table 26/27
+case from the declared physical edges and corner restraint, uses exact tabulated
+points or adjacent linear interpolation, and rejects extrapolation. External
+coefficient carriers remain available and never claim library verification.
+All complete routes return provenance, provided-bar checks, ordinary one-way
+shear and strict reviewed span/depth serviceability evidence. Flat slabs,
+column-supported punching and direct-deflection calculation remain held.
+
+Supported-case discovery is available through
+`api.get_supported_is456_capabilities`. CLI and REST consumers use
+`api.get_supported_is456_capability_document` so the public supported/held
+boundary is serialized from the same registry.
 
 The application-facing beam slice is discoverable through the immutable
 `api.WorkflowCatalog` returned by `api.get_workflow_catalog()`. Transport and

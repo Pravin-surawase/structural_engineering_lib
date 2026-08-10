@@ -1078,6 +1078,58 @@
         "title": "APIResponse[ColumnUniaxialResponse]",
         "type": "object"
       },
+      "APIResponse_CompleteOneWaySlabDesignResponse_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CompleteOneWaySlabDesignResponse"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[CompleteOneWaySlabDesignResponse]",
+        "type": "object"
+      },
       "APIResponse_ComplianceReportResponse_": {
         "example": {
           "data": {
@@ -1128,6 +1180,58 @@
           "data"
         ],
         "title": "APIResponse[ComplianceReportResponse]",
+        "type": "object"
+      },
+      "APIResponse_ContinuousOneWaySlabDesignResponse_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ContinuousOneWaySlabDesignResponse"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[ContinuousOneWaySlabDesignResponse]",
         "type": "object"
       },
       "APIResponse_CostOptimizationResponse_": {
@@ -2740,6 +2844,58 @@
           "data"
         ],
         "title": "APIResponse[TorsionDesignResponse]",
+        "type": "object"
+      },
+      "APIResponse_TwoWaySlabPanelDesignResponse_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/TwoWaySlabPanelDesignResponse"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[TwoWaySlabPanelDesignResponse]",
         "type": "object"
       },
       "APIResponse_WorkflowCancellationResponse_": {
@@ -5638,6 +5794,421 @@
         "title": "BuildingGeometryResponse",
         "type": "object"
       },
+      "BuiltinContinuousOneWaySlabDesignRequest": {
+        "description": "Continuous one-way request resolved from built-in Tables 12 and 13.",
+        "properties": {
+          "d_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "D Mm",
+            "type": "number"
+          },
+          "distribution_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Distribution Bar Diameter Mm",
+            "type": "number"
+          },
+          "distribution_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Distribution Bar Spacing Mm",
+            "type": "number"
+          },
+          "factored_dead_and_fixed_imposed_load_kn_per_m2": {
+            "minimum": 0.0,
+            "title": "Factored Dead And Fixed Imposed Load Kn Per M2",
+            "type": "number"
+          },
+          "factored_nonfixed_imposed_load_kn_per_m2": {
+            "minimum": 0.0,
+            "title": "Factored Nonfixed Imposed Load Kn Per M2",
+            "type": "number"
+          },
+          "fck_n_per_mm2": {
+            "maximum": 40.0,
+            "minimum": 20.0,
+            "title": "Fck N Per Mm2",
+            "type": "number"
+          },
+          "fy_n_per_mm2": {
+            "enum": [
+              250.0,
+              415.0,
+              500.0
+            ],
+            "title": "Fy N Per Mm2",
+            "type": "number"
+          },
+          "long_effective_span_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Long Effective Span Mm",
+            "type": "number"
+          },
+          "maximum_span_variation_percent": {
+            "maximum": 15.0,
+            "minimum": 0.0,
+            "title": "Maximum Span Variation Percent",
+            "type": "number"
+          },
+          "negative_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Negative Bar Diameter Mm",
+            "type": "number"
+          },
+          "negative_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Negative Bar Spacing Mm",
+            "type": "number"
+          },
+          "negative_location": {
+            "enum": [
+              "next_to_end_support_negative",
+              "other_interior_support_negative"
+            ],
+            "title": "Negative Location",
+            "type": "string"
+          },
+          "number_of_spans": {
+            "minimum": 3.0,
+            "title": "Number Of Spans",
+            "type": "integer"
+          },
+          "positive_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Positive Bar Diameter Mm",
+            "type": "number"
+          },
+          "positive_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Positive Bar Spacing Mm",
+            "type": "number"
+          },
+          "positive_location": {
+            "enum": [
+              "end_span_positive",
+              "interior_span_positive"
+            ],
+            "title": "Positive Location",
+            "type": "string"
+          },
+          "qualified_serviceability_acceptance_acknowledged": {
+            "const": true,
+            "title": "Qualified Serviceability Acceptance Acknowledged",
+            "type": "boolean"
+          },
+          "qualified_serviceability_acceptance_reference": {
+            "minLength": 1,
+            "title": "Qualified Serviceability Acceptance Reference",
+            "type": "string"
+          },
+          "redistribution_applied": {
+            "const": false,
+            "title": "Redistribution Applied",
+            "type": "boolean"
+          },
+          "reviewed_aggregate_modification_factor": {
+            "exclusiveMinimum": 0.0,
+            "title": "Reviewed Aggregate Modification Factor",
+            "type": "number"
+          },
+          "reviewed_base_span_depth_limit": {
+            "exclusiveMinimum": 0.0,
+            "title": "Reviewed Base Span Depth Limit",
+            "type": "number"
+          },
+          "serviceability_limit_source_is_approved": {
+            "const": true,
+            "title": "Serviceability Limit Source Is Approved",
+            "type": "boolean"
+          },
+          "serviceability_limit_source_reference": {
+            "minLength": 1,
+            "title": "Serviceability Limit Source Reference",
+            "type": "string"
+          },
+          "shear_location": {
+            "enum": [
+              "end_support",
+              "next_to_end_support_outer",
+              "next_to_end_support_inner",
+              "other_interior_support"
+            ],
+            "title": "Shear Location",
+            "type": "string"
+          },
+          "short_effective_span_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Short Effective Span Mm",
+            "type": "number"
+          },
+          "strip_width_mm": {
+            "default": 1000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Strip Width Mm",
+            "type": "number"
+          },
+          "substantially_uniform_load_acknowledged": {
+            "const": true,
+            "title": "Substantially Uniform Load Acknowledged",
+            "type": "boolean"
+          },
+          "thickness_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Thickness Mm",
+            "type": "number"
+          },
+          "uniform_cross_section_acknowledged": {
+            "const": true,
+            "title": "Uniform Cross Section Acknowledged",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "reviewed_base_span_depth_limit",
+          "reviewed_aggregate_modification_factor",
+          "serviceability_limit_source_reference",
+          "serviceability_limit_source_is_approved",
+          "qualified_serviceability_acceptance_reference",
+          "qualified_serviceability_acceptance_acknowledged",
+          "short_effective_span_mm",
+          "long_effective_span_mm",
+          "thickness_mm",
+          "d_mm",
+          "factored_dead_and_fixed_imposed_load_kn_per_m2",
+          "factored_nonfixed_imposed_load_kn_per_m2",
+          "positive_location",
+          "negative_location",
+          "shear_location",
+          "fck_n_per_mm2",
+          "fy_n_per_mm2",
+          "number_of_spans",
+          "maximum_span_variation_percent",
+          "uniform_cross_section_acknowledged",
+          "substantially_uniform_load_acknowledged",
+          "redistribution_applied",
+          "positive_bar_diameter_mm",
+          "positive_bar_spacing_mm",
+          "negative_bar_diameter_mm",
+          "negative_bar_spacing_mm",
+          "distribution_bar_diameter_mm",
+          "distribution_bar_spacing_mm"
+        ],
+        "title": "BuiltinContinuousOneWaySlabDesignRequest",
+        "type": "object"
+      },
+      "BuiltinTwoWaySlabPanelDesignRequest": {
+        "description": "Two-way request resolved from built-in Table 26 or 27.",
+        "properties": {
+          "corner_lift_condition": {
+            "enum": [
+              "restrained",
+              "free_to_lift"
+            ],
+            "title": "Corner Lift Condition",
+            "type": "string"
+          },
+          "d_x_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "D X Mm",
+            "type": "number"
+          },
+          "d_y_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "D Y Mm",
+            "type": "number"
+          },
+          "edge_strip_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Edge Strip Bar Diameter Mm",
+            "type": "number"
+          },
+          "edge_strip_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Edge Strip Bar Spacing Mm",
+            "type": "number"
+          },
+          "factored_area_load_kn_per_m2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Factored Area Load Kn Per M2",
+            "type": "number"
+          },
+          "fck_n_per_mm2": {
+            "maximum": 40.0,
+            "minimum": 20.0,
+            "title": "Fck N Per Mm2",
+            "type": "number"
+          },
+          "fy_n_per_mm2": {
+            "enum": [
+              250.0,
+              415.0,
+              500.0
+            ],
+            "title": "Fy N Per Mm2",
+            "type": "number"
+          },
+          "qualified_serviceability_acceptance_acknowledged": {
+            "const": true,
+            "title": "Qualified Serviceability Acceptance Acknowledged",
+            "type": "boolean"
+          },
+          "qualified_serviceability_acceptance_reference": {
+            "minLength": 1,
+            "title": "Qualified Serviceability Acceptance Reference",
+            "type": "string"
+          },
+          "reviewed_aggregate_modification_factor": {
+            "exclusiveMinimum": 0.0,
+            "title": "Reviewed Aggregate Modification Factor",
+            "type": "number"
+          },
+          "reviewed_base_span_depth_limit": {
+            "exclusiveMinimum": 0.0,
+            "title": "Reviewed Base Span Depth Limit",
+            "type": "number"
+          },
+          "serviceability_limit_source_is_approved": {
+            "const": true,
+            "title": "Serviceability Limit Source Is Approved",
+            "type": "boolean"
+          },
+          "serviceability_limit_source_reference": {
+            "minLength": 1,
+            "title": "Serviceability Limit Source Reference",
+            "type": "string"
+          },
+          "thickness_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Thickness Mm",
+            "type": "number"
+          },
+          "torsion_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Torsion Bar Diameter Mm",
+            "type": "number"
+          },
+          "torsion_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Torsion Bar Spacing Mm",
+            "type": "number"
+          },
+          "x_effective_span_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "X Effective Span Mm",
+            "type": "number"
+          },
+          "x_max_edge": {
+            "enum": [
+              "continuous",
+              "discontinuous"
+            ],
+            "title": "X Max Edge",
+            "type": "string"
+          },
+          "x_min_edge": {
+            "enum": [
+              "continuous",
+              "discontinuous"
+            ],
+            "title": "X Min Edge",
+            "type": "string"
+          },
+          "x_negative_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "X Negative Bar Diameter Mm",
+            "type": "number"
+          },
+          "x_negative_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "X Negative Bar Spacing Mm",
+            "type": "number"
+          },
+          "x_positive_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "X Positive Bar Diameter Mm",
+            "type": "number"
+          },
+          "x_positive_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "X Positive Bar Spacing Mm",
+            "type": "number"
+          },
+          "y_effective_span_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Y Effective Span Mm",
+            "type": "number"
+          },
+          "y_max_edge": {
+            "enum": [
+              "continuous",
+              "discontinuous"
+            ],
+            "title": "Y Max Edge",
+            "type": "string"
+          },
+          "y_min_edge": {
+            "enum": [
+              "continuous",
+              "discontinuous"
+            ],
+            "title": "Y Min Edge",
+            "type": "string"
+          },
+          "y_negative_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Y Negative Bar Diameter Mm",
+            "type": "number"
+          },
+          "y_negative_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Y Negative Bar Spacing Mm",
+            "type": "number"
+          },
+          "y_positive_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Y Positive Bar Diameter Mm",
+            "type": "number"
+          },
+          "y_positive_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Y Positive Bar Spacing Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "reviewed_base_span_depth_limit",
+          "reviewed_aggregate_modification_factor",
+          "serviceability_limit_source_reference",
+          "serviceability_limit_source_is_approved",
+          "qualified_serviceability_acceptance_reference",
+          "qualified_serviceability_acceptance_acknowledged",
+          "x_effective_span_mm",
+          "y_effective_span_mm",
+          "thickness_mm",
+          "x_min_edge",
+          "x_max_edge",
+          "y_min_edge",
+          "y_max_edge",
+          "corner_lift_condition",
+          "factored_area_load_kn_per_m2",
+          "d_x_mm",
+          "d_y_mm",
+          "fck_n_per_mm2",
+          "fy_n_per_mm2",
+          "x_positive_bar_diameter_mm",
+          "x_positive_bar_spacing_mm",
+          "x_negative_bar_diameter_mm",
+          "x_negative_bar_spacing_mm",
+          "y_positive_bar_diameter_mm",
+          "y_positive_bar_spacing_mm",
+          "y_negative_bar_diameter_mm",
+          "y_negative_bar_spacing_mm",
+          "edge_strip_bar_diameter_mm",
+          "edge_strip_bar_spacing_mm",
+          "torsion_bar_diameter_mm",
+          "torsion_bar_spacing_mm"
+        ],
+        "title": "BuiltinTwoWaySlabPanelDesignRequest",
+        "type": "object"
+      },
       "CSVImportResponse": {
         "description": "Response from CSV import endpoint.",
         "properties": {
@@ -7300,6 +7871,164 @@
         "title": "ColumnUniaxialResponse",
         "type": "object"
       },
+      "CompleteOneWaySlabDesignRequest": {
+        "description": "Simply supported one-way flexure/detailing plus shear/serviceability.",
+        "properties": {
+          "d_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "D Mm",
+            "type": "number"
+          },
+          "distribution_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Distribution Bar Diameter Mm",
+            "type": "number"
+          },
+          "distribution_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Distribution Bar Spacing Mm",
+            "type": "number"
+          },
+          "factored_area_load_kn_per_m2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Factored Area Load Kn Per M2",
+            "type": "number"
+          },
+          "fck_n_per_mm2": {
+            "maximum": 80.0,
+            "minimum": 20.0,
+            "title": "Fck N Per Mm2",
+            "type": "number"
+          },
+          "fy_n_per_mm2": {
+            "enum": [
+              250.0,
+              415.0,
+              500.0
+            ],
+            "title": "Fy N Per Mm2",
+            "type": "number"
+          },
+          "long_effective_span_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Long Effective Span Mm",
+            "type": "number"
+          },
+          "main_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Main Bar Diameter Mm",
+            "type": "number"
+          },
+          "main_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Main Bar Spacing Mm",
+            "type": "number"
+          },
+          "qualified_serviceability_acceptance_acknowledged": {
+            "const": true,
+            "title": "Qualified Serviceability Acceptance Acknowledged",
+            "type": "boolean"
+          },
+          "qualified_serviceability_acceptance_reference": {
+            "minLength": 1,
+            "title": "Qualified Serviceability Acceptance Reference",
+            "type": "string"
+          },
+          "reviewed_aggregate_modification_factor": {
+            "exclusiveMinimum": 0.0,
+            "title": "Reviewed Aggregate Modification Factor",
+            "type": "number"
+          },
+          "reviewed_base_span_depth_limit": {
+            "exclusiveMinimum": 0.0,
+            "title": "Reviewed Base Span Depth Limit",
+            "type": "number"
+          },
+          "serviceability_limit_source_is_approved": {
+            "const": true,
+            "title": "Serviceability Limit Source Is Approved",
+            "type": "boolean"
+          },
+          "serviceability_limit_source_reference": {
+            "minLength": 1,
+            "title": "Serviceability Limit Source Reference",
+            "type": "string"
+          },
+          "short_effective_span_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Short Effective Span Mm",
+            "type": "number"
+          },
+          "strip_width_mm": {
+            "default": 1000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Strip Width Mm",
+            "type": "number"
+          },
+          "thickness_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Thickness Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "reviewed_base_span_depth_limit",
+          "reviewed_aggregate_modification_factor",
+          "serviceability_limit_source_reference",
+          "serviceability_limit_source_is_approved",
+          "qualified_serviceability_acceptance_reference",
+          "qualified_serviceability_acceptance_acknowledged",
+          "short_effective_span_mm",
+          "long_effective_span_mm",
+          "thickness_mm",
+          "d_mm",
+          "factored_area_load_kn_per_m2",
+          "fck_n_per_mm2",
+          "fy_n_per_mm2",
+          "main_bar_diameter_mm",
+          "main_bar_spacing_mm",
+          "distribution_bar_diameter_mm",
+          "distribution_bar_spacing_mm"
+        ],
+        "title": "CompleteOneWaySlabDesignRequest",
+        "type": "object"
+      },
+      "CompleteOneWaySlabDesignResponse": {
+        "properties": {
+          "complete_engineering_design_approved": {
+            "title": "Complete Engineering Design Approved",
+            "type": "boolean"
+          },
+          "punching_shear_disposition": {
+            "title": "Punching Shear Disposition",
+            "type": "string"
+          },
+          "reinforcement": {
+            "additionalProperties": true,
+            "title": "Reinforcement",
+            "type": "object"
+          },
+          "serviceability": {
+            "additionalProperties": true,
+            "title": "Serviceability",
+            "type": "object"
+          },
+          "shear": {
+            "additionalProperties": true,
+            "title": "Shear",
+            "type": "object"
+          }
+        },
+        "required": [
+          "reinforcement",
+          "shear",
+          "serviceability",
+          "punching_shear_disposition",
+          "complete_engineering_design_approved"
+        ],
+        "title": "CompleteOneWaySlabDesignResponse",
+        "type": "object"
+      },
       "ComplianceCaseInput": {
         "description": "A single load case for compliance checking.",
         "properties": {
@@ -7566,6 +8295,270 @@
           "cost_inr"
         ],
         "title": "ConcreteSummaryResponse",
+        "type": "object"
+      },
+      "ContinuousOneWaySlabDesignRequest": {
+        "description": "Explicit continuous one-way coefficient-method request.",
+        "properties": {
+          "coefficient_source_is_approved": {
+            "const": true,
+            "title": "Coefficient Source Is Approved",
+            "type": "boolean"
+          },
+          "coefficient_source_reference": {
+            "minLength": 1,
+            "title": "Coefficient Source Reference",
+            "type": "string"
+          },
+          "d_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "D Mm",
+            "type": "number"
+          },
+          "distribution_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Distribution Bar Diameter Mm",
+            "type": "number"
+          },
+          "distribution_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Distribution Bar Spacing Mm",
+            "type": "number"
+          },
+          "factored_area_load_kn_per_m2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Factored Area Load Kn Per M2",
+            "type": "number"
+          },
+          "fck_n_per_mm2": {
+            "maximum": 40.0,
+            "minimum": 20.0,
+            "title": "Fck N Per Mm2",
+            "type": "number"
+          },
+          "fy_n_per_mm2": {
+            "enum": [
+              250.0,
+              415.0,
+              500.0
+            ],
+            "title": "Fy N Per Mm2",
+            "type": "number"
+          },
+          "long_effective_span_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Long Effective Span Mm",
+            "type": "number"
+          },
+          "maximum_span_variation_percent": {
+            "maximum": 15.0,
+            "minimum": 0.0,
+            "title": "Maximum Span Variation Percent",
+            "type": "number"
+          },
+          "negative_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Negative Bar Diameter Mm",
+            "type": "number"
+          },
+          "negative_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Negative Bar Spacing Mm",
+            "type": "number"
+          },
+          "negative_moment_coefficient": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 1.0,
+            "title": "Negative Moment Coefficient",
+            "type": "number"
+          },
+          "number_of_spans": {
+            "minimum": 3.0,
+            "title": "Number Of Spans",
+            "type": "integer"
+          },
+          "positive_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Positive Bar Diameter Mm",
+            "type": "number"
+          },
+          "positive_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Positive Bar Spacing Mm",
+            "type": "number"
+          },
+          "positive_moment_coefficient": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 1.0,
+            "title": "Positive Moment Coefficient",
+            "type": "number"
+          },
+          "qualified_coefficient_acceptance_acknowledged": {
+            "const": true,
+            "title": "Qualified Coefficient Acceptance Acknowledged",
+            "type": "boolean"
+          },
+          "qualified_coefficient_acceptance_reference": {
+            "minLength": 1,
+            "title": "Qualified Coefficient Acceptance Reference",
+            "type": "string"
+          },
+          "qualified_serviceability_acceptance_acknowledged": {
+            "const": true,
+            "title": "Qualified Serviceability Acceptance Acknowledged",
+            "type": "boolean"
+          },
+          "qualified_serviceability_acceptance_reference": {
+            "minLength": 1,
+            "title": "Qualified Serviceability Acceptance Reference",
+            "type": "string"
+          },
+          "redistribution_applied": {
+            "const": false,
+            "title": "Redistribution Applied",
+            "type": "boolean"
+          },
+          "reviewed_aggregate_modification_factor": {
+            "exclusiveMinimum": 0.0,
+            "title": "Reviewed Aggregate Modification Factor",
+            "type": "number"
+          },
+          "reviewed_base_span_depth_limit": {
+            "exclusiveMinimum": 0.0,
+            "title": "Reviewed Base Span Depth Limit",
+            "type": "number"
+          },
+          "serviceability_limit_source_is_approved": {
+            "const": true,
+            "title": "Serviceability Limit Source Is Approved",
+            "type": "boolean"
+          },
+          "serviceability_limit_source_reference": {
+            "minLength": 1,
+            "title": "Serviceability Limit Source Reference",
+            "type": "string"
+          },
+          "shear_coefficient": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 1.0,
+            "title": "Shear Coefficient",
+            "type": "number"
+          },
+          "short_effective_span_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Short Effective Span Mm",
+            "type": "number"
+          },
+          "strip_width_mm": {
+            "default": 1000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Strip Width Mm",
+            "type": "number"
+          },
+          "substantially_uniform_load_acknowledged": {
+            "const": true,
+            "title": "Substantially Uniform Load Acknowledged",
+            "type": "boolean"
+          },
+          "thickness_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Thickness Mm",
+            "type": "number"
+          },
+          "uniform_cross_section_acknowledged": {
+            "const": true,
+            "title": "Uniform Cross Section Acknowledged",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "reviewed_base_span_depth_limit",
+          "reviewed_aggregate_modification_factor",
+          "serviceability_limit_source_reference",
+          "serviceability_limit_source_is_approved",
+          "qualified_serviceability_acceptance_reference",
+          "qualified_serviceability_acceptance_acknowledged",
+          "short_effective_span_mm",
+          "long_effective_span_mm",
+          "thickness_mm",
+          "d_mm",
+          "factored_area_load_kn_per_m2",
+          "fck_n_per_mm2",
+          "fy_n_per_mm2",
+          "positive_moment_coefficient",
+          "negative_moment_coefficient",
+          "shear_coefficient",
+          "coefficient_source_reference",
+          "coefficient_source_is_approved",
+          "qualified_coefficient_acceptance_reference",
+          "qualified_coefficient_acceptance_acknowledged",
+          "number_of_spans",
+          "maximum_span_variation_percent",
+          "uniform_cross_section_acknowledged",
+          "substantially_uniform_load_acknowledged",
+          "redistribution_applied",
+          "positive_bar_diameter_mm",
+          "positive_bar_spacing_mm",
+          "negative_bar_diameter_mm",
+          "negative_bar_spacing_mm",
+          "distribution_bar_diameter_mm",
+          "distribution_bar_spacing_mm"
+        ],
+        "title": "ContinuousOneWaySlabDesignRequest",
+        "type": "object"
+      },
+      "ContinuousOneWaySlabDesignResponse": {
+        "properties": {
+          "complete_engineering_design_approved": {
+            "title": "Complete Engineering Design Approved",
+            "type": "boolean"
+          },
+          "distribution_reinforcement": {
+            "additionalProperties": true,
+            "title": "Distribution Reinforcement",
+            "type": "object"
+          },
+          "flexure": {
+            "additionalProperties": true,
+            "title": "Flexure",
+            "type": "object"
+          },
+          "negative_reinforcement": {
+            "additionalProperties": true,
+            "title": "Negative Reinforcement",
+            "type": "object"
+          },
+          "positive_reinforcement": {
+            "additionalProperties": true,
+            "title": "Positive Reinforcement",
+            "type": "object"
+          },
+          "punching_shear_disposition": {
+            "title": "Punching Shear Disposition",
+            "type": "string"
+          },
+          "serviceability": {
+            "additionalProperties": true,
+            "title": "Serviceability",
+            "type": "object"
+          },
+          "shear": {
+            "additionalProperties": true,
+            "title": "Shear",
+            "type": "object"
+          }
+        },
+        "required": [
+          "flexure",
+          "positive_reinforcement",
+          "negative_reinforcement",
+          "distribution_reinforcement",
+          "shear",
+          "serviceability",
+          "punching_shear_disposition",
+          "complete_engineering_design_approved"
+        ],
+        "title": "ContinuousOneWaySlabDesignResponse",
         "type": "object"
       },
       "CostBreakdown": {
@@ -14082,6 +15075,312 @@
         "title": "TorsionDesignResponse",
         "type": "object"
       },
+      "TwoWaySlabPanelDesignRequest": {
+        "description": "Common oriented two-way panel with reviewed external coefficients.",
+        "properties": {
+          "alpha_x_negative": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Alpha X Negative",
+            "type": "number"
+          },
+          "alpha_x_positive": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 1.0,
+            "title": "Alpha X Positive",
+            "type": "number"
+          },
+          "alpha_y_negative": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Alpha Y Negative",
+            "type": "number"
+          },
+          "alpha_y_positive": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 1.0,
+            "title": "Alpha Y Positive",
+            "type": "number"
+          },
+          "coefficient_source_is_approved": {
+            "const": true,
+            "title": "Coefficient Source Is Approved",
+            "type": "boolean"
+          },
+          "coefficient_source_reference": {
+            "minLength": 1,
+            "title": "Coefficient Source Reference",
+            "type": "string"
+          },
+          "corner_lift_condition": {
+            "enum": [
+              "restrained",
+              "free_to_lift"
+            ],
+            "title": "Corner Lift Condition",
+            "type": "string"
+          },
+          "d_x_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "D X Mm",
+            "type": "number"
+          },
+          "d_y_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "D Y Mm",
+            "type": "number"
+          },
+          "edge_strip_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Edge Strip Bar Diameter Mm",
+            "type": "number"
+          },
+          "edge_strip_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Edge Strip Bar Spacing Mm",
+            "type": "number"
+          },
+          "factored_area_load_kn_per_m2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Factored Area Load Kn Per M2",
+            "type": "number"
+          },
+          "fck_n_per_mm2": {
+            "maximum": 40.0,
+            "minimum": 20.0,
+            "title": "Fck N Per Mm2",
+            "type": "number"
+          },
+          "fy_n_per_mm2": {
+            "enum": [
+              250.0,
+              415.0,
+              500.0
+            ],
+            "title": "Fy N Per Mm2",
+            "type": "number"
+          },
+          "qualified_coefficient_acceptance_acknowledged": {
+            "const": true,
+            "title": "Qualified Coefficient Acceptance Acknowledged",
+            "type": "boolean"
+          },
+          "qualified_coefficient_acceptance_reference": {
+            "minLength": 1,
+            "title": "Qualified Coefficient Acceptance Reference",
+            "type": "string"
+          },
+          "qualified_serviceability_acceptance_acknowledged": {
+            "const": true,
+            "title": "Qualified Serviceability Acceptance Acknowledged",
+            "type": "boolean"
+          },
+          "qualified_serviceability_acceptance_reference": {
+            "minLength": 1,
+            "title": "Qualified Serviceability Acceptance Reference",
+            "type": "string"
+          },
+          "reviewed_aggregate_modification_factor": {
+            "exclusiveMinimum": 0.0,
+            "title": "Reviewed Aggregate Modification Factor",
+            "type": "number"
+          },
+          "reviewed_base_span_depth_limit": {
+            "exclusiveMinimum": 0.0,
+            "title": "Reviewed Base Span Depth Limit",
+            "type": "number"
+          },
+          "serviceability_limit_source_is_approved": {
+            "const": true,
+            "title": "Serviceability Limit Source Is Approved",
+            "type": "boolean"
+          },
+          "serviceability_limit_source_reference": {
+            "minLength": 1,
+            "title": "Serviceability Limit Source Reference",
+            "type": "string"
+          },
+          "support_topology_kind": {
+            "enum": [
+              "four_edges_continuous",
+              "one_edge_discontinuous",
+              "two_adjacent_edges_discontinuous",
+              "two_opposite_edges_discontinuous",
+              "three_edges_discontinuous",
+              "four_edges_discontinuous_restrained",
+              "simply_supported_corners_free"
+            ],
+            "title": "Support Topology Kind",
+            "type": "string"
+          },
+          "thickness_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Thickness Mm",
+            "type": "number"
+          },
+          "torsion_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Torsion Bar Diameter Mm",
+            "type": "number"
+          },
+          "torsion_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Torsion Bar Spacing Mm",
+            "type": "number"
+          },
+          "x_effective_span_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "X Effective Span Mm",
+            "type": "number"
+          },
+          "x_max_edge": {
+            "enum": [
+              "continuous",
+              "discontinuous"
+            ],
+            "title": "X Max Edge",
+            "type": "string"
+          },
+          "x_min_edge": {
+            "enum": [
+              "continuous",
+              "discontinuous"
+            ],
+            "title": "X Min Edge",
+            "type": "string"
+          },
+          "x_negative_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "X Negative Bar Diameter Mm",
+            "type": "number"
+          },
+          "x_negative_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "X Negative Bar Spacing Mm",
+            "type": "number"
+          },
+          "x_positive_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "X Positive Bar Diameter Mm",
+            "type": "number"
+          },
+          "x_positive_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "X Positive Bar Spacing Mm",
+            "type": "number"
+          },
+          "y_effective_span_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Y Effective Span Mm",
+            "type": "number"
+          },
+          "y_max_edge": {
+            "enum": [
+              "continuous",
+              "discontinuous"
+            ],
+            "title": "Y Max Edge",
+            "type": "string"
+          },
+          "y_min_edge": {
+            "enum": [
+              "continuous",
+              "discontinuous"
+            ],
+            "title": "Y Min Edge",
+            "type": "string"
+          },
+          "y_negative_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Y Negative Bar Diameter Mm",
+            "type": "number"
+          },
+          "y_negative_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Y Negative Bar Spacing Mm",
+            "type": "number"
+          },
+          "y_positive_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Y Positive Bar Diameter Mm",
+            "type": "number"
+          },
+          "y_positive_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Y Positive Bar Spacing Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "reviewed_base_span_depth_limit",
+          "reviewed_aggregate_modification_factor",
+          "serviceability_limit_source_reference",
+          "serviceability_limit_source_is_approved",
+          "qualified_serviceability_acceptance_reference",
+          "qualified_serviceability_acceptance_acknowledged",
+          "x_effective_span_mm",
+          "y_effective_span_mm",
+          "thickness_mm",
+          "x_min_edge",
+          "x_max_edge",
+          "y_min_edge",
+          "y_max_edge",
+          "corner_lift_condition",
+          "support_topology_kind",
+          "alpha_x_negative",
+          "alpha_x_positive",
+          "alpha_y_negative",
+          "alpha_y_positive",
+          "coefficient_source_reference",
+          "coefficient_source_is_approved",
+          "qualified_coefficient_acceptance_reference",
+          "qualified_coefficient_acceptance_acknowledged",
+          "factored_area_load_kn_per_m2",
+          "d_x_mm",
+          "d_y_mm",
+          "fck_n_per_mm2",
+          "fy_n_per_mm2",
+          "x_positive_bar_diameter_mm",
+          "x_positive_bar_spacing_mm",
+          "x_negative_bar_diameter_mm",
+          "x_negative_bar_spacing_mm",
+          "y_positive_bar_diameter_mm",
+          "y_positive_bar_spacing_mm",
+          "y_negative_bar_diameter_mm",
+          "y_negative_bar_spacing_mm",
+          "edge_strip_bar_diameter_mm",
+          "edge_strip_bar_spacing_mm",
+          "torsion_bar_diameter_mm",
+          "torsion_bar_spacing_mm"
+        ],
+        "title": "TwoWaySlabPanelDesignRequest",
+        "type": "object"
+      },
+      "TwoWaySlabPanelDesignResponse": {
+        "properties": {
+          "complete_engineering_design_approved": {
+            "title": "Complete Engineering Design Approved",
+            "type": "boolean"
+          },
+          "panel": {
+            "additionalProperties": true,
+            "title": "Panel",
+            "type": "object"
+          },
+          "serviceability": {
+            "additionalProperties": true,
+            "title": "Serviceability",
+            "type": "object"
+          }
+        },
+        "required": [
+          "panel",
+          "serviceability",
+          "complete_engineering_design_approved"
+        ],
+        "title": "TwoWaySlabPanelDesignResponse",
+        "type": "object"
+      },
       "ValidationResult": {
         "description": "Validation result details.",
         "properties": {
@@ -16045,6 +17344,221 @@
           }
         },
         "summary": "Design a simply supported one-way slab strip",
+        "tags": [
+          "footing",
+          "slab"
+        ]
+      }
+    },
+    "/api/v1/design/slab/one-way/complete": {
+      "post": {
+        "description": "Add ordinary shear and strict reviewed-limit serviceability.",
+        "operationId": "design_complete_one_way_slab_api_v1_design_slab_one_way_complete_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteOneWaySlabDesignRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_CompleteOneWaySlabDesignResponse_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Design a complete bounded simply supported one-way slab strip",
+        "tags": [
+          "footing",
+          "slab"
+        ]
+      }
+    },
+    "/api/v1/design/slab/one-way/continuous": {
+      "post": {
+        "description": "Validate coefficient provenance/domain and call the public service.",
+        "operationId": "design_continuous_one_way_slab_api_v1_design_slab_one_way_continuous_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContinuousOneWaySlabDesignRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_ContinuousOneWaySlabDesignResponse_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Design a coefficient-method continuous one-way slab strip",
+        "tags": [
+          "footing",
+          "slab"
+        ]
+      }
+    },
+    "/api/v1/design/slab/one-way/continuous/builtin": {
+      "post": {
+        "description": "Resolve Tables 12/13 and call the bounded public workflow.",
+        "operationId": "design_continuous_one_way_slab_builtin_api_v1_design_slab_one_way_continuous_builtin_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuiltinContinuousOneWaySlabDesignRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_ContinuousOneWaySlabDesignResponse_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Design a continuous one-way slab using built-in IS 456 coefficients",
+        "tags": [
+          "footing",
+          "slab"
+        ]
+      }
+    },
+    "/api/v1/design/slab/two-way/panel": {
+      "post": {
+        "description": "Run topology, external coefficients, strips, torsion, shear and bars.",
+        "operationId": "design_two_way_slab_panel_api_v1_design_slab_two_way_panel_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TwoWaySlabPanelDesignRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_TwoWaySlabPanelDesignResponse_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Design a common oriented two-way solid slab panel",
+        "tags": [
+          "footing",
+          "slab"
+        ]
+      }
+    },
+    "/api/v1/design/slab/two-way/panel/builtin": {
+      "post": {
+        "description": "Resolve Table 26/27 with bounded interpolation and run the panel workflow.",
+        "operationId": "design_two_way_slab_panel_builtin_api_v1_design_slab_two_way_panel_builtin_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuiltinTwoWaySlabPanelDesignRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_TwoWaySlabPanelDesignResponse_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Design a two-way slab panel using built-in IS 456 coefficients",
         "tags": [
           "footing",
           "slab"

@@ -5,6 +5,117 @@
 
 ---
 
+## 2026-08-10 — Session: IS 456 Solid Slabs Implementation Closeout
+
+**Agent:** Codex
+**Branch:** `codex/is456-slabs-plan`
+**Focus:** Complete the approved simply supported/continuous one-way and common
+two-way solid-slab program while retaining flat slabs as a separate extension
+
+### Summary
+
+- Implemented oriented panel geometry and physical edge/corner topology,
+  provenance-bearing external/built-in coefficients, exact lookup and bounded
+  interpolation with no extrapolation, continuous one-way actions, common
+  two-way panel regions, strip distribution and corner torsion.
+- Completed provided-bar detailing, minimum steel/diameter/spacing checks,
+  strict reviewed span/depth serviceability carriers and beam/wall-supported
+  ordinary one-way slab shear. Direct deflection, automatic shear reinforcement,
+  flat slabs and column-supported punching remain explicit holds.
+- Added compatibility-preserving public services, capability/semantic contracts,
+  five typed FastAPI routes, synchronized API/OpenAPI manifests and a dedicated
+  revision-safe React slab workbench with a 2D support/reinforcement map and
+  calculation-passport export.
+- Recorded the owner's standing decision that all IS-code content required by
+  an approved feature scope may be directly implemented without repeated
+  permission questions; formal source/licensing permission is a pre-launch
+  public-distribution gate, not an implementation blocker.
+
+### Issues encountered
+
+- The initial plan and capability text still treated built-in normalized code
+  data as unavailable after the owner broadened implementation permission.
+- NPTEL B02 published steel values differ slightly from the library's exact
+  canonical 0.36/0.42 stress-block root while its actions and shear agree.
+- Inserting the new FastAPI routes initially displaced the original generic
+  exception handlers, and exact clause decorators named subclauses absent from
+  the repository's clause registry.
+- The first full repository gate found the expected API-reference, OpenAPI
+  snapshot and planning-frontmatter synchronization gaps.
+- The first complete Python suite found one integration assertion frozen to the
+  former external-coefficient, flexure-only slab capability wording.
+- An ad-hoc strict mypy pass exposed slab-local type ambiguity in a mutable
+  protocol, shared reinforcement kwargs and public built-in wrapper `**kwargs`.
+- Two terminal commands used incorrect guessed paths: a nonexistent capability
+  test file during early focused verification and npm from the repository root
+  rather than `react_app/` during a chained rerun.
+- The first implementation commit was blocked by the repository-wide mypy hook
+  because two pre-existing beam service annotations referenced result types as
+  attributes of a module that does not explicitly re-export them to mypy.
+
+### Root causes and resolutions
+
+- Permission policy and runtime truth lived in multiple files. `AGENTS.md`, the
+  master plan, evidence ledger, capability registry and owner-requested memory
+  extension now carry one standing rule; built-in lookup/interpolation and other
+  required IS-code content were implemented with source/case/bounds provenance.
+- B02's educational steel calculation uses rounded intermediate identities,
+  whereas the established library flexure path solves the accepted stress block
+  without those rounding steps. The canonical library root was retained,
+  NPTEL's values were kept as an independent comparison with a narrow documented
+  tolerance, and exact action/shear assertions remain unchanged.
+- The route patch used an ambiguous insertion anchor. The handlers were restored
+  to their owning route before validation. Decorators now use registered parent
+  clause identities while result source references retain the exact subclause/
+  table identities.
+- New public routes/functions require generated truth to move atomically. The
+  API stability mirror, API manifest, 74-endpoint/259-schema OpenAPI baseline and
+  valid plan status were synchronized; the full gate then passed 30/30.
+- The integration test asserted narrative text rather than the capability
+  outcome. It now checks the two built-in public workflows and the continuing
+  flat-slab hold; the complete suite passes.
+- Frozen coefficient dataclasses could not satisfy writable protocol members,
+  generic dictionaries erased keyword types, and public `**kwargs` also hid the
+  built-in function signatures from introspection. The protocol now exposes
+  read-only properties, reinforcement calls use explicit typed keywords, and
+  both built-in services publish complete explicit signatures. Focused mypy with
+  skipped unrelated imports reports no issues in the two task-owned modules.
+- Repository commands require root-relative `.venv` paths and React-local npm.
+  Targeted `rg` found the maintained capability test, and npm was rerun with
+  `workdir=react_app`; both corrected checks passed.
+- `beam_api.py` imported the canonical serviceability module for runtime calls
+  but annotated its two wrapper returns through implicit module re-exports;
+  strict mypy does not recognize those names as public module attributes. The
+  wrappers now import `DeflectionResult` and `CrackWidthResult` directly from
+  `core.data_types`, matching their actual definition. The full structural-lib
+  mypy hook passes without bypassing verification.
+
+### Verification
+
+- Focused slab/capability/FastAPI set: 121 passed; focused React: 3 passed.
+- Complete suites: 5,532 Python passed, 3 skipped, 6 deselected; 388 FastAPI
+  passed; 241 React passed.
+- `./run.sh frontend check`: ESLint, all React tests, TypeScript and production
+  Vite build passed.
+- `./run.sh check --quick`: 10/10 passed; `./run.sh check`: 30/30 passed.
+- Focused mypy for `coefficients.py` and `slab_api.py`: no issues found.
+- Live Chromium: `/workbench/slabs` loaded with meaningful content, no framework
+  error overlay and no captured console errors. Continuous B02 returned
+  `10.688/12.825 kN m/m` with exact Table 12/13 provenance; input mutation made
+  the result stale and disabled export. B04 returned
+  `18.600/13.888/11.656/8.680 kN m/m` with exact Table 26 provenance.
+- Dev services and the browser were stopped after verification. No release,
+  push, pull request or merge was performed.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: guessed `Python/tests/test_capability_registry.py` did not
+  exist -> `rg` located `Python/tests/integration/test_capability_semantics.py`,
+  and the maintained focused test passed.
+- ⚠️ TERMINAL ISSUE: a chained root command invoked npm where no `package.json`
+  exists -> rerunning the same tests from `react_app/` passed 3/3.
+
+
 ## 2026-08-10 — Session: IS 456 Solid Slabs Master Planning
 
 **Agent:** Codex

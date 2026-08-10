@@ -1,0 +1,80 @@
+# IS 456 Solid Slab Source and Benchmark Ledger
+
+**Type:** Verification
+**Audience:** Developers and engineering reviewers
+**Status:** Internal implementation evidence; qualified review required
+**Importance:** Critical
+**Created:** 2026-08-10
+**Last Updated:** 2026-08-10
+
+## Source lock
+
+| ID | Identity | Permitted implementation use | State |
+|---|---|---|---|
+| `SLAB-SRC-IS456-A5` | Controlled IS 456:2000 copy through Amendment 5, SHA-256 `964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264` | Owner-authorized implementation of required formulas, normalized tables, limits, figure-derived values, lookup and interpolation; protected prose/images excluded | Implementation authorized; public production distribution remains a pre-launch gate |
+| `SLAB-SRC-IS456-A6` | Amendment 6, June 2024, SHA-256 `4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881` | Amendment-impact review | Controlled copy; no slab change identified by the existing evidence record |
+| `SLAB-SRC-NPTEL-18` | IIT Kharagpur/NPTEL, Module 8 Lesson 18, One-way Slabs | Public secondary explanation and benchmark B02 | Accepted as independent educational evidence, not primary-code approval |
+| `SLAB-SRC-NPTEL-19` | IIT Kharagpur/NPTEL, Module 8 Lesson 19, Two-way Slabs | Public secondary explanation and benchmark B04 | Accepted as independent educational evidence, not primary-code approval |
+
+The private corpus manifest declares `private_only=true`,
+`public_distribution_allowed=false`, and `review_state=UNREVIEWED_SOURCE_CORPUS`.
+The owner nevertheless authorized direct implementation of the normalized slab
+coefficient lookups and interpolation on 2026-08-10, with formal permission
+moved to a mandatory pre-launch gate. Agents must not request the implementation
+decision again. Runtime results retain table, case, aspect-ratio, interpolation,
+and amendment provenance; external coefficient carriers remain available.
+Public production release of normalized data remains blocked until the
+pre-launch permission gate passes.
+
+## Clause and behavior map
+
+| Calculation behavior | Primary reference area | Public corroboration | Runtime policy |
+|---|---|---|---|
+| One-way/two-way classification | Cl. 24.1 and 24.3 | Lesson 18 pp. 5-6 | Ratio is computed from explicit effective spans; no support is inferred |
+| Continuous one-way coefficient domain | Cl. 22.5 | Lesson 18 p. 7 | At least three spans, uniform section/load acknowledgement, span variation no more than 15 percent, and no redistribution |
+| Slab reinforcement minimum, diameter and spacing | Cl. 26.5.2.1, 26.5.2.2, 26.3.3 | Lesson 18 pp. 8-11 | Deterministic provided-bar checks |
+| Two-way middle/edge strips | Annex D | Lesson 19 pp. 4-5 | Middle strip 3/4; two edge strips 1/8 each |
+| Restrained-corner torsion | Annex D, D-1.8 to D-1.10 | Lesson 19 pp. 7-8 | Full, half, none, or free-to-lift disposition from physical adjacent edges |
+| One-way slab shear | Cl. 40.1, 40.2.1.1; Tables 19 and 20 | Lesson 18 pp. 6 and 15 | Existing packaged Table 19/20 lookup plus slab-depth factor; no automatic stirrup design |
+| Span/depth serviceability | Cl. 23.2.1 and Cl. 24.1 | Lessons 18-19 | Explicit support or reviewed limit carrier; direct deflection remains held |
+
+## Accepted benchmark ledger
+
+| ID | Inputs | Expected values | Tolerance |
+|---|---|---|---|
+| `SLAB-B01` | Simply supported one-way: `Lx=3 m`, `wu=10 kN/m2`, one-metre strip, `d=125 mm`, M20/Fe415 | `Mu=11.25 kN m/m`, `Ast=260.7266304 mm2/m` | moment `1e-12`; steel `1e-7 mm2` |
+| `SLAB-B02` | Continuous one-way Lesson 18 Problem 8.1: `L=3 m`, `D=140 mm`, `d=115 mm`, M20/Fe415, `wu=14.25 kN/m` with reviewed external coefficients `1/12`, `1/10`, `0.4` | positive `10.6875`, negative `12.825 kN m/m`; shear `17.1 kN/m`; lesson steel `270.615` and `328.34 mm2/m`; canonical 0.36/0.42 stress-block steel `270.835` and `328.665 mm2/m`; `tau_v about 0.148 N/mm2` | actions `1e-12`; canonical steel `0.001 mm2`; lesson comparison `0.35 mm2`; shear stress `0.001 N/mm2` |
+| `SLAB-B03` | Interior two-way compatibility route: `Lx=4 m`, `Ly=6 m`, `wu=10 kN/m2`, external `alpha_x=.08`, `alpha_y=.06` | `Mx=12.8`, `My=9.6 kN m/m` | `1e-12` |
+| `SLAB-B04` | Restrained two-way Lesson 19 Problem 8.2: `Lx=4 m`, `Ly=6 m`, `wu=15.5 kN/m2`, two adjacent discontinuous edges, reviewed coefficients `0.075/.056/.047/.035` | negative `Mx/My=18.6/11.656`, positive `13.888/8.68 kN m/m`; shear `31 kN/m`; corner zone `800 mm` | actions `0.01 kN m/m`; shear `1e-12`; zone `1e-12 mm` |
+
+## Holds and claim ceiling
+
+- Built-in coefficient data and interpolation are implementation scope. Public
+  distribution remains held until the pre-launch permission gate passes.
+- Unequal-span or unequal-load continuous analysis beyond the accepted
+  coefficient-method domain is unsupported; no elastic envelope is inferred.
+- Direct deflection, crack-width calculation, concentrated loads, openings,
+  irregular panels, and automatic slab shear reinforcement are held.
+- Punching shear is not applicable to the supported beam/wall-supported UDL
+  solid-panel routes. Column-supported and flat-slab punching is a separate held
+  extension.
+- Passing software tests demonstrates arithmetic and contract behavior only.
+  Construction use requires project-specific checks and qualified structural-
+  engineering approval.
+
+## Implementation verification — 2026-08-10
+
+- Focused slab, semantic-contract and FastAPI checks passed as a 121-test set.
+- The complete repository suites passed: 5,532 Python tests with 3 skipped and
+  6 deselected, 388 FastAPI tests, and 241 React tests.
+- `./run.sh frontend check` passed lint, all React tests, TypeScript and the
+  production build; `./run.sh check --quick` passed 10/10 and the integrated
+  repository gate passed 30/30.
+- Live Chromium verification loaded `/workbench/slabs` without an error overlay
+  or captured console errors. The built-in continuous sample returned
+  `10.688/12.825 kN m/m` with Table 12/13 provenance; editing its span made the
+  result stale and disabled passport export. The oriented B04 two-way sample
+  returned `18.600/13.888/11.656/8.680 kN m/m` with exact Table 26 provenance.
+- This evidence supports the bounded software behavior only. Public production
+  distribution still requires the pre-launch source/licensing gate, and project
+  use still requires qualified structural-engineering review.

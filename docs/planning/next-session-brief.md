@@ -4,21 +4,21 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: IS456-SLAB-001 master plan complete; start only the S0 source, coefficient-policy, and benchmark gate
+- Focus: IS456-SLAB-001 bounded software implementation is complete and locally verified; no calculation/UI work remains in the approved solid-slab scope
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
 
 **Planning branch:** `codex/is456-slabs-plan`
 
-**Base:** clean `main` at `a0e115e1`; slab calculation implementation has not started
+**Base:** implementation branch from `a0e115e1`; planning checkpoint `8c558abc`; implementation closeout is committed locally in this session and discoverable from `git log`
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | IS456-SLAB-001 planning | Deep solid-slab scope, architecture, benchmarks, pitfalls, API/UI sequence, and flat-slab HOLD are recorded |
-| **Next** | IS456-SLAB-S0 | Freeze controlled source pages, coefficient shipping/interpolation policy, physical support-case IDs, and independent B02/B04 benchmarks before code |
-| **Held** | Stable/engineering use | Requires cumulative qualified structural-engineering review |
+| **Current** | IS456-SLAB-001 software complete | Pure calculations, public facade, 74-endpoint OpenAPI snapshot, FastAPI and React slab workbench are verified |
+| **Next** | Owner/GitHub handoff | Review the local commit and authorize push/PR when desired; no release was performed |
+| **Held** | Launch/stable/engineering use | Formal source/licensing permission before public production distribution plus cumulative qualified structural-engineering review |
 
 ## Required Reading
 
@@ -29,33 +29,32 @@
 - [Current task board](../TASKS.md)
 - [Release policy](../getting-started/releases.md)
 
-## IS456-SLAB-001 planning outcome
+## IS456-SLAB-001 implementation outcome
 
-- Extend the existing slab package; do not create a second engine. The current
-  simply supported one-way and external-coefficient interior two-way routes stay
-  compatible.
-- Add oriented physical edge/corner topology before coefficient work; the
-  existing axis-neutral span normalization is unsafe once edges are attached.
-- Sequence continuous one-way actions/completion before a two-adjacent-edge
-  two-way vertical slice that exercises built-in/external coefficient trust,
-  strips, torsion, serviceability, and shear.
-- Separate coefficient-provider architecture from protected table data. No
-  built-in values ship until S0 records source/licensing permission and the
-  exact-match/interpolation decision.
-- Treat SP 16 only as withdrawn legacy comparison evidence; primary IS 456
-  formulas and controlled current sources govern.
-- Keep punching explicitly not applicable/unsupported for the initial
-  beam/wall-supported UDL panels. Do not reuse the footing punching workflow.
-- Keep flat slabs, drops, column strips, slab-column transfer, and flat-slab
-  punching under a separately approved FS0 extension.
+- Existing compatibility slab functions remain available; the implementation
+  extends the maintained slab package rather than creating another engine.
+- Built-in Tables 12/13 and Tables 26/27 resolution is implemented with exact
+  provenance, bounded adjacent interpolation and explicit extrapolation errors.
+  External coefficient providers remain available with distinct trust status.
+- Oriented physical edges drive common two-way cases, strip widths and full/
+  half/none/free corner-torsion dispositions without silent span rotation.
+- Complete bounded routes cover provided bars, minimum/maximum detailing,
+  reviewed span/depth serviceability and ordinary one-way shear. Direct
+  deflection, automatic shear reinforcement and irregular/concentrated-load
+  panels remain held.
+- Five new FastAPI routes and the `/workbench/slabs` React flow are live-verified.
+  Results preserve revision identity and stale results cannot be exported.
+- Flat slabs, drops, column strips, slab-column transfer and column-supported
+  punching remain under a separately approved FS0 extension.
 
-### First packet — S0 only
+### Verification at handoff
 
-Return an approved source-page map, coefficient packaging decision, support-case
-IDs/transforms, interpolation policy, characteristic/factored/service-load
-contract, independent B02/B04 calculations and tolerances, remaining HOLDs, and
-explicit authorization for S1. Do not edit calculation, public API, FastAPI, or
-React code in S0.
+- 5,532 Python tests passed, 3 skipped and 6 deselected.
+- 388 FastAPI tests and 241 React tests passed.
+- Frontend lint/test/TypeScript/production build passed.
+- Quick gate 10/10 and integrated gate 30/30 passed.
+- Live continuous and B04 two-way flows passed without browser console errors;
+  stale passport export was blocked as designed.
 
 ## Fresh-start maintenance closeout
 

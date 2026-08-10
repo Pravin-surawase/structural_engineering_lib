@@ -119,6 +119,196 @@ def test_one_way_slab_endpoint_rejects_two_way_geometry(client):
     assert response.json()["success"] is False
 
 
+def _continuous_slab_payload(**overrides):
+    payload = {
+        "short_effective_span_mm": 3000,
+        "long_effective_span_mm": 7500,
+        "thickness_mm": 140,
+        "d_mm": 115,
+        "factored_area_load_kn_per_m2": 14.25,
+        "fck_n_per_mm2": 20,
+        "fy_n_per_mm2": 415,
+        "positive_moment_coefficient": 1 / 12,
+        "negative_moment_coefficient": 1 / 10,
+        "shear_coefficient": 0.4,
+        "coefficient_source_reference": "NPTEL-L18-B02",
+        "coefficient_source_is_approved": True,
+        "qualified_coefficient_acceptance_reference": "review:B02",
+        "qualified_coefficient_acceptance_acknowledged": True,
+        "number_of_spans": 3,
+        "maximum_span_variation_percent": 0,
+        "uniform_cross_section_acknowledged": True,
+        "substantially_uniform_load_acknowledged": True,
+        "redistribution_applied": False,
+        "positive_bar_diameter_mm": 8,
+        "positive_bar_spacing_mm": 180,
+        "negative_bar_diameter_mm": 10,
+        "negative_bar_spacing_mm": 230,
+        "distribution_bar_diameter_mm": 8,
+        "distribution_bar_spacing_mm": 250,
+        "reviewed_base_span_depth_limit": 23,
+        "reviewed_aggregate_modification_factor": 1.18,
+        "serviceability_limit_source_reference": "NPTEL-L18-B02-SLS",
+        "serviceability_limit_source_is_approved": True,
+        "qualified_serviceability_acceptance_reference": "review:B02-SLS",
+        "qualified_serviceability_acceptance_acknowledged": True,
+    }
+    payload.update(overrides)
+    return payload
+
+
+def _two_way_slab_payload(**overrides):
+    payload = {
+        "x_effective_span_mm": 4000,
+        "y_effective_span_mm": 6000,
+        "thickness_mm": 160,
+        "x_min_edge": "discontinuous",
+        "x_max_edge": "continuous",
+        "y_min_edge": "discontinuous",
+        "y_max_edge": "continuous",
+        "corner_lift_condition": "restrained",
+        "support_topology_kind": "two_adjacent_edges_discontinuous",
+        "alpha_x_negative": 0.075,
+        "alpha_x_positive": 0.056,
+        "alpha_y_negative": 0.047,
+        "alpha_y_positive": 0.035,
+        "coefficient_source_reference": "NPTEL-L19-B04",
+        "coefficient_source_is_approved": True,
+        "qualified_coefficient_acceptance_reference": "review:B04",
+        "qualified_coefficient_acceptance_acknowledged": True,
+        "factored_area_load_kn_per_m2": 15.5,
+        "d_x_mm": 135,
+        "d_y_mm": 125,
+        "fck_n_per_mm2": 20,
+        "fy_n_per_mm2": 415,
+        "x_positive_bar_diameter_mm": 10,
+        "x_positive_bar_spacing_mm": 200,
+        "x_negative_bar_diameter_mm": 10,
+        "x_negative_bar_spacing_mm": 200,
+        "y_positive_bar_diameter_mm": 8,
+        "y_positive_bar_spacing_mm": 200,
+        "y_negative_bar_diameter_mm": 8,
+        "y_negative_bar_spacing_mm": 200,
+        "edge_strip_bar_diameter_mm": 8,
+        "edge_strip_bar_spacing_mm": 250,
+        "torsion_bar_diameter_mm": 8,
+        "torsion_bar_spacing_mm": 200,
+        "reviewed_base_span_depth_limit": 30,
+        "reviewed_aggregate_modification_factor": 1,
+        "serviceability_limit_source_reference": "NPTEL-L19-B04-SLS",
+        "serviceability_limit_source_is_approved": True,
+        "qualified_serviceability_acceptance_reference": "review:B04-SLS",
+        "qualified_serviceability_acceptance_acknowledged": True,
+    }
+    payload.update(overrides)
+    return payload
+
+
+def test_continuous_one_way_slab_endpoint_returns_b02_actions(client):
+    response = client.post(
+        "/api/v1/design/slab/one-way/continuous",
+        json=_continuous_slab_payload(),
+    )
+    assert response.status_code == 200, response.json()
+    data = _unwrap(response)
+    assert data["flexure"]["positive_midspan"][
+        "factored_moment_knm_per_m"
+    ] == pytest.approx(10.6875)
+    assert data["flexure"]["negative_support"][
+        "factored_moment_knm_per_m"
+    ] == pytest.approx(12.825)
+    assert data["flexure"]["coefficient_correctness_verified_by_library"] is False
+    assert data["shear"]["punching_shear_disposition"].startswith("not_applicable")
+
+
+def test_continuous_endpoint_rejects_redistribution_or_unapproved_source(client):
+    for payload in (
+        _continuous_slab_payload(redistribution_applied=True),
+        _continuous_slab_payload(coefficient_source_is_approved=False),
+    ):
+        response = client.post("/api/v1/design/slab/one-way/continuous", json=payload)
+        assert response.status_code == 422
+
+
+def test_two_way_slab_panel_endpoint_returns_b04_topology_and_torsion(client):
+    response = client.post(
+        "/api/v1/design/slab/two-way/panel", json=_two_way_slab_payload()
+    )
+    assert response.status_code == 200, response.json()
+    data = _unwrap(response)
+    assert data["panel"]["x_negative"]["factored_moment_knm_per_m"] == pytest.approx(
+        18.6
+    )
+    assert data["panel"]["y_positive"]["factored_moment_knm_per_m"] == pytest.approx(
+        8.68
+    )
+    assert data["panel"]["corner_torsion"][0]["torsion_class"] == "full"
+    assert data["panel"]["corner_torsion"][0]["zone_extent_from_each_edge_mm"] == 800
+    assert data["panel"]["coefficient_correctness_verified_by_library"] is False
+
+
+def test_two_way_endpoint_rejects_topology_coefficient_mismatch(client):
+    response = client.post(
+        "/api/v1/design/slab/two-way/panel",
+        json=_two_way_slab_payload(support_topology_kind="four_edges_continuous"),
+    )
+    assert response.status_code == 422
+
+
+def test_builtin_continuous_endpoint_resolves_tables_12_and_13(client):
+    payload = _continuous_slab_payload()
+    for field in (
+        "factored_area_load_kn_per_m2",
+        "positive_moment_coefficient",
+        "negative_moment_coefficient",
+        "shear_coefficient",
+        "coefficient_source_reference",
+        "coefficient_source_is_approved",
+        "qualified_coefficient_acceptance_reference",
+        "qualified_coefficient_acceptance_acknowledged",
+    ):
+        payload.pop(field)
+    payload.update(
+        {
+            "factored_dead_and_fixed_imposed_load_kn_per_m2": 14.25,
+            "factored_nonfixed_imposed_load_kn_per_m2": 0,
+            "positive_location": "end_span_positive",
+            "negative_location": "next_to_end_support_negative",
+            "shear_location": "end_support",
+        }
+    )
+    response = client.post(
+        "/api/v1/design/slab/one-way/continuous/builtin", json=payload
+    )
+    assert response.status_code == 200, response.json()
+    data = _unwrap(response)
+    assert data["flexure"]["input"]["coefficients"]["table_id"] == "IS456_TABLE_12_13"
+    assert data["flexure"]["coefficient_correctness_verified_by_library"] is True
+
+
+def test_builtin_two_way_endpoint_resolves_table_26_case_4(client):
+    payload = _two_way_slab_payload()
+    for field in (
+        "support_topology_kind",
+        "alpha_x_negative",
+        "alpha_x_positive",
+        "alpha_y_negative",
+        "alpha_y_positive",
+        "coefficient_source_reference",
+        "coefficient_source_is_approved",
+        "qualified_coefficient_acceptance_reference",
+        "qualified_coefficient_acceptance_acknowledged",
+    ):
+        payload.pop(field)
+    response = client.post("/api/v1/design/slab/two-way/panel/builtin", json=payload)
+    assert response.status_code == 200, response.json()
+    data = _unwrap(response)
+    coefficients = data["panel"]["input"]["coefficients"]
+    assert coefficients["case_id"] == "table_26_case_4"
+    assert coefficients["method"] == "built_in_exact"
+    assert data["panel"]["coefficient_correctness_verified_by_library"] is True
+
+
 def test_library_core_pydantic_422_uses_standard_envelope(client):
     response = client.post("/api/v1/design/slab/one-way", json={})
 

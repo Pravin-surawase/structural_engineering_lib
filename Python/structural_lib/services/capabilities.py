@@ -130,16 +130,25 @@ _CAPABILITIES = (
     ),
     IS456Capability(
         element="solid_slab",
-        public_workflows=("design_one_way_slab_is456", "design_two_way_slab_is456"),
+        public_workflows=(
+            "design_one_way_slab_is456",
+            "design_complete_one_way_slab_is456",
+            "design_continuous_one_way_slab_is456",
+            "design_continuous_one_way_slab_builtin_is456",
+            "design_two_way_slab_is456",
+            "design_two_way_slab_panel_is456",
+            "design_two_way_slab_panel_builtin_is456",
+        ),
         supported_case=(
-            "Simply supported one-way strip; externally accepted coefficient, "
-            "flexure-only supported case for one interior solid rectangular panel "
-            "with all four edges continuous."
+            "Simply supported and coefficient-method continuous one-way solid strips; "
+            "common oriented two-way beam/wall-supported panels with built-in bounded "
+            "IS 456 coefficient lookup/interpolation or reviewed external coefficients, "
+            "strip distribution, corner torsion, provided-bar checks, span/depth "
+            "serviceability carriers, and ordinary one-way shear."
         ),
         held_cases=(
-            "Two-way coefficient lookup is not built in.",
-            "The two-way result is not a complete engineering design approval; detailing, serviceability, shear/punching, and load combinations/patterning remain incomplete.",
-            "Flat/drop/ribbed slabs, openings, irregular panels and FEM are excluded.",
+            "Direct deflection, crack width, concentrated loads, openings, irregular panels, load-envelope analysis and automatic slab shear reinforcement are excluded.",
+            "Flat/drop/ribbed slabs, column strips, column-supported punching and FEM require a separately approved extension.",
         ),
         qualified_review_required=True,
     ),
@@ -590,6 +599,189 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             ),
             limitations=(
                 "Reinforcement detailing, serviceability, shear/punching, load combinations/patterning, and other panel cases remain incomplete.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_complete_one_way_slab_is456",
+            element="solid_slab",
+            fields=(
+                _field("d_mm", "effective slab depth", "mm", True, _MM),
+                _field(
+                    "reviewed_base_span_depth_limit",
+                    "reviewed serviceability base limit",
+                    "dimensionless",
+                    True,
+                    "finite positive",
+                ),
+                _field(
+                    "shear.status",
+                    "ordinary one-way shear disposition",
+                    "enumeration",
+                    True,
+                    "explicit capacity state",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "complete_engineering_design_approved",
+                    "Always false for this software result.",
+                    ("Qualified project review remains required.",),
+                ),
+            ),
+            limitations=(
+                "Direct deflection and automatic shear reinforcement are not implemented.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_continuous_one_way_slab_is456",
+            element="solid_slab",
+            fields=(
+                _field(
+                    "positive_moment_coefficient",
+                    "reviewed external positive coefficient",
+                    "dimensionless",
+                    True,
+                    "finite in (0, 1]",
+                ),
+                _field(
+                    "negative_moment_coefficient",
+                    "reviewed external negative coefficient",
+                    "dimensionless",
+                    True,
+                    "finite in (0, 1]",
+                ),
+                _field(
+                    "redistribution_applied",
+                    "moment redistribution declaration",
+                    "boolean",
+                    True,
+                    "must be false",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "flexure.coefficient_correctness_verified_by_library",
+                    "Always false for external coefficients.",
+                    ("The source and qualified acceptance references remain visible.",),
+                ),
+            ),
+            limitations=(
+                "Requires at least three spans, no more than 15 percent span variation, a uniform section, substantially uniform load, and no redistribution.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_continuous_one_way_slab_builtin_is456",
+            element="solid_slab",
+            fields=(
+                _field(
+                    "positive_location",
+                    "one-way positive-action location",
+                    "enumeration",
+                    True,
+                    "supported Table 12 action location",
+                ),
+                _field(
+                    "shear_location",
+                    "one-way shear-action location",
+                    "enumeration",
+                    True,
+                    "supported Table 13 action location",
+                ),
+                _field(
+                    "flexure.coefficient_correctness_verified_by_library",
+                    "library coefficient-verification claim",
+                    "boolean",
+                    True,
+                    "always true for normalized built-in records",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "flexure.coefficient_correctness_verified_by_library",
+                    "True when the normalized built-in coefficient record resolved successfully.",
+                    (
+                        "The coefficient provenance remains visible and qualified project review remains required.",
+                    ),
+                ),
+            ),
+            limitations=(
+                "Requires at least three spans, no more than 15 percent span variation, a uniform section, substantially uniform load, and no redistribution.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_two_way_slab_panel_is456",
+            element="solid_slab",
+            fields=(
+                _field(
+                    "support_topology_kind",
+                    "physical edge topology identity",
+                    "enumeration",
+                    True,
+                    "must match declared physical edges",
+                ),
+                _field(
+                    "alpha_x_positive",
+                    "reviewed external x positive coefficient",
+                    "dimensionless",
+                    True,
+                    "finite in (0, 1]",
+                ),
+                _field(
+                    "alpha_y_positive",
+                    "reviewed external y positive coefficient",
+                    "dimensionless",
+                    True,
+                    "finite in (0, 1]",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "coefficient_correctness_verified_by_library",
+                    "Always false for external coefficients.",
+                    ("No protected table lookup or interpolation is performed.",),
+                ),
+            ),
+            limitations=(
+                "Flat slabs and column-supported punching are a separate held extension.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_two_way_slab_panel_builtin_is456",
+            element="solid_slab",
+            fields=(
+                _field(
+                    "x_min_edge",
+                    "physical x-min edge continuity",
+                    "enumeration",
+                    True,
+                    "continuous or discontinuous",
+                ),
+                _field(
+                    "corner_lift_condition",
+                    "physical corner lift condition",
+                    "enumeration",
+                    True,
+                    "restrained or free_to_lift",
+                ),
+                _field(
+                    "panel.coefficient_correctness_verified_by_library",
+                    "library coefficient-verification claim",
+                    "boolean",
+                    True,
+                    "always true for normalized built-in records",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "panel.coefficient_correctness_verified_by_library",
+                    "True when exact lookup or bounded interpolation resolved successfully.",
+                    (
+                        "The physical support topology and coefficient provenance remain visible.",
+                    ),
+                ),
+            ),
+            limitations=(
+                "Flat slabs and column-supported punching are a separate held extension.",
             ),
         ),
     ),
