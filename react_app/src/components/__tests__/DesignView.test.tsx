@@ -6,6 +6,7 @@ import { DesignView } from '../../components/design/DesignView';
 // Mock react-router-dom
 vi.mock('react-router-dom', () => ({
   useNavigate: vi.fn(() => vi.fn()),
+  useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
 }));
 
 // Mock useLiveDesign

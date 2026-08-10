@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-10
 doc_type: guide
 complexity: intermediate
 tags: []
@@ -11,10 +11,10 @@ tags: []
 
 **Type:** Guide
 **Audience:** All Agents, Developers, Users
-**Status:** Production Ready
+**Status:** Development Preview
 **Importance:** High
 **Created:** 2026-01-27
-**Last Updated:** 2026-01-27
+**Last Updated:** 2026-08-10
 **Related Tasks:** TASK-V3-REACT-UI, TASK-V3-PHASE4
 
 ---
@@ -30,35 +30,38 @@ The React app (`react_app/`) provides a modern workspace UI with 3D visualizatio
 
 ## App Structure Overview
 
+```text
+Home -> Workbench -> Quick beam (catalogue input + result + 3D + export)
+                  -> New project -> Import -> Review/design -> Results/export
+                  -> Beam workflow (development/test flag only)
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    ModernAppLayout                          │
-├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐         │
-│  │ LandingView │  │ ImportView  │  │ DesignView  │         │
-│  │   (home)    │→ │  (import)   │→ │  (design)   │         │
-│  └─────────────┘  └─────────────┘  └─────────────┘         │
-│                                           ↓                 │
-│         ┌─────────────────────────────────────┐             │
-│         │          ResultsView                │             │
-│         │   ┌──────────┐ ┌──────────────┐     │             │
-│         │   │Viewport3D│ │  BeamTable   │     │             │
-│         │   │  (3D)    │ │  (grid)      │     │             │
-│         │   └──────────┘ └──────────────┘     │             │
-│         └─────────────────────────────────────┘             │
-└─────────────────────────────────────────────────────────────┘
-```
+
+The router in `App.tsx` and the route decisions in `app/navigation.ts` are the
+navigation authority. Project-stage URLs include the durable project identity;
+legacy URLs redirect to the canonical route and show recovery when no matching
+project is loaded.
 
 **Key Components:**
 | Component | Path | Purpose |
 |-----------|------|---------|
-| `ModernAppLayout` | `layout/ModernAppLayout.tsx` | Root layout, view routing |
-| `LandingView` | `LandingView.tsx` | Welcome screen, quick actions |
+| `App` | `App.tsx` | Router, one global shell, guarded compatibility routes |
+| `WorkbenchHomePage` | `pages/WorkbenchHomePage.tsx` | Quick beam, project resume/import, flagged workflow entry |
 | `ImportView` | `ImportView.tsx` | CSV/Excel import, sample data |
-| `DesignView` | `DesignView.tsx` | Single beam design + settings |
+| `DesignView` | `DesignView.tsx` | Catalogue-first quick beam with manual rollback route |
+| `BuildingEditorPage` | `pages/BuildingEditorPage.tsx` | Project review, batch design, member inspection, 3D |
+| `DashboardPage` | `pages/DashboardPage.tsx` | Current-revision project results and exports |
 | `Viewport3D` | `Viewport3D.tsx` | 3D beam/building visualization |
-| `BeamTable` | `BeamTable.tsx` | Data grid for batch editing |
-| `ResultsView` | (inline) | 3D + table combined view |
+
+Canonical entry routes are `/workbench`, `/workbench/quick`,
+`/workbench/projects/new`, and
+`/workbench/projects/:projectId/{import|review|design|results}`. The reviewed
+manual quick-beam escape remains `/workbench/quick/manual`. Set
+`VITE_CATALOGUE_QUICK_ENABLED=false` at build time to roll the canonical quick
+route back to that manual renderer.
+
+The persona diagrams below are retained as historical interaction rationale.
+The canonical routes and component ownership above override their older route
+labels and page-shell names.
 
 ---
 

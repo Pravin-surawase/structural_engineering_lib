@@ -5,8 +5,8 @@
  * contextual advanced actions.
  */
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Calculator, CheckCircle, AlertCircle, Loader2, Eye, ChevronDown, ChevronRight, Shield, Lightbulb, Download, FileText, Ruler, ChevronUp, RotateCcw, ArrowRight, Activity } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Calculator, CheckCircle, AlertCircle, Loader2, ChevronDown, ChevronRight, Shield, Lightbulb, Download, FileText, Ruler, ChevronUp, RotateCcw, ArrowRight, Activity } from "lucide-react";
 import { useExportBBS, useExportDXF, useExportReport } from "../../hooks/useExport";
 import { useLoadAnalysis } from "../../hooks/useLoadAnalysis";
 import type { LoadAnalysisResponse } from "../../api/client";
@@ -51,6 +51,7 @@ export interface DesignViewProps {
 
 export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { inputs, length } = useDesignStore();
   const [autoDesign, setAutoDesign] = useState(true);
   const [resultsCollapsed, setResultsCollapsed] = useState(false);
@@ -184,6 +185,14 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
           </WorkbenchHeader>
         )}
       >
+      {searchParams.get("recovery") === "result-required" ? (
+        <div
+          className="border-b border-amber-400/20 bg-amber-400/10 px-4 py-2 text-sm text-amber-100"
+          role="status"
+        >
+          The saved result is missing or no longer matches these inputs. Review the values and run the design again.
+        </div>
+      ) : null}
       <div className="grid min-h-full min-w-0 grid-cols-1 lg:grid-cols-[20rem_minmax(0,1fr)]">
       {/* Left: Compact Input Form */}
       <div className="min-w-0 flex flex-col border-b border-white/5 bg-zinc-950 lg:border-r lg:border-b-0">
@@ -320,15 +329,6 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
         <div className="px-3 pb-3 space-y-2">
           {state.isFallbackActive && (
             <p className="text-center text-[10px] text-zinc-400">Verified REST request mode · cancelled and stale responses are ignored</p>
-          )}
-          {state.result && (
-            <button
-              onClick={() => navigate("/design/results")}
-              className="w-full py-2.5 bg-white/5 hover:bg-white/10 text-white/70 text-sm font-medium rounded-xl transition-colors flex items-center justify-center gap-2 border border-white/10"
-            >
-              <Eye className="w-4 h-4" />
-              Full 3D Detail View
-            </button>
           )}
         </div>
       </div>

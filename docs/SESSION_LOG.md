@@ -25,6 +25,9 @@
 - P13 generates one provider-neutral beam tool descriptor from the catalogue,
   preserves schema/units/limitations/review boundaries, and activates no model,
   chat, autonomous execution, or external integration.
+- P14 cuts canonical journeys over to one guarded project-stage route model,
+  preserves legacy bookmarks with explicit recovery, keeps a build-time quick-
+  route rollback, and safely retires five duplicate/dead page shells.
 
 ### Issues encountered
 
@@ -81,6 +84,12 @@
 - The first P13 commit found that the maintained enhanced-index generator writes
   JSON without a final newline, so every legitimate regeneration is changed by
   the EOF pre-commit hook.
+- P14 safe-delete inspection found that two active UI guides still named page
+  shells that the authoritative router no longer used, while archived planning
+  documents correctly retained their historical references.
+- The frozen `/design/results` contract required an explicit explanation for an
+  empty or stale result, but the first redirect preserved only the destination
+  and query string.
 
 ### Root causes and resolutions
 
@@ -151,6 +160,15 @@
 - `generate_enhanced_index.py` now writes newline-terminated JSON itself. A
   functional regression checks the emitted bytes, and two consecutive scripts-
   index generations remain hook-clean.
+- Route evolution had updated `App.tsx` without updating the active structure
+  guides, leaving documentation—not runtime imports—as the final blocker to
+  safe retirement. The active guides now name the canonical shell and routes;
+  the five files were deleted through `safe_file_delete.py --force` only after
+  dry-run review, with recoverable backups retained under `tmp/deleted_backups`.
+- Legacy result recovery did not consult the revision lifecycle. The redirect
+  now adds `recovery=result-required` whenever the result is not `current`, and
+  the quick workbench renders the reason instead of silently presenting inputs.
+  Route tests prove bookmark query preservation and the explicit recovery state.
 
 ### Verification
 
@@ -165,6 +183,8 @@
 - P13: 27 combined catalogue/manifest/runner/API tests plus 2 catalogue React
   tests, deterministic write/check drift proof, JSON Schema validation, scoped
   Ruff/Black/mypy, scripts-index coverage, React lint, and link validation.
+- P14: 22 focused route/workbench/catalogue tests, full React lint, production
+  build, and 1,079-link validation with zero broken links.
 
 ## 2026-08-10 — Session: UIX-001 Session 1 P4-P8 Closeout
 

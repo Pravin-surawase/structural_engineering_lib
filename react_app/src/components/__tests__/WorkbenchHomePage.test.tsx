@@ -6,6 +6,7 @@ const navigate = vi.fn();
 
 vi.mock('react-router-dom', () => ({
   useNavigate: () => navigate,
+  useSearchParams: () => [new URLSearchParams()],
 }));
 
 describe('WorkbenchHomePage', () => {
