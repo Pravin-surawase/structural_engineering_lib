@@ -13,15 +13,25 @@ vi.mock('../../hooks/useLiveDesign', () => ({
   useLiveDesign: vi.fn(() => ({
     state: {
       result: null,
+      inputRevision: 1,
+      resultRevision: null,
+      resultLifecycle: 'not_evaluated',
+      exportEligible: false,
       isDesigning: false,
+      isConnected: true,
+      isLoadingGeometry: false,
       connectionStatus: 'disconnected',
       latency: null,
       error: null,
+      geometry: null,
+      isFallbackActive: true,
     },
     actions: {
+      triggerDesign: vi.fn(),
       updateInputs: vi.fn(),
       updateLength: vi.fn(),
       reconnect: vi.fn(),
+      reset: vi.fn(),
     },
   })),
 }));
@@ -71,8 +81,8 @@ vi.mock('../../store/designStore', () => ({
 describe('DesignView', () => {
   it('renders without crashing', () => {
     render(React.createElement(DesignView));
-    expect(screen.getByText('Beam Design')).toBeInTheDocument();
-    expect(screen.getByText('IS 456:2000')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Quick beam design' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Beam inputs' })).toBeInTheDocument();
   });
 
   it('renders connection status', () => {
@@ -88,5 +98,14 @@ describe('DesignView', () => {
   it('renders 3D viewport', () => {
     render(React.createElement(DesignView));
     expect(screen.getByTestId('viewport-3d')).toBeInTheDocument();
+  });
+
+  it('keeps one primary design action and common inputs visible', () => {
+    render(React.createElement(DesignView));
+    expect(screen.getAllByRole('button', { name: 'Design beam' })).toHaveLength(1);
+    expect(screen.getByLabelText('Width in mm')).toBeInTheDocument();
+    expect(screen.getByLabelText('Moment (Mu) in kN·m')).toBeInTheDocument();
+    expect(screen.getByText('Not evaluated')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Compare options' })).toBeDisabled();
   });
 });

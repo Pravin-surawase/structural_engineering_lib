@@ -1,28 +1,28 @@
 /**
  * useLiveDesign Hook
  *
- * Ties together the design store, WebSocket updates, and 3D geometry.
+ * Ties together the design store, revision-safe REST design, and 3D geometry.
  * Provides a unified interface for live design workflow:
- * 1. Input changes → WebSocket design request
+ * 1. Input changes → cancellable design request
  * 2. Design result → Store update
  * 3. Store update → 3D geometry refresh
  *
- * This creates the <100ms latency design experience.
+ * Results apply only when the request still owns the current input revision.
  */
 import { useEffect, useCallback, useRef, useMemo } from 'react';
 import { useDesignStore } from '../store/designStore';
-import { useDesignWebSocket } from './useDesignWebSocket';
 import { useBeamGeometry } from './useBeamGeometry';
 import { designBeam } from '../api/client';
+import type { BeamDesignRequest } from '../api/client';
 import type { Beam3DGeometry, BeamGeometryRequest } from './useBeamGeometry';
+import { LatestRequestCoordinator } from '../workspace/requestCoordinator';
+import type { ResultLifecycle, RevisionIdentity } from '../workspace/types';
 
 interface LiveDesignOptions {
   /** Enable WebSocket connection */
   enabled?: boolean;
   /** Debounce delay for input changes (ms) */
   debounceMs?: number;
-  /** Session ID for WebSocket */
-  sessionId?: string;
   /** Enable auto-design on input change */
   autoDesign?: boolean;
 }
@@ -38,6 +38,14 @@ interface LiveDesignState {
   latency: number | null;
   /** Last design result */
   result: import('../api/client').BeamDesignResponse | null;
+  /** Monotonic revision of the visible inputs. */
+  inputRevision: number;
+  /** Revision that produced the retained result, if any. */
+  resultRevision: number | null;
+  /** Truthful lifecycle of the retained result. */
+  resultLifecycle: ResultLifecycle;
+  /** Whether the retained result may drive a current-revision export. */
+  exportEligible: boolean;
   /** 3D geometry data */
   geometry: Beam3DGeometry | null;
   /** Any error message */
@@ -59,6 +67,46 @@ interface LiveDesignActions {
   updateLength: (length: number) => void;
   /** Reset to defaults */
   reset: () => void;
+}
+
+const QUICK_REQUEST_KEY = 'quick-design';
+
+export function createQuickDesignIdentity(
+  inputs: BeamDesignRequest,
+  length: number,
+  inputRevision: number,
+): RevisionIdentity {
+  const canonicalInputs = JSON.stringify({
+    width: inputs.width,
+    depth: inputs.depth,
+    length,
+    moment: inputs.moment,
+    shear: inputs.shear ?? 0,
+    fck: inputs.fck,
+    fy: inputs.fy,
+    clearCover: inputs.clear_cover ?? 40,
+    stirrupDiameter: inputs.stirrup_dia_mm ?? 8,
+    mainBarDiameter: inputs.main_bar_dia_mm ?? 20,
+  });
+  let hash = 2166136261;
+  for (let index = 0; index < canonicalInputs.length; index += 1) {
+    hash ^= canonicalInputs.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  const inputHash = `quick-fnv1a-${(hash >>> 0).toString(16).padStart(8, '0')}`;
+  return {
+    projectId: 'quick-design',
+    memberId: 'quick-beam',
+    inputHash,
+    inputRevision,
+    memberRevision: inputRevision,
+    projectRevision: inputRevision,
+  };
+}
+
+function currentQuickDesignIdentity(): RevisionIdentity {
+  const { inputs, length, inputRevision } = useDesignStore.getState();
+  return createQuickDesignIdentity(inputs, length, inputRevision);
 }
 
 /**
@@ -87,55 +135,71 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
   const {
     enabled = true,
     debounceMs = 150,
-    sessionId = 'default',
     autoDesign = true,
   } = options;
 
   // Design store
   const store = useDesignStore();
-  const { inputs, length, result, isLoading, setInputs, setLength, setResult, setLoading, setError, reset } = store;
-
-  // WebSocket hook
   const {
-    isConnected: wsIsConnected,
-    status: wsStatus,
-    latency: wsLatency,
-    error: wsError,
-    sendDesign: sendWsDesign,
-    reconnect: reconnectWs,
-  } = useDesignWebSocket(sessionId, enabled);
+    inputs,
+    length,
+    result,
+    inputRevision,
+    resultRevision,
+    resultLifecycle,
+    isLoading,
+    error,
+    setInputs,
+    setLength,
+    setResult,
+    setLoading,
+    setError,
+    reset,
+  } = store;
 
   // Debounce ref for auto-design
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastInputsRef = useRef(inputs);
-  const abortRef = useRef<AbortController | null>(null);
+  const coordinatorRef = useRef(new LatestRequestCoordinator());
+  const requestSequenceRef = useRef(0);
   const initialDesignFired = useRef(false);
 
-  // REST fallback is active when WS is not connected
-  const isFallbackActive =
-    !wsIsConnected && (wsStatus === 'disconnected' || wsStatus === 'error');
-
-  // REST fallback design request
+  // Quick design deliberately uses the AbortSignal-aware REST facade until the
+  // WebSocket contract carries a request/input revision that can be echoed back.
   const runRestDesign = useCallback(async () => {
-    if (abortRef.current) abortRef.current.abort();
-    abortRef.current = new AbortController();
+    const requestInputs = { ...inputs };
+    const requestRevision = inputRevision;
+    const identity = createQuickDesignIdentity(requestInputs, length, requestRevision);
+    requestSequenceRef.current += 1;
+    const token = coordinatorRef.current.begin(
+      QUICK_REQUEST_KEY,
+      `quick-${requestSequenceRef.current}`,
+      identity,
+    );
 
-    setLoading(true);
+    setLoading(true, requestRevision);
     try {
-      const res = await designBeam(inputs);
-      setResult(res);
+      const res = await designBeam(requestInputs, { signal: token.signal });
+      if (coordinatorRef.current.isCurrent(token, currentQuickDesignIdentity())) {
+        setResult(res, requestRevision);
+      }
     } catch (err) {
-      if ((err as Error).name !== 'AbortError') {
-        setError((err as Error).message);
+      if (
+        (err as Error).name !== 'AbortError'
+        && coordinatorRef.current.isCurrent(token, currentQuickDesignIdentity())
+      ) {
+        setError((err as Error).message, requestRevision);
       }
     } finally {
-      setLoading(false);
+      if (coordinatorRef.current.settle(token, currentQuickDesignIdentity())) {
+        setLoading(false, requestRevision);
+      }
     }
-  }, [inputs, setResult, setLoading, setError]);
+  }, [inputRevision, inputs, length, setError, setLoading, setResult]);
 
   // Build geometry request from current state
   const geometryParams = useMemo<BeamGeometryRequest | null>(() => {
-    if (!result?.success || !result.flexure) return null;
+    if (resultLifecycle !== 'current' || !result?.success || !result.flexure) return null;
 
     return {
       beam_id: 'live-design',
@@ -155,7 +219,7 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
       cover: inputs.clear_cover ?? 40,
       is_seismic: false,
     };
-  }, [inputs, length, result]);
+  }, [inputs, length, result, resultLifecycle]);
 
   // Fetch geometry when design result changes
   const {
@@ -171,7 +235,8 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
     runRestDesign();
   }, [autoDesign, enabled, runRestDesign]);
 
-  // Auto-design when inputs change (WebSocket or REST fallback)
+  // Auto-design when inputs change. One debounced REST transport keeps request
+  // ownership explicit and prevents the previous duplicate WS + REST dispatch.
   useEffect(() => {
     if (!autoDesign || !enabled) return;
 
@@ -195,77 +260,85 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
       clearTimeout(debounceRef.current);
     }
 
-    if (wsIsConnected) {
-      // WebSocket path: fast 150ms debounce
-      debounceRef.current = setTimeout(() => {
-        sendWsDesign();
-      }, debounceMs);
-    } else {
-      // REST fallback path: slower 300ms debounce
-      debounceRef.current = setTimeout(() => {
-        runRestDesign();
-      }, 300);
-    }
+    debounceRef.current = setTimeout(() => {
+      void runRestDesign();
+    }, debounceMs);
 
     return () => {
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
     };
-  }, [inputs, autoDesign, enabled, wsIsConnected, sendWsDesign, debounceMs, runRestDesign]);
+  }, [inputs, autoDesign, enabled, debounceMs, runRestDesign]);
 
   // Actions
   const triggerDesign = useCallback(() => {
-    if (wsIsConnected) {
-      return sendWsDesign();
-    }
-    // REST fallback — always available
-    runRestDesign();
+    if (!enabled) return false;
+    void runRestDesign();
     return true;
-  }, [wsIsConnected, sendWsDesign, runRestDesign]);
+  }, [enabled, runRestDesign]);
 
   const updateInputs = useCallback(
     (newInputs: Partial<typeof inputs>) => {
-      setInputs({ ...inputs, ...newInputs });
+      coordinatorRef.current.cancel(QUICK_REQUEST_KEY);
+      setInputs(newInputs);
     },
-    [inputs, setInputs]
+    [setInputs]
   );
 
   const updateLength = useCallback(
     (newLength: number) => {
+      coordinatorRef.current.cancel(QUICK_REQUEST_KEY);
       setLength(newLength);
     },
     [setLength]
   );
 
-  // Cleanup REST abort controller on unmount
+  const resetDesign = useCallback(() => {
+    coordinatorRef.current.cancel(QUICK_REQUEST_KEY);
+    reset();
+  }, [reset]);
+
+  const reconnect = useCallback(() => {
+    if (enabled) void runRestDesign();
+  }, [enabled, runRestDesign]);
+
+  // Cleanup any pending request on unmount.
   useEffect(() => {
+    const coordinator = coordinatorRef.current;
     return () => {
-      if (abortRef.current) abortRef.current.abort();
+      coordinator.cancelAll();
     };
   }, []);
 
   // Combined state
   const state: LiveDesignState = {
-    isConnected: wsIsConnected,
+    isConnected: enabled,
     isDesigning: isLoading,
     isLoadingGeometry,
-    latency: wsLatency,
+    latency: null,
     result,
+    inputRevision,
+    resultRevision,
+    resultLifecycle,
+    exportEligible: Boolean(
+      result
+      && resultLifecycle === 'current'
+      && resultRevision === inputRevision,
+    ),
     geometry: geometry ?? null,
-    // Only show WS connection error if there's no successful REST result
-    error: result ? null : (wsError || (geometryError as Error | null)?.message || null),
-    connectionStatus: wsStatus,
-    isFallbackActive,
+    error: error || (geometryError as Error | null)?.message || null,
+    connectionStatus: enabled ? 'connected' : 'disconnected',
+    isFallbackActive: true,
   };
 
   // Combined actions
   const actions: LiveDesignActions = {
     triggerDesign,
-    reconnect: reconnectWs,
+    reconnect,
     updateInputs,
     updateLength,
-    reset,
+    reset: resetDesign,
   };
 
   return { state, actions };

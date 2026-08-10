@@ -26,6 +26,7 @@ describe('designStore', () => {
   });
 
   it('setInputs merges partial inputs', () => {
+    const initialRevision = useDesignStore.getState().inputRevision;
     useDesignStore.getState().setInputs({ width: 400, depth: 600 });
     const state = useDesignStore.getState();
     expect(state.inputs.width).toBe(400);
@@ -33,6 +34,7 @@ describe('designStore', () => {
     // Unchanged fields preserved
     expect(state.inputs.moment).toBe(150);
     expect(state.inputs.fck).toBe(25.0);
+    expect(state.inputRevision).toBe(initialRevision + 1);
   });
 
   it('setResult clears error', () => {
@@ -61,6 +63,67 @@ describe('designStore', () => {
     const updated = useDesignStore.getState();
     expect(updated.result).toEqual(mockResult);
     expect(updated.error).toBeNull();
+    expect(updated.resultLifecycle).toBe('current');
+    expect(updated.resultRevision).toBe(updated.inputRevision);
+  });
+
+  it('invalidates a retained result when inputs change', () => {
+    const store = useDesignStore.getState();
+    store.setResult({
+      success: true,
+      message: 'current',
+      flexure: {
+        ast_required: 500,
+        ast_min: 200,
+        ast_max: 3000,
+        xu: 50,
+        xu_max: 200,
+        is_under_reinforced: true,
+        moment_capacity: 180,
+      },
+      ast_total: 500,
+      asc_total: 0,
+      utilization_ratio: 0.83,
+    });
+
+    const settledRevision = useDesignStore.getState().inputRevision;
+    store.setInputs({ moment: 175 });
+
+    const updated = useDesignStore.getState();
+    expect(updated.inputRevision).toBe(settledRevision + 1);
+    expect(updated.resultRevision).toBe(settledRevision);
+    expect(updated.resultLifecycle).toBe('stale');
+    expect(updated.result?.message).toBe('current');
+  });
+
+  it('rejects result, error, and finalizer writes from an older revision', () => {
+    const store = useDesignStore.getState();
+    const oldRevision = store.inputRevision;
+    store.setInputs({ width: 350 });
+
+    expect(store.setResult({
+      success: true,
+      message: 'late',
+      flexure: {
+        ast_required: 500,
+        ast_min: 200,
+        ast_max: 3000,
+        xu: 50,
+        xu_max: 200,
+        is_under_reinforced: true,
+        moment_capacity: 180,
+      },
+      ast_total: 500,
+      asc_total: 0,
+      utilization_ratio: 0.83,
+    }, oldRevision)).toBe(false);
+    expect(store.setError('late error', oldRevision)).toBe(false);
+    expect(store.setLoading(false, oldRevision)).toBe(false);
+
+    const updated = useDesignStore.getState();
+    expect(updated.result).toBeNull();
+    expect(updated.error).toBeNull();
+    expect(updated.resultLifecycle).toBe('not_evaluated');
   });
 
   it('setLoading updates loading state', () => {

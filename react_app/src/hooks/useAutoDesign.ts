@@ -11,7 +11,7 @@ import { designBeam } from '../api/client';
 const DEBOUNCE_MS = 300; // Debounce delay for REST fallback
 
 export function useAutoDesign(enabled: boolean = true) {
-  const { inputs, setResult, setLoading, setError } = useDesignStore();
+  const { inputs, inputRevision, setResult, setLoading, setError } = useDesignStore();
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -22,19 +22,23 @@ export function useAutoDesign(enabled: boolean = true) {
     }
     abortControllerRef.current = new AbortController();
 
-    setLoading(true);
+    const requestInputs = { ...inputs };
+    const requestRevision = inputRevision;
+    setLoading(true, requestRevision);
 
     try {
-      const result = await designBeam(inputs);
-      setResult(result);
+      const result = await designBeam(requestInputs, {
+        signal: abortControllerRef.current.signal,
+      });
+      setResult(result, requestRevision);
     } catch (error) {
       if ((error as Error).name !== 'AbortError') {
-        setError((error as Error).message);
+        setError((error as Error).message, requestRevision);
       }
     } finally {
-      setLoading(false);
+      setLoading(false, requestRevision);
     }
-  }, [inputs, setResult, setLoading, setError]);
+  }, [inputRevision, inputs, setResult, setLoading, setError]);
 
   useEffect(() => {
     if (!enabled) return;
