@@ -3,16 +3,16 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-10",
-  "file_count": 14,
+  "file_count": 15,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 149,
+      "size_lines": 152,
       "last_updated": "2026-08-10",
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
-      "content_hash": "f1fb7669d7da"
+      "content_hash": "4c7a2cbce979"
     },
     {
       "name": "adoption-trust-surface-plan.md",
@@ -91,11 +91,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 83,
+      "size_lines": 89,
       "last_updated": "2026-08-10",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-10",
-      "content_hash": "971b18d6ea94"
+      "content_hash": "60fd73c75e1a"
     },
     {
       "name": "pre-release-checklist.md",
@@ -118,12 +118,20 @@
     {
       "name": "react-ux-improvement-plan.md",
       "type": "documentation",
-      "size_lines": 702,
-      "last_updated": "2026-03-30",
-      "description": "> \"A structural engineer shouldn't have to fill in a form to see their own building.\" The primary workflow is **import-first**: bring in a real project (CSV / ETABS / SAFE), see all beams in 3D, selec",
-      "content_hash": "4ac77b09bca7"
+      "size_lines": 709,
+      "last_updated": "2026-08-10",
+      "description": "> **Historical implementation record.** Execution status in this document is > superseded by",
+      "content_hash": "706c92bd3f7a"
+    },
+    {
+      "name": "ui-experience-foundation-master-plan.md",
+      "type": "documentation",
+      "size_lines": 1961,
+      "last_updated": "2026-08-10",
+      "description": "The product will move from a collection of equally weighted pages to one compact, professional structural workbench.",
+      "content_hash": "e6040a34c9dd"
     }
   ],
   "subfolders": [],
-  "content_hash": "1523364fe9fe7d3e"
+  "content_hash": "9045d2563f2081a9"
 }

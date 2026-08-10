@@ -4,11 +4,14 @@
     "last_verified": "2026-08-09",
     "source": "https://help.openai.com/en/articles/20001106",
     "note": "Relative rates assume the same input, cached-input, and output token mix. Reasoning effort changes token volume and has no fixed multiplier.",
-    "standing_user_approval": "Explicit user model selections control. When the user delegates model choice for the current task, the orchestrator may select suitable available parent and subagent profiles. Sol profiles require explicit selection, case-specific approval, or delegated model-choice authority."
+    "standing_user_approval": "Explicit user model selections control. The user confirmed Luna is unavailable; do not probe it. Use Terra first for subagents. Sol profiles require explicit selection, case-specific approval, or delegated model-choice authority."
   },
+  "unavailable_models": [
+    "gpt-5.6-luna"
+  ],
   "defaults": {
     "parent_profile": "user-selected",
-    "subagent_profile": "luna-low",
+    "subagent_profile": "terra-low",
     "fast_mode": false,
     "max_concurrent_subagents": 2
   },

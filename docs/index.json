@@ -1,18 +1,18 @@
 {
   "folder": "docs",
   "type": "documentation",
-  "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly.",
+  "description": "Guides, references, evidence, and contributor material for the",
   "last_updated": "2026-08-10",
   "file_count": 6,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 254,
-      "last_updated": "2026-03-30",
+      "size_lines": 252,
+      "last_updated": "2026-08-10",
       "title": "Docs Index (Start Here)",
-      "description": "> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly. > Look at the **Type** and **Complexity** columns to decide what to read.",
-      "content_hash": "e7b381269418"
+      "description": "Guides, references, evidence, and contributor material for the structural-lib-is456 Python package and the React/FastAPI workbench.",
+      "content_hash": "c3eecbcb1222"
     },
     {
       "name": "SESSION_LOG.md",
@@ -30,15 +30,15 @@
       "last_updated": "2026-08-10",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "3b42a7cbec88"
+      "content_hash": "63f106b85012"
     },
     {
       "name": "WORKLOG.md",
       "type": "documentation",
-      "size_lines": 338,
+      "size_lines": 354,
       "last_updated": "2026-08-10",
       "description": "> **One line per item. Compact. Append-only.** > Format: DATE | TASK-ID | what changed | commit",
-      "content_hash": "82eaebb1f163"
+      "content_hash": "99219f077170"
     },
     {
       "name": "docs-canonical.json",
@@ -124,7 +124,7 @@
     {
       "name": "getting-started",
       "path": "getting-started/",
-      "file_count": 20,
+      "file_count": 21,
       "description": "Quick onboarding guides for new users of the structural engineering library."
     },
     {
@@ -152,8 +152,8 @@
     {
       "name": "images",
       "path": "images/",
-      "file_count": 1,
-      "description": "This folder contains images referenced by the documentation (e.g., Excel tutorial screenshots, architecture diagrams)."
+      "file_count": 7,
+      "description": "This folder contains images referenced by the documentation, including verified"
     },
     {
       "name": "learning",
@@ -164,7 +164,7 @@
     {
       "name": "learning-foundations",
       "path": "learning-foundations/",
-      "file_count": 14,
+      "file_count": 13,
       "description": "These are NOT specific to this repo. They are universal concepts every developer needs."
     },
     {
@@ -176,12 +176,12 @@
     {
       "name": "migration",
       "path": "migration/",
-      "file_count": 46
+      "file_count": 45
     },
     {
       "name": "planning",
       "path": "planning/",
-      "file_count": 15
+      "file_count": 17
     },
     {
       "name": "publications",
@@ -192,7 +192,7 @@
     {
       "name": "reference",
       "path": "reference/",
-      "file_count": 1793
+      "file_count": 1790
     },
     {
       "name": "research",
@@ -208,9 +208,9 @@
     {
       "name": "verification",
       "path": "verification/",
-      "file_count": 10,
+      "file_count": 11,
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "24e58c83387ac92a"
+  "content_hash": "cce5adbb7d2a20df"
 }

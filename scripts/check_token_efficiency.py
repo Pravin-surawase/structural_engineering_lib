@@ -38,8 +38,8 @@ FORBIDDEN_ACTIVE_TEXT = (
 TASK_PREAMBLE = """Work in low-token mode.
 
 Respect the parent model and reasoning selected by the user; never override it
-from repository policy. Keep Fast mode off. Use Luna-low subagents only for
-clear repetitive work and ask before any Sol escalation. Default to no
+from repository policy. Keep Fast mode off. Luna is unavailable: dispatch
+Terra-low subagents directly and ask before any Sol escalation. Default to no
 subagents; use no more than two only for independent,
 bounded work. Give each a concise packet with objective, exact files, non-goals,
 pitfalls, acceptance criteria, tests, and return format—never full conversation
@@ -84,8 +84,8 @@ def validate() -> dict:
 
     if agents.get("max_concurrent_threads_per_session") != 2:
         errors.append("agents.max_concurrent_threads_per_session must be 2")
-    if agents.get("default_subagent_model") != "gpt-5.6-luna":
-        errors.append("agents.default_subagent_model must be 'gpt-5.6-luna'")
+    if agents.get("default_subagent_model") != "gpt-5.6-terra":
+        errors.append("agents.default_subagent_model must be 'gpt-5.6-terra'")
     if agents.get("default_subagent_reasoning_effort") != "low":
         errors.append("agents.default_subagent_reasoning_effort must be 'low'")
     if features.get("fast_mode") is not False:
@@ -106,17 +106,16 @@ def validate() -> dict:
             errors.append("model policy relative token rates are stale")
         if model_policy.get("defaults", {}).get("max_concurrent_subagents") != 2:
             errors.append("model policy must cap concurrent subagents at 2")
-        if model_policy.get("defaults", {}).get("subagent_profile") != "luna-low":
-            errors.append("model policy must default subagents to luna-low")
+        if model_policy.get("unavailable_models") != ["gpt-5.6-luna"]:
+            errors.append("model policy must mark Luna unavailable")
+        if model_policy.get("defaults", {}).get("subagent_profile") != "terra-low":
+            errors.append("model policy must default subagents to terra-low")
         if model_policy.get("defaults", {}).get("parent_profile") != "user-selected":
             errors.append("model policy must preserve the user-selected parent profile")
         profile_ids = {
             profile.get("id") for profile in model_policy.get("profiles", [])
         }
         required_profiles = {
-            "luna-low",
-            "luna-medium",
-            "luna-high",
             "terra-low",
             "terra-medium",
             "terra-high",

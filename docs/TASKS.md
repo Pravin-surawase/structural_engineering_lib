@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — ADOPT-001 Packets A-G locally complete and fully gated
+**Updated:** 2026-08-10 — UIX-001 accepted; Session 1 Wave 0 active
 
 ---
 
@@ -26,7 +26,7 @@
 | MAINT-003 | Rebuild dependency and security baseline | P0 | ✅ DONE | Reproducible environment plan exists; npm/Python high-risk findings are upgraded or explicitly accepted |
 | MAINT-004 | Make `run.sh check` the canonical truth source and repair stale indexes/scanners | P1 | ✅ DONE | Canonical check, audit, health, API manifest, schemas, hooks, and registries agree |
 | MAINT-005 | Restore frontend confidence and define the v0.21.7 finish line | P1 | ✅ DONE | Live import→design→3D→dashboard→export flow and byte-level artifacts pass; v0.21.7 preflight is ready |
-| MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | User-selected parent model is preserved; Luna/Terra advisory routing, bounded worker packets, two-subagent cap, and quick-gate check pass |
+| MAINT-006 | Enforce low-token Codex operation | P1 | ✅ DONE | User-selected parent model is preserved; Terra-first advisory routing, bounded worker packets, two-subagent cap, and quick-gate check pass |
 | MAINT-007 | Refresh onboarding, agents, tools, and usage telemetry | P1 | ✅ DONE | Terminal-only PR status, current bootstrap/counts, complete 14-skill discovery, honest usage checkpoints, and focused regressions pass |
 | MAINT-008 | Compact CI, maintenance controls, and agent entry paths | P0 | ✅ DONE | Four-lane workflow, truthful `PR Gate`, native Codex Git/GitHub lifecycle, and retired unsafe wrappers are merged |
 | LIB-PRO-001 | Remediate the professional library audit without repeating completed maintenance | P0 | ✅ SOFTWARE COMPLETE | T0 and R1-R8 are retained as evidence; bounded-product closeout continues under LIB-IS456-V1 |
@@ -45,7 +45,7 @@
 - GitHub CLI API and SSH auth now pass end to end. Colima's stale transferred-disk lock was released only after Lima confirmed the VM was stopped; the existing VZ disk was preserved and Docker is healthy.
 - Docker release preflight passes with 5,158 Python tests, 8 skips, 6 deselections, and a Node 24 React production build. That evidence was merged through PR #676.
 - Low-token policy checkpoint `6e8e4a31` defaults Codex to Terra/medium, disables Fast mode, caps subagents at two, replaces full-history handoffs, and adds a ninth canonical quick check.
-- Authenticated analytics showed 1,858 turns in the one-month view: 1,065 GPT-5.5, 635 Sol, 96 Luna, 43 Terra, and 19 older models. The checked-in picker now favors Luna for clear/repeatable work, Terra for normal/high-risk implementation, and approval-gates Sol.
+- Authenticated analytics showed 1,858 turns in the one-month view: 1,065 GPT-5.5, 635 Sol, 96 Luna, 43 Terra, and 19 older models. On 2026-08-10 the user confirmed Luna is unavailable; the checked-in picker now starts on Terra and approval-gates Sol.
 - MAINT-007 removed the default `gh pr view --web` side effect from `./run.sh pr status`; browser opening now requires `--web`. Session checkpoints record model, reasoning, elapsed time, parent/subagent counts, optional dashboard values, verification, and Git state without estimating tokens or cost.
 - MAINT-007 closeout: 32 focused regressions, Ruff/Black, quick 9/9, full 29/29, audit 22/22, and health 100/100 pass; folder indexes and the 282-document global index are current.
 - PR #676 was safely squash-merged and synchronized; clean MAINT-008 baseline commit is `755ac9fb`.
@@ -126,27 +126,27 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| DEPS-MAINT-001 | Triage the nine remaining Dependabot PRs in bounded Python and React compatibility batches | Main Agent | ⏸ NEXT SESSION |
+| UIX-001 | Build one compact 3D-first structural workbench and a schema-driven no-code foundation | Main Agent | 🚧 [SESSION 1 WAVE 0 — READ-ONLY CONTRACT LOCK](planning/ui-experience-foundation-master-plan.md) |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| DEPS-MAINT-PY | Rebase and evaluate Python PRs #679 and #686-#688; keep lock/install surfaces consistent | Main Agent | 1 packet | P1 | ⏸ QUEUED |
-| DEPS-MAINT-REACT | Rebase and evaluate React group PR #680 against individual majors #681-#684; retain one coherent upgrade path | Main Agent | 1 packet | P1 | ⏸ QUEUED |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL STABLE GATE |
 
 ## Backlog
 
 The version roadmap and historical backlog remain below. The v0.23.0 Alpha is
-published. No new product milestone is active. Stable-release and
-engineering-use approval remain held for the cumulative qualified review.
+published. UIX-001 is owner-accepted and Session 1 Wave 0 is active; implementation
+edits remain gated until its read-only contract lock is accepted. Stable-release
+and engineering-use approval remain held for the cumulative qualified review.
 
 ## Recently Done
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| ADOPT-001 | Completed executable public truth, capability discovery, typed API contracts, production auth fail-close, evidence identity, React/BOQ trust presentation, and truthful Alpha/docs policy | Main Agent | ✅ PACKETS A-G LOCAL COMPLETE; OWNER HOLDS RETAINED |
+| DEPS-MAINT-001 | Replaced incompatible Python and React dependency PRs with coherent Python 3.11/Node 24 packets and added recurrence guards | Main Agent | ✅ DONE — PRs #708, #709, and #712 merged |
+| ADOPT-001 | Completed executable public truth, capability discovery, typed API contracts, production auth fail-close, evidence identity, React/BOQ trust presentation, and truthful Alpha/docs policy | Main Agent | ✅ DONE — PR #707 merged; release holds retained |
 | LIB-IS456-V1 | Completed C0-C4, bounded evidence, exact artifacts, public Alpha UAT, and v0.23.0 publication | Main Agent + owner | ✅ DONE |
 | MAINT-009 | Integrated automation and Actions updates, repaired Weekly Verification compatibility, and cleared obsolete GitHub/session state | Main Agent | ✅ DONE |
 | MAINT-001 | Preserve the inherited worktree, recover the Mac baseline, and close PR #676 required checks | Main Agent | ✅ DONE |

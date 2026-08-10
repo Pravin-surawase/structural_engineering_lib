@@ -1,20 +1,27 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: archived
+last_updated: 2026-08-10
 doc_type: guide
 complexity: intermediate
 tags: []
+superseded_by: ui-experience-foundation-master-plan.md
 ---
 
 # React App — UX & Visual Improvement Plan
 
+> **Historical implementation record.** Execution status in this document is
+> superseded by
+> [UIX-001 — UI Experience Foundation and Structural Workbench Master Plan](ui-experience-foundation-master-plan.md).
+> Preserve this file for the original import-first direction and prior commit
+> evidence; do not dispatch work from its stale TODO tables.
+
 **Type:** Architecture
 **Audience:** All Agents
-**Status:** Active
+**Status:** Historical — superseded by UIX-001
 **Importance:** High
 **Created:** 2026-03-25
-**Last Updated:** 2026-03-25 (Session 98 — A1–A6 implemented, bugs fixed)
+**Last Updated:** 2026-08-10 (execution status superseded; implementation history preserved)
 
 ---
 

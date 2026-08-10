@@ -1,6 +1,6 @@
 # Docs
 
-> **For AI Agents:** This index uses semantic metadata to help you find the right doc quickly.
+Guides, references, evidence, and contributor material for the
 
 **Type:** Documentation
 **Last Updated:** 2026-08-10
@@ -15,10 +15,10 @@
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [README.md](README.md) | Docs Index (Start Here) | > **For AI Agents:** This index uses semantic metadata to he | 254 |
+| [README.md](README.md) | Docs Index (Start Here) | Guides, references, evidence, and contributor material for t | 252 |
 | [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 545 |
 | [TASKS.md](TASKS.md) | Task Board | > **Single source of truth for active work.** Keep it short  | 666 |
-| [WORKLOG.md](WORKLOG.md) |  | > **One line per item. Compact. Append-only.** > Format: DAT | 338 |
+| [WORKLOG.md](WORKLOG.md) |  | > **One line per item. Compact. Append-only.** > Format: DAT | 354 |
 
 ## Subfolders
 
@@ -33,19 +33,19 @@
 | [contributing/](contributing/) | 26 | Guides for developers and maintainers of the structural engineering library. |
 | [cookbook/](cookbook/) | 5 | Task-focused recipes and code snippets for common structural engineering workflo |
 | [developers/](developers/) | 6 | > **For developers building on top of the structural_engineering_lib platform** |
-| [getting-started/](getting-started/) | 20 | Quick onboarding guides for new users of the structural engineering library. |
+| [getting-started/](getting-started/) | 21 | Quick onboarding guides for new users of the structural engineering library. |
 | [git-automation/](git-automation/) | 2 | owner: Main Agent |
 | [governance/](governance/) | 1 |  |
 | [guidelines/](guidelines/) | 18 |  |
 | [guides/](guides/) | 11 | End-user and developer guides for specific workflows. |
-| [images/](images/) | 1 | This folder contains images referenced by the documentation (e.g., Excel tutoria |
+| [images/](images/) | 7 | This folder contains images referenced by the documentation, including verified |
 | [learning/](learning/) | 6 | A guided learning path for engineers new to this codebase. Written for those who |
-| [learning-foundations/](learning-foundations/) | 14 | These are NOT specific to this repo. They are universal concepts every developer |
+| [learning-foundations/](learning-foundations/) | 13 | These are NOT specific to this repo. They are universal concepts every developer |
 | [legal/](legal/) | 6 | Engineering certification templates and usage guidelines. |
-| [migration/](migration/) | 46 |  |
-| [planning/](planning/) | 15 |  |
+| [migration/](migration/) | 45 |  |
+| [planning/](planning/) | 17 |  |
 | [publications/](publications/) | 11 | This directory contains blog posts, technical articles, and academic papers docu |
-| [reference/](reference/) | 1793 |  |
+| [reference/](reference/) | 1790 |  |
 | [research/](research/) | 8 |  |
 | [specs/](specs/) | 6 | Technical specifications for data formats and schemas. |
-| [verification/](verification/) | 10 | Benchmark examples and verification packs for validating library calculations ag |
+| [verification/](verification/) | 11 | Benchmark examples and verification packs for validating library calculations ag |
