@@ -3,16 +3,16 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-10",
-  "file_count": 15,
+  "file_count": 16,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 152,
+      "size_lines": 154,
       "last_updated": "2026-08-10",
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
-      "content_hash": "3db99326bf3a"
+      "content_hash": "56281c1a3fd2"
     },
     {
       "name": "adoption-trust-surface-plan.md",
@@ -64,6 +64,14 @@
       "content_hash": "3c22c1017a09"
     },
     {
+      "name": "is456-solid-slabs-master-plan.md",
+      "type": "documentation",
+      "size_lines": 1091,
+      "last_updated": "2026-08-10",
+      "description": "The next element program will complete a useful, evidence-backed solid-slab workflow under IS 456 without pretending to solve every slab system.",
+      "content_hash": "0f017bbbd43f"
+    },
+    {
       "name": "library-expansion-blueprint-v5.md",
       "type": "documentation",
       "size_lines": 1139,
@@ -91,11 +99,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 95,
+      "size_lines": 125,
       "last_updated": "2026-08-10",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-10",
-      "content_hash": "a70e069656d5"
+      "content_hash": "4c62fe3d902d"
     },
     {
       "name": "pre-release-checklist.md",
@@ -133,5 +141,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "923de532575a35d7"
+  "content_hash": "19852d3a725028cf"
 }

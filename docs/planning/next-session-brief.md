@@ -4,28 +4,58 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: Fresh-start maintenance complete; no implementation packet is active
+- Focus: IS456-SLAB-001 master plan complete; start only the S0 source, coefficient-policy, and benchmark gate
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
 
-**Branch:** `main` after the maintenance closeout merge
+**Planning branch:** `codex/is456-slabs-plan`
 
-**Base:** UIX-001 merged at `64e33627`; maintenance branch started from that exact main
+**Base:** clean `main` at `a0e115e1`; slab calculation implementation has not started
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | Repository ready | Main synchronized, health 100/100, generated truth current, root checkout clean |
-| **Next** | No active implementation packet | Await the owner-selected task; do not invent a third UIX cleanup session |
+| **Current** | IS456-SLAB-001 planning | Deep solid-slab scope, architecture, benchmarks, pitfalls, API/UI sequence, and flat-slab HOLD are recorded |
+| **Next** | IS456-SLAB-S0 | Freeze controlled source pages, coefficient shipping/interpolation policy, physical support-case IDs, and independent B02/B04 benchmarks before code |
 | **Held** | Stable/engineering use | Requires cumulative qualified structural-engineering review |
 
 ## Required Reading
 
+- [IS 456 solid slabs master plan](is456-solid-slabs-master-plan.md)
+- [IS 456 library-first evidence](../verification/is456-library-first-evidence.md)
 - [UI experience foundation master plan](ui-experience-foundation-master-plan.md)
 - [Session 2 acceptance](../verification/ui-experience-session-2-acceptance.md)
 - [Current task board](../TASKS.md)
 - [Release policy](../getting-started/releases.md)
+
+## IS456-SLAB-001 planning outcome
+
+- Extend the existing slab package; do not create a second engine. The current
+  simply supported one-way and external-coefficient interior two-way routes stay
+  compatible.
+- Add oriented physical edge/corner topology before coefficient work; the
+  existing axis-neutral span normalization is unsafe once edges are attached.
+- Sequence continuous one-way actions/completion before a two-adjacent-edge
+  two-way vertical slice that exercises built-in/external coefficient trust,
+  strips, torsion, serviceability, and shear.
+- Separate coefficient-provider architecture from protected table data. No
+  built-in values ship until S0 records source/licensing permission and the
+  exact-match/interpolation decision.
+- Treat SP 16 only as withdrawn legacy comparison evidence; primary IS 456
+  formulas and controlled current sources govern.
+- Keep punching explicitly not applicable/unsupported for the initial
+  beam/wall-supported UDL panels. Do not reuse the footing punching workflow.
+- Keep flat slabs, drops, column strips, slab-column transfer, and flat-slab
+  punching under a separately approved FS0 extension.
+
+### First packet — S0 only
+
+Return an approved source-page map, coefficient packaging decision, support-case
+IDs/transforms, interpolation policy, characteristic/factored/service-load
+contract, independent B02/B04 calculations and tolerances, remaining HOLDs, and
+explicit authorization for S1. Do not edit calculation, public API, FastAPI, or
+React code in S0.
 
 ## Fresh-start maintenance closeout
 

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — UIX-001 merged; fresh-start maintenance complete; no active implementation packet
+**Updated:** 2026-08-10 — owner selected solid slabs next; IS456-SLAB-001 master plan ready and S0 is the first implementation gate
 
 ---
 
@@ -126,18 +126,21 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| — | No implementation task is active after UIX-001 closeout | — | Await the next owner-selected packet |
+| IS456-SLAB-001 | Complete the bounded IS 456 solid-slab program for one-way and common two-way panels | Main Agent + owner | 📋 MASTER PLAN READY — calculation implementation has not started |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| IS456-SLAB-S0 | Freeze slab source pages, coefficient packaging/interpolation policy, support-case IDs, and B02/B04 independent benchmarks | Main Agent + owner/source reviewer | 1 packet | P0 | READY — START HERE |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL STABLE GATE |
 
 ## Backlog
 
-The version roadmap and historical backlog remain below. The v0.23.0 Alpha is
-published. UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
+The version roadmap and historical backlog remain below. The owner-selected next
+program is [IS456-SLAB-001](planning/is456-solid-slabs-master-plan.md); broad
+multi-code infrastructure remains future work. The v0.23.0 Alpha is published.
+UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded
 development workflow, generated beam manifest, canonical routes, and integrated
 live acceptance are complete. Stable-release and engineering-use approval remain

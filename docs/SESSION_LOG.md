@@ -5,6 +5,98 @@
 
 ---
 
+## 2026-08-10 — Session: IS 456 Solid Slabs Master Planning
+
+**Agent:** Codex
+**Branch:** `codex/is456-slabs-plan`
+**Focus:** Research and prepare an implementation-ready program for simply
+supported/continuous one-way and common two-way solid slabs while holding flat
+slabs separately
+
+### Summary
+
+- Audited the released slab package, services, capability registry, FastAPI
+  route, tests, prior implementation plan, evidence crosswalk, React workbench,
+  and current task/handoff state.
+- Researched current BIS status and official Amendment 6 plus IIT
+  Kharagpur/NPTEL one-way and two-way slab material. Confirmed SP 16 is listed
+  withdrawn and limited it to legacy comparison evidence.
+- Created `docs/planning/is456-solid-slabs-master-plan.md` with a source-gated
+  scope, physical support topology, coefficient/provider policy, algorithms,
+  detailing/serviceability/shear/punching boundaries, API/UI architecture,
+  benchmarks, pitfalls, packet sequence, acceptance criteria, and flat-slab
+  HOLD.
+- Selected S0 as the only first implementation packet: approve source pages,
+  coefficient distribution/interpolation policy, support-case identities, and
+  independent continuous one-way/two-way corner-panel benchmarks before code.
+- Updated the task board, planning index entry, and next-session handoff without
+  changing calculation behavior or public capability claims.
+
+### Issues encountered
+
+- The requested slab direction initially sounded like a greenfield element, but
+  the repository already ships a narrow one-way and externally supplied-
+  coefficient two-way Alpha capability.
+- The existing axis-neutral geometry normalizes span order, which would lose the
+  physical edge/corner orientation required for two-way support and torsion
+  cases.
+- Coefficient tables are protected source content, while the requested product
+  needs robust coefficient handling.
+- A direct inspection command guessed
+  `Python/structural_lib/codes/is456/footing/punching.py`, which does not exist.
+- The documented broad `./run.sh generate indexes` command rewrote unrelated
+  curated/non-recursive indexes while adding the new planning document.
+
+### Root causes and resolutions
+
+- Prior v0.23 work intentionally stopped at a simply supported one-way strip and
+  one external-coefficient interior two-way flexure case. The new program is
+  therefore an extension with compatibility anchors, not a duplicate slab
+  engine; current benchmark arithmetic and trust statuses are frozen.
+- Span normalization was safe only for classification. The plan requires a new
+  oriented panel contract with explicit `Lx/Ly` and physical edges before any
+  topology/coefficient code, preventing silent rotation of edge and corner
+  behavior.
+- Protected coefficient values and calculation architecture were previously
+  coupled as one future concern. S0 now separates packaging permission from a
+  provenance-bearing provider contract; the external-coefficient route remains
+  the fallback if built-in data cannot ship.
+- Repository search showed the maintained file is
+  `Python/structural_lib/codes/is456/footing/punching_shear.py`; reading that file
+  confirmed its footing-pressure/interior-perimeter assumptions and supported
+  the plan's decision not to reuse it for building slabs.
+- `run.sh generate indexes` dispatches to `scripts/generate_all_indexes.sh`, whose
+  fixed folder list invokes non-recursive generation and therefore replaced
+  unrelated recursive/curated projections. Those unrelated diffs were restored;
+  only the task-owned planning and parent-doc indexes were retained. Final index
+  evidence uses targeted `generate_enhanced_index.py ... --check` commands.
+
+### Verification
+
+- Read-only repository orientation: session brief/start, clean baseline at
+  `a0e115e1`, slab source/service/FastAPI/test inventory, capability and evidence
+  crosswalk, and current workbench/task authority.
+- Source cross-check: BIS lists IS 456:2000 active, reaffirmed 2021, with six
+  amendments; official Amendment 6 reviewed; NPTEL Lessons 18/19 provide the
+  recorded B02/B04 worked-example anchors; BIS lists SP 16:1980 withdrawn.
+- `generate_enhanced_index.py docs/planning --check` passes; the task-owned
+  planning index and parent `docs/index.json` were regenerated and checked after
+  the final documentation changes.
+- `./run.sh efficiency check` passes and `git diff --check` reports no whitespace
+  errors.
+- `./run.sh check --quick` passes 10/10, including broken links, documentation,
+  imports, stale references, governance, and Git state.
+- Final integrated `./run.sh check` passes 30/30. No calculation, FastAPI, or
+  React implementation was changed in this planning session.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: guessed `slab/../footing/punching.py` did not exist ->
+  targeted `rg` found and `sed` read the maintained `footing/punching_shear.py`.
+- ⚠️ TERMINAL ISSUE: `./run.sh generate indexes` rewrote unrelated curated
+  indexes through its non-recursive fixed folder list -> unrelated diffs were
+  restored and targeted enhanced-index checks were used for the owned paths.
+
 ## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
 
 **Agent:** Codex
