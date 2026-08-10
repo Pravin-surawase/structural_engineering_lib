@@ -5,7 +5,7 @@ Models for column classification, eccentricity, and axial design endpoints.
 All dimensions in mm, forces in kN, stresses in N/mm².
 """
 
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -966,13 +966,31 @@ class ColumnDesignRequest(BaseModel):
 
 
 class ColumnDesignResponse(BaseModel):
-    """Response for unified column design."""
+    """Review-complete response for the unified rectangular-column check."""
 
+    Pu_kN: float
+    Mux_applied_kNm: float
+    Muy_applied_kNm: float
+    Mux_design_kNm: float
+    Muy_design_kNm: float
     is_safe: bool
-    classification: str
+    classification: Literal["SHORT", "SLENDER"]
+    classification_x: Literal["SHORT", "SLENDER"]
+    classification_y: Literal["SHORT", "SLENDER"]
+    le_x_mm: float
+    le_y_mm: float
+    slenderness_x: float
+    slenderness_y: float
+    emin_x_mm: float
+    emin_y_mm: float
+    Mux_min_kNm: float
+    Muy_min_kNm: float
+    Ma_x_kNm: float | None = None
+    Ma_y_kNm: float | None = None
     governing_check: str
-    checks: dict
-    warnings: list[str] = []
+    checks: dict[str, Any]
+    clause_refs: list[str]
+    warnings: list[str] = Field(default_factory=list)
 
 
 # =============================================================================

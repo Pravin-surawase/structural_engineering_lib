@@ -1,0 +1,26 @@
+import type { ColumnReviewInputs } from './types';
+
+export const DEFAULT_COLUMN_REVIEW_INPUTS: ColumnReviewInputs = {
+  member_label: 'C1',
+  Pu_kN: 800,
+  Mux_kNm: 120,
+  Muy_kNm: 40,
+  b_mm: 300,
+  D_mm: 450,
+  l_mm: 3000,
+  end_condition: 'FIXED_FIXED',
+  fck_nmm2: 25,
+  fy_nmm2: 415,
+  d_prime_mm: 50,
+  l_unsupported_mm: 3000,
+  braced: true,
+  M1x_kNm: null,
+  M2x_kNm: null,
+  M1y_kNm: null,
+  M2y_kNm: null,
+  cover_mm: 40,
+  num_bars: 8,
+  bar_dia_mm: 20,
+  tie_dia_mm: 8,
+  at_lap_section: false,
+};

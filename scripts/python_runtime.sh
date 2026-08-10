@@ -11,9 +11,13 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 run_python_candidate() {
     local candidate="$1"
+    local bound_pythonpath="$REPO_ROOT/Python:$REPO_ROOT"
     shift
     if [[ -n "$candidate" && -x "$candidate" ]]; then
-        exec "$candidate" "$@"
+        if [[ -n "${PYTHONPATH:-}" ]]; then
+            bound_pythonpath="$bound_pythonpath:$PYTHONPATH"
+        fi
+        PYTHONPATH="$bound_pythonpath" exec "$candidate" "$@"
     fi
 }
 

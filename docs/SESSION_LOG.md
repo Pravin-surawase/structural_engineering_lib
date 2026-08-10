@@ -5,6 +5,130 @@
 
 ---
 
+## 2026-08-10 — Session: COLUMN-RECTANGULAR-REVIEW-V1
+
+**Agent:** Codex (`orchestrator` session role)
+**Branch:** `codex/column-rectangular-e2e`
+**Focus:** Rectangular/square tied-column check-and-review transport and feature-scoped React surface
+
+### Summary
+
+- Created the lane from exact `origin/main` commit `a0e115e1` without importing
+  the held generalized-PMM experiment at `8a52ed0f`.
+- Preserved the maintained rectangular-column calculations and expanded only the
+  unified FastAPI review contract, including both-axis classification, effective
+  length, slenderness, minimum eccentricity, applied/design/additional moments,
+  governing check data, warnings, safety, and clause references.
+- Added a feature-scoped React editor/reviewer for supplied rectangular tied
+  columns. It combines server-computed detailing with the unified adequacy check,
+  distinguishes PASS/FAIL/HOLD/stale states, binds results to input revisions,
+  and permits export only for a current safe result with valid detailing.
+- Added the bounded shared integration after owner review: the existing workbench
+  now exposes a lazy rectangular-column route/card, and the reviewed OpenAPI
+  baseline records only the expanded column response schema. The beam-only
+  workflow catalogue and existing navigation/capability declarations are unchanged.
+- The software evidence below verifies behavior only. It is not formula
+  certification, member approval, or qualified structural-engineering approval.
+
+### Issues encountered
+
+- The unified FastAPI endpoint returned only five fields even though the service
+  produced the data needed to review classification, eccentricity, moments,
+  length/slenderness, clauses, and warnings.
+- The first focused response-contract run exposed the nested biaxial
+  classification as integer `1` instead of `SHORT`.
+- The React quality pass found that an API failure during a re-check could leave
+  the preceding current PASS result available for export.
+- The managed worktree did not contain `react_app/node_modules`; the first
+  focused React test command failed because `vitest` was unavailable. A direct
+  dependency install initially used Node 26 instead of the repository's pinned
+  Node 24 runtime.
+- The first React lint/build passes found respectively a Fast Refresh export
+  boundary violation and one test importing the moved default-input constant
+  from its former module.
+- The single full closeout gate reported 28/30: OpenAPI snapshot drift for the
+  intentionally expanded column schema and an API-documentation mismatch naming
+  five slab symbols that are not present in this worktree's public API.
+- The first closeout React command was launched from the repository root, where
+  no `package.json` exists, so it stopped before any full-gate command ran.
+
+### Root causes and resolutions
+
+- `ColumnDesignResponse` declared only `is_safe`, `classification`,
+  `governing_check`, `checks`, and `warnings`, so Pydantic truncated the richer
+  service result. The response model now declares the complete maintained review
+  contract, and the service adds its already-computed per-axis classifications.
+  The focused FastAPI contract suite passed 43 tests, including all retained
+  fields and unsafe/slender dispositions.
+- `ColumnBiaxialResult.to_dict()` serializes `ColumnClassification.value`, whose
+  enum value is numeric, while the long-column serializer uses the enum name.
+  The FastAPI adapter now normalizes classification fields to their enum names
+  while converting nested typed results, without changing the mature calculation
+  object. The rerun passed 43/43.
+- The workspace retained `record` when a new request failed. Submission now
+  clears the previous record before transport begins; the focused React test
+  proves that a failed re-check leaves no export control or adequacy result.
+- The new worktree had source files but no ignored dependency tree. `npm ci`
+  installed the declared lockfile, and all subsequent React commands explicitly
+  selected `/opt/homebrew/Cellar/node@24/24.19.0/bin`; tests, lint, TypeScript,
+  and the production build passed on Node 24.
+- The component module also exported a shared constant, violating the project's
+  Fast Refresh rule. Moving defaults to `defaults.ts` and updating the test import
+  restored clean lint and build outcomes.
+- The OpenAPI snapshot correctly detected the changed `ColumnDesignResponse`.
+  After explicit shared-path authorization, the supported snapshot updater
+  changed only that schema; endpoint and schema totals remain 69 and 248, and the
+  checker reports no remaining drift.
+- `scripts/python_runtime.sh` selected interpreters in the intended order but
+  executed them with the caller/ambient import path, so a linked worktree could
+  load the primary checkout's editable `structural_lib`. Every selected
+  interpreter now receives this invoking repository's `Python/` and root first,
+  followed by any caller `PYTHONPATH`; `STRUCTURAL_LIB_PYTHON` and candidate
+  precedence are unchanged. Focused launcher regressions pass 3/3 and prove both
+  local module identity and preservation of the caller path.
+- The feature existed only under `features/columns`, so an end user could not
+  reach it. `App.tsx` now lazy-loads `/workbench/columns/rectangular`, the workbench
+  provides one check/review action, and the routed feature owns vertical scrolling
+  inside the existing shell. Focused column/workbench React tests pass 7/7.
+- npm was invoked from the wrong directory in the first closeout chain. Running
+  the focused command with `react_app/` as its working directory passed 6/6 and
+  lint passed; the failed chain never reached `./run.sh check`.
+
+### Verification
+
+- Focused FastAPI review and existing endpoint contracts: 43 passed.
+- Focused column regression selection: 540 passed/collected on the exact main
+  baseline (535 maintained ordinary tests plus 5 new review-contract tests; the
+  9 experimental PMM tests remain held with the excluded experiment).
+- Focused runtime-launcher regressions: 3 passed.
+- Focused React column feature plus WorkbenchHomePage reachability: 7 passed.
+- React ESLint: passed. TypeScript plus Vite production build: passed.
+- OpenAPI snapshot: no endpoint/schema drift after the reviewed update; 69
+  endpoints and 248 schemas.
+- Architecture boundary scan: 143 files, 0 violations. Circular import scan:
+  130 files, 0 circular imports.
+- `./run.sh check --quick`: 10/10 passed.
+- Initial full gate before shared integration: 28/30, exposing the runtime-binding
+  and expected OpenAPI-snapshot root causes. Final plain `./run.sh check`, with no
+  caller `PYTHONPATH` override: 30/30 passed from this linked worktree.
+- `git diff --check` and exact changed-path audit passed before closeout.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `npm test -- src/features/columns` initially reported
+  `vitest: command not found` because the new worktree lacked `node_modules` ->
+  `npm ci` installed the locked dependencies and the focused suite passed.
+- ⚠️ TERMINAL ISSUE: the first direct `npm ci` resolved the shell's Node 26
+  despite the repository pin -> all acceptance commands explicitly used the
+  Node 24 binary directory reported by `./run.sh frontend runtime`.
+- ⚠️ TERMINAL ISSUE: the first closeout npm command ran at repository root and
+  could not find `package.json` -> rerunning it from `react_app/` passed before
+  the one full gate began.
+- ⚠️ TERMINAL ISSUE: full-gate API validation imported the primary worktree's
+  editable Python package and reported unrelated slab symbols -> the shared
+  launcher now binds every selected interpreter to the invoking worktree first,
+  with focused regression proof and no caller override required.
+
 ## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
 
 **Agent:** Codex
