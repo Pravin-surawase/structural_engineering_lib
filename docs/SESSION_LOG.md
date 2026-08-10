@@ -95,8 +95,9 @@ prevent the complete local footing D1 slice from being omitted from publication
 - Ruff, Black, JSON/hash validation and `git diff --check` — passed.
 - `./run.sh check --quick` — 10/10 passed after the handoff correction.
 - `./run.sh release preflight 0.23.1a1` — target format/order, 5,537 Python
-  tests and React build passed; publication remains correctly blocked by the
-  dirty integration tree, 22 missing footing targets and absent wheel.
+  tests and React build passed. The final committed-state rerun confirmed a
+  clean tree and leaves only 22 missing footing targets plus the expected
+  absent-candidate-wheel warning.
 - PR #724 remains open/draft; only its obsolete permission sentence changed.
 
 ### Terminal issues
