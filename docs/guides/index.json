@@ -2,7 +2,7 @@
   "folder": "docs/guides",
   "type": "documentation",
   "description": "End-user and developer guides for specific workflows.",
-  "last_updated": "2026-08-07",
+  "last_updated": "2026-08-10",
   "file_count": 9,
   "files": [
     {
@@ -17,10 +17,10 @@
     {
       "name": "ai-agent-coding-guide.md",
       "type": "documentation",
-      "size_lines": 1003,
-      "last_updated": "2026-03-30",
+      "size_lines": 1002,
+      "last_updated": "2026-08-09",
       "description": "This guide ensures consistent, high-quality code from all AI agents working on this project. Every AI agent MUST read and follow this guide before writing any code. 1. Library-first: All logic belongs",
-      "content_hash": "9d1718322a97"
+      "content_hash": "8fd9df9226d6"
     },
     {
       "name": "code-reuse-and-library-structure.md",
@@ -33,10 +33,10 @@
     {
       "name": "copilot-agents-usage-guide.md",
       "type": "documentation",
-      "size_lines": 603,
-      "last_updated": "2026-08-07",
+      "size_lines": 602,
+      "last_updated": "2026-08-09",
       "description": "You have **16 agents**, **14 skills**, and **16 prompt files** configured in VS Code Copilot. This guide shows you when and how to use each one. | What | How | Example |",
-      "content_hash": "2ef69b6c51a3"
+      "content_hash": "1e69c707bd80"
     },
     {
       "name": "fastapi-deployment-guide.md",
@@ -50,25 +50,25 @@
       "name": "maintenance-checklist.md",
       "type": "documentation",
       "size_lines": 190,
-      "last_updated": "2026-08-07",
+      "last_updated": "2026-08-09",
       "description": "| Frequency | Command | What It Does | Time | |-----------|---------|-------------|------|",
-      "content_hash": "5a38edb6c978"
+      "content_hash": "fd02d0b104d2"
     },
     {
       "name": "react-ui-user-flow.md",
       "type": "documentation",
-      "size_lines": 530,
-      "last_updated": "2026-03-30",
+      "size_lines": 533,
+      "last_updated": "2026-08-10",
       "description": "This document is the **single source of truth** for React app UX flows, consolidating research from: - 8-week-development-plan.md",
-      "content_hash": "43c11a5f7bc3"
+      "content_hash": "be2491ffd6ed"
     },
     {
       "name": "testing-and-cicd-strategy.md",
       "type": "documentation",
-      "size_lines": 281,
-      "last_updated": "2026-03-30",
+      "size_lines": 278,
+      "last_updated": "2026-08-09",
       "description": "This project has a **mature, production-grade** CI/CD setup. This document reflects what EXISTS and what's MISSING. ",
-      "content_hash": "3fe5c8a57eab"
+      "content_hash": "53ef9dea7864"
     },
     {
       "name": "week3-realtime-features-guide.md",
@@ -80,5 +80,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "d15482dabb2a96d1"
+  "content_hash": "90055d1eeb31fa48"
 }

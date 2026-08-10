@@ -2,8 +2,8 @@
   "folder": "fastapi_app/tests",
   "type": "python-package",
   "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
-  "last_updated": "2026-04-07",
-  "file_count": 23,
+  "last_updated": "2026-08-10",
+  "file_count": 34,
   "files": [
     {
       "name": "README.md",
@@ -118,6 +118,72 @@
       "content_hash": "fea73f682b6c"
     },
     {
+      "name": "test_bundled_sample_evidence.py",
+      "type": "python",
+      "size_lines": 84,
+      "last_updated": "2026-08-10",
+      "description": "Reproducible software evidence for the bundled 153-beam acceptance sample.",
+      "functions": [
+        {
+          "name": "test_bundled_sample_boq_is_bound_to_dataset_and_calculation",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "content_hash": "721ccbf51b86"
+    },
+    {
+      "name": "test_capabilities.py",
+      "type": "python",
+      "size_lines": 32,
+      "last_updated": "2026-08-10",
+      "description": "Cross-surface tests for canonical capability discovery.",
+      "functions": [
+        {
+          "name": "test_capability_route_matches_python_contract",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_capability_route_has_a_typed_openapi_success_schema",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "content_hash": "bf3205115765"
+    },
+    {
+      "name": "test_catalog.py",
+      "type": "python",
+      "size_lines": 41,
+      "last_updated": "2026-08-10",
+      "description": "Cross-layer tests for the thin workflow catalogue transport.",
+      "functions": [
+        {
+          "name": "test_catalog_route_round_trips_library_document",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_catalog_route_supports_additive_alias_and_rejects_breaking_version",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_catalog_openapi_success_shape_is_typed",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "content_hash": "a6ab14ba3460"
+    },
+    {
       "name": "test_column_additional_moment.py",
       "type": "python",
       "size_lines": 203,
@@ -147,8 +213,8 @@
     {
       "name": "test_column_biaxial.py",
       "type": "python",
-      "size_lines": 182,
-      "last_updated": "2026-04-05",
+      "size_lines": 179,
+      "last_updated": "2026-08-09",
       "description": "Tests for POST /api/v1/design/column/biaxial-check endpoint.",
       "classes": [
         {
@@ -176,7 +242,7 @@
           "description": "Edge cases: zero moments, slender column, optional params.",
           "public_methods": [
             "test_zero_moments",
-            "test_slender_column_warnings",
+            "test_slender_column_fails_closed",
             "test_with_l_unsupported",
             "test_without_l_unsupported"
           ]
@@ -199,7 +265,7 @@
         "ENDPOINT",
         "SAFE_PAYLOAD"
       ],
-      "content_hash": "8b7df6994047"
+      "content_hash": "1a0b915583dd"
     },
     {
       "name": "test_column_detailing.py",
@@ -366,6 +432,69 @@
       "content_hash": "a125fc65ff16"
     },
     {
+      "name": "test_config.py",
+      "type": "python",
+      "size_lines": 126,
+      "last_updated": "2026-08-10",
+      "description": "Tests for safe, environment-configurable FastAPI settings.",
+      "functions": [
+        {
+          "name": "test_server_host_is_private_by_default_and_environment_configurable",
+          "description": "Local startup stays private unless a deploy environment opts in.",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_development_defaults_remain_unauthenticated",
+          "description": "Local development and test startup retain the existing defaults.",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_production_requires_authentication",
+          "description": "Production-like profiles must not serve public endpoints.",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_production_app_import_refuses_disabled_authentication",
+          "description": "The ASGI application fails before serving with production auth disabled."
+        },
+        {
+          "name": "test_production_rejects_empty_or_placeholder_jwt_secret",
+          "description": "Production auth cannot be enabled with the supplied development secret.",
+          "params": [
+            "monkeypatch",
+            "secret"
+          ]
+        },
+        {
+          "name": "test_production_accepts_authentication_with_non_default_secret",
+          "description": "A configured production profile remains valid.",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_production_app_import_allows_valid_authentication_setup",
+          "description": "A configured production ASGI application can start."
+        },
+        {
+          "name": "test_development_app_import_keeps_current_local_startup_behavior",
+          "description": "The local profile still imports with development authentication defaults."
+        }
+      ],
+      "constants": [
+        "_REPOSITORY_ROOT",
+        "_VALID_PRODUCTION_SECRET",
+        "_DEFAULT_DEVELOPMENT_SECRET"
+      ],
+      "content_hash": "e3051f7b7005"
+    },
+    {
       "name": "test_design_compliance.py",
       "type": "python",
       "size_lines": 381,
@@ -460,8 +589,8 @@
     {
       "name": "test_endpoints.py",
       "type": "python",
-      "size_lines": 853,
-      "last_updated": "2026-04-05",
+      "size_lines": 1049,
+      "last_updated": "2026-08-10",
       "description": "Integration Tests for FastAPI Endpoints.",
       "classes": [
         {
@@ -479,13 +608,15 @@
           "description": "Tests for beam design endpoints.",
           "public_methods": [
             "test_design_beam_basic",
+            "test_doubly_reinforced_design_uses_compliance_utilization",
+            "test_design_and_report_share_beam_evidence_identity",
+            "test_unsafe_beam_evidence_is_explicitly_failed",
+            "test_report_evidence_ignores_client_safety_claims",
             "test_design_beam_validation_error",
             "test_design_beam_depth_ratio_validation",
             "test_check_beam",
             "test_get_design_limits",
-            "test_torsion_design_basic",
-            "test_torsion_design_unsafe_section",
-            "test_torsion_design_validation"
+            "test_torsion_design_basic"
           ]
         },
         {
@@ -581,7 +712,44 @@
           ]
         }
       ],
-      "content_hash": "956da8f224d4"
+      "content_hash": "3f514f5dff70"
+    },
+    {
+      "name": "test_error_sanitization.py",
+      "type": "python",
+      "size_lines": 118,
+      "last_updated": "2026-04-07",
+      "description": "Tests for error sanitization utilities (TASK-796).",
+      "classes": [
+        {
+          "name": "TestSanitizeErrorString",
+          "description": "Tests for sanitize_error_string().",
+          "public_methods": [
+            "test_normal_message_passes_through",
+            "test_strips_unix_file_path",
+            "test_strips_backslash_path",
+            "test_strips_traceback_keyword",
+            "test_context_appears_in_sanitized_output",
+            "test_empty_string_passes_through",
+            "test_message_with_only_slashes_in_units_stripped",
+            "test_reference_id_format"
+          ]
+        },
+        {
+          "name": "TestSanitizeError",
+          "description": "Tests for sanitize_error().",
+          "public_methods": [
+            "test_value_error_safe_message_preserved",
+            "test_value_error_with_path_stripped",
+            "test_type_error_safe_message_preserved",
+            "test_generic_exception_returns_internal_error",
+            "test_generic_exception_hides_original_message",
+            "test_value_error_with_backslash_stripped",
+            "test_value_error_with_traceback_stripped"
+          ]
+        }
+      ],
+      "content_hash": "a8d07c1ff654"
     },
     {
       "name": "test_export_bbs_dxf.py",
@@ -706,8 +874,8 @@
     {
       "name": "test_insights_dashboard.py",
       "type": "python",
-      "size_lines": 339,
-      "last_updated": "2026-04-05",
+      "size_lines": 387,
+      "last_updated": "2026-08-10",
       "description": "Tests for insights router endpoints.",
       "classes": [
         {
@@ -743,6 +911,7 @@
           "description": "Tests for POST /api/v1/insights/project-boq.",
           "public_methods": [
             "test_project_boq_basic",
+            "test_project_boq_identity_binds_dataset_and_normalized_inputs",
             "test_project_boq_custom_costs",
             "test_project_boq_empty_beams"
           ]
@@ -753,13 +922,13 @@
           "name": "client"
         }
       ],
-      "content_hash": "9b0f66e89dcd"
+      "content_hash": "97f6af18d787"
     },
     {
       "name": "test_integration.py",
       "type": "python",
-      "size_lines": 386,
-      "last_updated": "2026-04-05",
+      "size_lines": 390,
+      "last_updated": "2026-08-10",
       "description": "Integration tests for FastAPI structural design endpoints.",
       "classes": [
         {
@@ -828,13 +997,72 @@
           "description": "Create test client."
         }
       ],
-      "content_hash": "ed165009a24a"
+      "content_hash": "92f69b161cab"
+    },
+    {
+      "name": "test_library_core.py",
+      "type": "python",
+      "size_lines": 163,
+      "last_updated": "2026-08-10",
+      "description": "Request-to-public-library evidence for the new footing and slab consumers.",
+      "functions": [
+        {
+          "name": "test_footing_load_transfer_endpoint_calls_supported_public_workflow",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_footing_load_transfer_endpoint_rejects_non_integral_or_invalid_count",
+          "params": [
+            "client",
+            "dowel_count"
+          ]
+        },
+        {
+          "name": "test_footing_load_transfer_endpoint_accepts_four_integral_dowels",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_one_way_slab_endpoint_calls_supported_public_workflow",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_one_way_slab_endpoint_rejects_two_way_geometry",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_library_core_pydantic_422_uses_standard_envelope",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_existing_endpoint_pydantic_422_uses_same_envelope",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_openapi_documents_the_maintained_422_envelope",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "content_hash": "0ae97d5ae880"
     },
     {
       "name": "test_load.py",
       "type": "python",
       "size_lines": 286,
-      "last_updated": "2026-04-06",
+      "last_updated": "2026-08-07",
       "description": "Load Tests for FastAPI Application.",
       "classes": [
         {
@@ -902,6 +1130,64 @@
       "content_hash": "2dc6ebdf8395"
     },
     {
+      "name": "test_maintenance_route_coverage.py",
+      "type": "python",
+      "size_lines": 150,
+      "last_updated": "2026-08-09",
+      "description": "Direct contract coverage for routes identified by the MAINT-004 parity audit.",
+      "functions": [
+        {
+          "name": "test_column_classify_route",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_column_eccentricity_route",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_column_axial_route",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_long_column_route",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_helical_check_route",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_column_ductile_detailing_route",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_rebar_validate_route",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_rebar_apply_route",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "content_hash": "9729bb50d769"
+    },
+    {
       "name": "test_optimization_pareto.py",
       "type": "python",
       "size_lines": 158,
@@ -926,10 +1212,184 @@
       "content_hash": "bcfabea9e2ef"
     },
     {
+      "name": "test_plausibility_validators.py",
+      "type": "python",
+      "size_lines": 761,
+      "last_updated": "2026-08-09",
+      "description": "Tests for cross-field plausibility validators (TASK-729).",
+      "classes": [
+        {
+          "name": "TestBeamDesignRequestValidator",
+          "description": "Tests for BeamDesignRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_effective_depth_gte_depth",
+            "test_rejects_effective_depth_gt_depth",
+            "test_rejects_clear_cover_gte_depth",
+            "test_rejects_depth_width_ratio_gt_6",
+            "test_none_effective_depth_is_valid"
+          ]
+        },
+        {
+          "name": "TestBeamCheckRequestValidator",
+          "description": "Tests for BeamCheckRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_effective_depth_gte_depth",
+            "test_rejects_effective_depth_equal_depth",
+            "test_rejects_clear_cover_gte_depth",
+            "test_none_effective_depth_passes"
+          ]
+        },
+        {
+          "name": "TestBeamDetailingRequestValidator",
+          "description": "Tests for BeamDetailingRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_clear_cover_gte_depth"
+          ]
+        },
+        {
+          "name": "TestBeamGeometryRequestValidator",
+          "description": "Tests for BeamGeometryRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_cover_gte_depth",
+            "test_rejects_cover_gt_depth"
+          ]
+        },
+        {
+          "name": "TestCrossSectionRequestValidator",
+          "description": "Tests for CrossSectionRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_cover_gte_half_depth",
+            "test_cover_just_below_half_depth_passes"
+          ]
+        },
+        {
+          "name": "TestSmartAnalysisRequestValidator",
+          "description": "Tests for SmartAnalysisRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_depth_width_ratio_gt_6",
+            "test_depth_width_ratio_at_6_passes"
+          ]
+        },
+        {
+          "name": "TestColumnAxialRequestValidator",
+          "description": "Tests for ColumnAxialRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_asc_gte_ag",
+            "test_rejects_asc_gt_ag"
+          ]
+        },
+        {
+          "name": "TestColumnUniaxialRequestValidator",
+          "description": "Tests for ColumnUniaxialRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_d_prime_gte_half_D",
+            "test_rejects_d_prime_equal_half_D"
+          ]
+        },
+        {
+          "name": "TestBiaxialCheckRequestValidator",
+          "description": "Tests for BiaxialCheckRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_d_prime_gte_half_D"
+          ]
+        },
+        {
+          "name": "TestPMInteractionRequestValidator",
+          "description": "Tests for PMInteractionRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_d_prime_gte_half_D"
+          ]
+        },
+        {
+          "name": "TestAdditionalMomentRequestValidator",
+          "description": "Tests for AdditionalMomentRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_d_prime_gte_half_D",
+            "test_rejects_fck_below_15",
+            "test_rejects_fy_below_250"
+          ]
+        },
+        {
+          "name": "TestLongColumnRequestValidator",
+          "description": "Tests for LongColumnRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_d_prime_gte_half_D",
+            "test_rejects_fck_below_15",
+            "test_rejects_fy_below_250"
+          ]
+        },
+        {
+          "name": "TestColumnDesignRequestValidator",
+          "description": "Tests for ColumnDesignRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_d_prime_gte_half_D",
+            "test_rejects_fck_below_15",
+            "test_rejects_fy_below_250"
+          ]
+        },
+        {
+          "name": "TestHelicalCheckRequestValidator",
+          "description": "Tests for HelicalCheckRequest cross-field validators.",
+          "public_methods": [
+            "test_valid_inputs",
+            "test_rejects_d_core_gte_d",
+            "test_rejects_d_core_gt_d",
+            "test_rejects_fck_below_15",
+            "test_rejects_fy_below_250"
+          ]
+        }
+      ],
+      "content_hash": "3967e7381b9b"
+    },
+    {
+      "name": "test_public_documentation_contract.py",
+      "type": "python",
+      "size_lines": 70,
+      "last_updated": "2026-08-10",
+      "description": "Executable contracts for the public REST documentation.",
+      "functions": [
+        {
+          "name": "test_documented_beam_request_and_response_path",
+          "description": "The documented raw-HTTP beam quick start is copyable.",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_documented_health_version_matches_application",
+          "description": "The version shown in the public health reference is current.",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_public_guides_retain_the_maintained_contract_language",
+          "description": "Known stale field and response paths must not return to public guides."
+        }
+      ],
+      "constants": [
+        "REPO_ROOT"
+      ],
+      "content_hash": "c75296b85c55"
+    },
+    {
       "name": "test_security.py",
       "type": "python",
       "size_lines": 407,
-      "last_updated": "2026-04-04",
+      "last_updated": "2026-08-09",
       "description": "Security Tests for FastAPI Application.",
       "classes": [
         {
@@ -1016,8 +1476,8 @@
     {
       "name": "test_streaming.py",
       "type": "python",
-      "size_lines": 174,
-      "last_updated": "2026-04-04",
+      "size_lines": 276,
+      "last_updated": "2026-08-10",
       "description": "Tests for SSE Streaming Endpoint.",
       "classes": [
         {
@@ -1025,7 +1485,9 @@
           "description": "Test SSE batch design endpoint.",
           "public_methods": [
             "test_batch_design_single_beam",
+            "test_batch_design_stream_preserves_unsafe_shear_failure",
             "test_batch_design_multiple_beams",
+            "test_batch_design_post_accepts_maintained_sample_size",
             "test_batch_design_invalid_json",
             "test_batch_design_empty_array",
             "test_batch_design_progress_tracking"
@@ -1036,17 +1498,52 @@
           "description": "Test job status endpoint.",
           "public_methods": [
             "test_get_job_status_not_found",
+            "test_get_job_status_is_in_progress_until_every_item_completes",
             "test_get_job_status_after_batch"
           ]
         }
       ],
-      "content_hash": "04751b3c7bfc"
+      "content_hash": "36d80aeaa232"
+    },
+    {
+      "name": "test_typed_response_contracts.py",
+      "type": "python",
+      "size_lines": 72,
+      "last_updated": "2026-08-10",
+      "description": "OpenAPI and envelope contracts for the typed column and library-core routes.",
+      "functions": [
+        {
+          "name": "test_target_routes_expose_typed_success_contracts",
+          "description": "Every maintained JSON target route exposes its concrete payload schema.",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_typed_success_responses_preserve_existing_envelope_shape",
+          "description": "Response filtering must not add optional envelope fields to JSON 2xx output.",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_typed_import_format_metadata_does_not_add_null_fields",
+          "description": "Optional schema fields stay absent when the existing payload omits them.",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "constants": [
+        "_SUCCESS_RESPONSE_SCHEMAS"
+      ],
+      "content_hash": "5d973d54a33b"
     },
     {
       "name": "test_websocket.py",
       "type": "python",
-      "size_lines": 166,
-      "last_updated": "2026-03-26",
+      "size_lines": 211,
+      "last_updated": "2026-08-10",
       "description": "Tests for WebSocket Live Design Endpoint.",
       "classes": [
         {
@@ -1055,6 +1552,7 @@
           "public_methods": [
             "test_websocket_connect_disconnect",
             "test_websocket_design_beam",
+            "test_websocket_and_rest_share_calculation_identity",
             "test_websocket_design_beam_latency",
             "test_websocket_unknown_message_type",
             "test_websocket_check_beam",
@@ -1063,10 +1561,54 @@
           ]
         }
       ],
-      "content_hash": "d735719cd182"
+      "content_hash": "6065b0583354"
+    },
+    {
+      "name": "test_workflows.py",
+      "type": "python",
+      "size_lines": 176,
+      "last_updated": "2026-08-10",
+      "description": "Transport gates for the explicitly activated bounded workflow runner.",
+      "functions": [
+        {
+          "name": "test_template_is_read_only_but_execution_is_disabled_by_default",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_enabled_transport_validates_runs_and_replays",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_enabled_transport_stops_tampered_and_timed_out_runs",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_enabled_transport_can_cancel_an_active_run",
+          "params": [
+            "client",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_run_id_reuse_with_different_input_is_conflict",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "constants": [
+        "SAFE_INPUTS"
+      ],
+      "content_hash": "e6bce7e98e96"
     }
   ],
   "subfolders": [],
-  "content_hash": "3529a084acfc5e34",
-  "has_init": true
+  "has_init": true,
+  "content_hash": "43c895ea39e6ec58"
 }

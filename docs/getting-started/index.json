@@ -2,8 +2,8 @@
   "folder": "docs/getting-started",
   "type": "mixed",
   "description": "Quick onboarding guides for new users of the structural engineering library.",
-  "last_updated": "2026-08-09",
-  "file_count": 18,
+  "last_updated": "2026-08-10",
+  "file_count": 19,
   "files": [
     {
       "name": "NEW-DEVELOPER-ONBOARDING.md",
@@ -26,9 +26,9 @@
       "name": "agent-bootstrap.md",
       "type": "documentation",
       "size_lines": 738,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "description": "> **This is THE canonical bootstrap for all AI agents.** Entry points (CLAUDE.md, .github/copilot-instructions.md) link here. | # | Critical Warning | Why it matters |",
-      "content_hash": "d0512bfd5022"
+      "content_hash": "762fd878bac4"
     },
     {
       "name": "agent-essentials.md",
@@ -50,9 +50,9 @@
       "name": "beginners-guide.md",
       "type": "documentation",
       "size_lines": 159,
-      "last_updated": "2026-04-06",
+      "last_updated": "2026-08-10",
       "description": "This guide is written for engineers and students who are new to coding. Follow the steps exactly and you will get a working result. You have two ways to use this library:",
-      "content_hash": "760a790741e7"
+      "content_hash": "dd31442ade42"
     },
     {
       "name": "colab-workflow.md",
@@ -119,30 +119,38 @@
       "content_hash": "8c4943b0ed59"
     },
     {
+      "name": "product-tour.md",
+      "type": "documentation",
+      "size_lines": 99,
+      "last_updated": "2026-08-10",
+      "description": "See the supported workflow before installing anything. These screenshots are authentic captures from StructLib v0.23.0 running locally with the bundled",
+      "content_hash": "9ea3752a4fd5"
+    },
+    {
       "name": "python-quickstart.md",
       "type": "documentation",
       "size_lines": 201,
-      "last_updated": "2026-04-07",
+      "last_updated": "2026-08-10",
       "description": "This guide shows how to install, run, and verify the Python library with simple, copy/paste steps. No prior packaging experience required. > **📚 New to this?** See beginners-guide.md for comprehensive",
-      "content_hash": "ec8e24016146"
+      "content_hash": "725fbcae959d"
     },
     {
       "name": "releases.md",
       "type": "documentation",
-      "size_lines": 1115,
-      "last_updated": "2026-08-09",
+      "size_lines": 1183,
+      "last_updated": "2026-08-10",
       "description": "This document serves as the **immutable source of truth** for project releases. Entries here represent \"locked\" versions that have been verified and approved.",
-      "content_hash": "1cf9fc5d2615"
+      "content_hash": "126e895bfbaa"
     },
     {
       "name": "user-guide.md",
       "type": "documentation",
       "size_lines": 223,
-      "last_updated": "2026-04-07",
+      "last_updated": "2026-08-10",
       "description": "This guide walks you through a complete beam design workflow from start to finish. For detailed installation help, see Beginner's Guide. bash",
-      "content_hash": "74617c4fbb8b"
+      "content_hash": "94c8452d382e"
     }
   ],
   "subfolders": [],
-  "content_hash": "ac54ca14fffcf01d"
+  "content_hash": "cf9a2d1f5b6f41a2"
 }

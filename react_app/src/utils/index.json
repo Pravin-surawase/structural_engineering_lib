@@ -2,19 +2,19 @@
   "folder": "react_app/src/utils",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-04-07",
-  "file_count": 3,
+  "last_updated": "2026-08-10",
+  "file_count": 5,
   "files": [
     {
       "name": "beamStatus.ts",
       "type": "typescript",
-      "size_lines": 23,
-      "last_updated": "2026-03-26",
+      "size_lines": 30,
+      "last_updated": "2026-08-09",
       "exports": [
         "BeamStatus",
         "deriveBeamStatus"
       ],
-      "content_hash": "36d89c5c378c"
+      "content_hash": "8b7f32dac125"
     },
     {
       "name": "materialOverrides.ts",
@@ -28,16 +28,41 @@
       "content_hash": "90bf1253c1c2"
     },
     {
+      "name": "quantities.ts",
+      "type": "typescript",
+      "size_lines": 8,
+      "last_updated": "2026-08-09",
+      "exports": [
+        "calculateSteelWeightKg"
+      ],
+      "content_hash": "d88235bbf216"
+    },
+    {
       "name": "sampleData.ts",
       "type": "typescript",
-      "size_lines": 21,
-      "last_updated": "2026-03-27",
+      "size_lines": 28,
+      "last_updated": "2026-08-10",
       "exports": [
         "mapSampleBeamsToRows"
       ],
-      "content_hash": "f7e40efa0281"
+      "content_hash": "c10f13a0b83f"
+    },
+    {
+      "name": "trustPresentation.ts",
+      "type": "typescript",
+      "size_lines": 51,
+      "last_updated": "2026-08-10",
+      "exports": [
+        "TrustStatus",
+        "TrustPresentation",
+        "getTrustPresentation",
+        "formatRatio",
+        "formatPercent",
+        "formatSignedRatio"
+      ],
+      "content_hash": "d0d352633ea1"
     }
   ],
   "subfolders": [],
-  "content_hash": "de6d0eeea9274da7"
+  "content_hash": "b638fec0c28d87d7"
 }

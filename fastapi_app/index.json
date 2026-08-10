@@ -2,8 +2,8 @@
   "folder": "fastapi_app",
   "type": "python-package",
   "description": "REST API + WebSocket bridge between the React frontend and the Python `structural_lib`.",
-  "last_updated": "2026-04-07",
-  "file_count": 7,
+  "last_updated": "2026-08-10",
+  "file_count": 8,
   "files": [
     {
       "name": "README.md",
@@ -18,15 +18,15 @@
       "name": "__init__.py",
       "type": "python",
       "size_lines": 11,
-      "last_updated": "2026-04-06",
+      "last_updated": "2026-08-10",
       "description": "FastAPI backend for structural_engineering_lib.",
-      "content_hash": "1510644cf71b"
+      "content_hash": "db91a1d0e32f"
     },
     {
       "name": "auth.py",
       "type": "python",
-      "size_lines": 376,
-      "last_updated": "2026-04-05",
+      "size_lines": 378,
+      "last_updated": "2026-08-10",
       "description": "Authentication and Authorization Module.",
       "classes": [
         {
@@ -108,33 +108,48 @@
         "RATE_LIMIT_REQUESTS",
         "RATE_LIMIT_WINDOW_SECONDS"
       ],
-      "content_hash": "b07b15bac038"
+      "content_hash": "6d5ec69e79c1"
     },
     {
       "name": "config.py",
       "type": "python",
-      "size_lines": 80,
-      "last_updated": "2026-04-06",
+      "size_lines": 124,
+      "last_updated": "2026-08-10",
       "description": "Application Configuration.",
       "classes": [
         {
           "name": "Settings",
-          "description": "Application settings loaded from environment variables."
+          "description": "Application settings loaded from environment variables.",
+          "public_methods": [
+            "validate_production_security"
+          ]
         }
       ],
       "functions": [
+        {
+          "name": "is_insecure_jwt_secret",
+          "description": "Return whether a JWT secret is empty, short, or a known placeholder.",
+          "params": [
+            "secret"
+          ]
+        },
         {
           "name": "get_settings",
           "description": "Get cached application settings."
         }
       ],
-      "content_hash": "eda8113d5e32"
+      "constants": [
+        "_PRODUCTION_ENVIRONMENTS",
+        "_INSECURE_JWT_SECRET_MARKERS",
+        "MINIMUM_JWT_SECRET_LENGTH"
+      ],
+      "content_hash": "b36dd973302e"
     },
     {
       "name": "error_utils.py",
       "type": "python",
-      "size_lines": 52,
-      "last_updated": "2026-04-06",
+      "size_lines": 74,
+      "last_updated": "2026-04-07",
       "description": "Error sanitization utilities for API responses.",
       "functions": [
         {
@@ -151,15 +166,23 @@
             "e",
             "context"
           ]
+        },
+        {
+          "name": "sanitize_error_string",
+          "description": "Sanitize a raw error string for API responses.",
+          "params": [
+            "msg",
+            "context"
+          ]
         }
       ],
-      "content_hash": "a17cd08e3bca"
+      "content_hash": "5b0b4fdf1daf"
     },
     {
       "name": "main.py",
       "type": "python",
-      "size_lines": 503,
-      "last_updated": "2026-04-06",
+      "size_lines": 566,
+      "last_updated": "2026-08-10",
       "description": "FastAPI Application Entry Point.",
       "classes": [
         {
@@ -185,6 +208,14 @@
         }
       ],
       "functions": [
+        {
+          "name": "request_validation_error_handler",
+          "description": "Map every Pydantic request failure to the maintained API envelope.",
+          "params": [
+            "request",
+            "exc"
+          ]
+        },
         {
           "name": "generic_exception_handler",
           "description": "Catch-all for unhandled exceptions. Logs full traceback server-side,",
@@ -212,12 +243,12 @@
         "API_TAGS_METADATA",
         "API_V1_PREFIX"
       ],
-      "content_hash": "635a8bdaa704"
+      "content_hash": "a9d046ae73f1"
     },
     {
       "name": "openapi_baseline.json",
       "type": "config",
-      "last_updated": "2026-04-07",
+      "last_updated": "2026-08-10",
       "top_level_keys": [
         "components",
         "info",
@@ -225,7 +256,14 @@
         "paths",
         "tags"
       ],
-      "content_hash": "8c4dfa60d929"
+      "content_hash": "2c2dfb7056db"
+    },
+    {
+      "name": "ruff.toml",
+      "type": "config",
+      "last_updated": "2026-08-10",
+      "description": ".TOML configuration file",
+      "content_hash": "a86a2bd7f0e7"
     }
   ],
   "subfolders": [
@@ -237,23 +275,23 @@
     {
       "name": "models",
       "path": "models/",
-      "file_count": 12,
+      "file_count": 17,
       "is_package": true
     },
     {
       "name": "routers",
       "path": "routers/",
-      "file_count": 16,
+      "file_count": 20,
       "is_package": true
     },
     {
       "name": "tests",
       "path": "tests/",
-      "file_count": 25,
+      "file_count": 36,
       "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
       "is_package": true
     }
   ],
-  "content_hash": "20c97c58500bcefb",
-  "has_init": true
+  "has_init": true,
+  "content_hash": "d5555b33783badf8"
 }

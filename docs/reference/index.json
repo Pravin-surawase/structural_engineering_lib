@@ -3,7 +3,7 @@
   "type": "mixed",
   "description": "",
   "last_updated": "2026-08-10",
-  "file_count": 28,
+  "file_count": 30,
   "files": [
     {
       "name": "3d-json-contract.md",
@@ -24,11 +24,11 @@
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 80,
-      "last_updated": "2026-03-29",
+      "size_lines": 81,
+      "last_updated": "2026-08-10",
       "title": "Reference Documentation",
       "description": "Comprehensive lookup documentation for APIs, formulas, contracts, and troubleshooting. | Need | Go To |",
-      "content_hash": "6ffc97220be6"
+      "content_hash": "c000c3e75584"
     },
     {
       "name": "agent-automation-pitfalls.md",
@@ -57,23 +57,23 @@
         "count",
         "symbols"
       ],
-      "content_hash": "b256f694202a"
+      "content_hash": "c3a45671fc2e"
     },
     {
       "name": "api-stability.md",
       "type": "documentation",
-      "size_lines": 639,
+      "size_lines": 647,
       "last_updated": "2026-08-10",
       "description": "> This document defines which parts of the library are safe to depend on and which may change. This library follows Semantic Versioning:",
-      "content_hash": "4b02ab138fca"
+      "content_hash": "23645463a577"
     },
     {
       "name": "api.md",
       "type": "documentation",
-      "size_lines": 3956,
+      "size_lines": 3962,
       "last_updated": "2026-08-10",
       "description": "geometry, loading, reinforcement, and evidence boundaries. The primary combined beam route covers rectangular flexure and shear (plus optional serviceability),",
-      "content_hash": "ba138dde89b7"
+      "content_hash": "b52421786c5d"
     },
     {
       "name": "automation-catalog.md",
@@ -92,9 +92,31 @@
       "content_hash": "f44f739cd52e"
     },
     {
+      "name": "beam-tool-manifest.json",
+      "type": "config",
+      "last_updated": "2026-08-10",
+      "top_level_keys": [
+        "activation",
+        "manifest_id",
+        "manifest_version",
+        "schema_version",
+        "source",
+        "tools"
+      ],
+      "content_hash": "b62abb9e4f86"
+    },
+    {
+      "name": "beam-tool-manifest.md",
+      "type": "documentation",
+      "size_lines": 32,
+      "last_updated": "2026-08-10",
+      "description": "The generated beam tool manifest describes the one approved is456.beam.design capability. It is a deterministic projection of the",
+      "content_hash": "744bdc879e86"
+    },
+    {
       "name": "clause-map.json",
       "type": "config",
-      "last_updated": "2026-04-04",
+      "last_updated": "2026-08-10",
       "top_level_keys": [
         "metadata",
         "mappings",
@@ -239,5 +261,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "ebdcc17cd63e6c43"
+  "content_hash": "919f5dea1892a065"
 }

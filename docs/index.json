@@ -8,29 +8,29 @@
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 252,
+      "size_lines": 253,
       "last_updated": "2026-08-10",
       "title": "Docs Index (Start Here)",
       "description": "Guides, references, evidence, and contributor material for the structural-lib-is456 Python package and the React/FastAPI workbench.",
-      "content_hash": "c3eecbcb1222"
+      "content_hash": "09e22d932251"
     },
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 545,
+      "size_lines": 948,
       "last_updated": "2026-08-10",
       "title": "Session Log",
       "description": "> Append-only decision log for AI agent sessions. > Earlier sessions (1-100): SESSION_LOG_through_session_100.md",
-      "content_hash": "b194a13e8173"
+      "content_hash": "b5a66d3814b6"
     },
     {
       "name": "TASKS.md",
       "type": "documentation",
-      "size_lines": 666,
+      "size_lines": 669,
       "last_updated": "2026-08-10",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "5869b0078fe2"
+      "content_hash": "07e630125604"
     },
     {
       "name": "WORKLOG.md",
@@ -57,7 +57,7 @@
     {
       "name": "docs-index.json",
       "type": "config",
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-10",
       "top_level_keys": [
         "version",
         "generated",
@@ -192,7 +192,7 @@
     {
       "name": "reference",
       "path": "reference/",
-      "file_count": 1790
+      "file_count": 1792
     },
     {
       "name": "research",
@@ -208,9 +208,9 @@
     {
       "name": "verification",
       "path": "verification/",
-      "file_count": 11,
+      "file_count": 12,
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "d5c304628b3b90b6"
+  "content_hash": "d118b6845dc97f7a"
 }

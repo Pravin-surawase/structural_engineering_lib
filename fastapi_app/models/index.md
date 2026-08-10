@@ -1,8 +1,8 @@
 # Models
 
 **Type:** Python Package
-**Last Updated:** 2026-04-07
-**Files:** 10
+**Last Updated:** 2026-08-10
+**Files:** 15
 
 ## Public API
 
@@ -32,12 +32,17 @@
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) | Pydantic Models Package. | 0 | 0 | 88 |
-| [analysis.py](analysis.py) | Smart Analysis Pydantic Models. | 10 | 0 | 254 |
-| [beam.py](beam.py) | Beam Design and Detailing Pydantic Models. | 15 | 0 | 618 |
-| [boq.py](boq.py) | Pydantic models for Project BOQ endpoint. | 6 | 0 | 77 |
-| [column.py](column.py) | Column Design Pydantic Models. | 15 | 0 | 1005 |
-| [common.py](common.py) | Common Pydantic Models. | 6 | 0 | 150 |
+| [analysis.py](analysis.py) | Smart Analysis Pydantic Models. | 10 | 0 | 264 |
+| [beam.py](beam.py) | Beam Design and Detailing Pydantic Models. | 15 | 0 | 679 |
+| [boq.py](boq.py) | Pydantic models for Project BOQ endpoint. | 8 | 0 | 107 |
+| [capabilities.py](capabilities.py) | Typed transport models for canonical IS 456 capability disco | 8 | 0 | 79 |
+| [catalog.py](catalog.py) | Typed transport models for the application workflow catalogu | 4 | 0 | 56 |
+| [column.py](column.py) | Column Design Pydantic Models. | 15 | 0 | 1174 |
+| [common.py](common.py) | Common Pydantic Models. | 5 | 0 | 137 |
 | [compliance.py](compliance.py) | IS 456 Compliance Check Pydantic Models. | 15 | 0 | 325 |
-| [geometry.py](geometry.py) | 3D Geometry Pydantic Models. | 15 | 0 | 394 |
+| [geometry.py](geometry.py) | 3D Geometry Pydantic Models. | 15 | 0 | 412 |
+| [library_core.py](library_core.py) | Requests for the bounded footing and slab public-library wor | 10 | 0 | 178 |
+| [metadata.py](metadata.py) | Typed payload models for maintained static JSON metadata rou | 9 | 0 | 97 |
 | [optimization.py](optimization.py) | Cost Optimization Pydantic Models. | 9 | 0 | 298 |
-| [response.py](response.py) | Standardized API response wrappers. | 1 | 2 | 45 |
+| [response.py](response.py) | Standardized API response wrappers. | 3 | 2 | 71 |
+| [workflows.py](workflows.py) | Typed models for the default-disabled bounded beam workflow  | 11 | 0 | 99 |

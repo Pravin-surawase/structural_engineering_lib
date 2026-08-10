@@ -2,22 +2,22 @@
   "folder": "fastapi_app/routers",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-04-07",
-  "file_count": 14,
+  "last_updated": "2026-08-10",
+  "file_count": 18,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 36,
-      "last_updated": "2026-04-01",
+      "size_lines": 44,
+      "last_updated": "2026-08-10",
       "description": "FastAPI Routers Package.",
-      "content_hash": "da16792c49de"
+      "content_hash": "4235ead08b65"
     },
     {
       "name": "analysis.py",
       "type": "python",
-      "size_lines": 334,
-      "last_updated": "2026-04-05",
+      "size_lines": 338,
+      "last_updated": "2026-08-10",
       "description": "Smart Analysis Router.",
       "functions": [
         {
@@ -39,13 +39,45 @@
           "description": "Get IS 456:2000 code clause references."
         }
       ],
-      "content_hash": "c79a52368115"
+      "content_hash": "8e86dcd8585a"
+    },
+    {
+      "name": "capabilities.py",
+      "type": "python",
+      "size_lines": 23,
+      "last_updated": "2026-08-10",
+      "description": "Public discovery route for the canonical supported IS 456 contract.",
+      "functions": [
+        {
+          "name": "get_library_capabilities",
+          "description": "Return the same canonical document exposed by Python and the CLI."
+        }
+      ],
+      "content_hash": "69b361f5f967"
+    },
+    {
+      "name": "catalog.py",
+      "type": "python",
+      "size_lines": 51,
+      "last_updated": "2026-08-10",
+      "description": "Thin read-only transport for the canonical application workflow catalogue.",
+      "functions": [
+        {
+          "name": "get_workflow_catalog",
+          "description": "Return the library-owned catalogue without serializing Python callables.",
+          "params": [
+            "response",
+            "version"
+          ]
+        }
+      ],
+      "content_hash": "613fde4d7518"
     },
     {
       "name": "column.py",
       "type": "python",
-      "size_lines": 736,
-      "last_updated": "2026-04-06",
+      "size_lines": 750,
+      "last_updated": "2026-08-10",
       "description": "Column Design Router.",
       "functions": [
         {
@@ -140,13 +172,13 @@
           ]
         }
       ],
-      "content_hash": "9c761afc41ed"
+      "content_hash": "75c71eaa8352"
     },
     {
       "name": "design.py",
       "type": "python",
-      "size_lines": 882,
-      "last_updated": "2026-04-06",
+      "size_lines": 931,
+      "last_updated": "2026-08-10",
       "description": "Beam Design Router.",
       "functions": [
         {
@@ -217,13 +249,13 @@
           ]
         }
       ],
-      "content_hash": "24570368d5ff"
+      "content_hash": "94d8bfdc7b3d"
     },
     {
       "name": "detailing.py",
       "type": "python",
-      "size_lines": 402,
-      "last_updated": "2026-04-05",
+      "size_lines": 412,
+      "last_updated": "2026-08-10",
       "description": "Beam Detailing Router.",
       "functions": [
         {
@@ -255,13 +287,13 @@
           ]
         }
       ],
-      "content_hash": "07db19cffb61"
+      "content_hash": "ad4f898f9ee6"
     },
     {
       "name": "export.py",
       "type": "python",
-      "size_lines": 579,
-      "last_updated": "2026-04-06",
+      "size_lines": 661,
+      "last_updated": "2026-08-10",
       "description": "Export Router — BBS, DXF, and Report exports.",
       "classes": [
         {
@@ -318,13 +350,13 @@
           ]
         }
       ],
-      "content_hash": "4d16af60872e"
+      "content_hash": "bae2c6afe783"
     },
     {
       "name": "geometry.py",
       "type": "python",
-      "size_lines": 647,
-      "last_updated": "2026-04-05",
+      "size_lines": 653,
+      "last_updated": "2026-08-10",
       "description": "3D Geometry Router.",
       "functions": [
         {
@@ -360,7 +392,7 @@
           ]
         }
       ],
-      "content_hash": "99664043694f"
+      "content_hash": "c56bcb74da9e"
     },
     {
       "name": "health.py",
@@ -404,8 +436,8 @@
     {
       "name": "imports.py",
       "type": "python",
-      "size_lines": 930,
-      "last_updated": "2026-04-05",
+      "size_lines": 992,
+      "last_updated": "2026-08-10",
       "description": "CSV Import Router.",
       "classes": [
         {
@@ -419,6 +451,10 @@
         {
           "name": "BeamWith3D",
           "description": "Beam data with 3D positioning for visualization."
+        },
+        {
+          "name": "SampleDatasetEvidence",
+          "description": "Stable identity for the exact bundled source files."
         },
         {
           "name": "SampleDataResponse",
@@ -483,13 +519,13 @@
           "description": "Load sample building data from actual ETABS export CSV files."
         }
       ],
-      "content_hash": "2924c666ce78"
+      "content_hash": "f0e4e7889036"
     },
     {
       "name": "insights.py",
       "type": "python",
-      "size_lines": 507,
-      "last_updated": "2026-04-05",
+      "size_lines": 579,
+      "last_updated": "2026-08-10",
       "description": "Insights Router.",
       "classes": [
         {
@@ -571,13 +607,37 @@
           ]
         }
       ],
-      "content_hash": "5b167d8e29a4"
+      "content_hash": "c9c66c19afbf"
+    },
+    {
+      "name": "library_core.py",
+      "type": "python",
+      "size_lines": 74,
+      "last_updated": "2026-08-10",
+      "description": "Thin FastAPI consumers for the supported footing and slab library routes.",
+      "functions": [
+        {
+          "name": "check_footing_load_transfer",
+          "description": "Validate a request, call the public library service, and map its result.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "design_one_way_slab",
+          "description": "Validate a request, call the public slab service, and map its result.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "8dd0877b399b"
     },
     {
       "name": "optimization.py",
       "type": "python",
-      "size_lines": 327,
-      "last_updated": "2026-04-06",
+      "size_lines": 331,
+      "last_updated": "2026-08-10",
       "description": "Cost Optimization Router.",
       "functions": [
         {
@@ -599,13 +659,13 @@
           ]
         }
       ],
-      "content_hash": "606098b86400"
+      "content_hash": "54a33e797dd0"
     },
     {
       "name": "rebar.py",
       "type": "python",
-      "size_lines": 261,
-      "last_updated": "2026-04-05",
+      "size_lines": 269,
+      "last_updated": "2026-08-10",
       "description": "Rebar Validation and Application Router.",
       "classes": [
         {
@@ -653,15 +713,23 @@
           ]
         }
       ],
-      "content_hash": "80d763de4bf6"
+      "content_hash": "74775647e3ef"
     },
     {
       "name": "streaming.py",
       "type": "python",
-      "size_lines": 308,
-      "last_updated": "2026-04-04",
+      "size_lines": 351,
+      "last_updated": "2026-08-10",
       "description": "Server-Sent Events (SSE) Router for Batch Processing.",
       "classes": [
+        {
+          "name": "BatchJobProgress",
+          "description": "Completed and total item counts for one batch job."
+        },
+        {
+          "name": "BatchJobStatusResponse",
+          "description": "Typed polling response for one streamed batch job."
+        },
         {
           "name": "BatchJobManager",
           "description": "Manages batch job state for progress tracking.",
@@ -676,7 +744,16 @@
       "functions": [
         {
           "name": "stream_batch_design",
-          "description": "Stream batch beam design results.",
+          "description": "Stream a small legacy batch supplied through the query string.",
+          "params": [
+            "request",
+            "beams",
+            "_"
+          ]
+        },
+        {
+          "name": "stream_batch_design_post",
+          "description": "Stream a batch from a request body without request-target size limits.",
           "params": [
             "request",
             "beams",
@@ -692,13 +769,13 @@
           ]
         }
       ],
-      "content_hash": "4d0ea0c92e06"
+      "content_hash": "43cf71831126"
     },
     {
       "name": "websocket.py",
       "type": "python",
-      "size_lines": 355,
-      "last_updated": "2026-04-06",
+      "size_lines": 428,
+      "last_updated": "2026-08-10",
       "description": "WebSocket Router for Live Design Updates.",
       "classes": [
         {
@@ -747,24 +824,62 @@
           ]
         }
       ],
-      "content_hash": "3dc405e36039"
+      "content_hash": "bc24dda9664d"
+    },
+    {
+      "name": "workflows.py",
+      "type": "python",
+      "size_lines": 172,
+      "last_updated": "2026-08-10",
+      "description": "Default-disabled transport for the one allowlisted beam workflow.",
+      "functions": [
+        {
+          "name": "get_beam_workflow_template"
+        },
+        {
+          "name": "validate_beam_workflow",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "run_beam_workflow",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "cancel_beam_workflow",
+          "params": [
+            "run_id"
+          ]
+        }
+      ],
+      "constants": [
+        "_RUNNER"
+      ],
+      "content_hash": "e99d13ab2776"
     }
   ],
   "subfolders": [],
-  "content_hash": "ccd5b3718e63b847",
   "has_init": true,
   "public_api": [
     "analysis",
+    "catalog",
     "column",
     "design",
     "detailing",
+    "export",
     "geometry",
     "health",
     "imports",
     "insights",
+    "library_core",
     "optimization",
     "rebar",
     "streaming",
-    "websocket"
-  ]
+    "websocket",
+    "workflows"
+  ],
+  "content_hash": "c5c403f6b5e63ac9"
 }

@@ -4,19 +4,19 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-10
-- Focus: UIX-001 P0-P15 accepted; no implementation packet is active
+- Focus: Fresh-start maintenance complete; no implementation packet is active
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
 
-**Branch:** `codex/ui-capability-platform`
+**Branch:** `main` after the maintenance closeout merge
 
-**Base:** Session 2 began from merged Session 1 commit `49d7780e`
+**Base:** UIX-001 merged at `64e33627`; maintenance branch started from that exact main
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | UIX-001 P0-P15 complete | Merge only after required checks are green |
+| **Current** | Repository ready | Main synchronized, health 100/100, generated truth current, root checkout clean |
 | **Next** | No active implementation packet | Await the owner-selected task; do not invent a third UIX cleanup session |
 | **Held** | Stable/engineering use | Requires cumulative qualified structural-engineering review |
 
@@ -26,6 +26,23 @@
 - [Session 2 acceptance](../verification/ui-experience-session-2-acceptance.md)
 - [Current task board](../TASKS.md)
 - [Release policy](../getting-started/releases.md)
+
+## Fresh-start maintenance closeout
+
+- Local `main` is synchronized to the merged UIX result.
+- Five clean disposable `/private/tmp` worktrees were removed while their branches
+  were retained; two named external worktrees were preserved for their owners.
+- No server is listening on the maintained frontend/backend ports, no stash was
+  present, and the stale-branch dry run found nothing eligible for deletion.
+- Five API/router counts and all 32 generated indexes are synchronized. Index
+  drift detection now includes child-folder projections rather than direct files
+  only.
+- Generated build/test/type/lint/coverage and bytecode caches were cleaned while
+  environments, dependencies, logs, benchmarks, recovery backups, and user state
+  were preserved.
+- Health is 100/100, token-efficiency passes, the quick gate is 10/10, the full
+  gate is 30/30, and the root checkout is the fresh baseline for the next
+  owner-selected packet.
 
 ## Accepted UIX outcome
 

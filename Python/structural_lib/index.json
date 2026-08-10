@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib",
   "type": "python-package",
   "description": "> **Purpose:** IS 456:2000 RC beam design calculations",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-10",
   "file_count": 51,
   "files": [
     {
@@ -17,19 +17,19 @@
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 372,
-      "last_updated": "2026-04-07",
+      "size_lines": 377,
+      "last_updated": "2026-08-10",
       "description": "Package:      structural_lib",
       "constants": [
         "_LAZY_MODULES"
       ],
-      "content_hash": "379e55fcbde3"
+      "content_hash": "8920b5929246"
     },
     {
       "name": "__main__.py",
       "type": "python",
-      "size_lines": 1533,
-      "last_updated": "2026-04-07",
+      "size_lines": 1573,
+      "last_updated": "2026-08-10",
       "description": "Unified CLI entrypoint for structural_lib.",
       "functions": [
         {
@@ -103,6 +103,13 @@
           ]
         },
         {
+          "name": "cmd_capabilities",
+          "description": "Print the canonical supported/held IS 456 capability contract.",
+          "params": [
+            "args"
+          ]
+        },
+        {
           "name": "main",
           "description": "Main entry point for the CLI.",
           "params": [
@@ -110,7 +117,7 @@
           ]
         }
       ],
-      "content_hash": "8470657ab1e2"
+      "content_hash": "36508a2dbd0a"
     },
     {
       "name": "adapters.py",
@@ -506,7 +513,7 @@
     {
       "name": "codes",
       "path": "codes/",
-      "file_count": 56,
+      "file_count": 65,
       "is_package": true
     },
     {
@@ -536,7 +543,7 @@
     {
       "name": "services",
       "path": "services/",
-      "file_count": 35,
+      "file_count": 40,
       "is_package": true
     },
     {
@@ -546,7 +553,6 @@
       "is_package": true
     }
   ],
-  "content_hash": "adad6aca83d16e81",
   "has_init": true,
   "public_api": [
     "__version__",
@@ -569,5 +575,6 @@
     "serialization",
     "serviceability",
     "shear"
-  ]
+  ],
+  "content_hash": "c8513106df68e4ae"
 }

@@ -3,7 +3,7 @@
 > **Purpose:** Example scripts demonstrating structural_lib usage
 
 **Type:** Python Package
-**Last Updated:** 2026-04-07
+**Last Updated:** 2026-08-10
 **Files:** 18
 
 ## Config Files

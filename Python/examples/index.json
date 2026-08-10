@@ -2,7 +2,7 @@
   "folder": "Python/examples",
   "type": "python-package",
   "description": "> **Purpose:** Example scripts demonstrating structural_lib usage",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-10",
   "file_count": 18,
   "files": [
     {
@@ -320,5 +320,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "79959aeb6dbaf1fc"
+  "content_hash": "5aa6f3bbb744153d"
 }

@@ -2,7 +2,7 @@
   "folder": "docs/architecture",
   "type": "mixed",
   "description": "Deep dives into project structure, design decisions, and system architecture.",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-10",
   "file_count": 13,
   "files": [
     {
@@ -90,11 +90,11 @@
     {
       "name": "unified-architecture-v1.md",
       "type": "documentation",
-      "size_lines": 1562,
-      "last_updated": "2026-04-07",
+      "size_lines": 1601,
+      "last_updated": "2026-08-10",
       "title": "Unified Architecture — structural_engineering_lib v1.0",
       "description": "> THE single source of truth for architecture decisions, quality gates, and safety guarantees. > Every agent, every session, every change must comply with this document.",
-      "content_hash": "23abffc6fe67"
+      "content_hash": "433875b6b964"
     },
     {
       "name": "visual-architecture.md",
@@ -112,5 +112,5 @@
       "file_count": 1
     }
   ],
-  "content_hash": "995eeb2875d2509d"
+  "content_hash": "2352788f2ebe5127"
 }

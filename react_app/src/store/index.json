@@ -2,34 +2,34 @@
   "folder": "react_app/src/store",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-04-07",
+  "last_updated": "2026-08-10",
   "file_count": 2,
   "files": [
     {
       "name": "designStore.ts",
       "type": "typescript",
-      "size_lines": 88,
-      "last_updated": "2026-03-26",
+      "size_lines": 161,
+      "last_updated": "2026-08-10",
       "exports": [
         "DesignState",
         "useDesignStore"
       ],
       "description": "Design State Store using Zustand",
-      "content_hash": "89be3a44bd0c"
+      "content_hash": "c830fa8ffba2"
     },
     {
       "name": "importedBeamsStore.ts",
       "type": "typescript",
-      "size_lines": 54,
-      "last_updated": "2026-03-26",
+      "size_lines": 94,
+      "last_updated": "2026-08-10",
       "exports": [
         "ImportedBeamsState",
         "useImportedBeamsStore"
       ],
       "description": "Imported Beams Store",
-      "content_hash": "b1be98e68e79"
+      "content_hash": "c2acc14c5d84"
     }
   ],
   "subfolders": [],
-  "content_hash": "9b56a5606e23580f"
+  "content_hash": "f269bca1ca5e55ef"
 }

@@ -190,7 +190,7 @@ def test_script_reference_validator_fails_missing_control_target(
 
 def test_api_endpoint_extraction_stops_before_query_template():
     expression = (
-        "`${API_BASE_URL}/api/v1/import/dual-csv" "${queryStr ? `?${queryStr}` : ''}`"
+        "`${API_BASE_URL}/api/v1/import/dual-csv${queryStr ? `?${queryStr}` : ''}`"
     )
     assert check_api._extract_endpoint(expression) == "/api/v1/import/dual-csv"
 
@@ -304,6 +304,25 @@ def test_generated_json_indexes_end_with_newline(
     generator.generate_json({"folder": "scripts"}, output)
 
     assert (output / "index.json").read_bytes().endswith(b"\n")
+
+
+def test_generated_index_hash_tracks_subfolder_projection(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    generator = importlib.import_module("scripts.generate_enhanced_index")
+    parent = tmp_path / "parent"
+    child = parent / "child"
+    child.mkdir(parents=True)
+    (child / "first.py").write_text("VALUE = 1\n", encoding="utf-8")
+    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
+
+    initial = generator.scan_folder_enhanced(parent)
+    (child / "second.py").write_text("VALUE = 2\n", encoding="utf-8")
+    updated = generator.scan_folder_enhanced(parent)
+
+    assert initial["subfolders"][0]["file_count"] == 1
+    assert updated["subfolders"][0]["file_count"] == 2
+    assert initial["content_hash"] != updated["content_hash"]
 
 
 def test_session_end_preserves_current_same_day_handoff(

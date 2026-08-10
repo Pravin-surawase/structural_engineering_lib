@@ -1,7 +1,7 @@
 # Is456
 
 **Type:** Python Package
-**Last Updated:** 2026-04-07
+**Last Updated:** 2026-08-10
 **Files:** 14
 
 ## Public API
@@ -9,13 +9,14 @@
 - `IS456Code`
 - `beam`
 - `column`
+- `footing`
+- `slab`
 - `tables`
 - `shear`
 - `flexure`
 - `detailing`
 - `serviceability`
 - `compliance`
-- `ductile`
 - `slenderness`
 - `torsion`
 - `traceability`
@@ -45,7 +46,7 @@
 | [slenderness.py](slenderness.py) | Slenderness Check Module — IS 456:2000 Beam Lateral Stabilit | 2 | 3 | 364 |
 | [tables.py](tables.py) | Module:       tables | 0 | 2 | 97 |
 | [torsion.py](torsion.py) | Backward compatibility shim — torsion module moved to beam/  | 0 | 0 | 29 |
-| [traceability.py](traceability.py) | IS 456 Traceability Module | 0 | 9 | 354 |
+| [traceability.py](traceability.py) | IS 456 Traceability Module | 0 | 9 | 350 |
 
 ## Subfolders
 
@@ -54,4 +55,5 @@
 | [beam/](beam/) 📦 | 6 |  |
 | [column/](column/) 📦 | 11 |  |
 | [common/](common/) 📦 | 5 |  |
-| [footing/](footing/) 📦 | 8 |  |
+| [footing/](footing/) 📦 | 9 |  |
+| [slab/](slab/) 📦 | 8 |  |
