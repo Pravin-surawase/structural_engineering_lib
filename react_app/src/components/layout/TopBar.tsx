@@ -4,9 +4,7 @@
 import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Settings, ChevronRight } from "lucide-react";
-import { motion } from "framer-motion";
-import { useImportedBeamsStore } from "../../store/importedBeamsStore";
-import { useDesignStore } from "../../store/designStore";
+import { activeGlobalDestination, GLOBAL_DESTINATIONS } from "../../app/navigation";
 import { SettingsPanel } from "./SettingsPanel";
 
 const routeLabels: Record<string, string> = {
@@ -19,26 +17,17 @@ const routeLabels: Record<string, string> = {
   "/dashboard": "Dashboard",
   "/batch": "Batch Design",
   "/settings": "Settings",
+  "/workbench": "Workbench",
+  "/workbench/quick": "Quick Beam",
+  "/workbench/projects": "Projects",
+  "/workbench/projects/new": "New Project",
 };
-
-const navLinks = [
-  { path: "/design", label: "Design" },
-  { path: "/import", label: "Import" },
-  { path: "/batch", label: "Batch" },
-  { path: "/editor", label: "Editor" },
-  { path: "/dashboard", label: "Dashboard" },
-];
 
 export function TopBar() {
   const location = useLocation();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  // Get context for badges
-  const beams = useImportedBeamsStore((state) => state.beams);
-  const designResult = useDesignStore((state) => state.result);
-
-  const beamCount = beams.length;
-  const hasDesignResults = designResult !== null;
+  const activeDestination = activeGlobalDestination(location.pathname);
 
   // Don't show on home page
   if (location.pathname === "/") return null;
@@ -51,9 +40,7 @@ export function TopBar() {
   });
 
   return (
-    <motion.header
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
+    <header
       className="fixed top-0 left-0 right-0 z-40 h-14 flex items-center justify-between px-6 bg-zinc-950/80 backdrop-blur-xl border-b border-white/5"
     >
       {/* Left: Logo + Nav links */}
@@ -75,42 +62,19 @@ export function TopBar() {
 
         {/* Nav links */}
         <nav aria-label="Main navigation" className="hidden md:flex items-center gap-1">
-          {navLinks.map(link => {
-            const isActive = location.pathname === link.path ||
-              (link.path === "/design" && location.pathname.startsWith("/design"));
-
-            // Determine badge content
-            let badge: React.ReactNode = null;
-            if (link.path === "/editor" && beamCount > 0) {
-              badge = (
-                <span
-                  className="ml-1.5 px-1.5 py-0.5 text-[10px] font-semibold rounded bg-zinc-700 text-white tabular-nums"
-                  aria-label={`${beamCount} beams imported`}
-                >
-                  {beamCount}
-                </span>
-              );
-            } else if (link.path === "/dashboard" && hasDesignResults) {
-              badge = (
-                <span
-                  className="ml-1.5 w-1.5 h-1.5 rounded-full bg-green-400"
-                  aria-label="Design results available"
-                />
-              );
-            }
-
+          {GLOBAL_DESTINATIONS.map((destination) => {
+            const isActive = activeDestination === destination.id;
             return (
               <Link
-                key={link.path}
-                to={link.path}
+                key={destination.id}
+                to={destination.path}
                 className={`px-2.5 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center ${
                   isActive
                     ? "bg-white/10 text-white"
                     : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
                 }`}
               >
-                {link.label}
-                {badge}
+                {destination.label}
               </Link>
             );
           })}
@@ -147,6 +111,6 @@ export function TopBar() {
 
       {/* Settings Panel */}
       <SettingsPanel isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
-    </motion.header>
+    </header>
   );
 }

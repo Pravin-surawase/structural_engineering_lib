@@ -20,6 +20,8 @@ export interface LegacyRouteDecision {
   requiresSettledRun: boolean;
 }
 
+export type GlobalDestinationId = GlobalDestination['id'];
+
 export const GLOBAL_DESTINATIONS: readonly GlobalDestination[] = [
   { id: 'workbench', label: 'Workbench', path: '/workbench' },
   { id: 'projects', label: 'Projects', path: '/workbench/projects' },
@@ -105,4 +107,22 @@ export function resolveLegacyDestination(
   if (!decision.requiresProject) return decision.destination;
   if (!projectId?.trim()) return '/workbench?recovery=project-required';
   return decision.destination.replace(':projectId', encodeURIComponent(projectId.trim()));
+}
+
+export function activeGlobalDestination(pathname: string): GlobalDestinationId | null {
+  if (
+    pathname.startsWith('/workbench/projects')
+    || ['/import', '/editor', '/batch', '/dashboard'].includes(pathname)
+  ) {
+    return 'projects';
+  }
+  if (
+    pathname === '/workbench'
+    || pathname.startsWith('/workbench/quick')
+    || pathname === '/start'
+    || pathname.startsWith('/design')
+  ) {
+    return 'workbench';
+  }
+  return null;
 }

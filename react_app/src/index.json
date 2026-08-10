@@ -8,10 +8,10 @@
     {
       "name": "App.tsx",
       "type": "react-component",
-      "size_lines": 164,
-      "last_updated": "2026-04-05",
+      "size_lines": 117,
+      "last_updated": "2026-08-10",
       "description": "Structural Engineering App",
-      "content_hash": "f04cc58ccc78"
+      "content_hash": "52da26bffa41"
     },
     {
       "name": "config.ts",
@@ -66,7 +66,7 @@
     {
       "name": "components",
       "path": "components/",
-      "file_count": 66
+      "file_count": 69
     },
     {
       "name": "hooks",
@@ -104,5 +104,5 @@
       "file_count": 12
     }
   ],
-  "content_hash": "85b284cebe12a7c7"
+  "content_hash": "e06bd909110238eb"
 }

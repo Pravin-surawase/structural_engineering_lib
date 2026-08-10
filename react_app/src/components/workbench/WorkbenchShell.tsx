@@ -20,7 +20,7 @@ export function WorkbenchShell({
   className = '',
 }: WorkbenchShellProps) {
   return (
-    <section className={`min-h-dvh bg-zinc-950 text-zinc-100 ${className}`}>
+    <section className={`h-full min-h-0 overflow-y-auto bg-zinc-950 text-zinc-100 ${className}`}>
       {header}
       <div className="grid min-h-0 grid-cols-1 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <section className="min-w-0" aria-label="Workbench content">

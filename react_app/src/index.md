@@ -8,7 +8,7 @@
 
 | File | Exports | Lines |
 |------|---------|-------|
-| [App.tsx](App.tsx) |  | 164 |
+| [App.tsx](App.tsx) |  | 117 |
 | [main.tsx](main.tsx) |  | 11 |
 
 ## Stylesheet Files
@@ -29,7 +29,7 @@
 | [api/](api/) | 2 |  |
 | [app/](app/) | 4 |  |
 | [assets/](assets/) | 1 |  |
-| [components/](components/) | 66 |  |
+| [components/](components/) | 69 |  |
 | [hooks/](hooks/) | 24 |  |
 | [lib/](lib/) | 1 |  |
 | [store/](store/) | 6 |  |

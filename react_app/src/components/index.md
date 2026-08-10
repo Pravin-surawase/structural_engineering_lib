@@ -23,7 +23,7 @@
 | [design/](design/) | 11 |  |
 | [import/](import/) | 6 |  |
 | [layout/](layout/) | 3 |  |
-| [pages/](pages/) | 7 |  |
+| [pages/](pages/) | 8 |  |
 | [ui/](ui/) | 10 |  |
 | [viewport/](viewport/) | 8 |  |
 | [workbench/](workbench/) | 8 |  |

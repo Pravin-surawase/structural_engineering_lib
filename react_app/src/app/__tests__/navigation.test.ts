@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  activeGlobalDestination,
   GLOBAL_DESTINATIONS,
   LEGACY_ROUTE_DECISIONS,
   PROJECT_STAGES,
@@ -49,5 +50,13 @@ describe('workbench navigation contract', () => {
       '/workbench/projects/sample/review',
     );
     expect(resolveLegacyDestination('/unknown')).toBeNull();
+  });
+
+  it('maps canonical and compatibility paths to one global destination', () => {
+    expect(activeGlobalDestination('/workbench/quick')).toBe('workbench');
+    expect(activeGlobalDestination('/design/results')).toBe('workbench');
+    expect(activeGlobalDestination('/workbench/projects/new')).toBe('projects');
+    expect(activeGlobalDestination('/editor')).toBe('projects');
+    expect(activeGlobalDestination('/')).toBeNull();
   });
 });
