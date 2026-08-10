@@ -66,8 +66,8 @@ pyvista>=0.43
 # Data & Scientific (project-wide, not in pyproject.toml)
 # ===========================================
 pandas>=2.0
-numpy>=2.0,<2.5
-scipy>=1.14
+numpy>=2.5.1,<2.6
+scipy>=1.18.0
 
 # ===========================================
 # FastAPI Backend (project-wide, not in pyproject.toml)
