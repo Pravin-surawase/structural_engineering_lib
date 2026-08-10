@@ -30,6 +30,8 @@ two-way solid-slab program while retaining flat slabs as a separate extension
   an approved feature scope may be directly implemented without repeated
   permission questions; formal source/licensing permission is a pre-launch
   public-distribution gate, not an implementation blocker.
+- Closed the post-implementation generated-count drift through the maintained
+  session-sync path, updating only the two delegated documentation files.
 
 ### Issues encountered
 
@@ -52,6 +54,9 @@ two-way solid-slab program while retaining flat slabs as a separate extension
 - The first implementation commit was blocked by the repository-wide mypy hook
   because two pre-existing beam service annotations referenced result types as
   attributes of a module that does not explicitly re-export them to mypy.
+- After the five slab endpoints and five public service functions were added,
+  project health fell to 94/100 because `llms.txt` still reported 69 endpoints
+  and `agent-bootstrap.md` still reported 69 endpoints and 78 public functions.
 
 ### Root causes and resolutions
 
@@ -89,6 +94,12 @@ two-way solid-slab program while retaining flat slabs as a separate extension
   wrappers now import `DeflectionResult` and `CrackWidthResult` directly from
   `core.data_types`, matching their actual definition. The full structural-lib
   mypy hook passes without bypassing verification.
+- The calculation, API manifest and OpenAPI snapshot were synchronized during
+  implementation, but the maintained public-count projection was not rerun
+  after the final endpoint/export additions. `./run.sh session sync` identified
+  exactly three stale lines; `./run.sh session sync --fix` changed only
+  `llms.txt` and `docs/getting-started/agent-bootstrap.md` to 74 endpoints and
+  83 public functions.
 
 ### Verification
 
@@ -106,6 +117,9 @@ two-way solid-slab program while retaining flat slabs as a separate extension
   `18.600/13.888/11.656/8.680 kN m/m` with exact Table 26 provenance.
 - Dev services and the browser were stopped after verification. No release,
   push, pull request or merge was performed.
+- Post-closeout maintenance evidence: `./run.sh session sync` reports all
+  numbers current, `./run.sh health` reports 100/100, and
+  `./run.sh check --quick` passes 10/10.
 
 ### Terminal issues
 
