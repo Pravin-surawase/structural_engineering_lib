@@ -164,26 +164,26 @@ def recommend(
             "pre-authorized if a concrete quality gap remains."
         )
     elif is_repetitive and not is_implementation:
-        selected, fallback = "luna-low", "luna-medium"
+        selected, fallback = "terra-low", "terra-medium"
         rationale = (
-            "The task is clear and repeatable, which is Luna's most efficient workload."
+            "The task is clear and repeatable, so use the lowest available Terra profile."
         )
     elif is_bounded and is_implementation:
-        selected, fallback = "luna-high", "terra-low"
-        rationale = "The code work is bounded and pattern-driven; try Luna high before moving tiers."
+        selected, fallback = "terra-low", "terra-medium"
+        rationale = "The code work is bounded and pattern-driven; start on Terra Low."
     elif is_bounded:
-        selected, fallback = "luna-medium", "terra-low"
-        rationale = "The acceptance boundary is explicit and needs moderate checking."
+        selected, fallback = "terra-low", "terra-medium"
+        rationale = "The acceptance boundary is explicit; start on Terra Low."
     elif is_implementation:
         selected, fallback = "terra-medium", "terra-high"
         rationale = "Normal implementation benefits from Terra's balanced tool use and judgment."
     else:
         selected, fallback = "terra-medium", "terra-high"
-        rationale = "The task lacks enough low-risk structure for an automatic Luna recommendation."
+        rationale = "The task lacks enough low-risk structure for Terra Low."
 
     if risk == "low" and selected.startswith("terra") and not is_complex:
-        selected, fallback = "luna-medium", "terra-low"
-        rationale = "Explicit low risk allows a cheaper Luna-first attempt."
+        selected, fallback = "terra-low", "terra-medium"
+        rationale = "Explicit low risk selects the lowest available Terra profile."
 
     selected_profile = _profile(policy, selected)
     fallback_profile = _profile(policy, fallback)
@@ -228,11 +228,14 @@ def _print_recommendation(result: ModelRecommendation, query: str) -> None:
 
 def _print_table() -> None:
     policy = _load_policy()
+    unavailable = set(policy.get("unavailable_models", []))
     print("Profile       Rate  Approval  Best use")
     print(
         "------------  ----  --------  -----------------------------------------------"
     )
     for profile in policy["profiles"]:
+        if profile["model"] in unavailable:
+            continue
         rate = policy["relative_token_rates"][profile["model"]]
         approval = "yes" if profile["approval_required"] else "no"
         print(f"{profile['id']:<12}  {rate:>2}x   {approval:<8}  {profile['use_for']}")

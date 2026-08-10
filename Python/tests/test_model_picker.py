@@ -21,8 +21,8 @@ picker = importlib.import_module("scripts.model_picker")
 @pytest.mark.parametrize(
     ("query", "profile"),
     [
-        ("format the worklog and regenerate index metadata", "luna-low"),
-        ("fix the known lint assertion test", "luna-high"),
+        ("format the worklog and regenerate index metadata", "terra-low"),
+        ("fix the known lint assertion test", "terra-low"),
         ("implement a normal FastAPI endpoint", "terra-medium"),
         ("diagnose an intermittent cross-layer architecture failure", "terra-high"),
         ("verify the IS456 reinforcement capacity formula", "terra-high"),
@@ -60,8 +60,8 @@ def test_substantial_planning_uses_efficient_terra_default(query: str) -> None:
     assert result.approval_required is False
 
 
-def test_mechanical_planning_doc_update_stays_on_luna() -> None:
-    assert picker.recommend("format the planning docs").profile == "luna-low"
+def test_mechanical_planning_doc_update_uses_terra_low() -> None:
+    assert picker.recommend("format the planning docs").profile == "terra-low"
 
 
 def test_main_orchestrator_advises_terra_without_overriding_user_choice() -> None:
@@ -71,11 +71,11 @@ def test_main_orchestrator_advises_terra_without_overriding_user_choice() -> Non
     assert result.approval_required is False
 
 
-def test_low_risk_override_prefers_luna() -> None:
+def test_low_risk_override_prefers_terra_low() -> None:
     result = picker.recommend("implement a small helper", risk="low")
 
-    assert result.profile == "luna-medium"
-    assert result.relative_token_rate == 1
+    assert result.profile == "terra-low"
+    assert result.relative_token_rate == 10
 
 
 def test_model_policy_profiles_are_unique_and_complete() -> None:
@@ -86,6 +86,8 @@ def test_model_policy_profiles_are_unique_and_complete() -> None:
     ids = {profile["id"] for profile in profiles}
 
     assert len(ids) == len(profiles)
-    assert {"luna-high", "luna-xhigh", "terra-high", "sol-medium", "sol-high"} <= ids
+    assert {"terra-low", "terra-medium", "terra-high", "sol-medium", "sol-high"} <= ids
+    assert policy["unavailable_models"] == ["gpt-5.6-luna"]
+    assert policy["defaults"]["subagent_profile"] == "terra-low"
     assert policy["defaults"]["parent_profile"] == "user-selected"
     assert policy["defaults"]["max_concurrent_subagents"] == 2

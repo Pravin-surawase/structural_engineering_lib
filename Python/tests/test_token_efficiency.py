@@ -19,7 +19,7 @@ def test_project_codex_defaults_are_low_token() -> None:
     assert "model_reasoning_effort" not in config
     assert config["model_verbosity"] == "low"
     assert config["agents"]["max_concurrent_threads_per_session"] == 2
-    assert config["agents"]["default_subagent_model"] == "gpt-5.6-luna"
+    assert config["agents"]["default_subagent_model"] == "gpt-5.6-terra"
     assert config["agents"]["default_subagent_reasoning_effort"] == "low"
     assert config["features"]["fast_mode"] is False
 

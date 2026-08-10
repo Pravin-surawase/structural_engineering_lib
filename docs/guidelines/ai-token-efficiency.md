@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-09
+last_updated: 2026-08-10
 doc_type: guide
 ---
 
@@ -19,9 +19,9 @@ engineering, test, or Git safety gates.
    user explicitly delegates model choice for a task, the main orchestrator may
    choose suitable available parent and subagent profiles in proportion to task
    risk. Project defaults remain advisory in either case.
-3. Use Luna, when the active client exposes it, for simple searches, status
-   checks, extraction, formatting, and small mechanical edits. Use Terra for
-   normal implementation, testing, documentation, and focused worker review.
+3. Luna is unavailable in the active runtime. Do not probe or attempt it. Use
+   Terra Low for clear repeatable work and Terra Medium/High in proportion to
+   implementation and risk.
 4. Sol profiles require explicit user selection, case-specific approval, or
    delegated model-choice authority. Escalate only when the task risk or a
    concrete quality gap justifies it.
@@ -30,19 +30,15 @@ engineering, test, or Git safety gates.
 
 ## Model and Reasoning Matrix
 
-The verified token rate card makes Luna the reference rate: Terra is 10x and
-Sol is 25x for the same input/cached-input/output token mix. Reasoning effort
-changes how many tokens a task may consume, but OpenAI does not publish a fixed
-Low/Medium/High/Extra High multiplier. Therefore, do not assume that Luna Extra
-High is always cheaper than Terra Low for a real task; use the lowest profile
+The verified token rate card retains Luna as the accounting reference: Terra is
+10x and Sol is 25x for the same input/cached-input/output token mix. This does
+not make Luna an available routing option. Reasoning effort changes how many
+tokens a task may consume, but OpenAI does not publish a fixed
+Low/Medium/High/Extra High multiplier. Use the lowest available Terra profile
 that reliably completes the work.
 
 | Profile | Default use | Escalate when |
 |---|---|---|
-| Luna Low | Search, status, extraction, formatting, indexes | The task is not deterministic |
-| Luna Medium | Bounded docs, tests, summaries, mechanical edits | Tool use or requirements become unclear |
-| Luna High | Structured audits, log triage, constrained repetitive code | The problem becomes cross-layer or ambiguous |
-| Luna Extra High | Rare, highly structured work needing extensive checking | Prefer Terra if ambiguity is the difficulty |
 | Terra Low | Small code fixes with an obvious pattern | Targeted verification does not explain a failure |
 | Terra Medium | Normal implementation and maintenance | Architecture, safety, or multiple systems interact |
 | Terra High | Cross-layer debugging, architecture, security, release, IS 456 | A concrete unresolved quality gap justifies Sol |
@@ -78,7 +74,7 @@ when changing to a genuinely different issue.
 ## Orchestrator Contract
 
 The user-selected orchestrator owns decomposition and acceptance, not just routing.
-Before handing work to Luna or Terra, it provides a compact task packet with:
+Before handing work to Terra, it provides a compact task packet with:
 
 - one objective and explicit non-goals;
 - exact files/paths and existing patterns to reuse;
@@ -183,7 +179,7 @@ IS 456 quality gate.
 
 The Claude model labels in `.github/agents/*.agent.md` and
 `agents/agent_registry.json` are VS Code Copilot configuration. They are not
-Codex routing inputs; Codex Luna/Terra/Sol choices live only in
+Codex routing inputs; Codex Terra/Sol choices live only in
 `agents/model_policy.json` and project `.codex/config.toml`.
 
 ## Reusable Task Preamble
@@ -194,7 +190,8 @@ Work in low-token mode.
 Honor an explicit parent model and reasoning selection by the user. If the user
 delegates model choice, select available parent and subagent profiles in
 proportion to task risk. Repository defaults remain advisory. Keep Fast mode
-off. Use Luna-low subagents for clear repetitive work; use Sol only after
+off. Luna is unavailable; use Terra-low subagents for clear repetitive work
+without probing Luna. Use Sol only after
 explicit selection, case-specific approval, or delegated model-choice
 authority. Default to no
 subagents; use no more than two only for independent,
