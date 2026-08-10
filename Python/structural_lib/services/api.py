@@ -148,6 +148,12 @@ from structural_lib.services.slab_api import (  # noqa: F401
     design_one_way_slab_is456,
     design_two_way_slab_is456,
 )
+from structural_lib.services.workflow_catalog import (  # noqa: F401
+    WorkflowCatalog,
+    get_workflow_catalog,
+    get_workflow_catalog_document,
+    serialize_workflow_catalog,
+)
 from structural_lib.visualization.geometry_3d import (  # noqa: F401
     Beam3DGeometry,
     Point3D,
@@ -322,5 +328,9 @@ __all__ = [
     "get_supported_is456_capability_document",
     "get_supported_is456_capabilities",
     "get_supported_is456_semantic_contract",
+    "WorkflowCatalog",
+    "get_workflow_catalog",
+    "get_workflow_catalog_document",
+    "serialize_workflow_catalog",
     "IS456Capability",
 ]

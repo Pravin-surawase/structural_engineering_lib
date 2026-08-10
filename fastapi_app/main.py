@@ -36,6 +36,7 @@ from fastapi_app.models.response import RequestValidationErrorResponse, error_re
 from fastapi_app.models.metadata import APIInfoResponse
 from fastapi_app.routers import (
     analysis,
+    catalog,
     capabilities,
     column,
     design,
@@ -104,6 +105,10 @@ API_TAGS_METADATA = [
     {
         "name": "library",
         "description": "Canonical supported/held capability and semantic discovery.",
+    },
+    {
+        "name": "catalog",
+        "description": "Versioned application workflow discovery from library-owned truth.",
     },
     {
         "name": "column",
@@ -442,6 +447,10 @@ app.include_router(
 )
 app.include_router(
     capabilities.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    catalog.router,
     prefix=API_V1_PREFIX,
 )
 app.include_router(

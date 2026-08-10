@@ -508,12 +508,20 @@ capabilities: tuple[api.IS456Capability, ...] = (
 )
 semantic_contract = api.get_supported_is456_semantic_contract()
 capability_document = api.get_supported_is456_capability_document()
+workflow_catalog: api.WorkflowCatalog = api.get_workflow_catalog()
+workflow_catalog_document = api.get_workflow_catalog_document()
+workflow_catalog_json = api.serialize_workflow_catalog()
 ```
 
 The two-way route supports only its documented interior-panel configuration
 with caller-supplied, qualified coefficients. The capability document is the
 canonical JSON-safe form used by Python, CLI, and REST discovery. Capability
 records and result types may change before v1.0.
+
+The application workflow catalogue is likewise a development-preview discovery
+surface. Its version/compatibility rules are explicit, but its records may change
+before v1.0; consumers must reject unknown major versions rather than silently
+ignoring them.
 
 ---
 

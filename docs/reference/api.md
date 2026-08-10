@@ -55,6 +55,12 @@ accepts only qualified, caller-supplied coefficients and explicit literal-true
 declarations for its single documented interior, four-edge-continuous panel
 case.
 
+The application-facing beam slice is discoverable through the immutable
+`api.WorkflowCatalog` returned by `api.get_workflow_catalog()`. Transport and
+tooling surfaces consume `api.get_workflow_catalog_document()` or the stable
+`api.serialize_workflow_catalog()` representation; these expose approved schema
+and adapter IDs only and never serialize Python callables.
+
 ## 0. Unified CLI (v0.9.4+)
 
 The library provides a unified command-line interface:

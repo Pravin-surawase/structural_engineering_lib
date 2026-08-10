@@ -28,6 +28,15 @@
   placement under the repository's newly aligned Ruff rules.
 - The first agent-control commit was blocked because pre-commit correctly hid
   the unstaged compliant session entry while validating the staged new rule.
+- The first P9/P10 commit was blocked by two public-API integration gates: typed
+  JSON normalization returned `Any`, and the new public symbols were absent from
+  the API reference.
+- A direct one-file mypy command loaded unrelated core/report modules outside the
+  repository hook configuration and reported seven pre-existing errors.
+- A guessed `check_api_doc_signatures.py` path did not exist when rerunning the
+  API documentation gate directly.
+- The next commit attempt found that public catalogue symbols were documented in
+  the API reference but not projected into the API-stability classification.
 
 ### Root causes and resolutions
 
@@ -46,6 +55,19 @@
 - The validation rule and its first compliant session record are one atomic
   control-plane change. Staging that task-owned record with the rule makes the
   isolated pre-commit view valid without weakening or bypassing the check.
+- The catalogue serializer now casts only after recursive JSON normalization,
+  preserving runtime validation while satisfying strict mypy. The four public
+  discovery symbols are documented in the canonical API reference; the same
+  pre-commit gates pass on rerun.
+- The command bypassed the maintained mypy hook configuration rather than
+  exposing a P9 defect. Verification now uses the scoped pre-commit mypy hook,
+  which is the same gate used by commits; unrelated findings were not suppressed
+  or changed.
+- The gate is implemented by `scripts/check_api.py --docs`, as declared in
+  `.pre-commit-config.yaml`; using that maintained command passed.
+- The API and stability documents are a synchronized pair. The catalogue is now
+  explicitly classified as development preview in `api-stability.md`, so the
+  sync gate passes without overstating a pre-1.0 stability promise.
 
 ### Verification
 

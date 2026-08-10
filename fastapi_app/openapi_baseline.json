@@ -2742,6 +2742,58 @@
         "title": "APIResponse[TorsionDesignResponse]",
         "type": "object"
       },
+      "APIResponse_WorkflowCatalogDocumentModel_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorkflowCatalogDocumentModel"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[WorkflowCatalogDocumentModel]",
+        "type": "object"
+      },
       "AdditionalMomentRequest": {
         "description": "Request for additional moment calculation per IS 456 Cl 39.7.1.",
         "properties": {
@@ -5422,6 +5474,172 @@
           "format_detected"
         ],
         "title": "CSVImportResponse",
+        "type": "object"
+      },
+      "CatalogExampleModel": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "values": {
+            "items": {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "string"
+                },
+                {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              ],
+              "type": "array"
+            },
+            "title": "Values",
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "values"
+        ],
+        "title": "CatalogExampleModel",
+        "type": "object"
+      },
+      "CatalogFieldModel": {
+        "properties": {
+          "choices": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Choices",
+            "type": "array"
+          },
+          "default": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default"
+          },
+          "field_id": {
+            "title": "Field Id",
+            "type": "string"
+          },
+          "group": {
+            "title": "Group",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "maximum": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum"
+          },
+          "minimum": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minimum"
+          },
+          "required": {
+            "title": "Required",
+            "type": "boolean"
+          },
+          "semantic_ref": {
+            "title": "Semantic Ref",
+            "type": "string"
+          },
+          "transport_name": {
+            "title": "Transport Name",
+            "type": "string"
+          },
+          "unit": {
+            "title": "Unit",
+            "type": "string"
+          },
+          "widget": {
+            "enum": [
+              "number",
+              "select"
+            ],
+            "title": "Widget",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field_id",
+          "transport_name",
+          "semantic_ref",
+          "label",
+          "group",
+          "widget",
+          "unit",
+          "required",
+          "default",
+          "choices"
+        ],
+        "title": "CatalogFieldModel",
         "type": "object"
       },
       "CheckDetail": {
@@ -13693,6 +13911,156 @@
         "title": "ValidationResult",
         "type": "object"
       },
+      "WorkflowCapabilityModel": {
+        "properties": {
+          "capability_id": {
+            "title": "Capability Id",
+            "type": "string"
+          },
+          "capability_version": {
+            "title": "Capability Version",
+            "type": "string"
+          },
+          "element": {
+            "title": "Element",
+            "type": "string"
+          },
+          "examples": {
+            "items": {
+              "$ref": "#/components/schemas/CatalogExampleModel"
+            },
+            "title": "Examples",
+            "type": "array"
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/CatalogFieldModel"
+            },
+            "title": "Fields",
+            "type": "array"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "next_actions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Next Actions",
+            "type": "array"
+          },
+          "prerequisites": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Prerequisites",
+            "type": "array"
+          },
+          "qualified_review_required": {
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "request_schema_id": {
+            "title": "Request Schema Id",
+            "type": "string"
+          },
+          "result_schema_id": {
+            "title": "Result Schema Id",
+            "type": "string"
+          },
+          "semantic_workflow_id": {
+            "title": "Semantic Workflow Id",
+            "type": "string"
+          },
+          "service_adapter_id": {
+            "title": "Service Adapter Id",
+            "type": "string"
+          },
+          "status_semantic_ref": {
+            "title": "Status Semantic Ref",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "visualization_affordances": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Visualization Affordances",
+            "type": "array"
+          }
+        },
+        "required": [
+          "capability_id",
+          "capability_version",
+          "element",
+          "title",
+          "summary",
+          "semantic_workflow_id",
+          "service_adapter_id",
+          "request_schema_id",
+          "result_schema_id",
+          "status_semantic_ref",
+          "fields",
+          "prerequisites",
+          "next_actions",
+          "visualization_affordances",
+          "examples",
+          "limitations",
+          "qualified_review_required"
+        ],
+        "title": "WorkflowCapabilityModel",
+        "type": "object"
+      },
+      "WorkflowCatalogDocumentModel": {
+        "properties": {
+          "capabilities": {
+            "items": {
+              "$ref": "#/components/schemas/WorkflowCapabilityModel"
+            },
+            "title": "Capabilities",
+            "type": "array"
+          },
+          "catalog_version": {
+            "title": "Catalog Version",
+            "type": "string"
+          },
+          "code_edition": {
+            "title": "Code Edition",
+            "type": "string"
+          },
+          "compatible_versions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Compatible Versions",
+            "type": "array"
+          },
+          "schema_version": {
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "catalog_version",
+          "code_edition",
+          "compatible_versions",
+          "capabilities"
+        ],
+        "title": "WorkflowCatalogDocumentModel",
+        "type": "object"
+      },
       "fastapi_app__routers__insights__BeamParams": {
         "description": "Beam parameters for code checks.",
         "properties": {
@@ -13956,6 +14324,56 @@
         "summary": "Simple Load Analysis (BMD/SFD)",
         "tags": [
           "analysis"
+        ]
+      }
+    },
+    "/api/v1/catalog/workflows": {
+      "get": {
+        "description": "Return the library-owned catalogue without serializing Python callables.",
+        "operationId": "get_workflow_catalog_api_v1_catalog_workflows_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "version",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Version"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_WorkflowCatalogDocumentModel_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Discover approved application workflows",
+        "tags": [
+          "catalog"
         ]
       }
     },
@@ -16459,6 +16877,10 @@
     {
       "description": "Canonical supported/held capability and semantic discovery.",
       "name": "library"
+    },
+    {
+      "description": "Versioned application workflow discovery from library-owned truth.",
+      "name": "catalog"
     },
     {
       "description": "Column design: classification, eccentricity, and axial capacity per IS 456.",
