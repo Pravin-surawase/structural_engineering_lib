@@ -5,6 +5,53 @@
 
 ---
 
+## 2026-08-10 — Session: UIX-001 Session 2 P9-P15
+
+**Agent:** Codex
+**Branch:** `codex/ui-capability-platform`
+**Focus:** Complete the one-beam capability platform, bounded workflow, route cutover, and integrated UIX acceptance
+
+### Summary
+
+- Session 2 is active from merged Session 1 commit `49d7780e`.
+
+### Issues encountered
+
+- Cross-agent instructions required root-cause fixes but did not require a
+  durable issue/cause/solution/proof record, so later work could repeat the same
+  diagnosis.
+- Session completeness scanned beyond the newest same-day entry and could borrow
+  completion markers from an older session, producing a false pass.
+- The first P10 response differed from the library document because FastAPI was
+  configured to remove `null` field bounds during response serialization.
+- The first P9 lint pass rejected the new version exception name and import
+  placement under the repository's newly aligned Ruff rules.
+- The first agent-control commit was blocked because pre-commit correctly hid
+  the unstaged compliant session entry while validating the staged new rule.
+
+### Root causes and resolutions
+
+- The logging contract existed only as guidance about fixing causes, not as a
+  required session schema. Shared agent instructions now require explicit issue
+  and root-cause sections, and session closeout enforces them.
+- The completeness checker iterated through the whole file instead of isolating
+  the newest entry. It now uses the newest session block only; focused session
+  automation regressions pass.
+- `response_model_exclude_none` changed the catalogue transport shape after the
+  library had produced it. The thin route now preserves the complete canonical
+  document; the cross-layer equality test proves byte-meaning parity.
+- The new exception did not follow Ruff's enforced `Error` suffix convention,
+  and the API re-export was outside sorted module order. The type was renamed,
+  the import moved to its canonical position, and scoped Ruff now passes.
+- The validation rule and its first compliant session record are one atomic
+  control-plane change. Staging that task-owned record with the rule makes the
+  isolated pre-commit view valid without weakening or bypassing the check.
+
+### Verification
+
+- `.venv/bin/pytest Python/tests/test_session_automation.py -q`
+- `.venv/bin/ruff check scripts/session.py Python/tests/test_session_automation.py`
+
 ## 2026-08-10 — Session: UIX-001 Session 1 P4-P8 Closeout
 
 **Agent:** Codex

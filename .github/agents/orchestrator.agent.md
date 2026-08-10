@@ -274,7 +274,9 @@ If a specialist agent:
 ### Post-Session Review (Continuous Improvement)
 
 When concrete repeated failures appear, preserve the evidence and correct the
-smallest shared instruction or automation root cause. Do not edit agent files
+smallest shared instruction or automation root cause. Record each material issue
+as symptom/impact, confirmed cause or `unconfirmed`, solution, and proof in the
+newest task-owned session entry. Do not edit agent files
 after every session or turn a one-off mistake into permanent policy.
 
 ## Scheduled Agent Evolution
@@ -345,7 +347,8 @@ When preparing a Codex Git/GitHub closeout:
 When durable cross-session state changed, update
 `docs/planning/next-session-brief.md`. Preserve its Latest Handoff block,
 Required Reading section, literal `Current` and `Next` rows, completed outcome,
-next action, and any terminal issues. Update `docs/TASKS.md` only when task state
+next action, `### Issues encountered`, and `### Root causes and resolutions`.
+Update `docs/TASKS.md` only when task state
 changed. `agent_brief.sh --handoff` reads the versioned next-session brief;
 runtime files under `logs/` are not handoff sources of truth.
 

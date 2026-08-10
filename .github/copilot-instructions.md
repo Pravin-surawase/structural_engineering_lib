@@ -10,6 +10,21 @@ Current focus: See [TASKS.md](../docs/TASKS.md) for active work and priorities.
 - For every review finding, ask: **Would fixing this change the outcome of the main process?** If not, ignore it. If a non-essential concern needs preservation, file a follow-up bead/task only when necessary; do not expand the current scope.
 - Review only essential main-process behavior. Do not report issues about comments, edge cases, test-coverage or falsification gaps, generic hardening, or adjacent improvements. Do not add tests during review. Reject security or concurrency observations that are merely hardening and do not change the main-process outcome.
 
+## Root-Cause and Session-Issue Record (MANDATORY)
+
+- Record every material task issue in the newest task-owned
+  `docs/SESSION_LOG.md` entry under `### Issues encountered`, and pair it with a
+  `### Root causes and resolutions` record containing the confirmed cause,
+  implemented fix, and verification evidence. Use `- None encountered.` when
+  truthful; never infer a cause from an error message alone.
+- Material means the issue changed the main-process outcome, blocked a required
+  command, exposed a stale instruction/contract, or would cause repeated work.
+  Exclude secrets, transient noise, speculative hardening, and unrelated
+  non-impacting failures.
+- Subagents return symptom, impact, cause or `unconfirmed`, solution, and proof;
+  the parent maintains the single deduplicated versioned record. Session closeout
+  fails when the newest entry omits either required section.
+
 ## IMPORTANT: Git and GitHub — Codex Native
 
 Codex owns the Git/GitHub lifecycle directly. Follow [AGENTS.md](../AGENTS.md) and the canonical [Codex-native workflow](../docs/git-automation/git-workflow-single-source.md): inspect state, stage only intended files, use a conventional commit, push without rewriting history, and create or update the PR through the connected GitHub integration.

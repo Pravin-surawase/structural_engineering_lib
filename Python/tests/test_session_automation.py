@@ -303,6 +303,83 @@ def test_session_end_preserves_current_same_day_handoff(
     assert next_brief.read_text(encoding="utf-8") == expected
 
 
+def test_session_log_completeness_uses_only_newest_same_day_entry(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    class SessionDate(date):
+        @classmethod
+        def today(cls) -> date:
+            return cls(2026, 8, 10)
+
+    session_log = tmp_path / "SESSION_LOG.md"
+    session_log.write_text(
+        """# Log
+
+## 2026-08-10 — Session 2
+**Focus:** finish the capability platform
+
+### Summary
+- Completed the owned packet.
+
+## 2026-08-10 — Session 1
+**Focus:** prior work
+
+**Completed:**
+- Prior completion
+
+### Issues encountered
+- None encountered.
+
+### Root causes and resolutions
+- None encountered.
+""",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(session, "SESSION_LOG", session_log)
+    monkeypatch.setattr(session, "date", SessionDate)
+
+    complete, issues = session.check_session_log_complete()
+
+    assert complete is False
+    assert "SESSION_LOG: Missing 'Issues encountered' section" in issues
+    assert "SESSION_LOG: Missing 'Root causes and resolutions' section" in issues
+
+
+def test_session_log_completeness_accepts_explicit_issue_record(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    class SessionDate(date):
+        @classmethod
+        def today(cls) -> date:
+            return cls(2026, 8, 10)
+
+    session_log = tmp_path / "SESSION_LOG.md"
+    session_log.write_text(
+        """# Log
+
+## 2026-08-10 — Session 2
+**Focus:** finish the capability platform
+
+### Summary
+- Completed the owned packet.
+
+### Issues encountered
+- Catalogue validation initially accepted a duplicate ID.
+
+### Root causes and resolutions
+- Registry construction skipped uniqueness validation; validation now fails closed and the duplicate regression passes.
+""",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(session, "SESSION_LOG", session_log)
+    monkeypatch.setattr(session, "date", SessionDate)
+
+    complete, issues = session.check_session_log_complete()
+
+    assert complete is True
+    assert issues == []
+
+
 def test_legacy_activity_log_uses_local_midnight_and_no_billing_estimate(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):

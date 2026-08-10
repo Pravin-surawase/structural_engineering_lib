@@ -36,7 +36,7 @@ for an otherwise complete task.
 |---|-----|---------------|--------|
 | 1 | `docs/TASKS.md` | Task status or priority actually changed | Board matches the implemented state |
 | 2 | `docs/planning/next-session-brief.md` | Durable continuation state is needed | Next action, branch, verification, and blocker are exact |
-| 3 | `docs/WORKLOG.md` / `docs/SESSION_LOG.md` | The task explicitly owns historical logging | New entry is concise and append-only |
+| 3 | `docs/WORKLOG.md` / `docs/SESSION_LOG.md` | The task explicitly owns historical logging | New entry is concise, append-only, and records issues plus root-cause resolutions |
 | 4 | `CHANGELOG.md` | User-visible behavior changed | Unreleased entry describes the outcome |
 | 5 | Agent feedback | A concrete stale or missing control was observed | Evidence and affected instruction are named |
 
@@ -77,6 +77,7 @@ do not create a documentation-only closeout commit by default.
 | **Metadata required** | All new docs need Type, Audience, Status, Importance, Created, Last Updated |
 | **Check canonical first** | `docs/docs-canonical.json` before creating any doc |
 | **Append-only logs** | WORKLOG.md, SESSION_LOG.md — never rewrite history |
+| **Issue evidence required** | Newest session entry includes `Issues encountered` and `Root causes and resolutions`; every material issue records symptom, cause, fix, and proof |
 | **Immutable releases** | CHANGELOG.md, releases.md — append only, never edit past entries |
 | **Update stale counts** | After any endpoint is added/removed, grep for the old count across ALL doc files and update. Use: `grep -rn 'N endpoints' docs/ .github/ AGENTS.md CLAUDE.md` |
 

@@ -9,6 +9,21 @@ Open-source IS 456 RC beam design library. V3 stack: React 19 + R3F + Tailwind â
 - For every review finding, ask: **Would fixing this change the outcome of the main process?** If not, ignore it. If a non-essential concern needs preservation, file a follow-up bead/task only when necessary; do not expand the current scope.
 - Review only essential main-process behavior. Do not report issues about comments, edge cases, test-coverage or falsification gaps, generic hardening, or adjacent improvements. Do not add tests during review. Reject security or concurrency observations that are merely hardening and do not change the main-process outcome.
 
+## Root-Cause and Session-Issue Record (MANDATORY)
+
+- Record every material task issue in the newest task-owned
+  `docs/SESSION_LOG.md` entry under `### Issues encountered`, and pair it with a
+  `### Root causes and resolutions` record containing the confirmed cause,
+  implemented fix, and verification evidence. Use `- None encountered.` when
+  truthful; never invent a cause from an error message alone.
+- Material means the issue changed the main-process outcome, blocked a required
+  command, exposed a stale instruction/contract, or would cause repeated work.
+  Exclude secrets, transient noise, speculative hardening, and unrelated
+  non-impacting failures.
+- Subagents return symptom, impact, cause or `unconfirmed`, solution, and proof;
+  the parent maintains the single deduplicated versioned record. Session closeout
+  fails when the newest entry omits either required section.
+
 ## IMPORTANT: Git and GitHub
 
 Follow the Codex-native workflow in `AGENTS.md` and
