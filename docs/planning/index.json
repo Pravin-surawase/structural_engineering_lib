@@ -91,11 +91,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 87,
+      "size_lines": 89,
       "last_updated": "2026-08-10",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-10",
-      "content_hash": "fa748c76311f"
+      "content_hash": "60fd73c75e1a"
     },
     {
       "name": "pre-release-checklist.md",
@@ -121,7 +121,7 @@
       "size_lines": 709,
       "last_updated": "2026-08-10",
       "description": "> **Historical implementation record.** Execution status in this document is > superseded by",
-      "content_hash": "23f66e0d2972"
+      "content_hash": "706c92bd3f7a"
     },
     {
       "name": "ui-experience-foundation-master-plan.md",
@@ -133,5 +133,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "a665a65d814ec5f4"
+  "content_hash": "9045d2563f2081a9"
 }
