@@ -242,9 +242,9 @@ Subcommands:
   checklist                Print release checklist
 
 Examples:
-  ./run.sh release preflight 0.20.0  # Validate before releasing
-  ./run.sh release run 0.20.0        # Bump to 0.20.0
-  ./run.sh release verify --version 0.20.0  # Verify exact release artifact
+  ./run.sh release preflight 0.24.0a1  # Validate an Alpha publication candidate
+  ./run.sh release run 0.24.0a1        # Bump to an Alpha publication candidate
+  ./run.sh release verify --version 0.24.0a1  # Verify exact release artifact
   ./run.sh release check-docs        # Check version in docs
 EOF
 }

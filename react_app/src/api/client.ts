@@ -12,6 +12,9 @@ export interface BeamDesignRequest {
   shear?: number;
   fck: number;
   fy: number;
+  clear_cover?: number;
+  stirrup_dia_mm?: number;
+  main_bar_dia_mm?: number;
 }
 
 export interface FlexureResult {
@@ -45,6 +48,28 @@ export interface BeamDesignResponse {
   utilization_ratio: number;
   effective_depth_used?: number;
   warnings?: string[];
+  evidence?: EvidenceEnvelope;
+}
+
+export interface EvidenceEnvelope {
+  artifact_schema: string;
+  artifact_schema_version: string;
+  library_version: string;
+  code_edition: string;
+  code_amendment_identity: string;
+  capability_id: string;
+  support_status: 'SUPPORTED' | 'HELD';
+  unit_system: string;
+  explicit_units: Record<string, string>;
+  normalized_input_hash: string;
+  calculation_identity: string;
+  governing_check: string;
+  exact_utilization: number | null;
+  margin: number | null;
+  status: 'PASS' | 'FAIL' | 'HOLD';
+  generated_at: string;
+  qualified_review_required: boolean;
+  qualified_review_requirement: string;
 }
 
 export interface HealthResponse {
@@ -221,6 +246,16 @@ export interface SampleDataResponse {
   beams: SampleBeam[];
   format_detected: string;
   warnings: string[];
+  dataset: SampleDatasetEvidence;
+}
+
+export interface SampleDatasetEvidence {
+  dataset_id: string;
+  dataset_version: string;
+  dataset_sha256: string;
+  hash_algorithm: string;
+  source_files: string[];
+  beam_count: number;
 }
 
 export async function loadSampleData(): Promise<SampleDataResponse> {

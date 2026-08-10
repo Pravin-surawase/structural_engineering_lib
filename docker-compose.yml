@@ -6,7 +6,11 @@ services:
     ports:
       - "8000:8000"
     environment:
-      # WARNING: Set JWT_SECRET_KEY in .env before deploying. See .env.example.
+      # This Compose file is the production profile. Local evaluation uses
+      # docker-compose.dev.yml or direct local startup instead.
+      - ENVIRONMENT=production
+      - AUTH_ENABLED=true
+      # Set a non-default value in .env before deploying. See .env.example.
       - JWT_SECRET_KEY=${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set - see .env.example}
       - RATE_LIMIT_REQUESTS=${RATE_LIMIT_REQUESTS:-100}
       - RATE_LIMIT_WINDOW=${RATE_LIMIT_WINDOW:-60}

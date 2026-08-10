@@ -55,11 +55,46 @@ class TestWebSocketDesign:
             assert data["ast_total"] == flexure["ast_required"]
             assert 0 < data["utilization_ratio"] <= 1.0
             assert data["effective_depth_used"] > 0
+            assert data["evidence"]["status"] == "PASS"
+            assert data["evidence"]["exact_utilization"] == data["utilization_ratio"]
 
             shear = data["shear"]
             assert shear["tau_v"] > 0
             assert shear["tau_c_max"] > 0
             assert shear["stirrup_spacing"] > 0
+
+    def test_websocket_and_rest_share_calculation_identity(self):
+        client = TestClient(app)
+        rest_payload = {
+            "width": 300,
+            "depth": 500,
+            "moment": 150,
+            "shear": 75,
+            "fck": 25,
+            "fy": 500,
+            "clear_cover": 40,
+            "stirrup_dia_mm": 8,
+            "main_bar_dia_mm": 20,
+        }
+        rest = client.post("/api/v1/design/beam", json=rest_payload).json()["data"]
+
+        with client.websocket_connect("/ws/design/evidence-parity") as websocket:
+            websocket.send_json(
+                {
+                    "type": "design_beam",
+                    "params": {**rest_payload, "cover": rest_payload["clear_cover"]},
+                }
+            )
+            live = websocket.receive_json()["data"]
+
+        assert (
+            live["evidence"]["normalized_input_hash"]
+            == rest["evidence"]["normalized_input_hash"]
+        )
+        assert (
+            live["evidence"]["calculation_identity"]
+            == rest["evidence"]["calculation_identity"]
+        )
 
     def test_websocket_design_beam_latency(self):
         """Test that WebSocket design is fast (<100ms)."""

@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-10
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -22,6 +22,9 @@ pip install structural-lib-is456[dxf]
 ## Quick Start
 
 ```bash
+# Discover supported and held workflows as canonical JSON
+python -m structural_lib capabilities --json
+
 # Design beams from CSV
 python -m structural_lib design input.csv -o results.json
 
@@ -53,6 +56,21 @@ python -m structural_lib mark-diff --bbs schedule.csv --dxf drawings.dxf
 ---
 
 ## Commands
+
+### `capabilities` — Supported/held contract
+
+Show the canonical machine-readable IS 456 capability and semantic contract.
+It includes the code edition, supported workflows, held cases, units, field
+domains, status limitations, and qualified-review requirement.
+
+```bash
+python -m structural_lib capabilities
+python -m structural_lib capabilities --json
+```
+
+The JSON form is the same document returned by
+`structural_lib.get_supported_is456_capability_document()` and
+`GET /api/v1/library/capabilities`.
 
 ### `design` — Beam Design
 

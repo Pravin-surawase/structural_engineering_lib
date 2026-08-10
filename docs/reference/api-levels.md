@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-07
+last_updated: 2026-08-10
 doc_type: reference
 complexity: intermediate
 tags: [api, reference]
@@ -10,7 +10,7 @@ tags: [api, reference]
 # Which API Should I Use?
 
 **Type:** Reference | **Audience:** Developers | **Status:** Active
-**Importance:** High | **Created:** 2026-04-05 | **Last Updated:** 2026-04-05
+**Importance:** High | **Created:** 2026-04-05 | **Last Updated:** 2026-08-10
 
 ---
 
@@ -30,11 +30,13 @@ result = sl.design_beam_is456(
     fck_nmm2=25, fy_nmm2=500, mu_knm=150, vu_kn=100,
 )
 
-# Column axial capacity
-col = sl.design_column_axial_is456(
-    b_mm=400, D_mm=400, fck=25, fy=415,
-    Ast_mm2=2412, unsupported_length_mm=3000,
+# Complete short-column workflow, including biaxial interaction
+col = sl.design_column_is456(
+    Pu_kN=1000, Mux_kNm=80, Muy_kNm=40,
+    b_mm=400, D_mm=400, l_mm=3000,
+    fck_nmm2=25, fy_nmm2=415, Asc_mm2=2412,
 )
+assert col["is_safe"]
 
 # Design + detailing + BBS in one call
 full = sl.design_and_detail_beam_is456(
@@ -43,7 +45,12 @@ full = sl.design_and_detail_beam_is456(
 )
 ```
 
-**Returns:** Typed dataclasses (`ComplianceCaseResult`, `DesignAndDetailResult`) with `.is_safe()`, `.to_dict()`, `.summary()`.
+**Returns:** Beam workflows return typed result dataclasses. Use `.is_ok` for the
+aggregate beam status and `.to_dict()`, `.to_json()`, or `.summary()` for the
+supported representations. Column service functions currently return their
+documented result type: `design_column_is456()` returns a dictionary with
+`is_safe` and `governing_check`, while `design_column_axial_is456()` returns a
+`ColumnAxialResult` with an `is_safe` field and `.to_dict()`.
 
 ## Level 2: Module-Level Functions (custom workflows)
 
@@ -73,9 +80,19 @@ shear = design_shear(b_mm=300, d_mm=450, vu_kn=100, fck=25, fy=500)
 ```bash
 curl -X POST http://localhost:8000/api/v1/design/beam \
   -H "Content-Type: application/json" \
-  -d '{"b_mm": 300, "D_mm": 500, "d_mm": 450,
-       "fck": 25, "fy": 500, "Mu_kNm": 150, "Vu_kN": 100}'
+  -d '{"width": 300, "depth": 500, "moment": 150,
+       "shear": 100, "fck": 25, "fy": 500}'
 ```
+
+JSON calculation endpoints use the maintained response envelope:
+
+```json
+{"success": true, "data": {"success": true, "flexure": {}}}
+```
+
+Read the calculation payload from `response.json()["data"]`. Health checks,
+file downloads, streaming responses, and WebSockets use their endpoint-specific
+contracts.
 
 **Key endpoints:** `POST /design/beam`, `POST /design/column`, `POST /detailing/beam`, `POST /export/bbs`
 **API docs:** `http://localhost:8000/docs` (auto-generated OpenAPI)
@@ -85,7 +102,8 @@ curl -X POST http://localhost:8000/api/v1/design/beam \
 | I want to... | Use |
 |--------------|-----|
 | Design a complete beam | Level 1: `design_beam_is456()` |
-| Design a column | Level 1: `design_column_axial_is456()` |
+| Run a complete supported column workflow | Level 1: `design_column_is456()` |
+| Calculate short-column axial capacity | Level 1: `design_column_axial_is456()` |
 | Get only flexure capacity | Level 2: `flexure.design_singly_reinforced()` |
 | Build a web frontend | Level 3: `POST /api/v1/design/beam` |
 | Run a full pipeline (design → detail → BBS → report) | Level 1: `design_and_detail_beam_is456()` + `compute_bbs()` |

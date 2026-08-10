@@ -10,8 +10,9 @@ from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
 from fastapi_app.error_utils import sanitize_error, sanitize_error_string
-from fastapi_app.models.response import error_response, success_response
+from fastapi_app.models.response import APIResponse, error_response, success_response
 from fastapi_app.models.beam import (
+    BarAreasResponse,
     BeamDetailingRequest,
     BeamDetailingResponse,
     BarArrangement,
@@ -21,6 +22,7 @@ from fastapi_app.models.compliance import (
     AnchorageCheckRequest,
     AnchorageCheckResponse,
 )
+from fastapi_app.models.metadata import DevelopmentLengthResponse
 
 logger = logging.getLogger(__name__)
 
@@ -37,6 +39,7 @@ router = APIRouter(
 
 @router.post(
     "/beam",
+    response_model=APIResponse[BeamDetailingResponse],
     summary="Detail Beam Reinforcement",
     description="Generate reinforcement detailing for a beam section.",
 )
@@ -219,6 +222,7 @@ async def detail_beam(request: BeamDetailingRequest):
 
 @router.get(
     "/bar-areas",
+    response_model=APIResponse[BarAreasResponse],
     summary="Get Standard Bar Areas",
     description="Get cross-sectional areas for standard reinforcement bars.",
 )
@@ -251,6 +255,7 @@ async def get_bar_areas():
 
 @router.get(
     "/development-length/{bar_diameter}",
+    response_model=APIResponse[DevelopmentLengthResponse],
     summary="Calculate Development Length",
     description="Calculate development length for a specific bar diameter.",
 )
@@ -346,6 +351,7 @@ async def calculate_development_length(
 
 @router.post(
     "/anchorage-check",
+    response_model=APIResponse[AnchorageCheckResponse],
     summary="Anchorage Check at Simple Support (IS 456 Cl 26.2.3.3)",
     description=(
         "Check anchorage of bottom bars at simple supports per IS 456:2000 Cl 26.2.3.3. "

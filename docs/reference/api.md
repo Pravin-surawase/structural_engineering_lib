@@ -40,16 +40,20 @@ Machine-readable signatures live in `docs/reference/api-manifest.json`.
 The canonical public import path is `structural_lib.services.api`.
 `structural_lib.api` and selected package-root imports are compatibility paths
 that delegate to the same objects. Capability boundaries are discoverable with
-`get_supported_is456_capabilities()`.
+`api.get_supported_is456_capabilities()`, their units/status semantics with
+`api.get_supported_is456_semantic_contract()`, and the canonical JSON-safe form
+with `api.get_supported_is456_capability_document()`.
 
 New LIB-IS456-V1 workflows include `api.check_isolated_footing_load_transfer`,
 `api.design_one_way_slab_is456`, and `api.design_two_way_slab_is456`. Their
 result/capability types are `api.LoadTransferResult`,
 `api.OneWaySlabDesignResult`, and `api.IS456Capability`; supported-case
-discovery is available through `api.get_supported_is456_capabilities`. The
-two-way route accepts only qualified, caller-supplied coefficients and explicit
-literal-true declarations for its single documented interior,
-four-edge-continuous panel case.
+discovery is available through `api.get_supported_is456_capabilities`. CLI and
+REST consumers use `api.get_supported_is456_capability_document` so the public
+supported/held boundary is serialized from the same registry. The two-way route
+accepts only qualified, caller-supplied coefficients and explicit literal-true
+declarations for its single documented interior, four-edge-continuous panel
+case.
 
 ## 0. Unified CLI (v0.9.4+)
 

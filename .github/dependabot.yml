@@ -40,6 +40,15 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    # The maintained runtime is Python 3.11. Revisit these ceilings only with a
+    # coordinated runtime/Pydantic upgrade and clean-environment evidence.
+    ignore:
+      - dependency-name: "numpy"
+        versions: [">=2.5"]
+      - dependency-name: "scipy"
+        versions: [">=1.18"]
+      - dependency-name: "pydantic-core"
+        versions: [">2.46.4"]
 
   # Keep the distributable Python package dependencies up to date.
   - package-ecosystem: "pip"
@@ -77,6 +86,9 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    ignore:
+      - dependency-name: "numpy"
+        versions: [">=2.5"]
 
   # Keep the React application dependencies up to date.
   - package-ecosystem: "npm"

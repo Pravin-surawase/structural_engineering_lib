@@ -26,19 +26,19 @@
     {
       "name": "TASKS.md",
       "type": "documentation",
-      "size_lines": 667,
+      "size_lines": 666,
       "last_updated": "2026-08-10",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "3a2d40b5fb19"
+      "content_hash": "63f106b85012"
     },
     {
       "name": "WORKLOG.md",
       "type": "documentation",
-      "size_lines": 345,
+      "size_lines": 354,
       "last_updated": "2026-08-10",
       "description": "> **One line per item. Compact. Append-only.** > Format: DATE | TASK-ID | what changed | commit",
-      "content_hash": "1318dbfff302"
+      "content_hash": "99219f077170"
     },
     {
       "name": "docs-canonical.json",
@@ -181,7 +181,7 @@
     {
       "name": "planning",
       "path": "planning/",
-      "file_count": 16
+      "file_count": 17
     },
     {
       "name": "publications",
@@ -208,9 +208,9 @@
     {
       "name": "verification",
       "path": "verification/",
-      "file_count": 10,
+      "file_count": 11,
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "df6e805c8441346e"
+  "content_hash": "cce5adbb7d2a20df"
 }

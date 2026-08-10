@@ -7,8 +7,8 @@ When to use: At release time. Bumps version in pyproject.toml and all version st
 This script updates version numbers across the codebase from ONE location.
 
 USAGE:
-    ./scripts/python_runtime.sh scripts/bump_version.py 0.9.2
-    ./scripts/python_runtime.sh scripts/bump_version.py 0.10.0 --dry-run
+    ./scripts/python_runtime.sh scripts/bump_version.py 0.24.0a1
+    ./scripts/python_runtime.sh scripts/bump_version.py 0.24.0a1 --dry-run
     ./scripts/python_runtime.sh scripts/bump_version.py --sync-docs
 
 The single source of truth is Python/pyproject.toml.
@@ -23,6 +23,8 @@ from pathlib import Path
 
 # Root of the repository
 REPO_ROOT = Path(__file__).parent.parent
+ALPHA_VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)a(\d+)$")
+LEGACY_STABLE_VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 
 # Files that need version updates (relative to repo root)
 # MINIMAL SET: Only files that MUST have hardcoded versions
@@ -38,7 +40,7 @@ VERSION_FILES = {
     ],
     # Academic citation
     "CITATION.cff": [
-        (r"^version: [0-9]+\.[0-9]+\.[0-9]+", "version: {version}"),
+        (r"^version: [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "version: {version}"),
         (r"^date-released: .+", "date-released: {date}"),
     ],
     # FastAPI backend version
@@ -58,56 +60,68 @@ VERSION_FILES = {
     ],
     # React settings panel version display
     "react_app/src/components/layout/SettingsPanel.tsx": [
-        (r"v[0-9]+\.[0-9]+\.[0-9]+</span>", "v{version}</span>"),
+        (r"v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?</span>", "v{version}</span>"),
     ],
 }
 
 # Documentation references that should track the library version.
 DOC_VERSION_FILES = {
     "Python/README.md": [
-        (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
-        (r"@v[0-9]+\.[0-9]+\.[0-9]+", "@v{version}"),
-        (r"^## New in v[0-9]+\.[0-9]+\.[0-9]+", "## New in v{version}"),
+        (
+            r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            "**Version:** {version}",
+        ),
+        (r"@v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "@v{version}"),
+        (r"^## New in v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "## New in v{version}"),
     ],
     "docs/getting-started/python-quickstart.md": [
-        (r"@v[0-9]+\.[0-9]+\.[0-9]+", "@v{version}"),
+        (r"@v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "@v{version}"),
     ],
     "docs/reference/api.md": [
         (
-            r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+",
+            r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
             "**Document Version:** {version}",
         ),
     ],
     "docs/getting-started/user-guide.md": [
-        (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
+        (
+            r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            "**Version:** {version}",
+        ),
     ],
     "docs/planning/pre-release-checklist.md": [
         (
-            r"^(Installed metadata version: )[0-9]+\.[0-9]+\.[0-9]+(.*)$",
+            r"^(Installed metadata version: )[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?(.*)$",
             r"\g<1>{version}\g<2>",
         ),
     ],
     "docs/reference/api-stability.md": [
         (
-            r"structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+",
+            r"structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
             "structural-lib-is456=={version}",
         ),
     ],
     "docs/verification/validation-pack.md": [
-        (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
+        (
+            r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            "**Version:** {version}",
+        ),
     ],
     "docs/verification/examples.md": [
-        (r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+", "**Version:** {version}"),
+        (
+            r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            "**Version:** {version}",
+        ),
     ],
     "docs/TASKS.md": [
         (
-            r"^\|\s*\*\*Current\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+",
+            r"^\|\s*\*\*Current\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
             "| **Current** | v{version}",
         ),
     ],
     "docs/planning/next-session-brief.md": [
         (
-            r"^\|\s*\*\*Current\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+",
+            r"^\|\s*\*\*Current\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
             "| **Current** | v{version}",
         ),
     ],
@@ -120,7 +134,7 @@ DOC_DATE_FILES = {
     ],
     "docs/reference/api.md": [
         (
-            r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+",
+            r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
             "**Document Version:** {version}",
         ),
         (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}<br>"),
@@ -132,7 +146,7 @@ DOC_DATE_FILES = {
         (r"^\*\*Updated:\*\* .+", "**Updated:** {date}"),
     ],
     "docs/getting-started/beginners-guide.md": [
-        (r"(Document Version: )[0-9]+\.[0-9]+\.[0-9]+", r"\g<1>{version}"),
+        (r"(Document Version: )[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", r"\g<1>{version}"),
         (r"(Last Updated: ).+", r"\g<1>{date}"),
     ],
     "docs/contributing/development-guide.md": [
@@ -162,6 +176,21 @@ def read_current_version() -> str:
     if match:
         return match.group(1)
     raise ValueError("Could not find version in pyproject.toml")
+
+
+def version_key(version: str) -> tuple[int, int, int, int, int]:
+    """Order supported Alpha identifiers and the legacy stable release."""
+    alpha_match = ALPHA_VERSION_RE.fullmatch(version)
+    if alpha_match:
+        major, minor, patch, alpha = (int(part) for part in alpha_match.groups())
+        return (major, minor, patch, 0, alpha)
+
+    stable_match = LEGACY_STABLE_VERSION_RE.fullmatch(version)
+    if stable_match:
+        major, minor, patch = (int(part) for part in stable_match.groups())
+        return (major, minor, patch, 1, 0)
+
+    raise ValueError(f"Unsupported version format: {version}")
 
 
 def update_file(
@@ -202,7 +231,7 @@ def update_file(
 
 def main():
     parser = argparse.ArgumentParser(description="Bump version across codebase")
-    parser.add_argument("version", nargs="?", help="New version (e.g., 0.9.2)")
+    parser.add_argument("version", nargs="?", help="New Alpha version (e.g., 0.24.0a1)")
     parser.add_argument("--dry-run", action="store_true", help="Show what would change")
     parser.add_argument("--current", action="store_true", help="Show current version")
     parser.add_argument(
@@ -326,24 +355,20 @@ def main():
         print(
             "\nUsage: ./scripts/python_runtime.sh scripts/bump_version.py <new_version>"
         )
-        print("Example: ./scripts/python_runtime.sh scripts/bump_version.py 0.9.2")
+        print("Example: ./scripts/python_runtime.sh scripts/bump_version.py 0.24.0a1")
         return 1
 
     new_version = args.version
 
     # Validate version format
-    if not re.match(r"^\d+\.\d+\.\d+$", new_version):
+    if not ALPHA_VERSION_RE.fullmatch(new_version):
         print(f"ERROR: Invalid version format: {new_version}")
-        print("Expected: X.Y.Z (e.g., 0.9.2, 1.0.0)")
+        print("Expected PEP 440 Alpha format: X.Y.ZaN (e.g., 0.24.0a1)")
         return 1
 
     # Validate version is higher than current
-    def _semver_tuple(v: str) -> tuple[int, int, int]:
-        parts = v.split(".")
-        return (int(parts[0]), int(parts[1]), int(parts[2]))
-
     if not args.force:
-        if _semver_tuple(new_version) <= _semver_tuple(current):
+        if version_key(new_version) <= version_key(current):
             print(
                 f"ERROR: New version {new_version} must be higher than current {current}"
             )

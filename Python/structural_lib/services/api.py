@@ -106,6 +106,8 @@ from structural_lib.services.calculation_report import (  # noqa: F401
 from structural_lib.services.capabilities import (  # noqa: F401
     IS456Capability,
     get_supported_is456_capabilities,
+    get_supported_is456_capability_document,
+    get_supported_is456_semantic_contract,
 )
 from structural_lib.services.column_api import (  # noqa: F401
     biaxial_bending_check_is456,
@@ -317,6 +319,8 @@ __all__ = [
     "design_two_way_slab_is456",
     "OneWaySlabDesignResult",
     # Capability discovery
+    "get_supported_is456_capability_document",
     "get_supported_is456_capabilities",
+    "get_supported_is456_semantic_contract",
     "IS456Capability",
 ]

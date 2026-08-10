@@ -96,8 +96,10 @@ objects, symlinks, and migration records relevant to the current architecture.
 - Preserved explicit `pending` state after editor changes, updated AG Grid's
   selection API, removed the stale 154-beam claim, and rounded sample spans.
 - Corrected BOQ steel weight to include member length and made the dashboard
-  and project BOQ agree; the final live design reports 2,663.4 kg for the
-  bundled 153-beam sample.
+  and project BOQ agree. The then-recorded 2,663.4 kg / 114.8 m³ checkpoint was
+  later found to be unbound to the tracked sample inputs; ADOPT-001 Packet F
+  supersedes it with the identity-bound record in
+  `docs/verification/bundled-sample-boq-evidence.md`.
 - Aligned WebSocket design messages with `BeamDesignResponse`; the frontend
   accepts the current contract and normalizes legacy payloads without replacing
   real capacities or utilization with zeroes.
@@ -106,8 +108,8 @@ objects, symlinks, and migration records relevant to the current architecture.
   browser harness does not surface programmatic Blob downloads as download
   events, the same live responses were also validated byte-for-byte: CSV row
   counts, DXF sections/EOF, and PDF signatures all pass.
-- Verified all 153 imported beams and the final project quantities: 2,663.4 kg
-  steel and 114.8 m³ concrete.
+- Verified all 153 imported beams. Quantity acceptance now uses the later
+  dataset- and calculation-bound Packet F evidence record.
 - Repaired release preflight for macOS reclaimable-memory reporting and
   `.nvmrc` Node selection. Repaired clean-wheel verification to install the
   package's `[dev]` test dependencies. v0.21.7 preflight is READY TO RELEASE

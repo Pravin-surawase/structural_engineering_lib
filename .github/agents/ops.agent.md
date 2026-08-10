@@ -54,8 +54,9 @@ docker compose config
 ```
 
 Use targeted checks while diagnosing and one full gate at closeout. Do not run a
-release, publish, tag, merge, close an issue, or delete a branch without explicit
-user confirmation.
+release, publish, tag, close an issue, or delete a branch without explicit user
+confirmation. Codex may merge an in-scope PR after verifying its reviewed head,
+required checks, conflicts, and blockers.
 
 ## Git/GitHub Boundary
 

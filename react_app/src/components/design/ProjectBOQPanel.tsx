@@ -29,6 +29,12 @@ function downloadBOQCSV(data: ProjectBOQResponse) {
   rows.push(
     `TOTAL,${data.total_beams},${data.grand_total_steel_kg.toFixed(1)},${data.grand_total_concrete_m3.toFixed(2)},${data.grand_total_cost_inr.toFixed(0)}`
   );
+  rows.push("");
+  rows.push(`EVIDENCE,Calculation,${data.evidence.calculation_identity}`);
+  rows.push(`EVIDENCE,Input Hash,${data.evidence.normalized_input_hash}`);
+  if (data.evidence.dataset_sha256) {
+    rows.push(`EVIDENCE,Dataset SHA-256,${data.evidence.dataset_sha256}`);
+  }
 
   const blob = new Blob([rows.join("\n")], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -98,6 +104,14 @@ export function ProjectBOQPanel({ data, isLoading, error }: ProjectBOQPanelProps
             {formatINR(data.grand_total_cost_inr)}
           </p>
         </div>
+      </div>
+
+      <div className="rounded-lg border border-white/8 bg-white/[0.02] p-2.5 text-[10px] text-zinc-400 font-mono break-all">
+        <p>Dataset: {data.evidence.dataset_id ?? "user-supplied"} · {data.evidence.dataset_version ?? "unversioned"}</p>
+        <p>SHA-256: {data.evidence.dataset_sha256 ?? "not supplied"}</p>
+        <p>Calculation: {data.evidence.calculation_identity}</p>
+        <p>Library: {data.evidence.library_version} · Units: {data.evidence.unit_system}</p>
+        <p className="mt-1 text-amber-400/80">Qualified review required before procurement or construction use.</p>
       </div>
 
       {/* By Story Table */}

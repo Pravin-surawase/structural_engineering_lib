@@ -5,6 +5,14 @@
 from pydantic import BaseModel, Field
 
 
+class DatasetReference(BaseModel):
+    """Optional source-dataset identity supplied by an import surface."""
+
+    dataset_id: str = Field(max_length=200)
+    dataset_version: str = Field(max_length=100)
+    dataset_sha256: str = Field(pattern="^[0-9a-f]{64}$")
+
+
 class BeamMetadata(BaseModel):
     """Per-beam metadata for BOQ aggregation."""
 
@@ -34,6 +42,27 @@ class ProjectBOQRequest(BaseModel):
             "Defaults: {25: 6000, 30: 7000, 35: 8000, 40: 9500}"
         ),
     )
+    dataset: DatasetReference | None = Field(
+        default=None, description="Optional identity of the source dataset"
+    )
+
+
+class BOQEvidenceResponse(BaseModel):
+    """Server-generated identity for one BOQ aggregation."""
+
+    artifact_schema: str
+    artifact_schema_version: str
+    library_version: str
+    calculation_identity: str
+    normalized_input_hash: str
+    dataset_id: str | None
+    dataset_version: str | None
+    dataset_sha256: str | None
+    unit_system: str
+    explicit_units: dict[str, str]
+    generated_at: str
+    qualified_review_required: bool
+    qualified_review_requirement: str
 
 
 class SteelSummaryResponse(BaseModel):
@@ -74,3 +103,4 @@ class ProjectBOQResponse(BaseModel):
     grand_total_steel_kg: float = Field(description="Total steel weight in kg")
     grand_total_concrete_m3: float = Field(description="Total concrete volume in m³")
     grand_total_cost_inr: float = Field(description="Grand total cost in ₹")
+    evidence: BOQEvidenceResponse

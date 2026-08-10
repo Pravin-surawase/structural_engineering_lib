@@ -6,7 +6,7 @@ owner: Main Agent and repository owner
 created: 2026-08-10
 last_updated: 2026-08-10
 doc_type: spec
-baseline_commit: 67b85302b0bd3597894fa520a43e24da15bda79c
+baseline_commit: fa0ee99548b82242f8c75056c76c097400a11350
 branch: codex/ui-experience-foundation
 implementation_started: true
 second_audit_integrated: true
@@ -63,7 +63,7 @@ acceptance. The program does not change IS 456 formulas merely to serve the UI.
 The repository owner accepted this document on 2026-08-10. It is the execution
 authority for UIX-001. By explicit owner decision, the current branch owns
 planning plus Session 1; Session 2 uses a fresh branch after the Session 1
-owner-held merge. Execution remains exactly two outcome-gated sessions under
+verified green merge. Execution remains exactly two outcome-gated sessions under
 sections 12 and 16.1.
 
 It supersedes the execution status in
@@ -153,7 +153,10 @@ approval.
 
 ## 4. Verified current baseline
 
-Refresh this table at P0 if the baseline commit changes.
+The original UI observations were captured at `67b85302`. Session 1 now starts
+from `fa0ee995`, which includes ADOPT-001, the Python/React compatibility packets,
+the merge-policy update, and the Dependabot Python 3.11 guard. P0 must refresh
+every quantitative or contract-sensitive row before the Wave 0 checkpoint.
 
 | Area | Verified baseline at `67b85302` | Program treatment |
 |---|---|---|
@@ -755,7 +758,7 @@ SESSION 1 — Compact workbench and essential 3D (P0-P8)
   Wave 1: shell + revisioned state + quick flow + 3D contract/fixture
   Wave 2: project flow -> viewport parity -> essential 3D + integration/UAT
   |
-  | Session 1 exit gate and owner-held merge
+  | Session 1 exit gate and verified green merge
   v
 SESSION 2 — Capability platform and cutover (P9-P15)
   Wave 0: catalogue/client/runner contract lock
@@ -763,7 +766,7 @@ SESSION 2 — Capability platform and cutover (P9-P15)
   Wave 2: bounded no-code -> beam AI manifest/cutover -> full UAT
   |
   v
-Owner decision: merge/release/hold
+Merge when green; owner decision remains for release/hold
 ~~~
 
 At most two bounded subagents may work concurrently with the parent. Reuse the
@@ -954,7 +957,8 @@ missing.
   oversized/timed-out/cancelled/repeated cases;
 - one deterministic beam AI tool manifest without chat or autonomous execution;
 - canonical route cutover/redirect evidence, integrated UAT, quick/frontend/full
-  gates, rollback evidence, and owner-held merge/release decision.
+  gates, rollback evidence, verified merge readiness, and the owner-held release
+  decision.
 
 **Session 2 scope cuts**
 
@@ -1683,7 +1687,7 @@ merge is not required before this read-only wave.
    separate conventional commits for accepted plan/routing, Wave 0 evidence,
    Wave 1 foundations, Wave 2 product flow, and integrated evidence where changes
    are logically separable.
-2. **Session 2 branch:** only after the Session 1 exit gate and owner-held merge,
+2. **Session 2 branch:** only after the Session 1 exit gate and verified green merge,
    create `codex/ui-platform-session-2` from updated main. Use separate commits
    for catalogue/API/renderer, bounded workflow/manifest, cutover, and evidence.
 
@@ -1706,19 +1710,13 @@ worktree. A branch is never checked out, staged, committed, merged, rebased, or
 cleaned from another branch's worktree. Before every implementation wave, the
 parent rechecks worktree status and changed-path overlap.
 
-Current external locks at Session 1 start:
-
-| Parallel branch | Locked paths for UIX-001 | Rule |
-|---|---|---|
-| codex/merge-policy | AGENTS.md and its Git/agent instruction set | Do not edit on UIX-001; Terra is persisted in non-overlapping canonical routing files and memory |
-| codex/react-dependency-compatibility | React package manifests, ImportView, BuildingEditorPage | Do not edit or regenerate these paths until the branch is owner-merged and UIX-001 is updated through the normal non-rewriting flow |
-| codex/python-dependency-compatibility | Python/ruff/requirements dependency files | Keep all dependency changes outside UIX-001 |
-| codex/social-preview | Documentation images | No current UIX overlap; retain separate ownership |
-
-Session 1 Wave 0 is read-only and may proceed with these locks. Wave 2 Stage A
-cannot edit the locked import/editor pages until the React dependency lock clears;
-the parent may prepare new disjoint project-stage components meanwhile. Tests and
-dev servers must not overwrite another worktree's files or kill its processes.
+The former merge-policy, Python-dependency, and React-dependency locks were
+resolved on `main` before the Wave 0 baseline. `codex/social-preview` owns only
+separate documentation-image work and has no current UIX overlap. Dependency
+manifests remain out of scope by program rule, but `ImportView` and
+`BuildingEditorPage` are available for later UIX waves under the normal packet
+ownership map. Tests and dev servers must not overwrite another worktree's files
+or kill its processes.
 Before starting a local server, inspect the intended ports and use an isolated
 port or an explicitly identified current-branch process.
 
@@ -1909,20 +1907,20 @@ After acceptance:
 
 1. refresh `origin/main` and confirm the intended branch/base;
 2. run `./run.sh session brief --agent orchestrator` and `./run.sh session start`;
-3. commit the accepted plan and Terra-routing changes on the current Session 1
-   branch without pushing or merging unless separately authorized;
+3. confirm the accepted plan and Terra-routing commits are present on the current
+   Session 1 branch and keep later wave commits logically separable;
 4. dispatch the two read-only Session 1 Wave 0 packets, integrate P0/P1 evidence,
    and freeze shared contracts before Wave 1;
 5. execute Session 1 Waves 1-2 through follow-up packets and pass its exit gate;
-6. obtain the owner-held Session 1 merge decision, then create the Session 2 branch
-   from updated main;
+6. merge Session 1 after its reviewed head and required checks are green, then
+   create the Session 2 branch from updated main;
 7. execute Session 2 Waves 0-2 and pass its full exit gate;
 8. keep no-code execution unavailable by default; enable it only for explicit
    test/development UAT until a separate public authentication/rate-limit decision;
 9. move only optional scope to backlog; never move a failed critical gate into a
    presumed third cleanup session;
-10. do not merge, release, delete branches, or make professional-use claims without
-    explicit owner approval.
+10. do not release, delete branches, or make professional-use claims without the
+    required owner approval.
 
 ## 23. Final acceptance checklist
 
@@ -1958,4 +1956,5 @@ After acceptance:
 - [ ] `./run.sh check --quick` passes at integrated milestones.
 - [ ] One final `./run.sh check` passes at P15.
 - [ ] Live UAT evidence and known limitations are recorded.
-- [ ] Merge, release, branch deletion, and professional-use claims remain owner-held.
+- [ ] Merge follows the verified-green policy; release, branch deletion, and
+      professional-use claims remain owner-held.

@@ -1,11 +1,18 @@
-name: Deploy Docs
+name: Validate Documentation
 
 on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - 'Python/pyproject.toml'
+      - 'Python/structural_lib/**'
   push:
     branches: [main]
     paths:
       - 'docs/**'
       - 'mkdocs.yml'
+      - 'Python/pyproject.toml'
       - 'Python/structural_lib/**'
   workflow_dispatch:
 
@@ -17,11 +24,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
-    name: Deploy MkDocs
+  build:
+    name: Build MkDocs
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v7
         with:
@@ -37,7 +42,7 @@ jobs:
           pip install "mkdocs-material>=9.5,<10" "mkdocstrings[python]>=0.25,<1"
           pip install -e Python/
 
-      - name: Deploy to GitHub Pages
-        run: mkdocs gh-deploy --force --clean --strict
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # GitHub Pages is intentionally owner-configured. Until its settings and
+      # deployed URL are verified, this workflow provides build evidence only.
+      - name: Build documentation strictly
+        run: mkdocs build --strict

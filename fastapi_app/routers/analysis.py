@@ -10,7 +10,7 @@ from fastapi import APIRouter, status
 from fastapi.responses import JSONResponse
 
 from fastapi_app.error_utils import sanitize_error
-from fastapi_app.models.response import error_response, success_response
+from fastapi_app.models.response import APIResponse, error_response, success_response
 from fastapi_app.models.analysis import (
     LoadAnalysisRequest,
     LoadAnalysisResponse,
@@ -22,6 +22,7 @@ from fastapi_app.models.analysis import (
     EfficiencyMetrics,
     CostEstimate,
 )
+from fastapi_app.models.metadata import CodeClausesResponse
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +39,7 @@ router = APIRouter(
 
 @router.post(
     "/loads/simple",
+    response_model=APIResponse[LoadAnalysisResponse],
     summary="Simple Load Analysis (BMD/SFD)",
     description="Compute BMD and SFD for a beam with UDL and/or point loads. "
     "Returns discretized diagrams + critical points (max moment, max shear).",
@@ -123,6 +125,7 @@ async def analyze_loads(request: LoadAnalysisRequest):
 
 @router.post(
     "/beam/smart",
+    response_model=APIResponse[SmartAnalysisResponse],
     summary="Smart Beam Analysis",
     description="Get AI-assisted analysis with suggestions for beam design.",
 )
@@ -286,6 +289,7 @@ async def smart_analyze_beam(
 
 @router.get(
     "/code-clauses",
+    response_model=APIResponse[CodeClausesResponse],
     summary="Get Code Clause References",
     description="Get IS 456 clause references for common checks.",
 )

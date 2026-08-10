@@ -7,8 +7,8 @@ When to use: At release time. Runs release verification checks and manages the r
 Consolidates: release.py, verify_release.py, check_release_docs.py, check_pre_release_checklist.py
 
 USAGE:
-    python scripts/release.py run 0.9.7 [--dry-run] [--no-open]
-    python scripts/release.py verify [--version 0.9.7] [--source wheel]
+    python scripts/release.py run 0.24.0a1 [--dry-run] [--no-open]
+    python scripts/release.py verify [--version 0.24.0a1] [--source wheel]
     python scripts/release.py check-docs
     python scripts/release.py checklist
 """
@@ -44,7 +44,9 @@ PYPROJECT = REPO_ROOT / "Python" / "pyproject.toml"
 FASTAPI_INIT = REPO_ROOT / "fastapi_app" / "__init__.py"
 REACT_PACKAGE = REPO_ROOT / "react_app" / "package.json"
 CITATION = REPO_ROOT / "CITATION.cff"
-VERSION_RE = re.compile(r"^##\s*\[?v?(\d+\.\d+\.\d+)\b")
+ALPHA_VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)a(\d+)$")
+LEGACY_STABLE_VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
+VERSION_RE = re.compile(r"^##\s*\[?v?(\d+\.\d+\.\d+(?:a\d+)?)\b")
 _EXCLUDED_WHEEL_PREFIXES = (
     "structural_lib/_migration_fixtures/",
     "structural_lib/codes/aci318/",
@@ -53,12 +55,19 @@ _EXCLUDED_WHEEL_PREFIXES = (
 )
 
 
-def _semver_tuple(v: str) -> tuple[int, int, int]:
-    """Parse version string to comparable tuple."""
-    parts = v.split(".")
-    if len(parts) != 3:
-        return (0, 0, 0)
-    return (int(parts[0]), int(parts[1]), int(parts[2]))
+def _release_version_key(v: str) -> tuple[int, int, int, int, int]:
+    """Order supported Alpha identifiers and the legacy stable release."""
+    alpha_match = ALPHA_VERSION_RE.fullmatch(v)
+    if alpha_match:
+        major, minor, patch, alpha = (int(part) for part in alpha_match.groups())
+        return (major, minor, patch, 0, alpha)
+
+    stable_match = LEGACY_STABLE_VERSION_RE.fullmatch(v)
+    if stable_match:
+        major, minor, patch = (int(part) for part in stable_match.groups())
+        return (major, minor, patch, 1, 0)
+
+    raise ValueError(f"Unsupported version format: {v}")
 
 
 # ─── Candidate version evidence ────────────────────────────────────────────
@@ -96,7 +105,7 @@ def _latest_documented_version(path: Path) -> str:
     versions = _parse_versions(path)
     if not versions:
         raise ValueError(f"no release version found in {path.relative_to(REPO_ROOT)}")
-    return max(versions, key=_semver_tuple)
+    return max(versions, key=_release_version_key)
 
 
 def _release_authorization_recorded(expected: str) -> bool:
@@ -199,7 +208,8 @@ def _wheel_metadata_version(wheel: Path) -> str:
 
 def _wheel_filename_version(wheel: Path) -> str:
     match = re.match(
-        r"^structural_lib_is456-([0-9]+\.[0-9]+\.[0-9]+)-.+\.whl$", wheel.name
+        r"^structural_lib_is456-([0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?)-.+\.whl$",
+        wheel.name,
     )
     if not match:
         raise ValueError(f"unexpected wheel filename: {wheel.name}")
@@ -516,7 +526,7 @@ def cmd_run(args: argparse.Namespace) -> int:
         )
         print(result.stdout.strip())
         print("\nUsage: python scripts/release.py run <new_version>")
-        print("Example: python scripts/release.py run 0.9.7")
+        print("Example: python scripts/release.py run 0.24.0a1")
         return 1
 
     version = args.version
@@ -575,7 +585,10 @@ def cmd_run(args: argparse.Namespace) -> int:
     )
 
     try:
-        if _semver_tuple(version) <= _semver_tuple(current_version):
+        if not ALPHA_VERSION_RE.fullmatch(version):
+            print(f"  ERROR: Version {version} must use PEP 440 Alpha format X.Y.ZaN")
+            return 1
+        if _release_version_key(version) <= _release_version_key(current_version):
             print(
                 f"  ERROR: New version {version} must be higher than current {current_version}"
             )
@@ -856,10 +869,10 @@ def cmd_check_docs(args: argparse.Namespace) -> int:
         return 1
 
     missing_in_releases = sorted(
-        set(changelog_versions) - set(releases_versions), key=_semver_tuple
+        set(changelog_versions) - set(releases_versions), key=_release_version_key
     )
     missing_in_changelog = sorted(
-        set(releases_versions) - set(changelog_versions), key=_semver_tuple
+        set(releases_versions) - set(changelog_versions), key=_release_version_key
     )
 
     if missing_in_releases:
@@ -874,8 +887,8 @@ def cmd_check_docs(args: argparse.Namespace) -> int:
             print(f"  - {v}")
         return 1
 
-    latest_changelog = max(changelog_versions, key=_semver_tuple)
-    latest_releases = max(releases_versions, key=_semver_tuple)
+    latest_changelog = max(changelog_versions, key=_release_version_key)
+    latest_releases = max(releases_versions, key=_release_version_key)
     if latest_changelog != latest_releases:
         print(
             f"ERROR: Latest versions do not match: CHANGELOG={latest_changelog}, RELEASES={latest_releases}"
@@ -1039,12 +1052,13 @@ def cmd_preflight(args: argparse.Namespace) -> int:
         warnings += 1
 
     if args.version:
-        if not re.match(r"^\d+\.\d+\.\d+$", args.version):
+        if not ALPHA_VERSION_RE.fullmatch(args.version):
             print(f"  ✗ Invalid version format: {args.version}")
+            print("    Expected PEP 440 Alpha format X.Y.ZaN (for example, 0.24.0a1)")
             errors += 1
         else:
             try:
-                if _semver_tuple(args.version) <= _semver_tuple(current):
+                if _release_version_key(args.version) <= _release_version_key(current):
                     print(f"  ✗ Target {args.version} is not higher than {current}")
                     errors += 1
                 else:

@@ -275,6 +275,23 @@ export interface ProjectBOQResponse {
   grand_total_steel_kg: number;
   grand_total_concrete_m3: number;
   grand_total_cost_inr: number;
+  evidence: ProjectBOQEvidence;
+}
+
+export interface ProjectBOQEvidence {
+  artifact_schema: string;
+  artifact_schema_version: string;
+  library_version: string;
+  calculation_identity: string;
+  normalized_input_hash: string;
+  dataset_id: string | null;
+  dataset_version: string | null;
+  dataset_sha256: string | null;
+  unit_system: string;
+  explicit_units: Record<string, string>;
+  generated_at: string;
+  qualified_review_required: boolean;
+  qualified_review_requirement: string;
 }
 
 interface ProjectBOQBeam {
@@ -289,6 +306,11 @@ interface ProjectBOQBeam {
 
 interface ProjectBOQRequest {
   beams: ProjectBOQBeam[];
+  dataset?: {
+    dataset_id: string;
+    dataset_version: string;
+    dataset_sha256: string;
+  };
 }
 
 async function fetchProjectBOQ(

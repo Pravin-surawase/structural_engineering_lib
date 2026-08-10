@@ -34,6 +34,15 @@ tags: []
 
 | Date | Task | Change | Commit |
 |------|------|--------|--------|
+| 2026-08-10 | ADOPT-001 | Closed Packets A-G with 6,010 tests, full repository gates, browser evidence, owner holds, and current indexes | 3bda5072 |
+| 2026-08-10 | ADOPT-001-B | Exposed one canonical supported/held capability inventory through Python, CLI JSON, REST, and public AI metadata | 4f05a85c |
+| 2026-08-10 | ADOPT-001-C | Added typed success contracts across all 63 HTTP operations while preserving runtime envelopes | 58a890d0 |
+| 2026-08-10 | ADOPT-001-D | Made production-like startup fail closed without authentication and a non-placeholder JWT secret | c1cf0599 |
+| 2026-08-10 | ADOPT-001-E | Bound beam REST and report results to normalized input and calculation identities | bce01a54 |
+| 2026-08-10 | ADOPT-001-F | Added exact React trust presentation, export holds, and a dataset-bound 153-beam BOQ record | 0a53f94f |
+| 2026-08-10 | ADOPT-001-G | Made docs CI build-only until Pages is configured and enforced PEP 440 Alpha publication identifiers | e019a7dc |
+| 2026-08-10 | ADOPT-001-E | Preserved byte-identical legacy HTML when report evidence is absent | af528d0f |
+| 2026-08-10 | ADOPT-001 | Added the adoption/trust plan, repaired executable Python/REST examples, and added public-contract regressions | 88bca3c1 |
 | 2026-08-09 | MAINT-008 | Added a truthful aggregate PR Gate and removed nine superseded pull-request workflow triggers after the live gate passed | 07ecf357 |
 | 2026-08-09 | MAINT-008 | Removed hidden session mutations so summary, sync, and end are read-only unless an explicit write flag is supplied | fc4d0249 |
 | 2026-08-09 | MAINT-008 | Repaired all 14 skill entrypoints, canonicalized tier/route validation, and made supporting evidence commands fail closed | 5ac70ac1 |

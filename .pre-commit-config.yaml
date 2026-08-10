@@ -9,6 +9,9 @@ repos:
     hooks:
       - id: check-yaml
         files: \.(yml|yaml)$  # Only run on YAML files
+        # MkDocs uses a Python callable tag for Mermaid fences. Its config is
+        # validated by the strict MkDocs workflow instead of the safe YAML loader.
+        exclude: ^mkdocs\.yml$
       - id: check-toml
         files: \.toml$  # Only run on TOML files
       - id: check-json
@@ -24,7 +27,7 @@ repos:
 
   # Python formatting
   - repo: https://github.com/psf/black
-    rev: 25.9.0
+    rev: 26.5.1
     hooks:
       - id: black
         language_version: python3
@@ -36,7 +39,7 @@ repos:
 
   # Python linting
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.8
+    rev: v0.16.1
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -204,33 +207,12 @@ repos:
         pass_filenames: false
         files: ^docs/.*\.md$
         verbose: true
-      - id: apptest-smoke
-        name: AppTest smoke tests (runtime validation)
-        entry: bash -c './scripts/python_runtime.sh -m pytest tests/apptest/test_all_pages_smoke.py -v --tb=short -x'
-        language: system
-        pass_filenames: false
-        files: ^streamlit_app/pages/.*\.py$
-        verbose: true
       - id: check-api-signatures
         name: Check React/FastAPI endpoint contract
         entry: ./scripts/python_runtime.sh scripts/check_api.py --signatures
         language: system
         pass_filenames: false
         files: ^(react_app/src/.*\.(ts|tsx)|fastapi_app/.*\.py)$
-        verbose: true
-      - id: pylint-streamlit
-        name: Pylint check for Streamlit app
-        entry: bash -c './scripts/python_runtime.sh -m pylint --rcfile=.pylintrc-streamlit --exit-zero streamlit_app/pages/*.py'
-        language: system
-        pass_filenames: false
-        files: ^streamlit_app/pages/.*\.py$
-        verbose: true
-      - id: check-type-annotations
-        name: Check type annotations (Streamlit utils)
-        entry: ./scripts/python_runtime.sh scripts/check_type_annotations.py --lenient
-        language: system
-        pass_filenames: false
-        files: ^streamlit_app/utils/.*\.py$
         verbose: true
       - id: check-doc-metadata
         name: Check doc metadata (warning mode)

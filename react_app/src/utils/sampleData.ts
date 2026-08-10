@@ -1,7 +1,10 @@
-import type { SampleBeam } from '../api/client';
+import type { SampleBeam, SampleDatasetEvidence } from '../api/client';
 import type { BeamCSVRow } from '../types/csv';
 
-export function mapSampleBeamsToRows(beams: SampleBeam[]): BeamCSVRow[] {
+export function mapSampleBeamsToRows(
+  beams: SampleBeam[],
+  dataset?: SampleDatasetEvidence,
+): BeamCSVRow[] {
   return beams.map((beam) => ({
     id: beam.id,
     story: beam.story,
@@ -16,5 +19,8 @@ export function mapSampleBeamsToRows(beams: SampleBeam[]): BeamCSVRow[] {
     cover: beam.cover_mm,
     point1: beam.point1,
     point2: beam.point2,
+    dataset_id: dataset?.dataset_id,
+    dataset_version: dataset?.dataset_version,
+    dataset_sha256: dataset?.dataset_sha256,
   }));
 }

@@ -34,6 +34,8 @@ import jwt
 from jwt.exceptions import PyJWTError
 from pydantic import BaseModel
 
+from fastapi_app.config import is_insecure_jwt_secret
+
 auth_logger = logging.getLogger("auth.events")
 
 # =============================================================================
@@ -45,7 +47,7 @@ auth_logger = logging.getLogger("auth.events")
 SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dev-secret-key-change-in-production")
 _ENVIRONMENT = os.getenv("ENVIRONMENT", "development").lower()
 
-if "change" in SECRET_KEY or "dev-secret" in SECRET_KEY:
+if is_insecure_jwt_secret(SECRET_KEY):
     if _ENVIRONMENT in ("production", "prod", "staging"):
         raise RuntimeError(
             "JWT_SECRET_KEY is using a default/insecure value. "

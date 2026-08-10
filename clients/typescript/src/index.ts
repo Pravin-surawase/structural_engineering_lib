@@ -13,6 +13,13 @@ export interface BeamDesignRequest {
   fy: number;
 }
 
+export interface APIResponse<T> {
+  success: boolean;
+  data: T;
+  error?: string | Record<string, unknown>;
+  clause_refs?: Record<string, string>;
+}
+
 export interface FlexureResult {
   ast_required: number;
   ast_min: number;
@@ -52,9 +59,17 @@ export interface HealthResponse {
 }
 
 export interface GeometryResult {
-  volume: number;
-  surface_area: number;
-  weight: number;
+  success: boolean;
+  message: string;
+  components: Array<Record<string, unknown>>;
+  bounding_box: Record<string, number>;
+  center: number[];
+  suggested_camera_distance: number;
+  total_vertices: number;
+  total_faces: number;
+  stl_base64?: string | null;
+  gltf_json?: Record<string, unknown> | null;
+  warnings?: string[];
 }
 
 export class StructuralDesignClient {
@@ -87,10 +102,14 @@ export class StructuralDesignClient {
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(`Design failed: ${error.detail || response.status}`);
+      throw new Error(`Design failed: ${JSON.stringify(error.error) || response.status}`);
     }
 
-    return response.json();
+    const envelope = await response.json() as APIResponse<BeamDesignResponse>;
+    if (!envelope.success) {
+      throw new Error(`Design failed: ${JSON.stringify(envelope.error)}`);
+    }
+    return envelope.data;
   }
 
   /**
@@ -101,19 +120,21 @@ export class StructuralDesignClient {
     depth: number,
     length: number,
   ): Promise<GeometryResult> {
-    const params = new URLSearchParams({
-      width: String(width),
-      depth: String(depth),
-      length: String(length),
+    const response = await fetch(`${this.baseUrl}/api/v1/geometry/beam/3d`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ width, depth, length }),
     });
-
-    const response = await fetch(`${this.baseUrl}/api/v1/geometry/beam?${params}`);
 
     if (!response.ok) {
       throw new Error(`Geometry calculation failed: ${response.status}`);
     }
 
-    return response.json();
+    const envelope = await response.json() as APIResponse<GeometryResult>;
+    if (!envelope.success) {
+      throw new Error(`Geometry generation failed: ${JSON.stringify(envelope.error)}`);
+    }
+    return envelope.data;
   }
 }
 
