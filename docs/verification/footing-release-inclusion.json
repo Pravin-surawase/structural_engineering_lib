@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "record_id": "FOOT-ISO-RC-V1-RELEASE-INCLUSION",
+  "source_branch": "codex/footing-isolated-v1",
+  "source_head": "886871aef93d9a955a3cc2fa613fe49bad589ce7",
+  "source_commits": [
+    "1068557b",
+    "8e2364a5",
+    "de75405c",
+    "b4b64d56",
+    "886871ae"
+  ],
+  "scope": "FOOT-ISO-RC-V1 phases A-D1: calculation corrections, concentric isolated-footing service, detailing, FastAPI route, and React workbench.",
+  "scope_boundary": "Report/export and catalogue closeout were not implemented in D1 and are not claimed by this receipt.",
+  "required_owned_file_sha256": {
+    "Python/structural_lib/codes/is456/footing/detailing.py": "b85742a74f64d004a1f96c0a77f4213504045f3448f8b24c2d7aca0ee7580cc4",
+    "Python/structural_lib/services/footing_api.py": "35cd6f767ce99262949648bd88e5ce48164dca4e6bcc8c487c565dd0e898967a",
+    "Python/tests/test_footing_api.py": "3b8e731059825ded1c42e5bedb28a66c64df3552d52e7da39f477d5554d30d13",
+    "Python/tests/test_footing_detailing.py": "579e20e1c4d6cd03f5f1d01187c86d224f5b600a49e6f84c9a296ad99b965446",
+    "fastapi_app/models/footing.py": "fb855613f669386622ad296ad1efd66867fa177f32f1c2c9fdc729565c1e7ea1",
+    "fastapi_app/routers/footing.py": "b141176f189ceccc9591a37b2743042e2a4be65c25ccff6dd88e3b58f1d4320f",
+    "fastapi_app/tests/test_footing.py": "7a6e0ad239a8ac0929654314290d363b8384f9cbea73a13092d5be6e8ba8f611",
+    "react_app/src/features/footing/ConcentricIsolatedFootingPage.tsx": "7065be7cb39be4dd0008cadbcb05ba708d31ba13a65b530608f0f527f042d1a6",
+    "react_app/src/features/footing/FootingInputForm.tsx": "d6144c17ad02c1d2d7c23bb6c5fc7299f529dd0fd4c1f1cd6ebf92497ce6270a",
+    "react_app/src/features/footing/FootingResults.tsx": "0bf9314eed7d2533e109c25dae63961d45ea433e35486348b770730fa89699f8",
+    "react_app/src/features/footing/__tests__/ConcentricIsolatedFootingPage.test.tsx": "3afd297d48a74397132847da5e7d764c747d51a8226408120ae2a23a92ad04b9",
+    "react_app/src/features/footing/__tests__/client.test.ts": "3ab53a0efe50044aa4fe32b37664d83a986ebfcbe0c5e23e49ca99b1744f4ec6",
+    "react_app/src/features/footing/client.ts": "6c763ab2bb187a36a8b4eb7baf7deecc9e58a43acd2e104952fa1179c95af5d9",
+    "react_app/src/features/footing/draft.ts": "1e18cc0f4db253e9e4a49588a80fe73ee54a165254c4a4c27bd34ac05188b90f",
+    "react_app/src/features/footing/types.ts": "6f6dc4f55f95edd18d25105b86d6bf4b30a8f7dd691475626dee7fded0f4b5d4"
+  },
+  "required_shared_markers": {
+    "Python/structural_lib/codes/is456/footing/_common.py": [
+      "overall_thickness_mm"
+    ],
+    "Python/structural_lib/codes/is456/footing/one_way_shear.py": [
+      "pt_L_percent",
+      "pt_B_percent"
+    ],
+    "fastapi_app/main.py": [
+      "footing.router"
+    ],
+    "react_app/src/App.tsx": [
+      "/workbench/footing/isolated/concentric"
+    ],
+    "react_app/src/app/navigation.ts": [
+      "/workbench/footing"
+    ],
+    "react_app/src/components/pages/WorkbenchHomePage.tsx": [
+      "/workbench/footing/isolated/concentric"
+    ]
+  }
+}

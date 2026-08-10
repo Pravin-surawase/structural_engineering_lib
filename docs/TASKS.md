@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — IS456-SLAB-001 bounded solid-slab software implementation and live verification complete; pre-launch and qualified-review gates remain
+**Updated:** 2026-08-11 — IS456-SLAB-PRELAUNCH public-distribution permission recorded and release-enforced; qualified-review gate remains
 
 ---
 
@@ -132,7 +132,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| IS456-SLAB-PRELAUNCH | Record formal source/licensing permission before public production distribution of normalized IS 456 data | Owner/source reviewer | 1 gate | P0 | ⏸ REQUIRED BEFORE LAUNCH; not an implementation blocker |
+| FOOT-ISO-RC-V1-INTEGRATION | Integrate and publish-protect the complete clean local footing head `886871ae` across Python, FastAPI and React | Main Agent + ops | 1 integration | P0 | ⏸ NEXT ALPHA BLOCKED until inclusion receipt passes; branch is local-only and must not be lost |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL STABLE GATE |
 
 ## Backlog
@@ -150,6 +150,7 @@ held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| IS456-SLAB-PRELAUNCH | Record and enforce source/licensing permission for public distribution of approved-scope normalized IS 456 data | Owner + Main Agent | ✅ DONE — owner confirmed 2026-08-11; canonical record, preflight, candidate, and publish-CI gates added |
 | IS456-SLAB-001 | Implemented simply supported/continuous one-way and common two-way solid slabs with built-in/external coefficients, topology, strips, corner torsion, detailing, serviceability, shear, FastAPI and a revision-safe React workbench | Main Agent | ✅ SOFTWARE COMPLETE — 5,532 Python, 388 FastAPI, 241 React, 30/30 integrated checks and live browser pass; flat slabs held |
 | UIX-001 | Built one compact 3D-first structural workbench and schema-driven bounded workflow foundation | Main Agent | ✅ DONE — PR #721 merged; Pages/release/public runner remain held |
 | DEPS-MAINT-001 | Replaced incompatible Python and React dependency PRs with coherent Python 3.11/Node 24 packets and added recurrence guards | Main Agent | ✅ DONE — PRs #708, #709, and #712 merged |

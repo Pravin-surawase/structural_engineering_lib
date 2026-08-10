@@ -5,6 +5,105 @@
 
 ---
 
+## 2026-08-11 — Public Distribution Permission and Footing Release Guard
+
+**Agent:** Codex
+**Branch:** `codex/is456-slabs-plan`
+**Focus:** Record the owner-confirmed IS 456 public-distribution decision and
+prevent the complete local footing D1 slice from being omitted from publication
+
+### Summary
+
+- Recorded the owner's 2026-08-11 confirmation that source/licensing permission
+  has been obtained for public distribution of normalized IS 456 data within
+  approved feature scopes. Protected source prose, PDFs/pages and unrelated
+  standard content remain excluded.
+- Added one canonical machine-readable permission record and made release run,
+  preflight, candidate verification and publish CI fail closed if it is missing,
+  invalid or narrowed. The record explicitly does not authorize a tag or
+  publication; per-release owner approval remains mandatory.
+- Synchronized the active task board, slab plan/evidence, library-first evidence,
+  handoff, checklist and PR #724 body so the permission gate is no longer
+  described as unresolved.
+- Audited `codex/footing-isolated-v1` at exact clean head `886871ae`. All five
+  commits and the Python/FastAPI/React D1 work are intact locally, but the branch
+  has no upstream and is not integrated into the current release source.
+- Added a release-inclusion receipt covering 15 exact footing-owned file hashes
+  and six shared integration surfaces. Release run, preflight, candidate checks,
+  publish CI, clean-wheel UAT and the artifact manifest now prevent silent
+  omission of the reviewed footing slice.
+- No footing worktree file, branch, commit or Git object was changed. No push,
+  merge, tag, package publication or release was performed.
+
+### Issues encountered
+
+- Active documentation and PR #724 still said source/licensing permission was a
+  pending pre-launch gate after the owner confirmed it had been obtained.
+- The release path checked protected-content exclusions but had no
+  machine-readable public-distribution permission authority.
+- The private source manifest's correct `public_distribution_allowed=false`
+  corpus boundary was being interpreted as if it also blocked separately
+  normalized code data.
+- The complete footing D1 work existed only on a clean local branch with no
+  upstream or PR and was absent from `main` and the current slab/release branch.
+- The first quick gate failed because the updated handoff reached 151 lines,
+  one line over its maintained maximum.
+- The first `0.23.1a1` preflight falsely treated the published v0.23.0 source
+  baseline as unpublished when no candidate wheel was supplied; after that
+  branch was corrected, it still required one brittle authorization phrase
+  instead of accepting the ledger's explicit PyPI/GitHub published status.
+- One exploratory zsh command used an unmatched `scripts/run*.sh` glob, so that
+  portion stopped before the targeted `run.sh` search was rerun successfully.
+
+### Root causes and resolutions
+
+- Permission truth was duplicated as manual prose and was not connected to
+  release execution. `is456-public-distribution-permission.json` is now the
+  canonical bounded decision, and `./run.sh release permission-check` plus all
+  release/publication paths validate it fail closed.
+- Source-corpus handling and normalized-data distribution were conflated. The
+  evidence now states that the private-only manifest continues to govern the
+  protected corpus, while the owner-confirmed record governs approved-scope
+  normalized data; agents are instructed not to reopen the passed gate unless
+  the owner explicitly changes it.
+- Parallel feature work had preservation evidence but no release inclusion
+  control. `footing-release-inclusion.json` binds the reviewed footing head to
+  exact owned-file hashes and cross-layer markers. It passes against the clean
+  footing worktree and intentionally fails on the current branch until an
+  approved integration is complete.
+- The permission handoff initially repeated too much policy text. It was
+  compressed to 149 lines without removing the authority, scope or release
+  boundary; the quick gate then passed 10/10.
+- Preflight tied published-source authorization handling to the presence of a
+  candidate wheel even though the checklist marker is already exact-version and
+  fail-closed. Preflight now always evaluates that version-scoped authorization;
+  the published-state check accepts the ledger's explicit PyPI/GitHub wording.
+  All false document errors are removed without weakening candidate-wheel
+  evidence requirements.
+- The shell search was rerun with an exact `run.sh` path instead of a zsh glob.
+
+### Verification
+
+- `Python/tests/test_release_scripts.py -m 'not slow'` — 49 passed.
+- Footing branch focused Python/FastAPI rerun — 184 passed.
+- Footing branch React gate — ESLint, 246 tests, TypeScript and production build
+  passed; the 34.84 kB lazy footing chunk was produced.
+- The footing inclusion receipt passed against clean head `886871ae` and failed
+  on the current branch with every absent owned file/integration marker listed,
+  proving the next Alpha is blocked until integration.
+- `./run.sh release permission-check` — passed.
+- Ruff, Black, JSON/hash validation and `git diff --check` — passed.
+- `./run.sh check --quick` — 10/10 passed after the handoff correction.
+- `./run.sh release preflight 0.23.1a1` — target format/order, 5,537 Python
+  tests and React build passed; publication remains correctly blocked by the
+  dirty integration tree, 22 missing footing targets and absent wheel.
+- PR #724 remains open/draft; only its obsolete permission sentence changed.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: an unmatched `scripts/run*.sh` zsh glob stopped one search
+  -> the exact `run.sh` path was queried successfully.
+
 ## 2026-08-11 — Recent-Work Maintenance and Cleaning Session
 
 **Agent:** Codex

@@ -4,7 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-11
-- Focus: Recent RC-core work is reconciled; the local maintenance baseline is green and cleaned, with active footing work protected and one shared PR-CI hold recorded
+- Focus: Public-distribution permission is recorded and enforced; the local maintenance baseline remains green, with active footing work protected and one shared PR-CI hold recorded
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
@@ -18,8 +18,18 @@ maintenance checkpoint are discoverable from `git log`
 | State | Target | Decision |
 |---|---|---|
 | **Current** | Local maintenance baseline ready | Health 100/100, audit 19/19, indexes 32/32 and integrated gate 30/30; generated caches are cleaned |
-| **Next** | Owner-selected isolated work | Start from `origin/main` or an explicitly approved stacked base; do not reuse the active footing worktree |
-| **Held** | PRs #724-#726 and launch/engineering use | Shared PR timing gate needs an approved focused correction; formal source/licensing permission and qualified structural-engineering review remain separate gates |
+| **Next** | Next Alpha integration | Preserve and integrate the clean local footing head `886871ae`; its 15 owned-file hashes and six cross-layer markers are now a fail-closed release gate |
+| **Held** | PRs #724-#726, next Alpha, and engineering-use claims | Shared PR timing gate needs correction; footing is not yet integrated or remote-backed; distribution permission passed, while qualified review remains a separate stable/engineering-use gate |
+
+## Public-distribution permission
+
+- The repository owner confirmed source/licensing permission on 2026-08-11 for
+  approved-scope normalized IS 456 data. The canonical record is
+  [`is456-public-distribution-permission.json`](../verification/is456-public-distribution-permission.json);
+  release preflight, candidate checks, and publish CI validate it fail closed.
+- The private corpus remains private, protected prose/images remain excluded,
+  and each release still needs separate owner authorization. Do not report this
+  gate as pending unless the owner explicitly changes the recorded decision.
 
 ## Required Reading
 

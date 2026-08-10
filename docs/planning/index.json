@@ -66,10 +66,10 @@
     {
       "name": "is456-solid-slabs-master-plan.md",
       "type": "documentation",
-      "size_lines": 1093,
-      "last_updated": "2026-08-10",
+      "size_lines": 1100,
+      "last_updated": "2026-08-11",
       "description": "The next element program will complete a useful, evidence-backed solid-slab workflow under IS 456 without pretending to solve every slab system.",
-      "content_hash": "3b314e21a539"
+      "content_hash": "2e10ff4ab194"
     },
     {
       "name": "library-expansion-blueprint-v5.md",
@@ -99,20 +99,20 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 140,
+      "size_lines": 150,
       "last_updated": "2026-08-11",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-11",
-      "content_hash": "dfacc54bb2e0"
+      "content_hash": "208215a372e0"
     },
     {
       "name": "pre-release-checklist.md",
       "type": "documentation",
-      "size_lines": 66,
-      "last_updated": "2026-08-10",
+      "size_lines": 73,
+      "last_updated": "2026-08-11",
       "title": "Pre-Release Checklist",
       "description": "Installed metadata version: 0.23.0 - **Release source:** tag v0.23.0 at 3f880d5bbc338baefc4aec8ed472cafe840a5c99",
-      "content_hash": "c8c34a3bd461"
+      "content_hash": "d26a54cc63fd"
     },
     {
       "name": "professional-library-remediation-plan.md",
@@ -141,5 +141,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "c1519cd4bab40cfc"
+  "content_hash": "e4b406b59c929e63"
 }

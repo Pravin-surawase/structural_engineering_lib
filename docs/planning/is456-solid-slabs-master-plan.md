@@ -4,7 +4,7 @@ title: IS 456 Solid Slabs Expansion Master Plan
 status: active
 owner: Main Agent and repository owner
 created: 2026-08-10
-last_updated: 2026-08-10
+last_updated: 2026-08-11
 doc_type: spec
 baseline_commit: a0e115e17009cc14b3d883e3c291d47c32f7ca4e
 branch: codex/is456-slabs-plan
@@ -16,10 +16,10 @@ flat_slab_status: separate_owner_and_qualified_engineer_approval_required
 **Type:** Master Plan and Implementation Packet
 **Audience:** Product owner, structural-math, library, API, frontend, reviewer,
 tester, and qualified structural-engineering reviewer
-**Status:** S0-S13 implemented and verified; pre-launch permission and qualified-review gates remain
+**Status:** S0-S13 implemented and verified; public-distribution permission passed; qualified-review gate remains
 **Importance:** Critical
 **Created:** 2026-08-10
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 
 ---
 
@@ -58,9 +58,11 @@ methods, unbalanced column moment transfer, or flat-slab punching design.
 
 Packet S0 froze the controlled source identity, coefficient data policy,
 support-case identities, interpolation decision, and benchmark ledger before
-calculation work began. The 2026-08-10 owner decision then authorized direct
-implementation of all IS-code content required by the approved slab scope,
-while keeping public production distribution behind the pre-launch gate.
+calculation work began. The 2026-08-10 owner decision authorized direct
+implementation of all IS-code content required by the approved slab scope. On
+2026-08-11 the owner confirmed source/licensing permission for public
+distribution of that approved-scope normalized data; the release tooling now
+validates the canonical decision record fail closed.
 
 ## 2. Why this is an extension, not a new slab engine
 
@@ -186,15 +188,19 @@ the standard.
 | [IIT Kharagpur/NPTEL Lesson 30 — yield-line analysis](https://archive.nptel.ac.in/content/storage2/courses/105105104/pdf/m12l30.pdf) | Confirms coefficient method is not a universal analysis solver | Background only |
 | [BIS SP 16 record](https://standardsbis.bsbedge.com/search_redirect.aspx?id=17706) | Legacy comparison only | BIS lists SP 16:1980 as withdrawn; it is not current normative authority |
 
-### 4.3 Coefficient data implementation and pre-launch policy
+### 4.3 Coefficient data implementation and distribution policy
 
 On 2026-08-10 the owner authorized direct implementation of any IS code content
 needed by an approved feature scope, including formulas, normalized tables,
-limits, figure-derived values, lookup, and interpolation. Formal permission is
-moved to a mandatory pre-launch gate and is not an implementation blocker or a
-question for later agents to repeat. This slab program therefore implements the
-required coefficient data directly while still separating calculation
-architecture, provenance, and public-release authority:
+limits, figure-derived values, lookup, and interpolation. On 2026-08-11 the
+owner confirmed source/licensing permission for public distribution of that
+approved-scope normalized data. This gate is passed and is not a question for
+later agents to repeat unless the owner explicitly changes the decision. The
+canonical record is
+[`is456-public-distribution-permission.json`](../verification/is456-public-distribution-permission.json).
+This slab program therefore separates calculation architecture, provenance,
+protected-source exclusion, standing distribution permission, and per-release
+execution authority:
 
 1. `CoefficientSourceRecord` identifies standard, edition/amendments, table,
    support case, aspect ratio, extraction reviewer, checksum, and packaging
@@ -207,8 +213,9 @@ architecture, provenance, and public-release authority:
    enter source, tests, docs, package data, logs, or generated indexes.
 5. Tests cover table points, interpolation boundaries, and accepted benchmarks
    without reproducing protected prose.
-6. A production release containing normalized data remains blocked until the
-   formal source/licensing pre-launch gate is recorded as passed.
+6. Release preflight, candidate verification, and publish CI fail closed unless
+   the canonical public-distribution permission record remains valid. A tag or
+   publication still requires separate owner authorization for that release.
 
 ### 4.4 SP 16 treatment
 
@@ -1059,7 +1066,7 @@ project design or replace a qualified structural engineer.
 |---|---|---|
 | May normalized IS 456 coefficients be implemented? | **Approved by owner on 2026-08-10; do not ask again** | Built-in lookup is required implementation scope |
 | Is linear interpolation permitted? | **Approved for implementation on 2026-08-10** with exact endpoint and bounds tests | No extrapolation or silent topology fallback |
-| May a public production release distribute normalized coefficient data? | Verify formal source/licensing permission at pre-launch | Release remains blocked; implementation continues |
+| May a public production release distribute normalized coefficient data? | **Approved by owner on 2026-08-11; canonical record is release-validated; do not ask again unless explicitly changed** | Protected source content remains excluded; each tag/publication still needs separate owner authorization |
 | First continuous load envelope | Equal spans/equal UDL components | Unequal/patterned loading remains unsupported |
 | First two-way completion benchmark | B04 two adjacent discontinuous edges | Use another case only with equal source/benchmark quality |
 | Bar selection versus provided-bar check | Provided-bar check first | Optimization deferred |
