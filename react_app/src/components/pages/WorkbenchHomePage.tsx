@@ -1,9 +1,11 @@
-import { ArrowRight, Boxes, Calculator, ShieldCheck } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { ArrowRight, Boxes, Calculator, ShieldCheck, Workflow } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { projectStagePath } from '../../app/navigation';
 import { WorkbenchHeader } from '../workbench/WorkbenchHeader';
 import { WorkbenchPanel } from '../workbench/WorkbenchPanel';
 import { WorkbenchShell } from '../workbench/WorkbenchShell';
 import { useWorkspaceStore } from '../../workspace/workspaceStore';
+import { WORKFLOW_RUNNER_ENABLED } from '../../features/automation/config';
 
 export interface WorkbenchHomePageProps {
   initialView?: 'workbench' | 'projects';
@@ -13,6 +15,7 @@ export function WorkbenchHomePage({
   initialView = 'workbench',
 }: WorkbenchHomePageProps) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const workspace = useWorkspaceStore((state) => state.snapshot);
   const loadState = useWorkspaceStore((state) => state.loadState);
   const loadError = useWorkspaceStore((state) => state.loadError);
@@ -39,6 +42,11 @@ export function WorkbenchHomePage({
       )}
     >
       <div className="mx-auto grid max-w-5xl gap-4 p-4 pb-24 sm:p-6 md:grid-cols-2 md:pb-8">
+        {searchParams.get('recovery') === 'project-required' ? (
+          <div className="rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 text-sm text-amber-100 md:col-span-2" role="alert">
+            Open an existing project or import a new one before using that project stage.
+          </div>
+        ) : null}
         {workspace ? (
           <WorkbenchPanel
             title="Continue project"
@@ -51,10 +59,10 @@ export function WorkbenchHomePage({
               </p>
               <button
                 type="button"
-                onClick={() => navigate('/editor')}
+                onClick={() => navigate(projectStagePath(workspace.projectId, workspace.selectedStage))}
                 className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500"
               >
-                Resume review
+                Resume project
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
@@ -93,6 +101,33 @@ export function WorkbenchHomePage({
             </div>
           </div>
         </WorkbenchPanel>
+
+        {WORKFLOW_RUNNER_ENABLED ? (
+          <WorkbenchPanel
+            title="Beam workflow"
+            description="Build and run the one approved development workflow."
+          >
+            <div className="flex items-start gap-3">
+              <span className="rounded-xl bg-cyan-500/10 p-2.5 text-cyan-300">
+                <Workflow className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm leading-6 text-zinc-400">
+                  Ordered input, validation, beam design, review stop and evidence
+                  export with fixed handlers and bounded execution.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => navigate('/workbench/automation')}
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200"
+                >
+                  Open workflow
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          </WorkbenchPanel>
+        ) : null}
 
         <WorkbenchPanel
           title="Project workflow"

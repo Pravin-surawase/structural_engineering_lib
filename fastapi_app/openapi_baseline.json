@@ -2742,6 +2742,266 @@
         "title": "APIResponse[TorsionDesignResponse]",
         "type": "object"
       },
+      "APIResponse_WorkflowCancellationResponse_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorkflowCancellationResponse"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[WorkflowCancellationResponse]",
+        "type": "object"
+      },
+      "APIResponse_WorkflowCatalogDocumentModel_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorkflowCatalogDocumentModel"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[WorkflowCatalogDocumentModel]",
+        "type": "object"
+      },
+      "APIResponse_WorkflowDefinitionModel_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorkflowDefinitionModel"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[WorkflowDefinitionModel]",
+        "type": "object"
+      },
+      "APIResponse_WorkflowRunResponse_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorkflowRunResponse"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[WorkflowRunResponse]",
+        "type": "object"
+      },
+      "APIResponse_WorkflowValidationResponse_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/WorkflowValidationResponse"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[WorkflowValidationResponse]",
+        "type": "object"
+      },
       "AdditionalMomentRequest": {
         "description": "Request for additional moment calculation per IS 456 Cl 39.7.1.",
         "properties": {
@@ -5422,6 +5682,172 @@
           "format_detected"
         ],
         "title": "CSVImportResponse",
+        "type": "object"
+      },
+      "CatalogExampleModel": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "values": {
+            "items": {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "type": "string"
+                },
+                {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              ],
+              "type": "array"
+            },
+            "title": "Values",
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "values"
+        ],
+        "title": "CatalogExampleModel",
+        "type": "object"
+      },
+      "CatalogFieldModel": {
+        "properties": {
+          "choices": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Choices",
+            "type": "array"
+          },
+          "default": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default"
+          },
+          "field_id": {
+            "title": "Field Id",
+            "type": "string"
+          },
+          "group": {
+            "title": "Group",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "maximum": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum"
+          },
+          "minimum": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minimum"
+          },
+          "required": {
+            "title": "Required",
+            "type": "boolean"
+          },
+          "semantic_ref": {
+            "title": "Semantic Ref",
+            "type": "string"
+          },
+          "transport_name": {
+            "title": "Transport Name",
+            "type": "string"
+          },
+          "unit": {
+            "title": "Unit",
+            "type": "string"
+          },
+          "widget": {
+            "enum": [
+              "number",
+              "select"
+            ],
+            "title": "Widget",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field_id",
+          "transport_name",
+          "semantic_ref",
+          "label",
+          "group",
+          "widget",
+          "unit",
+          "required",
+          "default",
+          "choices"
+        ],
+        "title": "CatalogFieldModel",
         "type": "object"
       },
       "CheckDetail": {
@@ -13693,6 +14119,580 @@
         "title": "ValidationResult",
         "type": "object"
       },
+      "WorkflowAuditModel": {
+        "properties": {
+          "review_stop": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review Stop"
+          }
+        },
+        "required": [
+          "review_stop"
+        ],
+        "title": "WorkflowAuditModel",
+        "type": "object"
+      },
+      "WorkflowBindingModel": {
+        "additionalProperties": false,
+        "properties": {
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "target": {
+            "title": "Target",
+            "type": "string"
+          },
+          "unit_contract": {
+            "title": "Unit Contract",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source",
+          "target",
+          "unit_contract"
+        ],
+        "title": "WorkflowBindingModel",
+        "type": "object"
+      },
+      "WorkflowCancellationResponse": {
+        "properties": {
+          "cancellation_requested": {
+            "title": "Cancellation Requested",
+            "type": "boolean"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "cancellation_requested"
+        ],
+        "title": "WorkflowCancellationResponse",
+        "type": "object"
+      },
+      "WorkflowCapabilityModel": {
+        "properties": {
+          "capability_id": {
+            "title": "Capability Id",
+            "type": "string"
+          },
+          "capability_version": {
+            "title": "Capability Version",
+            "type": "string"
+          },
+          "element": {
+            "title": "Element",
+            "type": "string"
+          },
+          "examples": {
+            "items": {
+              "$ref": "#/components/schemas/CatalogExampleModel"
+            },
+            "title": "Examples",
+            "type": "array"
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/CatalogFieldModel"
+            },
+            "title": "Fields",
+            "type": "array"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "next_actions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Next Actions",
+            "type": "array"
+          },
+          "prerequisites": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Prerequisites",
+            "type": "array"
+          },
+          "qualified_review_required": {
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "request_schema_id": {
+            "title": "Request Schema Id",
+            "type": "string"
+          },
+          "result_schema_id": {
+            "title": "Result Schema Id",
+            "type": "string"
+          },
+          "semantic_workflow_id": {
+            "title": "Semantic Workflow Id",
+            "type": "string"
+          },
+          "service_adapter_id": {
+            "title": "Service Adapter Id",
+            "type": "string"
+          },
+          "status_semantic_ref": {
+            "title": "Status Semantic Ref",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "visualization_affordances": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Visualization Affordances",
+            "type": "array"
+          }
+        },
+        "required": [
+          "capability_id",
+          "capability_version",
+          "element",
+          "title",
+          "summary",
+          "semantic_workflow_id",
+          "service_adapter_id",
+          "request_schema_id",
+          "result_schema_id",
+          "status_semantic_ref",
+          "fields",
+          "prerequisites",
+          "next_actions",
+          "visualization_affordances",
+          "examples",
+          "limitations",
+          "qualified_review_required"
+        ],
+        "title": "WorkflowCapabilityModel",
+        "type": "object"
+      },
+      "WorkflowCatalogDocumentModel": {
+        "properties": {
+          "capabilities": {
+            "items": {
+              "$ref": "#/components/schemas/WorkflowCapabilityModel"
+            },
+            "title": "Capabilities",
+            "type": "array"
+          },
+          "catalog_version": {
+            "title": "Catalog Version",
+            "type": "string"
+          },
+          "code_edition": {
+            "title": "Code Edition",
+            "type": "string"
+          },
+          "compatible_versions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Compatible Versions",
+            "type": "array"
+          },
+          "schema_version": {
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "catalog_version",
+          "code_edition",
+          "compatible_versions",
+          "capabilities"
+        ],
+        "title": "WorkflowCatalogDocumentModel",
+        "type": "object"
+      },
+      "WorkflowDefinitionModel": {
+        "additionalProperties": false,
+        "properties": {
+          "bindings": {
+            "items": {
+              "$ref": "#/components/schemas/WorkflowBindingModel"
+            },
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Bindings",
+            "type": "array"
+          },
+          "capability_id": {
+            "const": "is456.beam.design",
+            "title": "Capability Id",
+            "type": "string"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/WorkflowLimitsModel"
+          },
+          "schema_version": {
+            "const": "1.0",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/WorkflowStepDefinitionModel"
+            },
+            "maxItems": 5,
+            "minItems": 5,
+            "title": "Steps",
+            "type": "array"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "workflow_id": {
+            "const": "is456.beam.review",
+            "title": "Workflow Id",
+            "type": "string"
+          },
+          "workflow_version": {
+            "const": "1.0.0",
+            "title": "Workflow Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "workflow_id",
+          "workflow_version",
+          "title",
+          "capability_id",
+          "steps",
+          "bindings",
+          "limits"
+        ],
+        "title": "WorkflowDefinitionModel",
+        "type": "object"
+      },
+      "WorkflowLimitsModel": {
+        "additionalProperties": false,
+        "properties": {
+          "max_batch_items": {
+            "const": 1,
+            "title": "Max Batch Items",
+            "type": "integer"
+          },
+          "max_cached_runs": {
+            "const": 128,
+            "title": "Max Cached Runs",
+            "type": "integer"
+          },
+          "max_concurrency": {
+            "const": 1,
+            "title": "Max Concurrency",
+            "type": "integer"
+          },
+          "max_definition_bytes": {
+            "const": 16384,
+            "title": "Max Definition Bytes",
+            "type": "integer"
+          },
+          "max_input_bytes": {
+            "const": 32768,
+            "title": "Max Input Bytes",
+            "type": "integer"
+          },
+          "max_output_bytes": {
+            "const": 262144,
+            "title": "Max Output Bytes",
+            "type": "integer"
+          },
+          "max_project_members": {
+            "const": 1,
+            "title": "Max Project Members",
+            "type": "integer"
+          },
+          "max_steps": {
+            "const": 5,
+            "title": "Max Steps",
+            "type": "integer"
+          },
+          "max_timeout_ms": {
+            "const": 2000,
+            "title": "Max Timeout Ms",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "max_steps",
+          "max_definition_bytes",
+          "max_input_bytes",
+          "max_output_bytes",
+          "max_timeout_ms",
+          "max_concurrency",
+          "max_project_members",
+          "max_batch_items",
+          "max_cached_runs"
+        ],
+        "title": "WorkflowLimitsModel",
+        "type": "object"
+      },
+      "WorkflowRunRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "definition": {
+            "$ref": "#/components/schemas/WorkflowDefinitionModel"
+          },
+          "inputs": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Inputs",
+            "type": "object"
+          },
+          "review_acknowledged": {
+            "default": false,
+            "title": "Review Acknowledged",
+            "type": "boolean"
+          },
+          "run_id": {
+            "pattern": "^[A-Za-z0-9_-]{1,64}$",
+            "title": "Run Id",
+            "type": "string"
+          },
+          "timeout_ms": {
+            "default": 1500,
+            "maximum": 2000.0,
+            "minimum": 0.0,
+            "title": "Timeout Ms",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "definition",
+          "inputs",
+          "run_id"
+        ],
+        "title": "WorkflowRunRequest",
+        "type": "object"
+      },
+      "WorkflowRunResponse": {
+        "properties": {
+          "audit": {
+            "$ref": "#/components/schemas/WorkflowAuditModel"
+          },
+          "definition_hash": {
+            "title": "Definition Hash",
+            "type": "string"
+          },
+          "export": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Export"
+          },
+          "idempotent_replay": {
+            "title": "Idempotent Replay",
+            "type": "boolean"
+          },
+          "input_hash": {
+            "title": "Input Hash",
+            "type": "string"
+          },
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "COMPLETED",
+              "REVIEW_REQUIRED",
+              "UNSAFE",
+              "CANCELLED",
+              "TIMED_OUT"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/WorkflowStepResultModel"
+            },
+            "title": "Steps",
+            "type": "array"
+          },
+          "workflow_id": {
+            "const": "is456.beam.review",
+            "title": "Workflow Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id",
+          "workflow_id",
+          "status",
+          "steps",
+          "export",
+          "audit",
+          "definition_hash",
+          "input_hash",
+          "idempotent_replay"
+        ],
+        "title": "WorkflowRunResponse",
+        "type": "object"
+      },
+      "WorkflowStepDefinitionModel": {
+        "additionalProperties": false,
+        "properties": {
+          "handler_id": {
+            "title": "Handler Id",
+            "type": "string"
+          },
+          "position": {
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Position",
+            "type": "integer"
+          },
+          "step_id": {
+            "enum": [
+              "input",
+              "validate",
+              "design",
+              "review",
+              "export"
+            ],
+            "title": "Step Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "step_id",
+          "handler_id",
+          "position"
+        ],
+        "title": "WorkflowStepDefinitionModel",
+        "type": "object"
+      },
+      "WorkflowStepResultModel": {
+        "properties": {
+          "output": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "step_id": {
+            "title": "Step Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "step_id",
+          "status"
+        ],
+        "title": "WorkflowStepResultModel",
+        "type": "object"
+      },
+      "WorkflowValidateRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "definition": {
+            "$ref": "#/components/schemas/WorkflowDefinitionModel"
+          },
+          "inputs": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Inputs",
+            "type": "object"
+          }
+        },
+        "required": [
+          "definition",
+          "inputs"
+        ],
+        "title": "WorkflowValidateRequest",
+        "type": "object"
+      },
+      "WorkflowValidationResponse": {
+        "properties": {
+          "normalized_definition": {
+            "$ref": "#/components/schemas/WorkflowDefinitionModel"
+          },
+          "normalized_inputs": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "title": "Normalized Inputs",
+            "type": "object"
+          },
+          "valid": {
+            "const": true,
+            "default": true,
+            "title": "Valid",
+            "type": "boolean"
+          },
+          "workflow_id": {
+            "const": "is456.beam.review",
+            "title": "Workflow Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "workflow_id",
+          "normalized_definition",
+          "normalized_inputs"
+        ],
+        "title": "WorkflowValidationResponse",
+        "type": "object"
+      },
       "fastapi_app__routers__insights__BeamParams": {
         "description": "Beam parameters for code checks.",
         "properties": {
@@ -13956,6 +14956,56 @@
         "summary": "Simple Load Analysis (BMD/SFD)",
         "tags": [
           "analysis"
+        ]
+      }
+    },
+    "/api/v1/catalog/workflows": {
+      "get": {
+        "description": "Return the library-owned catalogue without serializing Python callables.",
+        "operationId": "get_workflow_catalog_api_v1_catalog_workflows_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "version",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Version"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_WorkflowCatalogDocumentModel_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Discover approved application workflows",
+        "tags": [
+          "catalog"
         ]
       }
     },
@@ -16228,6 +17278,161 @@
         ]
       }
     },
+    "/api/v1/workflows/beam-template": {
+      "get": {
+        "operationId": "get_beam_workflow_template_api_v1_workflows_beam_template_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_WorkflowDefinitionModel_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Discover the approved beam workflow template",
+        "tags": [
+          "workflows"
+        ]
+      }
+    },
+    "/api/v1/workflows/run": {
+      "post": {
+        "operationId": "run_beam_workflow_api_v1_workflows_run_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowRunRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_WorkflowRunResponse_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Run the bounded beam workflow",
+        "tags": [
+          "workflows"
+        ]
+      }
+    },
+    "/api/v1/workflows/runs/{run_id}/cancel": {
+      "post": {
+        "operationId": "cancel_beam_workflow_api_v1_workflows_runs__run_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_WorkflowCancellationResponse_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Cancel a bounded workflow run",
+        "tags": [
+          "workflows"
+        ]
+      }
+    },
+    "/api/v1/workflows/validate": {
+      "post": {
+        "operationId": "validate_beam_workflow_api_v1_workflows_validate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowValidateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_WorkflowValidationResponse_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Validate the bounded beam workflow",
+        "tags": [
+          "workflows"
+        ]
+      }
+    },
     "/health": {
       "get": {
         "description": "Returns the current health status of the API.",
@@ -16461,6 +17666,10 @@
       "name": "library"
     },
     {
+      "description": "Versioned application workflow discovery from library-owned truth.",
+      "name": "catalog"
+    },
+    {
       "description": "Column design: classification, eccentricity, and axial capacity per IS 456.",
       "name": "column"
     },
@@ -16487,6 +17696,10 @@
     {
       "description": "Server-Sent Events (SSE) for batch processing and progress.",
       "name": "streaming"
+    },
+    {
+      "description": "Explicitly activated bounded local/test workflow execution.",
+      "name": "workflows"
     },
     {
       "description": "CSV import using structural_lib adapters (ETABS, SAFE, STAAD, Generic).",

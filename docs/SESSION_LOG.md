@@ -5,6 +5,280 @@
 
 ---
 
+## 2026-08-10 — Session: UIX-001 Session 2 P9-P15
+
+**Agent:** Codex
+**Branch:** `codex/ui-capability-platform`
+**Focus:** Complete the one-beam capability platform, bounded workflow, route cutover, and integrated UIX acceptance
+
+### Summary
+
+- Session 2 is active from merged Session 1 commit `49d7780e`.
+- P9/P10 provide one immutable, semantically validated beam catalogue and a thin
+  typed discovery API with explicit compatibility and cache identity.
+- P11 adds a curated catalogue field/widget registry to the accepted quick-beam
+  result/3D/export surface, with visible unknown-contract failure and a reviewed
+  manual-form escape route.
+- P12 provides one fixed beam workflow, default-disabled execution transport,
+  bounded/idempotent active cancellation, local draft persistence, review stops,
+  and an ordered development composer.
+- P13 generates one provider-neutral beam tool descriptor from the catalogue,
+  preserves schema/units/limitations/review boundaries, and activates no model,
+  chat, autonomous execution, or external integration.
+- P14 cuts canonical journeys over to one guarded project-stage route model,
+  preserves legacy bookmarks with explicit recovery, keeps a build-time quick-
+  route rollback, and safely retires five duplicate/dead page shells.
+- P15 closes the integrated product story with live safe/unsafe quick design,
+  153-member import/design/results/export, durable direct-link recovery, bounded
+  workflow stops, three-width responsive evidence, and WebGL-loss fallback.
+
+### Issues encountered
+
+- Cross-agent instructions required root-cause fixes but did not require a
+  durable issue/cause/solution/proof record, so later work could repeat the same
+  diagnosis.
+- Session completeness scanned beyond the newest same-day entry and could borrow
+  completion markers from an older session, producing a false pass.
+- The first P10 response differed from the library document because FastAPI was
+  configured to remove `null` field bounds during response serialization.
+- The first P9 lint pass rejected the new version exception name and import
+  placement under the repository's newly aligned Ruff rules.
+- The first agent-control commit was blocked because pre-commit correctly hid
+  the unstaged compliant session entry while validating the staged new rule.
+- The first P9/P10 commit was blocked by two public-API integration gates: typed
+  JSON normalization returned `Any`, and the new public symbols were absent from
+  the API reference.
+- A direct one-file mypy command loaded unrelated core/report modules outside the
+  repository hook configuration and reported seven pre-existing errors.
+- A guessed `check_api_doc_signatures.py` path did not exist when rerunning the
+  API documentation gate directly.
+- The next commit attempt found that public catalogue symbols were documented in
+  the API reference but not projected into the API-stability classification.
+- The first P12 lint pass required runtime collection protocols to come from
+  `collections.abc` under the aligned Ruff rules.
+- The first P12 transport lint pass found a redundant local `WorkflowRunner`
+  import after the singleton type moved to module scope.
+- The initial green cancellation test pre-cancelled an unknown run ID; it did
+  not prove that the async API could service cancellation during CPU work, and
+  unknown IDs plus completed runs could grow process memory without a limit.
+- The React/API signature checker assigned the next function's `POST` method to
+  the preceding workflow-template `GET` because it scanned a fixed 500-character
+  tail instead of the current `fetch(...)` expression.
+- Two continuation commands mixed repository-root paths with a `react_app/`
+  working directory, first missing the workbench file and then stopping before
+  lint when `react_app/src` could not exist beneath itself.
+- A guessed `validate-api-contracts` pre-commit hook ID did not exist.
+- Running every pre-commit hook against every tracked file activated the EOF
+  fixer on 1,770 previously clean vendor/index/fixture files.
+- The first P12 commit stopped after the repository Black hooks reformatted four
+  new Python/FastAPI files that had passed Ruff but were not yet Black-normalized.
+- P13 format checks found the new generator/service and then the touched
+  catalogue file not yet Black-normalized, while strict mypy found a redundant
+  cast in the canonical input validator.
+- P13 inspection exposed a P9 truth mismatch: all six catalogue fields were
+  marked required even though the FastAPI request requires only width, depth,
+  and moment; catalogue validation also treated required fields with UI defaults
+  as optional.
+- The first P13 React command was launched from the repository root, so npm
+  could not find the package located under `react_app/`; the next combined
+  command made the inverse mistake and looked for root `.venv` beneath React.
+- The initial drift test tried to import `scripts/` as a package, but maintained
+  pytest paths expose it as an executable tool directory rather than a library.
+- The first P13 commit found that the maintained enhanced-index generator writes
+  JSON without a final newline, so every legitimate regeneration is changed by
+  the EOF pre-commit hook.
+- P14 safe-delete inspection found that two active UI guides still named page
+  shells that the authoritative router no longer used, while archived planning
+  documents correctly retained their historical references.
+- The frozen `/design/results` contract required an explicit explanation for an
+  empty or stale result, but the first redirect preserved only the destination
+  and query string.
+- The first live catalogue quick-design request returned HTTP 200 but remained
+  visually stuck in Calculating under React Strict Mode.
+- Catalogue mode rendered the six schema-driven fields beside the old manual
+  materials, force, load-calculator, and torsion controls, creating two editable
+  sources for the same design request.
+- A direct reload of the canonical project results URL briefly redirected to
+  recovery even though the IndexedDB snapshot restored milliseconds later.
+- The first integrated full gate rejected four missing public catalogue symbols
+  in the generated API manifest and an unsupported documentation status value.
+- The P15 documentation check rejected `complete` as master-plan frontmatter
+  even though the plan's human-facing execution state is complete.
+- Browser automation could not use `networkidle`, navigation-regex waits, or its
+  high-level viewport setter reliably for this Vite/WebGL flow; emulated
+  screenshots also tiled while exact DOM metrics remained correct.
+- The first closeout hook command used bare `pre-commit`, which is not installed
+  on the interactive shell PATH.
+- The first rewritten next-session table used `Complete` instead of the literal
+  `Current` row required by session-document automation.
+- PR #721 React Validation rejected a render-time ref assignment that the first
+  local lint run had accepted.
+
+### Root causes and resolutions
+
+- The logging contract existed only as guidance about fixing causes, not as a
+  required session schema. Shared agent instructions now require explicit issue
+  and root-cause sections, and session closeout enforces them.
+- The completeness checker iterated through the whole file instead of isolating
+  the newest entry. It now uses the newest session block only; focused session
+  automation regressions pass.
+- `response_model_exclude_none` changed the catalogue transport shape after the
+  library had produced it. The thin route now preserves the complete canonical
+  document; the cross-layer equality test proves byte-meaning parity.
+- The new exception did not follow Ruff's enforced `Error` suffix convention,
+  and the API re-export was outside sorted module order. The type was renamed,
+  the import moved to its canonical position, and scoped Ruff now passes.
+- The validation rule and its first compliant session record are one atomic
+  control-plane change. Staging that task-owned record with the rule makes the
+  isolated pre-commit view valid without weakening or bypassing the check.
+- The catalogue serializer now casts only after recursive JSON normalization,
+  preserving runtime validation while satisfying strict mypy. The four public
+  discovery symbols are documented in the canonical API reference; the same
+  pre-commit gates pass on rerun.
+- The command bypassed the maintained mypy hook configuration rather than
+  exposing a P9 defect. Verification now uses the scoped pre-commit mypy hook,
+  which is the same gate used by commits; unrelated findings were not suppressed
+  or changed.
+- The gate is implemented by `scripts/check_api.py --docs`, as declared in
+  `.pre-commit-config.yaml`; using that maintained command passed.
+- The API and stability documents are a synchronized pair. The catalogue is now
+  explicitly classified as development preview in `api-stability.md`, so the
+  sync gate passes without overstating a pre-1.0 stability promise.
+- `Callable` and `Mapping` now import from `collections.abc`; the P12 scoped Ruff
+  and maintained mypy hooks pass without an ignore.
+- The route keeps one module-scope runner import and removes the duplicate local
+  import; focused workflow tests still pass and scoped Ruff is clean.
+- The runner now executes through FastAPI's thread pool, accepts cancellation
+  only for a tracked active run, checks the stop after bounded design work, and
+  caps the idempotency cache at 128 ordered records. A concurrent service test
+  and a concurrent TestClient request prove active cancellation; the composer
+  disables state-changing controls while running and cancels on unmount.
+- The signature scanner now finds the balanced close parenthesis for each fetch
+  call before looking for its method. Its two-adjacent-fetch regression proves
+  the template remains `GET` and the run remains `POST`; the live signature gate
+  matches all 29 React calls.
+- Commands now use either root-relative paths from the repository root or
+  `src/...` beneath the explicit React working directory. The corrected three-
+  file component selection, lint, and build all pass.
+- Hook IDs are read from `.pre-commit-config.yaml`; the maintained contract hook
+  is `check-api-signatures`, and its underlying command passes.
+- After the all-files hook completed with the expected legacy failures, its
+  exact diff was inspected. A reverse patch restored only the 1,770 hook-created
+  paths to their captured clean
+  state while preserving all 12 intentional tracked paths; targeted hooks are
+  used during packet iteration.
+- The formatter output was retained, the four files were restaged, and the
+  focused runner/API tests plus format hooks are rerun before the commit retry.
+- Black output was applied to the P13 files and the redundant cast removed; five
+  manifest tests, Ruff, Black, and the maintained mypy hook pass.
+- Catalogue `required` flags now match `BeamDesignRequest`: width/depth/moment
+  are required and shear/fck/fy use transport defaults. Required validation no
+  longer depends on whether the curated UI provides a default. Catalogue,
+  manifest JSON Schema, runner, FastAPI, and React focused tests pass together.
+- React commands now run in `react_app/`, while Python formatter/test commands
+  run from the repository root. The corrected component test and full lint pass.
+- The drift test now invokes the documented generator CLI in a temporary path,
+  proving `--write --check` succeeds and a one-byte-contract replacement fails;
+  no script-directory import contract was invented.
+- `generate_enhanced_index.py` now writes newline-terminated JSON itself. A
+  functional regression checks the emitted bytes, and two consecutive scripts-
+  index generations remain hook-clean.
+- Route evolution had updated `App.tsx` without updating the active structure
+  guides, leaving documentation—not runtime imports—as the final blocker to
+  safe retirement. The active guides now name the canonical shell and routes;
+  the five files were deleted through `safe_file_delete.py --force` only after
+  dry-run review, with recoverable backups retained under `tmp/deleted_backups`.
+- Legacy result recovery did not consult the revision lifecycle. The redirect
+  now adds `recovery=result-required` whenever the result is not `current`, and
+  the quick workbench renders the reason instead of silently presenting inputs.
+  Route tests prove bookmark query preservation and the explicit recovery state.
+- Strict Mode deliberately runs effect setup, cleanup, and setup again. The
+  first setup owned the request, cleanup cancelled it, and a one-shot ref blocked
+  the replacement setup, leaving Zustand loading state active. The hook now
+  retains the latest runner rather than the one-shot flag; its Strict Mode
+  regression proves the first signal aborts and the replacement result becomes
+  current and exportable.
+- P11 added the catalogue panel without making it the sole input owner. The
+  catalog/manual render boundary now exposes exactly one source: catalogue mode
+  renders only curated schema inputs, while the reviewed escape route owns the
+  legacy load/torsion controls. Component and live locator checks prove no
+  duplicate shear or concrete-strength control remains.
+- Project guards evaluated `idle` before the persistence bridge effect could
+  enter `loading`, so valid deep links were treated as missing data. Idle and
+  loading are now explicit hydration states; focused route regressions and a
+  fresh live results URL prove the restored project remains on canonical results.
+- The generated API manifest had not been refreshed after P9 exports, and the
+  frontmatter validator accepts a controlled status vocabulary rather than the
+  semantic phrase used in the body. Regeneration records the four exports and
+  frontmatter now uses `active`; the manifest drift and complete docs gates pass.
+- Frontmatter status represents document lifecycle, not task execution. The
+  canonical plan remains machine-`active` and discoverable while its visible
+  status, ledger, and acceptance checklist record completed execution; the
+  frontmatter gate passes without archiving current authority.
+- The browser limitations were observer/tooling mismatches, not application
+  failures. Acceptance used `domcontentloaded` plus semantic waits, direct URL
+  and DOM inspection, scoped CDP device metrics that were cleared afterward,
+  exact overflow measurements, and server HTTP 200 evidence for programmatic
+  Blob exports. No product gate was waived on a screenshot artifact.
+- The repository-local tool lives at `.venv/bin/pre-commit`, consistent with the
+  pinned Python runtime. The closeout reran the same explicit-file hook command
+  through that executable rather than changing PATH or bypassing hooks.
+- The handoff checker treats `Current` and `Next` as a stable machine interface,
+  independent of whether the current task is complete. The row now reads
+  `Current: UIX-001 P0-P15 complete`; the session-document hook passes.
+- The implementation stored the latest initial-design callback by mutating a ref
+  during render. Local `node_modules` still contained react-hooks 7.0.1 even
+  though the lockfile requires 7.1.1, so only the clean CI install enforced the
+  new refs rule. React 19 `useEffectEvent` now provides the latest callback to
+  the mount effect without render-time ref mutation or input-change duplication.
+  A pinned Node 24 `npm ci`, lint, all 239 React tests, and production build pass.
+
+### Verification
+
+- `.venv/bin/pytest Python/tests/test_session_automation.py -q`
+- `.venv/bin/ruff check scripts/session.py Python/tests/test_session_automation.py`
+- P9/P10: 7 focused Python/FastAPI tests, scoped Ruff, mypy, OpenAPI snapshot,
+  API documentation and API/client contract hooks.
+- P11: 9 focused React tests, full React lint, and production build.
+- P12: 15 focused Python/FastAPI tests, 8 focused React tests, scoped Ruff,
+  maintained mypy, React lint/build, 69-operation OpenAPI snapshot, and the
+  live 29-call React/FastAPI signature scan.
+- P13: 27 combined catalogue/manifest/runner/API tests plus 2 catalogue React
+  tests, deterministic write/check drift proof, JSON Schema validation, scoped
+  Ruff/Black/mypy, scripts-index coverage, React lint, and link validation.
+- P14: 22 focused route/workbench/catalogue tests, full React lint, production
+  build, and 1,079-link validation with zero broken links.
+- P15: 91 focused Python/FastAPI catalogue, workflow, evidence, and API tests;
+  87 focused React tests; 76 geometry/streaming tests; 29 live React/API call
+  signatures; 239 total React tests with lint and production build; quick 10/10.
+- Live Chromium: safe/unsafe/stale/recalculate quick flow; 153/153 project PASS,
+  direct results restore, calculation identity
+  `daf4db29b14ad439c34c9a941e086d878c0dcdfbfd0829a30c49e811986361ac`,
+  report/export HTTP 200, bounded workflow safe completion and unsafe STOP,
+  390/1024/1440 px without horizontal overflow, and WebGL-loss DOM fallback.
+- Final stable-milestone `./run.sh check`: 30/30 passed.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: Two guessed probe URLs, `/api/health` and
+  `/api/v1/catalogue`, returned 404 -> route inspection identified the maintained
+  `/health` and `/api/v1/catalog/workflows` contracts; later probes used them.
+- ⚠️ TERMINAL ISSUE: Browser `networkidle`, regex navigation waiting,
+  viewport setting, screenshots under emulation, and programmatic-download
+  observation were unreliable -> semantic DOM waits, direct URL inspection,
+  temporary CDP metrics with cleanup, exact DOM widths, and server 200 evidence
+  supplied the maintained proof. These limitations remain recorded rather than
+  being mistaken for product defects.
+- ⚠️ TERMINAL ISSUE: Bare `pre-commit` was not on PATH -> the maintained
+  `.venv/bin/pre-commit` executable ran the identical scoped hook set.
+- ⚠️ TERMINAL ISSUE: `check-session-docs` rejected a missing literal
+  `Current` row -> the handoff restored the maintained label while preserving
+  the completed state in the row value.
+- ⚠️ TERMINAL ISSUE: The interactive shell exposed Node 26 and stale
+  react-hooks 7.0.1, masking the clean-install lint rule ->
+  `.venv/bin/python scripts/node_runtime.py -- npm --prefix react_app ci` rebuilt
+  the lockfile-exact tree under Node 24 before the frontend gate reran.
+
 ## 2026-08-10 — Session: UIX-001 Session 1 P4-P8 Closeout
 
 **Agent:** Codex

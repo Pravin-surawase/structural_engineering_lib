@@ -7,7 +7,7 @@ created: 2026-08-10
 last_updated: 2026-08-10
 doc_type: spec
 baseline_commit: 32b9f33b204f5175efdf0d3e8d4d99e3634cf46c
-branch: codex/ui-quick-design-p4
+branch: codex/ui-capability-platform
 implementation_started: true
 second_audit_integrated: true
 execution_sessions: 2
@@ -15,12 +15,12 @@ max_concurrent_subagents: 2
 subagent_model: gpt-5.6-terra
 owner_accepted: 2026-08-10
 current_session: 2
-current_wave: 0
+current_wave: complete
 ---
 
 **Type:** Master Plan
 **Audience:** Product owner, frontend, backend, API, structural-library, 3D, reviewer, and tester roles
-**Status:** Active — Session 1 P0-P8 accepted; Session 2 P9 is next
+**Status:** Complete — Session 1 P0-P8 and Session 2 P9-P15 accepted
 **Importance:** Critical
 **Created:** 2026-08-10
 **Last Updated:** 2026-08-10
@@ -1882,7 +1882,7 @@ these tables only after the parent reviews evidence.
 | Macro session | Scope | State | Required exit |
 |---|---|---|---|
 | Session 1 | P0-P8 compact workbench and essential 3D | Accepted | Session 1 exit gate in section 12.2 |
-| Session 2 | P9-P15 capability platform and cutover | Ready after Session 1 green merge | Session 2 exit gate in section 12.3 |
+| Session 2 | P9-P15 capability platform and cutover | Accepted | Session 2 exit gate in section 12.3 |
 
 | Session | Packet | State | Evidence/commit | Notes |
 |---|---|---|---|---|
@@ -1895,13 +1895,13 @@ these tables only after the parent reviews evidence.
 | 1 | P6 | Accepted | `d56eae7c`, `322648f9` | Batch results, stage progression, dashboard, BOQ, and export are revision bound |
 | 1 | P7 | Accepted | `024002ca` | GeometrySpaceV1 adapter and viewport decomposition preserve behavior |
 | 1 | P8 | Accepted | `024002ca`, `bb5e8958` | Inspection, responsive fallback, resource metrics, and browser gates pass |
-| 2 | P9 | Not started | — | Workflow catalogue |
-| 2 | P10 | Not started | — | Catalogue API |
-| 2 | P11 | Not started | — | React schema vertical slice |
-| 2 | P12 | Not started | — | Bounded no-code MVP |
-| 2 | P13 | Not started | — | One beam AI manifest |
-| 2 | P14 | Not started | — | Route cutover/retirement |
-| 2 | P15 | Not started | — | Integrated closeout |
+| 2 | P9 | Accepted | `54c279bc` | Immutable semantically validated beam workflow catalogue |
+| 2 | P10 | Accepted | `54c279bc` | Thin typed discovery API preserves the canonical document |
+| 2 | P11 | Accepted | `26e6d0c8` | Curated catalogue renderer owns the quick-beam input surface |
+| 2 | P12 | Accepted | `332a2455` | Default-disabled bounded workflow validates, persists, runs, cancels, and stops unsafe output |
+| 2 | P13 | Accepted | `50905cbe` | Provider-neutral beam manifest is generated from catalogue truth |
+| 2 | P14 | Accepted | `cd48faf5` | Canonical routes, legacy recovery, rollback flag, and safe retirement pass |
+| 2 | P15 | Accepted | [Session 2 acceptance](../verification/ui-experience-session-2-acceptance.md) | Integrated closeout and root-cause corrections |
 
 ## 22. Session 1 Wave 0 evidence and contract lock
 
@@ -2311,6 +2311,42 @@ decomposition, inspection, and the final live-workflow root-cause repairs.
   repository gate. Optional loads/dimensions/comparison layers, Firefox support,
   GitHub Pages, release actions, and professional-use claims remain held.
 
+### 22.12 Accepted Session 2 P9-P15 closeout evidence
+
+Session 2 began from merged Session 1 commit `49d7780e` and completed the one-beam
+capability platform without broadening into public automation or AI execution.
+
+- P9/P10 publish one immutable catalogue and a thin discovery route whose
+  complete serialized document equals the library source. P11 consumes curated
+  field metadata without inventing engineering semantics; catalogue mode now has
+  one input owner, with the manual surface retained only as an explicit fallback.
+- P12 runs one allowlisted beam workflow only behind explicit development/test
+  activation. It validates bindings and quotas, retains bounded idempotency,
+  supports active cancellation, persists reviewed drafts, and stops unsafe
+  results before export. P13 deterministically derives one provider-neutral tool
+  descriptor without activating chat, a provider, or autonomous execution.
+- P14 makes the workbench routes canonical, redirects retained legacy URLs with
+  explicit recovery, preserves a build-time quick-route rollback, and retires
+  five duplicate shells through the safe-delete workflow.
+- P15 found and fixed three outcome-changing integration causes: React Strict
+  Mode could cancel initial quick design without replacement; catalogue and
+  manual inputs rendered concurrently; and project guards redirected before
+  IndexedDB hydration. Focused regressions and live replay prove each corrected
+  outcome.
+- Live Chromium passed safe, unsafe, stale, recalculate, import, project design,
+  direct-results resume, export, bounded workflow, legacy redirect, 390/1024/1440
+  px, large-scene, and WebGL interruption flows. The maintained sample settled
+  153 PASS / 0 FAIL with revision-bound project evidence.
+- Verification includes 91 focused Python/FastAPI tests, 87 focused React tests,
+  76 geometry/streaming tests, 29 React/API call signatures, 239 total React
+  tests with lint/build, the 10/10 quick gate, and the final integrated gate.
+  Detailed evidence and tooling limits are frozen in
+  [UIX-001 Session 2 acceptance](../verification/ui-experience-session-2-acceptance.md).
+
+Execution remains default-disabled outside explicit development/test activation.
+Firefox, exact Safari responsive automation, GitHub Pages, release/tag/package
+publication, and professional-use claims remain held.
+
 ## 23. Immediate kickoff checklist
 
 Implementation must not start until the owner accepts this plan or supplies edits.
@@ -2335,37 +2371,37 @@ After acceptance:
 
 ## 24. Final acceptance checklist
 
-- [ ] Session 1 P0-P8 exit gate passed before Session 2 began.
-- [ ] Exactly two implementation sessions/branches were used; wave commits retain
+- [x] Session 1 P0-P8 exit gate passed before Session 2 began.
+- [x] Exactly two implementation sessions/branches were used; wave commits retain
       rollback and no critical work was hidden in optional backlog.
-- [ ] One canonical workbench shell and navigation model.
-- [ ] Fresh sample journey has no dead end.
-- [ ] Quick-design safe and unsafe cases remain truthful.
-- [ ] Import -> review -> design -> resolve -> results -> export passes live.
-- [ ] Returning project restores from versioned local state.
-- [ ] Results, geometry, alternatives, metrics, and exports are bound to the
+- [x] One canonical workbench shell and navigation model.
+- [x] Fresh sample journey has no dead end.
+- [x] Quick-design safe and unsafe cases remain truthful.
+- [x] Import -> review -> design -> resolve -> results -> export passes live.
+- [x] Returning project restores from versioned local state.
+- [x] Results, geometry, alternatives, metrics, and exports are bound to the
       current revision; edited/stale data cannot appear current.
-- [ ] Cancelled, delayed, or prior-run responses cannot replace newer state.
-- [ ] Every exposed feature passes the usefulness contract.
-- [ ] Dormant hooks/clients remain unavailable until complete live API contracts pass.
-- [ ] No dead settings, placeholder, or command-palette action is exposed.
-- [ ] P1 wireframes and three-width before/after browser evidence are accepted.
-- [ ] 3D selection synchronizes with grid, issue queue, and inspector.
-- [ ] Versioned 3D units, axes, schema, and member identity pass the golden fixture.
-- [ ] Agreed scene layers have authoritative data and legends.
-- [ ] Browser, responsive, lazy-delivery, large-scene, and WebGL fallback gates pass.
-- [ ] Project persistence passes revision, migration, atomic-save, quota, corruption,
+- [x] Cancelled, delayed, or prior-run responses cannot replace newer state.
+- [x] Every exposed feature passes the usefulness contract.
+- [x] Dormant hooks/clients remain unavailable until complete live API contracts pass.
+- [x] No dead settings, placeholder, or command-palette action is exposed.
+- [x] P1 wireframes and three-width before/after browser evidence are accepted.
+- [x] 3D selection synchronizes with grid, issue queue, and inspector.
+- [x] Versioned 3D units, axes, schema, and member identity pass the golden fixture.
+- [x] Agreed scene layers have authoritative data and legends.
+- [x] Browser, responsive, lazy-delivery, large-scene, and WebGL fallback gates pass.
+- [x] Project persistence passes revision, migration, atomic-save, quota, corruption,
       last-known-good, and multi-tab conflict recovery.
-- [ ] Library capability/semantic truth is not duplicated in UI/API.
-- [ ] Catalogue is versioned and one beam slice is schema-driven.
-- [ ] No-code beam workflow validates, saves, reloads, runs within quotas, cancels,
+- [x] Library capability/semantic truth is not duplicated in UI/API.
+- [x] Catalogue is versioned and one beam slice is schema-driven.
+- [x] No-code beam workflow validates, saves, reloads, runs within quotas, cancels,
       is idempotent where required, and stops unsafe/tampered/oversized cases.
-- [ ] Exactly one beam AI manifest is generated from the same catalogue, without
+- [x] Exactly one beam AI manifest is generated from the same catalogue, without
       activating AI chat.
-- [ ] Legacy routes redirect or retire according to the frozen map.
-- [ ] Focused suites and `./run.sh frontend check` pass.
-- [ ] `./run.sh check --quick` passes at integrated milestones.
-- [ ] One final `./run.sh check` passes at P15.
-- [ ] Live UAT evidence and known limitations are recorded.
-- [ ] Merge follows the verified-green policy; release, branch deletion, and
+- [x] Legacy routes redirect or retire according to the frozen map.
+- [x] Focused suites and `./run.sh frontend check` pass.
+- [x] `./run.sh check --quick` passes at integrated milestones.
+- [x] One final `./run.sh check` passes at P15.
+- [x] Live UAT evidence and known limitations are recorded.
+- [x] Merge follows the verified-green policy; release, branch deletion, and
       professional-use claims remain owner-held.

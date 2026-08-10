@@ -195,6 +195,32 @@ def test_api_endpoint_extraction_stops_before_query_template():
     assert check_api._extract_endpoint(expression) == "/api/v1/import/dual-csv"
 
 
+def test_api_call_method_extraction_stops_at_each_fetch(tmp_path: Path):
+    client = tmp_path / "client.ts"
+    client.write_text(
+        """export async function load() {
+  return fetch(`${API_BASE_URL}/api/v1/workflows/beam-template`, {
+    headers: { Accept: 'application/json' },
+  });
+}
+export async function run() {
+  return fetch(`${API_BASE_URL}/api/v1/workflows/run`, {
+    method: 'POST',
+  });
+}
+""",
+        encoding="utf-8",
+    )
+
+    calls, unresolved = check_api._extract_call_sites(client)
+
+    assert unresolved == []
+    assert [(call.endpoint, call.method) for call in calls] == [
+        ("/api/v1/workflows/beam-template", "GET"),
+        ("/api/v1/workflows/run", "POST"),
+    ]
+
+
 def test_api_route_shape_matches_dynamic_segments():
     assert check_api._same_route_shape(
         "/api/v1/export/{dynamic}", "/api/v1/export/{format}"
@@ -267,6 +293,19 @@ def test_generated_indexes_do_not_emit_trailing_space_hard_breaks():
     assert "f\"**Last Updated:** {index['last_updated']}  \"" not in generator
 
 
+def test_generated_json_indexes_end_with_newline(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    generator = importlib.import_module("scripts.generate_enhanced_index")
+    output = tmp_path / "scripts"
+    output.mkdir()
+    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
+
+    generator.generate_json({"folder": "scripts"}, output)
+
+    assert (output / "index.json").read_bytes().endswith(b"\n")
+
+
 def test_session_end_preserves_current_same_day_handoff(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):
@@ -301,6 +340,83 @@ def test_session_end_preserves_current_same_day_handoff(
     assert ok is True
     assert "Preserved" in message
     assert next_brief.read_text(encoding="utf-8") == expected
+
+
+def test_session_log_completeness_uses_only_newest_same_day_entry(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    class SessionDate(date):
+        @classmethod
+        def today(cls) -> date:
+            return cls(2026, 8, 10)
+
+    session_log = tmp_path / "SESSION_LOG.md"
+    session_log.write_text(
+        """# Log
+
+## 2026-08-10 — Session 2
+**Focus:** finish the capability platform
+
+### Summary
+- Completed the owned packet.
+
+## 2026-08-10 — Session 1
+**Focus:** prior work
+
+**Completed:**
+- Prior completion
+
+### Issues encountered
+- None encountered.
+
+### Root causes and resolutions
+- None encountered.
+""",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(session, "SESSION_LOG", session_log)
+    monkeypatch.setattr(session, "date", SessionDate)
+
+    complete, issues = session.check_session_log_complete()
+
+    assert complete is False
+    assert "SESSION_LOG: Missing 'Issues encountered' section" in issues
+    assert "SESSION_LOG: Missing 'Root causes and resolutions' section" in issues
+
+
+def test_session_log_completeness_accepts_explicit_issue_record(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    class SessionDate(date):
+        @classmethod
+        def today(cls) -> date:
+            return cls(2026, 8, 10)
+
+    session_log = tmp_path / "SESSION_LOG.md"
+    session_log.write_text(
+        """# Log
+
+## 2026-08-10 — Session 2
+**Focus:** finish the capability platform
+
+### Summary
+- Completed the owned packet.
+
+### Issues encountered
+- Catalogue validation initially accepted a duplicate ID.
+
+### Root causes and resolutions
+- Registry construction skipped uniqueness validation; validation now fails closed and the duplicate regression passes.
+""",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(session, "SESSION_LOG", session_log)
+    monkeypatch.setattr(session, "date", SessionDate)
+
+    complete, issues = session.check_session_log_complete()
+
+    assert complete is True
+    assert issues == []
 
 
 def test_legacy_activity_log_uses_local_midnight_and_no_billing_estimate(

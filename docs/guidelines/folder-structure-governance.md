@@ -270,13 +270,13 @@ react_app/src/
 │   │
 │   ├── layout/                    # App shell & navigation
 │   │   ├── TopBar.tsx
-│   │   └── ModernAppLayout.tsx
+│   │   └── SettingsPanel.tsx
 │   │
 │   ├── pages/                     # Route-level pages
 │   │   ├── HomePage.tsx
-│   │   ├── ModeSelectPage.tsx
+│   │   ├── WorkbenchHomePage.tsx
 │   │   ├── BuildingEditorPage.tsx
-│   │   └── BeamDetailPage.tsx
+│   │   └── DashboardPage.tsx
 │   │
 │   ├── ui/                        # Shared/primitive UI components
 │   │   ├── BentoGrid.tsx, FloatingDock.tsx, Toast.tsx

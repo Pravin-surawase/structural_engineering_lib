@@ -24,6 +24,7 @@ import {
 } from "../../workspace/resultRecords";
 import type { WorkspaceSnapshotV1 } from "../../workspace/types";
 import { useWorkspaceStore } from "../../workspace/workspaceStore";
+import { projectStagePath } from "../../app/navigation";
 
 function getEnvelopeMu(beam: ReturnType<typeof useImportedBeamsStore.getState>['beams'][number]): number {
   return Math.max(
@@ -76,6 +77,10 @@ function projectExportRows(
 
 export function DashboardPage() {
   const navigate = useNavigate();
+  const workspaceProjectId = useWorkspaceStore((state) => state.snapshot?.projectId);
+  const importPath = workspaceProjectId
+    ? projectStagePath(workspaceProjectId, "import")
+    : "/workbench/projects/new";
   const { beams, restoreFromWorkspace } = useImportedBeamsStore();
   const workspaceSnapshot = useWorkspaceStore((state) => state.snapshot);
   const dashboard = useDashboardInsights();
@@ -151,7 +156,7 @@ export function DashboardPage() {
         <BarChart3 className="w-12 h-12 text-white/10" />
         <p className="text-zinc-500 text-sm">No beams imported. Import CSV first.</p>
         <button
-          onClick={() => navigate("/import")}
+          onClick={() => navigate(importPath)}
           className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded-lg transition-colors"
         >
           Go to Import

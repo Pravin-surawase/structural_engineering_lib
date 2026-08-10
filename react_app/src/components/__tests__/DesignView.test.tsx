@@ -6,6 +6,7 @@ import { DesignView } from '../../components/design/DesignView';
 // Mock react-router-dom
 vi.mock('react-router-dom', () => ({
   useNavigate: vi.fn(() => vi.fn()),
+  useSearchParams: vi.fn(() => [new URLSearchParams(), vi.fn()]),
 }));
 
 // Mock useLiveDesign
@@ -70,6 +71,19 @@ vi.mock('../../components/ui/ConnectionStatus', () => ({
     React.createElement('span', { 'data-testid': 'connection-status' }, status),
 }));
 
+vi.mock('../../features/catalog/CatalogBeamInputPanel', () => ({
+  CatalogBeamInputPanel: () => React.createElement(
+    'div',
+    { 'data-testid': 'catalog-beam-inputs' },
+    React.createElement('input', { 'aria-label': 'Width in mm' }),
+    React.createElement('input', { 'aria-label': 'Depth in mm' }),
+    React.createElement('input', { 'aria-label': 'Moment (Mu) in kN m' }),
+    React.createElement('input', { 'aria-label': 'Shear (Vu) in kN' }),
+    React.createElement('select', { 'aria-label': 'Concrete in N/mm2' }),
+    React.createElement('select', { 'aria-label': 'Steel in N/mm2' }),
+  ),
+}));
+
 // Mock design store
 vi.mock('../../store/designStore', () => ({
   useDesignStore: vi.fn(() => ({
@@ -107,5 +121,13 @@ describe('DesignView', () => {
     expect(screen.getByLabelText('Moment (Mu) in kN·m')).toBeInTheDocument();
     expect(screen.getByText('Not evaluated')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Compare options' })).toBeDisabled();
+  });
+
+  it('renders one schema-owned control per field in catalogue mode', () => {
+    render(React.createElement(DesignView, { inputMode: 'catalog' }));
+    expect(screen.getAllByLabelText('Shear (Vu) in kN')).toHaveLength(1);
+    expect(screen.getAllByLabelText('Concrete in N/mm2')).toHaveLength(1);
+    expect(screen.queryByLabelText('Load Calculator')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Include Torsion')).not.toBeInTheDocument();
   });
 });

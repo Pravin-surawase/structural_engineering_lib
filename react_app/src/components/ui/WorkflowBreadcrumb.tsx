@@ -2,6 +2,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import {
   PROJECT_STAGES,
+  projectStagePath,
   stageIsReachable,
   type ProjectStage,
 } from '../../app/navigation';
@@ -31,6 +32,7 @@ export function WorkflowBreadcrumb() {
   const location = useLocation();
   const { beams } = useImportedBeamsStore();
   const workspaceStage = useWorkspaceStore((state) => state.snapshot?.selectedStage);
+  const workspaceProjectId = useWorkspaceStore((state) => state.snapshot?.projectId);
   const currentStage = stageForPath(location.pathname);
   const currentOrder = PROJECT_STAGES.find((stage) => stage.id === currentStage)?.order ?? -1;
   const completed = new Set<ProjectStage>();
@@ -65,7 +67,11 @@ export function WorkflowBreadcrumb() {
       description: state === 'locked' ? `Complete ${stage.requires ?? 'the prior stage'} first` : undefined,
       onSelect: state === 'locked'
         ? undefined
-        : () => navigate(LEGACY_STAGE_ROUTES[stage.id]),
+        : () => navigate(
+          workspaceProjectId
+            ? projectStagePath(workspaceProjectId, stage.id)
+            : '/workbench/projects/new',
+        ),
     };
   });
 

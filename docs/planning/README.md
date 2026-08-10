@@ -31,8 +31,8 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `next-session-brief.md` | 2026-08-10 | 🚧 UIX-001 Session 1 Wave 1 handoff |
-| `ui-experience-foundation-master-plan.md` | 2026-08-10 | 🚧 Wave 0 lock accepted; Session 1 P2/P3 foundations active |
+| `next-session-brief.md` | 2026-08-10 | ✅ UIX-001 P0-P15 closeout; next task owner-held |
+| `ui-experience-foundation-master-plan.md` | 2026-08-10 | ✅ Two-session P0-P15 workbench/capability program accepted |
 | `compact-modernization-plan.md` | 2026-08-09 | 📋 Ready after PR #676 |
 | `is456-library-first-master-plan.md` | 2026-08-10 | ✅ C0-C4 and v0.23.0 Alpha release complete |
 | `professional-library-remediation-plan.md` | 2026-08-10 | ✅ Software remediation evidence ledger; final professional review deferred |

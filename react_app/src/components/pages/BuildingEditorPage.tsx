@@ -44,6 +44,7 @@ import { WorkflowHint } from "../ui/WorkflowHint";
 import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
 import { useWorkspaceStore } from "../../workspace/workspaceStore";
 import { projectExportReadiness } from "../../workspace/resultRecords";
+import { projectStagePath } from "../../app/navigation";
 
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
@@ -99,6 +100,9 @@ export function BuildingEditorPage() {
   const { startBatchDesign, status: batchStatus } = useBatchDesign();
   const isDesigning = batchStatus === "running";
   const { mutate: exportBuilding, isPending: exportPending } = useExportBuildingSummary();
+  const importPath = workspaceProjectId
+    ? projectStagePath(workspaceProjectId, "import")
+    : "/workbench/projects/new";
 
   useEffect(() => {
     if (beams.length === 0 && workspaceSnapshot?.members.length) {
@@ -367,7 +371,7 @@ export function BuildingEditorPage() {
               {workspaceLoadError}
             </p>
           ) : null}
-          <button onClick={() => navigate("/import")}
+          <button onClick={() => navigate(importPath)}
             className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-medium">
             Import Beams
           </button>
@@ -384,7 +388,7 @@ export function BuildingEditorPage() {
       {/* Toolbar */}
       <div className="flex min-h-11 shrink-0 flex-wrap items-center justify-between gap-2 border-b border-white/5 px-4 py-2">
         <div className="flex min-w-0 flex-wrap items-center gap-3">
-          <button onClick={() => navigate("/import")} className="p-1.5 rounded-lg hover:bg-white/5 text-white/50 hover:text-white/80 transition-colors">
+          <button onClick={() => navigate(importPath)} className="p-1.5 rounded-lg hover:bg-white/5 text-white/50 hover:text-white/80 transition-colors">
             <ArrowLeft className="w-4 h-4" />
           </button>
           <span className="text-sm font-medium text-white">Building Editor</span>

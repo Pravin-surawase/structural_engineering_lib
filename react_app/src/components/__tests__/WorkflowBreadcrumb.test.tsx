@@ -60,7 +60,7 @@ describe('WorkflowBreadcrumb', () => {
     render(React.createElement(WorkflowBreadcrumb));
 
     fireEvent.click(screen.getByRole('button', { name: /import/i }));
-    expect(mockNavigate).toHaveBeenCalledWith('/import');
+    expect(mockNavigate).toHaveBeenCalledWith('/workbench/projects/new');
   });
 
   it('does not navigate to future incomplete steps', () => {
@@ -85,6 +85,6 @@ describe('WorkflowBreadcrumb', () => {
     const results = screen.getByRole('button', { name: /results/i });
     expect(results).not.toBeDisabled();
     fireEvent.click(results);
-    expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
+    expect(mockNavigate).toHaveBeenCalledWith('/workbench/projects/project-1/results');
   });
 });

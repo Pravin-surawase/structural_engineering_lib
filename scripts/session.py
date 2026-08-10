@@ -169,6 +169,12 @@ def add_session_log_entry() -> bool:
         "### Key Deliverables",
         "-",
         "",
+        "### Issues encountered",
+        "- None encountered.",
+        "",
+        "### Root causes and resolutions",
+        "- None encountered.",
+        "",
         "### Notes",
         "-",
         "",
@@ -808,34 +814,40 @@ def check_session_log_complete() -> tuple[bool, list[str]]:
             issues.append("No entry for today")
             return False, issues
 
-        lines = content.split("\n")
-        in_today = False
-        has_focus = False
-        has_completed = False
+        entry_date, block = _latest_session_block(content.splitlines())
+        if entry_date != today_str:
+            issues.append("SESSION_LOG: Newest entry is not for today")
+            return False, issues
 
-        for line in lines:
-            if today_str in line or today_display in line:
-                in_today = True
-            elif in_today and line.startswith("## Session:"):
-                break
-            elif in_today:
-                if "**Focus:**" in line and "<!--" not in line:
-                    if len(line.split("**Focus:**")[1].strip()) > 5:
-                        has_focus = True
-                if "**Completed:**" in line:
+        focus = _parse_focus(block)
+        has_focus = len(focus) > 5 and focus != "-" and "<!--" not in focus
+
+        has_completed = False
+        in_outcome_section = False
+        for line in block:
+            if line.startswith("**Completed:**") or line.startswith("### Summary"):
+                in_outcome_section = True
+                continue
+            if in_outcome_section and line.startswith("### "):
+                in_outcome_section = False
+            if in_outcome_section and line.strip().startswith("-"):
+                item = line.strip().removeprefix("-").strip()
+                if item and item != "-" and "<!--" not in item:
                     has_completed = True
-                if (
-                    has_completed
-                    and line.strip().startswith("-")
-                    and len(line.strip()) > 2
-                ):
-                    if "<!--" not in line:
-                        has_completed = True
+
+        has_issues = any(line == "### Issues encountered" for line in block)
+        has_root_causes = any(
+            line == "### Root causes and resolutions" for line in block
+        )
 
         if not has_focus:
             issues.append("SESSION_LOG: Focus not filled in")
         if not has_completed:
             issues.append("SESSION_LOG: No completed items listed")
+        if not has_issues:
+            issues.append("SESSION_LOG: Missing 'Issues encountered' section")
+        if not has_root_causes:
+            issues.append("SESSION_LOG: Missing 'Root causes and resolutions' section")
 
         return len(issues) == 0, issues
     except Exception as e:
@@ -1380,9 +1392,29 @@ def cmd_check(args: argparse.Namespace) -> int:
         print(f"Expected first session header to start with {session_heading}.")
         return 1
 
-    window = session_lines[session_idx : session_idx + 25]
-    if not any("Focus:" in line for line in window):
+    session_end_idx = next(
+        (
+            idx
+            for idx in range(session_idx + 1, len(session_lines))
+            if session_lines[idx].startswith("## ")
+        ),
+        len(session_lines),
+    )
+    session_block = session_lines[session_idx:session_end_idx]
+    if not any("Focus:" in line for line in session_block):
         print(f"ERROR: SESSION_LOG.md entry for {date_str} missing 'Focus:' line")
+        return 1
+    if "### Issues encountered" not in session_block:
+        print(
+            f"ERROR: SESSION_LOG.md entry for {date_str} missing "
+            "'Issues encountered' section"
+        )
+        return 1
+    if "### Root causes and resolutions" not in session_block:
+        print(
+            f"ERROR: SESSION_LOG.md entry for {date_str} missing "
+            "'Root causes and resolutions' section"
+        )
         return 1
 
     hash_errors = _validate_commit_hashes(session_lines, "SESSION_LOG.md")

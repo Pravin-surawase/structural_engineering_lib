@@ -26,6 +26,8 @@ import { applyMaterialOverrides } from "../../utils/materialOverrides";
 import { useDualCSVImport } from "../../hooks/useCSVImport";
 import { WorkflowHint } from "../ui/WorkflowHint";
 import { WorkflowBreadcrumb } from "../ui/WorkflowBreadcrumb";
+import { projectStagePath } from "../../app/navigation";
+import { useWorkspaceStore } from "../../workspace/workspaceStore";
 
 type ImportStep = "upload" | "preview";
 
@@ -161,7 +163,14 @@ export function ImportView() {
         <PreviewStep
           beams={beams}
           onBack={() => setStep("upload")}
-          onProceed={() => navigate("/editor")}
+          onProceed={() => {
+            const snapshot = useWorkspaceStore.getState().snapshot;
+            navigate(
+              snapshot
+                ? projectStagePath(snapshot.projectId, "review")
+                : "/workbench?recovery=project-required",
+            );
+          }}
         />
       )}
     </div>

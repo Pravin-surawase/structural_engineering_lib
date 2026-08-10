@@ -1,0 +1,125 @@
+{
+  "activation": {
+    "autonomous_execution": false,
+    "chat_ui": false,
+    "model_integration": false
+  },
+  "manifest_id": "structural-lib.workflow-tools",
+  "manifest_version": "1.0.0",
+  "schema_version": "1.0",
+  "source": {
+    "catalog_schema_version": "1.0",
+    "catalog_sha256": "6a009b46f73ab36b3d15dbb25fff727950a23654b1dee1dd14bf0aa973208383",
+    "catalog_version": "1.0.0"
+  },
+  "tools": [
+    {
+      "capability_id": "is456.beam.design",
+      "capability_version": "1.0.0",
+      "description": "Design one rectangular reinforced-concrete beam for the declared flexure and shear inputs.",
+      "execution": {
+        "adapter_id": "fastapi.design_beam.v1",
+        "allowlisted": true,
+        "enabled_by_default": false
+      },
+      "input_schema": {
+        "$id": "urn:structural-lib:schema:fastapi.BeamDesignRequest.v1",
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "depth": {
+            "default": 500.0,
+            "description": "Depth in mm.",
+            "maximum": 3000.0,
+            "minimum": 250.0,
+            "title": "Depth",
+            "type": "number",
+            "x-semantic-ref": "workflows.design_beam_is456.fields.D_mm",
+            "x-unit": "mm"
+          },
+          "fck": {
+            "default": 25.0,
+            "description": "Concrete in N/mm2.",
+            "enum": [
+              20.0,
+              25.0,
+              30.0,
+              35.0,
+              40.0,
+              45.0,
+              50.0
+            ],
+            "title": "Concrete",
+            "type": "number",
+            "x-semantic-ref": "workflows.design_beam_is456.fields.fck_nmm2",
+            "x-unit": "N/mm2"
+          },
+          "fy": {
+            "default": 500.0,
+            "description": "Steel in N/mm2.",
+            "enum": [
+              415.0,
+              500.0,
+              550.0
+            ],
+            "title": "Steel",
+            "type": "number",
+            "x-semantic-ref": "workflows.design_beam_is456.fields.fy_nmm2",
+            "x-unit": "N/mm2"
+          },
+          "moment": {
+            "default": 150.0,
+            "description": "Moment (Mu) in kN m.",
+            "maximum": 2000.0,
+            "minimum": 0.0,
+            "title": "Moment (Mu)",
+            "type": "number",
+            "x-semantic-ref": "workflows.design_beam_is456.fields.mu_knm",
+            "x-unit": "kN m"
+          },
+          "shear": {
+            "default": 75.0,
+            "description": "Shear (Vu) in kN.",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Shear (Vu)",
+            "type": "number",
+            "x-semantic-ref": "workflows.design_beam_is456.fields.vu_kn",
+            "x-unit": "kN"
+          },
+          "width": {
+            "default": 300.0,
+            "description": "Width in mm.",
+            "maximum": 2000.0,
+            "minimum": 150.0,
+            "title": "Width",
+            "type": "number",
+            "x-semantic-ref": "workflows.design_beam_is456.fields.b_mm",
+            "x-unit": "mm"
+          }
+        },
+        "required": [
+          "width",
+          "depth",
+          "moment"
+        ],
+        "type": "object",
+        "x-schema-id": "fastapi.BeamDesignRequest.v1"
+      },
+      "input_schema_id": "fastapi.BeamDesignRequest.v1",
+      "limitations": [
+        "Torsion is a separate explicit workflow.",
+        "The result is software evidence and requires qualified engineering review."
+      ],
+      "result_schema_id": "fastapi.BeamDesignResponse.v1",
+      "review_boundary": {
+        "qualified_review_required": true,
+        "statement": "This descriptor does not authorize autonomous execution. Outputs remain software evidence requiring qualified engineering review.",
+        "user_acknowledgement_required_before_execution": true
+      },
+      "status_semantic_ref": "workflows.design_beam_is456.statuses.is_ok",
+      "title": "IS 456 beam design",
+      "tool_name": "is456_beam_design"
+    }
+  ]
+}

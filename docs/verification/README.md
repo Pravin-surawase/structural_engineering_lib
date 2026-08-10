@@ -2,7 +2,7 @@
 
 Benchmark examples and verification packs for validating library calculations against IS 456 standards.
 
-**Files:** 5 | **Updated:** 2026-01-11
+**Files:** 8 | **Updated:** 2026-08-10
 
 ---
 
@@ -17,6 +17,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [external-cli-test.md](external-cli-test.md) | S-007 checklist for a fresh user run |
 | [is456-library-first-evidence.md](is456-library-first-evidence.md) | Supported-core claim crosswalk and controlled-source evidence |
 | [release-artifact-evidence-template.md](release-artifact-evidence-template.md) | Exact CI artifact identity and approval record |
+| [ui-experience-session-2-acceptance.md](ui-experience-session-2-acceptance.md) | UIX-001 P9-P15 live workflow, root-cause, and closeout evidence |
 
 ---
 

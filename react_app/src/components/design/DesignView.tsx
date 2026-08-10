@@ -5,8 +5,8 @@
  * contextual advanced actions.
  */
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Calculator, CheckCircle, AlertCircle, Loader2, Eye, ChevronDown, ChevronRight, Shield, Lightbulb, Download, FileText, Ruler, ChevronUp, RotateCcw, ArrowRight, Activity } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Calculator, CheckCircle, AlertCircle, Loader2, ChevronDown, ChevronRight, Shield, Lightbulb, Download, FileText, Ruler, ChevronUp, RotateCcw, ArrowRight, Activity } from "lucide-react";
 import { useExportBBS, useExportDXF, useExportReport } from "../../hooks/useExport";
 import { useLoadAnalysis } from "../../hooks/useLoadAnalysis";
 import type { LoadAnalysisResponse } from "../../api/client";
@@ -25,6 +25,8 @@ import { formatPercent, formatRatio, formatSignedRatio, getTrustPresentation } f
 import { WorkbenchHeader } from "../workbench/WorkbenchHeader";
 import { WorkbenchShell } from "../workbench/WorkbenchShell";
 import { ResultLifecycleBadge } from "../workbench/ResultLifecycleBadge";
+import { CatalogBeamInputPanel } from "../../features/catalog/CatalogBeamInputPanel";
+import type { CatalogBeamTransportName } from "../../features/catalog/types";
 
 /** Collapsible accordion section */
 function AccordionSection({ title, children, defaultOpen = true }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
@@ -43,8 +45,13 @@ function AccordionSection({ title, children, defaultOpen = true }: { title: stri
   );
 }
 
-export function DesignView() {
+export interface DesignViewProps {
+  inputMode?: "manual" | "catalog";
+}
+
+export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { inputs, length } = useDesignStore();
   const [autoDesign, setAutoDesign] = useState(true);
   const [resultsCollapsed, setResultsCollapsed] = useState(false);
@@ -85,6 +92,9 @@ export function DesignView() {
   const loadAnalysis = useLoadAnalysis();
 
   const spanMeters = Number((length / 1000).toFixed(2));
+  const updateCatalogInput = (name: CatalogBeamTransportName, value: number) => {
+    actions.updateInputs({ [name]: value });
+  };
 
   // Auto-trigger code checks + rebar suggestions when design result changes
   useEffect(() => {
@@ -175,6 +185,14 @@ export function DesignView() {
           </WorkbenchHeader>
         )}
       >
+      {searchParams.get("recovery") === "result-required" ? (
+        <div
+          className="border-b border-amber-400/20 bg-amber-400/10 px-4 py-2 text-sm text-amber-100"
+          role="status"
+        >
+          The saved result is missing or no longer matches these inputs. Review the values and run the design again.
+        </div>
+      ) : null}
       <div className="grid min-h-full min-w-0 grid-cols-1 lg:grid-cols-[20rem_minmax(0,1fr)]">
       {/* Left: Compact Input Form */}
       <div className="min-w-0 flex flex-col border-b border-white/5 bg-zinc-950 lg:border-r lg:border-b-0">
@@ -202,6 +220,21 @@ export function DesignView() {
             {state.isDesigning && <Loader2 className="w-3.5 h-3.5 text-blue-400 animate-spin" />}
           </div>
 
+          {inputMode === "catalog" ? (
+            <CatalogBeamInputPanel
+              values={{
+                width: inputs.width,
+                depth: inputs.depth,
+                moment: inputs.moment,
+                shear: inputs.shear ?? 0,
+                fck: inputs.fck,
+                fy: inputs.fy,
+              }}
+              onChange={updateCatalogInput}
+              onUseManual={() => navigate("/workbench/quick/manual")}
+            />
+          ) : (
+          <>
           <AccordionSection title="Dimensions">
             <InputField label="Width" value={inputs.width} onChange={(v) => actions.updateInputs({ width: v })} unit="mm" min={150} max={600} />
             <InputField label="Depth" value={inputs.depth} onChange={(v) => actions.updateInputs({ depth: v })} unit="mm" min={300} max={1200} />
@@ -288,21 +321,14 @@ export function DesignView() {
               <InputField label="Torsion (Tu)" value={torsionMoment} onChange={setTorsionMoment} unit="kN·m" min={0.1} max={200} step={0.5} />
             )}
           </AccordionSection>
+          </>
+          )}
         </div>
 
         {/* Bottom actions */}
         <div className="px-3 pb-3 space-y-2">
           {state.isFallbackActive && (
             <p className="text-center text-[10px] text-zinc-400">Verified REST request mode · cancelled and stale responses are ignored</p>
-          )}
-          {state.result && (
-            <button
-              onClick={() => navigate("/design/results")}
-              className="w-full py-2.5 bg-white/5 hover:bg-white/10 text-white/70 text-sm font-medium rounded-xl transition-colors flex items-center justify-center gap-2 border border-white/10"
-            >
-              <Eye className="w-4 h-4" />
-              Full 3D Detail View
-            </button>
           )}
         </div>
       </div>

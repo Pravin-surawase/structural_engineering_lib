@@ -37,6 +37,26 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
 - For every review finding, ask: **Would fixing this change the outcome of the main process?** If not, ignore it. If a non-essential concern needs preservation, file a follow-up bead/task only when necessary; do not expand the current scope.
 - Review only essential main-process behavior. Do not report issues about comments, edge cases, test-coverage or falsification gaps, generic hardening, or adjacent improvements. Do not add tests during review. Reject security or concurrency observations that are merely hardening and do not change the main-process outcome.
 
+## Root-Cause and Session-Issue Record (MANDATORY)
+
+- Every agent records material issues encountered during its owned work in the
+  newest task-owned `docs/SESSION_LOG.md` entry. A material issue is one that
+  changes the main-process outcome, blocks a required command, exposes a stale
+  instruction/contract, or would cause the same work to be repeated.
+- Every session entry must contain `### Issues encountered` and
+  `### Root causes and resolutions`. For each material issue, record the visible
+  symptom and impact, the confirmed root cause (or explicitly `unconfirmed`), the
+  implemented solution, and the command/test/live evidence that proved the
+  corrected outcome. Write `- None encountered.` when that is true.
+- Do not log secrets, transient noise, speculative hardening, or failures outside
+  the owned scope that did not affect the work. Do not claim a root cause from an
+  error message alone; trace the failing path and distinguish evidence from
+  inference.
+- Subagents include the same issue/root-cause/evidence fields in their return;
+  the parent owns the single versioned session record and removes duplicates.
+  `./run.sh session end --agent <role>` must fail if the newest entry omits either
+  required section.
+
 ## Git and GitHub — Codex Native
 
 Codex owns the normal branch, stage, commit, push, pull-request, and check-status
