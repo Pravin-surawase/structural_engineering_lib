@@ -2244,6 +2244,10 @@ calculation/service/FastAPI contract without changing the separate torsion route
 - The documentation metadata hook ran in warning mode and exposed missing
   `Type`/`Audience` fields plus a noncanonical lifecycle status on the new
   evidence record. A guessed direct checker path was also obsolete.
+- PR #732 FastAPI Validation failed while every independent component job
+  passed: `test_project_boq_basic` expected public version `0.23.0`, but the
+  candidate API correctly returned `0.23.1a1`; PR Gate then failed as a direct
+  dependency.
 - The candidate worktree has no local `.venv`; focused commands used the
   maintained shared project interpreter.
 
@@ -2297,6 +2301,11 @@ calculation/service/FastAPI contract without changing the separate torsion route
   Resolution: added canonical reference metadata, retained
   `LOCAL PREPUBLICATION REHEARSAL` as a separate evidence boundary, and used the
   maintained checker path discovered from the repository.
+- Root cause: candidate version automation updated maintained runtime/version
+  surfaces but the FastAPI BOQ regression encoded a historical public version
+  literal. Resolution: compare BOQ evidence to `fastapi_app.__version__`, the
+  maintained application version surface, so future candidate bumps retain the
+  cross-surface contract without test-file rewrites.
 
 ### Verification
 
@@ -2322,6 +2331,9 @@ calculation/service/FastAPI contract without changing the separate torsion route
   rewriting history and draft PR #732 was opened against `main`; it was
   mergeable and normal PR validation started. No publish-capable workflow was
   dispatched.
+- GitHub run `31463676435` isolated the FastAPI version-literal failure while
+  Repository, Python, React, and MkDocs validation passed. After the fix, the
+  exact failed test passed and `./run.sh test --fastapi` passed all 413 tests.
 - Wheel SHA-256 remained
   `9c986920ceb43e341d01c6411c873605fec3321486d862a847e2083c36156aa7`;
   sdist remained
