@@ -2145,15 +2145,24 @@ calculation/service/FastAPI contract without changing the separate torsion route
 - The footing merge conflicted in `docs/SESSION_LOG.md` and `docs/planning/next-session-brief.md` because the preserved footing lane and the newer integration lane each had legitimate session and handoff history.
 - Shared `react_app/src/App.tsx`, `react_app/src/app/navigation.ts`, and `react_app/src/components/__tests__/WorkbenchHomePage.test.tsx` conflicted because slab/column and footing work independently added reachable workflows.
 - `fastapi_app/openapi_baseline.json` conflicted because the footing endpoint and schemas changed the generated snapshot relative to the already-integrated beam/column/slab source.
+- The maintained API-manifest check then found two stale beam serviceability return annotations in `docs/reference/api-manifest.json`.
+- The isolated integration worktree has no local React dependency entry, so its first focused React command could not start until the approved shared Node 24 dependency installation was made available temporarily.
 
 ### Root causes and resolutions
 
 - Root cause: preservation branches were intentionally developed from an older common base, so shared documentation, generated API evidence, and navigation surfaces diverged without either side being disposable. Resolution: retained both relevant histories, updated the handoff to the dedicated integration lane, combined all route/card assertions, and regenerated the OpenAPI snapshot from maintained source. Evidence: `git diff --check`, the conflict-marker scan, and the successful generator update completed before staging.
 - Root cause: the route conflicts represented additive feature ownership rather than incompatible behavior. Resolution: retained `/workbench/slabs`, `/workbench/columns/rectangular`, and `/workbench/footing/isolated/concentric`, plus their active-navigation and workbench entries. Preservation and route coexistence proofs are run after the merge commit before any PR action.
+- Root cause: the preserved API manifest still reflected unqualified `CrackWidthResult` and `DeflectionResult` projections while the merged beam source exposes `serviceability.CrackWidthResult` and `serviceability.DeflectionResult`. Resolution: regenerated `docs/reference/api-manifest.json` with `scripts/generate_api_manifest.py`; the reviewed diff changed only those two signatures and the generation date.
+- Root cause: the isolated worktree intentionally lacked copied dependencies. Resolution: ran the 13-test React route/navigation/workbench selection with a temporary symlink to the approved primary Node 24 installation and removed the symlink on exit; no dependency target was changed.
 
 ### Verification
 
-- The complete footing branch is staged from exact head `886871aef93d9a955a3cc2fa613fe49bad589ce7` and the preserved release-guard branch is already an exact merge parent at `7e623984e027141fff62e5129c23fdc16264f8e0`.
-- Maintained OpenAPI regeneration completed successfully; footing inclusion, exact file-identity, ancestry, and four-workflow proofs remain the next required acceptance gates.
+- The complete footing branch is an exact merge parent at `886871aef93d9a955a3cc2fa613fe49bad589ce7`; the preserved release-guard head `7e623984e027141fff62e5129c23fdc16264f8e0` is an ancestor of the integration head.
+- Ancestry proof passed: `plan_ancestor=YES`, `footing_ancestor=YES`.
+- `./run.sh release footing-inclusion-check` passed: owned files match reviewed head and all Python/FastAPI/React markers are present; the receipt reports zero missing owned files and zero missing markers.
+- Exact receipt/blob proof passed for all 15 footing-owned files: `missing_files=0`, `mismatched_files=0`, `receipt_source_mismatches=0`, and `name_status_diff_entries=0` for `git diff --name-status 886871ae..HEAD` constrained to the owned paths.
+- Focused footing/core/FastAPI tests passed; React route/navigation/workbench acceptance passed 4 files and 13 tests on Node 24.
+- Maintained OpenAPI regeneration and API-manifest check passed, `git diff --check` passed, and `./run.sh check --quick` passed 10/10.
+- Targeted source evidence proves `/workbench/quick`, `/workbench/slabs`, `/workbench/columns/rectangular`, and `/workbench/footing/isolated/concentric` coexist, with all four workbench entries reachable.
 
 ---
