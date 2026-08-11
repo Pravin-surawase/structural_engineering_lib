@@ -2,7 +2,7 @@
   "folder": "scripts",
   "type": "python-package",
   "description": "> Development, validation, discovery, release-preparation, and maintenance tools.",
-  "last_updated": "2026-08-10",
+  "last_updated": "2026-08-11",
   "file_count": 108,
   "files": [
     {
@@ -4054,10 +4054,24 @@
     {
       "name": "release.py",
       "type": "python",
-      "size_lines": 1353,
-      "last_updated": "2026-08-10",
+      "size_lines": 1592,
+      "last_updated": "2026-08-11",
       "description": "Unified release management CLI.",
       "functions": [
+        {
+          "name": "cmd_permission_check",
+          "description": "Verify the standing owner-confirmed public-distribution permission.",
+          "params": [
+            "args"
+          ]
+        },
+        {
+          "name": "cmd_footing_inclusion_check",
+          "description": "Verify that the complete reviewed footing D1 slice is integrated.",
+          "params": [
+            "args"
+          ]
+        },
         {
           "name": "cmd_candidate_check",
           "description": "Verify exact source, artifact, and clean-install version evidence.",
@@ -4108,14 +4122,14 @@
         "CHANGELOG",
         "RELEASES",
         "CHECKLIST_PATH",
+        "PUBLIC_DISTRIBUTION_PERMISSION",
+        "FOOTING_RELEASE_INCLUSION",
         "PYPROJECT",
         "FASTAPI_INIT",
         "REACT_PACKAGE",
-        "CITATION",
-        "ALPHA_VERSION_RE",
-        "LEGACY_STABLE_VERSION_RE"
+        "CITATION"
       ],
-      "content_hash": "bd101159cbe1"
+      "content_hash": "d3c4d2beea92"
     },
     {
       "name": "repo_health_check.sh",
@@ -5343,5 +5357,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "786eb026437f4245"
+  "content_hash": "84432d4c966894c7"
 }

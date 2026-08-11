@@ -3,7 +3,7 @@
 REST API + WebSocket bridge between the React frontend and the Python `structural_lib`.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 **Files:** 8
 
 ## Config Files

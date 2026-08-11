@@ -4,8 +4,10 @@ Integration tests that exercise the scripts via subprocess.
 All bump operations use --dry-run to remain non-destructive.
 """
 
+import argparse
 import hashlib
 import importlib
+import json
 import re
 import subprocess
 import sys
@@ -260,6 +262,19 @@ class TestPublishWorkflow:
         assert "^[0-9]+\\.[0-9]+\\.[0-9]+a[0-9]+$" in workflow
         assert "Expected PEP 440 Alpha format X.Y.ZaN" in workflow
 
+    def test_publication_fails_closed_on_permission_record(self):
+        workflow = (REPO_ROOT / ".github" / "workflows" / "publish.yml").read_text(
+            encoding="utf-8"
+        )
+
+        assert "python ../scripts/release.py permission-check" in workflow
+        assert '"public_distribution_permission_gate_passed": True' in workflow
+        assert "IS456-PUBLIC-DISTRIBUTION-001" in workflow
+        assert "python ../scripts/release.py footing-inclusion-check" in workflow
+        assert '"footing_release_inclusion_gate_passed": True' in workflow
+        assert "FOOT-ISO-RC-V1-RELEASE-INCLUSION" in workflow
+        assert "footing_api.design_concentric_isolated_footing_is456" in workflow
+
     def test_alpha_ordering_preserves_legacy_release_history(self):
         assert release._release_version_key("0.24.0a1") > release._release_version_key(
             "0.23.0"
@@ -326,6 +341,54 @@ class TestReleasePreflight:
         assert "Last command output" in output
         assert "final-error" in output
         assert len(output) < 200
+
+    def test_public_distribution_permission_record_is_valid(self):
+        assert release._public_distribution_permission_errors() == []
+
+    def test_published_current_source_surfaces_are_accepted_without_wheel(self):
+        current = release._version_from_pyproject()
+
+        assert (
+            release._source_surface_version_errors(
+                current, allow_authorized_release=True
+            )
+            == []
+        )
+
+    def test_public_distribution_permission_check_fails_closed(
+        self, tmp_path, monkeypatch
+    ):
+        missing = tmp_path / "missing-permission.json"
+        monkeypatch.setattr(release, "PUBLIC_DISTRIBUTION_PERMISSION", missing)
+
+        assert release.cmd_permission_check(argparse.Namespace()) == 1
+
+    def test_footing_inclusion_check_fails_closed_when_owned_file_is_missing(
+        self, tmp_path
+    ):
+        receipt = tmp_path / "footing-release-inclusion.json"
+        receipt.write_text(
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "record_id": "FOOT-ISO-RC-V1-RELEASE-INCLUSION",
+                    "source_head": "886871aef93d9a955a3cc2fa613fe49bad589ce7",
+                    "required_owned_file_sha256": {"Python/missing.py": "0" * 64},
+                    "required_shared_markers": {
+                        "fastapi_app/missing.py": ["footing.router"]
+                    },
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        errors = release._footing_release_inclusion_errors(receipt, repo_root=tmp_path)
+
+        assert "required footing file is missing: Python/missing.py" in errors
+        assert (
+            "required footing integration file is missing: fastapi_app/missing.py"
+            in errors
+        )
 
     @pytest.mark.slow
     def test_preflight_runs(self):

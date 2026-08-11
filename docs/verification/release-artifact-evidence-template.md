@@ -5,7 +5,7 @@
 **Status:** Review
 **Importance:** Critical
 **Created:** 2026-08-09
-**Last Updated:** 2026-08-09
+**Last Updated:** 2026-08-11
 
 Complete this record from the CI run that built the exact candidate.
 
@@ -23,6 +23,10 @@ Complete this record from the CI run that built the exact candidate.
 | Sdist size | `<bytes>` |
 | Content allowlist | `PASS/HOLD` |
 | Protected-content gate | `PASS/HOLD` |
+| Public-distribution permission record | `record ID and SHA-256` |
+| Public-distribution permission gate | `PASS/HOLD` |
+| Footing release-inclusion record | `record ID, source head and SHA-256` |
+| Footing release-inclusion gate | `PASS/HOLD` |
 | Exact-wheel installed UAT | `PASS/HOLD` |
 | CLI UAT | `PASS/HOLD` |
 | SBOM | `<artifact path and SHA-256>` |

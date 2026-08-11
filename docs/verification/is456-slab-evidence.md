@@ -5,26 +5,29 @@
 **Status:** Internal implementation evidence; qualified review required
 **Importance:** Critical
 **Created:** 2026-08-10
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 
 ## Source lock
 
 | ID | Identity | Permitted implementation use | State |
 |---|---|---|---|
-| `SLAB-SRC-IS456-A5` | Controlled IS 456:2000 copy through Amendment 5, SHA-256 `964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264` | Owner-authorized implementation of required formulas, normalized tables, limits, figure-derived values, lookup and interpolation; protected prose/images excluded | Implementation authorized; public production distribution remains a pre-launch gate |
+| `SLAB-SRC-IS456-A5` | Controlled IS 456:2000 copy through Amendment 5, SHA-256 `964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264` | Owner-authorized implementation and public distribution of required formulas, normalized tables, limits, figure-derived values, lookup and interpolation; protected prose/images excluded | Implementation and approved-scope normalized-data distribution authorized |
 | `SLAB-SRC-IS456-A6` | Amendment 6, June 2024, SHA-256 `4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881` | Amendment-impact review | Controlled copy; no slab change identified by the existing evidence record |
 | `SLAB-SRC-NPTEL-18` | IIT Kharagpur/NPTEL, Module 8 Lesson 18, One-way Slabs | Public secondary explanation and benchmark B02 | Accepted as independent educational evidence, not primary-code approval |
 | `SLAB-SRC-NPTEL-19` | IIT Kharagpur/NPTEL, Module 8 Lesson 19, Two-way Slabs | Public secondary explanation and benchmark B04 | Accepted as independent educational evidence, not primary-code approval |
 
 The private corpus manifest declares `private_only=true`,
 `public_distribution_allowed=false`, and `review_state=UNREVIEWED_SOURCE_CORPUS`.
-The owner nevertheless authorized direct implementation of the normalized slab
-coefficient lookups and interpolation on 2026-08-10, with formal permission
-moved to a mandatory pre-launch gate. Agents must not request the implementation
-decision again. Runtime results retain table, case, aspect-ratio, interpolation,
-and amendment provenance; external coefficient carriers remain available.
-Public production release of normalized data remains blocked until the
-pre-launch permission gate passes.
+Those flags apply to the protected source corpus itself, which remains private;
+they do not describe the separately authorized normalized code data. The owner
+authorized implementation on 2026-08-10 and confirmed source/licensing
+permission for public distribution of approved-scope normalized data on
+2026-08-11. The canonical decision is
+[`is456-public-distribution-permission.json`](is456-public-distribution-permission.json),
+and the release path validates it fail closed. Agents must not report this gate
+as pending or request it again unless the owner explicitly changes the decision.
+Runtime results retain table, case, aspect-ratio, interpolation, and amendment
+provenance; external coefficient carriers remain available.
 
 ## Clause and behavior map
 
@@ -49,8 +52,9 @@ pre-launch permission gate passes.
 
 ## Holds and claim ceiling
 
-- Built-in coefficient data and interpolation are implementation scope. Public
-  distribution remains held until the pre-launch permission gate passes.
+- Built-in coefficient data and interpolation are authorized implementation and
+  public-distribution scope within approved features. Protected source prose,
+  page images, and unrelated standard content remain excluded.
 - Unequal-span or unequal-load continuous analysis beyond the accepted
   coefficient-method domain is unsupported; no elastic envelope is inferred.
 - Direct deflection, crack-width calculation, concentrated loads, openings,
@@ -75,9 +79,10 @@ pre-launch permission gate passes.
   `10.688/12.825 kN m/m` with Table 12/13 provenance; editing its span made the
   result stale and disabled passport export. The oriented B04 two-way sample
   returned `18.600/13.888/11.656/8.680 kN m/m` with exact Table 26 provenance.
-- This evidence supports the bounded software behavior only. Public production
-  distribution still requires the pre-launch source/licensing gate, and project
-  use still requires qualified structural-engineering review.
+-- This evidence supports the bounded software behavior only. The normalized-data
+  public-distribution permission gate passed on 2026-08-11; each release still
+  requires separate owner authorization, and project use still requires
+  qualified structural-engineering review.
 
 ## IS456-SLAB-001A closeout evidence — 2026-08-10
 

@@ -2,7 +2,7 @@
   "folder": "Python/tests",
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
-  "last_updated": "2026-08-10",
+  "last_updated": "2026-08-11",
   "file_count": 58,
   "files": [
     {
@@ -3989,7 +3989,7 @@
     {
       "name": "codes",
       "path": "codes/",
-      "file_count": 16,
+      "file_count": 18,
       "is_package": true
     },
     {
@@ -4040,5 +4040,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "26b08e5568daa17e"
+  "content_hash": "8a941c4f98d8dd2c"
 }

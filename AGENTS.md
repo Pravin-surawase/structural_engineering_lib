@@ -11,7 +11,7 @@ Open-source IS 456 RC beam design library. Full stack:
 - **FastAPI backend** (`fastapi_app/`) — REST + WebSocket API (60 endpoints, 13 routers)
 - **React 19 frontend** (`react_app/`) — R3F 3D visualization + Tailwind
 
-## Owner Decision — Required IS Code Content (2026-08-10)
+## Owner Decision — Required IS Code Content and Distribution (2026-08-10/11)
 
 - The owner authorizes direct implementation of any IS code content needed for
   an approved feature scope, including formulas, normalized tables, limits,
@@ -21,9 +21,15 @@ Open-source IS 456 RC beam design library. Full stack:
 - Preserve source/table/case provenance in runtime results and tests. Do not copy
   protected clause prose, page images, or unrelated standard content into the
   repository.
-- Formal source/licensing permission is a mandatory **pre-launch** gate, not an
-  implementation blocker. It must be verified before public distribution or a
-  production release containing normalized IS code data.
+- On 2026-08-11 the owner confirmed that source/licensing permission has been
+  obtained for public distribution of normalized IS code data within approved
+  feature scopes. The gate is passed and must not be reported as pending or
+  requested again unless the owner explicitly revokes or changes the decision.
+  The canonical machine-readable record is
+  `docs/verification/is456-public-distribution-permission.json`.
+- This standing permission does not authorize a tag, package publication, or
+  GitHub Release. Each release still requires the repository's per-release
+  owner authorization and software/evidence gates.
 - This source-use decision does not expand feature scope. Flat slabs, for
   example, remain a separately approved extension.
 
@@ -95,7 +101,7 @@ recreate that lifecycle in repository scripts. The canonical process is
 NEVER: gh pr merge --admin            ← bypasses required CI checks
 NEVER: gh pr merge <N> --squash (with failing CI) ← fix failures first, then merge
 NEVER: gh issue close (without user approval) ← destructive, ask first
-NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py --dry-run
+NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py (dry-run by default)
 NEVER: --no-verify / --force          ← breaks CI, causes rework
 NEVER: git rebase --skip              ← silently drops conflicting commits
 NEVER: git push --force-with-lease     ← rewrites shared history

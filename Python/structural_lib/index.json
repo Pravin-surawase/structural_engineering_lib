@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib",
   "type": "python-package",
   "description": "> **Purpose:** IS 456:2000 RC beam design calculations",
-  "last_updated": "2026-08-10",
+  "last_updated": "2026-08-11",
   "file_count": 51,
   "files": [
     {
@@ -17,13 +17,13 @@
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 377,
+      "size_lines": 393,
       "last_updated": "2026-08-10",
       "description": "Package:      structural_lib",
       "constants": [
         "_LAZY_MODULES"
       ],
-      "content_hash": "8920b5929246"
+      "content_hash": "923a5d75498f"
     },
     {
       "name": "__main__.py",
@@ -513,7 +513,7 @@
     {
       "name": "codes",
       "path": "codes/",
-      "file_count": 65,
+      "file_count": 73,
       "is_package": true
     },
     {
@@ -576,5 +576,5 @@
     "serviceability",
     "shear"
   ],
-  "content_hash": "c8513106df68e4ae"
+  "content_hash": "f1446f55417a359d"
 }

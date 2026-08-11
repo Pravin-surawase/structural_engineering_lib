@@ -342,12 +342,12 @@
     {
       "name": "check_crack_width",
       "kind": "function",
-      "signature": "(exposure_class: 'str' = 'moderate', limit_mm: 'float | None' = None, acr_mm: 'float | None' = None, cmin_mm: 'float | None' = None, h_mm: 'float | None' = None, x_mm: 'float | None' = None, epsilon_m: 'float | None' = None, fs_service_nmm2: 'float | None' = None, es_nmm2: 'float' = 200000.0) -> 'serviceability.CrackWidthResult'"
+      "signature": "(exposure_class: 'str' = 'moderate', limit_mm: 'float | None' = None, acr_mm: 'float | None' = None, cmin_mm: 'float | None' = None, h_mm: 'float | None' = None, x_mm: 'float | None' = None, epsilon_m: 'float | None' = None, fs_service_nmm2: 'float | None' = None, es_nmm2: 'float' = 200000.0) -> 'CrackWidthResult'"
     },
     {
       "name": "check_deflection_span_depth",
       "kind": "function",
-      "signature": "(span_mm: 'float', d_mm: 'float', support_condition: 'str' = 'simply_supported', base_allowable_ld: 'float | None' = None, mf_tension_steel: 'float | None' = None, mf_compression_steel: 'float | None' = None, mf_flanged: 'float | None' = None) -> 'serviceability.DeflectionResult'"
+      "signature": "(span_mm: 'float', d_mm: 'float', support_condition: 'str' = 'simply_supported', base_allowable_ld: 'float | None' = None, mf_tension_steel: 'float | None' = None, mf_compression_steel: 'float | None' = None, mf_flanged: 'float | None' = None) -> 'DeflectionResult'"
     },
     {
       "name": "check_helical_reinforcement_is456",
