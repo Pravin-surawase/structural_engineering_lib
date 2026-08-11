@@ -96,7 +96,7 @@ function parseCapability(value: unknown): WorkflowCapability {
   if (value.capability_id !== 'is456.beam.design') {
     throw new Error(`Unsupported capability '${String(value.capability_id)}'`);
   }
-  if (value.capability_version !== '1.0.0') {
+  if (value.capability_version !== '1.1.0') {
     throw new Error(`Unsupported capability version '${String(value.capability_version)}'`);
   }
   if (value.semantic_workflow_id !== 'design_beam_is456') {
@@ -140,7 +140,7 @@ export function parseWorkflowCatalog(value: unknown): WorkflowCatalog {
   if (value.schema_version !== '1.0') {
     throw new Error(`Unsupported catalogue schema '${String(value.schema_version)}'`);
   }
-  if (value.catalog_version !== '1.0.0') {
+  if (value.catalog_version !== '1.1.0') {
     throw new Error(`Unsupported catalogue version '${String(value.catalog_version)}'`);
   }
   if (value.code_edition !== 'IS 456:2000') {

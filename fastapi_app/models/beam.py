@@ -22,6 +22,31 @@ class RebarLayerConfig(BaseModel):
     bar_dia_mm: float = Field(ge=8, le=36, description="Bar diameter (mm)")
 
 
+class BeamCrackWidthParams(BaseModel):
+    """Explicit maintained inputs for the primary-route crack-width check."""
+
+    exposure_class: Literal["mild", "moderate", "severe", "very_severe"] = Field(
+        default="moderate"
+    )
+    limit_mm: float | None = Field(default=None, gt=0)
+    acr_mm: float = Field(gt=0)
+    cmin_mm: float = Field(gt=0)
+    h_mm: float = Field(gt=0)
+    x_mm: float = Field(gt=0)
+    epsilon_m: float | None = Field(default=None, gt=0)
+    fs_service_nmm2: float | None = Field(default=None, ge=0)
+    es_nmm2: float = Field(default=200000.0, gt=0)
+
+    @model_validator(mode="after")
+    def validate_crack_width_inputs(self) -> "BeamCrackWidthParams":
+        """Reject inputs that the maintained crack-width service cannot use."""
+        if self.h_mm <= self.x_mm:
+            raise ValueError("h_mm must be greater than x_mm.")
+        if self.epsilon_m is None and self.fs_service_nmm2 is None:
+            raise ValueError("epsilon_m or fs_service_nmm2 is required.")
+        return self
+
+
 class BeamDesignRequest(BaseModel):
     """Request model for beam design calculation."""
 
@@ -33,6 +58,7 @@ class BeamDesignRequest(BaseModel):
                     "depth": 500.0,
                     "moment": 150.0,
                     "shear": 75.0,
+                    "torsion": 0.0,
                     "fck": 25.0,
                     "fy": 415.0,
                     "clear_cover": 25.0,
@@ -68,6 +94,12 @@ class BeamDesignRequest(BaseModel):
         ge=0,
         description="Factored design shear force Vu (kN)",
         examples=[50.0, 150.0, 300.0],
+    )
+    torsion: float = Field(
+        default=0.0,
+        ge=0,
+        description="Factored design torsional moment Tu (kN·m)",
+        examples=[0.0, 10.0, 25.0],
     )
 
     # Material properties
@@ -126,6 +158,12 @@ class BeamDesignRequest(BaseModel):
         default="SIMPLY_SUPPORTED",
         description="Support condition for deflection check",
     )
+    crack_width_params: BeamCrackWidthParams | None = Field(
+        default=None,
+        description=(
+            "Maintained crack-width inputs; required when include_serviceability=True"
+        ),
+    )
 
     # Multi-layer rebar config
     rebar_layers: list[RebarLayerConfig] | None = Field(
@@ -150,6 +188,48 @@ class BeamDesignRequest(BaseModel):
                 f"clear_cover ({self.clear_cover}mm) must be less than "
                 f"depth ({self.depth}mm)"
             )
+        if self.torsion > 0:
+            if self.fck > 40:
+                raise ValueError(
+                    "TORSION_SCOPE_HOLD: primary-route torsion is limited to "
+                    "fck <= 40 N/mm²."
+                )
+            if self.fy > 500:
+                raise ValueError(
+                    "TORSION_SCOPE_HOLD: primary-route torsion is limited to "
+                    "fy <= 500 N/mm²."
+                )
+            core_width = self.width - 2 * (self.clear_cover + self.stirrup_dia_mm / 2)
+            core_depth = self.depth - 2 * (self.clear_cover + self.stirrup_dia_mm / 2)
+            if core_width <= 0 or core_depth <= 0:
+                raise ValueError(
+                    "TORSION_SCOPE_HOLD: cover and stirrup diameter leave no "
+                    "positive closed-stirrup core."
+                )
+        if self.include_serviceability:
+            if self.span_mm is None or self.span_mm <= 0:
+                raise ValueError(
+                    "span_mm must be greater than zero when "
+                    "include_serviceability=True."
+                )
+            support = self.support_condition.strip().lower()
+            if support not in {
+                "cantilever",
+                "cant",
+                "simply_supported",
+                "simply",
+                "ss",
+                "continuous",
+                "cont",
+            }:
+                raise ValueError(
+                    "support_condition must be cantilever, simply_supported, "
+                    "or continuous when include_serviceability=True."
+                )
+            if self.crack_width_params is None:
+                raise ValueError(
+                    "crack_width_params is required when include_serviceability=True."
+                )
         return self
 
 
@@ -335,6 +415,10 @@ class ShearResult(BaseModel):
     tau_c: float = Field(description="Concrete shear strength (N/mm²)")
     tau_c_max: float = Field(description="Maximum shear stress limit (N/mm²)")
     asv_required: float = Field(description="Required stirrup area (mm²/mm)")
+    asv_required_unit: Literal["mm²/mm"] = Field(
+        default="mm²/mm",
+        description="Unit of asv_required (stirrup area per unit spacing)",
+    )
     stirrup_spacing: float = Field(description="Calculated stirrup spacing (mm)")
     sv_max: float = Field(description="Maximum allowed spacing (mm)")
     shear_capacity: float = Field(description="Shear capacity Vu,cap (kN)")
@@ -356,6 +440,34 @@ class CrackWidthCheckResult(BaseModel):
     crack_width_mm: float | None = None
     crack_width_limit_mm: float | None = None
     remarks: str = ""
+
+
+class CombinedBeamActions(BaseModel):
+    """Original and IS 456 equivalent actions used by the primary route."""
+
+    mu_knm: float
+    vu_kn: float
+    tu_knm: float
+    me_knm: float
+    ve_kn: float
+
+
+class IntegratedTorsionResult(BaseModel):
+    """Torsion calculation details embedded in the primary beam result."""
+
+    source: Literal["IS 456:2000"] = "IS 456:2000"
+    is_safe: bool
+    tau_ve: float = Field(description="Equivalent shear stress (N/mm²)")
+    tau_c: float = Field(description="Concrete shear strength (N/mm²)")
+    tau_c_max: float = Field(description="Maximum shear stress (N/mm²)")
+    asv_torsion: float = Field(description="Torsion stirrup demand (mm²/mm)")
+    asv_shear: float = Field(description="Shear stirrup demand (mm²/mm)")
+    asv_total: float = Field(description="Combined stirrup demand (mm²/mm)")
+    stirrup_spacing: float = Field(description="Designed closed-stirrup spacing (mm)")
+    al_torsion: float = Field(description="Longitudinal torsion steel (mm²)")
+    requires_closed_stirrups: bool
+    errors: list[dict[str, Any]] = Field(default_factory=list)
+    clause_refs: dict[str, str] = Field(default_factory=dict)
 
 
 class BeamDesignResponse(BaseModel):
@@ -386,10 +498,16 @@ class BeamDesignResponse(BaseModel):
     deflection_check: DeflectionCheckResult | None = None
     crack_width_check: CrackWidthCheckResult | None = None
 
+    # Combined-action results (populated only when Tu > 0)
+    combined_actions: CombinedBeamActions | None = None
+    torsion: IntegratedTorsionResult | None = None
+    holds: list[str] = Field(default_factory=list)
+
     # Warnings
     warnings: list[str] = Field(default_factory=list, description="Design warnings")
-    evidence: EvidenceEnvelopeResponse = Field(
-        description="Traceable calculation identity and supported-case boundary"
+    evidence: EvidenceEnvelopeResponse | None = Field(
+        default=None,
+        description="Traceable calculation identity and supported-case boundary",
     )
 
 

@@ -17,6 +17,7 @@ import type { BeamDesignRequest } from '../api/client';
 import type { Beam3DGeometry, BeamGeometryRequest } from './useBeamGeometry';
 import { LatestRequestCoordinator } from '../workspace/requestCoordinator';
 import type { ResultLifecycle, RevisionIdentity } from '../workspace/types';
+import { isBeamResultExportable } from '../utils/trustPresentation';
 
 interface LiveDesignOptions {
   /** Enable WebSocket connection */
@@ -54,6 +55,8 @@ interface LiveDesignState {
   connectionStatus: 'connecting' | 'connected' | 'disconnected' | 'reconnecting' | 'error';
   /** Whether REST fallback is active (WS unavailable) */
   isFallbackActive: boolean;
+  /** Why the canonical HTTP transport is being used. */
+  transportExplanation: string;
 }
 
 interface LiveDesignActions {
@@ -71,23 +74,38 @@ interface LiveDesignActions {
 
 const QUICK_REQUEST_KEY = 'quick-design';
 
-export function createQuickDesignIdentity(
-  inputs: BeamDesignRequest,
-  length: number,
-  inputRevision: number,
-): RevisionIdentity {
-  const canonicalInputs = JSON.stringify({
+function canonicalQuickInputs(inputs: BeamDesignRequest, length: number): string {
+  const includeServiceability = inputs.include_serviceability ?? false;
+  return JSON.stringify({
     width: inputs.width,
     depth: inputs.depth,
     length,
     moment: inputs.moment,
     shear: inputs.shear ?? 0,
+    torsion: inputs.torsion ?? 0,
     fck: inputs.fck,
     fy: inputs.fy,
     clearCover: inputs.clear_cover ?? 40,
+    effectiveDepth: inputs.effective_depth ?? null,
     stirrupDiameter: inputs.stirrup_dia_mm ?? 8,
     mainBarDiameter: inputs.main_bar_dia_mm ?? 20,
+    includeServiceability,
+    serviceability: includeServiceability
+      ? {
+          span: inputs.span_mm ?? null,
+          support: inputs.support_condition ?? null,
+          crackWidth: inputs.crack_width_params ?? null,
+        }
+      : null,
   });
+}
+
+export function createQuickDesignIdentity(
+  inputs: BeamDesignRequest,
+  length: number,
+  inputRevision: number,
+): RevisionIdentity {
+  const canonicalInputs = canonicalQuickInputs(inputs, length);
   let hash = 2166136261;
   for (let index = 0; index < canonicalInputs.length; index += 1) {
     hash ^= canonicalInputs.charCodeAt(index);
@@ -159,7 +177,7 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
 
   // Debounce ref for auto-design
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastInputsRef = useRef(inputs);
+  const lastInputsRef = useRef(canonicalQuickInputs(inputs, length));
   const coordinatorRef = useRef(new LatestRequestCoordinator());
   const requestSequenceRef = useRef(0);
 
@@ -242,19 +260,11 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
     if (!autoDesign || !enabled) return;
 
     // Check if inputs actually changed
-    const inputsChanged =
-      lastInputsRef.current.width !== inputs.width ||
-      lastInputsRef.current.depth !== inputs.depth ||
-      lastInputsRef.current.moment !== inputs.moment ||
-      lastInputsRef.current.shear !== inputs.shear ||
-      lastInputsRef.current.fck !== inputs.fck ||
-      lastInputsRef.current.fy !== inputs.fy ||
-      lastInputsRef.current.clear_cover !== inputs.clear_cover ||
-      lastInputsRef.current.stirrup_dia_mm !== inputs.stirrup_dia_mm ||
-      lastInputsRef.current.main_bar_dia_mm !== inputs.main_bar_dia_mm;
+    const currentInputs = canonicalQuickInputs(inputs, length);
+    const inputsChanged = lastInputsRef.current !== currentInputs;
 
     if (!inputsChanged) return;
-    lastInputsRef.current = { ...inputs };
+    lastInputsRef.current = currentInputs;
 
     // Debounce the design request
     if (debounceRef.current) {
@@ -270,7 +280,7 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
         clearTimeout(debounceRef.current);
       }
     };
-  }, [inputs, autoDesign, enabled, debounceMs, runRestDesign]);
+  }, [inputs, length, autoDesign, enabled, debounceMs, runRestDesign]);
 
   // Actions
   const triggerDesign = useCallback(() => {
@@ -325,12 +335,18 @@ export function useLiveDesign(options: LiveDesignOptions = {}): {
     exportEligible: Boolean(
       result
       && resultLifecycle === 'current'
-      && resultRevision === inputRevision,
+      && resultRevision === inputRevision
+      && isBeamResultExportable(result),
     ),
     geometry: geometry ?? null,
     error: error || (geometryError as Error | null)?.message || null,
     connectionStatus: enabled ? 'connected' : 'disconnected',
     isFallbackActive: true,
+    transportExplanation: (inputs.torsion ?? 0) > 0
+      ? 'Canonical HTTP is required because the WebSocket contract does not carry torsion.'
+      : inputs.include_serviceability
+        ? 'Canonical HTTP is required because the WebSocket contract does not carry serviceability inputs.'
+        : 'Verified HTTP mode ignores cancelled and stale responses.',
   };
 
   // Combined actions

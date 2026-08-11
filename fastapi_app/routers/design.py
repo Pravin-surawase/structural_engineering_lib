@@ -20,10 +20,14 @@ from fastapi_app.models.beam import (
     BeamDesignResponse,
     BeamCheckRequest,
     BeamCheckResponse,
+    CombinedBeamActions,
+    CrackWidthCheckResult,
+    DeflectionCheckResult,
     EvidenceEnvelopeResponse,
     EnhancedShearRequest,
     EnhancedShearResponse,
     FlexureResult,
+    IntegratedTorsionResult,
     ShearResult,
     TorsionDesignRequest,
     TorsionDesignResponse,
@@ -65,19 +69,23 @@ router = APIRouter(
     "/beam",
     response_model=APIResponse[BeamDesignResponse],
     summary="Design Beam Section",
-    description="Calculate required reinforcement for a beam section under given loading.",
+    description=(
+        "Calculate required reinforcement for a rectangular beam under flexure, "
+        "shear, and optional torsion."
+    ),
 )
 async def design_beam(request: BeamDesignRequest):
     """
-    Design a beam section for flexure and shear.
+    Design a rectangular beam section for flexure, shear, and optional torsion.
 
     Calculates:
     - Required tension reinforcement (Ast)
     - Required compression reinforcement (Asc) if doubly reinforced
     - Required shear reinforcement (stirrups)
+    - Equivalent actions and torsion reinforcement when Tu > 0
     - Neutral axis depth and capacity checks
 
-    Per IS 456:2000 clauses 38.1 (flexure) and 40 (shear).
+    Per IS 456:2000 clauses 38.1 (flexure), 40 (shear), and 41 (torsion).
     """
     try:
         from structural_lib.services.api import design_beam_is456
@@ -89,6 +97,19 @@ async def design_beam(request: BeamDesignRequest):
             stirrup = request.stirrup_dia_mm
             bar = request.main_bar_dia_mm
             effective_depth = request.depth - request.clear_cover - stirrup - bar / 2
+
+        deflection_params = None
+        crack_width_params = None
+        if request.include_serviceability:
+            deflection_params = {
+                "span_mm": request.span_mm,
+                "d_mm": effective_depth,
+                "support_condition": request.support_condition,
+            }
+            if request.crack_width_params is not None:
+                crack_width_params = request.crack_width_params.model_dump(
+                    exclude_none=True
+                )
 
         # Call the design function with actual API parameter names
         result = design_beam_is456(
@@ -103,6 +124,11 @@ async def design_beam(request: BeamDesignRequest):
             d_dash_mm=request.clear_cover
             + request.stirrup_dia_mm
             + request.main_bar_dia_mm / 2,
+            deflection_params=deflection_params,
+            crack_width_params=crack_width_params,
+            tu_knm=request.torsion,
+            cover_mm=request.clear_cover,
+            stirrup_dia_mm=request.stirrup_dia_mm,
         )
 
         # Extract flexure results directly from ComplianceCaseResult
@@ -122,16 +148,23 @@ async def design_beam(request: BeamDesignRequest):
 
         # Build shear result if shear was provided
         shear_result = None
-        if request.shear > 0 and result.shear:
+        if (request.shear > 0 or request.torsion > 0) and result.shear:
             shear = result.shear
+            asv_required = (
+                shear.Vus * 1000 / (0.87 * request.fy * effective_depth)
+                if shear.Vus > 0
+                else 0.0
+            )
+            stirrup_spacing = shear.spacing
+            if result.torsion is not None:
+                asv_required = result.torsion.Asv_total
+                stirrup_spacing = result.torsion.stirrup_spacing
             shear_result = ShearResult(
                 tau_v=shear.tau_v,
                 tau_c=shear.tau_c,
                 tau_c_max=shear.tau_c_max,
-                asv_required=(
-                    shear.Vus / (0.87 * request.fy) * 1000 if shear.Vus > 0 else 0.0
-                ),
-                stirrup_spacing=shear.spacing,
+                asv_required=asv_required,
+                stirrup_spacing=stirrup_spacing,
                 sv_max=300.0,
                 shear_capacity=(
                     shear.tau_c * request.width * effective_depth / 1000 + shear.Vus
@@ -150,6 +183,7 @@ async def design_beam(request: BeamDesignRequest):
                 "case_id": "CASE-1",
                 "mu_knm": request.moment,
                 "vu_kn": request.shear if request.shear > 0 else 0.0,
+                "tu_knm": request.torsion,
                 "b_mm": request.width,
                 "D_mm": request.depth,
                 "d_mm": effective_depth,
@@ -159,11 +193,60 @@ async def design_beam(request: BeamDesignRequest):
                 + request.stirrup_dia_mm
                 + request.main_bar_dia_mm / 2,
                 "asv_mm2": 100.0,
+                "cover_mm": request.clear_cover,
+                "stirrup_dia_mm": request.stirrup_dia_mm,
+                "include_serviceability": request.include_serviceability,
+                "deflection_params": deflection_params,
+                "crack_width_params": crack_width_params,
             },
             is_ok=result.is_ok,
             governing_utilization=utilization,
             utilizations=result.utilizations,
         )
+        holds: list[str] = []
+
+        deflection_check = None
+        if result.deflection is not None:
+            deflection_check = DeflectionCheckResult(
+                is_ok=result.deflection.is_ok,
+                span_depth_actual=result.deflection.computed.get("ld_ratio"),
+                span_depth_allowable=result.deflection.computed.get("allowable_ld"),
+                remarks=result.deflection.remarks,
+            )
+
+        crack_width_check = None
+        if result.crack_width is not None:
+            crack_width_check = CrackWidthCheckResult(
+                is_ok=result.crack_width.is_ok,
+                crack_width_mm=result.crack_width.computed.get("wcr_mm"),
+                crack_width_limit_mm=result.crack_width.computed.get("limit_mm"),
+                remarks=result.crack_width.remarks,
+            )
+
+        combined_actions = None
+        torsion_result = None
+        if result.torsion is not None:
+            combined_actions = CombinedBeamActions(
+                mu_knm=result.Mu_knm,
+                vu_kn=result.Vu_kn,
+                tu_knm=result.Tu_knm,
+                me_knm=result.torsion.Me_knm,
+                ve_kn=result.torsion.Ve_kn,
+            )
+            torsion_result = IntegratedTorsionResult(
+                is_safe=result.torsion.is_safe,
+                tau_ve=result.torsion.tau_ve,
+                tau_c=result.torsion.tau_c,
+                tau_c_max=result.torsion.tau_c_max,
+                asv_torsion=result.torsion.Asv_torsion,
+                asv_shear=result.torsion.Asv_shear,
+                asv_total=result.torsion.Asv_total,
+                stirrup_spacing=result.torsion.stirrup_spacing,
+                al_torsion=result.torsion.Al_torsion,
+                requires_closed_stirrups=result.torsion.requires_closed_stirrups,
+                errors=[error.to_dict() for error in result.torsion.errors],
+                clause_refs=result.torsion.clause_refs,
+            )
 
         # Collect warnings
         warnings = []
@@ -174,6 +257,10 @@ async def design_beam(request: BeamDesignRequest):
             )
         if flexure_result.xu > flexure_result.xu_max:
             warnings.append("Section is over-reinforced - consider increasing depth")
+        if result.torsion is not None and result.torsion.requires_closed_stirrups:
+            warnings.append("Closed stirrups mandatory for torsion (IS 456 Cl 41.4.3)")
+        for error in result.torsion.errors if result.torsion is not None else []:
+            warnings.append(sanitize_error_string(error.message, "beam design"))
 
         return success_response(
             BeamDesignResponse(
@@ -189,8 +276,17 @@ async def design_beam(request: BeamDesignRequest):
                 asc_total=flexure.asc_required,
                 utilization_ratio=min(utilization, 2.0),
                 effective_depth_used=effective_depth,
+                deflection_check=deflection_check,
+                crack_width_check=crack_width_check,
+                combined_actions=combined_actions,
+                torsion=torsion_result,
+                holds=holds,
                 warnings=warnings,
-                evidence=EvidenceEnvelopeResponse.model_validate(evidence),
+                evidence=(
+                    EvidenceEnvelopeResponse.model_validate(evidence)
+                    if evidence is not None
+                    else None
+                ),
             )
         )
 

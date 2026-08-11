@@ -25,6 +25,8 @@ export interface ExportBeamParams {
   asc_required?: number;
   moment?: number;
   shear?: number;
+  torsion?: number;
+  include_serviceability?: boolean;
 }
 
 export interface ExportReportParams {
@@ -35,10 +37,20 @@ export interface ExportReportParams {
   fy: number;
   moment?: number;
   shear?: number;
+  torsion?: number;
   ast_required?: number;
   ast_provided?: number;
   utilization?: number;
   is_safe?: boolean;
+  effective_depth?: number;
+  clear_cover?: number;
+  stirrup_dia_mm?: number;
+  main_bar_dia_mm?: number;
+  include_serviceability?: boolean;
+  span_mm?: number;
+  support_condition?: string;
+  crack_width_params?: import('../api/client').BeamDesignRequest['crack_width_params'];
+  calculation_identity?: string;
   format?: "html" | "json" | "pdf";
 }
 

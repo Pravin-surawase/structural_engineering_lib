@@ -100,8 +100,15 @@ class CrackWidthParams(TypedDict, total=False):
     All fields are optional (total=False).
     """
 
-    exposure: str  # Exposure class: "MILD", "MODERATE", "SEVERE", "VERY_SEVERE"
-    max_crack_width_mm: float  # Maximum allowable crack width
+    exposure_class: str
+    limit_mm: float
+    acr_mm: float
+    cmin_mm: float
+    h_mm: float
+    x_mm: float
+    epsilon_m: float
+    fs_service_nmm2: float
+    es_nmm2: float
 
 
 class OptimizerInputs(TypedDict, total=False):
@@ -508,6 +515,7 @@ class TorsionResult:
     is_safe: bool
     requires_closed_stirrups: bool = True
     errors: list[DesignError] = field(default_factory=list)
+    clause_refs: dict[str, str] = field(default_factory=dict)
 
     @property
     def tu_knm(self) -> float:
@@ -762,6 +770,10 @@ class ComplianceCaseResult:
     failed_checks: list[str] = field(default_factory=list)
     remarks: str = ""
     clause_refs: dict[str, str] = field(default_factory=dict)
+    Tu_knm: float = 0.0
+    Me_knm: float | None = None
+    Ve_kn: float | None = None
+    torsion: TorsionResult | None = None
 
     @property
     def mu_knm(self) -> float:

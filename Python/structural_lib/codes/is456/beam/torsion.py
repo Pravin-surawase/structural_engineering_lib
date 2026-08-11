@@ -19,9 +19,8 @@ References:
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
-from typing import TYPE_CHECKING
 
+from structural_lib.core.data_types import TorsionResult
 from structural_lib.core.error_messages import (
     dimension_too_small,
     material_property_out_of_range,
@@ -36,10 +35,6 @@ from structural_lib.core.errors import (
 from .. import tables
 from ..traceability import clause
 
-if TYPE_CHECKING:
-    pass
-
-
 __all__ = [
     "TorsionResult",
     "calculate_equivalent_shear",
@@ -49,55 +44,6 @@ __all__ = [
     "calculate_longitudinal_torsion_steel",
     "design_torsion",
 ]
-
-
-# =============================================================================
-# Data Types
-# =============================================================================
-
-
-@dataclass
-class TorsionResult:
-    """Result of torsion design per IS 456 Clause 41.
-
-    Attributes:
-        Tu_knm: Applied torsional moment (kN·m)
-        Vu_kn: Applied shear force (kN)
-        Mu_knm: Applied bending moment (kN·m)
-        Ve_kn: Equivalent shear force (kN)
-        Me_knm: Equivalent bending moment (kN·m)
-        tau_ve: Equivalent shear stress (N/mm²)
-        tau_c: Design shear strength of concrete (N/mm²)
-        tau_c_max: Maximum shear stress limit (N/mm²)
-        Asv_torsion: Area of stirrups for torsion per unit length (mm²/mm)
-        Asv_shear: Area of stirrups for shear per unit length (mm²/mm)
-        Asv_total: Total stirrup area per unit length (mm²/mm)
-        stirrup_spacing: Designed stirrup spacing (mm)
-        Al_torsion: Longitudinal steel for torsion (mm²)
-        is_safe: True if section is safe
-        requires_closed_stirrups: True (always for torsion)
-        errors: List of structured errors/warnings
-    """
-
-    Tu_knm: float
-    Vu_kn: float
-    Mu_knm: float
-    Ve_kn: float
-    Me_knm: float
-    tau_ve: float
-    tau_c: float
-    tau_c_max: float
-    Asv_torsion: float
-    Asv_shear: float
-    Asv_total: float
-    stirrup_spacing: float
-    Al_torsion: float
-    is_safe: bool
-    requires_closed_stirrups: bool = True
-    errors: list[DesignError] = field(default_factory=list)
-    clause_refs: dict[str, str] = field(
-        default_factory=dict
-    )  # IS 456 clause references
 
 
 # =============================================================================
@@ -465,6 +411,14 @@ def design_torsion(
           fy ≤ 500 N/mm².
     """
     errors: list[DesignError] = []
+    clause_refs = {
+        "Ve": "IS 456 Cl 41.3.1",
+        "Me": "IS 456 Cl 41.4.2",
+        "tau_ve": "IS 456 Cl 41.3.1",
+        "Asv_torsion": "IS 456 Cl 41.4.3",
+        "Al_torsion": "IS 456 Cl 41.4.2",
+        "sv_max": "IS 456 Cl 41.4.3, Cl 26.5.1.5",
+    }
 
     # Validate inputs
     if b <= 0:
@@ -544,6 +498,7 @@ def design_torsion(
             is_safe=False,
             requires_closed_stirrups=True,
             errors=errors,
+            clause_refs=clause_refs,
         )
 
     # Step 6: Calculate stirrup reinforcement
@@ -592,12 +547,5 @@ def design_torsion(
         is_safe=True,
         requires_closed_stirrups=True,
         errors=errors,
-        clause_refs={
-            "Ve": "IS 456 Cl 41.3.1",
-            "Me": "IS 456 Cl 41.4.2",
-            "tau_ve": "IS 456 Cl 41.3.1",
-            "Asv_torsion": "IS 456 Cl 41.4.3",
-            "Al_torsion": "IS 456 Cl 41.4.2",
-            "sv_max": "IS 456 Cl 41.4.3, Cl 26.5.1.5",
-        },
+        clause_refs=clause_refs,
     )

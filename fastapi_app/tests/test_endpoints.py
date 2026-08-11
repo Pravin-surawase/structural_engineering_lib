@@ -116,6 +116,7 @@ class TestDesignEndpoints:
                 "ast_provided": design["ast_total"],
                 "utilization": evidence["exact_utilization"],
                 "governing_check": evidence["governing_check"],
+                "calculation_identity": evidence["calculation_identity"],
                 "is_safe": evidence["status"] == "PASS",
                 "format": "json",
             },
@@ -173,6 +174,7 @@ class TestDesignEndpoints:
                 "utilization": 2.0,
                 "exact_utilization": evidence["exact_utilization"],
                 "governing_check": evidence["governing_check"],
+                "calculation_identity": evidence["calculation_identity"],
                 "is_safe": False,
                 "format": "json",
             },
@@ -209,6 +211,7 @@ class TestDesignEndpoints:
                 "utilization": 2.0,
                 "exact_utilization": 9.0,
                 "governing_check": "client_claim",
+                "calculation_identity": design["evidence"]["calculation_identity"],
                 "is_safe": False,
                 "format": "json",
             },
@@ -805,8 +808,8 @@ class TestAnalysisEndpoints:
 class TestExportEndpoints:
     """Tests for export endpoints (BBS, DXF, Report)."""
 
-    def _report_payload(self, fmt="html"):
-        return {
+    def _report_payload(self, client, fmt="html"):
+        payload = {
             "beam_id": "TEST-1",
             "width": 300,
             "depth": 500,
@@ -820,11 +823,16 @@ class TestExportEndpoints:
             "is_safe": True,
             "format": fmt,
         }
+        design = unwrap(client.post("/api/v1/design/beam", json=payload))
+        return {
+            **payload,
+            "calculation_identity": design["evidence"]["calculation_identity"],
+        }
 
     def test_export_report_html(self, client):
         """Test HTML report export."""
         response = client.post(
-            "/api/v1/export/report", json=self._report_payload("html")
+            "/api/v1/export/report", json=self._report_payload(client, "html")
         )
         assert response.status_code == status.HTTP_200_OK
         assert "text/html" in response.headers["content-type"]
@@ -833,7 +841,7 @@ class TestExportEndpoints:
     def test_export_report_json(self, client):
         """Test JSON report export."""
         response = client.post(
-            "/api/v1/export/report", json=self._report_payload("json")
+            "/api/v1/export/report", json=self._report_payload(client, "json")
         )
         assert response.status_code == status.HTTP_200_OK
         assert "application/json" in response.headers["content-type"]
@@ -841,7 +849,7 @@ class TestExportEndpoints:
     def test_export_report_pdf(self, client):
         """Test PDF report export (requires weasyprint)."""
         response = client.post(
-            "/api/v1/export/report", json=self._report_payload("pdf")
+            "/api/v1/export/report", json=self._report_payload(client, "pdf")
         )
         # Accepts either 200 (weasyprint installed) or 503 (not installed)
         if response.status_code == status.HTTP_200_OK:
@@ -854,7 +862,7 @@ class TestExportEndpoints:
     def test_export_report_invalid_format(self, client):
         """Test invalid format is rejected."""
         response = client.post(
-            "/api/v1/export/report", json=self._report_payload("docx")
+            "/api/v1/export/report", json=self._report_payload(client, "docx")
         )
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 

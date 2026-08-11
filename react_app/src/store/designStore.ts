@@ -42,11 +42,14 @@ const DEFAULT_INPUTS: BeamDesignRequest = {
   depth: 450, // mm
   moment: 150, // kN·m
   shear: 80, // kN
+  torsion: 0, // kN·m
   fck: 25.0, // N/mm² (M25)
   fy: 500.0, // N/mm² (Fe500)
   clear_cover: 40, // mm
   stirrup_dia_mm: 8, // mm
   main_bar_dia_mm: 20, // mm
+  include_serviceability: false,
+  support_condition: 'simply_supported',
 };
 
 const DEFAULT_LENGTH = 4000; // mm

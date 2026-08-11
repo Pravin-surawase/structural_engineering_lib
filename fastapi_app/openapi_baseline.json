@@ -4179,6 +4179,92 @@
         "title": "BeamCheckResponse",
         "type": "object"
       },
+      "BeamCrackWidthParams": {
+        "description": "Explicit maintained inputs for the primary-route crack-width check.",
+        "properties": {
+          "acr_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Acr Mm",
+            "type": "number"
+          },
+          "cmin_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Cmin Mm",
+            "type": "number"
+          },
+          "epsilon_m": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epsilon M"
+          },
+          "es_nmm2": {
+            "default": 200000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Es Nmm2",
+            "type": "number"
+          },
+          "exposure_class": {
+            "default": "moderate",
+            "enum": [
+              "mild",
+              "moderate",
+              "severe",
+              "very_severe"
+            ],
+            "title": "Exposure Class",
+            "type": "string"
+          },
+          "fs_service_nmm2": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fs Service Nmm2"
+          },
+          "h_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "H Mm",
+            "type": "number"
+          },
+          "limit_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit Mm"
+          },
+          "x_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "X Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "acr_mm",
+          "cmin_mm",
+          "h_mm",
+          "x_mm"
+        ],
+        "title": "BeamCrackWidthParams",
+        "type": "object"
+      },
       "BeamDesignRequest": {
         "description": "Request model for beam design calculation.",
         "examples": [
@@ -4191,6 +4277,7 @@
             "moment": 150.0,
             "shear": 75.0,
             "stirrup_dia_mm": 8.0,
+            "torsion": 0.0,
             "width": 300.0
           }
         ],
@@ -4207,6 +4294,17 @@
             "minimum": 20.0,
             "title": "Clear Cover",
             "type": "number"
+          },
+          "crack_width_params": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BeamCrackWidthParams"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Maintained crack-width inputs; required when include_serviceability=True"
           },
           "depth": {
             "description": "Overall beam depth D (mm)",
@@ -4339,6 +4437,18 @@
             "title": "Support Condition",
             "type": "string"
           },
+          "torsion": {
+            "default": 0.0,
+            "description": "Factored design torsional moment Tu (kN\u00b7m)",
+            "examples": [
+              0.0,
+              10.0,
+              25.0
+            ],
+            "minimum": 0.0,
+            "title": "Torsion",
+            "type": "number"
+          },
           "width": {
             "description": "Beam width b (mm)",
             "examples": [
@@ -4374,6 +4484,16 @@
             "title": "Ast Total",
             "type": "number"
           },
+          "combined_actions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CombinedBeamActions"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "crack_width_check": {
             "anyOf": [
               {
@@ -4407,11 +4527,25 @@
             "title": "Effective Depth Used"
           },
           "evidence": {
-            "$ref": "#/components/schemas/EvidenceEnvelopeResponse",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EvidenceEnvelopeResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Traceable calculation identity and supported-case boundary"
           },
           "flexure": {
             "$ref": "#/components/schemas/FlexureResult"
+          },
+          "holds": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Holds",
+            "type": "array"
           },
           "message": {
             "description": "Summary message",
@@ -4432,6 +4566,16 @@
             "description": "Whether design is valid",
             "title": "Success",
             "type": "boolean"
+          },
+          "torsion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IntegratedTorsionResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "utilization_ratio": {
             "description": "Governing IS 456 compliance utilization ratio",
@@ -4454,8 +4598,7 @@
           "message",
           "flexure",
           "ast_total",
-          "utilization_ratio",
-          "evidence"
+          "utilization_ratio"
         ],
         "title": "BeamDesignResponse",
         "type": "object"
@@ -7416,6 +7559,40 @@
         "title": "ColumnUniaxialResponse",
         "type": "object"
       },
+      "CombinedBeamActions": {
+        "description": "Original and IS 456 equivalent actions used by the primary route.",
+        "properties": {
+          "me_knm": {
+            "title": "Me Knm",
+            "type": "number"
+          },
+          "mu_knm": {
+            "title": "Mu Knm",
+            "type": "number"
+          },
+          "tu_knm": {
+            "title": "Tu Knm",
+            "type": "number"
+          },
+          "ve_kn": {
+            "title": "Ve Kn",
+            "type": "number"
+          },
+          "vu_kn": {
+            "title": "Vu Kn",
+            "type": "number"
+          }
+        },
+        "required": [
+          "mu_knm",
+          "vu_kn",
+          "tu_knm",
+          "me_knm",
+          "ve_kn"
+        ],
+        "title": "CombinedBeamActions",
+        "type": "object"
+      },
       "ComplianceCaseInput": {
         "description": "A single load case for compliance checking.",
         "properties": {
@@ -9481,6 +9658,11 @@
             "title": "Fy",
             "type": "number"
           },
+          "include_serviceability": {
+            "default": false,
+            "title": "Include Serviceability",
+            "type": "boolean"
+          },
           "moment": {
             "default": 0,
             "description": "Design moment kN\u00b7m",
@@ -9500,6 +9682,13 @@
             "description": "Span in mm",
             "minimum": 0.0,
             "title": "Span Length",
+            "type": "number"
+          },
+          "torsion": {
+            "default": 0,
+            "description": "Design torsion kN m",
+            "minimum": 0.0,
+            "title": "Torsion",
             "type": "number"
           },
           "width": {
@@ -9541,6 +9730,14 @@
             "title": "Beam Id",
             "type": "string"
           },
+          "calculation_identity": {
+            "description": "Exact calculation identity from the current primary response",
+            "maxLength": 64,
+            "minLength": 64,
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Calculation Identity",
+            "type": "string"
+          },
           "clear_cover": {
             "default": 25,
             "description": "Clear cover used by the source calculation (mm)",
@@ -9548,6 +9745,16 @@
             "minimum": 20.0,
             "title": "Clear Cover",
             "type": "number"
+          },
+          "crack_width_params": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BeamCrackWidthParams"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "depth": {
             "exclusiveMinimum": 0.0,
@@ -9603,6 +9810,11 @@
             "title": "Governing Check",
             "type": "string"
           },
+          "include_serviceability": {
+            "default": false,
+            "title": "Include Serviceability",
+            "type": "boolean"
+          },
           "is_safe": {
             "default": true,
             "title": "Is Safe",
@@ -9628,12 +9840,35 @@
             "title": "Shear",
             "type": "number"
           },
+          "span_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Span Mm"
+          },
           "stirrup_dia_mm": {
             "default": 8,
             "description": "Stirrup diameter used by the source calculation (mm)",
             "maximum": 16.0,
             "minimum": 6.0,
             "title": "Stirrup Dia Mm",
+            "type": "number"
+          },
+          "support_condition": {
+            "default": "simply_supported",
+            "title": "Support Condition",
+            "type": "string"
+          },
+          "torsion": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Torsion",
             "type": "number"
           },
           "utilization": {
@@ -9653,7 +9888,8 @@
           "width",
           "depth",
           "fck",
-          "fy"
+          "fy",
+          "calculation_identity"
         ],
         "title": "ExportReportRequest",
         "type": "object"
@@ -10930,6 +11166,94 @@
           "note"
         ],
         "title": "ImportFormatsResponse",
+        "type": "object"
+      },
+      "IntegratedTorsionResult": {
+        "description": "Torsion calculation details embedded in the primary beam result.",
+        "properties": {
+          "al_torsion": {
+            "description": "Longitudinal torsion steel (mm\u00b2)",
+            "title": "Al Torsion",
+            "type": "number"
+          },
+          "asv_shear": {
+            "description": "Shear stirrup demand (mm\u00b2/mm)",
+            "title": "Asv Shear",
+            "type": "number"
+          },
+          "asv_torsion": {
+            "description": "Torsion stirrup demand (mm\u00b2/mm)",
+            "title": "Asv Torsion",
+            "type": "number"
+          },
+          "asv_total": {
+            "description": "Combined stirrup demand (mm\u00b2/mm)",
+            "title": "Asv Total",
+            "type": "number"
+          },
+          "clause_refs": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "object"
+          },
+          "errors": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Errors",
+            "type": "array"
+          },
+          "is_safe": {
+            "title": "Is Safe",
+            "type": "boolean"
+          },
+          "requires_closed_stirrups": {
+            "title": "Requires Closed Stirrups",
+            "type": "boolean"
+          },
+          "source": {
+            "const": "IS 456:2000",
+            "default": "IS 456:2000",
+            "title": "Source",
+            "type": "string"
+          },
+          "stirrup_spacing": {
+            "description": "Designed closed-stirrup spacing (mm)",
+            "title": "Stirrup Spacing",
+            "type": "number"
+          },
+          "tau_c": {
+            "description": "Concrete shear strength (N/mm\u00b2)",
+            "title": "Tau C",
+            "type": "number"
+          },
+          "tau_c_max": {
+            "description": "Maximum shear stress (N/mm\u00b2)",
+            "title": "Tau C Max",
+            "type": "number"
+          },
+          "tau_ve": {
+            "description": "Equivalent shear stress (N/mm\u00b2)",
+            "title": "Tau Ve",
+            "type": "number"
+          }
+        },
+        "required": [
+          "is_safe",
+          "tau_ve",
+          "tau_c",
+          "tau_c_max",
+          "asv_torsion",
+          "asv_shear",
+          "asv_total",
+          "stirrup_spacing",
+          "al_torsion",
+          "requires_closed_stirrups"
+        ],
+        "title": "IntegratedTorsionResult",
         "type": "object"
       },
       "LoadAnalysisRequest": {
@@ -13212,6 +13536,13 @@
             "title": "Asv Required",
             "type": "number"
           },
+          "asv_required_unit": {
+            "const": "mm\u00b2/mm",
+            "default": "mm\u00b2/mm",
+            "description": "Unit of asv_required (stirrup area per unit spacing)",
+            "title": "Asv Required Unit",
+            "type": "string"
+          },
           "shear_capacity": {
             "description": "Shear capacity Vu,cap (kN)",
             "title": "Shear Capacity",
@@ -15127,7 +15458,7 @@
     },
     "/api/v1/design/beam": {
       "post": {
-        "description": "Calculate required reinforcement for a beam section under given loading.",
+        "description": "Calculate required reinforcement for a rectangular beam under flexure, shear, and optional torsion.",
         "operationId": "design_beam_api_v1_design_beam_post",
         "requestBody": {
           "content": {
