@@ -1315,6 +1315,40 @@ def cmd_checklist(args: argparse.Namespace) -> int:
 # ─── Preflight ───────────────────────────────────────────────────────────────
 
 
+def _run_local_pytest_gate(section: str, test_path: str) -> bool:
+    """Run one release test suite and print a bounded result."""
+    print(f"\n{section}")
+    try:
+        result = _run_with_timeout(
+            [
+                sys.executable,
+                "-m",
+                "pytest",
+                test_path,
+                "-v",
+                "--tb=short",
+                "-q",
+                "-m",
+                "not slow",
+            ],
+            timeout=600,
+            cwd=REPO_ROOT,
+        )
+    except subprocess.TimeoutExpired:
+        print("  ✗ Tests TIMED OUT (>600s)")
+        return False
+
+    if result.returncode != 0:
+        print("  ✗ Tests FAILED")
+        _print_failure_tail(result)
+        return False
+
+    lines = result.stdout.strip().split("\n")
+    summary = lines[-1] if lines else "passed"
+    print(f"  ✓ {summary}")
+    return True
+
+
 def cmd_preflight(args: argparse.Namespace) -> int:
     """Run all pre-release validation checks without making changes."""
     print("=" * 60)
@@ -1464,7 +1498,36 @@ def cmd_preflight(args: argparse.Namespace) -> int:
             )
             errors += 1
 
-        print("\n4. React Build (Docker, 2GB limit)")
+        print("\n4. FastAPI Tests (Docker, 2GB limit)")
+        try:
+            fastapi_result = _run_with_timeout(
+                [
+                    "docker",
+                    "compose",
+                    "-f",
+                    "docker-compose.preflight.yml",
+                    "run",
+                    "--rm",
+                    "test-fastapi",
+                ],
+                timeout=600,
+            )
+            if fastapi_result.returncode != 0:
+                print("  ✗ FastAPI tests FAILED (in Docker)")
+                _print_failure_tail(fastapi_result)
+                errors += 1
+            else:
+                print("  ✓ FastAPI tests passed (in Docker)")
+        except subprocess.TimeoutExpired:
+            print("  ✗ FastAPI tests TIMED OUT (>600s)")
+            errors += 1
+        except FileNotFoundError:
+            print(
+                "  ✗ Docker not available — start Colima: colima start --cpu 4 --memory 4"
+            )
+            errors += 1
+
+        print("\n5. React Build (Docker, 2GB limit)")
         try:
             react_result = _run_with_timeout(
                 [
@@ -1493,44 +1556,13 @@ def cmd_preflight(args: argparse.Namespace) -> int:
             )
             errors += 1
     else:
-        # 3. Tests (local)
-        print("\n3. Python Tests")
-        try:
-            test_result = _run_with_timeout(
-                [
-                    sys.executable,
-                    "-m",
-                    "pytest",
-                    "Python/tests/",
-                    "-v",
-                    "--tb=short",
-                    "-q",
-                    "-m",
-                    "not slow",
-                ],
-                timeout=600,
-            )
-        except subprocess.TimeoutExpired:
-            print("  ✗ Tests TIMED OUT (>600s)")
+        if not _run_local_pytest_gate("3. Python Tests", "Python/tests/"):
             errors += 1
-            test_result = None
-
-        if test_result is None:
-            pass
-        elif test_result.returncode != 0:
-            print("  ✗ Tests FAILED")
-            # Show last few lines
-            lines = test_result.stdout.strip().split("\n")
-            for line in lines[-5:]:
-                print(f"    {line}")
+        if not _run_local_pytest_gate("4. FastAPI Tests", "fastapi_app/tests/"):
             errors += 1
-        else:
-            lines = test_result.stdout.strip().split("\n")
-            summary = lines[-1] if lines else "passed"
-            print(f"  ✓ {summary}")
 
-        # 4. React build (local)
-        print("\n4. React Build")
+        # 5. React build (local)
+        print("\n5. React Build")
         react_dir = REPO_ROOT / "react_app"
         if react_dir.exists():
             node_env, node_status = _node_runtime_env()
@@ -1569,8 +1601,8 @@ def cmd_preflight(args: argparse.Namespace) -> int:
             print("  ⚠ react_app/ not found")
             warnings += 1
 
-    # 5. Doc version sync
-    print("\n5. Doc Version Sync")
+    # 6. Doc version sync
+    print("\n6. Doc Version Sync")
     sync_result = subprocess.run(
         [sys.executable, str(BUMP_SCRIPT), "--check-docs"],
         capture_output=True,
@@ -1582,8 +1614,8 @@ def cmd_preflight(args: argparse.Namespace) -> int:
     else:
         print("  ✓ Doc versions are synced")
 
-    # 6. CHANGELOG check
-    print("\n6. Release Docs")
+    # 7. CHANGELOG check
+    print("\n7. Release Docs")
     docs_result = cmd_check_docs(argparse.Namespace())
     if docs_result != 0:
         print("  ⚠ CHANGELOG ↔ releases.md mismatch (expected before new release)")
@@ -1591,8 +1623,8 @@ def cmd_preflight(args: argparse.Namespace) -> int:
     else:
         print("  ✓ CHANGELOG ↔ releases.md in sync")
 
-    # 7. Version files exist
-    print("\n7. Version Files")
+    # 8. Version files exist
+    print("\n8. Version Files")
     version_files_check = subprocess.run(
         [sys.executable, str(BUMP_SCRIPT), "--report"],
         capture_output=True,

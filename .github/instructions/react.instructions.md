@@ -65,7 +65,7 @@ RIGHT: useBeamGeometry → POST /api/v1/geometry/beam/full → geometry_3d
 
 ## Migration Scripts
 
-- **Move a component:** `.venv/bin/python scripts/migrate_react_component.py <src> <dst> --dry-run`
+- **Move a component:** `./scripts/python_runtime.sh scripts/migrate_react_component.py <src> <dst> --dry-run`
 - Co-located CSS files are moved automatically
 
 ## Build & Test

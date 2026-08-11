@@ -26,6 +26,18 @@ The brief is the bounded orientation packet; session start verifies the environm
 
 Before editing, confirm the branch and working tree shown by session start. Preserve unrelated user changes.
 
+In a linked worktree, `.venv/` may exist only in the primary checkout. Use
+`./run.sh` or `./scripts/python_runtime.sh`; never bypass the launcher with a
+primary-checkout interpreter path. Session start must report `Python source
+binding: current worktree`. If it does not, stop and run:
+
+```bash
+./scripts/python_runtime.sh --diagnose
+```
+
+If a direct helper name is missing or has been consolidated, do not guess an
+archive path. Resolve the maintained command with `./run.sh find "task"`.
+
 ## Session Closeout
 
 1. Run the narrow checks for changed behavior while iterating.

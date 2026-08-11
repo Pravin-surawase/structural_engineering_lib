@@ -4,7 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-11
-- Focus: 0.23.1a1 local candidate isolation and preflight repair on the preserved exact artifacts
+- Focus: 0.23.1a1 candidate repair and repeat-debug prevention on preserved exact artifacts
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
@@ -16,8 +16,8 @@
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | Local candidate rehearsal | Exact-wheel UAT and clean-tree preflight pass; preflight reports zero warnings |
-| **Next** | Candidate draft PR #732 | Inspect normal PR CI and owner review; preserve every publication hold |
+| **Current** | Candidate prevention controls | Worktree runtime, session trust, automation discovery, metadata, and FastAPI preflight parity pass local gates |
+| **Next** | Candidate draft PR #732 | Inspect the updated normal PR CI and owner review; preserve every publication hold |
 | **Held** | Publication and engineering-use claims | No tag/TestPyPI/PyPI/GitHub Release; qualified review remains a separate stable gate |
 
 ## Integrated footing scope

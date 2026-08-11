@@ -279,16 +279,16 @@ colima stop
 
 Before starting, kill any old processes so ports 8000 and 5173 are free.
 
-**Step 1 — Activate the Python virtual environment (do this once per terminal session):**
+**Step 1 — Resolve the project Python runtime:**
 ```bash
 cd /Users/pravinsurawase/VS_code_project/structural_engineering_lib
-source .venv/bin/activate
-# Your prompt will change to: (.venv) pravinsurawase@macmini-dev ...
-# Verify: which python  →  should show .venv/bin/python
+./scripts/python_runtime.sh --diagnose
 ```
 
-> **Never skip this.** Without it, `uvicorn` and `python` commands use the system Python (3.9) and won't find the project's packages.
-> **Shortcut:** Instead of `source .venv/bin/activate`, you can always call `.venv/bin/uvicorn` and `.venv/bin/python` directly by full path — same result.
+> The launcher selects the approved `.venv` from this checkout or the primary
+> worktree and binds imports to the invoking worktree. A linked worktree does
+> not need its own copied or symlinked `.venv`. Use
+> `./scripts/python_runtime.sh -m uvicorn ...` for direct server commands.
 
 **Step 2 — Kill old FastAPI (port 8000):**
 ```bash
@@ -406,8 +406,8 @@ curl http://localhost:8000/health           # Should return {"status":"ok"}
 ### Option C: Python library only (no UI)
 
 ```bash
-pip install -e Python/                               # Install in dev mode
-.venv/bin/python -c "from structural_lib import design_beam_is456; print('OK')"
+./scripts/python_runtime.sh -m pip install -e Python/ # Install in dev mode
+./scripts/python_runtime.sh -c "from structural_lib import design_beam_is456; print('OK')"
 ```
 
 ### Port Map
@@ -426,13 +426,13 @@ pip install -e Python/                               # Install in dev mode
 | Colima download/start fails | Run `colima status`, then inspect `~/.colima/_lima/colima/ha.stderr.log`; do not delete the transferred VM without approval |
 | Port 8000 already in use | Inspect the listener: `lsof -nP -iTCP:8000 -sTCP:LISTEN` |
 | Port 5173 already in use | Inspect the listener: `lsof -nP -iTCP:5173 -sTCP:LISTEN` |
-| `uvicorn: command not found` | Venv not activated → `source .venv/bin/activate` or use `.venv/bin/uvicorn` |
-| `ModuleNotFoundError: structural_lib` | Venv not active or re-install → `source .venv/bin/activate && pip install -e Python/` |
+| `uvicorn: command not found` | Use `./scripts/python_runtime.sh -m uvicorn` |
+| `ModuleNotFoundError: structural_lib` | Run `./scripts/python_runtime.sh --diagnose`; reinstall only if the worktree source binding is correct |
 | React shows blank / "cannot connect" | FastAPI not running — start it first on :8000 |
 | React can't reach API | Ensure FastAPI is running on :8000 first |
 | "Cannot connect to backend" in browser but `curl` works | macOS resolves `localhost` to IPv6 `::1`; uvicorn not bound to IPv6 — use `--host "::"` not `--host 0.0.0.0` |
 | Sample data 404 in Docker | Ensure `Etabs_CSV/` is copied (Dockerfile) or mounted (docker-compose.dev.yml) |
-| Python import errors | Use `.venv/bin/python`, never bare `python` |
+| Python import errors | Use `./scripts/python_runtime.sh`, never bare `python` |
 
 ---
 
@@ -444,8 +444,8 @@ pip install -e Python/                               # Install in dev mode
 ./run.sh session usage --checkpoint start --task-id TASK-XXX --task "short scope"
 
 # Validate codebase
-./run.sh check --quick                               # Fast validation (9 checks, <30s)
-./run.sh check                                       # Full validation (29 checks, parallel)
+./run.sh check --quick                               # Fast validation (10 checks, <30s)
+./run.sh check                                       # Full validation (30 checks, parallel)
 ./run.sh check --category api                        # One category only
 
 # Run tests
@@ -522,18 +522,18 @@ END:    □ Codex reviews the scoped diff and performs Git/GitHub closeout
 | Git/GitHub closeout | Codex | [canonical workflow](../git-automation/git-workflow-single-source.md) |
 | Full check | `./run.sh check` | N/A (orchestrator) |
 | Quick check | `./run.sh check --quick` | N/A |
-| Run tests | `./run.sh test` | `.venv/bin/pytest Python/tests/ -v` |
-| Test changed | `./run.sh test --changed` | `.venv/bin/python scripts/test_changed.py` |
-| Pre-flight | `./run.sh preflight` | `.venv/bin/python scripts/preflight.py` |
-| Session context | `./run.sh session context` | `.venv/bin/python scripts/session.py context` |
-| Usage checkpoint | `./run.sh session usage ...` | `.venv/bin/python scripts/session.py usage ...` |
-| Find script | `./run.sh find "task"` | `.venv/bin/python scripts/find_automation.py "task"` |
-| API signatures | `./run.sh find --api <func>` | `.venv/bin/python scripts/discover_api_signatures.py <func>` |
-| Move file | N/A | `.venv/bin/python scripts/safe_file_move.py old new` |
-| Delete file | N/A | `.venv/bin/python scripts/safe_file_delete.py file` |
-| Create doc | N/A | `.venv/bin/python scripts/create_doc.py path "Title"` |
-| Fix links | `./run.sh check --category docs --fix` | `.venv/bin/python scripts/check_links.py --fix` |
-| Session end | `./run.sh session end` | `.venv/bin/python scripts/session.py end` |
+| Run tests | `./run.sh test` | `./scripts/python_runtime.sh -m pytest Python/tests/ -v` |
+| Test changed | `./run.sh test --changed` | `./scripts/python_runtime.sh scripts/test_changed.py` |
+| Pre-flight | `./run.sh preflight` | `./scripts/python_runtime.sh scripts/preflight.py` |
+| Session context | `./run.sh session context` | `./scripts/python_runtime.sh scripts/session.py context` |
+| Usage checkpoint | `./run.sh session usage ...` | `./scripts/python_runtime.sh scripts/session.py usage ...` |
+| Find script | `./run.sh find "task"` | `./scripts/python_runtime.sh scripts/find_automation.py "task"` |
+| API signatures | `./run.sh find --api <func>` | `./scripts/python_runtime.sh scripts/discover_api_signatures.py <func>` |
+| Move file | N/A | `./scripts/python_runtime.sh scripts/safe_file_move.py old new` |
+| Delete file | N/A | `./scripts/python_runtime.sh scripts/safe_file_delete.py file` |
+| Create doc | N/A | `./scripts/python_runtime.sh scripts/create_doc.py path "Title"` |
+| Fix links | `./run.sh check --category docs --fix` | `./scripts/python_runtime.sh scripts/check_links.py --fix` |
+| Session end | `./run.sh session end` | `./scripts/python_runtime.sh scripts/session.py end` |
 | Gen indexes | `./run.sh generate indexes` | `./scripts/generate_all_indexes.sh` |
 
 **Never do:** automated Git recovery, history rewriting, raw `rm`/`mv` for repository docs, or documents without metadata.
@@ -569,7 +569,7 @@ END:    □ Codex reviews the scoped diff and performs Git/GitHub closeout
 | Skip validation | Runtime errors | Run tests + `check_*` scripts |
 | Create duplicate docs | Clutter, confusion | Check `docs-canonical.json` first |
 | Mix architecture layers | Import errors | Core → IS456 → Services → UI (one direction only) |
-| Use `python` directly | Wrong env, missing deps | Always use `.venv/bin/python` |
+| Use `python` directly | Wrong env, missing deps | Always use `./scripts/python_runtime.sh` |
 | Forget to update indexes | Out-of-sync navigation | Run `generate_all_indexes.sh` after structural changes |
 | Run `docker` without Colima | "permission denied" errors | Run `colima start` before any `docker` command |
 | `uvicorn --host 0.0.0.0` on Mac Mini | Browser "Cannot connect" but `curl` works | macOS resolves `localhost` to IPv6 `::1`; use `--host "::"` for dual-stack |

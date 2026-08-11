@@ -9,6 +9,28 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
+if [[ "${1:-}" == "--diagnose" ]]; then
+    export STRUCTURAL_LIB_RUNTIME_REPO_ROOT="$REPO_ROOT"
+    set -- -c '
+import json
+import os
+import sys
+from pathlib import Path
+
+import structural_lib
+
+repo_root = Path(os.environ["STRUCTURAL_LIB_RUNTIME_REPO_ROOT"]).resolve()
+module_path = Path(structural_lib.__file__).resolve()
+source_root = (repo_root / "Python" / "structural_lib").resolve()
+print(json.dumps({
+    "interpreter": str(Path(sys.executable).resolve()),
+    "repository": str(repo_root),
+    "module": str(module_path),
+    "source_bound": module_path.is_relative_to(source_root),
+}))
+'
+fi
+
 run_python_candidate() {
     local candidate="$1"
     local bound_pythonpath="$REPO_ROOT/Python:$REPO_ROOT"

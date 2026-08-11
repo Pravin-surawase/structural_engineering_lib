@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| ALPHA-0231-CANDIDATE | Repair exact-wheel isolation, candidate truth, and reproducible preflight | Main Agent + ops | 🟡 DRAFT PR #732 OPEN — local gates green; normal CI and owner review remain |
+| ALPHA-0231-CANDIDATE | Repair exact-wheel isolation, candidate truth, and reproducible preflight | Main Agent + ops | 🟡 DRAFT PR #732 OPEN — prevention controls added; local gates green; CI and owner review remain |
 
 ## Up Next
 

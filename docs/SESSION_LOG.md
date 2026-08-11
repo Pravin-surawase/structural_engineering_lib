@@ -2211,6 +2211,9 @@ calculation/service/FastAPI contract without changing the separate torsion route
   dependencies with `npm ci` while refusing `node_modules` symlinks.
 - Removed published-release status rows from automatic candidate version/date
   rewriting and recorded a truthful local-prepublication evidence boundary.
+- Added worktree-bound runtime diagnostics, fail-closed session trust,
+  discoverable retired-command aliases, metadata parsing repair, and local/
+  Docker FastAPI preflight parity so the same failure modes stop earlier.
 - Preserved the existing wheel and sdist byte-for-byte; no tag, upload, release,
   Pages action, or publish workflow was invoked.
 
@@ -2250,6 +2253,19 @@ calculation/service/FastAPI contract without changing the separate torsion route
   dependency.
 - The candidate worktree has no local `.venv`; focused commands used the
   maintained shared project interpreter.
+- The maintained local release preflight exercised Python and React but omitted
+  the FastAPI suite that exposed the candidate-version failure in CI.
+- Session start reported a counted dirty tree but still wrote a trusted state.
+- Independent review found the first trust repair still accepted a clean tree
+  when branch detection returned its `unknown` detached/error sentinel.
+- The documentation metadata parser emitted a false missing-`Last Updated`
+  warning for a correctly populated multiword field.
+- Automation discovery could not resolve the retired
+  `check_markdown_links.py` and `check_doc_metadata.py` names to their
+  consolidated maintained commands.
+- Active skills and instructions assumed every linked worktree owned
+  `.venv/bin/python`, even though the maintained launcher already supports the
+  primary environment with current-worktree source binding.
 
 ### Root causes and resolutions
 
@@ -2306,6 +2322,24 @@ calculation/service/FastAPI contract without changing the separate torsion route
   literal. Resolution: compare BOQ evidence to `fastapi_app.__version__`, the
   maintained application version surface, so future candidate bumps retain the
   cross-surface contract without test-file rewrites.
+- Root cause: release preflight and CI had different maintained test surfaces.
+  Resolution: local preflight now runs `fastapi_app/tests/`, and Docker preflight
+  has an equivalent read-only `test-fastapi` service alongside Python and React.
+- Root cause: session trust searched the formatted Git summary for the words
+  `modified` and `untracked`, while `get_uncommitted_status()` returns a count.
+  Resolution: trust now requires the exact `Clean working tree` sentinel on a
+  known non-main branch, checks both Git command return codes, and fails closed
+  for dirty, detached, or unknown state.
+- Root cause: metadata extraction accepted only single-word field names.
+  Resolution: the parser accepts trimmed multiword metadata keys and regression
+  coverage proves `Last Updated` validates without warnings.
+- Root cause: consolidated helper scripts had no searchable compatibility names.
+  Resolution: automation entries now carry aliases, discovery searches and
+  displays them, and regression coverage maps both retired checker names.
+- Root cause: documentation bypassed the worktree-aware Python launcher.
+  Resolution: active skills and instructions use `python_runtime.sh`, session
+  start proves `structural_lib` resolves under the invoking worktree, and
+  `--diagnose` reports interpreter, repository, module path, and binding status.
 
 ### Verification
 
@@ -2334,6 +2368,16 @@ calculation/service/FastAPI contract without changing the separate torsion route
 - GitHub run `31463676435` isolated the FastAPI version-literal failure while
   Repository, Python, React, and MkDocs validation passed. After the fix, the
   exact failed test passed and `./run.sh test --fastapi` passed all 413 tests.
+- Prevention-control regression suite passed all 135 tests; the broad Python
+  suite passed 5,599 tests with 3 skipped and 6 deselected, and the FastAPI suite
+  passed all 413 tests.
+- Runtime diagnosis reported `source_bound: true` for this linked worktree;
+  session start reported `Python source binding: current worktree` and correctly
+  marked the dirty tree untrusted.
+- Automation registry validation passed at 106/106 physical scripts and 119
+  grouped tasks; both retired checker names resolved to maintained commands.
+- `./run.sh check --quick` passed 10/10 and `./run.sh check` passed 30/30 after
+  the prevention updates.
 - Wheel SHA-256 remained
   `9c986920ceb43e341d01c6411c873605fec3321486d862a847e2083c36156aa7`;
   sdist remained

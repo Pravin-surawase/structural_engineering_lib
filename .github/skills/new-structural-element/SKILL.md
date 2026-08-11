@@ -67,8 +67,8 @@ If the task is delegated, use at most the repository's allowed bounded workers. 
 Use targeted checks while editing. Then run:
 
 ```bash
-.venv/bin/python scripts/check_architecture_boundaries.py
-.venv/bin/python scripts/validate_imports.py --scope structural_lib
+./scripts/python_runtime.sh scripts/check_architecture_boundaries.py
+./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib
 ./run.sh check --quick
 ```
 

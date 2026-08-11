@@ -8,12 +8,14 @@ applyTo: "**"
 Absolute path: `/Users/pravinsurawase/VS_code_project/structural_engineering_lib`
 All commands below assume cwd = this directory unless stated otherwise.
 
-## venv Location
-`.venv/` is at the PROJECT ROOT — NOT inside `Python/` subdirectory.
+## Python Runtime and venv Location
+The approved `.venv/` may be in this checkout or the primary worktree. Always
+use the launcher so imports bind to the invoking worktree.
 ```
-CORRECT: .venv/bin/python ...
-CORRECT: .venv/bin/pytest Python/tests/ -v
-WRONG:   cd Python && .venv/bin/pytest tests/     ← .venv not in Python/
+CORRECT: ./scripts/python_runtime.sh ...
+CORRECT: ./scripts/python_runtime.sh -m pytest Python/tests/ -v
+CHECK:   ./scripts/python_runtime.sh --diagnose
+WRONG:   cd Python && python -m pytest tests/          ← cwd and interpreter are implicit
 WRONG:   python scripts/...                        ← wrong env, missing deps
 ```
 
@@ -21,7 +23,7 @@ WRONG:   python scripts/...                        ← wrong env, missing deps
 If you run `cd react_app`, your NEXT command is still in `react_app/`.
 Always use full paths from root, or prefix with explicit `cd`:
 ```
-SAFE:    .venv/bin/pytest Python/tests/ -v          ← works from root
+SAFE:    ./scripts/python_runtime.sh -m pytest Python/tests/ -v          ← works from root
 SAFE:    ./run.sh frontend build                     ← root-stable, pinned Node
 DANGER:  npm run build                              ← cwd and Node are implicit
 ```
@@ -34,14 +36,14 @@ If `./run.sh <cmd>` produces no output or fails:
 
 | run.sh Command | Direct Script Fallback | CLI Fallback |
 |----------------|----------------------|--------------|
-| `./run.sh test` | `.venv/bin/pytest Python/tests/ -v` | Python suite only |
-| `./run.sh test --fastapi` | `.venv/bin/pytest fastapi_app/tests/` | — |
-| `./run.sh test --react` | `.venv/bin/python scripts/node_runtime.py -- npm --prefix react_app test` | — |
-| `./run.sh frontend check` | `.venv/bin/python scripts/node_runtime.py -- npm --prefix react_app test` | Run lint and build through the same wrapper |
-| `./run.sh check --quick` | `.venv/bin/python scripts/check_all.py --quick` | — |
-| `./run.sh find --api func` | `.venv/bin/python scripts/discover_api_signatures.py func` | — |
-| `./run.sh session summary` | `.venv/bin/python scripts/session.py summary` | Add `--write` only intentionally |
-| `./run.sh generate indexes` | `.venv/bin/python scripts/generate_enhanced_index.py --all` | — |
+| `./run.sh test` | `./scripts/python_runtime.sh -m pytest Python/tests/ -v` | Python suite only |
+| `./run.sh test --fastapi` | `./scripts/python_runtime.sh -m pytest fastapi_app/tests/` | — |
+| `./run.sh test --react` | `./scripts/python_runtime.sh scripts/node_runtime.py -- npm --prefix react_app test` | — |
+| `./run.sh frontend check` | `./scripts/python_runtime.sh scripts/node_runtime.py -- npm --prefix react_app test` | Run lint and build through the same wrapper |
+| `./run.sh check --quick` | `./scripts/python_runtime.sh scripts/check_all.py --quick` | — |
+| `./run.sh find --api func` | `./scripts/python_runtime.sh scripts/discover_api_signatures.py func` | — |
+| `./run.sh session summary` | `./scripts/python_runtime.sh scripts/session.py summary` | Add `--write` only intentionally |
+| `./run.sh generate indexes` | `./scripts/python_runtime.sh scripts/generate_enhanced_index.py --all` | — |
 | `./run.sh dev` | `bash scripts/launch_stack.sh` | `colima start && docker compose up --build` |
 | `./run.sh dev --docker` | `bash scripts/launch_stack.sh --docker` | `colima start && docker compose up --build` |
 | `./run.sh dev --kill-only` | `bash scripts/launch_stack.sh --kill-only` | Stop only listeners started for this task; never kill arbitrary port owners |
@@ -50,10 +52,10 @@ If `./run.sh <cmd>` produces no output or fails:
 
 ### Python
 ```bash
-.venv/bin/pytest Python/tests/ -v                    # All tests
-.venv/bin/pytest Python/tests/ -v -k "test_shear"    # Specific tests
-.venv/bin/python scripts/discover_api_signatures.py design_beam_is456  # API params
-.venv/bin/python scripts/validate_imports.py --scope structural_lib    # Check imports
+./scripts/python_runtime.sh -m pytest Python/tests/ -v                    # All tests
+./scripts/python_runtime.sh -m pytest Python/tests/ -v -k "test_shear"    # Specific tests
+./scripts/python_runtime.sh scripts/discover_api_signatures.py design_beam_is456  # API params
+./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib    # Check imports
 ```
 
 ### React (pinned `.nvmrc` runtime)
@@ -96,8 +98,8 @@ Codex inspects the state and diff, stages only intended paths, creates a convent
 
 **FORBIDDEN (causes merge conflicts, rework, and lost changes):**
 ```
-NEVER: rm file.md                                     ← use .venv/bin/python scripts/safe_file_delete.py
-NEVER: mv old.md new.md                               ← use .venv/bin/python scripts/safe_file_move.py
+NEVER: rm file.md                                     ← use ./scripts/python_runtime.sh scripts/safe_file_delete.py
+NEVER: mv old.md new.md                               ← use ./scripts/python_runtime.sh scripts/safe_file_move.py
 NEVER: --no-verify or --force                         ← has caused 10+ hours of rework
 NEVER: git rebase --skip                              ← can silently drop commits
 NEVER: cat > file << 'EOF' ... EOF   ← heredoc fails in agent terminals; use editFiles tool
@@ -112,7 +114,7 @@ require explicit user approval.
 ```
 NEVER: gh pr merge --admin            ← bypasses required CI checks
 NEVER: gh issue close (without user approval) ← destructive, ask first
-NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py --dry-run
+NEVER: git push origin --delete (without user approval) ← use ./scripts/python_runtime.sh scripts/cleanup_stale_branches.py --dry-run
 ```
 
 Closing issues or pull requests and deleting branches require **explicit user

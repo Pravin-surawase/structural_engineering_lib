@@ -441,6 +441,19 @@ class TestReleasePreflight:
             assert mount in compose
         assert '"-m", "not slow"' in compose
         assert '"-p", "no:cacheprovider"' in compose
+        assert "test-fastapi:" in compose
+        assert "./fastapi_app:/app/fastapi_app:ro" in compose
+        assert "./docs:/app/docs:ro" in compose
+
+    def test_preflight_covers_the_fastapi_ci_suite(self):
+        source = RELEASE_SCRIPT.read_text(encoding="utf-8")
+        preflight = source.split("def cmd_preflight", 1)[1]
+
+        assert (
+            '_run_local_pytest_gate("4. FastAPI Tests", "fastapi_app/tests/")'
+            in preflight
+        )
+        assert '"test-fastapi"' in preflight
 
     def test_fastapi_image_retries_slow_dependency_downloads(self):
         dockerfile = (REPO_ROOT / "Dockerfile.fastapi").read_text(encoding="utf-8")
