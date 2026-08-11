@@ -2241,6 +2241,9 @@ calculation/service/FastAPI contract without changing the separate torsion route
   `scripts/check_markdown_links.py` path and stopped before its second command.
 - The first evidence-commit command stopped at `git diff --check` because the
   new Markdown header used two trailing-space hard breaks; no paths were staged.
+- The documentation metadata hook ran in warning mode and exposed missing
+  `Type`/`Audience` fields plus a noncanonical lifecycle status on the new
+  evidence record. A guessed direct checker path was also obsolete.
 - The candidate worktree has no local `.venv`; focused commands used the
   maintained shared project interpreter.
 
@@ -2289,6 +2292,11 @@ calculation/service/FastAPI contract without changing the separate torsion route
 - Root cause: the evidence header used Markdown hard-break whitespace that the
   repository hygiene rule rejects. Resolution: replaced the hard breaks with
   explicit blank paragraphs and reran `git diff --check` before staging.
+- Root cause: the evidence boundary had been placed in the `Status` field, and
+  the direct metadata checker was consolidated into `scripts/check_docs.py`.
+  Resolution: added canonical reference metadata, retained
+  `LOCAL PREPUBLICATION REHEARSAL` as a separate evidence boundary, and used the
+  maintained checker path discovered from the repository.
 
 ### Verification
 

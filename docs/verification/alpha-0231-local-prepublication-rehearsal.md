@@ -1,8 +1,14 @@
 # v0.23.1a1 Local Prepublication Rehearsal
 
-**Status:** LOCAL PREPUBLICATION REHEARSAL
+**Type:** Reference
+**Audience:** Maintainers
+**Status:** Complete
+**Importance:** Critical
+**Created:** 2026-08-11
+**Last Updated:** 2026-08-11
 
-**Authority:** Local evidence only; not a CI artifact identity, tag, or publication approval
+**Evidence boundary:** LOCAL PREPUBLICATION REHEARSAL; local evidence only,
+not a CI artifact identity, tag, or publication approval
 
 **Artifact source:** `72d2d9b8ccc1350b46499dc5a5d08df6284fe10f`
 
