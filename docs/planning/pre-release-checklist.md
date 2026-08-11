@@ -9,7 +9,7 @@
 
 ## Current State
 
-Installed metadata version: 0.23.0
+Installed metadata version: 0.23.1a1
 
 - **Release source:** tag `v0.23.0` at `3f880d5bbc338baefc4aec8ed472cafe840a5c99`
 - **Implementation PR:** #693 merged at `cc99e610`

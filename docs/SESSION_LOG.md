@@ -2166,3 +2166,31 @@ calculation/service/FastAPI contract without changing the separate torsion route
 - Targeted source evidence proves `/workbench/quick`, `/workbench/slabs`, `/workbench/columns/rectangular`, and `/workbench/footing/isolated/concentric` coexist, with all four workbench entries reachable.
 
 ---
+## 2026-08-11 — Session: 0.23.1a1 Candidate Evidence Preparation
+
+**Agent:** Codex (`orchestrator`)
+**Branch:** `codex/alpha-0231-candidate-evidence`
+**Focus:** Prepare a local, non-publishing Alpha candidate source from merged main.
+
+### Summary
+
+- Started from exact merged main `5da9c66a0f962fc08a6431fe95e39ec664a353f6` in a dedicated local candidate lane.
+- Ran the canonical `./run.sh release run 0.23.1a1 --no-open` only after the non-publishing plan and permission gates were green.
+- Prepared the expected 16-file version/document bump to `0.23.1a1`; no changelog publication entry, tag, package upload, GitHub Release, or Pages action was performed.
+
+### Issues encountered
+
+- The first pre-bump `./run.sh release preflight 0.23.1a1` and first candidate `./run.sh release run 0.23.1a1 --no-open` stopped at the React build because the isolated worktree has no `react_app/node_modules`; the visible release-run symptom was `sh: tsc: command not found`.
+- Preflight correctly reports clean-install evidence as pending until an exact wheel is supplied.
+
+### Root causes and resolutions
+
+- Root cause: `scripts/release.py` selects Node 24 and invokes `npm run build` directly but does not provision dependencies, while this isolated worktree intentionally has no local Node installation. Resolution: used a temporary symlink to the approved primary Node 24 dependency installation for the controlled preflight/build commands, removed it on exit, and made no release-automation change. Direct `npm run build` then passed and produced the expected footing chunk.
+- Root cause: clean-install evidence is necessarily unavailable before the exact candidate wheel exists. Resolution: kept the pre-bump preflight warning visible and deferred exact-wheel preflight/UAT until one frozen artifact is built.
+
+### Verification
+
+- Pre-bump `0.23.1a1` preflight passed with target upgrade, permission, footing inclusion, 5,584 Python tests, and Node 24 React build; only the expected candidate-wheel warning remained.
+- Candidate preparation passed its same Python/build gates and updated only the expected version/document files. Artifact hash, inventory, SBOM, exact-wheel preflight, and clean-install UAT evidence will be recorded against the frozen source SHA after the single artifact build.
+
+---

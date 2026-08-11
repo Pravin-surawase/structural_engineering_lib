@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-11 — IS456-SLAB-PRELAUNCH public-distribution permission recorded and release-enforced; qualified-review gate remains
+**Updated:** 2026-08-11
 
 ---
 
@@ -69,7 +69,7 @@
 
 ## Current Release
 
-| **Current** | v0.23.0 | ✅ ALPHA RELEASED — exact CI/public artifact evidence recorded |
+| **Current** | v0.23.1a1 | ✅ ALPHA RELEASED — exact CI/public artifact evidence recorded |
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
 - **Target:** keep later roadmap work inactive until separately activated
