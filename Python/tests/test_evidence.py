@@ -6,7 +6,10 @@ import json
 
 import pytest
 
-from structural_lib.services.evidence import build_beam_evidence_envelope
+from structural_lib.services.evidence import (
+    BEAM_EVIDENCE_SCHEMA_VERSION,
+    build_beam_evidence_envelope,
+)
 from structural_lib.services.report import ReportData, export_html, export_json
 
 
@@ -68,6 +71,64 @@ def test_beam_evidence_hash_changes_for_relevant_input() -> None:
 
     assert baseline["normalized_input_hash"] != changed["normalized_input_hash"]
     assert baseline["calculation_identity"] != changed["calculation_identity"]
+
+
+def test_beam_evidence_v2_binds_torsion_and_enabled_serviceability() -> None:
+    baseline = _beam_inputs()
+    torsion = {
+        **baseline,
+        "tu_knm": 12.0,
+        "cover_mm": 25.0,
+        "stirrup_dia_mm": 8.0,
+    }
+    service = {
+        **baseline,
+        "include_serviceability": True,
+        "deflection_params": {
+            "span_mm": 5000.0,
+            "d_mm": 457.0,
+            "support_condition": "SS",
+        },
+        "crack_width_params": {
+            "exposure_class": "moderate",
+            "acr_mm": 45.0,
+            "cmin_mm": 25.0,
+            "h_mm": 500.0,
+            "x_mm": 150.0,
+            "fs_service_nmm2": 180.0,
+            "es_nmm2": 200000.0,
+        },
+    }
+
+    base_evidence = _evidence(baseline)
+    torsion_evidence = _evidence(torsion)
+    service_evidence = _evidence(service)
+
+    assert base_evidence["artifact_schema_version"] == BEAM_EVIDENCE_SCHEMA_VERSION
+    assert BEAM_EVIDENCE_SCHEMA_VERSION == "2.0"
+    assert (
+        torsion_evidence["normalized_input_hash"]
+        != base_evidence["normalized_input_hash"]
+    )
+    assert (
+        service_evidence["normalized_input_hash"]
+        != base_evidence["normalized_input_hash"]
+    )
+
+
+def test_disabled_serviceability_drafts_do_not_change_identity() -> None:
+    baseline = _beam_inputs()
+    with_unused_drafts = {
+        **baseline,
+        "include_serviceability": False,
+        "deflection_params": {"span_mm": 9999.0},
+        "crack_width_params": {"acr_mm": 999.0},
+    }
+
+    assert (
+        _evidence(baseline)["normalized_input_hash"]
+        == _evidence(with_unused_drafts)["normalized_input_hash"]
+    )
 
 
 def test_held_beam_evidence_does_not_present_a_pass_or_fail() -> None:

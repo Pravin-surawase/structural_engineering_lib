@@ -520,7 +520,14 @@ describe('Export Router', () => {
     const res = await fetch(`${API}/api/v1/export/dxf`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ beams: [{ beam_id: 'B1' }] }),
+      body: JSON.stringify({
+        beam_id: 'B1',
+        width: 300,
+        depth: 500,
+        fck: 25,
+        fy: 500,
+        ast_required: 850,
+      }),
     });
 
     expect(res.ok).toBe(true);
@@ -531,7 +538,14 @@ describe('Export Router', () => {
     const res = await fetch(`${API}/api/v1/export/report`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ beams: [{ beam_id: 'B1' }] }),
+      body: JSON.stringify({
+        beam_id: 'B1',
+        width: 300,
+        depth: 500,
+        fck: 25,
+        fy: 500,
+        calculation_identity: 'a'.repeat(64),
+      }),
     });
 
     expect(res.ok).toBe(true);

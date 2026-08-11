@@ -30,8 +30,8 @@ __all__ = [
 ]
 
 CATALOG_SCHEMA_VERSION = "1.0"
-CATALOG_VERSION = "1.0.0"
-_COMPATIBLE_VERSIONS = ("1.0", CATALOG_VERSION)
+CATALOG_VERSION = "1.1.0"
+_COMPATIBLE_VERSIONS = ("1.0", "1.0.0", CATALOG_VERSION)
 _APPROVED_ADAPTERS = frozenset({"fastapi.design_beam.v1"})
 _APPROVED_REQUEST_SCHEMAS = frozenset({"fastapi.BeamDesignRequest.v1"})
 _APPROVED_RESULT_SCHEMAS = frozenset({"fastapi.BeamDesignResponse.v1"})
@@ -194,10 +194,13 @@ _CATALOG = WorkflowCatalog(
     capabilities=(
         WorkflowCapability(
             capability_id="is456.beam.design",
-            capability_version="1.0.0",
+            capability_version="1.1.0",
             element="beam",
             title="IS 456 beam design",
-            summary="Design one rectangular reinforced-concrete beam for the declared flexure and shear inputs.",
+            summary=(
+                "Discover the ordinary solid rectangular primary beam route; "
+                "this catalogue adapter exposes declared flexure and shear inputs."
+            ),
             semantic_workflow_id="design_beam_is456",
             service_adapter_id="fastapi.design_beam.v1",
             request_schema_id="fastapi.BeamDesignRequest.v1",
@@ -231,7 +234,9 @@ _CATALOG = WorkflowCatalog(
                 ),
             ),
             limitations=(
-                "Torsion is a separate explicit workflow.",
+                "Optional torsion is supported by the ordinary solid rectangular primary service/manual workbench within its declared material limits; this catalogue automation surface remains held for Tu > 0.",
+                "Level-A serviceability is available in the manual workbench only when explicit maintained inputs are supplied; this catalogue automation surface remains held for serviceability.",
+                "Flanged, hollow/box, deep, prestressed, axially loaded, and torsion-redistribution cases are held.",
                 "The result is software evidence and requires qualified engineering review.",
             ),
             qualified_review_required=True,

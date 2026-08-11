@@ -73,6 +73,8 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
   const status = deriveBeamStatus(beam);
   const utilPct = beam.utilization != null ? beam.utilization * 100 : null;
   const exportHeld = beam.is_valid !== true;
+  // Imported/batch rows do not retain the canonical primary evidence identity.
+  const reportIdentityAvailable = false;
 
   // Track backend-computed sv_max from design response
   const [designSvMax, setDesignSvMax] = useState<number | null>(null);
@@ -122,7 +124,7 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
           stirrup_spacing: data.shear?.stirrup_spacing ?? b.stirrup_spacing,
           utilization: trust.exactUtilization,
           is_valid: trust.status === "PASS",
-          status: trust.status === "PASS" ? "pass" : "fail",
+          status: trust.status === "PASS" ? "pass" : trust.status === "HOLD" ? "warning" : "fail",
         }
       ));
     },
@@ -422,12 +424,17 @@ export function BeamDetailPanel({ beam, onClose }: BeamDetailPanelProps) {
           <div className="flex gap-2">
             <ExportBtn label="BBS" icon={<Download className="w-3.5 h-3.5" />} loading={bbsPending} disabled={exportHeld} onClick={() => exportBBS(exportParams)} />
             <ExportBtn label="DXF" icon={<Ruler className="w-3.5 h-3.5" />} loading={dxfPending} disabled={exportHeld} onClick={() => exportDXF(exportParams)} />
-            <ExportBtn label="Report" icon={<FileText className="w-3.5 h-3.5" />} loading={reportPending} disabled={exportHeld}
+            <ExportBtn label="Report" icon={<FileText className="w-3.5 h-3.5" />} loading={reportPending} disabled={exportHeld || !reportIdentityAvailable}
               onClick={() => exportReport({ ...exportParams, ast_provided: beam.ast_provided, utilization: beam.utilization, is_safe: beam.is_valid })} />
           </div>
           {exportHeld && (
             <p className="mt-2 text-[10px] text-amber-400/80" role="status">
               Exports held until this beam has a PASS result.
+            </p>
+          )}
+          {!exportHeld && !reportIdentityAvailable && (
+            <p className="mt-2 text-[10px] text-amber-400/80" role="status">
+              Report held: this imported row does not retain an exact primary-response evidence identity.
             </p>
           )}
         </div>

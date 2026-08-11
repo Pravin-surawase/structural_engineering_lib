@@ -35,6 +35,27 @@ function designResult(message: string, utilization = 0.8): BeamDesignResponse {
     ast_total: 500,
     asc_total: 0,
     utilization_ratio: utilization,
+    holds: [],
+    evidence: {
+      artifact_schema: 'structural_lib.beam-evidence',
+      artifact_schema_version: '2.0',
+      library_version: '0.23.0',
+      code_edition: 'IS 456:2000',
+      code_amendment_identity: 'not-declared-in-artifact',
+      capability_id: 'design_beam_is456',
+      support_status: 'SUPPORTED',
+      unit_system: 'IS456',
+      explicit_units: { length: 'mm' },
+      normalized_input_hash: `input-${message}`,
+      calculation_identity: `calculation-${message}`,
+      governing_check: 'flexure',
+      exact_utilization: utilization,
+      margin: 1 - utilization,
+      status: 'PASS',
+      generated_at: '2026-08-10T00:00:00Z',
+      qualified_review_required: true,
+      qualified_review_requirement: 'Qualified review required.',
+    },
   };
 }
 
@@ -157,5 +178,40 @@ describe('useLiveDesign request truth', () => {
     expect(createQuickDesignIdentity(state.inputs, state.length, state.inputRevision)).toEqual(
       createQuickDesignIdentity({ ...state.inputs }, state.length, state.inputRevision),
     );
+  });
+
+  it('binds torsion and enabled serviceability to revision identity', () => {
+    const state = useDesignStore.getState();
+    const baseline = createQuickDesignIdentity(state.inputs, state.length, 1);
+    const torsion = createQuickDesignIdentity({ ...state.inputs, torsion: 10 }, state.length, 1);
+    const service = createQuickDesignIdentity({
+      ...state.inputs,
+      include_serviceability: true,
+      span_mm: 5000,
+      crack_width_params: {
+        exposure_class: 'moderate',
+        acr_mm: 40,
+        cmin_mm: 25,
+        h_mm: 500,
+        x_mm: 150,
+        fs_service_nmm2: 180,
+      },
+    }, state.length, 1);
+
+    expect(torsion.inputHash).not.toBe(baseline.inputHash);
+    expect(service.inputHash).not.toBe(baseline.inputHash);
+  });
+
+  it('withholds export eligibility when identity evidence is missing', async () => {
+    const response = designResult('missing-evidence');
+    response.evidence = null;
+    mocks.designBeam.mockResolvedValue(response);
+    const { result } = renderHook(() => useLiveDesign({ autoDesign: false }));
+
+    act(() => {
+      result.current.actions.triggerDesign();
+    });
+    await waitFor(() => expect(result.current.state.resultLifecycle).toBe('current'));
+    expect(result.current.state.exportEligible).toBe(false);
   });
 });

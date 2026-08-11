@@ -23,6 +23,13 @@ export interface WebSocketState {
   lastConnectedAt: Date | null;
 }
 
+export function requiresCanonicalHttp(inputs: {
+  torsion?: number;
+  include_serviceability?: boolean;
+}): boolean {
+  return (inputs.torsion ?? 0) > 0 || Boolean(inputs.include_serviceability);
+}
+
 type WebSocketDesignData = Omit<Partial<BeamDesignResponse>, 'flexure' | 'shear'> & {
   flexure?: Partial<BeamDesignResponse['flexure']> & {
     // Legacy field used by servers before the REST/WebSocket contract was aligned.
@@ -61,6 +68,7 @@ export function normalizeWebSocketDesignResult(data: WebSocketDesignData): BeamD
           tau_c: shear.tau_c ?? shear.tc ?? 0,
           tau_c_max: shear.tau_c_max ?? 0,
           asv_required: shear.asv_required ?? 0,
+          asv_required_unit: 'mm²/mm',
           stirrup_spacing: shear.stirrup_spacing ?? shear.spacing ?? 0,
           sv_max: shear.sv_max ?? 0,
           shear_capacity: shear.shear_capacity ?? 0,
@@ -72,6 +80,7 @@ export function normalizeWebSocketDesignResult(data: WebSocketDesignData): BeamD
     effective_depth_used: data.effective_depth_used,
     warnings: data.warnings ?? [],
     evidence: data.evidence,
+    holds: data.evidence ? data.holds ?? [] : ['WEBSOCKET_EVIDENCE_IDENTITY_MISSING'],
   };
 }
 
@@ -87,6 +96,7 @@ const RWS_OPTIONS = {
 export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
   const { inputs, setResult, setLoading, setError, length } = useDesignStore();
   const wsRef = useRef<ReconnectingWebSocket | null>(null);
+  const webSocketAllowed = enabled && !requiresCanonicalHttp(inputs);
   const retryCountRef = useRef(0);
   const [state, setState] = useState<WebSocketState>({
     isConnected: false,
@@ -151,7 +161,7 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
         setState((s) => ({
           ...s,
           isConnected: false,
-          status: enabled ? 'reconnecting' : 'disconnected',
+          status: webSocketAllowed ? 'reconnecting' : 'disconnected',
         }));
       };
 
@@ -182,7 +192,7 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
         error: (err as Error).message,
       }));
     }
-  }, [sessionId, enabled, handleMessage]);
+  }, [sessionId, webSocketAllowed, handleMessage]);
 
   // Send design request
   const sendDesign = useCallback(() => {
@@ -214,7 +224,7 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
 
   // Connect on mount
   useEffect(() => {
-    if (enabled) {
+    if (webSocketAllowed) {
       connect();
     }
 
@@ -223,14 +233,14 @@ export function useDesignWebSocket(sessionId: string, enabled: boolean = true) {
         wsRef.current.close();
       }
     };
-  }, [enabled, connect]);
+  }, [webSocketAllowed, connect]);
 
   // Send design on input changes when connected
   useEffect(() => {
-    if (enabled && state.isConnected) {
+    if (webSocketAllowed && state.isConnected) {
       sendDesign();
     }
-  }, [enabled, state.isConnected, inputs, sendDesign]);
+  }, [webSocketAllowed, state.isConnected, inputs, sendDesign]);
 
   // Reconnect function for manual retry
   const reconnect = useCallback(() => {
