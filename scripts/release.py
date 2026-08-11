@@ -450,10 +450,16 @@ def _clean_wheel_import_version(wheel: Path) -> str:
         _run_check([sys.executable, "-m", "venv", str(venv_dir)])
         pip = _bin_path(venv_dir, "pip")
         python = _bin_path(venv_dir, "python")
-        _run_check([str(pip), "install", "--disable-pip-version-check", str(wheel)])
         clean_env = {
-            key: value for key, value in os.environ.items() if key != "PYTHONPATH"
+            key: value
+            for key, value in os.environ.items()
+            if key not in {"PYTHONPATH", "VIRTUAL_ENV"}
         }
+        _run_check(
+            [str(pip), "install", "--disable-pip-version-check", str(wheel)],
+            env=clean_env,
+        )
+        _assert_package_import_from_venv(python, venv_dir, clean_env, temp_root)
         result = subprocess.run(
             [
                 str(python),
@@ -673,6 +679,46 @@ def _node_runtime_env(
     )
 
 
+def _ensure_react_dependencies(react_dir: Path, node_env: dict[str, str]) -> bool:
+    """Provision the lockfile-pinned React toolchain in an isolated worktree."""
+    node_modules = react_dir / "node_modules"
+    tsc = node_modules / ".bin" / "tsc"
+    package_lock = react_dir / "package-lock.json"
+
+    if node_modules.is_symlink():
+        print("  ✗ react_app/node_modules is a symlink; refusing to traverse it")
+        return False
+    if tsc.is_file():
+        print("  ✓ React dependencies are installed")
+        return True
+    if not package_lock.is_file():
+        print("  ✗ react_app/package-lock.json is missing")
+        return False
+
+    if node_modules.exists() and not node_modules.is_dir():
+        print("  ✗ react_app/node_modules is not a directory")
+        return False
+
+    print("  → Installing lockfile-pinned React dependencies with npm ci")
+    try:
+        install_result = _run_with_timeout(
+            ["npm", "ci"], timeout=300, cwd=react_dir, env=node_env
+        )
+    except subprocess.TimeoutExpired:
+        print("  ✗ npm ci TIMED OUT (>300s)")
+        return False
+    if install_result.returncode != 0:
+        print("  ✗ npm ci FAILED")
+        _print_failure_tail(install_result)
+        return False
+    if not tsc.is_file():
+        print("  ✗ npm ci completed without installing TypeScript")
+        return False
+
+    print("  ✓ Lockfile-pinned React dependencies installed")
+    return True
+
+
 def _print_checklist(version: str) -> None:
     print()
     print("=" * 60)
@@ -857,6 +903,9 @@ def cmd_run(args: argparse.Namespace) -> int:
             return 1
         node_env["NODE_OPTIONS"] = "--max-old-space-size=1536"
         print(f"  → Selected {node_version}")
+        if not _ensure_react_dependencies(react_dir, node_env):
+            print("  ERROR: React dependencies are unavailable")
+            return 1
         try:
             react_result = _run_with_timeout(
                 ["npm", "run", "build"],
@@ -922,9 +971,76 @@ def _bin_path(venv_dir: Path, name: str) -> Path:
     return venv_dir / "bin" / name
 
 
-def _run_check(cmd: list[str], *, cwd: Path | None = None, timeout: int = 600) -> None:
+def _run_check(
+    cmd: list[str],
+    *,
+    cwd: Path | None = None,
+    timeout: int = 600,
+    env: dict[str, str] | None = None,
+) -> None:
     print(f"+ {' '.join(str(c) for c in cmd)}")
-    subprocess.run(cmd, check=True, cwd=cwd, timeout=timeout)
+    subprocess.run(cmd, check=True, cwd=cwd, timeout=timeout, env=env)
+
+
+def _assert_package_import_from_venv(
+    python: Path,
+    venv_dir: Path,
+    clean_env: dict[str, str],
+    cwd: Path,
+) -> None:
+    """Fail if the verification interpreter imports the checkout instead of its venv."""
+    _run_check(
+        [
+            str(python),
+            "-c",
+            (
+                "import sysconfig\n"
+                "from pathlib import Path\n"
+                "import structural_lib\n"
+                "from structural_lib import api\n"
+                "package_file = Path(structural_lib.__file__).resolve()\n"
+                "site_packages = Path(sysconfig.get_paths()['purelib']).resolve()\n"
+                f"venv_root = Path({str(venv_dir)!r}).resolve()\n"
+                "if not (\n"
+                "    package_file.is_relative_to(site_packages)\n"
+                "    and site_packages.is_relative_to(venv_root)\n"
+                "):\n"
+                "    raise RuntimeError(\n"
+                "        f'structural_lib imported from {package_file}, not {site_packages}'\n"
+                "    )\n"
+                "print(package_file)\n"
+                "print(api.get_library_version())"
+            ),
+        ],
+        cwd=cwd,
+        env=clean_env,
+    )
+
+
+def _isolated_pytest_config(temp_root: Path) -> Path:
+    """Create a config that cannot inherit the checkout's pythonpath setting."""
+    config = temp_root / "pytest.ini"
+    source_config = (REPO_ROOT / "Python" / "pytest.ini").read_text(encoding="utf-8")
+    isolated_lines = [
+        line
+        for line in source_config.splitlines()
+        if not line.strip().startswith("pythonpath")
+        and "::pyparsing.warnings." not in line
+    ]
+    config.write_text("\n".join(isolated_lines) + "\n", encoding="utf-8")
+    return config
+
+
+def _repo_only_test_ignore_args() -> list[str]:
+    """Exclude checkout-only modules before pytest imports them during collection."""
+    test_root = REPO_ROOT / "Python" / "tests"
+    marker = "pytestmark = pytest.mark.repo_only"
+    ignored = [
+        path
+        for path in test_root.rglob("test_*.py")
+        if marker in path.read_text(encoding="utf-8")
+    ]
+    return [arg for path in sorted(ignored) for arg in ("--ignore", str(path))]
 
 
 def _find_wheel(wheel_dir: Path, version: str | None) -> Path:
@@ -960,44 +1076,66 @@ def cmd_verify(args: argparse.Namespace) -> int:
 
         pip = _bin_path(venv_dir, "pip")
         python = _bin_path(venv_dir, "python")
+        clean_env = {
+            key: value
+            for key, value in os.environ.items()
+            if key not in {"PYTHONPATH", "VIRTUAL_ENV"}
+        }
 
-        _run_check([str(pip), "install", "--upgrade", "pip"])
+        _run_check([str(pip), "install", "--upgrade", "pip"], env=clean_env)
 
         if args.source == "wheel":
             wheel = _find_wheel(wheel_dir, args.version)
-            _run_check([str(pip), "install", f"{wheel}[dev]"])
+            _run_check(
+                [
+                    str(pip),
+                    "install",
+                    f"{wheel}[dev,validation]",
+                    "httpx>=0.27",
+                ],
+                env=clean_env,
+            )
         else:
             if not args.version:
                 print("error: --version is required when using --source pypi")
                 return 2
             _run_check(
-                [str(pip), "install", f"structural-lib-is456[dev]=={args.version}"]
+                [
+                    str(pip),
+                    "install",
+                    f"structural-lib-is456[dev,validation]=={args.version}",
+                    "httpx>=0.27",
+                ],
+                env=clean_env,
             )
 
-        _run_check(
-            [
-                str(python),
-                "-c",
-                "from structural_lib import api; print(api.get_library_version())",
-            ]
-        )
+        temp_root = venv_dir.parent
+        _assert_package_import_from_venv(python, venv_dir, clean_env, temp_root)
 
         # Run core tests
         print("\nRunning core tests in clean venv...")
+        pytest_config = _isolated_pytest_config(temp_root)
         _run_check(
             [
                 str(python),
                 "-m",
                 "pytest",
+                "-c",
+                str(pytest_config),
+                "--import-mode=importlib",
                 str(REPO_ROOT / "Python" / "tests"),
                 "-v",
                 "--tb=short",
                 "-q",
                 "-x",  # Stop on first failure
                 "-m",
-                "not slow",
-            ]
+                "not slow and not repo_only",
+                *_repo_only_test_ignore_args(),
+            ],
+            cwd=temp_root,
+            env=clean_env,
         )
+        _assert_package_import_from_venv(python, venv_dir, clean_env, temp_root)
 
         if not args.skip_cli:
             if not job_path.exists():
@@ -1013,7 +1151,9 @@ def cmd_verify(args: argparse.Namespace) -> int:
                     str(job_path),
                     "-o",
                     str(out_dir),
-                ]
+                ],
+                cwd=temp_root,
+                env=clean_env,
             )
             _run_check(
                 [
@@ -1026,7 +1166,9 @@ def cmd_verify(args: argparse.Namespace) -> int:
                     "1",
                     "--format",
                     "csv",
-                ]
+                ],
+                cwd=temp_root,
+                env=clean_env,
             )
             _run_check(
                 [
@@ -1039,7 +1181,9 @@ def cmd_verify(args: argparse.Namespace) -> int:
                     "html",
                     "-o",
                     str(out_dir / "report.html"),
-                ]
+                ],
+                cwd=temp_root,
+                env=clean_env,
             )
 
         print("Release verification OK.")
@@ -1169,6 +1313,40 @@ def cmd_checklist(args: argparse.Namespace) -> int:
 
 
 # ─── Preflight ───────────────────────────────────────────────────────────────
+
+
+def _run_local_pytest_gate(section: str, test_path: str) -> bool:
+    """Run one release test suite and print a bounded result."""
+    print(f"\n{section}")
+    try:
+        result = _run_with_timeout(
+            [
+                sys.executable,
+                "-m",
+                "pytest",
+                test_path,
+                "-v",
+                "--tb=short",
+                "-q",
+                "-m",
+                "not slow",
+            ],
+            timeout=600,
+            cwd=REPO_ROOT,
+        )
+    except subprocess.TimeoutExpired:
+        print("  ✗ Tests TIMED OUT (>600s)")
+        return False
+
+    if result.returncode != 0:
+        print("  ✗ Tests FAILED")
+        _print_failure_tail(result)
+        return False
+
+    lines = result.stdout.strip().split("\n")
+    summary = lines[-1] if lines else "passed"
+    print(f"  ✓ {summary}")
+    return True
 
 
 def cmd_preflight(args: argparse.Namespace) -> int:
@@ -1320,7 +1498,36 @@ def cmd_preflight(args: argparse.Namespace) -> int:
             )
             errors += 1
 
-        print("\n4. React Build (Docker, 2GB limit)")
+        print("\n4. FastAPI Tests (Docker, 2GB limit)")
+        try:
+            fastapi_result = _run_with_timeout(
+                [
+                    "docker",
+                    "compose",
+                    "-f",
+                    "docker-compose.preflight.yml",
+                    "run",
+                    "--rm",
+                    "test-fastapi",
+                ],
+                timeout=600,
+            )
+            if fastapi_result.returncode != 0:
+                print("  ✗ FastAPI tests FAILED (in Docker)")
+                _print_failure_tail(fastapi_result)
+                errors += 1
+            else:
+                print("  ✓ FastAPI tests passed (in Docker)")
+        except subprocess.TimeoutExpired:
+            print("  ✗ FastAPI tests TIMED OUT (>600s)")
+            errors += 1
+        except FileNotFoundError:
+            print(
+                "  ✗ Docker not available — start Colima: colima start --cpu 4 --memory 4"
+            )
+            errors += 1
+
+        print("\n5. React Build (Docker, 2GB limit)")
         try:
             react_result = _run_with_timeout(
                 [
@@ -1349,44 +1556,13 @@ def cmd_preflight(args: argparse.Namespace) -> int:
             )
             errors += 1
     else:
-        # 3. Tests (local)
-        print("\n3. Python Tests")
-        try:
-            test_result = _run_with_timeout(
-                [
-                    sys.executable,
-                    "-m",
-                    "pytest",
-                    "Python/tests/",
-                    "-v",
-                    "--tb=short",
-                    "-q",
-                    "-m",
-                    "not slow",
-                ],
-                timeout=600,
-            )
-        except subprocess.TimeoutExpired:
-            print("  ✗ Tests TIMED OUT (>600s)")
+        if not _run_local_pytest_gate("3. Python Tests", "Python/tests/"):
             errors += 1
-            test_result = None
-
-        if test_result is None:
-            pass
-        elif test_result.returncode != 0:
-            print("  ✗ Tests FAILED")
-            # Show last few lines
-            lines = test_result.stdout.strip().split("\n")
-            for line in lines[-5:]:
-                print(f"    {line}")
+        if not _run_local_pytest_gate("4. FastAPI Tests", "fastapi_app/tests/"):
             errors += 1
-        else:
-            lines = test_result.stdout.strip().split("\n")
-            summary = lines[-1] if lines else "passed"
-            print(f"  ✓ {summary}")
 
-        # 4. React build (local)
-        print("\n4. React Build")
+        # 5. React build (local)
+        print("\n5. React Build")
         react_dir = REPO_ROOT / "react_app"
         if react_dir.exists():
             node_env, node_status = _node_runtime_env()
@@ -1397,17 +1573,22 @@ def cmd_preflight(args: argparse.Namespace) -> int:
             else:
                 print(f"  → Selected {node_status}")
                 node_env["NODE_OPTIONS"] = "--max-old-space-size=1536"
-                try:
-                    react_result = _run_with_timeout(
-                        ["npm", "run", "build"],
-                        timeout=300,
-                        cwd=react_dir,
-                        env=node_env,
-                    )
-                except subprocess.TimeoutExpired:
-                    print("  ✗ React build TIMED OUT (>300s)")
+                if not _ensure_react_dependencies(react_dir, node_env):
+                    print("  ✗ React dependencies are unavailable")
                     errors += 1
                     react_result = None
+                else:
+                    try:
+                        react_result = _run_with_timeout(
+                            ["npm", "run", "build"],
+                            timeout=300,
+                            cwd=react_dir,
+                            env=node_env,
+                        )
+                    except subprocess.TimeoutExpired:
+                        print("  ✗ React build TIMED OUT (>300s)")
+                        errors += 1
+                        react_result = None
 
             if react_result is None:
                 pass
@@ -1420,8 +1601,8 @@ def cmd_preflight(args: argparse.Namespace) -> int:
             print("  ⚠ react_app/ not found")
             warnings += 1
 
-    # 5. Doc version sync
-    print("\n5. Doc Version Sync")
+    # 6. Doc version sync
+    print("\n6. Doc Version Sync")
     sync_result = subprocess.run(
         [sys.executable, str(BUMP_SCRIPT), "--check-docs"],
         capture_output=True,
@@ -1433,8 +1614,8 @@ def cmd_preflight(args: argparse.Namespace) -> int:
     else:
         print("  ✓ Doc versions are synced")
 
-    # 6. CHANGELOG check
-    print("\n6. Release Docs")
+    # 7. CHANGELOG check
+    print("\n7. Release Docs")
     docs_result = cmd_check_docs(argparse.Namespace())
     if docs_result != 0:
         print("  ⚠ CHANGELOG ↔ releases.md mismatch (expected before new release)")
@@ -1442,8 +1623,8 @@ def cmd_preflight(args: argparse.Namespace) -> int:
     else:
         print("  ✓ CHANGELOG ↔ releases.md in sync")
 
-    # 7. Version files exist
-    print("\n7. Version Files")
+    # 8. Version files exist
+    print("\n8. Version Files")
     version_files_check = subprocess.run(
         [sys.executable, str(BUMP_SCRIPT), "--report"],
         capture_output=True,

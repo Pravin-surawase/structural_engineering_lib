@@ -17,7 +17,7 @@ Use the canonical release verifier instead of copying API examples into this ski
 
 - Run from the workspace root.
 - Identify the exact version and source being accepted.
-- For a wheel, build it first with `.venv/bin/python -m build Python` and confirm the versioned artifact exists in `Python/dist/`.
+- For a wheel, build it first with `./scripts/python_runtime.sh -m build Python` and confirm the versioned artifact exists in `Python/dist/`.
 - Do not accept evidence from a different commit or version.
 
 ## Pre-Release Wheel UAT

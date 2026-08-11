@@ -26,6 +26,7 @@ agent_drift = importlib.import_module("agent_drift_detector")
 agent_trends = importlib.import_module("agent_trends")
 audit_permissions = importlib.import_module("audit_permissions")
 check_all = importlib.import_module("check_all")
+check_docs = importlib.import_module("check_docs")
 check_scripts_index = importlib.import_module("check_scripts_index")
 cli_smoke = importlib.import_module("test_cli_smoke")
 evolve = importlib.import_module("evolve")
@@ -92,6 +93,27 @@ print(json.dumps({
     assert Path(payload["module"]).is_relative_to(REPO_ROOT / "Python")
 
 
+def test_python_runtime_diagnostic_proves_worktree_source_binding():
+    launcher = SCRIPTS_DIR / "python_runtime.sh"
+    env = os.environ.copy()
+    env["STRUCTURAL_LIB_PYTHON"] = sys.executable
+
+    result = subprocess.run(
+        [str(launcher), "--diagnose"],
+        cwd=REPO_ROOT,
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["repository"] == str(REPO_ROOT)
+    assert payload["source_bound"] is True
+    assert Path(payload["module"]).is_relative_to(REPO_ROOT / "Python")
+
+
 def test_control_paths_use_python_runtime_launcher():
     launcher = str(SCRIPTS_DIR / "python_runtime.sh")
     run_sh = (REPO_ROOT / "run.sh").read_text(encoding="utf-8")
@@ -114,6 +136,8 @@ def test_control_paths_use_python_runtime_launcher():
     assert "git fetch" not in agent_start_source
     assert "gh pr" not in agent_start_source
     assert "chmod +x" not in agent_start_source
+    assert "Python source binding: current worktree" in agent_start_source
+    assert "Python source shadowing detected" in agent_start_source
 
     workflow = (REPO_ROOT / ".github" / "workflows" / "fast-checks.yml").read_text(
         encoding="utf-8"
@@ -121,6 +145,19 @@ def test_control_paths_use_python_runtime_launcher():
     install_offset = workflow.index("python -m pip install -e Python pytest PyYAML")
     smoke_offset = workflow.index("python scripts/test_cli_smoke.py")
     assert install_offset < smoke_offset
+
+
+def test_active_agent_instructions_use_worktree_safe_python_launcher():
+    instruction_paths = [REPO_ROOT / "AGENTS.md"]
+    instruction_paths.extend((REPO_ROOT / ".github" / "skills").glob("*/SKILL.md"))
+    instruction_paths.extend(
+        (REPO_ROOT / ".github" / "instructions").glob("*.instructions.md")
+    )
+
+    for path in instruction_paths:
+        source = path.read_text(encoding="utf-8")
+        assert ".venv/bin/python" not in source, path
+        assert ".venv/bin/pytest" not in source, path
 
 
 def test_watch_help_does_not_require_fswatch():
@@ -368,6 +405,39 @@ def test_automation_discovery_metadata_is_single_source():
     assert "add groups temp" not in active
     assert "test vba adapter" not in active
     assert all("streamlit" not in name for name in active)
+
+
+def test_automation_discovery_resolves_retired_checker_names():
+    automation_map = find_automation.load_automation_map()
+
+    assert find_automation.find_task("check_doc_metadata.py", automation_map)[0][0] == (
+        "check docs metadata"
+    )
+    assert (
+        find_automation.find_task("check_markdown_links.py", automation_map)[0][0]
+        == "check markdown links"
+    )
+
+
+def test_metadata_parser_recognizes_multiword_fields():
+    metadata = check_docs._extract_metadata(
+        "**Type:** Reference\n"
+        "**Audience:** Maintainers\n"
+        "**Status:** Complete\n"
+        "**Last Updated:** 2026-08-11\n"
+    )
+
+    assert metadata["Last Updated"] == "2026-08-11"
+    errors, warnings = check_docs._validate_metadata(
+        "**Type:** Reference\n"
+        "**Audience:** Maintainers\n"
+        "**Status:** Complete\n"
+        "**Importance:** Critical\n"
+        "**Created:** 2026-08-11\n"
+        "**Last Updated:** 2026-08-11\n"
+    )
+    assert errors == []
+    assert warnings == []
 
 
 def test_automation_semantics_reject_stale_and_temporary_entries():

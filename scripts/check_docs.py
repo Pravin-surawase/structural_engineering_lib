@@ -303,9 +303,9 @@ def _is_meta_exempt(file_path: Path) -> bool:
 def _extract_metadata(content: str) -> dict[str, str]:
     """Extract **Field:** Value metadata from markdown."""
     metadata = {}
-    pattern = r"\*\*(\w+):\*\*\s*(.+?)(?:\n|$)"
+    pattern = r"\*\*([A-Za-z][A-Za-z0-9 _-]*):\*\*\s*(.+?)(?:\n|$)"
     for match in re.finditer(pattern, content[:2000]):
-        metadata[match.group(1)] = match.group(2).strip()
+        metadata[match.group(1).strip()] = match.group(2).strip()
     return metadata
 
 

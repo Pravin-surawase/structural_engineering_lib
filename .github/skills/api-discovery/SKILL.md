@@ -31,7 +31,7 @@ Output includes:
 ## List All Public API Functions
 
 ```bash
-.venv/bin/python scripts/discover_api_signatures.py --all
+./scripts/python_runtime.sh scripts/discover_api_signatures.py --all
 ```
 
 The count is derived at runtime. Do not copy it into instructions or documentation.
@@ -39,16 +39,16 @@ The count is derived at runtime. Do not copy it into instructions or documentati
 ## Filter by Keyword
 
 ```bash
-.venv/bin/python scripts/discover_api_signatures.py --filter beam
-.venv/bin/python scripts/discover_api_signatures.py --filter rebar
-.venv/bin/python scripts/discover_api_signatures.py --filter detailing
+./scripts/python_runtime.sh scripts/discover_api_signatures.py --filter beam
+./scripts/python_runtime.sh scripts/discover_api_signatures.py --filter rebar
+./scripts/python_runtime.sh scripts/discover_api_signatures.py --filter detailing
 ```
 
 ## JSON Output (for programmatic use)
 
 ```bash
-.venv/bin/python scripts/discover_api_signatures.py design_beam_is456 --json
-.venv/bin/python scripts/discover_api_signatures.py --all --json
+./scripts/python_runtime.sh scripts/discover_api_signatures.py design_beam_is456 --json
+./scripts/python_runtime.sh scripts/discover_api_signatures.py --all --json
 ```
 
 ## Required Use Pattern

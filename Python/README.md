@@ -2,7 +2,7 @@
 
 IS 456 RC Beam Design Library (Python package).
 
-**Version:** 0.23.0 (Alpha development preview)
+**Version:** 0.23.1a1 (Alpha development preview)
 **Status:** [![Weekly Verification](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml/badge.svg)](https://github.com/Pravin-surawase/structural_engineering_lib/actions/workflows/nightly.yml)
 
 > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.
@@ -12,7 +12,7 @@ IS 456 RC Beam Design Library (Python package).
 > qualified structural-engineering review. Use official standards as the
 > authoritative source.
 
-## New in v0.23.0
+## New in v0.23.1a1
 
 - **Security hardening:** 14 cross-field plausibility validators, error sanitization
 - **Code quality:** `check_code()` and `show_versions()` diagnostics

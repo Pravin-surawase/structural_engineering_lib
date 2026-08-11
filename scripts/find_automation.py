@@ -55,9 +55,12 @@ def find_task(query: str, automation_map: dict) -> list[tuple[str, dict]]:
     # Partial match
     matches = []
     for task_name, task_info in tasks.items():
+        aliases = [str(alias).lower() for alias in task_info.get("aliases", [])]
         if query_lower in task_name:
             matches.append((task_name, task_info))
         elif query_lower in task_info.get("description", "").lower():
+            matches.append((task_name, task_info))
+        elif any(query_lower in alias for alias in aliases):
             matches.append((task_name, task_info))
 
     if matches:
@@ -80,6 +83,8 @@ def print_task(task_name: str, task_info: dict):
         print("     📚 Context docs:")
         for doc in task_info["context_docs"]:
             print(f"        - {doc}")
+    if "aliases" in task_info:
+        print(f"     Aliases: {', '.join(task_info['aliases'])}")
     if "never_use" in task_info:
         never = ", ".join(task_info["never_use"])
         print(f"     ⚠️  Never use: {never}")

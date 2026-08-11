@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-11 — IS456-SLAB-PRELAUNCH public-distribution permission recorded and release-enforced; qualified-review gate remains
+**Updated:** 2026-08-11 — 0.23.1a1 publication authorized; exact-head release sequence in progress
 
 ---
 
@@ -69,7 +69,8 @@
 
 ## Current Release
 
-| **Current** | v0.23.0 | ✅ ALPHA RELEASED — exact CI/public artifact evidence recorded |
+| **Current public release** | v0.23.0 | ✅ ALPHA RELEASED — exact CI/public artifact evidence recorded |
+- **Release candidate:** `0.23.1a1`; owner-authorized for TestPyPI, production PyPI, tag, and GitHub prerelease after exact-head gates
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
 - **Target:** keep later roadmap work inactive until separately activated
@@ -126,13 +127,13 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| — | No active implementation packet | — | Slab software scope is complete on `codex/is456-slabs-plan` |
+| ALPHA-0231-CANDIDATE | Publish the exact 0.23.1a1 Alpha candidate through gated CI | Main Agent + ops | 🟡 AUTHORIZED — release-ready metadata and exact-head TestPyPI evidence in progress |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| FOOT-ISO-RC-V1-INTEGRATION | Integrate and publish-protect the complete clean local footing head `886871ae` across Python, FastAPI and React | Main Agent + ops | 1 integration | P0 | ⏸ NEXT ALPHA BLOCKED until inclusion receipt passes; branch is local-only and must not be lost |
+| ALPHA-0231-CI | Obtain CI-built artifact identity without silently publishing | Owner + ops | owner decision | P0 | ⏸ HELD — current manual workflow proceeds to TestPyPI |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL STABLE GATE |
 
 ## Backlog

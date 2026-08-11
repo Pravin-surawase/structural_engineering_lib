@@ -36,7 +36,7 @@ Python/structural_lib/
 
 Before wrapping or calling any function from `api.py`:
 ```bash
-.venv/bin/python scripts/discover_api_signatures.py <function_name>
+./scripts/python_runtime.sh scripts/discover_api_signatures.py <function_name>
 ```
 NEVER guess parameter names. It's `b_mm` not `width`, `fck` not `concrete_grade`.
 
@@ -53,17 +53,17 @@ The services API currently has 68 public functions and 15 internal helpers. Key 
 - `services/api.py` — 68 public functions and 15 internal helpers, the real entry point
 - `codes/is456/` — all IS 456 math lives here
 - `core/` — base types, sections, materials
-- Before wrapping API functions: `.venv/bin/python scripts/discover_api_signatures.py <func>`
+- Before wrapping API functions: `./scripts/python_runtime.sh scripts/discover_api_signatures.py <func>`
 - Never guess parameter names (`b_mm` not `width`, `fck` not `concrete_grade`)
 
 ## Migration Scripts
 
-- **Move a module:** `.venv/bin/python scripts/migrate_python_module.py <src> <dst> --dry-run`
-- **Validate imports:** `.venv/bin/python scripts/validate_imports.py --scope structural_lib`
+- **Move a module:** `./scripts/python_runtime.sh scripts/migrate_python_module.py <src> <dst> --dry-run`
+- **Validate imports:** `./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib`
 
 ## Testing & Quality
 
-- Tests: `.venv/bin/pytest Python/tests/ -v` (85% branch coverage required)
+- Tests: `./scripts/python_runtime.sh -m pytest Python/tests/ -v` (85% branch coverage required)
 - Production code requires a Codex-managed branch and PR through the connected GitHub integration.
 
 ## Cross-Platform File I/O

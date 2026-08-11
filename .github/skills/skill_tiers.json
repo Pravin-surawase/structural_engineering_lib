@@ -6,7 +6,7 @@
       "specialist": "Available to specific agents based on role",
       "experimental": "Requires explicit activation"
     },
-    "last_updated": "2026-08-09"
+    "last_updated": "2026-08-11"
   },
   "core": [
     {"name": "session-management", "description": "Session start/end automation", "available_to": "all"},

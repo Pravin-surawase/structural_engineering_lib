@@ -66,8 +66,8 @@ Run the narrowest existing test or direct calculation check after the calculatio
 For implementation work, add or update only the narrow tests needed for the requested calculation. Cover the accepted benchmark and the governing limit that changes the main result. Do not invent universal test counts or tolerances.
 
 ```bash
-.venv/bin/pytest <exact-test-path> -q
-.venv/bin/pytest Python/tests/ -q -k "<function_or_clause>"
+./scripts/python_runtime.sh -m pytest <exact-test-path> -q
+./scripts/python_runtime.sh -m pytest Python/tests/ -q -k "<function_or_clause>"
 ```
 
 Independently compare the computed result with the recorded source and show units. A benchmark mismatch is a stop condition; do not loosen the tolerance merely to pass.
@@ -89,8 +89,8 @@ Add FastAPI and React consumers only when they are part of the requested main pr
 During implementation, run only affected checks. Before commit:
 
 ```bash
-.venv/bin/python scripts/check_architecture_boundaries.py
-.venv/bin/python scripts/validate_imports.py --scope structural_lib
+./scripts/python_runtime.sh scripts/check_architecture_boundaries.py
+./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib
 ./run.sh check --quick
 ```
 

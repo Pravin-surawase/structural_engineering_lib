@@ -101,7 +101,7 @@ recreate that lifecycle in repository scripts. The canonical process is
 NEVER: gh pr merge --admin            ← bypasses required CI checks
 NEVER: gh pr merge <N> --squash (with failing CI) ← fix failures first, then merge
 NEVER: gh issue close (without user approval) ← destructive, ask first
-NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py (dry-run by default)
+NEVER: git push origin --delete (without user approval) ← use ./scripts/python_runtime.sh scripts/cleanup_stale_branches.py (dry-run by default)
 NEVER: --no-verify / --force          ← breaks CI, causes rework
 NEVER: git rebase --skip              ← silently drops conflicting commits
 NEVER: git push --force-with-lease     ← rewrites shared history
@@ -145,16 +145,16 @@ UI/IO        → react_app/, fastapi_app/
 ls react_app/src/hooks/                                         # Existing React hooks
 grep -r "@router" fastapi_app/routers/ | head -30               # Existing API routes
 ./run.sh find --api <func>                                   # Public API exact signature (68 functions)
-.venv/bin/python scripts/discover_api_signatures.py <func>      # Exact param names (b_mm not width)
-.venv/bin/python scripts/find_automation.py "task"              # Find existing scripts (113 mapped)
+./scripts/python_runtime.sh scripts/discover_api_signatures.py <func>      # Exact param names (b_mm not width)
+./scripts/python_runtime.sh scripts/find_automation.py "task"              # Find existing automation (119 tasks)
 ```
 
 ## Essential Commands (`./run.sh` — preferred entry point)
 
 ```bash
 ./run.sh session start              # Begin work (verify env, read priorities)
-./run.sh check --quick              # Fast validation (<30s, 9 checks)
-./run.sh check                      # Full validation (29 checks, parallel)
+./run.sh check --quick              # Fast validation (<30s, 10 checks)
+./run.sh check                      # Full validation (30 checks, parallel)
 ./run.sh test                       # Run Python package pytest suite
 ./run.sh test --fastapi             # Run complete FastAPI test suite
 ./run.sh test --react               # Run complete React test suite on pinned Node
@@ -191,9 +191,9 @@ grep -r "@router" fastapi_app/routers/ | head -30               # Existing API r
 
 Direct scripts (when run.sh doesn't cover it):
 ```bash
-.venv/bin/python scripts/agent_context.py <name> # Agent startup context (all 16 agents)
-.venv/bin/python scripts/agent_context.py --list # List available agents
-.venv/bin/python scripts/safe_file_move.py a b   # Move files (preserves 870+ links)
+./scripts/python_runtime.sh scripts/agent_context.py <name> # Agent startup context (all 16 agents)
+./scripts/python_runtime.sh scripts/agent_context.py --list # List available agents
+./scripts/python_runtime.sh scripts/safe_file_move.py a b   # Move files (preserves 870+ links)
 colima start --cpu 4 --memory 4                  # Start Docker runtime (Colima, not Docker Desktop)
 docker compose up --build                        # Full stack at :8000/docs
 ./run.sh frontend build                          # React build on pinned Node
@@ -206,17 +206,18 @@ docker compose up --build                        # Full stack at :8000/docs
 **All commands assume cwd = workspace root.** Terminal cwd persists between calls — if a previous command did `cd react_app`, the next command is STILL in `react_app/`.
 
 ```
-WRONG: cd Python && .venv/bin/pytest tests/ -v     ← .venv is NOT inside Python/
-RIGHT: .venv/bin/pytest Python/tests/ -v           ← run from workspace root
-RIGHT: .venv/bin/python scripts/check_links.py     ← scripts are at workspace root
+WRONG: cd Python && python -m pytest tests/ -v          ← cwd and interpreter are implicit
+RIGHT: ./scripts/python_runtime.sh -m pytest Python/tests/ -v           ← run from workspace root
+RIGHT: ./scripts/python_runtime.sh scripts/check_links.py     ← scripts are at workspace root
 
 WRONG: npm run build                               ← only works if already in react_app/
 RIGHT: cd react_app && npm run build               ← explicit cd first
 ```
 
 **Key paths (all relative to workspace root):**
-- `.venv/bin/pytest` — pytest binary
-- `.venv/bin/python` — Python binary
+- `./scripts/python_runtime.sh -m pytest` — worktree-bound pytest launcher
+- `./scripts/python_runtime.sh` — worktree-bound Python launcher; the selected
+  `.venv` may live in the primary checkout
 - `Python/tests/` — Python test directory
 - `react_app/` — React app directory
 - `scripts/` — utility scripts
@@ -263,7 +264,9 @@ Log feedback only when a concrete stale instruction or missing control was found
 
 - Read `index.json` / `index.md` in folders FIRST — machine-readable summaries
 - Large files (read selectively): SESSION_LOG.md (400KB), adapters.py (71KB), CHANGELOG.md (52KB)
-- Always use `.venv/bin/python`, never bare `python`
+- Always use `./scripts/python_runtime.sh`, never bare `python`. In linked
+  worktrees, verify the current source binding with
+  `./scripts/python_runtime.sh --diagnose`.
 
 ## VS Code Copilot Agents & Skills
 

@@ -124,6 +124,21 @@ PYTHON_PATH=$("$PYTHON_RUNTIME" -c 'import sys; print(sys.executable)' 2>/dev/nu
     exit 1
 }
 echo -e "  ${GREEN}✓${NC} Python runtime: $PYTHON_PATH"
+PYTHON_SOURCE=$("$PYTHON_RUNTIME" -c 'from pathlib import Path; import structural_lib; print(Path(structural_lib.__file__).resolve())' 2>/dev/null) || {
+    echo -e "  ${RED}✗${NC} structural_lib could not be imported through the approved runtime"
+    exit 1
+}
+EXPECTED_SOURCE="$PROJECT_ROOT/Python/structural_lib"
+case "$PYTHON_SOURCE" in
+    "$EXPECTED_SOURCE"/*)
+        echo -e "  ${GREEN}✓${NC} Python source binding: current worktree"
+        ;;
+    *)
+        echo -e "  ${RED}✗${NC} Python source shadowing detected: $PYTHON_SOURCE"
+        echo -e "  ${YELLOW}→${NC} Diagnose with: ./scripts/python_runtime.sh --diagnose"
+        exit 1
+        ;;
+esac
 
 # Step 3: Pre-flight Check (skip in quick mode or if explicitly skipped)
 echo -e "${BLUE}[3/6]${NC} Running pre-flight checks..."

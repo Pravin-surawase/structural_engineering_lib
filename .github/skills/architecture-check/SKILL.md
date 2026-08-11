@@ -28,7 +28,7 @@ Layer 4: UI/IO         → react_app/, fastapi_app/             # External inter
 ## Boundary Validation
 
 ```bash
-.venv/bin/python scripts/check_architecture_boundaries.py
+./scripts/python_runtime.sh scripts/check_architecture_boundaries.py
 ```
 
 Checks:
@@ -40,7 +40,7 @@ Checks:
 ## Import Validation
 
 ```bash
-.venv/bin/python scripts/validate_imports.py --scope structural_lib
+./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib
 ```
 
 This is a separate resolution check. It catches broken module paths; the boundary checker owns layer direction.
@@ -48,7 +48,7 @@ This is a separate resolution check. It catches broken module paths; the boundar
 Run the circular-import checker only if the change creates an import cycle or the normal import validation reports one:
 
 ```bash
-.venv/bin/python scripts/check_circular_imports.py
+./scripts/python_runtime.sh scripts/check_circular_imports.py
 ```
 
 Do not run generic duplication scans as part of this skill. Before adding a new hook, route, or public function, use targeted `rg` in that component to locate an existing implementation.

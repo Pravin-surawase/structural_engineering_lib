@@ -2166,3 +2166,276 @@ calculation/service/FastAPI contract without changing the separate torsion route
 - Targeted source evidence proves `/workbench/quick`, `/workbench/slabs`, `/workbench/columns/rectangular`, and `/workbench/footing/isolated/concentric` coexist, with all four workbench entries reachable.
 
 ---
+## 2026-08-11 — Session: 0.23.1a1 Candidate Evidence Preparation
+
+**Agent:** Codex (`orchestrator`)
+**Branch:** `codex/alpha-0231-candidate-evidence`
+**Focus:** Prepare a local, non-publishing Alpha candidate source from merged main.
+
+### Summary
+
+- Started from exact merged main `5da9c66a0f962fc08a6431fe95e39ec664a353f6` in a dedicated local candidate lane.
+- Ran the canonical `./run.sh release run 0.23.1a1 --no-open` only after the non-publishing plan and permission gates were green.
+- Prepared the expected 16-file version/document bump to `0.23.1a1`; no changelog publication entry, tag, package upload, GitHub Release, or Pages action was performed.
+
+### Issues encountered
+
+- The first pre-bump `./run.sh release preflight 0.23.1a1` and first candidate `./run.sh release run 0.23.1a1 --no-open` stopped at the React build because the isolated worktree has no `react_app/node_modules`; the visible release-run symptom was `sh: tsc: command not found`.
+- Preflight correctly reports clean-install evidence as pending until an exact wheel is supplied.
+
+### Root causes and resolutions
+
+- Root cause: `scripts/release.py` selects Node 24 and invokes `npm run build` directly but does not provision dependencies, while this isolated worktree intentionally has no local Node installation. Resolution: used a temporary symlink to the approved primary Node 24 dependency installation for the controlled preflight/build commands, removed it on exit, and made no release-automation change. Direct `npm run build` then passed and produced the expected footing chunk.
+- Root cause: clean-install evidence is necessarily unavailable before the exact candidate wheel exists. Resolution: kept the pre-bump preflight warning visible and deferred exact-wheel preflight/UAT until one frozen artifact is built.
+
+### Verification
+
+- Pre-bump `0.23.1a1` preflight passed with target upgrade, permission, footing inclusion, 5,584 Python tests, and Node 24 React build; only the expected candidate-wheel warning remained.
+- Candidate preparation passed its same Python/build gates and updated only the expected version/document files. Artifact hash, inventory, SBOM, exact-wheel preflight, and clean-install UAT evidence will be recorded against the frozen source SHA after the single artifact build.
+
+---
+
+## 2026-08-11 — Session: 0.23.1a1 Candidate Verification Root-Cause Repair
+
+**Agent:** Codex (`orchestrator`, bounded verifier and version-semantics workers)
+**Branch:** `codex/alpha-0231-candidate-evidence`
+**Focus:** Make the preserved candidate reproducible and truthful without rebuilding or publishing it.
+
+### Summary
+
+- Repaired installed-wheel verification so the maintained UAT uses only the
+  wheel's declared `dev,validation` extras plus generated-client `httpx`, runs
+  outside the checkout with an isolated pytest configuration, and asserts the
+  imported package is inside the disposable venv before and after tests.
+- Made release-run and preflight provision missing lockfile-pinned React
+  dependencies with `npm ci` while refusing `node_modules` symlinks.
+- Removed published-release status rows from automatic candidate version/date
+  rewriting and recorded a truthful local-prepublication evidence boundary.
+- Added worktree-bound runtime diagnostics, fail-closed session trust,
+  discoverable retired-command aliases, metadata parsing repair, and local/
+  Docker FastAPI preflight parity so the same failure modes stop earlier.
+- Preserved the existing wheel and sdist byte-for-byte; no tag, upload, release,
+  Pages action, or publish workflow was invoked.
+
+### Issues encountered
+
+- Exact-wheel verification inherited checkout-oriented pytest behavior and the
+  broad `requirements.txt` experiment could pass while obscuring which
+  dependencies came from the artifact.
+- The existing release-state regression assumed the current source version was
+  already authorized/published, so it encoded an untrue candidate-state premise.
+- Generated-client tests require `httpx`, while validation tests require the
+  wheel's declared `validation` extra; the earlier `[dev]`-only install did not
+  express either requirement.
+- The first isolated UAT failed during collection because
+  `test_research_prototypes.py` imports an intentionally excluded
+  `structural_lib.research` package. Marker filtering alone occurs too late to
+  prevent that import.
+- The isolated worktree had no `react_app/node_modules`, so the canonical React
+  build failed with `sh: tsc: command not found`.
+- Candidate bump automation changed the `TASKS.md` current-release version while
+  retaining `ALPHA RELEASED` and public-evidence wording, and erased the
+  descriptive task-board update text.
+- The first full closeout gate rejected the new evidence filename because
+  version dots violate the repository documentation naming policy.
+- The first code commit attempt was blocked after Ruff removed one extra blank
+  line in the research test module; no commit was created on that attempt.
+- A documentation-only validation shortcut referenced the retired
+  `scripts/check_markdown_links.py` path and stopped before its second command.
+- The first evidence-commit command stopped at `git diff --check` because the
+  new Markdown header used two trailing-space hard breaks; no paths were staged.
+- The documentation metadata hook ran in warning mode and exposed missing
+  `Type`/`Audience` fields plus a noncanonical lifecycle status on the new
+  evidence record. A guessed direct checker path was also obsolete.
+- PR #732 FastAPI Validation failed while every independent component job
+  passed: `test_project_boq_basic` expected public version `0.23.0`, but the
+  candidate API correctly returned `0.23.1a1`; PR Gate then failed as a direct
+  dependency.
+- The candidate worktree has no local `.venv`; focused commands used the
+  maintained shared project interpreter.
+- The maintained local release preflight exercised Python and React but omitted
+  the FastAPI suite that exposed the candidate-version failure in CI.
+- Session start reported a counted dirty tree but still wrote a trusted state.
+- Independent review found the first trust repair still accepted a clean tree
+  when branch detection returned its `unknown` detached/error sentinel.
+- The documentation metadata parser emitted a false missing-`Last Updated`
+  warning for a correctly populated multiword field.
+- Automation discovery could not resolve the retired
+  `check_markdown_links.py` and `check_doc_metadata.py` names to their
+  consolidated maintained commands.
+- Active skills and instructions assumed every linked worktree owned
+  `.venv/bin/python`, even though the maintained launcher already supports the
+  primary environment with current-worktree source binding.
+
+### Root causes and resolutions
+
+- Root cause: `Python/pytest.ini` injects `Python/` through `pythonpath = .`, and
+  `cmd_verify` ran repository tests from the checkout. Resolution: create a
+  temporary config with only that directive removed, run from the temporary
+  directory with importlib mode, and assert the resolved package path is inside
+  the verification venv before and after pytest. The broad requirements install
+  was removed in favor of `[dev,validation]` and `httpx>=0.27`.
+- Root cause: the release-state test passed
+  `allow_authorized_release=True` unconditionally instead of deriving that fact
+  from the permission record. Resolution: bind the allowance to
+  `_release_authorization_recorded(current)` so candidate source is not silently
+  treated as published.
+- Root cause: `[dev]` alone did not model the maintained test dependency
+  boundary, and the broad root requirements install masked the missing
+  distinction. Resolution: install the exact wheel with its declared
+  `[dev,validation]` extras and add only the generated-client requirement
+  `httpx>=0.27`.
+- Root cause: pytest imports test modules before applying marker selection.
+  Resolution: classify the research prototype module as `repo_only` and derive
+  `--ignore` arguments for every module-level repo-only test before collection.
+- Root cause: release automation selected pinned Node 24 but assumed dependencies
+  already existed. Resolution: both release paths share one provisioner that
+  runs lockfile-pinned `npm ci` when TypeScript is absent and fails closed on a
+  symlink or invalid dependency path.
+- Root cause: `bump_version.py` treated published operational history as a source
+  version pin. Resolution: exclude `TASKS.md` and the handoff from automatic
+  candidate version/date rewriting; focused temporary-repository coverage proves
+  a future bump preserves the last published release status.
+- Root cause: the evidence filename copied the dotted package version into a
+  path governed by hyphenated document naming. Resolution: use the repository's
+  safe-file mover to rename it to
+  `alpha-0231-local-prepublication-rehearsal.md`; link validation and the full
+  governance gate then passed.
+- Root cause: the staged research-test import grouping did not match the
+  repository Ruff format. Resolution: accepted the hook's one-line formatting
+  change, reran the 200 focused tests, restaged the intended five code/test
+  paths, and committed only after all hooks passed.
+- Root cause: the shortcut guessed an obsolete direct script name instead of
+  consulting the automation registry. Resolution: `./run.sh find` identified
+  `scripts/check_links.py` and `scripts/session.py check`; both maintained
+  commands completed successfully. No fallback mutation was used.
+- Root cause: the evidence header used Markdown hard-break whitespace that the
+  repository hygiene rule rejects. Resolution: replaced the hard breaks with
+  explicit blank paragraphs and reran `git diff --check` before staging.
+- Root cause: the evidence boundary had been placed in the `Status` field, and
+  the direct metadata checker was consolidated into `scripts/check_docs.py`.
+  Resolution: added canonical reference metadata, retained
+  `LOCAL PREPUBLICATION REHEARSAL` as a separate evidence boundary, and used the
+  maintained checker path discovered from the repository.
+- Root cause: candidate version automation updated maintained runtime/version
+  surfaces but the FastAPI BOQ regression encoded a historical public version
+  literal. Resolution: compare BOQ evidence to `fastapi_app.__version__`, the
+  maintained application version surface, so future candidate bumps retain the
+  cross-surface contract without test-file rewrites.
+- Root cause: release preflight and CI had different maintained test surfaces.
+  Resolution: local preflight now runs `fastapi_app/tests/`, and Docker preflight
+  has an equivalent read-only `test-fastapi` service alongside Python and React.
+- Root cause: session trust searched the formatted Git summary for the words
+  `modified` and `untracked`, while `get_uncommitted_status()` returns a count.
+  Resolution: trust now requires the exact `Clean working tree` sentinel on a
+  known non-main branch, checks both Git command return codes, and fails closed
+  for dirty, detached, or unknown state.
+- Root cause: metadata extraction accepted only single-word field names.
+  Resolution: the parser accepts trimmed multiword metadata keys and regression
+  coverage proves `Last Updated` validates without warnings.
+- Root cause: consolidated helper scripts had no searchable compatibility names.
+  Resolution: automation entries now carry aliases, discovery searches and
+  displays them, and regression coverage maps both retired checker names.
+- Root cause: documentation bypassed the worktree-aware Python launcher.
+  Resolution: active skills and instructions use `python_runtime.sh`, session
+  start proves `structural_lib` resolves under the invoking worktree, and
+  `--diagnose` reports interpreter, repository, module path, and binding status.
+
+### Verification
+
+- Focused release/version/research tests: 200 passed; source research tests still
+  execute normally while installed-artifact UAT excludes checkout-only modules.
+- Prior integration evidence remained intact: `./run.sh check` passed 30/30 and
+  merged PR #730 had seven successful checks (Detect Changes, Build MkDocs,
+  Repository Validation, Python Validation, FastAPI Validation, React
+  Validation, and PR Gate).
+- Exact installed wheel: 5,055 passed, 51 skipped, 2 deselected, 29 warnings;
+  disposable `site-packages` identity passed before and after pytest; installed
+  `job`, `critical`, and HTML `report` workflows passed.
+- React Node 24 dependency provisioning used `npm ci`; the production build
+  passed and retained the isolated-footing chunk.
+- Candidate closeout gates: `./run.sh check --quick` passed 10/10; the first full
+  gate exposed the invalid evidence filename at 29/30, and the corrected rerun
+  passed 30/30.
+- Clean-tree exact-wheel preflight passed with zero warnings: 5,590 Python tests
+  passed, 3 skipped, 6 deselected, and 46 warnings; Node 24 React build, clean
+  wheel identity, permission, footing inclusion, version, and release-document
+  gates all passed. Wheel and sdist hashes remained unchanged before and after.
+- Dedicated branch `codex/alpha-0231-candidate-evidence` was pushed without
+  rewriting history and draft PR #732 was opened against `main`; it was
+  mergeable and normal PR validation started. No publish-capable workflow was
+  dispatched.
+- GitHub run `31463676435` isolated the FastAPI version-literal failure while
+  Repository, Python, React, and MkDocs validation passed. After the fix, the
+  exact failed test passed and `./run.sh test --fastapi` passed all 413 tests.
+- Prevention-control regression suite passed all 135 tests; the broad Python
+  suite passed 5,599 tests with 3 skipped and 6 deselected, and the FastAPI suite
+  passed all 413 tests.
+- Runtime diagnosis reported `source_bound: true` for this linked worktree;
+  session start reported `Python source binding: current worktree` and correctly
+  marked the dirty tree untrusted.
+- Automation registry validation passed at 106/106 physical scripts and 119
+  grouped tasks; both retired checker names resolved to maintained commands.
+- `./run.sh check --quick` passed 10/10 and `./run.sh check` passed 30/30 after
+  the prevention updates.
+- Clean-tree exact-wheel preflight passed with zero warnings after the control
+  repair: 5,602 Python tests passed, 3 skipped, and 6 deselected; 407 non-slow
+  FastAPI tests passed with 6 deselected; and the Node 24 React build passed.
+- Wheel SHA-256 remained
+  `9c986920ceb43e341d01c6411c873605fec3321486d862a847e2083c36156aa7`;
+  sdist remained
+  `9f7ebf55afa8232eeeb3f35449450a4bc8aca5d835c9f017f308052c979f1de6`.
+
+---
+
+## 2026-08-11 — Session: 0.23.1a1 Authorized Publication
+
+**Agent:** Codex (`ops`)
+**Branch:** `codex/alpha-0231-candidate-evidence`
+**Focus:** Publish the reviewed Alpha candidate through exact-head TestPyPI,
+production PyPI, tag, and GitHub prerelease gates.
+
+### Summary
+
+- Recorded the owner's explicit 2026-08-11 authorization for the
+  `v0.23.1a1` TestPyPI rehearsal, production tag/PyPI publication, and GitHub
+  prerelease after exact-head evidence passes.
+- Converted candidate-only metadata to a dated, release-ready Alpha state while
+  preserving the case-qualified scope and professional-review boundary.
+
+### Issues encountered
+
+- Publication was explicitly authorized in the active task, but the versioned
+  checklist, changelog, citation metadata, task board, handoff, and immutable
+  release ledger still recorded an unreleased hold.
+- Exact-head TestPyPI run `31467674597` stopped in release-test collection
+  before build or upload because generated-client and tool-manifest tests could
+  not import `httpx` and `jsonschema`.
+
+### Root causes and resolutions
+
+- Root cause: the previous task deliberately stopped at a reviewed local
+  rehearsal and therefore could not record per-release publication authority.
+  Resolution: bind the owner's current instruction to the exact Alpha version,
+  require an exact-head TestPyPI rehearsal before the production tag, and use a
+  new append-only release-ledger entry to supersede the historical hold without
+  rewriting it. Evidence: release preflight, CI workflow run identities,
+  package-index verification, tag, and GitHub prerelease evidence are recorded
+  below as the authorized sequence completes.
+- Root cause: `publish.yml` installed only the wheel's `dev` extra before
+  running the full repository test suite, while maintained generated-client and
+  manifest tests require explicit `httpx` and the `validation` extra. The local
+  exact-wheel verifier had already corrected this boundary, but the publish
+  validation job retained the stale dependency set. Resolution: align publish
+  validation with `[dev,validation]` plus `httpx>=0.27` and add a workflow
+  regression assertion. Evidence: the failed run published nothing; focused
+  tests, PR CI, and a new exact-head TestPyPI run must pass before continuation.
+
+### Verification
+
+- Pending release-ready preflight and PR CI at the metadata commit.
+- Pending exact-head TestPyPI workflow and installed-package verification.
+- Pending unchanged-head merge, production tag workflow, PyPI verification,
+  GitHub prerelease assets, and final repository closeout.
+
+---

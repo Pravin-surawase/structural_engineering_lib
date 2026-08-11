@@ -118,6 +118,8 @@ def get_branch() -> str:
             capture_output=True,
             text=True,
         )
+        if result.returncode != 0:
+            return "unknown"
         return result.stdout.strip() or "unknown"
     except Exception:
         return "unknown"
@@ -131,12 +133,25 @@ def get_uncommitted_status() -> str:
             capture_output=True,
             text=True,
         )
+        if result.returncode != 0:
+            return "Unable to check"
         lines = result.stdout.strip().split("\n") if result.stdout.strip() else []
         return (
             "Clean working tree" if not lines else f"{len(lines)} uncommitted change(s)"
         )
     except Exception:
         return "Unable to check"
+
+
+def _evaluate_trust(branch: str, uncommitted: str) -> tuple[bool, str]:
+    """Trust only an exact clean-tree result on a non-main branch."""
+    if uncommitted != "Clean working tree":
+        return False, "uncommitted or unknown Git state detected"
+    if not branch or branch == "unknown":
+        return False, "unknown or detached Git branch"
+    if branch == "main":
+        return False, "on main branch, expected feature branch"
+    return True, "clean state confirmed"
 
 
 def check_session_log_entry() -> tuple[bool, str]:
@@ -372,16 +387,7 @@ def cmd_start(args: argparse.Namespace) -> int:
     branch = get_branch()
     uncommitted = get_uncommitted_status()
 
-    # Evaluate trust state
-    if "modified" in uncommitted.lower() or "untracked" in uncommitted.lower():
-        trusted = False
-        trust_reason = "uncommitted changes detected"
-    elif branch == "main":
-        trusted = False
-        trust_reason = "on main branch, expected feature branch"
-    else:
-        trusted = True
-        trust_reason = "clean state confirmed"
+    trusted, trust_reason = _evaluate_trust(branch, uncommitted)
 
     save_trust_state(trusted, trust_reason)
 

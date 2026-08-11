@@ -1,6 +1,6 @@
 {
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
-  "_updated": "2026-08-09",
+  "_updated": "2026-08-11",
   "_usage": "Run: ./scripts/python_runtime.sh scripts/find_automation.py \"task description\" — or --list for all",
   "_coverage": "106/106 scripts mapped",
   "tasks": {
@@ -8,6 +8,13 @@
       "group": "Infrastructure",
       "script": "./scripts/python_runtime.sh --version",
       "description": "Resolve the approved Python interpreter across primary and linked Git worktrees",
+      "permission": "ReadOnly"
+    },
+    "diagnose python runtime": {
+      "group": "Infrastructure",
+      "script": "./scripts/python_runtime.sh --diagnose",
+      "description": "Show the selected interpreter and prove structural_lib is bound to the invoking worktree",
+      "aliases": [".venv", "worktree python", "python source binding"],
       "permission": "ReadOnly"
     },
     "choose codex model": {
@@ -98,6 +105,13 @@
       "script": "./scripts/python_runtime.sh scripts/check_links.py --fix",
       "description": "Find and auto-fix broken internal links in markdown files"
     },
+    "check markdown links": {
+      "group": "Docs",
+      "script": "./scripts/python_runtime.sh scripts/check_links.py",
+      "description": "Read-only validation of internal Markdown links",
+      "aliases": ["check_markdown_links.py", "markdown links"],
+      "permission": "ReadOnly"
+    },
     "fix deleted file links": {
       "group": "Docs",
       "script": "./scripts/python_runtime.sh scripts/fix_broken_links.py --dry-run",
@@ -110,7 +124,7 @@
     },
     "select frontend node runtime": {
       "group": "Infrastructure",
-      "script": ".venv/bin/python scripts/node_runtime.py --print",
+      "script": "./scripts/python_runtime.sh scripts/node_runtime.py --print",
       "description": "Select the healthy Node/npm pair pinned by .nvmrc (also: ./run.sh frontend runtime)",
       "options": {
         "--print": "Show selected Node and npm versions",
@@ -291,6 +305,13 @@
       "script": "./scripts/python_runtime.sh scripts/check_docs.py",
       "description": "Unified doc checker — index, links, metadata validation"
     },
+    "check docs metadata": {
+      "group": "Docs",
+      "script": "./scripts/python_runtime.sh scripts/check_docs.py --metadata --strict",
+      "description": "Validate required documentation metadata with the consolidated checker",
+      "aliases": ["check_doc_metadata.py", "doc metadata"],
+      "permission": "ReadOnly"
+    },
     "validate imports": {
       "group": "Quality",
       "script": "./scripts/python_runtime.sh scripts/validate_imports.py",
@@ -467,7 +488,15 @@
     "release": {
       "group": "Release",
       "script": "./scripts/python_runtime.sh scripts/release.py",
-      "description": "Unified release management — verify, tag, publish"
+      "description": "Unified release management — preflight, artifact verification, and owner-gated publication"
+    },
+    "release preflight": {
+      "group": "Release",
+      "script": "./run.sh release preflight --wheel <exact-wheel-path>",
+      "description": "Run clean-tree Python, FastAPI, React, version, permission, and exact-wheel release gates",
+      "aliases": ["candidate preflight", "release CI parity"],
+      "permission": "ReadOnly",
+      "context_docs": [".github/skills/release-preflight/SKILL.md"]
     },
     "benchmark api": {
       "group": "Testing",

@@ -4,22 +4,21 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-11
-- Focus: Beam, column, and slab PRs are merged; preserved permission and complete footing history are active in the dedicated Alpha integration lane
+- Focus: owner-authorized 0.23.1a1 TestPyPI, production PyPI, tag, and GitHub prerelease sequence
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
 
-**Integration branch:** `codex/alpha-0231-integration`
+**Candidate branch:** `codex/alpha-0231-candidate-evidence`
 
-**Base:** current `origin/main` after sequential beam, column, and slab merges;
-preserved release guards and footing history are being integrated here
+**Base:** `origin/main` at `5da9c66a`; frozen artifact source `72d2d9b8`
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | Alpha integration lane | Beam, column, and slab are merged; preserved permission/footing release guards are being integrated from exact reviewed heads |
-| **Next** | Preservation proof and integration PR | Prove both preserved ancestors, zero missing footing files/markers, exact footing-owned file identity, and all four workflows before opening the PR |
-| **Held** | Candidate release and engineering-use claims | `0.23.1a1` evidence remains non-publishing; qualified review remains a separate stable/engineering-use gate |
+| **Current** | Release-ready metadata | Owner authorization recorded; exact-head gates and TestPyPI rehearsal must pass before tagging |
+| **Next** | Candidate PR #732 | Mark ready and merge unchanged reviewed head, then push `v0.23.1a1` for production publication |
+| **Held** | Stable/engineering-use claims | Alpha publication does not grant qualified professional approval or complete-code coverage |
 
 ## Integrated footing scope
 
