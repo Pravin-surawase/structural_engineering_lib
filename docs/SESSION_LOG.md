@@ -2314,6 +2314,10 @@ calculation/service/FastAPI contract without changing the separate torsion route
 - Candidate closeout gates: `./run.sh check --quick` passed 10/10; the first full
   gate exposed the invalid evidence filename at 29/30, and the corrected rerun
   passed 30/30.
+- Clean-tree exact-wheel preflight passed with zero warnings: 5,590 Python tests
+  passed, 3 skipped, 6 deselected, and 46 warnings; Node 24 React build, clean
+  wheel identity, permission, footing inclusion, version, and release-document
+  gates all passed. Wheel and sdist hashes remained unchanged before and after.
 - Wheel SHA-256 remained
   `9c986920ceb43e341d01c6411c873605fec3321486d862a847e2083c36156aa7`;
   sdist remained

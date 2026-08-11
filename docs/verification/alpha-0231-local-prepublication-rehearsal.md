@@ -44,6 +44,18 @@ protected-standard-text and protected-table-values flags as `false`.
   bytes, SHA-256
   `82c7560a8a0137cf8989e594ab5c9668fd88f3699b03fcea460a738f2b6856a1`.
 
+## Clean-tree candidate preflight
+
+- Maintained command: `./run.sh release preflight --wheel Python/dist/structural_lib_is456-0.23.1a1-py3-none-any.whl`
+- Result: ready to release with zero preflight warnings.
+- Python gate: 5,590 passed, 3 skipped, 6 deselected, 46 warnings.
+- React gate: Node 24 production build passed using lockfile-pinned installed
+  dependencies.
+- Clean wheel identity, candidate version, public-distribution permission,
+  footing inclusion, documentation sync, and release records all passed.
+- Wheel and sdist SHA-256 values were unchanged immediately before and after
+  preflight.
+
 ## Authority boundary
 
 The local SBOM and archive identities support review of this rehearsal only.

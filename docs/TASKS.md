@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| ALPHA-0231-CANDIDATE | Repair exact-wheel isolation, candidate truth, and reproducible preflight | Main Agent + ops | 🟡 LOCAL REHEARSAL GREEN — repository gates 10/10 and 30/30; clean-tree preflight and draft PR pending |
+| ALPHA-0231-CANDIDATE | Repair exact-wheel isolation, candidate truth, and reproducible preflight | Main Agent + ops | 🟡 LOCAL REHEARSAL GREEN — repository gates 10/10 and 30/30; exact-wheel preflight 0 warnings; draft PR pending |
 
 ## Up Next
 

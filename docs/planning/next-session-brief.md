@@ -16,8 +16,8 @@
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | Local candidate rehearsal | Exact-wheel UAT imports only disposable-venv `site-packages`; CLI workflows pass |
-| **Next** | Candidate draft PR | Final preflight/gates, truthful evidence commit, explicit candidate upstream, then normal PR CI |
+| **Current** | Local candidate rehearsal | Exact-wheel UAT and clean-tree preflight pass; preflight reports zero warnings |
+| **Next** | Candidate draft PR | Push the explicit candidate branch, open the bounded draft, then inspect normal PR CI |
 | **Held** | Publication and engineering-use claims | No tag/TestPyPI/PyPI/GitHub Release; qualified review remains a separate stable gate |
 
 ## Integrated footing scope
