@@ -58,10 +58,10 @@
     {
       "name": "gpt-5-3-codex-spark-work-program.md",
       "type": "documentation",
-      "size_lines": 605,
+      "size_lines": 614,
       "last_updated": "2026-08-11",
       "description": "Use GPT-5.3-Codex-Spark as a high-throughput implementation lane for small, explicit, rapidly verifiable tasks. The program targets truthful documentation,",
-      "content_hash": "c7c305412f4d"
+      "content_hash": "4160ef25ca5e"
     },
     {
       "name": "is456-library-first-master-plan.md",
@@ -107,11 +107,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 147,
+      "size_lines": 151,
       "last_updated": "2026-08-11",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-11",
-      "content_hash": "723858e689d4"
+      "content_hash": "2f11d114ef29"
     },
     {
       "name": "pre-release-checklist.md",
@@ -149,5 +149,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "980cf40f6eeb7a89"
+  "content_hash": "bead19d8a4532bd4"
 }

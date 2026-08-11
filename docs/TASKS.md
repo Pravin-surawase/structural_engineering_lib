@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-11 — Alpha published; SPARK-001 Phase 2 recovery and integration in progress
+**Updated:** 2026-08-11 — SPARK-001 Phase 2 integrated and verified; owner review gate G0 remains held
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| SPARK-001 | Recover and integrate the measured GPT-5.3-Codex-Spark work program without rewriting history | Main Agent + repository owner | 🛠 PHASE 2 — checkpoint preserved; current `main` integration in progress |
+| SPARK-001 | Establish a measured GPT-5.3-Codex-Spark work program for bounded high-throughput tasks | Main Agent + repository owner | ✅ PHASE 2 COMPLETE — recovery/integration verified; implementation held for G0 |
 
 ## Up Next
 

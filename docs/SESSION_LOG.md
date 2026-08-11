@@ -1,3 +1,73 @@
+## 2026-08-11 — Session: SPARK-001 Phase 2 Recovery and Integration
+
+**Agent:** Codex
+**Branch:** `codex/gpt-5-3-spark-work-program`
+**Focus:** Preserve the dirty Spark draft, merge current `main` without rewriting
+history, and close the picker acceptance gap found in Phase 1
+
+### Summary
+
+- Preserved all 13 classified Spark planning paths in checkpoint `47fce48e`.
+- Merged `origin/main` at `8d47de73` through two-parent merge commit `f0314f3e`;
+  no rebase, reset, stash, force operation, or history rewrite was used.
+- Reconciled handwritten shared state semantically and regenerated only the
+  affected canonical indexes.
+- Made the task-aware picker route bounded, verification-forward work to the
+  unpriced `spark-low` preview with Terra Low fallback while retaining Terra/Sol
+  safety and approval boundaries.
+
+### Issues encountered
+
+- The stale branch advertised `./run.sh task brief`, but its `run.sh` did not
+  implement that command, so the first chained startup stopped early.
+- `./run.sh model --table` crashed with `KeyError: 'gpt-5.3-codex-spark'` even
+  though the focused tests and quick gate were green.
+- The controlled merge produced seven conflicts in the session/task/handoff and
+  generated-index surfaces predicted during Phase 1.
+- Preserving both handoffs verbatim produced a 163-line brief over the maintained
+  150-line limit.
+- Live high-risk picker output described Sol as pre-authorized while the policy
+  and result correctly required approval.
+- The picker and test edits made three folder indexes stale.
+
+### Root causes and resolutions
+
+- The branch predated the task-intake command added on current `main`; session
+  startup was rerun separately using the available `session brief` and `session
+  start` commands. The merged branch now contains the current intake workflow.
+- The picker assumed every profile model had a fixed numeric entry in
+  `relative_token_rates`, while Spark is intentionally unpriced. A single helper
+  now returns an optional verified rate, human/JSON output labels an absent rate
+  as preview/null, and a subprocess regression exercises the real `--table` path.
+- Both histories changed single-writer ledgers and their projections. Append-only
+  session history was retained, current Alpha truth and Spark state were combined,
+  and `docs`, `docs/planning`, and `agents` indexes were regenerated rather than
+  manually selecting conflict sides.
+- The superseded fresh-start maintenance recap was removed from the current
+  handoff; its durable evidence remains in the session log. The brief is 146
+  physical lines and the length gate passes.
+- The stale escalation sentence was aligned with `fallback_requires_approval`;
+  the critical-work regression now requires the approval wording.
+- Only `scripts`, `Python/tests`, and `Python` indexes were regenerated child
+  first; their targeted drift checks pass without unrelated global rewrites.
+
+### Verification
+
+- `./run.sh model --table` passes and labels `spark-low` as `preview`.
+- `pytest Python/tests/test_model_picker.py Python/tests/test_token_efficiency.py
+  -q` — 18 passed.
+- Targeted Ruff and format checks pass.
+- Targeted index drift checks for `agents`, `docs`, `docs/planning`, `scripts`,
+  `Python/tests`, and `Python` pass.
+- `./run.sh check --quick` — 10/10 passed.
+- `./run.sh check` — 30/30 passed.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `./run.sh task brief` was unavailable on the stale branch
+  -> the available session commands completed startup, and merging current
+  `main` restored the documented intake command.
+
 ## 2026-08-11 — Session: FOOT-ISO-RC-V1 Phases A-D1
 
 **Agent:** Codex

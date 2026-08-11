@@ -3,8 +3,8 @@
 IS 456 RC Beam Design Library (Python package).
 
 **Type:** Mixed
-**Last Updated:** 2026-04-04
-**Files:** 5
+**Last Updated:** 2026-08-11
+**Files:** 6
 
 ## Config Files
 
@@ -15,13 +15,13 @@ IS 456 RC Beam Design Library (Python package).
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [README.md](README.md) | structural-lib-is456 | IS 456 RC Beam Design Library (Python package). > ⚠️ **Devel | 108 |
+| [README.md](README.md) | structural-lib-is456 | IS 456 RC Beam Design Library (Python package). > ⚠️ **Devel | 242 |
 
 ## Subfolders
 
 | Folder | Files | Description |
 |--------|-------|-------------|
-| [examples/](examples/) | 19 | > **Purpose:** Example scripts demonstrating library usage |
+| [examples/](examples/) | 20 | > **Purpose:** Example scripts demonstrating structural_lib usage |
 | [scripts/](scripts/) | 2 |  |
-| [structural_lib/](structural_lib/) 📦 | 184 | > **Purpose:** IS 456:2000 RC beam design calculations |
-| [tests/](tests/) | 156 | This document describes the test taxonomy and structure for the structural_engin |
+| [structural_lib/](structural_lib/) 📦 | 219 | > **Purpose:** IS 456:2000 RC beam design calculations |
+| [tests/](tests/) 📦 | 201 | This document describes the test taxonomy and structure for the structural_engin |

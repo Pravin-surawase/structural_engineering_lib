@@ -4,7 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-11
-- Focus: preserve and integrate SPARK-001 onto the published Alpha baseline; Wave 0 remains held for G0 review
+- Focus: SPARK-001 Phase 2 integrated and verified; Wave 0 remains held for G0 review
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
@@ -16,7 +16,7 @@
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | SPARK-001 Phase 2 | Original draft checkpoint is preserved; post-Alpha `main` is being integrated without history rewrite |
+| **Current** | SPARK-001 Phase 2 | Draft preserved, post-Alpha `main` integrated, picker gap fixed, and repository gates green |
 | **Next** | Owner review gate G0 | Accept, revise, or reject Wave 0 after the reconciled control plane passes verification |
 | **Held** | Stable/engineering-use claims | Alpha publication does not grant qualified professional approval or complete-code coverage |
 
@@ -58,7 +58,8 @@
 ## SPARK-001 planning state
 
 - The original draft was preserved at checkpoint `47fce48e` before integrating
-  current `origin/main`; no product or calculation implementation was started.
+  current `origin/main` through merge commit `f0314f3e`; no product or calculation
+  implementation was started and no history was rewritten.
 - The plan records verified preview properties, current usage/pricing uncertainty,
   protected structural and security areas, active worktree ownership, mandatory
   tests, escalation triggers, cost-learning fields, and independent review gates.
@@ -68,6 +69,9 @@
   integration.
 - Wave 0 remains unauthorized until the repository owner accepts or revises the
   plan. Acceptance of G0 authorizes only the specifically approved first wave.
+- The recovered control plane now treats Spark as an unpriced preview, exercises
+  the real model-table CLI, and keeps ambiguous/high-risk work on Terra with
+  approval-gated Sol escalation.
 
 ## IS456-SLAB-001 implementation outcome
 

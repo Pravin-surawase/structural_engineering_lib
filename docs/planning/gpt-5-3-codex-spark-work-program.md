@@ -55,6 +55,15 @@ The owner-selected planning packet is active. Implementation authorization is
 `false` until the owner reviews this document. Acceptance of the plan authorizes
 only the first approved wave, not every later wave automatically.
 
+### Phase 2 recovery record
+
+The repository owner explicitly authorized dirty-lane recovery and Phase 1 gap
+closure on 2026-08-11. That recovery preserved the inherited control-plane draft
+at `47fce48e`, merged current `origin/main` without rewriting history, completed
+the missing S0-02 picker behavior and real CLI regression, and verified the
+integrated repository. This records what now exists; it is not G0 acceptance and
+does not authorize Wave 1 or later implementation.
+
 ## 3. Verified model facts and planning assumptions
 
 The program uses only facts currently stated by OpenAI:
