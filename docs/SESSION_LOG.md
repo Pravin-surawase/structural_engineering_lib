@@ -5,6 +5,43 @@
 
 ---
 
+## 2026-08-10 — Session: FastAPI Load-Lane Fix
+
+**Focus:** Remove flaky shared-runner latency assertions from required FastAPI lane and validate benchmark evidence path.
+
+### Summary
+- Removed `test_async_concurrent_requests_latency` from `fastapi_app/tests/test_load.py` (including duplicated latency assertion block).
+- Kept only deterministic concurrent success/error verification in the maintained PR lane.
+- Verified required non-blocking markers + filtered test-path behavior via `pytest -c fastapi_app/pytest.ini` commands.
+- Ran FastAPI benchmark smoke (`scripts/benchmark_api.py --mode fastapi --quick --output json --save ...`) and confirmed JSON writes, including overwrite behavior when stale payloads exist.
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| #729 | Gate slow/performance assertions by pytest markers (in progress) |
+
+### Key Deliverables
+- `fastapi_app/tests/test_load.py`: removed the latency-only concurrent test; concurrency correctness coverage remains.
+- `docs/SESSION_LOG.md`: root-cause + remediation evidence captured.
+- Focused and full FastAPI load checks completed via shared worktree `.venv` runtime.
+- Benchmark lane JSON evidence smoke verified at `docs/reference/fastapi-benchmark-smoke.json`.
+
+### Issues encountered
+- Parent review confirmed a duplicate assertion block and blocking flake due to a wall-clock assertion method in maintained load tests.
+- Initial local `pytest` invocation failed in this worktree because `.venv` was absent (`.venv/bin/pytest` not found), so runtime had to be pointed to the shared project interpreter.
+
+### Root causes and resolutions
+- Root cause: The duplicated `test_async_concurrent_requests_latency` method (with repeated average-latency assertion) still enforced shared-runner latency thresholds in the test file path, so CI could still hit wall-clock instability despite marker changes.
+- Resolution: Deleted the latency-only async test entirely, leaving only deterministic concurrent success/error checks in required suites; retained latency/performance measurement strictly in the scheduled benchmark lane (`scripts/benchmark_api.py`), with JSON evidence path verification and overwrite of stale payloads.
+- Evidence:
+  - `./run.sh test --fastapi -c fastapi_app/pytest.ini fastapi_app/tests/test_load.py -m "not slow and not performance"` (376 passed, 6 deselected).
+  - `/Users/.../VS_code_project/structural_engineering_lib/.venv/bin/python -m pytest -c fastapi_app/pytest.ini fastapi_app/tests/test_load.py` (8 passed).
+  - `/Users/.../VS_code_project/structural_engineering_lib/.venv/bin/python scripts/benchmark_api.py --mode fastapi --quick --output json --save docs/reference/fastapi-benchmark-smoke.json` (JSON written, valid, re-run with stale/non-JSON seed file succeeds).
+
+### Notes
+-
+
+
 ## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
 
 **Agent:** Codex
