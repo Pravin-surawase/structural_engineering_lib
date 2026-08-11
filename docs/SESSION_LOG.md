@@ -5,7 +5,7 @@
 
 ---
 
-## 2026-08-10 — Session: FastAPI Load-Lane Fix
+## 2026-08-11 — Session: FastAPI Load-Lane Fix
 
 **Focus:** Remove flaky shared-runner latency assertions from required FastAPI lane and validate benchmark evidence path.
 
@@ -15,10 +15,10 @@
 - Verified required non-blocking markers + filtered test-path behavior via `pytest -c fastapi_app/pytest.ini` commands.
 - Ran FastAPI benchmark smoke (`scripts/benchmark_api.py --mode fastapi --quick --output json --save ...`) and confirmed JSON writes, including overwrite behavior when stale payloads exist.
 
-### PRs Merged
+### Opened/Active PRs
 | PR | Summary |
 |----|---------|
-| #729 | Gate slow/performance assertions by pytest markers (in progress) |
+| #729 | Gate slow/performance assertions by pytest markers (open) |
 
 ### Key Deliverables
 - `fastapi_app/tests/test_load.py`: removed the latency-only concurrent test; concurrency correctness coverage remains.
