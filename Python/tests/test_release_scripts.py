@@ -234,12 +234,130 @@ class TestReleaseVerifyDependencies:
         dev_section = pyproject.split("dev = [", 1)[1].split("]", 1)[0]
         assert "hypothesis" in dev_section
 
-    def test_wheel_verify_installs_dev_extra(self):
+    def test_wheel_verify_installs_exact_test_dependencies(self):
         source = RELEASE_SCRIPT.read_text(encoding="utf-8")
         verify_block = source.split("def cmd_verify", 1)[1].split(
             "# ─── Check Docs", 1
         )[0]
-        assert 'f"{wheel}[dev]"' in verify_block
+        assert 'f"{wheel}[dev,validation]"' in verify_block
+        assert 'f"structural-lib-is456[dev,validation]=={args.version}"' in verify_block
+        assert '"httpx>=0.27"' in verify_block
+        assert '"-r", str(requirements)' not in verify_block
+
+    def test_wheel_verify_uses_isolated_pytest_configuration(self):
+        source = RELEASE_SCRIPT.read_text(encoding="utf-8")
+        verify_block = source.split("def cmd_verify", 1)[1].split(
+            "# ─── Check Docs", 1
+        )[0]
+
+        assert "_assert_package_import_from_venv" in verify_block
+        assert "_isolated_pytest_config" in verify_block
+        assert '"--import-mode=importlib"' in verify_block
+        assert '"not slow and not repo_only"' in verify_block
+        assert "cwd=temp_root" in verify_block
+
+    def test_wheel_verify_commands_are_package_scoped_and_isolated(
+        self, tmp_path, monkeypatch
+    ):
+        wheel = tmp_path / "structural_lib_is456-0.23.1a1-py3-none-any.whl"
+        calls: list[tuple[list[str], Path | None, dict[str, str] | None]] = []
+
+        class TemporaryDirectory:
+            def __enter__(self):
+                return str(tmp_path)
+
+            def __exit__(self, *_):
+                return False
+
+        def record_run_check(cmd, *, cwd=None, timeout=600, env=None):
+            calls.append((cmd, cwd, env))
+
+        monkeypatch.setattr(release, "_run_check", record_run_check)
+        monkeypatch.setattr(release, "_find_wheel", lambda *_: wheel)
+        monkeypatch.setattr(
+            release.tempfile, "TemporaryDirectory", lambda **_: TemporaryDirectory()
+        )
+
+        result = release.cmd_verify(
+            argparse.Namespace(
+                wheel_dir="Python/dist",
+                job="Python/examples/sample_job_is456.json",
+                source="wheel",
+                version="0.23.1a1",
+                skip_cli=True,
+            )
+        )
+
+        assert result == 0
+        install_commands = [cmd for cmd, _, _ in calls if "install" in cmd]
+        assert [
+            str(tmp_path / "venv" / "bin" / "pip"),
+            "install",
+            f"{wheel}[dev,validation]",
+            "httpx>=0.27",
+        ] in install_commands
+        assert all("requirements.txt" not in " ".join(cmd) for cmd in install_commands)
+        pytest_calls = [cmd for cmd, _, _ in calls if "pytest" in cmd]
+        assert len(pytest_calls) == 1
+        assert "--import-mode=importlib" in pytest_calls[0]
+        assert "-c" in pytest_calls[0]
+        research_test = str(
+            REPO_ROOT / "Python" / "tests" / "test_research_prototypes.py"
+        )
+        assert research_test in pytest_calls[0]
+        assert pytest_calls[0][pytest_calls[0].index(research_test) - 1] == "--ignore"
+        assert any(cwd == tmp_path for _, cwd, _ in calls)
+        pytest_config = tmp_path / "pytest.ini"
+        assert pytest_config.read_text(encoding="utf-8").startswith("[pytest]\n")
+        assert "pythonpath" not in pytest_config.read_text(encoding="utf-8")
+
+
+class TestReleaseReactDependencies:
+    """Release checks must provision isolated worktree dependencies safely."""
+
+    def test_missing_dependencies_are_installed_from_lockfile(
+        self, tmp_path, monkeypatch
+    ):
+        react_dir = tmp_path / "react_app"
+        react_dir.mkdir()
+        (react_dir / "package-lock.json").write_text("{}\n", encoding="utf-8")
+        calls: list[list[str]] = []
+
+        def fake_run(cmd, *, cwd=None, timeout=600, env=None):
+            calls.append(cmd)
+            tsc = react_dir / "node_modules" / ".bin" / "tsc"
+            tsc.parent.mkdir(parents=True)
+            tsc.write_text("", encoding="utf-8")
+            return subprocess.CompletedProcess(cmd, 0, "", "")
+
+        monkeypatch.setattr(release, "_run_with_timeout", fake_run)
+
+        assert release._ensure_react_dependencies(react_dir, {"PATH": "test"})
+        assert calls == [["npm", "ci"]]
+
+    def test_dependency_symlink_is_rejected_without_running_npm(
+        self, tmp_path, monkeypatch
+    ):
+        react_dir = tmp_path / "react_app"
+        react_dir.mkdir()
+        target = tmp_path / "shared-node-modules"
+        target.mkdir()
+        (react_dir / "node_modules").symlink_to(target, target_is_directory=True)
+        called = False
+
+        def fail_if_called(*_args, **_kwargs):
+            nonlocal called
+            called = True
+            raise AssertionError("npm must not traverse a dependency symlink")
+
+        monkeypatch.setattr(release, "_run_with_timeout", fail_if_called)
+
+        assert not release._ensure_react_dependencies(react_dir, {"PATH": "test"})
+        assert not called
+
+    def test_release_run_and_preflight_share_dependency_provisioner(self):
+        source = RELEASE_SCRIPT.read_text(encoding="utf-8")
+        assert source.count("_ensure_react_dependencies(react_dir, node_env)") == 2
 
 
 class TestPublishWorkflow:

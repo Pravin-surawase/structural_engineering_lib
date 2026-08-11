@@ -64,7 +64,9 @@ VERSION_FILES = {
     ],
 }
 
-# Documentation references that should track the library version.
+# Documentation references that should track the library version. Release-history
+# surfaces (TASKS.md and next-session-brief.md) are intentionally excluded: their
+# version/status rows describe published evidence, not the prepared candidate.
 DOC_VERSION_FILES = {
     "Python/README.md": [
         (
@@ -113,25 +115,10 @@ DOC_VERSION_FILES = {
             "**Version:** {version}",
         ),
     ],
-    "docs/TASKS.md": [
-        (
-            r"^\|\s*\*\*Current\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            "| **Current** | v{version}",
-        ),
-    ],
-    "docs/planning/next-session-brief.md": [
-        (
-            r"^\|\s*\*\*Current\*\*\s*\|\s*v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            "| **Current** | v{version}",
-        ),
-    ],
 }
 
 # Documentation "Last Updated" stamps (normalized to YYYY-MM-DD).
 DOC_DATE_FILES = {
-    "docs/planning/next-session-brief.md": [
-        (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}<br>"),
-    ],
     "docs/reference/api.md": [
         (
             r"^\*\*Document Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
@@ -141,9 +128,6 @@ DOC_DATE_FILES = {
     ],
     "docs/verification/examples.md": [
         (r"^\*\*Last Updated:\*\* .+", "**Last Updated:** {date}<br>"),
-    ],
-    "docs/TASKS.md": [
-        (r"^\*\*Updated:\*\* .+", "**Updated:** {date}"),
     ],
     "docs/getting-started/beginners-guide.md": [
         (r"(Document Version: )[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", r"\g<1>{version}"),

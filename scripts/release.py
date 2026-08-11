@@ -451,12 +451,15 @@ def _clean_wheel_import_version(wheel: Path) -> str:
         pip = _bin_path(venv_dir, "pip")
         python = _bin_path(venv_dir, "python")
         clean_env = {
-            key: value for key, value in os.environ.items() if key != "PYTHONPATH"
+            key: value
+            for key, value in os.environ.items()
+            if key not in {"PYTHONPATH", "VIRTUAL_ENV"}
         }
         _run_check(
             [str(pip), "install", "--disable-pip-version-check", str(wheel)],
             env=clean_env,
         )
+        _assert_package_import_from_venv(python, venv_dir, clean_env, temp_root)
         result = subprocess.run(
             [
                 str(python),
@@ -676,6 +679,46 @@ def _node_runtime_env(
     )
 
 
+def _ensure_react_dependencies(react_dir: Path, node_env: dict[str, str]) -> bool:
+    """Provision the lockfile-pinned React toolchain in an isolated worktree."""
+    node_modules = react_dir / "node_modules"
+    tsc = node_modules / ".bin" / "tsc"
+    package_lock = react_dir / "package-lock.json"
+
+    if node_modules.is_symlink():
+        print("  ✗ react_app/node_modules is a symlink; refusing to traverse it")
+        return False
+    if tsc.is_file():
+        print("  ✓ React dependencies are installed")
+        return True
+    if not package_lock.is_file():
+        print("  ✗ react_app/package-lock.json is missing")
+        return False
+
+    if node_modules.exists() and not node_modules.is_dir():
+        print("  ✗ react_app/node_modules is not a directory")
+        return False
+
+    print("  → Installing lockfile-pinned React dependencies with npm ci")
+    try:
+        install_result = _run_with_timeout(
+            ["npm", "ci"], timeout=300, cwd=react_dir, env=node_env
+        )
+    except subprocess.TimeoutExpired:
+        print("  ✗ npm ci TIMED OUT (>300s)")
+        return False
+    if install_result.returncode != 0:
+        print("  ✗ npm ci FAILED")
+        _print_failure_tail(install_result)
+        return False
+    if not tsc.is_file():
+        print("  ✗ npm ci completed without installing TypeScript")
+        return False
+
+    print("  ✓ Lockfile-pinned React dependencies installed")
+    return True
+
+
 def _print_checklist(version: str) -> None:
     print()
     print("=" * 60)
@@ -860,6 +903,9 @@ def cmd_run(args: argparse.Namespace) -> int:
             return 1
         node_env["NODE_OPTIONS"] = "--max-old-space-size=1536"
         print(f"  → Selected {node_version}")
+        if not _ensure_react_dependencies(react_dir, node_env):
+            print("  ERROR: React dependencies are unavailable")
+            return 1
         try:
             react_result = _run_with_timeout(
                 ["npm", "run", "build"],
@@ -936,6 +982,67 @@ def _run_check(
     subprocess.run(cmd, check=True, cwd=cwd, timeout=timeout, env=env)
 
 
+def _assert_package_import_from_venv(
+    python: Path,
+    venv_dir: Path,
+    clean_env: dict[str, str],
+    cwd: Path,
+) -> None:
+    """Fail if the verification interpreter imports the checkout instead of its venv."""
+    _run_check(
+        [
+            str(python),
+            "-c",
+            (
+                "import sysconfig\n"
+                "from pathlib import Path\n"
+                "import structural_lib\n"
+                "from structural_lib import api\n"
+                "package_file = Path(structural_lib.__file__).resolve()\n"
+                "site_packages = Path(sysconfig.get_paths()['purelib']).resolve()\n"
+                f"venv_root = Path({str(venv_dir)!r}).resolve()\n"
+                "if not (\n"
+                "    package_file.is_relative_to(site_packages)\n"
+                "    and site_packages.is_relative_to(venv_root)\n"
+                "):\n"
+                "    raise RuntimeError(\n"
+                "        f'structural_lib imported from {package_file}, not {site_packages}'\n"
+                "    )\n"
+                "print(package_file)\n"
+                "print(api.get_library_version())"
+            ),
+        ],
+        cwd=cwd,
+        env=clean_env,
+    )
+
+
+def _isolated_pytest_config(temp_root: Path) -> Path:
+    """Create a config that cannot inherit the checkout's pythonpath setting."""
+    config = temp_root / "pytest.ini"
+    source_config = (REPO_ROOT / "Python" / "pytest.ini").read_text(encoding="utf-8")
+    isolated_lines = [
+        line
+        for line in source_config.splitlines()
+        if not line.strip().startswith("pythonpath")
+        and "::pyparsing.warnings." not in line
+    ]
+    config.write_text("\n".join(isolated_lines) + "\n", encoding="utf-8")
+    return config
+
+
+def _repo_only_test_ignore_args() -> list[str]:
+    """Exclude checkout-only modules before pytest imports them during collection."""
+    test_root = REPO_ROOT / "Python" / "tests"
+    marker = "pytestmark = pytest.mark.repo_only"
+    ignored = [
+        path
+        for path in test_root.rglob("test_*.py")
+        if marker in path.read_text(encoding="utf-8")
+    ]
+    return [arg for path in sorted(ignored) for arg in ("--ignore", str(path))]
+
+
 def _find_wheel(wheel_dir: Path, version: str | None) -> Path:
     pattern = (
         f"structural_lib_is456-{version}-*.whl"
@@ -969,44 +1076,66 @@ def cmd_verify(args: argparse.Namespace) -> int:
 
         pip = _bin_path(venv_dir, "pip")
         python = _bin_path(venv_dir, "python")
+        clean_env = {
+            key: value
+            for key, value in os.environ.items()
+            if key not in {"PYTHONPATH", "VIRTUAL_ENV"}
+        }
 
-        _run_check([str(pip), "install", "--upgrade", "pip"])
+        _run_check([str(pip), "install", "--upgrade", "pip"], env=clean_env)
 
         if args.source == "wheel":
             wheel = _find_wheel(wheel_dir, args.version)
-            _run_check([str(pip), "install", f"{wheel}[dev]"])
+            _run_check(
+                [
+                    str(pip),
+                    "install",
+                    f"{wheel}[dev,validation]",
+                    "httpx>=0.27",
+                ],
+                env=clean_env,
+            )
         else:
             if not args.version:
                 print("error: --version is required when using --source pypi")
                 return 2
             _run_check(
-                [str(pip), "install", f"structural-lib-is456[dev]=={args.version}"]
+                [
+                    str(pip),
+                    "install",
+                    f"structural-lib-is456[dev,validation]=={args.version}",
+                    "httpx>=0.27",
+                ],
+                env=clean_env,
             )
 
-        _run_check(
-            [
-                str(python),
-                "-c",
-                "from structural_lib import api; print(api.get_library_version())",
-            ]
-        )
+        temp_root = venv_dir.parent
+        _assert_package_import_from_venv(python, venv_dir, clean_env, temp_root)
 
         # Run core tests
         print("\nRunning core tests in clean venv...")
+        pytest_config = _isolated_pytest_config(temp_root)
         _run_check(
             [
                 str(python),
                 "-m",
                 "pytest",
+                "-c",
+                str(pytest_config),
+                "--import-mode=importlib",
                 str(REPO_ROOT / "Python" / "tests"),
                 "-v",
                 "--tb=short",
                 "-q",
                 "-x",  # Stop on first failure
                 "-m",
-                "not slow",
-            ]
+                "not slow and not repo_only",
+                *_repo_only_test_ignore_args(),
+            ],
+            cwd=temp_root,
+            env=clean_env,
         )
+        _assert_package_import_from_venv(python, venv_dir, clean_env, temp_root)
 
         if not args.skip_cli:
             if not job_path.exists():
@@ -1022,7 +1151,9 @@ def cmd_verify(args: argparse.Namespace) -> int:
                     str(job_path),
                     "-o",
                     str(out_dir),
-                ]
+                ],
+                cwd=temp_root,
+                env=clean_env,
             )
             _run_check(
                 [
@@ -1035,7 +1166,9 @@ def cmd_verify(args: argparse.Namespace) -> int:
                     "1",
                     "--format",
                     "csv",
-                ]
+                ],
+                cwd=temp_root,
+                env=clean_env,
             )
             _run_check(
                 [
@@ -1048,7 +1181,9 @@ def cmd_verify(args: argparse.Namespace) -> int:
                     "html",
                     "-o",
                     str(out_dir / "report.html"),
-                ]
+                ],
+                cwd=temp_root,
+                env=clean_env,
             )
 
         print("Release verification OK.")
@@ -1406,17 +1541,22 @@ def cmd_preflight(args: argparse.Namespace) -> int:
             else:
                 print(f"  → Selected {node_status}")
                 node_env["NODE_OPTIONS"] = "--max-old-space-size=1536"
-                try:
-                    react_result = _run_with_timeout(
-                        ["npm", "run", "build"],
-                        timeout=300,
-                        cwd=react_dir,
-                        env=node_env,
-                    )
-                except subprocess.TimeoutExpired:
-                    print("  ✗ React build TIMED OUT (>300s)")
+                if not _ensure_react_dependencies(react_dir, node_env):
+                    print("  ✗ React dependencies are unavailable")
                     errors += 1
                     react_result = None
+                else:
+                    try:
+                        react_result = _run_with_timeout(
+                            ["npm", "run", "build"],
+                            timeout=300,
+                            cwd=react_dir,
+                            env=node_env,
+                        )
+                    except subprocess.TimeoutExpired:
+                        print("  ✗ React build TIMED OUT (>300s)")
+                        errors += 1
+                        react_result = None
 
             if react_result is None:
                 pass
