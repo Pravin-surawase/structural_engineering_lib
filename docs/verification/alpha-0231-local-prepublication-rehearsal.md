@@ -55,6 +55,11 @@ protected-standard-text and protected-table-values flags as `false`.
   footing inclusion, documentation sync, and release records all passed.
 - Wheel and sdist SHA-256 values were unchanged immediately before and after
   preflight.
+- A later prevention-control preflight on commit `15a6cf99` added explicit
+  FastAPI parity and again passed with zero warnings: 5,602 Python tests passed,
+  3 skipped, and 6 deselected; 407 non-slow FastAPI tests passed with 6
+  deselected; and the Node 24 React production build passed. The same exact
+  wheel was installed and checked; neither artifact was rebuilt.
 
 ## Authority boundary
 

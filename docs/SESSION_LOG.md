@@ -2378,6 +2378,9 @@ calculation/service/FastAPI contract without changing the separate torsion route
   grouped tasks; both retired checker names resolved to maintained commands.
 - `./run.sh check --quick` passed 10/10 and `./run.sh check` passed 30/30 after
   the prevention updates.
+- Clean-tree exact-wheel preflight passed with zero warnings after the control
+  repair: 5,602 Python tests passed, 3 skipped, and 6 deselected; 407 non-slow
+  FastAPI tests passed with 6 deselected; and the Node 24 React build passed.
 - Wheel SHA-256 remained
   `9c986920ceb43e341d01c6411c873605fec3321486d862a847e2083c36156aa7`;
   sdist remained
