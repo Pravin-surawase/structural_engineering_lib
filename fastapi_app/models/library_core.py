@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, StrictInt
 
@@ -41,6 +41,170 @@ class OneWaySlabDesignRequest(BaseModel):
     distribution_bar_diameter_mm: float = Field(gt=0)
     distribution_bar_spacing_mm: float = Field(gt=0)
     strip_width_mm: float = Field(default=1000.0, gt=0)
+
+
+class SlabServiceabilityCarrierRequest(BaseModel):
+    """Reviewed external serviceability-limit carrier; no silent defaults."""
+
+    reviewed_base_span_depth_limit: float = Field(gt=0)
+    reviewed_aggregate_modification_factor: float = Field(gt=0)
+    serviceability_limit_source_reference: str = Field(min_length=1)
+    serviceability_limit_source_is_approved: Literal[True]
+    qualified_serviceability_acceptance_reference: str = Field(min_length=1)
+    qualified_serviceability_acceptance_acknowledged: Literal[True]
+
+
+class CompleteOneWaySlabDesignRequest(
+    OneWaySlabDesignRequest, SlabServiceabilityCarrierRequest
+):
+    """Simply supported one-way flexure/detailing plus shear/serviceability."""
+
+
+class ContinuousOneWaySlabDesignRequest(SlabServiceabilityCarrierRequest):
+    """Explicit continuous one-way coefficient-method request."""
+
+    short_effective_span_mm: float = Field(gt=0)
+    long_effective_span_mm: float = Field(gt=0)
+    thickness_mm: float = Field(gt=0)
+    d_mm: float = Field(gt=0)
+    factored_area_load_kn_per_m2: float = Field(gt=0)
+    fck_n_per_mm2: float = Field(ge=20, le=40)
+    fy_n_per_mm2: Literal[250.0, 415.0, 500.0]
+    positive_moment_coefficient: float = Field(gt=0, le=1)
+    negative_moment_coefficient: float = Field(gt=0, le=1)
+    shear_coefficient: float = Field(gt=0, le=1)
+    coefficient_source_reference: str = Field(min_length=1)
+    coefficient_source_is_approved: Literal[True]
+    qualified_coefficient_acceptance_reference: str = Field(min_length=1)
+    qualified_coefficient_acceptance_acknowledged: Literal[True]
+    number_of_spans: StrictInt = Field(ge=3)
+    maximum_span_variation_percent: float = Field(ge=0, le=15)
+    uniform_cross_section_acknowledged: Literal[True]
+    substantially_uniform_load_acknowledged: Literal[True]
+    redistribution_applied: Literal[False]
+    positive_bar_diameter_mm: float = Field(gt=0)
+    positive_bar_spacing_mm: float = Field(gt=0)
+    negative_bar_diameter_mm: float = Field(gt=0)
+    negative_bar_spacing_mm: float = Field(gt=0)
+    distribution_bar_diameter_mm: float = Field(gt=0)
+    distribution_bar_spacing_mm: float = Field(gt=0)
+    strip_width_mm: float = Field(default=1000.0, gt=0)
+
+
+class BuiltinContinuousOneWaySlabDesignRequest(SlabServiceabilityCarrierRequest):
+    """Continuous one-way request resolved from built-in Tables 12 and 13."""
+
+    short_effective_span_mm: float = Field(gt=0)
+    long_effective_span_mm: float = Field(gt=0)
+    thickness_mm: float = Field(gt=0)
+    d_mm: float = Field(gt=0)
+    factored_dead_and_fixed_imposed_load_kn_per_m2: float = Field(ge=0)
+    factored_nonfixed_imposed_load_kn_per_m2: float = Field(ge=0)
+    positive_location: Literal["end_span_positive", "interior_span_positive"]
+    negative_location: Literal[
+        "next_to_end_support_negative", "other_interior_support_negative"
+    ]
+    shear_location: Literal[
+        "end_support",
+        "next_to_end_support_outer",
+        "next_to_end_support_inner",
+        "other_interior_support",
+    ]
+    fck_n_per_mm2: float = Field(ge=20, le=40)
+    fy_n_per_mm2: Literal[250.0, 415.0, 500.0]
+    number_of_spans: StrictInt = Field(ge=3)
+    maximum_span_variation_percent: float = Field(ge=0, le=15)
+    uniform_cross_section_acknowledged: Literal[True]
+    substantially_uniform_load_acknowledged: Literal[True]
+    redistribution_applied: Literal[False]
+    positive_bar_diameter_mm: float = Field(gt=0)
+    positive_bar_spacing_mm: float = Field(gt=0)
+    negative_bar_diameter_mm: float = Field(gt=0)
+    negative_bar_spacing_mm: float = Field(gt=0)
+    distribution_bar_diameter_mm: float = Field(gt=0)
+    distribution_bar_spacing_mm: float = Field(gt=0)
+    strip_width_mm: float = Field(default=1000.0, gt=0)
+
+
+EdgeContinuity = Literal["continuous", "discontinuous"]
+TopologyKind = Literal[
+    "four_edges_continuous",
+    "one_edge_discontinuous",
+    "two_adjacent_edges_discontinuous",
+    "two_opposite_edges_discontinuous",
+    "three_edges_discontinuous",
+    "four_edges_discontinuous_restrained",
+    "simply_supported_corners_free",
+]
+
+
+class TwoWaySlabPanelDesignRequest(SlabServiceabilityCarrierRequest):
+    """Common oriented two-way panel with reviewed external coefficients."""
+
+    x_effective_span_mm: float = Field(gt=0)
+    y_effective_span_mm: float = Field(gt=0)
+    thickness_mm: float = Field(gt=0)
+    x_min_edge: EdgeContinuity
+    x_max_edge: EdgeContinuity
+    y_min_edge: EdgeContinuity
+    y_max_edge: EdgeContinuity
+    corner_lift_condition: Literal["restrained", "free_to_lift"]
+    support_topology_kind: TopologyKind
+    alpha_x_negative: float = Field(ge=0, le=1)
+    alpha_x_positive: float = Field(gt=0, le=1)
+    alpha_y_negative: float = Field(ge=0, le=1)
+    alpha_y_positive: float = Field(gt=0, le=1)
+    coefficient_source_reference: str = Field(min_length=1)
+    coefficient_source_is_approved: Literal[True]
+    qualified_coefficient_acceptance_reference: str = Field(min_length=1)
+    qualified_coefficient_acceptance_acknowledged: Literal[True]
+    factored_area_load_kn_per_m2: float = Field(gt=0)
+    d_x_mm: float = Field(gt=0)
+    d_y_mm: float = Field(gt=0)
+    fck_n_per_mm2: float = Field(ge=20, le=40)
+    fy_n_per_mm2: Literal[250.0, 415.0, 500.0]
+    x_positive_bar_diameter_mm: float = Field(gt=0)
+    x_positive_bar_spacing_mm: float = Field(gt=0)
+    x_negative_bar_diameter_mm: float = Field(gt=0)
+    x_negative_bar_spacing_mm: float = Field(gt=0)
+    y_positive_bar_diameter_mm: float = Field(gt=0)
+    y_positive_bar_spacing_mm: float = Field(gt=0)
+    y_negative_bar_diameter_mm: float = Field(gt=0)
+    y_negative_bar_spacing_mm: float = Field(gt=0)
+    edge_strip_bar_diameter_mm: float = Field(gt=0)
+    edge_strip_bar_spacing_mm: float = Field(gt=0)
+    torsion_bar_diameter_mm: float = Field(gt=0)
+    torsion_bar_spacing_mm: float = Field(gt=0)
+
+
+class BuiltinTwoWaySlabPanelDesignRequest(SlabServiceabilityCarrierRequest):
+    """Two-way request resolved from built-in Table 26 or 27."""
+
+    x_effective_span_mm: float = Field(gt=0)
+    y_effective_span_mm: float = Field(gt=0)
+    thickness_mm: float = Field(gt=0)
+    x_min_edge: EdgeContinuity
+    x_max_edge: EdgeContinuity
+    y_min_edge: EdgeContinuity
+    y_max_edge: EdgeContinuity
+    corner_lift_condition: Literal["restrained", "free_to_lift"]
+    factored_area_load_kn_per_m2: float = Field(gt=0)
+    d_x_mm: float = Field(gt=0)
+    d_y_mm: float = Field(gt=0)
+    fck_n_per_mm2: float = Field(ge=20, le=40)
+    fy_n_per_mm2: Literal[250.0, 415.0, 500.0]
+    x_positive_bar_diameter_mm: float = Field(gt=0)
+    x_positive_bar_spacing_mm: float = Field(gt=0)
+    x_negative_bar_diameter_mm: float = Field(gt=0)
+    x_negative_bar_spacing_mm: float = Field(gt=0)
+    y_positive_bar_diameter_mm: float = Field(gt=0)
+    y_positive_bar_spacing_mm: float = Field(gt=0)
+    y_negative_bar_diameter_mm: float = Field(gt=0)
+    y_negative_bar_spacing_mm: float = Field(gt=0)
+    edge_strip_bar_diameter_mm: float = Field(gt=0)
+    edge_strip_bar_spacing_mm: float = Field(gt=0)
+    torsion_bar_diameter_mm: float = Field(gt=0)
+    torsion_bar_spacing_mm: float = Field(gt=0)
 
 
 class FootingLoadTransferResponse(BaseModel):
@@ -175,3 +339,28 @@ class OneWaySlabDesignResponse(BaseModel):
 
     flexure: OneWaySlabFlexureResponse
     detailing: OneWaySlabDetailingResponse
+
+
+class CompleteOneWaySlabDesignResponse(BaseModel):
+    reinforcement: dict[str, Any]
+    shear: dict[str, Any]
+    serviceability: dict[str, Any]
+    punching_shear_disposition: str
+    complete_engineering_design_approved: bool
+
+
+class ContinuousOneWaySlabDesignResponse(BaseModel):
+    flexure: dict[str, Any]
+    positive_reinforcement: dict[str, Any]
+    negative_reinforcement: dict[str, Any]
+    distribution_reinforcement: dict[str, Any]
+    shear: dict[str, Any]
+    serviceability: dict[str, Any]
+    punching_shear_disposition: str
+    complete_engineering_design_approved: bool
+
+
+class TwoWaySlabPanelDesignResponse(BaseModel):
+    panel: dict[str, Any]
+    serviceability: dict[str, Any]
+    complete_engineering_design_approved: bool

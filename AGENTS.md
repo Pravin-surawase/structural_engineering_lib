@@ -11,6 +11,22 @@ Open-source IS 456 RC beam design library. Full stack:
 - **FastAPI backend** (`fastapi_app/`) — REST + WebSocket API (60 endpoints, 13 routers)
 - **React 19 frontend** (`react_app/`) — R3F 3D visualization + Tailwind
 
+## Owner Decision — Required IS Code Content (2026-08-10)
+
+- The owner authorizes direct implementation of any IS code content needed for
+  an approved feature scope, including formulas, normalized tables, limits,
+  figure-derived values, lookup, and interpolation. This includes, but is not
+  limited to, slab Tables 12, 13, 26, and 27. Do not avoid required engineering
+  logic and do not ask for this implementation permission again.
+- Preserve source/table/case provenance in runtime results and tests. Do not copy
+  protected clause prose, page images, or unrelated standard content into the
+  repository.
+- Formal source/licensing permission is a mandatory **pre-launch** gate, not an
+  implementation blocker. It must be verified before public distribution or a
+  production release containing normalized IS code data.
+- This source-use decision does not expand feature scope. Flat slabs, for
+  example, remain a separately approved extension.
+
 ## Token-Efficiency Policy (MANDATORY)
 
 The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines/ai-token-efficiency.md); project efficiency defaults are enforced by [`.codex/config.toml`](.codex/config.toml).

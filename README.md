@@ -167,7 +167,7 @@ single “IS 456 compliant” label.
 | **Beams** | Rectangular flexure and shear in the primary combined route; bounded torsion, flanged, doubly reinforced, detailing, and serviceability utilities | Torsion is not added automatically to the primary combined route |
 | **Columns** | Rectangular/square sections, symmetric two-face interaction, directional slenderness, minimum eccentricity, and bounded detailing checks | Circular/helical utilities do not constitute complete circular-column design |
 | **Isolated footings** | Concentric square/rectangular sizing, flexure, one-way shear, punching shear, bearing, and dowel transfer | Eccentric and combined-footing systems are outside the current supported route |
-| **Solid slabs** | Simply supported one-way design/detailing and one accepted-coefficient interior two-way flexure case | This is not a general slab-system solver |
+| **Solid slabs** | Simply supported and coefficient-method continuous one-way strips; common oriented two-way beam/wall-supported panels with built-in bounded coefficient lookup/interpolation, strips, corner torsion, detailing, span/depth and ordinary one-way shear checks | Direct deflection, irregular/concentrated-load panels, automatic shear reinforcement, flat slabs and column-supported punching remain outside the supported route |
 
 The auditable scope, source identities, unsafe cases, limitations, and release
 evidence are collected in the

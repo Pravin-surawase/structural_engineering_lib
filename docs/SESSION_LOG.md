@@ -5,6 +5,23 @@
 
 ---
 
+## 2026-08-11 — Session: Sequential Slab Integration
+
+**Focus:** Synchronize slab PR #724 with the merged CI, beam, and column feature history while preserving all four reachable workflows.
+
+### Summary
+- Merged current `main` into the preserved slab branch with additive conflict resolution for session history, OpenAPI, and shared React workbench surfaces.
+- Kept both `/workbench/slabs` and `/workbench/columns/rectangular` routes and both workbench cards reachable.
+- Regenerated `fastapi_app/openapi_baseline.json` through `scripts/check_openapi_drift.py --update`.
+
+### Issues encountered
+- The first focused slab integration run failed because `Python/tests/integration/test_api_entrypoints_is456.py` still expected capability document schema version `1.0`, while merged beam capability discovery returned `2.0`.
+
+### Root causes and resolutions
+- Root cause: The beam capability contract intentionally bumped `CAPABILITY_SCHEMA_VERSION` to `2.0`, but the shared API-entrypoint assertion remained at the old `1.0` expectation on both the pre-merge main history and slab branch.
+- Resolution: Updated the assertion to the authoritative `2.0` contract; no capability source downgrade or feature removal was made.
+- Evidence: Focused slab/Python/FastAPI regression rerun passed 48 tests after the correction; React slab/workbench tests passed 6/6 and the prior synchronized quick gate passed 10/10.
+
 ## 2026-08-11 — Session: FastAPI Load-Lane Fix
 
 **Focus:** Remove flaky shared-runner latency assertions from required FastAPI lane and validate benchmark evidence path.
@@ -41,6 +58,344 @@
 ### Notes
 -
 
+## 2026-08-10 — Session: IS456-SLAB-001A Workflow Truth and React Closeout
+
+**Agent:** Codex (`structural-engineer`)
+**Branch:** `codex/is456-slabs-closeout`
+**Focus:** Correct complete-workflow semantics and close the existing common-case
+React slab editor/reviewer without adding slab formulas or flat-slab scope
+
+### Summary
+
+- Preserved compatibility-route arithmetic while making complete one-way results
+  report composed detailing, reviewed span/depth serviceability, and ordinary
+  one-way shear instead of obsolete pending-P8 claims.
+- Removed the false built-in-coefficient hold from complete two-way results and
+  made their serviceability dependency reflect the check already evaluated by
+  the service wrapper.
+- Added continuous Table 12/13 action-location controls, physical two-way edge/
+  corner controls, coefficient provenance, reinforcement/check dispositions,
+  strip widths, per-corner torsion, truthful holds, and explicit redesign/review
+  outcomes to the existing React slab workbench. Stale-export blocking remains.
+
+### Issues encountered
+
+- Complete one-way API/passport results embedded legacy flexure/detailing records
+  that still said reinforcement, serviceability, and shear were pending.
+- Built-in two-way results simultaneously reported verified built-in coefficients
+  and serialized a hold saying built-in lookup/interpolation was unavailable.
+- The React workbench described common coefficient/topology handling but exposed
+  only fixed B02/B04 presets and summary moments; returned adequacy, torsion,
+  strip, shear, serviceability, and hold records were not reviewable.
+- The final UI audit found that the returned punching-shear disposition was not
+  rendered and the ordinary slab shear row was labeled as one-way in every mode.
+- The first focused Python run failed when the composed flexure status was copied
+  into the retained detailing input.
+- This isolated worktree initially had no React dependencies, and the ambient
+  shell selected Node 26 rather than the repository's pinned Node 24.
+- The first authorized full closeout gate stopped at 29/30 because two unrelated
+  beam serviceability return annotations disagreed with the API manifest.
+- The required read-only session-end command returned non-zero while the scoped
+  changes remained intentionally uncommitted and suggested generated index
+  updates that this lane is not authorized to make.
+- The first commit attempt was stopped by mypy because the restored qualified
+  annotations referenced result types through the deprecated compatibility shim.
+
+### Root causes and resolutions
+
+- The complete one-way wrapper reused slice-level dataclasses without replacing
+  their legacy lifecycle metadata. The wrapper now replaces the retained status
+  and limitations only after all calculations complete, including the nested
+  detailing-input copy; the direct compatibility function remains unchanged.
+- `TwoWayPanelDesignResult.held_scope` was frozen before built-in Tables 26/27
+  were implemented, and the service returned the pure-core serviceability
+  dependency unchanged. The obsolete hold was removed, the real automatic-shear
+  hold was retained, and the wrapper records completed reviewed-limit evaluation.
+- React input ownership lived entirely in numeric `EDITABLE` fields while action
+  locations and physical edges lived only in sample objects. Select controls now
+  mutate the same revisioned request, enforce the free-corner topology contract,
+  and render returned result truth rather than recomputing engineering outcomes.
+- The reviewer check list omitted the existing mode-specific punching field and
+  used a fixed one-way shear label. It now reads the top-level one-way or nested
+  two-way punching disposition, displays that boundary, and uses the accurate
+  ordinary-slab-shear label; the focused React test, lint, and build passed.
+- `OneWaySlabDetailingInput.__post_init__` accepted only the pre-composition
+  status even though the calculation validator separately enforces that status
+  before detailing. The retained carrier now accepts both recognized lifecycle
+  states; the calculation validator remains strict. The focused rerun passed.
+- Installed the pinned lockfile dependencies only in this ignored worktree and
+  used `./run.sh frontend runtime` to select Node 24 for focused tests, lint,
+  TypeScript, and production build. No other worktree was changed.
+- Git history confirmed that slab-lineage commit `7bb1512f` changed
+  `check_crack_width` and `check_deflection_span_depth` from the origin/main
+  module-qualified return annotations to imported unqualified symbols, without
+  updating the API manifest. Under the orchestrator's one-path authorization,
+  `beam_api.py` now restores `serviceability.CrackWidthResult` and
+  `serviceability.DeflectionResult` and removes the two unnecessary imports.
+  The generated manifest remains untouched; the narrow manifest check provides
+  direct proof of the repaired public signature.
+- The branch's direct core-result imports had masked that `beam_api.py` still
+  imported `serviceability` through a wildcard compatibility shim whose static
+  interface does not expose `DeflectionResult` or `CrackWidthResult`. The same
+  authorized file now imports the canonical beam serviceability module directly;
+  runtime behavior and manifest spelling are unchanged, while mypy can resolve
+  both qualified annotations.
+- `./run.sh session end --agent structural-engineer` reported that handoff,
+  session-log, link, and governance checks all passed, then returned non-zero
+  because 13 intended files were still uncommitted and folder indexes could be
+  refreshed. This is the expected pre-commit state after the green gates, and
+  generated indexes are an explicit non-owned surface, so no index was mutated.
+
+### Verification
+
+- Focused slab calculations and capability semantics: passed.
+- Focused slab FastAPI transport: 5 passed, 12 deselected.
+- Focused React slab workbench: 5 passed.
+- `./run.sh frontend check`: lint, 244 React tests, TypeScript, and production
+  build passed.
+- `./run.sh check --quick`: 10/10 passed.
+- Initial `./run.sh check`: 29/30 passed; only the beam API-manifest signature
+  mismatch introduced at `7bb1512f` failed before the authorized reversal.
+- `./scripts/python_runtime.sh scripts/generate_api_manifest.py --check`: passed
+  after the module-qualified return annotations were restored; the manifest was
+  not regenerated or edited.
+- Post-repair `./run.sh check --quick`: 10/10 passed.
+- Post-repair `./run.sh check`: 30/30 passed, including API manifest, API
+  contracts, API validation, type annotations, and OpenAPI snapshot.
+- The first commit attempt was correctly blocked by the mypy hook on the
+  compatibility-shim type surface; after importing the canonical beam module,
+  the exact hook command passed with no issues in 191 source files. The narrow
+  manifest check, final quick gate (10/10), and final full gate (30/30) then all
+  passed against the corrected source state.
+- `./run.sh session end --agent structural-engineer`: handoff, session-log,
+  links, and governance passed; command exited 1 on the intentional uncommitted
+  13-file state and non-owned index-refresh suggestion.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: the isolated worktree lacked `react_app/node_modules`, and
+  ambient `npm ci` reported Node 26 against the required Node 24 engine -> local
+  lockfile dependencies were installed, `./run.sh frontend runtime` resolved
+  Node 24.19.0/npm 11.17.0, and all frontend acceptance checks ran on that runtime.
+
+---
+
+## 2026-08-10 — Session: IS 456 Solid Slabs Implementation Closeout
+
+**Agent:** Codex
+**Branch:** `codex/is456-slabs-plan`
+**Focus:** Complete the approved simply supported/continuous one-way and common
+two-way solid-slab program while retaining flat slabs as a separate extension
+
+### Summary
+
+- Implemented oriented panel geometry and physical edge/corner topology,
+  provenance-bearing external/built-in coefficients, exact lookup and bounded
+  interpolation with no extrapolation, continuous one-way actions, common
+  two-way panel regions, strip distribution and corner torsion.
+- Completed provided-bar detailing, minimum steel/diameter/spacing checks,
+  strict reviewed span/depth serviceability carriers and beam/wall-supported
+  ordinary one-way slab shear. Direct deflection, automatic shear reinforcement,
+  flat slabs and column-supported punching remain explicit holds.
+- Added compatibility-preserving public services, capability/semantic contracts,
+  five typed FastAPI routes, synchronized API/OpenAPI manifests and a dedicated
+  revision-safe React slab workbench with a 2D support/reinforcement map and
+  calculation-passport export.
+- Recorded the owner's standing decision that all IS-code content required by
+  an approved feature scope may be directly implemented without repeated
+  permission questions; formal source/licensing permission is a pre-launch
+  public-distribution gate, not an implementation blocker.
+- Closed the post-implementation generated-count drift through the maintained
+  session-sync path, updating only the two delegated documentation files.
+
+### Issues encountered
+
+- The initial plan and capability text still treated built-in normalized code
+  data as unavailable after the owner broadened implementation permission.
+- NPTEL B02 published steel values differ slightly from the library's exact
+  canonical 0.36/0.42 stress-block root while its actions and shear agree.
+- Inserting the new FastAPI routes initially displaced the original generic
+  exception handlers, and exact clause decorators named subclauses absent from
+  the repository's clause registry.
+- The first full repository gate found the expected API-reference, OpenAPI
+  snapshot and planning-frontmatter synchronization gaps.
+- The first complete Python suite found one integration assertion frozen to the
+  former external-coefficient, flexure-only slab capability wording.
+- An ad-hoc strict mypy pass exposed slab-local type ambiguity in a mutable
+  protocol, shared reinforcement kwargs and public built-in wrapper `**kwargs`.
+- Two terminal commands used incorrect guessed paths: a nonexistent capability
+  test file during early focused verification and npm from the repository root
+  rather than `react_app/` during a chained rerun.
+- The first implementation commit was blocked by the repository-wide mypy hook
+  because two pre-existing beam service annotations referenced result types as
+  attributes of a module that does not explicitly re-export them to mypy.
+- After the five slab endpoints and five public service functions were added,
+  project health fell to 94/100 because `llms.txt` still reported 69 endpoints
+  and `agent-bootstrap.md` still reported 69 endpoints and 78 public functions.
+
+### Root causes and resolutions
+
+- Permission policy and runtime truth lived in multiple files. `AGENTS.md`, the
+  master plan, evidence ledger, capability registry and owner-requested memory
+  extension now carry one standing rule; built-in lookup/interpolation and other
+  required IS-code content were implemented with source/case/bounds provenance.
+- B02's educational steel calculation uses rounded intermediate identities,
+  whereas the established library flexure path solves the accepted stress block
+  without those rounding steps. The canonical library root was retained,
+  NPTEL's values were kept as an independent comparison with a narrow documented
+  tolerance, and exact action/shear assertions remain unchanged.
+- The route patch used an ambiguous insertion anchor. The handlers were restored
+  to their owning route before validation. Decorators now use registered parent
+  clause identities while result source references retain the exact subclause/
+  table identities.
+- New public routes/functions require generated truth to move atomically. The
+  API stability mirror, API manifest, 74-endpoint/259-schema OpenAPI baseline and
+  valid plan status were synchronized; the full gate then passed 30/30.
+- The integration test asserted narrative text rather than the capability
+  outcome. It now checks the two built-in public workflows and the continuing
+  flat-slab hold; the complete suite passes.
+- Frozen coefficient dataclasses could not satisfy writable protocol members,
+  generic dictionaries erased keyword types, and public `**kwargs` also hid the
+  built-in function signatures from introspection. The protocol now exposes
+  read-only properties, reinforcement calls use explicit typed keywords, and
+  both built-in services publish complete explicit signatures. Focused mypy with
+  skipped unrelated imports reports no issues in the two task-owned modules.
+- Repository commands require root-relative `.venv` paths and React-local npm.
+  Targeted `rg` found the maintained capability test, and npm was rerun with
+  `workdir=react_app`; both corrected checks passed.
+- `beam_api.py` imported the canonical serviceability module for runtime calls
+  but annotated its two wrapper returns through implicit module re-exports;
+  strict mypy does not recognize those names as public module attributes. The
+  wrappers now import `DeflectionResult` and `CrackWidthResult` directly from
+  `core.data_types`, matching their actual definition. The full structural-lib
+  mypy hook passes without bypassing verification.
+- The calculation, API manifest and OpenAPI snapshot were synchronized during
+  implementation, but the maintained public-count projection was not rerun
+  after the final endpoint/export additions. `./run.sh session sync` identified
+  exactly three stale lines; `./run.sh session sync --fix` changed only
+  `llms.txt` and `docs/getting-started/agent-bootstrap.md` to 74 endpoints and
+  83 public functions.
+
+### Verification
+
+- Focused slab/capability/FastAPI set: 121 passed; focused React: 3 passed.
+- Complete suites: 5,532 Python passed, 3 skipped, 6 deselected; 388 FastAPI
+  passed; 241 React passed.
+- `./run.sh frontend check`: ESLint, all React tests, TypeScript and production
+  Vite build passed.
+- `./run.sh check --quick`: 10/10 passed; `./run.sh check`: 30/30 passed.
+- Focused mypy for `coefficients.py` and `slab_api.py`: no issues found.
+- Live Chromium: `/workbench/slabs` loaded with meaningful content, no framework
+  error overlay and no captured console errors. Continuous B02 returned
+  `10.688/12.825 kN m/m` with exact Table 12/13 provenance; input mutation made
+  the result stale and disabled export. B04 returned
+  `18.600/13.888/11.656/8.680 kN m/m` with exact Table 26 provenance.
+- Dev services and the browser were stopped after verification. No release,
+  push, pull request or merge was performed.
+- Post-closeout maintenance evidence: `./run.sh session sync` reports all
+  numbers current, `./run.sh health` reports 100/100, and
+  `./run.sh check --quick` passes 10/10.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: guessed `Python/tests/test_capability_registry.py` did not
+  exist -> `rg` located `Python/tests/integration/test_capability_semantics.py`,
+  and the maintained focused test passed.
+- ⚠️ TERMINAL ISSUE: a chained root command invoked npm where no `package.json`
+  exists -> rerunning the same tests from `react_app/` passed 3/3.
+
+
+## 2026-08-10 — Session: IS 456 Solid Slabs Master Planning
+
+**Agent:** Codex
+**Branch:** `codex/is456-slabs-plan`
+**Focus:** Research and prepare an implementation-ready program for simply
+supported/continuous one-way and common two-way solid slabs while holding flat
+slabs separately
+
+### Summary
+
+- Audited the released slab package, services, capability registry, FastAPI
+  route, tests, prior implementation plan, evidence crosswalk, React workbench,
+  and current task/handoff state.
+- Researched current BIS status and official Amendment 6 plus IIT
+  Kharagpur/NPTEL one-way and two-way slab material. Confirmed SP 16 is listed
+  withdrawn and limited it to legacy comparison evidence.
+- Created `docs/planning/is456-solid-slabs-master-plan.md` with a source-gated
+  scope, physical support topology, coefficient/provider policy, algorithms,
+  detailing/serviceability/shear/punching boundaries, API/UI architecture,
+  benchmarks, pitfalls, packet sequence, acceptance criteria, and flat-slab
+  HOLD.
+- Selected S0 as the only first implementation packet: approve source pages,
+  coefficient distribution/interpolation policy, support-case identities, and
+  independent continuous one-way/two-way corner-panel benchmarks before code.
+- Updated the task board, planning index entry, and next-session handoff without
+  changing calculation behavior or public capability claims.
+
+### Issues encountered
+
+- The requested slab direction initially sounded like a greenfield element, but
+  the repository already ships a narrow one-way and externally supplied-
+  coefficient two-way Alpha capability.
+- The existing axis-neutral geometry normalizes span order, which would lose the
+  physical edge/corner orientation required for two-way support and torsion
+  cases.
+- Coefficient tables are protected source content, while the requested product
+  needs robust coefficient handling.
+- A direct inspection command guessed
+  `Python/structural_lib/codes/is456/footing/punching.py`, which does not exist.
+- The documented broad `./run.sh generate indexes` command rewrote unrelated
+  curated/non-recursive indexes while adding the new planning document.
+
+### Root causes and resolutions
+
+- Prior v0.23 work intentionally stopped at a simply supported one-way strip and
+  one external-coefficient interior two-way flexure case. The new program is
+  therefore an extension with compatibility anchors, not a duplicate slab
+  engine; current benchmark arithmetic and trust statuses are frozen.
+- Span normalization was safe only for classification. The plan requires a new
+  oriented panel contract with explicit `Lx/Ly` and physical edges before any
+  topology/coefficient code, preventing silent rotation of edge and corner
+  behavior.
+- Protected coefficient values and calculation architecture were previously
+  coupled as one future concern. S0 now separates packaging permission from a
+  provenance-bearing provider contract; the external-coefficient route remains
+  the fallback if built-in data cannot ship.
+- Repository search showed the maintained file is
+  `Python/structural_lib/codes/is456/footing/punching_shear.py`; reading that file
+  confirmed its footing-pressure/interior-perimeter assumptions and supported
+  the plan's decision not to reuse it for building slabs.
+- `run.sh generate indexes` dispatches to `scripts/generate_all_indexes.sh`, whose
+  fixed folder list invokes non-recursive generation and therefore replaced
+  unrelated recursive/curated projections. Those unrelated diffs were restored;
+  only the task-owned planning and parent-doc indexes were retained. Final index
+  evidence uses targeted `generate_enhanced_index.py ... --check` commands.
+
+### Verification
+
+- Read-only repository orientation: session brief/start, clean baseline at
+  `a0e115e1`, slab source/service/FastAPI/test inventory, capability and evidence
+  crosswalk, and current workbench/task authority.
+- Source cross-check: BIS lists IS 456:2000 active, reaffirmed 2021, with six
+  amendments; official Amendment 6 reviewed; NPTEL Lessons 18/19 provide the
+  recorded B02/B04 worked-example anchors; BIS lists SP 16:1980 withdrawn.
+- `generate_enhanced_index.py docs/planning --check` passes; the task-owned
+  planning index and parent `docs/index.json` were regenerated and checked after
+  the final documentation changes.
+- `./run.sh efficiency check` passes and `git diff --check` reports no whitespace
+  errors.
+- `./run.sh check --quick` passes 10/10, including broken links, documentation,
+  imports, stale references, governance, and Git state.
+- Final integrated `./run.sh check` passes 30/30. No calculation, FastAPI, or
+  React implementation was changed in this planning session.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: guessed `slab/../footing/punching.py` did not exist ->
+  targeted `rg` found and `sed` read the maintained `footing/punching_shear.py`.
+- ⚠️ TERMINAL ISSUE: `./run.sh generate indexes` rewrote unrelated curated
+  indexes through its non-recursive fixed folder list -> unrelated diffs were
+  restored and targeted enhanced-index checks were used for the owned paths.
 ## 2026-08-10 — Session: COLUMN-RECTANGULAR-REVIEW-V1
 
 **Agent:** Codex (`orchestrator` session role)

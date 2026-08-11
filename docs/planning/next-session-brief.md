@@ -4,28 +4,57 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-11
-- Focus: FastAPI load-lane root-cause correction active in PR #729; required checks must finish before merge
+- Focus: Beam and column feature PRs are merged; slab PR #724 is being synchronized and validated before footing integration
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
 
-**Branch:** `main` after the maintenance closeout merge
+**Planning branch:** `codex/is456-slabs-plan`
 
-**Base:** UIX-001 merged at `64e33627`; maintenance branch started from that exact main
+**Base:** implementation branch from `a0e115e1`; planning checkpoint `8c558abc`; implementation closeout is committed locally in this session and discoverable from `git log`
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | Repository ready | Main synchronized, health 100/100, generated truth current, root checkout clean |
-| **Next** | No active implementation packet | Await the owner-selected task; do not invent a third UIX cleanup session |
-| **Held** | Stable/engineering use | Requires cumulative qualified structural-engineering review |
+| **Current** | IS456-SLAB-001 software complete | Pure calculations, public facade, 74-endpoint OpenAPI snapshot, FastAPI and React slab workbench are verified |
+| **Next** | Owner/GitHub handoff | Review the local commit and authorize push/PR when desired; no release was performed |
+| **Held** | Launch/stable/engineering use | Formal source/licensing permission before public production distribution plus cumulative qualified structural-engineering review |
 
 ## Required Reading
 
+- [IS 456 solid slabs master plan](is456-solid-slabs-master-plan.md)
+- [IS 456 library-first evidence](../verification/is456-library-first-evidence.md)
 - [UI experience foundation master plan](ui-experience-foundation-master-plan.md)
 - [Session 2 acceptance](../verification/ui-experience-session-2-acceptance.md)
 - [Current task board](../TASKS.md)
 - [Release policy](../getting-started/releases.md)
+
+## IS456-SLAB-001 implementation outcome
+
+- Existing compatibility slab functions remain available; the implementation
+  extends the maintained slab package rather than creating another engine.
+- Built-in Tables 12/13 and Tables 26/27 resolution is implemented with exact
+  provenance, bounded adjacent interpolation and explicit extrapolation errors.
+  External coefficient providers remain available with distinct trust status.
+- Oriented physical edges drive common two-way cases, strip widths and full/
+  half/none/free corner-torsion dispositions without silent span rotation.
+- Complete bounded routes cover provided bars, minimum/maximum detailing,
+  reviewed span/depth serviceability and ordinary one-way shear. Direct
+  deflection, automatic shear reinforcement and irregular/concentrated-load
+  panels remain held.
+- Five new FastAPI routes and the `/workbench/slabs` React flow are live-verified.
+  Results preserve revision identity and stale results cannot be exported.
+- Flat slabs, drops, column strips, slab-column transfer and column-supported
+  punching remain under a separately approved FS0 extension.
+
+### Verification at handoff
+
+- 5,532 Python tests passed, 3 skipped and 6 deselected.
+- 388 FastAPI tests and 241 React tests passed.
+- Frontend lint/test/TypeScript/production build passed.
+- Quick gate 10/10 and integrated gate 30/30 passed.
+- Live continuous and B04 two-way flows passed without browser console errors;
+  stale passport export was blocked as designed.
 
 ## Fresh-start maintenance closeout
 

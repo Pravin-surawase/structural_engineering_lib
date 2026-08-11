@@ -14,8 +14,8 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any, TypeVar
 
-from structural_lib.codes.is456 import compliance, serviceability, slenderness
-from structural_lib.codes.is456.beam import detailing
+from structural_lib.codes.is456 import compliance, slenderness
+from structural_lib.codes.is456.beam import detailing, serviceability
 from structural_lib.codes.is456.beam.shear import enhanced_shear_strength
 from structural_lib.codes.is13920 import beam as ductile
 from structural_lib.core.data_types import (

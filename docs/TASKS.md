@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — UIX-001 merged; fresh-start maintenance complete; no active implementation packet
+**Updated:** 2026-08-10 — IS456-SLAB-001 bounded solid-slab software implementation and live verification complete; pre-launch and qualified-review gates remain
 
 ---
 
@@ -126,18 +126,21 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| — | No implementation task is active after UIX-001 closeout | — | Await the next owner-selected packet |
+| — | No active implementation packet | — | Slab software scope is complete on `codex/is456-slabs-plan` |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| IS456-SLAB-PRELAUNCH | Record formal source/licensing permission before public production distribution of normalized IS 456 data | Owner/source reviewer | 1 gate | P0 | ⏸ REQUIRED BEFORE LAUNCH; not an implementation blocker |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL STABLE GATE |
 
 ## Backlog
 
-The version roadmap and historical backlog remain below. The v0.23.0 Alpha is
-published. UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
+The version roadmap and historical backlog remain below. The owner-selected next
+program is [IS456-SLAB-001](planning/is456-solid-slabs-master-plan.md); broad
+multi-code infrastructure remains future work. The v0.23.0 Alpha is published.
+UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded
 development workflow, generated beam manifest, canonical routes, and integrated
 live acceptance are complete. Stable-release and engineering-use approval remain
@@ -147,6 +150,7 @@ held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| IS456-SLAB-001 | Implemented simply supported/continuous one-way and common two-way solid slabs with built-in/external coefficients, topology, strips, corner torsion, detailing, serviceability, shear, FastAPI and a revision-safe React workbench | Main Agent | ✅ SOFTWARE COMPLETE — 5,532 Python, 388 FastAPI, 241 React, 30/30 integrated checks and live browser pass; flat slabs held |
 | UIX-001 | Built one compact 3D-first structural workbench and schema-driven bounded workflow foundation | Main Agent | ✅ DONE — PR #721 merged; Pages/release/public runner remain held |
 | DEPS-MAINT-001 | Replaced incompatible Python and React dependency PRs with coherent Python 3.11/Node 24 packets and added recurrence guards | Main Agent | ✅ DONE — PRs #708, #709, and #712 merged |
 | ADOPT-001 | Completed executable public truth, capability discovery, typed API contracts, production auth fail-close, evidence identity, React/BOQ trust presentation, and truthful Alpha/docs policy | Main Agent | ✅ DONE — PR #707 merged; release holds retained |

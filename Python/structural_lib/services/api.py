@@ -144,9 +144,17 @@ from structural_lib.services.multi_objective_optimizer import (  # noqa: F401
     optimize_pareto_front,
 )
 from structural_lib.services.slab_api import (  # noqa: F401
+    CompleteOneWaySlabDesignResult,
+    ContinuousOneWaySlabDesignResult,
     OneWaySlabDesignResult,
+    TwoWaySlabPanelWorkflowResult,
+    design_complete_one_way_slab_is456,
+    design_continuous_one_way_slab_builtin_is456,
+    design_continuous_one_way_slab_is456,
     design_one_way_slab_is456,
     design_two_way_slab_is456,
+    design_two_way_slab_panel_builtin_is456,
+    design_two_way_slab_panel_is456,
 )
 from structural_lib.services.workflow_catalog import (  # noqa: F401
     WorkflowCatalog,
@@ -322,8 +330,16 @@ __all__ = [
     "LoadTransferResult",
     # Solid slab design (bounded supported cases)
     "design_one_way_slab_is456",
+    "design_complete_one_way_slab_is456",
+    "design_continuous_one_way_slab_builtin_is456",
+    "design_continuous_one_way_slab_is456",
     "design_two_way_slab_is456",
+    "design_two_way_slab_panel_is456",
+    "design_two_way_slab_panel_builtin_is456",
     "OneWaySlabDesignResult",
+    "CompleteOneWaySlabDesignResult",
+    "ContinuousOneWaySlabDesignResult",
+    "TwoWaySlabPanelWorkflowResult",
     # Capability discovery
     "get_supported_is456_capability_document",
     "get_supported_is456_capabilities",

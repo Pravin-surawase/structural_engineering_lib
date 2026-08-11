@@ -18,6 +18,8 @@ describe('WorkbenchHomePage', () => {
     fireEvent.click(screen.getByRole('button', { name: /open quick beam/i }));
     expect(navigate).toHaveBeenCalledWith('/workbench/quick');
 
+    fireEvent.click(screen.getByRole('button', { name: /open slab workbench/i }));
+    expect(navigate).toHaveBeenCalledWith('/workbench/slabs');
     fireEvent.click(screen.getByRole('button', { name: /open column review/i }));
     expect(navigate).toHaveBeenCalledWith('/workbench/columns/rectangular');
 

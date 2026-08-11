@@ -502,7 +502,18 @@ from structural_lib import api
 
 transfer: api.LoadTransferResult = api.check_isolated_footing_load_transfer(...)
 one_way: api.OneWaySlabDesignResult = api.design_one_way_slab_is456(...)
-two_way = api.design_two_way_slab_is456(...)
+one_way_complete: api.CompleteOneWaySlabDesignResult = (
+    api.design_complete_one_way_slab_is456(...)
+)
+continuous: api.ContinuousOneWaySlabDesignResult = (
+    api.design_continuous_one_way_slab_builtin_is456(...)
+)
+continuous_external = api.design_continuous_one_way_slab_is456(...)
+two_way: api.TwoWaySlabPanelWorkflowResult = (
+    api.design_two_way_slab_panel_builtin_is456(...)
+)
+two_way_external = api.design_two_way_slab_panel_is456(...)
+interior_flexure_compatibility = api.design_two_way_slab_is456(...)
 capabilities: tuple[api.IS456Capability, ...] = (
     api.get_supported_is456_capabilities()
 )
@@ -513,10 +524,15 @@ workflow_catalog_document = api.get_workflow_catalog_document()
 workflow_catalog_json = api.serialize_workflow_catalog()
 ```
 
-The two-way route supports only its documented interior-panel configuration
-with caller-supplied, qualified coefficients. The capability document is the
-canonical JSON-safe form used by Python, CLI, and REST discovery. Capability
-records and result types may change before v1.0.
+The compatibility two-way route retains its documented interior-panel
+configuration with caller-supplied, qualified coefficients. The complete
+development-preview routes add common oriented beam/wall-supported panels,
+built-in exact/bounded-interpolated coefficient provenance, strip and corner
+detailing, span/depth carriers and ordinary one-way shear. External-coefficient
+variants remain available. Flat slabs, column-supported punching, direct
+deflection and irregular/concentrated-load panels are outside this contract.
+The capability document is the canonical JSON-safe form used by Python, CLI,
+and REST discovery. Capability records and result types may change before v1.0.
 
 The application workflow catalogue is likewise a development-preview discovery
 surface. Its version/compatibility rules are explicit, but its records may change

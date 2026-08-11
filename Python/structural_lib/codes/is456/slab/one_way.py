@@ -59,9 +59,10 @@ _P8_LIMITATIONS: tuple[str, ...] = (
 
 
 class OneWaySlabFlexureStatus(StrEnum):
-    """Status of the intentionally incomplete P7 flexural result."""
+    """Status of the flexural slice or a service-composed workflow result."""
 
     FLEXURE_ONLY_PENDING_P8 = "flexure_only_pending_p8"
+    COMPLETE_WORKFLOW_CHECKS_COMPOSED = "complete_workflow_checks_composed"
 
 
 @dataclass(frozen=True)
