@@ -3,8 +3,8 @@
 ## Latest Handoff
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-10
-- Focus: Fresh-start maintenance complete; no implementation packet is active
+- Date: 2026-08-11
+- Focus: FastAPI load-lane root-cause correction active in PR #729; required checks must finish before merge
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
