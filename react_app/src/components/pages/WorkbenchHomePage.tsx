@@ -127,6 +127,31 @@ export function WorkbenchHomePage({
           </div>
         </WorkbenchPanel>
 
+        <WorkbenchPanel
+          title="Rectangular column review"
+          description="Check a supplied tied-column section and reinforcement."
+        >
+          <div className="flex items-start gap-3">
+            <span className="rounded-xl bg-emerald-500/10 p-2.5 text-emerald-300">
+              <ShieldCheck className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm leading-6 text-zinc-400">
+                Review both-axis classification, minimum eccentricity, adequacy,
+                and supplied detailing with explicit PASS, FAIL, HOLD, and stale states.
+              </p>
+              <button
+                type="button"
+                onClick={() => navigate('/workbench/columns/rectangular')}
+                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-300 hover:text-emerald-200"
+              >
+                Open column review
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        </WorkbenchPanel>
+
         {WORKFLOW_RUNNER_ENABLED ? (
           <WorkbenchPanel
             title="Beam workflow"

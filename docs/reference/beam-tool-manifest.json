@@ -9,14 +9,14 @@
   "schema_version": "1.0",
   "source": {
     "catalog_schema_version": "1.0",
-    "catalog_sha256": "6a009b46f73ab36b3d15dbb25fff727950a23654b1dee1dd14bf0aa973208383",
-    "catalog_version": "1.0.0"
+    "catalog_sha256": "0aad993b7755b4c34c234652260767247a9396e16d53c5c2d18a3d956c5bdfae",
+    "catalog_version": "1.1.0"
   },
   "tools": [
     {
       "capability_id": "is456.beam.design",
-      "capability_version": "1.0.0",
-      "description": "Design one rectangular reinforced-concrete beam for the declared flexure and shear inputs.",
+      "capability_version": "1.1.0",
+      "description": "Discover the ordinary solid rectangular primary beam route; this catalogue adapter exposes declared flexure and shear inputs.",
       "execution": {
         "adapter_id": "fastapi.design_beam.v1",
         "allowlisted": true,
@@ -108,7 +108,9 @@
       },
       "input_schema_id": "fastapi.BeamDesignRequest.v1",
       "limitations": [
-        "Torsion is a separate explicit workflow.",
+        "Optional torsion is supported by the ordinary solid rectangular primary service/manual workbench within its declared material limits; this catalogue automation surface remains held for Tu > 0.",
+        "Level-A serviceability is available in the manual workbench only when explicit maintained inputs are supplied; this catalogue automation surface remains held for serviceability.",
+        "Flanged, hollow/box, deep, prestressed, axially loaded, and torsion-redistribution cases are held.",
         "The result is software evidence and requires qualified engineering review."
       ],
       "result_schema_id": "fastapi.BeamDesignResponse.v1",

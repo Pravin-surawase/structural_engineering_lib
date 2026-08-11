@@ -20,7 +20,7 @@ __all__ = [
     "get_supported_is456_semantic_contract",
 ]
 
-CAPABILITY_SCHEMA_VERSION = "1.0"
+CAPABILITY_SCHEMA_VERSION = "2.0"
 IS456_CODE_EDITION = "IS 456:2000"
 
 
@@ -98,8 +98,18 @@ _CAPABILITIES = (
     IS456Capability(
         element="beam",
         public_workflows=("design_beam_is456", "check_beam_is456", "detail_beam_is456"),
-        supported_case="Route-specific rectangular/flanged flexure, shear and detailing; torsion is a separate explicit workflow.",
-        held_cases=("The primary combined beam route does not include torsion.",),
+        supported_case=(
+            "Ordinary solid rectangular beam primary design for flexure and shear, "
+            "with optional IS 456 torsion within fck 15-40 N/mm2 and fy <= 500 "
+            "N/mm2, plus maintained Level-A deflection and crack-width checks when "
+            "their explicit inputs are supplied."
+        ),
+        held_cases=(
+            "Flanged, hollow/box, deep, prestressed, or axially loaded torsion cases are excluded.",
+            "Compatibility-versus-equilibrium torsion redistribution decisions are excluded.",
+            "Beam check, detailing, batch, import, and other automation surfaces that do not accept Tu and serviceability inputs remain outside the combined route.",
+            "Serviceability is held unless span, support condition, crack geometry, and service strain or stress are explicitly supplied.",
+        ),
         qualified_review_required=True,
     ),
     IS456Capability(
@@ -195,11 +205,40 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             fields=(
                 _field("mu_knm", "factored bending moment", "kN m", True, "finite"),
                 _field("vu_kn", "factored shear force", "kN", True, "finite"),
+                _field(
+                    "tu_knm",
+                    "factored torsional moment",
+                    "kN m",
+                    False,
+                    "finite non-negative; zero opts out",
+                ),
                 _field("b_mm", "section width", "mm", True, _MM),
                 _field("D_mm", "overall section depth", "mm", True, _MM),
                 _field("d_mm", "effective section depth", "mm", True, _MM),
                 _field("fck_nmm2", "concrete strength", "N/mm2", True, _N_PER_MM2),
                 _field("fy_nmm2", "steel strength", "N/mm2", True, _N_PER_MM2),
+                _field("cover_mm", "clear cover for torsion core", "mm", False, _MM),
+                _field(
+                    "stirrup_dia_mm",
+                    "closed stirrup diameter",
+                    "mm",
+                    False,
+                    _MM,
+                ),
+                _field(
+                    "deflection_params",
+                    "explicit Level-A deflection inputs",
+                    "structured input",
+                    False,
+                    "span, effective depth, and supported condition",
+                ),
+                _field(
+                    "crack_width_params",
+                    "explicit Level-A crack-width inputs",
+                    "structured input",
+                    False,
+                    "complete maintained crack geometry and strain or service stress",
+                ),
                 _field(
                     "is_ok", "combined compliance outcome", "boolean", True, _BOOLEAN
                 ),
@@ -207,11 +246,18 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             statuses=(
                 IS456StatusContract(
                     "is_ok",
-                    "The evaluated compliance checks for this beam case passed.",
-                    ("It is software evidence, not professional design approval.",),
+                    "All evaluated flexure, shear, torsion, and enabled serviceability checks passed.",
+                    (
+                        "It is software evidence, not professional design approval.",
+                        "Missing or invalid evidence identity is a HOLD, not a pass.",
+                    ),
                 ),
             ),
-            limitations=("Torsion is a separate explicit workflow.",),
+            limitations=(
+                "Optional torsion is limited to the ordinary solid rectangular route.",
+                "Serviceability requires explicit maintained inputs.",
+                "Qualified engineering review remains required.",
+            ),
         ),
         IS456WorkflowContract(
             workflow="check_beam_is456",

@@ -3162,7 +3162,7 @@
         "description": "Request for additional moment calculation per IS 456 Cl 39.7.1.",
         "properties": {
           "Asc_mm2": {
-            "description": "Total steel area (mm\u00b2)",
+            "description": "Total steel area (mm²)",
             "examples": [
               2400.0
             ],
@@ -3210,7 +3210,7 @@
             "type": "number"
           },
           "fck": {
-            "description": "Concrete strength (N/mm\u00b2)",
+            "description": "Concrete strength (N/mm²)",
             "examples": [
               25.0
             ],
@@ -3220,7 +3220,7 @@
             "type": "number"
           },
           "fy": {
-            "description": "Steel yield strength (N/mm\u00b2)",
+            "description": "Steel yield strength (N/mm²)",
             "examples": [
               415.0
             ],
@@ -3273,22 +3273,22 @@
             "type": "number"
           },
           "Max_kNm": {
-            "description": "Additional moment about x-axis (kN\u00b7m)",
+            "description": "Additional moment about x-axis (kN·m)",
             "title": "Max Knm",
             "type": "number"
           },
           "Max_reduced_kNm": {
-            "description": "Reduced additional moment x-axis (kN\u00b7m)",
+            "description": "Reduced additional moment x-axis (kN·m)",
             "title": "Max Reduced Knm",
             "type": "number"
           },
           "May_kNm": {
-            "description": "Additional moment about y-axis (kN\u00b7m)",
+            "description": "Additional moment about y-axis (kN·m)",
             "title": "May Knm",
             "type": "number"
           },
           "May_reduced_kNm": {
-            "description": "Reduced additional moment y-axis (kN\u00b7m)",
+            "description": "Reduced additional moment y-axis (kN·m)",
             "title": "May Reduced Knm",
             "type": "number"
           },
@@ -3420,14 +3420,14 @@
             "type": "number"
           },
           "fck": {
-            "description": "Concrete strength (N/mm\u00b2)",
+            "description": "Concrete strength (N/mm²)",
             "maximum": 80.0,
             "minimum": 15.0,
             "title": "Fck",
             "type": "number"
           },
           "fy": {
-            "description": "Steel yield strength (N/mm\u00b2)",
+            "description": "Steel yield strength (N/mm²)",
             "maximum": 600.0,
             "minimum": 250.0,
             "title": "Fy",
@@ -3435,7 +3435,7 @@
           },
           "has_standard_bend": {
             "default": true,
-            "description": "True if bar has 90\u00b0 bend at support",
+            "description": "True if bar has 90° bend at support",
             "title": "Has Standard Bend",
             "type": "boolean"
           },
@@ -3644,7 +3644,7 @@
         "description": "Reinforcement bar arrangement.",
         "properties": {
           "area_provided": {
-            "description": "Total area provided (mm\u00b2)",
+            "description": "Total area provided (mm²)",
             "title": "Area Provided",
             "type": "number"
           },
@@ -3683,7 +3683,7 @@
         "description": "Information about a single standard reinforcement bar.",
         "properties": {
           "area_mm2": {
-            "description": "Cross-sectional area in mm\u00b2",
+            "description": "Cross-sectional area in mm²",
             "title": "Area Mm2",
             "type": "number"
           },
@@ -4154,13 +4154,13 @@
         "properties": {
           "asc_provided": {
             "default": 0.0,
-            "description": "Provided compression reinforcement area Asc (mm\u00b2)",
+            "description": "Provided compression reinforcement area Asc (mm²)",
             "minimum": 0.0,
             "title": "Asc Provided",
             "type": "number"
           },
           "ast_provided": {
-            "description": "Provided tension reinforcement area Ast (mm\u00b2)",
+            "description": "Provided tension reinforcement area Ast (mm²)",
             "examples": [
               615.0,
               942.0,
@@ -4200,7 +4200,7 @@
           },
           "fck": {
             "default": 25.0,
-            "description": "fck (N/mm\u00b2)",
+            "description": "fck (N/mm²)",
             "maximum": 80.0,
             "minimum": 15.0,
             "title": "Fck",
@@ -4208,14 +4208,14 @@
           },
           "fy": {
             "default": 500.0,
-            "description": "fy (N/mm\u00b2)",
+            "description": "fy (N/mm²)",
             "maximum": 600.0,
             "minimum": 250.0,
             "title": "Fy",
             "type": "number"
           },
           "moment": {
-            "description": "Factored design moment Mu (kN\u00b7m)",
+            "description": "Factored design moment Mu (kN·m)",
             "minimum": 0.0,
             "title": "Moment",
             "type": "number"
@@ -4229,7 +4229,7 @@
           },
           "stirrup_area": {
             "default": 0.0,
-            "description": "Two-legged stirrup area Asv (mm\u00b2)",
+            "description": "Two-legged stirrup area Asv (mm²)",
             "examples": [
               100.5,
               157.0,
@@ -4283,7 +4283,7 @@
             "type": "string"
           },
           "moment_capacity": {
-            "description": "Moment capacity Mu,cap (kN\u00b7m)",
+            "description": "Moment capacity Mu,cap (kN·m)",
             "title": "Moment Capacity",
             "type": "number"
           },
@@ -4335,6 +4335,92 @@
         "title": "BeamCheckResponse",
         "type": "object"
       },
+      "BeamCrackWidthParams": {
+        "description": "Explicit maintained inputs for the primary-route crack-width check.",
+        "properties": {
+          "acr_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Acr Mm",
+            "type": "number"
+          },
+          "cmin_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Cmin Mm",
+            "type": "number"
+          },
+          "epsilon_m": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Epsilon M"
+          },
+          "es_nmm2": {
+            "default": 200000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Es Nmm2",
+            "type": "number"
+          },
+          "exposure_class": {
+            "default": "moderate",
+            "enum": [
+              "mild",
+              "moderate",
+              "severe",
+              "very_severe"
+            ],
+            "title": "Exposure Class",
+            "type": "string"
+          },
+          "fs_service_nmm2": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fs Service Nmm2"
+          },
+          "h_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "H Mm",
+            "type": "number"
+          },
+          "limit_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit Mm"
+          },
+          "x_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "X Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "acr_mm",
+          "cmin_mm",
+          "h_mm",
+          "x_mm"
+        ],
+        "title": "BeamCrackWidthParams",
+        "type": "object"
+      },
       "BeamDesignRequest": {
         "description": "Request model for beam design calculation.",
         "examples": [
@@ -4347,6 +4433,7 @@
             "moment": 150.0,
             "shear": 75.0,
             "stirrup_dia_mm": 8.0,
+            "torsion": 0.0,
             "width": 300.0
           }
         ],
@@ -4363,6 +4450,17 @@
             "minimum": 20.0,
             "title": "Clear Cover",
             "type": "number"
+          },
+          "crack_width_params": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BeamCrackWidthParams"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Maintained crack-width inputs; required when include_serviceability=True"
           },
           "depth": {
             "description": "Overall beam depth D (mm)",
@@ -4391,7 +4489,7 @@
           },
           "fck": {
             "default": 25.0,
-            "description": "Characteristic compressive strength of concrete (N/mm\u00b2)",
+            "description": "Characteristic compressive strength of concrete (N/mm²)",
             "examples": [
               20.0,
               25.0,
@@ -4405,7 +4503,7 @@
           },
           "fy": {
             "default": 500.0,
-            "description": "Yield strength of reinforcement steel (N/mm\u00b2)",
+            "description": "Yield strength of reinforcement steel (N/mm²)",
             "examples": [
               415.0,
               500.0,
@@ -4431,7 +4529,7 @@
             "type": "number"
           },
           "moment": {
-            "description": "Factored design moment Mu (kN\u00b7m)",
+            "description": "Factored design moment Mu (kN·m)",
             "examples": [
               100.0,
               250.0,
@@ -4478,7 +4576,7 @@
                 "type": "null"
               }
             ],
-            "description": "Beam span (mm) \u2014 required when include_serviceability=True",
+            "description": "Beam span (mm) — required when include_serviceability=True",
             "title": "Span Mm"
           },
           "stirrup_dia_mm": {
@@ -4494,6 +4592,18 @@
             "description": "Support condition for deflection check",
             "title": "Support Condition",
             "type": "string"
+          },
+          "torsion": {
+            "default": 0.0,
+            "description": "Factored design torsional moment Tu (kN·m)",
+            "examples": [
+              0.0,
+              10.0,
+              25.0
+            ],
+            "minimum": 0.0,
+            "title": "Torsion",
+            "type": "number"
           },
           "width": {
             "description": "Beam width b (mm)",
@@ -4521,14 +4631,24 @@
         "properties": {
           "asc_total": {
             "default": 0.0,
-            "description": "Total compression steel (mm\u00b2)",
+            "description": "Total compression steel (mm²)",
             "title": "Asc Total",
             "type": "number"
           },
           "ast_total": {
-            "description": "Total tension steel required (mm\u00b2)",
+            "description": "Total tension steel required (mm²)",
             "title": "Ast Total",
             "type": "number"
+          },
+          "combined_actions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CombinedBeamActions"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "crack_width_check": {
             "anyOf": [
@@ -4563,11 +4683,25 @@
             "title": "Effective Depth Used"
           },
           "evidence": {
-            "$ref": "#/components/schemas/EvidenceEnvelopeResponse",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EvidenceEnvelopeResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "description": "Traceable calculation identity and supported-case boundary"
           },
           "flexure": {
             "$ref": "#/components/schemas/FlexureResult"
+          },
+          "holds": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Holds",
+            "type": "array"
           },
           "message": {
             "description": "Summary message",
@@ -4588,6 +4722,16 @@
             "description": "Whether design is valid",
             "title": "Success",
             "type": "boolean"
+          },
+          "torsion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IntegratedTorsionResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "utilization_ratio": {
             "description": "Governing IS 456 compliance utilization ratio",
@@ -4610,8 +4754,7 @@
           "message",
           "flexure",
           "ast_total",
-          "utilization_ratio",
-          "evidence"
+          "utilization_ratio"
         ],
         "title": "BeamDesignResponse",
         "type": "object"
@@ -4621,20 +4764,20 @@
         "properties": {
           "asc_required": {
             "default": 0.0,
-            "description": "Required compression reinforcement area Asc (mm\u00b2)",
+            "description": "Required compression reinforcement area Asc (mm²)",
             "minimum": 0.0,
             "title": "Asc Required",
             "type": "number"
           },
           "ast_required": {
-            "description": "Required tension reinforcement area Ast (mm\u00b2)",
+            "description": "Required tension reinforcement area Ast (mm²)",
             "exclusiveMinimum": 0.0,
             "title": "Ast Required",
             "type": "number"
           },
           "asv_required": {
             "default": 0.0,
-            "description": "Required stirrup area Asv (mm\u00b2/mm)",
+            "description": "Required stirrup area Asv (mm²/mm)",
             "minimum": 0.0,
             "title": "Asv Required",
             "type": "number"
@@ -4656,7 +4799,7 @@
           },
           "fck": {
             "default": 25.0,
-            "description": "fck (N/mm\u00b2)",
+            "description": "fck (N/mm²)",
             "maximum": 80.0,
             "minimum": 15.0,
             "title": "Fck",
@@ -4664,7 +4807,7 @@
           },
           "fy": {
             "default": 500.0,
-            "description": "fy (N/mm\u00b2)",
+            "description": "fy (N/mm²)",
             "maximum": 600.0,
             "minimum": 250.0,
             "title": "Fy",
@@ -4750,12 +4893,12 @@
           },
           "asc_provided": {
             "default": 0.0,
-            "description": "Compression steel provided (mm\u00b2)",
+            "description": "Compression steel provided (mm²)",
             "title": "Asc Provided",
             "type": "number"
           },
           "ast_provided": {
-            "description": "Total tension steel provided (mm\u00b2)",
+            "description": "Total tension steel provided (mm²)",
             "title": "Ast Provided",
             "type": "number"
           },
@@ -4860,21 +5003,21 @@
         "properties": {
           "ast_end": {
             "default": 500.0,
-            "description": "Tension steel at end (mm\u00b2)",
+            "description": "Tension steel at end (mm²)",
             "minimum": 0.0,
             "title": "Ast End",
             "type": "number"
           },
           "ast_mid": {
             "default": 400.0,
-            "description": "Tension steel at mid-span (mm\u00b2)",
+            "description": "Tension steel at mid-span (mm²)",
             "minimum": 0.0,
             "title": "Ast Mid",
             "type": "number"
           },
           "ast_start": {
             "default": 500.0,
-            "description": "Tension steel at start (mm\u00b2)",
+            "description": "Tension steel at start (mm²)",
             "minimum": 0.0,
             "title": "Ast Start",
             "type": "number"
@@ -4903,7 +5046,7 @@
           },
           "fck": {
             "default": 25.0,
-            "description": "fck (N/mm\u00b2)",
+            "description": "fck (N/mm²)",
             "maximum": 80.0,
             "minimum": 15.0,
             "title": "Fck",
@@ -4911,7 +5054,7 @@
           },
           "fy": {
             "default": 500.0,
-            "description": "fy (N/mm\u00b2)",
+            "description": "fy (N/mm²)",
             "maximum": 600.0,
             "minimum": 250.0,
             "title": "Fy",
@@ -5047,7 +5190,7 @@
           },
           "fck": {
             "default": 25,
-            "description": "Concrete grade (N/mm\u00b2)",
+            "description": "Concrete grade (N/mm²)",
             "title": "Fck",
             "type": "integer"
           },
@@ -5092,7 +5235,7 @@
           },
           "ast_provided": {
             "default": 0.0,
-            "description": "Steel area provided (mm\u00b2)",
+            "description": "Steel area provided (mm²)",
             "title": "Ast Provided",
             "type": "number"
           },
@@ -5166,13 +5309,13 @@
           },
           "fck_mpa": {
             "default": 25.0,
-            "description": "Concrete strength in N/mm\u00b2",
+            "description": "Concrete strength in N/mm²",
             "title": "Fck Mpa",
             "type": "number"
           },
           "fy_mpa": {
             "default": 500.0,
-            "description": "Steel strength in N/mm\u00b2",
+            "description": "Steel strength in N/mm²",
             "title": "Fy Mpa",
             "type": "number"
           },
@@ -5184,7 +5327,7 @@
           },
           "mu_knm": {
             "default": 0.0,
-            "description": "Design moment in kN\u00b7m",
+            "description": "Design moment in kN·m",
             "title": "Mu Knm",
             "type": "number"
           },
@@ -5256,13 +5399,13 @@
           },
           "fck_mpa": {
             "default": 25.0,
-            "description": "Concrete strength in N/mm\u00b2",
+            "description": "Concrete strength in N/mm²",
             "title": "Fck Mpa",
             "type": "number"
           },
           "fy_mpa": {
             "default": 500.0,
-            "description": "Steel strength in N/mm\u00b2",
+            "description": "Steel strength in N/mm²",
             "title": "Fy Mpa",
             "type": "number"
           },
@@ -5274,7 +5417,7 @@
           },
           "mu_knm": {
             "default": 0.0,
-            "description": "Design moment in kN\u00b7m",
+            "description": "Design moment in kN·m",
             "title": "Mu Knm",
             "type": "number"
           },
@@ -5342,7 +5485,7 @@
         "description": "Request model for biaxial bending check per IS 456 Cl 39.6 (Bresler load contour).",
         "properties": {
           "Asc_mm2": {
-            "description": "Total steel area in mm\u00b2",
+            "description": "Total steel area in mm²",
             "examples": [
               2400.0,
               3600.0,
@@ -5423,7 +5566,7 @@
             "type": "number"
           },
           "fck": {
-            "description": "Concrete grade (N/mm\u00b2)",
+            "description": "Concrete grade (N/mm²)",
             "examples": [
               20.0,
               25.0,
@@ -5435,7 +5578,7 @@
             "type": "number"
           },
           "fy": {
-            "description": "Steel yield strength (N/mm\u00b2)",
+            "description": "Steel yield strength (N/mm²)",
             "examples": [
               415.0,
               500.0
@@ -6687,7 +6830,7 @@
         ],
         "properties": {
           "Ag_mm2": {
-            "description": "Gross cross-sectional area of column (mm\u00b2)",
+            "description": "Gross cross-sectional area of column (mm²)",
             "examples": [
               90000.0,
               120000.0,
@@ -6699,7 +6842,7 @@
             "type": "number"
           },
           "Asc_mm2": {
-            "description": "Area of longitudinal reinforcement (mm\u00b2)",
+            "description": "Area of longitudinal reinforcement (mm²)",
             "examples": [
               1256.64,
               1800.0,
@@ -6710,7 +6853,7 @@
             "type": "number"
           },
           "fck": {
-            "description": "Characteristic compressive strength of concrete (N/mm\u00b2)",
+            "description": "Characteristic compressive strength of concrete (N/mm²)",
             "examples": [
               20.0,
               25.0,
@@ -6723,7 +6866,7 @@
             "type": "number"
           },
           "fy": {
-            "description": "Yield strength of reinforcement steel (N/mm\u00b2)",
+            "description": "Yield strength of reinforcement steel (N/mm²)",
             "examples": [
               415.0,
               500.0,
@@ -6748,17 +6891,17 @@
         "description": "Response model for short column axial capacity.",
         "properties": {
           "Ac_mm2": {
-            "description": "Net concrete area Ag - Asc (mm\u00b2)",
+            "description": "Net concrete area Ag - Asc (mm²)",
             "title": "Ac Mm2",
             "type": "number"
           },
           "Ag_mm2": {
-            "description": "Gross cross-sectional area (mm\u00b2)",
+            "description": "Gross cross-sectional area (mm²)",
             "title": "Ag Mm2",
             "type": "number"
           },
           "Asc_mm2": {
-            "description": "Area of longitudinal steel (mm\u00b2)",
+            "description": "Area of longitudinal steel (mm²)",
             "title": "Asc Mm2",
             "type": "number"
           },
@@ -6768,17 +6911,17 @@
             "type": "number"
           },
           "fck": {
-            "description": "Concrete strength used (N/mm\u00b2)",
+            "description": "Concrete strength used (N/mm²)",
             "title": "Fck",
             "type": "number"
           },
           "fy": {
-            "description": "Steel yield strength used (N/mm\u00b2)",
+            "description": "Steel yield strength used (N/mm²)",
             "title": "Fy",
             "type": "number"
           },
           "is_safe": {
-            "description": "Whether steel ratio is within IS 456 limits (0.8%\u20136%)",
+            "description": "Whether steel ratio is within IS 456 limits (0.8%–6%)",
             "title": "Is Safe",
             "type": "boolean"
           },
@@ -6877,7 +7020,7 @@
         "description": "Request for unified column design per IS 456.",
         "properties": {
           "Asc_mm2": {
-            "description": "Total steel area (mm\u00b2)",
+            "description": "Total steel area (mm²)",
             "examples": [
               2400.0
             ],
@@ -7022,7 +7165,7 @@
           },
           "fck": {
             "default": 25.0,
-            "description": "Concrete strength (N/mm\u00b2)",
+            "description": "Concrete strength (N/mm²)",
             "examples": [
               25.0
             ],
@@ -7033,7 +7176,7 @@
           },
           "fy": {
             "default": 415.0,
-            "description": "Steel yield strength (N/mm\u00b2)",
+            "description": "Steel yield strength (N/mm²)",
             "examples": [
               415.0
             ],
@@ -7079,16 +7222,101 @@
         "type": "object"
       },
       "ColumnDesignResponse": {
-        "description": "Response for unified column design.",
+        "description": "Review-complete response for the unified rectangular-column check.",
         "properties": {
+          "Ma_x_kNm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ma X Knm"
+          },
+          "Ma_y_kNm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ma Y Knm"
+          },
+          "Mux_applied_kNm": {
+            "title": "Mux Applied Knm",
+            "type": "number"
+          },
+          "Mux_design_kNm": {
+            "title": "Mux Design Knm",
+            "type": "number"
+          },
+          "Mux_min_kNm": {
+            "title": "Mux Min Knm",
+            "type": "number"
+          },
+          "Muy_applied_kNm": {
+            "title": "Muy Applied Knm",
+            "type": "number"
+          },
+          "Muy_design_kNm": {
+            "title": "Muy Design Knm",
+            "type": "number"
+          },
+          "Muy_min_kNm": {
+            "title": "Muy Min Knm",
+            "type": "number"
+          },
+          "Pu_kN": {
+            "title": "Pu Kn",
+            "type": "number"
+          },
           "checks": {
             "additionalProperties": true,
             "title": "Checks",
             "type": "object"
           },
           "classification": {
+            "enum": [
+              "SHORT",
+              "SLENDER"
+            ],
             "title": "Classification",
             "type": "string"
+          },
+          "classification_x": {
+            "enum": [
+              "SHORT",
+              "SLENDER"
+            ],
+            "title": "Classification X",
+            "type": "string"
+          },
+          "classification_y": {
+            "enum": [
+              "SHORT",
+              "SLENDER"
+            ],
+            "title": "Classification Y",
+            "type": "string"
+          },
+          "clause_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "emin_x_mm": {
+            "title": "Emin X Mm",
+            "type": "number"
+          },
+          "emin_y_mm": {
+            "title": "Emin Y Mm",
+            "type": "number"
           },
           "governing_check": {
             "title": "Governing Check",
@@ -7098,8 +7326,23 @@
             "title": "Is Safe",
             "type": "boolean"
           },
+          "le_x_mm": {
+            "title": "Le X Mm",
+            "type": "number"
+          },
+          "le_y_mm": {
+            "title": "Le Y Mm",
+            "type": "number"
+          },
+          "slenderness_x": {
+            "title": "Slenderness X",
+            "type": "number"
+          },
+          "slenderness_y": {
+            "title": "Slenderness Y",
+            "type": "number"
+          },
           "warnings": {
-            "default": [],
             "items": {
               "type": "string"
             },
@@ -7108,10 +7351,26 @@
           }
         },
         "required": [
+          "Pu_kN",
+          "Mux_applied_kNm",
+          "Muy_applied_kNm",
+          "Mux_design_kNm",
+          "Muy_design_kNm",
           "is_safe",
           "classification",
+          "classification_x",
+          "classification_y",
+          "le_x_mm",
+          "le_y_mm",
+          "slenderness_x",
+          "slenderness_y",
+          "emin_x_mm",
+          "emin_y_mm",
+          "Mux_min_kNm",
+          "Muy_min_kNm",
           "governing_check",
-          "checks"
+          "checks",
+          "clause_refs"
         ],
         "title": "ColumnDesignResponse",
         "type": "object"
@@ -7175,7 +7434,7 @@
           },
           "fck": {
             "default": 25.0,
-            "description": "Concrete grade (N/mm\u00b2)",
+            "description": "Concrete grade (N/mm²)",
             "examples": [
               20.0,
               25.0,
@@ -7188,7 +7447,7 @@
           },
           "fy": {
             "default": 415.0,
-            "description": "Steel yield strength (N/mm\u00b2)",
+            "description": "Steel yield strength (N/mm²)",
             "examples": [
               415.0,
               500.0
@@ -7447,7 +7706,7 @@
                 "type": "null"
               }
             ],
-            "description": "Gross area of column (mm\u00b2). Defaults to b\u00d7D if omitted.",
+            "description": "Gross area of column (mm²). Defaults to b×D if omitted.",
             "examples": [
               200000.0
             ],
@@ -7463,14 +7722,14 @@
                 "type": "null"
               }
             ],
-            "description": "Confined core area to hoop centerline (mm\u00b2). Estimated if omitted.",
+            "description": "Confined core area to hoop centerline (mm²). Estimated if omitted.",
             "examples": [
               102400.0
             ],
             "title": "Ak Mm2"
           },
           "D_mm": {
-            "description": "Column depth \u2014 longer dimension (mm)",
+            "description": "Column depth — longer dimension (mm)",
             "examples": [
               400.0,
               500.0,
@@ -7482,7 +7741,7 @@
             "type": "number"
           },
           "b_mm": {
-            "description": "Column width \u2014 shorter dimension (mm)",
+            "description": "Column width — shorter dimension (mm)",
             "examples": [
               300.0,
               400.0,
@@ -7517,7 +7776,7 @@
             "type": "number"
           },
           "fck": {
-            "description": "Characteristic concrete strength (N/mm\u00b2)",
+            "description": "Characteristic concrete strength (N/mm²)",
             "examples": [
               20.0,
               25.0,
@@ -7529,7 +7788,7 @@
             "type": "number"
           },
           "fy": {
-            "description": "Yield strength of steel (N/mm\u00b2)",
+            "description": "Yield strength of steel (N/mm²)",
             "examples": [
               415.0,
               500.0
@@ -7661,7 +7920,7 @@
         "description": "Request model for short column uniaxial bending design per IS 456 Cl 39.5.",
         "properties": {
           "Asc_mm2": {
-            "description": "Total longitudinal reinforcement area, symmetrically placed (mm\u00b2)",
+            "description": "Total longitudinal reinforcement area, symmetrically placed (mm²)",
             "examples": [
               2700.0,
               1800.0,
@@ -7730,7 +7989,7 @@
             "type": "number"
           },
           "fck": {
-            "description": "Characteristic concrete strength (N/mm\u00b2)",
+            "description": "Characteristic concrete strength (N/mm²)",
             "examples": [
               20.0,
               25.0,
@@ -7742,7 +8001,7 @@
             "type": "number"
           },
           "fy": {
-            "description": "Steel yield strength (N/mm\u00b2)",
+            "description": "Steel yield strength (N/mm²)",
             "examples": [
               415.0,
               500.0
@@ -7869,6 +8128,40 @@
           "eccentricity_mm"
         ],
         "title": "ColumnUniaxialResponse",
+        "type": "object"
+      },
+      "CombinedBeamActions": {
+        "description": "Original and IS 456 equivalent actions used by the primary route.",
+        "properties": {
+          "me_knm": {
+            "title": "Me Knm",
+            "type": "number"
+          },
+          "mu_knm": {
+            "title": "Mu Knm",
+            "type": "number"
+          },
+          "tu_knm": {
+            "title": "Tu Knm",
+            "type": "number"
+          },
+          "ve_kn": {
+            "title": "Ve Kn",
+            "type": "number"
+          },
+          "vu_kn": {
+            "title": "Vu Kn",
+            "type": "number"
+          }
+        },
+        "required": [
+          "mu_knm",
+          "vu_kn",
+          "tu_knm",
+          "me_knm",
+          "ve_kn"
+        ],
+        "title": "CombinedBeamActions",
         "type": "object"
       },
       "CompleteOneWaySlabDesignRequest": {
@@ -8038,7 +8331,7 @@
             "type": "string"
           },
           "mu_knm": {
-            "description": "Factored moment (kN\u00b7m)",
+            "description": "Factored moment (kN·m)",
             "minimum": 0.0,
             "title": "Mu Knm",
             "type": "number"
@@ -8085,7 +8378,7 @@
             "type": "boolean"
           },
           "mu_knm": {
-            "description": "Applied moment (kN\u00b7m)",
+            "description": "Applied moment (kN·m)",
             "title": "Mu Knm",
             "type": "number"
           },
@@ -8131,7 +8424,7 @@
           },
           "asv_mm2": {
             "default": 100.0,
-            "description": "Area of stirrup legs (mm\u00b2)",
+            "description": "Area of stirrup legs (mm²)",
             "minimum": 0.0,
             "title": "Asv Mm2",
             "type": "number"
@@ -8189,14 +8482,14 @@
             "description": "Default deflection parameters"
           },
           "fck_nmm2": {
-            "description": "Concrete strength (N/mm\u00b2)",
+            "description": "Concrete strength (N/mm²)",
             "maximum": 80.0,
             "minimum": 15.0,
             "title": "Fck Nmm2",
             "type": "number"
           },
           "fy_nmm2": {
-            "description": "Steel yield strength (N/mm\u00b2)",
+            "description": "Steel yield strength (N/mm²)",
             "maximum": 600.0,
             "minimum": 250.0,
             "title": "Fy Nmm2",
@@ -8274,7 +8567,7 @@
         "description": "Concrete quantities for one grade.",
         "properties": {
           "cost_inr": {
-            "description": "Cost in \u20b9",
+            "description": "Cost in ₹",
             "title": "Cost Inr",
             "type": "number"
           },
@@ -8284,7 +8577,7 @@
             "type": "string"
           },
           "total_volume_m3": {
-            "description": "Total volume in m\u00b3",
+            "description": "Total volume in m³",
             "title": "Total Volume M3",
             "type": "number"
           }
@@ -8565,27 +8858,27 @@
         "description": "Detailed cost breakdown.",
         "properties": {
           "concrete_cost": {
-            "description": "Cost of concrete (\u20b9)",
+            "description": "Cost of concrete (₹)",
             "title": "Concrete Cost",
             "type": "number"
           },
           "cost_per_meter": {
-            "description": "Cost per meter length (\u20b9/m)",
+            "description": "Cost per meter length (₹/m)",
             "title": "Cost Per Meter",
             "type": "number"
           },
           "formwork_cost": {
-            "description": "Cost of formwork (\u20b9)",
+            "description": "Cost of formwork (₹)",
             "title": "Formwork Cost",
             "type": "number"
           },
           "steel_cost": {
-            "description": "Cost of reinforcement (\u20b9)",
+            "description": "Cost of reinforcement (₹)",
             "title": "Steel Cost",
             "type": "number"
           },
           "total_cost": {
-            "description": "Total cost (\u20b9)",
+            "description": "Total cost (₹)",
             "title": "Total Cost",
             "type": "number"
           }
@@ -8614,7 +8907,7 @@
             "type": "string"
           },
           "estimated_concrete": {
-            "description": "Estimated concrete (m\u00b3/m)",
+            "description": "Estimated concrete (m³/m)",
             "title": "Estimated Concrete",
             "type": "number"
           },
@@ -8651,7 +8944,7 @@
           },
           "fck": {
             "default": 25.0,
-            "description": "fck (N/mm\u00b2)",
+            "description": "fck (N/mm²)",
             "maximum": 80.0,
             "minimum": 15.0,
             "title": "Fck",
@@ -8659,7 +8952,7 @@
           },
           "fy": {
             "default": 500.0,
-            "description": "fy (N/mm\u00b2)",
+            "description": "fy (N/mm²)",
             "maximum": 600.0,
             "minimum": 250.0,
             "title": "Fy",
@@ -8680,7 +8973,7 @@
             "type": "integer"
           },
           "moment": {
-            "description": "Factored design moment Mu (kN\u00b7m)",
+            "description": "Factored design moment Mu (kN·m)",
             "minimum": 0.0,
             "title": "Moment",
             "type": "number"
@@ -8778,7 +9071,7 @@
         "properties": {
           "concrete_cost": {
             "default": 6000.0,
-            "description": "Cost of concrete per m\u00b3 (\u20b9/m\u00b3)",
+            "description": "Cost of concrete per m³ (₹/m³)",
             "examples": [
               5000.0,
               6000.0,
@@ -8790,7 +9083,7 @@
           },
           "formwork_cost": {
             "default": 400.0,
-            "description": "Cost of formwork per m\u00b2 (\u20b9/m\u00b2)",
+            "description": "Cost of formwork per m² (₹/m²)",
             "examples": [
               350.0,
               400.0,
@@ -8802,7 +9095,7 @@
           },
           "steel_cost": {
             "default": 60.0,
-            "description": "Cost of reinforcement steel per kg (\u20b9/kg)",
+            "description": "Cost of reinforcement steel per kg (₹/kg)",
             "examples": [
               55.0,
               60.0,
@@ -8898,7 +9191,7 @@
           },
           "es_nmm2": {
             "default": 200000.0,
-            "description": "Modulus of elasticity of steel (N/mm\u00b2)",
+            "description": "Modulus of elasticity of steel (N/mm²)",
             "exclusiveMinimum": 0.0,
             "title": "Es Nmm2",
             "type": "number"
@@ -8919,7 +9212,7 @@
                 "type": "null"
               }
             ],
-            "description": "Steel stress at service (N/mm\u00b2)",
+            "description": "Steel stress at service (N/mm²)",
             "title": "Fs Service Nmm2"
           },
           "h_mm": {
@@ -9337,7 +9630,7 @@
             "type": "integer"
           },
           "total_concrete_m3": {
-            "description": "Total concrete volume (m\u00b3)",
+            "description": "Total concrete volume (m³)",
             "title": "Total Concrete M3",
             "type": "number"
           },
@@ -9844,14 +10137,14 @@
             "type": "number"
           },
           "fck": {
-            "description": "Concrete strength (N/mm\u00b2)",
+            "description": "Concrete strength (N/mm²)",
             "maximum": 80.0,
             "minimum": 15.0,
             "title": "Fck",
             "type": "number"
           },
           "fy": {
-            "description": "Steel yield strength (N/mm\u00b2)",
+            "description": "Steel yield strength (N/mm²)",
             "maximum": 600.0,
             "minimum": 250.0,
             "title": "Fy",
@@ -10105,7 +10398,7 @@
             "type": "number"
           },
           "fck": {
-            "description": "Characteristic compressive strength of concrete (N/mm\u00b2)",
+            "description": "Characteristic compressive strength of concrete (N/mm²)",
             "examples": [
               20.0,
               25.0,
@@ -10154,22 +10447,22 @@
             "type": "number"
           },
           "is_capped": {
-            "description": "Whether \u03c4c' was capped at \u03c4c,max",
+            "description": "Whether τc' was capped at τc,max",
             "title": "Is Capped",
             "type": "boolean"
           },
           "tau_c_base": {
-            "description": "Base shear strength \u03c4c (N/mm\u00b2)",
+            "description": "Base shear strength τc (N/mm²)",
             "title": "Tau C Base",
             "type": "number"
           },
           "tau_c_enhanced": {
-            "description": "Enhanced shear strength \u03c4c' (N/mm\u00b2)",
+            "description": "Enhanced shear strength τc' (N/mm²)",
             "title": "Tau C Enhanced",
             "type": "number"
           },
           "tau_c_max": {
-            "description": "Maximum shear stress \u03c4c,max (N/mm\u00b2)",
+            "description": "Maximum shear stress τc,max (N/mm²)",
             "title": "Tau C Max",
             "type": "number"
           }
@@ -10314,13 +10607,13 @@
         "properties": {
           "asc_required": {
             "default": 0,
-            "description": "Required compression steel mm\u00b2",
+            "description": "Required compression steel mm²",
             "minimum": 0.0,
             "title": "Asc Required",
             "type": "number"
           },
           "ast_required": {
-            "description": "Required tension steel mm\u00b2",
+            "description": "Required tension steel mm²",
             "minimum": 0.0,
             "title": "Ast Required",
             "type": "number"
@@ -10347,20 +10640,25 @@
             "type": "number"
           },
           "fck": {
-            "description": "Concrete grade N/mm\u00b2",
+            "description": "Concrete grade N/mm²",
             "exclusiveMinimum": 0.0,
             "title": "Fck",
             "type": "number"
           },
           "fy": {
-            "description": "Steel grade N/mm\u00b2",
+            "description": "Steel grade N/mm²",
             "exclusiveMinimum": 0.0,
             "title": "Fy",
             "type": "number"
           },
+          "include_serviceability": {
+            "default": false,
+            "title": "Include Serviceability",
+            "type": "boolean"
+          },
           "moment": {
             "default": 0,
-            "description": "Design moment kN\u00b7m",
+            "description": "Design moment kN·m",
             "minimum": 0.0,
             "title": "Moment",
             "type": "number"
@@ -10377,6 +10675,13 @@
             "description": "Span in mm",
             "minimum": 0.0,
             "title": "Span Length",
+            "type": "number"
+          },
+          "torsion": {
+            "default": 0,
+            "description": "Design torsion kN m",
+            "minimum": 0.0,
+            "title": "Torsion",
             "type": "number"
           },
           "width": {
@@ -10418,6 +10723,14 @@
             "title": "Beam Id",
             "type": "string"
           },
+          "calculation_identity": {
+            "description": "Exact calculation identity from the current primary response",
+            "maxLength": 64,
+            "minLength": 64,
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Calculation Identity",
+            "type": "string"
+          },
           "clear_cover": {
             "default": 25,
             "description": "Clear cover used by the source calculation (mm)",
@@ -10425,6 +10738,16 @@
             "minimum": 20.0,
             "title": "Clear Cover",
             "type": "number"
+          },
+          "crack_width_params": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BeamCrackWidthParams"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "depth": {
             "exclusiveMinimum": 0.0,
@@ -10480,6 +10803,11 @@
             "title": "Governing Check",
             "type": "string"
           },
+          "include_serviceability": {
+            "default": false,
+            "title": "Include Serviceability",
+            "type": "boolean"
+          },
           "is_safe": {
             "default": true,
             "title": "Is Safe",
@@ -10505,12 +10833,35 @@
             "title": "Shear",
             "type": "number"
           },
+          "span_mm": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Span Mm"
+          },
           "stirrup_dia_mm": {
             "default": 8,
             "description": "Stirrup diameter used by the source calculation (mm)",
             "maximum": 16.0,
             "minimum": 6.0,
             "title": "Stirrup Dia Mm",
+            "type": "number"
+          },
+          "support_condition": {
+            "default": "simply_supported",
+            "title": "Support Condition",
+            "type": "string"
+          },
+          "torsion": {
+            "default": 0,
+            "minimum": 0.0,
+            "title": "Torsion",
             "type": "number"
           },
           "utilization": {
@@ -10530,7 +10881,8 @@
           "width",
           "depth",
           "fck",
-          "fy"
+          "fy",
+          "calculation_identity"
         ],
         "title": "ExportReportRequest",
         "type": "object"
@@ -10540,22 +10892,22 @@
         "properties": {
           "asc_required": {
             "default": 0.0,
-            "description": "Compression steel if needed (mm\u00b2)",
+            "description": "Compression steel if needed (mm²)",
             "title": "Asc Required",
             "type": "number"
           },
           "ast_max": {
-            "description": "Maximum allowed steel area (mm\u00b2)",
+            "description": "Maximum allowed steel area (mm²)",
             "title": "Ast Max",
             "type": "number"
           },
           "ast_min": {
-            "description": "Minimum required steel area (mm\u00b2)",
+            "description": "Minimum required steel area (mm²)",
             "title": "Ast Min",
             "type": "number"
           },
           "ast_required": {
-            "description": "Required tension steel area (mm\u00b2)",
+            "description": "Required tension steel area (mm²)",
             "title": "Ast Required",
             "type": "number"
           },
@@ -10565,7 +10917,7 @@
             "type": "boolean"
           },
           "moment_capacity": {
-            "description": "Singly reinforced limiting moment Mu,lim (kN\u00b7m)",
+            "description": "Singly reinforced limiting moment Mu,lim (kN·m)",
             "title": "Moment Capacity",
             "type": "number"
           },
@@ -11332,7 +11684,7 @@
             "type": "number"
           },
           "fck": {
-            "description": "Concrete strength (N/mm\u00b2)",
+            "description": "Concrete strength (N/mm²)",
             "examples": [
               25.0
             ],
@@ -11342,7 +11694,7 @@
             "type": "number"
           },
           "fy": {
-            "description": "Steel yield strength (N/mm\u00b2)",
+            "description": "Steel yield strength (N/mm²)",
             "examples": [
               415.0
             ],
@@ -11809,6 +12161,94 @@
         "title": "ImportFormatsResponse",
         "type": "object"
       },
+      "IntegratedTorsionResult": {
+        "description": "Torsion calculation details embedded in the primary beam result.",
+        "properties": {
+          "al_torsion": {
+            "description": "Longitudinal torsion steel (mm²)",
+            "title": "Al Torsion",
+            "type": "number"
+          },
+          "asv_shear": {
+            "description": "Shear stirrup demand (mm²/mm)",
+            "title": "Asv Shear",
+            "type": "number"
+          },
+          "asv_torsion": {
+            "description": "Torsion stirrup demand (mm²/mm)",
+            "title": "Asv Torsion",
+            "type": "number"
+          },
+          "asv_total": {
+            "description": "Combined stirrup demand (mm²/mm)",
+            "title": "Asv Total",
+            "type": "number"
+          },
+          "clause_refs": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "object"
+          },
+          "errors": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Errors",
+            "type": "array"
+          },
+          "is_safe": {
+            "title": "Is Safe",
+            "type": "boolean"
+          },
+          "requires_closed_stirrups": {
+            "title": "Requires Closed Stirrups",
+            "type": "boolean"
+          },
+          "source": {
+            "const": "IS 456:2000",
+            "default": "IS 456:2000",
+            "title": "Source",
+            "type": "string"
+          },
+          "stirrup_spacing": {
+            "description": "Designed closed-stirrup spacing (mm)",
+            "title": "Stirrup Spacing",
+            "type": "number"
+          },
+          "tau_c": {
+            "description": "Concrete shear strength (N/mm²)",
+            "title": "Tau C",
+            "type": "number"
+          },
+          "tau_c_max": {
+            "description": "Maximum shear stress (N/mm²)",
+            "title": "Tau C Max",
+            "type": "number"
+          },
+          "tau_ve": {
+            "description": "Equivalent shear stress (N/mm²)",
+            "title": "Tau Ve",
+            "type": "number"
+          }
+        },
+        "required": [
+          "is_safe",
+          "tau_ve",
+          "tau_c",
+          "tau_c_max",
+          "asv_torsion",
+          "asv_shear",
+          "asv_total",
+          "stirrup_spacing",
+          "al_torsion",
+          "requires_closed_stirrups"
+        ],
+        "title": "IntegratedTorsionResult",
+        "type": "object"
+      },
       "LoadAnalysisRequest": {
         "description": "Request model for simple load analysis (BMD/SFD).",
         "examples": [
@@ -11976,7 +12416,7 @@
         "description": "Request for long (slender) column design per IS 456 Cl 39.7.",
         "properties": {
           "Asc_mm2": {
-            "description": "Total steel area (mm\u00b2)",
+            "description": "Total steel area (mm²)",
             "examples": [
               2400.0
             ],
@@ -12065,7 +12505,7 @@
             "type": "number"
           },
           "fck": {
-            "description": "Concrete strength (N/mm\u00b2)",
+            "description": "Concrete strength (N/mm²)",
             "examples": [
               25.0
             ],
@@ -12075,7 +12515,7 @@
             "type": "number"
           },
           "fy": {
-            "description": "Steel yield strength (N/mm\u00b2)",
+            "description": "Steel yield strength (N/mm²)",
             "examples": [
               415.0
             ],
@@ -12738,17 +13178,17 @@
         "properties": {
           "asc_required": {
             "default": 0.0,
-            "description": "Compression steel (mm\u00b2)",
+            "description": "Compression steel (mm²)",
             "title": "Asc Required",
             "type": "number"
           },
           "ast_required": {
-            "description": "Tension steel required (mm\u00b2)",
+            "description": "Tension steel required (mm²)",
             "title": "Ast Required",
             "type": "number"
           },
           "concrete_volume": {
-            "description": "Concrete volume (m\u00b3/m)",
+            "description": "Concrete volume (m³/m)",
             "title": "Concrete Volume",
             "type": "number"
           },
@@ -12761,7 +13201,7 @@
             "type": "number"
           },
           "formwork_area": {
-            "description": "Formwork area (m\u00b2/m)",
+            "description": "Formwork area (m²/m)",
             "title": "Formwork Area",
             "type": "number"
           },
@@ -12816,7 +13256,7 @@
         "description": "Request model for P-M interaction curve generation.",
         "properties": {
           "Asc_mm2": {
-            "description": "Total area of longitudinal reinforcement (mm\u00b2)",
+            "description": "Total area of longitudinal reinforcement (mm²)",
             "examples": [
               2400.0,
               3000.0,
@@ -12863,7 +13303,7 @@
             "type": "number"
           },
           "fck": {
-            "description": "Characteristic compressive strength of concrete (N/mm\u00b2)",
+            "description": "Characteristic compressive strength of concrete (N/mm²)",
             "examples": [
               25.0,
               30.0,
@@ -12875,7 +13315,7 @@
             "type": "number"
           },
           "fy": {
-            "description": "Characteristic yield strength of steel (N/mm\u00b2)",
+            "description": "Characteristic yield strength of steel (N/mm²)",
             "examples": [
               415.0,
               500.0
@@ -12913,7 +13353,7 @@
         "description": "Response model for P-M interaction curve.",
         "properties": {
           "Asc_mm2": {
-            "description": "Total steel area (mm\u00b2)",
+            "description": "Total steel area (mm²)",
             "title": "Asc Mm2",
             "type": "number"
           },
@@ -12923,12 +13363,12 @@
             "type": "number"
           },
           "Mu_0_kNm": {
-            "description": "Pure bending capacity (kN\u00b7m)",
+            "description": "Pure bending capacity (kN·m)",
             "title": "Mu 0 Knm",
             "type": "number"
           },
           "Mu_bal_kNm": {
-            "description": "Balanced point moment capacity (kN\u00b7m)",
+            "description": "Balanced point moment capacity (kN·m)",
             "title": "Mu Bal Knm",
             "type": "number"
           },
@@ -12959,12 +13399,12 @@
             "type": "number"
           },
           "fck": {
-            "description": "Concrete strength used (N/mm\u00b2)",
+            "description": "Concrete strength used (N/mm²)",
             "title": "Fck",
             "type": "number"
           },
           "fy": {
-            "description": "Steel yield strength used (N/mm\u00b2)",
+            "description": "Steel yield strength used (N/mm²)",
             "title": "Fy",
             "type": "number"
           },
@@ -13005,7 +13445,7 @@
         "description": "A single point on the P-M interaction curve.",
         "properties": {
           "Mu_kNm": {
-            "description": "Moment (kN\u00b7m)",
+            "description": "Moment (kN·m)",
             "title": "Mu Knm",
             "type": "number"
           },
@@ -13031,12 +13471,12 @@
             "type": "integer"
           },
           "ast_provided": {
-            "description": "Provided steel area (mm\u00b2)",
+            "description": "Provided steel area (mm²)",
             "title": "Ast Provided",
             "type": "number"
           },
           "ast_required": {
-            "description": "Required steel area (mm\u00b2)",
+            "description": "Required steel area (mm²)",
             "title": "Ast Required",
             "type": "number"
           },
@@ -13066,12 +13506,12 @@
             "type": "integer"
           },
           "fck_nmm2": {
-            "description": "Concrete grade (N/mm\u00b2)",
+            "description": "Concrete grade (N/mm²)",
             "title": "Fck Nmm2",
             "type": "integer"
           },
           "fy_nmm2": {
-            "description": "Steel grade (N/mm\u00b2)",
+            "description": "Steel grade (N/mm²)",
             "title": "Fy Nmm2",
             "type": "integer"
           },
@@ -13143,7 +13583,7 @@
             "type": "integer"
           },
           "mu_knm": {
-            "description": "Factored bending moment (kN\u00b7m)",
+            "description": "Factored bending moment (kN·m)",
             "examples": [
               120.0,
               200.0
@@ -13354,7 +13794,7 @@
                 "type": "null"
               }
             ],
-            "description": "Concrete costs by grade {fck: \u20b9/m\u00b3}. Defaults: {25: 6000, 30: 7000, 35: 8000, 40: 9500}",
+            "description": "Concrete costs by grade {fck: ₹/m³}. Defaults: {25: 6000, 30: 7000, 35: 8000, 40: 9500}",
             "title": "Concrete Costs"
           },
           "dataset": {
@@ -13377,7 +13817,7 @@
           },
           "steel_cost_per_kg": {
             "default": 60.0,
-            "description": "Steel rate \u20b9/kg",
+            "description": "Steel rate ₹/kg",
             "exclusiveMinimum": 0.0,
             "title": "Steel Cost Per Kg",
             "type": "number"
@@ -13412,12 +13852,12 @@
             "$ref": "#/components/schemas/BOQEvidenceResponse"
           },
           "grand_total_concrete_m3": {
-            "description": "Total concrete volume in m\u00b3",
+            "description": "Total concrete volume in m³",
             "title": "Grand Total Concrete M3",
             "type": "number"
           },
           "grand_total_cost_inr": {
-            "description": "Grand total cost in \u20b9",
+            "description": "Grand total cost in ₹",
             "title": "Grand Total Cost Inr",
             "type": "number"
           },
@@ -13520,7 +13960,7 @@
                 "type": "null"
               }
             ],
-            "description": "Steel area provided (mm\u00b2)",
+            "description": "Steel area provided (mm²)",
             "title": "Ast Provided Mm2"
           },
           "geometry": {
@@ -13676,7 +14116,7 @@
         "properties": {
           "ast_mm2": {
             "default": 0.0,
-            "description": "Steel area (mm\u00b2)",
+            "description": "Steel area (mm²)",
             "title": "Ast Mm2",
             "type": "number"
           },
@@ -13786,12 +14226,12 @@
         "properties": {
           "ast_provided": {
             "default": 0.0,
-            "description": "Current steel area (mm\u00b2)",
+            "description": "Current steel area (mm²)",
             "title": "Ast Provided",
             "type": "number"
           },
           "ast_required": {
-            "description": "Required steel area (mm\u00b2)",
+            "description": "Required steel area (mm²)",
             "minimum": 0.0,
             "title": "Ast Required",
             "type": "number"
@@ -13843,7 +14283,7 @@
             "type": "string"
           },
           "current_ast_mm2": {
-            "description": "Current steel area (mm\u00b2)",
+            "description": "Current steel area (mm²)",
             "title": "Current Ast Mm2",
             "type": "number"
           },
@@ -13858,7 +14298,7 @@
             "type": "string"
           },
           "min_ast_mm2": {
-            "description": "Minimum required steel area (mm\u00b2)",
+            "description": "Minimum required steel area (mm²)",
             "title": "Min Ast Mm2",
             "type": "number"
           },
@@ -14085,9 +14525,16 @@
         "description": "Shear design result.",
         "properties": {
           "asv_required": {
-            "description": "Required stirrup area (mm\u00b2/mm)",
+            "description": "Required stirrup area (mm²/mm)",
             "title": "Asv Required",
             "type": "number"
+          },
+          "asv_required_unit": {
+            "const": "mm²/mm",
+            "default": "mm²/mm",
+            "description": "Unit of asv_required (stirrup area per unit spacing)",
+            "title": "Asv Required Unit",
+            "type": "string"
           },
           "shear_capacity": {
             "description": "Shear capacity Vu,cap (kN)",
@@ -14105,17 +14552,17 @@
             "type": "number"
           },
           "tau_c": {
-            "description": "Concrete shear strength (N/mm\u00b2)",
+            "description": "Concrete shear strength (N/mm²)",
             "title": "Tau C",
             "type": "number"
           },
           "tau_c_max": {
-            "description": "Maximum shear stress limit (N/mm\u00b2)",
+            "description": "Maximum shear stress limit (N/mm²)",
             "title": "Tau C Max",
             "type": "number"
           },
           "tau_v": {
-            "description": "Nominal shear stress (N/mm\u00b2)",
+            "description": "Nominal shear stress (N/mm²)",
             "title": "Tau V",
             "type": "number"
           }
@@ -14349,7 +14796,7 @@
           },
           "fck": {
             "default": 25.0,
-            "description": "fck (N/mm\u00b2)",
+            "description": "fck (N/mm²)",
             "maximum": 80.0,
             "minimum": 15.0,
             "title": "Fck",
@@ -14357,7 +14804,7 @@
           },
           "fy": {
             "default": 500.0,
-            "description": "fy (N/mm\u00b2)",
+            "description": "fy (N/mm²)",
             "maximum": 600.0,
             "minimum": 250.0,
             "title": "Fy",
@@ -14376,7 +14823,7 @@
             "type": "boolean"
           },
           "moment": {
-            "description": "Factored moment Mu (kN\u00b7m)",
+            "description": "Factored moment Mu (kN·m)",
             "minimum": 0.0,
             "title": "Moment",
             "type": "number"
@@ -14519,7 +14966,7 @@
         "description": "Steel quantities for one grade.",
         "properties": {
           "cost_inr": {
-            "description": "Cost in \u20b9",
+            "description": "Cost in ₹",
             "title": "Cost Inr",
             "type": "number"
           },
@@ -14546,7 +14993,7 @@
         "description": "Stirrup arrangement.",
         "properties": {
           "area_per_meter": {
-            "description": "Asv/sv provided (mm\u00b2/mm)",
+            "description": "Asv/sv provided (mm²/mm)",
             "title": "Area Per Meter",
             "type": "number"
           },
@@ -14657,12 +15104,12 @@
             "type": "integer"
           },
           "concrete_m3": {
-            "description": "Total concrete in m\u00b3",
+            "description": "Total concrete in m³",
             "title": "Concrete M3",
             "type": "number"
           },
           "cost_inr": {
-            "description": "Total cost in \u20b9",
+            "description": "Total cost in ₹",
             "title": "Cost Inr",
             "type": "number"
           },
@@ -14784,7 +15231,7 @@
             "type": "object"
           },
           "title": {
-            "description": "Short title (e.g., '4\u00d816mm')",
+            "description": "Short title (e.g., '4Ø16mm')",
             "title": "Title",
             "type": "string"
           }
@@ -14872,7 +15319,7 @@
           },
           "fck": {
             "default": 25.0,
-            "description": "Characteristic compressive strength of concrete (N/mm\u00b2)",
+            "description": "Characteristic compressive strength of concrete (N/mm²)",
             "maximum": 80.0,
             "minimum": 15.0,
             "title": "Fck",
@@ -14880,14 +15327,14 @@
           },
           "fy": {
             "default": 500.0,
-            "description": "Yield strength of reinforcement steel (N/mm\u00b2)",
+            "description": "Yield strength of reinforcement steel (N/mm²)",
             "maximum": 600.0,
             "minimum": 250.0,
             "title": "Fy",
             "type": "number"
           },
           "moment": {
-            "description": "Factored bending moment Mu (kN\u00b7m)",
+            "description": "Factored bending moment Mu (kN·m)",
             "examples": [
               100.0,
               250.0
@@ -14924,7 +15371,7 @@
             "type": "number"
           },
           "torsion": {
-            "description": "Factored torsional moment Tu (kN\u00b7m)",
+            "description": "Factored torsional moment Tu (kN·m)",
             "examples": [
               5.0,
               15.0,
@@ -14960,22 +15407,22 @@
         "description": "Response model for torsion design.",
         "properties": {
           "al_torsion": {
-            "description": "Longitudinal steel for torsion (mm\u00b2)",
+            "description": "Longitudinal steel for torsion (mm²)",
             "title": "Al Torsion",
             "type": "number"
           },
           "asv_shear": {
-            "description": "Stirrup area for shear (mm\u00b2/mm)",
+            "description": "Stirrup area for shear (mm²/mm)",
             "title": "Asv Shear",
             "type": "number"
           },
           "asv_torsion": {
-            "description": "Stirrup area for torsion (mm\u00b2/mm)",
+            "description": "Stirrup area for torsion (mm²/mm)",
             "title": "Asv Torsion",
             "type": "number"
           },
           "asv_total": {
-            "description": "Total stirrup area (mm\u00b2/mm)",
+            "description": "Total stirrup area (mm²/mm)",
             "title": "Asv Total",
             "type": "number"
           },
@@ -14985,7 +15432,7 @@
             "type": "boolean"
           },
           "me_knm": {
-            "description": "Equivalent moment Me (kN\u00b7m)",
+            "description": "Equivalent moment Me (kN·m)",
             "title": "Me Knm",
             "type": "number"
           },
@@ -14995,7 +15442,7 @@
             "type": "string"
           },
           "mu_knm": {
-            "description": "Applied bending moment (kN\u00b7m)",
+            "description": "Applied bending moment (kN·m)",
             "title": "Mu Knm",
             "type": "number"
           },
@@ -15016,22 +15463,22 @@
             "type": "boolean"
           },
           "tc": {
-            "description": "Concrete shear strength \u03c4c (N/mm\u00b2)",
+            "description": "Concrete shear strength τc (N/mm²)",
             "title": "Tc",
             "type": "number"
           },
           "tc_max": {
-            "description": "Maximum shear stress limit \u03c4c,max (N/mm\u00b2)",
+            "description": "Maximum shear stress limit τc,max (N/mm²)",
             "title": "Tc Max",
             "type": "number"
           },
           "tu_knm": {
-            "description": "Applied torsional moment (kN\u00b7m)",
+            "description": "Applied torsional moment (kN·m)",
             "title": "Tu Knm",
             "type": "number"
           },
           "tv_equiv": {
-            "description": "Equivalent shear stress \u03c4ve (N/mm\u00b2)",
+            "description": "Equivalent shear stress τve (N/mm²)",
             "title": "Tv Equiv",
             "type": "number"
           },
@@ -16033,7 +16480,7 @@
           },
           "mu_knm": {
             "default": 100.0,
-            "description": "Design moment (kN\u00b7m)",
+            "description": "Design moment (kN·m)",
             "title": "Mu Knm",
             "type": "number"
           },
@@ -16100,7 +16547,7 @@
       "name": "Structural Engineering Library",
       "url": "https://github.com/yourusername/structural_engineering_lib"
     },
-    "description": "\n## IS 456:2000 Compliant Structural Engineering Library\n\nThis API exposes the library's route-specific supported IS 456:2000 reinforced\nconcrete calculations. Each result remains subject to the documented case\nboundary and qualified engineering review.\n\n### Features\n\n- **Beam Design**: Flexure, shear, and combined design calculations\n- **Column Design**: Bounded rectangular short/long-column workflows\n- **Footing Design**: Isolated-footing checks and concentric load transfer\n- **Slab Design**: Bounded simply supported one-way slab strip\n- **Detailing**: Reinforcement layout, spacing, and development lengths\n- **Optimization**: Cost-optimized beam cross-section selection\n- **Smart Analysis**: AI-assisted design suggestions and insights\n- **3D Geometry**: Visualization-ready mesh generation\n\n### Design Codes\n\n- IS 456:2000 - Plain and Reinforced Concrete\n- IS 13920 - Ductile Detailing for Seismic Resistance\n\n### Units\n\nAll inputs and outputs use consistent units:\n- **Length**: millimeters (mm)\n- **Force**: kilonewtons (kN)\n- **Moment**: kilonewton-meters (kN\u00b7m)\n- **Stress**: N/mm\u00b2 (MPa)\n- **Area**: mm\u00b2\n",
+    "description": "\n## IS 456:2000 Compliant Structural Engineering Library\n\nThis API exposes the library's route-specific supported IS 456:2000 reinforced\nconcrete calculations. Each result remains subject to the documented case\nboundary and qualified engineering review.\n\n### Features\n\n- **Beam Design**: Flexure, shear, and combined design calculations\n- **Column Design**: Bounded rectangular short/long-column workflows\n- **Footing Design**: Isolated-footing checks and concentric load transfer\n- **Slab Design**: Bounded simply supported one-way slab strip\n- **Detailing**: Reinforcement layout, spacing, and development lengths\n- **Optimization**: Cost-optimized beam cross-section selection\n- **Smart Analysis**: AI-assisted design suggestions and insights\n- **3D Geometry**: Visualization-ready mesh generation\n\n### Design Codes\n\n- IS 456:2000 - Plain and Reinforced Concrete\n- IS 13920 - Ductile Detailing for Seismic Resistance\n\n### Units\n\nAll inputs and outputs use consistent units:\n- **Length**: millimeters (mm)\n- **Force**: kilonewtons (kN)\n- **Moment**: kilonewton-meters (kN·m)\n- **Stress**: N/mm² (MPa)\n- **Area**: mm²\n",
     "license": {
       "name": "MIT License",
       "url": "https://opensource.org/licenses/MIT"
@@ -16310,7 +16757,7 @@
     },
     "/api/v1/design/beam": {
       "post": {
-        "description": "Calculate required reinforcement for a beam section under given loading.",
+        "description": "Calculate required reinforcement for a rectangular beam under flexure, shear, and optional torsion.",
         "operationId": "design_beam_api_v1_design_beam_post",
         "requestBody": {
           "content": {
@@ -16562,7 +17009,7 @@
     },
     "/api/v1/design/beam/enhanced-shear": {
       "post": {
-        "description": "Calculate enhanced design shear strength \u03c4c' for sections close to supports per IS 456:2000 Cl 40.3. Applies when a concentrated load acts within 2d of the face of support.",
+        "description": "Calculate enhanced design shear strength τc' for sections close to supports per IS 456:2000 Cl 40.3. Applies when a concentrated load acts within 2d of the face of support.",
         "operationId": "enhanced_shear_api_v1_design_beam_enhanced_shear_post",
         "requestBody": {
           "content": {
@@ -16688,7 +17135,7 @@
     },
     "/api/v1/design/column": {
       "post": {
-        "description": "Complete column design check \u2014 classifies the column, computes effective length, applies minimum eccentricity, checks axial and bending capacity per the appropriate IS 456 clause.",
+        "description": "Complete column design check — classifies the column, computes effective length, applies minimum eccentricity, checks axial and bending capacity per the appropriate IS 456 clause.",
         "operationId": "design_column_api_v1_design_column_post",
         "requestBody": {
           "content": {
@@ -16730,7 +17177,7 @@
     },
     "/api/v1/design/column/additional-moment": {
       "post": {
-        "description": "Calculate additional moment Ma = Pu \u00d7 eadd for slender columns, where eadd = D \u00d7 (le/D)\u00b2 / 2000. Includes k-factor reduction per Cl 39.7.1.1.",
+        "description": "Calculate additional moment Ma = Pu × eadd for slender columns, where eadd = D × (le/D)² / 2000. Includes k-factor reduction per Cl 39.7.1.1.",
         "operationId": "additional_moment_api_v1_design_column_additional_moment_post",
         "requestBody": {
           "content": {
@@ -16772,7 +17219,7 @@
     },
     "/api/v1/design/column/axial": {
       "post": {
-        "description": "Calculate the axial load capacity of a short column under pure axial load (or minimum eccentricity) per IS 456:2000 Cl. 39.3: Pu = 0.4\u00b7fck\u00b7Ac + 0.67\u00b7fy\u00b7Asc.",
+        "description": "Calculate the axial load capacity of a short column under pure axial load (or minimum eccentricity) per IS 456:2000 Cl. 39.3: Pu = 0.4·fck·Ac + 0.67·fy·Asc.",
         "operationId": "column_axial_capacity_api_v1_design_column_axial_post",
         "requestBody": {
           "content": {
@@ -16814,7 +17261,7 @@
     },
     "/api/v1/design/column/biaxial-check": {
       "post": {
-        "description": "Check a column section under biaxial bending using the Bresler load contour method per IS 456:2000 Cl. 39.6. Returns the interaction ratio (Mux/Mux1)^\u03b1n + (Muy/Muy1)^\u03b1n and safety status.",
+        "description": "Check a column section under biaxial bending using the Bresler load contour method per IS 456:2000 Cl. 39.6. Returns the interaction ratio (Mux/Mux1)^αn + (Muy/Muy1)^αn and safety status.",
         "operationId": "biaxial_check_api_v1_design_column_biaxial_check_post",
         "requestBody": {
           "content": {
@@ -17024,7 +17471,7 @@
     },
     "/api/v1/design/column/effective-length": {
       "post": {
-        "description": "Calculate the effective length of a column based on end restraint conditions per IS 456:2000 Cl. 25.2, Table 28. Returns le = ratio \u00d7 l for seven standard end-condition cases.",
+        "description": "Calculate the effective length of a column based on end restraint conditions per IS 456:2000 Cl. 25.2, Table 28. Returns le = ratio × l for seven standard end-condition cases.",
         "operationId": "calculate_effective_length_api_v1_design_column_effective_length_post",
         "requestBody": {
           "content": {

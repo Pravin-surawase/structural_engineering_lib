@@ -187,8 +187,8 @@ def get_test_cases() -> list[dict[str, Any]]:
         "width": 300,
         "depth": 450,
         "length": 5000,
-        "Mu": 120,
-        "Vu": 80,
+        "moment": 120,
+        "shear": 80,
         "fck": 25,
         "fy": 500,
     }
@@ -199,8 +199,8 @@ def get_test_cases() -> list[dict[str, Any]]:
         "depth": 450,
         "provided_ast": 1200,
         "provided_stirrup_area": 100,
-        "Mu": 120,
-        "Vu": 80,
+        "moment": 120,
+        "shear": 80,
         "fck": 25,
         "fy": 500,
     }
@@ -232,8 +232,8 @@ def get_test_cases() -> list[dict[str, Any]]:
         "width": 300,
         "depth": 450,
         "length": 5000,
-        "Mu": 120,
-        "Vu": 80,
+        "moment": 120,
+        "shear": 80,
         "fck": 25,
         "fy": 500,
     }
@@ -318,8 +318,8 @@ def get_quick_test_cases() -> list[dict[str, Any]]:
         "width": 300,
         "depth": 450,
         "length": 5000,
-        "Mu": 120,
-        "Vu": 80,
+        "moment": 120,
+        "shear": 80,
         "fck": 25,
         "fy": 500,
     }

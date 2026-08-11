@@ -30,7 +30,7 @@ export interface CatalogExample {
 
 export interface WorkflowCapability {
   capability_id: 'is456.beam.design';
-  capability_version: '1.0.0';
+  capability_version: '1.1.0';
   element: 'beam';
   title: string;
   summary: string;
@@ -50,7 +50,7 @@ export interface WorkflowCapability {
 
 export interface WorkflowCatalog {
   schema_version: '1.0';
-  catalog_version: '1.0.0';
+  catalog_version: '1.1.0';
   code_edition: 'IS 456:2000';
   compatible_versions: string[];
   capabilities: WorkflowCapability[];

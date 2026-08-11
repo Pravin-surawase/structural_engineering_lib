@@ -1093,6 +1093,9 @@ def design_beam_is456(
     ast_mm2_for_shear: float | None = None,
     deflection_params: DeflectionParams | None = None,
     crack_width_params: CrackWidthParams | None = None,
+    tu_knm: float = 0.0,
+    cover_mm: float | None = None,
+    stirrup_dia_mm: float = 8.0,
 ) -> ComplianceCaseResult:
     """Design/check a single IS 456 beam case (strength + optional serviceability).
 
@@ -1114,6 +1117,10 @@ def design_beam_is456(
         ast_mm2_for_shear: Use this Ast for shear table lookup (optional).
         deflection_params: Per-case deflection params (optional).
         crack_width_params: Per-case crack width params (optional).
+        tu_knm: Factored torsional moment (kN·m). Zero preserves the
+            flexure/shear-only route.
+        cover_mm: Clear cover (mm), required when ``tu_knm > 0``.
+        stirrup_dia_mm: Closed-stirrup diameter (mm) used for torsion design.
 
     Returns:
         ComplianceCaseResult with flexure, shear, and optional serviceability checks.
@@ -1124,6 +1131,7 @@ def design_beam_is456(
     Units (IS456):
     - Mu: kN·m (factored)
     - Vu: kN (factored)
+    - Tu: kN·m (factored)
     - b_mm, D_mm, d_mm, d_dash_mm: mm
     - fck_nmm2, fy_nmm2: N/mm² (MPa)
 
@@ -1153,8 +1161,41 @@ def design_beam_is456(
         ("fy_nmm2", fy_nmm2),
         ("d_dash_mm", d_dash_mm),
         ("asv_mm2", asv_mm2),
+        ("tu_knm", tu_knm),
     ):
         _require_finite_real(name, value)
+
+    if tu_knm < 0:
+        raise ValueError("tu_knm must be >= 0.")
+
+    if tu_knm > 0:
+        if cover_mm is None:
+            raise ValueError(
+                "TORSION_SCOPE_HOLD: cover_mm is required when tu_knm > 0."
+            )
+        _require_finite_real("cover_mm", cover_mm)
+        _require_finite_real("stirrup_dia_mm", stirrup_dia_mm)
+        if not 15 <= fck_nmm2 <= 40:
+            raise ValueError(
+                "TORSION_SCOPE_HOLD: primary-route torsion is limited to "
+                "fck_nmm2 from 15 to 40 N/mm²."
+            )
+        if fy_nmm2 > 500:
+            raise ValueError(
+                "TORSION_SCOPE_HOLD: primary-route torsion is limited to "
+                "fy_nmm2 <= 500 N/mm²."
+            )
+        if cover_mm <= 0 or stirrup_dia_mm <= 0:
+            raise ValueError(
+                "TORSION_SCOPE_HOLD: cover_mm and stirrup_dia_mm must be positive."
+            )
+        b1_mm = b_mm - 2 * (cover_mm + stirrup_dia_mm / 2)
+        d1_mm = D_mm - 2 * (cover_mm + stirrup_dia_mm / 2)
+        if b1_mm <= 0 or d1_mm <= 0:
+            raise ValueError(
+                "TORSION_SCOPE_HOLD: cover and stirrup diameter leave no positive "
+                "closed-stirrup core."
+            )
 
     # Unit plausibility guards (catch common mistakes)
     _validate_plausibility(
@@ -1186,6 +1227,9 @@ def design_beam_is456(
         ast_mm2_for_shear=ast_mm2_for_shear,
         deflection_params=deflection_params,
         crack_width_params=crack_width_params,
+        tu_knm=tu_knm,
+        cover_mm=cover_mm,
+        stirrup_dia_mm=stirrup_dia_mm,
     )
 
 

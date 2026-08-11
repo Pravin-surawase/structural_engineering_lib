@@ -12,7 +12,7 @@ vi.mock('react-router-dom', () => ({
 describe('WorkbenchHomePage', () => {
   beforeEach(() => navigate.mockClear());
 
-  it('keeps one project action and one quick-design entry reachable', () => {
+  it('keeps project, quick-beam, and rectangular-column review entries reachable', () => {
     render(<WorkbenchHomePage />);
 
     fireEvent.click(screen.getByRole('button', { name: /open quick beam/i }));
@@ -20,6 +20,8 @@ describe('WorkbenchHomePage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /open slab workbench/i }));
     expect(navigate).toHaveBeenCalledWith('/workbench/slabs');
+    fireEvent.click(screen.getByRole('button', { name: /open column review/i }));
+    expect(navigate).toHaveBeenCalledWith('/workbench/columns/rectangular');
 
     fireEvent.click(screen.getByRole('button', { name: /^new project/i }));
     expect(navigate).toHaveBeenCalledWith('/workbench/projects/new');

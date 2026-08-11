@@ -442,7 +442,7 @@
     {
       "name": "design_beam_is456",
       "kind": "function",
-      "signature": "(*, units: 'str', case_id: 'str' = 'CASE-1', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, deflection_params: 'DeflectionParams | None' = None, crack_width_params: 'CrackWidthParams | None' = None) -> 'ComplianceCaseResult'"
+      "signature": "(*, units: 'str', case_id: 'str' = 'CASE-1', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, deflection_params: 'DeflectionParams | None' = None, crack_width_params: 'CrackWidthParams | None' = None, tu_knm: 'float' = 0.0, cover_mm: 'float | None' = None, stirrup_dia_mm: 'float' = 8.0) -> 'ComplianceCaseResult'"
     },
     {
       "name": "design_column_axial_is456",

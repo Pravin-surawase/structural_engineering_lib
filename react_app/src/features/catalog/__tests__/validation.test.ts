@@ -3,12 +3,12 @@ import { parseWorkflowCatalog } from '../validation';
 
 const VALID_CATALOG = {
   schema_version: '1.0',
-  catalog_version: '1.0.0',
+  catalog_version: '1.1.0',
   code_edition: 'IS 456:2000',
-  compatible_versions: ['1.0', '1.0.0'],
+  compatible_versions: ['1.0', '1.0.0', '1.1.0'],
   capabilities: [{
     capability_id: 'is456.beam.design',
-    capability_version: '1.0.0',
+    capability_version: '1.1.0',
     element: 'beam',
     title: 'Beam design',
     summary: 'One beam',
