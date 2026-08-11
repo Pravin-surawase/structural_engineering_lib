@@ -16,7 +16,7 @@ Use this only for an actual release candidate. The canonical automation owns res
 ## Preconditions
 
 - Run from the workspace root on the intended release branch.
-- Know the exact target version in `X.Y.Z` form.
+- Know the exact target version in PEP 440 `X.Y.ZaN` form for Alpha releases (or the exact stable `X.Y.Z` form for stable releases).
 - Preserve unrelated work; preflight requires a clean working tree.
 - The `PR Gate` for the release candidate must pass on its current commit.
 
