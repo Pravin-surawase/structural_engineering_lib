@@ -1180,3 +1180,12 @@ Older release notes may reference the historical stub paths that existed at the 
 - DXF schedule polish (column widths, text sizing, smart truncation)
 - AI model name fix (`gpt-4o-mini`)
 - Streamlit API index for component reuse
+
+---
+
+## v0.23.1a1 - Prepared candidate (unreleased; on hold)
+**Status:** Prepared candidate; not tagged or published.
+**Source:** `72d2d9b8ccc1350b46499dc5a5d08df6284fe10f`
+
+This candidate is retained for exact-artifact evidence only. No owner authorization
+for tagging, package publication, or a GitHub Release is recorded here.

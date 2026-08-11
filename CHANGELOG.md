@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.23.1a1] - Prepared candidate (unreleased; on hold)
+
+- v0.23.1a1 candidate source prepared for evidence collection; not tagged or published.
+
 ### Added
 
 - Versioned beam workflow catalogue, thin discovery API, curated schema-driven
