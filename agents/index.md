@@ -16,6 +16,7 @@
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [README.md](README.md) | Agent Prompt Cheat Sheet | > **⚠️ NOTE:** The authoritative role system is in .github/a | 145 |
+| [spark-worker-packet-template.md](spark-worker-packet-template.md) | Spark Worker Packet Template | Required packet shape for bounded Spark execution packets | 29 |
 
 ## Subfolders
 

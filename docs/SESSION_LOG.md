@@ -5,6 +5,62 @@
 
 ---
 
+## 2026-08-11 — Session: GPT-5.3-Codex-Spark Work Program
+
+**Agent:** Codex
+**Branch:** `codex/gpt-5-3-spark-work-program`
+**Focus:** Create an isolated branch and an in-depth, review-gated Spark execution plan
+
+### Summary
+
+- Created the isolated Spark program branch from clean `main` at `a0e115e1`.
+- Verified official Spark preview properties and separated them from unknown
+  future pricing, availability, and project-specific quality assumptions.
+- Defined a 70-packet, eight-wave program with worktree protection, task packets,
+  verification gates, escalation rules, usage measurement, and owner checkpoints.
+- Kept all implementation unauthorized pending owner review gate G0.
+
+### PRs Merged
+
+| PR | Summary |
+|----|---------|
+| None | Planning remains local for review |
+
+### Key Deliverables
+
+- `docs/planning/gpt-5-3-codex-spark-work-program.md`
+- Updated task-board and next-session review state
+
+### Issues encountered
+
+- The canonical global index command rewrote 28 unrelated folder indexes,
+  including a large research-index reduction, which would have polluted the
+  planning-only branch and obscured review.
+- The first unified documentation check rejected the new plan's descriptive
+  `proposed-review-required` status and `master-plan` document type.
+
+### Root causes and resolutions
+
+- `./run.sh generate indexes` intentionally processes every indexed folder, so
+  pre-existing projection drift outside `docs/planning/` was regenerated along
+  with the new plan. The exact unrelated generator diffs were inspected and
+  reversed; only `docs/planning/index.*` and the parent `docs/index.json` updates
+  required to discover SPARK-001 were retained. `git diff --check` and the final
+  repository gates provide the corrected-state evidence.
+- The documentation schema accepts only its enumerated front-matter values. The
+  plan now uses `status: draft` and `doc_type: spec`; the separate
+  `implementation_authorized: false` field preserves the review hold. The
+  unified documentation check is rerun as the correction evidence.
+
+### Notes
+
+- No Spark implementation, product behavior, structural calculation, release,
+  merge, or GitHub mutation was performed.
+- Verification: 70 unique packet IDs; unified documentation checks 5/5;
+  token-efficiency check passed; `./run.sh check --quick` passed 10/10; and
+  `git diff --check` reported no whitespace errors.
+
+
 ## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
 
 **Agent:** Codex

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-10 — UIX-001 merged; fresh-start maintenance complete; no active implementation packet
+**Updated:** 2026-08-11 — SPARK-001 planning branch created; implementation awaits owner review
 
 ---
 
@@ -126,12 +126,13 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| — | No implementation task is active after UIX-001 closeout | — | Await the next owner-selected packet |
+| SPARK-001 | Establish a measured GPT-5.3-Codex-Spark work program for bounded high-throughput tasks | Main Agent + repository owner | 📝 PLAN READY — implementation held for owner review |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL STABLE GATE |
 
 ## Backlog

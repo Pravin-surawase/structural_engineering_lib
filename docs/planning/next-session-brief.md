@@ -3,29 +3,45 @@
 ## Latest Handoff
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-10
-- Focus: Fresh-start maintenance complete; no implementation packet is active
+- Date: 2026-08-11
+- Focus: SPARK-001 master plan ready for owner review; implementation remains paused
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
 
-**Branch:** `main` after the maintenance closeout merge
+**Branch:** `codex/gpt-5-3-spark-work-program`
 
-**Base:** UIX-001 merged at `64e33627`; maintenance branch started from that exact main
+**Base:** clean `main` at `a0e115e17009cc14b3d883e3c291d47c32f7ca4e`
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | Repository ready | Main synchronized, health 100/100, generated truth current, root checkout clean |
-| **Next** | No active implementation packet | Await the owner-selected task; do not invent a third UIX cleanup session |
+| **Current** | SPARK-001 planning | Isolated branch and worker-ready 70-packet program prepared |
+| **Next** | Owner review gate G0 | Accept, revise, or reject Wave 0; do not begin implementation before acceptance |
 | **Held** | Stable/engineering use | Requires cumulative qualified structural-engineering review |
 
 ## Required Reading
 
+- [GPT-5.3-Codex-Spark work program](gpt-5-3-codex-spark-work-program.md)
+- [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
 - [UI experience foundation master plan](ui-experience-foundation-master-plan.md)
 - [Session 2 acceptance](../verification/ui-experience-session-2-acceptance.md)
 - [Current task board](../TASKS.md)
 - [Release policy](../getting-started/releases.md)
+
+## SPARK-001 planning state
+
+- The isolated program branch was created from clean `main`; no product or
+  calculation implementation was started.
+- The plan records verified preview properties, current usage/pricing uncertainty,
+  protected structural and security areas, active worktree ownership, mandatory
+  tests, escalation triggers, cost-learning fields, and independent review gates.
+- Seventy bounded packets are organized into eight waves covering control-plane
+  calibration, documentation truth, automation contracts, API examples, bounded
+  React behavior, runnable examples, verification operations, and post-merge
+  integration.
+- Wave 0 remains unauthorized until the repository owner accepts or revises the
+  plan. Acceptance of G0 authorizes only the specifically approved first wave.
 
 ## Fresh-start maintenance closeout
 

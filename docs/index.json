@@ -2,7 +2,7 @@
   "folder": "docs",
   "type": "documentation",
   "description": "Guides, references, evidence, and contributor material for the",
-  "last_updated": "2026-08-10",
+  "last_updated": "2026-08-11",
   "file_count": 6,
   "files": [
     {
@@ -17,20 +17,20 @@
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 948,
-      "last_updated": "2026-08-10",
+      "size_lines": 1004,
+      "last_updated": "2026-08-11",
       "title": "Session Log",
       "description": "> Append-only decision log for AI agent sessions. > Earlier sessions (1-100): SESSION_LOG_through_session_100.md",
-      "content_hash": "b5a66d3814b6"
+      "content_hash": "f6ddedccc173"
     },
     {
       "name": "TASKS.md",
       "type": "documentation",
-      "size_lines": 669,
-      "last_updated": "2026-08-10",
+      "size_lines": 670,
+      "last_updated": "2026-08-11",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "07e630125604"
+      "content_hash": "8c044550e19d"
     },
     {
       "name": "WORKLOG.md",
@@ -181,7 +181,7 @@
     {
       "name": "planning",
       "path": "planning/",
-      "file_count": 17
+      "file_count": 18
     },
     {
       "name": "publications",
@@ -212,5 +212,5 @@
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "d118b6845dc97f7a"
+  "content_hash": "590fcdad82d99744"
 }

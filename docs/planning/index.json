@@ -2,14 +2,14 @@
   "folder": "docs/planning",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-10",
-  "file_count": 15,
+  "last_updated": "2026-08-11",
+  "file_count": 16,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 152,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-11",
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
       "content_hash": "3db99326bf3a"
@@ -56,6 +56,14 @@
       "content_hash": "88e3dfd24f78"
     },
     {
+      "name": "gpt-5-3-codex-spark-work-program.md",
+      "type": "documentation",
+      "size_lines": 605,
+      "last_updated": "2026-08-11",
+      "description": "Use GPT-5.3-Codex-Spark as a high-throughput implementation lane for small, explicit, rapidly verifiable tasks. The program targets truthful documentation,",
+      "content_hash": "c7c305412f4d"
+    },
+    {
       "name": "is456-library-first-master-plan.md",
       "type": "documentation",
       "size_lines": 1497,
@@ -91,17 +99,17 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 95,
-      "last_updated": "2026-08-10",
+      "size_lines": 111,
+      "last_updated": "2026-08-11",
       "title": "Next Session Briefing",
-      "description": "<!-- HANDOFF:START --> - Date: 2026-08-10",
-      "content_hash": "a70e069656d5"
+      "description": "<!-- HANDOFF:START --> - Date: 2026-08-11",
+      "content_hash": "10deafb7daa6"
     },
     {
       "name": "pre-release-checklist.md",
       "type": "documentation",
       "size_lines": 66,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-11",
       "title": "Pre-Release Checklist",
       "description": "Installed metadata version: 0.23.0 - **Release source:** tag v0.23.0 at 3f880d5bbc338baefc4aec8ed472cafe840a5c99",
       "content_hash": "c8c34a3bd461"
@@ -133,5 +141,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "923de532575a35d7"
+  "content_hash": "d325769c792d2a2c"
 }
