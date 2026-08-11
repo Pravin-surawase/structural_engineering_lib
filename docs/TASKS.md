@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-11 — 0.23.1a1 local candidate verification repaired; publication remains held
+**Updated:** 2026-08-11 — 0.23.1a1 publication authorized; exact-head release sequence in progress
 
 ---
 
@@ -70,7 +70,7 @@
 ## Current Release
 
 | **Current public release** | v0.23.0 | ✅ ALPHA RELEASED — exact CI/public artifact evidence recorded |
-- **Prepared candidate:** `0.23.1a1` local prepublication rehearsal; not tagged, published, or CI-authoritative
+- **Release candidate:** `0.23.1a1`; owner-authorized for TestPyPI, production PyPI, tag, and GitHub prerelease after exact-head gates
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
 - **Target:** keep later roadmap work inactive until separately activated
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| ALPHA-0231-CANDIDATE | Repair exact-wheel isolation, candidate truth, and reproducible preflight | Main Agent + ops | 🟡 DRAFT PR #732 OPEN — prevention controls added; local gates green; CI and owner review remain |
+| ALPHA-0231-CANDIDATE | Publish the exact 0.23.1a1 Alpha candidate through gated CI | Main Agent + ops | 🟡 AUTHORIZED — release-ready metadata and exact-head TestPyPI evidence in progress |
 
 ## Up Next
 

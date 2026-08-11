@@ -9,7 +9,7 @@
 
 ## Current State
 
-Candidate source metadata: 0.23.1a1 (local prepublication rehearsal)
+Release-ready source metadata: 0.23.1a1
 Current public release: v0.23.0 Alpha
 
 - **Release source:** tag `v0.23.0` at `3f880d5bbc338baefc4aec8ed472cafe840a5c99`
@@ -25,12 +25,14 @@ Current public release: v0.23.0 Alpha
 - [x] Pass `./run.sh release footing-inclusion-check` with exact footing-owned files and Python/FastAPI/React integration markers present
 - [x] Verify the frozen local wheel through isolated installed-package tests and CLI UAT; retain the inclusion receipt hash in the local rehearsal record
 
-### v0.23.1a1 Local Prepublication Rehearsal
+### v0.23.1a1 Release Authorization
 
 - Source: `72d2d9b8ccc1350b46499dc5a5d08df6284fe10f`
 - Evidence: [v0.23.1a1 local rehearsal](../verification/alpha-0231-local-prepublication-rehearsal.md)
-- Status: local evidence only; not tagged, published, or a substitute for the CI artifact manifest
-- Publication authorization: not recorded for this candidate
+- Status: owner-authorized Alpha release; TestPyPI and exact-head CI evidence must pass before the production tag
+- [x] Owner authorizes the v0.23.1a1 TestPyPI rehearsal
+- [x] Owner authorizes the v0.23.1a1 tag, production PyPI publication, and GitHub Release after exact CI evidence passes
+- Authorization source: direct owner instruction in the active Codex task on 2026-08-11
 
 ## Beta Readiness Checklist
 

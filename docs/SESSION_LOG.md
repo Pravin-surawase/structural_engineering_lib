@@ -2387,3 +2387,44 @@ calculation/service/FastAPI contract without changing the separate torsion route
   `9f7ebf55afa8232eeeb3f35449450a4bc8aca5d835c9f017f308052c979f1de6`.
 
 ---
+
+## 2026-08-11 — Session: 0.23.1a1 Authorized Publication
+
+**Agent:** Codex (`ops`)
+**Branch:** `codex/alpha-0231-candidate-evidence`
+**Focus:** Publish the reviewed Alpha candidate through exact-head TestPyPI,
+production PyPI, tag, and GitHub prerelease gates.
+
+### Summary
+
+- Recorded the owner's explicit 2026-08-11 authorization for the
+  `v0.23.1a1` TestPyPI rehearsal, production tag/PyPI publication, and GitHub
+  prerelease after exact-head evidence passes.
+- Converted candidate-only metadata to a dated, release-ready Alpha state while
+  preserving the case-qualified scope and professional-review boundary.
+
+### Issues encountered
+
+- Publication was explicitly authorized in the active task, but the versioned
+  checklist, changelog, citation metadata, task board, handoff, and immutable
+  release ledger still recorded an unreleased hold.
+
+### Root causes and resolutions
+
+- Root cause: the previous task deliberately stopped at a reviewed local
+  rehearsal and therefore could not record per-release publication authority.
+  Resolution: bind the owner's current instruction to the exact Alpha version,
+  require an exact-head TestPyPI rehearsal before the production tag, and use a
+  new append-only release-ledger entry to supersede the historical hold without
+  rewriting it. Evidence: release preflight, CI workflow run identities,
+  package-index verification, tag, and GitHub prerelease evidence are recorded
+  below as the authorized sequence completes.
+
+### Verification
+
+- Pending release-ready preflight and PR CI at the metadata commit.
+- Pending exact-head TestPyPI workflow and installed-package verification.
+- Pending unchanged-head merge, production tag workflow, PyPI verification,
+  GitHub prerelease assets, and final repository closeout.
+
+---

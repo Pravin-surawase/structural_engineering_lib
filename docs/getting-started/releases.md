@@ -1189,3 +1189,23 @@ Older release notes may reference the historical stub paths that existed at the 
 
 This candidate is retained for exact-artifact evidence only. No owner authorization
 for tagging, package publication, or a GitHub Release is recorded here.
+
+---
+
+## v0.23.1a1 — Authorized Alpha Release (2026-08-11)
+
+**Status:** Release authorized; TestPyPI rehearsal and exact-head evidence must
+pass before the production tag is pushed.
+**Authorization:** Owner-approved TestPyPI, production PyPI, tag, and GitHub
+prerelease sequence on 2026-08-11.
+**Supersedes:** The prepared-candidate hold recorded immediately above.
+**Scope:** Case-qualified beam, rectangular-column, concentric isolated-footing,
+and bounded solid-slab workflows; not complete IS 456 coverage or professional
+design approval.
+
+Release evidence will be bound to the exact tag-triggered workflow run. The
+production workflow must build its own wheel and sdist, verify their allowlists,
+run clean-environment UAT, generate a CycloneDX SBOM, publish through trusted
+OIDC, and create the GitHub prerelease only after PyPI succeeds.
+
+**Full changelog:** See [CHANGELOG.md](../../CHANGELOG.md#0231a1--2026-08-11)

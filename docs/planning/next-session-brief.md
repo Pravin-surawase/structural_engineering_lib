@@ -4,7 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-11
-- Focus: 0.23.1a1 candidate repair and repeat-debug prevention on preserved exact artifacts
+- Focus: owner-authorized 0.23.1a1 TestPyPI, production PyPI, tag, and GitHub prerelease sequence
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
@@ -16,9 +16,9 @@
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | Candidate prevention controls | Worktree runtime, session trust, automation discovery, metadata, and FastAPI preflight parity pass local gates |
-| **Next** | Candidate draft PR #732 | Inspect the updated normal PR CI and owner review; preserve every publication hold |
-| **Held** | Publication and engineering-use claims | No tag/TestPyPI/PyPI/GitHub Release; qualified review remains a separate stable gate |
+| **Current** | Release-ready metadata | Owner authorization recorded; exact-head gates and TestPyPI rehearsal must pass before tagging |
+| **Next** | Candidate PR #732 | Mark ready and merge unchanged reviewed head, then push `v0.23.1a1` for production publication |
+| **Held** | Stable/engineering-use claims | Alpha publication does not grant qualified professional approval or complete-code coverage |
 
 ## Integrated footing scope
 

@@ -1,7 +1,8 @@
 cff-version: 1.2.0
 title: "Structural Engineering Library (IS 456)"
 version: 0.23.1a1
-message: "Candidate prepared; not tagged or published. Alpha development preview with case-qualified IS 456 workflows; independent verification and qualified professional approval remain required for engineering use."
+date-released: 2026-08-11
+message: "Alpha development preview with case-qualified IS 456 workflows; independent verification and qualified professional approval remain required for engineering use."
 repository-code: "https://github.com/Pravin-surawase/structural_engineering_lib"
 url: "https://pypi.org/project/structural-lib-is456/"
 authors:

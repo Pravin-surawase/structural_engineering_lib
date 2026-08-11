@@ -4,9 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [0.23.1a1] - Prepared candidate (unreleased; on hold)
+## [0.23.1a1] — 2026-08-11
 
-- v0.23.1a1 candidate source prepared for evidence collection; not tagged or published.
+Alpha development preview of the bounded beam, column, isolated-footing, and
+solid-slab workflows. This is case-qualified software evidence, not
+professional design approval or complete IS 456 coverage.
 
 ### Added
 
