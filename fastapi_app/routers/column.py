@@ -652,7 +652,21 @@ async def design_column(request: ColumnDesignRequest):
             M1y_kNm=request.M1y_kNm,
             M2y_kNm=request.M2y_kNm,
         )
-        return success_response(ColumnDesignResponse(**result))
+        checks = {}
+        for name, value in result["checks"].items():
+            payload = value.to_dict() if hasattr(value, "to_dict") else value
+            if isinstance(payload, dict):
+                payload = dict(payload)
+                for field_name in (
+                    "classification",
+                    "classification_x",
+                    "classification_y",
+                ):
+                    enum_value = getattr(value, field_name, None)
+                    if hasattr(enum_value, "name"):
+                        payload[field_name] = enum_value.name
+            checks[name] = payload
+        return success_response(ColumnDesignResponse(**{**result, "checks": checks}))
 
     except (ValueError, TypeError):
         logger.exception("Invalid input for unified column design")

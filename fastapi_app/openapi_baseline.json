@@ -6651,16 +6651,101 @@
         "type": "object"
       },
       "ColumnDesignResponse": {
-        "description": "Response for unified column design.",
+        "description": "Review-complete response for the unified rectangular-column check.",
         "properties": {
+          "Ma_x_kNm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ma X Knm"
+          },
+          "Ma_y_kNm": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ma Y Knm"
+          },
+          "Mux_applied_kNm": {
+            "title": "Mux Applied Knm",
+            "type": "number"
+          },
+          "Mux_design_kNm": {
+            "title": "Mux Design Knm",
+            "type": "number"
+          },
+          "Mux_min_kNm": {
+            "title": "Mux Min Knm",
+            "type": "number"
+          },
+          "Muy_applied_kNm": {
+            "title": "Muy Applied Knm",
+            "type": "number"
+          },
+          "Muy_design_kNm": {
+            "title": "Muy Design Knm",
+            "type": "number"
+          },
+          "Muy_min_kNm": {
+            "title": "Muy Min Knm",
+            "type": "number"
+          },
+          "Pu_kN": {
+            "title": "Pu Kn",
+            "type": "number"
+          },
           "checks": {
             "additionalProperties": true,
             "title": "Checks",
             "type": "object"
           },
           "classification": {
+            "enum": [
+              "SHORT",
+              "SLENDER"
+            ],
             "title": "Classification",
             "type": "string"
+          },
+          "classification_x": {
+            "enum": [
+              "SHORT",
+              "SLENDER"
+            ],
+            "title": "Classification X",
+            "type": "string"
+          },
+          "classification_y": {
+            "enum": [
+              "SHORT",
+              "SLENDER"
+            ],
+            "title": "Classification Y",
+            "type": "string"
+          },
+          "clause_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "emin_x_mm": {
+            "title": "Emin X Mm",
+            "type": "number"
+          },
+          "emin_y_mm": {
+            "title": "Emin Y Mm",
+            "type": "number"
           },
           "governing_check": {
             "title": "Governing Check",
@@ -6670,8 +6755,23 @@
             "title": "Is Safe",
             "type": "boolean"
           },
+          "le_x_mm": {
+            "title": "Le X Mm",
+            "type": "number"
+          },
+          "le_y_mm": {
+            "title": "Le Y Mm",
+            "type": "number"
+          },
+          "slenderness_x": {
+            "title": "Slenderness X",
+            "type": "number"
+          },
+          "slenderness_y": {
+            "title": "Slenderness Y",
+            "type": "number"
+          },
           "warnings": {
-            "default": [],
             "items": {
               "type": "string"
             },
@@ -6680,10 +6780,26 @@
           }
         },
         "required": [
+          "Pu_kN",
+          "Mux_applied_kNm",
+          "Muy_applied_kNm",
+          "Mux_design_kNm",
+          "Muy_design_kNm",
           "is_safe",
           "classification",
+          "classification_x",
+          "classification_y",
+          "le_x_mm",
+          "le_y_mm",
+          "slenderness_x",
+          "slenderness_y",
+          "emin_x_mm",
+          "emin_y_mm",
+          "Mux_min_kNm",
+          "Muy_min_kNm",
           "governing_check",
-          "checks"
+          "checks",
+          "clause_refs"
         ],
         "title": "ColumnDesignResponse",
         "type": "object"

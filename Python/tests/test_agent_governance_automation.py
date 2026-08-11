@@ -54,6 +54,44 @@ def test_python_runtime_launcher_uses_explicit_interpreter():
     assert Path(result.stdout.strip()).resolve() == Path(sys.executable).resolve()
 
 
+def test_python_runtime_launcher_binds_invoking_repository_imports(tmp_path):
+    launcher = SCRIPTS_DIR / "python_runtime.sh"
+    caller_path = tmp_path / "caller-pythonpath"
+    caller_path.mkdir()
+    env = os.environ.copy()
+    env["STRUCTURAL_LIB_PYTHON"] = sys.executable
+    env["PYTHONPATH"] = str(caller_path)
+    probe = """
+import json
+import os
+from pathlib import Path
+import structural_lib
+
+print(json.dumps({
+    "module": str(Path(structural_lib.__file__).resolve()),
+    "pythonpath": os.environ["PYTHONPATH"].split(os.pathsep),
+}))
+"""
+
+    result = subprocess.run(
+        [str(launcher), "-c", probe],
+        cwd=REPO_ROOT,
+        env=env,
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["pythonpath"] == [
+        str(REPO_ROOT / "Python"),
+        str(REPO_ROOT),
+        str(caller_path),
+    ]
+    assert Path(payload["module"]).is_relative_to(REPO_ROOT / "Python")
+
+
 def test_control_paths_use_python_runtime_launcher():
     launcher = str(SCRIPTS_DIR / "python_runtime.sh")
     run_sh = (REPO_ROOT / "run.sh").read_text(encoding="utf-8")

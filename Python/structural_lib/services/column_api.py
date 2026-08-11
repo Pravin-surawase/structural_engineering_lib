@@ -1222,6 +1222,8 @@ def design_column_is456(
         "Mux_applied_kNm": Mux_kNm,
         "Muy_applied_kNm": Muy_kNm,
         "classification": classification,
+        "classification_x": classification_x,
+        "classification_y": classification_y,
         "le_x_mm": le_x_mm,
         "le_y_mm": le_y_mm,
         "slenderness_x": le_x_mm / D_mm,
