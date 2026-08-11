@@ -5,6 +5,23 @@
 
 ---
 
+## 2026-08-11 — Session: Sequential Slab Integration
+
+**Focus:** Synchronize slab PR #724 with the merged CI, beam, and column feature history while preserving all four reachable workflows.
+
+### Summary
+- Merged current `main` into the preserved slab branch with additive conflict resolution for session history, OpenAPI, and shared React workbench surfaces.
+- Kept both `/workbench/slabs` and `/workbench/columns/rectangular` routes and both workbench cards reachable.
+- Regenerated `fastapi_app/openapi_baseline.json` through `scripts/check_openapi_drift.py --update`.
+
+### Issues encountered
+- The first focused slab integration run failed because `Python/tests/integration/test_api_entrypoints_is456.py` still expected capability document schema version `1.0`, while merged beam capability discovery returned `2.0`.
+
+### Root causes and resolutions
+- Root cause: The beam capability contract intentionally bumped `CAPABILITY_SCHEMA_VERSION` to `2.0`, but the shared API-entrypoint assertion remained at the old `1.0` expectation on both the pre-merge main history and slab branch.
+- Resolution: Updated the assertion to the authoritative `2.0` contract; no capability source downgrade or feature removal was made.
+- Evidence: Focused slab/Python/FastAPI regression rerun passed 48 tests after the correction; React slab/workbench tests passed 6/6 and the prior synchronized quick gate passed 10/10.
+
 ## 2026-08-11 — Session: FastAPI Load-Lane Fix
 
 **Focus:** Remove flaky shared-runner latency assertions from required FastAPI lane and validate benchmark evidence path.

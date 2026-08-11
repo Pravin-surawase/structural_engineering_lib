@@ -147,7 +147,7 @@ def test_capability_registry_names_every_supported_core_element():
 def test_capability_document_is_json_native_and_preserves_review_boundaries():
     document = services_api.get_supported_is456_capability_document()
 
-    assert document["schema_version"] == "1.0"
+    assert document["schema_version"] == "2.0"
     assert document["code_edition"] == "IS 456:2000"
     assert [item["capability_id"] for item in document["capabilities"]] == [
         "beam",
