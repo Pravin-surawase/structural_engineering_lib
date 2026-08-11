@@ -2,7 +2,7 @@
   "folder": "Python/structural_lib/codes/is456",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-10",
+  "last_updated": "2026-08-11",
   "file_count": 14,
   "files": [
     {
@@ -406,7 +406,7 @@
     {
       "name": "slab",
       "path": "slab/",
-      "file_count": 8,
+      "file_count": 16,
       "is_package": true
     }
   ],
@@ -432,5 +432,5 @@
     "list_clauses_by_category",
     "search_clauses"
   ],
-  "content_hash": "c43647f7ac0dc25a"
+  "content_hash": "1eddf584c6005f42"
 }

@@ -3,7 +3,7 @@
 > Development, validation, discovery, release-preparation, and maintenance tools.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 **Files:** 108
 
 ## Config Files
@@ -91,7 +91,7 @@
 | [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 203 |
 | [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 908 |
 | [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 3 | 494 |
-| [release.py](release.py) | Unified release management CLI. | 0 | 8 | 1353 |
+| [release.py](release.py) | Unified release management CLI. | 0 | 10 | 1592 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 350 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
 | [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2294 |

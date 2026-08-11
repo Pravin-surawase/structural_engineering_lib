@@ -4,21 +4,46 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-11
-- Focus: Beam and column feature PRs are merged; slab PR #724 is being synchronized and validated before footing integration
+- Focus: Beam, column, and slab PRs are merged; preserved permission and complete footing history are active in the dedicated Alpha integration lane
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
 
-**Planning branch:** `codex/is456-slabs-plan`
+**Integration branch:** `codex/alpha-0231-integration`
 
-**Base:** implementation branch from `a0e115e1`; planning checkpoint `8c558abc`; implementation closeout is committed locally in this session and discoverable from `git log`
+**Base:** current `origin/main` after sequential beam, column, and slab merges;
+preserved release guards and footing history are being integrated here
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | IS456-SLAB-001 software complete | Pure calculations, public facade, 74-endpoint OpenAPI snapshot, FastAPI and React slab workbench are verified |
-| **Next** | Owner/GitHub handoff | Review the local commit and authorize push/PR when desired; no release was performed |
-| **Held** | Launch/stable/engineering use | Formal source/licensing permission before public production distribution plus cumulative qualified structural-engineering review |
+| **Current** | Alpha integration lane | Beam, column, and slab are merged; preserved permission/footing release guards are being integrated from exact reviewed heads |
+| **Next** | Preservation proof and integration PR | Prove both preserved ancestors, zero missing footing files/markers, exact footing-owned file identity, and all four workflows before opening the PR |
+| **Held** | Candidate release and engineering-use claims | `0.23.1a1` evidence remains non-publishing; qualified review remains a separate stable/engineering-use gate |
+
+## Integrated footing scope
+
+- The maintained scope is one concentric square/rectangular isolated-footing
+  workflow with explicit service and factored actions, external allowable-soil-
+  pressure approval, and approved A1 load-transfer evidence.
+- Overall thickness and effective depth remain distinct; flexure, directional
+  one-way shear, punching shear, bearing, and uniform-depth selection are
+  fail-closed.
+- Optional two-layer bottom-reinforcement detailing returns physical directional
+  depths, bar schedules, rectangular central/outer-band zones, anchorage evidence
+  and linked dowels. Missing or unsupported inputs remain visible HOLDs.
+- The release inclusion receipt binds 15 footing-owned file hashes and six
+  cross-layer markers; verify it after the complete merge before any PR action.
+
+## Public-distribution permission
+
+- The repository owner confirmed source/licensing permission on 2026-08-11 for
+  approved-scope normalized IS 456 data. The canonical record is
+  [`is456-public-distribution-permission.json`](../verification/is456-public-distribution-permission.json);
+  release preflight, candidate checks, and publish CI validate it fail closed.
+- The private corpus remains private, protected prose/images remain excluded,
+  and each release still needs separate owner authorization. Do not report this
+  gate as pending unless the owner explicitly changes the recorded decision.
 
 ## Required Reading
 

@@ -137,9 +137,13 @@ def footing_flexure(
         - One-directional bending per direction; does not consider
           biaxial moment effects on steel distribution.
     """
-    validate_footing_inputs(L_mm, B_mm, d_mm, a_mm, b_mm)
-    require_finite_real(
-        "overall_thickness_mm", overall_thickness_mm, error_type=DimensionError
+    validate_footing_inputs(
+        L_mm,
+        B_mm,
+        d_mm,
+        a_mm,
+        b_mm,
+        overall_thickness_mm=overall_thickness_mm,
     )
     if not 0 < d_mm < overall_thickness_mm:
         raise DimensionError(

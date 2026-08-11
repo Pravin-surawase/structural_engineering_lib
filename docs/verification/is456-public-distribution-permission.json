@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "record_id": "IS456-PUBLIC-DISTRIBUTION-001",
+  "decision": "AUTHORIZED",
+  "effective_date": "2026-08-11",
+  "authority": "repository_owner",
+  "permission_basis": "Owner confirmation recorded in the project session on 2026-08-11.",
+  "scope": {
+    "standard": "IS 456:2000 through Amendment 6",
+    "public_distribution_of_normalized_code_data": true,
+    "approved_feature_scope_only": true,
+    "includes": [
+      "formulas",
+      "normalized tables",
+      "limits",
+      "figure-derived values",
+      "lookup",
+      "interpolation"
+    ],
+    "explicit_examples": [
+      "slab Tables 12, 13, 26, and 27"
+    ]
+  },
+  "restrictions": {
+    "protected_clause_prose_in_repository": false,
+    "page_images_in_repository": false,
+    "unrelated_standard_content_in_repository": false,
+    "preserve_runtime_provenance": true
+  },
+  "release_boundaries": {
+    "authorizes_tag_or_publish": false,
+    "per_release_owner_authorization_required": true,
+    "qualified_structural_engineering_review_required_for_stable_or_engineering_use": true
+  }
+}

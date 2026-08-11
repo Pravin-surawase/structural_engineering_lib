@@ -2,7 +2,7 @@
   "folder": "docs/guides",
   "type": "documentation",
   "description": "End-user and developer guides for specific workflows.",
-  "last_updated": "2026-08-10",
+  "last_updated": "2026-08-11",
   "file_count": 9,
   "files": [
     {
@@ -50,9 +50,9 @@
       "name": "maintenance-checklist.md",
       "type": "documentation",
       "size_lines": 190,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-11",
       "description": "| Frequency | Command | What It Does | Time | |-----------|---------|-------------|------|",
-      "content_hash": "fd02d0b104d2"
+      "content_hash": "4f80e8213aa2"
     },
     {
       "name": "react-ui-user-flow.md",
@@ -80,5 +80,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "90055d1eeb31fa48"
+  "content_hash": "93fb088af19e540f"
 }

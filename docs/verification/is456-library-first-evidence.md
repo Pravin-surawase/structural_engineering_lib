@@ -5,9 +5,9 @@
 **Status:** Review
 **Importance:** Critical
 **Created:** 2026-08-09
-**Last Updated:** 2026-08-10
-**Date:** 2026-08-10
-**State:** C0-C4 complete; v0.23.0 Alpha published with exact CI/public-package evidence; qualified review deferred to final stable/engineering-use approval
+**Last Updated:** 2026-08-11
+**Date:** 2026-08-11
+**State:** C0-C4 complete; v0.23.0 Alpha published; approved-scope normalized-data public-distribution permission confirmed; qualified review deferred to final stable/engineering-use approval
 
 ## Controlled sources
 
@@ -23,6 +23,13 @@ from package discovery. Its manifest records two PDFs, 130 extracted pages,
 artifacts, and automated candidates for clauses, tables, formulas and figures.
 Those candidates remain `UNREVIEWED_SOURCE_CORPUS`; counts do not certify the
 interpretation or completeness of any formula/table normalization.
+
+The corpus manifest's non-distribution flag continues to protect the source
+PDFs, extracted pages, prose, and images. It is not the authority for derived
+normalized code data. On 2026-08-11 the owner confirmed source/licensing
+permission for public distribution of normalized IS 456 data within approved
+feature scopes. The canonical, release-validated record is
+[`is456-public-distribution-permission.json`](is456-public-distribution-permission.json).
 
 The packaged `clauses.json` contains identifiers and project-authored metadata
 only. It contains no protected standard text or table values.

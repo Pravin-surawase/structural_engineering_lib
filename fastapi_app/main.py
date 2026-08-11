@@ -42,6 +42,7 @@ from fastapi_app.routers import (
     design,
     detailing,
     export,
+    footing,
     geometry,
     health,
     imports,
@@ -114,6 +115,10 @@ API_TAGS_METADATA = [
     {
         "name": "column",
         "description": "Column design: classification, eccentricity, and axial capacity per IS 456.",
+    },
+    {
+        "name": "footing",
+        "description": "Bounded isolated-footing design and maintained evidence.",
     },
     {
         "name": "detailing",
@@ -492,6 +497,10 @@ app.include_router(
 )
 app.include_router(
     library_core.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    footing.router,
     prefix=API_V1_PREFIX,
 )
 app.include_router(

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-10",
+  "generated": "2026-08-11",
   "module": "structural_lib.api",
   "python": "3.11.15",
   "count": 130,
@@ -537,7 +537,7 @@
     {
       "name": "footing_one_way_shear",
       "kind": "function",
-      "signature": "(Pu_kN: 'float', L_mm: 'float', B_mm: 'float', d_mm: 'float', a_mm: 'float', b_mm: 'float', fck: 'float', pt: 'float' = 0.15) -> 'FootingOneWayShearResult'"
+      "signature": "(Pu_kN: 'float', L_mm: 'float', B_mm: 'float', d_mm: 'float', a_mm: 'float', b_mm: 'float', fck: 'float', pt: 'float' = 0.15, *, pt_L_percent: 'float | None' = None, pt_B_percent: 'float | None' = None) -> 'FootingOneWayShearResult'"
     },
     {
       "name": "footing_punching_shear",

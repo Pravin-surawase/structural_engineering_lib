@@ -1,7 +1,7 @@
 # Is456
 
 **Type:** Python Package
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 **Files:** 14
 
 ## Public API
@@ -56,4 +56,4 @@
 | [column/](column/) 📦 | 11 |  |
 | [common/](common/) 📦 | 5 |  |
 | [footing/](footing/) 📦 | 9 |  |
-| [slab/](slab/) 📦 | 8 |  |
+| [slab/](slab/) 📦 | 16 |  |

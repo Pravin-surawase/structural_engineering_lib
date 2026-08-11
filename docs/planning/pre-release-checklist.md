@@ -5,7 +5,7 @@
 **Status:** Review
 **Importance:** High
 **Created:** 2026-03-31
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 
 ## Current State
 
@@ -17,6 +17,12 @@ Installed metadata version: 0.23.0
 - **Release target:** v0.23.0 Alpha, published 2026-08-10 local time
 - **Publication state:** PyPI and GitHub prerelease published; exact public-version UAT green
 - **Review policy:** qualified structural-engineering review is required before stable/engineering-use approval, not before this Alpha release
+
+## Next Alpha Readiness Checklist
+
+- [ ] Integrate the complete `FOOT-ISO-RC-V1` source head `886871ae` (or an explicitly reviewed successor) into the release branch
+- [ ] Pass `./run.sh release footing-inclusion-check` with exact footing-owned files and Python/FastAPI/React integration markers present
+- [ ] Verify the clean built wheel imports the concentric isolated-footing service; retain the inclusion receipt hash in the CI artifact manifest
 
 ## Beta Readiness Checklist
 
@@ -37,6 +43,7 @@ Installed metadata version: 0.23.0
 - [x] Canonical API facade, compatibility paths and capability registry documented
 - [x] Public `clauses.json` contains identifiers/project metadata only
 - [x] Protected PDFs and extracted clause/table/formula candidates are local, hash-inventoried and Git-ignored
+- [x] Owner-confirmed public-distribution permission for approved-scope normalized IS 456 data is recorded and enforced by release tooling
 - [x] Wheel/sdist allowlist and exact-artifact UAT encoded in publish CI
 - [x] Exact local wheel/sdist hashes, inventories, protected-content result and SBOM recorded
 - [x] Exact local wheel clean-install tests and CLI UAT pass

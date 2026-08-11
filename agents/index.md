@@ -3,7 +3,7 @@
 > **⚠️ NOTE:** The authoritative role system is in `.github/agents/` (16 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlier
 
 **Type:** Documentation
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 **Files:** 3
 
 ## Config Files

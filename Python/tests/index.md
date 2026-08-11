@@ -3,7 +3,7 @@
 This document describes the test taxonomy and structure for the structural_engineering_lib test suite.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 **Files:** 58
 
 ## Documentation Files
@@ -77,7 +77,7 @@ This document describes the test taxonomy and structure for the structural_engin
 
 | Folder | Files | Description |
 |--------|-------|-------------|
-| [codes/](codes/) 📦 | 16 |  |
+| [codes/](codes/) 📦 | 18 |  |
 | [data/](data/) | 5 |  |
 | [fixtures/](fixtures/) | 11 |  |
 | [helpers/](helpers/) 📦 | 2 |  |

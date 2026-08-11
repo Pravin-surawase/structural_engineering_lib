@@ -11,6 +11,8 @@ USAGE:
     python scripts/release.py verify [--version 0.24.0a1] [--source wheel]
     python scripts/release.py check-docs
     python scripts/release.py checklist
+    python scripts/release.py permission-check
+    python scripts/release.py footing-inclusion-check
 """
 
 from __future__ import annotations
@@ -40,6 +42,12 @@ BUMP_SCRIPT = REPO_ROOT / "scripts" / "bump_version.py"
 CHANGELOG = REPO_ROOT / "CHANGELOG.md"
 RELEASES = REPO_ROOT / "docs" / "getting-started" / "releases.md"
 CHECKLIST_PATH = REPO_ROOT / "docs" / "planning" / "pre-release-checklist.md"
+PUBLIC_DISTRIBUTION_PERMISSION = (
+    REPO_ROOT / "docs" / "verification" / "is456-public-distribution-permission.json"
+)
+FOOTING_RELEASE_INCLUSION = (
+    REPO_ROOT / "docs" / "verification" / "footing-release-inclusion.json"
+)
 PYPROJECT = REPO_ROOT / "Python" / "pyproject.toml"
 FASTAPI_INIT = REPO_ROOT / "fastapi_app" / "__init__.py"
 REACT_PACKAGE = REPO_ROOT / "react_app" / "package.json"
@@ -53,6 +61,184 @@ _EXCLUDED_WHEEL_PREFIXES = (
     "structural_lib/codes/ec2/",
     "structural_lib/research/",
 )
+
+_REQUIRED_NORMALIZED_CONTENT = {
+    "formulas",
+    "normalized tables",
+    "limits",
+    "figure-derived values",
+    "lookup",
+    "interpolation",
+}
+
+
+def _public_distribution_permission_errors(path: Path | None = None) -> list[str]:
+    """Return fail-closed errors for the standing IS 456 distribution decision."""
+    path = path or PUBLIC_DISTRIBUTION_PERMISSION
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except OSError as exc:
+        return [f"public-distribution permission record unavailable: {exc}"]
+    except json.JSONDecodeError as exc:
+        return [f"public-distribution permission record is invalid JSON: {exc}"]
+
+    expected_values = {
+        "schema_version": 1,
+        "record_id": "IS456-PUBLIC-DISTRIBUTION-001",
+        "decision": "AUTHORIZED",
+        "authority": "repository_owner",
+    }
+    errors = [
+        f"permission record {key}={data.get(key)!r}, expected {expected!r}"
+        for key, expected in expected_values.items()
+        if data.get(key) != expected
+    ]
+
+    effective_date = data.get("effective_date")
+    if not isinstance(effective_date, str) or not re.fullmatch(
+        r"\d{4}-\d{2}-\d{2}", effective_date
+    ):
+        errors.append("permission record effective_date must be ISO YYYY-MM-DD")
+
+    scope = data.get("scope")
+    if not isinstance(scope, dict):
+        errors.append("permission record scope must be an object")
+    else:
+        if scope.get("public_distribution_of_normalized_code_data") is not True:
+            errors.append("normalized IS 456 public distribution is not authorized")
+        if scope.get("approved_feature_scope_only") is not True:
+            errors.append("permission must remain limited to approved feature scopes")
+        includes = scope.get("includes")
+        if not isinstance(includes, list) or not _REQUIRED_NORMALIZED_CONTENT.issubset(
+            set(includes)
+        ):
+            errors.append("permission scope omits required normalized content types")
+
+    restrictions = data.get("restrictions")
+    required_restrictions = {
+        "protected_clause_prose_in_repository": False,
+        "page_images_in_repository": False,
+        "unrelated_standard_content_in_repository": False,
+        "preserve_runtime_provenance": True,
+    }
+    if not isinstance(restrictions, dict):
+        errors.append("permission record restrictions must be an object")
+    else:
+        errors.extend(
+            f"permission restriction {key}={restrictions.get(key)!r}, expected {expected!r}"
+            for key, expected in required_restrictions.items()
+            if restrictions.get(key) is not expected
+        )
+
+    boundaries = data.get("release_boundaries")
+    required_boundaries = {
+        "authorizes_tag_or_publish": False,
+        "per_release_owner_authorization_required": True,
+        "qualified_structural_engineering_review_required_for_stable_or_engineering_use": True,
+    }
+    if not isinstance(boundaries, dict):
+        errors.append("permission record release_boundaries must be an object")
+    else:
+        errors.extend(
+            f"release boundary {key}={boundaries.get(key)!r}, expected {expected!r}"
+            for key, expected in required_boundaries.items()
+            if boundaries.get(key) is not expected
+        )
+
+    return errors
+
+
+def cmd_permission_check(args: argparse.Namespace) -> int:
+    """Verify the standing owner-confirmed public-distribution permission."""
+    errors = _public_distribution_permission_errors()
+    if errors:
+        _print_version_errors(errors)
+        return 1
+    print(
+        "  ✓ Owner-confirmed IS 456 normalized-data public-distribution "
+        "permission is recorded"
+    )
+    print("  ✓ Protected source content remains excluded")
+    print("  ✓ Per-release tag/publication authorization remains required")
+    return 0
+
+
+def _footing_release_inclusion_errors(
+    path: Path | None = None, *, repo_root: Path | None = None
+) -> list[str]:
+    """Return errors until the complete reviewed footing D1 slice is present."""
+    path = path or FOOTING_RELEASE_INCLUSION
+    repo_root = repo_root or REPO_ROOT
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except OSError as exc:
+        return [f"footing release-inclusion record unavailable: {exc}"]
+    except json.JSONDecodeError as exc:
+        return [f"footing release-inclusion record is invalid JSON: {exc}"]
+
+    expected_values = {
+        "schema_version": 1,
+        "record_id": "FOOT-ISO-RC-V1-RELEASE-INCLUSION",
+        "source_head": "886871aef93d9a955a3cc2fa613fe49bad589ce7",
+    }
+    errors = [
+        f"footing inclusion {key}={data.get(key)!r}, expected {expected!r}"
+        for key, expected in expected_values.items()
+        if data.get(key) != expected
+    ]
+
+    required_files = data.get("required_owned_file_sha256")
+    if not isinstance(required_files, dict) or not required_files:
+        errors.append("footing inclusion record has no owned-file hashes")
+    else:
+        for relative_path, expected_sha256 in required_files.items():
+            candidate = repo_root / relative_path
+            if not candidate.is_file():
+                errors.append(f"required footing file is missing: {relative_path}")
+                continue
+            actual_sha256 = hashlib.sha256(candidate.read_bytes()).hexdigest()
+            if actual_sha256 != expected_sha256:
+                errors.append(
+                    f"required footing file changed: {relative_path}; review and "
+                    "refresh the inclusion receipt"
+                )
+
+    shared_markers = data.get("required_shared_markers")
+    if not isinstance(shared_markers, dict) or not shared_markers:
+        errors.append("footing inclusion record has no shared-surface markers")
+    else:
+        for relative_path, markers in shared_markers.items():
+            candidate = repo_root / relative_path
+            if not candidate.is_file():
+                errors.append(
+                    f"required footing integration file is missing: {relative_path}"
+                )
+                continue
+            content = candidate.read_text(encoding="utf-8")
+            if not isinstance(markers, list) or not markers:
+                errors.append(
+                    f"footing integration markers are invalid: {relative_path}"
+                )
+                continue
+            for marker in markers:
+                if marker not in content:
+                    errors.append(
+                        f"footing integration marker missing from {relative_path}: "
+                        f"{marker}"
+                    )
+
+    return errors
+
+
+def cmd_footing_inclusion_check(args: argparse.Namespace) -> int:
+    """Verify that the complete reviewed footing D1 slice is integrated."""
+    errors = _footing_release_inclusion_errors()
+    if errors:
+        _print_version_errors(errors)
+        return 1
+    print("  ✓ FOOT-ISO-RC-V1 owned files match reviewed source head 886871ae")
+    print("  ✓ Footing Python, FastAPI, and React integration markers are present")
+    return 0
 
 
 def _release_version_key(v: str) -> tuple[int, int, int, int, int]:
@@ -166,7 +352,13 @@ def _source_surface_version_errors(
             errors.append(
                 f"CHANGELOG.md must give authorized v{expected} an ISO release date"
             )
-        if "release authorized" not in release_text.lower():
+        authorized_release_markers = (
+            "release authorized",
+            "published to pypi and github releases",
+        )
+        if not any(
+            marker in release_text.lower() for marker in authorized_release_markers
+        ):
             errors.append("release ledger must record the authorized release state")
     else:
         if has_release_date:
@@ -298,7 +490,11 @@ def cmd_candidate_check(args: argparse.Namespace) -> int:
     wheel = Path(args.wheel).expanduser().resolve()
     print(f"Candidate version evidence: {expected}")
 
-    errors = _source_surface_version_errors(expected, allow_authorized_release=True)
+    errors = _public_distribution_permission_errors()
+    errors.extend(_footing_release_inclusion_errors())
+    errors.extend(
+        _source_surface_version_errors(expected, allow_authorized_release=True)
+    )
     errors.extend(_wheel_version_errors(wheel, expected))
     if errors:
         _print_version_errors(errors)
@@ -540,6 +736,18 @@ def cmd_run(args: argparse.Namespace) -> int:
 
     # Pre-flight checks
     print("Pre-flight checks...")
+
+    permission_errors = _public_distribution_permission_errors()
+    if permission_errors:
+        _print_version_errors(permission_errors)
+        return 1
+    print("  ✓ Public-distribution permission record")
+
+    footing_errors = _footing_release_inclusion_errors()
+    if footing_errors:
+        _print_version_errors(footing_errors)
+        return 1
+    print("  ✓ Complete footing D1 release inclusion")
 
     # Check git working tree is clean
     result = subprocess.run(
@@ -1013,13 +1221,27 @@ def cmd_preflight(args: argparse.Namespace) -> int:
 
     wheel_arg = getattr(args, "wheel", None)
     source_version_errors = _source_surface_version_errors(
-        current, allow_authorized_release=bool(wheel_arg)
+        current, allow_authorized_release=True
     )
     if source_version_errors:
         _print_version_errors(source_version_errors)
         errors += len(source_version_errors)
     else:
         print("  ✓ Source, FastAPI, React, CITATION, and release docs agree")
+
+    permission_errors = _public_distribution_permission_errors()
+    if permission_errors:
+        _print_version_errors(permission_errors)
+        errors += len(permission_errors)
+    else:
+        print("  ✓ Public-distribution permission is recorded and bounded")
+
+    footing_errors = _footing_release_inclusion_errors()
+    if footing_errors:
+        _print_version_errors(footing_errors)
+        errors += len(footing_errors)
+    else:
+        print("  ✓ Complete footing D1 slice is included")
 
     if wheel_arg:
         wheel_errors = _wheel_version_errors(Path(wheel_arg).expanduser(), current)
@@ -1266,7 +1488,11 @@ def cmd_preflight(args: argparse.Namespace) -> int:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="release.py",
-        description="Unified release management (run, verify, check-docs, checklist)",
+        description=(
+            "Unified release management "
+            "(run, verify, check-docs, checklist, permission-check, "
+            "footing-inclusion-check)"
+        ),
     )
     sub = parser.add_subparsers(dest="command", help="Release command")
 
@@ -1299,6 +1525,17 @@ def build_parser() -> argparse.ArgumentParser:
 
     # checklist
     sub.add_parser("checklist", help="Validate pre-release checklist structure")
+
+    # permission-check
+    sub.add_parser(
+        "permission-check",
+        help="Validate owner-confirmed IS 456 public-distribution permission",
+    )
+
+    sub.add_parser(
+        "footing-inclusion-check",
+        help="Validate complete FOOT-ISO-RC-V1 release inclusion",
+    )
 
     # preflight
     p_preflight = sub.add_parser("preflight", help="Run pre-release validation checks")
@@ -1341,6 +1578,8 @@ def main() -> int:
         "verify": cmd_verify,
         "check-docs": cmd_check_docs,
         "checklist": cmd_checklist,
+        "permission-check": cmd_permission_check,
+        "footing-inclusion-check": cmd_footing_inclusion_check,
         "preflight": cmd_preflight,
         "candidate-check": cmd_candidate_check,
     }
