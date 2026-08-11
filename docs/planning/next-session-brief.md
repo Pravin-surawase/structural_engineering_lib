@@ -4,20 +4,20 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-11
-- Focus: owner-authorized 0.23.1a1 TestPyPI, production PyPI, tag, and GitHub prerelease sequence
+- Focus: published 0.23.1a1 Alpha closeout and next-task handoff
 <!-- HANDOFF:END -->
 
-**Current release:** `v0.23.0` Alpha
+**Current release:** `v0.23.1a1` Alpha
 
-**Candidate branch:** `codex/alpha-0231-candidate-evidence`
+**Closeout branch:** `codex/alpha-0231-release-closeout`
 
-**Base:** `origin/main` at `5da9c66a`; frozen artifact source `72d2d9b8`
+**Base:** `origin/main` at release merge `95bed562`; immutable tag `v0.23.1a1`
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | Release-ready metadata | Owner authorization recorded; exact-head gates and TestPyPI rehearsal must pass before tagging |
-| **Next** | Candidate PR #732 | Mark ready and merge unchanged reviewed head, then push `v0.23.1a1` for production publication |
+| **Current** | Published Alpha | PyPI and GitHub prerelease are public; exact package hashes and installed-package UAT are recorded |
+| **Next** | Owner-selected packet | Start from post-closeout `main`; do not rewrite or move the published tag |
 | **Held** | Stable/engineering-use claims | Alpha publication does not grant qualified professional approval or complete-code coverage |
 
 ## Integrated footing scope

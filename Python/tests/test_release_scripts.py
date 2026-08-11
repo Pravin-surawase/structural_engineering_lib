@@ -240,8 +240,13 @@ class TestReleaseVerifyDependencies:
             "# ─── Check Docs", 1
         )[0]
         assert 'f"{wheel}[dev,validation]"' in verify_block
-        assert 'f"structural-lib-is456[dev,validation]=={args.version}"' in verify_block
+        assert (
+            'f"structural-lib-is456[dev,validation]==={args.version}"' in verify_block
+        )
         assert '"httpx>=0.27"' in verify_block
+        assert '"--pre"' not in verify_block
+        assert '"--no-cache-dir"' in verify_block
+        assert '"https://pypi.org/simple/"' in verify_block
         assert '"-r", str(requirements)' not in verify_block
 
     def test_wheel_verify_uses_isolated_pytest_configuration(self):
@@ -310,6 +315,45 @@ class TestReleaseVerifyDependencies:
         pytest_config = tmp_path / "pytest.ini"
         assert pytest_config.read_text(encoding="utf-8").startswith("[pytest]\n")
         assert "pythonpath" not in pytest_config.read_text(encoding="utf-8")
+
+    def test_pypi_verify_forces_fresh_official_index(self, tmp_path, monkeypatch):
+        calls: list[list[str]] = []
+
+        class TemporaryDirectory:
+            def __enter__(self):
+                return str(tmp_path)
+
+            def __exit__(self, *_):
+                return False
+
+        def record_run_check(cmd, *, cwd=None, timeout=600, env=None):
+            calls.append(cmd)
+
+        monkeypatch.setattr(release, "_run_check", record_run_check)
+        monkeypatch.setattr(
+            release.tempfile, "TemporaryDirectory", lambda **_: TemporaryDirectory()
+        )
+
+        result = release.cmd_verify(
+            argparse.Namespace(
+                wheel_dir="Python/dist",
+                job="Python/examples/sample_job_is456.json",
+                source="pypi",
+                version="0.23.1a1",
+                skip_cli=True,
+            )
+        )
+
+        assert result == 0
+        assert [
+            str(tmp_path / "venv" / "bin" / "pip"),
+            "install",
+            "--no-cache-dir",
+            "--index-url",
+            "https://pypi.org/simple/",
+            "structural-lib-is456[dev,validation]===0.23.1a1",
+            "httpx>=0.27",
+        ] in calls
 
 
 class TestReleaseReactDependencies:

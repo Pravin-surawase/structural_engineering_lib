@@ -69,8 +69,8 @@
 
 ## Current Release
 
-| **Current public release** | v0.23.0 | ✅ ALPHA RELEASED — exact CI/public artifact evidence recorded |
-- **Release candidate:** `0.23.1a1`; owner-authorized for TestPyPI, production PyPI, tag, and GitHub prerelease after exact-head gates
+| **Current public release** | v0.23.1a1 | ✅ ALPHA RELEASED — exact CI/public artifact evidence recorded |
+- **Release evidence:** production run `31468341946`; tag `95bed562`; public installed-package UAT green
 - **Strategy:** Incremental micro-releases — each focuses on one quality dimension (tests, API, security, performance)
 - **Focus:** API introspection → security hardening → performance baselines → stabilization
 - **Target:** keep later roadmap work inactive until separately activated
@@ -127,20 +127,19 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| ALPHA-0231-CANDIDATE | Publish the exact 0.23.1a1 Alpha candidate through gated CI | Main Agent + ops | 🟡 AUTHORIZED — release-ready metadata and exact-head TestPyPI evidence in progress |
+| — | No active release task | — | Published Alpha closeout complete |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| ALPHA-0231-CI | Obtain CI-built artifact identity without silently publishing | Owner + ops | owner decision | P0 | ⏸ HELD — current manual workflow proceeds to TestPyPI |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL STABLE GATE |
 
 ## Backlog
 
 The version roadmap and historical backlog remain below. The owner-selected next
 program is [IS456-SLAB-001](planning/is456-solid-slabs-master-plan.md); broad
-multi-code infrastructure remains future work. The v0.23.0 Alpha is published.
+multi-code infrastructure remains future work. The v0.23.1a1 Alpha is published.
 UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded
 development workflow, generated beam manifest, canonical routes, and integrated
@@ -151,12 +150,13 @@ held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| ALPHA-0231-CANDIDATE | Published the exact 0.23.1a1 Alpha through exact-head CI, TestPyPI, production PyPI, and GitHub prerelease gates | Main Agent + ops | ✅ DONE — production run `31468341946`; exact public package UAT green |
 | IS456-SLAB-PRELAUNCH | Record and enforce source/licensing permission for public distribution of approved-scope normalized IS 456 data | Owner + Main Agent | ✅ DONE — owner confirmed 2026-08-11; canonical record, preflight, candidate, and publish-CI gates added |
 | IS456-SLAB-001 | Implemented simply supported/continuous one-way and common two-way solid slabs with built-in/external coefficients, topology, strips, corner torsion, detailing, serviceability, shear, FastAPI and a revision-safe React workbench | Main Agent | ✅ SOFTWARE COMPLETE — 5,532 Python, 388 FastAPI, 241 React, 30/30 integrated checks and live browser pass; flat slabs held |
 | UIX-001 | Built one compact 3D-first structural workbench and schema-driven bounded workflow foundation | Main Agent | ✅ DONE — PR #721 merged; Pages/release/public runner remain held |
 | DEPS-MAINT-001 | Replaced incompatible Python and React dependency PRs with coherent Python 3.11/Node 24 packets and added recurrence guards | Main Agent | ✅ DONE — PRs #708, #709, and #712 merged |
 | ADOPT-001 | Completed executable public truth, capability discovery, typed API contracts, production auth fail-close, evidence identity, React/BOQ trust presentation, and truthful Alpha/docs policy | Main Agent | ✅ DONE — PR #707 merged; release holds retained |
-| LIB-IS456-V1 | Completed C0-C4, bounded evidence, exact artifacts, public Alpha UAT, and v0.23.0 publication | Main Agent + owner | ✅ DONE |
+| LIB-IS456-V1 | Completed C0-C4, bounded evidence, exact artifacts, public Alpha UAT, and v0.23.1a1 publication | Main Agent + owner | ✅ DONE |
 | MAINT-009 | Integrated automation and Actions updates, repaired Weekly Verification compatibility, and cleared obsolete GitHub/session state | Main Agent | ✅ DONE |
 | MAINT-001 | Preserve the inherited worktree, recover the Mac baseline, and close PR #676 required checks | Main Agent | ✅ DONE |
 | MAINT-006 | Add enforceable low-token defaults, context rules, analytics-calibrated model routing, and automation | Main Agent | ✅ DONE |

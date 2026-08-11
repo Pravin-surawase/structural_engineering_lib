@@ -1209,3 +1209,41 @@ run clean-environment UAT, generate a CycloneDX SBOM, publish through trusted
 OIDC, and create the GitHub prerelease only after PyPI succeeds.
 
 **Full changelog:** See [CHANGELOG.md](../../CHANGELOG.md#0231a1--2026-08-11)
+
+---
+
+## v0.23.1a1 — Published Alpha Evidence (2026-08-11)
+
+**Status:** Published to PyPI and GitHub Releases as an Alpha development
+preview. This entry supersedes the authorization state above without rewriting
+the retained release history.
+
+**Current-state clarification:** Earlier statements calling `v0.23.0` the
+current release describe the historical state when they were appended. The
+current public Alpha is `v0.23.1a1`; an unqualified pip install continues to
+select `0.23.0`, so evaluation of the current Alpha must use the exact command
+below.
+
+**Source:** Annotated tag `v0.23.1a1` at
+`95bed5621c2ff6e5bbcf1a25b7ac476f92ae4307`; PR #732 merged the reviewed
+`adb161b8` source with an identical tree.
+
+**Publication evidence:** TestPyPI run `31467980119`; production run
+`31468341946`. The production wheel is 529,982 bytes with SHA-256
+`e586db493bbb80c56474a4855f162b9d647911648f68331c950f1ab2deafd622`;
+the sdist is 438,007 bytes with SHA-256
+`5cd0e1cefe486ed3188a6cca67e728d2df162578cc17eb135583852afd6f4bb4`.
+The 61-component CycloneDX 1.6 SBOM has SHA-256
+`29810e0e7e0e3e7e4380db635d9808797b6ddc241493616f0764991fa551c3b5`.
+
+**Public verification:** The maintained verifier installed the exact Alpha with
+package-scoped arbitrary equality, retained stable dependencies, passed 5,055
+tests with 51 skipped and 2 deselected, and passed installed `job`, `critical`,
+and `report` CLI workflows. Use:
+
+```bash
+pip install structural-lib-is456===0.23.1a1
+```
+
+This remains case-qualified software evidence, not complete IS 456 coverage,
+professional validation, or engineering-use approval.
