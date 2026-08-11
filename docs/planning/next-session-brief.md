@@ -17,7 +17,7 @@
 | State | Target | Decision |
 |---|---|---|
 | **Current** | Local candidate rehearsal | Exact-wheel UAT and clean-tree preflight pass; preflight reports zero warnings |
-| **Next** | Candidate draft PR | Push the explicit candidate branch, open the bounded draft, then inspect normal PR CI |
+| **Next** | Candidate draft PR #732 | Inspect normal PR CI and owner review; preserve every publication hold |
 | **Held** | Publication and engineering-use claims | No tag/TestPyPI/PyPI/GitHub Release; qualified review remains a separate stable gate |
 
 ## Integrated footing scope
