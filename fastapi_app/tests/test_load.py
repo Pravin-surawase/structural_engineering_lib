@@ -34,6 +34,7 @@ LOAD_P95_MS = float(os.getenv("LOAD_P95_MS", "100"))
 LOAD_HEALTH_MAX_MS = float(os.getenv("LOAD_HEALTH_MAX_MS", "50"))
 LOAD_DEGRADATION_PCT = float(os.getenv("LOAD_DEGRADATION_PCT", "100"))
 LOAD_AVG_MS = float(os.getenv("LOAD_AVG_MS", "150"))
+REQUEST_TIMEOUT_SECONDS = 2.5
 
 
 @pytest.fixture
@@ -216,8 +217,6 @@ class TestResourceUsage:
         assert response.status_code == 200
 
 
-@pytest.mark.performance
-@pytest.mark.slow
 class TestAsyncConcurrentLoad:
     """Async load tests for true concurrent testing."""
 
@@ -233,6 +232,39 @@ class TestAsyncConcurrentLoad:
         async with httpx.AsyncClient(
             transport=httpx.ASGITransport(app=app),
             base_url="http://test",
+            timeout=REQUEST_TIMEOUT_SECONDS,
+        ) as client:
+
+            async def make_request():
+                start = time.perf_counter()
+                response = await client.post(
+                    "/api/v1/design/beam", json=valid_beam_data
+                )
+                return response.status_code, (time.perf_counter() - start) * 1000
+
+            tasks = [make_request() for _ in range(num_requests)]
+            results = await asyncio.gather(*tasks)
+
+        successful = [(s, t) for s, t in results if s == 200]
+        assert (
+            len(successful) >= num_requests * 0.95
+        ), f"Expected 95%+ success, got {len(successful)}/{num_requests}"
+
+    @pytest.mark.performance
+    @pytest.mark.slow
+    @pytest.mark.asyncio
+    async def test_async_concurrent_requests_latency(self, valid_beam_data: dict):
+        """Test async concurrent request latency envelope."""
+        import httpx
+
+        num_requests = 30
+        results = []
+
+        # Use ASGI transport for async testing
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(app=app),
+            base_url="http://test",
+            timeout=REQUEST_TIMEOUT_SECONDS,
         ) as client:
 
             async def make_request():
@@ -258,6 +290,14 @@ class TestAsyncConcurrentLoad:
                 f"(threshold {LOAD_AVG_MS:.1f}ms)"
             )
 
+        if successful:
+            latencies = [t for _, t in successful]
+            avg_latency = statistics.mean(latencies)
+            assert avg_latency < LOAD_AVG_MS, (
+                f"Average latency {avg_latency:.1f}ms too high "
+                f"(threshold {LOAD_AVG_MS:.1f}ms)"
+            )
+
     @pytest.mark.asyncio
     async def test_async_mixed_endpoints(self, valid_beam_data: dict):
         """Test concurrent mixed endpoint requests."""
@@ -266,6 +306,7 @@ class TestAsyncConcurrentLoad:
         async with httpx.AsyncClient(
             transport=httpx.ASGITransport(app=app),
             base_url="http://test",
+            timeout=REQUEST_TIMEOUT_SECONDS,
         ) as client:
             # Create mix of request types
             tasks = []
