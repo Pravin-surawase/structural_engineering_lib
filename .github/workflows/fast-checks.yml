@@ -119,7 +119,7 @@ jobs:
           python -m ruff check fastapi_app
 
       - name: FastAPI tests
-        run: python -m pytest fastapi_app/tests -v --tb=short
+        run: python -m pytest -c fastapi_app/pytest.ini fastapi_app/tests -v --tb=short -m "not slow and not performance"
 
       - name: API and deployment contracts
         run: |
