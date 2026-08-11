@@ -450,10 +450,13 @@ def _clean_wheel_import_version(wheel: Path) -> str:
         _run_check([sys.executable, "-m", "venv", str(venv_dir)])
         pip = _bin_path(venv_dir, "pip")
         python = _bin_path(venv_dir, "python")
-        _run_check([str(pip), "install", "--disable-pip-version-check", str(wheel)])
         clean_env = {
             key: value for key, value in os.environ.items() if key != "PYTHONPATH"
         }
+        _run_check(
+            [str(pip), "install", "--disable-pip-version-check", str(wheel)],
+            env=clean_env,
+        )
         result = subprocess.run(
             [
                 str(python),
@@ -922,9 +925,15 @@ def _bin_path(venv_dir: Path, name: str) -> Path:
     return venv_dir / "bin" / name
 
 
-def _run_check(cmd: list[str], *, cwd: Path | None = None, timeout: int = 600) -> None:
+def _run_check(
+    cmd: list[str],
+    *,
+    cwd: Path | None = None,
+    timeout: int = 600,
+    env: dict[str, str] | None = None,
+) -> None:
     print(f"+ {' '.join(str(c) for c in cmd)}")
-    subprocess.run(cmd, check=True, cwd=cwd, timeout=timeout)
+    subprocess.run(cmd, check=True, cwd=cwd, timeout=timeout, env=env)
 
 
 def _find_wheel(wheel_dir: Path, version: str | None) -> Path:

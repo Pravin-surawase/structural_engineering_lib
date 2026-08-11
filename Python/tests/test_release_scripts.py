@@ -345,12 +345,13 @@ class TestReleasePreflight:
     def test_public_distribution_permission_record_is_valid(self):
         assert release._public_distribution_permission_errors() == []
 
-    def test_published_current_source_surfaces_are_accepted_without_wheel(self):
+    def test_current_source_surfaces_match_release_state_without_wheel(self):
         current = release._version_from_pyproject()
+        authorized = release._release_authorization_recorded(current)
 
         assert (
             release._source_surface_version_errors(
-                current, allow_authorized_release=True
+                current, allow_authorized_release=authorized
             )
             == []
         )
