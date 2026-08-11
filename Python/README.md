@@ -22,9 +22,8 @@ IS 456 RC Beam Design Library (Python package).
 ## Install
 
 ```bash
-pip install structural-lib-is456           # from PyPI
-pip install "structural-lib-is456[dxf]"    # with DXF export support
-pip install structural-lib-is456==0.23.0   # pin this release exactly
+pip install structural-lib-is456===0.23.1a1       # current Alpha preview
+pip install "structural-lib-is456[dxf]===0.23.1a1" # Alpha with DXF export
 ```
 
 > **Requires Python 3.11+.** On Python 3.9–3.10, pip installs the older v0.16.x (beam-only, no column/footing).

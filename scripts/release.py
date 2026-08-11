@@ -1103,7 +1103,10 @@ def cmd_verify(args: argparse.Namespace) -> int:
                 [
                     str(pip),
                     "install",
-                    f"structural-lib-is456[dev,validation]=={args.version}",
+                    "--no-cache-dir",
+                    "--index-url",
+                    "https://pypi.org/simple/",
+                    f"structural-lib-is456[dev,validation]==={args.version}",
                     "httpx>=0.27",
                 ],
                 env=clean_env,

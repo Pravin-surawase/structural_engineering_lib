@@ -2391,7 +2391,8 @@ calculation/service/FastAPI contract without changing the separate torsion route
 ## 2026-08-11 — Session: 0.23.1a1 Authorized Publication
 
 **Agent:** Codex (`ops`)
-**Branch:** `codex/alpha-0231-candidate-evidence`
+**Branches:** `codex/alpha-0231-candidate-evidence`, then
+`codex/alpha-0231-release-closeout`
 **Focus:** Publish the reviewed Alpha candidate through exact-head TestPyPI,
 production PyPI, tag, and GitHub prerelease gates.
 
@@ -2402,6 +2403,12 @@ production PyPI, tag, and GitHub prerelease gates.
   prerelease after exact-head evidence passes.
 - Converted candidate-only metadata to a dated, release-ready Alpha state while
   preserving the case-qualified scope and professional-review boundary.
+- Published the reviewed tree through TestPyPI, merged PR #732 unchanged,
+  pushed annotated tag `v0.23.1a1`, and verified production PyPI and the GitHub
+  prerelease against workflow-generated hashes.
+- Hardened the maintained public verifier and version-bump documentation
+  contract after post-publication checks exposed prerelease-selection and stale
+  install-pin gaps.
 
 ### Issues encountered
 
@@ -2411,6 +2418,15 @@ production PyPI, tag, and GitHub prerelease gates.
 - Exact-head TestPyPI run `31467674597` stopped in release-test collection
   before build or upload because generated-client and tool-manifest tests could
   not import `httpx` and `jsonschema`.
+- After production publication succeeded, two maintained `--source pypi`
+  verification attempts reported versions only through `0.23.0` even though
+  official PyPI JSON and Simple API responses already listed `0.23.1a1` with
+  the production manifest hashes.
+- The public PyPI description still showed the prior `0.23.0` exact-install pin
+  even though its version heading and package metadata were `0.23.1a1`.
+- The README's unqualified primary install examples selected `0.23.0`, and the
+  append-only ledger retained a historical sentence calling that version
+  current after `v0.23.1a1` was published.
 
 ### Root causes and resolutions
 
@@ -2430,12 +2446,51 @@ production PyPI, tag, and GitHub prerelease gates.
   validation with `[dev,validation]` plus `httpx>=0.27` and add a workflow
   regression assertion. Evidence: the failed run published nothing; focused
   tests, PR CI, and a new exact-head TestPyPI run must pass before continuation.
+- Root cause: pip's candidate selection omitted the Alpha version unless
+  `--pre` was explicit, even with the exact equality pin; `pip index versions`
+  reproduced `0.23.0` without `--pre` and `0.23.1a1` with it. Official PyPI
+  HTML, PEP 691 JSON, and release JSON all already contained the new files, and
+  pip configuration showed no alternate index. A global `--pre` did find the
+  package but also selected prerelease dependencies, so it was rejected.
+  Resolution: use package-scoped arbitrary equality `===0.23.1a1`, which selects
+  the exact Alpha while retaining stable dependency resolution; also force
+  `https://pypi.org/simple/` and disable cache. Regression coverage asserts the
+  exact command. Evidence: the maintained public-version verifier is rerun
+  below.
+- Root cause: `scripts/bump_version.py` updated the Python README's version and
+  release heading but did not own its exact package-install pin. Resolution:
+  add the pin to the automated documentation version patterns, normalize Alpha
+  pins to package-scoped `===`, and add fixture coverage that proves the heading,
+  metadata label, and install pin advance together.
+- Root cause: prerelease selection semantics were handled only by the later
+  exact-pin example, while the first README commands remained unqualified; the
+  ledger correctly preserved prior text but lacked an explicit successor for
+  its old current-state sentence. Resolution: make exact Alpha pins primary for
+  both base and DXF installs, teach the bump control to update optional-extra
+  pins, and append a current-state clarification to the immutable ledger.
 
 ### Verification
 
-- Pending release-ready preflight and PR CI at the metadata commit.
-- Pending exact-head TestPyPI workflow and installed-package verification.
-- Pending unchanged-head merge, production tag workflow, PyPI verification,
-  GitHub prerelease assets, and final repository closeout.
+- Release-ready preflight passed with zero warnings: 5,602 Python tests passed,
+  3 skipped, and 6 deselected; 407 FastAPI tests passed with 6 deselected; the
+  React production build passed.
+- PR #732 passed all seven exact-head checks. Corrected TestPyPI run
+  `31467980119` completed validation, build, protected-content allowlisting,
+  exact-wheel UAT, a 61-component CycloneDX SBOM, and TestPyPI publication.
+- PR #732 merged with release tree unchanged at `95bed562`; annotated tag
+  `v0.23.1a1` dereferences to that commit.
+- Production run `31468341946` completed all gates, trusted PyPI publication,
+  and GitHub prerelease creation. Public PyPI hashes match the production
+  manifest: wheel `e586db493bbb80c56474a4855f162b9d647911648f68331c950f1ab2deafd622`;
+  sdist `5cd0e1cefe486ed3188a6cca67e728d2df162578cc17eb135583852afd6f4bb4`.
+- The maintained public verifier passed from a disposable installed package:
+  5,055 tests passed, 51 skipped, 2 deselected, with `job`, `critical`, and
+  `report` CLI workflows green and stable dependency versions selected.
+- Post-release prevention coverage passed all 58 focused release and version-
+  bump tests; Black and Ruff passed on the four changed Python files.
+- The closeout quick gate passed 10/10 and the full repository gate passed
+  30/30. A final live recheck confirmed successful production run
+  `31468341946`, immutable tag target `95bed562`, non-draft GitHub prerelease
+  assets, and PyPI file sizes and hashes matching the production evidence.
 
 ---

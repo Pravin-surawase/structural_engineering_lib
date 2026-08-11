@@ -75,6 +75,11 @@ DOC_VERSION_FILES = {
         ),
         (r"@v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "@v{version}"),
         (r"^## New in v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "## New in v{version}"),
+        (
+            r"(structural-lib-is456(?:\[[^\]]+\])?)={2,3}"
+            r"[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            r"\g<1>==={version}",
+        ),
     ],
     "docs/getting-started/python-quickstart.md": [
         (r"@v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "@v{version}"),
