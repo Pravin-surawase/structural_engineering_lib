@@ -4,22 +4,36 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-11
-- Focus: Beam, column, and slab PRs are merged; preserved permission and footing guards are active in the dedicated integration lane
+- Focus: Beam, column, and slab PRs are merged; preserved permission and complete footing history are active in the dedicated Alpha integration lane
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
 
-**Planning branch:** `codex/is456-slabs-plan`
+**Integration branch:** `codex/alpha-0231-integration`
 
-**Base:** planning branch from `a0e115e1`; slab implementation and the latest
-maintenance checkpoint are discoverable from `git log`
+**Base:** current `origin/main` after sequential beam, column, and slab merges;
+preserved release guards and footing history are being integrated here
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | Local maintenance baseline ready | Health 100/100, audit 19/19, indexes 32/32 and integrated gate 30/30; generated caches are cleaned |
-| **Next** | Next Alpha integration | Preserve and integrate the clean local footing head `886871ae`; its 15 owned-file hashes and six cross-layer markers are now a fail-closed release gate |
-| **Held** | PRs #724-#726, next Alpha, and engineering-use claims | Shared PR timing gate needs correction; footing is not yet integrated or remote-backed; distribution permission passed, while qualified review remains a separate stable/engineering-use gate |
+| **Current** | Alpha integration lane | Beam, column, and slab are merged; preserved permission/footing release guards are being integrated from exact reviewed heads |
+| **Next** | Preservation proof and integration PR | Prove both preserved ancestors, zero missing footing files/markers, exact footing-owned file identity, and all four workflows before opening the PR |
+| **Held** | Candidate release and engineering-use claims | `0.23.1a1` evidence remains non-publishing; qualified review remains a separate stable/engineering-use gate |
+
+## Integrated footing scope
+
+- The maintained scope is one concentric square/rectangular isolated-footing
+  workflow with explicit service and factored actions, external allowable-soil-
+  pressure approval, and approved A1 load-transfer evidence.
+- Overall thickness and effective depth remain distinct; flexure, directional
+  one-way shear, punching shear, bearing, and uniform-depth selection are
+  fail-closed.
+- Optional two-layer bottom-reinforcement detailing returns physical directional
+  depths, bar schedules, rectangular central/outer-band zones, anchorage evidence
+  and linked dowels. Missing or unsupported inputs remain visible HOLDs.
+- The release inclusion receipt binds 15 footing-owned file hashes and six
+  cross-layer markers; verify it after the complete merge before any PR action.
 
 ## Public-distribution permission
 
@@ -39,21 +53,6 @@ maintenance checkpoint are discoverable from `git log`
 - [Session 2 acceptance](../verification/ui-experience-session-2-acceptance.md)
 - [Current task board](../TASKS.md)
 - [Release policy](../getting-started/releases.md)
-
-## Recent-work maintenance closeout
-
-- Eight registered worktrees were reconciled. Seven were clean; the footing lane
-  contains an active uncommitted React slice and was left untouched.
-- Draft PR #723 is green. Draft PRs #724, #725 and #726 are merge-blocked only by
-  the same hosted-runner average-latency assertion; their reviewed feature heads
-  were not changed or rerun during maintenance.
-- The stale-branch helper found no deletion candidate. No stash, maintained-port
-  listener, Git object-integrity problem or prunable worktree metadata was found.
-- Invalid stale-branch command references, two API-manifest signature strings and
-  14 stale folder-index projections were repaired through maintained generators.
-- Forty-three generated cache/build targets (about 180,196 KB) were removed while
-  environments, dependencies, logs, benchmarks, recovery data, branches and user
-  worktrees were preserved.
 
 ## IS456-SLAB-001 implementation outcome
 

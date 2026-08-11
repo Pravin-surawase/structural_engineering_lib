@@ -1,3 +1,224 @@
+## 2026-08-11 — Session: FOOT-ISO-RC-V1 Phases A-D1
+
+**Agent:** Codex
+**Branch:** `codex/footing-isolated-v1`
+**Focus:** Correct footing inputs and complete concentric isolated-footing orchestration/detailing/API/workbench
+
+### Summary
+
+- Corrected the footing input boundary so the IS 456 edge-thickness minimum is
+  checked against overall thickness, not effective depth.
+- Added directional reinforcement percentages to one-way shear while retaining
+  the legacy scalar input as a backward-compatible fallback.
+- Preserved the existing footing public functions and verified the focused
+  footing, core/public-contract, and FastAPI capability baselines.
+- Added a fail-closed service for concentric square/rectangular isolated
+  footings with explicit service/factored actions, external allowable-pressure
+  provenance, deterministic uniform-depth selection, structural checks,
+  approved-A1 load transfer, and qualified-review/detailing HOLD boundaries.
+- Added maintained two-layer bottom-reinforcement detailing with physical
+  directional depths, deterministic bar selection, buildable rectangular
+  central/outer-band schedules, straight anchorage, approved dowel linkage,
+  normalized provenance, and service-level PASS/FAIL/HOLD aggregation.
+- Added one typed FastAPI route for the same concentric square/rectangular
+  service authority, including calculation/detailing/aggregate status,
+  screening-versus-final shear evidence, provenance, exclusions, qualified
+  review, and canonical validation errors.
+- Added one React workbench surface for that route with explicit external
+  approvals and units, optional atomic detailing inputs, separate calculation /
+  detailing / aggregate status, complete returned evidence, and request-revision
+  invalidation. Report/export and catalogue closeout remain deliberately absent.
+
+### Issues encountered
+
+- The shared footing validator applied the 150 mm edge-thickness rule to
+  `d_mm`, rejecting structurally representable cases whose overall thickness
+  satisfied the rule but whose effective depth was below 150 mm.
+- One-way shear used the same reinforcement percentage for both orthogonal
+  directions, so directional Table 19 shear capacities could not be represented.
+- Negative reinforcement percentages passed finite-value validation and could
+  reach the Table 19 lower-bound interpolation behavior instead of failing
+  closed.
+- The first commit attempt stopped at Ruff C408 because one new test fixture
+  used `dict(...)` where the repository requires a literal.
+- Failed depth candidates initially populated the top-level flexure, one-way
+  shear, punching, and directional-pt fields even when no passing depth was
+  selected, making the last failed candidate look like a maintained result.
+- Initial service provenance omitted the Table 19 basis for directional shear
+  screening and Cl. 34.3.1 for rectangular-footing central-band distribution.
+- The worktree has no local `.venv`; a direct runtime probe through the shared
+  wrapper initially resolved the installed package instead of the untracked
+  worktree module.
+- A normal import-following single-file mypy probe traversed unrelated existing
+  `core/models.py` property-decorator errors and optional `weasyprint` typing.
+- The first B2 draft reported rectangular central/outer bar counts while
+  retaining an unrelated uniform-grid spacing, so its count, spacing and
+  provided-area fields did not describe one buildable physical layout.
+- The first B2 draft treated every exhausted bar search as `FAIL`, including a
+  numerically feasible layout that needed unsupported hooks/bends, and it used
+  the rounded development length as the anchorage acceptance threshold.
+- The first B2 draft silently excluded 10 mm bars and imposed a hidden minimum
+  of 12 bars per direction. That made the independent square benchmark appear
+  as 12/12 bars; removing the floor then exposed an 11/12 area/spacing schedule.
+- Initial B2 evidence used a new unverified source label, allowed unsupported
+  steel/bar-type pairings, and did not reject a stale load-transfer receipt.
+- The initial B2 PASS still passed required-steel percentages from the analysis
+  screen to one-way shear while selecting fewer bars from physical-depth
+  flexure. The 11-T12 lower layer provided only 0.1555088364% at the maintained
+  400 mm analysis depth, reproducing an unsafe 1.0209076 shear utilization
+  despite the aggregate PASS label.
+- The B2 decorator used exact clause bases absent from `clauses.json`, causing
+  normal maintained imports to emit five unknown-clause warnings even though
+  those exact bases remained valid result/provenance evidence.
+- The core `FootingType` enum uses implementation-valued members and FastAPI is
+  forbidden from importing core/code layers, so exposing that enum directly
+  would make the transport contract unstable and violate the dependency rule.
+- If service validation escaped the footing router, the existing global
+  `StructuralLibError` path would return a legacy non-envelope body instead of
+  the maintained request-validation response shape.
+- The first C1 commit attempt imported `structural_lib` from an older checkout
+  during hooks because this worktree has no local `.venv`; the new footing
+  service could not be resolved and no commit was created.
+- This worktree also had no React `node_modules`. Calling the shared Vitest
+  binary by absolute path could not resolve Vite from the worktree and created
+  one ignored `.vite` cache receipt before stopping.
+- The first D1 feature draft silently converted unapproved soil/A1 inputs to
+  approved request literals, showed an impossible PASS fixture with missing
+  detailing evidence, and omitted material returned checks and schedules.
+- The first detailing toggle displayed fallback values without placing the
+  complete detailing group into draft state. The response type also modelled
+  punching as one-way shear and could hide contract drift.
+- A shell inspection loop used zsh's special `path` variable name, temporarily
+  replacing `PATH` for that shell and making its final Git probe unavailable.
+- The resumed full repository gate initially reported 27/30 because the public
+  API manifest still described the pre-directional one-way-shear signature and
+  the shared virtual environment imported a different checkout when the
+  worktree source was not placed first on `PYTHONPATH`.
+- `./run.sh generate indexes` stopped because its shell implementation requires
+  a worktree-local `.venv/bin/python`; the documented shared-runtime fallback is
+  not wired into that generator. Retrying through a temporary environment link
+  also produced broad, non-footing index churn on this older branch.
+
+### Root causes and resolutions
+
+- Overall thickness and effective depth were conflated in the shared validator.
+  The validator now accepts an explicit optional `overall_thickness_mm`, applies
+  the 150 mm rule only to that quantity, and flexure supplies it while preserving
+  the separate `0 < d < overall thickness` check.
+- The one-way-shear API had only the legacy scalar `pt` input. It now accepts
+  keyword-only `pt_L_percent` and `pt_B_percent`, uses them directionally, and
+  falls back to `pt` when either directional value is omitted.
+- Directional and legacy reinforcement percentages are now rejected when
+  negative before the IS 456 Table 19 lookup.
+- The test fixture was rewritten as a dictionary literal; the commit hooks were
+  rerun without bypassing validation.
+- Selected-result variables are now assigned only inside the passing-candidate
+  branch. Exhausted ranges retain status, utilizations, and reasons solely in
+  `depth_candidates`; all top-level selected-result fields remain empty.
+- Provenance now identifies Cl. 34.2.3.1 with Cl. 34.3.1 and identifies
+  Cl. 34.2.4.1(a) with IS 456 Table 19, explicitly describing required
+  directional `pt` as conservative screening pending provided detailing.
+- Direct worktree probes use
+  `PYTHONPATH="$PWD/Python" ./scripts/python_runtime.sh ...`; owned isolated
+  typing evidence uses `mypy --follow-imports=skip`, leaving unrelated shared
+  typing findings untouched.
+- Central-band counts were originally calculated after uniform spacing and did
+  not regenerate a physical zone layout. The maintained selector now assigns
+  boundary bars once, calculates exact central and symmetric outer-zone counts,
+  spacings, clear spacings and areas, and verifies each zone independently.
+- A single generic no-candidate branch conflated numerical/codal failure with
+  unsupported anchorage geometry. Candidate disposition is now explicit:
+  numerical depth/cover/spacing/diameter failures return `FAIL`, while an
+  otherwise feasible arrangement needing hooks/bends returns `HOLD`; exact
+  unrounded development length governs and the rounded helper value is report
+  evidence only.
+- The hidden 12-bar floor and T10 skip had no clause/contract basis. Counts now
+  come only from required area and maximum spacing, all six bounded diameters
+  are evaluated when permitted, and deterministic selection uses least
+  provided steel, then count, maximum diameter and lexical pair.
+- Candidate selection originally stopped after physical-depth flexure/minimum
+  steel and never closed the Table 19 screening loop. Each candidate now also
+  covers the maintained analysis-depth directional flexural demand, derives
+  directional `pt` from actual provided area at that analysis depth, and reruns
+  one-way shear before PASS. The corrected T12-and-above benchmark is 13-T12
+  in each direction, 1470.265 mm2 and 0.1837831702%, with final utilization
+  0.9564856. Top-level shear/pt are this final evidence; the earlier
+  0.1711262355%/0.9842895 screen remains explicitly labelled.
+- Exact clause bases remain in result/provenance evidence, while the decorator
+  now uses only recognized exact/parent IDs already in `clauses.json`. A fresh
+  import/call emits no unknown-clause warning; no clause database was edited.
+- B2 now inherits the existing consolidated/amendment source identities,
+  accepts only Fe250/plain or Fe415/Fe500 deformed pairs, checks the retained
+  load-transfer load/column-area/source identity, and links rather than
+  redesigns the accepted dowel schedule.
+- B1 intentionally ended at a detailing HOLD. Optional explicit detailing
+  inputs now invoke the pure B2 selector after a passing structural depth:
+  detailing PASS closes the aggregate to PASS, detailing FAIL fails only the
+  aggregate/detailing status, and missing/unsupported engineering inputs remain
+  fail-closed HOLD.
+- The C1 request model exposes stable `ISOLATED_SQUARE` and
+  `ISOLATED_RECTANGULAR` wire names and the router maps them through the service
+  module before invoking the single accepted service; FastAPI imports no
+  core/code module and contains no engineering formula.
+- The router now catches service `ValidationError` explicitly and returns the
+  canonical `success=false`, `data=null`, structured 422 error envelope with
+  sanitized detail. Pydantic omissions, extra fields, non-finite values,
+  invalid footing names, and non-integral dowel counts use the main app's same
+  documented 422 envelope.
+- The accepted C1 commit was retried with `PYTHONPATH="$PWD/Python"`; all hooks
+  passed against the current worktree and produced `b4b64d56` without bypassing
+  validation. No push or GitHub action was taken.
+- React validation reused the existing dependency installation through one
+  exact, validated worktree-local `node_modules` symlink. The generated cache
+  receipt was removed and the symlink was unlinked after validation; the shared
+  dependency directory was never modified or deleted.
+- D1 now requires the user to affirm both external approvals and transmits the
+  literal approvals only after validation. Detailing is initialized and sent as
+  one complete optional group; absent detailing remains a visible server HOLD.
+- The UI types and evidence panels now preserve bearing, flexure, screening and
+  final actual-provided-pt shear, punching, depth candidates, directional demand
+  and zone schedules, anchorage, dowel linkage, provenance, exclusions and the
+  qualified-review requirement. Full request revisions abort and invalidate
+  stale results; late responses cannot restore authority.
+- Subsequent shell commands use task-specific variable names; a fresh shell
+  confirmed the branch/status normally.
+- Regenerated `docs/reference/api-manifest.json` from the footing worktree so it
+  records the keyword-only directional reinforcement percentages. The full
+  gate is now run with `PYTHONPATH="$PWD/Python"`, which binds validation to this
+  branch instead of the primary checkout's editable package.
+- A validated temporary `.venv` link allowed the generator to be diagnosed and
+  was removed immediately with its shared target preserved. All 31 generator-
+  only index diffs were then reversed as one inspected mechanical patch because
+  they were unrelated to the footing outcome; no user-owned index change was
+  present before that command.
+- Evidence: the 182-case footing/core/public-contract matrix passed, the
+  12-test FastAPI library-core/capability baseline passed, the 4-case footing
+  contract selection passed, the 167-case B1/core/load-transfer matrix passed,
+  Black/Ruff and the isolated mypy gate passed, the architecture scan checked
+  143 files with zero violations, and `git diff --check` passed.
+- B2 evidence: the 199-case footing/detailing/service/load-transfer/golden-vector
+  matrix passed; focused Black, Ruff, isolated mypy and import checks passed;
+  the architecture scan checked 144 files with zero violations; and
+  `git diff --check` passed.
+- C1 evidence: 37 focused FastAPI/service/typed-contract tests passed; Black and
+  Ruff passed; isolated mypy passed for five owned/integration Python files;
+  the architecture scan checked 146 files with zero violations; the maintained
+  OpenAPI snapshot now records exactly one added endpoint and 15 footing schemas
+  (70 endpoints, 263 schemas); import validation and `git diff --check` passed.
+- D1 evidence: 13 focused feature/client/workbench/navigation tests passed;
+  ESLint and the TypeScript/Vite production build passed, including a separate
+  34.78 kB lazy footing chunk; the architecture scan checked 146 files with zero
+  violations. Component-state tests prove approval gating, exact request
+  omission/inclusion, PASS evidence, retained HOLD, canonical 422 messaging,
+  transport failure, stale-result marking and late-response rejection.
+- Resume closeout evidence: 206 focused footing/core/service/load-transfer/
+  golden-vector/FastAPI tests passed; the complete React gate passed 246 tests,
+  ESLint and the production build with a 34.84 kB lazy footing chunk; the quick
+  repository gate passed 10/10 and the source-bound full gate passed 30/30.
+
+---
+
+## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
 # Session Log
 
 > Append-only decision log for AI agent sessions.
@@ -1904,5 +2125,35 @@ calculation/service/FastAPI contract without changing the separate torsion route
 
 ### Key Decision
 `--host "::"` is now the canonical uvicorn start command for this project (not `0.0.0.0`).
+
+---
+## 2026-08-11 — Session: Alpha Integration and Footing Preservation
+
+**Agent:** Codex (`orchestrator`)
+**Branch:** `codex/alpha-0231-integration`
+**Focus:** Merge the complete preserved footing history with the preserved release guards after sequential beam, column, and slab integration.
+
+### Summary
+
+- Merged `origin/codex/footing-isolated-v1` as a complete normal merge; no footing implementation files were selected or cherry-picked.
+- Preserved the footing feature history and its release-inclusion receipt while keeping the newer integration-side session and handoff history.
+- Kept beam, column, slab, and footing route/navigation/workbench changes additive on shared React surfaces.
+- Regenerated `fastapi_app/openapi_baseline.json` through `scripts/check_openapi_drift.py --update` after the footing router was present.
+
+### Issues encountered
+
+- The footing merge conflicted in `docs/SESSION_LOG.md` and `docs/planning/next-session-brief.md` because the preserved footing lane and the newer integration lane each had legitimate session and handoff history.
+- Shared `react_app/src/App.tsx`, `react_app/src/app/navigation.ts`, and `react_app/src/components/__tests__/WorkbenchHomePage.test.tsx` conflicted because slab/column and footing work independently added reachable workflows.
+- `fastapi_app/openapi_baseline.json` conflicted because the footing endpoint and schemas changed the generated snapshot relative to the already-integrated beam/column/slab source.
+
+### Root causes and resolutions
+
+- Root cause: preservation branches were intentionally developed from an older common base, so shared documentation, generated API evidence, and navigation surfaces diverged without either side being disposable. Resolution: retained both relevant histories, updated the handoff to the dedicated integration lane, combined all route/card assertions, and regenerated the OpenAPI snapshot from maintained source. Evidence: `git diff --check`, the conflict-marker scan, and the successful generator update completed before staging.
+- Root cause: the route conflicts represented additive feature ownership rather than incompatible behavior. Resolution: retained `/workbench/slabs`, `/workbench/columns/rectangular`, and `/workbench/footing/isolated/concentric`, plus their active-navigation and workbench entries. Preservation and route coexistence proofs are run after the merge commit before any PR action.
+
+### Verification
+
+- The complete footing branch is staged from exact head `886871aef93d9a955a3cc2fa613fe49bad589ce7` and the preserved release-guard branch is already an exact merge parent at `7e623984e027141fff62e5129c23fdc16264f8e0`.
+- Maintained OpenAPI regeneration completed successfully; footing inclusion, exact file-identity, ancestry, and four-workflow proofs remain the next required acceptance gates.
 
 ---

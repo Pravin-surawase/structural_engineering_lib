@@ -19,6 +19,9 @@ const routeLabels: Record<string, string> = {
   "/settings": "Settings",
   "/workbench": "Workbench",
   "/workbench/quick": "Quick Beam",
+  "/workbench/footing": "Footing",
+  "/workbench/footing/isolated": "Isolated",
+  "/workbench/footing/isolated/concentric": "Concentric Footing",
   "/workbench/projects": "Projects",
   "/workbench/projects/new": "New Project",
 };

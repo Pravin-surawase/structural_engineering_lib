@@ -12,8 +12,11 @@ vi.mock('react-router-dom', () => ({
 describe('WorkbenchHomePage', () => {
   beforeEach(() => navigate.mockClear());
 
-  it('keeps project, quick-beam, and rectangular-column review entries reachable', () => {
+  it('keeps project, beam, slab, column, and isolated-footing entries reachable', () => {
     render(<WorkbenchHomePage />);
+
+    fireEvent.click(screen.getByRole('button', { name: /open isolated footing/i }));
+    expect(navigate).toHaveBeenCalledWith('/workbench/footing/isolated/concentric');
 
     fireEvent.click(screen.getByRole('button', { name: /open quick beam/i }));
     expect(navigate).toHaveBeenCalledWith('/workbench/quick');

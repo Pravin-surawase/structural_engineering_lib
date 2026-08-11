@@ -85,6 +85,9 @@ def footing_one_way_shear(
     b_mm: float,
     fck: float,
     pt: float = 0.15,
+    *,
+    pt_L_percent: float | None = None,
+    pt_B_percent: float | None = None,
 ) -> FootingOneWayShearResult:
     """Check one-way shear at distance d from column face per IS 456 Cl 34.2.4.1(a).
 
@@ -103,7 +106,11 @@ def footing_one_way_shear(
         a_mm: Column dimension parallel to L (mm)
         b_mm: Column dimension parallel to B (mm)
         fck: Characteristic concrete strength (N/mm²)
-        pt: Steel percentage for Table 19 lookup (default 0.15%)
+        pt: Legacy steel percentage fallback for Table 19 lookup (default 0.15%)
+        pt_L_percent: L-direction steel percentage for Table 19 lookup;
+            defaults to ``pt`` when omitted.
+        pt_B_percent: B-direction steel percentage for Table 19 lookup;
+            defaults to ``pt`` when omitted.
 
     Returns:
         FootingOneWayShearResult with governing direction info
@@ -127,24 +134,40 @@ def footing_one_way_shear(
     validate_footing_inputs(L_mm, B_mm, d_mm, a_mm, b_mm)
     require_finite_real("fck", fck)
     require_finite_real("pt", pt)
+    if pt_L_percent is not None:
+        require_finite_real("pt_L_percent", pt_L_percent)
+    if pt_B_percent is not None:
+        require_finite_real("pt_B_percent", pt_B_percent)
 
     if fck <= 0:
         raise ValidationError(
             "Concrete strength must be positive",
             details={"fck": fck},
         )
+    for name, value in (
+        ("pt", pt),
+        ("pt_L_percent", pt_L_percent),
+        ("pt_B_percent", pt_B_percent),
+    ):
+        if value is not None and value < 0:
+            raise ValidationError(
+                f"{name} must be non-negative",
+                details={name: value},
+            )
 
     qu = net_upward_pressure_nmm2(Pu_kN, L_mm, B_mm)
 
     # Check both directions
     cant_L = (L_mm - a_mm) / 2.0
     cant_B = (B_mm - b_mm) / 2.0
+    effective_pt_L = pt if pt_L_percent is None else pt_L_percent
+    effective_pt_B = pt if pt_B_percent is None else pt_B_percent
 
     tau_v_L, tau_c_L, Vu_L, util_L, safe_L, warn_L = _check_direction(
-        qu, cant_L, d_mm, B_mm, fck, pt, "L"
+        qu, cant_L, d_mm, B_mm, fck, effective_pt_L, "L"
     )
     tau_v_B, tau_c_B, Vu_B, util_B, safe_B, warn_B = _check_direction(
-        qu, cant_B, d_mm, L_mm, fck, pt, "B"
+        qu, cant_B, d_mm, L_mm, fck, effective_pt_B, "B"
     )
 
     # is_safe only if BOTH directions pass
