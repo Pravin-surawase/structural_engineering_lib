@@ -4,22 +4,21 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-11
-- Focus: Beam, column, and slab PRs are merged; preserved permission and complete footing history are active in the dedicated Alpha integration lane
+- Focus: 0.23.1a1 local candidate isolation and preflight repair on the preserved exact artifacts
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.0` Alpha
 
-**Integration branch:** `codex/alpha-0231-integration`
+**Candidate branch:** `codex/alpha-0231-candidate-evidence`
 
-**Base:** current `origin/main` after sequential beam, column, and slab merges;
-preserved release guards and footing history are being integrated here
+**Base:** `origin/main` at `5da9c66a`; frozen artifact source `72d2d9b8`
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | Alpha integration lane | Beam, column, and slab are merged; preserved permission/footing release guards are being integrated from exact reviewed heads |
-| **Next** | Preservation proof and integration PR | Prove both preserved ancestors, zero missing footing files/markers, exact footing-owned file identity, and all four workflows before opening the PR |
-| **Held** | Candidate release and engineering-use claims | `0.23.1a1` evidence remains non-publishing; qualified review remains a separate stable/engineering-use gate |
+| **Current** | Local candidate rehearsal | Exact-wheel UAT imports only disposable-venv `site-packages`; CLI workflows pass |
+| **Next** | Candidate draft PR | Final preflight/gates, truthful evidence commit, explicit candidate upstream, then normal PR CI |
+| **Held** | Publication and engineering-use claims | No tag/TestPyPI/PyPI/GitHub Release; qualified review remains a separate stable gate |
 
 ## Integrated footing scope
 

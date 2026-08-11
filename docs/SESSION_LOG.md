@@ -2194,3 +2194,121 @@ calculation/service/FastAPI contract without changing the separate torsion route
 - Candidate preparation passed its same Python/build gates and updated only the expected version/document files. Artifact hash, inventory, SBOM, exact-wheel preflight, and clean-install UAT evidence will be recorded against the frozen source SHA after the single artifact build.
 
 ---
+
+## 2026-08-11 — Session: 0.23.1a1 Candidate Verification Root-Cause Repair
+
+**Agent:** Codex (`orchestrator`, bounded verifier and version-semantics workers)
+**Branch:** `codex/alpha-0231-candidate-evidence`
+**Focus:** Make the preserved candidate reproducible and truthful without rebuilding or publishing it.
+
+### Summary
+
+- Repaired installed-wheel verification so the maintained UAT uses only the
+  wheel's declared `dev,validation` extras plus generated-client `httpx`, runs
+  outside the checkout with an isolated pytest configuration, and asserts the
+  imported package is inside the disposable venv before and after tests.
+- Made release-run and preflight provision missing lockfile-pinned React
+  dependencies with `npm ci` while refusing `node_modules` symlinks.
+- Removed published-release status rows from automatic candidate version/date
+  rewriting and recorded a truthful local-prepublication evidence boundary.
+- Preserved the existing wheel and sdist byte-for-byte; no tag, upload, release,
+  Pages action, or publish workflow was invoked.
+
+### Issues encountered
+
+- Exact-wheel verification inherited checkout-oriented pytest behavior and the
+  broad `requirements.txt` experiment could pass while obscuring which
+  dependencies came from the artifact.
+- The existing release-state regression assumed the current source version was
+  already authorized/published, so it encoded an untrue candidate-state premise.
+- Generated-client tests require `httpx`, while validation tests require the
+  wheel's declared `validation` extra; the earlier `[dev]`-only install did not
+  express either requirement.
+- The first isolated UAT failed during collection because
+  `test_research_prototypes.py` imports an intentionally excluded
+  `structural_lib.research` package. Marker filtering alone occurs too late to
+  prevent that import.
+- The isolated worktree had no `react_app/node_modules`, so the canonical React
+  build failed with `sh: tsc: command not found`.
+- Candidate bump automation changed the `TASKS.md` current-release version while
+  retaining `ALPHA RELEASED` and public-evidence wording, and erased the
+  descriptive task-board update text.
+- The first full closeout gate rejected the new evidence filename because
+  version dots violate the repository documentation naming policy.
+- The first code commit attempt was blocked after Ruff removed one extra blank
+  line in the research test module; no commit was created on that attempt.
+- A documentation-only validation shortcut referenced the retired
+  `scripts/check_markdown_links.py` path and stopped before its second command.
+- The first evidence-commit command stopped at `git diff --check` because the
+  new Markdown header used two trailing-space hard breaks; no paths were staged.
+- The candidate worktree has no local `.venv`; focused commands used the
+  maintained shared project interpreter.
+
+### Root causes and resolutions
+
+- Root cause: `Python/pytest.ini` injects `Python/` through `pythonpath = .`, and
+  `cmd_verify` ran repository tests from the checkout. Resolution: create a
+  temporary config with only that directive removed, run from the temporary
+  directory with importlib mode, and assert the resolved package path is inside
+  the verification venv before and after pytest. The broad requirements install
+  was removed in favor of `[dev,validation]` and `httpx>=0.27`.
+- Root cause: the release-state test passed
+  `allow_authorized_release=True` unconditionally instead of deriving that fact
+  from the permission record. Resolution: bind the allowance to
+  `_release_authorization_recorded(current)` so candidate source is not silently
+  treated as published.
+- Root cause: `[dev]` alone did not model the maintained test dependency
+  boundary, and the broad root requirements install masked the missing
+  distinction. Resolution: install the exact wheel with its declared
+  `[dev,validation]` extras and add only the generated-client requirement
+  `httpx>=0.27`.
+- Root cause: pytest imports test modules before applying marker selection.
+  Resolution: classify the research prototype module as `repo_only` and derive
+  `--ignore` arguments for every module-level repo-only test before collection.
+- Root cause: release automation selected pinned Node 24 but assumed dependencies
+  already existed. Resolution: both release paths share one provisioner that
+  runs lockfile-pinned `npm ci` when TypeScript is absent and fails closed on a
+  symlink or invalid dependency path.
+- Root cause: `bump_version.py` treated published operational history as a source
+  version pin. Resolution: exclude `TASKS.md` and the handoff from automatic
+  candidate version/date rewriting; focused temporary-repository coverage proves
+  a future bump preserves the last published release status.
+- Root cause: the evidence filename copied the dotted package version into a
+  path governed by hyphenated document naming. Resolution: use the repository's
+  safe-file mover to rename it to
+  `alpha-0231-local-prepublication-rehearsal.md`; link validation and the full
+  governance gate then passed.
+- Root cause: the staged research-test import grouping did not match the
+  repository Ruff format. Resolution: accepted the hook's one-line formatting
+  change, reran the 200 focused tests, restaged the intended five code/test
+  paths, and committed only after all hooks passed.
+- Root cause: the shortcut guessed an obsolete direct script name instead of
+  consulting the automation registry. Resolution: `./run.sh find` identified
+  `scripts/check_links.py` and `scripts/session.py check`; both maintained
+  commands completed successfully. No fallback mutation was used.
+- Root cause: the evidence header used Markdown hard-break whitespace that the
+  repository hygiene rule rejects. Resolution: replaced the hard breaks with
+  explicit blank paragraphs and reran `git diff --check` before staging.
+
+### Verification
+
+- Focused release/version/research tests: 200 passed; source research tests still
+  execute normally while installed-artifact UAT excludes checkout-only modules.
+- Prior integration evidence remained intact: `./run.sh check` passed 30/30 and
+  merged PR #730 had seven successful checks (Detect Changes, Build MkDocs,
+  Repository Validation, Python Validation, FastAPI Validation, React
+  Validation, and PR Gate).
+- Exact installed wheel: 5,055 passed, 51 skipped, 2 deselected, 29 warnings;
+  disposable `site-packages` identity passed before and after pytest; installed
+  `job`, `critical`, and HTML `report` workflows passed.
+- React Node 24 dependency provisioning used `npm ci`; the production build
+  passed and retained the isolated-footing chunk.
+- Candidate closeout gates: `./run.sh check --quick` passed 10/10; the first full
+  gate exposed the invalid evidence filename at 29/30, and the corrected rerun
+  passed 30/30.
+- Wheel SHA-256 remained
+  `9c986920ceb43e341d01c6411c873605fec3321486d862a847e2083c36156aa7`;
+  sdist remained
+  `9f7ebf55afa8232eeeb3f35449450a4bc8aca5d835c9f017f308052c979f1de6`.
+
+---
