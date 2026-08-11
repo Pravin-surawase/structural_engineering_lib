@@ -13,9 +13,10 @@ interface ExportPanelProps {
   utilization?: number;
   isSafe?: boolean;
   astProvided?: number;
+  calculationIdentity?: string;
 }
 
-export function ExportPanel({ beamParams, utilization, isSafe, astProvided }: ExportPanelProps) {
+export function ExportPanel({ beamParams, utilization, isSafe, astProvided, calculationIdentity }: ExportPanelProps) {
   const bbs = useExportBBS();
   const dxf = useExportDXF();
   const report = useExportReport();
@@ -46,7 +47,7 @@ export function ExportPanel({ beamParams, utilization, isSafe, astProvided }: Ex
           label="Report"
           icon={<FileText className="w-3.5 h-3.5" />}
           loading={report.isPending}
-          disabled={exportDisabled}
+          disabled={exportDisabled || !calculationIdentity}
           onClick={() =>
             report.mutate({
               beam_id: beamParams.beam_id,
@@ -60,6 +61,7 @@ export function ExportPanel({ beamParams, utilization, isSafe, astProvided }: Ex
               ast_provided: astProvided,
               utilization: utilization,
               is_safe: isSafe,
+              calculation_identity: calculationIdentity,
               format: "html",
             })
           }
@@ -68,6 +70,11 @@ export function ExportPanel({ beamParams, utilization, isSafe, astProvided }: Ex
       {exportHeld && (
         <p className="mt-2 text-[10px] text-amber-400/80" role="status">
           Exports held until the outer design result is PASS.
+        </p>
+      )}
+      {!exportHeld && !calculationIdentity && (
+        <p className="mt-2 text-[10px] text-amber-400/80" role="status">
+          Report held until an exact primary-response evidence identity is available.
         </p>
       )}
       {(bbs.error || dxf.error || report.error) && (

@@ -117,6 +117,35 @@ def test_commit_summary_uses_exclusive_previous_day_boundary(
     assert "--after=2026-04-07 23:59:59" in seen[0]
 
 
+@pytest.mark.parametrize(
+    ("branch", "git_state", "trusted"),
+    [
+        ("codex/task", "Clean working tree", True),
+        ("codex/task", "2 uncommitted change(s)", False),
+        ("codex/task", "Unable to check", False),
+        ("main", "Clean working tree", False),
+        ("unknown", "Clean working tree", False),
+        ("", "Clean working tree", False),
+    ],
+)
+def test_session_trust_fails_closed_on_dirty_or_unknown_git_state(
+    branch: str, git_state: str, trusted: bool
+):
+    result, _reason = session._evaluate_trust(branch, git_state)
+
+    assert result is trusted
+
+
+def test_git_identity_helpers_reject_failed_commands(monkeypatch: pytest.MonkeyPatch):
+    def fake_run(args, **kwargs):
+        return subprocess.CompletedProcess(args, 128, "", "fatal: not a repository")
+
+    monkeypatch.setattr(session.subprocess, "run", fake_run)
+
+    assert session.get_branch() == "unknown"
+    assert session.get_uncommitted_status() == "Unable to check"
+
+
 def test_launcher_port_discovery_is_listener_only():
     launcher = (REPO_ROOT / "scripts" / "launch_stack.sh").read_text(encoding="utf-8")
     function_body = launcher.split("get_process_on_port()", 1)[1].split(

@@ -10,11 +10,29 @@ export interface BeamDesignRequest {
   depth: number;
   moment: number;
   shear?: number;
+  torsion?: number;
   fck: number;
   fy: number;
   clear_cover?: number;
   stirrup_dia_mm?: number;
   main_bar_dia_mm?: number;
+  effective_depth?: number;
+  include_serviceability?: boolean;
+  span_mm?: number;
+  support_condition?: string;
+  crack_width_params?: Partial<BeamCrackWidthParams>;
+}
+
+export interface BeamCrackWidthParams {
+  exposure_class: 'mild' | 'moderate' | 'severe' | 'very_severe';
+  limit_mm?: number;
+  acr_mm: number;
+  cmin_mm: number;
+  h_mm: number;
+  x_mm: number;
+  epsilon_m?: number;
+  fs_service_nmm2?: number;
+  es_nmm2?: number;
 }
 
 export interface FlexureResult {
@@ -33,9 +51,48 @@ export interface ShearResult {
   tau_c: number;
   tau_c_max: number;
   asv_required: number;
+  asv_required_unit: 'mm²/mm';
   stirrup_spacing: number;
   sv_max: number;
   shear_capacity: number;
+}
+
+export interface DeflectionCheckResult {
+  is_ok: boolean;
+  span_depth_actual: number | null;
+  span_depth_allowable: number | null;
+  remarks: string;
+}
+
+export interface CrackWidthCheckResult {
+  is_ok: boolean;
+  crack_width_mm: number | null;
+  crack_width_limit_mm: number | null;
+  remarks: string;
+}
+
+export interface CombinedBeamActions {
+  mu_knm: number;
+  vu_kn: number;
+  tu_knm: number;
+  me_knm: number;
+  ve_kn: number;
+}
+
+export interface IntegratedTorsionResult {
+  source: 'IS 456:2000';
+  is_safe: boolean;
+  tau_ve: number;
+  tau_c: number;
+  tau_c_max: number;
+  asv_torsion: number;
+  asv_shear: number;
+  asv_total: number;
+  stirrup_spacing: number;
+  al_torsion: number;
+  requires_closed_stirrups: boolean;
+  errors: Array<Record<string, unknown>>;
+  clause_refs: Record<string, string>;
 }
 
 export interface BeamDesignResponse {
@@ -47,8 +104,13 @@ export interface BeamDesignResponse {
   asc_total: number;
   utilization_ratio: number;
   effective_depth_used?: number;
+  deflection_check?: DeflectionCheckResult | null;
+  crack_width_check?: CrackWidthCheckResult | null;
+  combined_actions?: CombinedBeamActions | null;
+  torsion?: IntegratedTorsionResult | null;
+  holds?: string[];
   warnings?: string[];
-  evidence?: EvidenceEnvelope;
+  evidence?: EvidenceEnvelope | null;
 }
 
 export interface EvidenceEnvelope {
@@ -188,7 +250,8 @@ export async function designBeam(
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({ detail: response.statusText }));
-    throw new Error(`Design failed: ${error.detail || response.status}`);
+    const message = error?.error?.message ?? error?.detail ?? response.status;
+    throw new Error(`Design failed: ${message}`);
   }
 
   return response.json().then(unwrapResponse<BeamDesignResponse>);

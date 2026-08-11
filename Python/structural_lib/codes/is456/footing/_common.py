@@ -48,6 +48,8 @@ def validate_footing_inputs(
     d_mm: float,
     a_mm: float,
     b_mm: float,
+    *,
+    overall_thickness_mm: float | None = None,
 ) -> None:
     """Validate footing geometry inputs.
 
@@ -57,6 +59,8 @@ def validate_footing_inputs(
         d_mm: Effective depth (mm)
         a_mm: Column dimension parallel to L (mm)
         b_mm: Column dimension parallel to B (mm)
+        overall_thickness_mm: Overall physical footing thickness (mm), when the
+            calling check requires the IS 456 150 mm edge minimum.
 
     Raises:
         DimensionError: If any dimension is non-positive
@@ -93,10 +97,17 @@ def validate_footing_inputs(
             details={"a_mm": a_mm, "b_mm": b_mm, "L_mm": L_mm, "B_mm": B_mm},
             clause_ref=E_FOOTING_007.clause,
         )
-    if d_mm < 150:
+    if overall_thickness_mm is not None:
+        require_finite_real(
+            "overall_thickness_mm",
+            overall_thickness_mm,
+            error_type=DimensionError,
+            clause_ref=E_FOOTING_005.clause,
+        )
+    if overall_thickness_mm is not None and overall_thickness_mm < 150:
         raise DimensionError(
             E_FOOTING_005.message,
-            details={"d_mm": d_mm, "minimum": 150},
+            details={"overall_thickness_mm": overall_thickness_mm, "minimum": 150},
             clause_ref=E_FOOTING_005.clause,
         )
 

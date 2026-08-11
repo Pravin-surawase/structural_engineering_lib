@@ -3,7 +3,7 @@
 > Development, validation, discovery, release-preparation, and maintenance tools.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 **Files:** 108
 
 ## Config Files
@@ -34,7 +34,7 @@
 | [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 11 | 783 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 467 |
 | [benchmark_api.py](benchmark_api.py) | API Performance Benchmark Script. | 4 | 9 | 837 |
-| [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 4 | 469 |
+| [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 4 | 453 |
 | [check_all.py](check_all.py) | Unified check orchestrator — runs all validation scripts in  | 3 | 1 | 712 |
 | [check_api.py](check_api.py) | Validate the live React/FastAPI contract and Python API docu | 1 | 4 | 390 |
 | [check_api_compat.py](check_api_compat.py) | Compatibility wrapper for the canonical public API manifest  | 0 | 1 | 49 |
@@ -73,7 +73,7 @@
 | [evolve.py](evolve.py) | Self-evolution engine — orchestrates project health, feedbac | 0 | 12 | 552 |
 | [export_paper_data.py](export_paper_data.py) | Export agent performance data for academic paper. | 0 | 8 | 388 |
 | [external_cli_test.py](external_cli_test.py) | External CLI smoke test (S-007). | 1 | 1 | 401 |
-| [find_automation.py](find_automation.py) | Find the right automation script for a task. | 0 | 8 | 187 |
+| [find_automation.py](find_automation.py) | Find the right automation script for a task. | 0 | 8 | 192 |
 | [fix_broken_links.py](fix_broken_links.py) | Fix broken internal links in markdown files. | 0 | 6 | 268 |
 | [generate_api_manifest.py](generate_api_manifest.py) | Generate or validate the public API manifest for structural_ | 0 | 1 | 159 |
 | [generate_beam_tool_manifest.py](generate_beam_tool_manifest.py) | Generate and byte-check the catalogue-derived beam tool mani | 0 | 4 | 64 |
@@ -91,10 +91,10 @@
 | [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 203 |
 | [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 908 |
 | [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 3 | 494 |
-| [release.py](release.py) | Unified release management CLI. | 0 | 8 | 1353 |
+| [release.py](release.py) | Unified release management CLI. | 0 | 10 | 1773 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 350 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
-| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2294 |
+| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2300 |
 | [session_store.py](session_store.py) | JSON-based session state persistence for AI agent sessions. | 1 | 14 | 374 |
 | [skill_tiers.py](skill_tiers.py) | Skill tier classification and management for AI agents. | 1 | 11 | 485 |
 | [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 502 |

@@ -34,10 +34,11 @@ from structural_lib.core.data_types import (
     FlexureResult,
     ShearResult,
     SupportCondition,
+    TorsionResult,
 )
 from structural_lib.core.errors import Severity
 
-from .beam import flexure, serviceability, shear
+from .beam import flexure, serviceability, shear, torsion
 
 _logger = logging.getLogger(__name__)
 
@@ -187,12 +188,17 @@ def check_compliance_case(
     # Optional serviceability checks
     deflection_params: DeflectionParams | None = None,
     crack_width_params: CrackWidthParams | None = None,
+    # Optional torsion integration (ordinary solid rectangular beams only)
+    tu_knm: float = 0.0,
+    cover_mm: float | None = None,
+    stirrup_dia_mm: float = 8.0,
 ) -> ComplianceCaseResult:
     """Run a single compliance case.
 
     Units:
     - Mu: kN·m (factored)
     - Vu: kN (factored)
+    - Tu: kN·m (factored)
     - b_mm, D_mm, d_mm, d_dash_mm: mm
     - fck_nmm2, fy_nmm2: N/mm²
     - asv_mm2: mm² (area of stirrup legs)
@@ -205,13 +211,26 @@ def check_compliance_case(
 
     failed_checks: list[str] = []
     assumptions: list[str] = []
+    torsion_result: TorsionResult | None = None
+
+    design_mu_knm = mu_knm
+    design_vu_kn = vu_kn
+    if tu_knm > 0:
+        design_mu_knm = torsion.calculate_equivalent_moment(
+            mu_knm, tu_knm, d_mm, b_mm, D_mm=D_mm
+        )
+        design_vu_kn = torsion.calculate_equivalent_shear(vu_kn, tu_knm, b_mm)
+        assumptions.append(
+            "Applied IS 456 torsion equivalent actions Me and Ve to primary "
+            "flexure and shear design."
+        )
 
     flex = flexure.design_doubly_reinforced(
         b=b_mm,
         d=d_mm,
         d_dash=d_dash_mm,
         d_total=D_mm,
-        mu_knm=mu_knm,
+        mu_knm=design_mu_knm,
         fck=fck_nmm2,
         fy=fy_nmm2,
     )
@@ -232,8 +251,27 @@ def check_compliance_case(
                 "pt_percent not provided; using 0.0 (tables clamp internally)."
             )
 
+    if tu_knm > 0:
+        if cover_mm is None:
+            raise ValueError("cover_mm is required when tu_knm > 0.")
+        torsion_result = torsion.design_torsion(
+            tu_knm=tu_knm,
+            vu_kn=vu_kn,
+            mu_knm=mu_knm,
+            b=b_mm,
+            D=D_mm,
+            d=d_mm,
+            fck=fck_nmm2,
+            fy=fy_nmm2,
+            cover=cover_mm,
+            stirrup_dia=stirrup_dia_mm,
+            pt=pt_percent,
+        )
+        design_mu_knm = torsion_result.Me_knm
+        design_vu_kn = torsion_result.Ve_kn
+
     sh = shear.design_shear(
-        vu_kn=vu_kn,
+        vu_kn=design_vu_kn,
         b=b_mm,
         d=d_mm,
         fck=fck_nmm2,
@@ -271,15 +309,29 @@ def check_compliance_case(
             error_msgs = ["shear"]
         failed_checks.extend(error_msgs)
 
+    if torsion_result is not None and not torsion_result.is_safe:
+        error_msgs = [
+            f"torsion ({e.message})"
+            for e in torsion_result.errors
+            if e.severity == Severity.ERROR
+        ]
+        if not error_msgs:
+            error_msgs = ["torsion"]
+        failed_checks.extend(error_msgs)
+
     if defl is not None and not defl.is_ok:
         failed_checks.append("deflection")
     if crack is not None and not crack.is_ok:
         failed_checks.append("crack_width")
 
     utilizations: dict[str, float] = {
-        "flexure": _compute_flexure_utilization(mu_knm, flex),
+        "flexure": _compute_flexure_utilization(design_mu_knm, flex),
         "shear": _compute_shear_utilization(sh),
     }
+    if torsion_result is not None:
+        utilizations["torsion"] = _utilization_safe(
+            torsion_result.tau_ve, torsion_result.tau_c_max
+        )
     if defl is not None:
         utilizations["deflection"] = _compute_deflection_utilization(defl)
     if crack is not None:
@@ -291,6 +343,21 @@ def check_compliance_case(
     remarks = "OK" if is_ok else ("FAIL: " + ", ".join(failed_checks))
     if assumptions:
         remarks = remarks + " | " + " | ".join(assumptions)
+
+    clause_refs = {
+        "flexure": "IS 456 Cl 38.1",
+        "shear": "IS 456 Cl 40",
+        "deflection": "IS 456 Cl 23.2",
+        "crack_width": "IS 456 Cl 35.3.2",
+    }
+    if torsion_result is not None:
+        clause_refs["torsion"] = "IS 456 Cl 41"
+        clause_refs.update(
+            {
+                f"torsion_{key}": value
+                for key, value in torsion_result.clause_refs.items()
+            }
+        )
 
     return ComplianceCaseResult(
         case_id=case_id,
@@ -305,12 +372,11 @@ def check_compliance_case(
         utilizations=utilizations,
         failed_checks=failed_checks,
         remarks=remarks,
-        clause_refs={
-            "flexure": "IS 456 Cl 38.1",
-            "shear": "IS 456 Cl 40",
-            "deflection": "IS 456 Cl 23.2",
-            "crack_width": "IS 456 Cl 35.3.2",
-        },
+        clause_refs=clause_refs,
+        Tu_knm=tu_knm,
+        Me_knm=design_mu_knm if torsion_result is not None else None,
+        Ve_kn=design_vu_kn if torsion_result is not None else None,
+        torsion=torsion_result,
     )
 
 

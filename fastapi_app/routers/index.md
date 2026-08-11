@@ -1,7 +1,7 @@
 # Routers
 
 **Type:** Python Package
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 **Files:** 18
 
 ## Public API
@@ -39,7 +39,7 @@
 | [health.py](health.py) | Health Check Router. | 3 | 3 | 208 |
 | [imports.py](imports.py) | CSV Import Router. | 9 | 6 | 992 |
 | [insights.py](insights.py) | Insights Router. | 12 | 4 | 579 |
-| [library_core.py](library_core.py) | Thin FastAPI consumers for the supported footing and slab li | 0 | 2 | 74 |
+| [library_core.py](library_core.py) | Thin FastAPI consumers for the supported footing and slab li | 0 | 7 | 229 |
 | [optimization.py](optimization.py) | Cost Optimization Router. | 0 | 3 | 331 |
 | [rebar.py](rebar.py) | Rebar Validation and Application Router. | 7 | 2 | 269 |
 | [streaming.py](streaming.py) | Server-Sent Events (SSE) Router for Batch Processing. | 3 | 3 | 351 |

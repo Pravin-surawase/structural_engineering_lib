@@ -240,12 +240,16 @@ Subcommands:
   verify                   Verify installed package in clean venv
   check-docs               Check docs have correct version
   checklist                Print release checklist
+  permission-check         Verify public-distribution permission record
+  footing-inclusion-check  Verify complete footing D1 integration
 
 Examples:
   ./run.sh release preflight 0.24.0a1  # Validate an Alpha publication candidate
   ./run.sh release run 0.24.0a1        # Bump to an Alpha publication candidate
   ./run.sh release verify --version 0.24.0a1  # Verify exact release artifact
   ./run.sh release check-docs        # Check version in docs
+  ./run.sh release permission-check  # Check standing distribution permission
+  ./run.sh release footing-inclusion-check  # Check footing release inclusion
 EOF
 }
 
@@ -916,7 +920,7 @@ _run_sh() {
     local -a test_opts=('--python' '--fastapi' '--react' '--all' '--parity' '--pipeline' '--cli' '--benchmark' '--ci' '--stats')
     local -a frontend_subs=('runtime' 'lint' 'test' 'build' 'check' 'dev')
     local -a audit_opts=('--score' '--errors' '--inputs' '--diagnostics')
-    local -a release_subs=('preflight' 'run' 'verify' 'check-docs' 'checklist')
+    local -a release_subs=('preflight' 'run' 'verify' 'check-docs' 'checklist' 'permission-check' 'footing-inclusion-check')
     local -a efficiency_subs=('check' 'prompt')
 
     if (( CURRENT == 2 )); then

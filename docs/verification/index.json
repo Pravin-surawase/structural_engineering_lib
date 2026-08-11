@@ -2,8 +2,8 @@
   "folder": "docs/verification",
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
-  "last_updated": "2026-08-10",
-  "file_count": 10,
+  "last_updated": "2026-08-11",
+  "file_count": 13,
   "files": [
     {
       "name": "README.md",
@@ -39,6 +39,23 @@
       "content_hash": "a81223e8c701"
     },
     {
+      "name": "footing-release-inclusion.json",
+      "type": "config",
+      "last_updated": "2026-08-11",
+      "top_level_keys": [
+        "schema_version",
+        "record_id",
+        "source_branch",
+        "source_head",
+        "source_commits",
+        "scope",
+        "scope_boundary",
+        "required_owned_file_sha256",
+        "required_shared_markers"
+      ],
+      "content_hash": "e15f6ebeb790"
+    },
+    {
       "name": "insights-verification-pack.md",
       "type": "documentation",
       "size_lines": 101,
@@ -49,11 +66,37 @@
     {
       "name": "is456-library-first-evidence.md",
       "type": "documentation",
-      "size_lines": 162,
-      "last_updated": "2026-08-10",
+      "size_lines": 169,
+      "last_updated": "2026-08-11",
       "title": "IS 456 Library-First Evidence and Claim Crosswalk",
       "description": "| Source | SHA-256 | Pages | Use | |---|---|---:|---|",
-      "content_hash": "69f74cdf8518"
+      "content_hash": "3a47d498ba82"
+    },
+    {
+      "name": "is456-public-distribution-permission.json",
+      "type": "config",
+      "last_updated": "2026-08-11",
+      "top_level_keys": [
+        "schema_version",
+        "record_id",
+        "decision",
+        "effective_date",
+        "authority",
+        "permission_basis",
+        "scope",
+        "restrictions",
+        "release_boundaries"
+      ],
+      "content_hash": "539ba5deb682"
+    },
+    {
+      "name": "is456-slab-evidence.md",
+      "type": "documentation",
+      "size_lines": 86,
+      "last_updated": "2026-08-11",
+      "title": "IS 456 Solid Slab Source and Benchmark Ledger",
+      "description": "| ID | Identity | Permitted implementation use | State | |---|---|---|---|",
+      "content_hash": "e4d28f3bcec0"
     },
     {
       "name": "pack.md",
@@ -66,11 +109,11 @@
     {
       "name": "release-artifact-evidence-template.md",
       "type": "documentation",
-      "size_lines": 34,
-      "last_updated": "2026-08-09",
+      "size_lines": 38,
+      "last_updated": "2026-08-11",
       "title": "Release Artifact Evidence Template",
       "description": "Complete this record from the CI run that built the exact candidate. | Field | Value |",
-      "content_hash": "2b9ece6532d0"
+      "content_hash": "dd7652006f11"
     },
     {
       "name": "ui-experience-session-2-acceptance.md",
@@ -90,5 +133,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "99a270b33085e508"
+  "content_hash": "2769009e65612f3a"
 }

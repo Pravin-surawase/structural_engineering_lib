@@ -33,8 +33,8 @@ Choose the exact existing test module or keyword that exercises the changed main
 ## Run Targeted Verification
 
 ```bash
-.venv/bin/pytest <exact-test-path> -q
-.venv/bin/pytest Python/tests/ -q -k "<function_or_clause>"
+./scripts/python_runtime.sh -m pytest <exact-test-path> -q
+./scripts/python_runtime.sh -m pytest Python/tests/ -q -k "<function_or_clause>"
 ```
 
 Compare the result independently with the benchmark and show the unit conversion. Use the source's precision to set tolerance; do not apply one universal percentage to tables, charts, and textbook examples.
@@ -46,8 +46,8 @@ When the task is review-only, do not add tests. Report only a confirmed mismatch
 For an implemented structural change:
 
 ```bash
-.venv/bin/python scripts/check_architecture_boundaries.py
-.venv/bin/python scripts/validate_imports.py --scope structural_lib
+./scripts/python_runtime.sh scripts/check_architecture_boundaries.py
+./scripts/python_runtime.sh scripts/validate_imports.py --scope structural_lib
 ./run.sh check --quick
 ```
 

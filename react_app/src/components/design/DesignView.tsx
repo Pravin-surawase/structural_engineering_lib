@@ -10,9 +10,7 @@ import { Calculator, CheckCircle, AlertCircle, Loader2, ChevronDown, ChevronRigh
 import { useExportBBS, useExportDXF, useExportReport } from "../../hooks/useExport";
 import { useLoadAnalysis } from "../../hooks/useLoadAnalysis";
 import type { LoadAnalysisResponse } from "../../api/client";
-import { useTorsionDesign } from "../../hooks/useTorsionDesign";
-import type { TorsionDesignResponse } from "../../hooks/useTorsionDesign";
-import type { BeamDesignResponse } from "../../api/client";
+import type { BeamCrackWidthParams, BeamDesignResponse } from "../../api/client";
 import { useDesignStore } from "../../store/designStore";
 import { useLiveDesign } from "../../hooks/useLiveDesign";
 import { useCodeChecks, useRebarSuggestions } from "../../hooks/useInsights";
@@ -57,8 +55,6 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
   const [resultsCollapsed, setResultsCollapsed] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [showCompare, setShowCompare] = useState(false);
-  const [torsionEnabled, setTorsionEnabled] = useState(false);
-  const [torsionMoment, setTorsionMoment] = useState(10); // kN·m
   const [loadCalcEnabled, setLoadCalcEnabled] = useState(false);
   const [loadCalcType, setLoadCalcType] = useState<'udl' | 'point'>('udl');
   const [loadCalcMagnitude, setLoadCalcMagnitude] = useState(20); // kN/m or kN
@@ -74,6 +70,8 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
     ast_required: 0, // filled below when result exists
     moment: inputs.moment,
     shear: inputs.shear ?? 0,
+    torsion: inputs.torsion ?? 0,
+    include_serviceability: inputs.include_serviceability ?? false,
   };
   const { mutate: exportBBS, isPending: bbsPending } = useExportBBS();
   const { mutate: exportDXF, isPending: dxfPending } = useExportDXF();
@@ -88,30 +86,44 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
 
   const codeChecks = useCodeChecks();
   const rebarSuggestions = useRebarSuggestions();
-  const torsionDesign = useTorsionDesign();
   const loadAnalysis = useLoadAnalysis();
+  const combinedCase = (inputs.torsion ?? 0) > 0 || Boolean(inputs.include_serviceability);
 
   const spanMeters = Number((length / 1000).toFixed(2));
   const updateCatalogInput = (name: CatalogBeamTransportName, value: number) => {
     actions.updateInputs({ [name]: value });
+  };
+  const updateCrackWidthInput = (
+    name: keyof BeamCrackWidthParams,
+    value: string | number | undefined,
+  ) => {
+    actions.updateInputs({
+      crack_width_params: {
+        exposure_class: inputs.crack_width_params?.exposure_class ?? "moderate",
+        ...inputs.crack_width_params,
+        [name]: value,
+      },
+    });
   };
 
   // Auto-trigger code checks + rebar suggestions when design result changes
   useEffect(() => {
     if (!state.result || state.resultLifecycle !== "current") return;
     const r = state.result;
-    codeChecks.mutate({
-      beam: {
-        b_mm: inputs.width,
-        D_mm: inputs.depth,
-        span_mm: length,
-        fck_mpa: inputs.fck,
-        fy_mpa: inputs.fy,
-        mu_knm: inputs.moment,
-        vu_kn: inputs.shear,
-      },
-      config: r.ast_total ? { ast_mm2: r.ast_total } : null,
-    });
+    if (!combinedCase) {
+      codeChecks.mutate({
+        beam: {
+          b_mm: inputs.width,
+          D_mm: inputs.depth,
+          span_mm: length,
+          fck_mpa: inputs.fck,
+          fy_mpa: inputs.fy,
+          mu_knm: inputs.moment,
+          vu_kn: inputs.shear,
+        },
+        config: r.ast_total ? { ast_mm2: r.ast_total } : null,
+      });
+    }
     if (r.flexure?.ast_required) {
       rebarSuggestions.mutate({
         ast_required: r.flexure.ast_required,
@@ -122,21 +134,6 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.result, state.resultLifecycle]);
-
-  // Auto-trigger torsion design when enabled and flexure result exists
-  useEffect(() => {
-    if (!torsionEnabled || !state.result || state.resultLifecycle !== "current") return;
-    torsionDesign.mutate({
-      width: inputs.width,
-      depth: inputs.depth,
-      torsion: torsionMoment,
-      moment: inputs.moment,
-      shear: inputs.shear ?? 0,
-      fck: inputs.fck,
-      fy: inputs.fy,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [torsionEnabled, torsionMoment, state.result, state.resultLifecycle]);
 
   return (
     <div className="h-screen pt-14">
@@ -159,7 +156,8 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
               <>
                 <button
                   onClick={() => setShowCompare((visible) => !visible)}
-                  disabled={!state.exportEligible}
+                  disabled={!state.exportEligible || combinedCase}
+                  title={combinedCase ? "Comparison automation does not carry torsion or serviceability inputs." : undefined}
                   aria-pressed={showCompare}
                   className="rounded-lg border border-white/10 px-3 py-2 text-xs text-zinc-300 hover:bg-white/5 disabled:opacity-40"
                 >
@@ -305,20 +303,31 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
                 {loadAnalysis.data && <MiniDiagram data={loadAnalysis.data} />}
               </>
             )}
-            <div className="col-span-2 flex items-center gap-2 px-1 pt-1">
-              <label className="flex items-center gap-2 text-xs text-white/60 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={torsionEnabled}
-                  onChange={(e) => setTorsionEnabled(e.target.checked)}
-                  className="accent-purple-500 w-3.5 h-3.5"
-                />
-                <RotateCcw className="w-3 h-3 text-purple-400" />
-                Include Torsion
-              </label>
-            </div>
-            {torsionEnabled && (
-              <InputField label="Torsion (Tu)" value={torsionMoment} onChange={setTorsionMoment} unit="kN·m" min={0.1} max={200} step={0.5} />
+            <InputField label="Torsion (Tu)" value={inputs.torsion ?? 0} onChange={(v) => actions.updateInputs({ torsion: v })} unit="kN·m" min={0} max={200} step={0.5} />
+          </AccordionSection>
+
+          <AccordionSection title="Serviceability" defaultOpen={false}>
+            <label className="col-span-2 flex items-center gap-2 text-xs text-white/60 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={inputs.include_serviceability ?? false}
+                onChange={(e) => actions.updateInputs({ include_serviceability: e.target.checked })}
+                className="accent-blue-500 w-3.5 h-3.5"
+              />
+              Include maintained Level-A deflection and crack-width checks
+            </label>
+            {inputs.include_serviceability && (
+              <>
+                <OptionalInputField label="Check span" value={inputs.span_mm} onChange={(v) => actions.updateInputs({ span_mm: v })} unit="mm" min={1} />
+                <DropdownField label="Check support" value={inputs.support_condition ?? "simply_supported"} onChange={(v) => actions.updateInputs({ support_condition: v })} options={["simply_supported", "continuous", "cantilever"]} format={(v) => v.replaceAll("_", " ")} />
+                <DropdownField label="Exposure" value={inputs.crack_width_params?.exposure_class ?? "moderate"} onChange={(v) => updateCrackWidthInput("exposure_class", v)} options={["mild", "moderate", "severe", "very_severe"]} format={(v) => v.replaceAll("_", " ")} />
+                <OptionalInputField label="acr" value={inputs.crack_width_params?.acr_mm} onChange={(v) => updateCrackWidthInput("acr_mm", v)} unit="mm" min={0.1} />
+                <OptionalInputField label="cmin" value={inputs.crack_width_params?.cmin_mm} onChange={(v) => updateCrackWidthInput("cmin_mm", v)} unit="mm" min={0.1} />
+                <OptionalInputField label="h" value={inputs.crack_width_params?.h_mm} onChange={(v) => updateCrackWidthInput("h_mm", v)} unit="mm" min={0.1} />
+                <OptionalInputField label="x" value={inputs.crack_width_params?.x_mm} onChange={(v) => updateCrackWidthInput("x_mm", v)} unit="mm" min={0.1} />
+                <OptionalInputField label="fs,service" value={inputs.crack_width_params?.fs_service_nmm2} onChange={(v) => updateCrackWidthInput("fs_service_nmm2", v)} unit="N/mm²" min={0} />
+                <p className="col-span-2 text-[10px] leading-4 text-zinc-500">Span, crack geometry, and service stress are required explicitly. Empty values are not inferred from the 3D span or reinforcement.</p>
+              </>
             )}
           </AccordionSection>
           </>
@@ -328,8 +337,9 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
         {/* Bottom actions */}
         <div className="px-3 pb-3 space-y-2">
           {state.isFallbackActive && (
-            <p className="text-center text-[10px] text-zinc-400">Verified REST request mode · cancelled and stale responses are ignored</p>
+            <p className="text-center text-[10px] text-zinc-400">{state.transportExplanation}</p>
           )}
+          {combinedCase && <p className="text-center text-[10px] text-amber-300/70">BBS, DXF, and PDF are held for combined/serviceability cases; use the identity-bound HTML or JSON report.</p>}
         </div>
       </div>
 
@@ -348,7 +358,7 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
                   : "Export and detailing are held until the outer result is PASS."
                 : "Fill in dimensions, materials, and forces in the left panel, then click 'Design Beam'."
             }
-            nextAction={state.result ? (canExport ? "Export → BBS/DXF/Report" : "Recalculate or resolve FAIL/HOLD") : "Design Beam"}
+            nextAction={state.result ? (canExport ? (combinedCase ? "Export → HTML/JSON Report" : "Export → BBS/DXF/Report") : "Recalculate or resolve FAIL/HOLD") : "Design Beam"}
             storageKey="workflow_hint_design_view"
           />
         </div>
@@ -369,12 +379,36 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
             {showExportMenu && (
               <div className="absolute right-0 mt-1.5 w-44 rounded-xl bg-zinc-900 border border-white/10 shadow-2xl shadow-black/50 overflow-hidden">
                 {[
-                  { label: "BBS (CSV)", icon: <Download className="w-3.5 h-3.5" />, loading: bbsPending, onClick: () => { exportBBS({ ...exportParams, ast_required: state.result?.flexure?.ast_required ?? 0 }); setShowExportMenu(false); } },
-                  { label: "DXF Drawing", icon: <Ruler className="w-3.5 h-3.5" />, loading: dxfPending, onClick: () => { exportDXF({ ...exportParams, ast_required: state.result?.flexure?.ast_required ?? 0 }); setShowExportMenu(false); } },
-                  { label: "HTML Report", icon: <FileText className="w-3.5 h-3.5" />, loading: reportPending, onClick: () => { exportReport({ ...exportParams, ast_required: state.result?.flexure?.ast_required, ast_provided: state.result?.ast_total, utilization: state.result?.utilization_ratio, is_safe: state.result?.success }); setShowExportMenu(false); } },
-                  { label: "PDF Report", icon: <FileText className="w-3.5 h-3.5" />, loading: reportPending, onClick: () => { exportReport({ ...exportParams, ast_required: state.result?.flexure?.ast_required, ast_provided: state.result?.ast_total, utilization: state.result?.utilization_ratio, is_safe: state.result?.success, format: "pdf" }); setShowExportMenu(false); } },
+                  { label: "BBS (CSV)", blocked: combinedCase, icon: <Download className="w-3.5 h-3.5" />, loading: bbsPending, onClick: () => { exportBBS({ ...exportParams, ast_required: state.result?.flexure?.ast_required ?? 0 }); setShowExportMenu(false); } },
+                  { label: "DXF Drawing", blocked: combinedCase, icon: <Ruler className="w-3.5 h-3.5" />, loading: dxfPending, onClick: () => { exportDXF({ ...exportParams, ast_required: state.result?.flexure?.ast_required ?? 0 }); setShowExportMenu(false); } },
+                  ...(["html", "json", "pdf"] as const).map((format) => ({
+                    label: `${format.toUpperCase()} Report`,
+                    blocked: combinedCase && format === "pdf",
+                    icon: <FileText className="w-3.5 h-3.5" />,
+                    loading: reportPending,
+                    onClick: () => {
+                      exportReport({
+                        ...exportParams,
+                        ast_required: state.result?.flexure?.ast_required,
+                        ast_provided: state.result?.ast_total,
+                        utilization: state.result?.utilization_ratio,
+                        is_safe: state.result?.success,
+                        effective_depth: state.result?.effective_depth_used,
+                        clear_cover: inputs.clear_cover,
+                        stirrup_dia_mm: inputs.stirrup_dia_mm,
+                        main_bar_dia_mm: inputs.main_bar_dia_mm,
+                        span_mm: inputs.span_mm,
+                        support_condition: inputs.support_condition,
+                        crack_width_params: inputs.crack_width_params,
+                        calculation_identity: trust!.calculationIdentity!,
+                        format,
+                      });
+                      setShowExportMenu(false);
+                    },
+                  })),
                 ].map((item) => (
-                  <button key={item.label} onClick={item.onClick} disabled={item.loading || !canExport}
+                  <button key={item.label} onClick={item.onClick} disabled={item.loading || !canExport || item.blocked}
+                    title={item.blocked ? "This format cannot represent the combined governing result." : undefined}
                     className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-xs text-white/60 hover:bg-white/5 hover:text-white/90 transition-colors disabled:opacity-40">
                     {item.loading ? <div className="w-3.5 h-3.5 rounded-full border border-white/30 border-t-white/70 animate-spin" /> : item.icon}
                     {item.label}
@@ -436,10 +470,9 @@ export function DesignView({ inputMode = "manual" }: DesignViewProps) {
               </button>
               <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-3">
                 <CompactResults result={state.result} />
-                {torsionDesign.data && <TorsionResultsPanel data={torsionDesign.data} isPending={torsionDesign.isPending} />}
-                <CodeChecksPanel data={codeChecks.data} isPending={codeChecks.isPending} />
+                {!combinedCase && <CodeChecksPanel data={codeChecks.data} isPending={codeChecks.isPending} />}
                 <RebarSuggestionsPanel data={rebarSuggestions.data} isPending={rebarSuggestions.isPending} />
-                {showCompare ? <ParetoPanel spanMm={length} muKnm={inputs.moment} vuKn={inputs.shear ?? 0} /> : null}
+                {showCompare && !combinedCase ? <ParetoPanel spanMm={length} muKnm={inputs.moment} vuKn={inputs.shear ?? 0} /> : null}
               </div>
             </div>
           )
@@ -468,7 +501,7 @@ function CompactResultsBar({ result }: { result: BeamDesignResponse }) {
   const barColor = trust.exactUtilization > 1 ? "bg-rose-500" : trust.exactUtilization > 0.9 ? "bg-amber-400" : "bg-emerald-400";
   return (
     <div className="flex items-center gap-3 flex-1 min-w-0">
-      <span className={`text-xs font-semibold ${isOk ? "text-emerald-400" : "text-rose-400"}`}>
+      <span className={`text-xs font-semibold ${isOk ? "text-emerald-400" : trust.status === "HOLD" ? "text-amber-400" : "text-rose-400"}`}>
         {isOk ? "✓ PASS" : trust.status === "HOLD" ? "◼ HOLD" : "✕ FAIL"}
       </span>
       <div className="flex items-center gap-1.5 flex-1 min-w-0">
@@ -497,10 +530,10 @@ function CompactResults({ result }: { result: BeamDesignResponse }) {
   return (
     <div className="space-y-3">
       {/* Status */}
-      <div className={`p-3 rounded-xl border flex items-center gap-2.5 ${isSuccess ? "bg-green-500/10 border-green-500/30" : "bg-red-500/10 border-red-500/30"}`}>
-        {isSuccess ? <CheckCircle className="w-5 h-5 text-green-400" /> : <AlertCircle className="w-5 h-5 text-red-400" />}
+      <div className={`p-3 rounded-xl border flex items-center gap-2.5 ${isSuccess ? "bg-green-500/10 border-green-500/30" : trust.status === "HOLD" ? "bg-amber-500/10 border-amber-500/30" : "bg-red-500/10 border-red-500/30"}`}>
+        {isSuccess ? <CheckCircle className="w-5 h-5 text-green-400" /> : <AlertCircle className={`w-5 h-5 ${trust.status === "HOLD" ? "text-amber-400" : "text-red-400"}`} />}
         <div>
-          <p className={`font-semibold text-sm ${isSuccess ? "text-green-400" : "text-red-400"}`}>
+          <p className={`font-semibold text-sm ${isSuccess ? "text-green-400" : trust.status === "HOLD" ? "text-amber-400" : "text-red-400"}`}>
             {isSuccess ? "Design PASS" : trust.status === "HOLD" ? "Design HOLD" : "Requires Revision"}
           </p>
           <p className="text-[11px] text-white/50">{result.message || "IS 456:2000"}</p>
@@ -528,15 +561,52 @@ function CompactResults({ result }: { result: BeamDesignResponse }) {
         ]} />
         <ResultMiniCard title="Shear" items={[
           { l: "τv", v: result.shear?.tau_v ? `${result.shear.tau_v.toFixed(2)} MPa` : "-" },
+          { l: "Asv/s", v: result.shear ? `${result.shear.asv_required.toFixed(4)} ${result.shear.asv_required_unit}` : "-" },
           { l: "Sv", v: result.shear?.stirrup_spacing ? `${result.shear.stirrup_spacing} mm` : "-" },
-          { l: "Vu,cap", v: result.shear?.shear_capacity ? `${result.shear.shear_capacity.toFixed(0)} kN` : "-" },
         ]} />
         <ResultMiniCard title="Summary" items={[
           { l: "Ast total", v: `${result.ast_total?.toFixed(0) || "-"} mm²` },
           { l: "Asc", v: `${result.asc_total?.toFixed(0) || "0"} mm²` },
-          { l: "Status", v: result.success ? "SAFE" : "FAIL" },
+          { l: "Status", v: trust.status },
         ]} />
       </div>
+
+      {result.combined_actions && result.torsion && (
+        <div className="grid grid-cols-2 gap-2.5">
+          <ResultMiniCard title="Original / Equivalent Actions" items={[
+            { l: "Mu / Me", v: `${result.combined_actions.mu_knm.toFixed(1)} / ${result.combined_actions.me_knm.toFixed(1)} kN·m` },
+            { l: "Vu / Ve", v: `${result.combined_actions.vu_kn.toFixed(1)} / ${result.combined_actions.ve_kn.toFixed(1)} kN` },
+            { l: "Tu", v: `${result.combined_actions.tu_knm.toFixed(1)} kN·m` },
+          ]} />
+          <ResultMiniCard title={`Torsion · ${result.torsion.source}`} items={[
+            { l: "Asv/s total", v: `${result.torsion.asv_total.toFixed(4)} mm²/mm` },
+            { l: "Al", v: `${result.torsion.al_torsion.toFixed(1)} mm²` },
+            { l: "Closed stirrups", v: result.torsion.requires_closed_stirrups ? "Required" : "Not required" },
+          ]} />
+          <p className="col-span-2 text-[10px] text-zinc-500">{Object.values(result.torsion.clause_refs).join(" · ")}</p>
+        </div>
+      )}
+
+      {(result.deflection_check || result.crack_width_check) && (
+        <div className="grid grid-cols-2 gap-2.5">
+          {result.deflection_check && <ResultMiniCard title="Deflection" items={[
+            { l: "Status", v: result.deflection_check.is_ok ? "PASS" : "FAIL" },
+            { l: "L/d actual", v: result.deflection_check.span_depth_actual?.toFixed(2) ?? "-" },
+            { l: "L/d allowable", v: result.deflection_check.span_depth_allowable?.toFixed(2) ?? "-" },
+          ]} />}
+          {result.crack_width_check && <ResultMiniCard title="Crack width" items={[
+            { l: "Status", v: result.crack_width_check.is_ok ? "PASS" : "FAIL" },
+            { l: "Calculated", v: result.crack_width_check.crack_width_mm == null ? "-" : `${result.crack_width_check.crack_width_mm.toFixed(3)} mm` },
+            { l: "Limit", v: result.crack_width_check.crack_width_limit_mm == null ? "-" : `${result.crack_width_check.crack_width_limit_mm.toFixed(3)} mm` },
+          ]} />}
+        </div>
+      )}
+
+      {result.holds && result.holds.length > 0 && (
+        <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5">
+          {result.holds.map((hold) => <p key={hold} className="text-xs text-amber-300">• {hold}</p>)}
+        </div>
+      )}
 
       {/* Warnings */}
       {result.warnings && result.warnings.length > 0 && (
@@ -728,6 +798,32 @@ function InputField({ label, value, onChange, unit, min, max, step = 1, disabled
   );
 }
 
+function OptionalInputField({ label, value, onChange, unit, min, max, step = 1 }: {
+  label: string; value: number | undefined; onChange: (v: number | undefined) => void;
+  unit: string; min?: number; max?: number; step?: number;
+}) {
+  const fieldId = `design-optional-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+  return (
+    <div>
+      <label htmlFor={fieldId} className="block text-[10px] text-zinc-400 mb-0.5">{label}</label>
+      <div className="relative">
+        <input
+          id={fieldId}
+          type="number"
+          value={value ?? ""}
+          onChange={(event) => onChange(event.target.value === "" ? undefined : Number(event.target.value))}
+          min={min}
+          max={max}
+          step={step}
+          aria-label={`${label} in ${unit}`}
+          className="w-full px-2.5 py-1.5 pr-12 text-xs text-white bg-white/[0.04] border border-white/8 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500/50"
+        />
+        <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500" aria-hidden="true">{unit}</span>
+      </div>
+    </div>
+  );
+}
+
 function DropdownField<T extends string | number>({ label, value, onChange, options, format }: {
   label: string; value: T; onChange: (v: T) => void; options: T[]; format: (v: T) => string;
 }) {
@@ -753,84 +849,6 @@ function DropdownField<T extends string | number>({ label, value, onChange, opti
           <option key={String(opt)} value={String(opt)} className="bg-zinc-900">{format(opt)}</option>
         ))}
       </select>
-    </div>
-  );
-}
-
-/* ---------- Torsion Results Panel ---------- */
-
-function TorsionResultsPanel({ data, isPending }: { data: TorsionDesignResponse | undefined; isPending: boolean }) {
-  const [expanded, setExpanded] = useState(true);
-  if (isPending) {
-    return (
-      <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/[0.02] border border-white/5">
-        <Loader2 className="w-3.5 h-3.5 text-purple-400 animate-spin" />
-        <span className="text-xs text-zinc-400">Calculating torsion...</span>
-      </div>
-    );
-  }
-  if (!data) return null;
-
-  return (
-    <div className={`rounded-xl border ${data.is_safe ? "bg-purple-500/5 border-purple-500/20" : "bg-red-500/5 border-red-500/20"}`}>
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center gap-2.5 px-3 py-2.5"
-      >
-        <RotateCcw className={`w-4 h-4 ${data.is_safe ? "text-purple-400" : "text-red-400"}`} />
-        <span className="text-xs font-semibold text-white/80">
-          Torsion (IS 456 Cl 41) — {data.is_safe ? "Safe" : "UNSAFE"}
-        </span>
-        <span className="ml-auto text-[10px] text-zinc-400 mr-2">
-          Sv {data.stirrup_spacing}mm · Al {data.al_torsion} mm²
-        </span>
-        {expanded ? <ChevronDown className="w-3.5 h-3.5 text-zinc-400" /> : <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />}
-      </button>
-      {expanded && (
-        <div className="px-3 pb-3 space-y-2.5">
-          {/* Equivalent forces */}
-          <div className="grid grid-cols-2 gap-2">
-            <div className="p-2.5 rounded-lg bg-white/[0.03] border border-white/8">
-              <h5 className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-1.5">Equivalent Forces</h5>
-              <div className="space-y-1">
-                <div className="flex justify-between text-xs"><span className="text-zinc-400">Ve</span><span className="text-white font-medium">{data.ve_kn.toFixed(1)} kN</span></div>
-                <div className="flex justify-between text-xs"><span className="text-zinc-400">Me</span><span className="text-white font-medium">{data.me_knm.toFixed(1)} kN·m</span></div>
-              </div>
-            </div>
-            <div className="p-2.5 rounded-lg bg-white/[0.03] border border-white/8">
-              <h5 className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-1.5">Shear Stress</h5>
-              <div className="space-y-1">
-                <div className="flex justify-between text-xs"><span className="text-zinc-400">τve</span><span className={`font-medium ${data.tv_equiv <= data.tc_max ? "text-white" : "text-red-400"}`}>{data.tv_equiv.toFixed(3)} MPa</span></div>
-                <div className="flex justify-between text-xs"><span className="text-zinc-400">τc</span><span className="text-white font-medium">{data.tc.toFixed(3)} MPa</span></div>
-                <div className="flex justify-between text-xs"><span className="text-zinc-400">τc,max</span><span className="text-white font-medium">{data.tc_max.toFixed(2)} MPa</span></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Reinforcement */}
-          <div className="p-2.5 rounded-lg bg-white/[0.03] border border-white/8">
-            <h5 className="text-[10px] font-semibold text-white/50 uppercase tracking-wider mb-1.5">Reinforcement (Closed Stirrups)</h5>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-              <div className="flex justify-between text-xs"><span className="text-zinc-400">Asv (torsion)</span><span className="text-white font-medium">{data.asv_torsion.toFixed(4)} mm²/mm</span></div>
-              <div className="flex justify-between text-xs"><span className="text-zinc-400">Asv (shear)</span><span className="text-white font-medium">{data.asv_shear.toFixed(4)} mm²/mm</span></div>
-              <div className="flex justify-between text-xs"><span className="text-zinc-400">Asv (total)</span><span className="text-purple-300 font-semibold">{data.asv_total.toFixed(4)} mm²/mm</span></div>
-              <div className="flex justify-between text-xs"><span className="text-zinc-400">Spacing Sv</span><span className="text-purple-300 font-semibold">{data.stirrup_spacing} mm</span></div>
-            </div>
-            <div className="mt-2 pt-2 border-t border-white/5">
-              <div className="flex justify-between text-xs"><span className="text-zinc-400">Longitudinal Al</span><span className="text-purple-300 font-semibold">{data.al_torsion} mm²</span></div>
-            </div>
-          </div>
-
-          {/* Warnings */}
-          {data.warnings && data.warnings.length > 0 && (
-            <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/30">
-              {data.warnings.map((w, i) => (
-                <p key={i} className="text-[10px] text-amber-400/80">• {w}</p>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }

@@ -1,8 +1,8 @@
 {
-  "generated": "2026-08-10",
+  "generated": "2026-08-11",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 122,
+  "count": 130,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -58,6 +58,16 @@
       "name": "CheckCodeReport",
       "kind": "class",
       "signature": "(code_id: 'str', all_importable: 'bool', all_decorated: 'bool', all_frozen: 'bool', all_results_valid: 'bool', all_params_named: 'bool', no_boundary_violations: 'bool', issues: 'tuple[str, ...]' = ()) -> None"
+    },
+    {
+      "name": "CompleteOneWaySlabDesignResult",
+      "kind": "class",
+      "signature": "(reinforcement: 'OneWaySlabDesignResult', shear: 'SlabShearResult', serviceability: 'SlabServiceabilityResult', punching_shear_disposition: 'str', complete_engineering_design_approved: 'bool' = False) -> None"
+    },
+    {
+      "name": "ContinuousOneWaySlabDesignResult",
+      "kind": "class",
+      "signature": "(flexure: 'ContinuousOneWaySlabResult', positive_reinforcement: 'SlabReinforcementRegionResult', negative_reinforcement: 'SlabReinforcementRegionResult', distribution_reinforcement: 'SlabReinforcementRegionResult', shear: 'SlabShearResult', serviceability: 'SlabServiceabilityResult', punching_shear_disposition: 'str', complete_engineering_design_approved: 'bool' = False) -> None"
     },
     {
       "name": "CostProfile",
@@ -208,6 +218,11 @@
       "name": "TorsionResult",
       "kind": "class",
       "signature": "(Tu_knm: 'float', Vu_kn: 'float', Mu_knm: 'float', Ve_kn: 'float', Me_knm: 'float', tau_ve: 'float', tau_c: 'float', tau_c_max: 'float', Asv_torsion: 'float', Asv_shear: 'float', Asv_total: 'float', stirrup_spacing: 'float', Al_torsion: 'float', is_safe: 'bool', requires_closed_stirrups: 'bool' = True, errors: 'list[DesignError]' = <factory>, clause_refs: 'dict[str, str]' = <factory>) -> None"
+    },
+    {
+      "name": "TwoWaySlabPanelWorkflowResult",
+      "kind": "class",
+      "signature": "(panel: 'TwoWayPanelDesignResult', serviceability: 'SlabServiceabilityResult', complete_engineering_design_approved: 'bool' = False) -> None"
     },
     {
       "name": "ValidationReport",
@@ -427,7 +442,7 @@
     {
       "name": "design_beam_is456",
       "kind": "function",
-      "signature": "(*, units: 'str', case_id: 'str' = 'CASE-1', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, deflection_params: 'DeflectionParams | None' = None, crack_width_params: 'CrackWidthParams | None' = None) -> 'ComplianceCaseResult'"
+      "signature": "(*, units: 'str', case_id: 'str' = 'CASE-1', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, deflection_params: 'DeflectionParams | None' = None, crack_width_params: 'CrackWidthParams | None' = None, tu_knm: 'float' = 0.0, cover_mm: 'float | None' = None, stirrup_dia_mm: 'float' = 8.0) -> 'ComplianceCaseResult'"
     },
     {
       "name": "design_column_axial_is456",
@@ -438,6 +453,21 @@
       "name": "design_column_is456",
       "kind": "function",
       "signature": "(Pu_kN: 'float', Mux_kNm: 'float' = 0.0, Muy_kNm: 'float' = 0.0, b_mm: 'float' = 0.0, D_mm: 'float' = 0.0, l_mm: 'float' = 0.0, end_condition: 'str' = 'FIXED_FIXED', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 50.0, l_unsupported_mm: 'float | None' = None, braced: 'bool' = True, M1x_kNm: 'float | None' = None, M2x_kNm: 'float | None' = None, M1y_kNm: 'float | None' = None, M2y_kNm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'dict[str, Any]'"
+    },
+    {
+      "name": "design_complete_one_way_slab_is456",
+      "kind": "function",
+      "signature": "(*, short_effective_span_mm: 'float', long_effective_span_mm: 'float', thickness_mm: 'float', d_mm: 'float', factored_area_load_kn_per_m2: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', main_bar_diameter_mm: 'float', main_bar_spacing_mm: 'float', distribution_bar_diameter_mm: 'float', distribution_bar_spacing_mm: 'float', reviewed_base_span_depth_limit: 'float', reviewed_aggregate_modification_factor: 'float', serviceability_limit_source_reference: 'str', serviceability_limit_source_is_approved: 'bool', qualified_serviceability_acceptance_reference: 'str', qualified_serviceability_acceptance_acknowledged: 'bool', strip_width_mm: 'float' = 1000.0) -> 'CompleteOneWaySlabDesignResult'"
+    },
+    {
+      "name": "design_continuous_one_way_slab_builtin_is456",
+      "kind": "function",
+      "signature": "(*, short_effective_span_mm: 'float', long_effective_span_mm: 'float', thickness_mm: 'float', d_mm: 'float', factored_dead_and_fixed_imposed_load_kn_per_m2: 'float', factored_nonfixed_imposed_load_kn_per_m2: 'float', positive_location: 'str', negative_location: 'str', shear_location: 'str', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', number_of_spans: 'int', maximum_span_variation_percent: 'float', uniform_cross_section_acknowledged: 'bool', substantially_uniform_load_acknowledged: 'bool', redistribution_applied: 'bool', positive_bar_diameter_mm: 'float', positive_bar_spacing_mm: 'float', negative_bar_diameter_mm: 'float', negative_bar_spacing_mm: 'float', distribution_bar_diameter_mm: 'float', distribution_bar_spacing_mm: 'float', reviewed_base_span_depth_limit: 'float', reviewed_aggregate_modification_factor: 'float', serviceability_limit_source_reference: 'str', serviceability_limit_source_is_approved: 'bool', qualified_serviceability_acceptance_reference: 'str', qualified_serviceability_acceptance_acknowledged: 'bool', strip_width_mm: 'float' = 1000.0) -> 'ContinuousOneWaySlabDesignResult'"
+    },
+    {
+      "name": "design_continuous_one_way_slab_is456",
+      "kind": "function",
+      "signature": "(*, short_effective_span_mm: 'float', long_effective_span_mm: 'float', thickness_mm: 'float', d_mm: 'float', factored_area_load_kn_per_m2: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', positive_moment_coefficient: 'float', negative_moment_coefficient: 'float', shear_coefficient: 'float', coefficient_source_reference: 'str', coefficient_source_is_approved: 'bool', qualified_coefficient_acceptance_reference: 'str', qualified_coefficient_acceptance_acknowledged: 'bool', number_of_spans: 'int', maximum_span_variation_percent: 'float', uniform_cross_section_acknowledged: 'bool', substantially_uniform_load_acknowledged: 'bool', redistribution_applied: 'bool', positive_bar_diameter_mm: 'float', positive_bar_spacing_mm: 'float', negative_bar_diameter_mm: 'float', negative_bar_spacing_mm: 'float', distribution_bar_diameter_mm: 'float', distribution_bar_spacing_mm: 'float', reviewed_base_span_depth_limit: 'float', reviewed_aggregate_modification_factor: 'float', serviceability_limit_source_reference: 'str', serviceability_limit_source_is_approved: 'bool', qualified_serviceability_acceptance_reference: 'str', qualified_serviceability_acceptance_acknowledged: 'bool', strip_width_mm: 'float' = 1000.0) -> 'ContinuousOneWaySlabDesignResult'"
     },
     {
       "name": "design_from_input",
@@ -470,6 +500,16 @@
       "signature": "(*, short_effective_span_mm: 'float', long_effective_span_mm: 'float', thickness_mm: 'float', alpha_x: 'float', alpha_y: 'float', coefficient_source_reference: 'str', coefficient_source_is_approved: 'bool', qualified_coefficient_acceptance_reference: 'str', qualified_coefficient_acceptance_acknowledged: 'bool', is_interior_solid_rectangular_panel: 'bool', all_four_edges_continuous: 'bool', factored_area_load_kn_per_m2: 'float', d_x_mm: 'float', d_y_mm: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', strip_width_mm: 'float' = 1000.0) -> 'TwoWaySlabFlexureResult'"
     },
     {
+      "name": "design_two_way_slab_panel_builtin_is456",
+      "kind": "function",
+      "signature": "(*, x_effective_span_mm: 'float', y_effective_span_mm: 'float', thickness_mm: 'float', x_min_edge: 'str', x_max_edge: 'str', y_min_edge: 'str', y_max_edge: 'str', corner_lift_condition: 'str', factored_area_load_kn_per_m2: 'float', d_x_mm: 'float', d_y_mm: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', x_positive_bar_diameter_mm: 'float', x_positive_bar_spacing_mm: 'float', x_negative_bar_diameter_mm: 'float', x_negative_bar_spacing_mm: 'float', y_positive_bar_diameter_mm: 'float', y_positive_bar_spacing_mm: 'float', y_negative_bar_diameter_mm: 'float', y_negative_bar_spacing_mm: 'float', edge_strip_bar_diameter_mm: 'float', edge_strip_bar_spacing_mm: 'float', torsion_bar_diameter_mm: 'float', torsion_bar_spacing_mm: 'float', reviewed_base_span_depth_limit: 'float', reviewed_aggregate_modification_factor: 'float', serviceability_limit_source_reference: 'str', serviceability_limit_source_is_approved: 'bool', qualified_serviceability_acceptance_reference: 'str', qualified_serviceability_acceptance_acknowledged: 'bool') -> 'TwoWaySlabPanelWorkflowResult'"
+    },
+    {
+      "name": "design_two_way_slab_panel_is456",
+      "kind": "function",
+      "signature": "(*, x_effective_span_mm: 'float', y_effective_span_mm: 'float', thickness_mm: 'float', x_min_edge: 'str', x_max_edge: 'str', y_min_edge: 'str', y_max_edge: 'str', corner_lift_condition: 'str', support_topology_kind: 'str', alpha_x_negative: 'float', alpha_x_positive: 'float', alpha_y_negative: 'float', alpha_y_positive: 'float', coefficient_source_reference: 'str', coefficient_source_is_approved: 'bool', qualified_coefficient_acceptance_reference: 'str', qualified_coefficient_acceptance_acknowledged: 'bool', factored_area_load_kn_per_m2: 'float', d_x_mm: 'float', d_y_mm: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', x_positive_bar_diameter_mm: 'float', x_positive_bar_spacing_mm: 'float', x_negative_bar_diameter_mm: 'float', x_negative_bar_spacing_mm: 'float', y_positive_bar_diameter_mm: 'float', y_positive_bar_spacing_mm: 'float', y_negative_bar_diameter_mm: 'float', y_negative_bar_spacing_mm: 'float', edge_strip_bar_diameter_mm: 'float', edge_strip_bar_spacing_mm: 'float', torsion_bar_diameter_mm: 'float', torsion_bar_spacing_mm: 'float', reviewed_base_span_depth_limit: 'float', reviewed_aggregate_modification_factor: 'float', serviceability_limit_source_reference: 'str', serviceability_limit_source_is_approved: 'bool', qualified_serviceability_acceptance_reference: 'str', qualified_serviceability_acceptance_acknowledged: 'bool') -> 'TwoWaySlabPanelWorkflowResult'"
+    },
+    {
       "name": "detail_beam_is456",
       "kind": "function",
       "signature": "(*, units: 'str', beam_id: 'str', story: 'str', b_mm: 'float', D_mm: 'float', span_mm: 'float', cover_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', ast_start_mm2: 'float', ast_mid_mm2: 'float', ast_end_mm2: 'float', asc_start_mm2: 'float' = 0.0, asc_mid_mm2: 'float' = 0.0, asc_end_mm2: 'float' = 0.0, stirrup_dia_mm: 'float' = 8.0, stirrup_spacing_start_mm: 'float' = 150.0, stirrup_spacing_mid_mm: 'float' = 200.0, stirrup_spacing_end_mm: 'float' = 150.0, is_seismic: 'bool' = False) -> 'detailing.BeamDetailingResult'"
@@ -497,7 +537,7 @@
     {
       "name": "footing_one_way_shear",
       "kind": "function",
-      "signature": "(Pu_kN: 'float', L_mm: 'float', B_mm: 'float', d_mm: 'float', a_mm: 'float', b_mm: 'float', fck: 'float', pt: 'float' = 0.15) -> 'FootingOneWayShearResult'"
+      "signature": "(Pu_kN: 'float', L_mm: 'float', B_mm: 'float', d_mm: 'float', a_mm: 'float', b_mm: 'float', fck: 'float', pt: 'float' = 0.15, *, pt_L_percent: 'float | None' = None, pt_B_percent: 'float | None' = None) -> 'FootingOneWayShearResult'"
     },
     {
       "name": "footing_punching_shear",

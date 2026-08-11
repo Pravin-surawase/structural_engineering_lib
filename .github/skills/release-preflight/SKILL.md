@@ -16,9 +16,11 @@ Use this only for an actual release candidate. The canonical automation owns res
 ## Preconditions
 
 - Run from the workspace root on the intended release branch.
-- Know the exact target version in `X.Y.Z` form.
+- Know the exact target version in PEP 440 `X.Y.ZaN` form for Alpha releases (or the exact stable `X.Y.Z` form for stable releases).
 - Preserve unrelated work; preflight requires a clean working tree.
 - The `PR Gate` for the release candidate must pass on its current commit.
+- The maintained preflight runs Python, FastAPI, and React gates. Do not replace
+  it with a Python-only result or assume local success covers FastAPI CI.
 
 ## Release Candidate Flow
 
@@ -57,6 +59,11 @@ Repair failures by rerunning only their narrow command, then establish one
 final green preflight. Do not run both the pre-bump and current-candidate forms
 for an already-bumped branch.
 
+When recording local evidence, use a governance-safe filename such as
+`alpha-0231-local-prepublication-rehearsal.md`. Do not place dotted package
+versions in documentation filenames. Run metadata validation through the
+consolidated command found by `./run.sh find "doc metadata"`.
+
 ### 2. Prepare the release changes
 
 `./run.sh release run <target-version>` changes version-controlled files and is owner-approved release work. Do not run it during a review-only task or without authorization to prepare the release.
@@ -68,7 +75,7 @@ After the version change, review the diff and complete the release notes require
 From the workspace root:
 
 ```bash
-.venv/bin/python -m build Python
+./scripts/python_runtime.sh -m build Python
 ```
 
 Before building, inspect and recoverably remove only the generated
@@ -86,6 +93,11 @@ Confirm that `Python/dist/` contains the wheel for the exact target version. Do 
 ```
 
 This creates and removes a unique temporary environment, installs the exact wheel, verifies the package, runs the installed-package checks, and exercises the CLI workflow. Do not create or delete a fixed `/tmp` directory manually.
+
+The verifier must prove `structural_lib.__file__` is inside the disposable
+environment before and after tests. It installs only the wheel's declared test
+extras plus explicitly documented generated-client requirements; broad root
+requirements are not acceptable artifact evidence.
 
 After publication, verify the exact public version separately:
 

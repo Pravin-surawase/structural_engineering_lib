@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.23.1a1] — 2026-08-11
+
+Alpha development preview of the bounded beam, column, isolated-footing, and
+solid-slab workflows. This is case-qualified software evidence, not
+professional design approval or complete IS 456 coverage.
+
 ### Added
 
 - Versioned beam workflow catalogue, thin discovery API, curated schema-driven

@@ -2,7 +2,7 @@
   "folder": "fastapi_app/routers",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-10",
+  "last_updated": "2026-08-11",
   "file_count": 18,
   "files": [
     {
@@ -612,7 +612,7 @@
     {
       "name": "library_core.py",
       "type": "python",
-      "size_lines": 74,
+      "size_lines": 229,
       "last_updated": "2026-08-10",
       "description": "Thin FastAPI consumers for the supported footing and slab library routes.",
       "functions": [
@@ -629,9 +629,44 @@
           "params": [
             "request"
           ]
+        },
+        {
+          "name": "design_complete_one_way_slab",
+          "description": "Add ordinary shear and strict reviewed-limit serviceability.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "design_continuous_one_way_slab",
+          "description": "Validate coefficient provenance/domain and call the public service.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "design_continuous_one_way_slab_builtin",
+          "description": "Resolve Tables 12/13 and call the bounded public workflow.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "design_two_way_slab_panel",
+          "description": "Run topology, external coefficients, strips, torsion, shear and bars.",
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "design_two_way_slab_panel_builtin",
+          "description": "Resolve Table 26/27 with bounded interpolation and run the panel workflow.",
+          "params": [
+            "request"
+          ]
         }
       ],
-      "content_hash": "8dd0877b399b"
+      "content_hash": "1bdefb724aee"
     },
     {
       "name": "optimization.py",
@@ -881,5 +916,5 @@
     "websocket",
     "workflows"
   ],
-  "content_hash": "c5c403f6b5e63ac9"
+  "content_hash": "8f881e426fd03c26"
 }

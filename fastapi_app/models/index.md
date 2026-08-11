@@ -1,7 +1,7 @@
 # Models
 
 **Type:** Python Package
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 **Files:** 15
 
 ## Public API
@@ -41,7 +41,7 @@
 | [common.py](common.py) | Common Pydantic Models. | 5 | 0 | 137 |
 | [compliance.py](compliance.py) | IS 456 Compliance Check Pydantic Models. | 15 | 0 | 325 |
 | [geometry.py](geometry.py) | 3D Geometry Pydantic Models. | 15 | 0 | 412 |
-| [library_core.py](library_core.py) | Requests for the bounded footing and slab public-library wor | 10 | 0 | 178 |
+| [library_core.py](library_core.py) | Requests for the bounded footing and slab public-library wor | 15 | 0 | 367 |
 | [metadata.py](metadata.py) | Typed payload models for maintained static JSON metadata rou | 9 | 0 | 97 |
 | [optimization.py](optimization.py) | Cost Optimization Pydantic Models. | 9 | 0 | 298 |
 | [response.py](response.py) | Standardized API response wrappers. | 3 | 2 | 71 |

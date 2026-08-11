@@ -26,6 +26,8 @@ from structural_lib.research.research_sustainability import (
     score_beam_carbon,
 )
 
+pytestmark = pytest.mark.repo_only
+
 # =============================================================================
 # Prototype 1: Sustainability Scoring
 # =============================================================================

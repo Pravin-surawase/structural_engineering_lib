@@ -1,4 +1,4 @@
-import { ArrowRight, Boxes, Calculator, ShieldCheck, Workflow } from 'lucide-react';
+import { ArrowRight, Boxes, Calculator, Layers3, ShieldCheck, Workflow } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { projectStagePath } from '../../app/navigation';
 import { WorkbenchHeader } from '../workbench/WorkbenchHeader';
@@ -78,6 +78,31 @@ export function WorkbenchHomePage({
         ) : null}
 
         <WorkbenchPanel
+          title="Isolated footing"
+          description="Centred square or rectangular footing with maintained server evidence."
+        >
+          <div className="flex items-start gap-3">
+            <span className="rounded-xl bg-amber-500/10 p-2.5 text-amber-300">
+              <Calculator className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm leading-6 text-zinc-400">
+                Keep service and factored loads, soil approval, structural checks,
+                reinforcement detailing and review status visibly separate.
+              </p>
+              <button
+                type="button"
+                onClick={() => navigate('/workbench/footing/isolated/concentric')}
+                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-amber-300 hover:text-amber-200"
+              >
+                Open isolated footing
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        </WorkbenchPanel>
+
+        <WorkbenchPanel
           title="Quick beam"
           description="One focused calculation without creating a project."
         >
@@ -96,6 +121,56 @@ export function WorkbenchHomePage({
                 className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-300 hover:text-blue-200"
               >
                 Open quick beam
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        </WorkbenchPanel>
+
+        <WorkbenchPanel
+          title="Solid slabs"
+          description="One-way and common two-way slab workflows with visible boundaries."
+        >
+          <div className="flex items-start gap-3">
+            <span className="rounded-xl bg-emerald-500/10 p-2.5 text-emerald-300">
+              <Layers3 className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm leading-6 text-zinc-400">
+                Resolve IS 456 coefficient cases, inspect strips and corner torsion,
+                check supplied bars, shear and span/depth, then export a current passport.
+              </p>
+              <button
+                type="button"
+                onClick={() => navigate('/workbench/slabs')}
+                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-300 hover:text-emerald-200"
+              >
+                Open slab workbench
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        </WorkbenchPanel>
+
+        <WorkbenchPanel
+          title="Rectangular column review"
+          description="Check a supplied tied-column section and reinforcement."
+        >
+          <div className="flex items-start gap-3">
+            <span className="rounded-xl bg-emerald-500/10 p-2.5 text-emerald-300">
+              <ShieldCheck className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm leading-6 text-zinc-400">
+                Review both-axis classification, minimum eccentricity, adequacy,
+                and supplied detailing with explicit PASS, FAIL, HOLD, and stale states.
+              </p>
+              <button
+                type="button"
+                onClick={() => navigate('/workbench/columns/rectangular')}
+                className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-300 hover:text-emerald-200"
+              >
+                Open column review
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>

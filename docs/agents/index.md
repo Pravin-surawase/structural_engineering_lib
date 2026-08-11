@@ -3,7 +3,7 @@
 > **For AI Agents:** Use the semantic registry below to find the right docs quickly.
 
 **Type:** Documentation
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 **Files:** 1
 
 ## Documentation Files

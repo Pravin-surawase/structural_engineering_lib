@@ -5,8 +5,9 @@
 # Usage:
 #   colima start --cpu 4 --memory 4     # Start Docker runtime (Colima, not Docker Desktop)
 #   docker compose -f docker-compose.preflight.yml run --rm test-python
+#   docker compose -f docker-compose.preflight.yml run --rm test-fastapi
 #   docker compose -f docker-compose.preflight.yml run --rm build-react
-#   docker compose -f docker-compose.preflight.yml up    # Run both
+#   docker compose -f docker-compose.preflight.yml --profile all up
 
 services:
   test-python:
@@ -26,6 +27,26 @@ services:
       - ./.nvmrc:/app/.nvmrc:ro
       - ./Dockerfile.fastapi:/app/Dockerfile.fastapi:ro
       - ./docker-compose.preflight.yml:/app/docker-compose.preflight.yml:ro
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "2"
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+    profiles: ["test", "all"]
+
+  test-fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile.fastapi
+    command: ["python", "-m", "pytest", "fastapi_app/tests/", "-v", "--tb=short", "-q", "-m", "not slow", "-p", "no:cacheprovider"]
+    working_dir: /app
+    volumes:
+      - ./Python:/app/Python:ro
+      - ./fastapi_app:/app/fastapi_app:ro
+      - ./Etabs_CSV:/app/Etabs_CSV:ro
+      - ./docs:/app/docs:ro
     deploy:
       resources:
         limits:

@@ -4,12 +4,12 @@ import { CatalogBeamInputPanel } from '../CatalogBeamInputPanel';
 
 const CATALOG = {
   schema_version: '1.0',
-  catalog_version: '1.0.0',
+  catalog_version: '1.1.0',
   code_edition: 'IS 456:2000',
-  compatible_versions: ['1.0', '1.0.0'],
+  compatible_versions: ['1.0', '1.0.0', '1.1.0'],
   capabilities: [{
     capability_id: 'is456.beam.design',
-    capability_version: '1.0.0',
+    capability_version: '1.1.0',
     element: 'beam',
     title: 'IS 456 beam design',
     summary: 'One beam',
@@ -51,7 +51,7 @@ describe('CatalogBeamInputPanel', () => {
     const width = await screen.findByLabelText('Width in mm');
     fireEvent.change(width, { target: { value: '350' } });
     expect(onChange).toHaveBeenCalledWith('width', 350);
-    expect(screen.getByText(/Catalogue 1.0.0/)).toBeInTheDocument();
+    expect(screen.getByText(/Catalogue 1.1.0/)).toBeInTheDocument();
   });
 
   it('shows the reviewed manual escape hatch on contract failure', async () => {

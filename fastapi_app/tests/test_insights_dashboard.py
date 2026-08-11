@@ -11,6 +11,7 @@ Covers:
 import pytest
 from fastapi.testclient import TestClient
 
+from fastapi_app import __version__
 from fastapi_app.main import app
 from fastapi_app.tests.conftest import unwrap
 
@@ -313,7 +314,7 @@ class TestProjectBOQ:
         assert data["evidence"]["artifact_schema"] == (
             "structural_lib.project-boq-evidence"
         )
-        assert data["evidence"]["library_version"] == "0.23.0"
+        assert data["evidence"]["library_version"] == __version__
         assert data["evidence"]["qualified_review_required"] is True
 
     def test_project_boq_identity_binds_dataset_and_normalized_inputs(self, client):

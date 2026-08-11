@@ -113,7 +113,7 @@ Run every 5th session or weekly:
 .venv/bin/python scripts/check_bootstrap_freshness.py
 
 # 7. Stale branch cleanup (dry-run first)
-.venv/bin/python scripts/cleanup_stale_branches.py --dry-run
+.venv/bin/python scripts/cleanup_stale_branches.py  # dry-run by default
 
 # 8. Instruction drift check
 # Compare .github/instructions/*.instructions.md with .claude/rules/*.md

@@ -134,15 +134,20 @@ def test_capability_registry_names_every_supported_core_element():
     slab_capability = next(
         item for item in capabilities if item.element == "solid_slab"
     )
-    assert "externally accepted coefficient, flexure-only supported case" in (
+    assert "built-in bounded IS 456 coefficient lookup/interpolation" in (
         slab_capability.supported_case
     )
+    assert {
+        "design_continuous_one_way_slab_builtin_is456",
+        "design_two_way_slab_panel_builtin_is456",
+    } <= set(slab_capability.public_workflows)
+    assert any("Flat/drop/ribbed slabs" in item for item in slab_capability.held_cases)
 
 
 def test_capability_document_is_json_native_and_preserves_review_boundaries():
     document = services_api.get_supported_is456_capability_document()
 
-    assert document["schema_version"] == "1.0"
+    assert document["schema_version"] == "2.0"
     assert document["code_edition"] == "IS 456:2000"
     assert [item["capability_id"] for item in document["capabilities"]] == [
         "beam",

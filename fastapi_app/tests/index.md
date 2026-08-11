@@ -3,7 +3,7 @@
 Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-11
 **Files:** 34
 
 ## Documentation Files
@@ -38,7 +38,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_imports_formats.py](test_imports_formats.py) | Tests for import router extended endpoints. | 2 | 1 | 82 |
 | [test_insights_dashboard.py](test_insights_dashboard.py) | Tests for insights router endpoints. | 4 | 1 | 387 |
 | [test_integration.py](test_integration.py) | Integration tests for FastAPI structural design endpoints. | 7 | 1 | 390 |
-| [test_library_core.py](test_library_core.py) | Request-to-public-library evidence for the new footing and s | 0 | 8 | 163 |
+| [test_library_core.py](test_library_core.py) | Request-to-public-library evidence for the new footing and s | 0 | 14 | 353 |
 | [test_load.py](test_load.py) | Load Tests for FastAPI Application. | 6 | 2 | 286 |
 | [test_maintenance_route_coverage.py](test_maintenance_route_coverage.py) | Direct contract coverage for routes identified by the MAINT- | 0 | 8 | 150 |
 | [test_optimization_pareto.py](test_optimization_pareto.py) | Tests for Pareto multi-objective beam optimization endpoint. | 1 | 0 | 158 |

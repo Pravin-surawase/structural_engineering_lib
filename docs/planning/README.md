@@ -19,6 +19,7 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
+| [IS 456 Solid Slabs Master Plan](is456-solid-slabs-master-plan.md) | Source-gated, implementation-ready program for simply supported/continuous one-way and common two-way solid slabs; flat slabs held separately |
 | [MAINT-008 Compact Modernization Plan](compact-modernization-plan.md) | Dependency-ordered implementation packets for CI and maintenance modernization |
 | [IS 456 Library-First Master Plan](is456-library-first-master-plan.md) | Worker-ready plan for completing the supported Python library, evidence, packaging, and PyPI flow before broad API/UI work |
 | [UI Experience Foundation Master Plan](ui-experience-foundation-master-plan.md) | Two-session worker plan for one compact 3D-first workbench, schema-driven capabilities, and a constrained no-code foundation |
@@ -31,7 +32,8 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `next-session-brief.md` | 2026-08-10 | ✅ UIX-001 P0-P15 closeout; next task owner-held |
+| `next-session-brief.md` | 2026-08-10 | 📋 IS456-SLAB-001 selected; S0 source/benchmark gate is next |
+| `is456-solid-slabs-master-plan.md` | 2026-08-10 | 📋 Master plan ready; implementation has not started |
 | `ui-experience-foundation-master-plan.md` | 2026-08-10 | ✅ Two-session P0-P15 workbench/capability program accepted |
 | `compact-modernization-plan.md` | 2026-08-09 | 📋 Ready after PR #676 |
 | `is456-library-first-master-plan.md` | 2026-08-10 | ✅ C0-C4 and v0.23.0 Alpha release complete |

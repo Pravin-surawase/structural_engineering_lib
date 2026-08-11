@@ -21,10 +21,10 @@ Use the repository's canonical gates from the workspace root. Do not recreate th
 Run only the smallest existing check that exercises the changed main process. Examples:
 
 ```bash
-.venv/bin/pytest Python/tests/path/to/test_file.py -q
-.venv/bin/pytest fastapi_app/tests/path/to/test_file.py -q
+./scripts/python_runtime.sh -m pytest Python/tests/path/to/test_file.py -q
+./scripts/python_runtime.sh -m pytest fastapi_app/tests/path/to/test_file.py -q
 npm --prefix react_app run lint
-.venv/bin/python scripts/check_architecture_boundaries.py
+./scripts/python_runtime.sh scripts/check_architecture_boundaries.py
 ```
 
 Choose commands from the affected component's skill or existing project automation. Do not add tests during a review-only task.

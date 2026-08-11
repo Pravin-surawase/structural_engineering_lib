@@ -46,11 +46,23 @@ describe('ExportPanel', () => {
   });
 
   it('all three export buttons are enabled for a passing design', () => {
-    render(React.createElement(ExportPanel, { beamParams: defaultParams, isSafe: true }));
+    render(React.createElement(ExportPanel, {
+      beamParams: defaultParams,
+      isSafe: true,
+      calculationIdentity: 'a'.repeat(64),
+    }));
     const buttons = screen.getAllByRole('button');
     buttons.forEach((btn) => {
       expect(btn).not.toBeDisabled();
     });
+  });
+
+  it('holds only the report when a passing result has no exact identity', () => {
+    render(React.createElement(ExportPanel, { beamParams: defaultParams, isSafe: true }));
+    expect(screen.getByRole('button', { name: 'BBS' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'DXF' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Report' })).toBeDisabled();
+    expect(screen.getByRole('status')).toHaveTextContent('evidence identity');
   });
 
   it.each([false, undefined])('holds all exports when safety is %s', (isSafe) => {

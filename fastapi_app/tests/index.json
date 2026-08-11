@@ -2,7 +2,7 @@
   "folder": "fastapi_app/tests",
   "type": "python-package",
   "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
-  "last_updated": "2026-08-10",
+  "last_updated": "2026-08-11",
   "file_count": 34,
   "files": [
     {
@@ -1002,7 +1002,7 @@
     {
       "name": "test_library_core.py",
       "type": "python",
-      "size_lines": 163,
+      "size_lines": 353,
       "last_updated": "2026-08-10",
       "description": "Request-to-public-library evidence for the new footing and slab consumers.",
       "functions": [
@@ -1038,6 +1038,42 @@
           ]
         },
         {
+          "name": "test_continuous_one_way_slab_endpoint_returns_b02_actions",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_continuous_endpoint_rejects_redistribution_or_unapproved_source",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_two_way_slab_panel_endpoint_returns_b04_topology_and_torsion",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_two_way_endpoint_rejects_topology_coefficient_mismatch",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_builtin_continuous_endpoint_resolves_tables_12_and_13",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_builtin_two_way_endpoint_resolves_table_26_case_4",
+          "params": [
+            "client"
+          ]
+        },
+        {
           "name": "test_library_core_pydantic_422_uses_standard_envelope",
           "params": [
             "client"
@@ -1056,7 +1092,7 @@
           ]
         }
       ],
-      "content_hash": "0ae97d5ae880"
+      "content_hash": "6f0cab2e4255"
     },
     {
       "name": "test_load.py",
@@ -1610,5 +1646,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "43c895ea39e6ec58"
+  "content_hash": "95fd9e86e49875ae"
 }

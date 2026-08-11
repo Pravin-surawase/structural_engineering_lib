@@ -12,19 +12,39 @@ export interface TrustPresentation {
   canExport: boolean;
 }
 
+function hasText(value: unknown): value is string {
+  return typeof value === 'string' && value.trim().length > 0;
+}
+
+export function isBeamResultExportable(result: BeamDesignResponse): boolean {
+  return getTrustPresentation(result).canExport;
+}
+
 /** Keep decision logic on exact values while presenting enough precision to audit it. */
 export function getTrustPresentation(result: BeamDesignResponse): TrustPresentation {
   const evidence = result.evidence;
   const exactUtilization = evidence?.exact_utilization ?? result.utilization_ratio;
   const margin = evidence?.margin ?? 1 - exactUtilization;
-  const evidenceStatus = evidence?.status;
-  const status: TrustStatus = evidenceStatus
-    ?? (result.success && exactUtilization <= 1 ? 'PASS' : 'FAIL');
+  const hasIdentity = Boolean(
+    evidence
+    && evidence.support_status === 'SUPPORTED'
+    && (evidence.status === 'PASS' || evidence.status === 'FAIL')
+    && Number.isFinite(evidence.exact_utilization)
+    && Number.isFinite(evidence.margin)
+    && hasText(evidence.normalized_input_hash)
+    && hasText(evidence.calculation_identity),
+  );
+  const hasHold = (result.holds?.length ?? 0) > 0;
+  const outcomeMatches = evidence?.status === (result.success ? 'PASS' : 'FAIL');
+  const status: TrustStatus = hasIdentity && !hasHold && outcomeMatches
+    ? evidence.status as 'PASS' | 'FAIL'
+    : 'HOLD';
   const canExport =
     status === 'PASS'
     && result.success
     && exactUtilization <= 1
-    && evidence?.support_status !== 'HELD';
+    && hasIdentity
+    && !hasHold;
 
   return {
     status,

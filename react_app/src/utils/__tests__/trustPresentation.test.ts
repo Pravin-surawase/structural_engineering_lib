@@ -20,7 +20,7 @@ function result(utilization: number, status: 'PASS' | 'FAIL' | 'HOLD'): BeamDesi
     utilization_ratio: utilization,
     evidence: {
       artifact_schema: 'structural_lib.beam-evidence',
-      artifact_schema_version: '1.0',
+      artifact_schema_version: '2.0',
       library_version: '0.23.0',
       code_edition: 'IS 456:2000',
       code_amendment_identity: 'not-declared-in-artifact',
@@ -52,5 +52,23 @@ describe('trust presentation', () => {
 
   it.each(['FAIL', 'HOLD'] as const)('quarantines %s results', (status) => {
     expect(getTrustPresentation(result(status === 'FAIL' ? 1.01 : 0, status)).canExport).toBe(false);
+  });
+
+  it('fails closed when evidence identity is absent or a backend hold exists', () => {
+    const missing = result(0.5, 'PASS');
+    missing.evidence = null;
+    expect(getTrustPresentation(missing).status).toBe('HOLD');
+    expect(getTrustPresentation(missing).canExport).toBe(false);
+
+    const held = result(0.5, 'PASS');
+    held.holds = ['TORSION_SCOPE_HOLD'];
+    expect(getTrustPresentation(held).status).toBe('HOLD');
+    expect(getTrustPresentation(held).canExport).toBe(false);
+  });
+
+  it('fails closed when evidence contradicts the combined primary result', () => {
+    const contradictory = result(0.5, 'PASS');
+    contradictory.success = false;
+    expect(getTrustPresentation(contradictory).status).toBe('HOLD');
   });
 });

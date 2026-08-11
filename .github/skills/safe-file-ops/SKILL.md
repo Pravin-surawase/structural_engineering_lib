@@ -21,7 +21,7 @@ Do not use this skill for generated build output or disposable files outside the
 Preview the exact source and destination:
 
 ```bash
-.venv/bin/python scripts/safe_file_move.py old/path/file.ext new/path/file.ext --dry-run
+./scripts/python_runtime.sh scripts/safe_file_move.py old/path/file.ext new/path/file.ext --dry-run
 ```
 
 Confirm that both resolved paths are inside the repository, the source is the intended file, the destination is exact, and the preview contains no unexpected edits.
@@ -29,7 +29,7 @@ Confirm that both resolved paths are inside the repository, the source is the in
 Then execute the same command without `--dry-run`:
 
 ```bash
-.venv/bin/python scripts/safe_file_move.py old/path/file.ext new/path/file.ext
+./scripts/python_runtime.sh scripts/safe_file_move.py old/path/file.ext new/path/file.ext
 ```
 
 Inspect `git diff --summary` and `git diff` immediately afterward. If the live result differs from the preview, stop and report it.
@@ -39,7 +39,7 @@ Inspect `git diff --summary` and `git diff` immediately afterward. If the live r
 The command without `--dry-run` deletes the file. Always preview explicitly:
 
 ```bash
-.venv/bin/python scripts/safe_file_delete.py path/to/file.ext --dry-run
+./scripts/python_runtime.sh scripts/safe_file_delete.py path/to/file.ext --dry-run
 ```
 
 If references are reported, update or remove those references first and repeat the preview. Do not bypass the result.
@@ -47,7 +47,7 @@ If references are reported, update or remove those references first and repeat t
 Only after a clean preview, execute the exact same target without `--dry-run`:
 
 ```bash
-.venv/bin/python scripts/safe_file_delete.py path/to/file.ext
+./scripts/python_runtime.sh scripts/safe_file_delete.py path/to/file.ext
 ```
 
 The script creates a backup under `tmp/deleted_backups/` by default. Never use `--force` or `--no-backup` in the normal agent workflow. If a referenced file genuinely must be removed, stop for owner direction instead of weakening the guardrail.
@@ -57,8 +57,8 @@ The script creates a backup under `tmp/deleted_backups/` by default. Never use `
 Use the dedicated migration script when Python imports must change:
 
 ```bash
-.venv/bin/python scripts/migrate_python_module.py Python/structural_lib/old.py Python/structural_lib/new.py --dry-run
-.venv/bin/python scripts/migrate_python_module.py Python/structural_lib/old.py Python/structural_lib/new.py
+./scripts/python_runtime.sh scripts/migrate_python_module.py Python/structural_lib/old.py Python/structural_lib/new.py --dry-run
+./scripts/python_runtime.sh scripts/migrate_python_module.py Python/structural_lib/old.py Python/structural_lib/new.py
 ```
 
 ## React Component Migration (with import updates)
@@ -66,8 +66,8 @@ Use the dedicated migration script when Python imports must change:
 Use the dedicated migration script when React imports must change:
 
 ```bash
-.venv/bin/python scripts/migrate_react_component.py react_app/src/old.tsx react_app/src/new.tsx --dry-run
-.venv/bin/python scripts/migrate_react_component.py react_app/src/old.tsx react_app/src/new.tsx
+./scripts/python_runtime.sh scripts/migrate_react_component.py react_app/src/old.tsx react_app/src/new.tsx --dry-run
+./scripts/python_runtime.sh scripts/migrate_react_component.py react_app/src/old.tsx react_app/src/new.tsx
 ```
 
 ## Verification
@@ -76,13 +76,13 @@ After a successful move or delete:
 
 ```bash
 git diff --summary
-.venv/bin/python scripts/check_links.py
+./scripts/python_runtime.sh scripts/check_links.py
 ```
 
 Regenerate an index only when the affected folder has a generated index:
 
 ```bash
-.venv/bin/python scripts/generate_enhanced_index.py affected/folder
+./scripts/python_runtime.sh scripts/generate_enhanced_index.py affected/folder
 ```
 
 For source migrations, also run the narrow import/build check for that language. Do not regenerate all indexes unless the task actually changes all indexed folders.

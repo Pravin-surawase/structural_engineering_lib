@@ -7,12 +7,15 @@ using StreamingResponse for efficient delivery.
 
 import html as html_lib
 import io
+import json
 import re
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
+
+from fastapi_app.models.beam import BeamCrackWidthParams
 
 
 def sanitize_filename(name: str) -> str:
@@ -61,6 +64,18 @@ class ExportBeamRequest(BaseModel):
     )
     moment: float = Field(default=0, ge=0, description="Design moment kN·m")
     shear: float = Field(default=0, ge=0, description="Design shear kN")
+    torsion: float = Field(default=0, ge=0, description="Design torsion kN m")
+    include_serviceability: bool = False
+
+    @model_validator(mode="after")
+    def reject_unrepresentable_combined_result(self) -> "ExportBeamRequest":
+        """BBS/DXF cannot yet preserve the combined governing contract."""
+        if self.torsion > 0 or self.include_serviceability:
+            raise ValueError(
+                "EXPORT_SCOPE_HOLD: BBS/DXF do not represent torsion or "
+                "serviceability governing results; use the canonical report export."
+            )
+        return self
 
 
 class ExportReportRequest(BaseModel):
@@ -75,6 +90,7 @@ class ExportReportRequest(BaseModel):
     fy: float = Field(..., gt=0)
     moment: float = Field(default=0, ge=0)
     shear: float = Field(default=0, ge=0)
+    torsion: float = Field(default=0, ge=0)
     ast_required: float = Field(default=0, ge=0)
     ast_provided: float = Field(default=0, ge=0)
     utilization: float = Field(default=0, ge=0, le=2)
@@ -112,7 +128,36 @@ class ExportReportRequest(BaseModel):
         le=36,
         description="Main bar diameter used by the source calculation (mm)",
     )
+    include_serviceability: bool = False
+    span_mm: float | None = Field(default=None, gt=0)
+    support_condition: str = "simply_supported"
+    crack_width_params: BeamCrackWidthParams | None = None
+    calculation_identity: str = Field(
+        min_length=64,
+        max_length=64,
+        pattern=r"^[0-9a-f]{64}$",
+        description="Exact calculation identity from the current primary response",
+    )
     format: str = Field(default="html", pattern="^(html|json|pdf)$")
+
+    @model_validator(mode="after")
+    def validate_combined_report_scope(self) -> "ExportReportRequest":
+        if self.torsion > 0 and (self.fck > 40 or self.fy > 500):
+            raise ValueError(
+                "TORSION_SCOPE_HOLD: report torsion is limited to fck <= 40 and fy <= 500."
+            )
+        if self.include_serviceability and (
+            self.span_mm is None or self.crack_width_params is None
+        ):
+            raise ValueError(
+                "SERVICEABILITY_SCOPE_HOLD: span_mm and crack_width_params are required."
+            )
+        if self.format == "pdf" and (self.torsion > 0 or self.include_serviceability):
+            raise ValueError(
+                "EXPORT_SCOPE_HOLD: PDF does not yet render the complete torsion or "
+                "serviceability result; use HTML or JSON."
+            )
+        return self
 
 
 # =============================================================================
@@ -282,9 +327,22 @@ async def export_report(request: ExportReportRequest):
             - request.stirrup_dia_mm
             - request.main_bar_dia_mm / 2
         )
-    # Re-run the supported calculation from the report inputs.  Evidence must
-    # identify a calculation performed by the server, not a client-supplied
-    # safety flag or rounded utilization value.
+    deflection_params = None
+    crack_width_params = None
+    if request.include_serviceability:
+        deflection_params = {
+            "span_mm": request.span_mm,
+            "d_mm": effective_depth,
+            "support_condition": request.support_condition,
+        }
+        if request.crack_width_params is not None:
+            crack_width_params = request.crack_width_params.model_dump(
+                exclude_none=True
+            )
+
+    # Re-run the exact supported calculation and require its identity to match
+    # the current primary response.  Client safety/utilization claims are never
+    # used as authority.
     design_result = design_beam_is456(
         units="IS456",
         case_id="CASE-1",
@@ -298,6 +356,11 @@ async def export_report(request: ExportReportRequest):
         d_dash_mm=request.clear_cover
         + request.stirrup_dia_mm
         + request.main_bar_dia_mm / 2,
+        tu_knm=request.torsion,
+        cover_mm=request.clear_cover,
+        stirrup_dia_mm=request.stirrup_dia_mm,
+        deflection_params=deflection_params,
+        crack_width_params=crack_width_params,
     )
     governing_utilization = design_result.governing_utilization
     evidence = build_beam_evidence_envelope(
@@ -306,6 +369,7 @@ async def export_report(request: ExportReportRequest):
             "case_id": "CASE-1",
             "mu_knm": request.moment,
             "vu_kn": request.shear,
+            "tu_knm": request.torsion,
             "b_mm": request.width,
             "D_mm": request.depth,
             "d_mm": effective_depth,
@@ -315,11 +379,24 @@ async def export_report(request: ExportReportRequest):
             + request.stirrup_dia_mm
             + request.main_bar_dia_mm / 2,
             "asv_mm2": 100.0,
+            "cover_mm": request.clear_cover,
+            "stirrup_dia_mm": request.stirrup_dia_mm,
+            "include_serviceability": request.include_serviceability,
+            "deflection_params": deflection_params,
+            "crack_width_params": crack_width_params,
         },
         is_ok=design_result.is_ok,
         governing_utilization=governing_utilization,
         utilizations=design_result.utilizations,
     )
+    if evidence["calculation_identity"] != request.calculation_identity:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                "STALE_CALCULATION_IDENTITY: report inputs do not match the current "
+                "primary beam response. Recalculate before exporting."
+            ),
+        )
     beam_geom = {
         "b_mm": request.width,
         "D_mm": request.depth,
@@ -332,15 +409,76 @@ async def export_report(request: ExportReportRequest):
             "case_id": "1.5(DL+LL)",
             "mu_knm": request.moment,
             "vu_kn": request.shear,
+            "tu_knm": request.torsion,
         }
     ]
-    results = {
-        "1.5(DL+LL)": {
-            "ast_required_mm2": request.ast_required,
-            "ast_provided_mm2": request.ast_provided,
-            "utilization": request.utilization,
-            "is_ok": design_result.is_ok,
+    torsion_result = None
+    combined_actions = None
+    if design_result.torsion is not None:
+        torsion = design_result.torsion
+        combined_actions = {
+            "mu_knm": design_result.Mu_knm,
+            "vu_kn": design_result.Vu_kn,
+            "tu_knm": design_result.Tu_knm,
+            "me_knm": torsion.Me_knm,
+            "ve_kn": torsion.Ve_kn,
         }
+        torsion_result = {
+            "source": "IS 456:2000",
+            "is_safe": torsion.is_safe,
+            "tau_ve_nmm2": torsion.tau_ve,
+            "tau_c_nmm2": torsion.tau_c,
+            "tau_c_max_nmm2": torsion.tau_c_max,
+            "asv_torsion_mm2_per_mm": torsion.Asv_torsion,
+            "asv_shear_mm2_per_mm": torsion.Asv_shear,
+            "asv_total_mm2_per_mm": torsion.Asv_total,
+            "stirrup_spacing_mm": torsion.stirrup_spacing,
+            "al_torsion_mm2": torsion.Al_torsion,
+            "requires_closed_stirrups": torsion.requires_closed_stirrups,
+            "errors": [error.to_dict() for error in torsion.errors],
+            "clause_refs": torsion.clause_refs,
+        }
+
+    deflection_result = None
+    if design_result.deflection is not None:
+        deflection_result = {
+            "is_ok": design_result.deflection.is_ok,
+            "computed": design_result.deflection.computed,
+            "remarks": design_result.deflection.remarks,
+        }
+    crack_result = None
+    if design_result.crack_width is not None:
+        crack_result = {
+            "is_ok": design_result.crack_width.is_ok,
+            "computed": design_result.crack_width.computed,
+            "remarks": design_result.crack_width.remarks,
+        }
+
+    results = {
+        "cases": [
+            {
+                "case_id": "1.5(DL+LL)",
+                "mu_knm": request.moment,
+                "vu_kn": request.shear,
+                "tu_knm": request.torsion,
+                "utilization": governing_utilization,
+                "is_ok": design_result.is_ok,
+            }
+        ],
+        "summary": {
+            "status": evidence["status"],
+            "ast_required_mm2": design_result.flexure.Ast_required,
+            "asc_required_mm2": design_result.flexure.Asc_required,
+            "combined_stirrup_demand_mm2_per_mm": (
+                torsion_result["asv_total_mm2_per_mm"]
+                if torsion_result is not None
+                else None
+            ),
+            "combined_actions": combined_actions,
+            "torsion": torsion_result,
+            "deflection_check": deflection_result,
+            "crack_width_check": crack_result,
+        },
     }
     report_data = ReportData(
         job_id=request.beam_id,
@@ -371,6 +509,12 @@ async def export_report(request: ExportReportRequest):
         )
     elif request.format == "html":
         content = export_html(report_data)
+        appendix = (
+            '<section class="section"><h2>Canonical Combined Beam Result</h2><pre>'
+            + html_lib.escape(json.dumps(results["summary"], indent=2, sort_keys=True))
+            + "</pre></section>"
+        )
+        content = content.replace("</body>", f"{appendix}</body>")
         return StreamingResponse(
             io.BytesIO(content.encode("utf-8")),
             media_type="text/html",

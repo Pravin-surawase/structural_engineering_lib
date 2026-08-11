@@ -21,7 +21,7 @@ from structural_lib.services.capabilities import (
 from structural_lib.services.common_api import get_library_version
 
 BEAM_EVIDENCE_ARTIFACT_SCHEMA = "structural_lib.beam-evidence"
-BEAM_EVIDENCE_SCHEMA_VERSION = "1.0"
+BEAM_EVIDENCE_SCHEMA_VERSION = "2.0"
 BEAM_CAPABILITY_ID = "design_beam_is456"
 CODE_AMENDMENT_IDENTITY = "not-declared-in-artifact"
 QUALIFIED_REVIEW_REQUIREMENT = (
@@ -36,6 +36,8 @@ _CONSUMED_INPUT_DEFAULTS: dict[str, Any] = {
     "asv_mm2": 100.0,
     "pt_percent": None,
     "ast_mm2_for_shear": None,
+    "tu_knm": 0.0,
+    "include_serviceability": False,
 }
 _REQUIRED_CONSUMED_INPUTS = (
     "mu_knm",
@@ -46,6 +48,29 @@ _REQUIRED_CONSUMED_INPUTS = (
     "fck_nmm2",
     "fy_nmm2",
 )
+
+_SUPPORT_ALIASES = {
+    "cant": "cantilever",
+    "cantilever": "cantilever",
+    "cont": "continuous",
+    "continuous": "continuous",
+    "simply": "simply_supported",
+    "simply_supported": "simply_supported",
+    "ss": "simply_supported",
+}
+
+
+def _normalize_nested(value: Any) -> Any:
+    """Normalize a JSON-compatible calculation input without dropping keys."""
+    if isinstance(value, Mapping):
+        return {
+            str(key): _normalize_nested(item) for key, item in sorted(value.items())
+        }
+    if isinstance(value, bool) or value is None:
+        return value
+    if isinstance(value, (int, float)):
+        return float(value)
+    return str(value).strip().lower()
 
 
 def normalize_beam_design_inputs(inputs: Mapping[str, Any]) -> dict[str, Any]:
@@ -70,6 +95,44 @@ def normalize_beam_design_inputs(inputs: Mapping[str, Any]) -> dict[str, Any]:
     for name in ("pt_percent", "ast_mm2_for_shear"):
         value = inputs.get(name, _CONSUMED_INPUT_DEFAULTS[name])
         normalized[name] = None if value is None else float(value)
+    normalized["tu_knm"] = float(
+        inputs.get("tu_knm", _CONSUMED_INPUT_DEFAULTS["tu_knm"])
+    )
+    if normalized["tu_knm"] > 0:
+        for name in ("cover_mm", "stirrup_dia_mm"):
+            if name not in inputs:
+                raise ValueError(f"Missing consumed torsion input: {name}")
+            normalized[name] = float(inputs[name])
+    else:
+        normalized["cover_mm"] = None
+        normalized["stirrup_dia_mm"] = None
+
+    include_serviceability = inputs.get(
+        "include_serviceability",
+        _CONSUMED_INPUT_DEFAULTS["include_serviceability"],
+    )
+    if not isinstance(include_serviceability, bool):
+        raise ValueError("include_serviceability must be a boolean")
+    normalized["include_serviceability"] = include_serviceability
+    if include_serviceability:
+        deflection = inputs.get("deflection_params")
+        crack_width = inputs.get("crack_width_params")
+        if not isinstance(deflection, Mapping) or not isinstance(crack_width, Mapping):
+            raise ValueError(
+                "Enabled serviceability requires deflection_params and "
+                "crack_width_params mappings"
+            )
+        normalized_deflection = _normalize_nested(deflection)
+        support = normalized_deflection.get("support_condition")
+        if support is not None:
+            normalized_deflection["support_condition"] = _SUPPORT_ALIASES.get(
+                support, support
+            )
+        normalized["deflection_params"] = normalized_deflection
+        normalized["crack_width_params"] = _normalize_nested(crack_width)
+    else:
+        normalized["deflection_params"] = None
+        normalized["crack_width_params"] = None
     return normalized
 
 

@@ -975,6 +975,47 @@ class TestFootingOneWayShear:
         )
         assert r2.tau_c_nmm2 >= r1.tau_c_nmm2
 
+    def test_directional_steel_percentages_use_the_matching_direction(self):
+        """The governing B-direction uses pt_B_percent, not legacy pt or L steel."""
+        common = {
+            "Pu_kN": 2000,
+            "L_mm": 2000,
+            "B_mm": 3000,
+            "d_mm": 400,
+            "a_mm": 1200,
+            "b_mm": 300,
+            "fck": 25,
+            "pt": 0.15,
+        }
+        legacy = footing_one_way_shear(**common)
+        directional = footing_one_way_shear(
+            **common, pt_L_percent=0.15, pt_B_percent=0.50
+        )
+        assert legacy.governing_direction == directional.governing_direction == "B"
+        assert directional.tau_c_nmm2 > legacy.tau_c_nmm2
+
+    @pytest.mark.parametrize(
+        "steel_percentages",
+        [
+            {"pt": -0.01},
+            {"pt_L_percent": -0.01},
+            {"pt_B_percent": -0.01},
+        ],
+    )
+    def test_negative_steel_percentages_are_rejected(self, steel_percentages):
+        """Table 19 steel percentages must be finite non-negative values."""
+        with pytest.raises(ValidationError, match="non-negative"):
+            footing_one_way_shear(
+                Pu_kN=1200,
+                L_mm=2000,
+                B_mm=2000,
+                d_mm=400,
+                a_mm=400,
+                b_mm=400,
+                fck=25,
+                **steel_percentages,
+            )
+
     def test_validation_negative_fck(self):
         """Validation: negative fck → ValidationError."""
         with pytest.raises(ValidationError, match="positive"):
@@ -1277,14 +1318,29 @@ class TestFootingCommon:
         with pytest.raises(DimensionError, match="positive"):
             validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=400, a_mm=-300, b_mm=400)
 
-    def test_validate_min_depth_150mm(self):
-        """validate_footing_inputs: d < 150mm → DimensionError per Cl 34.1."""
-        with pytest.raises(DimensionError, match="150"):
-            validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=140, a_mm=400, b_mm=400)
+    def test_validate_effective_depth_below_150mm_passes(self):
+        """Shared geometry validation permits a positive effective depth below 150mm."""
+        validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=140, a_mm=400, b_mm=400)
 
-    def test_validate_min_depth_exactly_150_passes(self):
-        """validate_footing_inputs: d == 150mm → no error."""
-        validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=150, a_mm=400, b_mm=400)
+    def test_validate_overall_thickness_minimum_150mm(self):
+        """The 150mm minimum applies to overall, not effective, thickness."""
+        with pytest.raises(DimensionError, match="150"):
+            validate_footing_inputs(
+                L_mm=2000,
+                B_mm=2000,
+                d_mm=140,
+                a_mm=400,
+                b_mm=400,
+                overall_thickness_mm=149,
+            )
+        validate_footing_inputs(
+            L_mm=2000,
+            B_mm=2000,
+            d_mm=100,
+            a_mm=400,
+            b_mm=400,
+            overall_thickness_mm=150,
+        )
 
     @pytest.mark.parametrize(
         "invalid_value", [float("nan"), float("inf"), float("-inf"), True, "400"]
@@ -1674,76 +1730,71 @@ class TestOneWayShearBothDirections:
         assert "governs" in s
 
 
-class TestMinimumDepthEnforcement:
-    """Verify d_mm >= 150mm enforcement in _common.py."""
+class TestOverallThicknessMinimum:
+    """Verify the 150mm edge minimum is enforced on overall thickness only."""
 
-    def test_d_149_raises_dimension_error(self):
-        """d_mm=149 should raise DimensionError per Cl 34.1."""
-        with pytest.raises(DimensionError, match="150"):
-            validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=149, a_mm=400, b_mm=400)
+    def test_d_149_is_valid_shared_geometry(self):
+        """A positive 149mm effective depth is not rejected by shared geometry."""
+        validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=149, a_mm=400, b_mm=400)
 
-    def test_d_150_passes(self):
-        """d_mm=150 is exactly the minimum — should pass."""
-        validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=150, a_mm=400, b_mm=400)
-
-    def test_d_1_raises(self):
-        """d_mm=1 should raise DimensionError."""
-        with pytest.raises(DimensionError, match="150"):
-            validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=1, a_mm=400, b_mm=400)
-
-    def test_d_150_flows_through_flexure(self):
-        """d_mm=150 flows through footing_flexure without error."""
-        result = footing_flexure(
-            Pu_kN=500,
-            L_mm=2000,
-            B_mm=2000,
-            d_mm=150,
-            overall_thickness_mm=200,
-            a_mm=300,
-            b_mm=300,
-            fck=25,
-            fy=415,
-        )
-        assert result.d_mm == 150.0
-        assert result.is_safe is True
-
-    def test_d_149_rejected_by_flexure(self):
-        """d_mm=149 raises DimensionError through footing_flexure."""
+    def test_overall_thickness_149_raises_dimension_error(self):
+        """An overall footing thickness of 149mm violates the edge minimum."""
         with pytest.raises(DimensionError, match="150"):
             footing_flexure(
-                Pu_kN=500,
+                Pu_kN=100,
                 L_mm=2000,
                 B_mm=2000,
-                d_mm=149,
-                overall_thickness_mm=199,
+                d_mm=100,
+                overall_thickness_mm=149,
                 a_mm=300,
                 b_mm=300,
                 fck=25,
                 fy=415,
             )
 
-    def test_d_149_rejected_by_one_way_shear(self):
-        """d_mm=149 raises DimensionError through footing_one_way_shear."""
-        with pytest.raises(DimensionError, match="150"):
-            footing_one_way_shear(
-                Pu_kN=1200,
-                L_mm=2000,
-                B_mm=2000,
-                d_mm=149,
-                a_mm=400,
-                b_mm=400,
-                fck=25,
-            )
+    def test_d_zero_raises(self):
+        """Effective depth remains required to be positive."""
+        with pytest.raises(DimensionError, match="positive"):
+            validate_footing_inputs(L_mm=2000, B_mm=2000, d_mm=0, a_mm=400, b_mm=400)
 
-    def test_d_149_rejected_by_punching_shear(self):
-        """d_mm=149 raises DimensionError through footing_punching_shear."""
-        with pytest.raises(DimensionError, match="150"):
-            footing_punching_shear(
-                Pu_kN=1200,
-                L_mm=2000,
-                B_mm=2000,
-                d_mm=149,
-                a_mm=400,
-                b_mm=400,
-                fck=25,
-            )
+    def test_d_149_flows_through_flexure_with_valid_overall_thickness(self):
+        """Flexure accepts d below 150mm when overall thickness is compliant."""
+        result = footing_flexure(
+            Pu_kN=100,
+            L_mm=2000,
+            B_mm=2000,
+            d_mm=149,
+            overall_thickness_mm=200,
+            a_mm=300,
+            b_mm=300,
+            fck=25,
+            fy=415,
+        )
+        assert result.d_mm == 149.0
+        assert result.is_safe is True
+
+    def test_d_149_flows_through_one_way_shear(self):
+        """One-way shear accepts a positive d below the overall-thickness minimum."""
+        result = footing_one_way_shear(
+            Pu_kN=1200,
+            L_mm=2000,
+            B_mm=2000,
+            d_mm=149,
+            a_mm=400,
+            b_mm=400,
+            fck=25,
+        )
+        assert result.d_mm == 149.0
+
+    def test_d_149_flows_through_punching_shear(self):
+        """Punching shear accepts a positive d below the overall-thickness minimum."""
+        result = footing_punching_shear(
+            Pu_kN=1200,
+            L_mm=2000,
+            B_mm=2000,
+            d_mm=149,
+            a_mm=400,
+            b_mm=400,
+            fck=25,
+        )
+        assert result.d_mm == 149.0

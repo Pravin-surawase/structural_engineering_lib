@@ -3,16 +3,16 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-11",
-  "file_count": 16,
+  "file_count": 17,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 152,
+      "size_lines": 154,
       "last_updated": "2026-08-11",
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
-      "content_hash": "3db99326bf3a"
+      "content_hash": "56281c1a3fd2"
     },
     {
       "name": "adoption-trust-surface-plan.md",
@@ -72,6 +72,14 @@
       "content_hash": "3c22c1017a09"
     },
     {
+      "name": "is456-solid-slabs-master-plan.md",
+      "type": "documentation",
+      "size_lines": 1123,
+      "last_updated": "2026-08-11",
+      "description": "The next element program will complete a useful, evidence-backed solid-slab workflow under IS 456 without pretending to solve every slab system.",
+      "content_hash": "bcd3ec19ce4d"
+    },
+    {
       "name": "library-expansion-blueprint-v5.md",
       "type": "documentation",
       "size_lines": 1139,
@@ -99,20 +107,20 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 111,
+      "size_lines": 147,
       "last_updated": "2026-08-11",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-11",
-      "content_hash": "10deafb7daa6"
+      "content_hash": "723858e689d4"
     },
     {
       "name": "pre-release-checklist.md",
       "type": "documentation",
-      "size_lines": 66,
+      "size_lines": 92,
       "last_updated": "2026-08-11",
       "title": "Pre-Release Checklist",
-      "description": "Installed metadata version: 0.23.0 - **Release source:** tag v0.23.0 at 3f880d5bbc338baefc4aec8ed472cafe840a5c99",
-      "content_hash": "c8c34a3bd461"
+      "description": "Release-ready source metadata: 0.23.1a1 Current public release: v0.23.1a1 Alpha",
+      "content_hash": "aa14481f9a4b"
     },
     {
       "name": "professional-library-remediation-plan.md",
@@ -141,5 +149,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "d325769c792d2a2c"
+  "content_hash": "980cf40f6eeb7a89"
 }

@@ -1,3 +1,224 @@
+## 2026-08-11 — Session: FOOT-ISO-RC-V1 Phases A-D1
+
+**Agent:** Codex
+**Branch:** `codex/footing-isolated-v1`
+**Focus:** Correct footing inputs and complete concentric isolated-footing orchestration/detailing/API/workbench
+
+### Summary
+
+- Corrected the footing input boundary so the IS 456 edge-thickness minimum is
+  checked against overall thickness, not effective depth.
+- Added directional reinforcement percentages to one-way shear while retaining
+  the legacy scalar input as a backward-compatible fallback.
+- Preserved the existing footing public functions and verified the focused
+  footing, core/public-contract, and FastAPI capability baselines.
+- Added a fail-closed service for concentric square/rectangular isolated
+  footings with explicit service/factored actions, external allowable-pressure
+  provenance, deterministic uniform-depth selection, structural checks,
+  approved-A1 load transfer, and qualified-review/detailing HOLD boundaries.
+- Added maintained two-layer bottom-reinforcement detailing with physical
+  directional depths, deterministic bar selection, buildable rectangular
+  central/outer-band schedules, straight anchorage, approved dowel linkage,
+  normalized provenance, and service-level PASS/FAIL/HOLD aggregation.
+- Added one typed FastAPI route for the same concentric square/rectangular
+  service authority, including calculation/detailing/aggregate status,
+  screening-versus-final shear evidence, provenance, exclusions, qualified
+  review, and canonical validation errors.
+- Added one React workbench surface for that route with explicit external
+  approvals and units, optional atomic detailing inputs, separate calculation /
+  detailing / aggregate status, complete returned evidence, and request-revision
+  invalidation. Report/export and catalogue closeout remain deliberately absent.
+
+### Issues encountered
+
+- The shared footing validator applied the 150 mm edge-thickness rule to
+  `d_mm`, rejecting structurally representable cases whose overall thickness
+  satisfied the rule but whose effective depth was below 150 mm.
+- One-way shear used the same reinforcement percentage for both orthogonal
+  directions, so directional Table 19 shear capacities could not be represented.
+- Negative reinforcement percentages passed finite-value validation and could
+  reach the Table 19 lower-bound interpolation behavior instead of failing
+  closed.
+- The first commit attempt stopped at Ruff C408 because one new test fixture
+  used `dict(...)` where the repository requires a literal.
+- Failed depth candidates initially populated the top-level flexure, one-way
+  shear, punching, and directional-pt fields even when no passing depth was
+  selected, making the last failed candidate look like a maintained result.
+- Initial service provenance omitted the Table 19 basis for directional shear
+  screening and Cl. 34.3.1 for rectangular-footing central-band distribution.
+- The worktree has no local `.venv`; a direct runtime probe through the shared
+  wrapper initially resolved the installed package instead of the untracked
+  worktree module.
+- A normal import-following single-file mypy probe traversed unrelated existing
+  `core/models.py` property-decorator errors and optional `weasyprint` typing.
+- The first B2 draft reported rectangular central/outer bar counts while
+  retaining an unrelated uniform-grid spacing, so its count, spacing and
+  provided-area fields did not describe one buildable physical layout.
+- The first B2 draft treated every exhausted bar search as `FAIL`, including a
+  numerically feasible layout that needed unsupported hooks/bends, and it used
+  the rounded development length as the anchorage acceptance threshold.
+- The first B2 draft silently excluded 10 mm bars and imposed a hidden minimum
+  of 12 bars per direction. That made the independent square benchmark appear
+  as 12/12 bars; removing the floor then exposed an 11/12 area/spacing schedule.
+- Initial B2 evidence used a new unverified source label, allowed unsupported
+  steel/bar-type pairings, and did not reject a stale load-transfer receipt.
+- The initial B2 PASS still passed required-steel percentages from the analysis
+  screen to one-way shear while selecting fewer bars from physical-depth
+  flexure. The 11-T12 lower layer provided only 0.1555088364% at the maintained
+  400 mm analysis depth, reproducing an unsafe 1.0209076 shear utilization
+  despite the aggregate PASS label.
+- The B2 decorator used exact clause bases absent from `clauses.json`, causing
+  normal maintained imports to emit five unknown-clause warnings even though
+  those exact bases remained valid result/provenance evidence.
+- The core `FootingType` enum uses implementation-valued members and FastAPI is
+  forbidden from importing core/code layers, so exposing that enum directly
+  would make the transport contract unstable and violate the dependency rule.
+- If service validation escaped the footing router, the existing global
+  `StructuralLibError` path would return a legacy non-envelope body instead of
+  the maintained request-validation response shape.
+- The first C1 commit attempt imported `structural_lib` from an older checkout
+  during hooks because this worktree has no local `.venv`; the new footing
+  service could not be resolved and no commit was created.
+- This worktree also had no React `node_modules`. Calling the shared Vitest
+  binary by absolute path could not resolve Vite from the worktree and created
+  one ignored `.vite` cache receipt before stopping.
+- The first D1 feature draft silently converted unapproved soil/A1 inputs to
+  approved request literals, showed an impossible PASS fixture with missing
+  detailing evidence, and omitted material returned checks and schedules.
+- The first detailing toggle displayed fallback values without placing the
+  complete detailing group into draft state. The response type also modelled
+  punching as one-way shear and could hide contract drift.
+- A shell inspection loop used zsh's special `path` variable name, temporarily
+  replacing `PATH` for that shell and making its final Git probe unavailable.
+- The resumed full repository gate initially reported 27/30 because the public
+  API manifest still described the pre-directional one-way-shear signature and
+  the shared virtual environment imported a different checkout when the
+  worktree source was not placed first on `PYTHONPATH`.
+- `./run.sh generate indexes` stopped because its shell implementation requires
+  a worktree-local `.venv/bin/python`; the documented shared-runtime fallback is
+  not wired into that generator. Retrying through a temporary environment link
+  also produced broad, non-footing index churn on this older branch.
+
+### Root causes and resolutions
+
+- Overall thickness and effective depth were conflated in the shared validator.
+  The validator now accepts an explicit optional `overall_thickness_mm`, applies
+  the 150 mm rule only to that quantity, and flexure supplies it while preserving
+  the separate `0 < d < overall thickness` check.
+- The one-way-shear API had only the legacy scalar `pt` input. It now accepts
+  keyword-only `pt_L_percent` and `pt_B_percent`, uses them directionally, and
+  falls back to `pt` when either directional value is omitted.
+- Directional and legacy reinforcement percentages are now rejected when
+  negative before the IS 456 Table 19 lookup.
+- The test fixture was rewritten as a dictionary literal; the commit hooks were
+  rerun without bypassing validation.
+- Selected-result variables are now assigned only inside the passing-candidate
+  branch. Exhausted ranges retain status, utilizations, and reasons solely in
+  `depth_candidates`; all top-level selected-result fields remain empty.
+- Provenance now identifies Cl. 34.2.3.1 with Cl. 34.3.1 and identifies
+  Cl. 34.2.4.1(a) with IS 456 Table 19, explicitly describing required
+  directional `pt` as conservative screening pending provided detailing.
+- Direct worktree probes use
+  `PYTHONPATH="$PWD/Python" ./scripts/python_runtime.sh ...`; owned isolated
+  typing evidence uses `mypy --follow-imports=skip`, leaving unrelated shared
+  typing findings untouched.
+- Central-band counts were originally calculated after uniform spacing and did
+  not regenerate a physical zone layout. The maintained selector now assigns
+  boundary bars once, calculates exact central and symmetric outer-zone counts,
+  spacings, clear spacings and areas, and verifies each zone independently.
+- A single generic no-candidate branch conflated numerical/codal failure with
+  unsupported anchorage geometry. Candidate disposition is now explicit:
+  numerical depth/cover/spacing/diameter failures return `FAIL`, while an
+  otherwise feasible arrangement needing hooks/bends returns `HOLD`; exact
+  unrounded development length governs and the rounded helper value is report
+  evidence only.
+- The hidden 12-bar floor and T10 skip had no clause/contract basis. Counts now
+  come only from required area and maximum spacing, all six bounded diameters
+  are evaluated when permitted, and deterministic selection uses least
+  provided steel, then count, maximum diameter and lexical pair.
+- Candidate selection originally stopped after physical-depth flexure/minimum
+  steel and never closed the Table 19 screening loop. Each candidate now also
+  covers the maintained analysis-depth directional flexural demand, derives
+  directional `pt` from actual provided area at that analysis depth, and reruns
+  one-way shear before PASS. The corrected T12-and-above benchmark is 13-T12
+  in each direction, 1470.265 mm2 and 0.1837831702%, with final utilization
+  0.9564856. Top-level shear/pt are this final evidence; the earlier
+  0.1711262355%/0.9842895 screen remains explicitly labelled.
+- Exact clause bases remain in result/provenance evidence, while the decorator
+  now uses only recognized exact/parent IDs already in `clauses.json`. A fresh
+  import/call emits no unknown-clause warning; no clause database was edited.
+- B2 now inherits the existing consolidated/amendment source identities,
+  accepts only Fe250/plain or Fe415/Fe500 deformed pairs, checks the retained
+  load-transfer load/column-area/source identity, and links rather than
+  redesigns the accepted dowel schedule.
+- B1 intentionally ended at a detailing HOLD. Optional explicit detailing
+  inputs now invoke the pure B2 selector after a passing structural depth:
+  detailing PASS closes the aggregate to PASS, detailing FAIL fails only the
+  aggregate/detailing status, and missing/unsupported engineering inputs remain
+  fail-closed HOLD.
+- The C1 request model exposes stable `ISOLATED_SQUARE` and
+  `ISOLATED_RECTANGULAR` wire names and the router maps them through the service
+  module before invoking the single accepted service; FastAPI imports no
+  core/code module and contains no engineering formula.
+- The router now catches service `ValidationError` explicitly and returns the
+  canonical `success=false`, `data=null`, structured 422 error envelope with
+  sanitized detail. Pydantic omissions, extra fields, non-finite values,
+  invalid footing names, and non-integral dowel counts use the main app's same
+  documented 422 envelope.
+- The accepted C1 commit was retried with `PYTHONPATH="$PWD/Python"`; all hooks
+  passed against the current worktree and produced `b4b64d56` without bypassing
+  validation. No push or GitHub action was taken.
+- React validation reused the existing dependency installation through one
+  exact, validated worktree-local `node_modules` symlink. The generated cache
+  receipt was removed and the symlink was unlinked after validation; the shared
+  dependency directory was never modified or deleted.
+- D1 now requires the user to affirm both external approvals and transmits the
+  literal approvals only after validation. Detailing is initialized and sent as
+  one complete optional group; absent detailing remains a visible server HOLD.
+- The UI types and evidence panels now preserve bearing, flexure, screening and
+  final actual-provided-pt shear, punching, depth candidates, directional demand
+  and zone schedules, anchorage, dowel linkage, provenance, exclusions and the
+  qualified-review requirement. Full request revisions abort and invalidate
+  stale results; late responses cannot restore authority.
+- Subsequent shell commands use task-specific variable names; a fresh shell
+  confirmed the branch/status normally.
+- Regenerated `docs/reference/api-manifest.json` from the footing worktree so it
+  records the keyword-only directional reinforcement percentages. The full
+  gate is now run with `PYTHONPATH="$PWD/Python"`, which binds validation to this
+  branch instead of the primary checkout's editable package.
+- A validated temporary `.venv` link allowed the generator to be diagnosed and
+  was removed immediately with its shared target preserved. All 31 generator-
+  only index diffs were then reversed as one inspected mechanical patch because
+  they were unrelated to the footing outcome; no user-owned index change was
+  present before that command.
+- Evidence: the 182-case footing/core/public-contract matrix passed, the
+  12-test FastAPI library-core/capability baseline passed, the 4-case footing
+  contract selection passed, the 167-case B1/core/load-transfer matrix passed,
+  Black/Ruff and the isolated mypy gate passed, the architecture scan checked
+  143 files with zero violations, and `git diff --check` passed.
+- B2 evidence: the 199-case footing/detailing/service/load-transfer/golden-vector
+  matrix passed; focused Black, Ruff, isolated mypy and import checks passed;
+  the architecture scan checked 144 files with zero violations; and
+  `git diff --check` passed.
+- C1 evidence: 37 focused FastAPI/service/typed-contract tests passed; Black and
+  Ruff passed; isolated mypy passed for five owned/integration Python files;
+  the architecture scan checked 146 files with zero violations; the maintained
+  OpenAPI snapshot now records exactly one added endpoint and 15 footing schemas
+  (70 endpoints, 263 schemas); import validation and `git diff --check` passed.
+- D1 evidence: 13 focused feature/client/workbench/navigation tests passed;
+  ESLint and the TypeScript/Vite production build passed, including a separate
+  34.78 kB lazy footing chunk; the architecture scan checked 146 files with zero
+  violations. Component-state tests prove approval gating, exact request
+  omission/inclusion, PASS evidence, retained HOLD, canonical 422 messaging,
+  transport failure, stale-result marking and late-response rejection.
+- Resume closeout evidence: 206 focused footing/core/service/load-transfer/
+  golden-vector/FastAPI tests passed; the complete React gate passed 246 tests,
+  ESLint and the production build with a 34.84 kB lazy footing chunk; the quick
+  repository gate passed 10/10 and the source-bound full gate passed 30/30.
+
+---
+
+## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
 # Session Log
 
 > Append-only decision log for AI agent sessions.
@@ -60,6 +281,967 @@
   token-efficiency check passed; `./run.sh check --quick` passed 10/10; and
   `git diff --check` reported no whitespace errors.
 
+
+## 2026-08-11 — Session: Sequential Slab Integration
+
+**Focus:** Synchronize slab PR #724 with the merged CI, beam, and column feature history while preserving all four reachable workflows.
+
+### Summary
+- Merged current `main` into the preserved slab branch with additive conflict resolution for session history, OpenAPI, and shared React workbench surfaces.
+- Kept both `/workbench/slabs` and `/workbench/columns/rectangular` routes and both workbench cards reachable.
+- Regenerated `fastapi_app/openapi_baseline.json` through `scripts/check_openapi_drift.py --update`.
+
+### Issues encountered
+- The first focused slab integration run failed because `Python/tests/integration/test_api_entrypoints_is456.py` still expected capability document schema version `1.0`, while merged beam capability discovery returned `2.0`.
+
+### Root causes and resolutions
+- Root cause: The beam capability contract intentionally bumped `CAPABILITY_SCHEMA_VERSION` to `2.0`, but the shared API-entrypoint assertion remained at the old `1.0` expectation on both the pre-merge main history and slab branch.
+- Resolution: Updated the assertion to the authoritative `2.0` contract; no capability source downgrade or feature removal was made.
+- Evidence: Focused slab/Python/FastAPI regression rerun passed 48 tests after the correction; React slab/workbench tests passed 6/6 and the prior synchronized quick gate passed 10/10.
+
+## 2026-08-11 — Session: FastAPI Load-Lane Fix
+
+**Focus:** Remove flaky shared-runner latency assertions from required FastAPI lane and validate benchmark evidence path.
+
+### Summary
+- Removed `test_async_concurrent_requests_latency` from `fastapi_app/tests/test_load.py` (including duplicated latency assertion block).
+- Kept only deterministic concurrent success/error verification in the maintained PR lane.
+- Verified required non-blocking markers + filtered test-path behavior via `pytest -c fastapi_app/pytest.ini` commands.
+- Ran FastAPI benchmark smoke (`scripts/benchmark_api.py --mode fastapi --quick --output json --save ...`) and confirmed JSON writes, including overwrite behavior when stale payloads exist.
+
+### Opened/Active PRs
+| PR | Summary |
+|----|---------|
+| #729 | Gate slow/performance assertions by pytest markers (merged) |
+
+### Key Deliverables
+- `fastapi_app/tests/test_load.py`: removed the latency-only concurrent test; concurrency correctness coverage remains.
+- `docs/SESSION_LOG.md`: root-cause + remediation evidence captured.
+- Focused and full FastAPI load checks completed via shared worktree `.venv` runtime.
+- Benchmark lane JSON evidence smoke verified at `docs/reference/fastapi-benchmark-smoke.json`.
+
+### Issues encountered
+- Parent review confirmed a duplicate assertion block and blocking flake due to a wall-clock assertion method in maintained load tests.
+- Initial local `pytest` invocation failed in this worktree because `.venv` was absent (`.venv/bin/pytest` not found), so runtime had to be pointed to the shared project interpreter.
+
+### Root causes and resolutions
+- Root cause: The duplicated `test_async_concurrent_requests_latency` method (with repeated average-latency assertion) still enforced shared-runner latency thresholds in the test file path, so CI could still hit wall-clock instability despite marker changes.
+- Resolution: Deleted the latency-only async test entirely, leaving only deterministic concurrent success/error checks in required suites; retained latency/performance measurement strictly in the scheduled benchmark lane (`scripts/benchmark_api.py`), with JSON evidence path verification and overwrite of stale payloads.
+- Evidence:
+  - `./run.sh test --fastapi -c fastapi_app/pytest.ini fastapi_app/tests/test_load.py -m "not slow and not performance"` (376 passed, 6 deselected).
+  - `/Users/.../VS_code_project/structural_engineering_lib/.venv/bin/python -m pytest -c fastapi_app/pytest.ini fastapi_app/tests/test_load.py` (8 passed).
+  - `/Users/.../VS_code_project/structural_engineering_lib/.venv/bin/python scripts/benchmark_api.py --mode fastapi --quick --output json --save docs/reference/fastapi-benchmark-smoke.json` (JSON written, valid, re-run with stale/non-JSON seed file succeeds).
+
+### Notes
+-
+
+## 2026-08-10 — Session: IS456-SLAB-001A Workflow Truth and React Closeout
+
+**Agent:** Codex (`structural-engineer`)
+**Branch:** `codex/is456-slabs-closeout`
+**Focus:** Correct complete-workflow semantics and close the existing common-case
+React slab editor/reviewer without adding slab formulas or flat-slab scope
+
+### Summary
+
+- Preserved compatibility-route arithmetic while making complete one-way results
+  report composed detailing, reviewed span/depth serviceability, and ordinary
+  one-way shear instead of obsolete pending-P8 claims.
+- Removed the false built-in-coefficient hold from complete two-way results and
+  made their serviceability dependency reflect the check already evaluated by
+  the service wrapper.
+- Added continuous Table 12/13 action-location controls, physical two-way edge/
+  corner controls, coefficient provenance, reinforcement/check dispositions,
+  strip widths, per-corner torsion, truthful holds, and explicit redesign/review
+  outcomes to the existing React slab workbench. Stale-export blocking remains.
+
+### Issues encountered
+
+- Complete one-way API/passport results embedded legacy flexure/detailing records
+  that still said reinforcement, serviceability, and shear were pending.
+- Built-in two-way results simultaneously reported verified built-in coefficients
+  and serialized a hold saying built-in lookup/interpolation was unavailable.
+- The React workbench described common coefficient/topology handling but exposed
+  only fixed B02/B04 presets and summary moments; returned adequacy, torsion,
+  strip, shear, serviceability, and hold records were not reviewable.
+- The final UI audit found that the returned punching-shear disposition was not
+  rendered and the ordinary slab shear row was labeled as one-way in every mode.
+- The first focused Python run failed when the composed flexure status was copied
+  into the retained detailing input.
+- This isolated worktree initially had no React dependencies, and the ambient
+  shell selected Node 26 rather than the repository's pinned Node 24.
+- The first authorized full closeout gate stopped at 29/30 because two unrelated
+  beam serviceability return annotations disagreed with the API manifest.
+- The required read-only session-end command returned non-zero while the scoped
+  changes remained intentionally uncommitted and suggested generated index
+  updates that this lane is not authorized to make.
+- The first commit attempt was stopped by mypy because the restored qualified
+  annotations referenced result types through the deprecated compatibility shim.
+
+### Root causes and resolutions
+
+- The complete one-way wrapper reused slice-level dataclasses without replacing
+  their legacy lifecycle metadata. The wrapper now replaces the retained status
+  and limitations only after all calculations complete, including the nested
+  detailing-input copy; the direct compatibility function remains unchanged.
+- `TwoWayPanelDesignResult.held_scope` was frozen before built-in Tables 26/27
+  were implemented, and the service returned the pure-core serviceability
+  dependency unchanged. The obsolete hold was removed, the real automatic-shear
+  hold was retained, and the wrapper records completed reviewed-limit evaluation.
+- React input ownership lived entirely in numeric `EDITABLE` fields while action
+  locations and physical edges lived only in sample objects. Select controls now
+  mutate the same revisioned request, enforce the free-corner topology contract,
+  and render returned result truth rather than recomputing engineering outcomes.
+- The reviewer check list omitted the existing mode-specific punching field and
+  used a fixed one-way shear label. It now reads the top-level one-way or nested
+  two-way punching disposition, displays that boundary, and uses the accurate
+  ordinary-slab-shear label; the focused React test, lint, and build passed.
+- `OneWaySlabDetailingInput.__post_init__` accepted only the pre-composition
+  status even though the calculation validator separately enforces that status
+  before detailing. The retained carrier now accepts both recognized lifecycle
+  states; the calculation validator remains strict. The focused rerun passed.
+- Installed the pinned lockfile dependencies only in this ignored worktree and
+  used `./run.sh frontend runtime` to select Node 24 for focused tests, lint,
+  TypeScript, and production build. No other worktree was changed.
+- Git history confirmed that slab-lineage commit `7bb1512f` changed
+  `check_crack_width` and `check_deflection_span_depth` from the origin/main
+  module-qualified return annotations to imported unqualified symbols, without
+  updating the API manifest. Under the orchestrator's one-path authorization,
+  `beam_api.py` now restores `serviceability.CrackWidthResult` and
+  `serviceability.DeflectionResult` and removes the two unnecessary imports.
+  The generated manifest remains untouched; the narrow manifest check provides
+  direct proof of the repaired public signature.
+- The branch's direct core-result imports had masked that `beam_api.py` still
+  imported `serviceability` through a wildcard compatibility shim whose static
+  interface does not expose `DeflectionResult` or `CrackWidthResult`. The same
+  authorized file now imports the canonical beam serviceability module directly;
+  runtime behavior and manifest spelling are unchanged, while mypy can resolve
+  both qualified annotations.
+- `./run.sh session end --agent structural-engineer` reported that handoff,
+  session-log, link, and governance checks all passed, then returned non-zero
+  because 13 intended files were still uncommitted and folder indexes could be
+  refreshed. This is the expected pre-commit state after the green gates, and
+  generated indexes are an explicit non-owned surface, so no index was mutated.
+
+### Verification
+
+- Focused slab calculations and capability semantics: passed.
+- Focused slab FastAPI transport: 5 passed, 12 deselected.
+- Focused React slab workbench: 5 passed.
+- `./run.sh frontend check`: lint, 244 React tests, TypeScript, and production
+  build passed.
+- `./run.sh check --quick`: 10/10 passed.
+- Initial `./run.sh check`: 29/30 passed; only the beam API-manifest signature
+  mismatch introduced at `7bb1512f` failed before the authorized reversal.
+- `./scripts/python_runtime.sh scripts/generate_api_manifest.py --check`: passed
+  after the module-qualified return annotations were restored; the manifest was
+  not regenerated or edited.
+- Post-repair `./run.sh check --quick`: 10/10 passed.
+- Post-repair `./run.sh check`: 30/30 passed, including API manifest, API
+  contracts, API validation, type annotations, and OpenAPI snapshot.
+- The first commit attempt was correctly blocked by the mypy hook on the
+  compatibility-shim type surface; after importing the canonical beam module,
+  the exact hook command passed with no issues in 191 source files. The narrow
+  manifest check, final quick gate (10/10), and final full gate (30/30) then all
+  passed against the corrected source state.
+- `./run.sh session end --agent structural-engineer`: handoff, session-log,
+  links, and governance passed; command exited 1 on the intentional uncommitted
+  13-file state and non-owned index-refresh suggestion.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: the isolated worktree lacked `react_app/node_modules`, and
+  ambient `npm ci` reported Node 26 against the required Node 24 engine -> local
+  lockfile dependencies were installed, `./run.sh frontend runtime` resolved
+  Node 24.19.0/npm 11.17.0, and all frontend acceptance checks ran on that runtime.
+
+---
+## 2026-08-11 — Public Distribution Permission and Footing Release Guard
+
+**Agent:** Codex
+**Branch:** `codex/is456-slabs-plan`
+**Focus:** Record the owner-confirmed IS 456 public-distribution decision and
+prevent the complete local footing D1 slice from being omitted from publication
+
+### Summary
+
+- Recorded the owner's 2026-08-11 confirmation that source/licensing permission
+  has been obtained for public distribution of normalized IS 456 data within
+  approved feature scopes. Protected source prose, PDFs/pages and unrelated
+  standard content remain excluded.
+- Added one canonical machine-readable permission record and made release run,
+  preflight, candidate verification and publish CI fail closed if it is missing,
+  invalid or narrowed. The record explicitly does not authorize a tag or
+  publication; per-release owner approval remains mandatory.
+- Synchronized the active task board, slab plan/evidence, library-first evidence,
+  handoff, checklist and PR #724 body so the permission gate is no longer
+  described as unresolved.
+- Audited `codex/footing-isolated-v1` at exact clean head `886871ae`. All five
+  commits and the Python/FastAPI/React D1 work are intact locally, but the branch
+  has no upstream and is not integrated into the current release source.
+- Added a release-inclusion receipt covering 15 exact footing-owned file hashes
+  and six shared integration surfaces. Release run, preflight, candidate checks,
+  publish CI, clean-wheel UAT and the artifact manifest now prevent silent
+  omission of the reviewed footing slice.
+- No footing worktree file, branch, commit or Git object was changed. No push,
+  merge, tag, package publication or release was performed.
+
+### Issues encountered
+
+- Active documentation and PR #724 still said source/licensing permission was a
+  pending pre-launch gate after the owner confirmed it had been obtained.
+- The release path checked protected-content exclusions but had no
+  machine-readable public-distribution permission authority.
+- The private source manifest's correct `public_distribution_allowed=false`
+  corpus boundary was being interpreted as if it also blocked separately
+  normalized code data.
+- The complete footing D1 work existed only on a clean local branch with no
+  upstream or PR and was absent from `main` and the current slab/release branch.
+- The first quick gate failed because the updated handoff reached 151 lines,
+  one line over its maintained maximum.
+- The first `0.23.1a1` preflight falsely treated the published v0.23.0 source
+  baseline as unpublished when no candidate wheel was supplied; after that
+  branch was corrected, it still required one brittle authorization phrase
+  instead of accepting the ledger's explicit PyPI/GitHub published status.
+- One exploratory zsh command used an unmatched `scripts/run*.sh` glob, so that
+  portion stopped before the targeted `run.sh` search was rerun successfully.
+
+### Root causes and resolutions
+
+- Permission truth was duplicated as manual prose and was not connected to
+  release execution. `is456-public-distribution-permission.json` is now the
+  canonical bounded decision, and `./run.sh release permission-check` plus all
+  release/publication paths validate it fail closed.
+- Source-corpus handling and normalized-data distribution were conflated. The
+  evidence now states that the private-only manifest continues to govern the
+  protected corpus, while the owner-confirmed record governs approved-scope
+  normalized data; agents are instructed not to reopen the passed gate unless
+  the owner explicitly changes it.
+- Parallel feature work had preservation evidence but no release inclusion
+  control. `footing-release-inclusion.json` binds the reviewed footing head to
+  exact owned-file hashes and cross-layer markers. It passes against the clean
+  footing worktree and intentionally fails on the current branch until an
+  approved integration is complete.
+- The permission handoff initially repeated too much policy text. It was
+  compressed to 149 lines without removing the authority, scope or release
+  boundary; the quick gate then passed 10/10.
+- Preflight tied published-source authorization handling to the presence of a
+  candidate wheel even though the checklist marker is already exact-version and
+  fail-closed. Preflight now always evaluates that version-scoped authorization;
+  the published-state check accepts the ledger's explicit PyPI/GitHub wording.
+  All false document errors are removed without weakening candidate-wheel
+  evidence requirements.
+- The shell search was rerun with an exact `run.sh` path instead of a zsh glob.
+
+### Verification
+
+- `Python/tests/test_release_scripts.py -m 'not slow'` — 49 passed.
+- Footing branch focused Python/FastAPI rerun — 184 passed.
+- Footing branch React gate — ESLint, 246 tests, TypeScript and production build
+  passed; the 34.84 kB lazy footing chunk was produced.
+- The footing inclusion receipt passed against clean head `886871ae` and failed
+  on the current branch with every absent owned file/integration marker listed,
+  proving the next Alpha is blocked until integration.
+- `./run.sh release permission-check` — passed.
+- Ruff, Black, JSON/hash validation and `git diff --check` — passed.
+- `./run.sh check --quick` — 10/10 passed after the handoff correction.
+- `./run.sh release preflight 0.23.1a1` — target format/order, 5,537 Python
+  tests and React build passed. The final committed-state rerun confirmed a
+  clean tree and leaves only 22 missing footing targets plus the expected
+  absent-candidate-wheel warning.
+- PR #724 remains open/draft; only its obsolete permission sentence changed.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: an unmatched `scripts/run*.sh` zsh glob stopped one search
+  -> the exact `run.sh` path was queried successfully.
+
+## 2026-08-11 — Recent-Work Maintenance and Cleaning Session
+
+**Agent:** Codex
+**Branch:** `codex/is456-slabs-plan`
+**Focus:** Reconcile the recent parallel RC-core lanes, repair generated truth,
+and leave the root checkout clean without disturbing owned worktrees
+
+### Summary
+
+- Reconciled all eight registered worktrees and the current GitHub PR surface.
+  Slab, column, beam, workflow-policy, PMM-experimental and Excel-planning
+  worktrees were clean; the footing worktree contained an active uncommitted
+  React slice and was explicitly excluded from cleanup.
+- Confirmed four recent draft feature/workflow PRs plus seven Dependabot PRs.
+  PR #723 is green; PRs #724, #725 and #726 are merge-blocked only by the same
+  FastAPI timing assertion, not by their individual feature suites.
+- Corrected all five maintained instruction references that passed the invalid
+  `--dry-run` flag to `cleanup_stale_branches.py`; the script is already dry-run
+  by default and reported no stale remote branch.
+- Regenerated the public API manifest and all 32 canonical folder indexes, then
+  removed 43 validated generated cache/build targets (about 180,196 KB) while
+  preserving environments, dependencies, logs, benchmarks, Hypothesis state,
+  recovery data, branches and every other worktree.
+
+### PRs Merged
+
+- None.
+
+### Key Deliverables
+
+- Current local health, audit, efficiency, quick and integrated gates are green.
+- Git object integrity, worktree metadata, stash state and maintained ports were
+  clean; no server, branch deletion, push, PR mutation, merge or release occurred.
+- PRs #724-#726 retain an explicit shared-CI hold pending approval for a focused
+  PR-gate correction; their exact reviewed heads remain unchanged.
+
+### Issues encountered
+
+- The documented stale-branch dry-run command failed because the script rejects
+  the unsupported `--dry-run` option.
+- Fourteen of 32 generated folder indexes were stale even though project health
+  still reported 100/100.
+- The first integrated gate passed 29/30 because `check_crack_width` and
+  `check_deflection_span_depth` had stale return-signature strings in the public
+  API manifest.
+- PRs #724, #725 and #726 each failed the same hosted-runner FastAPI load test:
+  measured average latency was 158.4 ms, 206.9 ms and 161.5 ms against an
+  absolute 150.0 ms threshold.
+
+### Root causes and resolutions
+
+- Dry-run behavior is the script default; five authority and maintenance files
+  had retained an invented flag even after an earlier session diagnosed it.
+  Those references now use the executable command and state its default mode;
+  the corrected dry run found no deletion candidate.
+- Recent API/docs work changed child-folder projections after their checked-in
+  index hashes were generated. The canonical all-folder generator refreshed the
+  projections and its 32/32 check now passes.
+- The beam-service wrappers changed return annotations from module-qualified
+  names to directly imported result types, but the generated manifest retained
+  the old strings. Regenerating the manifest synchronized those two signatures;
+  the integrated gate then passed 30/30.
+- Absolute wall-clock performance was mixed into the ordinary FastAPI PR gate,
+  so hosted-runner variability blocked three unrelated feature branches. The
+  feature diffs do not touch that test and the exact test passed locally three
+  times in 0.07–0.12 seconds. No feature-branch workaround or CI mutation was
+  made; a focused gate-classification change requires explicit approval.
+
+### Verification
+
+- `./run.sh health` — 100/100.
+- `./run.sh audit` — 19/19 passed with no warnings.
+- `./run.sh efficiency check` — passed.
+- `./run.sh check --quick` — 10/10 passed.
+- `./run.sh check` — 30/30 passed after manifest synchronization.
+- `generate_enhanced_index.py --all --check` — 32/32 current.
+- `git fsck --no-dangling`, `git diff --check` and worktree-prune dry run passed;
+  no stash or listener on ports 8000/5173 was present.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `cleanup_stale_branches.py --dry-run` was rejected as
+  an unknown option -> the maintained no-flag command ran in default dry-run
+  mode, and all stale documentation references were corrected.
+
+
+## 2026-08-10 — Session: IS 456 Solid Slabs Implementation Closeout
+
+**Agent:** Codex
+**Branch:** `codex/is456-slabs-plan`
+**Focus:** Complete the approved simply supported/continuous one-way and common
+two-way solid-slab program while retaining flat slabs as a separate extension
+
+### Summary
+
+- Implemented oriented panel geometry and physical edge/corner topology,
+  provenance-bearing external/built-in coefficients, exact lookup and bounded
+  interpolation with no extrapolation, continuous one-way actions, common
+  two-way panel regions, strip distribution and corner torsion.
+- Completed provided-bar detailing, minimum steel/diameter/spacing checks,
+  strict reviewed span/depth serviceability carriers and beam/wall-supported
+  ordinary one-way slab shear. Direct deflection, automatic shear reinforcement,
+  flat slabs and column-supported punching remain explicit holds.
+- Added compatibility-preserving public services, capability/semantic contracts,
+  five typed FastAPI routes, synchronized API/OpenAPI manifests and a dedicated
+  revision-safe React slab workbench with a 2D support/reinforcement map and
+  calculation-passport export.
+- Recorded the owner's standing decision that all IS-code content required by
+  an approved feature scope may be directly implemented without repeated
+  permission questions; formal source/licensing permission is a pre-launch
+  public-distribution gate, not an implementation blocker.
+- Closed the post-implementation generated-count drift through the maintained
+  session-sync path, updating only the two delegated documentation files.
+
+### Issues encountered
+
+- The initial plan and capability text still treated built-in normalized code
+  data as unavailable after the owner broadened implementation permission.
+- NPTEL B02 published steel values differ slightly from the library's exact
+  canonical 0.36/0.42 stress-block root while its actions and shear agree.
+- Inserting the new FastAPI routes initially displaced the original generic
+  exception handlers, and exact clause decorators named subclauses absent from
+  the repository's clause registry.
+- The first full repository gate found the expected API-reference, OpenAPI
+  snapshot and planning-frontmatter synchronization gaps.
+- The first complete Python suite found one integration assertion frozen to the
+  former external-coefficient, flexure-only slab capability wording.
+- An ad-hoc strict mypy pass exposed slab-local type ambiguity in a mutable
+  protocol, shared reinforcement kwargs and public built-in wrapper `**kwargs`.
+- Two terminal commands used incorrect guessed paths: a nonexistent capability
+  test file during early focused verification and npm from the repository root
+  rather than `react_app/` during a chained rerun.
+- The first implementation commit was blocked by the repository-wide mypy hook
+  because two pre-existing beam service annotations referenced result types as
+  attributes of a module that does not explicitly re-export them to mypy.
+- After the five slab endpoints and five public service functions were added,
+  project health fell to 94/100 because `llms.txt` still reported 69 endpoints
+  and `agent-bootstrap.md` still reported 69 endpoints and 78 public functions.
+
+### Root causes and resolutions
+
+- Permission policy and runtime truth lived in multiple files. `AGENTS.md`, the
+  master plan, evidence ledger, capability registry and owner-requested memory
+  extension now carry one standing rule; built-in lookup/interpolation and other
+  required IS-code content were implemented with source/case/bounds provenance.
+- B02's educational steel calculation uses rounded intermediate identities,
+  whereas the established library flexure path solves the accepted stress block
+  without those rounding steps. The canonical library root was retained,
+  NPTEL's values were kept as an independent comparison with a narrow documented
+  tolerance, and exact action/shear assertions remain unchanged.
+- The route patch used an ambiguous insertion anchor. The handlers were restored
+  to their owning route before validation. Decorators now use registered parent
+  clause identities while result source references retain the exact subclause/
+  table identities.
+- New public routes/functions require generated truth to move atomically. The
+  API stability mirror, API manifest, 74-endpoint/259-schema OpenAPI baseline and
+  valid plan status were synchronized; the full gate then passed 30/30.
+- The integration test asserted narrative text rather than the capability
+  outcome. It now checks the two built-in public workflows and the continuing
+  flat-slab hold; the complete suite passes.
+- Frozen coefficient dataclasses could not satisfy writable protocol members,
+  generic dictionaries erased keyword types, and public `**kwargs` also hid the
+  built-in function signatures from introspection. The protocol now exposes
+  read-only properties, reinforcement calls use explicit typed keywords, and
+  both built-in services publish complete explicit signatures. Focused mypy with
+  skipped unrelated imports reports no issues in the two task-owned modules.
+- Repository commands require root-relative `.venv` paths and React-local npm.
+  Targeted `rg` found the maintained capability test, and npm was rerun with
+  `workdir=react_app`; both corrected checks passed.
+- `beam_api.py` imported the canonical serviceability module for runtime calls
+  but annotated its two wrapper returns through implicit module re-exports;
+  strict mypy does not recognize those names as public module attributes. The
+  wrappers now import `DeflectionResult` and `CrackWidthResult` directly from
+  `core.data_types`, matching their actual definition. The full structural-lib
+  mypy hook passes without bypassing verification.
+- The calculation, API manifest and OpenAPI snapshot were synchronized during
+  implementation, but the maintained public-count projection was not rerun
+  after the final endpoint/export additions. `./run.sh session sync` identified
+  exactly three stale lines; `./run.sh session sync --fix` changed only
+  `llms.txt` and `docs/getting-started/agent-bootstrap.md` to 74 endpoints and
+  83 public functions.
+
+### Verification
+
+- Focused slab/capability/FastAPI set: 121 passed; focused React: 3 passed.
+- Complete suites: 5,532 Python passed, 3 skipped, 6 deselected; 388 FastAPI
+  passed; 241 React passed.
+- `./run.sh frontend check`: ESLint, all React tests, TypeScript and production
+  Vite build passed.
+- `./run.sh check --quick`: 10/10 passed; `./run.sh check`: 30/30 passed.
+- Focused mypy for `coefficients.py` and `slab_api.py`: no issues found.
+- Live Chromium: `/workbench/slabs` loaded with meaningful content, no framework
+  error overlay and no captured console errors. Continuous B02 returned
+  `10.688/12.825 kN m/m` with exact Table 12/13 provenance; input mutation made
+  the result stale and disabled export. B04 returned
+  `18.600/13.888/11.656/8.680 kN m/m` with exact Table 26 provenance.
+- Dev services and the browser were stopped after verification. No release,
+  push, pull request or merge was performed.
+- Post-closeout maintenance evidence: `./run.sh session sync` reports all
+  numbers current, `./run.sh health` reports 100/100, and
+  `./run.sh check --quick` passes 10/10.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: guessed `Python/tests/test_capability_registry.py` did not
+  exist -> `rg` located `Python/tests/integration/test_capability_semantics.py`,
+  and the maintained focused test passed.
+- ⚠️ TERMINAL ISSUE: a chained root command invoked npm where no `package.json`
+  exists -> rerunning the same tests from `react_app/` passed 3/3.
+
+
+## 2026-08-10 — Session: IS 456 Solid Slabs Master Planning
+
+**Agent:** Codex
+**Branch:** `codex/is456-slabs-plan`
+**Focus:** Research and prepare an implementation-ready program for simply
+supported/continuous one-way and common two-way solid slabs while holding flat
+slabs separately
+
+### Summary
+
+- Audited the released slab package, services, capability registry, FastAPI
+  route, tests, prior implementation plan, evidence crosswalk, React workbench,
+  and current task/handoff state.
+- Researched current BIS status and official Amendment 6 plus IIT
+  Kharagpur/NPTEL one-way and two-way slab material. Confirmed SP 16 is listed
+  withdrawn and limited it to legacy comparison evidence.
+- Created `docs/planning/is456-solid-slabs-master-plan.md` with a source-gated
+  scope, physical support topology, coefficient/provider policy, algorithms,
+  detailing/serviceability/shear/punching boundaries, API/UI architecture,
+  benchmarks, pitfalls, packet sequence, acceptance criteria, and flat-slab
+  HOLD.
+- Selected S0 as the only first implementation packet: approve source pages,
+  coefficient distribution/interpolation policy, support-case identities, and
+  independent continuous one-way/two-way corner-panel benchmarks before code.
+- Updated the task board, planning index entry, and next-session handoff without
+  changing calculation behavior or public capability claims.
+
+### Issues encountered
+
+- The requested slab direction initially sounded like a greenfield element, but
+  the repository already ships a narrow one-way and externally supplied-
+  coefficient two-way Alpha capability.
+- The existing axis-neutral geometry normalizes span order, which would lose the
+  physical edge/corner orientation required for two-way support and torsion
+  cases.
+- Coefficient tables are protected source content, while the requested product
+  needs robust coefficient handling.
+- A direct inspection command guessed
+  `Python/structural_lib/codes/is456/footing/punching.py`, which does not exist.
+- The documented broad `./run.sh generate indexes` command rewrote unrelated
+  curated/non-recursive indexes while adding the new planning document.
+
+### Root causes and resolutions
+
+- Prior v0.23 work intentionally stopped at a simply supported one-way strip and
+  one external-coefficient interior two-way flexure case. The new program is
+  therefore an extension with compatibility anchors, not a duplicate slab
+  engine; current benchmark arithmetic and trust statuses are frozen.
+- Span normalization was safe only for classification. The plan requires a new
+  oriented panel contract with explicit `Lx/Ly` and physical edges before any
+  topology/coefficient code, preventing silent rotation of edge and corner
+  behavior.
+- Protected coefficient values and calculation architecture were previously
+  coupled as one future concern. S0 now separates packaging permission from a
+  provenance-bearing provider contract; the external-coefficient route remains
+  the fallback if built-in data cannot ship.
+- Repository search showed the maintained file is
+  `Python/structural_lib/codes/is456/footing/punching_shear.py`; reading that file
+  confirmed its footing-pressure/interior-perimeter assumptions and supported
+  the plan's decision not to reuse it for building slabs.
+- `run.sh generate indexes` dispatches to `scripts/generate_all_indexes.sh`, whose
+  fixed folder list invokes non-recursive generation and therefore replaced
+  unrelated recursive/curated projections. Those unrelated diffs were restored;
+  only the task-owned planning and parent-doc indexes were retained. Final index
+  evidence uses targeted `generate_enhanced_index.py ... --check` commands.
+
+### Verification
+
+- Read-only repository orientation: session brief/start, clean baseline at
+  `a0e115e1`, slab source/service/FastAPI/test inventory, capability and evidence
+  crosswalk, and current workbench/task authority.
+- Source cross-check: BIS lists IS 456:2000 active, reaffirmed 2021, with six
+  amendments; official Amendment 6 reviewed; NPTEL Lessons 18/19 provide the
+  recorded B02/B04 worked-example anchors; BIS lists SP 16:1980 withdrawn.
+- `generate_enhanced_index.py docs/planning --check` passes; the task-owned
+  planning index and parent `docs/index.json` were regenerated and checked after
+  the final documentation changes.
+- `./run.sh efficiency check` passes and `git diff --check` reports no whitespace
+  errors.
+- `./run.sh check --quick` passes 10/10, including broken links, documentation,
+  imports, stale references, governance, and Git state.
+- Final integrated `./run.sh check` passes 30/30. No calculation, FastAPI, or
+  React implementation was changed in this planning session.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: guessed `slab/../footing/punching.py` did not exist ->
+  targeted `rg` found and `sed` read the maintained `footing/punching_shear.py`.
+- ⚠️ TERMINAL ISSUE: `./run.sh generate indexes` rewrote unrelated curated
+  indexes through its non-recursive fixed folder list -> unrelated diffs were
+  restored and targeted enhanced-index checks were used for the owned paths.
+## 2026-08-10 — Session: COLUMN-RECTANGULAR-REVIEW-V1
+
+**Agent:** Codex (`orchestrator` session role)
+**Branch:** `codex/column-rectangular-e2e`
+**Focus:** Rectangular/square tied-column check-and-review transport and feature-scoped React surface
+
+### Summary
+
+- Created the lane from exact `origin/main` commit `a0e115e1` without importing
+  the held generalized-PMM experiment at `8a52ed0f`.
+- Preserved the maintained rectangular-column calculations and expanded only the
+  unified FastAPI review contract, including both-axis classification, effective
+  length, slenderness, minimum eccentricity, applied/design/additional moments,
+  governing check data, warnings, safety, and clause references.
+- Added a feature-scoped React editor/reviewer for supplied rectangular tied
+  columns. It combines server-computed detailing with the unified adequacy check,
+  distinguishes PASS/FAIL/HOLD/stale states, binds results to input revisions,
+  and permits export only for a current safe result with valid detailing.
+- Added the bounded shared integration after owner review: the existing workbench
+  now exposes a lazy rectangular-column route/card, and the reviewed OpenAPI
+  baseline records only the expanded column response schema. The beam-only
+  workflow catalogue and existing navigation/capability declarations are unchanged.
+- The software evidence below verifies behavior only. It is not formula
+  certification, member approval, or qualified structural-engineering approval.
+
+### Issues encountered
+
+- The unified FastAPI endpoint returned only five fields even though the service
+  produced the data needed to review classification, eccentricity, moments,
+  length/slenderness, clauses, and warnings.
+- The first focused response-contract run exposed the nested biaxial
+  classification as integer `1` instead of `SHORT`.
+- The React quality pass found that an API failure during a re-check could leave
+  the preceding current PASS result available for export.
+- The managed worktree did not contain `react_app/node_modules`; the first
+  focused React test command failed because `vitest` was unavailable. A direct
+  dependency install initially used Node 26 instead of the repository's pinned
+  Node 24 runtime.
+- The first React lint/build passes found respectively a Fast Refresh export
+  boundary violation and one test importing the moved default-input constant
+  from its former module.
+- The single full closeout gate reported 28/30: OpenAPI snapshot drift for the
+  intentionally expanded column schema and an API-documentation mismatch naming
+  five slab symbols that are not present in this worktree's public API.
+- The first closeout React command was launched from the repository root, where
+  no `package.json` exists, so it stopped before any full-gate command ran.
+- Independent review found that the feature state and API carried all four
+  slender-column end moments, but the editor exposed none of them. Every UI
+  request therefore submitted `null` and silently selected the equal-end-moment
+  fallback even when the engineer had known end moments.
+
+### Root causes and resolutions
+
+- `ColumnDesignResponse` declared only `is_safe`, `classification`,
+  `governing_check`, `checks`, and `warnings`, so Pydantic truncated the richer
+  service result. The response model now declares the complete maintained review
+  contract, and the service adds its already-computed per-axis classifications.
+  The focused FastAPI contract suite passed 43 tests, including all retained
+  fields and unsafe/slender dispositions.
+- `ColumnBiaxialResult.to_dict()` serializes `ColumnClassification.value`, whose
+  enum value is numeric, while the long-column serializer uses the enum name.
+  The FastAPI adapter now normalizes classification fields to their enum names
+  while converting nested typed results, without changing the mature calculation
+  object. The rerun passed 43/43.
+- The workspace retained `record` when a new request failed. Submission now
+  clears the previous record before transport begins; the focused React test
+  proves that a failed re-check leaves no export control or adequacy result.
+- The new worktree had source files but no ignored dependency tree. `npm ci`
+  installed the declared lockfile, and all subsequent React commands explicitly
+  selected `/opt/homebrew/Cellar/node@24/24.19.0/bin`; tests, lint, TypeScript,
+  and the production build passed on Node 24.
+- The component module also exported a shared constant, violating the project's
+  Fast Refresh rule. Moving defaults to `defaults.ts` and updating the test import
+  restored clean lint and build outcomes.
+- The OpenAPI snapshot correctly detected the changed `ColumnDesignResponse`.
+  After explicit shared-path authorization, the supported snapshot updater
+  changed only that schema; endpoint and schema totals remain 69 and 248, and the
+  checker reports no remaining drift.
+- `scripts/python_runtime.sh` selected interpreters in the intended order but
+  executed them with the caller/ambient import path, so a linked worktree could
+  load the primary checkout's editable `structural_lib`. Every selected
+  interpreter now receives this invoking repository's `Python/` and root first,
+  followed by any caller `PYTHONPATH`; `STRUCTURAL_LIB_PYTHON` and candidate
+  precedence are unchanged. Focused launcher regressions pass 3/3 and prove both
+  local module identity and preservation of the caller path.
+- The feature existed only under `features/columns`, so an end user could not
+  reach it. `App.tsx` now lazy-loads `/workbench/columns/rectangular`, the workbench
+  provides one check/review action, and the routed feature owns vertical scrolling
+  inside the existing shell. Focused column/workbench React tests pass 7/7.
+- npm was invoked from the wrong directory in the first closeout chain. Running
+  the focused command with `react_app/` as its working directory passed 6/6 and
+  lint passed; the failed chain never reached `./run.sh check`.
+- The first UI slice preserved backend end-moment fields in types, hashing, and
+  transport but omitted their editor controls, hiding a material maintained-route
+  assumption. The editor now provides four optional signed kN·m inputs. Empty
+  strings map explicitly to `null`; visible copy explains that blank axis values
+  use the minimum-eccentricity-adjusted equal-end-moment fallback. Focused React
+  evidence proves all four explicit values reach the API mock, blank values remain
+  null, the slender/additional-moment disposition is rendered, returned additional
+  moments are visible, and PASS/export semantics are unchanged.
+
+### Verification
+
+- Focused FastAPI review and existing endpoint contracts: 43 passed.
+- Focused column regression selection: 540 passed/collected on the exact main
+  baseline (535 maintained ordinary tests plus 5 new review-contract tests; the
+  9 experimental PMM tests remain held with the excluded experiment).
+- Focused runtime-launcher regressions: 3 passed.
+- Focused React column feature: 7 passed; combined with WorkbenchHomePage
+  reachability: 8 passed across 3 files.
+- Focused slender end-moment correction: blank-as-null and explicit four-value
+  transport, slender disposition, additional moments, and current export passed.
+- React ESLint: passed. TypeScript plus Vite production build: passed.
+- OpenAPI snapshot: no endpoint/schema drift after the reviewed update; 69
+  endpoints and 248 schemas.
+- Architecture boundary scan: 143 files, 0 violations. Circular import scan:
+  130 files, 0 circular imports.
+- `./run.sh check --quick`: 10/10 passed.
+- Initial full gate before shared integration: 28/30, exposing the runtime-binding
+  and expected OpenAPI-snapshot root causes. Final plain `./run.sh check`, with no
+  caller `PYTHONPATH` override: 30/30 passed from this linked worktree.
+- Post-review slender end-moment correction: React lint, TypeScript, production
+  build, `./run.sh check --quick` 10/10, and plain `./run.sh check` 30/30 passed.
+- `git diff --check` and exact changed-path audit passed before closeout.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `npm test -- src/features/columns` initially reported
+  `vitest: command not found` because the new worktree lacked `node_modules` ->
+  `npm ci` installed the locked dependencies and the focused suite passed.
+- ⚠️ TERMINAL ISSUE: the first direct `npm ci` resolved the shell's Node 26
+  despite the repository pin -> all acceptance commands explicitly used the
+  Node 24 binary directory reported by `./run.sh frontend runtime`.
+- ⚠️ TERMINAL ISSUE: the first closeout npm command ran at repository root and
+  could not find `package.json` -> rerunning it from `react_app/` passed before
+  the one full gate began.
+- ⚠️ TERMINAL ISSUE: full-gate API validation imported the primary worktree's
+  editable Python package and reported unrelated slab symbols -> the shared
+  launcher now binds every selected interpreter to the invoking worktree first,
+  with focused regression proof and no caller override required.
+## 2026-08-10 — Session: BEAM-CORE-ROUTE-001 Phase B
+
+**Agent:** Codex (`frontend` integration role)
+**Branch:** `codex/is456-beam-primary-route`
+**Base:** `origin/main` at `a0e115e17009cc14b3d883e3c291d47c32f7ca4e`
+**Focus:** Bind the accepted primary beam calculation to shared evidence,
+discovery, workbench status, revision identity, and fail-closed export boundaries
+
+### Summary
+
+- Versioned beam evidence to `2.0` and bound original `Mu`/`Vu`/`Tu`, section,
+  materials, derived effective/compression depths, torsion core inputs, and all
+  enabled maintained serviceability values. Supported primary results now always
+  return a non-null evidence envelope; zero-torsion/no-service calculation
+  semantics remain unchanged.
+- Made the combined primary response the only workbench PASS/FAIL authority.
+  Missing/malformed identity, evidence/result disagreement, or any backend hold
+  presents `HOLD` and blocks export instead of falling back to utilization.
+- Replaced the workbench's secondary torsion request/status with canonical `Tu`
+  input and integrated `Me`/`Ve`, combined `Asv/s` (`mm²/mm`), longitudinal
+  torsion steel, closed-stirrup, clause, and serviceability presentation.
+- Added explicit Level-A serviceability controls without deriving the check span
+  or crack inputs from unrelated UI values. Tu/serviceability participate in
+  revision identity; stale responses cannot restore export eligibility.
+- Kept live design on canonical HTTP and made the transport reason visible for
+  Tu/serviceability. Legacy WebSocket results without evidence are quarantined;
+  the separate `/beam/torsion` endpoint and hook remain unchanged.
+- Required report requests to carry the exact current calculation identity and
+  re-ran the complete canonical input contract before export. HTML/JSON reports
+  carry combined actions, torsion, and serviceability results. BBS/DXF and
+  combined/serviceability PDF are explicitly held because their existing formats
+  cannot represent every governing result.
+- Versioned capability discovery to `2.0` and the additive catalogue wording to
+  `1.1.0`. Catalogue automation remains explicitly Mu/Vu-only and held for
+  `Tu > 0` or serviceability; qualified engineering review remains required.
+- This is software implementation and test evidence, not qualified structural-
+  engineering review or approval for engineering/construction use.
+
+### Issues encountered
+
+- The shared evidence identity omitted `Tu` and serviceability, so distinct
+  combined cases could not safely receive identities.
+- Workbench trust presentation fell back to utilization when evidence was absent,
+  while a secondary torsion panel and Mu/Vu-only supplemental checks could show
+  a status inconsistent with the primary combined result.
+- Report export re-ran a Mu/Vu-only calculation and accepted client summary
+  values; BBS/DXF/PDF had no complete representation of combined/serviceability
+  governing results.
+- The linked worktree has no local `.venv` or `react_app/node_modules`. The npm
+  package also has no standalone `typecheck` script.
+- `scripts/safe_file_delete.py` resolves symlinks before type checking, so it
+  dereferenced and refused the authorized temporary `react_app/node_modules`
+  link as “Not a file.”
+- The first direct Vite build was invoked from the repository root and therefore
+  looked for `index.html` in the wrong directory.
+- The final export-panel test found the evidence-identity disable condition was
+  attached to BBS instead of Report.
+- The workbench offered an `extreme` exposure value that the maintained crack-
+  width service does not support; its permissive normalization converted the
+  user's selection to `MODERATE`, allowing calculation and evidence for a
+  different exposure than the explicit request.
+
+### Root causes and resolutions
+
+- Evidence normalization represented only the earlier Mu/Vu contract. Evidence
+  schema `2.0` now normalizes all calculation-relevant primary inputs, ignores
+  disabled serviceability drafts, canonicalizes support aliases, and changes the
+  hash for positive Tu or enabled serviceability. Focused identity and FastAPI
+  tests prove those distinctions.
+- UI trust combined identity, calculation outcome, and holds permissively. It now
+  fails closed unless supported evidence has non-empty hashes, finite exact
+  values, no holds, and a status matching the combined primary outcome. The
+  secondary torsion request was removed, and unsupported supplemental checks and
+  comparisons are held for combined cases.
+- Export requests lacked the canonical input/evidence contract. Reports now
+  require a 64-character calculation identity, reconstruct all Tu/serviceability
+  parameters, return `409 STALE_CALCULATION_IDENTITY` on mismatch, and serialize
+  authoritative combined results. Pydantic validators reject unrepresentable
+  BBS/DXF and combined PDF requests with `EXPORT_SCOPE_HOLD`.
+- Python verification used the primary checkout environment with explicit
+  `PYTHONPATH="$PWD/Python:$PWD"`. React verification used the orchestrator-
+  authorized exact temporary dependency symlink after validating both endpoints;
+  it was removed after tests/typecheck/lint/build and is absent from Git status.
+- The symlink delete helper cannot operate on symlinks because `Path.resolve()`
+  discards link identity. After the helper failed without mutation, the exact
+  link and destination were revalidated and native non-recursive `unlink` removed
+  only the worktree link; the target dependency directory remains present.
+- TypeScript was run directly without emit, and the production Vite build was
+  rerun from `react_app`, where it completed successfully.
+- The export-panel identity guard was bound to the wrong sibling button during
+  the initial UI patch. The focused test exposed the outcome; the guard now
+  disables only Report when identity is absent, while ordinary BBS/DXF retain
+  their existing safe-case behavior.
+- The React exposure options and client type, plus the FastAPI request field,
+  were broader than the maintained service domain. The workbench and TypeScript
+  contract now expose only `mild`, `moderate`, `severe`, and `very_severe`, while
+  the Pydantic literal rejects any other value before service execution. A
+  focused route test proves `extreme` returns `422 REQUEST_VALIDATION_ERROR`.
+
+### Verification
+
+- Focused Python/service/FastAPI/export suite: **116 passed**, including zero-Tu
+  compatibility, safe/unsafe/out-of-domain torsion, serviceability opt-in/out,
+  evidence v2, stale report identity, BBS/DXF holds, and unchanged standalone
+  torsion endpoint behavior.
+- Focused React suite: **33 passed in 7 files** for trust, revision/staleness,
+  WebSocket quarantine/fallback, manual workbench, export holds, and catalogue
+  presentation.
+- React app and config TypeScript checks passed without emit; ESLint passed; Vite
+  production build transformed 2,419 modules successfully.
+- Architecture boundary check: 142 files, 0 violations. Import validation: 534
+  files, 3,649 imports, 0 broken. API manifest check passed.
+- OpenAPI snapshot matches the reviewed regenerated baseline: 69 endpoints and
+  251 schemas. Catalogue-derived beam tool manifest byte-check passed.
+- Post-review exposure correction: **12 focused FastAPI tests passed** and **7
+  focused DesignView tests passed**; the React app typecheck, targeted ESLint,
+  and Vite production build passed. The reviewed OpenAPI enum contains exactly
+  the four maintained exposure values.
+- Orchestrator closeout reran **147 focused Python/FastAPI tests** and **82
+  focused React tests across 8 files** against this worktree; all passed.
+- `./run.sh check --quick`: **10/10 passed**. The final full `./run.sh check`
+  passed **30/30** with this worktree pinned on `PYTHONPATH`; `git diff --check`
+  passed.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `.venv/bin/pytest` and local React dependencies are absent
+  in the linked worktree -> explicit beam-worktree `PYTHONPATH` plus the maintained
+  primary environments provided authoritative tests without installing packages.
+- ⚠️ TERMINAL ISSUE: `npm run typecheck` is not defined -> direct non-emitting
+  TypeScript project checks and the production build passed.
+- ⚠️ TERMINAL ISSUE: `safe_file_delete.py` dereferences symlinks and refused the
+  temporary dependency link -> exact link validation plus native `unlink` removed
+  only that link; `test ! -e react_app/node_modules` passed.
+- ⚠️ TERMINAL ISSUE: Vite launched from the repository root could not resolve
+  `index.html` -> rerunning from `react_app` built successfully.
+
+## 2026-08-10 — Session: BEAM-CORE-ROUTE-001 Phase A
+
+**Agent:** Codex (`backend` role)
+**Branch:** `codex/is456-beam-primary-route`
+**Base:** `origin/main` at `a0e115e17009cc14b3d883e3c291d47c32f7ca4e`
+**Focus:** Integrate optional torsion into the primary rectangular-beam
+calculation/service/FastAPI contract without changing the separate torsion route
+
+### Summary
+
+- Added optional factored `tu_knm`/`torsion` input with a zero default. The
+  zero-torsion service result remains dataclass-equal to the pre-existing call,
+  including flexure/shear arithmetic, safety, and the absence of a torsion result.
+- For positive torsion, the primary flexure and shear calculations now consume
+  the mature Clause 41 equivalent actions `Me` and `Ve`; the combined result
+  includes original/equivalent actions, stresses, transverse and longitudinal
+  reinforcement, closed-stirrup requirement, structured errors, and clauses.
+- Added fail-closed primary-route guards for the documented ordinary solid
+  rectangular torsion material/core domain. This does not change the standalone
+  `/beam/torsion` endpoint contract.
+- Forwarded primary-route serviceability inputs into the maintained deflection
+  and crack-width services. Opt-in now requires explicit valid span, support,
+  geometry, and service strain/stress inputs; opt-out still returns no checks.
+- Corrected primary `asv_required` to `Asv/s` using effective depth, retained the
+  existing field name, and made its `mm²/mm` unit explicit. With torsion, the
+  field reports the maintained combined transverse demand and torsion spacing.
+- Withheld evidence identities for torsion or serviceability calculations because
+  the frozen shared evidence normalizer does not bind those inputs. The FastAPI
+  result exposes explicit integration holds instead of issuing a misleading hash.
+- This is software implementation and test evidence only. It is not qualified
+  structural-engineering review or approval for engineering/construction use.
+
+### Issues encountered
+
+- Positive torsion was available only through a separate endpoint, so the primary
+  route continued to design flexure and shear from original actions and could
+  advertise a pass that ignored `Tu`.
+- `BeamDesignRequest.include_serviceability`, `span_mm`, and
+  `support_condition` were never forwarded, and the request had no way to supply
+  the maintained crack-width service's required inputs.
+- FastAPI labeled `asv_required` as `mm²/mm` but calculated
+  `Vus × 1000 / (0.87 fy)`, omitting effective depth and returning an area-like
+  value instead of `Asv/s`.
+- Core and beam torsion modules defined separate `TorsionResult` dataclasses; only
+  the beam-local copy carried clause references needed by the combined contract.
+- The shared evidence input normalizer and public API/OpenAPI snapshots do not yet
+  include torsion or serviceability inputs. Updating them is explicitly outside
+  this Phase A path ownership.
+- The linked worktree has no local `.venv`, so the initially instructed direct
+  `.venv/bin/python` and `.venv/bin/pytest` commands failed.
+- One combined verification command guessed a nonexistent packaging test node and
+  pytest stopped before running that set.
+
+### Root causes and resolutions
+
+- The primary compliance orchestrator accepted only `Mu`/`Vu`; the standalone
+  torsion workflow was never connected. Positive `Tu` now derives `Me`/`Ve` via
+  the existing Clause 41 functions before primary flexure/shear design and adds
+  torsion to combined failure/utilization. Focused safe/unsafe tests prove the
+  changed governing outcome.
+- The router ignored all serviceability request fields. It now builds the exact
+  maintained service parameter dictionaries, maps both results into the primary
+  response, and rejects missing/invalid opt-in inputs through explicit 422
+  validation. Focused true/false tests prove forwarding and opt-out behavior.
+- The shear transport formula stopped before dividing by `d`. It now calculates
+  `Asv/s = Vus × 1000 / (0.87 fy d)` and returns the explicit `mm²/mm` unit;
+  the baseline sample changed from the contradictory area-like value to
+  `0.0106473463 mm²/mm`.
+- The duplicate torsion result types had drifted. The beam module now uses the
+  core `TorsionResult`, whose append-only `clause_refs` field also preserves
+  clause evidence for unsafe results. Existing torsion and public-contract tests
+  remain green.
+- The frozen evidence schema would hash distinct torsion/serviceability cases as
+  the same consumed input. Phase A returns `evidence=null` plus explicit pending
+  integration holds for those cases. The integration owner must update the
+  shared evidence/capability/API artifacts before removing the holds.
+- `scripts/python_runtime.sh` is the maintained linked-worktree fallback and was
+  run with `PYTHONPATH="$PWD/Python:$PWD"`; it selected the primary checkout's
+  Python 3.11 environment while importing this worktree's source. All subsequent
+  focused tests and checks used that path successfully.
+- `rg` identified `Python/tests/test_packaging.py::TestAPIStability`; rerunning
+  that exact node passed 4/4 tests.
+
+### Verification
+
+- Baseline probe before edits: sample primary result passed with
+  `Ast=863.7612750 mm²`, `tau_v=0.5470459519 N/mm²`, and governing utilization
+  `0.7167560601`.
+- Focused Python/service/public-contract suite: 164 passed in 0.37 s.
+- Focused FastAPI primary-route plus existing endpoint suite: 66 passed.
+- `./run.sh check --category arch`: 3/3 circular-import, architecture-boundary,
+  and import-validation checks passed.
+- `./run.sh check --quick`: 10/10 passed. No full repository gate was run.
+- `./run.sh session end --agent backend`: handoff, session-log, links, and
+  governance checks passed; it reported the expected 9 uncommitted Phase A
+  paths and 10 stale folder projections, which were not regenerated by scope.
+- Scoped Ruff check and format check passed.
+- Expected frozen shared drift, intentionally not regenerated in Phase A:
+  OpenAPI added three schemas and changed `BeamDesignRequest`,
+  `BeamDesignResponse`, and `ShearResult`; the public API manifest reports only
+  the intended `design_beam_is456` signature change.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: This linked worktree has no `.venv`, so direct
+  `.venv/bin/python`/`pytest` failed -> the maintained
+  `scripts/python_runtime.sh` fallback with this worktree on `PYTHONPATH` passed.
 
 ## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
 
@@ -999,5 +2181,372 @@
 
 ### Key Decision
 `--host "::"` is now the canonical uvicorn start command for this project (not `0.0.0.0`).
+
+---
+## 2026-08-11 — Session: Alpha Integration and Footing Preservation
+
+**Agent:** Codex (`orchestrator`)
+**Branch:** `codex/alpha-0231-integration`
+**Focus:** Merge the complete preserved footing history with the preserved release guards after sequential beam, column, and slab integration.
+
+### Summary
+
+- Merged `origin/codex/footing-isolated-v1` as a complete normal merge; no footing implementation files were selected or cherry-picked.
+- Preserved the footing feature history and its release-inclusion receipt while keeping the newer integration-side session and handoff history.
+- Kept beam, column, slab, and footing route/navigation/workbench changes additive on shared React surfaces.
+- Regenerated `fastapi_app/openapi_baseline.json` through `scripts/check_openapi_drift.py --update` after the footing router was present.
+
+### Issues encountered
+
+- The footing merge conflicted in `docs/SESSION_LOG.md` and `docs/planning/next-session-brief.md` because the preserved footing lane and the newer integration lane each had legitimate session and handoff history.
+- Shared `react_app/src/App.tsx`, `react_app/src/app/navigation.ts`, and `react_app/src/components/__tests__/WorkbenchHomePage.test.tsx` conflicted because slab/column and footing work independently added reachable workflows.
+- `fastapi_app/openapi_baseline.json` conflicted because the footing endpoint and schemas changed the generated snapshot relative to the already-integrated beam/column/slab source.
+- The maintained API-manifest check then found two stale beam serviceability return annotations in `docs/reference/api-manifest.json`.
+- The isolated integration worktree has no local React dependency entry, so its first focused React command could not start until the approved shared Node 24 dependency installation was made available temporarily.
+
+### Root causes and resolutions
+
+- Root cause: preservation branches were intentionally developed from an older common base, so shared documentation, generated API evidence, and navigation surfaces diverged without either side being disposable. Resolution: retained both relevant histories, updated the handoff to the dedicated integration lane, combined all route/card assertions, and regenerated the OpenAPI snapshot from maintained source. Evidence: `git diff --check`, the conflict-marker scan, and the successful generator update completed before staging.
+- Root cause: the route conflicts represented additive feature ownership rather than incompatible behavior. Resolution: retained `/workbench/slabs`, `/workbench/columns/rectangular`, and `/workbench/footing/isolated/concentric`, plus their active-navigation and workbench entries. Preservation and route coexistence proofs are run after the merge commit before any PR action.
+- Root cause: the preserved API manifest still reflected unqualified `CrackWidthResult` and `DeflectionResult` projections while the merged beam source exposes `serviceability.CrackWidthResult` and `serviceability.DeflectionResult`. Resolution: regenerated `docs/reference/api-manifest.json` with `scripts/generate_api_manifest.py`; the reviewed diff changed only those two signatures and the generation date.
+- Root cause: the isolated worktree intentionally lacked copied dependencies. Resolution: ran the 13-test React route/navigation/workbench selection with a temporary symlink to the approved primary Node 24 installation and removed the symlink on exit; no dependency target was changed.
+
+### Verification
+
+- The complete footing branch is an exact merge parent at `886871aef93d9a955a3cc2fa613fe49bad589ce7`; the preserved release-guard head `7e623984e027141fff62e5129c23fdc16264f8e0` is an ancestor of the integration head.
+- Ancestry proof passed: `plan_ancestor=YES`, `footing_ancestor=YES`.
+- `./run.sh release footing-inclusion-check` passed: owned files match reviewed head and all Python/FastAPI/React markers are present; the receipt reports zero missing owned files and zero missing markers.
+- Exact receipt/blob proof passed for all 15 footing-owned files: `missing_files=0`, `mismatched_files=0`, `receipt_source_mismatches=0`, and `name_status_diff_entries=0` for `git diff --name-status 886871ae..HEAD` constrained to the owned paths.
+- Focused footing/core/FastAPI tests passed; React route/navigation/workbench acceptance passed 4 files and 13 tests on Node 24.
+- Maintained OpenAPI regeneration and API-manifest check passed, `git diff --check` passed, and `./run.sh check --quick` passed 10/10.
+- Targeted source evidence proves `/workbench/quick`, `/workbench/slabs`, `/workbench/columns/rectangular`, and `/workbench/footing/isolated/concentric` coexist, with all four workbench entries reachable.
+
+---
+## 2026-08-11 — Session: 0.23.1a1 Candidate Evidence Preparation
+
+**Agent:** Codex (`orchestrator`)
+**Branch:** `codex/alpha-0231-candidate-evidence`
+**Focus:** Prepare a local, non-publishing Alpha candidate source from merged main.
+
+### Summary
+
+- Started from exact merged main `5da9c66a0f962fc08a6431fe95e39ec664a353f6` in a dedicated local candidate lane.
+- Ran the canonical `./run.sh release run 0.23.1a1 --no-open` only after the non-publishing plan and permission gates were green.
+- Prepared the expected 16-file version/document bump to `0.23.1a1`; no changelog publication entry, tag, package upload, GitHub Release, or Pages action was performed.
+
+### Issues encountered
+
+- The first pre-bump `./run.sh release preflight 0.23.1a1` and first candidate `./run.sh release run 0.23.1a1 --no-open` stopped at the React build because the isolated worktree has no `react_app/node_modules`; the visible release-run symptom was `sh: tsc: command not found`.
+- Preflight correctly reports clean-install evidence as pending until an exact wheel is supplied.
+
+### Root causes and resolutions
+
+- Root cause: `scripts/release.py` selects Node 24 and invokes `npm run build` directly but does not provision dependencies, while this isolated worktree intentionally has no local Node installation. Resolution: used a temporary symlink to the approved primary Node 24 dependency installation for the controlled preflight/build commands, removed it on exit, and made no release-automation change. Direct `npm run build` then passed and produced the expected footing chunk.
+- Root cause: clean-install evidence is necessarily unavailable before the exact candidate wheel exists. Resolution: kept the pre-bump preflight warning visible and deferred exact-wheel preflight/UAT until one frozen artifact is built.
+
+### Verification
+
+- Pre-bump `0.23.1a1` preflight passed with target upgrade, permission, footing inclusion, 5,584 Python tests, and Node 24 React build; only the expected candidate-wheel warning remained.
+- Candidate preparation passed its same Python/build gates and updated only the expected version/document files. Artifact hash, inventory, SBOM, exact-wheel preflight, and clean-install UAT evidence will be recorded against the frozen source SHA after the single artifact build.
+
+---
+
+## 2026-08-11 — Session: 0.23.1a1 Candidate Verification Root-Cause Repair
+
+**Agent:** Codex (`orchestrator`, bounded verifier and version-semantics workers)
+**Branch:** `codex/alpha-0231-candidate-evidence`
+**Focus:** Make the preserved candidate reproducible and truthful without rebuilding or publishing it.
+
+### Summary
+
+- Repaired installed-wheel verification so the maintained UAT uses only the
+  wheel's declared `dev,validation` extras plus generated-client `httpx`, runs
+  outside the checkout with an isolated pytest configuration, and asserts the
+  imported package is inside the disposable venv before and after tests.
+- Made release-run and preflight provision missing lockfile-pinned React
+  dependencies with `npm ci` while refusing `node_modules` symlinks.
+- Removed published-release status rows from automatic candidate version/date
+  rewriting and recorded a truthful local-prepublication evidence boundary.
+- Added worktree-bound runtime diagnostics, fail-closed session trust,
+  discoverable retired-command aliases, metadata parsing repair, and local/
+  Docker FastAPI preflight parity so the same failure modes stop earlier.
+- Preserved the existing wheel and sdist byte-for-byte; no tag, upload, release,
+  Pages action, or publish workflow was invoked.
+
+### Issues encountered
+
+- Exact-wheel verification inherited checkout-oriented pytest behavior and the
+  broad `requirements.txt` experiment could pass while obscuring which
+  dependencies came from the artifact.
+- The existing release-state regression assumed the current source version was
+  already authorized/published, so it encoded an untrue candidate-state premise.
+- Generated-client tests require `httpx`, while validation tests require the
+  wheel's declared `validation` extra; the earlier `[dev]`-only install did not
+  express either requirement.
+- The first isolated UAT failed during collection because
+  `test_research_prototypes.py` imports an intentionally excluded
+  `structural_lib.research` package. Marker filtering alone occurs too late to
+  prevent that import.
+- The isolated worktree had no `react_app/node_modules`, so the canonical React
+  build failed with `sh: tsc: command not found`.
+- Candidate bump automation changed the `TASKS.md` current-release version while
+  retaining `ALPHA RELEASED` and public-evidence wording, and erased the
+  descriptive task-board update text.
+- The first full closeout gate rejected the new evidence filename because
+  version dots violate the repository documentation naming policy.
+- The first code commit attempt was blocked after Ruff removed one extra blank
+  line in the research test module; no commit was created on that attempt.
+- A documentation-only validation shortcut referenced the retired
+  `scripts/check_markdown_links.py` path and stopped before its second command.
+- The first evidence-commit command stopped at `git diff --check` because the
+  new Markdown header used two trailing-space hard breaks; no paths were staged.
+- The documentation metadata hook ran in warning mode and exposed missing
+  `Type`/`Audience` fields plus a noncanonical lifecycle status on the new
+  evidence record. A guessed direct checker path was also obsolete.
+- PR #732 FastAPI Validation failed while every independent component job
+  passed: `test_project_boq_basic` expected public version `0.23.0`, but the
+  candidate API correctly returned `0.23.1a1`; PR Gate then failed as a direct
+  dependency.
+- The candidate worktree has no local `.venv`; focused commands used the
+  maintained shared project interpreter.
+- The maintained local release preflight exercised Python and React but omitted
+  the FastAPI suite that exposed the candidate-version failure in CI.
+- Session start reported a counted dirty tree but still wrote a trusted state.
+- Independent review found the first trust repair still accepted a clean tree
+  when branch detection returned its `unknown` detached/error sentinel.
+- The documentation metadata parser emitted a false missing-`Last Updated`
+  warning for a correctly populated multiword field.
+- Automation discovery could not resolve the retired
+  `check_markdown_links.py` and `check_doc_metadata.py` names to their
+  consolidated maintained commands.
+- Active skills and instructions assumed every linked worktree owned
+  `.venv/bin/python`, even though the maintained launcher already supports the
+  primary environment with current-worktree source binding.
+
+### Root causes and resolutions
+
+- Root cause: `Python/pytest.ini` injects `Python/` through `pythonpath = .`, and
+  `cmd_verify` ran repository tests from the checkout. Resolution: create a
+  temporary config with only that directive removed, run from the temporary
+  directory with importlib mode, and assert the resolved package path is inside
+  the verification venv before and after pytest. The broad requirements install
+  was removed in favor of `[dev,validation]` and `httpx>=0.27`.
+- Root cause: the release-state test passed
+  `allow_authorized_release=True` unconditionally instead of deriving that fact
+  from the permission record. Resolution: bind the allowance to
+  `_release_authorization_recorded(current)` so candidate source is not silently
+  treated as published.
+- Root cause: `[dev]` alone did not model the maintained test dependency
+  boundary, and the broad root requirements install masked the missing
+  distinction. Resolution: install the exact wheel with its declared
+  `[dev,validation]` extras and add only the generated-client requirement
+  `httpx>=0.27`.
+- Root cause: pytest imports test modules before applying marker selection.
+  Resolution: classify the research prototype module as `repo_only` and derive
+  `--ignore` arguments for every module-level repo-only test before collection.
+- Root cause: release automation selected pinned Node 24 but assumed dependencies
+  already existed. Resolution: both release paths share one provisioner that
+  runs lockfile-pinned `npm ci` when TypeScript is absent and fails closed on a
+  symlink or invalid dependency path.
+- Root cause: `bump_version.py` treated published operational history as a source
+  version pin. Resolution: exclude `TASKS.md` and the handoff from automatic
+  candidate version/date rewriting; focused temporary-repository coverage proves
+  a future bump preserves the last published release status.
+- Root cause: the evidence filename copied the dotted package version into a
+  path governed by hyphenated document naming. Resolution: use the repository's
+  safe-file mover to rename it to
+  `alpha-0231-local-prepublication-rehearsal.md`; link validation and the full
+  governance gate then passed.
+- Root cause: the staged research-test import grouping did not match the
+  repository Ruff format. Resolution: accepted the hook's one-line formatting
+  change, reran the 200 focused tests, restaged the intended five code/test
+  paths, and committed only after all hooks passed.
+- Root cause: the shortcut guessed an obsolete direct script name instead of
+  consulting the automation registry. Resolution: `./run.sh find` identified
+  `scripts/check_links.py` and `scripts/session.py check`; both maintained
+  commands completed successfully. No fallback mutation was used.
+- Root cause: the evidence header used Markdown hard-break whitespace that the
+  repository hygiene rule rejects. Resolution: replaced the hard breaks with
+  explicit blank paragraphs and reran `git diff --check` before staging.
+- Root cause: the evidence boundary had been placed in the `Status` field, and
+  the direct metadata checker was consolidated into `scripts/check_docs.py`.
+  Resolution: added canonical reference metadata, retained
+  `LOCAL PREPUBLICATION REHEARSAL` as a separate evidence boundary, and used the
+  maintained checker path discovered from the repository.
+- Root cause: candidate version automation updated maintained runtime/version
+  surfaces but the FastAPI BOQ regression encoded a historical public version
+  literal. Resolution: compare BOQ evidence to `fastapi_app.__version__`, the
+  maintained application version surface, so future candidate bumps retain the
+  cross-surface contract without test-file rewrites.
+- Root cause: release preflight and CI had different maintained test surfaces.
+  Resolution: local preflight now runs `fastapi_app/tests/`, and Docker preflight
+  has an equivalent read-only `test-fastapi` service alongside Python and React.
+- Root cause: session trust searched the formatted Git summary for the words
+  `modified` and `untracked`, while `get_uncommitted_status()` returns a count.
+  Resolution: trust now requires the exact `Clean working tree` sentinel on a
+  known non-main branch, checks both Git command return codes, and fails closed
+  for dirty, detached, or unknown state.
+- Root cause: metadata extraction accepted only single-word field names.
+  Resolution: the parser accepts trimmed multiword metadata keys and regression
+  coverage proves `Last Updated` validates without warnings.
+- Root cause: consolidated helper scripts had no searchable compatibility names.
+  Resolution: automation entries now carry aliases, discovery searches and
+  displays them, and regression coverage maps both retired checker names.
+- Root cause: documentation bypassed the worktree-aware Python launcher.
+  Resolution: active skills and instructions use `python_runtime.sh`, session
+  start proves `structural_lib` resolves under the invoking worktree, and
+  `--diagnose` reports interpreter, repository, module path, and binding status.
+
+### Verification
+
+- Focused release/version/research tests: 200 passed; source research tests still
+  execute normally while installed-artifact UAT excludes checkout-only modules.
+- Prior integration evidence remained intact: `./run.sh check` passed 30/30 and
+  merged PR #730 had seven successful checks (Detect Changes, Build MkDocs,
+  Repository Validation, Python Validation, FastAPI Validation, React
+  Validation, and PR Gate).
+- Exact installed wheel: 5,055 passed, 51 skipped, 2 deselected, 29 warnings;
+  disposable `site-packages` identity passed before and after pytest; installed
+  `job`, `critical`, and HTML `report` workflows passed.
+- React Node 24 dependency provisioning used `npm ci`; the production build
+  passed and retained the isolated-footing chunk.
+- Candidate closeout gates: `./run.sh check --quick` passed 10/10; the first full
+  gate exposed the invalid evidence filename at 29/30, and the corrected rerun
+  passed 30/30.
+- Clean-tree exact-wheel preflight passed with zero warnings: 5,590 Python tests
+  passed, 3 skipped, 6 deselected, and 46 warnings; Node 24 React build, clean
+  wheel identity, permission, footing inclusion, version, and release-document
+  gates all passed. Wheel and sdist hashes remained unchanged before and after.
+- Dedicated branch `codex/alpha-0231-candidate-evidence` was pushed without
+  rewriting history and draft PR #732 was opened against `main`; it was
+  mergeable and normal PR validation started. No publish-capable workflow was
+  dispatched.
+- GitHub run `31463676435` isolated the FastAPI version-literal failure while
+  Repository, Python, React, and MkDocs validation passed. After the fix, the
+  exact failed test passed and `./run.sh test --fastapi` passed all 413 tests.
+- Prevention-control regression suite passed all 135 tests; the broad Python
+  suite passed 5,599 tests with 3 skipped and 6 deselected, and the FastAPI suite
+  passed all 413 tests.
+- Runtime diagnosis reported `source_bound: true` for this linked worktree;
+  session start reported `Python source binding: current worktree` and correctly
+  marked the dirty tree untrusted.
+- Automation registry validation passed at 106/106 physical scripts and 119
+  grouped tasks; both retired checker names resolved to maintained commands.
+- `./run.sh check --quick` passed 10/10 and `./run.sh check` passed 30/30 after
+  the prevention updates.
+- Clean-tree exact-wheel preflight passed with zero warnings after the control
+  repair: 5,602 Python tests passed, 3 skipped, and 6 deselected; 407 non-slow
+  FastAPI tests passed with 6 deselected; and the Node 24 React build passed.
+- Wheel SHA-256 remained
+  `9c986920ceb43e341d01c6411c873605fec3321486d862a847e2083c36156aa7`;
+  sdist remained
+  `9f7ebf55afa8232eeeb3f35449450a4bc8aca5d835c9f017f308052c979f1de6`.
+
+---
+
+## 2026-08-11 — Session: 0.23.1a1 Authorized Publication
+
+**Agent:** Codex (`ops`)
+**Branches:** `codex/alpha-0231-candidate-evidence`, then
+`codex/alpha-0231-release-closeout`
+**Focus:** Publish the reviewed Alpha candidate through exact-head TestPyPI,
+production PyPI, tag, and GitHub prerelease gates.
+
+### Summary
+
+- Recorded the owner's explicit 2026-08-11 authorization for the
+  `v0.23.1a1` TestPyPI rehearsal, production tag/PyPI publication, and GitHub
+  prerelease after exact-head evidence passes.
+- Converted candidate-only metadata to a dated, release-ready Alpha state while
+  preserving the case-qualified scope and professional-review boundary.
+- Published the reviewed tree through TestPyPI, merged PR #732 unchanged,
+  pushed annotated tag `v0.23.1a1`, and verified production PyPI and the GitHub
+  prerelease against workflow-generated hashes.
+- Hardened the maintained public verifier and version-bump documentation
+  contract after post-publication checks exposed prerelease-selection and stale
+  install-pin gaps.
+
+### Issues encountered
+
+- Publication was explicitly authorized in the active task, but the versioned
+  checklist, changelog, citation metadata, task board, handoff, and immutable
+  release ledger still recorded an unreleased hold.
+- Exact-head TestPyPI run `31467674597` stopped in release-test collection
+  before build or upload because generated-client and tool-manifest tests could
+  not import `httpx` and `jsonschema`.
+- After production publication succeeded, two maintained `--source pypi`
+  verification attempts reported versions only through `0.23.0` even though
+  official PyPI JSON and Simple API responses already listed `0.23.1a1` with
+  the production manifest hashes.
+- The public PyPI description still showed the prior `0.23.0` exact-install pin
+  even though its version heading and package metadata were `0.23.1a1`.
+- The README's unqualified primary install examples selected `0.23.0`, and the
+  append-only ledger retained a historical sentence calling that version
+  current after `v0.23.1a1` was published.
+
+### Root causes and resolutions
+
+- Root cause: the previous task deliberately stopped at a reviewed local
+  rehearsal and therefore could not record per-release publication authority.
+  Resolution: bind the owner's current instruction to the exact Alpha version,
+  require an exact-head TestPyPI rehearsal before the production tag, and use a
+  new append-only release-ledger entry to supersede the historical hold without
+  rewriting it. Evidence: release preflight, CI workflow run identities,
+  package-index verification, tag, and GitHub prerelease evidence are recorded
+  below as the authorized sequence completes.
+- Root cause: `publish.yml` installed only the wheel's `dev` extra before
+  running the full repository test suite, while maintained generated-client and
+  manifest tests require explicit `httpx` and the `validation` extra. The local
+  exact-wheel verifier had already corrected this boundary, but the publish
+  validation job retained the stale dependency set. Resolution: align publish
+  validation with `[dev,validation]` plus `httpx>=0.27` and add a workflow
+  regression assertion. Evidence: the failed run published nothing; focused
+  tests, PR CI, and a new exact-head TestPyPI run must pass before continuation.
+- Root cause: pip's candidate selection omitted the Alpha version unless
+  `--pre` was explicit, even with the exact equality pin; `pip index versions`
+  reproduced `0.23.0` without `--pre` and `0.23.1a1` with it. Official PyPI
+  HTML, PEP 691 JSON, and release JSON all already contained the new files, and
+  pip configuration showed no alternate index. A global `--pre` did find the
+  package but also selected prerelease dependencies, so it was rejected.
+  Resolution: use package-scoped arbitrary equality `===0.23.1a1`, which selects
+  the exact Alpha while retaining stable dependency resolution; also force
+  `https://pypi.org/simple/` and disable cache. Regression coverage asserts the
+  exact command. Evidence: the maintained public-version verifier is rerun
+  below.
+- Root cause: `scripts/bump_version.py` updated the Python README's version and
+  release heading but did not own its exact package-install pin. Resolution:
+  add the pin to the automated documentation version patterns, normalize Alpha
+  pins to package-scoped `===`, and add fixture coverage that proves the heading,
+  metadata label, and install pin advance together.
+- Root cause: prerelease selection semantics were handled only by the later
+  exact-pin example, while the first README commands remained unqualified; the
+  ledger correctly preserved prior text but lacked an explicit successor for
+  its old current-state sentence. Resolution: make exact Alpha pins primary for
+  both base and DXF installs, teach the bump control to update optional-extra
+  pins, and append a current-state clarification to the immutable ledger.
+
+### Verification
+
+- Release-ready preflight passed with zero warnings: 5,602 Python tests passed,
+  3 skipped, and 6 deselected; 407 FastAPI tests passed with 6 deselected; the
+  React production build passed.
+- PR #732 passed all seven exact-head checks. Corrected TestPyPI run
+  `31467980119` completed validation, build, protected-content allowlisting,
+  exact-wheel UAT, a 61-component CycloneDX SBOM, and TestPyPI publication.
+- PR #732 merged with release tree unchanged at `95bed562`; annotated tag
+  `v0.23.1a1` dereferences to that commit.
+- Production run `31468341946` completed all gates, trusted PyPI publication,
+  and GitHub prerelease creation. Public PyPI hashes match the production
+  manifest: wheel `e586db493bbb80c56474a4855f162b9d647911648f68331c950f1ab2deafd622`;
+  sdist `5cd0e1cefe486ed3188a6cca67e728d2df162578cc17eb135583852afd6f4bb4`.
+- The maintained public verifier passed from a disposable installed package:
+  5,055 tests passed, 51 skipped, 2 deselected, with `job`, `critical`, and
+  `report` CLI workflows green and stable dependency versions selected.
+- Post-release prevention coverage passed all 58 focused release and version-
+  bump tests; Black and Ruff passed on the four changed Python files.
+- The closeout quick gate passed 10/10 and the full repository gate passed
+  30/30. A final live recheck confirmed successful production run
+  `31468341946`, immutable tag target `95bed562`, non-draft GitHub prerelease
+  assets, and PyPI file sizes and hashes matching the production evidence.
 
 ---

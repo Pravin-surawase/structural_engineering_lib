@@ -3,8 +3,8 @@
 > **⚠️ NOTE:** The authoritative role system is in `.github/agents/` (16 Copilot agents with handoffs, skills, and pipeline enforcement). The role docs below are a **legacy reference** from an earlier
 
 **Type:** Documentation
-**Last Updated:** 2026-08-10
-**Files:** 3
+**Last Updated:** 2026-08-11
+**Files:** 4
 
 ## Config Files
 
@@ -15,8 +15,8 @@
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [README.md](README.md) | Agent Prompt Cheat Sheet | > **⚠️ NOTE:** The authoritative role system is in .github/a | 145 |
-| [spark-worker-packet-template.md](spark-worker-packet-template.md) | Spark Worker Packet Template | Required packet shape for bounded Spark execution packets | 29 |
+| [README.md](README.md) | Agent Prompt Cheat Sheet | > **⚠️ NOTE:** The authoritative role system is in .github/a | 150 |
+| [spark-worker-packet-template.md](spark-worker-packet-template.md) |  | Use this for every Spark worker packet. text | 33 |
 
 ## Subfolders
 

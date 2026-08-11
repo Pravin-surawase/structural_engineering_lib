@@ -4,26 +4,52 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-11
-- Focus: SPARK-001 master plan ready for owner review; implementation remains paused
+- Focus: preserve and integrate SPARK-001 onto the published Alpha baseline; Wave 0 remains held for G0 review
 <!-- HANDOFF:END -->
 
-**Current release:** `v0.23.0` Alpha
+**Current release:** `v0.23.1a1` Alpha
 
 **Branch:** `codex/gpt-5-3-spark-work-program`
 
-**Base:** clean `main` at `a0e115e17009cc14b3d883e3c291d47c32f7ca4e`
+**Integration base:** `origin/main` at `8d47de73`; immutable Alpha tag `v0.23.1a1` remains unchanged
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | SPARK-001 planning | Isolated branch and worker-ready 70-packet program prepared |
-| **Next** | Owner review gate G0 | Accept, revise, or reject Wave 0; do not begin implementation before acceptance |
-| **Held** | Stable/engineering use | Requires cumulative qualified structural-engineering review |
+| **Current** | SPARK-001 Phase 2 | Original draft checkpoint is preserved; post-Alpha `main` is being integrated without history rewrite |
+| **Next** | Owner review gate G0 | Accept, revise, or reject Wave 0 after the reconciled control plane passes verification |
+| **Held** | Stable/engineering-use claims | Alpha publication does not grant qualified professional approval or complete-code coverage |
+
+## Integrated footing scope
+
+- The maintained scope is one concentric square/rectangular isolated-footing
+  workflow with explicit service and factored actions, external allowable-soil-
+  pressure approval, and approved A1 load-transfer evidence.
+- Overall thickness and effective depth remain distinct; flexure, directional
+  one-way shear, punching shear, bearing, and uniform-depth selection are
+  fail-closed.
+- Optional two-layer bottom-reinforcement detailing returns physical directional
+  depths, bar schedules, rectangular central/outer-band zones, anchorage evidence
+  and linked dowels. Missing or unsupported inputs remain visible HOLDs.
+- The release inclusion receipt binds 15 footing-owned file hashes and six
+  cross-layer markers; verify it after the complete merge before any PR action.
+
+## Public-distribution permission
+
+- The repository owner confirmed source/licensing permission on 2026-08-11 for
+  approved-scope normalized IS 456 data. The canonical record is
+  [`is456-public-distribution-permission.json`](../verification/is456-public-distribution-permission.json);
+  release preflight, candidate checks, and publish CI validate it fail closed.
+- The private corpus remains private, protected prose/images remain excluded,
+  and each release still needs separate owner authorization. Do not report this
+  gate as pending unless the owner explicitly changes the recorded decision.
 
 ## Required Reading
 
 - [GPT-5.3-Codex-Spark work program](gpt-5-3-codex-spark-work-program.md)
 - [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
+- [IS 456 solid slabs master plan](is456-solid-slabs-master-plan.md)
+- [IS 456 library-first evidence](../verification/is456-library-first-evidence.md)
 - [UI experience foundation master plan](ui-experience-foundation-master-plan.md)
 - [Session 2 acceptance](../verification/ui-experience-session-2-acceptance.md)
 - [Current task board](../TASKS.md)
@@ -31,8 +57,8 @@
 
 ## SPARK-001 planning state
 
-- The isolated program branch was created from clean `main`; no product or
-  calculation implementation was started.
+- The original draft was preserved at checkpoint `47fce48e` before integrating
+  current `origin/main`; no product or calculation implementation was started.
 - The plan records verified preview properties, current usage/pricing uncertainty,
   protected structural and security areas, active worktree ownership, mandatory
   tests, escalation triggers, cost-learning fields, and independent review gates.
@@ -43,22 +69,32 @@
 - Wave 0 remains unauthorized until the repository owner accepts or revises the
   plan. Acceptance of G0 authorizes only the specifically approved first wave.
 
-## Fresh-start maintenance closeout
+## IS456-SLAB-001 implementation outcome
 
-- Local `main` is synchronized to the merged UIX result.
-- Five clean disposable `/private/tmp` worktrees were removed while their branches
-  were retained; two named external worktrees were preserved for their owners.
-- No server is listening on the maintained frontend/backend ports, no stash was
-  present, and the stale-branch dry run found nothing eligible for deletion.
-- Five API/router counts and all 32 generated indexes are synchronized. Index
-  drift detection now includes child-folder projections rather than direct files
-  only.
-- Generated build/test/type/lint/coverage and bytecode caches were cleaned while
-  environments, dependencies, logs, benchmarks, recovery backups, and user state
-  were preserved.
-- Health is 100/100, token-efficiency passes, the quick gate is 10/10, the full
-  gate is 30/30, and the root checkout is the fresh baseline for the next
-  owner-selected packet.
+- Existing compatibility slab functions remain available; the implementation
+  extends the maintained slab package rather than creating another engine.
+- Built-in Tables 12/13 and Tables 26/27 resolution is implemented with exact
+  provenance, bounded adjacent interpolation and explicit extrapolation errors.
+  External coefficient providers remain available with distinct trust status.
+- Oriented physical edges drive common two-way cases, strip widths and full/
+  half/none/free corner-torsion dispositions without silent span rotation.
+- Complete bounded routes cover provided bars, minimum/maximum detailing,
+  reviewed span/depth serviceability and ordinary one-way shear. Direct
+  deflection, automatic shear reinforcement and irregular/concentrated-load
+  panels remain held.
+- Five new FastAPI routes and the `/workbench/slabs` React flow are live-verified.
+  Results preserve revision identity and stale results cannot be exported.
+- Flat slabs, drops, column strips, slab-column transfer and column-supported
+  punching remain under a separately approved FS0 extension.
+
+### Verification at handoff
+
+- 5,532 Python tests passed, 3 skipped and 6 deselected.
+- 388 FastAPI tests and 241 React tests passed.
+- Frontend lint/test/TypeScript/production build passed.
+- Quick gate 10/10 and integrated gate 30/30 passed.
+- Live continuous and B04 two-way flows passed without browser console errors;
+  stale passport export was blocked as designed.
 
 ## Accepted UIX outcome
 

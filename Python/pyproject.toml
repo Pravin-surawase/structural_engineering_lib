@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "structural-lib-is456"
-version = "0.23.0"
+version = "0.23.1a1"
 description = "Supported-case IS 456 RC workflows for beams, columns, isolated footings, and solid slabs"
 readme = "README.md"
 requires-python = ">=3.11"

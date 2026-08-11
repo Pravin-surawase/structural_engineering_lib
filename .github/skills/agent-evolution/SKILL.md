@@ -22,10 +22,10 @@ Periodic reviews are report-only unless `--fix` is explicitly supplied. Do not u
 Choose a stable session ID and agent name:
 
 ```bash
-.venv/bin/python scripts/agent_session_collector.py --session-id <session-id>
-.venv/bin/python scripts/agent_scorer.py --session <session-id> --agent <agent> --auto-only
-.venv/bin/python scripts/agent_drift_detector.py --session <session-id> --agent <agent>
-.venv/bin/python scripts/agent_compliance_checker.py --session <session-id> --agent <agent>
+./scripts/python_runtime.sh scripts/agent_session_collector.py --session-id <session-id>
+./scripts/python_runtime.sh scripts/agent_scorer.py --session <session-id> --agent <agent> --auto-only
+./scripts/python_runtime.sh scripts/agent_drift_detector.py --session <session-id> --agent <agent>
+./scripts/python_runtime.sh scripts/agent_compliance_checker.py --session <session-id> --agent <agent>
 ```
 
 Drift and compliance checks are read-only. Add `--write` to the drift command
@@ -38,9 +38,9 @@ Do not use nonexistent bulk flags. Manual scores require the scorer's explicit d
 Instruction proposals require at least 15 collected session records. Before that threshold, observe and collect only. When the threshold is met and an evolution review is requested:
 
 ```bash
-.venv/bin/python scripts/agent_trends.py --weekly --alert
-.venv/bin/python scripts/agent_evolve_instructions.py --propose
-.venv/bin/python scripts/agent_evolve_instructions.py --list
+./scripts/python_runtime.sh scripts/agent_trends.py --weekly --alert
+./scripts/python_runtime.sh scripts/agent_evolve_instructions.py --propose
+./scripts/python_runtime.sh scripts/agent_evolve_instructions.py --list
 ```
 
 Trend analysis is read-only by default; add `--write` only for an intentional
@@ -53,7 +53,7 @@ Review each proposal against the underlying sessions. Correlation or a single ba
 Preview one exact proposal ID:
 
 ```bash
-.venv/bin/python scripts/agent_evolve_instructions.py --apply <evolution-id> --dry-run
+./scripts/python_runtime.sh scripts/agent_evolve_instructions.py --apply <evolution-id> --dry-run
 ```
 
 Actual `--apply <evolution-id>` changes agent instructions and requires explicit user approval. `--rollback <evolution-id>` also requires explicit approval and the evolution ID from the log; an agent name is not a valid rollback target.

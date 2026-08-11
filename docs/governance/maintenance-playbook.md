@@ -82,7 +82,7 @@ git branch --show-current
 ./run.sh evolve --status
 
 # Clean stale git branches (dry-run first!)
-.venv/bin/python scripts/cleanup_stale_branches.py --dry-run
+.venv/bin/python scripts/cleanup_stale_branches.py  # dry-run by default
 ```
 
 ---

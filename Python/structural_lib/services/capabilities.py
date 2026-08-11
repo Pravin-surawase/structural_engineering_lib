@@ -20,7 +20,7 @@ __all__ = [
     "get_supported_is456_semantic_contract",
 ]
 
-CAPABILITY_SCHEMA_VERSION = "1.0"
+CAPABILITY_SCHEMA_VERSION = "2.0"
 IS456_CODE_EDITION = "IS 456:2000"
 
 
@@ -98,8 +98,18 @@ _CAPABILITIES = (
     IS456Capability(
         element="beam",
         public_workflows=("design_beam_is456", "check_beam_is456", "detail_beam_is456"),
-        supported_case="Route-specific rectangular/flanged flexure, shear and detailing; torsion is a separate explicit workflow.",
-        held_cases=("The primary combined beam route does not include torsion.",),
+        supported_case=(
+            "Ordinary solid rectangular beam primary design for flexure and shear, "
+            "with optional IS 456 torsion within fck 15-40 N/mm2 and fy <= 500 "
+            "N/mm2, plus maintained Level-A deflection and crack-width checks when "
+            "their explicit inputs are supplied."
+        ),
+        held_cases=(
+            "Flanged, hollow/box, deep, prestressed, or axially loaded torsion cases are excluded.",
+            "Compatibility-versus-equilibrium torsion redistribution decisions are excluded.",
+            "Beam check, detailing, batch, import, and other automation surfaces that do not accept Tu and serviceability inputs remain outside the combined route.",
+            "Serviceability is held unless span, support condition, crack geometry, and service strain or stress are explicitly supplied.",
+        ),
         qualified_review_required=True,
     ),
     IS456Capability(
@@ -130,16 +140,25 @@ _CAPABILITIES = (
     ),
     IS456Capability(
         element="solid_slab",
-        public_workflows=("design_one_way_slab_is456", "design_two_way_slab_is456"),
+        public_workflows=(
+            "design_one_way_slab_is456",
+            "design_complete_one_way_slab_is456",
+            "design_continuous_one_way_slab_is456",
+            "design_continuous_one_way_slab_builtin_is456",
+            "design_two_way_slab_is456",
+            "design_two_way_slab_panel_is456",
+            "design_two_way_slab_panel_builtin_is456",
+        ),
         supported_case=(
-            "Simply supported one-way strip; externally accepted coefficient, "
-            "flexure-only supported case for one interior solid rectangular panel "
-            "with all four edges continuous."
+            "Simply supported and coefficient-method continuous one-way solid strips; "
+            "common oriented two-way beam/wall-supported panels with built-in bounded "
+            "IS 456 coefficient lookup/interpolation or reviewed external coefficients, "
+            "strip distribution, corner torsion, provided-bar checks, span/depth "
+            "serviceability carriers, and ordinary one-way shear."
         ),
         held_cases=(
-            "Two-way coefficient lookup is not built in.",
-            "The two-way result is not a complete engineering design approval; detailing, serviceability, shear/punching, and load combinations/patterning remain incomplete.",
-            "Flat/drop/ribbed slabs, openings, irregular panels and FEM are excluded.",
+            "Direct deflection, crack width, concentrated loads, openings, irregular panels, load-envelope analysis and automatic slab shear reinforcement are excluded.",
+            "Flat/drop/ribbed slabs, column strips, column-supported punching and FEM require a separately approved extension.",
         ),
         qualified_review_required=True,
     ),
@@ -186,11 +205,40 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             fields=(
                 _field("mu_knm", "factored bending moment", "kN m", True, "finite"),
                 _field("vu_kn", "factored shear force", "kN", True, "finite"),
+                _field(
+                    "tu_knm",
+                    "factored torsional moment",
+                    "kN m",
+                    False,
+                    "finite non-negative; zero opts out",
+                ),
                 _field("b_mm", "section width", "mm", True, _MM),
                 _field("D_mm", "overall section depth", "mm", True, _MM),
                 _field("d_mm", "effective section depth", "mm", True, _MM),
                 _field("fck_nmm2", "concrete strength", "N/mm2", True, _N_PER_MM2),
                 _field("fy_nmm2", "steel strength", "N/mm2", True, _N_PER_MM2),
+                _field("cover_mm", "clear cover for torsion core", "mm", False, _MM),
+                _field(
+                    "stirrup_dia_mm",
+                    "closed stirrup diameter",
+                    "mm",
+                    False,
+                    _MM,
+                ),
+                _field(
+                    "deflection_params",
+                    "explicit Level-A deflection inputs",
+                    "structured input",
+                    False,
+                    "span, effective depth, and supported condition",
+                ),
+                _field(
+                    "crack_width_params",
+                    "explicit Level-A crack-width inputs",
+                    "structured input",
+                    False,
+                    "complete maintained crack geometry and strain or service stress",
+                ),
                 _field(
                     "is_ok", "combined compliance outcome", "boolean", True, _BOOLEAN
                 ),
@@ -198,11 +246,18 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             statuses=(
                 IS456StatusContract(
                     "is_ok",
-                    "The evaluated compliance checks for this beam case passed.",
-                    ("It is software evidence, not professional design approval.",),
+                    "All evaluated flexure, shear, torsion, and enabled serviceability checks passed.",
+                    (
+                        "It is software evidence, not professional design approval.",
+                        "Missing or invalid evidence identity is a HOLD, not a pass.",
+                    ),
                 ),
             ),
-            limitations=("Torsion is a separate explicit workflow.",),
+            limitations=(
+                "Optional torsion is limited to the ordinary solid rectangular route.",
+                "Serviceability requires explicit maintained inputs.",
+                "Qualified engineering review remains required.",
+            ),
         ),
         IS456WorkflowContract(
             workflow="check_beam_is456",
@@ -590,6 +645,189 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             ),
             limitations=(
                 "Reinforcement detailing, serviceability, shear/punching, load combinations/patterning, and other panel cases remain incomplete.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_complete_one_way_slab_is456",
+            element="solid_slab",
+            fields=(
+                _field("d_mm", "effective slab depth", "mm", True, _MM),
+                _field(
+                    "reviewed_base_span_depth_limit",
+                    "reviewed serviceability base limit",
+                    "dimensionless",
+                    True,
+                    "finite positive",
+                ),
+                _field(
+                    "shear.status",
+                    "ordinary one-way shear disposition",
+                    "enumeration",
+                    True,
+                    "explicit capacity state",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "complete_engineering_design_approved",
+                    "Always false for this software result.",
+                    ("Qualified project review remains required.",),
+                ),
+            ),
+            limitations=(
+                "Direct deflection and automatic shear reinforcement are not implemented.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_continuous_one_way_slab_is456",
+            element="solid_slab",
+            fields=(
+                _field(
+                    "positive_moment_coefficient",
+                    "reviewed external positive coefficient",
+                    "dimensionless",
+                    True,
+                    "finite in (0, 1]",
+                ),
+                _field(
+                    "negative_moment_coefficient",
+                    "reviewed external negative coefficient",
+                    "dimensionless",
+                    True,
+                    "finite in (0, 1]",
+                ),
+                _field(
+                    "redistribution_applied",
+                    "moment redistribution declaration",
+                    "boolean",
+                    True,
+                    "must be false",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "flexure.coefficient_correctness_verified_by_library",
+                    "Always false for external coefficients.",
+                    ("The source and qualified acceptance references remain visible.",),
+                ),
+            ),
+            limitations=(
+                "Requires at least three spans, no more than 15 percent span variation, a uniform section, substantially uniform load, and no redistribution.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_continuous_one_way_slab_builtin_is456",
+            element="solid_slab",
+            fields=(
+                _field(
+                    "positive_location",
+                    "one-way positive-action location",
+                    "enumeration",
+                    True,
+                    "supported Table 12 action location",
+                ),
+                _field(
+                    "shear_location",
+                    "one-way shear-action location",
+                    "enumeration",
+                    True,
+                    "supported Table 13 action location",
+                ),
+                _field(
+                    "flexure.coefficient_correctness_verified_by_library",
+                    "library coefficient-verification claim",
+                    "boolean",
+                    True,
+                    "always true for normalized built-in records",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "flexure.coefficient_correctness_verified_by_library",
+                    "True when the normalized built-in coefficient record resolved successfully.",
+                    (
+                        "The coefficient provenance remains visible and qualified project review remains required.",
+                    ),
+                ),
+            ),
+            limitations=(
+                "Requires at least three spans, no more than 15 percent span variation, a uniform section, substantially uniform load, and no redistribution.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_two_way_slab_panel_is456",
+            element="solid_slab",
+            fields=(
+                _field(
+                    "support_topology_kind",
+                    "physical edge topology identity",
+                    "enumeration",
+                    True,
+                    "must match declared physical edges",
+                ),
+                _field(
+                    "alpha_x_positive",
+                    "reviewed external x positive coefficient",
+                    "dimensionless",
+                    True,
+                    "finite in (0, 1]",
+                ),
+                _field(
+                    "alpha_y_positive",
+                    "reviewed external y positive coefficient",
+                    "dimensionless",
+                    True,
+                    "finite in (0, 1]",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "coefficient_correctness_verified_by_library",
+                    "Always false for external coefficients.",
+                    ("No protected table lookup or interpolation is performed.",),
+                ),
+            ),
+            limitations=(
+                "Flat slabs and column-supported punching are a separate held extension.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_two_way_slab_panel_builtin_is456",
+            element="solid_slab",
+            fields=(
+                _field(
+                    "x_min_edge",
+                    "physical x-min edge continuity",
+                    "enumeration",
+                    True,
+                    "continuous or discontinuous",
+                ),
+                _field(
+                    "corner_lift_condition",
+                    "physical corner lift condition",
+                    "enumeration",
+                    True,
+                    "restrained or free_to_lift",
+                ),
+                _field(
+                    "panel.coefficient_correctness_verified_by_library",
+                    "library coefficient-verification claim",
+                    "boolean",
+                    True,
+                    "always true for normalized built-in records",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "panel.coefficient_correctness_verified_by_library",
+                    "True when exact lookup or bounded interpolation resolved successfully.",
+                    (
+                        "The physical support topology and coefficient provenance remain visible.",
+                    ),
+                ),
+            ),
+            limitations=(
+                "Flat slabs and column-supported punching are a separate held extension.",
             ),
         ),
     ),
