@@ -380,6 +380,14 @@ class TestPublishWorkflow:
         assert "^[0-9]+\\.[0-9]+\\.[0-9]+a[0-9]+$" in workflow
         assert "Expected PEP 440 Alpha format X.Y.ZaN" in workflow
 
+    def test_release_validation_installs_maintained_test_dependencies(self):
+        workflow = (REPO_ROOT / ".github" / "workflows" / "publish.yml").read_text(
+            encoding="utf-8"
+        )
+
+        assert "python -m pip install -e '.[dev,validation]' 'httpx>=0.27'" in workflow
+        assert "python -m pip install -e '.[dev]'" not in workflow
+
     def test_publication_fails_closed_on_permission_record(self):
         workflow = (REPO_ROOT / ".github" / "workflows" / "publish.yml").read_text(
             encoding="utf-8"

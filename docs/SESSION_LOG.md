@@ -2408,6 +2408,9 @@ production PyPI, tag, and GitHub prerelease gates.
 - Publication was explicitly authorized in the active task, but the versioned
   checklist, changelog, citation metadata, task board, handoff, and immutable
   release ledger still recorded an unreleased hold.
+- Exact-head TestPyPI run `31467674597` stopped in release-test collection
+  before build or upload because generated-client and tool-manifest tests could
+  not import `httpx` and `jsonschema`.
 
 ### Root causes and resolutions
 
@@ -2419,6 +2422,14 @@ production PyPI, tag, and GitHub prerelease gates.
   rewriting it. Evidence: release preflight, CI workflow run identities,
   package-index verification, tag, and GitHub prerelease evidence are recorded
   below as the authorized sequence completes.
+- Root cause: `publish.yml` installed only the wheel's `dev` extra before
+  running the full repository test suite, while maintained generated-client and
+  manifest tests require explicit `httpx` and the `validation` extra. The local
+  exact-wheel verifier had already corrected this boundary, but the publish
+  validation job retained the stale dependency set. Resolution: align publish
+  validation with `[dev,validation]` plus `httpx>=0.27` and add a workflow
+  regression assertion. Evidence: the failed run published nothing; focused
+  tests, PR CI, and a new exact-head TestPyPI run must pass before continuation.
 
 ### Verification
 
