@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-12 — GIT-001 packet 7A integrated; PMM preserved and held; Phase 1 research continues
+**Updated:** 2026-08-12 — COLUMN-PMM-001 benchmark-backed experimental recovery in progress
 
 ---
 
@@ -127,8 +127,8 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| SPARK-001 | Establish a measured GPT-5.3-Codex-Spark work program for bounded high-throughput tasks | Main Agent + repository owner | ✅ PHASE 2 COMPLETE — recovery/integration verified; implementation held for G0 |
 | GIT-001 | Research and propose an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🔬 PHASE 1 IN PROGRESS + PACKET 7A COMPLETE — PMM preserved/held; PR #723 replacement integrated; broad policy held |
+| COLUMN-PMM-001 | Recover and independently benchmark the experimental rectangular-column P-Mx-My fiber surface | Main Agent + repository owner | 🧪 IMPLEMENTATION — analytical 45-degree benchmark established; experimental module recovery in verification |
 
 ## Up Next
 

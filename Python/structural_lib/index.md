@@ -3,7 +3,7 @@
 > **Purpose:** IS 456:2000 RC beam design calculations
 
 **Type:** Python Package
-**Last Updated:** 2026-08-11
+**Last Updated:** 2026-08-12
 **Files:** 51
 
 ## Public API
@@ -94,10 +94,10 @@
 | Folder | Files | Description |
 |--------|-------|-------------|
 | [cli/](cli/) 📦 | 2 |  |
-| [codes/](codes/) 📦 | 73 |  |
+| [codes/](codes/) 📦 | 75 |  |
 | [core/](core/) 📦 | 20 |  |
 | [insights/](insights/) 📦 | 12 |  |
 | [reports/](reports/) 📦 | 7 |  |
 | [research/](research/) 📦 | 4 |  |
-| [services/](services/) 📦 | 40 |  |
+| [services/](services/) 📦 | 41 |  |
 | [visualization/](visualization/) 📦 | 4 |  |

@@ -1678,7 +1678,7 @@
     {
       "name": "check_function_quality.py",
       "type": "python",
-      "size_lines": 670,
+      "size_lines": 674,
       "last_updated": "2026-08-12",
       "description": "12-point quality checklist for IS 456 functions.",
       "classes": [
@@ -1759,7 +1759,7 @@
         "UNIT_SUFFIXES",
         "ADVISORY_CHECKS"
       ],
-      "content_hash": "4971f9bf9372"
+      "content_hash": "cda5924f482f"
     },
     {
       "name": "check_governance.py",
@@ -5370,5 +5370,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "9ead30e6c5b194f5"
+  "content_hash": "6ed4e1cf64d433a3"
 }

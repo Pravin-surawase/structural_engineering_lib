@@ -1,3 +1,92 @@
+## 2026-08-12 — Session: COLUMN-PMM-001 Experimental Recovery
+
+**Agent:** Codex
+**Branch:** `codex/column-pmm-completion`
+**Focus:** Recover the preserved rectangular-column P-Mx-My fiber work onto
+current `main`, establish an independent oblique benchmark, and retain an
+explicit experimental support boundary
+
+### Summary
+
+- Recovered only the generalized reinforcement types and pure IS 456 PMM
+  module from historical commit `8a52ed0f`; stale services, public exports,
+  generated files, and unrelated changes were not cherry-picked.
+- Added an independently derived closed-form 45-degree strain-plane benchmark
+  for a 200 mm square M25 section with four Fe415 bars. The exact response is
+  `Pu=145.723673 kN`, `Mx=+26.906094 kNm`, and `My=-26.906094 kNm`.
+- Kept the feature directly importable only from the experimental IS 456 module.
+  The supported Cl. 39.6 Bresler route remains unchanged, and no FastAPI, React,
+  services, root-package, or stable-API exposure was added.
+- Repaired the maintained function-quality checker so explicit `N/mm2` and
+  degree units, structured reinforcement, dimensionless sampling counts, and
+  private validation helpers are recognized. Its module filter now uses the
+  IS 456-relative path rather than the absolute worktree path.
+
+### Issues encountered
+
+- The first worktree-creation command was launched with the not-yet-created
+  worktree as its process directory, so the shell could not start.
+- The preserved PMM tests compared only with the existing uniaxial solver and
+  did not provide an independent oblique benchmark.
+- A 48 x 64 benchmark mesh introduced unequal x/y discretization error, while a
+  64 x 64 mesh preserved symmetry but missed the chosen axial tolerance.
+- The strict function-quality script rejected current explicit-unit and helper
+  conventions, then `--module pmm` scanned all modules because the absolute
+  worktree path itself contained `pmm`.
+- Two combined regression commands used guessed, obsolete test paths for the
+  biaxial and column golden-vector tests and stopped before collection.
+- Targeted index generation created six new nested test indexes where the
+  repository had no tracked index convention; reference checking also produced
+  false positives because `index.json` and `index.md` are generic basenames.
+
+### Root causes and resolutions
+
+- A process cannot start in a directory that does not exist. The worktree was
+  created from the primary checkout, then every implementation command used the
+  new absolute worktree path. `python_runtime.sh --diagnose` proves
+  `source_bound=true` for the completion lane.
+- Passing agreement between two repository solvers is not independent evidence.
+  Concrete strip integrals and exact discrete-bar forces were derived separately,
+  versioned in `docs/verification/column-pmm-benchmark.md`, and exercised at both
+  the root response kernel and public experimental slice.
+- A rectangular mesh breaks the square benchmark's x/y numerical symmetry, and
+  the first square mesh was too coarse. A 128 x 128 square kernel mesh preserves
+  symmetry and gives `145.713469 kN`, `+26.905867 kNm`, and `-26.905867 kNm`
+  within the declared discretization tolerances; the slice has a separate signed
+  interpolation regression.
+- The quality checker encoded older parameter spellings and filtered absolute
+  paths. The rules now recognize the maintained explicit contracts and the
+  scanner compares against `py_file.relative_to(IS456_DIR)`; a temporary
+  PMM-named-worktree regression proves only `column/pmm.py` is selected.
+- Test filenames had moved. `rg --files Python/tests` found the maintained
+  `test_column_biaxial.py` and `regression/test_golden_vectors_column.py` paths;
+  the corrected focused suite passes.
+- The index generator writes into any requested folder, even where indexes are
+  not tracked. The six newly generated, untracked files were individually
+  validated as regular files inside this worktree and removed with
+  `safe_file_delete.py --force --no-backup`; tracked parent indexes were retained.
+
+### Verification
+
+- Independent analytical benchmark review: PASS; no calculation or sign defect.
+- Focused PMM, function-quality, uniaxial, biaxial, and golden-vector regressions:
+  PASS.
+- Full Python suite: 5,623 passed, 3 skipped, 6 deselected.
+- `check_function_quality.py --module pmm --strict --summary`: 2/2 pass.
+- Architecture boundaries: 155 files checked, zero violations.
+- Import validation: 194 files and 1,059 imports checked, zero broken imports.
+- Ruff, Black, mypy, and `git diff --check`: PASS on affected handwritten files.
+- `./run.sh check --quick`: 10/10; `./run.sh check`: 30/30.
+
+### Terminal issues
+
+- `exec` with the future worktree as `workdir` failed before mutation because
+  that path did not exist; rerunning `git worktree add` from the primary checkout
+  succeeded.
+- Guessed `Python/tests/codes/is456/column/test_biaxial.py` and
+  `Python/tests/golden/test_column_golden_vectors.py` did not exist; targeted
+  `rg --files` discovery supplied the maintained paths.
+
 ## 2026-08-12 — Session: GIT-001 Packet 7A Integration Closeout
 
 **Agent:** Codex
