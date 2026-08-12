@@ -1,3 +1,45 @@
+## 2026-08-12 — Session: GIT-001 Future-Work Plan Closeout
+
+**Agent:** Codex
+
+**Branch:** `codex/git-future-work-plan-closeout`
+
+**Focus:** Record the exact publication receipt for the reconciled GIT-001
+future-work and next-agent handoff
+
+### Summary
+
+- PR #741 passed required checks at unchanged head `0f324db9` and was
+  squash-merged to `main` as `52ac5f58`.
+- Fast-forwarded the clean primary worktree to the exact merge and reran the
+  quick repository gate from integrated `main`.
+- Replaced the pre-merge base label in the next-session briefing with the exact
+  published-plan receipt so it cannot be mistaken for current remote state.
+
+### Issues encountered
+
+- The plan candidate necessarily recorded its pre-merge base before the future
+  squash-merge commit existed.
+
+### Root causes and resolutions
+
+- A commit cannot truthfully record its own future GitHub checks and squash
+  identity. This bounded closeout records PR #741, its unchanged reviewed head,
+  and merge commit, while the briefing still instructs the next agent to refresh
+  live state rather than treating any dated SHA as permanent current truth.
+
+### Verification
+
+- PR #741: `MERGED`, reviewed head `0f324db9`, merge `52ac5f58`.
+- Detect Changes, Repository Validation, Build MkDocs, and PR Gate passed;
+  unaffected Python, FastAPI, and React jobs were skipped by design.
+- Integrated primary worktree: `HEAD = origin/main = 52ac5f58`, clean.
+- Integrated `./run.sh check --quick`: 10/10 passed.
+
+### Terminal issues
+
+- None encountered.
+
 ## 2026-08-12 — Session: GIT-001 Future-Work Reconciliation
 
 **Agent:** Codex
