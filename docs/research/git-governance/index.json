@@ -3,15 +3,15 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-12",
-  "file_count": 5,
+  "file_count": 6,
   "files": [
     {
       "name": "GIT-001-README.md",
       "type": "documentation",
-      "size_lines": 91,
+      "size_lines": 92,
       "last_updated": "2026-08-12",
       "description": "This directory is the task-owned, non-normative research record for GIT-001. Its contents may describe official Git/GitHub/Codex facts, observed project",
-      "content_hash": "c6c9777e4f0f"
+      "content_hash": "09c6c6b7ec58"
     },
     {
       "name": "GIT-001-lifecycle-research.md",
@@ -20,6 +20,14 @@
       "last_updated": "2026-08-12",
       "description": "This is a factual, non-normative lifecycle model under research. It does not replace the canonical project workflow. Proposed transitions and permissions",
       "content_hash": "351814e5c940"
+    },
+    {
+      "name": "GIT-001-next-agent-disposition-plan.md",
+      "type": "documentation",
+      "size_lines": 411,
+      "last_updated": "2026-08-12",
+      "description": "This packet converts the original six-priority cleanup and recovery list into a current, evidence-backed handoff. It tells the next agent what is already done,",
+      "content_hash": "eb05a95fb3ae"
     },
     {
       "name": "GIT-001-official-evidence-register.md",
@@ -47,5 +55,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "32c2f9c0475d6d4f"
+  "content_hash": "2f3aeb29cde330ce"
 }

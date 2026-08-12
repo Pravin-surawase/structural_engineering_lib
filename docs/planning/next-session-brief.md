@@ -4,144 +4,101 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-12
-- Focus: COLUMN-PMM-001 integrated; GIT-001 Phase 1 continues
+- Focus: GIT-001 Phase 1 continuation and evidence-gated repository disposition
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
-**Branch:** `codex/column-pmm-closeout`
-**Integration base:** `origin/main` at `402bf22c`; immutable Alpha tag `v0.23.1a1` remains unchanged
+
+**Integration anchor at handoff:** `main = origin/main = 951f5e1d`
+
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | GIT-001 Phase 1 | Complete primary-source coverage and factual lifecycle research without changing canonical policy |
-| **Next** | GIT-001 Phase 2 | Forensic incident study only after the Phase 1 coverage review passes |
-| **Held** | Broad policy implementation and remote cleanup | Historical refs stay preserved; PMM production/public support remains a separately approved contract |
-
-## Integrated footing scope
-
-- The maintained scope is one concentric square/rectangular isolated-footing
-  workflow with explicit service and factored actions, external allowable-soil-
-  pressure approval, and approved A1 load-transfer evidence.
-- Overall thickness and effective depth remain distinct; flexure, directional
-  one-way shear, punching shear, bearing, and uniform-depth selection are
-  fail-closed.
-- Optional two-layer bottom-reinforcement detailing returns physical directional
-  depths, bar schedules, rectangular central/outer-band zones, anchorage evidence
-  and linked dowels. Missing or unsupported inputs remain visible HOLDs.
-- The release inclusion receipt binds 15 footing-owned file hashes and six
-  cross-layer markers; verify it after the complete merge before any PR action.
-
-## Public-distribution permission
-
-- The repository owner confirmed source/licensing permission on 2026-08-11 for
-  approved-scope normalized IS 456 data. The canonical record is
-  [`is456-public-distribution-permission.json`](../verification/is456-public-distribution-permission.json);
-  release preflight, candidate checks, and publish CI validate it fail closed.
-- The private corpus remains private, protected prose/images remain excluded,
-  and each release still needs separate owner authorization. Do not report this
-  gate as pending unless the owner explicitly changes the recorded decision.
+| **Current** | GIT-001 Phase 1 | Synchronize the research lane, finish official-source coverage, and write the factual lifecycle map |
+| **Next** | Excel planning lane | Confirm a named active owner/next action or approve retirement |
+| **Approval-gated** | Alpha worktrees and merged branches | Exact evidence is ready; deletion still requires explicit target approval |
+| **Separate maintenance** | Seven dependency PRs | Replace one-by-one merging with four current-base compatibility packets |
 
 ## Required Reading
 
-- [GIT-001 research index](../research/git-governance/GIT-001-README.md)
-- [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
-- [IS 456 solid slabs master plan](is456-solid-slabs-master-plan.md)
-- [IS 456 library-first evidence](../verification/is456-library-first-evidence.md)
-- [UI experience foundation master plan](ui-experience-foundation-master-plan.md)
-- [Session 2 acceptance](../verification/ui-experience-session-2-acceptance.md)
-- [Current task board](../TASKS.md)
-- [Release policy](../getting-started/releases.md)
+1. [Reconciled future-work and disposition plan](../research/git-governance/GIT-001-next-agent-disposition-plan.md)
+2. [GIT-001 research index](../research/git-governance/GIT-001-README.md)
+3. [Official evidence register](../research/git-governance/GIT-001-official-evidence-register.md)
+4. [Lifecycle research](../research/git-governance/GIT-001-lifecycle-research.md)
+5. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+6. [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
 
-## GIT-001 research state
+## Start command
 
-- Dedicated `codex/git-governance-research` worktree was created from refreshed
-  `origin/main` at `6bc356c3`; primary `main` remains clean and synchronized.
-- Phase 0 records eight clean worktrees, sixteen local branches, eight open PRs,
-  the active main ruleset, no stashes, protected unique work, and explicit unknowns.
-- Column PMM is remotely preserved, recovered onto current `main`, and checked
-  against an independent closed-form oblique benchmark. It remains experimental.
-  PR #723 is closed after its bounded replacement merged via #736.
-- Phase 1 has begun with official Git, GitHub, and OpenAI sources. Research facts,
-  project observations, proposed decisions, and normative policy stay separate.
-- Existing conflicting Git guides and retired-wrapper learning text are Phase 2
-  evidence candidates, not early rewrite targets.
-- Integrated packet 7A restores lane-safe intake and index-runtime behavior;
-  canonical policy, GitHub settings, broad cleanup, and release remain held.
-- SPARK-001 remains integrated at PR #734, but Wave 0 stays behind owner gate G0.
+```bash
+./run.sh task brief "continue GIT-001 Phase 1 official research"
+./run.sh session brief --agent ops
+./run.sh session start
+```
 
-## IS456-SLAB-001 implementation outcome
+Then refresh and inspect the branch, upstream, worktree, diff, current PR, and
+all linked worktrees before mutation. The dated handoff is evidence, not a
+replacement for live inspection.
 
-- Existing compatibility slab functions remain available; the implementation
-  extends the maintained slab package rather than creating another engine.
-- Built-in Tables 12/13 and Tables 26/27 resolution is implemented with exact
-  provenance, bounded adjacent interpolation and explicit extrapolation errors.
-  External coefficient providers remain available with distinct trust status.
-- Oriented physical edges drive common two-way cases, strip widths and full/
-  half/none/free corner-torsion dispositions without silent span rotation.
-- Complete bounded routes cover provided bars, minimum/maximum detailing,
-  reviewed span/depth serviceability and ordinary one-way shear. Direct
-  deflection, automatic shear reinforcement and irregular/concentrated-load
-  panels remain held.
-- Five new FastAPI routes and the `/workbench/slabs` React flow are live-verified.
-  Results preserve revision identity and stale results cannot be exported.
-- Flat slabs, drops, column strips, slab-column transfer and column-supported
-  punching remain under a separately approved FS0 extension.
+## Current Git facts
 
-### Verification at handoff
+- The dedicated GIT-001 worktree is clean at `3be4790d`, one commit ahead and
+  six behind current `main` by ancestry. `git cherry` shows its patch is already
+  squash-integrated. Merge current `origin/main` into this shared branch after
+  exact clean/upstream checks; do not rebase or force-push it.
+- Column PMM preservation, selective recovery, independent benchmark,
+  integration, closeout, and learning update are complete through PRs #738-#740.
+  Historical remote refs remain evidence; PMM remains experimental.
+- PR #723 is closed without merge. Its useful behavior was selectively rebuilt
+  through PRs #736-#737. Use #723 as incident evidence, not a merge target.
+- Excel planning has no unique commit, remote feature branch, or PR. Git supports
+  retirement, but task ownership still needs an owner decision.
+- Three merged Alpha worktrees are clean and retirement-ready after explicit
+  approval. They occupy roughly 651 MB, mainly old `node_modules`.
+- Eight unattached merged local branches, not seven, now have exact PR and main
+  reachability receipts. Local and remote deletion require separate approval.
+- All seven remaining Dependabot PRs are behind current `main`; their old green
+  checks are stale for integration.
 
-- 5,532 Python tests passed, 3 skipped and 6 deselected.
-- 388 FastAPI tests and 241 React tests passed.
-- Frontend lint/test/TypeScript/production build passed.
-- Quick gate 10/10 and integrated gate 30/30 passed.
-- Live continuous and B04 two-way flows passed without browser console errors;
-  stale passport export was blocked as designed.
+## Phase 1 boundary
 
-## Accepted UIX outcome
+Finish official coverage for core Git operations and recovery, GitHub merging
+and governance, dependency automation, releases/contributors, and verified
+Codex task/worktree behavior. Then produce the source-backed lifecycle map for
+normal, parallel, integration, release, cleanup, and recovery paths.
 
-Session 1 delivered revision-safe quick/project results, durable project identity,
-revision-bound exports, and authoritative 3D inspection. Session 2 delivered one
-immutable beam catalogue, thin discovery API, curated schema renderer, one
-default-disabled bounded workflow, one generated provider-neutral beam manifest,
-canonical workbench routes, and integrated live acceptance.
+Every statement must be labeled as an external fact, project observation,
+unresolved choice, or not applicable. Do not change canonical policy, GitHub
+settings, hooks, or cleanup behavior during Phase 1. Do not advance to Phase 2
+until the coverage review explicitly passes.
 
-The final live pass fixed three main-process causes:
+## Destructive-action holds
 
-- React Strict Mode cancelled the initial quick-design effect while a one-shot
-  ref prevented its replacement; the hook now retains the current runner.
-- Catalogue inputs were rendered beside the legacy input surface; catalogue and
-  manual modes now have mutually exclusive ownership.
-- Project route guards redirected before IndexedDB hydration began; idle/loading
-  are now explicit restore states.
+- Do not remove Excel until the owner decides whether the planning task is active.
+- Do not remove Alpha worktrees until the owner approves the three exact paths.
+- Do not delete local or remote branches without an exact refreshed table and
+  explicit approval for that deletion scope.
+- Stop if a lane becomes dirty, attached unexpectedly, diverged, conflicted, or
+  gains new commits/PR activity. Never reset, clean, stash, rebase, or force-push
+  as a shortcut around uncertain ownership.
 
-The bundled sample settles 153/153 PASS and restores canonical results directly.
-Safe, unsafe, stale/recalculate, export, bounded workflow, legacy redirects,
-390/1024/1440 px, and WebGL interruption flows pass in maintained Chromium.
+## Dependency grouping
 
-## Verification
+- Python typing: PRs #715 and #717 together.
+- ESLint 10: PRs #713 and #683 together.
+- React build: hold #684 for coordinated Vite/toolchain compatibility.
+- Node types: hold #714 while repository runtime remains Node 24.
+- Motion: #716 can be an independent current-base frontend task.
 
-- 91 focused Python/FastAPI tests, 87 focused React tests, and 76 focused
-  geometry/streaming tests pass.
-- React/API signature scan matches 29 maintained call sites.
-- `./run.sh frontend check` passes lint, 239 tests, and production build.
-- `./run.sh check --quick` passes 10/10 and the final integrated gate passes
-  30/30; pull-request checks remain the merge authority.
+Each group gets a fresh worktree, a compatibility hypothesis, targeted checks,
+the complete relevant gate, and exact-head CI. Do not merge the seven old PRs
+as unrelated updates.
 
-## Holds
+## Session closeout
 
-- Workflow execution remains unavailable by default and is enabled only through
-  explicit development/test flags.
-- Firefox, exact Safari responsive automation, GitHub Pages, public workflow
-  activation, release/tag/package publication, and professional-use claims are
-  not part of UIX acceptance.
-- Production JWT secret provisioning remains an owner operation.
-- PR #711 remains superseded; PR #683 belongs to a coordinated ESLint 10
-  migration; PR #684 remains blocked on a coordinated Vite 8 migration.
-
-## Repeat-prevention record
-
-Every session must record observed issue, confirmed root cause, resolution, and
-verification in the newest `docs/SESSION_LOG.md` block. Shared `AGENTS.md` and
-agent templates enforce that schema, and session closeout validates the newest
-entry only. Log terminal/tool failures with the maintained command or evidence
-path that succeeded; do not treat an observer limitation as a product failure.
+Run the quick gate and the full relevant gate once at closeout. Record every
+material issue as symptom, impact, confirmed root cause, solution, and evidence
+in the newest `docs/SESSION_LOG.md` entry. Preserve shared-surface ownership:
+session/task records, generated indexes, registries, routes, manifests, and
+lockfiles have one writer at a time.
