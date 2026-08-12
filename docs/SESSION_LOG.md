@@ -1,3 +1,61 @@
+## 2026-08-12 — Session: SPARK-001 Phase 3 Publication Closeout
+
+**Agent:** Codex
+**Branch:** `codex/gpt-5-3-spark-work-program`
+**Focus:** Publish the preserved and integrated Spark work program through the
+normal PR path without authorizing Wave 0 implementation
+
+### Summary
+
+- Refreshed `origin/main` and confirmed the recovered head was `3` commits ahead
+  and `0` behind, with no existing remote branch or pull request.
+- Re-ran the live picker acceptance path, focused tests, quick gate, and full
+  repository gate against the publication candidate.
+- Pushed the existing three-commit history without rewriting it and opened draft
+  PR #734 against `main` for the G0 review path.
+- Kept Wave 0 implementation held; publishing the plan does not grant execution,
+  release, engineering-use, or qualified-review authority.
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| None | PR #734 opened for review; merge is handled only after unchanged-head required checks pass |
+
+### Key Deliverables
+
+- Remote branch `origin/codex/gpt-5-3-spark-work-program`.
+- Draft PR #734: `chore(agents): establish bounded Spark work program`.
+- Exact pre-publication evidence: `HEAD...origin/main = 3 0` at
+  `b5aafb2959ec90b74f67983aecd7a6ba58bc768b`.
+- `./run.sh model --table` passes and reports `spark-low` as `preview`.
+- Focused picker/token-efficiency tests: 18 passed.
+- `./run.sh check --quick`: 10/10 passed.
+- `./run.sh check`: 30/30 passed.
+
+### Issues encountered
+
+- The first session-end check could not recognize today's entry and reported a
+  stale next-session handoff, blocking clean closeout validation.
+- The refreshed handoff reached 152 physical lines and failed the maintained
+  150-line brief-length gate.
+
+### Root causes and resolutions
+
+- Session startup inserted its skeleton below the existing top-of-file entry,
+  while the validator treats the first dated entry as newest. The completed
+  Phase 3 entry was moved to the top, the dated handoff was refreshed, and the
+  session-end check was rerun.
+- The new Phase 3 state added content to an already near-limit brief. Two
+  redundant blank lines were removed; the content remained intact and the quick
+  gate was rerun to prove the 150-line contract.
+
+### Notes
+
+- The feature branch is intentionally retained after integration until the
+  repository owner explicitly approves local or remote branch deletion.
+- Wave 0 remains behind SPARK-001-G0; this closeout publishes the plan but does
+  not accept that gate.
+
 ## 2026-08-11 — Session: SPARK-001 Phase 2 Recovery and Integration
 
 **Agent:** Codex
@@ -285,8 +343,6 @@ history, and close the picker acceptance gap found in Phase 1
   golden-vector/FastAPI tests passed; the complete React gate passed 246 tests,
   ESLint and the production build with a 34.84 kB lazy footing chunk; the quick
   repository gate passed 10/10 and the source-bound full gate passed 30/30.
-
----
 
 ## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
 # Session Log

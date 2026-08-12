@@ -3,20 +3,18 @@
 ## Latest Handoff
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-11
-- Focus: SPARK-001 Phase 2 integrated and verified; Wave 0 remains held for G0 review
+- Date: 2026-08-12
+- Focus: SPARK-001 published through PR #734 for G0 review; Wave 0 remains held
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
-
 **Branch:** `codex/gpt-5-3-spark-work-program`
-
 **Integration base:** `origin/main` at `8d47de73`; immutable Alpha tag `v0.23.1a1` remains unchanged
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | SPARK-001 Phase 2 | Draft preserved, post-Alpha `main` integrated, picker gap fixed, and repository gates green |
+| **Current** | SPARK-001 Phase 3 | PR #734 carries the preserved plan, integrated `main`, picker fix, and green local gates |
 | **Next** | Owner review gate G0 | Accept, revise, or reject Wave 0 after the reconciled control plane passes verification |
 | **Held** | Stable/engineering-use claims | Alpha publication does not grant qualified professional approval or complete-code coverage |
 
@@ -57,6 +55,8 @@
 
 ## SPARK-001 planning state
 
+- Draft PR #734 publishes the recovered work program and picker fix for review;
+  publication alone does not authorize any execution wave.
 - The original draft was preserved at checkpoint `47fce48e` before integrating
   current `origin/main` through merge commit `f0314f3e`; no product or calculation
   implementation was started and no history was rewritten.
