@@ -1,8 +1,8 @@
 ---
 owner: Main Agent
-status: in-progress
+status: active
 last_updated: 2026-08-12
-doc_type: research-analysis
+doc_type: reference
 task: GIT-001
 phase: 1
 ---

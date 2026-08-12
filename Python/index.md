@@ -3,7 +3,7 @@
 IS 456 RC Beam Design Library (Python package).
 
 **Type:** Mixed
-**Last Updated:** 2026-08-11
+**Last Updated:** 2026-08-12
 **Files:** 6
 
 ## Config Files
