@@ -1,3 +1,42 @@
+## 2026-08-12 — Session: COLUMN-PMM-001 Integration Closeout
+
+**Agent:** Codex
+**Branch:** `codex/column-pmm-closeout`
+**Focus:** Record the exact merge and integrated-main verification for the
+experimental rectangular-column P-Mx-My recovery
+
+### Summary
+
+- PR #738 passed required CI at unchanged head `a481d1ab` and was squash-merged
+  to `main` as `402bf22c`.
+- Fast-forwarded the primary worktree to the exact merge and reran the PMM and
+  function-quality regressions from integrated `main`.
+- Moved COLUMN-PMM-001 from active work to recently done while retaining its
+  explicit experimental, non-stable-API boundary.
+
+### Issues encountered
+
+- The feature candidate's task and handoff records correctly described a
+  pre-merge state that became stale when PR #738 merged.
+
+### Root causes and resolutions
+
+- Merge receipts cannot exist before CI and integration. This bounded follow-up
+  records the exact reviewed head, merge commit, and integrated-main evidence
+  without changing calculation code or widening the support contract.
+
+### Verification
+
+- PR #738: required Python Validation, Repository Validation, Build MkDocs, and
+  PR Gate passed at head `a481d1ab`; GitHub reported CLEAN and MERGEABLE.
+- Integrated `main`: `HEAD=origin/main=402bf22c`, working tree clean, and
+  `python_runtime.sh --diagnose` reports `source_bound=true`.
+- Integrated PMM plus checker regressions: 15 passed; focused strict scan: 2/2.
+
+### Terminal issues
+
+- None encountered.
+
 ## 2026-08-12 — Session: COLUMN-PMM-001 Experimental Recovery
 
 **Agent:** Codex

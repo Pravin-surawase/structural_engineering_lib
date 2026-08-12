@@ -4,17 +4,17 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-12
-- Focus: COLUMN-PMM-001 candidate complete; GIT-001 Phase 1 continues
+- Focus: COLUMN-PMM-001 integrated; GIT-001 Phase 1 continues
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
-**Branch:** `codex/column-pmm-completion`
-**Integration base:** `origin/main` at `b069428b`; immutable Alpha tag `v0.23.1a1` remains unchanged
+**Branch:** `codex/column-pmm-closeout`
+**Integration base:** `origin/main` at `402bf22c`; immutable Alpha tag `v0.23.1a1` remains unchanged
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | COLUMN-PMM-001 | Review and integrate the independently benchmarked experimental PMM candidate without stable API exposure |
+| **Current** | GIT-001 Phase 1 | Complete primary-source coverage and factual lifecycle research without changing canonical policy |
 | **Next** | GIT-001 Phase 2 | Forensic incident study only after the Phase 1 coverage review passes |
 | **Held** | Broad policy implementation and remote cleanup | Historical refs stay preserved; PMM production/public support remains a separately approved contract |
 
