@@ -2,14 +2,14 @@
   "folder": "Python/tests",
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
-  "last_updated": "2026-08-11",
+  "last_updated": "2026-08-12",
   "file_count": 61,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 394,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-12",
       "title": "Test Suite Organization",
       "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite. - test_detailing.py - Reinforcement detailing calculations",
       "content_hash": "706b48faeda0"
@@ -18,14 +18,14 @@
       "name": "__init__.py",
       "type": "python",
       "size_lines": 1,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-12",
       "content_hash": "e3b0c44298fc"
     },
     {
       "name": "conftest.py",
       "type": "python",
       "size_lines": 131,
-      "last_updated": "2026-04-06",
+      "last_updated": "2026-08-12",
       "description": "Pytest configuration and Hypothesis profiles for the test suite.",
       "functions": [
         {
@@ -65,7 +65,7 @@
       "name": "test_agent_governance_automation.py",
       "type": "python",
       "size_lines": 536,
-      "last_updated": "2026-08-11",
+      "last_updated": "2026-08-12",
       "description": "Regression tests for agent-governance automation controls.",
       "functions": [
         {
@@ -166,7 +166,7 @@
       "name": "test_api_manifest_tools.py",
       "type": "python",
       "size_lines": 134,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-12",
       "description": "Regression tests for the single canonical public API manifest.",
       "functions": [
         {
@@ -214,7 +214,7 @@
       "name": "test_api_results.py",
       "type": "python",
       "size_lines": 394,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-12",
       "description": "Tests for API result dataclasses.",
       "classes": [
         {
@@ -254,7 +254,7 @@
       "name": "test_api_stability.py",
       "type": "python",
       "size_lines": 233,
-      "last_updated": "2026-08-07",
+      "last_updated": "2026-08-12",
       "description": "EA-9: Wheel API stability tests.",
       "classes": [
         {
@@ -308,7 +308,7 @@
       "name": "test_api_surface_snapshot.py",
       "type": "python",
       "size_lines": 122,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-12",
       "description": "Snapshot regression tests — assert minimum API surface counts.",
       "classes": [
         {
@@ -361,7 +361,7 @@
       "name": "test_assertion_helpers.py",
       "type": "python",
       "size_lines": 82,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-12",
       "description": "Tests for the IS 456 test assertion helpers.",
       "classes": [
         {
@@ -403,7 +403,7 @@
       "name": "test_audit.py",
       "type": "python",
       "size_lines": 468,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-12",
       "description": "Tests for audit module (TASK-278).",
       "classes": [
         {
@@ -477,7 +477,7 @@
       "name": "test_boq.py",
       "type": "python",
       "size_lines": 190,
-      "last_updated": "2026-03-31",
+      "last_updated": "2026-08-12",
       "description": "Tests for the BOQ (Bill of Quantities) aggregation module.",
       "classes": [
         {
@@ -503,7 +503,7 @@
       "name": "test_bump_version_semantics.py",
       "type": "python",
       "size_lines": 66,
-      "last_updated": "2026-08-11",
+      "last_updated": "2026-08-12",
       "description": "Regression coverage for candidate-version documentation semantics.",
       "functions": [
         {
@@ -524,7 +524,7 @@
       "name": "test_calculation_report.py",
       "type": "python",
       "size_lines": 745,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-12",
       "description": "Tests for the calculation_report module (TASK-277).",
       "classes": [
         {
@@ -652,7 +652,7 @@
       "name": "test_clause_traceability.py",
       "type": "python",
       "size_lines": 489,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-12",
       "description": "Tests for IS 456 Traceability Module",
       "classes": [
         {
@@ -770,7 +770,7 @@
       "name": "test_column_axial.py",
       "type": "python",
       "size_lines": 273,
-      "last_updated": "2026-04-01",
+      "last_updated": "2026-08-12",
       "description": "Tests for column axial module — effective_length() per IS 456 Table 28.",
       "classes": [
         {
@@ -842,7 +842,7 @@
       "name": "test_column_biaxial.py",
       "type": "python",
       "size_lines": 958,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-12",
       "description": "Tests for IS 456 Cl 39.6 biaxial bending check — TASK-635.",
       "classes": [
         {
@@ -973,7 +973,7 @@
       "name": "test_column_helical.py",
       "type": "python",
       "size_lines": 356,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-12",
       "description": "Tests for IS 456 Cl 39.4 helical reinforcement check.",
       "classes": [
         {
@@ -1040,7 +1040,7 @@
       "name": "test_column_long.py",
       "type": "python",
       "size_lines": 662,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-12",
       "description": "Tests for IS 456 Cl 39.7 long (slender) column design.",
       "classes": [
         {
@@ -1168,7 +1168,7 @@
       "name": "test_column_return_types.py",
       "type": "python",
       "size_lines": 281,
-      "last_updated": "2026-04-07",
+      "last_updated": "2026-08-12",
       "description": "Tests for UX-02: Column API return type unification.",
       "classes": [
         {
@@ -1258,7 +1258,7 @@
       "name": "test_core.py",
       "type": "python",
       "size_lines": 176,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-12",
       "description": "Tests for structural_lib.core module.",
       "classes": [
         {
@@ -1328,7 +1328,7 @@
       "name": "test_core_types.py",
       "type": "python",
       "size_lines": 391,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-12",
       "description": "Tests for core types and error dataclasses.",
       "classes": [
         {
@@ -1437,7 +1437,7 @@
       "name": "test_dashboard.py",
       "type": "python",
       "size_lines": 259,
-      "last_updated": "2026-03-31",
+      "last_updated": "2026-08-12",
       "description": "Tests for the dashboard analytics module.",
       "classes": [
         {
@@ -1491,7 +1491,7 @@
       "name": "test_design_from_input.py",
       "type": "python",
       "size_lines": 142,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-12",
       "description": "Tests for design_from_input API function.",
       "classes": [
         {
@@ -1514,7 +1514,7 @@
       "name": "test_error_messages.py",
       "type": "python",
       "size_lines": 294,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-12",
       "description": "Tests for error message templates.",
       "classes": [
         {
@@ -1595,7 +1595,7 @@
       "name": "test_etabs_import_integration.py",
       "type": "python",
       "size_lines": 330,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-12",
       "description": "Integration tests for etabs_import Pydantic conversion functions.",
       "classes": [
         {
@@ -1665,7 +1665,7 @@
       "name": "test_evidence.py",
       "type": "python",
       "size_lines": 169,
-      "last_updated": "2026-08-11",
+      "last_updated": "2026-08-12",
       "description": "Focused tests for the supported IS 456 beam evidence envelope.",
       "functions": [
         {
@@ -1693,7 +1693,7 @@
       "name": "test_exception_hierarchy.py",
       "type": "python",
       "size_lines": 278,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-12",
       "description": "Tests for exception hierarchy in errors module.",
       "classes": [
         {
@@ -1746,7 +1746,7 @@
       "name": "test_footing.py",
       "type": "python",
       "size_lines": 1801,
-      "last_updated": "2026-08-11",
+      "last_updated": "2026-08-12",
       "description": "Tests for IS 456 footing design — TASK-650/651/652.",
       "classes": [
         {
@@ -1923,7 +1923,7 @@
       "name": "test_footing_api.py",
       "type": "python",
       "size_lines": 357,
-      "last_updated": "2026-08-11",
+      "last_updated": "2026-08-12",
       "description": "Focused contract tests for Phase B1 isolated-footing orchestration.",
       "functions": [
         {
@@ -1976,7 +1976,7 @@
       "name": "test_footing_detailing.py",
       "type": "python",
       "size_lines": 238,
-      "last_updated": "2026-08-11",
+      "last_updated": "2026-08-12",
       "description": "Outcome-focused tests for the bounded footing detailing slice.",
       "functions": [
         {
@@ -2026,7 +2026,7 @@
       "name": "test_footing_load_transfer.py",
       "type": "python",
       "size_lines": 165,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-12",
       "description": "Focused independent arithmetic checks for IS 456 Cl. 34.4 load transfer.",
       "functions": [
         {
@@ -2061,7 +2061,7 @@
       "name": "test_generated_clients.py",
       "type": "python",
       "size_lines": 71,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-12",
       "description": "Contract checks for the checked-in basic generated clients.",
       "functions": [
         {
@@ -2081,7 +2081,7 @@
       "name": "test_inputs.py",
       "type": "python",
       "size_lines": 464,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-12",
       "description": "Tests for the inputs module (TASK-276: Input Flexibility).",
       "classes": [
         {
@@ -2172,7 +2172,7 @@
       "name": "test_is456_common.py",
       "type": "python",
       "size_lines": 854,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-12",
       "description": "Tests for IS 456:2000 common modules - stress_blocks, reinforcement, validation.",
       "classes": [
         {
@@ -2348,7 +2348,7 @@
       "name": "test_is456_constants.py",
       "type": "python",
       "size_lines": 163,
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-08-12",
       "description": "Tests for IS 456:2000 named design constants.",
       "classes": [
         {
@@ -2374,7 +2374,7 @@
       "name": "test_model_picker.py",
       "type": "python",
       "size_lines": 132,
-      "last_updated": "2026-08-11",
+      "last_updated": "2026-08-12",
       "description": "Tests for the deterministic low-token model picker.",
       "functions": [
         {
@@ -2418,7 +2418,7 @@
       "name": "test_multi_objective_optimizer.py",
       "type": "python",
       "size_lines": 319,
-      "last_updated": "2026-08-07",
+      "last_updated": "2026-08-12",
       "description": "Tests for the multi-objective optimizer module (NSGA-II).",
       "classes": [
         {
@@ -2471,7 +2471,7 @@
       "name": "test_numerics.py",
       "type": "python",
       "size_lines": 136,
-      "last_updated": "2026-03-30",
+      "last_updated": "2026-08-12",
       "description": "Tests for structural_lib.core.numerics - safe arithmetic utilities.",
       "classes": [
         {
@@ -2531,7 +2531,7 @@
       "name": "test_packaging.py",
       "type": "python",
       "size_lines": 452,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-12",
       "description": "Tests for package distribution correctness.",
       "classes": [
         {
@@ -2625,7 +2625,7 @@
       "name": "test_pipeline_state.py",
       "type": "python",
       "size_lines": 353,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-12",
       "description": "Tests for scripts/pipeline_state.py — Pipeline step tracking + resume.",
       "classes": [
         {
@@ -2702,7 +2702,7 @@
       "name": "test_private_source_boundary.py",
       "type": "python",
       "size_lines": 40,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-12",
       "description": "Protected engineering-source material stays local and outside distributions.",
       "functions": [
         {
@@ -2721,7 +2721,7 @@
       "name": "test_release_environment.py",
       "type": "python",
       "size_lines": 263,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-12",
       "description": "Regression tests for local release preflight environment selection.",
       "functions": [
         {
@@ -2813,7 +2813,7 @@
       "name": "test_release_scripts.py",
       "type": "python",
       "size_lines": 693,
-      "last_updated": "2026-08-11",
+      "last_updated": "2026-08-12",
       "description": "Tests for release scripts (bump_version.py, release.py).",
       "classes": [
         {
@@ -2970,7 +2970,7 @@
       "name": "test_report_edge_cases.py",
       "type": "python",
       "size_lines": 303,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-12",
       "description": "Edge case tests for report generation modules (TASK-520).",
       "classes": [
         {
@@ -3031,7 +3031,7 @@
       "name": "test_report_svg.py",
       "type": "python",
       "size_lines": 141,
-      "last_updated": "2026-03-31",
+      "last_updated": "2026-08-12",
       "description": "Tests for the SVG report generation module.",
       "classes": [
         {
@@ -3083,7 +3083,7 @@
       "name": "test_reports.py",
       "type": "python",
       "size_lines": 447,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-12",
       "description": "Tests for the reports module.",
       "classes": [
         {
@@ -3170,7 +3170,7 @@
       "name": "test_research_prototypes.py",
       "type": "python",
       "size_lines": 910,
-      "last_updated": "2026-08-11",
+      "last_updated": "2026-08-12",
       "description": "Tests for research prototypes: Sustainability, Generative Design, Design Companion.",
       "classes": [
         {
@@ -3244,7 +3244,7 @@
       "name": "test_result_base.py",
       "type": "python",
       "size_lines": 217,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-12",
       "description": "Tests for result_base module.",
       "classes": [
         {
@@ -3312,14 +3312,30 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 491,
-      "last_updated": "2026-08-11",
+      "size_lines": 598,
+      "last_updated": "2026-08-12",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
         {
           "name": "test_session_heading_marker_accepts_descriptive_titles",
           "params": [
             "heading"
+          ]
+        },
+        {
+          "name": "test_task_brief_reports_lane_route_and_safe_workflow",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_run_task_brief_and_index_help_are_read_only"
+        },
+        {
+          "name": "test_index_generator_uses_worktree_runtime_in_temp_project",
+          "description": "The index launcher must resolve its runtime from its own worktree.",
+          "params": [
+            "tmp_path"
           ]
         },
         {
@@ -3404,31 +3420,18 @@
             "tmp_path",
             "monkeypatch"
           ]
-        },
-        {
-          "name": "test_tool_registry_discovers_all_copilot_skills"
-        },
-        {
-          "name": "test_generated_indexes_do_not_emit_trailing_space_hard_breaks"
-        },
-        {
-          "name": "test_generated_json_indexes_end_with_newline",
-          "params": [
-            "tmp_path",
-            "monkeypatch"
-          ]
         }
       ],
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "f9431a7d4ab0"
+      "content_hash": "e197dd5a389c"
     },
     {
       "name": "test_session_store.py",
       "type": "python",
       "size_lines": 287,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-12",
       "description": "Tests for scripts/session_store.py — JSON session persistence.",
       "classes": [
         {
@@ -3500,7 +3503,7 @@
       "name": "test_slenderness.py",
       "type": "python",
       "size_lines": 360,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-12",
       "description": "Unit tests for slenderness module.",
       "classes": [
         {
@@ -3571,7 +3574,7 @@
       "name": "test_testing_strategies.py",
       "type": "python",
       "size_lines": 681,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-12",
       "description": "Tests for the testing_strategies module (TASK-279).",
       "classes": [
         {
@@ -3705,7 +3708,7 @@
       "name": "test_timing_regression.py",
       "type": "python",
       "size_lines": 86,
-      "last_updated": "2026-04-07",
+      "last_updated": "2026-08-12",
       "description": "Regression tests for Windows-compatible timing.",
       "functions": [
         {
@@ -3725,7 +3728,7 @@
       "name": "test_token_efficiency.py",
       "type": "python",
       "size_lines": 83,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-12",
       "description": "Regression tests for repository-side token-efficiency controls.",
       "functions": [
         {
@@ -3753,7 +3756,7 @@
       "name": "test_tool_manifest.py",
       "type": "python",
       "size_lines": 101,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-12",
       "description": "Focused gates for the catalogue-derived beam tool manifest.",
       "functions": [
         {
@@ -3785,7 +3788,7 @@
       "name": "test_visualization_edge_cases.py",
       "type": "python",
       "size_lines": 757,
-      "last_updated": "2026-04-06",
+      "last_updated": "2026-08-12",
       "description": "Edge case tests for 3D visualization / geometry module (TASK-520).",
       "classes": [
         {
@@ -3909,7 +3912,7 @@
       "name": "test_visualization_geometry_3d.py",
       "type": "python",
       "size_lines": 765,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-12",
       "description": "Tests for visualization.geometry_3d module.",
       "classes": [
         {
@@ -4031,7 +4034,7 @@
       "name": "test_visualization_integration.py",
       "type": "python",
       "size_lines": 246,
-      "last_updated": "2026-04-07",
+      "last_updated": "2026-08-12",
       "description": "Integration tests for visualization.geometry_3d with detailing module.",
       "classes": [
         {
@@ -4065,7 +4068,7 @@
       "name": "test_workflow_catalog.py",
       "type": "python",
       "size_lines": 89,
-      "last_updated": "2026-08-11",
+      "last_updated": "2026-08-12",
       "description": "Focused contract tests for the one-beam application workflow catalogue.",
       "functions": [
         {
@@ -4087,7 +4090,7 @@
       "name": "test_workflow_runner.py",
       "type": "python",
       "size_lines": 189,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-12",
       "description": "Bounded-runner tests for the approved beam workflow only.",
       "functions": [
         {
@@ -4180,5 +4183,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "1d162fe09c9103c1"
+  "content_hash": "37ad3cb0bf11cae6"
 }

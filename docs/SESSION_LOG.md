@@ -1,3 +1,93 @@
+## 2026-08-12 — Session: GIT-001 Preservation and Workflow Recovery
+
+**Agent:** Codex
+**Branch:** `codex/workflow-intake-recovery`
+**Focus:** Preserve the unpublished Column PMM work and selectively recover the
+useful, current-compatible controls from stale PR #723
+
+### Summary
+
+- Published the exact Column PMM commit `8a52ed0f` on
+  `origin/codex/column-pmm-experimental` and corrected the old worktree's
+  upstream without rewriting its history.
+- Created fresh recovery worktrees from then-current `main` so preservation,
+  engineering assessment, and workflow implementation could not overwrite the
+  two historical lanes.
+- Held PMM integration because the preserved plan explicitly lacks an
+  independent full-surface benchmark; the existing supported Cl. 39.5 solver
+  remains the production route.
+- Reimplemented only PR #723's missing lane-safe `run.sh task brief` intake and
+  linked-worktree-safe index runtime/help behavior. Broad parallel-policy,
+  generated-index, agent-instruction, and unrelated historical changes were
+  rejected from this packet.
+- Merged the green GIT-001 baseline through PR #735, fast-forwarded local
+  `main`, and merged that exact main commit into this recovery branch without
+  conflicts or history rewriting.
+
+### Issues encountered
+
+- The PMM fiber solver had passing regression tests but no independent
+  benchmark for the complete P-Mx-My surface.
+- The preserved PMM worktree's first focused test run imported
+  `structural_lib` from the primary checkout instead of its own lane.
+- The first workflow checkpoint commit stopped when Black reformatted the new
+  regression test.
+- PR #723 was 53 commits behind `main`, conflicted, and combined the useful
+  intake/runtime controls with broad policy, generated, and unrelated changes.
+- The full gate found invalid front-matter values across the GIT-001 research
+  documents, including the new packet record.
+- The first session-end validation returned nonzero while the completed
+  evidence record and regenerated indexes were still uncommitted.
+
+### Root causes and resolutions
+
+- The PMM plan itself classifies the generalized fiber solver as experimental
+  and states that only a non-independent comparison with the supported Cl. 39.5
+  implementation exists. The exact commit was preserved remotely, but no PMM
+  calculation code was copied into the fresh integration lane. A trusted
+  independent oblique-surface benchmark remains the explicit advancement gate.
+- The old branch predates the maintained linked-worktree runtime binding. The
+  first green result was rejected; rerunning with `PYTHONPATH="$PWD/Python"`
+  resolved the PMM lane and passed its 9 focused tests. The fresh lanes'
+  `./scripts/python_runtime.sh --diagnose` reports `source_bound: true`.
+- The test was not Black-formatted when first staged. The hook was allowed to
+  modify it, the focused 38-test file was rerun, the exact four paths were
+  restaged, and commit `2d30e9d1` passed all hooks. No bypass was used.
+- The old PR evolved across several unrelated work streams. Its three commits
+  were treated as research evidence, not cherry-picked as a unit. Current-main
+  implementations and focused tests prove the two selected outcomes; PR #723
+  remains preserved until replacement CI and merge prove supersession.
+- GIT-001 used descriptive status/type labels outside the validator's finite
+  schema. The five records now use allowed `active` status and
+  `index`/`log`/`reference` types; phase-specific state remains in their content.
+  Targeted documentation validation and the full gate pass after regeneration.
+- Session-end intentionally checks for a clean handoff tree. Its content,
+  linkage, task, and governance checks passed; the evidence/index commit is
+  created before rerunning the validator against the clean candidate.
+
+### Verification
+
+- PMM local and remote preservation refs both resolve to `8a52ed0f`; corrected
+  focused PMM check: 9 passed with the preserved lane explicitly imported.
+- Workflow runtime diagnosis resolves this linked worktree; `task brief` reports
+  this branch, live dirty/base/upstream/worktree state, route, tools, and safe
+  start/close guidance without changing Git state.
+- `generate indexes --help` prints usage without generation, and a disposable
+  linked-worktree regression proves all generator calls use that lane's runtime.
+- `Python/tests/test_session_automation.py`: 38 passed; `./run.sh check --quick`:
+  10/10 passed; `git diff --check`: clean before the checkpoint.
+- After main integration and the front-matter correction, `./run.sh check`
+  passes 30/30.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: the preserved PMM lane did not support the current
+  runtime `--diagnose` behavior and initially imported the primary checkout ->
+  explicit lane `PYTHONPATH` proved the historical code, while fresh-lane
+  diagnosis proves the maintained fix.
+- ⚠️ TERMINAL ISSUE: the PMM audit used unsupported `rg -E` syntax ->
+  `rg -e '<pattern>'` completed the targeted search.
+
 ## 2026-08-12 — Session: GIT-001 Program Start and Research Baseline
 
 **Agent:** Codex

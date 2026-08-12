@@ -4,19 +4,19 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-12
-- Focus: GIT-001 Phase 0 baseline complete; official-source Phase 1 research started
+- Focus: GIT-001 Phase 1 continues; packet 7A replacement is under review
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
-**Branch:** `codex/git-governance-research`
-**Integration base:** refreshed `origin/main` at `6bc356c3`; immutable Alpha tag `v0.23.1a1` remains unchanged
+**Branch:** `codex/workflow-intake-recovery`
+**Integration base:** `origin/main` at `9778a4c2`; immutable Alpha tag `v0.23.1a1` remains unchanged
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
 | **Current** | GIT-001 Phase 1 | Complete primary-source coverage and factual lifecycle research without changing canonical policy |
 | **Next** | GIT-001 Phase 2 | Forensic incident study only after the Phase 1 coverage review passes |
-| **Held** | Policy implementation and cleanup | Phase 7 needs separate owner approval; all uncertain lanes remain preserved |
+| **Held** | Broad policy implementation and cleanup | Packet 7A is bounded; uncertain lanes stay preserved until exact replacement evidence passes |
 
 ## Integrated footing scope
 
@@ -59,14 +59,14 @@
   `origin/main` at `6bc356c3`; primary `main` remains clean and synchronized.
 - Phase 0 records eight clean worktrees, sixteen local branches, eight open PRs,
   the active main ruleset, no stashes, protected unique work, and explicit unknowns.
-- Column PMM and PR #723's parallel-policy lane remain untouched. Reachability,
-  age, or cleanliness is not being used as cleanup authority.
+- Column PMM is remotely preserved and held for an independent full-surface
+  benchmark. PR #723 stays intact while its bounded replacement is reviewed.
 - Phase 1 has begun with official Git, GitHub, and OpenAI sources. Research facts,
   project observations, proposed decisions, and normative policy stay separate.
 - Existing conflicting Git guides and retired-wrapper learning text are Phase 2
   evidence candidates, not early rewrite targets.
-- Canonical policy, GitHub settings, hooks, cleanup, release, and implementation
-  remain held until the Phase 6 proposal is reviewed and Phase 7 is authorized.
+- Packet 7A selectively restores lane-safe intake and index-runtime behavior;
+  canonical policy, GitHub settings, broad cleanup, and release remain held.
 - SPARK-001 remains integrated at PR #734, but Wave 0 stays behind owner gate G0.
 
 ## IS456-SLAB-001 implementation outcome
