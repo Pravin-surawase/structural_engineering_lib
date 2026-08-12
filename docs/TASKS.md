@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-12 — COLUMN-PMM-001 integrated through PR #738; GIT-001 Phase 1 continues
+**Updated:** 2026-08-13 — GIT-001 Phase 1 factual coverage independently passed; Phase 2 not started
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| GIT-001 | Research and propose an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🔬 PHASE 1 IN PROGRESS + PACKET 7A COMPLETE — PMM and PR #723 recovery integrated; broad policy held |
+| GIT-001 | Research and propose an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | ✅ PHASE 1 COMPLETE + PACKET 7A COMPLETE — factual lifecycle coverage independently passed; Phase 2/policy work not started |
 
 ## Up Next
 

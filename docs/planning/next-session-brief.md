@@ -3,8 +3,8 @@
 ## Latest Handoff
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-12
-- Focus: GIT-001 Phase 1 continuation and evidence-gated repository disposition
+- Date: 2026-08-13
+- Focus: GIT-001 Phase 1 complete; evidence-gated repository disposition
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
@@ -15,7 +15,7 @@
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | GIT-001 Phase 1 | Synchronize the research lane, finish official-source coverage, and write the factual lifecycle map |
+| **Current** | GIT-001 Phase 1 | Complete — synchronized research lane, official-source register, factual lifecycle map, and two passing coverage reviews |
 | **Next** | Excel planning lane | Confirm a named active owner/next action or approve retirement |
 | **Approval-gated** | Alpha worktrees and merged branches | Exact evidence is ready; deletion still requires explicit target approval |
 | **Separate maintenance** | Seven dependency PRs | Replace one-by-one merging with four current-base compatibility packets |
@@ -32,7 +32,7 @@
 ## Start command
 
 ```bash
-./run.sh task brief "continue GIT-001 Phase 1 official research"
+./run.sh task brief "continue evidence-gated repository disposition after GIT-001 Phase 1"
 ./run.sh session brief --agent ops
 ./run.sh session start
 ```
@@ -43,10 +43,12 @@ replacement for live inspection.
 
 ## Current Git facts
 
-- The dedicated GIT-001 worktree is clean at `3be4790d`, one commit ahead and
-  six behind current `main` by ancestry. `git cherry` shows its patch is already
-  squash-integrated. Merge current `origin/main` into this shared branch after
-  exact clean/upstream checks; do not rebase or force-push it.
+- The dedicated GIT-001 branch was synchronized without history rewriting at
+  `54a03557`; its tree exactly matched `origin/main = 69d9f68c`, its quick gate
+  passed 10/10, and the merge was fast-forward pushed to its existing remote.
+- Phase 1 covers the required Git, GitHub, release/dependency/contributor, and
+  Codex lifecycle facts. Product guarantees for task snapshots, managed-
+  worktree cleanup, and task-to-task Git handoff remain explicitly unresolved.
 - Column PMM preservation, selective recovery, independent benchmark,
   integration, closeout, and learning update are complete through PRs #738-#740.
   Historical remote refs remain evidence; PMM remains experimental.
@@ -61,17 +63,14 @@ replacement for live inspection.
 - All seven remaining Dependabot PRs are behind current `main`; their old green
   checks are stale for integration.
 
-## Phase 1 boundary
+## Phase 1 result
 
-Finish official coverage for core Git operations and recovery, GitHub merging
-and governance, dependency automation, releases/contributors, and verified
-Codex task/worktree behavior. Then produce the source-backed lifecycle map for
-normal, parallel, integration, release, cleanup, and recovery paths.
-
-Every statement must be labeled as an external fact, project observation,
-unresolved choice, or not applicable. Do not change canonical policy, GitHub
-settings, hooks, or cleanup behavior during Phase 1. Do not advance to Phase 2
-until the coverage review explicitly passes.
+The evidence register dispositions are complete and the factual lifecycle map
+covers normal, parallel, integration, release, cleanup, and recovery paths.
+Two independent read-only reviews passed after local claims were explicitly
+labeled and bound to dated observation evidence. Phase 1 changed no canonical
+policy, GitHub setting, hook, cleanup behavior, or release state. GIT-001 Phase
+2 remains not started.
 
 ## Destructive-action holds
 
