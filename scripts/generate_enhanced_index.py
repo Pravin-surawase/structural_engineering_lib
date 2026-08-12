@@ -5,6 +5,10 @@ When to use: After adding, removing, or restructuring files in key project folde
 Generates machine-readable (index.json) and human-readable (index.md) indexes
 that enable agents to load folder context quickly without reading every file.
 
+Live generation updates folders that already contain an index or are listed in
+``KEY_FOLDERS``. Creating indexes in any other folder requires the explicit
+``--allow-new-index`` option. Use ``--dry-run`` first when the target is new.
+
 Extends generate_folder_index.py to handle:
 - Python packages (.py files with class/function extraction)
 - React/TypeScript (.ts/.tsx with export detection)
@@ -26,6 +30,8 @@ Options:
     --md-only     Generate only index.md
     --all         Generate indexes for all key project folders
     --dry-run     Show what would be generated
+    --allow-new-index
+                  Permit live creation in a folder without maintained indexes
 """
 
 from __future__ import annotations
@@ -98,6 +104,22 @@ KEY_FOLDERS = [
     "agents",
     "agents/roles",
 ]
+
+
+def is_maintained_index_folder(folder: Path) -> bool:
+    """Return whether live generation may update ``folder`` by default.
+
+    A folder is maintained when it is in the canonical key-folder list or
+    already contains either generated index. This distinguishes updating an
+    existing projection from introducing new repository files.
+    """
+    resolved_folder = folder.resolve()
+    relative_folder = resolved_folder.relative_to(PROJECT_ROOT).as_posix()
+    return (
+        relative_folder in KEY_FOLDERS
+        or (resolved_folder / "index.json").is_file()
+        or (resolved_folder / "index.md").is_file()
+    )
 
 
 # ─── Python Analysis ────────────────────────────────────────────
@@ -703,6 +725,11 @@ def main():
         "--dry-run", action="store_true", help="Show what would be generated"
     )
     parser.add_argument(
+        "--allow-new-index",
+        action="store_true",
+        help="Permit live index creation in a previously unmaintained folder",
+    )
+    parser.add_argument(
         "--check",
         action="store_true",
         help="Check if existing indexes are stale (exit 1 if any are)",
@@ -789,6 +816,18 @@ def main():
         else:
             print(f"✓ All {checked} index(es) with hashes are current")
             sys.exit(0)
+
+    if not args.dry_run and not args.allow_new_index:
+        unmaintained = [
+            folder for folder in folders if not is_maintained_index_folder(folder)
+        ]
+        if unmaintained:
+            print("❌ Refusing to create indexes in unmaintained folder(s):")
+            for folder in unmaintained:
+                print(f"  - {folder.relative_to(PROJECT_ROOT)}")
+            print("Run with --dry-run to inspect the targets.")
+            print("Use --allow-new-index only when new index files are intentional.")
+            sys.exit(2)
 
     print(f"Folders to process: {len(folders)}")
     print(f"Mode: {'DRY RUN' if args.dry_run else 'LIVE'}")

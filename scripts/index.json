@@ -8,11 +8,11 @@
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 72,
+      "size_lines": 79,
       "last_updated": "2026-08-12",
       "title": "Scripts",
       "description": "> Development, validation, discovery, release-preparation, and maintenance tools. > Git/GitHub lifecycle wrappers were retired on 2026-08-09; Codex owns that",
-      "content_hash": "f038a0884d21"
+      "content_hash": "812e467b64a5"
     },
     {
       "name": "agent_brief.sh",
@@ -912,7 +912,7 @@
         "_coverage",
         "tasks"
       ],
-      "content_hash": "5c3fe48192ca"
+      "content_hash": "186f2a2c15ec"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1678,7 +1678,7 @@
     {
       "name": "check_function_quality.py",
       "type": "python",
-      "size_lines": 674,
+      "size_lines": 677,
       "last_updated": "2026-08-12",
       "description": "12-point quality checklist for IS 456 functions.",
       "classes": [
@@ -1759,7 +1759,7 @@
         "UNIT_SUFFIXES",
         "ADVISORY_CHECKS"
       ],
-      "content_hash": "cda5924f482f"
+      "content_hash": "a6b22dde821d"
     },
     {
       "name": "check_governance.py",
@@ -3266,10 +3266,17 @@
     {
       "name": "generate_enhanced_index.py",
       "type": "python",
-      "size_lines": 827,
+      "size_lines": 866,
       "last_updated": "2026-08-12",
       "description": "Generate enhanced index.json + index.md for ANY folder type.",
       "functions": [
+        {
+          "name": "is_maintained_index_folder",
+          "description": "Return whether live generation may update ``folder`` by default.",
+          "params": [
+            "folder"
+          ]
+        },
         {
           "name": "analyze_python_file",
           "description": "Extract metadata from a Python file.",
@@ -3344,7 +3351,7 @@
         "SKIP_DIRS",
         "KEY_FOLDERS"
       ],
-      "content_hash": "102cdd8402b4"
+      "content_hash": "333f720a61be"
     },
     {
       "name": "generate_error_docs.py",
@@ -4059,10 +4066,10 @@
     {
       "name": "python_runtime.sh",
       "type": "shell-script",
-      "size_lines": 72,
+      "size_lines": 75,
       "last_updated": "2026-08-12",
       "description": "Resolve the repository Python interpreter across primary and linked worktrees.",
-      "content_hash": "3d184251b5e6"
+      "content_hash": "a1668746c936"
     },
     {
       "name": "release.py",
@@ -4154,7 +4161,7 @@
     {
       "name": "safe_file_delete.py",
       "type": "python",
-      "size_lines": 350,
+      "size_lines": 355,
       "last_updated": "2026-08-12",
       "description": "Safe file delete script with reference checking.",
       "functions": [
@@ -4193,7 +4200,7 @@
           "name": "main"
         }
       ],
-      "content_hash": "c2dea6869d7b"
+      "content_hash": "1c59c8d925fa"
     },
     {
       "name": "safe_file_move.py",
@@ -5370,5 +5377,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "6ed4e1cf64d433a3"
+  "content_hash": "eefbdc480ded19b3"
 }

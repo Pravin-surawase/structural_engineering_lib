@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-09
+last_updated: 2026-08-12
 doc_type: guide
 complexity: intermediate
 tags: [git, github, codex, workflow]
@@ -55,6 +55,17 @@ automatic reset, clean, checkout, stash/drop, rebase, or force push.
 If resolution requires choosing which user changes or commits to keep, stop and
 ask the user. A normal implementation request does not authorize discarding
 work.
+
+When recovering useful work from a stale or mixed historical branch, preserve
+the exact commit first and treat it as evidence rather than applying it as a
+unit. Create a fresh worktree from current `main`, recover only the intended
+paths or hunks, verify runtime/source identity, and establish any missing domain
+evidence before publication. Squash integration changes commit identity, so
+cleanup must consider the PR receipt, content, tests, and retained remote refs;
+ancestry alone is insufficient.
+
+See the worked [Column PMM recovery case study](git-recovery-case-study-column-pmm.md)
+for the complete branch/worktree, script, benchmark, CI, and cleanup sequence.
 
 ## Owner-approved operations
 

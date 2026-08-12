@@ -3,7 +3,7 @@
 Guides for developers and maintainers of the structural engineering library.
 
 **Type:** Documentation
-**Last Updated:** 2026-08-11
+**Last Updated:** 2026-08-12
 **Files:** 24
 
 ## Documentation Files
@@ -21,7 +21,7 @@ Guides for developers and maintainers of the structural engineering library.
 | [doc-template.md](doc-template.md) |  | Copy this header to new documentation files and fill in the  | 92 |
 | [docstring-style-guide.md](docstring-style-guide.md) |  | > **Purpose:** Standard docstring format for all Python modu | 377 |
 | [end-of-session-workflow.md](end-of-session-workflow.md) |  | > **Standard procedure for ALL agents when ending a session. | 498 |
-| [git-workflow-ai-agents.md](git-workflow-ai-agents.md) |  | The canonical workflow is git-workflow-single-source.md. | 24 |
+| [git-workflow-ai-agents.md](git-workflow-ai-agents.md) |  | The canonical workflow is git-workflow-single-source.md. | 29 |
 | [git-workflow-testing.md](git-workflow-testing.md) |  | > Historical test strategy for the retired wrapper layer. Do | 346 |
 | [github-workflow.md](github-workflow.md) |  | Codex owns the repository's Git and GitHub lifecycle. The ol | 55 |
 | [handoff.md](handoff.md) |  | Goal: enable the next agent to resume in under 2 minutes. 1. | 96 |

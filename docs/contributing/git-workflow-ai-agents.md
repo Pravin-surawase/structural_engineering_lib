@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-09
+last_updated: 2026-08-12
 doc_type: guide
 complexity: beginner
 tags: [git, github, codex]
@@ -21,3 +21,8 @@ Destructive or history-changing actions—including merge, branch deletion,
 issue closure, release, force push, amend of published history, and reset—need
 explicit user confirmation. Unclear Git state is a stop condition, not a reason
 to invoke automated recovery.
+
+For a complete repository example of preserving a stale unique branch,
+selectively recovering it onto current `main`, proving linked-worktree runtime
+identity, handling squash ancestry, and retiring only clean local lanes, read the
+[Column PMM recovery case study](../git-automation/git-recovery-case-study-column-pmm.md).
