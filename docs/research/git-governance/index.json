@@ -1,0 +1,43 @@
+{
+  "folder": "docs/research/git-governance",
+  "type": "documentation",
+  "description": "",
+  "last_updated": "2026-08-12",
+  "file_count": 4,
+  "files": [
+    {
+      "name": "GIT-001-README.md",
+      "type": "documentation",
+      "size_lines": 90,
+      "last_updated": "2026-08-12",
+      "description": "This directory is the task-owned, non-normative research record for GIT-001. Its contents may describe official Git/GitHub/Codex facts, observed project",
+      "content_hash": "40bd0c1ed89d"
+    },
+    {
+      "name": "GIT-001-lifecycle-research.md",
+      "type": "documentation",
+      "size_lines": 114,
+      "last_updated": "2026-08-12",
+      "description": "This is a factual, non-normative lifecycle model under research. It does not replace the canonical project workflow. Proposed transitions and permissions",
+      "content_hash": "68b356028e7f"
+    },
+    {
+      "name": "GIT-001-official-evidence-register.md",
+      "type": "documentation",
+      "size_lines": 47,
+      "last_updated": "2026-08-12",
+      "description": "Only primary, official sources belong in this register. A verified source can support a factual finding; it cannot by itself create project policy. Project",
+      "content_hash": "b92c77d4d824"
+    },
+    {
+      "name": "GIT-001-phase-0-preservation-baseline.md",
+      "type": "documentation",
+      "size_lines": 165,
+      "last_updated": "2026-08-12",
+      "description": "- Observation time: 2026-08-12T21:17:05+05:30 - Repository: Pravin-surawase/structural_engineering_lib",
+      "content_hash": "8de626754037"
+    }
+  ],
+  "subfolders": [],
+  "content_hash": "a2ed61bd0a523b7e"
+}

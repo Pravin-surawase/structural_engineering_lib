@@ -4,19 +4,19 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-12
-- Focus: SPARK-001 published through PR #734 for G0 review; Wave 0 remains held
+- Focus: GIT-001 Phase 0 baseline complete; official-source Phase 1 research started
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
-**Branch:** `codex/gpt-5-3-spark-work-program`
-**Integration base:** `origin/main` at `8d47de73`; immutable Alpha tag `v0.23.1a1` remains unchanged
+**Branch:** `codex/git-governance-research`
+**Integration base:** refreshed `origin/main` at `6bc356c3`; immutable Alpha tag `v0.23.1a1` remains unchanged
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | SPARK-001 Phase 3 | PR #734 carries the preserved plan, integrated `main`, picker fix, and green local gates |
-| **Next** | Owner review gate G0 | Accept, revise, or reject Wave 0 after the reconciled control plane passes verification |
-| **Held** | Stable/engineering-use claims | Alpha publication does not grant qualified professional approval or complete-code coverage |
+| **Current** | GIT-001 Phase 1 | Complete primary-source coverage and factual lifecycle research without changing canonical policy |
+| **Next** | GIT-001 Phase 2 | Forensic incident study only after the Phase 1 coverage review passes |
+| **Held** | Policy implementation and cleanup | Phase 7 needs separate owner approval; all uncertain lanes remain preserved |
 
 ## Integrated footing scope
 
@@ -44,7 +44,7 @@
 
 ## Required Reading
 
-- [GPT-5.3-Codex-Spark work program](gpt-5-3-codex-spark-work-program.md)
+- [GIT-001 research index](../research/git-governance/GIT-001-README.md)
 - [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
 - [IS 456 solid slabs master plan](is456-solid-slabs-master-plan.md)
 - [IS 456 library-first evidence](../verification/is456-library-first-evidence.md)
@@ -53,25 +53,21 @@
 - [Current task board](../TASKS.md)
 - [Release policy](../getting-started/releases.md)
 
-## SPARK-001 planning state
+## GIT-001 research state
 
-- Draft PR #734 publishes the recovered work program and picker fix for review;
-  publication alone does not authorize any execution wave.
-- The original draft was preserved at checkpoint `47fce48e` before integrating
-  current `origin/main` through merge commit `f0314f3e`; no product or calculation
-  implementation was started and no history was rewritten.
-- The plan records verified preview properties, current usage/pricing uncertainty,
-  protected structural and security areas, active worktree ownership, mandatory
-  tests, escalation triggers, cost-learning fields, and independent review gates.
-- Seventy bounded packets are organized into eight waves covering control-plane
-  calibration, documentation truth, automation contracts, API examples, bounded
-  React behavior, runnable examples, verification operations, and post-merge
-  integration.
-- Wave 0 remains unauthorized until the repository owner accepts or revises the
-  plan. Acceptance of G0 authorizes only the specifically approved first wave.
-- The recovered control plane now treats Spark as an unpriced preview, exercises
-  the real model-table CLI, and keeps ambiguous/high-risk work on Terra with
-  approval-gated Sol escalation.
+- Dedicated `codex/git-governance-research` worktree was created from refreshed
+  `origin/main` at `6bc356c3`; primary `main` remains clean and synchronized.
+- Phase 0 records eight clean worktrees, sixteen local branches, eight open PRs,
+  the active main ruleset, no stashes, protected unique work, and explicit unknowns.
+- Column PMM and PR #723's parallel-policy lane remain untouched. Reachability,
+  age, or cleanliness is not being used as cleanup authority.
+- Phase 1 has begun with official Git, GitHub, and OpenAI sources. Research facts,
+  project observations, proposed decisions, and normative policy stay separate.
+- Existing conflicting Git guides and retired-wrapper learning text are Phase 2
+  evidence candidates, not early rewrite targets.
+- Canonical policy, GitHub settings, hooks, cleanup, release, and implementation
+  remain held until the Phase 6 proposal is reviewed and Phase 7 is authorized.
+- SPARK-001 remains integrated at PR #734, but Wave 0 stays behind owner gate G0.
 
 ## IS456-SLAB-001 implementation outcome
 

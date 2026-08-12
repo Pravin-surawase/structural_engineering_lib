@@ -1,3 +1,67 @@
+## 2026-08-12 — Session: GIT-001 Program Start and Research Baseline
+
+**Agent:** Codex
+**Branch:** `codex/git-governance-research`
+**Focus:** Establish a preservation-first research lane, complete the Phase 0
+baseline, and start official-source Phase 1 research without changing policy
+
+### Summary
+
+- Refreshed `origin/main`, verified clean `main` at exact SHA `6bc356c3`, and
+  created a dedicated sibling worktree and branch from that object.
+- Inventoried worktrees, local branches/upstreams/reachability, stashes,
+  operation markers, open PRs, merge settings, and the active main ruleset.
+- Preserved Column PMM, parallel-policy PR #723, Alpha, Excel, and all uncertain
+  lanes; made no cleanup or recovery disposition.
+- Added a non-normative GIT-001 research index, Phase 0 receipt, official-source
+  evidence register, and initial factual lifecycle model.
+- Kept the canonical Git policy and Phase 7 implementation unchanged and
+  approval-gated.
+
+### Issues encountered
+
+- The required intake command `./run.sh task brief "..."` failed because the
+  current `run.sh` does not implement a `task` command.
+- `./run.sh generate indexes --help` started generation instead of showing help,
+  then failed in the linked worktree because `.venv/bin/python` was absent.
+- A subagent's first linked-worktree marker probe stopped when a zsh variable
+  named `path` overwrote the shell's command-search array.
+
+### Root causes and resolutions
+
+- Repository instructions and prior task evidence advertise `run.sh task brief`,
+  but the command is absent from the integrated CLI. The supported
+  `./run.sh session brief --agent orchestrator` and `./run.sh session start`
+  path was used successfully. The mismatch is retained as a GIT-001 incident
+  candidate; no intake implementation was added during research.
+- `run.sh` forwards every argument after `generate indexes` to a shell script
+  that has no help parser, and that script invokes `.venv/bin/python` relative
+  to the linked worktree instead of the maintained runtime resolver. Affected
+  indexes were regenerated child-first with `./scripts/python_runtime.sh
+  scripts/generate_enhanced_index.py <folder>`. The generator itself remains a
+  Phase 2 incident candidate rather than an unapproved Phase 1 repair.
+- In zsh, `path` is tied to `PATH`; assigning it removed command lookup for the
+  rest of the chained probe. The read-only probe was rerun with `marker_target`,
+  confirming all GIT-001 operation markers were absent. No repository state was
+  changed by the failed probe.
+
+### Verification
+
+- `git fetch origin --prune`; `HEAD...origin/main` was `0 0` before lane creation.
+- New worktree/branch HEAD equals `6bc356c37f094ff6dba1c5c2f06527bf1cda4966`.
+- All eight worktrees reported no file records under no-optional-locks porcelain
+  status; preserved branch and PR facts are recorded in the Phase 0 receipt.
+- `./scripts/python_runtime.sh --diagnose` resolved the new lane's source tree.
+- Documentation and repository gates are recorded at session closeout.
+
+### Notes
+
+- Phase 1 remains in progress. Phase 0 completion does not certify old lanes as
+  merged, redundant, recoverable, or safe to remove.
+- No branch deletion, PR closure, policy implementation, GitHub-setting change,
+  release, package publication, reset, stash, rebase, force push, or cleanup was
+  performed.
+
 ## 2026-08-12 — Session: SPARK-001 Phase 3 Publication Closeout
 
 **Agent:** Codex
