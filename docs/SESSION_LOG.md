@@ -1,3 +1,123 @@
+## 2026-08-13 — Session: GIT-001 Phases 2-6 Upgrade Proposal
+
+**Agent:** Codex (`orchestrator` / `ops`)
+
+**Branch:** `codex/git-governance-research`
+
+**Focus:** Convert completed Git research and recent recovery knowledge into a
+forensic incident register, live gap matrix, operating model, scenario gate,
+and owner-ready first implementation packet
+
+### Summary
+
+- Refreshed and inspected the primary and dedicated GIT-001 lanes, sibling
+  worktrees, branch/upstream/diff state, current PR history, active ruleset,
+  repository merge settings, and 100 recent workflow runs before mutation.
+- Synchronized the clean research branch with current `origin/main` through
+  normal two-parent merge `845c3fa9`; the merge introduced no content delta
+  from main and preserved the prior squash ancestry.
+- Completed Phase 2 with ten evidence-backed incident families covering
+  divergence, dirty lanes, mixed stale work, linked-worktree identity,
+  generated data, timing CI, release parity, trust, squash cleanup, and
+  intake/help drift.
+- Completed Phase 3 with thirteen outcome-changing gaps across the state/intake,
+  publication/server, generated-data/cleanup, and guidance/handoff planes.
+- Completed the Phase 4 proposal: one typed read-only state kernel, explicit
+  lane lifecycle, PR-required enforcement, two merge methods, outcome-routed CI,
+  targeted generation, inspection-only cleanup, and durable handoff receipts.
+- Completed Phase 5 proposal validation with disposable Git scenarios and live
+  read-only checks. The current linked-worktree merge and detached-HEAD guards
+  reproduced false-success results; the required Git primitives, targeted
+  non-writing generation, and intake performance were feasible.
+- Prepared Phase 6 for owner decision. Recommendation: accept the operating
+  model and authorize only GIT-7B, the read-only state/intake kernel. GIT-7C–7E,
+  GitHub settings, cleanup, deletion, and all broader implementation remain held.
+
+### Issues encountered
+
+- The required quick-gate validator and unfinished-merge guard both reported no
+  unfinished merge and exited zero during a real stopped merge in a disposable
+  linked worktree.
+- The current detached-HEAD guard printed a warning but exited zero.
+- Current task brief used the branch upstream head as `base` and omitted the
+  local `+2/-0` upstream relation, current-main relation, operation state, and
+  PR/check identity.
+- The maintained cleanup script exposes remote deletion while selecting by
+  age/ancestry and collapsing some Git query failures to merged/very-old
+  evidence; its automation permission is unspecified.
+- Live workflow instructions retain unsupported `--dry-run`/`--fix`, obsolete
+  command, and direct-main guidance even though the static Codex workflow check
+  passes.
+- The active main ruleset requires strict `PR Gate` but has no pull-request rule
+  and includes an always-bypass repository role available to the owner.
+- Required CI does not run maintained session/task/runtime outcome tests for
+  changed control-plane scripts, and strict MkDocs build is a separate
+  non-required, globally cancelling workflow.
+
+### Root causes and resolutions
+
+- Root cause: both shell guards inspect literal `.git/MERGE_HEAD`, but linked
+  worktrees store operation markers under the path returned by
+  `git rev-parse --git-path`. Resolution in this phase: reproduced the failure
+  without changing project state, specified one worktree-aware typed kernel,
+  and made normal/linked operation scenarios mandatory for GIT-7B. Evidence:
+  literal marker false, Git-path marker true, both current guards exit zero.
+- Root cause: branch, base, upstream, tree, operation, publication, and trust
+  semantics are duplicated across several scripts and consumers. Resolution in
+  this phase: define one evidence schema and fail-closed derived actions; runtime
+  consolidation remains owner-gated GIT-7B.
+- Root cause: cleanup combines an incomplete classifier with a mutation path and
+  its subprocess helper ignores return codes. Resolution in this phase: define
+  an inspection-only disposition contract for GIT-7D; no branch or worktree was
+  changed or deleted.
+- Root cause: the static workflow checker scans a small filename/phrase surface,
+  while live guidance and CI path routing are not semantically bound to outcome
+  tests. Resolution in this phase: define semantic instruction and
+  control-plane CI gates for GIT-7C/GIT-7E; no current instruction or workflow
+  was silently rewritten.
+- Root cause: current GitHub rules protect a status context and ref operations
+  but do not enforce the canonical PR path, and the standing bypass can skip the
+  protection. Resolution in this phase: record the exact settings mismatch and
+  propose PR-required/no-standing-bypass policy for separately approved GIT-7C;
+  no server setting changed.
+
+### Verification
+
+- Live start state: primary `main = origin/main = f3ad94dc`, all six attached
+  worktrees clean; research branch exact with upstream before synchronization.
+- GitHub connector and `gh` inspection: active ruleset `11390214`, exact rule
+  JSON, repository merge settings, PR #743 history, and latest 100 workflow runs.
+- Disposable repository: branch divergence `1/1`; linked merge marker resolved
+  only through `--git-path`; current merge guard and validator exited zero;
+  detached guard exited zero.
+- Targeted generator dry-run processed exactly one folder and left Git status
+  unchanged.
+- Six-worktree task brief completed in 0.26 seconds; current comprehensive Git
+  validator took 4.05 seconds.
+- Phase 5 defines executable acceptance scenarios for every GIT-7B–7E packet.
+- Strict documentation validation passed all five checks with zero invalid
+  frontmatter; 341 Markdown files and 1,108 internal links produced zero broken
+  links. Existing advisory metadata/frontmatter warnings were unchanged and
+  outside this task.
+- `./run.sh check --quick`: 10/10 passed. `./run.sh check`: 30/30 passed.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: an initial `rg` pattern contained shell backticks around a
+  commit ID, so zsh attempted to execute that ID -> reran the search with a
+  single-quoted pattern and no executable substitution.
+- ⚠️ TERMINAL ISSUE: the first detached-guard probe inherited the parent working
+  directory instead of the disposable detached worktree -> reran it from the
+  exact validated disposable path and recorded the correct zero exit.
+- ⚠️ TERMINAL ISSUE: the first targeted-index rerun used a remembered
+  script name that does not exist -> located the maintained command with
+  `rg --files scripts` and regenerated only the three affected folders through
+  `scripts/generate_enhanced_index.py`.
+- ⚠️ TERMINAL ISSUE: the read-only session-end check returned nonzero
+  because the validated proposal was still uncommitted -> retained the exact
+  17-path scope and completed the normal local commit before rerunning the
+  session-end check.
+
 ## 2026-08-13 — Session: GIT-001 Phase 1 Completion
 
 **Agent:** Codex (`orchestrator` / `ops`)

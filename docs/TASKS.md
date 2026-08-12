@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-13 — GIT-001 Phase 1 factual coverage independently passed; Phase 2 not started
+**Updated:** 2026-08-13 — GIT-001 Phase 6 proposal ready; owner decision and separate GIT-7B authorization pending
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| GIT-001 | Research and propose an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | ✅ PHASE 1 COMPLETE + PACKET 7A COMPLETE — factual lifecycle coverage independently passed; Phase 2/policy work not started |
+| GIT-001 | Research and propose an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🟡 PHASE 6 OWNER DECISION — recommend accept operating model and authorize read-only GIT-7B only; GIT-7C–7E, settings, cleanup, and deletion remain held |
 
 ## Up Next
 

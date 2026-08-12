@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-13",
-  "file_count": 6,
+  "file_count": 11,
   "files": [
     {
       "name": "GIT-001-README.md",
@@ -11,7 +11,7 @@
       "size_lines": 92,
       "last_updated": "2026-08-13",
       "description": "This directory is the task-owned, non-normative research record for GIT-001. Its contents may describe official Git/GitHub/Codex facts, observed project",
-      "content_hash": "f9d7d247a4a2"
+      "content_hash": "ac5502f5d5ef"
     },
     {
       "name": "GIT-001-lifecycle-research.md",
@@ -46,6 +46,46 @@
       "content_hash": "6d737c63cb6d"
     },
     {
+      "name": "GIT-001-phase-2-incident-register.md",
+      "type": "documentation",
+      "size_lines": 350,
+      "last_updated": "2026-08-13",
+      "description": "This register traces confirmed Git, worktree, automation, CI, release, and recovery failures from this repository. It is forensic evidence for the later",
+      "content_hash": "e94fe169b0f7"
+    },
+    {
+      "name": "GIT-001-phase-3-gap-risk-matrix.md",
+      "type": "documentation",
+      "size_lines": 234,
+      "last_updated": "2026-08-13",
+      "description": "This matrix compares five evidence layers: 1. official Git/GitHub/Codex facts from Phase 1;",
+      "content_hash": "c4c66d7f8b7e"
+    },
+    {
+      "name": "GIT-001-phase-4-operating-model.md",
+      "type": "documentation",
+      "size_lines": 429,
+      "last_updated": "2026-08-13",
+      "description": "Use a **preservation-first, evidence-separated, Codex-native** operating model: - one task, one attached worktree, one branch, and one named integration owner;",
+      "content_hash": "2648d526bef2"
+    },
+    {
+      "name": "GIT-001-phase-5-scenario-validation.md",
+      "type": "documentation",
+      "size_lines": 227,
+      "last_updated": "2026-08-13",
+      "description": "Phase 5 tests whether the proposed operating model is grounded in observable Git/GitHub behavior and whether every implementation packet has a falsifiable",
+      "content_hash": "c58cdf2724e1"
+    },
+    {
+      "name": "GIT-001-phase-6-canonical-policy-proposal.md",
+      "type": "documentation",
+      "size_lines": 250,
+      "last_updated": "2026-08-13",
+      "description": "state and intake kernel, as the first implementation packet.** Do not yet authorize GitHub ruleset changes, CI topology changes, generated-data",
+      "content_hash": "4a29b4e49f8a"
+    },
+    {
       "name": "GIT-001-phase-7A-preservation-workflow-recovery.md",
       "type": "documentation",
       "size_lines": 82,
@@ -55,5 +95,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "ffdd6b6c399b36e6"
+  "content_hash": "fe8ed4f7be0d68b9"
 }

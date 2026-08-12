@@ -2,7 +2,7 @@
   "folder": "docs/research",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-12",
+  "last_updated": "2026-08-13",
   "file_count": 6,
   "files": [
     {
@@ -60,8 +60,8 @@
     {
       "name": "git-governance",
       "path": "git-governance/",
-      "file_count": 7
+      "file_count": 13
     }
   ],
-  "content_hash": "c7f3c37bb7e159d1"
+  "content_hash": "978cc237aa8e758f"
 }

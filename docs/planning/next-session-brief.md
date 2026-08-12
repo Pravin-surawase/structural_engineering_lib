@@ -4,7 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-13
-- Focus: GIT-001 Phase 1 complete; evidence-gated repository disposition
+- Focus: GIT-001 Phase 6 proposal ready; owner decision and GIT-7B authorization pending
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
@@ -15,8 +15,9 @@
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | GIT-001 Phase 1 | Complete — synchronized research lane, official-source register, factual lifecycle map, and two passing coverage reviews |
-| **Next** | Excel planning lane | Confirm a named active owner/next action or approve retirement |
+| **Current** | GIT-001 Phase 6 | Ready for owner decision — recommend accepting the operating model and authorizing only read-only GIT-7B |
+| **Next** | GIT-7B after owner acceptance | Build one worktree-aware state kernel and route task brief, trust, quick gate, and focused CI through it |
+| **Parallel owner decision** | Excel planning lane | Confirm a named active owner/next action or approve retirement |
 | **Approval-gated** | Alpha worktrees and merged branches | Exact evidence is ready; deletion still requires explicit target approval |
 | **Separate maintenance** | Seven dependency PRs | Replace one-by-one merging with four current-base compatibility packets |
 
@@ -26,13 +27,18 @@
 2. [GIT-001 research index](../research/git-governance/GIT-001-README.md)
 3. [Official evidence register](../research/git-governance/GIT-001-official-evidence-register.md)
 4. [Lifecycle research](../research/git-governance/GIT-001-lifecycle-research.md)
-5. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
-6. [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
+5. [Phase 2 incident register](../research/git-governance/GIT-001-phase-2-incident-register.md)
+6. [Phase 3 gap/risk matrix](../research/git-governance/GIT-001-phase-3-gap-risk-matrix.md)
+7. [Phase 4 operating-model proposal](../research/git-governance/GIT-001-phase-4-operating-model.md)
+8. [Phase 5 scenario validation](../research/git-governance/GIT-001-phase-5-scenario-validation.md)
+9. [Phase 6 canonical-policy proposal](../research/git-governance/GIT-001-phase-6-canonical-policy-proposal.md)
+10. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+11. [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
 
 ## Start command
 
 ```bash
-./run.sh task brief "continue evidence-gated repository disposition after GIT-001 Phase 1"
+./run.sh task brief "implement accepted GIT-7B read-only state and intake kernel"
 ./run.sh session brief --agent ops
 ./run.sh session start
 ```
@@ -63,14 +69,21 @@ replacement for live inspection.
 - All seven remaining Dependabot PRs are behind current `main`; their old green
   checks are stale for integration.
 
-## Phase 1 result
+## Phase 1 through Phase 3 result
 
 The evidence register dispositions are complete and the factual lifecycle map
 covers normal, parallel, integration, release, cleanup, and recovery paths.
 Two independent read-only reviews passed after local claims were explicitly
 labeled and bound to dated observation evidence. Phase 1 changed no canonical
-policy, GitHub setting, hook, cleanup behavior, or release state. GIT-001 Phase
-2 remains not started.
+policy, GitHub setting, hook, cleanup behavior, or release state. Phase 2 now
+adds ten evidence-backed incident families with main-process impact, confirmed
+or explicit unconfirmed root causes, unsafe reactions, recovery, and proof.
+Phase 3 adds thirteen outcome-changing gaps. Phase 4 maps them into
+state/intake, publication/server enforcement, generated-data/cleanup, and
+guidance/handoff control planes, with the read-only state kernel first. Phase 5
+reproduces the current abnormal-state defects and defines falsifiable packet
+gates. Phase 6 now recommends acceptance and authorization of read-only GIT-7B
+only. No implementation is authorized until the owner records that decision.
 
 ## Destructive-action holds
 
