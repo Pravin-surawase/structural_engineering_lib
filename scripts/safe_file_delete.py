@@ -10,6 +10,11 @@ This script safely deletes files by:
 3. Optionally creating backup
 4. Running link validation after delete
 
+Reference discovery is deliberately conservative and searches by basename.
+Generic generated names such as ``index.json`` and ``index.md`` can therefore
+produce broad matches. Treat those matches as prompts to inspect the exact path,
+Git status, and ownership; ``--force`` is not proof that deletion is safe.
+
 Usage:
     python scripts/safe_file_delete.py <file> [--force] [--dry-run]
 

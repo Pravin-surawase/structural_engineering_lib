@@ -8,6 +8,7 @@
 
 ```bash
 ./run.sh session start
+./run.sh task brief "describe the task"
 ./run.sh check --quick
 ./run.sh check
 ./run.sh test
@@ -45,11 +46,14 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 | Docs | `check_docs.py` | Metadata and documentation checks |
 | Governance | `check_governance.py` | Folder and policy validation |
 | Git diagnosis | `validate_git_state.sh` | Read-only Git state report |
+| Task intake | `run.sh task brief` | Read-only lane, base, worktree, route, and safe-start summary |
+| Python runtime | `python_runtime.sh --diagnose` | Prove linked-worktree import identity with `source_bound=true` |
 | Discovery | `find_automation.py` | Find an existing project automation |
 | API discovery | `discover_api_signatures.py` | Exact Python API signatures |
 | Files | `safe_file_move.py` | Move files after a dry run and link scan |
 | Files | `safe_file_delete.py` | Delete files after a dry run and reference scan |
-| Indexes | `generate_enhanced_index.py` | Regenerate folder indexes |
+| Indexes | `generate_enhanced_index.py` | Update maintained folder indexes; new index locations require `--allow-new-index` |
+| IS 456 quality | `check_function_quality.py --module <name>` | Source-relative static function-contract scan; not a numerical benchmark |
 | Sessions | `session.py` | Bounded session lifecycle and usage checkpoints |
 | CI | `diagnose_ci.py` | Diagnose CI failures without managing Git |
 | Release | `release.py` | Authorized release preparation and validation |
@@ -60,6 +64,9 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 - Run from the repository root and use `./scripts/python_runtime.sh`, never bare `python`.
 - Inspect `--help` before invoking an unfamiliar tool.
 - Use `--dry-run` before supported destructive file operations.
+- Treat index generation as a write: preview new locations with `--dry-run` and
+  use `--allow-new-index` only when adding that folder to the maintained index
+  topology is intentional.
 - Prefer targeted checks while editing and one full gate at closeout.
 - Preserve unrelated changes in a dirty worktree.
 - Stop on unclear Git state; do not automate recovery or rewrite history.

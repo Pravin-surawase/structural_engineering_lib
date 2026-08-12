@@ -537,14 +537,15 @@
     "generate folder index": {
       "group": "Generation",
       "script": "./scripts/python_runtime.sh scripts/generate_enhanced_index.py <folder>",
-      "description": "Generate index.json + index.md for any folder (AI context files)",
+      "description": "Update maintained index.json + index.md files; new index locations require explicit opt-in",
       "permission": "WorkspaceWrite",
       "permission_modes": {
         "--dry-run": "ReadOnly",
         "--check": "ReadOnly"
       },
       "options": {
-        "--all": "Regenerate all folder indexes"
+        "--all": "Regenerate all key-folder indexes",
+        "--allow-new-index": "Permit intentional creation in a previously unmaintained folder"
       }
     },
     "generate all indexes": {

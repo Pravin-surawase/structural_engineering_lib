@@ -461,6 +461,42 @@ def test_generated_index_hash_tracks_subfolder_projection(
     assert initial["content_hash"] != updated["content_hash"]
 
 
+def test_index_generator_requires_opt_in_for_new_index_folder(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    generator = importlib.import_module("scripts.generate_enhanced_index")
+    unmaintained = tmp_path / "tests" / "new-area"
+    unmaintained.mkdir(parents=True)
+    (unmaintained / "sample.py").write_text("VALUE = 1\n", encoding="utf-8")
+    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
+    monkeypatch.setattr(generator, "KEY_FOLDERS", [])
+    monkeypatch.setattr(sys, "argv", ["generate_enhanced_index.py", str(unmaintained)])
+
+    with pytest.raises(SystemExit, match="2"):
+        generator.main()
+
+    output = capsys.readouterr().out
+    assert "Refusing to create indexes in unmaintained folder" in output
+    assert not (unmaintained / "index.json").exists()
+    assert not (unmaintained / "index.md").exists()
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "generate_enhanced_index.py",
+            str(unmaintained),
+            "--allow-new-index",
+        ],
+    )
+    generator.main()
+
+    assert (unmaintained / "index.json").is_file()
+    assert (unmaintained / "index.md").is_file()
+
+
 def test_session_end_preserves_current_same_day_handoff(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):

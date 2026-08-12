@@ -2,7 +2,10 @@
 # Resolve the repository Python interpreter across primary and linked worktrees.
 #
 # When to use: internal launcher for run.sh, pre-commit, and Python subprocess
-# orchestration. Callers pass normal Python arguments after this script.
+# orchestration. Callers pass normal Python arguments after this script. In a
+# linked worktree, use --diagnose before evidence-producing tests and require
+# source_bound=true; the selected interpreter may live in the primary checkout
+# while imports must come from the invoking worktree.
 
 set -euo pipefail
 

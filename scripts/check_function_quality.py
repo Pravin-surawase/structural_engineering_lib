@@ -17,6 +17,9 @@ Performs AST-based static analysis on IS 456 code modules to check:
   12. Errors as tuple return (advisory)
 
 When to use: after changing IS 456 functions or before their quality-gate review.
+The ``--module`` filter matches paths relative to the IS 456 source root, so a
+word in an absolute worktree directory cannot broaden the scan. This checker is
+static contract evidence; it does not replace an independent numerical benchmark.
 
 Usage:
     ./scripts/python_runtime.sh scripts/check_function_quality.py

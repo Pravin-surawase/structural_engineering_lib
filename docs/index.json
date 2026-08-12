@@ -17,10 +17,10 @@
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 3005,
+      "size_lines": 3071,
       "last_updated": "2026-08-12",
       "description": "> Append-only decision log for AI agent sessions. > Earlier sessions (1-100): SESSION_LOG_through_session_100.md",
-      "content_hash": "47a26a300cd4"
+      "content_hash": "d03541b840e3"
     },
     {
       "name": "TASKS.md",
@@ -129,7 +129,7 @@
     {
       "name": "git-automation",
       "path": "git-automation/",
-      "file_count": 2,
+      "file_count": 3,
       "description": "owner: Main Agent"
     },
     {
@@ -211,5 +211,5 @@
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "e3da7f5617103568"
+  "content_hash": "63ef515bcfa41648"
 }

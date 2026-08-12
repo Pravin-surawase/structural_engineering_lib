@@ -1,3 +1,69 @@
+## 2026-08-12 — Session: COLUMN-PMM-001 Git Learning Update
+
+**Agent:** Codex
+**Branch:** `codex/git-pmm-learning-update`
+**Focus:** Convert the PMM preservation, selective recovery, validation, merge,
+and cleanup experience into reusable Git teaching and executable script controls
+
+### Summary
+
+- Added a repository case study explaining why a stale clean commit was
+  preserved but not merged, why a fresh branch and worktree were both needed,
+  and how squash integration changes cleanup evidence.
+- Updated canonical Git guidance and the compact AI-agent guide with the
+  preservation-first selective-recovery rule and case-study route.
+- Expanded the external personal workbook, study notebook, and quick reference
+  with the four-commit PMM graph, exercises, script modes, and teach-back prompts.
+- Added a requested reusable memory-extension note with the exact issues,
+  root causes, solutions, commit identities, and evidence boundaries.
+- Changed `generate_enhanced_index.py` to refuse live creation in previously
+  unmaintained folders unless `--allow-new-index` is explicit; existing indexes
+  and canonical key folders remain normal update targets.
+- Clarified `task brief`, linked-worktree runtime diagnosis, function-quality
+  scanning, index generation, and safe deletion in maintained script guidance.
+
+### Issues encountered
+
+- The first attempt to create this learning worktree used the future directory
+  as the process working directory and could not start.
+- During the PMM session, index generation created six untracked files in nested
+  test folders that did not own maintained indexes.
+- A shell inspection using an unmatched `docs/git-automation/index.*` glob
+  stopped that command before the following inspection could run.
+
+### Root causes and resolutions
+
+- A process cannot start inside a directory before `git worktree add` creates
+  it. The worktree was created from the existing primary checkout and only then
+  used as the command directory; session start and runtime diagnosis passed.
+- The generator treated every requested folder as an implicit decision to add
+  repository index topology. Live generation now distinguishes maintained
+  folders from new targets and exits 2 before writing unless
+  `--allow-new-index` is supplied. A temporary-folder CLI regression and live
+  probe prove refusal and explicit opt-in behavior.
+- Zsh treats an unmatched glob as an error. The absence of a maintained
+  `docs/git-automation` index was already established; subsequent commands use
+  literal or `find`/`rg --files` paths instead of an optional bare glob.
+
+### Verification
+
+- Focused session-automation and function-quality regressions: 41 passed.
+- Live unmaintained-folder probe: exit 2 and no generated index files.
+- All 16 existing `generate_all_indexes.sh` targets remain maintained under the
+  new guard.
+- Ruff and Black: pass on the changed generator and regression test.
+- Script reference validation: zero runtime breaks and zero misleading output;
+  Codex-native Git workflow validation passed.
+- `./run.sh check --quick`: 10/10; `./run.sh check`: 30/30.
+- GitHub unchanged-head evidence is recorded at publication closeout.
+
+### Terminal issues
+
+- `exec` could not launch with the not-yet-created worktree as `workdir`; the
+  maintained sequence is create from an existing checkout, then enter the lane.
+- Zsh rejected unmatched glob `docs/git-automation/index.*`; use exact paths or
+  `rg --files` when a file may not exist.
+
 ## 2026-08-12 — Session: COLUMN-PMM-001 Integration Closeout
 
 **Agent:** Codex
