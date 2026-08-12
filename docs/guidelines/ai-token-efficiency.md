@@ -25,7 +25,11 @@ engineering, test, or Git safety gates.
 4. Sol profiles require explicit user selection, case-specific approval, or
    delegated model-choice authority. Escalate only when the task risk or a
    concrete quality gap justifies it.
-5. Keep Fast mode off. Enable it only when the user explicitly chooses speed
+5. Spark is available as a bounded, preview, text-only lane for explicit, outcome-
+   bounded documentation, automation, API/schema, and runnable-example work. It is
+   not the baseline for engineering/math/release decisions, and preview billing
+   remains explicitly unpriced in-project.
+6. Keep Fast mode off. Enable it only when the user explicitly chooses speed
    over credit efficiency for a time-sensitive task.
 
 ## Model and Reasoning Matrix
@@ -43,6 +47,7 @@ that reliably completes the work.
 | Terra Medium | Normal implementation and maintenance | Architecture, safety, or multiple systems interact |
 | Terra High | Cross-layer debugging, architecture, security, release, IS 456 | A concrete unresolved quality gap justifies Sol |
 | Terra Extra High | Rare, critical but bounded work | Sol may materially improve a high-value decision |
+| Spark Low | Small, explicit bounded packets with deterministic checks and clear stop conditions | Task intent is ambiguous, impacts safety boundaries, or is not output-verifiable |
 | Sol High | Explicitly selected important, complicated, or high-stakes execution | Obtain case-specific user approval |
 | Sol Medium/Extra High | Exceptional Sol profiles | Obtain case-specific user approval |
 

@@ -1,3 +1,131 @@
+## 2026-08-12 — Session: SPARK-001 Phase 3 Publication Closeout
+
+**Agent:** Codex
+**Branch:** `codex/gpt-5-3-spark-work-program`
+**Focus:** Publish the preserved and integrated Spark work program through the
+normal PR path without authorizing Wave 0 implementation
+
+### Summary
+
+- Refreshed `origin/main` and confirmed the recovered head was `3` commits ahead
+  and `0` behind, with no existing remote branch or pull request.
+- Re-ran the live picker acceptance path, focused tests, quick gate, and full
+  repository gate against the publication candidate.
+- Pushed the existing three-commit history without rewriting it and opened draft
+  PR #734 against `main` for the G0 review path.
+- Kept Wave 0 implementation held; publishing the plan does not grant execution,
+  release, engineering-use, or qualified-review authority.
+
+### PRs Merged
+| PR | Summary |
+|----|---------|
+| None | PR #734 opened for review; merge is handled only after unchanged-head required checks pass |
+
+### Key Deliverables
+
+- Remote branch `origin/codex/gpt-5-3-spark-work-program`.
+- Draft PR #734: `chore(agents): establish bounded Spark work program`.
+- Exact pre-publication evidence: `HEAD...origin/main = 3 0` at
+  `b5aafb2959ec90b74f67983aecd7a6ba58bc768b`.
+- `./run.sh model --table` passes and reports `spark-low` as `preview`.
+- Focused picker/token-efficiency tests: 18 passed.
+- `./run.sh check --quick`: 10/10 passed.
+- `./run.sh check`: 30/30 passed.
+
+### Issues encountered
+
+- The first session-end check could not recognize today's entry and reported a
+  stale next-session handoff, blocking clean closeout validation.
+- The refreshed handoff reached 152 physical lines and failed the maintained
+  150-line brief-length gate.
+
+### Root causes and resolutions
+
+- Session startup inserted its skeleton below the existing top-of-file entry,
+  while the validator treats the first dated entry as newest. The completed
+  Phase 3 entry was moved to the top, the dated handoff was refreshed, and the
+  session-end check was rerun.
+- The new Phase 3 state added content to an already near-limit brief. Two
+  redundant blank lines were removed; the content remained intact and the quick
+  gate was rerun to prove the 150-line contract.
+
+### Notes
+
+- The feature branch is intentionally retained after integration until the
+  repository owner explicitly approves local or remote branch deletion.
+- Wave 0 remains behind SPARK-001-G0; this closeout publishes the plan but does
+  not accept that gate.
+
+## 2026-08-11 — Session: SPARK-001 Phase 2 Recovery and Integration
+
+**Agent:** Codex
+**Branch:** `codex/gpt-5-3-spark-work-program`
+**Focus:** Preserve the dirty Spark draft, merge current `main` without rewriting
+history, and close the picker acceptance gap found in Phase 1
+
+### Summary
+
+- Preserved all 13 classified Spark planning paths in checkpoint `47fce48e`.
+- Merged `origin/main` at `8d47de73` through two-parent merge commit `f0314f3e`;
+  no rebase, reset, stash, force operation, or history rewrite was used.
+- Reconciled handwritten shared state semantically and regenerated only the
+  affected canonical indexes.
+- Made the task-aware picker route bounded, verification-forward work to the
+  unpriced `spark-low` preview with Terra Low fallback while retaining Terra/Sol
+  safety and approval boundaries.
+
+### Issues encountered
+
+- The stale branch advertised `./run.sh task brief`, but its `run.sh` did not
+  implement that command, so the first chained startup stopped early.
+- `./run.sh model --table` crashed with `KeyError: 'gpt-5.3-codex-spark'` even
+  though the focused tests and quick gate were green.
+- The controlled merge produced seven conflicts in the session/task/handoff and
+  generated-index surfaces predicted during Phase 1.
+- Preserving both handoffs verbatim produced a 163-line brief over the maintained
+  150-line limit.
+- Live high-risk picker output described Sol as pre-authorized while the policy
+  and result correctly required approval.
+- The picker and test edits made three folder indexes stale.
+
+### Root causes and resolutions
+
+- The branch predated the task-intake command added on current `main`; session
+  startup was rerun separately using the available `session brief` and `session
+  start` commands. The merged branch now contains the current intake workflow.
+- The picker assumed every profile model had a fixed numeric entry in
+  `relative_token_rates`, while Spark is intentionally unpriced. A single helper
+  now returns an optional verified rate, human/JSON output labels an absent rate
+  as preview/null, and a subprocess regression exercises the real `--table` path.
+- Both histories changed single-writer ledgers and their projections. Append-only
+  session history was retained, current Alpha truth and Spark state were combined,
+  and `docs`, `docs/planning`, and `agents` indexes were regenerated rather than
+  manually selecting conflict sides.
+- The superseded fresh-start maintenance recap was removed from the current
+  handoff; its durable evidence remains in the session log. The brief is 146
+  physical lines and the length gate passes.
+- The stale escalation sentence was aligned with `fallback_requires_approval`;
+  the critical-work regression now requires the approval wording.
+- Only `scripts`, `Python/tests`, and `Python` indexes were regenerated child
+  first; their targeted drift checks pass without unrelated global rewrites.
+
+### Verification
+
+- `./run.sh model --table` passes and labels `spark-low` as `preview`.
+- `pytest Python/tests/test_model_picker.py Python/tests/test_token_efficiency.py
+  -q` — 18 passed.
+- Targeted Ruff and format checks pass.
+- Targeted index drift checks for `agents`, `docs`, `docs/planning`, `scripts`,
+  `Python/tests`, and `Python` pass.
+- `./run.sh check --quick` — 10/10 passed.
+- `./run.sh check` — 30/30 passed.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `./run.sh task brief` was unavailable on the stale branch
+  -> the available session commands completed startup, and merging current
+  `main` restored the documented intake command.
+
 ## 2026-08-11 — Session: FOOT-ISO-RC-V1 Phases A-D1
 
 **Agent:** Codex
@@ -216,8 +344,6 @@
   ESLint and the production build with a 34.84 kB lazy footing chunk; the quick
   repository gate passed 10/10 and the source-bound full gate passed 30/30.
 
----
-
 ## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
 # Session Log
 
@@ -225,6 +351,62 @@
 > Earlier sessions (1-100): [SESSION_LOG_through_session_100.md](_archive/SESSION_LOG_through_session_100.md)
 
 ---
+
+## 2026-08-11 — Session: GPT-5.3-Codex-Spark Work Program
+
+**Agent:** Codex
+**Branch:** `codex/gpt-5-3-spark-work-program`
+**Focus:** Create an isolated branch and an in-depth, review-gated Spark execution plan
+
+### Summary
+
+- Created the isolated Spark program branch from clean `main` at `a0e115e1`.
+- Verified official Spark preview properties and separated them from unknown
+  future pricing, availability, and project-specific quality assumptions.
+- Defined a 70-packet, eight-wave program with worktree protection, task packets,
+  verification gates, escalation rules, usage measurement, and owner checkpoints.
+- Kept all implementation unauthorized pending owner review gate G0.
+
+### PRs Merged
+
+| PR | Summary |
+|----|---------|
+| None | Planning remains local for review |
+
+### Key Deliverables
+
+- `docs/planning/gpt-5-3-codex-spark-work-program.md`
+- Updated task-board and next-session review state
+
+### Issues encountered
+
+- The canonical global index command rewrote 28 unrelated folder indexes,
+  including a large research-index reduction, which would have polluted the
+  planning-only branch and obscured review.
+- The first unified documentation check rejected the new plan's descriptive
+  `proposed-review-required` status and `master-plan` document type.
+
+### Root causes and resolutions
+
+- `./run.sh generate indexes` intentionally processes every indexed folder, so
+  pre-existing projection drift outside `docs/planning/` was regenerated along
+  with the new plan. The exact unrelated generator diffs were inspected and
+  reversed; only `docs/planning/index.*` and the parent `docs/index.json` updates
+  required to discover SPARK-001 were retained. `git diff --check` and the final
+  repository gates provide the corrected-state evidence.
+- The documentation schema accepts only its enumerated front-matter values. The
+  plan now uses `status: draft` and `doc_type: spec`; the separate
+  `implementation_authorized: false` field preserves the review hold. The
+  unified documentation check is rerun as the correction evidence.
+
+### Notes
+
+- No Spark implementation, product behavior, structural calculation, release,
+  merge, or GitHub mutation was performed.
+- Verification: 70 unique packet IDs; unified documentation checks 5/5;
+  token-efficiency check passed; `./run.sh check --quick` passed 10/10; and
+  `git diff --check` reported no whitespace errors.
+
 
 ## 2026-08-11 — Session: Sequential Slab Integration
 

@@ -131,6 +131,11 @@ If unsure, start with PM for triage and assignment.
   Act as SUPPORT. Add a TROUBLESHOOTING entry for Excel add-in load failures on macOS with probes and fixes.
   ```
 
+## Spark Packet Contract
+
+Use the required return shape in `agents/spark-worker-packet-template.md` for
+Spark-bound bounded packets.
+
 ---
 
 ## Related Docs

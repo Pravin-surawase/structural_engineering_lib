@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-11 — 0.23.1a1 publication authorized; exact-head release sequence in progress
+**Updated:** 2026-08-11 — SPARK-001 Phase 2 integrated and verified; owner review gate G0 remains held
 
 ---
 
@@ -127,12 +127,13 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| — | No active release task | — | Published Alpha closeout complete |
+| SPARK-001 | Establish a measured GPT-5.3-Codex-Spark work program for bounded high-throughput tasks | Main Agent + repository owner | ✅ PHASE 2 COMPLETE — recovery/integration verified; implementation held for G0 |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL STABLE GATE |
 
 ## Backlog

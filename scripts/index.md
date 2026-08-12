@@ -34,7 +34,7 @@
 | [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 11 | 783 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 467 |
 | [benchmark_api.py](benchmark_api.py) | API Performance Benchmark Script. | 4 | 9 | 837 |
-| [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 4 | 453 |
+| [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 4 | 458 |
 | [check_all.py](check_all.py) | Unified check orchestrator — runs all validation scripts in  | 3 | 1 | 712 |
 | [check_api.py](check_api.py) | Validate the live React/FastAPI contract and Python API docu | 1 | 4 | 390 |
 | [check_api_compat.py](check_api_compat.py) | Compatibility wrapper for the canonical public API manifest  | 0 | 1 | 49 |
@@ -84,14 +84,14 @@
 | [governance_health_score.py](governance_health_score.py) | Governance Health Score - TASK-289 | 3 | 1 | 515 |
 | [migrate_python_module.py](migrate_python_module.py) | Migrate a Python module to a new location with import update | 0 | 8 | 516 |
 | [migrate_react_component.py](migrate_react_component.py) | Migrate a React component to a new feature-grouped folder. | 0 | 9 | 475 |
-| [model_picker.py](model_picker.py) | Recommend a GPT-5.6 model and reasoning effort for a reposit | 1 | 2 | 298 |
+| [model_picker.py](model_picker.py) | Recommend a supported model and reasoning effort for a repos | 1 | 2 | 305 |
 | [node_runtime.py](node_runtime.py) | Select and run the healthy Node.js major pinned by ``.nvmrc` | 0 | 4 | 205 |
 | [parity_dashboard.py](parity_dashboard.py) | Parity Dashboard — coverage/parity across IS 456, API, endpo | 0 | 6 | 519 |
 | [pipeline_state.py](pipeline_state.py) | Pipeline state tracking for multi-step agent workflows. | 2 | 17 | 868 |
 | [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 203 |
 | [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 908 |
 | [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 3 | 494 |
-| [release.py](release.py) | Unified release management CLI. | 0 | 10 | 1773 |
+| [release.py](release.py) | Unified release management CLI. | 0 | 10 | 1776 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 350 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
 | [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2300 |

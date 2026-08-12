@@ -3,21 +3,19 @@
 ## Latest Handoff
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-11
-- Focus: published 0.23.1a1 Alpha closeout and next-task handoff
+- Date: 2026-08-12
+- Focus: SPARK-001 published through PR #734 for G0 review; Wave 0 remains held
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
-
-**Closeout branch:** `codex/alpha-0231-release-closeout`
-
-**Base:** `origin/main` at release merge `95bed562`; immutable tag `v0.23.1a1`
+**Branch:** `codex/gpt-5-3-spark-work-program`
+**Integration base:** `origin/main` at `8d47de73`; immutable Alpha tag `v0.23.1a1` remains unchanged
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | Published Alpha | PyPI and GitHub prerelease are public; exact package hashes and installed-package UAT are recorded |
-| **Next** | Owner-selected packet | Start from post-closeout `main`; do not rewrite or move the published tag |
+| **Current** | SPARK-001 Phase 3 | PR #734 carries the preserved plan, integrated `main`, picker fix, and green local gates |
+| **Next** | Owner review gate G0 | Accept, revise, or reject Wave 0 after the reconciled control plane passes verification |
 | **Held** | Stable/engineering-use claims | Alpha publication does not grant qualified professional approval or complete-code coverage |
 
 ## Integrated footing scope
@@ -46,12 +44,34 @@
 
 ## Required Reading
 
+- [GPT-5.3-Codex-Spark work program](gpt-5-3-codex-spark-work-program.md)
+- [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
 - [IS 456 solid slabs master plan](is456-solid-slabs-master-plan.md)
 - [IS 456 library-first evidence](../verification/is456-library-first-evidence.md)
 - [UI experience foundation master plan](ui-experience-foundation-master-plan.md)
 - [Session 2 acceptance](../verification/ui-experience-session-2-acceptance.md)
 - [Current task board](../TASKS.md)
 - [Release policy](../getting-started/releases.md)
+
+## SPARK-001 planning state
+
+- Draft PR #734 publishes the recovered work program and picker fix for review;
+  publication alone does not authorize any execution wave.
+- The original draft was preserved at checkpoint `47fce48e` before integrating
+  current `origin/main` through merge commit `f0314f3e`; no product or calculation
+  implementation was started and no history was rewritten.
+- The plan records verified preview properties, current usage/pricing uncertainty,
+  protected structural and security areas, active worktree ownership, mandatory
+  tests, escalation triggers, cost-learning fields, and independent review gates.
+- Seventy bounded packets are organized into eight waves covering control-plane
+  calibration, documentation truth, automation contracts, API examples, bounded
+  React behavior, runnable examples, verification operations, and post-merge
+  integration.
+- Wave 0 remains unauthorized until the repository owner accepts or revises the
+  plan. Acceptance of G0 authorizes only the specifically approved first wave.
+- The recovered control plane now treats Spark as an unpriced preview, exercises
+  the real model-table CLI, and keeps ambiguous/high-risk work on Terra with
+  approval-gated Sol escalation.
 
 ## IS456-SLAB-001 implementation outcome
 
@@ -79,23 +99,6 @@
 - Quick gate 10/10 and integrated gate 30/30 passed.
 - Live continuous and B04 two-way flows passed without browser console errors;
   stale passport export was blocked as designed.
-
-## Fresh-start maintenance closeout
-
-- Local `main` is synchronized to the merged UIX result.
-- Five clean disposable `/private/tmp` worktrees were removed while their branches
-  were retained; two named external worktrees were preserved for their owners.
-- No server is listening on the maintained frontend/backend ports, no stash was
-  present, and the stale-branch dry run found nothing eligible for deletion.
-- Five API/router counts and all 32 generated indexes are synchronized. Index
-  drift detection now includes child-folder projections rather than direct files
-  only.
-- Generated build/test/type/lint/coverage and bytecode caches were cleaned while
-  environments, dependencies, logs, benchmarks, recovery backups, and user state
-  were preserved.
-- Health is 100/100, token-efficiency passes, the quick gate is 10/10, the full
-  gate is 30/30, and the root checkout is the fresh baseline for the next
-  owner-selected packet.
 
 ## Accepted UIX outcome
 

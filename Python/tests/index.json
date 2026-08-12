@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
   "last_updated": "2026-08-11",
-  "file_count": 58,
+  "file_count": 61,
   "files": [
     {
       "name": "README.md",
@@ -64,15 +64,27 @@
     {
       "name": "test_agent_governance_automation.py",
       "type": "python",
-      "size_lines": 428,
-      "last_updated": "2026-08-10",
+      "size_lines": 536,
+      "last_updated": "2026-08-11",
       "description": "Regression tests for agent-governance automation controls.",
       "functions": [
         {
           "name": "test_python_runtime_launcher_uses_explicit_interpreter"
         },
         {
+          "name": "test_python_runtime_launcher_binds_invoking_repository_imports",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_python_runtime_diagnostic_proves_worktree_source_binding"
+        },
+        {
           "name": "test_control_paths_use_python_runtime_launcher"
+        },
+        {
+          "name": "test_active_agent_instructions_use_worktree_safe_python_launcher"
         },
         {
           "name": "test_watch_help_does_not_require_fswatch"
@@ -142,27 +154,13 @@
           "params": [
             "monkeypatch"
           ]
-        },
-        {
-          "name": "test_tool_registry_does_not_infer_permission_from_git_text"
-        },
-        {
-          "name": "test_remaining_automation_permissions_match_modes",
-          "params": [
-            "operation",
-            "mode",
-            "expected"
-          ]
-        },
-        {
-          "name": "test_automation_discovery_metadata_is_single_source"
         }
       ],
       "constants": [
         "REPO_ROOT",
         "SCRIPTS_DIR"
       ],
-      "content_hash": "108dc1b66ce7"
+      "content_hash": "9cb6f613dcfd"
     },
     {
       "name": "test_api_manifest_tools.py",
@@ -500,6 +498,27 @@
         }
       ],
       "content_hash": "5b94d7b3d0bd"
+    },
+    {
+      "name": "test_bump_version_semantics.py",
+      "type": "python",
+      "size_lines": 66,
+      "last_updated": "2026-08-11",
+      "description": "Regression coverage for candidate-version documentation semantics.",
+      "functions": [
+        {
+          "name": "test_candidate_bump_preserves_published_release_evidence",
+          "description": "Candidate metadata changes must not relabel published-release history.",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        }
+      ],
+      "constants": [
+        "REPO_ROOT"
+      ],
+      "content_hash": "94c1aa451da7"
     },
     {
       "name": "test_calculation_report.py",
@@ -1645,8 +1664,8 @@
     {
       "name": "test_evidence.py",
       "type": "python",
-      "size_lines": 108,
-      "last_updated": "2026-08-10",
+      "size_lines": 169,
+      "last_updated": "2026-08-11",
       "description": "Focused tests for the supported IS 456 beam evidence envelope.",
       "functions": [
         {
@@ -1656,13 +1675,19 @@
           "name": "test_beam_evidence_hash_changes_for_relevant_input"
         },
         {
+          "name": "test_beam_evidence_v2_binds_torsion_and_enabled_serviceability"
+        },
+        {
+          "name": "test_disabled_serviceability_drafts_do_not_change_identity"
+        },
+        {
           "name": "test_held_beam_evidence_does_not_present_a_pass_or_fail"
         },
         {
           "name": "test_beam_report_exports_evidence_without_approval_claim"
         }
       ],
-      "content_hash": "ea52787db35d"
+      "content_hash": "0e7805cff4f9"
     },
     {
       "name": "test_exception_hierarchy.py",
@@ -1720,8 +1745,8 @@
     {
       "name": "test_footing.py",
       "type": "python",
-      "size_lines": 1750,
-      "last_updated": "2026-08-10",
+      "size_lines": 1801,
+      "last_updated": "2026-08-11",
       "description": "Tests for IS 456 footing design — TASK-650/651/652.",
       "classes": [
         {
@@ -1796,6 +1821,8 @@
             "test_auto_pass_cant_le_d",
             "test_unsafe_shallow_footing",
             "test_higher_steel_ratio_increases_tau_c",
+            "test_directional_steel_percentages_use_the_matching_direction",
+            "test_negative_steel_percentages_are_rejected",
             "test_validation_negative_fck",
             "test_result_is_frozen",
             "test_result_to_dict",
@@ -1829,8 +1856,8 @@
             "test_validate_column_equal_footing",
             "test_validate_valid_inputs_passes",
             "test_validate_negative_col_dim",
-            "test_validate_min_depth_150mm",
-            "test_validate_min_depth_exactly_150_passes",
+            "test_validate_effective_depth_below_150mm_passes",
+            "test_validate_overall_thickness_minimum_150mm",
             "test_validate_footing_inputs_rejects_non_finite_or_non_real_geometry"
           ]
         },
@@ -1869,16 +1896,15 @@
           ]
         },
         {
-          "name": "TestMinimumDepthEnforcement",
-          "description": "Verify d_mm >= 150mm enforcement in _common.py.",
+          "name": "TestOverallThicknessMinimum",
+          "description": "Verify the 150mm edge minimum is enforced on overall thickness only.",
           "public_methods": [
-            "test_d_149_raises_dimension_error",
-            "test_d_150_passes",
-            "test_d_1_raises",
-            "test_d_150_flows_through_flexure",
-            "test_d_149_rejected_by_flexure",
-            "test_d_149_rejected_by_one_way_shear",
-            "test_d_149_rejected_by_punching_shear"
+            "test_d_149_is_valid_shared_geometry",
+            "test_overall_thickness_149_raises_dimension_error",
+            "test_d_zero_raises",
+            "test_d_149_flows_through_flexure_with_valid_overall_thickness",
+            "test_d_149_flows_through_one_way_shear",
+            "test_d_149_flows_through_punching_shear"
           ]
         }
       ],
@@ -1891,7 +1917,110 @@
           ]
         }
       ],
-      "content_hash": "0bfff275bf68"
+      "content_hash": "f4b79b1e83cd"
+    },
+    {
+      "name": "test_footing_api.py",
+      "type": "python",
+      "size_lines": 357,
+      "last_updated": "2026-08-11",
+      "description": "Focused contract tests for Phase B1 isolated-footing orchestration.",
+      "functions": [
+        {
+          "name": "test_review_benchmark_freezes_plan_structural_and_transfer_evidence"
+        },
+        {
+          "name": "test_maintained_detailing_closes_square_benchmark_to_aggregate_pass"
+        },
+        {
+          "name": "test_actual_provided_pt_closes_the_detailing_to_shear_acceptance_loop"
+        },
+        {
+          "name": "test_detailing_failure_fails_aggregate_without_reclassifying_calculations"
+        },
+        {
+          "name": "test_unapproved_exposure_holds_aggregate_with_calculations_safe"
+        },
+        {
+          "name": "test_rectangular_sizing_and_provenance_keep_load_and_soil_roles_explicit"
+        },
+        {
+          "name": "test_depth_loop_selects_first_passing_uniform_depth_and_retains_history"
+        },
+        {
+          "name": "test_exhausted_depth_range_has_no_selected_top_level_check_evidence"
+        },
+        {
+          "name": "test_service_and_factored_actions_are_not_silently_inferred"
+        },
+        {
+          "name": "test_unequal_directional_depths_return_hold_without_structural_evaluation"
+        },
+        {
+          "name": "test_directional_steel_demand_and_shear_inputs_are_traceable_but_not_detailed"
+        },
+        {
+          "name": "test_unsafe_load_transfer_aggregates_to_fail"
+        },
+        {
+          "name": "test_required_external_and_load_provenance_fail_closed",
+          "params": [
+            "overrides",
+            "match"
+          ]
+        }
+      ],
+      "content_hash": "3b8e73105982"
+    },
+    {
+      "name": "test_footing_detailing.py",
+      "type": "python",
+      "size_lines": 238,
+      "last_updated": "2026-08-11",
+      "description": "Outcome-focused tests for the bounded footing detailing slice.",
+      "functions": [
+        {
+          "name": "test_square_benchmark_selects_buildable_12mm_layers"
+        },
+        {
+          "name": "test_rectangle_short_direction_has_consistent_buildable_zone_schedule"
+        },
+        {
+          "name": "test_ten_mm_bars_are_supported_when_explicitly_permitted"
+        },
+        {
+          "name": "test_explicit_layer_order_controls_directional_physical_depths"
+        },
+        {
+          "name": "test_numeric_depth_cover_and_spacing_constraints_fail_closed"
+        },
+        {
+          "name": "test_required_hook_or_bend_is_hold_not_selected_failure"
+        },
+        {
+          "name": "test_anchorage_check_uses_unrounded_required_length"
+        },
+        {
+          "name": "test_dowel_schedule_is_linked_and_never_silently_reworked"
+        },
+        {
+          "name": "test_unsupported_material_or_missing_engineering_basis_holds",
+          "params": [
+            "changes",
+            "expected"
+          ]
+        },
+        {
+          "name": "test_selection_and_provenance_are_deterministic_and_normalized"
+        },
+        {
+          "name": "test_traceability_decorator_uses_known_ids_without_unknown_clause_warning",
+          "params": [
+            "caplog"
+          ]
+        }
+      ],
+      "content_hash": "579e20e1c4d6"
     },
     {
       "name": "test_footing_load_transfer.py",
@@ -2244,8 +2373,8 @@
     {
       "name": "test_model_picker.py",
       "type": "python",
-      "size_lines": 94,
-      "last_updated": "2026-08-10",
+      "size_lines": 132,
+      "last_updated": "2026-08-11",
       "description": "Tests for the deterministic low-token model picker.",
       "functions": [
         {
@@ -2275,12 +2404,15 @@
         },
         {
           "name": "test_model_policy_profiles_are_unique_and_complete"
+        },
+        {
+          "name": "test_model_table_handles_unpriced_preview_profile"
         }
       ],
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "b8d50bb1968e"
+      "content_hash": "a2eb0b948e48"
     },
     {
       "name": "test_multi_objective_optimizer.py",
@@ -2680,8 +2812,8 @@
     {
       "name": "test_release_scripts.py",
       "type": "python",
-      "size_lines": 446,
-      "last_updated": "2026-08-10",
+      "size_lines": 693,
+      "last_updated": "2026-08-11",
       "description": "Tests for release scripts (bump_version.py, release.py).",
       "classes": [
         {
@@ -2750,7 +2882,19 @@
           "description": "The isolated wheel verifier must install its declared test tools.",
           "public_methods": [
             "test_dev_extra_declares_hypothesis",
-            "test_wheel_verify_installs_dev_extra"
+            "test_wheel_verify_installs_exact_test_dependencies",
+            "test_wheel_verify_uses_isolated_pytest_configuration",
+            "test_wheel_verify_commands_are_package_scoped_and_isolated",
+            "test_pypi_verify_forces_fresh_official_index"
+          ]
+        },
+        {
+          "name": "TestReleaseReactDependencies",
+          "description": "Release checks must provision isolated worktree dependencies safely.",
+          "public_methods": [
+            "test_missing_dependencies_are_installed_from_lockfile",
+            "test_dependency_symlink_is_rejected_without_running_npm",
+            "test_release_run_and_preflight_share_dependency_provisioner"
           ]
         },
         {
@@ -2759,6 +2903,8 @@
           "public_methods": [
             "test_development_status_controls_github_prerelease",
             "test_future_publications_require_alpha_identifiers",
+            "test_release_validation_installs_maintained_test_dependencies",
+            "test_publication_fails_closed_on_permission_record",
             "test_alpha_ordering_preserves_legacy_release_history",
             "test_docs_workflow_is_build_only_until_pages_is_configured"
           ]
@@ -2769,11 +2915,14 @@
           "public_methods": [
             "test_docker_preflight_uses_project_node_major",
             "test_docker_preflight_mounts_repo_only_test_inputs",
+            "test_preflight_covers_the_fastapi_ci_suite",
             "test_fastapi_image_retries_slow_dependency_downloads",
             "test_failure_tail_reports_bounded_diagnostics",
-            "test_preflight_runs",
-            "test_preflight_with_version",
-            "test_preflight_detects_version_issues"
+            "test_public_distribution_permission_record_is_valid",
+            "test_current_source_surfaces_match_release_state_without_wheel",
+            "test_public_distribution_permission_check_fails_closed",
+            "test_footing_inclusion_check_fails_closed_when_owned_file_is_missing",
+            "test_preflight_runs"
           ]
         },
         {
@@ -2797,15 +2946,6 @@
           "public_methods": [
             "test_checklist_runs"
           ]
-        },
-        {
-          "name": "TestEdgeCases",
-          "description": "Cross-cutting edge case tests.",
-          "public_methods": [
-            "test_concurrent_version_format_validation",
-            "test_scripts_exist",
-            "test_bump_no_args_shows_usage"
-          ]
         }
       ],
       "functions": [
@@ -2824,7 +2964,7 @@
         "RELEASE_SCRIPT",
         "VERSION_TRACKED_FILES"
       ],
-      "content_hash": "a1f6041c020d"
+      "content_hash": "0fa109f36cd1"
     },
     {
       "name": "test_report_edge_cases.py",
@@ -3029,8 +3169,8 @@
     {
       "name": "test_research_prototypes.py",
       "type": "python",
-      "size_lines": 908,
-      "last_updated": "2026-08-09",
+      "size_lines": 910,
+      "last_updated": "2026-08-11",
       "description": "Tests for research prototypes: Sustainability, Generative Design, Design Companion.",
       "classes": [
         {
@@ -3098,7 +3238,7 @@
           ]
         }
       ],
-      "content_hash": "c210912fd454"
+      "content_hash": "58d61e1db90d"
     },
     {
       "name": "test_result_base.py",
@@ -3172,8 +3312,8 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 462,
-      "last_updated": "2026-08-10",
+      "size_lines": 491,
+      "last_updated": "2026-08-11",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
         {
@@ -3203,6 +3343,20 @@
         },
         {
           "name": "test_commit_summary_uses_exclusive_previous_day_boundary",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_session_trust_fails_closed_on_dirty_or_unknown_git_state",
+          "params": [
+            "branch",
+            "git_state",
+            "trusted"
+          ]
+        },
+        {
+          "name": "test_git_identity_helpers_reject_failed_commands",
           "params": [
             "monkeypatch"
           ]
@@ -3263,26 +3417,12 @@
             "tmp_path",
             "monkeypatch"
           ]
-        },
-        {
-          "name": "test_generated_index_hash_tracks_subfolder_projection",
-          "params": [
-            "tmp_path",
-            "monkeypatch"
-          ]
-        },
-        {
-          "name": "test_session_end_preserves_current_same_day_handoff",
-          "params": [
-            "tmp_path",
-            "monkeypatch"
-          ]
         }
       ],
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "90e3edeef907"
+      "content_hash": "f9431a7d4ab0"
     },
     {
       "name": "test_session_store.py",
@@ -3924,8 +4064,8 @@
     {
       "name": "test_workflow_catalog.py",
       "type": "python",
-      "size_lines": 87,
-      "last_updated": "2026-08-10",
+      "size_lines": 89,
+      "last_updated": "2026-08-11",
       "description": "Focused contract tests for the one-beam application workflow catalogue.",
       "functions": [
         {
@@ -3941,7 +4081,7 @@
           "name": "test_additive_fixture_migrates_and_breaking_version_fails"
         }
       ],
-      "content_hash": "9c4dcf16fa46"
+      "content_hash": "e38a4842ebb5"
     },
     {
       "name": "test_workflow_runner.py",
@@ -4011,7 +4151,7 @@
     {
       "name": "integration",
       "path": "integration/",
-      "file_count": 44,
+      "file_count": 45,
       "is_package": true
     },
     {
@@ -4040,5 +4180,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "8a941c4f98d8dd2c"
+  "content_hash": "1d162fe09c9103c1"
 }

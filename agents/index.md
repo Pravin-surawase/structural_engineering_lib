@@ -4,7 +4,7 @@
 
 **Type:** Documentation
 **Last Updated:** 2026-08-11
-**Files:** 3
+**Files:** 4
 
 ## Config Files
 
@@ -15,7 +15,8 @@
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [README.md](README.md) | Agent Prompt Cheat Sheet | > **⚠️ NOTE:** The authoritative role system is in .github/a | 145 |
+| [README.md](README.md) | Agent Prompt Cheat Sheet | > **⚠️ NOTE:** The authoritative role system is in .github/a | 150 |
+| [spark-worker-packet-template.md](spark-worker-packet-template.md) |  | Use this for every Spark worker packet. text | 33 |
 
 ## Subfolders
 

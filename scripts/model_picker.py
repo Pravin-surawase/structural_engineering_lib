@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Recommend a GPT-5.6 model and reasoning effort for a repository task.
+"""Recommend a supported model and reasoning effort for a repository task.
 
 When to use: Before choosing a model for a new bounded repository task.
 """
@@ -97,7 +97,7 @@ class ModelRecommendation:
     profile: str
     model: str
     reasoning_effort: str
-    relative_token_rate: int
+    relative_token_rate: int | None
     approval_required: bool
     fallback_profile: str
     fallback_requires_approval: bool
@@ -117,6 +117,11 @@ def _profile(policy: dict, profile_id: str) -> dict:
     return next(
         profile for profile in policy["profiles"] if profile["id"] == profile_id
     )
+
+
+def _relative_rate(policy: dict, model: str) -> int | None:
+    """Return a verified fixed rate, or None for an unpriced preview model."""
+    return policy.get("relative_token_rates", {}).get(model)
 
 
 def recommend(
@@ -160,20 +165,15 @@ def recommend(
     elif is_high_risk or is_complex:
         selected, fallback = "terra-high", "sol-high"
         rationale = (
-            "Start complex or high-risk implementation on Terra High; Sol High is "
-            "pre-authorized if a concrete quality gap remains."
+            "Start complex or high-risk implementation on Terra High; request "
+            "approval before escalating to Sol High."
         )
-    elif is_repetitive and not is_implementation:
-        selected, fallback = "terra-low", "terra-medium"
+    elif (is_repetitive and not is_implementation) or is_bounded:
+        selected, fallback = "spark-low", "terra-low"
         rationale = (
-            "The task is clear and repeatable, so use the lowest available Terra profile."
+            "The task is bounded and verification-forward, so use the Spark preview; "
+            "fall back to Terra Low if availability or acceptance evidence is insufficient."
         )
-    elif is_bounded and is_implementation:
-        selected, fallback = "terra-low", "terra-medium"
-        rationale = "The code work is bounded and pattern-driven; start on Terra Low."
-    elif is_bounded:
-        selected, fallback = "terra-low", "terra-medium"
-        rationale = "The acceptance boundary is explicit; start on Terra Low."
     elif is_implementation:
         selected, fallback = "terra-medium", "terra-high"
         rationale = "Normal implementation benefits from Terra's balanced tool use and judgment."
@@ -187,7 +187,7 @@ def recommend(
 
     selected_profile = _profile(policy, selected)
     fallback_profile = _profile(policy, fallback)
-    relative_rate = policy["relative_token_rates"][selected_profile["model"]]
+    relative_rate = _relative_rate(policy, selected_profile["model"])
 
     return ModelRecommendation(
         profile=selected,
@@ -210,7 +210,10 @@ def _print_recommendation(result: ModelRecommendation, query: str) -> None:
     print(f"  Profile: {result.profile}")
     print(f"  Model: {result.model}")
     print(f"  Reasoning: {result.reasoning_effort}")
-    print(f"  Relative per-token rate: {result.relative_token_rate}x Luna")
+    if result.relative_token_rate is None:
+        print("  Relative per-token rate: unpriced preview; measure observed usage")
+    else:
+        print(f"  Relative per-token rate: {result.relative_token_rate}x Luna")
     print(f"  Approval required: {'yes' if result.approval_required else 'no'}")
     if result.profile == "sol-high":
         print("  Authorization: explicit user selection or approval required")
@@ -229,20 +232,24 @@ def _print_recommendation(result: ModelRecommendation, query: str) -> None:
 def _print_table() -> None:
     policy = _load_policy()
     unavailable = set(policy.get("unavailable_models", []))
-    print("Profile       Rate  Approval  Best use")
+    print("Profile       Rate     Approval  Best use")
     print(
-        "------------  ----  --------  -----------------------------------------------"
+        "------------  -------  --------  -----------------------------------------------"
     )
     for profile in policy["profiles"]:
         if profile["model"] in unavailable:
             continue
-        rate = policy["relative_token_rates"][profile["model"]]
+        rate = _relative_rate(policy, profile["model"])
+        rate_label = f"{rate}x" if rate is not None else "preview"
         approval = "yes" if profile["approval_required"] else "no"
-        print(f"{profile['id']:<12}  {rate:>2}x   {approval:<8}  {profile['use_for']}")
+        print(
+            f"{profile['id']:<12}  {rate_label:>7}  {approval:<8}  {profile['use_for']}"
+        )
     print()
     print(
         "Rates compare equal token mixes; reasoning effort has no fixed cost multiplier."
     )
+    print("Preview means no fixed relative rate is claimed; measure observed usage.")
     print(
         "Max is single-agent quality-first; Ultra may spawn agents. Both require approval here."
     )

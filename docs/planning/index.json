@@ -3,13 +3,13 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-11",
-  "file_count": 16,
+  "file_count": 17,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 154,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-11",
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
       "content_hash": "56281c1a3fd2"
@@ -56,6 +56,14 @@
       "content_hash": "88e3dfd24f78"
     },
     {
+      "name": "gpt-5-3-codex-spark-work-program.md",
+      "type": "documentation",
+      "size_lines": 614,
+      "last_updated": "2026-08-11",
+      "description": "Use GPT-5.3-Codex-Spark as a high-throughput implementation lane for small, explicit, rapidly verifiable tasks. The program targets truthful documentation,",
+      "content_hash": "4160ef25ca5e"
+    },
+    {
       "name": "is456-library-first-master-plan.md",
       "type": "documentation",
       "size_lines": 1497,
@@ -66,10 +74,10 @@
     {
       "name": "is456-solid-slabs-master-plan.md",
       "type": "documentation",
-      "size_lines": 1100,
+      "size_lines": 1123,
       "last_updated": "2026-08-11",
       "description": "The next element program will complete a useful, evidence-backed solid-slab workflow under IS 456 without pretending to solve every slab system.",
-      "content_hash": "2e10ff4ab194"
+      "content_hash": "bcd3ec19ce4d"
     },
     {
       "name": "library-expansion-blueprint-v5.md",
@@ -99,20 +107,20 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 150,
+      "size_lines": 151,
       "last_updated": "2026-08-11",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-11",
-      "content_hash": "208215a372e0"
+      "content_hash": "2f11d114ef29"
     },
     {
       "name": "pre-release-checklist.md",
       "type": "documentation",
-      "size_lines": 73,
+      "size_lines": 92,
       "last_updated": "2026-08-11",
       "title": "Pre-Release Checklist",
-      "description": "Installed metadata version: 0.23.0 - **Release source:** tag v0.23.0 at 3f880d5bbc338baefc4aec8ed472cafe840a5c99",
-      "content_hash": "d26a54cc63fd"
+      "description": "Release-ready source metadata: 0.23.1a1 Current public release: v0.23.1a1 Alpha",
+      "content_hash": "aa14481f9a4b"
     },
     {
       "name": "professional-library-remediation-plan.md",
@@ -141,5 +149,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "e4b406b59c929e63"
+  "content_hash": "bead19d8a4532bd4"
 }
