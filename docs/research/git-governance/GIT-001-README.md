@@ -31,10 +31,10 @@ work, make recovery deterministic, and remain efficient during normal work.
 
 | Role | Path / branch | Start state |
 |---|---|---|
-| Integration anchor | primary checkout / `main` | Clean at `6bc356c3`; no implementation work |
-| GIT-001 research lane | `structural_engineering_lib-git-governance-research` / `codex/git-governance-research` | Created from refreshed `origin/main` at `6bc356c3` |
-| Preserved engineering lane | `structural_engineering_lib-column-pmm` / `codex/column-pmm-experimental` | Exact commit published; integration held for independent benchmark |
-| Preserved workflow lane | remote `codex/parallel-task-policy` | PR #723 closed after replacement; remote retained for audit |
+| Integration anchor | primary checkout / `main` | Refreshed and clean at `951f5e1d` on 2026-08-12 |
+| GIT-001 research lane | `structural_engineering_lib-git-governance-research` / `codex/git-governance-research` | Active at `3be4790d`; patch integrated, branch behind current `main` and must be synchronized before more research |
+| Preserved engineering evidence | remote PMM forensic/recovery refs | Selective recovery and independent benchmark integrated through PRs #738-#740; PMM remains experimental |
+| Preserved workflow evidence | remote `codex/parallel-task-policy` | PR #723 closed after bounded replacement through PRs #736-#737; remote retained for audit |
 
 ## Phase ledger
 
@@ -56,6 +56,7 @@ work, make recovery deterministic, and remain efficient during normal work.
 - [Official evidence register](GIT-001-official-evidence-register.md)
 - [Lifecycle research](GIT-001-lifecycle-research.md)
 - [Phase 7A preservation and workflow recovery](GIT-001-phase-7A-preservation-workflow-recovery.md)
+- [Reconciled future-work and disposition plan](GIT-001-next-agent-disposition-plan.md)
 - Phase 2 incident register — planned
 - Phase 3 gap/risk matrix — planned
 - Phase 4 operating-model proposal — planned

@@ -1,3 +1,95 @@
+## 2026-08-12 — Session: GIT-001 Future-Work Reconciliation
+
+**Agent:** Codex
+
+**Branch:** `codex/git-future-work-plan`
+
+**Focus:** Reconcile the six-priority Git recovery/cleanup list against live
+repository and GitHub state, then provide an executable next-agent handoff
+
+### Summary
+
+- Reconciled every original priority against refreshed refs, worktree state,
+  patch equivalence, merged-PR receipts, branch attachment, and dependency PRs.
+- Moved completed PMM and PR #723 recovery into a completed ledger so future
+  agents do not repeat them.
+- Defined the current execution order: synchronize and complete GIT-001 Phase
+  1, decide Excel ownership, seek Alpha retirement approval, seek separate
+  local/remote branch-cleanup approval, then process dependencies in coherent
+  compatibility packets.
+- Updated the global next-session briefing and generated the two maintained
+  documentation indexes through the lane-bound runtime.
+
+### Issues encountered
+
+- The first combined document-read command stopped after requesting a Phase 0
+  filename that does not exist.
+- The initial runtime-pin inspection used `react_app/.nvmrc`, but this repository
+  stores the maintained Node pin at the root `.nvmrc`.
+- The stale-branch cleanup dry run returned no candidates even though eight
+  unattached merged local branches were identified by direct Git/PR evidence.
+- The GIT-001 research branch appeared one commit ahead of `main` even though
+  its work has already been integrated.
+- The index generator rejected two folder paths in one invocation.
+- The first documentation gate rejected `doc_type: plan` on the new packet.
+- The commit hook rejected the handoff heading `Read first` and then the custom
+  `Decision needed` state even though the quick and full gates had passed.
+
+### Root causes and resolutions
+
+- The actual Phase 0 file is
+  `GIT-001-phase-0-preservation-baseline.md`; `rg --files` established the exact
+  name, and subsequent reads used that path.
+- The Node runtime pin is repository-wide rather than React-folder-local.
+  Reading root `.nvmrc` proved Node 24, which makes the proposed Node 26 type
+  update a policy decision rather than a routine independent bump.
+- `cleanup_stale_branches.py` selects age-oriented remote cleanup candidates;
+  it is not a complete classifier for recent unattached local branches. The
+  plan therefore uses an explicit worktree/ref/reachability/PR receipt table
+  and preserves the maintained script only for an approved remote cleanup run.
+- The research commit was squash-integrated, so graph ancestry retained an
+  apparent branch-only commit. `git cherry origin/main
+  codex/git-governance-research` returned `- 3be4790d`, proving patch
+  equivalence; the next action is to synchronize the shared lane without
+  rebasing or rewriting it.
+- `generate_enhanced_index.py` accepts one optional folder per invocation. The
+  two already-maintained folders were regenerated in separate lane-bound calls;
+  both completed successfully and the generated entries include the new plan.
+- The documentation schema allows `guide`, `reference`, `tutorial`, `index`,
+  `spec`, and `log`, but not `plan`. The packet is an active non-normative
+  research reference, so its front matter now uses `doc_type: reference`; the
+  documentation gate then validates the new file.
+- `check_session_docs.py` requires the exact heading `Required Reading` and
+  literal `Current` and `Next` table rows; semantic equivalents are not
+  accepted. The briefing now uses those contract phrases, and the focused
+  session-doc check plus the next commit hook verify it.
+
+### Verification
+
+- Refreshed `main` and `origin/main` were exact at `951f5e1d`; primary and all
+  five pre-existing linked worktrees were clean at inspection.
+- PMM and workflow recovery receipts were matched to PRs #736-#740.
+- Three Alpha lanes have clean, main-reachable heads; the policy lane's local
+  and remote heads were both separately proven reachable from main.
+- Eight unattached merged local branches have matching remote heads and merged
+  PR receipts; no deletion was performed.
+- Documentation indexes regenerated only in their already-maintained folders.
+- Documentation validation passed 5/5 with zero invalid front-matter files;
+  internal-link validation found zero broken links across 1,103 links.
+- `./run.sh check --quick` passed 10/10 and `./run.sh check` passed 30/30.
+
+### Terminal issues
+
+- `sed` failed on the guessed Phase 0 filename; `rg --files` supplied the exact
+  maintained path.
+- `react_app/.nvmrc` was absent; root `.nvmrc` is the correct runtime pin.
+- The index generator does not accept multiple positional folders; run one
+  invocation per maintained folder or use the documented all/recursive modes.
+- `check_docs.py` rejected the unsupported `plan` value; use the repository's
+  controlled front-matter values rather than inferring a type from the title.
+- The pre-commit session-doc validator rejected semantic variants; use the exact
+  maintained `Required Reading`, `Current`, and `Next` labels in global handoffs.
+
 ## 2026-08-12 — Session: COLUMN-PMM-001 Git Learning Update
 
 **Agent:** Codex
