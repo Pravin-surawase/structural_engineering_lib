@@ -17,6 +17,9 @@ Performs AST-based static analysis on IS 456 code modules to check:
   12. Errors as tuple return (advisory)
 
 When to use: after changing IS 456 functions or before their quality-gate review.
+The ``--module`` filter matches paths relative to the IS 456 source root, so a
+word in an absolute worktree directory cannot broaden the scan. This checker is
+static contract evidence; it does not replace an independent numerical benchmark.
 
 Usage:
     ./scripts/python_runtime.sh scripts/check_function_quality.py
@@ -58,6 +61,7 @@ BARE_PARAMS = {
     "cls",
     "section",
     "materials",
+    "reinforcement",
     "loads",
     "geometry",
     "config",
@@ -79,6 +83,8 @@ UNIT_SUFFIXES = {
     "_mpa",
     "_MPa",
     "_percent",
+    "_nmm2",
+    "_deg",
 }
 
 # Advisory checks (warnings, not failures in --warn mode)
@@ -321,7 +327,7 @@ class FunctionChecker(ast.NodeVisitor):
         if (
             self.statement_index < 5
             and isinstance(node.func, ast.Name)
-            and node.func.id.startswith("validate")
+            and node.func.id.lstrip("_").startswith("validate")
         ):
             self.has_validate_call = True
 
@@ -370,8 +376,8 @@ class FunctionChecker(ast.NodeVisitor):
 
         missing_units = []
         for arg_name in all_args:
-            # Skip if in bare params
-            if arg_name in BARE_PARAMS:
+            # Skip structured objects and dimensionless sample/count controls.
+            if arg_name in BARE_PARAMS or arg_name.startswith("n_"):
                 continue
             # Check if has unit suffix
             if not any(arg_name.endswith(suffix) for suffix in UNIT_SUFFIXES):
@@ -496,9 +502,10 @@ def scan_all_modules(
 
         # Apply module filter
         if module_filter:
+            relative_module = py_file.relative_to(IS456_DIR).as_posix()
             if (
                 module_filter not in py_file.stem
-                and module_filter not in py_file.as_posix()
+                and module_filter not in relative_module
             ):
                 continue
 

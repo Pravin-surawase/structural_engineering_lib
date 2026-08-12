@@ -19,4 +19,4 @@
 
 | Folder | Files | Description |
 |--------|-------|-------------|
-| [git-governance/](git-governance/) | 6 |  |
+| [git-governance/](git-governance/) | 7 |  |

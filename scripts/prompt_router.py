@@ -19,14 +19,19 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import subprocess
 import sys
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
+from typing import Any
 
 # Add _lib to path
 sys.path.insert(0, str(Path(__file__).parent))
 from _lib.output import StatusLine, print_json
 from _lib.utils import REPO_ROOT
+from tool_registry import ToolEntry, find_tools, load_registry
+
+AUTOMATION_MAP_PATH = REPO_ROOT / "scripts" / "automation-map.json"
 
 
 @dataclass
@@ -204,6 +209,11 @@ STOPWORDS = {
     "help",
     "using",
     "use",
+}
+
+GENERIC_TASK_WORDS = {
+    "add", "change", "create", "efficient", "faster", "fix", "make", "new",
+    "smart", "task", "update", "without", "work",
 }
 
 
@@ -427,6 +437,151 @@ def route_all(query: str) -> list[RoutingResult]:
     return routing_results
 
 
+def _git(args: list[str], *, cwd: Path = REPO_ROOT) -> str | None:
+    """Run one read-only Git query and return stripped stdout."""
+    try:
+        result = subprocess.run(["git", *args], cwd=cwd, capture_output=True,
+                                text=True, check=False, timeout=10)
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    return result.stdout.strip() if result.returncode == 0 else None
+
+
+def _parse_worktrees(raw: str) -> list[dict[str, str]]:
+    """Parse ``git worktree list --porcelain`` records."""
+    records: list[dict[str, str]] = []
+    current: dict[str, str] = {}
+    for line in [*raw.splitlines(), ""]:
+        if not line:
+            if current:
+                records.append(current)
+                current = {}
+            continue
+        key, _, value = line.partition(" ")
+        current[key] = value
+    return records
+
+
+def collect_lane_state() -> dict[str, Any]:
+    """Collect current and sibling worktree state without mutating Git."""
+    branch = _git(["branch", "--show-current"]) or "DETACHED"
+    head = _git(["rev-parse", "--short", "HEAD"]) or "unknown"
+    status = _git(["status", "--porcelain=v1"])
+    upstream = _git(["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"])
+    base_ref = upstream or (
+        "origin/main" if _git(["rev-parse", "--verify", "origin/main"]) else "main"
+    )
+    base = _git(["merge-base", "HEAD", base_ref])
+    current_root = REPO_ROOT.resolve()
+    worktrees: list[dict[str, Any]] = []
+    for record in _parse_worktrees(_git(["worktree", "list", "--porcelain"]) or ""):
+        worktree_path = Path(record.get("worktree", ""))
+        worktree_status = _git(["status", "--porcelain=v1"], cwd=worktree_path)
+        try:
+            is_current = worktree_path.resolve() == current_root
+        except OSError:
+            is_current = False
+        worktrees.append({
+            "path": str(worktree_path),
+            "branch": record.get("branch", "DETACHED").removeprefix("refs/heads/"),
+            "head": record.get("HEAD", "unknown")[:8],
+            "dirty_files": len(worktree_status.splitlines()) if worktree_status is not None else None,
+            "current": is_current,
+        })
+    dirty_files = len(status.splitlines()) if status else 0
+    attention: list[str] = []
+    if branch == "DETACHED":
+        attention.append("Current worktree is detached; inspect Git state before editing.")
+    elif branch in {"main", "master"}:
+        attention.append("Current worktree is on the default branch; use Codex-native Git to isolate the task.")
+    if dirty_files:
+        attention.append(f"Current worktree has {dirty_files} changed file(s); confirm task ownership before editing.")
+    if any(not item["current"] and (item["dirty_files"] or 0) > 0 for item in worktrees):
+        attention.append("Other worktrees contain changes; preserve those active lanes.")
+    return {
+        "root": str(REPO_ROOT), "branch": branch, "head": head, "dirty_files": dirty_files,
+        "upstream": upstream or "none", "base_ref": base_ref,
+        "base": base[:8] if base else "unknown",
+        "worktrees": worktrees, "attention": attention,
+    }
+
+
+def _task_tokens(text: str) -> set[str]:
+    return {token for token in re.split(r"[^a-z0-9]+", text.lower())
+            if len(token) > 2 and token not in STOPWORDS | GENERIC_TASK_WORDS}
+
+
+def _relevant_tools(query: str, *, limit: int = 4) -> list[tuple[ToolEntry, float]]:
+    query_tokens = _task_tokens(query)
+    relevant: list[tuple[ToolEntry, float]] = []
+    seen_commands: set[str] = set()
+    for tool, score in find_tools(query, load_registry(), limit=25):
+        if not tool.script or tool.script in seen_commands:
+            continue
+        if query_tokens and not query_tokens & _task_tokens(f"{tool.name} {tool.description} {' '.join(tool.keywords)}"):
+            continue
+        relevant.append((tool, score))
+        seen_commands.add(tool.script)
+        if len(relevant) == limit:
+            break
+    return relevant
+
+
+def _initial_context(skills: list[str], tools: list[tuple[ToolEntry, float]]) -> list[str]:
+    context = ["AGENTS.md", "docs/TASKS.md", "docs/planning/next-session-brief.md"]
+    for skill in skills:
+        path = f".github/skills/{skill}/SKILL.md"
+        if (REPO_ROOT / path).exists():
+            context.append(path)
+    task_map = json.loads(AUTOMATION_MAP_PATH.read_text(encoding="utf-8")).get("tasks", {})
+    for tool, _score in tools:
+        for path in task_map.get(tool.name, {}).get("context_docs", []):
+            if path not in context and (REPO_ROOT / path).exists():
+                context.append(path)
+            if len(context) >= 7:
+                return context
+    return context
+
+
+def build_task_brief(query: str) -> dict[str, Any]:
+    """Compose read-only lane, routing, and automation guidance for ``query``."""
+    routing = route(query)
+    tools = _relevant_tools(query)
+    return {
+        "task": query, "lane": collect_lane_state(), "route": asdict(routing),
+        "matching_tools": [
+            {"name": tool.name, "description": tool.description, "command": tool.script,
+             "permission": tool.permission or "Unspecified", "score": score}
+            for tool, score in tools
+        ],
+        "initial_context": _initial_context(routing.skills, tools),
+        "workflow": {
+            "start": [f"./run.sh session brief --agent {routing.agent}", "./run.sh session start"],
+            "close": ["./run.sh check --quick", f"./run.sh session end --agent {routing.agent}"],
+            "git_rule": "Codex owns Git/worktree/PR operations; this command is inspection-only.",
+        },
+    }
+
+
+def _print_task_brief(brief: dict[str, Any]) -> None:
+    lane, routing = brief["lane"], brief["route"]
+    print("\nEfficient Task Brief\n" + "=" * 60)
+    print(f"Task: {brief['task']}")
+    print(f"Lane: {lane['branch']} @ {lane['head']} | dirty={lane['dirty_files']} | base={lane['base']} ({lane['base_ref']}) | upstream={lane['upstream']}")
+    print("Worktrees:")
+    for item in lane["worktrees"]:
+        print(f" {'*' if item['current'] else ' '} {item['branch']} | dirty={item['dirty_files']} | {item['path']}")
+    print(f"\nRoute: @{routing['agent']} ({routing['confidence']:.2f})")
+    print("Existing tools:")
+    for item in brief["matching_tools"]:
+        print(f" - {item['name']} [{item['permission']}] -> {item['command']}")
+    if not brief["matching_tools"]:
+        print(" - No task-specific automation match; inspect the affected folder index.")
+    print("\nSafe start: " + " -> ".join(brief["workflow"]["start"]))
+    print("Safe close: " + " -> ".join(brief["workflow"]["close"]))
+    print(f"Note: {brief['workflow']['git_rule']}\n")
+
+
 def _print_result(result: RoutingResult, query: str) -> None:
     """Print a routing result in human-readable format."""
     print(f'\n🎯 Routing: "{query}"')
@@ -467,15 +622,24 @@ def main() -> None:
   ./scripts/python_runtime.sh scripts/prompt_router.py "design beam 300x500 with IS 456"
   ./scripts/python_runtime.sh scripts/prompt_router.py --json "fix csv import bug"
   ./scripts/python_runtime.sh scripts/prompt_router.py --all "security audit"
+  ./scripts/python_runtime.sh scripts/prompt_router.py --brief "fix csv import bug"
 """,
     )
     parser.add_argument("query", help="Natural language query to route")
     parser.add_argument("--json", action="store_true", help="Output as JSON")
-    parser.add_argument("--all", action="store_true", help="Show all candidates ranked")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--all", action="store_true", help="Show all candidates ranked")
+    mode.add_argument("--brief", action="store_true", help="Build a read-only lane and automation brief")
 
     args = parser.parse_args()
 
-    if args.all:
+    if args.brief:
+        brief = build_task_brief(args.query)
+        if args.json:
+            print_json(brief)
+        else:
+            _print_task_brief(brief)
+    elif args.all:
         results = route_all(args.query)
         if args.json:
             print_json([asdict(r) for r in results])

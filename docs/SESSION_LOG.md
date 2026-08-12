@@ -1,3 +1,465 @@
+## 2026-08-12 — Session: GIT-001 Future-Work Plan Closeout
+
+**Agent:** Codex
+
+**Branch:** `codex/git-future-work-plan-closeout`
+
+**Focus:** Record the exact publication receipt for the reconciled GIT-001
+future-work and next-agent handoff
+
+### Summary
+
+- PR #741 passed required checks at unchanged head `0f324db9` and was
+  squash-merged to `main` as `52ac5f58`.
+- Fast-forwarded the clean primary worktree to the exact merge and reran the
+  quick repository gate from integrated `main`.
+- Replaced the pre-merge base label in the next-session briefing with the exact
+  published-plan receipt so it cannot be mistaken for current remote state.
+
+### Issues encountered
+
+- The plan candidate necessarily recorded its pre-merge base before the future
+  squash-merge commit existed.
+
+### Root causes and resolutions
+
+- A commit cannot truthfully record its own future GitHub checks and squash
+  identity. This bounded closeout records PR #741, its unchanged reviewed head,
+  and merge commit, while the briefing still instructs the next agent to refresh
+  live state rather than treating any dated SHA as permanent current truth.
+
+### Verification
+
+- PR #741: `MERGED`, reviewed head `0f324db9`, merge `52ac5f58`.
+- Detect Changes, Repository Validation, Build MkDocs, and PR Gate passed;
+  unaffected Python, FastAPI, and React jobs were skipped by design.
+- Integrated primary worktree: `HEAD = origin/main = 52ac5f58`, clean.
+- Integrated `./run.sh check --quick`: 10/10 passed.
+
+### Terminal issues
+
+- None encountered.
+
+## 2026-08-12 — Session: GIT-001 Future-Work Reconciliation
+
+**Agent:** Codex
+
+**Branch:** `codex/git-future-work-plan`
+
+**Focus:** Reconcile the six-priority Git recovery/cleanup list against live
+repository and GitHub state, then provide an executable next-agent handoff
+
+### Summary
+
+- Reconciled every original priority against refreshed refs, worktree state,
+  patch equivalence, merged-PR receipts, branch attachment, and dependency PRs.
+- Moved completed PMM and PR #723 recovery into a completed ledger so future
+  agents do not repeat them.
+- Defined the current execution order: synchronize and complete GIT-001 Phase
+  1, decide Excel ownership, seek Alpha retirement approval, seek separate
+  local/remote branch-cleanup approval, then process dependencies in coherent
+  compatibility packets.
+- Updated the global next-session briefing and generated the two maintained
+  documentation indexes through the lane-bound runtime.
+
+### Issues encountered
+
+- The first combined document-read command stopped after requesting a Phase 0
+  filename that does not exist.
+- The initial runtime-pin inspection used `react_app/.nvmrc`, but this repository
+  stores the maintained Node pin at the root `.nvmrc`.
+- The stale-branch cleanup dry run returned no candidates even though eight
+  unattached merged local branches were identified by direct Git/PR evidence.
+- The GIT-001 research branch appeared one commit ahead of `main` even though
+  its work has already been integrated.
+- The index generator rejected two folder paths in one invocation.
+- The first documentation gate rejected `doc_type: plan` on the new packet.
+- The commit hook rejected the handoff heading `Read first` and then the custom
+  `Decision needed` state even though the quick and full gates had passed.
+
+### Root causes and resolutions
+
+- The actual Phase 0 file is
+  `GIT-001-phase-0-preservation-baseline.md`; `rg --files` established the exact
+  name, and subsequent reads used that path.
+- The Node runtime pin is repository-wide rather than React-folder-local.
+  Reading root `.nvmrc` proved Node 24, which makes the proposed Node 26 type
+  update a policy decision rather than a routine independent bump.
+- `cleanup_stale_branches.py` selects age-oriented remote cleanup candidates;
+  it is not a complete classifier for recent unattached local branches. The
+  plan therefore uses an explicit worktree/ref/reachability/PR receipt table
+  and preserves the maintained script only for an approved remote cleanup run.
+- The research commit was squash-integrated, so graph ancestry retained an
+  apparent branch-only commit. `git cherry origin/main
+  codex/git-governance-research` returned `- 3be4790d`, proving patch
+  equivalence; the next action is to synchronize the shared lane without
+  rebasing or rewriting it.
+- `generate_enhanced_index.py` accepts one optional folder per invocation. The
+  two already-maintained folders were regenerated in separate lane-bound calls;
+  both completed successfully and the generated entries include the new plan.
+- The documentation schema allows `guide`, `reference`, `tutorial`, `index`,
+  `spec`, and `log`, but not `plan`. The packet is an active non-normative
+  research reference, so its front matter now uses `doc_type: reference`; the
+  documentation gate then validates the new file.
+- `check_session_docs.py` requires the exact heading `Required Reading` and
+  literal `Current` and `Next` table rows; semantic equivalents are not
+  accepted. The briefing now uses those contract phrases, and the focused
+  session-doc check plus the next commit hook verify it.
+
+### Verification
+
+- Refreshed `main` and `origin/main` were exact at `951f5e1d`; primary and all
+  five pre-existing linked worktrees were clean at inspection.
+- PMM and workflow recovery receipts were matched to PRs #736-#740.
+- Three Alpha lanes have clean, main-reachable heads; the policy lane's local
+  and remote heads were both separately proven reachable from main.
+- Eight unattached merged local branches have matching remote heads and merged
+  PR receipts; no deletion was performed.
+- Documentation indexes regenerated only in their already-maintained folders.
+- Documentation validation passed 5/5 with zero invalid front-matter files;
+  internal-link validation found zero broken links across 1,103 links.
+- `./run.sh check --quick` passed 10/10 and `./run.sh check` passed 30/30.
+
+### Terminal issues
+
+- `sed` failed on the guessed Phase 0 filename; `rg --files` supplied the exact
+  maintained path.
+- `react_app/.nvmrc` was absent; root `.nvmrc` is the correct runtime pin.
+- The index generator does not accept multiple positional folders; run one
+  invocation per maintained folder or use the documented all/recursive modes.
+- `check_docs.py` rejected the unsupported `plan` value; use the repository's
+  controlled front-matter values rather than inferring a type from the title.
+- The pre-commit session-doc validator rejected semantic variants; use the exact
+  maintained `Required Reading`, `Current`, and `Next` labels in global handoffs.
+
+## 2026-08-12 — Session: COLUMN-PMM-001 Git Learning Update
+
+**Agent:** Codex
+**Branch:** `codex/git-pmm-learning-update`
+**Focus:** Convert the PMM preservation, selective recovery, validation, merge,
+and cleanup experience into reusable Git teaching and executable script controls
+
+### Summary
+
+- Added a repository case study explaining why a stale clean commit was
+  preserved but not merged, why a fresh branch and worktree were both needed,
+  and how squash integration changes cleanup evidence.
+- Updated canonical Git guidance and the compact AI-agent guide with the
+  preservation-first selective-recovery rule and case-study route.
+- Expanded the external personal workbook, study notebook, and quick reference
+  with the four-commit PMM graph, exercises, script modes, and teach-back prompts.
+- Added a requested reusable memory-extension note with the exact issues,
+  root causes, solutions, commit identities, and evidence boundaries.
+- Changed `generate_enhanced_index.py` to refuse live creation in previously
+  unmaintained folders unless `--allow-new-index` is explicit; existing indexes
+  and canonical key folders remain normal update targets.
+- Clarified `task brief`, linked-worktree runtime diagnosis, function-quality
+  scanning, index generation, and safe deletion in maintained script guidance.
+
+### Issues encountered
+
+- The first attempt to create this learning worktree used the future directory
+  as the process working directory and could not start.
+- During the PMM session, index generation created six untracked files in nested
+  test folders that did not own maintained indexes.
+- A shell inspection using an unmatched `docs/git-automation/index.*` glob
+  stopped that command before the following inspection could run.
+
+### Root causes and resolutions
+
+- A process cannot start inside a directory before `git worktree add` creates
+  it. The worktree was created from the existing primary checkout and only then
+  used as the command directory; session start and runtime diagnosis passed.
+- The generator treated every requested folder as an implicit decision to add
+  repository index topology. Live generation now distinguishes maintained
+  folders from new targets and exits 2 before writing unless
+  `--allow-new-index` is supplied. A temporary-folder CLI regression and live
+  probe prove refusal and explicit opt-in behavior.
+- Zsh treats an unmatched glob as an error. The absence of a maintained
+  `docs/git-automation` index was already established; subsequent commands use
+  literal or `find`/`rg --files` paths instead of an optional bare glob.
+
+### Verification
+
+- Focused session-automation and function-quality regressions: 41 passed.
+- Live unmaintained-folder probe: exit 2 and no generated index files.
+- All 16 existing `generate_all_indexes.sh` targets remain maintained under the
+  new guard.
+- Ruff and Black: pass on the changed generator and regression test.
+- Script reference validation: zero runtime breaks and zero misleading output;
+  Codex-native Git workflow validation passed.
+- `./run.sh check --quick`: 10/10; `./run.sh check`: 30/30.
+- GitHub unchanged-head evidence is recorded at publication closeout.
+
+### Terminal issues
+
+- `exec` could not launch with the not-yet-created worktree as `workdir`; the
+  maintained sequence is create from an existing checkout, then enter the lane.
+- Zsh rejected unmatched glob `docs/git-automation/index.*`; use exact paths or
+  `rg --files` when a file may not exist.
+
+## 2026-08-12 — Session: COLUMN-PMM-001 Integration Closeout
+
+**Agent:** Codex
+**Branch:** `codex/column-pmm-closeout`
+**Focus:** Record the exact merge and integrated-main verification for the
+experimental rectangular-column P-Mx-My recovery
+
+### Summary
+
+- PR #738 passed required CI at unchanged head `a481d1ab` and was squash-merged
+  to `main` as `402bf22c`.
+- Fast-forwarded the primary worktree to the exact merge and reran the PMM and
+  function-quality regressions from integrated `main`.
+- Moved COLUMN-PMM-001 from active work to recently done while retaining its
+  explicit experimental, non-stable-API boundary.
+
+### Issues encountered
+
+- The feature candidate's task and handoff records correctly described a
+  pre-merge state that became stale when PR #738 merged.
+
+### Root causes and resolutions
+
+- Merge receipts cannot exist before CI and integration. This bounded follow-up
+  records the exact reviewed head, merge commit, and integrated-main evidence
+  without changing calculation code or widening the support contract.
+
+### Verification
+
+- PR #738: required Python Validation, Repository Validation, Build MkDocs, and
+  PR Gate passed at head `a481d1ab`; GitHub reported CLEAN and MERGEABLE.
+- Integrated `main`: `HEAD=origin/main=402bf22c`, working tree clean, and
+  `python_runtime.sh --diagnose` reports `source_bound=true`.
+- Integrated PMM plus checker regressions: 15 passed; focused strict scan: 2/2.
+
+### Terminal issues
+
+- None encountered.
+
+## 2026-08-12 — Session: COLUMN-PMM-001 Experimental Recovery
+
+**Agent:** Codex
+**Branch:** `codex/column-pmm-completion`
+**Focus:** Recover the preserved rectangular-column P-Mx-My fiber work onto
+current `main`, establish an independent oblique benchmark, and retain an
+explicit experimental support boundary
+
+### Summary
+
+- Recovered only the generalized reinforcement types and pure IS 456 PMM
+  module from historical commit `8a52ed0f`; stale services, public exports,
+  generated files, and unrelated changes were not cherry-picked.
+- Added an independently derived closed-form 45-degree strain-plane benchmark
+  for a 200 mm square M25 section with four Fe415 bars. The exact response is
+  `Pu=145.723673 kN`, `Mx=+26.906094 kNm`, and `My=-26.906094 kNm`.
+- Kept the feature directly importable only from the experimental IS 456 module.
+  The supported Cl. 39.6 Bresler route remains unchanged, and no FastAPI, React,
+  services, root-package, or stable-API exposure was added.
+- Repaired the maintained function-quality checker so explicit `N/mm2` and
+  degree units, structured reinforcement, dimensionless sampling counts, and
+  private validation helpers are recognized. Its module filter now uses the
+  IS 456-relative path rather than the absolute worktree path.
+
+### Issues encountered
+
+- The first worktree-creation command was launched with the not-yet-created
+  worktree as its process directory, so the shell could not start.
+- The preserved PMM tests compared only with the existing uniaxial solver and
+  did not provide an independent oblique benchmark.
+- A 48 x 64 benchmark mesh introduced unequal x/y discretization error, while a
+  64 x 64 mesh preserved symmetry but missed the chosen axial tolerance.
+- The strict function-quality script rejected current explicit-unit and helper
+  conventions, then `--module pmm` scanned all modules because the absolute
+  worktree path itself contained `pmm`.
+- Two combined regression commands used guessed, obsolete test paths for the
+  biaxial and column golden-vector tests and stopped before collection.
+- Targeted index generation created six new nested test indexes where the
+  repository had no tracked index convention; reference checking also produced
+  false positives because `index.json` and `index.md` are generic basenames.
+
+### Root causes and resolutions
+
+- A process cannot start in a directory that does not exist. The worktree was
+  created from the primary checkout, then every implementation command used the
+  new absolute worktree path. `python_runtime.sh --diagnose` proves
+  `source_bound=true` for the completion lane.
+- Passing agreement between two repository solvers is not independent evidence.
+  Concrete strip integrals and exact discrete-bar forces were derived separately,
+  versioned in `docs/verification/column-pmm-benchmark.md`, and exercised at both
+  the root response kernel and public experimental slice.
+- A rectangular mesh breaks the square benchmark's x/y numerical symmetry, and
+  the first square mesh was too coarse. A 128 x 128 square kernel mesh preserves
+  symmetry and gives `145.713469 kN`, `+26.905867 kNm`, and `-26.905867 kNm`
+  within the declared discretization tolerances; the slice has a separate signed
+  interpolation regression.
+- The quality checker encoded older parameter spellings and filtered absolute
+  paths. The rules now recognize the maintained explicit contracts and the
+  scanner compares against `py_file.relative_to(IS456_DIR)`; a temporary
+  PMM-named-worktree regression proves only `column/pmm.py` is selected.
+- Test filenames had moved. `rg --files Python/tests` found the maintained
+  `test_column_biaxial.py` and `regression/test_golden_vectors_column.py` paths;
+  the corrected focused suite passes.
+- The index generator writes into any requested folder, even where indexes are
+  not tracked. The six newly generated, untracked files were individually
+  validated as regular files inside this worktree and removed with
+  `safe_file_delete.py --force --no-backup`; tracked parent indexes were retained.
+
+### Verification
+
+- Independent analytical benchmark review: PASS; no calculation or sign defect.
+- Focused PMM, function-quality, uniaxial, biaxial, and golden-vector regressions:
+  PASS.
+- Full Python suite: 5,623 passed, 3 skipped, 6 deselected.
+- `check_function_quality.py --module pmm --strict --summary`: 2/2 pass.
+- Architecture boundaries: 155 files checked, zero violations.
+- Import validation: 194 files and 1,059 imports checked, zero broken imports.
+- Ruff, Black, mypy, and `git diff --check`: PASS on affected handwritten files.
+- `./run.sh check --quick`: 10/10; `./run.sh check`: 30/30.
+
+### Terminal issues
+
+- `exec` with the future worktree as `workdir` failed before mutation because
+  that path did not exist; rerunning `git worktree add` from the primary checkout
+  succeeded.
+- Guessed `Python/tests/codes/is456/column/test_biaxial.py` and
+  `Python/tests/golden/test_column_golden_vectors.py` did not exist; targeted
+  `rg --files` discovery supplied the maintained paths.
+
+## 2026-08-12 — Session: GIT-001 Packet 7A Integration Closeout
+
+**Agent:** Codex
+**Branch:** `codex/git-recovery-closeout`
+**Focus:** Record exact integration and safely retire only the local lanes proven
+superseded by the workflow replacement
+
+### Summary
+
+- PR #736 passed unchanged-head required CI and was squash-merged to `main` as
+  `30ec598d`.
+- Verified `task brief` and non-writing index help from integrated `main`; the
+  command left the main worktree clean.
+- Closed stale/conflicted PR #723 with a replacement note linking PR #736.
+- Removed the clean temporary PMM recovery, workflow recovery, and old PR #723
+  local worktrees and local branch names after exact reachability checks.
+- Retained the original PMM local/remote branch and retained remote workflow
+  branches for audit and recovery.
+
+### Issues encountered
+
+- The first integrated packet record correctly described PR #736 as under
+  review, but that state became stale after merge and local retirement.
+
+### Root causes and resolutions
+
+- Review-state documentation was committed with the implementation so CI could
+  validate the candidate before any retirement. This small follow-up changes
+  only the task/handoff/packet state and generated indexes after exact merge,
+  integrated-command, PR closure, and cleanup receipts were available.
+
+### Verification
+
+- PR #736 required `PR Gate` passed at unchanged head `aec9fbb2`; merge commit is
+  `30ec598d`.
+- Integrated `main` reported branch `main` at `30ec598d` from `task brief`, and
+  `generate indexes --help` printed usage without changing the tree.
+- Removed local paths are absent. Remote recovery refs remain exact:
+  workflow `aec9fbb2`, historical PR #723 `75d66681`, PMM `8a52ed0f`.
+
+### Terminal issues
+
+- None encountered.
+
+## 2026-08-12 — Session: GIT-001 Preservation and Workflow Recovery
+
+**Agent:** Codex
+**Branch:** `codex/workflow-intake-recovery`
+**Focus:** Preserve the unpublished Column PMM work and selectively recover the
+useful, current-compatible controls from stale PR #723
+
+### Summary
+
+- Published the exact Column PMM commit `8a52ed0f` on
+  `origin/codex/column-pmm-experimental` and corrected the old worktree's
+  upstream without rewriting its history.
+- Created fresh recovery worktrees from then-current `main` so preservation,
+  engineering assessment, and workflow implementation could not overwrite the
+  two historical lanes.
+- Held PMM integration because the preserved plan explicitly lacks an
+  independent full-surface benchmark; the existing supported Cl. 39.5 solver
+  remains the production route.
+- Reimplemented only PR #723's missing lane-safe `run.sh task brief` intake and
+  linked-worktree-safe index runtime/help behavior. Broad parallel-policy,
+  generated-index, agent-instruction, and unrelated historical changes were
+  rejected from this packet.
+- Merged the green GIT-001 baseline through PR #735, fast-forwarded local
+  `main`, and merged that exact main commit into this recovery branch without
+  conflicts or history rewriting.
+
+### Issues encountered
+
+- The PMM fiber solver had passing regression tests but no independent
+  benchmark for the complete P-Mx-My surface.
+- The preserved PMM worktree's first focused test run imported
+  `structural_lib` from the primary checkout instead of its own lane.
+- The first workflow checkpoint commit stopped when Black reformatted the new
+  regression test.
+- PR #723 was 53 commits behind `main`, conflicted, and combined the useful
+  intake/runtime controls with broad policy, generated, and unrelated changes.
+- The full gate found invalid front-matter values across the GIT-001 research
+  documents, including the new packet record.
+- The first session-end validation returned nonzero while the completed
+  evidence record and regenerated indexes were still uncommitted.
+
+### Root causes and resolutions
+
+- The PMM plan itself classifies the generalized fiber solver as experimental
+  and states that only a non-independent comparison with the supported Cl. 39.5
+  implementation exists. The exact commit was preserved remotely, but no PMM
+  calculation code was copied into the fresh integration lane. A trusted
+  independent oblique-surface benchmark remains the explicit advancement gate.
+- The old branch predates the maintained linked-worktree runtime binding. The
+  first green result was rejected; rerunning with `PYTHONPATH="$PWD/Python"`
+  resolved the PMM lane and passed its 9 focused tests. The fresh lanes'
+  `./scripts/python_runtime.sh --diagnose` reports `source_bound: true`.
+- The test was not Black-formatted when first staged. The hook was allowed to
+  modify it, the focused 38-test file was rerun, the exact four paths were
+  restaged, and commit `2d30e9d1` passed all hooks. No bypass was used.
+- The old PR evolved across several unrelated work streams. Its three commits
+  were treated as research evidence, not cherry-picked as a unit. Current-main
+  implementations and focused tests prove the two selected outcomes; PR #723
+  remains preserved until replacement CI and merge prove supersession.
+- GIT-001 used descriptive status/type labels outside the validator's finite
+  schema. The five records now use allowed `active` status and
+  `index`/`log`/`reference` types; phase-specific state remains in their content.
+  Targeted documentation validation and the full gate pass after regeneration.
+- Session-end intentionally checks for a clean handoff tree. Its content,
+  linkage, task, and governance checks passed; the evidence/index commit is
+  created before rerunning the validator against the clean candidate.
+
+### Verification
+
+- PMM local and remote preservation refs both resolve to `8a52ed0f`; corrected
+  focused PMM check: 9 passed with the preserved lane explicitly imported.
+- Workflow runtime diagnosis resolves this linked worktree; `task brief` reports
+  this branch, live dirty/base/upstream/worktree state, route, tools, and safe
+  start/close guidance without changing Git state.
+- `generate indexes --help` prints usage without generation, and a disposable
+  linked-worktree regression proves all generator calls use that lane's runtime.
+- `Python/tests/test_session_automation.py`: 38 passed; `./run.sh check --quick`:
+  10/10 passed; `git diff --check`: clean before the checkpoint.
+- After main integration and the front-matter correction, `./run.sh check`
+  passes 30/30.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: the preserved PMM lane did not support the current
+  runtime `--diagnose` behavior and initially imported the primary checkout ->
+  explicit lane `PYTHONPATH` proved the historical code, while fresh-lane
+  diagnosis proves the maintained fix.
+- ⚠️ TERMINAL ISSUE: the PMM audit used unsupported `rg -E` syntax ->
+  `rg -e '<pattern>'` completed the targeted search.
+
 ## 2026-08-12 — Session: GIT-001 Program Start and Research Baseline
 
 **Agent:** Codex

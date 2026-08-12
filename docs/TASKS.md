@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-12 — GIT-001 research lane established; Phase 0 complete and Phase 1 started
+**Updated:** 2026-08-12 — COLUMN-PMM-001 integrated through PR #738; GIT-001 Phase 1 continues
 
 ---
 
@@ -127,8 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| SPARK-001 | Establish a measured GPT-5.3-Codex-Spark work program for bounded high-throughput tasks | Main Agent + repository owner | ✅ PHASE 2 COMPLETE — recovery/integration verified; implementation held for G0 |
-| GIT-001 | Research and propose an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🔬 PHASE 1 IN PROGRESS — Phase 0 preservation baseline complete; policy implementation held |
+| GIT-001 | Research and propose an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🔬 PHASE 1 IN PROGRESS + PACKET 7A COMPLETE — PMM and PR #723 recovery integrated; broad policy held |
 
 ## Up Next
 
@@ -152,6 +151,7 @@ held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| COLUMN-PMM-001 | Recovered and independently benchmarked the experimental rectangular-column P-Mx-My fiber surface | Main Agent | ✅ SOFTWARE COMPLETE — PR #738 merged; module remains experimental and outside the stable API |
 | ALPHA-0231-CANDIDATE | Published the exact 0.23.1a1 Alpha through exact-head CI, TestPyPI, production PyPI, and GitHub prerelease gates | Main Agent + ops | ✅ DONE — production run `31468341946`; exact public package UAT green |
 | IS456-SLAB-PRELAUNCH | Record and enforce source/licensing permission for public distribution of approved-scope normalized IS 456 data | Owner + Main Agent | ✅ DONE — owner confirmed 2026-08-11; canonical record, preflight, candidate, and publish-CI gates added |
 | IS456-SLAB-001 | Implemented simply supported/continuous one-way and common two-way solid slabs with built-in/external coefficients, topology, strips, corner torsion, detailing, serviceability, shear, FastAPI and a revision-safe React workbench | Main Agent | ✅ SOFTWARE COMPLETE — 5,532 Python, 388 FastAPI, 241 React, 30/30 integrated checks and live browser pass; flat slabs held |

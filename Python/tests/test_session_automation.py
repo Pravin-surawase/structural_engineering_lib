@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib
 import json
+import os
 import subprocess
 import sys
 from datetime import date
@@ -20,6 +21,7 @@ if str(REPO_ROOT) not in sys.path:
 session = importlib.import_module("scripts.session")
 check_api = importlib.import_module("scripts.check_api")
 validate_script_refs = importlib.import_module("scripts.validate_script_refs")
+prompt_router = importlib.import_module("scripts.prompt_router")
 
 
 @pytest.mark.parametrize(
@@ -34,6 +36,111 @@ def test_session_heading_marker_accepts_descriptive_titles(heading: str):
     match = session.DATE_RE.match(heading)
     assert match is not None
     assert match.group(1) == "2026-08-07"
+
+
+def test_task_brief_reports_lane_route_and_safe_workflow(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    lane = {
+        "branch": "codex/intake",
+        "head": "abc12345",
+        "dirty_files": 0,
+        "base": "def67890",
+        "base_ref": "origin/main",
+        "upstream": "none",
+        "worktrees": [],
+        "attention": [],
+        "root": "/tmp/intake",
+    }
+    monkeypatch.setattr(prompt_router, "collect_lane_state", lambda: lane)
+    brief = prompt_router.build_task_brief("fix CSV import")
+
+    assert brief["lane"] is lane
+    assert brief["route"]["agent"]
+    assert brief["workflow"]["start"][0].startswith("./run.sh session brief")
+    assert "inspection-only" in brief["workflow"]["git_rule"]
+
+
+def test_run_task_brief_and_index_help_are_read_only():
+    before = subprocess.run(
+        ["git", "status", "--porcelain=v1"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout
+
+    brief = subprocess.run(
+        [str(REPO_ROOT / "run.sh"), "task", "brief", "fix CSV import"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    help_result = subprocess.run(
+        [str(REPO_ROOT / "run.sh"), "generate", "indexes", "--help"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    task_help = subprocess.run(
+        [str(REPO_ROOT / "run.sh"), "task", "brief", "--help"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    after = subprocess.run(
+        ["git", "status", "--porcelain=v1"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout
+
+    assert brief.returncode == 0, brief.stderr
+    assert "Lane:" in brief.stdout
+    assert "Route:" in brief.stdout
+    assert "Safe start:" in brief.stdout
+    assert help_result.returncode == 0, help_result.stderr
+    assert "Usage: ./run.sh generate indexes" in help_result.stdout
+    assert task_help.returncode == 0, task_help.stderr
+    assert "Usage: ./run.sh task brief" in task_help.stdout
+    assert before == after
+
+
+def test_index_generator_uses_worktree_runtime_in_temp_project(tmp_path: Path):
+    """The index launcher must resolve its runtime from its own worktree."""
+    project = tmp_path / "linked-worktree"
+    scripts = project / "scripts"
+    scripts.mkdir(parents=True)
+    (project / "docs").mkdir()
+    generator = REPO_ROOT / "scripts" / "generate_all_indexes.sh"
+    launcher = scripts / "generate_all_indexes.sh"
+    launcher.write_text(generator.read_text(encoding="utf-8"), encoding="utf-8")
+    launcher.chmod(0o755)
+    calls = tmp_path / "runtime-calls.txt"
+    runtime = scripts / "python_runtime.sh"
+    runtime.write_text(
+        '#!/usr/bin/env bash\nprintf \'%s\\n\' "$*" >> "${RUNTIME_ARGS:?}"\n',
+        encoding="utf-8",
+    )
+    runtime.chmod(0o755)
+
+    result = subprocess.run(
+        [str(launcher)],
+        cwd=project,
+        capture_output=True,
+        text=True,
+        timeout=10,
+        env={**os.environ, "RUNTIME_ARGS": str(calls)},
+    )
+
+    assert result.returncode == 0, result.stderr
+    recorded = calls.read_text(encoding="utf-8")
+    assert "scripts/generate_enhanced_index.py --json-only docs" in recorded
+    assert "scripts/generate_enhanced_index.py scripts" in recorded
 
 
 def test_latest_session_block_does_not_rewind_descriptive_heading():
@@ -352,6 +459,42 @@ def test_generated_index_hash_tracks_subfolder_projection(
     assert initial["subfolders"][0]["file_count"] == 1
     assert updated["subfolders"][0]["file_count"] == 2
     assert initial["content_hash"] != updated["content_hash"]
+
+
+def test_index_generator_requires_opt_in_for_new_index_folder(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    generator = importlib.import_module("scripts.generate_enhanced_index")
+    unmaintained = tmp_path / "tests" / "new-area"
+    unmaintained.mkdir(parents=True)
+    (unmaintained / "sample.py").write_text("VALUE = 1\n", encoding="utf-8")
+    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
+    monkeypatch.setattr(generator, "KEY_FOLDERS", [])
+    monkeypatch.setattr(sys, "argv", ["generate_enhanced_index.py", str(unmaintained)])
+
+    with pytest.raises(SystemExit, match="2"):
+        generator.main()
+
+    output = capsys.readouterr().out
+    assert "Refusing to create indexes in unmaintained folder" in output
+    assert not (unmaintained / "index.json").exists()
+    assert not (unmaintained / "index.md").exists()
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "generate_enhanced_index.py",
+            str(unmaintained),
+            "--allow-new-index",
+        ],
+    )
+    generator.main()
+
+    assert (unmaintained / "index.json").is_file()
+    assert (unmaintained / "index.md").is_file()
 
 
 def test_session_end_preserves_current_same_day_handoff(

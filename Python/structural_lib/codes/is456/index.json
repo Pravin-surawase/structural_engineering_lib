@@ -2,14 +2,14 @@
   "folder": "Python/structural_lib/codes/is456",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-11",
+  "last_updated": "2026-08-12",
   "file_count": 14,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
       "size_lines": 148,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-12",
       "description": "IS 456:2000 - Indian Standard for Plain and Reinforced Concrete.",
       "classes": [
         {
@@ -31,7 +31,7 @@
     {
       "name": "clauses.json",
       "type": "config",
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-12",
       "top_level_keys": [
         "$schema",
         "metadata",
@@ -45,8 +45,8 @@
     {
       "name": "compliance.py",
       "type": "python",
-      "size_lines": 483,
-      "last_updated": "2026-04-05",
+      "size_lines": 549,
+      "last_updated": "2026-08-12",
       "description": "Module: compliance",
       "functions": [
         {
@@ -65,13 +65,13 @@
           ]
         }
       ],
-      "content_hash": "d1bcd872a5c5"
+      "content_hash": "f7e7b8ddd87c"
     },
     {
       "name": "detailing.py",
       "type": "python",
       "size_lines": 28,
-      "last_updated": "2026-03-31",
+      "last_updated": "2026-08-12",
       "description": "Backward compatibility shim — detailing module moved to beam/ subpackage.",
       "content_hash": "c33bfd7dac60"
     },
@@ -79,7 +79,7 @@
       "name": "ductile.py",
       "type": "python",
       "size_lines": 30,
-      "last_updated": "2026-03-31",
+      "last_updated": "2026-08-12",
       "description": "Backward compatibility shim — ductile module moved to codes/is13920/.",
       "content_hash": "bdd02d80e4da"
     },
@@ -87,7 +87,7 @@
       "name": "flexure.py",
       "type": "python",
       "size_lines": 28,
-      "last_updated": "2026-03-31",
+      "last_updated": "2026-08-12",
       "description": "Backward compatibility shim — flexure module moved to beam/ subpackage.",
       "content_hash": "47488cbd8024"
     },
@@ -95,7 +95,7 @@
       "name": "load_analysis.py",
       "type": "python",
       "size_lines": 627,
-      "last_updated": "2026-04-06",
+      "last_updated": "2026-08-12",
       "description": "Module:       load_analysis",
       "functions": [
         {
@@ -176,7 +176,7 @@
       "name": "materials.py",
       "type": "python",
       "size_lines": 128,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-12",
       "description": "Module:       materials",
       "functions": [
         {
@@ -215,7 +215,7 @@
       "name": "serviceability.py",
       "type": "python",
       "size_lines": 37,
-      "last_updated": "2026-03-31",
+      "last_updated": "2026-08-12",
       "description": "Backward compatibility shim — serviceability module moved to beam/ subpackage.",
       "content_hash": "090ff8893072"
     },
@@ -223,7 +223,7 @@
       "name": "shear.py",
       "type": "python",
       "size_lines": 28,
-      "last_updated": "2026-03-31",
+      "last_updated": "2026-08-12",
       "description": "Backward compatibility shim — shear module moved to beam/ subpackage.",
       "content_hash": "9b97fb7e9292"
     },
@@ -231,7 +231,7 @@
       "name": "slenderness.py",
       "type": "python",
       "size_lines": 364,
-      "last_updated": "2026-03-29",
+      "last_updated": "2026-08-12",
       "description": "Slenderness Check Module — IS 456:2000 Beam Lateral Stability",
       "classes": [
         {
@@ -280,7 +280,7 @@
       "name": "tables.py",
       "type": "python",
       "size_lines": 97,
-      "last_updated": "2026-03-29",
+      "last_updated": "2026-08-12",
       "description": "Module:       tables",
       "functions": [
         {
@@ -309,7 +309,7 @@
       "name": "torsion.py",
       "type": "python",
       "size_lines": 29,
-      "last_updated": "2026-04-06",
+      "last_updated": "2026-08-12",
       "description": "Backward compatibility shim — torsion module moved to beam/ subpackage.",
       "content_hash": "93338352a274"
     },
@@ -317,7 +317,7 @@
       "name": "traceability.py",
       "type": "python",
       "size_lines": 350,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-12",
       "description": "IS 456 Traceability Module",
       "functions": [
         {
@@ -388,7 +388,7 @@
     {
       "name": "column",
       "path": "column/",
-      "file_count": 11,
+      "file_count": 12,
       "is_package": true
     },
     {
@@ -400,7 +400,7 @@
     {
       "name": "footing",
       "path": "footing/",
-      "file_count": 9,
+      "file_count": 10,
       "is_package": true
     },
     {
@@ -432,5 +432,5 @@
     "list_clauses_by_category",
     "search_clauses"
   ],
-  "content_hash": "1eddf584c6005f42"
+  "content_hash": "046c7ea40060e8db"
 }

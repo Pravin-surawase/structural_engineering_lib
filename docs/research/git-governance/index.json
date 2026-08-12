@@ -3,15 +3,15 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-12",
-  "file_count": 4,
+  "file_count": 6,
   "files": [
     {
       "name": "GIT-001-README.md",
       "type": "documentation",
-      "size_lines": 90,
+      "size_lines": 92,
       "last_updated": "2026-08-12",
       "description": "This directory is the task-owned, non-normative research record for GIT-001. Its contents may describe official Git/GitHub/Codex facts, observed project",
-      "content_hash": "40bd0c1ed89d"
+      "content_hash": "09c6c6b7ec58"
     },
     {
       "name": "GIT-001-lifecycle-research.md",
@@ -19,7 +19,15 @@
       "size_lines": 114,
       "last_updated": "2026-08-12",
       "description": "This is a factual, non-normative lifecycle model under research. It does not replace the canonical project workflow. Proposed transitions and permissions",
-      "content_hash": "68b356028e7f"
+      "content_hash": "351814e5c940"
+    },
+    {
+      "name": "GIT-001-next-agent-disposition-plan.md",
+      "type": "documentation",
+      "size_lines": 411,
+      "last_updated": "2026-08-12",
+      "description": "This packet converts the original six-priority cleanup and recovery list into a current, evidence-backed handoff. It tells the next agent what is already done,",
+      "content_hash": "eb05a95fb3ae"
     },
     {
       "name": "GIT-001-official-evidence-register.md",
@@ -27,7 +35,7 @@
       "size_lines": 47,
       "last_updated": "2026-08-12",
       "description": "Only primary, official sources belong in this register. A verified source can support a factual finding; it cannot by itself create project policy. Project",
-      "content_hash": "b92c77d4d824"
+      "content_hash": "f88f58928d58"
     },
     {
       "name": "GIT-001-phase-0-preservation-baseline.md",
@@ -35,9 +43,17 @@
       "size_lines": 165,
       "last_updated": "2026-08-12",
       "description": "- Observation time: 2026-08-12T21:17:05+05:30 - Repository: Pravin-surawase/structural_engineering_lib",
-      "content_hash": "8de626754037"
+      "content_hash": "6d737c63cb6d"
+    },
+    {
+      "name": "GIT-001-phase-7A-preservation-workflow-recovery.md",
+      "type": "documentation",
+      "size_lines": 82,
+      "last_updated": "2026-08-12",
+      "description": "The repository owner authorized Git operations, merge/deletion when proven safe, parallel subagents, preservation of Column PMM, and selective recovery of",
+      "content_hash": "3a5222567115"
     }
   ],
   "subfolders": [],
-  "content_hash": "a2ed61bd0a523b7e"
+  "content_hash": "2f3aeb29cde330ce"
 }

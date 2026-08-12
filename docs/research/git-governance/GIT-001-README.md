@@ -1,8 +1,8 @@
 ---
 owner: Main Agent
-status: active-research
+status: active
 last_updated: 2026-08-12
-doc_type: research-index
+doc_type: index
 task: GIT-001
 ---
 
@@ -31,10 +31,10 @@ work, make recovery deterministic, and remain efficient during normal work.
 
 | Role | Path / branch | Start state |
 |---|---|---|
-| Integration anchor | primary checkout / `main` | Clean at `6bc356c3`; no implementation work |
-| GIT-001 research lane | `structural_engineering_lib-git-governance-research` / `codex/git-governance-research` | Created from refreshed `origin/main` at `6bc356c3` |
-| Preserved engineering lane | `structural_engineering_lib-column-pmm` / `codex/column-pmm-experimental` | Reference only; untouched |
-| Preserved workflow lane | `structural_engineering_lib-parallel-policy` / `codex/parallel-task-policy` | Reference only; PR #723 remains open and conflicted |
+| Integration anchor | primary checkout / `main` | Refreshed and clean at `951f5e1d` on 2026-08-12 |
+| GIT-001 research lane | `structural_engineering_lib-git-governance-research` / `codex/git-governance-research` | Active at `3be4790d`; patch integrated, branch behind current `main` and must be synchronized before more research |
+| Preserved engineering evidence | remote PMM forensic/recovery refs | Selective recovery and independent benchmark integrated through PRs #738-#740; PMM remains experimental |
+| Preserved workflow evidence | remote `codex/parallel-task-policy` | PR #723 closed after bounded replacement through PRs #736-#737; remote retained for audit |
 
 ## Phase ledger
 
@@ -47,7 +47,7 @@ work, make recovery deterministic, and remain efficient during normal work.
 | 4 | Operating-model design | Not started | Lifecycle, states, permissions, topology, merge and recovery proposals |
 | 5 | Scenario validation | Not started | Disposable simulations and read-only project checks pass |
 | 6 | Canonical policy proposal | Not started | Owner accepts, revises, or rejects proposal |
-| 7 | Controlled implementation | Approval-gated | Separate owner authorization for each implementation packet |
+| 7 | Controlled implementation | Packet 7A complete; broader work held | Separate owner authorization for each implementation packet |
 | 8 | Adoption and closeout | Not started | Integrated workflow verified; supersession and maintenance established |
 
 ## Artifact map
@@ -55,6 +55,8 @@ work, make recovery deterministic, and remain efficient during normal work.
 - [Phase 0 preservation baseline](GIT-001-phase-0-preservation-baseline.md)
 - [Official evidence register](GIT-001-official-evidence-register.md)
 - [Lifecycle research](GIT-001-lifecycle-research.md)
+- [Phase 7A preservation and workflow recovery](GIT-001-phase-7A-preservation-workflow-recovery.md)
+- [Reconciled future-work and disposition plan](GIT-001-next-agent-disposition-plan.md)
 - Phase 2 incident register — planned
 - Phase 3 gap/risk matrix — planned
 - Phase 4 operating-model proposal — planned

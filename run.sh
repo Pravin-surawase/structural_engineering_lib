@@ -500,7 +500,11 @@ _cmd_generate() {
 
     case "$subcmd" in
         indexes)
-            "$SCRIPTS/generate_all_indexes.sh" "$@"
+            if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+                _help_generate_indexes
+            else
+                "$SCRIPTS/generate_all_indexes.sh" "$@"
+            fi
             ;;
         sdk)
             "$VENV" "$SCRIPTS/generate_client_sdks.py" "$@"
@@ -544,6 +548,15 @@ Examples:
   ./run.sh generate indexes                     # Regenerate all indexes
   ./run.sh generate sdk                         # Generate client SDKs
   ./run.sh generate scaffold structural_lib.core  # Test template
+EOF
+}
+
+_help_generate_indexes() {
+    cat <<'EOF'
+Usage: ./run.sh generate indexes
+
+Regenerate folder index.json and index.md files using the Python runtime bound
+to the invoking worktree. This command writes generated index files.
 EOF
 }
 
@@ -684,6 +697,39 @@ _cmd_route() {
 }
 
 # ── Command: tools ─────────────────────────────────────────────────────────
+
+_cmd_task() {
+    _require_venv
+    case "${1:-}" in
+        brief)
+            shift
+            if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+                _help_task
+                return
+            fi
+            if [[ $# -eq 0 ]]; then
+                _error "Task description required"
+                _help_task
+                exit 1
+            fi
+            "$VENV" "$SCRIPTS/prompt_router.py" --brief "$@"
+            ;;
+        *)
+            _help_task
+            [[ -n "${1:-}" ]] && _error "Unknown task subcommand: $1"
+            exit 1
+            ;;
+    esac
+}
+
+_help_task() {
+    cat <<'EOF'
+Usage: ./run.sh task brief <description> [--json]
+
+Build a read-only task intake brief from live worktree state, role routing, and
+the automation registry. Git lifecycle actions remain Codex-native.
+EOF
+}
 
 _cmd_tools() {
     _require_venv
@@ -839,6 +885,7 @@ _print_usage() {
     echo -e "  ${GREEN}evolve${NC}      Self-evolution engine (scan + fix + report)"
     echo -e "  ${GREEN}preflight${NC}   Pre-flight safety check (branch, venv, ports)"
     echo -e "  ${GREEN}route${NC}       Route natural language to the right agent"
+    echo -e "  ${GREEN}task${NC}        Build a lane-safe task intake brief"
     echo -e "  ${GREEN}tools${NC}       Tool & script discovery (list, find,stats)"
     echo -e "  ${GREEN}pipeline${NC}    Pipeline state tracking (new, advance, show)"
     echo -e "  ${GREEN}coverage${NC}    IS 456 clause coverage gap detection"
@@ -873,6 +920,7 @@ _dispatch_help() {
         evolve)   _help_evolve ;;
         dev)      _help_dev ;;
         route)    _cmd_route ;;
+        task)     _help_task ;;
         tools)    _cmd_tools ;;
         pipeline) _cmd_pipeline ;;
         coverage) _cmd_coverage ;;
@@ -904,6 +952,7 @@ _run_sh() {
         'feedback:Agent feedback collection'
         'evolve:Self-evolution engine'
         'route:Route tasks to the right agent'
+        'task:Build a lane-safe task intake brief'
         'tools:Tool and script discovery'
         'pipeline:Pipeline state tracking'
         'parity:Cross-layer parity dashboard'
@@ -913,6 +962,7 @@ _run_sh() {
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
     local -a session_subs=('start' 'end' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'costs' 'compact' 'trust')
+    local -a task_subs=('brief')
     local -a generate_subs=('indexes' 'sdk' 'manifest' 'docs-index' 'scaffold')
     local -a health_opts=('--fix' '--score' '--quick' '--category' '--json')
     local -a feedback_subs=('log' 'summary' 'pending' 'resolve' 'stats')
@@ -929,6 +979,7 @@ _run_sh() {
         case "${words[2]}" in
             check) _values 'option' $check_opts ;;
             session) _values 'subcommand' $session_subs ;;
+            task) _values 'subcommand' $task_subs ;;
             generate) _values 'subcommand' $generate_subs ;;
             health) _values 'option' $health_opts ;;
             feedback) _values 'subcommand' $feedback_subs ;;
@@ -1001,6 +1052,7 @@ main() {
         dev)      _cmd_dev "$@" ;;
         preflight) _require_venv; "$VENV" "$SCRIPTS/preflight.py" "$@" ;;
         route)    _cmd_route "$@" ;;
+        task)     _cmd_task "$@" ;;
         tools)    _cmd_tools "$@" ;;
         coverage) _cmd_coverage "$@" ;;
         parity)    _cmd_parity "$@" ;;
