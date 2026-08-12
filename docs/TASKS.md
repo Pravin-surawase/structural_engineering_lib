@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-11 — SPARK-001 Phase 2 integrated and verified; owner review gate G0 remains held
+**Updated:** 2026-08-12 — GIT-001 research lane established; Phase 0 complete and Phase 1 started
 
 ---
 
@@ -128,6 +128,7 @@
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
 | SPARK-001 | Establish a measured GPT-5.3-Codex-Spark work program for bounded high-throughput tasks | Main Agent + repository owner | ✅ PHASE 2 COMPLETE — recovery/integration verified; implementation held for G0 |
+| GIT-001 | Research and propose an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🔬 PHASE 1 IN PROGRESS — Phase 0 preservation baseline complete; policy implementation held |
 
 ## Up Next
 
