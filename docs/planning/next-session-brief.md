@@ -9,7 +9,7 @@
 
 **Current release:** `v0.23.1a1` Alpha
 
-**Integration anchor at handoff:** `main = origin/main = 951f5e1d`
+**Published plan receipt:** PR #741 merged as `52ac5f58`; refresh `main` before work
 
 **Task board:** [TASKS.md](../TASKS.md)
 
