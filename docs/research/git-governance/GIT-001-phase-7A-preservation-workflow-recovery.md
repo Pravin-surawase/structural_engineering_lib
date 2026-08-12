@@ -64,3 +64,18 @@ unrelated product/runtime work already superseded by current `main`.
 
 This packet records a selective replacement, not a claim that all historical PR
 #723 work was desirable or recovered.
+
+## Integration receipt
+
+- Replacement PR: #736, required CI green at unchanged head `aec9fbb2`.
+- Integrated main commit: `30ec598d`.
+- Integrated verification: `task brief` reports `main` at that commit and index
+  help remains non-writing.
+- Historical disposition: PR #723 closed at head `75d66681`; its remote branch
+  remains available for audit.
+- Local cleanup: the clean temporary PMM recovery, workflow recovery, and old
+  PR #723 worktrees/branches were removed after exact status and reachability
+  checks.
+- Preserved engineering artifact: `codex/column-pmm-experimental` remains local
+  and remote at `8a52ed0f`; independent full-surface benchmarking remains its
+  integration gate.

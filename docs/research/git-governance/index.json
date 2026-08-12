@@ -11,7 +11,7 @@
       "size_lines": 91,
       "last_updated": "2026-08-12",
       "description": "This directory is the task-owned, non-normative research record for GIT-001. Its contents may describe official Git/GitHub/Codex facts, observed project",
-      "content_hash": "22b1175b5461"
+      "content_hash": "c6c9777e4f0f"
     },
     {
       "name": "GIT-001-lifecycle-research.md",
@@ -40,12 +40,12 @@
     {
       "name": "GIT-001-phase-7A-preservation-workflow-recovery.md",
       "type": "documentation",
-      "size_lines": 67,
+      "size_lines": 82,
       "last_updated": "2026-08-12",
       "description": "The repository owner authorized Git operations, merge/deletion when proven safe, parallel subagents, preservation of Column PMM, and selective recovery of",
-      "content_hash": "6a2c183c939f"
+      "content_hash": "3a5222567115"
     }
   ],
   "subfolders": [],
-  "content_hash": "37987f0b57c1e581"
+  "content_hash": "32c2f9c0475d6d4f"
 }

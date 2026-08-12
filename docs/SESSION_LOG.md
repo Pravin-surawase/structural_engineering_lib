@@ -1,3 +1,47 @@
+## 2026-08-12 — Session: GIT-001 Packet 7A Integration Closeout
+
+**Agent:** Codex
+**Branch:** `codex/git-recovery-closeout`
+**Focus:** Record exact integration and safely retire only the local lanes proven
+superseded by the workflow replacement
+
+### Summary
+
+- PR #736 passed unchanged-head required CI and was squash-merged to `main` as
+  `30ec598d`.
+- Verified `task brief` and non-writing index help from integrated `main`; the
+  command left the main worktree clean.
+- Closed stale/conflicted PR #723 with a replacement note linking PR #736.
+- Removed the clean temporary PMM recovery, workflow recovery, and old PR #723
+  local worktrees and local branch names after exact reachability checks.
+- Retained the original PMM local/remote branch and retained remote workflow
+  branches for audit and recovery.
+
+### Issues encountered
+
+- The first integrated packet record correctly described PR #736 as under
+  review, but that state became stale after merge and local retirement.
+
+### Root causes and resolutions
+
+- Review-state documentation was committed with the implementation so CI could
+  validate the candidate before any retirement. This small follow-up changes
+  only the task/handoff/packet state and generated indexes after exact merge,
+  integrated-command, PR closure, and cleanup receipts were available.
+
+### Verification
+
+- PR #736 required `PR Gate` passed at unchanged head `aec9fbb2`; merge commit is
+  `30ec598d`.
+- Integrated `main` reported branch `main` at `30ec598d` from `task brief`, and
+  `generate indexes --help` printed usage without changing the tree.
+- Removed local paths are absent. Remote recovery refs remain exact:
+  workflow `aec9fbb2`, historical PR #723 `75d66681`, PMM `8a52ed0f`.
+
+### Terminal issues
+
+- None encountered.
+
 ## 2026-08-12 — Session: GIT-001 Preservation and Workflow Recovery
 
 **Agent:** Codex
