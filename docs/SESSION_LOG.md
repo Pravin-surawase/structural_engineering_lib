@@ -1,3 +1,98 @@
+## 2026-08-13 — Session: GIT-001 Phase 1 Completion
+
+**Agent:** Codex (`orchestrator` / `ops`)
+
+**Branch:** `codex/git-governance-research`
+
+**Focus:** Synchronize the shared research lane, complete official-source
+coverage, write the factual lifecycle map, and pass the Phase 1 coverage gate
+
+### Summary
+
+- Proved the clean research branch was exactly at its upstream and that its
+  apparent branch-only commit was patch-equivalent to the prior squash merge.
+- Merged current `origin/main` without rewriting history, resolved the expected
+  shared-document conflicts to the newer main content, verified an exact-main
+  tree, passed the quick gate, and fast-forward pushed merge `54a03557`.
+- Expanded the official register across core Git operations/recovery, GitHub
+  integration/governance/releases/dependencies/contributors, and Codex task,
+  worktree, archive, and deletion boundaries.
+- Added a labeled factual lifecycle map for normal, parallel, integration,
+  release, cleanup, and recovery paths. Unsupported Codex snapshot, managed-
+  worktree-cleanup, and Git handoff guarantees remain explicitly unresolved.
+- Obtained two independent read-only Phase 1 PASS reviews after correcting
+  diagram labeling and project-observation traceability.
+
+### Issues encountered
+
+- Merging `origin/main` produced fourteen shared-document and generated-index
+  conflicts because the branch's original research commit had been squash-
+  integrated and the same files later advanced on main.
+- Full index regeneration changed 23 unrelated maintained indexes even though
+  their source folders were outside this task.
+- Three guessed focused-checker paths, `scripts/check_markdown_links.py`,
+  `scripts/check_doc_metadata.py`, and `scripts/check_session_docs.py`, no
+  longer existed at their old locations.
+- The first coverage review rejected six arrow diagrams as unlabeled operating
+  policy; a second reviewer then rejected labeled PO claims whose dated local
+  evidence was not directly traceable.
+- The first full closeout gate rejected `status: complete` in the two Phase 1
+  artifacts even though the phase itself was complete.
+
+### Root causes and resolutions
+
+- Root cause: squash integration created patch equivalence without ancestry,
+  so the later merge replayed the original additions against newer versions.
+  Resolution: independently classify every conflict, select current main for
+  all authored documents, preserve all later non-conflicting receipts, and
+  require the final merge tree to equal `origin/main`. Evidence: both trees
+  resolved to `60b0e80fb8c9986e0c17e0946ddaa77009d22bbb` at `54a03557`.
+- Root cause: the all-index generator recalculates metadata in folders not owned
+  by this task and can surface existing drift. Resolution: restore only those
+  generated differences to the exact main tree and restrict closeout generation
+  to the two task-owned maintained folders. Evidence: the synchronization
+  commit contained no content delta from main.
+- Root cause: checker consolidation moved the old doc checkers under `_archive`
+  while the initial commands guessed their historical names. Resolution: use
+  `scripts/check_links.py` and discover the metadata command with `./run.sh
+  find`, which returned `scripts/check_docs.py --metadata --strict` and
+  `scripts/session.py check`. Evidence: the maintained link checker found zero
+  broken links across 1,103 links and the discovered commands passed.
+- Root cause: compact diagrams and PO labels compressed facts, current practice,
+  and later choices without per-claim provenance. Resolution: label every
+  diagram as a current-policy observation, keep future decisions as UC, add
+  OBS-05–10 with exact current-policy/disposition/release/recovery evidence, and
+  cite those IDs at each local claim. Evidence: both independent reviewers
+  returned PASS with no remaining essential Phase 1 finding.
+- Root cause: document lifecycle status and research-phase completion are
+  separate schemas; front matter permits only `active`, `draft`, `deprecated`,
+  or `archived`. Resolution: keep both maintained reference artifacts `active`
+  and record Phase 1 completion in the phase ledger and result sections.
+  Evidence: strict document validation and the rerun full gate passed.
+
+### Verification
+
+- Synchronization intake: branch clean, attached, exactly at upstream;
+  `git cherry origin/main HEAD` reported `- 3be4790d` before the merge.
+- Synchronization merge: `54a03557`, upstream exact, two commits ahead of
+  `origin/main` by ancestry, identical tree to `origin/main`, quick gate 10/10.
+- Official web verification used current Git documentation, GitHub Docs, and
+  official OpenAI/OpenAI Help sources only.
+- Current topology evidence: no submodules, non-shallow repository, no partial-
+  clone configuration, six attached and no detached/locked/prunable worktrees.
+- Source-ID comparison found no lifecycle identifier absent from the register;
+  internal-link validation found zero broken links.
+- Two independent Terra-high reviews passed the final evidence register and
+  factual lifecycle map without an essential finding.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: all-index generation modified unrelated index metadata →
+  restored the exact `origin/main` tree and limited later generation to owned
+  folders.
+- ⚠️ TERMINAL ISSUE: guessed retired checker paths were absent → used
+  `./run.sh find` and the maintained consolidated checker commands.
+
 ## 2026-08-12 — Session: GIT-001 Future-Work Plan Closeout
 
 **Agent:** Codex

@@ -2,24 +2,24 @@
   "folder": "docs/research/git-governance",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-12",
+  "last_updated": "2026-08-13",
   "file_count": 6,
   "files": [
     {
       "name": "GIT-001-README.md",
       "type": "documentation",
       "size_lines": 92,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-13",
       "description": "This directory is the task-owned, non-normative research record for GIT-001. Its contents may describe official Git/GitHub/Codex facts, observed project",
-      "content_hash": "09c6c6b7ec58"
+      "content_hash": "f9d7d247a4a2"
     },
     {
       "name": "GIT-001-lifecycle-research.md",
       "type": "documentation",
-      "size_lines": 114,
-      "last_updated": "2026-08-12",
-      "description": "This is a factual, non-normative lifecycle model under research. It does not replace the canonical project workflow. Proposed transitions and permissions",
-      "content_hash": "351814e5c940"
+      "size_lines": 192,
+      "last_updated": "2026-08-13",
+      "description": "This is a source-backed, non-normative map. It does not replace the canonical workflow and does not authorize policy, settings, cleanup, or release changes.",
+      "content_hash": "8a2c9f510b77"
     },
     {
       "name": "GIT-001-next-agent-disposition-plan.md",
@@ -32,10 +32,10 @@
     {
       "name": "GIT-001-official-evidence-register.md",
       "type": "documentation",
-      "size_lines": 47,
-      "last_updated": "2026-08-12",
-      "description": "Only primary, official sources belong in this register. A verified source can support a factual finding; it cannot by itself create project policy. Project",
-      "content_hash": "f88f58928d58"
+      "size_lines": 147,
+      "last_updated": "2026-08-13",
+      "description": "Only primary, official sources belong in the source tables. A source supports a bounded external fact; it does not create project policy. Project observations,",
+      "content_hash": "2fb0b91dbc96"
     },
     {
       "name": "GIT-001-phase-0-preservation-baseline.md",
@@ -55,5 +55,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "2f3aeb29cde330ce"
+  "content_hash": "ffdd6b6c399b36e6"
 }

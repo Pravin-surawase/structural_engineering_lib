@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 doc_type: index
 task: GIT-001
 ---
@@ -31,8 +31,8 @@ work, make recovery deterministic, and remain efficient during normal work.
 
 | Role | Path / branch | Start state |
 |---|---|---|
-| Integration anchor | primary checkout / `main` | Refreshed and clean at `951f5e1d` on 2026-08-12 |
-| GIT-001 research lane | `structural_engineering_lib-git-governance-research` / `codex/git-governance-research` | Active at `3be4790d`; patch integrated, branch behind current `main` and must be synchronized before more research |
+| Integration anchor | primary checkout / `main` | Refreshed and clean at `69d9f68c` on 2026-08-12 |
+| GIT-001 research lane | `structural_engineering_lib-git-governance-research` / `codex/git-governance-research` | Synchronized and published at `54a03557`; tree exactly matches `69d9f68c` while retaining research ancestry |
 | Preserved engineering evidence | remote PMM forensic/recovery refs | Selective recovery and independent benchmark integrated through PRs #738-#740; PMM remains experimental |
 | Preserved workflow evidence | remote `codex/parallel-task-policy` | PR #723 closed after bounded replacement through PRs #736-#737; remote retained for audit |
 
@@ -41,7 +41,7 @@ work, make recovery deterministic, and remain efficient during normal work.
 | Phase | Purpose | Status | Advancement gate |
 |---|---|---|---|
 | 0 | Preservation baseline | Complete for program start | Reproducible inventory, unknowns explicit, no cleanup disposition |
-| 1 | Official Git/GitHub/Codex research | In progress | Primary-source coverage reviewed; facts separated from decisions |
+| 1 | Official Git/GitHub/Codex research | Complete | Two independent reviews passed; primary-source facts, project observations, unresolved choices, and N/A topology are separated |
 | 2 | Project forensic study | Not started | Incident register traces evidence and confirmed root causes |
 | 3 | Gap and risk analysis | Not started | Ideal, policy, settings, automation, and behavior compared |
 | 4 | Operating-model design | Not started | Lifecycle, states, permissions, topology, merge and recovery proposals |
