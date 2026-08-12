@@ -2,30 +2,30 @@
   "folder": "Python/structural_lib/codes/is456/column",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-04-04",
-  "file_count": 9,
+  "last_updated": "2026-08-12",
+  "file_count": 10,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
       "size_lines": 53,
-      "last_updated": "2026-04-04",
+      "last_updated": "2026-08-12",
       "description": "IS 456:2000 — Column design modules.",
       "content_hash": "ebeecc787d39"
     },
     {
       "name": "_common.py",
       "type": "python",
-      "size_lines": 53,
-      "last_updated": "2026-04-03",
+      "size_lines": 68,
+      "last_updated": "2026-08-12",
       "description": "Module:       _common",
-      "content_hash": "5161dc5ec594"
+      "content_hash": "5de264b8655c"
     },
     {
       "name": "axial.py",
       "type": "python",
-      "size_lines": 343,
-      "last_updated": "2026-04-01",
+      "size_lines": 358,
+      "last_updated": "2026-08-12",
       "description": "Module:       axial",
       "functions": [
         {
@@ -64,13 +64,13 @@
           ]
         }
       ],
-      "content_hash": "84d1c996f20e"
+      "content_hash": "b7d374f1bd96"
     },
     {
       "name": "biaxial.py",
       "type": "python",
-      "size_lines": 496,
-      "last_updated": "2026-04-04",
+      "size_lines": 517,
+      "last_updated": "2026-08-12",
       "description": "Module:       biaxial",
       "functions": [
         {
@@ -88,13 +88,13 @@
           ]
         }
       ],
-      "content_hash": "c4a8472bd2a1"
+      "content_hash": "a8eb1d066c7c"
     },
     {
       "name": "detailing.py",
       "type": "python",
-      "size_lines": 620,
-      "last_updated": "2026-04-04",
+      "size_lines": 634,
+      "last_updated": "2026-08-12",
       "description": "Module:       detailing",
       "functions": [
         {
@@ -174,13 +174,13 @@
           ]
         }
       ],
-      "content_hash": "e86728dd3f8e"
+      "content_hash": "0beb5a632ced"
     },
     {
       "name": "helical.py",
       "type": "python",
       "size_lines": 237,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-12",
       "description": "Module:       helical",
       "functions": [
         {
@@ -202,8 +202,8 @@
     {
       "name": "long_column.py",
       "type": "python",
-      "size_lines": 395,
-      "last_updated": "2026-04-03",
+      "size_lines": 416,
+      "last_updated": "2026-08-12",
       "description": "Module:       long_column",
       "functions": [
         {
@@ -221,13 +221,41 @@
           ]
         }
       ],
-      "content_hash": "f51a7ff5c05a"
+      "content_hash": "2de89e2922ec"
+    },
+    {
+      "name": "pmm.py",
+      "type": "python",
+      "size_lines": 514,
+      "last_updated": "2026-08-12",
+      "description": "Experimental strain-compatibility analysis for rectangular columns.",
+      "functions": [
+        {
+          "name": "create_symmetric_two_face_layout",
+          "description": "Adapt the legacy symmetric two-face inputs to four corner bars."
+        },
+        {
+          "name": "pm_interaction_slice_for_layout",
+          "description": "Generate one experimental strain-compatibility P-M-M slice."
+        },
+        {
+          "name": "experimental_pmm_interaction_surface",
+          "description": "Generate a full 360° experimental P-M-M interaction surface."
+        }
+      ],
+      "constants": [
+        "_MIN_FIBERS_PER_AXIS",
+        "_MIN_DEPTH_POINTS",
+        "_MIN_ANGLES",
+        "_AXIAL_TOLERANCE_KN"
+      ],
+      "content_hash": "5fff434638fa"
     },
     {
       "name": "slenderness.py",
       "type": "python",
       "size_lines": 225,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-12",
       "description": "Module:       slenderness",
       "functions": [
         {
@@ -250,8 +278,8 @@
     {
       "name": "uniaxial.py",
       "type": "python",
-      "size_lines": 837,
-      "last_updated": "2026-04-04",
+      "size_lines": 880,
+      "last_updated": "2026-08-12",
       "description": "Module:       uniaxial",
       "functions": [
         {
@@ -282,11 +310,10 @@
           ]
         }
       ],
-      "content_hash": "da71f355a08b"
+      "content_hash": "9e2c590e0ba0"
     }
   ],
   "subfolders": [],
-  "content_hash": "585f2cecbb987ab3",
   "has_init": true,
   "public_api": [
     "axial",
@@ -303,5 +330,6 @@
     "pm_interaction_curve",
     "slenderness",
     "uniaxial"
-  ]
+  ],
+  "content_hash": "7b266170c127d4c7"
 }

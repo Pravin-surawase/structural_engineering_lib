@@ -4,19 +4,19 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-12
-- Focus: GIT-001 Phase 1 continues; packet 7A replacement is integrated
+- Focus: COLUMN-PMM-001 candidate complete; GIT-001 Phase 1 continues
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
-**Branch:** `codex/git-recovery-closeout`
-**Integration base:** `origin/main` at `30ec598d`; immutable Alpha tag `v0.23.1a1` remains unchanged
+**Branch:** `codex/column-pmm-completion`
+**Integration base:** `origin/main` at `b069428b`; immutable Alpha tag `v0.23.1a1` remains unchanged
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | GIT-001 Phase 1 | Complete primary-source coverage and factual lifecycle research without changing canonical policy |
+| **Current** | COLUMN-PMM-001 | Review and integrate the independently benchmarked experimental PMM candidate without stable API exposure |
 | **Next** | GIT-001 Phase 2 | Forensic incident study only after the Phase 1 coverage review passes |
-| **Held** | Broad policy implementation and remote cleanup | Packet 7A is complete; PMM and historical remote refs stay preserved |
+| **Held** | Broad policy implementation and remote cleanup | Historical refs stay preserved; PMM production/public support remains a separately approved contract |
 
 ## Integrated footing scope
 
@@ -59,8 +59,9 @@
   `origin/main` at `6bc356c3`; primary `main` remains clean and synchronized.
 - Phase 0 records eight clean worktrees, sixteen local branches, eight open PRs,
   the active main ruleset, no stashes, protected unique work, and explicit unknowns.
-- Column PMM is remotely preserved and held for an independent full-surface
-  benchmark. PR #723 is closed after its bounded replacement merged via #736.
+- Column PMM is remotely preserved, recovered onto current `main`, and checked
+  against an independent closed-form oblique benchmark. It remains experimental.
+  PR #723 is closed after its bounded replacement merged via #736.
 - Phase 1 has begun with official Git, GitHub, and OpenAI sources. Research facts,
   project observations, proposed decisions, and normative policy stay separate.
 - Existing conflicting Git guides and retired-wrapper learning text are Phase 2

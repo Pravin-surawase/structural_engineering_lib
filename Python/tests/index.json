@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
   "last_updated": "2026-08-12",
-  "file_count": 61,
+  "file_count": 62,
   "files": [
     {
       "name": "README.md",
@@ -2056,6 +2056,26 @@
         }
       ],
       "content_hash": "ee88228af18c"
+    },
+    {
+      "name": "test_function_quality_checker.py",
+      "type": "python",
+      "size_lines": 55,
+      "last_updated": "2026-08-12",
+      "description": "Focused regressions for the IS 456 function-quality checker.",
+      "functions": [
+        {
+          "name": "test_checker_accepts_current_unit_names_objects_and_sample_counts"
+        },
+        {
+          "name": "test_module_filter_ignores_matching_parent_worktree_name",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
+          ]
+        }
+      ],
+      "content_hash": "f8843abdbfe1"
     },
     {
       "name": "test_generated_clients.py",
@@ -4132,7 +4152,7 @@
     {
       "name": "codes",
       "path": "codes/",
-      "file_count": 18,
+      "file_count": 19,
       "is_package": true
     },
     {
@@ -4183,5 +4203,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "37ad3cb0bf11cae6"
+  "content_hash": "b3d7cf5f37c04c96"
 }
