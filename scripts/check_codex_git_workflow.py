@@ -156,6 +156,16 @@ def main() -> int:
         ):
             if token not in workflow:
                 errors.append(f"control-plane CI routing is missing: {token}")
+        focused_marker = "- name: Validate Git state and intake control plane"
+        if focused_marker in workflow:
+            focused_step = workflow.partition(focused_marker)[2].partition(
+                "\n      - name:"
+            )[0]
+            runtime_binding = 'STRUCTURAL_LIB_PYTHON="$(command -v python)"'
+            if runtime_binding not in focused_step:
+                errors.append(
+                    "control-plane CI tests do not bind the setup-python interpreter"
+                )
 
     retired_names = tuple(Path(path).name for path in RETIRED_PATHS[:7])
     for relative in LIVE_FILES_WITHOUT_WRAPPER_CALLS:

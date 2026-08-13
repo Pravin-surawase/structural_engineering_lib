@@ -222,6 +222,7 @@ jobs:
       - name: Validate Git state and intake control plane
         if: needs.changes.outputs.control_plane == 'true'
         run: >-
+          STRUCTURAL_LIB_PYTHON="$(command -v python)"
           python -m pytest
           Python/tests/test_git_state.py
           Python/tests/test_session_automation.py

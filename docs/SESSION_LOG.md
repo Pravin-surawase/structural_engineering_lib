@@ -40,7 +40,11 @@ through it without expanding into GIT-7C–7E
   process working directory was the directory that command was meant to create.
 - The first live PR run selected the intended control-plane tests but Repository
   Validation failed while importing the shared test configuration because
-  Hypothesis was absent from that job's environment.
+  Hypothesis was absent from that job's environment. After dependency repair,
+  the tests exposed that shell entrypoints could not resolve GitHub's
+  setup-python interpreter.
+- The first explicit-runtime simulation used the resolved interpreter reported
+  by diagnosis and therefore bypassed the primary `.venv` package context.
 
 ### Root causes and resolutions
 
@@ -64,6 +68,19 @@ through it without expanding into GIT-7C–7E
   extra. Resolution: install `Python/[dev]` in that job. Evidence: the focused
   64-test family and semantic workflow check pass with the corrected contract;
   PR #744 is the live exact-head check surface.
+- Root cause: setup-python adds its interpreter to `PATH`, while the repository
+  launcher intentionally accepts only an explicit `STRUCTURAL_LIB_PYTHON`, a
+  repository/primary-worktree `.venv`, or `VIRTUAL_ENV`; the focused CI step
+  supplied none of them to its subprocesses. Resolution: bind the setup-python
+  executable with the same explicit pattern already used by the CI smoke step,
+  and enforce that binding in the semantic workflow checker. Evidence: the
+  focused family, semantic checker, and quick gate pass locally; PR #744 runs
+  the corrected contract at the exact pushed head.
+- Root cause: diagnosis resolves `sys.executable` to its Homebrew target, while
+  Python virtual-environment discovery depends on invoking the `.venv/bin/python`
+  entrypoint. Resolution: repeat the explicit-runtime proof with the validated
+  primary `.venv` entrypoint. Evidence: all 64 focused tests pass with that
+  binding.
 
 ### Verification
 
@@ -89,6 +106,10 @@ through it without expanding into GIT-7C–7E
   filename that did not exist, so zsh stopped before `rg` ran -> discovered the
   exact changed paths with `git diff --name-only` and reran targeted `rg` without
   an unresolved glob.
+- ⚠️ TERMINAL ISSUE: the first explicit-runtime proof used the resolved
+  Homebrew interpreter path from `--diagnose`, which had no pytest installation
+  -> used the executable primary `.venv/bin/python` entrypoint and the 64 tests
+  passed.
 
 ## 2026-08-13 — Session: GIT-001 Phases 2-6 Upgrade Proposal
 

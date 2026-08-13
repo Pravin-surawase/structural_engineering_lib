@@ -101,7 +101,8 @@ with zero unknown lanes, below the two-second six-worktree budget.
   process working directory and could not start.
 - The first live PR run correctly selected the new control-plane tests, but
   Repository Validation failed before collection because its environment did
-  not contain Hypothesis.
+  not contain Hypothesis. After the dependency correction, the tests exposed
+  that their shell entrypoints could not resolve GitHub's setup-python runtime.
 
 ## Root causes and resolutions
 
@@ -122,6 +123,13 @@ with zero unknown lanes, below the two-second six-worktree budget.
   Hypothesis from the existing `dev` extra. Resolution: install `Python/[dev]`
   in that job. Evidence: the focused suite and semantic workflow check pass
   against the corrected contract; PR #744 provides the live exact-head run.
+- Root cause: setup-python placed its interpreter on `PATH`, but the repository
+  launcher correctly requires a project-bound or explicitly selected runtime,
+  and the new focused step did not export one to child shell entrypoints.
+  Resolution: bind `STRUCTURAL_LIB_PYTHON` to the setup-python executable for
+  that step and make the semantic workflow checker reject a missing binding.
+  Evidence: local focused and workflow checks pass; PR #744 exercises the same
+  contract in GitHub Actions.
 
 ## Closeout gate
 
