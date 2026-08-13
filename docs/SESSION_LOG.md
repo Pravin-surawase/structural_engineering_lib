@@ -1,3 +1,82 @@
+## 2026-08-13 — Session: GIT-001 Phase 7B State and Intake Kernel
+
+**Agent:** Codex (`ops`)
+
+**Branch:** `codex/git-7b-state-kernel`
+
+**Focus:** Implement the owner-authorized read-only, worktree-aware Git state
+authority and route task intake, session trust, quick checks, and focused CI
+through it without expanding into GIT-7C–7E
+
+### Summary
+
+- Recorded the owner's Phase 6 acceptance and GIT-7B-only authorization.
+- Refreshed and verified exact `main = origin/main = f3ad94dc`, created a fresh
+  isolated implementation worktree, replayed only the approved proposal record,
+  and verified worktree-bound Python source identity.
+- Added typed `scripts/git_state.py` with porcelain-v2 tree classification,
+  worktree/common-path operation and lock detection, separate default/upstream
+  reachability, explicit `READY_LOCAL`/`HOLD_*` actions, JSON/human output,
+  bounded siblings, optional locks disabled, and no network default.
+- Routed task brief, live session trust/checkpoints, and both quick Git checks
+  through the kernel. Replaced three independent shell classifiers with thin
+  delegates while preserving conflict-free operation completion in pre-commit.
+- Added changed-path CI routing for the exact state/intake tests and extended
+  the semantic workflow checker so consumers, wrappers, and CI cannot silently
+  drift away from the authority.
+- Updated only the narrow canonical and agent state/intake wording; GitHub
+  settings, cleanup, generators, deletion, recovery, release, and product
+  runtime remain unchanged and held.
+
+### Issues encountered
+
+- The accepted file list omitted the three active compatibility shells and the
+  existing pre-commit call argument needed to avoid split Git-state semantics
+  without blocking legitimate operation completion.
+- The first non-mutation test failed even though refs/status were unchanged
+  because its own final ordinary `git status` refreshed the index before the
+  timestamp assertion.
+- The first worktree-creation command could not start because its configured
+  process working directory was the directory that command was meant to create.
+
+### Root causes and resolutions
+
+- Root cause: the proposal named semantic consumers but not all compatibility
+  entrypoints/call details. Resolution: enumerate every live caller, amend the
+  accepted packet before editing, reduce the shells to kernel delegates, and
+  give only the existing pre-commit call the explicit conflict-free completion
+  flag. Evidence: manual operation guard fails, completion mode passes, and the
+  semantic workflow check passes.
+- Root cause: the proof's diagnostic command did not disable optional locks and
+  ran before the index-timestamp assertion. Resolution: measure the timestamp
+  immediately after kernel inspection, then compare ordinary status. Evidence:
+  the full 64-test focused family passes.
+- Root cause: command process setup resolves `cwd` before executing the command.
+  Resolution: create the fresh worktree from the existing clean research lane,
+  then execute from the validated new path. Evidence: worktree inventory and
+  `scripts/python_runtime.sh --diagnose` identify the intended branch and source.
+
+### Verification
+
+- Focused state/intake tests: 64 passed.
+- Black, Ruff, and MyPy on the owned control plane: passed.
+- Live current-worktree state: approximately 80 ms.
+- Live seven-worktree inventory: 556 ms, zero unknown lanes.
+- `./run.sh check --quick`: 10/10 passed in 3.3 seconds; combined Git checks
+  completed in 347 ms instead of the prior validator's approximately 3.7 seconds.
+- Expanded state/session/governance automation family: 109 passed.
+- Final `./run.sh check --quick`: 10/10 in 2.9 seconds; its Git checks completed
+  in 292 ms.
+- `./run.sh check`: 30/30 in 8.8 seconds; all four Git checks completed in
+  365 ms.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: a command configured the not-yet-created GIT-7B worktree
+  as its process working directory, so process startup failed -> created the
+  worktree from the validated research lane and then continued from the new
+  directory.
+
 ## 2026-08-13 — Session: GIT-001 Phases 2-6 Upgrade Proposal
 
 **Agent:** Codex (`orchestrator` / `ops`)

@@ -1,8 +1,8 @@
 {
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
-  "_updated": "2026-08-11",
+  "_updated": "2026-08-13",
   "_usage": "Run: ./scripts/python_runtime.sh scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "106/106 scripts mapped",
+  "_coverage": "107/107 scripts mapped",
   "tasks": {
     "resolve python runtime": {
       "group": "Infrastructure",
@@ -233,9 +233,14 @@
     },
     "check git state": {
       "group": "Git",
-      "script": "./scripts/validate_git_state.sh",
-      "description": "Validate git state before any git operation",
-      "permission": "ReadOnly"
+      "script": "./scripts/python_runtime.sh scripts/git_state.py",
+      "description": "Report typed local Git state, holds, base, upstream, operations, and locks without network or mutation",
+      "permission": "ReadOnly",
+      "options": {
+        "--json": "Machine-readable typed state",
+        "--worktrees": "Bounded current and sibling worktree inventory",
+        "--strict": "Fail unless the current lane is READY_LOCAL"
+      }
     },
     "check api signatures": {
       "group": "Discovery",
@@ -439,13 +444,36 @@
     },
     "check merge state": {
       "group": "Git",
-      "script": "./scripts/check_unfinished_merge.sh",
-      "description": "Check for unfinished merge before allowing commits (pre-commit hook)"
+      "script": "./scripts/python_runtime.sh scripts/git_state.py --guard operation",
+      "description": "Fail on an active or unknown Git operation, conflict, or lock",
+      "permission": "ReadOnly"
     },
     "check branch safety": {
       "group": "Git",
+      "script": "./scripts/python_runtime.sh scripts/git_state.py --guard branch",
+      "description": "Fail closed on main, detached HEAD, or unknown branch state",
+      "permission": "ReadOnly"
+    },
+    "compat validate git state": {
+      "group": "Git",
+      "script": "./scripts/validate_git_state.sh",
+      "description": "Deprecated compatibility entrypoint delegated to check git state",
+      "deprecated": true,
+      "replacement": "check git state"
+    },
+    "compat unfinished operation guard": {
+      "group": "Git",
+      "script": "./scripts/check_unfinished_merge.sh",
+      "description": "Deprecated compatibility entrypoint delegated to check merge state",
+      "deprecated": true,
+      "replacement": "check merge state"
+    },
+    "compat branch guard": {
+      "group": "Git",
       "script": "./scripts/check_not_main.sh",
-      "description": "Guard — prevent accidental operations on main branch"
+      "description": "Deprecated compatibility entrypoint delegated to check branch safety",
+      "deprecated": true,
+      "replacement": "check branch safety"
     },
     "migrate python module": {
       "group": "Migration",

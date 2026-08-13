@@ -1,12 +1,12 @@
 ---
 owner: Main Agent and repository owner
-status: draft
+status: active
 last_updated: 2026-08-13
 doc_type: spec
 task: GIT-001
 phase: 6
-owner_decision: pending
-implementation_authorized: false
+owner_decision: accepted-2026-08-13
+implementation_authorized: GIT-7B-only
 ---
 
 # GIT-001 Phase 6 — Canonical Policy Proposal and First Packet
@@ -165,6 +165,20 @@ quick Git gate consume it.
 - the narrow canonical/agent instruction text required to name the kernel;
 - task/session/handoff and owned generated indexes for the packet receipt.
 
+Implementation discovery on 2026-08-13 added three existing compatibility
+entrypoints to this list: `scripts/validate_git_state.sh`,
+`scripts/check_unfinished_merge.sh`, and `scripts/check_not_main.sh`. Caller
+enumeration proved that leaving their independent shell classification in place
+would preserve the exact split authority that GIT-7B must remove. They may only
+be reduced to read-only kernel delegates; this amendment adds no hook, recovery,
+network, mutation, cleanup, or server-setting authority.
+
+The existing `.pre-commit-config.yaml` call site is also authorized for one
+argument-only change: pass the kernel's explicit conflict-free operation-
+completion flag. This preserves normal merge/cherry-pick/revert completion while
+the same guard fails closed when invoked as a standalone inspection. The hook
+set, trigger, lifecycle ownership, and all other hook behavior remain unchanged.
+
 If implementation proves another file essential, stop and amend the packet
 before editing it.
 
@@ -245,5 +259,5 @@ The owner may choose exactly one route:
 4. **Reject** — current canonical policy remains unchanged and the program stops
    before implementation.
 
-Until one route is explicitly recorded, Phase 6 remains pending and no broader
-Phase 7 work is authorized.
+The owner selected route 1 on 2026-08-13. Phase 6 is accepted and GIT-7B alone
+is authorized. GIT-7C through GIT-7E remain held.

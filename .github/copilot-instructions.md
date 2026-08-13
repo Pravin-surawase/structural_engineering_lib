@@ -29,6 +29,11 @@ Current focus: See [TASKS.md](../docs/TASKS.md) for active work and priorities.
 
 Codex owns the Git/GitHub lifecycle directly. Follow [AGENTS.md](../AGENTS.md) and the canonical [Codex-native workflow](../docs/git-automation/git-workflow-single-source.md): inspect state, stage only intended files, use a conventional commit, push without rewriting history, and create or update the PR through the connected GitHub integration.
 
+Use `./scripts/python_runtime.sh scripts/git_state.py --json` as the sole local
+Git-state authority. Task intake and session trust must consume its explicit
+`READY_LOCAL` or `HOLD_*` result; do not infer clean, current, or safe state from
+empty command output, a literal `.git` directory, or unchecked remote freshness.
+
 Do not add repository wrappers that commit, push, create PRs, merge PRs, or recover Git state. Issue closure, branch deletion, release, and history rewriting remain explicit user-confirmation actions. Codex may merge an in-scope PR once its reviewed head and required checks are verified.
 
 **FORBIDDEN commands (all agents):**

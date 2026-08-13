@@ -15,10 +15,11 @@ Its contents may describe official Git/GitHub/Codex facts, observed project
 state, incidents, alternatives, and proposals. They do **not** change project
 policy.
 
-The current normative policy remains
+The current normative policy is
 [`docs/git-automation/git-workflow-single-source.md`](../../git-automation/git-workflow-single-source.md)
-until the owner reviews a Phase 6 proposal and separately authorizes Phase 7.
-Learning material is an input, never silent operational authority.
+and now includes the owner-accepted GIT-7B read-only state/intake contract.
+Learning material and held GIT-7C–7E proposals remain inputs, never silent
+operational authority.
 
 ## Objective
 
@@ -46,8 +47,8 @@ work, make recovery deterministic, and remain efficient during normal work.
 | 3 | Gap and risk analysis | Complete | Thirteen outcome-changing gaps compare ideal facts, incidents, policy, live settings, automation, CI, and behavior |
 | 4 | Operating-model design | Complete as proposal | Four control planes, one typed state model, lane lifecycle, permissions, CI/server policy, recovery, and four packets defined |
 | 5 | Scenario validation | Complete for proposal | Disposable Git and live read-only checks reproduce current defects, validate primitives, and define falsifiable GIT-7B–7E gates |
-| 6 | Canonical policy proposal | Ready for owner decision | Recommended acceptance plus exact GIT-7B authorization boundary documented; no implementation authority yet |
-| 7 | Controlled implementation | Packet 7A complete; broader work held | Separate owner authorization for each implementation packet |
+| 6 | Canonical policy proposal | Accepted 2026-08-13 | Owner accepted the operating model and authorized GIT-7B only |
+| 7 | Controlled implementation | Packets 7A and GIT-7B complete locally | GIT-7B focused, quick, and full evidence pass; publication remains explicit; GIT-7C–7E require separate authorization |
 | 8 | Adoption and closeout | Not started | Integrated workflow verified; supersession and maintenance established |
 
 ## Artifact map
@@ -62,6 +63,7 @@ work, make recovery deterministic, and remain efficient during normal work.
 - [Phase 4 operating-model proposal](GIT-001-phase-4-operating-model.md)
 - [Phase 5 simulation and verification report](GIT-001-phase-5-scenario-validation.md)
 - [Phase 6 canonical-policy proposal](GIT-001-phase-6-canonical-policy-proposal.md)
+- [Phase 7B read-only state/intake kernel](GIT-001-phase-7B-state-intake-kernel.md)
 - Phase 7 implementation packets — owner-approval gated
 - Phase 8 adoption/closeout report — planned
 

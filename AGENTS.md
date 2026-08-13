@@ -87,6 +87,10 @@ recreate that lifecycle in repository scripts. The canonical process is
 [docs/git-automation/git-workflow-single-source.md](docs/git-automation/git-workflow-single-source.md).
 
 - Inspect the branch, upstream, worktree, diff, and current PR before mutation.
+- Use `./scripts/python_runtime.sh scripts/git_state.py --json` for current-lane
+  evidence and add `--worktrees` for bounded sibling inspection. This is the
+  sole read-only Git-state authority; `NOT_CHECKED` remote freshness must not be
+  represented as current remote proof.
 - Use a `codex/<task-slug>` branch when a new branch is needed.
 - Stage only intended paths; preserve unrelated staged, unstaged, untracked, and
   stashed work.

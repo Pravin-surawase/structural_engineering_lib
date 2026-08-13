@@ -141,10 +141,10 @@ CATEGORIES: list[Category] = [
     Category(
         name="git",
         label="Git",
-        description="Git state, unfinished merges, version consistency, script budget",
+        description="Read-only Git state, active operations, version consistency",
         checks=[
-            Check("Git state", _sh("validate_git_state.sh")),
-            Check("Unfinished merge", _sh("check_unfinished_merge.sh")),
+            Check("Git state", _py("git_state.py", "--guard", "validation")),
+            Check("Unfinished operation", _py("git_state.py", "--guard", "operation")),
             Check("Version consistency", _sh("check_version_consistency.sh")),
             Check("Codex-native Git workflow", _py("check_codex_git_workflow.py")),
         ],
@@ -175,7 +175,7 @@ QUICK_CHECKS: dict[str, list[str]] = {
     "docs": ["Broken links", "Doc versions", "Brief length"],
     "arch": ["Import validation"],
     "governance": ["Repo hygiene", "Token efficiency"],
-    "git": ["Git state", "Unfinished merge"],
+    "git": ["Git state", "Unfinished operation"],
     "stale": ["Script references", "CLI smoke"],
 }
 

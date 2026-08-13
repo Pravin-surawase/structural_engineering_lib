@@ -4,7 +4,7 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-13
-- Focus: GIT-001 Phase 6 proposal ready; owner decision and GIT-7B authorization pending
+- Focus: GIT-001 Phase 6 accepted; GIT-7B locally complete and awaiting publication decision
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
@@ -15,8 +15,8 @@
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | GIT-001 Phase 6 | Ready for owner decision — recommend accepting the operating model and authorizing only read-only GIT-7B |
-| **Next** | GIT-7B after owner acceptance | Build one worktree-aware state kernel and route task brief, trust, quick gate, and focused CI through it |
+| **Current** | GIT-7B locally complete | Kernel, consumers, compatibility delegates, 64 focused tests, quick 10/10, full 30/30, and narrow CI routing pass |
+| **Next** | Owner publication decision | Push/open a draft PR only when explicitly requested; GIT-7C–7E remain separately approval-gated |
 | **Parallel owner decision** | Excel planning lane | Confirm a named active owner/next action or approve retirement |
 | **Approval-gated** | Alpha worktrees and merged branches | Exact evidence is ready; deletion still requires explicit target approval |
 | **Separate maintenance** | Seven dependency PRs | Replace one-by-one merging with four current-base compatibility packets |
@@ -32,13 +32,14 @@
 7. [Phase 4 operating-model proposal](../research/git-governance/GIT-001-phase-4-operating-model.md)
 8. [Phase 5 scenario validation](../research/git-governance/GIT-001-phase-5-scenario-validation.md)
 9. [Phase 6 canonical-policy proposal](../research/git-governance/GIT-001-phase-6-canonical-policy-proposal.md)
-10. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
-11. [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
+10. [Phase 7B implementation receipt](../research/git-governance/GIT-001-phase-7B-state-intake-kernel.md)
+11. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+12. [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
 
 ## Start command
 
 ```bash
-./run.sh task brief "implement accepted GIT-7B read-only state and intake kernel"
+./run.sh task brief "close out accepted GIT-7B read-only state and intake kernel"
 ./run.sh session brief --agent ops
 ./run.sh session start
 ```
@@ -82,8 +83,10 @@ Phase 3 adds thirteen outcome-changing gaps. Phase 4 maps them into
 state/intake, publication/server enforcement, generated-data/cleanup, and
 guidance/handoff control planes, with the read-only state kernel first. Phase 5
 reproduces the current abnormal-state defects and defines falsifiable packet
-gates. Phase 6 now recommends acceptance and authorization of read-only GIT-7B
-only. No implementation is authorized until the owner records that decision.
+gates. The owner accepted Phase 6 and authorized GIT-7B on 2026-08-13. The
+read-only kernel, task brief, live session trust, quick Git checks, compatibility
+delegates, and focused CI routing are implemented; GIT-7C through GIT-7E remain
+held and no GitHub setting, cleanup, deletion, or recovery mutation is authorized.
 
 ## Destructive-action holds
 

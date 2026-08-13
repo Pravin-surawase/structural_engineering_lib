@@ -25,6 +25,7 @@ import json
 import re
 import subprocess
 import sys
+from dataclasses import asdict
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Optional
@@ -32,6 +33,7 @@ from typing import Optional
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
 from _lib.output import StatusLine
+from git_state import RepositoryState, collect_repository_state
 
 SESSION_LOG = REPO_ROOT / "docs" / "SESSION_LOG.md"
 TASKS_MD = REPO_ROOT / "docs" / "TASKS.md"
@@ -58,7 +60,9 @@ def _python_exe() -> str:
 # ─── Trust State Management ──────────────────────────────────────────────────
 
 
-def save_trust_state(trusted: bool, reason: str) -> None:
+def save_trust_state(
+    trusted: bool, reason: str, git_state: RepositoryState | None = None
+) -> None:
     """Write trust state to session_trust.json."""
     TRUST_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
     state = {
@@ -66,6 +70,26 @@ def save_trust_state(trusted: bool, reason: str) -> None:
         "reason": reason,
         "timestamp": datetime.now().isoformat(),
     }
+    if git_state is not None:
+        state["git_state"] = {
+            "schema_version": git_state.schema_version,
+            "observed_at_utc": git_state.observed_at_utc,
+            "branch": git_state.branch,
+            "head_sha": git_state.head_sha,
+            "default_base": asdict(git_state.default_base),
+            "upstream": asdict(git_state.upstream),
+            "tree": {
+                "dirty_count": git_state.tree.dirty_count,
+                "staged": len(git_state.tree.staged_paths),
+                "modified": len(git_state.tree.modified_paths),
+                "untracked": len(git_state.tree.untracked_paths),
+                "conflicted": len(git_state.tree.conflicted_paths),
+            },
+            "operation": git_state.operation,
+            "locks": list(git_state.locks),
+            "remote_freshness": git_state.remote_freshness,
+            "derived_action": git_state.derived_action,
+        }
     TRUST_STATE_FILE.write_text(json.dumps(state, indent=2))
 
 
@@ -80,8 +104,9 @@ def load_trust_state() -> dict:
 
 
 def is_session_trusted() -> bool:
-    """Check if current session is trusted."""
-    return load_trust_state().get("trusted", False)
+    """Re-evaluate live trust; never rely on a stale start checkpoint."""
+    trusted, _reason = _evaluate_trust(collect_repository_state(REPO_ROOT))
+    return trusted
 
 
 def _run_script(
@@ -110,48 +135,28 @@ def get_version() -> str:
         return "unknown"
 
 
-def get_branch() -> str:
-    try:
-        result = subprocess.run(
-            ["git", "branch", "--show-current"],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
-        )
-        if result.returncode != 0:
-            return "unknown"
-        return result.stdout.strip() or "unknown"
-    except Exception:
-        return "unknown"
+def get_branch(git_state: RepositoryState | None = None) -> str:
+    state = git_state or collect_repository_state(REPO_ROOT)
+    return "unknown" if state.branch == "UNKNOWN" else state.branch
 
 
-def get_uncommitted_status() -> str:
-    try:
-        result = subprocess.run(
-            ["git", "status", "--porcelain"],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
-        )
-        if result.returncode != 0:
-            return "Unable to check"
-        lines = result.stdout.strip().split("\n") if result.stdout.strip() else []
-        return (
-            "Clean working tree" if not lines else f"{len(lines)} uncommitted change(s)"
-        )
-    except Exception:
+def get_uncommitted_status(git_state: RepositoryState | None = None) -> str:
+    state = git_state or collect_repository_state(REPO_ROOT)
+    if state.query_failures:
         return "Unable to check"
+    return (
+        "Clean working tree"
+        if state.tree.clean
+        else f"{state.tree.dirty_count} uncommitted change(s)"
+    )
 
 
-def _evaluate_trust(branch: str, uncommitted: str) -> tuple[bool, str]:
-    """Trust only an exact clean-tree result on a non-main branch."""
-    if uncommitted != "Clean working tree":
-        return False, "uncommitted or unknown Git state detected"
-    if not branch or branch == "unknown":
-        return False, "unknown or detached Git branch"
-    if branch == "main":
-        return False, "on main branch, expected feature branch"
-    return True, "clean state confirmed"
+def _evaluate_trust(git_state: RepositoryState) -> tuple[bool, str]:
+    """Trust only the kernel's explicit local-ready state."""
+    if git_state.ready_local:
+        return True, "READY_LOCAL from read-only Git state authority"
+    detail = "; ".join(git_state.hold_reasons) or "required Git evidence is unknown"
+    return False, f"{git_state.derived_action}: {detail}"
 
 
 def check_session_log_entry() -> tuple[bool, str]:
@@ -384,12 +389,13 @@ def run_handoff_check() -> tuple[bool, str]:
 
 def cmd_start(args: argparse.Namespace) -> int:
     version = get_version()
-    branch = get_branch()
-    uncommitted = get_uncommitted_status()
+    git_state = collect_repository_state(REPO_ROOT)
+    branch = get_branch(git_state)
+    uncommitted = get_uncommitted_status(git_state)
 
-    trusted, trust_reason = _evaluate_trust(branch, uncommitted)
+    trusted, trust_reason = _evaluate_trust(git_state)
 
-    save_trust_state(trusted, trust_reason)
+    save_trust_state(trusted, trust_reason, git_state)
 
     print()
     print("=" * 60)
@@ -646,22 +652,19 @@ def _read_jsonl(path: Path) -> list[dict]:
 
 def _git_checkpoint_state() -> dict[str, object]:
     """Return cheap, observable repository state for a usage checkpoint."""
-
-    def capture(*command: str) -> str:
-        result = subprocess.run(
-            list(command),
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        return result.stdout.strip()
-
-    status = capture("git", "status", "--porcelain")
+    state = collect_repository_state(REPO_ROOT)
     return {
-        "branch": capture("git", "branch", "--show-current") or "unknown",
-        "head": capture("git", "rev-parse", "--short", "HEAD") or "unknown",
-        "working_tree_files": len(status.splitlines()) if status else 0,
+        "schema_version": state.schema_version,
+        "observed_at_utc": state.observed_at_utc,
+        "branch": state.branch,
+        "head": state.head_sha[:8] if state.head_sha else "unknown",
+        "working_tree_files": state.tree.dirty_count,
+        "default_base": asdict(state.default_base),
+        "upstream": asdict(state.upstream),
+        "operation": state.operation,
+        "locks": len(state.locks),
+        "remote_freshness": state.remote_freshness,
+        "derived_action": state.derived_action,
     }
 
 
@@ -2126,10 +2129,10 @@ def cmd_trust(args: argparse.Namespace) -> int:
             print("⚠️  No trust state file to clear")
         return 0
 
-    state = load_trust_state()
-    trusted = state.get("trusted", False)
-    reason = state.get("reason", "unknown")
-    timestamp = state.get("timestamp", "")
+    checkpoint = load_trust_state()
+    live_state = collect_repository_state(REPO_ROOT)
+    trusted, reason = _evaluate_trust(live_state)
+    timestamp = checkpoint.get("timestamp", "")
 
     print()
     print("🔒 Session Trust State")
@@ -2140,8 +2143,11 @@ def cmd_trust(args: argparse.Namespace) -> int:
     else:
         print("  Status:    ⚠️  Untrusted")
     print(f"  Reason:    {reason}")
+    print(f"  Git state: {live_state.derived_action}")
+    print(f"  Head:      {(live_state.head_sha or 'unknown')[:8]}")
+    print(f"  Remote:    {live_state.remote_freshness}")
     if timestamp:
-        print(f"  Updated:   {timestamp}")
+        print(f"  Last start checkpoint: {timestamp}")
     print()
     print("=" * 60)
     print()

@@ -21,6 +21,7 @@ jobs:
       python: ${{ steps.filter.outputs.python }}
       fastapi: ${{ steps.filter.outputs.fastapi }}
       react: ${{ steps.filter.outputs.react }}
+      control_plane: ${{ steps.filter.outputs.control_plane }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -41,6 +42,19 @@ jobs:
             react:
               - 'react_app/**'
               - '**/package-lock.json'
+            control_plane:
+              - 'scripts/git_state.py'
+              - 'scripts/prompt_router.py'
+              - 'scripts/session.py'
+              - 'scripts/check_all.py'
+              - 'scripts/automation-map.json'
+              - 'scripts/validate_git_state.sh'
+              - 'scripts/check_unfinished_merge.sh'
+              - 'scripts/check_not_main.sh'
+              - 'scripts/check_codex_git_workflow.py'
+              - 'Python/tests/test_git_state.py'
+              - 'Python/tests/test_session_automation.py'
+              - '.github/workflows/fast-checks.yml'
 
   python-validation:
     name: Python Validation
@@ -158,6 +172,7 @@ jobs:
 
   repository-validation:
     name: Repository Validation
+    needs: changes
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
@@ -204,10 +219,21 @@ jobs:
           python scripts/check_architecture_boundaries.py
           python scripts/skill_tiers.py validate
 
+      - name: Validate Git state and intake control plane
+        if: needs.changes.outputs.control_plane == 'true'
+        run: >-
+          python -m pytest
+          Python/tests/test_git_state.py
+          Python/tests/test_session_automation.py
+          -q
+
       - name: Validate maintenance scripts
         run: |
           bash -n scripts/validate_git_state.sh
+          bash -n scripts/check_unfinished_merge.sh
+          bash -n scripts/check_not_main.sh
           bash -n scripts/agent_start.sh
+          python scripts/git_state.py --json > /dev/null
           python scripts/check_codex_git_workflow.py
           python -m pytest tests/integration/test_migration_scripts.py -q
 

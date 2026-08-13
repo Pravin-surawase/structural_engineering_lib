@@ -22,6 +22,7 @@ session = importlib.import_module("scripts.session")
 check_api = importlib.import_module("scripts.check_api")
 validate_script_refs = importlib.import_module("scripts.validate_script_refs")
 prompt_router = importlib.import_module("scripts.prompt_router")
+git_state = importlib.import_module("scripts.git_state")
 
 
 @pytest.mark.parametrize(
@@ -225,20 +226,48 @@ def test_commit_summary_uses_exclusive_previous_day_boundary(
 
 
 @pytest.mark.parametrize(
-    ("branch", "git_state", "trusted"),
+    ("action", "trusted"),
     [
-        ("codex/task", "Clean working tree", True),
-        ("codex/task", "2 uncommitted change(s)", False),
-        ("codex/task", "Unable to check", False),
-        ("main", "Clean working tree", False),
-        ("unknown", "Clean working tree", False),
-        ("", "Clean working tree", False),
+        ("READY_LOCAL", True),
+        ("HOLD_DIRTY", False),
+        ("HOLD_MAIN", False),
+        ("HOLD_DETACHED", False),
+        ("HOLD_BEHIND", False),
+        ("HOLD_DIVERGED", False),
+        ("HOLD_OPERATION", False),
+        ("HOLD_LOCKED", False),
+        ("HOLD_UNKNOWN", False),
     ],
 )
-def test_session_trust_fails_closed_on_dirty_or_unknown_git_state(
-    branch: str, git_state: str, trusted: bool
-):
-    result, _reason = session._evaluate_trust(branch, git_state)
+def test_session_trust_accepts_only_kernel_ready_local(action: str, trusted: bool):
+    state = git_state.RepositoryState(
+        schema_version=1,
+        observed_at_utc="2026-08-13T00:00:00+00:00",
+        repository_root="/tmp/repo",
+        worktree_root="/tmp/repo",
+        git_dir="/tmp/repo/.git",
+        git_common_dir="/tmp/repo/.git",
+        linked_worktree=False,
+        branch="codex/task",
+        head_sha="a" * 40,
+        default_base=git_state.Relation("main", "b" * 40, 1, 0, "ahead"),
+        upstream=git_state.Relation("NONE", None, None, None, "none"),
+        tree=git_state.TreeState(clean=action != "HOLD_DIRTY"),
+        operation="merge" if action == "HOLD_OPERATION" else "none",
+        operation_markers=[],
+        locks=["index.lock"] if action == "HOLD_LOCKED" else [],
+        remote_freshness="NOT_CHECKED",
+        derived_action=action,
+        hold_reasons=[] if action == "READY_LOCAL" else [action],
+        query_failures=(
+            [git_state.QueryFailure("git status", "failed")]
+            if action == "HOLD_UNKNOWN"
+            else []
+        ),
+        duration_ms=1.0,
+    )
+
+    result, _reason = session._evaluate_trust(state)
 
     assert result is trusted
 
