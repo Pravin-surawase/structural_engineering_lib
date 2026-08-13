@@ -38,6 +38,9 @@ through it without expanding into GIT-7C–7E
   timestamp assertion.
 - The first worktree-creation command could not start because its configured
   process working directory was the directory that command was meant to create.
+- The first live PR run selected the intended control-plane tests but Repository
+  Validation failed while importing the shared test configuration because
+  Hypothesis was absent from that job's environment.
 
 ### Root causes and resolutions
 
@@ -55,6 +58,12 @@ through it without expanding into GIT-7C–7E
   Resolution: create the fresh worktree from the existing clean research lane,
   then execute from the validated new path. Evidence: worktree inventory and
   `scripts/python_runtime.sh --diagnose` identify the intended branch and source.
+- Root cause: the new focused pytest step was added to Repository Validation,
+  but that job still installed only the base package, pytest, and PyYAML; the
+  shared `Python/tests/conftest.py` imports Hypothesis from the existing `dev`
+  extra. Resolution: install `Python/[dev]` in that job. Evidence: the focused
+  64-test family and semantic workflow check pass with the corrected contract;
+  PR #744 is the live exact-head check surface.
 
 ### Verification
 
@@ -76,6 +85,10 @@ through it without expanding into GIT-7C–7E
   as its process working directory, so process startup failed -> created the
   worktree from the validated research lane and then continued from the new
   directory.
+- ⚠️ TERMINAL ISSUE: a diagnostic command used a shell glob for a receipt
+  filename that did not exist, so zsh stopped before `rg` ran -> discovered the
+  exact changed paths with `git diff --name-only` and reran targeted `rg` without
+  an unresolved glob.
 
 ## 2026-08-13 — Session: GIT-001 Phases 2-6 Upgrade Proposal
 

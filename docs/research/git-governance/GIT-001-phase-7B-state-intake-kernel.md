@@ -99,6 +99,9 @@ with zero unknown lanes, below the two-second six-worktree budget.
   `git status`, which refreshed the index and produced one false failure.
 - The first worktree-creation command used the not-yet-created directory as the
   process working directory and could not start.
+- The first live PR run correctly selected the new control-plane tests, but
+  Repository Validation failed before collection because its environment did
+  not contain Hypothesis.
 
 ## Root causes and resolutions
 
@@ -114,6 +117,11 @@ with zero unknown lanes, below the two-second six-worktree budget.
   would create it. Resolution: create the worktree from the existing research
   lane, then run lane commands from the validated new path. Evidence:
   `git worktree list` and Python diagnosis identify the expected lane.
+- Root cause: Repository Validation installed the base package, pytest, and
+  PyYAML even after it began running tests whose shared configuration imports
+  Hypothesis from the existing `dev` extra. Resolution: install `Python/[dev]`
+  in that job. Evidence: the focused suite and semantic workflow check pass
+  against the corrected contract; PR #744 provides the live exact-head run.
 
 ## Closeout gate
 
@@ -128,5 +136,5 @@ with zero unknown lanes, below the two-second six-worktree budget.
   365 ms.
 - Live seven-worktree inventory: 556 ms, zero unknown lanes.
 
-GIT-7B is complete locally. Publication remains an explicit owner decision, and
+GIT-7B was published for review as draft PR #744 after explicit owner approval.
 GIT-7C through GIT-7E remain held.

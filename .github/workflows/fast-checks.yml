@@ -191,7 +191,7 @@ jobs:
             Python/pyproject.toml
 
       - name: Install validation dependencies
-        run: python -m pip install -e Python pytest PyYAML
+        run: python -m pip install -e 'Python/[dev]' PyYAML
 
       - name: Validate YAML syntax
         run: |
