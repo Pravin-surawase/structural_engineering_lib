@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-13 — GIT-001 Phase 1 factual coverage independently passed; Phase 2 not started
+**Updated:** 2026-08-13 — GIT-001 Phase 6 accepted; GIT-7B implementation and all local closeout gates complete, publication pending
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| GIT-001 | Research and propose an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | ✅ PHASE 1 COMPLETE + PACKET 7A COMPLETE — factual lifecycle coverage independently passed; Phase 2/policy work not started |
+| GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | ✅ GIT-7B LOCALLY COMPLETE — read-only state/intake kernel; 64 focused, quick 10/10, full 30/30; push/PR pending explicit request; GIT-7C–7E remain held |
 
 ## Up Next
 

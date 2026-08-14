@@ -3,8 +3,8 @@
 > Development, validation, discovery, release-preparation, and maintenance tools.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-12
-**Files:** 108
+**Last Updated:** 2026-08-13
+**Files:** 109
 
 ## Config Files
 
@@ -43,7 +43,7 @@
 | [check_circular_imports.py](check_circular_imports.py) | Circular Import Detector for the Python Structural Library | 5 | 1 | 464 |
 | [check_clause_coverage.py](check_clause_coverage.py) | IS 456 clause coverage gap detection. | 0 | 8 | 488 |
 | [check_cli_reference.py](check_cli_reference.py) | Ensure CLI reference includes required commands. | 0 | 1 | 48 |
-| [check_codex_git_workflow.py](check_codex_git_workflow.py) | Guard the Codex-native Git/GitHub workflow contract. | 0 | 1 | 97 |
+| [check_codex_git_workflow.py](check_codex_git_workflow.py) | Guard the Codex-native Git/GitHub workflow contract. | 0 | 1 | 183 |
 | [check_doc_versions.py](check_doc_versions.py) | Doc Version Drift Check — Validate no stale *library* versio | 0 | 2 | 72 |
 | [check_docker_config.py](check_docker_config.py) | Docker Configuration Validator. | 0 | 6 | 295 |
 | [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 6 | 675 |
@@ -81,6 +81,7 @@
 | [generate_docs_index.py](generate_docs_index.py) | Generate machine-readable JSON index of documentation. | 0 | 7 | 246 |
 | [generate_enhanced_index.py](generate_enhanced_index.py) | Generate enhanced index.json + index.md for ANY folder type. | 0 | 11 | 866 |
 | [generate_error_docs.py](generate_error_docs.py) | Generate docs/reference/error-codes.md from core/errors.py. | 0 | 4 | 139 |
+| [git_state.py](git_state.py) | Read-only, worktree-aware Git state authority. | 5 | 4 | 658 |
 | [governance_health_score.py](governance_health_score.py) | Governance Health Score - TASK-289 | 3 | 1 | 515 |
 | [migrate_python_module.py](migrate_python_module.py) | Migrate a Python module to a new location with import update | 0 | 8 | 516 |
 | [migrate_react_component.py](migrate_react_component.py) | Migrate a React component to a new feature-grouped folder. | 0 | 9 | 475 |
@@ -90,11 +91,11 @@
 | [pipeline_state.py](pipeline_state.py) | Pipeline state tracking for multi-step agent workflows. | 2 | 17 | 868 |
 | [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 203 |
 | [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 908 |
-| [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 5 | 658 |
+| [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 5 | 700 |
 | [release.py](release.py) | Unified release management CLI. | 0 | 10 | 1776 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 355 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
-| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2300 |
+| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2306 |
 | [session_store.py](session_store.py) | JSON-based session state persistence for AI agent sessions. | 1 | 14 | 374 |
 | [skill_tiers.py](skill_tiers.py) | Skill tier classification and management for AI agents. | 1 | 11 | 485 |
 | [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 502 |
@@ -116,9 +117,9 @@
 - [agent_mistakes_report.sh](agent_mistakes_report.sh) — Agent Mistakes Report
 - [agent_start.sh](agent_start.sh) — Unified Agent Start Script
 - [archive_old_files.sh](archive_old_files.sh) — Auto-archive files older than 90 days from docs/_active/
-- [check_not_main.sh](check_not_main.sh)
+- [check_not_main.sh](check_not_main.sh) — Compatibility entrypoint. Fails closed on main, detached, or unknown state.
 - [check_root_file_count.sh](check_root_file_count.sh) — Check Root File Count
-- [check_unfinished_merge.sh](check_unfinished_merge.sh) — Check for unfinished merge before allowing new commits
+- [check_unfinished_merge.sh](check_unfinished_merge.sh) — Compatibility entrypoint. The shared kernel detects every operation from the
 - [check_version_consistency.sh](check_version_consistency.sh) — check_version_consistency.sh - Verify version strings are consistent
 - [check_wip_limits.sh](check_wip_limits.sh) — check_wip_limits.sh - Enforce WIP (Work In Progress) limits
 - [ci_local.sh](ci_local.sh) — Local equivalent of the maintained PR validation lanes.
@@ -127,7 +128,7 @@
 - [launch_stack.sh](launch_stack.sh) — launch_stack.sh — Full-stack development launcher for structural_engineering_lib
 - [python_runtime.sh](python_runtime.sh) — Resolve the repository Python interpreter across primary and linked worktrees.
 - [repo_health_check.sh](repo_health_check.sh)
-- [validate_git_state.sh](validate_git_state.sh) — Read-only Git workflow validator for Codex
+- [validate_git_state.sh](validate_git_state.sh) — Compatibility entrypoint. scripts/git_state.py owns all Git-state semantics.
 - [watch_tests.sh](watch_tests.sh) — Watch Mode (Solution 5 - Dev Automation)
 
 ## Subfolders

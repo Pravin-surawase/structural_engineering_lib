@@ -91,7 +91,7 @@ repos:
     hooks:
       - id: check-unfinished-merge
         name: Check for unfinished merge
-        entry: bash scripts/check_unfinished_merge.sh
+        entry: bash scripts/check_unfinished_merge.sh --allow-operation-completion
         language: system
         pass_filenames: false
         always_run: true

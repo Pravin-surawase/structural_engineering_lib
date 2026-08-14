@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-12
+last_updated: 2026-08-13
 doc_type: guide
 complexity: intermediate
 tags: [git, github, codex, workflow]
@@ -34,6 +34,26 @@ feat|fix|docs|refactor|test|chore|ci(scope): description
 Do not add a repository script that automates this lifecycle. Validation scripts
 may inspect Git state, but they must not stage, commit, push, merge, reset,
 checkout, clean, stash, delete branches, or mutate GitHub state.
+
+## Read-only Git state authority
+
+Use `./scripts/python_runtime.sh scripts/git_state.py` as the sole semantic
+authority for local Git state. It uses porcelain v2 and the invoking worktree's
+real Git/common paths, disables optional locks, performs no network request by
+default, and reports remote freshness as `NOT_CHECKED`.
+
+- `--json` emits typed current-lane evidence;
+- `--worktrees --json` adds bounded sibling-worktree summaries;
+- `--strict` succeeds only for `READY_LOCAL`;
+- `--guard operation` and `--guard branch` provide narrow fail-closed checks.
+
+Task brief, session trust, and the quick Git gate consume this authority.
+`READY_LOCAL` is the only trusted local state. `HOLD_MAIN`, `HOLD_DETACHED`,
+`HOLD_DIRTY`, `HOLD_OPERATION`, `HOLD_LOCKED`, `HOLD_BEHIND`,
+`HOLD_DIVERGED`, and `HOLD_UNKNOWN` are evidence states, not recovery commands.
+Ahead and no-upstream are publication facts rather than local-safety failures.
+The retained shell entrypoints are compatibility delegates and must not contain
+independent Git classification.
 
 ## Verification before publication
 

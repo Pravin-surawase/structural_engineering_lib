@@ -3,15 +3,15 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-13",
-  "file_count": 6,
+  "file_count": 12,
   "files": [
     {
       "name": "GIT-001-README.md",
       "type": "documentation",
-      "size_lines": 92,
+      "size_lines": 94,
       "last_updated": "2026-08-13",
       "description": "This directory is the task-owned, non-normative research record for GIT-001. Its contents may describe official Git/GitHub/Codex facts, observed project",
-      "content_hash": "f9d7d247a4a2"
+      "content_hash": "a33e68ad4118"
     },
     {
       "name": "GIT-001-lifecycle-research.md",
@@ -25,7 +25,7 @@
       "name": "GIT-001-next-agent-disposition-plan.md",
       "type": "documentation",
       "size_lines": 411,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-13",
       "description": "This packet converts the original six-priority cleanup and recovery list into a current, evidence-backed handoff. It tells the next agent what is already done,",
       "content_hash": "eb05a95fb3ae"
     },
@@ -41,19 +41,67 @@
       "name": "GIT-001-phase-0-preservation-baseline.md",
       "type": "documentation",
       "size_lines": 165,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-13",
       "description": "- Observation time: 2026-08-12T21:17:05+05:30 - Repository: Pravin-surawase/structural_engineering_lib",
       "content_hash": "6d737c63cb6d"
+    },
+    {
+      "name": "GIT-001-phase-2-incident-register.md",
+      "type": "documentation",
+      "size_lines": 350,
+      "last_updated": "2026-08-13",
+      "description": "This register traces confirmed Git, worktree, automation, CI, release, and recovery failures from this repository. It is forensic evidence for the later",
+      "content_hash": "e94fe169b0f7"
+    },
+    {
+      "name": "GIT-001-phase-3-gap-risk-matrix.md",
+      "type": "documentation",
+      "size_lines": 234,
+      "last_updated": "2026-08-13",
+      "description": "This matrix compares five evidence layers: 1. official Git/GitHub/Codex facts from Phase 1;",
+      "content_hash": "c4c66d7f8b7e"
+    },
+    {
+      "name": "GIT-001-phase-4-operating-model.md",
+      "type": "documentation",
+      "size_lines": 429,
+      "last_updated": "2026-08-13",
+      "description": "Use a **preservation-first, evidence-separated, Codex-native** operating model: - one task, one attached worktree, one branch, and one named integration owner;",
+      "content_hash": "2648d526bef2"
+    },
+    {
+      "name": "GIT-001-phase-5-scenario-validation.md",
+      "type": "documentation",
+      "size_lines": 227,
+      "last_updated": "2026-08-13",
+      "description": "Phase 5 tests whether the proposed operating model is grounded in observable Git/GitHub behavior and whether every implementation packet has a falsifiable",
+      "content_hash": "c58cdf2724e1"
+    },
+    {
+      "name": "GIT-001-phase-6-canonical-policy-proposal.md",
+      "type": "documentation",
+      "size_lines": 264,
+      "last_updated": "2026-08-13",
+      "description": "state and intake kernel, as the first implementation packet.** Do not yet authorize GitHub ruleset changes, CI topology changes, generated-data",
+      "content_hash": "8bb49d830e7b"
     },
     {
       "name": "GIT-001-phase-7A-preservation-workflow-recovery.md",
       "type": "documentation",
       "size_lines": 82,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-13",
       "description": "The repository owner authorized Git operations, merge/deletion when proven safe, parallel subagents, preservation of Column PMM, and selective recovery of",
       "content_hash": "3a5222567115"
+    },
+    {
+      "name": "GIT-001-phase-7B-state-intake-kernel.md",
+      "type": "documentation",
+      "size_lines": 133,
+      "last_updated": "2026-08-13",
+      "description": "The repository owner accepted Phase 6 and authorized GIT-7B on 2026-08-13. This packet implements only the read-only Git state authority, task intake,",
+      "content_hash": "658e05dc0d46"
     }
   ],
   "subfolders": [],
-  "content_hash": "ffdd6b6c399b36e6"
+  "content_hash": "94942503c47c59b7"
 }

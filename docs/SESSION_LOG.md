@@ -1,3 +1,236 @@
+## 2026-08-13 — Session: GIT-001 Phase 7B State and Intake Kernel
+
+**Agent:** Codex (`ops`)
+
+**Branch:** `codex/git-7b-state-kernel`
+
+**Focus:** Implement the owner-authorized read-only, worktree-aware Git state
+authority and route task intake, session trust, quick checks, and focused CI
+through it without expanding into GIT-7C–7E
+
+### Summary
+
+- Recorded the owner's Phase 6 acceptance and GIT-7B-only authorization.
+- Refreshed and verified exact `main = origin/main = f3ad94dc`, created a fresh
+  isolated implementation worktree, replayed only the approved proposal record,
+  and verified worktree-bound Python source identity.
+- Added typed `scripts/git_state.py` with porcelain-v2 tree classification,
+  worktree/common-path operation and lock detection, separate default/upstream
+  reachability, explicit `READY_LOCAL`/`HOLD_*` actions, JSON/human output,
+  bounded siblings, optional locks disabled, and no network default.
+- Routed task brief, live session trust/checkpoints, and both quick Git checks
+  through the kernel. Replaced three independent shell classifiers with thin
+  delegates while preserving conflict-free operation completion in pre-commit.
+- Added changed-path CI routing for the exact state/intake tests and extended
+  the semantic workflow checker so consumers, wrappers, and CI cannot silently
+  drift away from the authority.
+- Updated only the narrow canonical and agent state/intake wording; GitHub
+  settings, cleanup, generators, deletion, recovery, release, and product
+  runtime remain unchanged and held.
+
+### Issues encountered
+
+- The accepted file list omitted the three active compatibility shells and the
+  existing pre-commit call argument needed to avoid split Git-state semantics
+  without blocking legitimate operation completion.
+- The first non-mutation test failed even though refs/status were unchanged
+  because its own final ordinary `git status` refreshed the index before the
+  timestamp assertion.
+- The first worktree-creation command could not start because its configured
+  process working directory was the directory that command was meant to create.
+- The first live PR run selected the intended control-plane tests but Repository
+  Validation failed while importing the shared test configuration because
+  Hypothesis was absent from that job's environment. After dependency repair,
+  the tests exposed that shell entrypoints could not resolve GitHub's
+  setup-python interpreter.
+- The first explicit-runtime simulation used the resolved interpreter reported
+  by diagnosis and therefore bypassed the primary `.venv` package context.
+
+### Root causes and resolutions
+
+- Root cause: the proposal named semantic consumers but not all compatibility
+  entrypoints/call details. Resolution: enumerate every live caller, amend the
+  accepted packet before editing, reduce the shells to kernel delegates, and
+  give only the existing pre-commit call the explicit conflict-free completion
+  flag. Evidence: manual operation guard fails, completion mode passes, and the
+  semantic workflow check passes.
+- Root cause: the proof's diagnostic command did not disable optional locks and
+  ran before the index-timestamp assertion. Resolution: measure the timestamp
+  immediately after kernel inspection, then compare ordinary status. Evidence:
+  the full 64-test focused family passes.
+- Root cause: command process setup resolves `cwd` before executing the command.
+  Resolution: create the fresh worktree from the existing clean research lane,
+  then execute from the validated new path. Evidence: worktree inventory and
+  `scripts/python_runtime.sh --diagnose` identify the intended branch and source.
+- Root cause: the new focused pytest step was added to Repository Validation,
+  but that job still installed only the base package, pytest, and PyYAML; the
+  shared `Python/tests/conftest.py` imports Hypothesis from the existing `dev`
+  extra. Resolution: install `Python/[dev]` in that job. Evidence: the focused
+  64-test family and semantic workflow check pass with the corrected contract;
+  PR #744 is the live exact-head check surface.
+- Root cause: setup-python adds its interpreter to `PATH`, while the repository
+  launcher intentionally accepts only an explicit `STRUCTURAL_LIB_PYTHON`, a
+  repository/primary-worktree `.venv`, or `VIRTUAL_ENV`; the focused CI step
+  supplied none of them to its subprocesses. Resolution: bind the setup-python
+  executable with the same explicit pattern already used by the CI smoke step,
+  and enforce that binding in the semantic workflow checker. Evidence: the
+  focused family, semantic checker, and quick gate pass locally; PR #744 runs
+  the corrected contract at the exact pushed head.
+- Root cause: diagnosis resolves `sys.executable` to its Homebrew target, while
+  Python virtual-environment discovery depends on invoking the `.venv/bin/python`
+  entrypoint. Resolution: repeat the explicit-runtime proof with the validated
+  primary `.venv` entrypoint. Evidence: all 64 focused tests pass with that
+  binding.
+
+### Verification
+
+- Focused state/intake tests: 64 passed.
+- Black, Ruff, and MyPy on the owned control plane: passed.
+- Live current-worktree state: approximately 80 ms.
+- Live seven-worktree inventory: 556 ms, zero unknown lanes.
+- `./run.sh check --quick`: 10/10 passed in 3.3 seconds; combined Git checks
+  completed in 347 ms instead of the prior validator's approximately 3.7 seconds.
+- Expanded state/session/governance automation family: 109 passed.
+- Final `./run.sh check --quick`: 10/10 in 2.9 seconds; its Git checks completed
+  in 292 ms.
+- `./run.sh check`: 30/30 in 8.8 seconds; all four Git checks completed in
+  365 ms.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: a command configured the not-yet-created GIT-7B worktree
+  as its process working directory, so process startup failed -> created the
+  worktree from the validated research lane and then continued from the new
+  directory.
+- ⚠️ TERMINAL ISSUE: a diagnostic command used a shell glob for a receipt
+  filename that did not exist, so zsh stopped before `rg` ran -> discovered the
+  exact changed paths with `git diff --name-only` and reran targeted `rg` without
+  an unresolved glob.
+- ⚠️ TERMINAL ISSUE: the first explicit-runtime proof used the resolved
+  Homebrew interpreter path from `--diagnose`, which had no pytest installation
+  -> used the executable primary `.venv/bin/python` entrypoint and the 64 tests
+  passed.
+
+## 2026-08-13 — Session: GIT-001 Phases 2-6 Upgrade Proposal
+
+**Agent:** Codex (`orchestrator` / `ops`)
+
+**Branch:** `codex/git-governance-research`
+
+**Focus:** Convert completed Git research and recent recovery knowledge into a
+forensic incident register, live gap matrix, operating model, scenario gate,
+and owner-ready first implementation packet
+
+### Summary
+
+- Refreshed and inspected the primary and dedicated GIT-001 lanes, sibling
+  worktrees, branch/upstream/diff state, current PR history, active ruleset,
+  repository merge settings, and 100 recent workflow runs before mutation.
+- Synchronized the clean research branch with current `origin/main` through
+  normal two-parent merge `845c3fa9`; the merge introduced no content delta
+  from main and preserved the prior squash ancestry.
+- Completed Phase 2 with ten evidence-backed incident families covering
+  divergence, dirty lanes, mixed stale work, linked-worktree identity,
+  generated data, timing CI, release parity, trust, squash cleanup, and
+  intake/help drift.
+- Completed Phase 3 with thirteen outcome-changing gaps across the state/intake,
+  publication/server, generated-data/cleanup, and guidance/handoff planes.
+- Completed the Phase 4 proposal: one typed read-only state kernel, explicit
+  lane lifecycle, PR-required enforcement, two merge methods, outcome-routed CI,
+  targeted generation, inspection-only cleanup, and durable handoff receipts.
+- Completed Phase 5 proposal validation with disposable Git scenarios and live
+  read-only checks. The current linked-worktree merge and detached-HEAD guards
+  reproduced false-success results; the required Git primitives, targeted
+  non-writing generation, and intake performance were feasible.
+- Prepared Phase 6 for owner decision. Recommendation: accept the operating
+  model and authorize only GIT-7B, the read-only state/intake kernel. GIT-7C–7E,
+  GitHub settings, cleanup, deletion, and all broader implementation remain held.
+
+### Issues encountered
+
+- The required quick-gate validator and unfinished-merge guard both reported no
+  unfinished merge and exited zero during a real stopped merge in a disposable
+  linked worktree.
+- The current detached-HEAD guard printed a warning but exited zero.
+- Current task brief used the branch upstream head as `base` and omitted the
+  local `+2/-0` upstream relation, current-main relation, operation state, and
+  PR/check identity.
+- The maintained cleanup script exposes remote deletion while selecting by
+  age/ancestry and collapsing some Git query failures to merged/very-old
+  evidence; its automation permission is unspecified.
+- Live workflow instructions retain unsupported `--dry-run`/`--fix`, obsolete
+  command, and direct-main guidance even though the static Codex workflow check
+  passes.
+- The active main ruleset requires strict `PR Gate` but has no pull-request rule
+  and includes an always-bypass repository role available to the owner.
+- Required CI does not run maintained session/task/runtime outcome tests for
+  changed control-plane scripts, and strict MkDocs build is a separate
+  non-required, globally cancelling workflow.
+
+### Root causes and resolutions
+
+- Root cause: both shell guards inspect literal `.git/MERGE_HEAD`, but linked
+  worktrees store operation markers under the path returned by
+  `git rev-parse --git-path`. Resolution in this phase: reproduced the failure
+  without changing project state, specified one worktree-aware typed kernel,
+  and made normal/linked operation scenarios mandatory for GIT-7B. Evidence:
+  literal marker false, Git-path marker true, both current guards exit zero.
+- Root cause: branch, base, upstream, tree, operation, publication, and trust
+  semantics are duplicated across several scripts and consumers. Resolution in
+  this phase: define one evidence schema and fail-closed derived actions; runtime
+  consolidation remains owner-gated GIT-7B.
+- Root cause: cleanup combines an incomplete classifier with a mutation path and
+  its subprocess helper ignores return codes. Resolution in this phase: define
+  an inspection-only disposition contract for GIT-7D; no branch or worktree was
+  changed or deleted.
+- Root cause: the static workflow checker scans a small filename/phrase surface,
+  while live guidance and CI path routing are not semantically bound to outcome
+  tests. Resolution in this phase: define semantic instruction and
+  control-plane CI gates for GIT-7C/GIT-7E; no current instruction or workflow
+  was silently rewritten.
+- Root cause: current GitHub rules protect a status context and ref operations
+  but do not enforce the canonical PR path, and the standing bypass can skip the
+  protection. Resolution in this phase: record the exact settings mismatch and
+  propose PR-required/no-standing-bypass policy for separately approved GIT-7C;
+  no server setting changed.
+
+### Verification
+
+- Live start state: primary `main = origin/main = f3ad94dc`, all six attached
+  worktrees clean; research branch exact with upstream before synchronization.
+- GitHub connector and `gh` inspection: active ruleset `11390214`, exact rule
+  JSON, repository merge settings, PR #743 history, and latest 100 workflow runs.
+- Disposable repository: branch divergence `1/1`; linked merge marker resolved
+  only through `--git-path`; current merge guard and validator exited zero;
+  detached guard exited zero.
+- Targeted generator dry-run processed exactly one folder and left Git status
+  unchanged.
+- Six-worktree task brief completed in 0.26 seconds; current comprehensive Git
+  validator took 4.05 seconds.
+- Phase 5 defines executable acceptance scenarios for every GIT-7B–7E packet.
+- Strict documentation validation passed all five checks with zero invalid
+  frontmatter; 341 Markdown files and 1,108 internal links produced zero broken
+  links. Existing advisory metadata/frontmatter warnings were unchanged and
+  outside this task.
+- `./run.sh check --quick`: 10/10 passed. `./run.sh check`: 30/30 passed.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: an initial `rg` pattern contained shell backticks around a
+  commit ID, so zsh attempted to execute that ID -> reran the search with a
+  single-quoted pattern and no executable substitution.
+- ⚠️ TERMINAL ISSUE: the first detached-guard probe inherited the parent working
+  directory instead of the disposable detached worktree -> reran it from the
+  exact validated disposable path and recorded the correct zero exit.
+- ⚠️ TERMINAL ISSUE: the first targeted-index rerun used a remembered
+  script name that does not exist -> located the maintained command with
+  `rg --files scripts` and regenerated only the three affected folders through
+  `scripts/generate_enhanced_index.py`.
+- ⚠️ TERMINAL ISSUE: the read-only session-end check returned nonzero
+  because the validated proposal was still uncommitted -> retained the exact
+  17-path scope and completed the normal local commit before rerunning the
+  session-end check.
+
 ## 2026-08-13 — Session: GIT-001 Phase 1 Completion
 
 **Agent:** Codex (`orchestrator` / `ops`)
