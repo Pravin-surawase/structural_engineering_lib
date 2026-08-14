@@ -1,3 +1,115 @@
+# Session Log
+
+> Append-only decision log for AI agent sessions.
+> Earlier sessions (1-100): [SESSION_LOG_through_session_100.md](_archive/SESSION_LOG_through_session_100.md)
+
+---
+
+## 2026-08-14 — Session: GIT-001 Phase 7C1 Required CI Topology
+
+**Agent:** Codex (`ops`)
+
+**Branch:** `codex/git-7c-ci-enforcement`
+
+**Focus:** Make control-plane and strict documentation validation required,
+fail-closed dependencies of the existing `PR Gate` without changing GitHub
+server settings
+
+### Summary
+
+- Verified clean exact `main = origin/main = 0fdb48ed`, created a fresh
+  isolated GIT-7C1 lane, and proved `source_bound=true` before editing.
+- Added broad but explicit routing for scripts, `run.sh`, agent/session controls,
+  registries, Git workflow policy, workflow definitions, and maintained tests.
+- Added a dedicated Control Plane Validation job that runs the exact existing
+  Git, intake, session, persistence, pipeline, governance, and CI-contract
+  regression families.
+- Moved strict MkDocs PR evidence into Documentation Validation and made both
+  new routes direct, fail-closed dependencies of `PR Gate`.
+- Removed the duplicate docs pull-request trigger and replaced its global
+  cancellation group with ref-scoped post-merge/manual evidence.
+- Added executable result-matrix tests for success, failure, cancellation,
+  timeout-like, unexpected-skip, and unexpected-execution outcomes.
+- Restored the session log's canonical header and newest-first placement after
+  the required session-end check exposed an inherited structural break.
+
+### PRs Merged
+
+| PR | Summary |
+|----|---------|
+| #744 | GIT-7B read-only worktree-aware state and intake kernel |
+
+### Key Deliverables
+
+- `.github/workflows/fast-checks.yml`
+- `.github/workflows/deploy-docs.yml`
+- `Python/tests/test_ci_workflow_contract.py`
+- `scripts/check_codex_git_workflow.py`
+- `docs/research/git-governance/GIT-001-phase-7C1-required-ci-topology.md`
+
+### Issues encountered
+
+- The agent-governance family selected for the new required control-plane route
+  failed its existing workflow dependency assertion before the new behavior was
+  exercised. If left unchanged, every control-plane PR would fail despite using
+  the supported dependency installation.
+- The required session-end check reported that no current entry existed and
+  that the newest entry was not for today, even though the completed 2026-08-14
+  block was present. This blocked a truthful handoff.
+- The first commit attempt was blocked by the Python-version consistency hook
+  because the new integrated documentation job selected Python 3.12.
+
+### Root causes and resolutions
+
+- Root cause: GIT-7B changed Repository Validation from a base-package plus
+  hand-picked test dependency install to `Python/[dev]` so shared pytest
+  configuration could import Hypothesis, but an older assertion from
+  `0d01fa1f` still matched the retired command and was outside GIT-7B's focused
+  test route. Resolution: scope the assertion to the Repository Validation job,
+  match its supported `Python/[dev]` install, and make that regression family a
+  required control-plane input and command. Evidence: the previously failing
+  file passes, the combined maintained control-plane route passes 173 tests,
+  and the semantic workflow checker passes.
+- Root cause: the canonical `# Session Log` header and separator were embedded
+  after older entries, so session start inserted today's skeleton at that
+  mid-file separator while session end inspected the file's first dated block
+  and a bounded prefix. Resolution: move only the canonical header and today's
+  task-owned block to the top, preserving every historical entry and its text.
+  Evidence: the date headings now begin with 2026-08-14 and the required
+  session-end check passes.
+- Root cause: the documentation job was moved from the standalone workflow,
+  which used Python 3.12, into `fast-checks.yml`, whose repository contract pins
+  every job to the project minimum Python 3.11. Resolution: align the integrated
+  docs job to 3.11 and assert that version in the CI topology regression test.
+  Evidence: the Python-version consistency check and normal commit hooks pass.
+
+### Verification
+
+- Worktree Python diagnosis: `source_bound=true`.
+- New fail-closed workflow contract: 13 tests passed.
+- Existing maintained control-plane families: 160 tests passed.
+- Combined control-plane route: 173 tests passed.
+- Black, Ruff, workflow YAML parsing, semantic workflow check, and
+  `git diff --check`: passed.
+- Strict MkDocs passed in 8.1 seconds; the quick repository gate passed 10/10
+  in 3.0 seconds; the full repository gate passed 30/30 in 9.7 seconds.
+- Live exact-head draft-PR checks remain the final publication evidence.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `./run.sh session end --agent ops` initially reported no
+  current/newest session entry -> restored the canonical header and today's
+  block to newest-first position, then reran the required session-end check.
+- ⚠️ TERMINAL ISSUE: the first normal commit stopped at the Python-version
+  consistency hook because the new docs job used 3.12 -> aligned it with the
+  repository's 3.11 workflow contract and retried without bypassing hooks.
+
+### Notes
+
+- No ruleset, bypass actor, merge method, branch-deletion setting, cleanup,
+  recovery, release, or product-runtime change is included. GIT-7C2 remains a
+  separate owner gate after GIT-7C1 is green on `main`.
+
 ## 2026-08-13 — Session: GIT-001 Phase 7B State and Intake Kernel
 
 **Agent:** Codex (`ops`)
@@ -1199,13 +1311,6 @@ history, and close the picker acceptance gap found in Phase 1
   repository gate passed 10/10 and the source-bound full gate passed 30/30.
 
 ## 2026-08-10 — Session: Fresh-Start Maintenance Closeout
-# Session Log
-
-> Append-only decision log for AI agent sessions.
-> Earlier sessions (1-100): [SESSION_LOG_through_session_100.md](_archive/SESSION_LOG_through_session_100.md)
-
----
-
 ## 2026-08-11 — Session: GPT-5.3-Codex-Spark Work Program
 
 **Agent:** Codex

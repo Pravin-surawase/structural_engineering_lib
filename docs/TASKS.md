@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-13 — GIT-001 Phase 6 accepted; GIT-7B implementation and all local closeout gates complete, publication pending
+**Updated:** 2026-08-14 — GIT-7B merged through PR #744; GIT-7C1 required CI topology is locally complete and authorized for draft-PR validation
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | ✅ GIT-7B LOCALLY COMPLETE — read-only state/intake kernel; 64 focused, quick 10/10, full 30/30; push/PR pending explicit request; GIT-7C–7E remain held |
+| GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7C1 READY FOR DRAFT PR — required control-plane/docs routing and fail-closed PR Gate contract pass locally; GIT-7C2 settings and GIT-7D–7E remain held |
 
 ## Up Next
 

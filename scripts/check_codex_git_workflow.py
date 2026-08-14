@@ -24,6 +24,7 @@ GIT_STATE_COMPATIBILITY = (
     "scripts/check_not_main.sh",
 )
 FAST_CHECKS = REPO_ROOT / ".github/workflows/fast-checks.yml"
+DEPLOY_DOCS = REPO_ROOT / ".github/workflows/deploy-docs.yml"
 
 RETIRED_PATHS = (
     "scripts/ai_commit.sh",
@@ -149,14 +150,35 @@ def main() -> int:
         workflow = FAST_CHECKS.read_text(encoding="utf-8")
         for token in (
             "control_plane:",
-            "'scripts/git_state.py'",
+            "docs:",
+            "'scripts/**'",
+            "'docs/**'",
+            "control-plane-validation:",
+            "documentation-validation:",
             "needs.changes.outputs.control_plane == 'true'",
+            "needs.changes.outputs.docs == 'true'",
             "Python/tests/test_git_state.py",
             "Python/tests/test_session_automation.py",
+            "Python/tests/test_session_store.py",
+            "Python/tests/test_pipeline_state.py",
+            "Python/tests/test_agent_governance_automation.py",
+            "Python/tests/test_ci_workflow_contract.py",
+            "CONTROL_PLANE_RESULT:",
+            "DOCS_RESULT:",
+            "require_component 'Control Plane Validation'",
+            "require_component 'Documentation Validation'",
         ):
             if token not in workflow:
-                errors.append(f"control-plane CI routing is missing: {token}")
-        focused_marker = "- name: Validate Git state and intake control plane"
+                errors.append(f"required PR Gate routing is missing: {token}")
+        expected_concurrency = (
+            "group: ${{ github.workflow }}-"
+            "${{ github.event.pull_request.number || github.run_id }}"
+        )
+        if expected_concurrency not in workflow:
+            errors.append("PR validation concurrency is not scoped per pull request")
+        focused_marker = (
+            "- name: Validate Git, intake, session, and governance controls"
+        )
         if focused_marker in workflow:
             focused_step = workflow.partition(focused_marker)[2].partition(
                 "\n      - name:"
@@ -166,6 +188,22 @@ def main() -> int:
                 errors.append(
                     "control-plane CI tests do not bind the setup-python interpreter"
                 )
+
+    if not DEPLOY_DOCS.exists():
+        errors.append("post-merge documentation workflow is missing")
+    else:
+        deploy_docs = DEPLOY_DOCS.read_text(encoding="utf-8")
+        trigger_block = deploy_docs.partition("\non:\n")[2].partition("\npermissions:")[
+            0
+        ]
+        if "pull_request:" in trigger_block:
+            errors.append(
+                "documentation PR validation must run inside required PR Gate"
+            )
+        if "group: ${{ github.workflow }}-${{ github.ref }}" not in deploy_docs:
+            errors.append("post-merge documentation concurrency is not scoped per ref")
+        if "group: deploy-docs" in deploy_docs:
+            errors.append("global documentation concurrency group is still active")
 
     retired_names = tuple(Path(path).name for path in RETIRED_PATHS[:7])
     for relative in LIVE_FILES_WITHOUT_WRAPPER_CALLS:

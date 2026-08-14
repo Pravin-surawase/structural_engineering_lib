@@ -1,12 +1,6 @@
 name: Validate Documentation
 
 on:
-  pull_request:
-    paths:
-      - 'docs/**'
-      - 'mkdocs.yml'
-      - 'Python/pyproject.toml'
-      - 'Python/structural_lib/**'
   push:
     branches: [main]
     paths:
@@ -20,7 +14,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: deploy-docs
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:

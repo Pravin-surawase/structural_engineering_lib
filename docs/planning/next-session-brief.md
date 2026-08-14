@@ -3,20 +3,21 @@
 ## Latest Handoff
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-13
-- Focus: GIT-001 Phase 6 accepted; GIT-7B locally complete and awaiting publication decision
+- Date: 2026-08-14
+- Focus: GIT-7B merged; GIT-7C1 required CI topology locally complete and authorized for draft validation
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
 
-**Published plan receipt:** PR #741 merged as `52ac5f58`; refresh `main` before work
+**Integrated GIT-7B receipt:** PR #744 merged as `0fdb48ed`; refresh `main` before work
 
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | GIT-7B locally complete | Kernel, consumers, compatibility delegates, 64 focused tests, quick 10/10, full 30/30, and narrow CI routing pass |
-| **Next** | Owner publication decision | Push/open a draft PR only when explicitly requested; GIT-7C–7E remain separately approval-gated |
+| **Current** | GIT-7C1 locally complete | Required control-plane/docs routes, fail-closed PR Gate aggregation, scoped cancellation, and 173 control-plane tests pass |
+| **Next** | Draft PR exact-head validation | Require Control Plane, Documentation, Repository, and aggregate PR Gate outcomes at the unchanged head |
+| **Held** | GIT-7C2 server settings | No ruleset, bypass, merge-method, or branch-deletion change without a fresh exact-delta owner decision after GIT-7C1 is green on `main` |
 | **Parallel owner decision** | Excel planning lane | Confirm a named active owner/next action or approve retirement |
 | **Approval-gated** | Alpha worktrees and merged branches | Exact evidence is ready; deletion still requires explicit target approval |
 | **Separate maintenance** | Seven dependency PRs | Replace one-by-one merging with four current-base compatibility packets |
@@ -33,13 +34,14 @@
 8. [Phase 5 scenario validation](../research/git-governance/GIT-001-phase-5-scenario-validation.md)
 9. [Phase 6 canonical-policy proposal](../research/git-governance/GIT-001-phase-6-canonical-policy-proposal.md)
 10. [Phase 7B implementation receipt](../research/git-governance/GIT-001-phase-7B-state-intake-kernel.md)
-11. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
-12. [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
+11. [Phase 7C1 required CI topology](../research/git-governance/GIT-001-phase-7C1-required-ci-topology.md)
+12. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+13. [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
 
 ## Start command
 
 ```bash
-./run.sh task brief "close out accepted GIT-7B read-only state and intake kernel"
+./run.sh task brief "validate GIT-7C1 required CI topology at the exact draft PR head"
 ./run.sh session brief --agent ops
 ./run.sh session start
 ```
@@ -84,9 +86,12 @@ state/intake, publication/server enforcement, generated-data/cleanup, and
 guidance/handoff control planes, with the read-only state kernel first. Phase 5
 reproduces the current abnormal-state defects and defines falsifiable packet
 gates. The owner accepted Phase 6 and authorized GIT-7B on 2026-08-13. The
-read-only kernel, task brief, live session trust, quick Git checks, compatibility
-delegates, and focused CI routing are implemented; GIT-7C through GIT-7E remain
-held and no GitHub setting, cleanup, deletion, or recovery mutation is authorized.
+read-only kernel integrated through PR #744 as `0fdb48ed`. On 2026-08-14 the
+owner authorized publication of the planned GIT-7C1 workflow packet as a draft
+PR. Required control-plane and strict-documentation routes, fail-closed
+aggregation, and scoped cancellation are implemented locally. GIT-7C2 GitHub
+settings and GIT-7D–7E remain held; no cleanup, deletion, recovery, or release
+mutation is authorized.
 
 ## Destructive-action holds
 
