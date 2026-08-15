@@ -2,13 +2,14 @@
 
 **Type:** Documentation
 **Last Updated:** 2026-08-15
-**Files:** 21
+**Files:** 23
 
 ## Config Files
 
 - [GIT-001-eight-branch-retirement-authorization-proposal.json](GIT-001-eight-branch-retirement-authorization-proposal.json)
 - [GIT-001-eight-branch-retirement-classifier-evidence.json](GIT-001-eight-branch-retirement-classifier-evidence.json)
 - [GIT-001-phase-7D-cleanup-reconciliation.json](GIT-001-phase-7D-cleanup-reconciliation.json)
+- [GIT-001-phase-7E-task-git-handoff.json](GIT-001-phase-7E-task-git-handoff.json)
 
 ## Documentation Files
 
@@ -32,3 +33,4 @@
 | [GIT-001-phase-7D-cleanup-reconciliation.md](GIT-001-phase-7D-cleanup-reconciliation.md) |  | GIT-7D is complete as an inspection and control packet. GIT- | 206 |
 | [GIT-001-phase-7D1-targeted-index-generation.md](GIT-001-phase-7D1-targeted-index-generation.md) |  | GIT-7D is split so the incident-producing generator route ca | 93 |
 | [GIT-001-phase-7D2-branch-disposition.md](GIT-001-phase-7D2-branch-disposition.md) |  | GIT-7D2 replaces the deletion-oriented scripts/cleanup_stale | 144 |
+| [GIT-001-phase-7E-semantic-handoff.md](GIT-001-phase-7E-semantic-handoff.md) |  | GIT-7E started at 2026-08-15T09:12:34Z on codex/git-7e-seman | 100 |

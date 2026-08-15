@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-15 — GIT-7D complete; the eight-branch retirement proposal holds every exact target on unknown retention; GIT-7E is not started
+**Updated:** 2026-08-15 — PR #750 integrated the held retirement proposal at `b91838f`; GIT-7E semantic guidance and durable handoff implementation is active
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🔎 RETIREMENT PROPOSAL — eight exact unattached merged tips are `HOLD_UNKNOWN_OWNER` / `RETENTION_EVIDENCE_UNKNOWN`; no deletion is authorized; GIT-7E is not started |
+| GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
 
 ## Up Next
 

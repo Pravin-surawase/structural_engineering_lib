@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-07T16:14:27.256590",
-  "total_docs": 282,
+  "generated": "2026-08-15T16:12:41.232901",
+  "total_docs": 322,
   "docs": {
     "docs/SESSION_LOG.md": {
       "title": "Session Log",
@@ -10,18 +10,18 @@
       "folder": "root",
       "tags": [],
       "sections": [
-        "2026-08-07 \u2014 Maintenance Recovery Session",
-        "2026-04-07 \u2014 Session \u2014 CI Fixes & v0.21.6 Release",
-        "Session \u2014 2026-04-06 \u2014 Response Envelope Fix",
-        "2026-04-05 \u2014 External PyPI Audit Resolution",
-        "2026-04-05 \u2014 Session",
-        "2026-04-04 \u2014 Session",
-        "2026-03-31 \u2014 Session 106",
-        "2026-03-28 \u2014 Session 105",
-        "2026-03-28 \u2014 Session 104",
-        "2026-03-27 \u2014 Session 103 (Mac Mini sync + IPv6 fix)"
+        "2026-08-15 \u2014 Session: GIT-7E Semantic Guidance and Durable Handoff",
+        "2026-08-15 \u2014 Session: Eight-Branch Retirement Authorization Proposal",
+        "2026-08-15 \u2014 Session: GIT-7D Cleanup and Retrospective Reconciliation",
+        "2026-08-15 \u2014 Session: GIT-7D2 Inspection-Only Branch Disposition",
+        "2026-08-15 \u2014 Session: GIT-7C2 Receipt and GIT-7D1 Targeted Generation",
+        "2026-08-14 \u2014 Session: GIT-001 Phase 7C1 Required CI Topology",
+        "2026-08-13 \u2014 Session: GIT-001 Phase 7B State and Intake Kernel",
+        "2026-08-13 \u2014 Session: GIT-001 Phases 2-6 Upgrade Proposal",
+        "2026-08-13 \u2014 Session: GIT-001 Phase 1 Completion",
+        "2026-08-12 \u2014 Session: GIT-001 Future-Work Plan Closeout"
       ],
-      "size_bytes": 25371
+      "size_bytes": 266057
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -30,18 +30,18 @@
       "folder": "root",
       "tags": [],
       "sections": [
-        "\ud83d\udccb Quick Navigation (Semantic Index)",
+        "Start here",
+        "Browse by topic",
         "\ud83d\udd0d Document Type Legend",
-        "Quick CLI Reference (v0.11.0+)",
+        "Quick CLI Reference",
         "Documentation Maintenance",
         "Canonical Sources Map",
         "For Developers (Building on the Platform)",
         "For Most Users (recommended reading order)",
         "Visual Outputs (v0.11.0+)",
-        "DXF Rendering (optional)",
-        "For Beginners (more explanation, slower pace)"
+        "DXF Rendering (optional)"
       ],
-      "size_bytes": 11809
+      "size_bytes": 11971
     },
     "docs/TASKS.md": {
       "title": "Task Board",
@@ -61,7 +61,7 @@
         "Completed (Archived)",
         "External Audit Remediation \u2014 v0.21.6 \u2705 DONE"
       ],
-      "size_bytes": 44768
+      "size_bytes": 49873
     },
     "docs/WORKLOG.md": {
       "title": "Work Log",
@@ -73,7 +73,7 @@
         "Rules",
         "Log"
       ],
-      "size_bytes": 34760
+      "size_bytes": 40200
     },
     "docs/index.md": {
       "title": "Docs",
@@ -86,7 +86,7 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 3035
+      "size_bytes": 3022
     },
     "docs/_active/maintenance-plan-v0-21-sprint.md": {
       "title": "Maintenance Plan \u2014 Post v0.20.0 Sprint",
@@ -109,7 +109,7 @@
         "Execution Priority Matrix",
         "Success Criteria"
       ],
-      "size_bytes": 16776
+      "size_bytes": 16808
     },
     "docs/_active/git-workflow-hardening-plan.md": {
       "title": "Git Workflow Hardening Plan v1.0",
@@ -128,7 +128,7 @@
         "Implementation Notes",
         "Related Documents"
       ],
-      "size_bytes": 16422
+      "size_bytes": 16683
     },
     "docs/_active/agent-evolver-plan.md": {
       "title": "Agent-Evolver: Self-Evolving Meta-Agent \u2014 v2.0",
@@ -154,7 +154,7 @@
         "8. Performance Scoring Framework (11 Dimensions)",
         "9. Scoring Rubric (Anchored Examples)"
       ],
-      "size_bytes": 56521
+      "size_bytes": 56812
     },
     "docs/_active/README.md": {
       "title": "Active Work Directory",
@@ -214,7 +214,7 @@
         "7. Workflow Orchestration (from `$team`/`$ralph` modes + `coordinator/`)",
         "8. Testing & Quality Patterns (from `tests/` + parity audit)"
       ],
-      "size_bytes": 68119
+      "size_bytes": 68125
     },
     "docs/research/innovation-sustainability-scoring.md": {
       "title": "Innovation: Sustainability Scoring \u2014 Embodied Carbon per Beam Design",
@@ -311,7 +311,7 @@
     "docs/research/index.md": {
       "title": "Research",
       "type": "research",
-      "complexity": "advanced",
+      "complexity": "beginner",
       "folder": "research",
       "tags": [
         "investigation",
@@ -321,7 +321,349 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 15596
+      "size_bytes": 1282
+    },
+    "docs/research/git-governance/GIT-001-phase-7C1-required-ci-topology.md": {
+      "title": "GIT-001 Phase 7C1 \u2014 Required CI Topology",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Authorization and boundary",
+        "Lane and preservation receipt",
+        "Implemented topology",
+        "Cancellation and duplicate-work control",
+        "Regression contract",
+        "Issue and root-cause evidence",
+        "Scenario status",
+        "Local verification",
+        "Next gate"
+      ],
+      "size_bytes": 7870
+    },
+    "docs/research/git-governance/GIT-001-phase-7D1-targeted-index-generation.md": {
+      "title": "GIT-001 Phase 7D1 \u2014 Targeted Index Generation",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Scope and confirmed defect",
+        "Implemented contract",
+        "Acceptance evidence",
+        "Timing experiment",
+        "Non-goals and next gate"
+      ],
+      "size_bytes": 4010
+    },
+    "docs/research/git-governance/GIT-001-phase-0-preservation-baseline.md": {
+      "title": "GIT-001 Phase 0 \u2014 Preservation Baseline",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Receipt identity",
+        "Research-lane identity",
+        "Worktree inventory",
+        "Local branch inventory relative to `origin/main`",
+        "GitHub inventory",
+        "Recovery and operation state",
+        "Preserved lanes and holds",
+        "Unknown or not assessed",
+        "Reproduction commands",
+        "Phase 0 decision"
+      ],
+      "size_bytes": 8024
+    },
+    "docs/research/git-governance/GIT-001-phase-3-gap-risk-matrix.md": {
+      "title": "GIT-001 Phase 3 \u2014 Outcome-Focused Gap and Risk Matrix",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Decision boundary",
+        "Priority model",
+        "Outcome matrix",
+        "Evidence by gap",
+        "Existing controls that pass the comparison",
+        "Phase 4 routing",
+        "Phase 3 acceptance gate"
+      ],
+      "size_bytes": 16190
+    },
+    "docs/research/git-governance/GIT-001-phase-7B-state-intake-kernel.md": {
+      "title": "GIT-001 Phase 7B \u2014 Read-Only State and Intake Kernel",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Authorization and boundary",
+        "Lane and preservation receipt",
+        "Implemented authority",
+        "Focused CI contract",
+        "Scenario evidence",
+        "Issues encountered",
+        "Root causes and resolutions",
+        "Closeout gate"
+      ],
+      "size_bytes": 7062
+    },
+    "docs/research/git-governance/GIT-001-phase-2-incident-register.md": {
+      "title": "GIT-001 Phase 2 \u2014 Project Incident Register",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Purpose and authority boundary",
+        "Method and evidence standard",
+        "Incident ledger",
+        "GIT-I01 \u2014 diverged push falsely reported as ready",
+        "GIT-I02 \u2014 dirty Spark lane and shared-surface collision",
+        "GIT-I03 \u2014 stale mixed PR could not be integrated as a unit",
+        "GIT-I04 \u2014 linked-worktree source identity leaked",
+        "GIT-I05 \u2014 global index generation polluted bounded changes",
+        "GIT-I06 \u2014 nondeterministic timing blocked unrelated PRs",
+        "GIT-I07 \u2014 release preflight and CI surface skew"
+      ],
+      "size_bytes": 21146
+    },
+    "docs/research/git-governance/GIT-001-eight-branch-retirement-authorization-proposal.md": {
+      "title": "GIT-001 Eight-Branch Retirement Authorization Proposal",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Decision",
+        "Fresh evidence boundary",
+        "Exact disposition table",
+        "Classifier command and outcome",
+        "Protected holds preserved",
+        "Next explicit authorization boundary"
+      ],
+      "size_bytes": 7028
+    },
+    "docs/research/git-governance/GIT-001-phase-7E-semantic-handoff.md": {
+      "title": "GIT-7E \u2014 Semantic Live Guidance and Durable Git Handoff",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Exact boundary",
+        "Semantic rules",
+        "Receipt contract",
+        "Validation boundary"
+      ],
+      "size_bytes": 4801
+    },
+    "docs/research/git-governance/GIT-001-next-agent-disposition-plan.md": {
+      "title": "GIT-001 \u2014 Reconciled Future-Work and Disposition Plan",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Purpose",
+        "Snapshot and reading rule",
+        "Outcome first: the revised order",
+        "What changed from the original priorities",
+        "Completed ledger \u2014 do not repeat",
+        "Current worktree topology",
+        "Priority 1 \u2014 preserve completed GIT-001 evidence and start fresh",
+        "Priority 2 \u2014 decide Excel planning ownership",
+        "Priority 3 \u2014 preserve and reassess merged Alpha worktrees",
+        "Priority 4 \u2014 future branch-disposition packet"
+      ],
+      "size_bytes": 22367
+    },
+    "docs/research/git-governance/GIT-001-README.md": {
+      "title": "GIT-001 \u2014 Git Research, Project Workflow, and Future-Proof Governance",
+      "type": "index",
+      "complexity": "intermediate",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Authority boundary",
+        "Objective",
+        "Starting topology",
+        "Phase ledger",
+        "Artifact map",
+        "Ownership and non-goals",
+        "Research method"
+      ],
+      "size_bytes": 6618
+    },
+    "docs/research/git-governance/GIT-001-phase-7D-cleanup-reconciliation.md": {
+      "title": "GIT-001 Phase 7D \u2014 Non-Destructive Cleanup Reconciliation",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Outcome and authority boundary",
+        "Evidence identity",
+        "Preservation blockers",
+        "Attached integrated worktrees",
+        "Unattached merged branches",
+        "Owner decisions and exact deletion prerequisites",
+        "GitHub and non-mutation receipt",
+        "Next boundary: GIT-7E"
+      ],
+      "size_bytes": 12626
+    },
+    "docs/research/git-governance/GIT-001-lifecycle-research.md": {
+      "title": "GIT-001 Phase 1 \u2014 Factual Lifecycle Map",
+      "type": "research",
+      "complexity": "advanced",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Status and reading key",
+        "Foundational state model",
+        "Lifecycle stage map",
+        "Path maps",
+        "Hold-state evidence matrix",
+        "Not-applicable findings for the current topology",
+        "Phase 1 boundary result"
+      ],
+      "size_bytes": 14898
+    },
+    "docs/research/git-governance/index.md": {
+      "title": "Git Governance",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Config Files",
+        "Documentation Files"
+      ],
+      "size_bytes": 3635
+    },
+    "docs/research/git-governance/GIT-001-phase-7A-preservation-workflow-recovery.md": {
+      "title": "GIT-001 Phase 7A \u2014 Preservation and Workflow Recovery",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Authorization and boundary",
+        "Column PMM disposition",
+        "PR #723 selective recovery",
+        "Verification and retirement gate",
+        "Integration receipt"
+      ],
+      "size_bytes": 3584
+    },
+    "docs/research/git-governance/GIT-001-phase-7C2-server-enforcement.md": {
+      "title": "GIT-001 Phase 7C2 \u2014 Server Enforcement",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Authorization and prerequisite",
+        "GIT-7C1 integration receipt",
+        "Applied current-to-target delta",
+        "Transaction, rollback, and risk receipt",
+        "Phase 5 acceptance status"
+      ],
+      "size_bytes": 5083
+    },
+    "docs/research/git-governance/GIT-001-phase-4-operating-model.md": {
+      "title": "GIT-001 Phase 4 \u2014 Proposed Git Operating Model",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Executive decision",
+        "Design laws",
+        "Control-plane architecture",
+        "Plane 1 \u2014 one read-only state and intake kernel",
+        "Lane lifecycle and ownership",
+        "Plane 2 \u2014 publication, CI, and server enforcement",
+        "Plane 3 \u2014 generated data and cleanup",
+        "Plane 4 \u2014 guidance, discovery, and handoff",
+        "Recovery matrix",
+        "Controlled implementation packets"
+      ],
+      "size_bytes": 20239
+    },
+    "docs/research/git-governance/GIT-001-official-evidence-register.md": {
+      "title": "GIT-001 Phase 1 \u2014 Official Evidence Register",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Register contract",
+        "Git sources",
+        "GitHub sources",
+        "OpenAI Codex sources",
+        "Current project observations",
+        "Explicitly unresolved product facts",
+        "Coverage disposition",
+        "Phase 1 coverage gate"
+      ],
+      "size_bytes": 19346
+    },
+    "docs/research/git-governance/GIT-001-phase-5-scenario-validation.md": {
+      "title": "GIT-001 Phase 5 \u2014 Scenario and Feasibility Validation",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Validation boundary",
+        "Scenario matrix",
+        "Disposable Git scenario receipt",
+        "Live project read-only receipt",
+        "Packet acceptance scenarios",
+        "Phase 5 result"
+      ],
+      "size_bytes": 11679
+    },
+    "docs/research/git-governance/GIT-001-phase-7D2-branch-disposition.md": {
+      "title": "GIT-001 Phase 7D2 \u2014 Inspection-Only Branch Disposition",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Scope and migration decision",
+        "Preferred command",
+        "Evidence boundary",
+        "Outcomes",
+        "Non-mutation controls",
+        "Acceptance evidence",
+        "Integration completion",
+        "Non-goals and retained state"
+      ],
+      "size_bytes": 6460
+    },
+    "docs/research/git-governance/GIT-001-phase-6-canonical-policy-proposal.md": {
+      "title": "GIT-001 Phase 6 \u2014 Canonical Policy Proposal and First Packet",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "git-governance",
+      "tags": [],
+      "sections": [
+        "Recommended owner decision",
+        "Evidence supporting acceptance",
+        "Exact canonical decisions proposed",
+        "Proposed canonical-file disposition",
+        "GIT-7B \u2014 exact first implementation packet",
+        "Held packets",
+        "Owner response contract"
+      ],
+      "size_bytes": 11591
     },
     "docs/blog-drafts/performance-engineering-structural-calcs.md": {
       "title": "Performance Engineering for Structural Calculations: Speed Up Your Analysis 10x",
@@ -666,10 +1008,10 @@
         "Part 5: Branches \u2014 Working in Parallel",
         "Part 6: Pull Requests \u2014 Code Review Gateway",
         "Part 7: Git Hooks \u2014 Automatic Checks",
-        "Part 8: Git Automation \u2014 ai_commit.sh",
+        "Part 8: Repository Git Control Plane",
         "Part 9: .gitignore \u2014 What NOT to Track"
       ],
-      "size_bytes": 12219
+      "size_bytes": 12943
     },
     "docs/learning-foundations/03-tech-stack.md": {
       "title": "Module 3: The Tech Stack \u2014 Languages, Tools, and Why",
@@ -761,7 +1103,7 @@
         "Part 8: Release Pipeline",
         "Part 9: CI/CD Best Practices"
       ],
-      "size_bytes": 12951
+      "size_bytes": 12959
     },
     "docs/learning-foundations/04-apis.md": {
       "title": "Module 4: APIs \u2014 How Software Talks to Software",
@@ -789,16 +1131,28 @@
     "docs/images/README.md": {
       "title": "Documentation Images",
       "type": "index",
-      "complexity": "beginner",
+      "complexity": "intermediate",
       "folder": "images",
       "tags": [],
       "sections": [
         "\ud83d\udcf7 Image Categories",
         "\ud83d\udd27 Adding New Images",
         "\ud83d\udccb Excel Tutorial Screenshots",
+        "\ud83c\udf10 GitHub Social Preview",
         "\ud83d\udcda Related Documentation"
       ],
-      "size_bytes": 1450
+      "size_bytes": 2243
+    },
+    "docs/images/product/README.md": {
+      "title": "Product Screenshots",
+      "type": "index",
+      "complexity": "beginner",
+      "folder": "product",
+      "tags": [],
+      "sections": [
+        "Capture notes"
+      ],
+      "size_bytes": 1114
     },
     "docs/specs/csv-import-schema.md": {
       "title": "CSV Import Schema Specification",
@@ -910,7 +1264,7 @@
         "Documentation Updates",
         "Behavioral Verification (CRITICAL)"
       ],
-      "size_bytes": 9068
+      "size_bytes": 9154
     },
     "docs/contributing/workflow-professional-review.md": {
       "title": "Git Workflow Professional Review & Recommendations",
@@ -933,7 +1287,7 @@
         "Final Verdict",
         "Cost-Benefit Analysis"
       ],
-      "size_bytes": 11678
+      "size_bytes": 11762
     },
     "docs/contributing/quickstart-checklist.md": {
       "title": "Quick-Start Checklist (Solution 4 - Developer Guides)",
@@ -954,7 +1308,7 @@
         "\ud83d\udcda Reference Links",
         "\u26a1 Quick Commands"
       ],
-      "size_bytes": 11504
+      "size_bytes": 11531
     },
     "docs/contributing/development-guide.md": {
       "title": "IS 456 RC Beam Design Library \u2014 Development Guide",
@@ -977,7 +1331,7 @@
         "8. Error Handling",
         "9. Documentation Standards"
       ],
-      "size_bytes": 42443
+      "size_bytes": 42539
     },
     "docs/contributing/naming-conventions.md": {
       "title": "Naming Conventions",
@@ -1034,7 +1388,7 @@
         "\ud83c\udfd7\ufe0f Layer Architecture (Must Follow)",
         "\ud83d\udcda Related Documentation"
       ],
-      "size_bytes": 2986
+      "size_bytes": 2958
     },
     "docs/contributing/agent-coding-standards.md": {
       "title": "Agent Coding Standards for structural_lib",
@@ -1076,11 +1430,11 @@
         "Subject Line Rules",
         "Body (Optional)",
         "Footer (Optional)",
-        "Multi-Line Messages with ai_commit.sh",
+        "Multi-Line Messages",
         "Enforcement",
         "Common Patterns"
       ],
-      "size_bytes": 5275
+      "size_bytes": 5047
     },
     "docs/contributing/learning-paths.md": {
       "title": "Learning Paths for Contributors",
@@ -1098,7 +1452,7 @@
         "Path C: Advanced (refactor, API, or release)",
         "Scenario map (examples)"
       ],
-      "size_bytes": 3167
+      "size_bytes": 3128
     },
     "docs/contributing/git-workflow-testing.md": {
       "title": "Git Workflow Testing Strategy",
@@ -1121,7 +1475,7 @@
         "\ud83c\udf93 Learning Resources",
         "\ud83d\udd04 Continuous Improvement"
       ],
-      "size_bytes": 8696
+      "size_bytes": 8890
     },
     "docs/contributing/solo-maintainer-operating-system.md": {
       "title": "Solo Maintainer Operating System (Public)",
@@ -1152,22 +1506,19 @@
       "complexity": "intermediate",
       "folder": "contributing",
       "tags": [
+        "codex",
         "development",
+        "git",
+        "github",
         "workflow"
       ],
       "sections": [
-        "\ud83c\udfaf Quick Decision: Direct Commit or PR?",
-        "\u2705 Direct Commits (Low-Risk Only)",
-        "\ud83d\udd00 Pull Requests (All Production Code)",
-        "\ud83c\udfaf When to Use Direct Commits vs PRs",
-        "\u26a1 Fast CI Strategy",
-        "\ud83d\udccb Typical Workflows",
-        "\ud83d\udee1\ufe0f Safety Features",
-        "\ud83d\udcca Performance Comparison",
-        "\ud83c\udf93 Best Practices",
-        "\ud83d\udd27 Troubleshooting"
+        "Pull request policy",
+        "Normal flow",
+        "Failure handling",
+        "CI evidence"
       ],
-      "size_bytes": 7906
+      "size_bytes": 2076
     },
     "docs/contributing/index.md": {
       "title": "Contributing",
@@ -1181,7 +1532,7 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 3190
+      "size_bytes": 3256
     },
     "docs/contributing/repo-professionalism.md": {
       "title": "Repo Professionalism Playbook",
@@ -1250,7 +1601,7 @@
         "\ud83d\udca1 Pro Tips",
         "\ud83d\udcdd Templates"
       ],
-      "size_bytes": 13460
+      "size_bytes": 13451
     },
     "docs/contributing/session-issues.md": {
       "title": "Session Issues and Fixes",
@@ -1266,7 +1617,7 @@
         "2025-12-29 (v0.11.0 release)",
         "2025-12-30 (Main Branch Guard)"
       ],
-      "size_bytes": 3261
+      "size_bytes": 3161
     },
     "docs/contributing/agent-onboarding-message.md": {
       "title": "First Message for New Agents",
@@ -1282,7 +1633,7 @@
         "Why This Works",
         "For Different AI Tools"
       ],
-      "size_bytes": 1537
+      "size_bytes": 1534
     },
     "docs/contributing/background-agent-guide.md": {
       "title": "Background Agent Parallel Work Guide",
@@ -1305,7 +1656,7 @@
         "Question: [ROLE] \u2192 MAIN",
         "Parallel Coordination Rules (Strict)"
       ],
-      "size_bytes": 16488
+      "size_bytes": 16602
     },
     "docs/contributing/agent-collaboration-framework.md": {
       "title": "Agent Collaboration Framework",
@@ -1328,26 +1679,22 @@
         "6. Troubleshooting",
         "References"
       ],
-      "size_bytes": 16885
+      "size_bytes": 16640
     },
     "docs/contributing/git-workflow-ai-agents.md": {
-      "title": "Git Workflow for AI Agents (Canonical)",
+      "title": "Git Workflow for AI Agents",
       "type": "documentation",
-      "complexity": "intermediate",
+      "complexity": "beginner",
       "folder": "contributing",
       "tags": [
+        "codex",
         "development",
+        "git",
+        "github",
         "workflow"
       ],
-      "sections": [
-        "One Rule",
-        "Decision Path",
-        "What safe_push.sh Does (Important)",
-        "Recovery (When Git Is Broken)",
-        "Formatting Policy",
-        "FAQ"
-      ],
-      "size_bytes": 2556
+      "sections": [],
+      "size_bytes": 1144
     },
     "docs/contributing/handoff.md": {
       "title": "Handoff Quick Start",
@@ -1364,7 +1711,7 @@
         "Debug Snapshot Checklist",
         "Common Traps (fast fixes)"
       ],
-      "size_bytes": 3097
+      "size_bytes": 4771
     },
     "docs/contributing/testing-strategy.md": {
       "title": "Testing Strategy & Setup (Python-first, VBA parity aware)",
@@ -1385,7 +1732,7 @@
         "7) Property-Based Testing (Hypothesis)",
         "8) Definition of \"good\" (target state)"
       ],
-      "size_bytes": 9178
+      "size_bytes": 9348
     },
     "docs/contributing/changelog-deprecation-template.md": {
       "title": "CHANGELOG Template for Deprecations",
@@ -1536,7 +1883,7 @@
         "8. Documentation Infrastructure",
         "9. Metrics and Results"
       ],
-      "size_bytes": 52422
+      "size_bytes": 52634
     },
     "docs/publications/README.md": {
       "title": "Publications & Blog Posts",
@@ -1732,40 +2079,94 @@
       ],
       "size_bytes": 15306
     },
-    "docs/git-automation/git-workflow-single-source.md": {
-      "title": "Git Workflow \u2014 Single Source of Truth",
+    "docs/git-automation/git-governance-case-study-git-7d2-cleanup-audit.md": {
+      "title": "Git governance case study: GIT-7D2 and the cleanup audit",
       "type": "documentation",
       "complexity": "advanced",
       "folder": "git-automation",
-      "tags": [],
-      "sections": [
-        "Table of Contents",
-        "1. Quick Start",
-        "2. System Architecture",
-        "3. Complete Script Inventory",
-        "4. The 7-Step Workflow",
-        "5. Call Chain & Data Flow",
-        "6. Git Hooks",
-        "7. Pre-Commit Framework",
-        "8. Environment Variables",
-        "9. PR Workflow"
+      "tags": [
+        "cleanup",
+        "git",
+        "github",
+        "learning",
+        "worktree"
       ],
-      "size_bytes": 30627
+      "sections": [
+        "Why this case matters",
+        "The observed state",
+        "Examples, invariants, and the misses",
+        "Example tests versus invariants",
+        "Evidence identity and freshness",
+        "Schema and shell discovery card",
+        "Cleanup disposition ladder",
+        "Eight-branch proposal: authority is not retention evidence",
+        "Teach-back",
+        "1/3/7-day review"
+      ],
+      "size_bytes": 12214
+    },
+    "docs/git-automation/git-workflow-single-source.md": {
+      "title": "Codex-Native Git and GitHub Workflow",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "git-automation",
+      "tags": [
+        "codex",
+        "git",
+        "github",
+        "workflow"
+      ],
+      "sections": [
+        "Ownership boundary",
+        "Read-only Git state authority",
+        "Durable task-to-Git handoff",
+        "Verification before publication",
+        "Inspection-only branch disposition",
+        "Fail-closed recovery",
+        "Owner-approved operations",
+        "Local hooks",
+        "Historical material"
+      ],
+      "size_bytes": 7910
     },
     "docs/git-automation/README.md": {
-      "title": "Git Automation for AI Agents",
+      "title": "Codex-Native Git and GitHub",
       "type": "index",
       "complexity": "beginner",
       "folder": "git-automation",
-      "tags": [],
-      "sections": [
-        "Single Source of Truth",
-        "Quick Start (3 Commands)",
-        "Common Tasks",
-        "The One Rule",
-        "Archived Docs"
+      "tags": [
+        "codex",
+        "git",
+        "github"
       ],
-      "size_bytes": 1718
+      "sections": [],
+      "size_bytes": 1101
+    },
+    "docs/git-automation/git-recovery-case-study-column-pmm.md": {
+      "title": "Git recovery case study: Column PMM",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "git-automation",
+      "tags": [
+        "git",
+        "learning",
+        "recovery",
+        "scripts",
+        "worktree"
+      ],
+      "sections": [
+        "Why this case matters",
+        "Starting evidence and decision",
+        "Branch and worktree are different tools",
+        "Recovery graph",
+        "The execution sequence",
+        "Script behavior learned in this session",
+        "Index-generator recurrence control",
+        "Issues, root causes, and reusable solutions",
+        "How this work could be even better next time",
+        "Teach-back questions"
+      ],
+      "size_bytes": 11517
     },
     "docs/api-reference/index.md": {
       "title": "API Reference",
@@ -1783,8 +2184,8 @@
       ],
       "size_bytes": 2046
     },
-    "docs/planning/next-session-brief.md": {
-      "title": "Next Session Briefing",
+    "docs/planning/gpt-5-3-codex-spark-work-program.md": {
+      "title": "GPT-5.3-Codex-Spark Work Program",
       "type": "documentation",
       "complexity": "advanced",
       "folder": "planning",
@@ -1793,18 +2194,131 @@
         "tasks"
       ],
       "sections": [
-        "Latest Handoff (auto)",
-        "Start Here",
-        "Current Evidence",
-        "Maintenance Sequence",
-        "Previous Handoff (2026-04-07)",
-        "What Was Completed (v0.21.7 Session 1)",
-        "Current Version State",
-        "Priorities \u2014 v0.21.7 Remaining",
-        "Infrastructure Notes",
-        "Required Reading"
+        "1. Executive decision",
+        "2. Authority, status, and relationship to other work",
+        "3. Verified model facts and planning assumptions",
+        "4. Repository baseline",
+        "5. Existing lane protection",
+        "6. Program outcome and definition of done",
+        "7. Main-process and architecture contract",
+        "8. Protected areas and non-goals",
+        "9. Spark suitability and escalation matrix",
+        "10. Worker packet contract"
       ],
-      "size_bytes": 9519
+      "size_bytes": 30629
+    },
+    "docs/planning/next-session-brief.md": {
+      "title": "Next Session Briefing",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "Latest Handoff (auto)",
+        "Required Reading",
+        "Start commands",
+        "Verified current Git facts",
+        "Preservation and disposition holds",
+        "GIT-7E exact boundary",
+        "Destructive-action holds",
+        "Session closeout"
+      ],
+      "size_bytes": 7872
+    },
+    "docs/planning/is456-solid-slabs-master-plan.md": {
+      "title": "IS 456 Solid Slabs Expansion Master Plan",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "1. Executive decision",
+        "2. Why this is an extension, not a new slab engine",
+        "3. Scope contract",
+        "4. Authority, research, and source policy",
+        "5. Engineering domain model",
+        "6. Calculation design",
+        "7. Public API and compatibility plan",
+        "8. FastAPI plan",
+        "9. React slab workbench",
+        "10. Evidence and benchmark ledger"
+      ],
+      "size_bytes": 53400
+    },
+    "docs/planning/compact-modernization-plan.md": {
+      "title": "MAINT-008 Compact Project Modernization Plan",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "1. Outcome",
+        "2. Main-process contract",
+        "3. Proven baseline that must not regress",
+        "4. Confirmed current-state problems",
+        "5. Non-goals and protected areas",
+        "6. Execution rules",
+        "7. Minimum gate ladder",
+        "8. Target end state",
+        "9. Dependency order",
+        "10. Packet 0 \u2014 Parent/operations setup"
+      ],
+      "size_bytes": 34386
+    },
+    "docs/planning/ui-experience-foundation-master-plan.md": {
+      "title": "UI Experience Foundation and Structural Workbench Master Plan",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "1. Executive decision",
+        "2. Plan authority and relationship to existing work",
+        "3. Product outcome",
+        "4. Verified current baseline",
+        "5. Feature usefulness contract",
+        "6. Users and core journeys",
+        "7. Target information architecture",
+        "8. Compact professional visual system",
+        "9. 3D product plan",
+        "10. Schema-driven capability foundation"
+      ],
+      "size_bytes": 123750
+    },
+    "docs/planning/adoption-trust-surface-plan.md": {
+      "title": "ADOPT-001 Adoption and Trust Surface Plan",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "1. Outcome",
+        "2. Main-process contract",
+        "3. Verified starting problems",
+        "4. Recent-session incident review",
+        "5. Protected areas and non-goals",
+        "6. Execution rules",
+        "7. Dependency-ordered packets",
+        "8. Completed implementation",
+        "9. Gate ladder",
+        "10. Stop conditions"
+      ],
+      "size_bytes": 16366
     },
     "docs/planning/next-phase-improvements-plan.md": {
       "title": "Next Phase: What to Build and Why",
@@ -1829,6 +2343,29 @@
       ],
       "size_bytes": 54456
     },
+    "docs/planning/is456-library-first-master-plan.md": {
+      "title": "IS 456 Library-First Completion and PyPI Master Plan",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "1. Executive decision",
+        "2. Relationship to current repository plans",
+        "3. Why this plan exists",
+        "4. Current baseline",
+        "5. Program scope contract",
+        "6. Completion definitions",
+        "7. Target architecture and dependency direction",
+        "8. Source, benchmark, and provenance foundation",
+        "9. Agent operating model",
+        "10. Verification and gate ladder"
+      ],
+      "size_bytes": 72809
+    },
     "docs/planning/library-expansion-blueprint-v5.md": {
       "title": "Library Expansion Blueprint v5.0 \u2014 Multi-Code, Multi-Element",
       "type": "documentation",
@@ -1850,12 +2387,12 @@
         "8. Phase 4 \u2014 EC2 (EN 1992-1-1)",
         "9. Phase 5 \u2014 Fill the Matrix"
       ],
-      "size_bytes": 48215
+      "size_bytes": 48808
     },
     "docs/planning/pre-release-checklist.md": {
       "title": "Pre-Release Checklist",
       "type": "documentation",
-      "complexity": "beginner",
+      "complexity": "intermediate",
       "folder": "planning",
       "tags": [
         "roadmap",
@@ -1863,14 +2400,15 @@
       ],
       "sections": [
         "Current State",
+        "Next Alpha Readiness Checklist",
         "Beta Readiness Checklist"
       ],
-      "size_bytes": 1402
+      "size_bytes": 5263
     },
     "docs/planning/README.md": {
       "title": "Planning",
       "type": "index",
-      "complexity": "intermediate",
+      "complexity": "advanced",
       "folder": "planning",
       "tags": [
         "roadmap",
@@ -1885,7 +2423,7 @@
         "Templates & Workflow",
         "Rules"
       ],
-      "size_bytes": 6437
+      "size_bytes": 8124
     },
     "docs/planning/memory.md": {
       "title": "Project Memory - Persistent Context",
@@ -1908,7 +2446,7 @@
         "Roadmap Snapshot",
         "Contact & Escalation"
       ],
-      "size_bytes": 16927
+      "size_bytes": 19507
     },
     "docs/planning/etabs-killer-masterplan.md": {
       "title": "Project BHEEM: Open-Source Structural Design Software Masterplan",
@@ -1936,7 +2474,7 @@
     "docs/planning/index.md": {
       "title": "Planning",
       "type": "documentation",
-      "complexity": "beginner",
+      "complexity": "intermediate",
       "folder": "planning",
       "tags": [
         "roadmap",
@@ -1945,7 +2483,30 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 1556
+      "size_bytes": 2667
+    },
+    "docs/planning/professional-library-remediation-plan.md": {
+      "title": "Professional Library Remediation Plan",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "planning",
+      "tags": [
+        "roadmap",
+        "tasks"
+      ],
+      "sections": [
+        "1. Outcome and release decision",
+        "2. Audit basis and present state",
+        "3. Confirmed findings",
+        "4. Recent-work reconciliation: do not repeat these projects",
+        "5. Dependency-ordered remediation packets",
+        "6. Verification ladder",
+        "7. Stop conditions and escalation",
+        "8. Definition of done",
+        "9. Software remediation checkpoint \u2014 2026-08-09",
+        "10. Bounded closeout checkpoint \u2014 2026-08-10"
+      ],
+      "size_bytes": 28931
     },
     "docs/planning/react-ux-improvement-plan.md": {
       "title": "React App \u2014 UX & Visual Improvement Plan",
@@ -1968,7 +2529,7 @@
         "Visual System",
         "Implementation Priority"
       ],
-      "size_bytes": 38269
+      "size_bytes": 38724
     },
     "docs/planning/dependency-security-baseline.md": {
       "title": "Dependency and Security Baseline",
@@ -1985,7 +2546,7 @@
         "Reproduction",
         "Automation"
       ],
-      "size_bytes": 3426
+      "size_bytes": 3459
     },
     "docs/planning/democratization-vision.md": {
       "title": "Democratizing Structural Engineering",
@@ -2023,7 +2584,7 @@
         "Quick Links",
         "Related Documentation"
       ],
-      "size_bytes": 2853
+      "size_bytes": 2885
     },
     "docs/agents/index.md": {
       "title": "Agents",
@@ -2098,7 +2659,7 @@
     "docs/agents/guides/agent-6-quick-start.md": {
       "title": "Agent 6 Quick Start (Streamlit UI Specialist)",
       "type": "documentation",
-      "complexity": "beginner",
+      "complexity": "intermediate",
       "folder": "guides",
       "tags": [],
       "sections": [
@@ -2110,7 +2671,7 @@
         "Common Patterns",
         "Next Step"
       ],
-      "size_bytes": 1877
+      "size_bytes": 2037
     },
     "docs/agents/guides/agent-9-quick-start.md": {
       "title": "Agent 9 Quick Start - Governance & Documentation Structure",
@@ -2130,7 +2691,7 @@
         "Common Mistakes to Avoid",
         "Emergency Recovery"
       ],
-      "size_bytes": 7663
+      "size_bytes": 7880
     },
     "docs/agents/guides/agent-8-git-ops.md": {
       "title": "Agent 8: GIT OPERATIONS SPECIALIST",
@@ -2150,7 +2711,7 @@
         "Full Test Matrix Performance",
         "Handoff: [AGENT] \u2192 GIT OPERATIONS"
       ],
-      "size_bytes": 36570
+      "size_bytes": 37217
     },
     "docs/agents/guides/agent-6-comprehensive-onboarding.md": {
       "title": "Agent 6 Comprehensive Onboarding Guide",
@@ -2170,7 +2731,7 @@
         "\ud83d\udccb Current Tasks (v0.17.5)",
         "\ud83d\udd17 Quick Links"
       ],
-      "size_bytes": 12798
+      "size_bytes": 12922
     },
     "docs/agents/guides/agent-8-operations-log-spec.md": {
       "title": "Agent 8 Operations Log Spec",
@@ -2181,7 +2742,7 @@
       "sections": [
         "2026-01-08 19:30 UTC \u2014 Agent 6 Research Commit"
       ],
-      "size_bytes": 1343
+      "size_bytes": 1422
     },
     "docs/agents/guides/agent-bootstrap-complete-review.md": {
       "title": "Agent Bootstrap - Complete Review & Link Analysis",
@@ -2219,7 +2780,7 @@
         "\u2705 API Touchpoints (Public API Changes)",
         "\ud83d\udd0e Scanner & Validation (Streamlit)"
       ],
-      "size_bytes": 10066
+      "size_bytes": 10198
     },
     "docs/agents/guides/README.md": {
       "title": "Agent Guides",
@@ -2232,18 +2793,18 @@
         "Agent 9 - Governance & Documentation Structure",
         "Adding New Agent Guides"
       ],
-      "size_bytes": 2228
+      "size_bytes": 2474
     },
     "docs/agents/guides/index.md": {
       "title": "Guides",
       "type": "documentation",
-      "complexity": "beginner",
+      "complexity": "intermediate",
       "folder": "guides",
       "tags": [],
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 1992
+      "size_bytes": 2006
     },
     "docs/agents/guides/agent-workflow-master-guide.md": {
       "title": "Agent Workflow Master Guide",
@@ -2263,7 +2824,7 @@
         "\ud83c\udfad Agent Role Patterns",
         "\ud83d\udcca Quality Gates"
       ],
-      "size_bytes": 19713
+      "size_bytes": 19799
     },
     "docs/agents/guides/agent-8-automation.md": {
       "title": "Agent 8 Automation - Scripts & Tools Index",
@@ -2283,7 +2844,7 @@
         "Related Infrastructure",
         "Script Dependencies"
       ],
-      "size_bytes": 8511
+      "size_bytes": 8665
     },
     "docs/agents/guides/agent-9-governance-hub.md": {
       "title": "Agent 9 Governance Hub",
@@ -2319,7 +2880,7 @@
         "\ud83d\udea8 Emergency: If Mistake Happens Anyway",
         "\ud83c\udfaf Agent 8 Mission: Zero Mistakes"
       ],
-      "size_bytes": 29999
+      "size_bytes": 30075
     },
     "docs/agents/guides/agent-automation-system.md": {
       "title": "Agent Automation System v1.1.0",
@@ -2339,7 +2900,7 @@
         "Troubleshooting",
         "Maintenance"
       ],
-      "size_bytes": 8734
+      "size_bytes": 8859
     },
     "docs/agents/guides/agent-8-multi-agent-coordination.md": {
       "title": "Agent 8 Multi-Agent Coordination",
@@ -2359,7 +2920,7 @@
         "Implementation Status",
         "Testing"
       ],
-      "size_bytes": 7808
+      "size_bytes": 7875
     },
     "docs/cookbook/README.md": {
       "title": "Cookbook",
@@ -2410,7 +2971,7 @@
         "Exit Codes",
         "Related"
       ],
-      "size_bytes": 13515
+      "size_bytes": 14127
     },
     "docs/cookbook/python-recipes.md": {
       "title": "Python Recipes",
@@ -2456,7 +3017,26 @@
         "9. Tolerances and Rounding",
         "10. Adding New Verification Cases"
       ],
-      "size_bytes": 43513
+      "size_bytes": 43515
+    },
+    "docs/verification/bundled-sample-boq-evidence.md": {
+      "title": "Bundled Sample BOQ Evidence",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "boq",
+        "etabs",
+        "evidence",
+        "testing",
+        "validation",
+        "verification"
+      ],
+      "sections": [
+        "Accepted software record",
+        "Reconciliation of the older record"
+      ],
+      "size_bytes": 2326
     },
     "docs/verification/validation-pack.md": {
       "title": "Validation Pack \u2014 Benchmark Beams & Columns",
@@ -2474,12 +3054,53 @@
         "Additional Verification",
         "Tolerance Policy"
       ],
-      "size_bytes": 11920
+      "size_bytes": 11922
+    },
+    "docs/verification/is456-slab-evidence.md": {
+      "title": "IS 456 Solid Slab Source and Benchmark Ledger",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Source lock",
+        "Clause and behavior map",
+        "Accepted benchmark ledger",
+        "Holds and claim ceiling",
+        "Implementation verification \u2014 2026-08-10",
+        "IS456-SLAB-001A closeout evidence \u2014 2026-08-10"
+      ],
+      "size_bytes": 8573
+    },
+    "docs/verification/ui-experience-session-2-acceptance.md": {
+      "title": "UIX-001 Session 2 Acceptance",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "fastapi",
+        "react",
+        "testing",
+        "uix",
+        "validation",
+        "verification",
+        "workflow"
+      ],
+      "sections": [
+        "Accepted product story",
+        "Root-cause fixes found during acceptance",
+        "Verification matrix",
+        "Holds and tooling limits"
+      ],
+      "size_bytes": 4912
     },
     "docs/verification/README.md": {
       "title": "Verification",
       "type": "index",
-      "complexity": "beginner",
+      "complexity": "intermediate",
       "folder": "verification",
       "tags": [
         "testing",
@@ -2491,7 +3112,7 @@
         "\u2705 Why Verification Matters",
         "\ud83d\udcda Related Documentation"
       ],
-      "size_bytes": 1931
+      "size_bytes": 2347
     },
     "docs/verification/external-cli-test.md": {
       "title": "External CLI Test (S-007)",
@@ -2513,16 +3134,17 @@
     "docs/verification/index.md": {
       "title": "Verification",
       "type": "documentation",
-      "complexity": "beginner",
+      "complexity": "intermediate",
       "folder": "verification",
       "tags": [
         "testing",
         "validation"
       ],
       "sections": [
+        "Config Files",
         "Documentation Files"
       ],
-      "size_bytes": 1111
+      "size_bytes": 2309
     },
     "docs/verification/pack.md": {
       "title": "Verification Pack",
@@ -2541,6 +3163,55 @@
       ],
       "size_bytes": 1835
     },
+    "docs/verification/alpha-0231-local-prepublication-rehearsal.md": {
+      "title": "v0.23.1a1 Local Prepublication Rehearsal",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Preserved artifacts",
+        "Bound receipts",
+        "Installed-wheel evidence",
+        "Clean-tree candidate preflight",
+        "Authority boundary"
+      ],
+      "size_bytes": 3463
+    },
+    "docs/verification/release-artifact-evidence-template.md": {
+      "title": "Release Artifact Evidence Template",
+      "type": "documentation",
+      "complexity": "beginner",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [],
+      "size_bytes": 1284
+    },
+    "docs/verification/column-pmm-benchmark.md": {
+      "title": "Column PMM independent analytical benchmark",
+      "type": "documentation",
+      "complexity": "intermediate",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Purpose and claim boundary",
+        "Exact case",
+        "Closed-form concrete calculation",
+        "Exact steel calculation",
+        "Independent expected response",
+        "Supported conclusion and exclusions"
+      ],
+      "size_bytes": 4317
+    },
     "docs/verification/insights-verification-pack.md": {
       "title": "Insights Module Verification Pack",
       "type": "documentation",
@@ -2558,7 +3229,27 @@
         "Verification Philosophy",
         "For Contributors"
       ],
-      "size_bytes": 3574
+      "size_bytes": 3640
+    },
+    "docs/verification/is456-library-first-evidence.md": {
+      "title": "IS 456 Library-First Evidence and Claim Crosswalk",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "verification",
+      "tags": [
+        "testing",
+        "validation"
+      ],
+      "sections": [
+        "Controlled sources",
+        "Claim-to-evidence crosswalk",
+        "C2 final product UAT",
+        "Production release evidence",
+        "Release evidence contract",
+        "Local prepublication rehearsal",
+        "C4 frozen review scope"
+      ],
+      "size_bytes": 9847
     },
     "docs/architecture/unified-architecture-v1.md": {
       "title": "Unified Architecture \u2014 structural_engineering_lib v1.0",
@@ -2581,7 +3272,7 @@
         "9. Version Roadmap",
         "10. API Design Principles (Inspired by NumPy/pandas/scikit-learn)"
       ],
-      "size_bytes": 75936
+      "size_bytes": 75968
     },
     "docs/architecture/architecture-review-2025-12-27.md": {
       "title": "Architecture Review \u2014 2025-12-27",
@@ -2807,6 +3498,33 @@
       ],
       "size_bytes": 16608
     },
+    "docs/audit/automation-scripts-audit-2026-08-09.md": {
+      "title": "Automation Script Audit \u2014 2026-08-09",
+      "type": "documentation",
+      "complexity": "advanced",
+      "folder": "audit",
+      "tags": [
+        "archive",
+        "audit",
+        "automation",
+        "maint-008",
+        "maintenance",
+        "scripts"
+      ],
+      "sections": [
+        "Outcome",
+        "P0 implementation update \u2014 2026-08-09",
+        "P0 Batch 2 implementation update \u2014 2026-08-09",
+        "P1 Batch 3 implementation update \u2014 2026-08-09",
+        "Terminal/worktree runtime repair \u2014 2026-08-09",
+        "Remaining batches completion update \u2014 2026-08-10",
+        "Snapshot and scope",
+        "Method",
+        "Verification summary",
+        "Highest-priority confirmed issues"
+      ],
+      "size_bytes": 51095
+    },
     "docs/audit/onboarding-audit-session93.md": {
       "title": "Agent Onboarding Audit \u2014 Session 93",
       "type": "documentation",
@@ -2840,11 +3558,11 @@
         "Outcome",
         "Audit scope",
         "Completed maintenance",
-        "Open findings",
+        "Closeout findings",
         "Maintenance sequence",
         "Guardrails retained"
       ],
-      "size_bytes": 9010
+      "size_bytes": 9261
     },
     "docs/audit/audit-readiness.md": {
       "title": "Audit Readiness Checklist",
@@ -2860,7 +3578,7 @@
         "Per-Release Checklist",
         "Related Files"
       ],
-      "size_bytes": 5163
+      "size_bytes": 5145
     },
     "docs/audit/README.md": {
       "title": "Audit Evidence & Readiness",
@@ -2909,7 +3627,7 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 1391
+      "size_bytes": 1548
     },
     "docs/audit/evidence-bundle-template.md": {
       "title": "Evidence Bundle Template \u2014 Release vX.Y.Z",
@@ -2928,7 +3646,7 @@
         "7. Sign-Off",
         "Appendix: File Manifest"
       ],
-      "size_bytes": 4619
+      "size_bytes": 4635
     },
     "docs/audit/agent-testing-audit-2026-03-28.md": {
       "title": "Agent System Testing & Audit Report",
@@ -2986,26 +3704,22 @@
       "size_bytes": 2217
     },
     "docs/getting-started/copilot-quick-start.md": {
-      "title": "GitHub Copilot Agent Quick Start",
+      "title": "Agent Quick Start",
       "type": "tutorial",
-      "complexity": "intermediate",
+      "complexity": "beginner",
       "folder": "getting-started",
       "tags": [
         "beginner",
+        "codex",
+        "git",
+        "setup",
         "tutorial"
       ],
       "sections": [
-        "\ud83d\ude80 Quick Start (One Command)",
-        "Git Pager Prevention (Handled by agent_start.sh)",
-        "Quick Commands",
-        "Common Workflows",
-        "What NOT to Do",
-        "If Terminal Gets Stuck",
-        "Session Checklist",
-        "Useful Aliases (Created by Setup Script)",
-        "Additional Resources"
+        "Git and GitHub",
+        "Closeout"
       ],
-      "size_bytes": 4991
+      "size_bytes": 1147
     },
     "docs/getting-started/fix-copilot-terminal.md": {
       "title": "Fix Copilot Terminal Lockup - Manual Steps",
@@ -3040,6 +3754,7 @@
       ],
       "sections": [
         "Release Process",
+        "v0.23.0 \u2014 Supported IS 456 RC Core (2026-08-10)",
         "v0.21.6 \u2014 API Quality & Introspection (2026-04-07)",
         "v0.21.5",
         "v0.21.4",
@@ -3047,10 +3762,9 @@
         "v0.21.2",
         "v0.21.1",
         "v0.21.0",
-        "v0.17.0",
-        "v0.16.6"
+        "v0.17.0"
       ],
-      "size_bytes": 46424
+      "size_bytes": 52681
     },
     "docs/getting-started/cost-optimization-guide.md": {
       "title": "Cost Optimization Guide",
@@ -3111,7 +3825,7 @@
         "8. Units Reference",
         "9. Getting Help"
       ],
-      "size_bytes": 4750
+      "size_bytes": 4752
     },
     "docs/getting-started/mac-mini-setup.md": {
       "title": "Mac Mini Setup Guide",
@@ -3134,7 +3848,7 @@
         "Daily Workflow Commands",
         "Architecture Overview"
       ],
-      "size_bytes": 9651
+      "size_bytes": 9480
     },
     "docs/getting-started/agent-bootstrap.md": {
       "title": "Agent Bootstrap \u2014 structural_engineering_lib",
@@ -3148,7 +3862,7 @@
       "sections": [
         "\u26a0 Agent Quick-Scan (read this FIRST)",
         "1. Project Identity",
-        "2. THE ONE RULE",
+        "2. Codex-Native Git/GitHub",
         "3. V3 Architecture",
         "4. What Exists \u2014 DON'T Reinvent",
         "5. Launching the App",
@@ -3157,7 +3871,7 @@
         "8. Key Scripts",
         "9. Golden Rules"
       ],
-      "size_bytes": 38044
+      "size_bytes": 37298
     },
     "docs/getting-started/python-quickstart.md": {
       "title": "Python Quickstart (Beginner-Friendly)",
@@ -3180,7 +3894,7 @@
         "7) Column Design (IS 456)",
         "8) Packaging notes (contributors only)"
       ],
-      "size_bytes": 6492
+      "size_bytes": 6424
     },
     "docs/getting-started/index.md": {
       "title": "Getting Started",
@@ -3194,7 +3908,30 @@
       "sections": [
         "Documentation Files"
       ],
-      "size_bytes": 2296
+      "size_bytes": 2376
+    },
+    "docs/getting-started/product-tour.md": {
+      "title": "StructLib Product Tour",
+      "type": "tutorial",
+      "complexity": "intermediate",
+      "folder": "getting-started",
+      "tags": [
+        "beginner",
+        "fastapi",
+        "product-tour",
+        "react",
+        "screenshots",
+        "tutorial"
+      ],
+      "sections": [
+        "1. Import and verify the model",
+        "2. Review the building in 3D",
+        "3. Inspect a member",
+        "4. Understand the batch",
+        "Try the same workflow",
+        "Continue exploring"
+      ],
+      "size_bytes": 3476
     },
     "docs/getting-started/agent-essentials.md": {
       "title": "Agent Essentials",
@@ -3223,7 +3960,7 @@
         "Common fixes",
         "Next steps"
       ],
-      "size_bytes": 4103
+      "size_bytes": 4105
     },
     "docs/getting-started/ai-context-pack.md": {
       "title": "AI Context Pack",
@@ -3347,7 +4084,7 @@
         "6. Error Handling",
         "7. Documentation Standards"
       ],
-      "size_bytes": 24836
+      "size_bytes": 24733
     },
     "docs/guides/code-reuse-and-library-structure.md": {
       "title": "Code Reuse and Library Structure",
@@ -3383,7 +4120,7 @@
         "4. Implementation Checklist",
         "Summary"
       ],
-      "size_bytes": 6252
+      "size_bytes": 6461
     },
     "docs/guides/fastapi-deployment-guide.md": {
       "title": "FastAPI Deployment Guide",
@@ -3421,7 +4158,7 @@
         "Related Documentation",
         "Changelog"
       ],
-      "size_bytes": 32082
+      "size_bytes": 31287
     },
     "docs/guides/maintenance-checklist.md": {
       "title": "Maintenance Checklist",
@@ -3439,7 +4176,7 @@
         "Maintenance Pipeline (Who Does What)",
         "Tracking"
       ],
-      "size_bytes": 5476
+      "size_bytes": 5679
     },
     "docs/guides/README.md": {
       "title": "User Guides",
@@ -3501,7 +4238,7 @@
         "Context Management \u2014 Working Through Long Sessions",
         "Efficiency Patterns"
       ],
-      "size_bytes": 18243
+      "size_bytes": 18191
     },
     "docs/governance/maintenance-playbook.md": {
       "title": "Governance & Maintenance Playbook",
@@ -3521,7 +4258,7 @@
         "9. Release Checklist",
         "10. Incident Response"
       ],
-      "size_bytes": 6713
+      "size_bytes": 6795
     },
     "docs/guidelines/documentation-standard.md": {
       "title": "API Documentation & Discoverability Standard",
@@ -3576,7 +4313,7 @@
         "\ud83d\udcc1 Special Folder Rules",
         "\ud83e\udd16 For AI Agents"
       ],
-      "size_bytes": 8581
+      "size_bytes": 8773
     },
     "docs/guidelines/folder-cleanup-workflow.md": {
       "title": "Folder Cleanup Workflow",
@@ -3596,7 +4333,7 @@
         "Phase 3: Plan (Prepare Operations)",
         "Phase 4: Execute (Apply Changes)"
       ],
-      "size_bytes": 6701
+      "size_bytes": 6758
     },
     "docs/guidelines/migration-workflow-guide.md": {
       "title": "IS 456 Module Migration Workflow",
@@ -3616,7 +4353,7 @@
         "Phase 6: Migrate compliance.py",
         "Phase 7: Migrate ductile.py"
       ],
-      "size_bytes": 9849
+      "size_bytes": 10842
     },
     "docs/guidelines/ai-token-efficiency.md": {
       "title": "AI Token-Efficiency Policy",
@@ -3636,7 +4373,7 @@
         "Reusable Task Preamble",
         "Official References"
       ],
-      "size_bytes": 10247
+      "size_bytes": 10770
     },
     "docs/guidelines/result-object-standard.md": {
       "title": "Result Object Design Standard",
@@ -3723,7 +4460,7 @@
         "Config Files",
         "Documentation Files"
       ],
-      "size_bytes": 2227
+      "size_bytes": 2235
     },
     "docs/guidelines/folder-structure-governance.md": {
       "title": "Folder Structure Governance",
@@ -4298,7 +5035,7 @@
         "\ud83d\udcac Can You Explain?",
         "\ud83d\udcce References"
       ],
-      "size_bytes": 14759
+      "size_bytes": 14784
     },
     "docs/migration/learning/day-20-data-flow-e2e.md": {
       "title": "Day 20: End-to-End Data Flow \u2014 Tracing a Beam from CSV Upload to 3D Render",
@@ -4409,7 +5146,7 @@
         "Part 8: Exercises",
         "Part 9: Self-Check Q&A"
       ],
-      "size_bytes": 15802
+      "size_bytes": 15958
     },
     "docs/migration/learning/day-19-3d-visualization.md": {
       "title": "Day 19: 3D Visualization \u2014 Rendering Concrete, Rebar & Stirrups with React Three Fiber",
@@ -4492,7 +5229,7 @@
         "\ud83d\udcac Can You Explain?",
         "\ud83d\udcce References"
       ],
-      "size_bytes": 14189
+      "size_bytes": 14248
     },
     "docs/migration/learning/day-01-concrete-basics.md": {
       "title": "Day 1: Concrete & Steel Basics",
@@ -4609,7 +5346,7 @@
         "\ud83d\udcac Can You Explain?",
         "\ud83d\udcce References"
       ],
-      "size_bytes": 12832
+      "size_bytes": 12845
     },
     "docs/migration/learning/day-02-beam-flexure.md": {
       "title": "Day 2: Beam Flexure Design",
@@ -4866,7 +5603,7 @@
         "2. Flexure Module (`M06_Flexure` / `flexure.py`)",
         "3. Shear Module (`M07_Shear` / `shear.py`)"
       ],
-      "size_bytes": 124735
+      "size_bytes": 128420
     },
     "docs/reference/clause-map.md": {
       "title": "IS 456 Clause-to-Function Mapping",
@@ -4915,7 +5652,7 @@
       "size_bytes": 7285
     },
     "docs/reference/sdk-api-contract-v1.md": {
-      "title": "Structural SDK API Contract \u2014 v1.0",
+      "title": "Historical Structural SDK Target Contract \u2014 v1.0",
       "type": "reference",
       "complexity": "advanced",
       "folder": "reference",
@@ -4935,7 +5672,7 @@
         "Error Handling",
         "Backward Compatibility"
       ],
-      "size_bytes": 23668
+      "size_bytes": 24063
     },
     "docs/reference/troubleshooting.md": {
       "title": "Troubleshooting Guide",
@@ -4979,7 +5716,7 @@
         "Output Schema Stability",
         "How to Report Breaking Changes"
       ],
-      "size_bytes": 18236
+      "size_bytes": 20512
     },
     "docs/reference/dxf-layer-standards.md": {
       "title": "DXF Layer Standards & Drawing Conventions",
@@ -5042,6 +5779,21 @@
       ],
       "size_bytes": 1276
     },
+    "docs/reference/beam-tool-manifest.md": {
+      "title": "Beam Tool Manifest",
+      "type": "reference",
+      "complexity": "beginner",
+      "folder": "reference",
+      "tags": [
+        "ai-readiness",
+        "api",
+        "catalogue",
+        "technical",
+        "tools"
+      ],
+      "sections": [],
+      "size_bytes": 1135
+    },
     "docs/reference/error-schema.md": {
       "title": "Error Schema v1",
       "type": "reference",
@@ -5065,23 +5817,28 @@
     "docs/reference/fastapi-rest-api.md": {
       "title": "FastAPI REST API Reference",
       "type": "reference",
-      "complexity": "advanced",
+      "complexity": "intermediate",
       "folder": "reference",
       "tags": [
         "api",
+        "fastapi",
+        "is456",
+        "openapi",
+        "rest",
         "technical"
       ],
       "sections": [
         "Overview",
-        "Authentication",
-        "Endpoints",
-        "Error Codes",
-        "Rate Limiting",
-        "Client SDKs",
-        "OpenAPI Specification",
-        "Related Documents"
+        "Authentication boundary",
+        "Response envelope",
+        "Health checks",
+        "Executable beam-design example",
+        "Endpoint families",
+        "Client generation status",
+        "Validation commands",
+        "Related documents"
       ],
-      "size_bytes": 10301
+      "size_bytes": 6899
     },
     "docs/reference/README.md": {
       "title": "Reference Documentation",
@@ -5101,7 +5858,7 @@
         "VBA Development",
         "Project Health & Automation"
       ],
-      "size_bytes": 2640
+      "size_bytes": 2755
     },
     "docs/reference/3d-visualization-performance.md": {
       "title": "3D Visualization Performance Benchmarks",
@@ -5177,7 +5934,7 @@
         "Documentation Files",
         "Subfolders"
       ],
-      "size_bytes": 3423
+      "size_bytes": 3597
     },
     "docs/reference/bbs-dxf-contract.md": {
       "title": "BBS + DXF Contract (v1.x)",
@@ -5225,6 +5982,7 @@
         "technical"
       ],
       "sections": [
+        "GeometrySpaceV1 workbench boundary",
         "Overview",
         "TypeScript Type Definitions",
         "Sample JSON Payload",
@@ -5235,7 +5993,7 @@
         "Related Files",
         "Changelog"
       ],
-      "size_bytes": 11919
+      "size_bytes": 14208
     },
     "docs/reference/agent-automation-pitfalls.md": {
       "title": "Agent Automation Pitfalls and Best Practices",
@@ -5257,7 +6015,7 @@
         "Testing Automation Scripts",
         "Additional Resources"
       ],
-      "size_bytes": 15050
+      "size_bytes": 15118
     },
     "docs/reference/api-levels.md": {
       "title": "Which API Should I Use?",
@@ -5276,7 +6034,7 @@
         "Decision Tree",
         "See Also"
       ],
-      "size_bytes": 3377
+      "size_bytes": 4186
     },
     "docs/reference/error-codes.md": {
       "title": "Error Code Reference",
@@ -5312,30 +6070,26 @@
         "Development Dependencies",
         "How to Refresh This File"
       ],
-      "size_bytes": 1000
+      "size_bytes": 990
     },
     "docs/reference/automation-catalog.md": {
-      "title": "Automation Script Catalog",
+      "title": "Automation Catalog",
       "type": "reference",
-      "complexity": "advanced",
+      "complexity": "intermediate",
       "folder": "reference",
       "tags": [
         "api",
+        "automation",
+        "codex",
+        "scripts",
         "technical"
       ],
       "sections": [
-        "Quick Index",
-        "Catalog Scope",
-        "Recently Added Scripts (Not Yet Expanded in Catalog)",
-        "Session Management",
-        "Git Workflow",
-        "Documentation Quality",
-        "Release Management",
-        "Testing & Quality",
-        "Code Quality",
-        "Streamlit QA"
+        "Primary entry points",
+        "Git/GitHub is not repository automation",
+        "Maintenance rule"
       ],
-      "size_bytes": 70545
+      "size_bytes": 2137
     },
     "docs/reference/insights-api.md": {
       "title": "Insights API Reference",
@@ -5461,9 +6215,10 @@
         "docs/contributing/git-workflow-ai-agents.md",
         "docs/learning/glossary.md",
         "docs/publications/research-paper-git-infrastructure.md",
-        "docs/git-automation/README.md",
+        "docs/planning/compact-modernization-plan.md",
         "docs/agents/README.md",
         "docs/agents/index.md",
+        "docs/verification/is456-library-first-evidence.md",
         "docs/audit/maintenance-recovery-audit-2026-08-07.md",
         "docs/getting-started/ai-context-pack.md",
         "docs/guides/ai-agent-coding-guide.md",
@@ -5520,6 +6275,7 @@
     "by_topic": {
       "maintenance": [
         "docs/_active/maintenance-plan-v0-21-sprint.md",
+        "docs/audit/automation-scripts-audit-2026-08-09.md",
         "docs/audit/maintenance-recovery-audit-2026-08-07.md"
       ],
       "planning": [
@@ -5582,7 +6338,9 @@
         "docs/learning-foundations/06-testing.md",
         "docs/learning-foundations/08-backend.md",
         "docs/learning-foundations/10-ci-cd.md",
-        "docs/learning-foundations/04-apis.md"
+        "docs/learning-foundations/04-apis.md",
+        "docs/git-automation/git-governance-case-study-git-7d2-cleanup-audit.md",
+        "docs/git-automation/git-recovery-case-study-column-pmm.md"
       ],
       "design": [
         "docs/specs/csv-import-schema.md",
@@ -5663,7 +6421,33 @@
         "docs/contributing/git-workflow-ai-agents.md",
         "docs/contributing/handoff.md",
         "docs/contributing/testing-strategy.md",
-        "docs/contributing/changelog-deprecation-template.md"
+        "docs/contributing/changelog-deprecation-template.md",
+        "docs/git-automation/git-workflow-single-source.md",
+        "docs/verification/ui-experience-session-2-acceptance.md"
+      ],
+      "codex": [
+        "docs/contributing/github-workflow.md",
+        "docs/contributing/git-workflow-ai-agents.md",
+        "docs/git-automation/git-workflow-single-source.md",
+        "docs/git-automation/README.md",
+        "docs/getting-started/copilot-quick-start.md",
+        "docs/reference/automation-catalog.md"
+      ],
+      "git": [
+        "docs/contributing/github-workflow.md",
+        "docs/contributing/git-workflow-ai-agents.md",
+        "docs/git-automation/git-governance-case-study-git-7d2-cleanup-audit.md",
+        "docs/git-automation/git-workflow-single-source.md",
+        "docs/git-automation/README.md",
+        "docs/git-automation/git-recovery-case-study-column-pmm.md",
+        "docs/getting-started/copilot-quick-start.md"
+      ],
+      "github": [
+        "docs/contributing/github-workflow.md",
+        "docs/contributing/git-workflow-ai-agents.md",
+        "docs/git-automation/git-governance-case-study-git-7d2-cleanup-audit.md",
+        "docs/git-automation/git-workflow-single-source.md",
+        "docs/git-automation/README.md"
       ],
       "education": [
         "docs/learning/exercises.md",
@@ -5743,28 +6527,58 @@
         "docs/migration/learning/day-14-optimization.md",
         "docs/migration/learning/day-11-services-api.md"
       ],
+      "cleanup": [
+        "docs/git-automation/git-governance-case-study-git-7d2-cleanup-audit.md"
+      ],
+      "worktree": [
+        "docs/git-automation/git-governance-case-study-git-7d2-cleanup-audit.md",
+        "docs/git-automation/git-recovery-case-study-column-pmm.md"
+      ],
+      "recovery": [
+        "docs/git-automation/git-recovery-case-study-column-pmm.md",
+        "docs/audit/maintenance-recovery-audit-2026-08-07.md"
+      ],
+      "scripts": [
+        "docs/git-automation/git-recovery-case-study-column-pmm.md",
+        "docs/audit/automation-scripts-audit-2026-08-09.md",
+        "docs/reference/automation-catalog.md"
+      ],
       "roadmap": [
+        "docs/planning/gpt-5-3-codex-spark-work-program.md",
         "docs/planning/next-session-brief.md",
+        "docs/planning/is456-solid-slabs-master-plan.md",
+        "docs/planning/compact-modernization-plan.md",
+        "docs/planning/ui-experience-foundation-master-plan.md",
+        "docs/planning/adoption-trust-surface-plan.md",
         "docs/planning/next-phase-improvements-plan.md",
+        "docs/planning/is456-library-first-master-plan.md",
         "docs/planning/library-expansion-blueprint-v5.md",
         "docs/planning/pre-release-checklist.md",
         "docs/planning/README.md",
         "docs/planning/memory.md",
         "docs/planning/etabs-killer-masterplan.md",
         "docs/planning/index.md",
+        "docs/planning/professional-library-remediation-plan.md",
         "docs/planning/react-ux-improvement-plan.md",
         "docs/planning/dependency-security-baseline.md",
         "docs/planning/democratization-vision.md"
       ],
       "tasks": [
+        "docs/planning/gpt-5-3-codex-spark-work-program.md",
         "docs/planning/next-session-brief.md",
+        "docs/planning/is456-solid-slabs-master-plan.md",
+        "docs/planning/compact-modernization-plan.md",
+        "docs/planning/ui-experience-foundation-master-plan.md",
+        "docs/planning/adoption-trust-surface-plan.md",
         "docs/planning/next-phase-improvements-plan.md",
+        "docs/planning/is456-library-first-master-plan.md",
         "docs/planning/library-expansion-blueprint-v5.md",
         "docs/planning/pre-release-checklist.md",
         "docs/planning/README.md",
         "docs/planning/memory.md",
         "docs/planning/etabs-killer-masterplan.md",
         "docs/planning/index.md",
+        "docs/planning/professional-library-remediation-plan.md",
         "docs/planning/react-ux-improvement-plan.md",
         "docs/planning/dependency-security-baseline.md",
         "docs/planning/democratization-vision.md"
@@ -5775,7 +6589,9 @@
       ],
       "automation": [
         "docs/agents/README.md",
-        "docs/agents/index.md"
+        "docs/agents/index.md",
+        "docs/audit/automation-scripts-audit-2026-08-09.md",
+        "docs/reference/automation-catalog.md"
       ],
       "examples": [
         "docs/cookbook/README.md",
@@ -5791,21 +6607,60 @@
       ],
       "testing": [
         "docs/verification/examples.md",
+        "docs/verification/bundled-sample-boq-evidence.md",
         "docs/verification/validation-pack.md",
+        "docs/verification/is456-slab-evidence.md",
+        "docs/verification/ui-experience-session-2-acceptance.md",
         "docs/verification/README.md",
         "docs/verification/external-cli-test.md",
         "docs/verification/index.md",
         "docs/verification/pack.md",
-        "docs/verification/insights-verification-pack.md"
+        "docs/verification/alpha-0231-local-prepublication-rehearsal.md",
+        "docs/verification/release-artifact-evidence-template.md",
+        "docs/verification/column-pmm-benchmark.md",
+        "docs/verification/insights-verification-pack.md",
+        "docs/verification/is456-library-first-evidence.md"
       ],
       "validation": [
         "docs/verification/examples.md",
+        "docs/verification/bundled-sample-boq-evidence.md",
         "docs/verification/validation-pack.md",
+        "docs/verification/is456-slab-evidence.md",
+        "docs/verification/ui-experience-session-2-acceptance.md",
         "docs/verification/README.md",
         "docs/verification/external-cli-test.md",
         "docs/verification/index.md",
         "docs/verification/pack.md",
-        "docs/verification/insights-verification-pack.md"
+        "docs/verification/alpha-0231-local-prepublication-rehearsal.md",
+        "docs/verification/release-artifact-evidence-template.md",
+        "docs/verification/column-pmm-benchmark.md",
+        "docs/verification/insights-verification-pack.md",
+        "docs/verification/is456-library-first-evidence.md"
+      ],
+      "boq": [
+        "docs/verification/bundled-sample-boq-evidence.md"
+      ],
+      "etabs": [
+        "docs/verification/bundled-sample-boq-evidence.md"
+      ],
+      "evidence": [
+        "docs/verification/bundled-sample-boq-evidence.md"
+      ],
+      "verification": [
+        "docs/verification/bundled-sample-boq-evidence.md",
+        "docs/verification/ui-experience-session-2-acceptance.md"
+      ],
+      "fastapi": [
+        "docs/verification/ui-experience-session-2-acceptance.md",
+        "docs/getting-started/product-tour.md",
+        "docs/reference/fastapi-rest-api.md"
+      ],
+      "react": [
+        "docs/verification/ui-experience-session-2-acceptance.md",
+        "docs/getting-started/product-tour.md"
+      ],
+      "uix": [
+        "docs/verification/ui-experience-session-2-acceptance.md"
       ],
       "structure": [
         "docs/architecture/unified-architecture-v1.md",
@@ -5822,13 +6677,17 @@
         "docs/architecture/project-overview.md",
         "docs/architecture/canonical-data-format.md"
       ],
+      "archive": [
+        "docs/audit/automation-scripts-audit-2026-08-09.md"
+      ],
       "audit": [
+        "docs/audit/automation-scripts-audit-2026-08-09.md",
         "docs/audit/maintenance-recovery-audit-2026-08-07.md"
+      ],
+      "maint-008": [
+        "docs/audit/automation-scripts-audit-2026-08-09.md"
       ],
       "mac-mini": [
-        "docs/audit/maintenance-recovery-audit-2026-08-07.md"
-      ],
-      "recovery": [
         "docs/audit/maintenance-recovery-audit-2026-08-07.md"
       ],
       "v0.21.7": [
@@ -5846,6 +6705,7 @@
         "docs/getting-started/agent-bootstrap.md",
         "docs/getting-started/python-quickstart.md",
         "docs/getting-started/index.md",
+        "docs/getting-started/product-tour.md",
         "docs/getting-started/agent-essentials.md",
         "docs/getting-started/beginners-guide.md",
         "docs/getting-started/ai-context-pack.md",
@@ -5866,6 +6726,7 @@
         "docs/getting-started/agent-bootstrap.md",
         "docs/getting-started/python-quickstart.md",
         "docs/getting-started/index.md",
+        "docs/getting-started/product-tour.md",
         "docs/getting-started/agent-essentials.md",
         "docs/getting-started/beginners-guide.md",
         "docs/getting-started/ai-context-pack.md",
@@ -5873,6 +6734,15 @@
         "docs/getting-started/colab-workflow.md",
         "docs/getting-started/NEW-DEVELOPER-ONBOARDING.md",
         "docs/getting-started/insights-guide.md"
+      ],
+      "setup": [
+        "docs/getting-started/copilot-quick-start.md"
+      ],
+      "product-tour": [
+        "docs/getting-started/product-tour.md"
+      ],
+      "screenshots": [
+        "docs/getting-started/product-tour.md"
       ],
       "aci318": [
         "docs/migration/01-adr-library-separation.md"
@@ -5884,7 +6754,8 @@
         "docs/migration/01-adr-library-separation.md"
       ],
       "is456": [
-        "docs/migration/01-adr-library-separation.md"
+        "docs/migration/01-adr-library-separation.md",
+        "docs/reference/fastapi-rest-api.md"
       ],
       "library": [
         "docs/migration/01-adr-library-separation.md"
@@ -5915,6 +6786,7 @@
         "docs/reference/dxf-layer-standards.md",
         "docs/reference/deprecation-policy.md",
         "docs/reference/repo-health-baseline-2026-01-07.md",
+        "docs/reference/beam-tool-manifest.md",
         "docs/reference/error-schema.md",
         "docs/reference/fastapi-rest-api.md",
         "docs/reference/README.md",
@@ -5943,6 +6815,7 @@
         "docs/reference/dxf-layer-standards.md",
         "docs/reference/deprecation-policy.md",
         "docs/reference/repo-health-baseline-2026-01-07.md",
+        "docs/reference/beam-tool-manifest.md",
         "docs/reference/error-schema.md",
         "docs/reference/fastapi-rest-api.md",
         "docs/reference/README.md",
@@ -5959,6 +6832,21 @@
         "docs/reference/third-party-licenses.md",
         "docs/reference/automation-catalog.md",
         "docs/reference/insights-api.md"
+      ],
+      "ai-readiness": [
+        "docs/reference/beam-tool-manifest.md"
+      ],
+      "catalogue": [
+        "docs/reference/beam-tool-manifest.md"
+      ],
+      "tools": [
+        "docs/reference/beam-tool-manifest.md"
+      ],
+      "openapi": [
+        "docs/reference/fastapi-rest-api.md"
+      ],
+      "rest": [
+        "docs/reference/fastapi-rest-api.md"
       ],
       "reference": [
         "docs/reference/api-levels.md"

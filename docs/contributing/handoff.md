@@ -1,13 +1,36 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-15
 doc_type: guide
 complexity: intermediate
 tags: []
 ---
 
 # Handoff Quick Start
+
+> Current Git/session boundary: start with `./run.sh session brief --agent
+> <role>`, `./run.sh session start`, `scripts/python_runtime.sh --diagnose`, and
+> `scripts/git_state.py --json --worktrees`. The state authority is local-only;
+> remote freshness remains `NOT_CHECKED` unless separately established.
+
+Every durable task handoff uses a tracked machine-readable receipt built and
+validated by `scripts/git_handoff_receipt.py`. It records the
+`local_state_receipt_hash`, exact branch/head/upstream/base/worktree/tree/
+operation identity, hosted PR/review/check facts or explicit `UNKNOWN`,
+retention evidence, authorization, prohibited actions, and next permitted
+action. `NOT_APPLICABLE` requires a reason and is never a substitute for
+unknown. Task or transcript archive state is not Git retention evidence.
+The receipt must state `receipt_grants_authority: false`: it records external
+authority evidence but never grants authority. Authorization requires source
+provenance and exact task/branch/head/action binding, and cannot override holds
+recomputed from the remaining evidence.
+
+Reference the receipt in the newest session entry as `**Git handoff receipt:**
+<tracked-path>`, then run `scripts/session.py handoff --git-receipt
+<tracked-path>`. Session end validates schema, hash, exact-head contradictions,
+and the round trip. It recomputes required holds/status rather than trusting the
+serialized values; missing or invalid evidence is a hold.
 
 Goal: enable the next agent to resume in under 2 minutes.
 
@@ -23,7 +46,7 @@ Goal: enable the next agent to resume in under 2 minutes.
    - **Jan 11 2026**: Session 13 - Folder Governance + Agent Onboarding
    - Created unified `agent_start.sh` (replaces 4 commands with 1)
    - Archived 4 redundant docs, consolidated agent-automation-system.md v1.1.0
-4. If releasing: `./scripts/ci_local.sh` then `.venv/bin/python scripts/release.py verify --version X.Y.Z --source pypi`
+4. Release work remains separately authorized; use the maintained release-preflight workflow when in scope.
 
 ### Quick output sample (agent_start.sh --quick)
 ```
@@ -44,19 +67,19 @@ $ ./scripts/agent_start.sh --quick
 ```
 
 ### Release verify (clean venv)
-- Local wheel (pre-release): `.venv/bin/python scripts/release.py verify --source wheel --wheel-dir Python/dist`
-- PyPI (post-release): `.venv/bin/python scripts/release.py verify --version X.Y.Z --source pypi`
+- Local wheel (pre-release): `./scripts/python_runtime.sh scripts/release.py verify --source wheel --wheel-dir Python/dist`
+- PyPI (post-release): `./scripts/python_runtime.sh scripts/release.py verify --version X.Y.Z --source pypi`
 
 ## Handoff (ending)
 
 > **📋 Full workflow:** See [contributing/end-of-session-workflow.md](end-of-session-workflow.md) for comprehensive checklist
 
 **Quick steps (5 minutes):**
-1. Run: `.venv/bin/python scripts/session.py end --fix`
+1. Validate the tracked Git receipt and run `./run.sh session end --agent <role>`.
 2. Update `docs/planning/next-session-brief.md` with summary + blockers.
 3. Update `docs/TASKS.md` (move items to Done/Active).
 4. Document issues in `docs/contributing/session-issues.md` (if encountered).
-5. Ensure clean tree: `git status -sb`
+5. Inspect the exact local tree with `./scripts/python_runtime.sh scripts/git_state.py --json`.
 
 ## Debug Snapshot Checklist
 
@@ -64,7 +87,7 @@ When encountering persistent errors, collect this information for handoff:
 
 1. **Collect diagnostics bundle:**
    ```bash
-   .venv/bin/python scripts/collect_diagnostics.py > diagnostics.txt
+   ./scripts/python_runtime.sh scripts/collect_diagnostics.py > diagnostics.txt
    ```
 
 2. **Enable debug mode** (Streamlit):
@@ -73,14 +96,14 @@ When encountering persistent errors, collect this information for handoff:
    ```
 
 3. **Check log files:**
-   - `logs/git_workflow.log` (git operations)
+   - the versioned task-to-Git receipt (Git identity and holds)
    - `logs/ci_monitor.log` (CI status)
 
 4. **Run validators:**
    ```bash
-   .venv/bin/python scripts/generate_api_manifest.py --check
-   .venv/bin/python scripts/check_scripts_index.py
-   .venv/bin/python scripts/check_links.py
+   ./scripts/python_runtime.sh scripts/generate_api_manifest.py --check
+   ./scripts/python_runtime.sh scripts/check_scripts_index.py
+   ./scripts/python_runtime.sh scripts/check_links.py
    ```
 
 5. **Include in handoff:**
@@ -90,6 +113,6 @@ When encountering persistent errors, collect this information for handoff:
    - Steps to reproduce
 
 ## Common Traps (fast fixes)
-- CI watch times out: re-run `gh pr checks <num> --watch`.
-- PR behind base: `gh pr update-branch <num>` then re-check CI.
+- CI query times out: record `UNKNOWN`/hold and have Codex re-query the exact head.
+- PR behind base: inspect exact base/head and let Codex choose a normal, non-rewriting update path.
 - PyPI verification: always use a clean venv.

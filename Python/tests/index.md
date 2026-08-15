@@ -3,8 +3,8 @@
 This document describes the test taxonomy and structure for the structural_engineering_lib test suite.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-13
-**Files:** 63
+**Last Updated:** 2026-08-15
+**Files:** 67
 
 ## Documentation Files
 
@@ -18,7 +18,7 @@ This document describes the test taxonomy and structure for the structural_engin
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) |  | 0 | 0 | 1 |
 | [conftest.py](conftest.py) | Pytest configuration and Hypothesis profiles for the test su | 0 | 6 | 131 |
-| [test_agent_governance_automation.py](test_agent_governance_automation.py) | Regression tests for agent-governance automation controls. | 0 | 20 | 536 |
+| [test_agent_governance_automation.py](test_agent_governance_automation.py) | Regression tests for agent-governance automation controls. | 0 | 20 | 541 |
 | [test_api_manifest_tools.py](test_api_manifest_tools.py) | Regression tests for the single canonical public API manifes | 0 | 5 | 134 |
 | [test_api_results.py](test_api_results.py) | Tests for API result dataclasses. | 3 | 0 | 394 |
 | [test_api_stability.py](test_api_stability.py) | EA-9: Wheel API stability tests. | 6 | 0 | 233 |
@@ -26,8 +26,10 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_assertion_helpers.py](test_assertion_helpers.py) | Tests for the IS 456 test assertion helpers. | 3 | 0 | 82 |
 | [test_audit.py](test_audit.py) | Tests for audit module (TASK-278). | 6 | 0 | 468 |
 | [test_boq.py](test_boq.py) | Tests for the BOQ (Bill of Quantities) aggregation module. | 1 | 0 | 190 |
+| [test_branch_disposition.py](test_branch_disposition.py) | Outcome tests for the inspection-only branch disposition cla | 0 | 12 | 437 |
 | [test_bump_version_semantics.py](test_bump_version_semantics.py) | Regression coverage for candidate-version documentation sema | 0 | 1 | 66 |
 | [test_calculation_report.py](test_calculation_report.py) | Tests for the calculation_report module (TASK-277). | 9 | 4 | 745 |
+| [test_ci_workflow_contract.py](test_ci_workflow_contract.py) | Regression tests for fail-closed PR workflow routing. | 0 | 5 | 182 |
 | [test_clause_traceability.py](test_clause_traceability.py) | Tests for IS 456 Traceability Module | 10 | 2 | 489 |
 | [test_column_axial.py](test_column_axial.py) | Tests for column axial module — effective_length() per IS 45 | 6 | 0 | 273 |
 | [test_column_biaxial.py](test_column_biaxial.py) | Tests for IS 456 Cl 39.6 biaxial bending check — TASK-635. | 8 | 0 | 958 |
@@ -48,7 +50,9 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_footing_load_transfer.py](test_footing_load_transfer.py) | Focused independent arithmetic checks for IS 456 Cl. 34.4 lo | 0 | 7 | 165 |
 | [test_function_quality_checker.py](test_function_quality_checker.py) | Focused regressions for the IS 456 function-quality checker. | 0 | 2 | 55 |
 | [test_generated_clients.py](test_generated_clients.py) | Contract checks for the checked-in basic generated clients. | 0 | 2 | 71 |
-| [test_git_state.py](test_git_state.py) | Outcome tests for the read-only, worktree-aware Git state au | 0 | 14 | 425 |
+| [test_git_guidance_semantics.py](test_git_guidance_semantics.py) | Semantic live-guidance discovery and coherence regressions. | 0 | 10 | 362 |
+| [test_git_handoff_receipt.py](test_git_handoff_receipt.py) | Regressions for the durable, fail-closed task-to-Git handoff | 0 | 20 | 429 |
+| [test_git_state.py](test_git_state.py) | Outcome tests for the read-only, worktree-aware Git state au | 0 | 20 | 682 |
 | [test_inputs.py](test_inputs.py) | Tests for the inputs module (TASK-276: Input Flexibility). | 7 | 0 | 464 |
 | [test_is456_common.py](test_is456_common.py) | Tests for IS 456:2000 common modules - stress_blocks, reinfo | 15 | 0 | 854 |
 | [test_is456_constants.py](test_is456_constants.py) | Tests for IS 456:2000 named design constants. | 1 | 0 | 163 |
@@ -65,7 +69,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_reports.py](test_reports.py) | Tests for the reports module. | 8 | 0 | 447 |
 | [test_research_prototypes.py](test_research_prototypes.py) | Tests for research prototypes: Sustainability, Generative De | 4 | 0 | 910 |
 | [test_result_base.py](test_result_base.py) | Tests for result_base module. | 7 | 0 | 217 |
-| [test_session_automation.py](test_session_automation.py) | Regression tests for maintenance session automation. | 0 | 20 | 663 |
+| [test_session_automation.py](test_session_automation.py) | Regression tests for maintenance session automation. | 0 | 20 | 1357 |
 | [test_session_store.py](test_session_store.py) | Tests for scripts/session_store.py — JSON session persistenc | 7 | 0 | 287 |
 | [test_slenderness.py](test_slenderness.py) | Unit tests for slenderness module. | 5 | 0 | 360 |
 | [test_testing_strategies.py](test_testing_strategies.py) | Tests for the testing_strategies module (TASK-279). | 12 | 0 | 681 |

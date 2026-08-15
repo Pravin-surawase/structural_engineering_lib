@@ -9,11 +9,14 @@ from __future__ import annotations
 
 import subprocess
 import sys
+import json
+import re
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CANONICAL = REPO_ROOT / "docs/git-automation/git-workflow-single-source.md"
 GIT_STATE_AUTHORITY = REPO_ROOT / "scripts/git_state.py"
+HANDOFF_RECEIPT = REPO_ROOT / "scripts/git_handoff_receipt.py"
 DISPOSITION_CLASSIFIER = REPO_ROOT / "scripts/classify_branch_disposition.py"
 GIT_STATE_CONSUMERS = (
     "scripts/prompt_router.py",
@@ -27,6 +30,7 @@ GIT_STATE_COMPATIBILITY = (
 )
 FAST_CHECKS = REPO_ROOT / ".github/workflows/fast-checks.yml"
 DEPLOY_DOCS = REPO_ROOT / ".github/workflows/deploy-docs.yml"
+GUIDANCE_INDEX = REPO_ROOT / "docs/git-automation/live-git-guidance-index.json"
 
 RETIRED_PATHS = (
     "scripts/ai_commit.sh",
@@ -42,33 +46,369 @@ RETIRED_PATHS = (
     "scripts/cleanup_stale_branches.py",
 )
 
-DISPOSITION_GUIDANCE = (
-    "AGENTS.md",
-    "CLAUDE.md",
-    ".github/copilot-instructions.md",
-    ".github/instructions/terminal-rules.instructions.md",
-    "docs/git-automation/git-workflow-single-source.md",
-    "docs/governance/maintenance-playbook.md",
-    "docs/guides/maintenance-checklist.md",
-    "scripts/README.md",
-    "scripts/automation-map.json",
+HISTORICAL_MARKERS = ("historical", "archive", "legacy")
+HISTORICAL_CONTEXT = re.compile(
+    r"\b(?:historical|archived|deprecated|legacy|old workflow|"
+    r"incident (?:record|evidence|narrative))\b",
+    re.IGNORECASE,
+)
+HISTORICAL_NARRATION = re.compile(
+    r"\b(?:says?|said|records?|mentions?|describes?|documents?|was|were|used|"
+    r"ran|during)\b",
+    re.IGNORECASE,
+)
+IMPERATIVE_LIFECYCLE_VERBS = re.compile(
+    r"\b(?:use|run|execute|invoke|issue|perform|stage|restore|undo|recover|"
+    r"amend|cherry-pick|create|checkout|switch|reset|commit|push|pull|revert|"
+    r"merge|rebase|stash|clean|prune|delete|remove|force|replay|apply|move|"
+    r"branch|fetch)\b",
+    re.IGNORECASE,
+)
+CLAUSE_BOUNDARY = re.compile(
+    r"(?:[.;!?]\s+|\b(?:but|however|then|instead|nevertheless|yet)\b[:,]?\s*)",
+    re.IGNORECASE,
+)
+GUIDANCE_CONTEXT_BOUNDARY = re.compile(r"[.;!?](?:\s+|$)")
+NEGATING_DIRECTIVE = re.compile(
+    r"(?<![A-Za-z0-9])(?:never|do not|don't|must not|should not|shall not|"
+    r"cannot|can't)\b"
+    r"|\b(?:forbidden|prohibited)\s*:\s*$",
+    re.IGNORECASE,
+)
+DIRECT_ACTION = re.compile(
+    r"\b(?:use|run|execute|invoke|issue|perform|stage|restore|undo|"
+    r"recover|amend|cherry-pick|create|checkout|switch|reset|commit|push|"
+    r"pull|revert|merge|rebase|stash|clean|prune|delete|remove|force|replay|"
+    r"apply|move|fetch)\b",
+    re.IGNORECASE,
+)
+DIRECTIVE_PUNCTUATION_ONLY = re.compile(r"^[\s`*_:~—–\-()\[\]]*$")
+SUFFIX_EXACT_OBJECT_LEAD = re.compile(
+    r"^[^.;!?]*[—–][\s`*_~()\[\]-]*$",
+    re.IGNORECASE,
+)
+INNER_ACTION_NEGATION = re.compile(r"\bnot\s+to[\s`*_~]*$", re.IGNORECASE)
+AVOID_GOVERNOR = re.compile(r"\bavoid\b", re.IGNORECASE)
+EXACT_OBJECT_SUFFIX = re.compile(
+    r"^[\s`*_~]*(?:(?:this|that)\s+"
+    r"(?:command|form|expression|example))?[\s`*_~.!,:;()\[\]-]*$",
+    re.IGNORECASE,
+)
+NEGATING_PREDICATE = re.compile(
+    r"\b(?:is|are)\s+(?:strictly\s+)?(?:forbidden|prohibited|not allowed)\b"
+    r"|\b(?:must|should|shall)\s+not\s+be\s+"
+    r"(?:used|run|executed)\b",
+    re.IGNORECASE,
 )
 
-LIVE_FILES_WITHOUT_WRAPPER_CALLS = (
-    "AGENTS.md",
-    "CLAUDE.md",
-    ".github/copilot-instructions.md",
-    "run.sh",
-    "scripts/agent_start.sh",
-    "agents/agent-9/KNOWLEDGE_BASE.md",
-    "agents/agent-9/RESEARCH_PLAN.md",
-    "agents/agent-9/research/AGENT_9_CONSTRAINTS.md",
-    "agents/agent-9/workflows/LINK_GOVERNANCE.md",
-    "agents/roles/GOVERNANCE.md",
-    "docs/guidelines/migration-workflow-guide.md",
-    "docs/guidelines/folder-cleanup-workflow.md",
-    "docs/guidelines/file-operations-safety-guide.md",
-)
+
+def _local_clause(line: str, start: int, end: int) -> tuple[str, str]:
+    """Return text locally governing a command, excluding prior/later clauses."""
+    before = line[:start]
+    after = line[end:]
+    prior = list(CLAUSE_BOUNDARY.finditer(before))
+    following = CLAUSE_BOUNDARY.search(after)
+    return (
+        before[prior[-1].end() :] if prior else before,
+        after[: following.start()] if following else after,
+    )
+
+
+def _is_governing_prohibition(line: str, start: int, end: int) -> bool:
+    """True only when the nearest action prohibits this Git expression."""
+    before, after = _local_clause(line, start, end)
+    actions = list(DIRECT_ACTION.finditer(before))
+    if actions:
+        action = actions[-1]
+        action_prefix = before[: action.start()]
+        if INNER_ACTION_NEGATION.search(action_prefix) is not None:
+            return True
+        directives = list(NEGATING_DIRECTIVE.finditer(action_prefix))
+        if directives and DIRECTIVE_PUNCTUATION_ONLY.fullmatch(
+            action_prefix[directives[-1].end() :]
+        ):
+            return True
+
+    avoidances = list(AVOID_GOVERNOR.finditer(before))
+    if avoidances and (not actions or avoidances[-1].start() > actions[-1].end()):
+        avoid = avoidances[-1]
+        directives = list(NEGATING_DIRECTIVE.finditer(before[: avoid.start()]))
+        directly_negated = directives and DIRECTIVE_PUNCTUATION_ONLY.fullmatch(
+            before[directives[-1].end() : avoid.start()]
+        )
+        if not directly_negated:
+            return True
+
+    directives = list(NEGATING_DIRECTIVE.finditer(before))
+    if directives and DIRECTIVE_PUNCTUATION_ONLY.fullmatch(
+        before[directives[-1].end() :]
+    ):
+        return True
+
+    suffix_directives = list(NEGATING_DIRECTIVE.finditer(after))
+    if suffix_directives:
+        directive = suffix_directives[0]
+        suffix_actions = list(DIRECT_ACTION.finditer(after[directive.end() :]))
+        if suffix_actions:
+            action = suffix_actions[0]
+            action_start = directive.end() + action.start()
+            action_end = directive.end() + action.end()
+            suffix_lead = after[: directive.start()]
+            if (
+                (
+                    DIRECTIVE_PUNCTUATION_ONLY.fullmatch(suffix_lead)
+                    or SUFFIX_EXACT_OBJECT_LEAD.fullmatch(suffix_lead)
+                )
+                and DIRECTIVE_PUNCTUATION_ONLY.fullmatch(
+                    after[directive.end() : action_start]
+                )
+                and EXACT_OBJECT_SUFFIX.fullmatch(after[action_end:])
+            ):
+                return True
+    return NEGATING_PREDICATE.search(after) is not None
+
+
+def _is_historical_narration(line: str, start: int) -> bool:
+    """Recognize explicit past evidence, not a historical-looking directive."""
+    prefix = line[:start]
+    if HISTORICAL_CONTEXT.search(line) is None:
+        return False
+    if HISTORICAL_NARRATION.search(line) is None:
+        return False
+    prior = list(CLAUSE_BOUNDARY.finditer(prefix))
+    local_prefix = prefix[prior[-1].end() :] if prior else prefix
+    return IMPERATIVE_LIFECYCLE_VERBS.search(local_prefix) is None
+
+
+def _unsafe_match_is_instruction(line: str, match: re.Match[str]) -> bool:
+    """Fail closed unless the command is locally prohibited or historical."""
+    return _instruction_span_is_unsafe(line, match.start(), match.end(), match.group(0))
+
+
+def _instruction_span_is_unsafe(line: str, start: int, end: int, matched: str) -> bool:
+    """Classify one action-starting span with the shared semantic grammar."""
+    directive = NEGATING_DIRECTIVE.search(matched)
+    if (
+        directive is not None
+        and DIRECTIVE_PUNCTUATION_ONLY.fullmatch(matched[: directive.start()])
+        and re.search(r"\bwithout\b", matched[directive.end() :], re.IGNORECASE) is None
+    ):
+        action = DIRECT_ACTION.search(matched, directive.end())
+        if action is not None:
+            start += action.start()
+    return not _is_governing_prohibition(line, start, end) and not (
+        _is_historical_narration(line, start)
+    )
+
+
+def _clause_spans(line: str) -> list[tuple[int, int]]:
+    """Return sentence/semicolon-local spans without crossing context boundaries."""
+    spans: list[tuple[int, int]] = []
+    start = 0
+    for boundary in GUIDANCE_CONTEXT_BOUNDARY.finditer(line):
+        if boundary.start() > start:
+            spans.append((start, boundary.start()))
+        start = boundary.end()
+    if start < len(line):
+        spans.append((start, len(line)))
+    return spans
+
+
+def _structured_instruction_errors(
+    line: str,
+    action_pattern: re.Pattern[str],
+    context_pattern: re.Pattern[str],
+    standalone_patterns: tuple[re.Pattern[str], ...],
+) -> list[tuple[int, int]]:
+    """Match one data-driven action rule within its own lexical context clause."""
+    errors: list[tuple[int, int]] = []
+    for clause_start, clause_end in _clause_spans(line):
+        clause = line[clause_start:clause_end]
+        has_context = context_pattern.search(clause) is not None
+        is_standalone = any(
+            pattern.fullmatch(clause.strip()) is not None
+            for pattern in standalone_patterns
+        )
+        if not has_context and not is_standalone:
+            continue
+        for match in action_pattern.finditer(clause):
+            start = clause_start + match.start()
+            end = clause_start + match.end()
+            if _instruction_span_is_unsafe(line, start, end, match.group(0)):
+                errors.append((start, end))
+    return errors
+
+
+def _front_matter_status(content: str) -> str | None:
+    if not content.startswith("---\n"):
+        return None
+    front_matter = content.split("---", 2)[1]
+    match = re.search(r"^status:\s*([^\s]+)\s*$", front_matter, re.MULTILINE)
+    return match.group(1).lower() if match else None
+
+
+def _historical_boundary_is_explicit(path: Path, boundary: str) -> bool:
+    if boundary == "archive_path":
+        return "_archive" in path.parts
+    content = path.read_text(encoding="utf-8", errors="replace")
+    first_lines = "\n".join(content.splitlines()[:24]).lower()
+    if boundary == "front_matter_status_deprecated":
+        return _front_matter_status(content) == "deprecated" and any(
+            marker in first_lines for marker in HISTORICAL_MARKERS
+        )
+    return False
+
+
+def discover_guidance_surfaces(
+    repo_root: Path = REPO_ROOT, index_path: Path = GUIDANCE_INDEX
+) -> tuple[list[Path], list[str], dict]:
+    """Resolve live guidance from the maintained index, failing on ambiguity."""
+    errors: list[str] = []
+    try:
+        config = json.loads(index_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return [], [f"live guidance index is missing or malformed: {exc}"], {}
+    if config.get("schema_version") != 1:
+        errors.append("live guidance index schema is unknown")
+
+    surfaces: set[Path] = set()
+    for relative in config.get("live_surfaces", []):
+        path = repo_root / relative
+        if path.is_file():
+            surfaces.add(path)
+        else:
+            errors.append(f"indexed live guidance is missing: {relative}")
+    for pattern in config.get("live_globs", []):
+        matches = sorted(repo_root.glob(pattern))
+        if not matches:
+            errors.append(f"indexed live guidance glob matched nothing: {pattern}")
+        surfaces.update(path for path in matches if path.is_file())
+
+    for surface_set in config.get("indexed_surface_sets", []):
+        index = repo_root / surface_set.get("index", "")
+        root = repo_root / surface_set.get("root", "")
+        try:
+            entries = json.loads(index.read_text(encoding="utf-8")).get("files", [])
+        except (OSError, json.JSONDecodeError, AttributeError) as exc:
+            errors.append(f"indexed guidance set is malformed: {index}: {exc}")
+            continue
+        ignored = set(surface_set.get("ignore_names", []))
+        historical_statuses = set(surface_set.get("historical_statuses", []))
+        for entry in entries:
+            name = entry.get("name") if isinstance(entry, dict) else None
+            if not name or name in ignored or not name.endswith(".md"):
+                continue
+            path = root / name
+            if not path.is_file():
+                errors.append(
+                    f"indexed guidance entry is missing: {path.relative_to(repo_root)}"
+                )
+                continue
+            content = path.read_text(encoding="utf-8", errors="replace")
+            status = _front_matter_status(content)
+            if status in historical_statuses:
+                if not _historical_boundary_is_explicit(
+                    path, "front_matter_status_deprecated"
+                ):
+                    errors.append(
+                        f"historical exclusion lacks an explicit boundary: "
+                        f"{path.relative_to(repo_root)}"
+                    )
+                continue
+            surfaces.add(path)
+
+    for exclusion in config.get("historical_exclusions", []):
+        pattern = exclusion.get("glob", "")
+        boundary = exclusion.get("boundary", "")
+        for path in repo_root.glob(pattern):
+            if path.is_file() and not _historical_boundary_is_explicit(path, boundary):
+                errors.append(
+                    f"historical exclusion lacks an explicit boundary: "
+                    f"{path.relative_to(repo_root)}"
+                )
+    return sorted(surfaces), errors, config
+
+
+def check_semantic_guidance(
+    repo_root: Path = REPO_ROOT, index_path: Path = GUIDANCE_INDEX
+) -> list[str]:
+    """Reject lifecycle contradictions across every indexed live surface."""
+    surfaces, errors, config = discover_guidance_surfaces(repo_root, index_path)
+    forbidden_tokens = tuple(config.get("forbidden_tokens", []))
+    patterns: list[re.Pattern[str]] = []
+    for raw in config.get("forbidden_command_patterns", []):
+        try:
+            patterns.append(re.compile(raw, re.IGNORECASE))
+        except re.error as exc:
+            errors.append(f"invalid semantic guidance pattern {raw!r}: {exc}")
+    instruction_patterns: list[re.Pattern[str]] = []
+    structured_instruction_rules: list[
+        tuple[re.Pattern[str], re.Pattern[str], tuple[re.Pattern[str], ...]]
+    ] = []
+    for raw in config.get("forbidden_instruction_patterns", []):
+        if isinstance(raw, dict):
+            if raw.get("kind") != "clause_action":
+                errors.append(f"invalid semantic instruction rule kind: {raw!r}")
+                continue
+            try:
+                structured_instruction_rules.append(
+                    (
+                        re.compile(raw["action_pattern"], re.IGNORECASE),
+                        re.compile(raw["context_pattern"], re.IGNORECASE),
+                        tuple(
+                            re.compile(pattern, re.IGNORECASE)
+                            for pattern in raw["standalone_clause_patterns"]
+                        ),
+                    )
+                )
+            except (KeyError, TypeError, re.error) as exc:
+                errors.append(f"invalid semantic instruction rule {raw!r}: {exc}")
+            continue
+        if not isinstance(raw, str):
+            errors.append(f"invalid semantic instruction pattern: {raw!r}")
+            continue
+        try:
+            instruction_patterns.append(re.compile(raw, re.IGNORECASE))
+        except re.error as exc:
+            errors.append(f"invalid semantic instruction pattern {raw!r}: {exc}")
+    required = config.get("required_contracts", {})
+
+    for path in surfaces:
+        relative = path.relative_to(repo_root).as_posix()
+        content = path.read_text(encoding="utf-8", errors="replace")
+        for token in forbidden_tokens:
+            if token in content:
+                errors.append(f"{relative} prescribes retired lifecycle token: {token}")
+        in_fence = False
+        for line_number, line in enumerate(content.splitlines(), start=1):
+            stripped = line.strip()
+            if stripped.startswith("```"):
+                in_fence = not in_fence
+                continue
+            for pattern in patterns:
+                match = pattern.search(line)
+                if match and _unsafe_match_is_instruction(line, match):
+                    errors.append(
+                        f"{relative}:{line_number} prescribes prohibited Git mutation: "
+                        f"{line.strip()}"
+                    )
+            for pattern in instruction_patterns:
+                match = pattern.search(line)
+                if match and _unsafe_match_is_instruction(line, match):
+                    errors.append(
+                        f"{relative}:{line_number} prescribes unsafe Git "
+                        f"instruction: {stripped}"
+                    )
+            for action, context, standalone in structured_instruction_rules:
+                if _structured_instruction_errors(line, action, context, standalone):
+                    errors.append(
+                        f"{relative}:{line_number} prescribes unsafe Git "
+                        f"instruction: {stripped}"
+                    )
+        for phrase in required.get(relative, []):
+            if phrase not in content:
+                errors.append(f"{relative} is missing semantic contract: {phrase}")
+    return errors
 
 
 def main() -> int:
@@ -119,6 +459,26 @@ def main() -> int:
         if "ls-remote" in source:
             errors.append("Git state authority must not contact a remote")
 
+    if not HANDOFF_RECEIPT.exists():
+        errors.append("task-to-Git handoff receipt contract is missing")
+    else:
+        source = HANDOFF_RECEIPT.read_text(encoding="utf-8")
+        for token in (
+            "collect_repository_state",
+            "receipt_sha256",
+            "NOT_CHECKED",
+            "UNKNOWN",
+            "is_git_retention_evidence",
+            "REVIEWED_HEAD_MISMATCH",
+            "SQUASH_TREE_EQUIVALENCE_UNKNOWN",
+        ):
+            if token not in source:
+                errors.append(f"handoff receipt is missing required contract: {token}")
+        if "subprocess" in source or "ls-remote" in source:
+            errors.append(
+                "handoff receipt must not read Git or remote state independently"
+            )
+
     if not DISPOSITION_CLASSIFIER.exists():
         errors.append(
             "inspection-only classifier is missing: "
@@ -157,18 +517,7 @@ def main() -> int:
                     f"branch disposition classifier exposes action flag: {action_flag}"
                 )
 
-    for relative in DISPOSITION_GUIDANCE:
-        path = REPO_ROOT / relative
-        if not path.exists():
-            errors.append(f"branch disposition guidance is missing: {relative}")
-            continue
-        content = path.read_text(encoding="utf-8")
-        if "cleanup_stale_branches.py" in content:
-            errors.append(f"{relative} still routes to deletion-oriented cleanup")
-        if "classify_branch_disposition.py" not in content:
-            errors.append(
-                f"{relative} does not route to the inspection-only classifier"
-            )
+    errors.extend(check_semantic_guidance())
 
     for relative in GIT_STATE_CONSUMERS:
         path = REPO_ROOT / relative
@@ -224,6 +573,8 @@ def main() -> int:
             "needs.changes.outputs.control_plane == 'true'",
             "needs.changes.outputs.docs == 'true'",
             "Python/tests/test_git_state.py",
+            "Python/tests/test_git_handoff_receipt.py",
+            "Python/tests/test_git_guidance_semantics.py",
             "Python/tests/test_branch_disposition.py",
             "Python/tests/test_session_automation.py",
             "Python/tests/test_session_store.py",
@@ -271,17 +622,6 @@ def main() -> int:
             errors.append("post-merge documentation concurrency is not scoped per ref")
         if "group: deploy-docs" in deploy_docs:
             errors.append("global documentation concurrency group is still active")
-
-    retired_names = tuple(Path(path).name for path in RETIRED_PATHS[:7])
-    for relative in LIVE_FILES_WITHOUT_WRAPPER_CALLS:
-        path = REPO_ROOT / relative
-        if not path.exists():
-            errors.append(f"required live instruction file is missing: {relative}")
-            continue
-        content = path.read_text(encoding="utf-8")
-        for name in retired_names:
-            if name in content:
-                errors.append(f"{relative} still invokes or prescribes retired {name}")
 
     if errors:
         print("Codex-native Git workflow check failed:")

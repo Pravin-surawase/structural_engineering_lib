@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-15",
-  "file_count": 21,
+  "file_count": 23,
   "files": [
     {
       "name": "GIT-001-README.md",
@@ -11,7 +11,7 @@
       "size_lines": 107,
       "last_updated": "2026-08-15",
       "description": "This directory is the task-owned, non-normative research record for GIT-001. Its contents may describe official Git/GitHub/Codex facts, observed project",
-      "content_hash": "3e30669bc28a"
+      "content_hash": "eb0ab1194fa8"
     },
     {
       "name": "GIT-001-eight-branch-retirement-authorization-proposal.json",
@@ -196,8 +196,34 @@
       "last_updated": "2026-08-15",
       "description": "GIT-7D2 replaces the deletion-oriented scripts/cleanup_stale_branches.py path with",
       "content_hash": "a51ad88ca239"
+    },
+    {
+      "name": "GIT-001-phase-7E-semantic-handoff.md",
+      "type": "documentation",
+      "size_lines": 100,
+      "last_updated": "2026-08-15",
+      "description": "GIT-7E started at 2026-08-15T09:12:34Z on codex/git-7e-semantic-handoff from freshly fetched and independently verified",
+      "content_hash": "f80001d77308"
+    },
+    {
+      "name": "GIT-001-phase-7E-task-git-handoff.json",
+      "type": "config",
+      "last_updated": "2026-08-15",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "aab116932ebd"
     }
   ],
   "subfolders": [],
-  "content_hash": "91f820b313c40c4e"
+  "content_hash": "8cdda2122458f974"
 }

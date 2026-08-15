@@ -42,6 +42,14 @@ archive path. Resolve the maintained command with `./run.sh find "task"`.
 
 1. Run the narrow checks for changed behavior while iterating.
 2. Update `docs/TASKS.md` and `docs/planning/next-session-brief.md` only when their project state actually changed or another agent needs a durable handoff. Update other logs only when the task explicitly owns them.
+   Create or update the task's versioned receipt with
+   `scripts/git_handoff_receipt.py`; include its path in the newest session entry
+   as `**Git handoff receipt:** <path>`. Session handoff validates the
+   `local_state_receipt_hash`, exact identities, independently derived
+   fail-closed holds, `receipt_grants_authority: false`, and externally sourced
+   exact-target authorization evidence, including fresh/query-successful
+   provenance and a next action bound to that authority or the closed safe-hold
+   set.
 3. Run the pre-commit gate once:
 
    ```bash
@@ -79,11 +87,16 @@ Verifies:
 | `docs/WORKLOG.md` | Compact completed-work history when the task changes it |
 | `docs/planning/next-session-brief.md` | Handoff to next session |
 | `docs/TASKS.md` | Active task board |
-| `scripts/session.py` | Session management CLI |
+| `scripts/session.py` | Session management CLI and receipt round-trip validation |
+| `scripts/git_handoff_receipt.py` | Read-only task-to-Git receipt contract |
 
 ## Context Checkpoint (save before context overflow)
 
-When a task must transfer to another session, update the handoff with: completed outcome, current branch/commit, exact remaining work, verification already run, and blockers. Keep it task-specific; do not copy the conversation.
+When a task must transfer to another session, update the handoff with: completed
+outcome, the versioned receipt path and `local_state_receipt_hash`, exact
+remaining work, verification already run, and blockers. Remote/PR/check facts
+are exact or `UNKNOWN`/`NOT_CHECKED`; `NOT_APPLICABLE` always has a reason. Keep
+it task-specific; do not copy the conversation.
 
 ## Context Recovery (new chat after overflow)
 

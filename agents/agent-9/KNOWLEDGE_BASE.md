@@ -1,13 +1,18 @@
 ---
 owner: Governance Agent
 status: active
-last_updated: 2026-08-07
+last_updated: 2026-08-15
 doc_type: reference
 complexity: advanced
 tags: [agents, governance]
 ---
 
 # Agent 9: Git & CI Governance Knowledge Base
+
+> Current repository boundary: `AGENTS.md` and the canonical Codex-native Git
+> workflow control. Use `scripts/git_state.py` for local facts. Codex performs
+> authorized Git/GitHub mutations; this guide never authorizes recovery,
+> cleanup, deletion, history rewriting, or bypass.
 
 **Purpose:** Git/CI best practices, troubleshooting guides, and research citations
 **Source:** Extracted from `docs/_internal/git-governance.md` + sustainability research
@@ -37,18 +42,16 @@ tags: [agents, governance]
 
 ### Recommended Workflow
 
-**For All Changes:**
+**For all changes, inspect first:**
 ```bash
-# Work on a task branch, inspect and stage only reviewed paths
-git switch -c codex/TASK-XXX-description
-git status --short
-git add <reviewed-paths>
-git commit -m "feat: implement X"
-git push -u origin codex/TASK-XXX-description
-# Create and inspect the PR with the connected GitHub integration or gh CLI.
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
 
-Merge and branch deletion remain explicit owner-confirmation actions. See
+Codex verifies current main, ownership, and source binding before creating the
+`codex/<task-slug>` lane. It inspects and stages exact owned paths, creates the
+conventional commit, pushes without rewriting history, and opens or updates the
+PR through the connected GitHub integration. Merge and branch deletion remain
+separate authority decisions. See
 `docs/git-automation/git-workflow-single-source.md` for the canonical workflow.
 
 ### Commit Message Convention
@@ -90,23 +93,16 @@ pre-commit install
 
 ### Hook Workflow
 
-**Normal Case:**
-```bash
-git add file.py
-git commit -m "feat: add function"
-# Hooks run automatically
-# If changes made: Files modified by hooks
-git add file.py  # Re-stage modified files
-git commit --amend --no-edit  # Amend commit
-```
+**Normal case:** Codex inspects the exact intended diff, stages only owned
+paths, and creates a conventional commit. If a hook changes files, stop and
+attribute every hook-created path before preserving the intended hook delta.
+Codex then restages only those exact reviewed paths and creates a normal
+follow-up commit when needed; this guide never authorizes amendment or history
+rewriting.
 
-**If Hooks Fail:**
-```bash
-# Read error message carefully
-# Fix the issue
-git add fixed-file.py
-git commit -m "feat: add function"
-```
+**If hooks fail:** Read the failure, trace its root cause, correct only the
+owned paths, rerun the focused gate, and return the reviewed diff to the same
+Codex lifecycle.
 
 ### CI/CD Workflows
 
@@ -130,14 +126,12 @@ git commit -m "feat: add function"
 ### Waiting for CI
 
 ```bash
-# After creating PR
-gh pr create --title "..." --body "..."
-
-# WAIT for CI (don't merge immediately!)
+# Read-only hosted wait after Codex creates or updates the PR
 gh pr checks <PR_NUMBER> --watch
 
-# Only after all checks pass
-gh pr merge <PR_NUMBER> --squash --delete-branch
+# Only after all checks pass, have Codex recheck the unchanged reviewed head,
+# required checks, mergeability, and unresolved blockers before normal merge.
+# Retain the branch/worktree until a separate disposition decision.
 ```
 
 ---
@@ -153,19 +147,11 @@ gh pr merge <PR_NUMBER> --squash --delete-branch
 
 **Cause:** Remote has commits you don't have locally
 
-**Solution:**
-```bash
-# Pull and rebase
-git pull --rebase origin main
-git push
-
-# Alternative: fetch and reset
-git fetch origin
-git rebase origin/main
-git push
-```
-
-**Prevention:** Always pull before pushing
+**Solution:** Stop and inspect with `scripts/git_state.py --json --worktrees`.
+Refresh remote evidence through Codex, then choose a normal non-rewriting
+integration path only after ownership and exact heads are known. A query
+failure, `NOT_CHECKED`, behind, or diverged result remains an `UNKNOWN`/hold;
+never reset or rewrite a published lane to make the push succeed.
 
 ---
 
@@ -181,10 +167,10 @@ git push
 .venv/bin/python -m black Python/
 .venv/bin/python -m ruff check --fix Python/
 
-# Commit fixes
-git add -A
-git commit -m "style: apply black/ruff formatting"
-git push
+# Inspect formatter changes, then stage only the exact owned paths
+git diff -- Python/path/to/owned_file.py
+# Have Codex stage the reviewed path, create the conventional commit, and push
+# without rewriting history.
 ```
 
 **Prevention:** Use pre-commit hooks
@@ -230,13 +216,10 @@ sorted(items, key=lambda x: x.cost.total if x.cost else float('inf'))
 
 **Solution:**
 ```bash
-# Re-stage modified files and amend commit
-git add -A
-git commit --amend --no-edit
-
-# OR create new commit
-git add -A
-git commit -m "chore: apply pre-commit fixes"
+# Inspect hook changes, stage only exact owned paths, and have Codex create a
+# conventional follow-up commit after the gate passes. Do not amend or rewrite
+# a published commit merely to absorb hook edits.
+git diff -- path/to/owned_file
 ```
 
 **Note:** This is NORMAL - hooks are doing their job!
@@ -248,36 +231,12 @@ git commit -m "chore: apply pre-commit fixes"
 **Symptom:** Git reports conflicts during pull/merge
 
 **Solution:**
-```bash
-# View conflicted files
-git status
-
-# For each file:
-# - Open in editor
-# - Find conflict markers: <<<<<<< ======= >>>>>>>
-# - Manually resolve conflicts
-# - Remove conflict markers
-
-# After fixing:
-git add <fixed-files>
-
-# If rebasing:
-git rebase --continue
-
-# If merging:
-git commit --no-edit
-
-# Push resolved changes
-git push
-```
-
-**Alternative (Ours Strategy):**
-```bash
-# Keep our version (use with caution!)
-git checkout --ours <file>
-git add <file>
-git commit --no-edit
-```
+Run `./scripts/python_runtime.sh scripts/git_state.py --json` and hold while an
+operation is active. Preserve every side, classify the exact conflicted paths
+and owners, and resolve only the authorized owned paths through the canonical
+Codex workflow. Codex stages exact paths and continues the known operation only
+after the conflict markers, diff, and preservation evidence are reviewed.
+Never choose one side wholesale merely to escape the conflict.
 
 ---
 
@@ -289,60 +248,39 @@ git commit --no-edit
 - ✅ Required status checks must pass
 - ✅ Force pushes disabled
 - ✅ Branch deletion disabled
-- ✅ PR-first for code/CI/deps
-- ✅ Direct commits allowed for docs only
+- ✅ PR-required for every change to `main`
 
 ### Branch Naming Convention
 
-- `feat/task-XXX-description` - Feature branches
-- `fix/task-XXX-description` - Bug fix branches
-- `docs/task-XXX-description` - Documentation branches
-- `refactor/task-XXX-description` - Refactoring branches
+- `codex/<task-slug>` - all normal task branches
 
 **Examples:**
 ```
-feat/task-017-etabs-import
-fix/task-012-shear-bug
-docs/task-025-api-reference
+codex/task-017-etabs-import
+codex/task-012-shear-bug
+codex/task-025-api-reference
 ```
 
-### Branch Cleanup
+### Branch Disposition
 
-```bash
-# Delete local merged branches
-git branch --merged | grep -v "\*\|main" | xargs -n 1 git branch -d
-
-# Delete remote merged branches
-gh pr list --state merged --limit 20 --json headRefName | \
-  jq -r '.[].headRefName' | \
-  xargs -I {} git push origin --delete {}
-
-# Prune remote references
-git remote prune origin
-git fetch --prune
-```
+Use `scripts/classify_branch_disposition.py` only after exact caller-supplied
+remote, PR, ownership, and retention evidence is available. `NOT_CHECKED`,
+missing, stale, contradictory, or query-failed evidence is `UNKNOWN`. Even
+`RETIREMENT_READY_PENDING_APPROVAL` requires separate exact local-branch,
+remote-branch, and worktree authorization plus immediate reinspection. The
+classifier never fetches, prunes, removes a worktree, or deletes a ref.
 
 ### Worktree Management
 
-**Create Worktree:**
+Inspect the current and sibling topology without changing it:
+
 ```bash
-git worktree add ../worktree-agent-6 -b feat/ui-feature
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
 
-**List Worktrees:**
-```bash
-git worktree list
-```
-
-**Remove Worktree:**
-```bash
-git worktree remove ../worktree-agent-6
-```
-
-**Prune Stale Worktrees:**
-```bash
-git worktree prune
-```
+Codex may create a fresh `codex/<task-slug>` worktree after verifying current
+main and ownership. Removal or pruning is never a routine follow-up: it needs
+complete exact-target disposition evidence and separate authorization.
 
 ---
 
@@ -355,23 +293,18 @@ git worktree prune
 - Tests fail
 - Application won't run
 
-**Immediate Action:**
-```bash
-# Option A: Revert last commit
-git revert HEAD
-git push
-
-# Option B: Revert to specific commit
-git revert <bad-commit-hash>
-git push
-```
+**Immediate action:** Establish the failing main head and current hosted checks
+from fresh evidence. Preserve the exact bad and prior-good trees, identify the
+owning change, and hold if any identity or ownership fact is unknown. Codex may
+prepare a normal `codex/<task-slug>` revert/fix PR only after the exact target
+and authority are known; this guide does not authorize a direct main mutation.
 
 **Follow-Up:**
-1. Create fix branch
-2. Repair issue
-3. Test thoroughly
-4. Open PR
-5. Merge when CI passes
+1. Verify the source-bound task lane from current main.
+2. Repair only the owned issue.
+3. Run focused and repository gates.
+4. Have Codex open the normal PR.
+5. Recheck exact head, checks, review, and merge authority.
 
 ---
 
@@ -379,19 +312,11 @@ git push
 
 **Detection:** History rewritten, commits lost
 
-**Recovery:**
-```bash
-# Find lost commit in reflog
-git reflog
-
-# Reset to lost commit
-git reset --hard <lost-commit-hash>
-
-# Force push (only if you're sure!)
-git push --force-with-lease
-```
-
-**Prevention:** Branch protection prevents force push
+**Recovery:** Inspect the reflog and current `git_state.py` receipt without
+moving a ref. Preserve the exact candidate commit/tree as evidence, establish
+ownership, and recover intended paths onto a fresh lane. Never hard-reset or
+force-push as a shortcut; a published-history decision needs explicit owner
+authority beyond this guide.
 
 ---
 
@@ -402,27 +327,10 @@ git push --force-with-lease
 - Commands failing unexpectedly
 - Merge states stuck
 
-**Recovery:**
-```bash
-# Check for unfinished merges
-ls .git/MERGE_*
-
-# If unfinished merge exists:
-git commit --no-edit  # Complete merge
-# OR
-git merge --abort     # Abort merge
-
-# Check for unfinished rebases
-ls .git/rebase-*
-
-# If unfinished rebase:
-git rebase --continue  # Complete rebase
-# OR
-git rebase --abort     # Abort rebase
-
-# Nuclear option (last resort):
-git reset --hard origin/main
-```
+**Recovery:** Run `scripts/git_state.py --json --worktrees`; it resolves real
+linked-worktree operation markers and locks. Stop on `HOLD_OPERATION`,
+`HOLD_LOCKED`, or `HOLD_UNKNOWN`. Inspect the owning operation and exact paths;
+do not delete markers, abort/continue blindly, reset, stash, or switch lanes.
 
 ---
 
@@ -430,20 +338,17 @@ git reset --hard origin/main
 
 **Detection:** Work disappeared after git operation
 
-**Recovery:**
+**Inspection only:**
 ```bash
-# Check reflog for lost commits
-git reflog
-
-# Find your work (look for commit messages)
-git show <commit-hash>
-
-# Recover work
-git cherry-pick <commit-hash>
-
-# OR create new branch from lost commit
-git checkout -b recovery-branch <commit-hash>
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
+
+Codex may inspect reflog/object candidates without moving a ref. Record exact
+commit and tree identities, prove ownership, preserve the candidate, and hold
+on conflicts or unknown provenance. Recovery onto a fresh verified
+`codex/<task-slug>` lane requires explicit target/action authority and the
+canonical Codex lifecycle; this guide authorizes neither broad patch replay nor
+ad-hoc recovery-branch creation.
 
 ---
 
@@ -522,10 +427,10 @@ Agent 9's WIP limits (2 worktrees, 5 PRs, 10 docs, 3 research) prevent context f
 **Git Operations:**
 - Use native scoped Git operations and the connected GitHub integration
 - Wait for CI before merging PRs
-- Pull before push (especially after merging PRs)
-- Use feature branches for significant changes
-- Amend commits when pre-commit modifies files (if not yet pushed)
-- Check git status before committing
+- Refresh remote evidence before publication decisions
+- Use verified `codex/<task-slug>` lanes for scoped changes
+- Attribute hook changes and use a normal follow-up commit when needed
+- Inspect with `git_state.py` before any lifecycle mutation
 
 **Commit Hygiene:**
 - Use conventional commits (`feat:`, `fix:`, `docs:`)
@@ -537,7 +442,7 @@ Agent 9's WIP limits (2 worktrees, 5 PRs, 10 docs, 3 research) prevent context f
 - Use pre-commit hooks (install once, saves time)
 - Run tests locally before pushing
 - Check formatting locally: `black Python/ && ruff check Python/`
-- Fix CI failures immediately or revert
+- Trace CI failures and route the scoped correction through the normal PR
 
 ---
 
@@ -545,7 +450,9 @@ Agent 9's WIP limits (2 worktrees, 5 PRs, 10 docs, 3 research) prevent context f
 
 **Git Operations:**
 - Don't merge immediately after creating PR (wait for CI)
-- Don't push to PR branch without pulling first
+- Don't push until `scripts/git_state.py --json --worktrees` proves the branch,
+  upstream, ownership, and ahead/behind state. Behind, diverged, query-failed,
+  or `NOT_CHECKED` evidence remains a hold.
 - Don't force-push to main (branch protection prevents this)
 - Don't skip pre-commit hooks (they catch issues early)
 - Don't commit generated files (use .gitignore)
@@ -560,28 +467,18 @@ Agent 9's WIP limits (2 worktrees, 5 PRs, 10 docs, 3 research) prevent context f
 
 ## Quick Reference Commands
 
-### Daily Operations
+### Daily inspection and hosted checks
 ```bash
-# Start work
-git pull --ff-only
+# Inspect the local lane and sibling worktrees
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 
-# Commit changes
-git add <reviewed-paths>
-git commit -m "type: description"
-
-# Create PR
-git push -u origin codex/TASK-XXX-description
-gh pr create --draft --fill
-
-# Wait for CI
+# After Codex creates or updates the exact-head PR, wait read-only for CI
 gh pr checks <PR_NUM> --watch
-
-# Merge PR
-gh pr merge <PR_NUM> --squash --delete-branch
-
-# Sync after merge
-git pull --ff-only
 ```
+
+Codex owns branch creation, exact-path staging, commit, push, PR, readiness, and
+normal merge after the required unchanged-head rechecks. Branch/worktree
+retention and every deletion remain separate decisions.
 
 ### Health Checks
 ```bash
@@ -591,40 +488,25 @@ git pull --ff-only
 # Check version consistency
 ./scripts/check_version_consistency.sh
 
-# Check git state
-git status
-git worktree list
-gh pr list --state open
+# Check local Git state through the sole authority
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
 
-### Cleanup
-```bash
-# Archive old docs
-./scripts/archive_old_sessions.sh
+### Disposition review
 
-# Clean worktrees
-git worktree prune
-
-# Clean branches
-git remote prune origin
-git fetch --prune
-```
+Run the inspection-only classifier with exact evidence. Do not infer cleanup
+authority from age, reachability, a merged PR, task archive state, or a clean
+tree. No pruning or deletion is part of routine health checks.
 
 ### Emergency
 ```bash
-# Check for stuck states
-ls .git/MERGE_* .git/rebase-*
-
-# Inspect exact recovery state; stop before choosing a destructive action
-git status
-git reflog
-
-# Revert bad commit
-git revert HEAD
-
-# Find lost work
-git reflog
+# Inspect exact operation, lock, dirty, branch, and worktree state
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
+
+Stop on any hold. Codex may inspect exact object/reflog evidence read-only, but
+recovery, revert, ref movement, history replay, or lane creation requires known
+ownership and explicit target/action authority through the canonical workflow.
 
 ---
 

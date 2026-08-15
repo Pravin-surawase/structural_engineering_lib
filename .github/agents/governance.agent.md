@@ -83,18 +83,19 @@ ls docs/planning/*.md | wc -l               # Target: <10
 .venv/bin/python scripts/check_links.py
 ```
 
-### Phase 2: Branch & Worktree Cleanup (30 min)
+### Phase 2: Branch & Worktree Disposition Review (30 min)
 
 ```bash
-# List worktrees (target: ≤2)
-git worktree list
+# Inspect local lanes through the sole state authority
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 
-# List merged remote branches
-git branch -r --merged main | grep -v "HEAD\|main"
-
-# Prune stale references
-git remote prune origin && git fetch --prune
+# Classify exact branches without fetch, prune, removal, or deletion
+./scripts/python_runtime.sh scripts/classify_branch_disposition.py --all-local --json
 ```
+
+`NOT_CHECKED`, missing, stale, contradictory, or failed evidence is an
+`UNKNOWN` hold. Cleanup is never inferred from worktree count, age, reachability,
+or merge state; later exact-target actions require separate authorization.
 
 ### Phase 3: Version Consistency (30 min)
 

@@ -1,13 +1,16 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-15
 doc_type: guide
 complexity: intermediate
 tags: []
 ---
 
 # Agent 6 Comprehensive Onboarding Guide
+
+> Historical only. The maintained frontend is React; wrapper-based Git
+> instructions below are not current authority.
 
 **Type:** Guide
 **Audience:** Agent 6 (Streamlit UI Specialist)

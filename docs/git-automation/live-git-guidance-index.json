@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "canonical": "docs/git-automation/git-workflow-single-source.md",
+  "live_surfaces": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".github/copilot-instructions.md",
+    "docs/git-automation/git-workflow-single-source.md",
+    "docs/governance/maintenance-playbook.md",
+    "docs/guides/maintenance-checklist.md",
+    "docs/guidelines/migration-workflow-guide.md",
+    "docs/guidelines/folder-cleanup-workflow.md",
+    "docs/guidelines/file-operations-safety-guide.md",
+    "docs/contributing/handoff.md",
+    "docs/learning-foundations/09-git.md",
+    "agents/agent-9/KNOWLEDGE_BASE.md",
+    "scripts/README.md",
+    "scripts/automation-map.json"
+  ],
+  "live_globs": [
+    ".github/agents/*.agent.md",
+    ".github/instructions/*.md",
+    ".github/skills/*/SKILL.md"
+  ],
+  "indexed_surface_sets": [
+    {
+      "index": "docs/agents/guides/index.json",
+      "root": "docs/agents/guides",
+      "historical_statuses": ["deprecated"],
+      "ignore_names": ["index.md"]
+    }
+  ],
+  "historical_exclusions": [
+    {
+      "glob": "docs/_archive/**",
+      "boundary": "archive_path"
+    },
+    {
+      "glob": "scripts/_archive/**",
+      "boundary": "archive_path"
+    }
+  ],
+  "forbidden_tokens": [
+    "ai_commit.sh",
+    "safe_push.sh",
+    "recover_git_state.sh",
+    "finish_task_pr.sh",
+    "create_task_pr.sh",
+    "should_use_pr.sh",
+    "cleanup_stale_branches.py",
+    "--finish",
+    "--delete-branch"
+  ],
+  "forbidden_command_patterns": [
+    "(^|[` ])git\\s+reset\\s+--hard(?:[` ]|$)",
+    "(^|[` ])git\\s+push\\b[^\\n]*--force(?:-with-lease)?(?:[` ]|$)",
+    "(^|[` ])git\\s+checkout\\s+main(?:[` ]|$)",
+    "(^|[` ])git\\s+branch\\s+-D(?:[` ]|$)",
+    "(^|[` ])git\\s+stash(?:\\s|`|$)",
+    "(^|[` ])git\\s+worktree\\s+(remove|prune)(?:\\s|`|$)",
+    "(^|[` ])git\\s+(fetch|remote)\\b[^\\n]*--prune(?:[` ]|$)"
+  ],
+  "forbidden_instruction_patterns": [
+    "(^|[` ])git\\s+add\\s+(?:\\.|-A|--all)(?:[` ]|$)",
+    "(^|[` ])git\\s+filter-branch(?:[` ]|$)",
+    "(^|[` ])git\\s+checkout\\b[^\\n]*(?:HEAD|--)\\b",
+    "(^|[` ])git\\s+reset(?:\\s|`|$)",
+    "(^|[` ])git\\s+commit\\b[^\\n]*--amend(?:[` ]|$)",
+    "(^|[` ])git\\s+cherry-pick(?:\\s|`|$)",
+    "(^|[` ])git\\s+checkout\\s+-b(?:\\s|`|$)",
+    "(^|[` ])git\\s+switch\\s+-c\\s+(?!codex/)",
+    "(?<![A-Za-z0-9])(?:do not|don't|never)\\s+push\\b[^\\n.;!?]*\\bwithout\\s+pull(?:ing)?\\s+first\\b",
+    {
+      "kind": "clause_action",
+      "action_pattern": "\\bpull(?:\\s+(?:the\\s+)?(?:(?:pr|remote|upstream)\\s+)?branch)?\\s+before\\s+(?:you\\s+)?push(?:ing)?\\b|\\bpull\\s+first\\b[^\\n.;!?]{0,40}\\b(?:then\\s+)?push(?:ing)?\\b|\\bpull\\s+first\\b",
+      "context_pattern": "\\b(?:git|pr|branch|remote|repository|upstream|commit)\\b",
+      "standalone_clause_patterns": [
+        "(?:then\\s+)?(?:always\\s+)?pull\\s+before\\s+you\\s+push(?:\\s+to\\s+(?:the\\s+)?pr\\s+branch)?",
+        "(?:then\\s+)?pull\\s+first\\s*,?\\s*then\\s+push(?:\\s+the\\s+change)?",
+        "(?:then\\s+)?before\\s+you\\s+push\\s*,\\s*pull\\s+first"
+      ]
+    }
+  ],
+  "required_contracts": {
+    "AGENTS.md": [
+      "scripts/git_state.py",
+      "NOT_CHECKED",
+      "classify_branch_disposition.py"
+    ],
+    ".github/skills/session-management/SKILL.md": [
+      "git_handoff_receipt.py",
+      "local_state_receipt_hash",
+      "receipt_grants_authority"
+    ],
+    "docs/git-automation/git-workflow-single-source.md": [
+      "scripts/git_state.py",
+      "NOT_CHECKED",
+      "UNKNOWN",
+      "git_handoff_receipt.py",
+      "receipt_grants_authority"
+    ],
+    "docs/contributing/handoff.md": [
+      "git_handoff_receipt.py",
+      "NOT_CHECKED",
+      "UNKNOWN",
+      "receipt_grants_authority"
+    ]
+  }
+}

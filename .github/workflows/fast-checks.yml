@@ -63,6 +63,8 @@ jobs:
               - 'Python/tests/test_agent_governance_automation.py'
               - 'Python/tests/test_ci_workflow_contract.py'
               - 'Python/tests/test_git_state.py'
+              - 'Python/tests/test_git_handoff_receipt.py'
+              - 'Python/tests/test_git_guidance_semantics.py'
               - 'Python/tests/test_pipeline_state.py'
               - 'Python/tests/test_session_automation.py'
               - 'Python/tests/test_session_store.py'
@@ -211,6 +213,8 @@ jobs:
           STRUCTURAL_LIB_PYTHON="$(command -v python)" python scripts/check_codex_git_workflow.py
           STRUCTURAL_LIB_PYTHON="$(command -v python)" python -m pytest \
             Python/tests/test_git_state.py \
+            Python/tests/test_git_handoff_receipt.py \
+            Python/tests/test_git_guidance_semantics.py \
             Python/tests/test_branch_disposition.py \
             Python/tests/test_session_automation.py \
             Python/tests/test_session_store.py \

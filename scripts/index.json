@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "> Development, validation, discovery, release-preparation, and maintenance tools.",
   "last_updated": "2026-08-15",
-  "file_count": 109,
+  "file_count": 110,
   "files": [
     {
       "name": "README.md",
@@ -912,7 +912,7 @@
         "_coverage",
         "tasks"
       ],
-      "content_hash": "e72e30a4b4ba"
+      "content_hash": "509c9fc38593"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1474,10 +1474,26 @@
     {
       "name": "check_codex_git_workflow.py",
       "type": "python",
-      "size_lines": 298,
+      "size_lines": 638,
       "last_updated": "2026-08-15",
       "description": "Guard the Codex-native Git/GitHub workflow contract.",
       "functions": [
+        {
+          "name": "discover_guidance_surfaces",
+          "description": "Resolve live guidance from the maintained index, failing on ambiguity.",
+          "params": [
+            "repo_root",
+            "index_path"
+          ]
+        },
+        {
+          "name": "check_semantic_guidance",
+          "description": "Reject lifecycle contradictions across every indexed live surface.",
+          "params": [
+            "repo_root",
+            "index_path"
+          ]
+        },
         {
           "name": "main"
         }
@@ -1486,15 +1502,15 @@
         "REPO_ROOT",
         "CANONICAL",
         "GIT_STATE_AUTHORITY",
+        "HANDOFF_RECEIPT",
         "DISPOSITION_CLASSIFIER",
         "GIT_STATE_CONSUMERS",
         "GIT_STATE_COMPATIBILITY",
         "FAST_CHECKS",
         "DEPLOY_DOCS",
-        "RETIRED_PATHS",
-        "DISPOSITION_GUIDANCE"
+        "GUIDANCE_INDEX"
       ],
-      "content_hash": "31fc5eed5a46"
+      "content_hash": "480a59b69a6d"
     },
     {
       "name": "check_doc_versions.py",
@@ -3391,9 +3407,51 @@
       "content_hash": "47a4073cd002"
     },
     {
+      "name": "git_handoff_receipt.py",
+      "type": "python",
+      "size_lines": 573,
+      "last_updated": "2026-08-15",
+      "description": "Build and validate fail-closed task-to-Git handoff receipts.",
+      "functions": [
+        {
+          "name": "build_receipt",
+          "description": "Create one receipt. Missing or inconsistent facts become explicit holds."
+        },
+        {
+          "name": "validate_receipt",
+          "description": "Validate a stored receipt without upgrading unknown evidence to success.",
+          "params": [
+            "receipt"
+          ]
+        },
+        {
+          "name": "load_receipt",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "main",
+          "params": [
+            "argv"
+          ]
+        }
+      ],
+      "constants": [
+        "SCHEMA_VERSION",
+        "RECEIPT_KIND",
+        "UNKNOWN",
+        "NOT_CHECKED",
+        "MAX_EVIDENCE_AGE_SECONDS",
+        "SHA_RE",
+        "SAFE_HOLD_NEXT_ACTIONS"
+      ],
+      "content_hash": "97392ad102cb"
+    },
+    {
       "name": "git_state.py",
       "type": "python",
-      "size_lines": 658,
+      "size_lines": 1004,
       "last_updated": "2026-08-15",
       "description": "Read-only, worktree-aware Git state authority.",
       "classes": [
@@ -3430,6 +3488,13 @@
       ],
       "functions": [
         {
+          "name": "validate_repository_state_consistency",
+          "description": "Validate the full canonical evidence contract without Git or network I/O.",
+          "params": [
+            "state"
+          ]
+        },
+        {
           "name": "collect_repository_state",
           "description": "Collect one local repository/worktree state without mutation or network.",
           "params": [
@@ -3461,9 +3526,15 @@
         "REPO_ROOT",
         "SCHEMA_VERSION",
         "DEFAULT_COMMAND_TIMEOUT_SECONDS",
-        "SIBLING_COMMAND_TIMEOUT_SECONDS"
+        "SIBLING_COMMAND_TIMEOUT_SECONDS",
+        "SHA_RE",
+        "RELATION_STATUSES",
+        "OPERATION_STATUSES",
+        "DERIVED_ACTIONS",
+        "REMOTE_FRESHNESS_STATUSES",
+        "MAX_EVIDENCE_AGE"
       ],
-      "content_hash": "8a947cedc599"
+      "content_hash": "3cbad0ae60d3"
     },
     {
       "name": "governance_health_score.py",
@@ -4337,7 +4408,7 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 2306,
+      "size_lines": 2461,
       "last_updated": "2026-08-15",
       "description": "Unified session management CLI.",
       "functions": [
@@ -4417,7 +4488,15 @@
           ]
         },
         {
-          "name": "get_uncommitted_changes"
+          "name": "get_closeout_git_evidence",
+          "description": "Return CLEAN, DIRTY, or UNKNOWN from the canonical Git-state authority."
+        },
+        {
+          "name": "report_closeout_git_evidence",
+          "description": "Print fail-closed closeout evidence; return true only for CLEAN.",
+          "params": [
+            "evidence"
+          ]
         },
         {
           "name": "check_session_log_complete"
@@ -4426,13 +4505,10 @@
           "name": "check_doc_links"
         },
         {
-          "name": "get_changed_doc_folders"
-        },
-        {
-          "name": "update_folder_readmes",
+          "name": "get_changed_doc_folders",
+          "description": "Derive current dirty doc folders only from canonical state evidence.",
           "params": [
-            "folders",
-            "fix"
+            "evidence"
           ]
         }
       ],
@@ -4448,7 +4524,7 @@
         "HANDOFF_DATE_RE",
         "COMMIT_HASH_RE"
       ],
-      "content_hash": "cf690cae634e"
+      "content_hash": "8a951de8d836"
     },
     {
       "name": "session_store.py",
@@ -5462,5 +5538,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "00cc8212e284953c"
+  "content_hash": "3c741ce61e0e0c75"
 }

@@ -1,13 +1,16 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-15
 doc_type: guide
 complexity: intermediate
 tags: []
 ---
 
 # Agent 6 Quick Start (Streamlit UI Specialist)
+
+> Historical only. The maintained frontend is React; current agent and Git
+> guidance lives in `.github/agents/`, `AGENTS.md`, and the canonical workflow.
 
 **Role:** Build production-ready Streamlit dashboards for structural engineering
 **Time to onboard:** 60 seconds

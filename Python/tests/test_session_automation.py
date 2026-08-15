@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
+import copy
 import importlib
 import json
 import os
 import subprocess
 import sys
-from datetime import date
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -22,7 +24,505 @@ session = importlib.import_module("scripts.session")
 check_api = importlib.import_module("scripts.check_api")
 validate_script_refs = importlib.import_module("scripts.validate_script_refs")
 prompt_router = importlib.import_module("scripts.prompt_router")
+
+
+def test_run_sh_routes_receipt_bound_handoff_help():
+    result = subprocess.run(
+        [str(REPO_ROOT / "run.sh"), "session", "handoff", "--help"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "--git-receipt" in result.stdout
+
+
+def test_handoff_replaces_maintained_legacy_heading(monkeypatch, tmp_path):
+    brief = tmp_path / "next-session-brief.md"
+    brief.write_text(
+        "# Brief\n\n## Latest Handoff\n\n"
+        f"{session.HANDOFF_START}\n- Date: old\n{session.HANDOFF_END}\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(session, "NEXT_BRIEF", brief)
+
+    session._update_next_brief(["- Date: 2026-08-15", "- Git receipt: exact"])
+
+    updated = brief.read_text(encoding="utf-8")
+    assert "## Latest Handoff (auto)" in updated
+    assert "- Git receipt: exact" in updated
+    assert "- Date: old" not in updated
+
+
 git_state = importlib.import_module("scripts.git_state")
+git_handoff_receipt = importlib.import_module("scripts.git_handoff_receipt")
+
+
+def _closeout_state(
+    *,
+    clean: bool,
+    paths: list[str] | None = None,
+    failures: list | None = None,
+    schema_version: int = 1,
+):
+    modified = list(paths or [])
+    query_failures = list(failures or [])
+    if query_failures:
+        derived_action = "HOLD_UNKNOWN"
+        hold_reasons = ["required Git evidence is unknown"]
+        if modified:
+            hold_reasons.append(f"changed paths: {len(modified)}")
+    elif clean:
+        derived_action = "READY_LOCAL"
+        hold_reasons = []
+    else:
+        derived_action = "HOLD_DIRTY"
+        hold_reasons = [f"changed paths: {len(modified)}"]
+    return git_state.RepositoryState(
+        schema_version=schema_version,
+        observed_at_utc=datetime.now(UTC).isoformat(),
+        repository_root="/tmp/repo",
+        worktree_root="/tmp/repo",
+        git_dir="/tmp/repo/.git",
+        git_common_dir="/tmp/repo/.git",
+        linked_worktree=False,
+        branch="codex/git-7e",
+        head_sha="a" * 40,
+        default_base=git_state.Relation("origin/main", "b" * 40, 1, 0, "ahead"),
+        upstream=git_state.Relation("origin/codex/git-7e", "a" * 40, 0, 0, "equal"),
+        tree=git_state.TreeState(modified_paths=modified, clean=clean),
+        operation="none",
+        operation_markers=[],
+        locks=[],
+        remote_freshness="NOT_CHECKED",
+        derived_action=derived_action,
+        hold_reasons=hold_reasons,
+        query_failures=query_failures,
+        duration_ms=1.0,
+    )
+
+
+def _malformed_clean_state(case: str):
+    state = copy.deepcopy(_closeout_state(clean=True))
+    if case == "head_sha":
+        state.head_sha = "not-a-sha"
+    elif case == "empty_branch":
+        state.branch = ""
+    elif case == "head_branch":
+        state.branch = "HEAD"
+    elif case == "banana_relation":
+        state.default_base.status = "BANANA"
+    elif case == "uppercase_unknown_relation":
+        state.default_base.status = "UNKNOWN"
+    elif case == "schema":
+        state.schema_version = 999
+    elif case == "remote_freshness":
+        state.remote_freshness = "CURRENT"
+    elif case == "default_none_observed":
+        state.default_base.ref = "NONE"
+    elif case == "default_bad_ref":
+        state.default_base.ref = "bad ref"
+    elif case == "upstream_none_observed":
+        state.upstream.ref = "NONE"
+    elif case == "double_slash_branch":
+        state.branch = "codex//x"
+    elif case == "leading_dash_branch":
+        state.branch = "-bad"
+    elif case == "worktree_identity":
+        state.worktree_root = "/tmp/other"
+    elif case == "nan_duration":
+        state.duration_ms = float("nan")
+    elif case == "infinite_duration":
+        state.duration_ms = float("inf")
+    elif case == "future_timestamp":
+        state.observed_at_utc = (datetime.now(UTC) + timedelta(days=1)).isoformat()
+    elif case == "stale_timestamp":
+        state.observed_at_utc = (datetime.now(UTC) - timedelta(days=1)).isoformat()
+    return state
+
+
+def test_session_closeout_uses_canonical_clean_evidence_without_subprocess(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    state = _closeout_state(clean=True)
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+    monkeypatch.setattr(
+        session.subprocess,
+        "run",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("closeout evidence must not invoke a second subprocess")
+        ),
+    )
+
+    assert session.get_closeout_git_evidence() == (
+        "CLEAN",
+        [],
+        "Canonical Git-state tree is clean",
+    )
+
+
+def test_session_closeout_reports_canonical_dirty_paths(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    state = _closeout_state(clean=False, paths=["docs/SESSION_LOG.md"])
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+
+    status, paths, _reason = session.get_closeout_git_evidence()
+
+    assert status == "DIRTY"
+    assert paths == ["docs/SESSION_LOG.md"]
+
+
+@pytest.mark.parametrize(
+    "case",
+    [
+        "head_sha",
+        "empty_branch",
+        "head_branch",
+        "banana_relation",
+        "uppercase_unknown_relation",
+        "schema",
+        "remote_freshness",
+        "default_none_observed",
+        "default_bad_ref",
+        "upstream_none_observed",
+        "double_slash_branch",
+        "leading_dash_branch",
+        "worktree_identity",
+        "nan_duration",
+        "infinite_duration",
+        "future_timestamp",
+        "stale_timestamp",
+    ],
+)
+def test_session_closeout_holds_malformed_canonical_contract_without_subprocess(
+    case: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    state = _malformed_clean_state(case)
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+    monkeypatch.setattr(
+        session.subprocess,
+        "run",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("closeout validation must not invoke a subprocess")
+        ),
+    )
+
+    evidence = session.get_closeout_git_evidence()
+
+    assert evidence[0] == "UNKNOWN"
+    assert session.report_closeout_git_evidence(evidence) is False
+    assert "Working tree clean" not in capsys.readouterr().out
+
+
+def test_session_closeout_holds_clean_action_hold_contradiction(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    state = _closeout_state(clean=True)
+    state.derived_action = "HOLD_DIRTY"
+    state.hold_reasons = ["WORKTREE_DIRTY"]
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+
+    status, paths, reason = session.get_closeout_git_evidence()
+
+    assert status == "UNKNOWN"
+    assert paths == []
+    assert "contradicts" in reason
+
+
+def test_session_closeout_holds_dirty_ready_contradiction(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    state = _closeout_state(clean=False, paths=["docs/SESSION_LOG.md"])
+    state.derived_action = "READY_LOCAL"
+    state.hold_reasons = []
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+
+    status, paths, reason = session.get_closeout_git_evidence()
+
+    assert status == "UNKNOWN"
+    assert paths == []
+    assert "contradicts" in reason
+
+
+def test_changed_doc_folders_uses_only_canonical_dirty_paths():
+    status, folders, reason = session.get_changed_doc_folders(
+        (
+            "DIRTY",
+            ["docs/SESSION_LOG.md", "docs/git-automation/index.json", "source.py"],
+            "canonical dirty paths",
+        )
+    )
+
+    assert status == "OBSERVED"
+    assert folders == [session.REPO_ROOT / "docs"]
+    assert reason == "canonical dirty paths inspected"
+
+
+def test_session_closeout_holds_nonzero_git_state_query(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    state = _closeout_state(
+        clean=False,
+        failures=[git_state.QueryFailure("git status --porcelain=v2", "exit 128")],
+    )
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+
+    status, paths, reason = session.get_closeout_git_evidence()
+
+    assert status == "UNKNOWN"
+    assert paths == []
+    assert "exit 128" in reason
+
+
+def test_session_closeout_holds_git_state_exception(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    def raise_query(_repo):
+        raise OSError("authority unavailable")
+
+    monkeypatch.setattr(session, "collect_repository_state", raise_query)
+
+    status, paths, reason = session.get_closeout_git_evidence()
+
+    assert status == "UNKNOWN"
+    assert paths == []
+    assert "authority unavailable" in reason
+
+
+@pytest.mark.parametrize(
+    "evidence",
+    [
+        {"tree": {"clean": True}},
+        _closeout_state(clean=True, schema_version=999),
+        _closeout_state(clean=True, paths=["contradiction.md"]),
+        _closeout_state(clean=False),
+    ],
+)
+def test_session_closeout_holds_malformed_or_unknown_evidence(
+    evidence, monkeypatch: pytest.MonkeyPatch
+):
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: evidence)
+
+    status, paths, _reason = session.get_closeout_git_evidence()
+
+    assert status == "UNKNOWN"
+    assert paths == []
+
+
+@pytest.mark.parametrize("status", ["DIRTY", "UNKNOWN"])
+def test_session_closeout_never_prints_clean_for_hold(
+    status: str, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    monkeypatch.setattr(
+        session,
+        "get_closeout_git_evidence",
+        lambda: (status, ["dirty.md"] if status == "DIRTY" else [], "held"),
+    )
+
+    assert session.report_closeout_git_evidence() is False
+    assert "Working tree clean" not in capsys.readouterr().out
+
+
+def _patch_cmd_end_dependencies(
+    monkeypatch: pytest.MonkeyPatch, state
+) -> tuple[list[list[str]], SimpleNamespace]:
+    authority_calls = []
+
+    def collect(_repo):
+        authority_calls.append(["collect_repository_state"])
+        return state
+
+    subprocess_calls: list[list[str]] = []
+
+    def run(args, **_kwargs):
+        command = [str(part) for part in args]
+        subprocess_calls.append(command)
+        assert not (
+            command[:1] == ["git"]
+            and len(command) > 1
+            and command[1] in {"diff", "status"}
+        ), f"session end invoked a second Git-state reader: {command}"
+        return subprocess.CompletedProcess(command, 0, "", "")
+
+    monkeypatch.setattr(session, "collect_repository_state", collect)
+    monkeypatch.setattr(session.subprocess, "run", run)
+    monkeypatch.setattr(
+        session, "run_handoff_check", lambda: (True, "All checks passed")
+    )
+    monkeypatch.setattr(session, "check_session_log_complete", lambda: (True, []))
+    monkeypatch.setattr(
+        session, "_latest_session_block", lambda _lines: ("2026-08-15", [])
+    )
+    monkeypatch.setattr(
+        session,
+        "_resolve_git_receipt",
+        lambda _block, _path: (
+            {
+                "local_state_receipt_hash": "sha256:" + "a" * 64,
+                "receipt_status": "HOLD",
+            },
+            "docs/research/git-governance/receipt.json",
+            [],
+        ),
+    )
+    monkeypatch.setattr(session, "check_doc_links", lambda: (True, "All links valid"))
+    monkeypatch.setattr(session, "archive_completed_tasks", lambda fix=False: (0, 0))
+    monkeypatch.setattr(session, "get_today_prs", list)
+    args = SimpleNamespace(fix=False, git_receipt=None, log_cost=False, agent="ops")
+    return authority_calls, args
+
+
+def test_session_end_reuses_one_clean_authority_query_and_skips_unknown_doc_set(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    authority_calls, args = _patch_cmd_end_dependencies(
+        monkeypatch, _closeout_state(clean=True)
+    )
+
+    assert session.cmd_end(args) == 0
+    output = capsys.readouterr().out
+    assert authority_calls == [["collect_repository_state"]]
+    assert "Working tree clean (scripts/git_state.py)" in output
+    assert "Doc-folder set UNKNOWN" in output
+    assert "no committed-diff path evidence" in output
+    assert "No doc folder changes detected" not in output
+
+
+def test_session_end_query_failure_cannot_pass_or_print_clean(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    state = _closeout_state(
+        clean=False,
+        failures=[git_state.QueryFailure("git status --porcelain=v2", "exit 128")],
+    )
+    authority_calls, args = _patch_cmd_end_dependencies(monkeypatch, state)
+
+    assert session.cmd_end(args) == 1
+    output = capsys.readouterr().out
+    assert authority_calls == [["collect_repository_state"]]
+    assert "Git state UNKNOWN/hold" in output
+    assert "Doc-folder set UNKNOWN" in output
+    assert "Working tree clean" not in output
+
+
+@pytest.mark.parametrize(
+    "case",
+    [
+        "head_sha",
+        "empty_branch",
+        "head_branch",
+        "banana_relation",
+        "uppercase_unknown_relation",
+        "schema",
+        "remote_freshness",
+        "default_none_observed",
+        "default_bad_ref",
+        "upstream_none_observed",
+        "double_slash_branch",
+        "leading_dash_branch",
+        "worktree_identity",
+        "nan_duration",
+        "infinite_duration",
+        "future_timestamp",
+        "stale_timestamp",
+    ],
+)
+def test_session_end_malformed_canonical_contract_fails_closed(
+    case: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    authority_calls, args = _patch_cmd_end_dependencies(
+        monkeypatch, _malformed_clean_state(case)
+    )
+
+    assert session.cmd_end(args) == 1
+    output = capsys.readouterr().out
+    assert authority_calls == [["collect_repository_state"]]
+    assert "Git state UNKNOWN/hold" in output
+    assert "Working tree clean" not in output
+
+
+@pytest.mark.parametrize(
+    ("case", "expected_return", "expected_text"),
+    [
+        ("clean", 0, "Working tree: \x1b[2mclean"),
+        ("dirty", 1, "Uncommitted changes: 1 file(s)"),
+        ("detached", 1, "Branch: \x1b[32mDETACHED"),
+        ("held", 1, "UNKNOWN/hold (HOLD_BEHIND)"),
+        ("query_failed", 1, "Branch: \x1b[33mUNKNOWN"),
+        ("malformed", 1, "Branch: \x1b[33mUNKNOWN"),
+    ],
+)
+def test_session_context_uses_only_canonical_git_state_and_fails_closed(
+    case: str,
+    expected_return: int,
+    expected_text: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    state = _closeout_state(clean=True)
+    if case == "dirty":
+        state = _closeout_state(clean=False, paths=["docs/SESSION_LOG.md"])
+    elif case == "detached":
+        state.branch = "DETACHED"
+        state.derived_action = "HOLD_DETACHED"
+        state.hold_reasons = ["HEAD is detached"]
+    elif case == "held":
+        state.default_base = git_state.Relation("origin/main", "b" * 40, 0, 1, "behind")
+        state.derived_action = "HOLD_BEHIND"
+        state.hold_reasons = ["HEAD is behind a required ref"]
+    elif case == "query_failed":
+        state = _closeout_state(
+            clean=True,
+            failures=[git_state.QueryFailure("git status --porcelain=v2", "exit 128")],
+        )
+    elif case == "malformed":
+        state.branch = "HEAD"
+
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+    monkeypatch.setattr(
+        session.subprocess,
+        "run",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("session context must not invoke a Git subprocess")
+        ),
+    )
+
+    assert session.cmd_context(SimpleNamespace()) == expected_return
+    output = capsys.readouterr().out
+    assert expected_text in output
+    assert "Branch: \x1b[32m\x1b[0m" not in output
+    if case != "clean":
+        assert "Working tree: \x1b[2mclean" not in output
+
+
+def test_session_context_holds_authority_exception_without_subprocess_fallback(
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    def raise_authority(_repo):
+        raise OSError("canonical authority unavailable")
+
+    monkeypatch.setattr(session, "collect_repository_state", raise_authority)
+    monkeypatch.setattr(
+        session.subprocess,
+        "run",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("session context must not invoke a Git subprocess")
+        ),
+    )
+
+    assert session.cmd_context(SimpleNamespace()) == 1
+    output = capsys.readouterr().out
+    assert "Branch: \x1b[33mUNKNOWN" in output
+    assert "canonical authority unavailable" in output
+    assert "Working tree: \x1b[2mclean" not in output
 
 
 @pytest.mark.parametrize(
@@ -623,17 +1123,137 @@ def test_session_end_preserves_current_same_day_handoff(
 <!-- HANDOFF:START -->
 - Date: 2026-08-07
 - Focus: obtain approval for the focused CI fixes
+- Git receipt: docs/receipt.json | sha256:test-hash | READY
 <!-- HANDOFF:END -->
 """
     next_brief.write_text(expected, encoding="utf-8")
     monkeypatch.setattr(session, "SESSION_LOG", session_log)
     monkeypatch.setattr(session, "NEXT_BRIEF", next_brief)
+    monkeypatch.setattr(
+        session,
+        "_resolve_git_receipt",
+        lambda block, explicit_path=None: (
+            {"local_state_receipt_hash": "sha256:test-hash"},
+            "docs/receipt.json",
+            [],
+        ),
+    )
 
     ok, message = session._do_handoff(preserve_current_same_day=True)
 
     assert ok is True
     assert "Preserved" in message
     assert next_brief.read_text(encoding="utf-8") == expected
+
+
+def test_handoff_round_trip_embeds_valid_receipt_identity(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    now = datetime(2026, 8, 15, 9, 30, tzinfo=UTC)
+    head = "a" * 40
+    base = "b" * 40
+    state = git_state.RepositoryState(
+        schema_version=1,
+        observed_at_utc=now.isoformat(),
+        repository_root=str(tmp_path),
+        worktree_root=str(tmp_path),
+        git_dir=str(tmp_path / ".git"),
+        git_common_dir=str(tmp_path / ".git"),
+        linked_worktree=False,
+        branch="codex/git-7e",
+        head_sha=head,
+        default_base=git_state.Relation("origin/main", base, 1, 0, "ahead"),
+        upstream=git_state.Relation("origin/codex/git-7e", head, 0, 0, "equal"),
+        tree=git_state.TreeState(clean=True),
+        operation="none",
+        operation_markers=[],
+        locks=[],
+        remote_freshness="NOT_CHECKED",
+        derived_action="READY_LOCAL",
+        hold_reasons=[],
+        query_failures=[],
+        duration_ms=1.0,
+    )
+    not_applicable = {
+        "status": "NOT_APPLICABLE",
+        "reason_code": "LOCAL_ONLY_TASK_AT_HANDOFF",
+    }
+    receipt = git_handoff_receipt.build_receipt(
+        task_id="GIT-7E",
+        integration_owner="Main Agent",
+        local_state=state,
+        evidence={
+            "remote": not_applicable,
+            "pull_request": not_applicable,
+            "review": not_applicable,
+            "integration": not_applicable,
+            "retention": {
+                "status": "NOT_APPLICABLE",
+                "reason_code": "NO_RETENTION_ACTION_IN_SCOPE",
+            },
+            "authorization": {
+                "status": "OBSERVED",
+                "authorized_actions": ["CONTINUE_LOCAL_WORK"],
+                "prohibited_actions": ["DELETE_BRANCH"],
+                "next_action": "CONTINUE_LOCAL_VALIDATION",
+            },
+        },
+        now=now,
+    )
+    repo = tmp_path / "repo"
+    docs = repo / "docs"
+    docs.mkdir(parents=True)
+    receipt_path = docs / "receipt.json"
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    session_log = docs / "SESSION_LOG.md"
+    session_log.write_text(
+        """# Log
+
+## 2026-08-15 — GIT-7E Session
+**Focus:** durable handoff
+
+**Completed:**
+- receipt contract
+""",
+        encoding="utf-8",
+    )
+    next_brief = docs / "next-session-brief.md"
+    next_brief.write_text("# Brief\n", encoding="utf-8")
+    monkeypatch.setattr(session, "REPO_ROOT", repo)
+    monkeypatch.setattr(session, "SESSION_LOG", session_log)
+    monkeypatch.setattr(session, "NEXT_BRIEF", next_brief)
+
+    ok, message = session._do_handoff(git_receipt=receipt_path)
+
+    handoff = next_brief.read_text(encoding="utf-8")
+    assert ok is True, message
+    assert receipt["local_state_receipt_hash"] in handoff
+    assert f"codex/git-7e@{head}" in handoff
+    assert "remote=NOT_APPLICABLE" in handoff
+    assert "Next action: CONTINUE_LOCAL_VALIDATION" in handoff
+
+
+def test_handoff_missing_receipt_is_an_explicit_hold(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    session_log = tmp_path / "SESSION_LOG.md"
+    next_brief = tmp_path / "next-session-brief.md"
+    session_log.write_text(
+        """# Log
+
+## 2026-08-15 — GIT-7E Session
+**Focus:** missing receipt
+""",
+        encoding="utf-8",
+    )
+    next_brief.write_text("# Brief\n", encoding="utf-8")
+    monkeypatch.setattr(session, "SESSION_LOG", session_log)
+    monkeypatch.setattr(session, "NEXT_BRIEF", next_brief)
+
+    ok, message = session._do_handoff()
+
+    assert ok is False
+    assert "Missing task-to-Git handoff receipt" in message
 
 
 def test_session_log_completeness_uses_only_newest_same_day_entry(

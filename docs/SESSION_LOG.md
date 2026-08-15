@@ -5,6 +5,484 @@
 
 ---
 
+## 2026-08-15 — Session: GIT-7E Semantic Guidance and Durable Handoff
+
+**Agent:** Codex (`ops`, sole writer/integration owner; no subagents)
+
+**Branch:** `codex/git-7e-semantic-handoff`, created from freshly fetched and
+verified `origin/main = b91838f594a04aff1d21c43bf6f87a64710b0748`
+
+**Task start:** `2026-08-15T09:12:34Z`
+
+**Focus:** Add semantic coherence over deterministically discovered maintained
+Git guidance and a durable, fail-closed task-to-Git handoff receipt, then pause
+at the locally and hosted green draft PR head for independent audit
+
+**Git handoff receipt:** `docs/research/git-governance/GIT-001-phase-7E-task-git-handoff.json`
+
+### Summary
+
+- Replaced the hand-maintained semantic surface list with an indexed discovery
+  contract whose live, generated-index, and historical boundaries are tested.
+- Corrected only the confirmed main-process live contradictions in Git learning,
+  migration, governance, Agent 9, and maintained guide surfaces.
+- Added a versioned task-to-Git receipt that consumes `git_state.py` for local
+  facts and caller evidence for hosted facts, without an independent Git/network
+  reader or any mutation path.
+- Routed session handoff/end through receipt path, hash, freshness,
+  contradiction, and round-trip validation; corrected the handoff automation
+  permission to `WorkspaceWrite`.
+- Updated the task, handoff, phase, canonical workflow, session skill, CI, and
+  generated indexes only where GIT-7E changed current truth. GIT-7D1/GIT-7D2
+  behavior and all protected lanes remain unchanged.
+
+### Issues encountered
+
+- The old semantic checker passed while indexed live guidance still recommended
+  retired wrappers, non-Codex branch/main-checkout flows, stash/destructive
+  rollback, deletion, reset, and force-push recovery.
+- Session handoff persisted prose and optional PR numbers only; session end could
+  not validate durable local/hosted identity, freshness, hashes, or contradictory
+  claims. The automation map also classified a writing handoff as read-only,
+  while `run.sh` did not dispatch its maintained `handoff` alias at all.
+- The first focused run exposed three implementation defects: receipt local
+  payload construction referenced an unset variable, deprecated frontmatter was
+  incorrectly accepted as its own historical marker, and the new receipt alias
+  was absent from the automation registry.
+- A targeted `rg` search beginning with `--delete` was parsed as an option.
+- The first receipt command left the `refs/**` boundary unquoted, so zsh
+  rejected the unmatched glob before the receipt tool ran.
+- The first real handoff reported success but left the current brief unchanged
+  because its maintained legacy heading lacked the newer `(auto)` suffix.
+- A formatter check was mistakenly aimed at the shell dispatcher; it made no
+  change, and the correct `bash -n run.sh` syntax check passed.
+- A targeted index-generation command correctly refused `docs/git-automation`
+  because that folder has no maintained index topology.
+- A repository-wide pre-commit invocation created 1,745 unstaged mechanical
+  edits across unrelated tracked files and surfaced known all-tree JSON/Bandit
+  baselines instead of a scoped task result. Before the hook the worktree had
+  exactly 22 staged task paths and zero unstaged paths.
+- The first commit attempt was stopped by the end-of-file hook because the
+  generated global docs index omitted its required final newline.
+- Independent exact-head audit reproduced that clearing serialized `holds` and
+  changing `receipt_status` to `READY` made stored validation return `[]`, even
+  when `DELETE_BRANCH` and `MERGE` were also inserted into authorized actions.
+- A second exact-head audit found that changing only `authorization.next_action`
+  to `DELETE_BRANCH` or `MERGE`, aging the authorization source, or recording an
+  authorization query failure still validated successfully.
+- The maintained indexed Git learning guide still prescribed broad staging,
+  filter-branch, checkout-overwrite, and reset recovery. The first contextual
+  semantic replay then exposed equivalent broad-staging and wholesale
+  checkout-ours instructions in the maintained Agent 9 knowledge base.
+- A third exact-head audit found nested `authority_source.query_status` was
+  ignored and upgraded to `OK`, while the maintained Agent 9 knowledge base
+  still directly prescribed commit amendment, cherry-pick, ad-hoc recovery
+  branches, direct revert/push, and other outcome-changing lifecycle commands.
+- A fourth exact-head audit found the semantic checker blanket-skipped every
+  line containing `never`/`do not` and recognized only seven instruction verbs,
+  so equivalent imperative prose such as amend, cherry-pick, create, or replay
+  could bypass otherwise-correct unsafe-command patterns.
+- A fifth exact-head audit found that clause-local negation still accepted
+  negated reminder/encouragement auxiliaries such as `do not forget to run`,
+  `never hesitate to recover`, and `never fail to create`; those sentences
+  direct the unsafe action rather than prohibit it.
+- A sixth exact-head audit found the direct-prefix approximation rejected four
+  genuine prohibitions: Markdown exact-object suffixes using `do not run` or
+  `never use`, inner `not to run`, and `do not fail to avoid`.
+- A seventh exact-head audit found maintained Agent 9 guidance still required
+  pulling before every PR-branch push, bypassing branch/upstream/ownership and
+  behind/diverged inspection. The semantic index missed the prose-equivalent
+  because its patterns required a literal `git` command.
+- An eighth exact-head audit found the omitted-`git` prose pattern missed
+  intervening-pronoun mandates such as `pull before you push` and overreached
+  into non-Git objects such as a lead horse or first-aid supplies. The same audit
+  found session-end independently ran `git status --porcelain`, treated
+  exceptions/nonzero results as an empty list, and could print a false CLEAN.
+- A ninth exact-head audit found the paired pull/push regex still classified
+  physical sled/actuator instructions as Git guidance; clean tree evidence was
+  not reconciled with `derived_action`/holds; and session-end still queried
+  `git diff` plus `git status --porcelain` for README folder discovery.
+- The first tenth-head focused replay showed the lifecycle-context regex
+  consumed a leading direct prohibition, while the initial grammar correction
+  would have misclassified the double-negative mandate `don't push ... without
+  pulling first` as safe.
+- The first tenth-candidate commit attempt stopped after Ruff converted one
+  test-only zero-argument lambda to the equivalent callable; no commit was
+  created and no path outside the 14 staged task paths changed.
+- A post-generation receipt display snippet assumed `task_id` was top-level and
+  raised `KeyError` after the receipt had already validated successfully.
+- Final receipt inspection found its inherited integration reason said the draft
+  PR was not open, although PR #751 existed; the section made no integration
+  claim, but its explanation was stale.
+- An eleventh exact-head audit found the pull rule missed an intervening remote-
+  branch object and a later unsafe clause, while unbounded/case-insensitive
+  context tokens matched `PR` inside `spring`/`appropriate` and crossed into a
+  later repository sentence. It also proved `git_state` derivation accepted
+  malformed schema, SHA, branch, relation, and freshness inputs as READY_LOCAL.
+- The first eleventh focused replay treated a failed status query's fail-closed
+  `clean=false`/zero-path state as contradictory and used an unchanged relation
+  count in one adversarial fixture. The prior receipt also correctly became
+  stale while the new code head was not yet available.
+- The eleventh pre-hook Ruff check rejected import ordering in the two edited
+  test modules before staging.
+- A twelfth exact-head audit found nine remaining canonical-schema mutations
+  could still validate as READY_LOCAL and let session-end print CLEAN: observed
+  relations using placeholder or malformed refs, invalid branch refnames,
+  contradictory worktree identity, non-finite duration, and future evidence.
+- The first twelfth focused replay used an actual `none` upstream fixture when
+  reproducing the auditor's observed/equal `ref="NONE"` mutation, so it did not
+  construct the claimed contradictory relation and one assertion failed.
+- The first twelfth receipt commit command placed `&& git commit` on the same
+  line as a Python here-document terminator, so Python parsed the shell suffix
+  and raised `SyntaxError` before the commit ran. The intended two receipt paths
+  remained staged with zero unstaged paths.
+- A completed twelfth-head audit found the pure branch grammar accepted the
+  exact pseudo-ref `HEAD`, although read-only
+  `git check-ref-format --branch HEAD` exits 128; tampered canonical evidence
+  could therefore remain READY_LOCAL and let session closeout report CLEAN.
+- The same audit found maintained `./run.sh session context` independently ran
+  `git status --porcelain` and `git rev-parse`; blank stdout with return code 128
+  produced an empty branch, `Working tree: clean`, and process exit 0.
+- The first final-closeout receipt generation ran after the LOCAL PASS session
+  note was edited, so canonical evidence truthfully added `LOCAL_HOLD_DIRTY`
+  instead of representing the clean audited implementation object.
+- The first ninth-head focused replay rejected valid canonical state fixtures
+  loaded through the package alias and one past-tense historical control.
+- A read-only inventory regex containing a backtick was initially passed with
+  unsafe shell quoting and zsh rejected it before the search ran.
+- The first sixth-head session-end replay held because it was intentionally run
+  before the newly generated receipt and index were committed.
+- The first seventh-head focused replay rejected the two Markdown suffix
+  controls while all prefix-polarity controls passed.
+- The first seventh-head Black check required mechanical multiline formatting
+  in the checker before the validation sequence could continue.
+- Eighth-head index generation refused a live write for `docs/git-automation`
+  because that folder has no maintained index topology, although dry-run listed
+  the prospective target.
+
+### Root causes and resolutions
+
+- Root cause: semantic coverage depended on hard-coded files/tokens rather than
+  the maintained indexes and explicit historical boundary. Resolution: add the
+  deterministic live-guidance index, discover active indexed entries and globs,
+  require explicit historical wording, and reject lifecycle contradictions by
+  semantic category. Evidence: live contradiction/coherent/archive fixtures and
+  the repository semantic check pass.
+- Root cause: prose-only handoff had no schema or exact evidence binding.
+  Resolution: add the read-only receipt builder/validator, canonical hash,
+  explicit `UNKNOWN`/`NOT_CHECKED`/reasoned `NOT_APPLICABLE`, exact-head/check
+  binding, squash-tree rules, and session validation. Evidence: receipt and real
+  session-handoff round-trip regressions pass, including malformed, stale,
+  query-failed, dirty, contradictory, and squash cases.
+- Root cause: the initial local payload assignment was placed in the helper that
+  consumed it; historical detection treated a metadata status as narrative; the
+  automation registry had no receipt entry. Resolution: construct the payload in
+  `build_receipt`, require an explicit historical banner, and register read-only
+  validation plus `WorkspaceWrite` output/handoff modes and route the alias
+  through `session.py`. Evidence: the corrected focused suite and live
+  `./run.sh session handoff --help` dispatch pass.
+- Root cause: the handoff updater detected generic markers but its replacement
+  regex accepted only the newer heading, creating a false-success no-op on the
+  live brief. Resolution: accept both maintained heading forms and regress the
+  legacy form; the real receipt-bound handoff now writes exact identity lines.
+- Terminal issue resolution: insert `--` before a ripgrep pattern that begins
+  with a hyphen; the corrected search completed without changing scope.
+- Terminal issue resolution: quote the literal `refs/**` receipt argument; the
+  corrected command produced and validated the intended receipt.
+- Terminal issue resolution: use Black only for Python paths and `bash -n` for
+  `run.sh`; both relevant formatter/syntax checks then passed.
+- Terminal issue resolution: inspect the folder for existing index files, do
+  not use `--allow-new-index`, and regenerate only maintained parent/global
+  indexes; no new topology was created.
+- Terminal issue resolution: retain the staged task snapshot and stage the
+  intended `docs/docs-index.json` newline normalization, leaving 1,744 hook-only
+  unstaged paths. Verify every remaining path was a tracked regular-file
+  modification with no traversal or symlink, then restore exactly that
+  NUL-delimited path set and use scoped pre-commit paths thereafter. The staged
+  22-file task snapshot was preserved. A read-only replay of the hook algorithms
+  reconstructed all 1,745 paths with path-set SHA-256
+  `9f7d1ccd79326e4cf2d6cd0c52e51d81de5d0e519aea7404d0adb4f0e0d07976`;
+  the only trailing-whitespace path was historical
+  `docs/_archive/VALIDATION_COMPLETE.md`, with the union otherwise attributable
+  to end-of-file normalization. The later orchestrator restriction against
+  `git restore` arrived after this exact path-bounded reversal had completed;
+  no further reversal command was run.
+- Root cause: the docs-index generator emitted JSON without the repository's
+  hook-required terminal newline. Resolution: retain the hook's normalization,
+  restage the exact generated file, and require a clean second hook pass before
+  commit; no validation was bypassed.
+- Root cause: stored validation treated caller-controlled serialized holds as
+  authority and checked false `READY` only against those stored values; it did
+  not independently derive semantic holds or validate the authorization source
+  and target. Resolution: use one evidence-to-holds derivation for creation and
+  validation, require an exact hold-set/status match, close the status enum,
+  require `receipt_grants_authority: false`, and validate external authorization
+  source plus task/branch/head/action binding. Evidence: both auditor tamper
+  reproductions now return `FALSE_READY_CLAIM`, hold-set/status contradictions,
+  and the missing evidence/authorization holds; focused regressions cover
+  clearing all holds, removing one hold, invalid status/next action, authority-
+  boundary tampering, and injected destructive/merge actions.
+- Root cause: authorization was structurally checked but did not pass through
+  freshness/query semantics, while `next_action` was not constrained to an
+  authorized exact-target action or a closed safe hold/wait set. Resolution:
+  derive authorization and source freshness/query holds, require every active
+  next action to be externally authorized and target-bound, and permit only four
+  explicit non-mutating hold/wait actions without mutation authority. Evidence:
+  direct DELETE_BRANCH/MERGE injection, stale provenance, and query-failure
+  regressions fail closed; all four safe hold actions round-trip.
+- Root cause: the semantic control covered lifecycle categories and destructive
+  command tokens but not instruction-context broad staging or history/file-
+  changing recovery forms. Resolution: add indexed instruction patterns applied
+  only to live command/instruction contexts, correct the active learning and
+  Agent 9 guidance to exact-path staging and preservation-first inspection, and
+  retain historical prose as non-authority. Evidence: five active unsafe forms
+  fail in fixtures, harmless incident prose passes, and the live indexed
+  repository semantic check passes.
+- Root cause: source freshness validation constructed a synthetic mapping with
+  `query_status: OK`, overwriting caller evidence. Resolution: validate the
+  nested source mapping itself and require its status, query result, and
+  timestamp to survive unchanged through hold derivation. Evidence: exact
+  FAILED, UNKNOWN, missing, malformed, future, stale, and missing/malformed-time
+  regressions all derive source-specific holds and reject false readiness.
+- Root cause: Agent 9 was correctly indexed and actively linked as maintained
+  authority, but its legacy examples mixed read-only inspection with imperative
+  Git mutation and the semantic patterns did not cover amendment, patch replay,
+  or ad-hoc/non-Codex branch creation. Resolution: audit the entire live file,
+  route all lifecycle mutations through `git_state.py`, preservation/ownership
+  checks, and Codex authority, and add instruction-context patterns while
+  allowing unambiguous historical incident prose. Evidence: the file contains
+  no imperative Git mutation command, nine unsafe context fixtures fail, four
+  historical-prose fixtures pass, and the live repository semantic check passes.
+- Root cause: instruction classification depended on a narrow verb allowlist
+  and line-wide negation rather than the grammatical relationship to the unsafe
+  command. Resolution: treat every indexed unsafe Git expression as authority
+  unless its local clause genuinely prohibits that expression or it is explicit
+  past-tense historical narration; clause boundaries prevent unrelated earlier
+  negation from suppressing a later imperative. Evidence: amend, cherry-pick,
+  create, replay, and adversarial-negation fixtures fail; four governing-
+  prohibition and four historical controls pass; the repository semantic check
+  remains green.
+- Root cause: the governing-prohibition check treated any negating directive in
+  the local clause as governing the later Git expression, even when the
+  negation governed an auxiliary such as forget, hesitate, fail, remember, or
+  omit. Resolution: require a lifecycle action verb to directly follow the
+  negating directive; retain exact-expression suffix prohibitions separately.
+  Evidence: the three auditor reproductions and equivalent auxiliary forms fail
+  closed, while direct `do not run`/`never use` prohibitions and historical
+  narration remain safe.
+- Focused tests passed after the direct-governance change, but the live semantic
+  replay rejected canonical `NEVER: git ...` prohibition lines because the
+  colon was not admitted between the directive and direct action. Resolution:
+  allow only intervening Markdown/directive punctuation before the action and
+  add the exact colon form as a safe regression; auxiliary words remain unsafe.
+- Root cause: direct governance was modeled only as the first action after a
+  prefix negation, so it could not represent a suffix referring to the matched
+  expression or the nearest inner action/polarity of `not to` and `avoid`.
+  Resolution: evaluate the nearest prefix action, non-negated avoidance, and an
+  exact-object suffix independently within the local clause. Evidence: all four
+  auditor forms and Markdown variants pass, their auxiliary/directly-negated
+  contrasts fail, clause boundaries stay isolated, and history controls pass.
+- Root cause: semantic mutation patterns covered `git pull`-style command text
+  but not unconditional pull-before-push prose, while Agent 9 retained one stale
+  checklist bullet inconsistent with its own correct inspection-first recovery
+  procedure. Resolution: replace that bullet with exact `git_state.py
+  --json --worktrees` inspection and fail-closed holds, and add a data-driven
+  omitted-`git` pattern for pull-before-push/pull-first forms. Evidence:
+  unconditional and double-negative mandate fixtures fail; direct prohibitions
+  plus historical/deprecated narration pass; the full indexed corpus is green.
+- Root cause: the prose pattern treated `pull first` as sufficient without a
+  paired push action and did not allow the subject `you`; session closeout also
+  retained a legacy subprocess calculation instead of consuming the already
+  imported Git-state kernel. Resolution: require a bounded pull/push action pair
+  (including `before you push`) and route closeout through
+  `collect_repository_state` only. Query failure, exception, schema/type
+  mismatch, or contradictory tree evidence is UNKNOWN/hold; only canonical
+  clean evidence prints CLEAN. Evidence: exact imperative/non-Git/history pairs
+  and clean/dirty/nonzero/exception/malformed authority regressions pass, with
+  no closeout Git/network/mutation subprocess.
+- Root cause: a bounded pull/push pair still lacked an explicit Git object or
+  lifecycle context, the closeout adapter validated tree fields independently
+  of the kernel action/holds, and README discovery retained its own historical
+  Git queries. Resolution: require Git lifecycle context except for three narrow
+  standalone imperative forms; add a read-only `git_state` consistency API that
+  recomputes action/holds from the supplied canonical evidence; require
+  READY_LOCAL plus empty holds for CLEAN and coherent HOLD_DIRTY evidence for
+  DIRTY; and reuse that one evidence tuple for README discovery. A clean state
+  has no committed-diff path set, so the advisory step reports UNKNOWN/skipped
+  instead of claiming no doc changes. Evidence: 191 focused receipt, semantic,
+  Git-state, and session tests pass with exact physical/Git pairs,
+  clean/dirty/action-hold contradictions, query failures, and cmd_end/subprocess
+  spies; the full indexed semantic corpus is green.
+- Focused-replay root cause: the Git-context lookahead deliberately included
+  leading prose, making the match start too early for direct-governance parsing;
+  blindly shifting to the first negated action would then hide a `without`
+  mandate. Resolution: locate the directly governed action only for a leading
+  negation without a same-match `without` clause. Evidence: direct `do not pull`
+  controls pass while the existing double-negative mandate and every prior
+  auxiliary, suffix, historical, and clause-boundary case retain their polarity.
+- Hook root cause: the new session-end spy used `lambda: []`, which Ruff's
+  unnecessary-lambda rule rewrites to `list`. Resolution: retain that exact
+  regular-file mechanical edit, regenerate the task-owned indexes, and rerun the
+  scoped tests/hooks. Evidence: before the hook there were 14 staged task paths,
+  zero unstaged paths, and staged SHA-256 `525049d9024920566ed6549290b2f61289dcb37e697915c89324f53333bec668`;
+  afterward the sole unstaged path was
+  `Python/tests/test_session_automation.py`, with binary-diff SHA-256
+  `f5835eff85348ecc7d723a87c2ed6e8e0bee7efdc07c085cee92dd8f456ed347`.
+- Terminal issue resolution: inspect the schema directly and read
+  `task.task_id`; validation remained green and no receipt field was changed by
+  the failed display-only snippet.
+- Receipt root cause: the caller evidence retained a pre-PR reason code across
+  later exact-head refreshes. Resolution: keep integration reasoned
+  `NOT_APPLICABLE` before audit/merge but replace the false fact with
+  `NO_INTEGRATION_CLAIM_PRE_AUDIT`; remote, PR, and review facts remain explicit
+  `NOT_CHECKED` holds rather than being inferred from that section. Evidence:
+  stored receipt validation and session-end remain fail-closed.
+- Eleventh semantic root cause: one monolithic regex searched context to the end
+  of the line, lacked lexical boundaries, consumed prose before the governed
+  action, and encoded only the PR-branch object. Resolution: replace only that
+  rule with a data-driven clause-action contract containing an action pattern,
+  word-bounded lifecycle context, and narrow standalone full-clause forms;
+  split context at sentence/semicolon boundaries and pass the action-starting
+  span to the existing prohibition/history grammar. Evidence: all five auditor
+  strings have verbatim polarity tests, the remote object match starts at
+  `Pull`, and every earlier physical/history/prohibition/double-negation case
+  remains green.
+- Eleventh state root cause: the consistency API recomputed derived action and
+  holds but assumed every source field already conformed to the canonical
+  schema. Resolution: make `git_state.py` validate its own full evidence
+  contract—supported schema, timestamps/paths/types, SHA/branch coherence,
+  relation counts/status, tree count/clean state, operation markers, locks,
+  query failures, freshness and derived enums—before recomputation; session-end
+  now consumes that one validator without a partial schema. Evidence: exact
+  malformed auditor inputs and paired relation/tree/operation/query cases return
+  UNKNOWN without subprocess I/O, and malformed cmd_end runs return nonzero
+  without printing CLEAN.
+- Focused-replay resolution: permit `clean=false` with zero known paths only
+  when required query-failure evidence exists, and change the relation-count
+  fixture to an actual count/status contradiction. Receipt staleness remains a
+  hold until exact-head evidence is regenerated after the code commit.
+- Formatter resolution: apply Ruff's scoped import ordering to only the two
+  edited tests, regenerate the maintained tests index, and replay Ruff clean;
+  no hook or unrelated path was involved.
+- Twelfth state root cause: the canonical consistency validator checked
+  relation refs only as nonempty strings, branches only for whitespace, paths
+  only for absolute shape, timestamps only for parseability, and durations only
+  for numeric/nonnegative shape. Resolution: add a pure Git-ref/refname grammar,
+  status-aware `NONE` placeholder rules, repository/worktree and linked Git-dir
+  identity checks, finite duration enforcement, and an injectable validation
+  clock with five-minute maximum age and five-second future skew. All rules
+  remain in `git_state.py`; session closeout still delegates to that one
+  validator. Evidence: all nine exact auditor mutations plus stale evidence
+  return UNKNOWN without subprocess access, while valid linked-worktree refs,
+  boundary timestamps, and finite durations pass.
+- Focused-replay resolution: replace the no-upstream fixture with an explicit
+  observed/equal relation carrying `ref="NONE"`; the exact mutation then fails
+  for the intended relation-ref reason without changing production behavior.
+- Terminal issue resolution: end the here-document on its own line, replay the
+  two-path staged inventory and hash, then run the commit separately. Evidence:
+  the staged set remained exactly the receipt JSON plus its maintained index,
+  with SHA-256 `d4be2299c68df90db6d9896dbb92299d0d292a7cc7e24967311131b6cd12d21c`,
+  zero unstaged paths, and no symlinks or non-regular files; the separate commit
+  and all hooks passed.
+- Local-only branch root cause: the pure grammar implemented general ref-format
+  character/component rules but omitted Git's branch-mode special rejection of
+  uppercase `HEAD`, while also rejecting the branch-valid one-level name `@`.
+  Resolution: make those two branch-mode rules exact and add a representative
+  parity corpus against read-only `git check-ref-format --branch`, retaining
+  earlier valid names and every malformed separator, component, suffix, and
+  character boundary. Evidence: the parity corpus and canonical/session `HEAD`
+  tamper regressions pass without any production subprocess or network access.
+- Local-only context root cause: `cmd_context` predated the canonical state
+  kernel and never checked the three Git subprocess return codes, forming a
+  second fail-open authority. Resolution: remove its status, rev-parse, and log
+  subprocesses; collect and validate the canonical evidence once, print its
+  branch/HEAD/tree facts, and return nonzero for dirty, detached, held,
+  malformed, query-failed, or exceptional evidence. Evidence: end-to-end clean,
+  dirty, detached, behind, failed-query, malformed, and exception cases pass
+  while a subprocess spy rejects every fallback Git command.
+- Final-closeout ordering root cause: the task-owned session note was written
+  before collecting the audited code-head state. Resolution: reverse only the
+  exact session/receipt edits with path-bounded patches, verify the worktree was
+  clean, generate the receipt from immutable head `abfdb968`, then reapply the
+  note for the single packet commit. Evidence: the corrected receipt records
+  `READY_LOCAL`, has no local hold, and retains only explicit remote, PR, and
+  review `NOT_CHECKED` holds.
+- Focused-replay root cause: Python loaded `git_state` and `scripts.git_state`
+  as distinct module identities, so nominal `isinstance` checks rejected the
+  same schema; historical grammar included `says` but omitted `said`.
+  Resolution: validate canonical evidence structurally by schema/required fields
+  and add the explicit past-tense narration token. Malformed fields still hold.
+- Terminal issue resolution: rerun the read-only inventory with the regex in
+  literal single quotes; it completed without any repository mutation.
+- Session-end correctly treats uncommitted receipt evidence as incomplete.
+  Resolution: validate and commit the exact receipt packet first, then replay
+  session-end on the clean tree; no hold was suppressed or auto-fixed.
+- Root cause: indexed unsafe-command patterns intentionally match the unsafe
+  token prefix rather than every argument, so the suffix classifier saw
+  `--hard` or a commit ID between the match end and the em-dash prohibition.
+  Resolution: recognize that bounded same-clause command continuation only when
+  it terminates at an em-dash exact-object suffix; semicolon/period clause
+  boundaries and non-deictic suffixes remain instructions. The remaining italic
+  `_never` case exposed Python's underscore-as-word boundary; directive starts
+  now exclude only letters/digits, so Markdown delimiters work without matching
+  embedded words such as `whenever`.
+- Formatter resolution: run Black only on the two scoped Python paths and replay
+  `--check`; both then passed without touching unrelated files.
+- Index resolution: do not use `--allow-new-index`; refresh the maintained
+  Python/tests, Agent 9, and top-level docs indexes only. The refusal created no
+  files and prevented an unintended parallel index authority.
+
+### Verification
+
+- Worktree-bound runtime diagnosis reported `source_bound=true`; startup local
+  state was clean and ready at the verified PR #750 merge SHA.
+- Focused receipt, semantic, and session regression suite: 160 passed after the
+  eighth independent-audit blocker fix.
+- The ninth candidate completed the full indexed semantic corpus, strict docs,
+  links, quick/full gates, efficiency, session-end, preservation replay, and
+  hosted checks before its independent-audit rejection.
+- Tenth-candidate focused receipt/semantic/Git-state/session regressions pass
+  191 tests; the full indexed semantic corpus passes; strict docs pass 5/5;
+  1,107 links have zero failures; and quick 10/10 plus full 30/30 pass. Final
+  efficiency, session-end, preservation, and hosted checks are replayed only on
+  the exact receipt-bound head.
+- Eleventh-candidate focused receipt/semantic/Git-state/session regressions pass
+  223 tests and the full indexed semantic corpus passes. Strict docs pass 5/5,
+  1,107 links have zero failures, quick passes 10/10, full passes 30/30, and
+  efficiency passes. On receipt commit `4ae58117695e9993f4dcd7d0faf47b9d942f7087`,
+  session-end passes using canonical `git_state.py` evidence and validates the
+  fail-closed HOLD receipt with hash
+  `sha256:ca5c3e527a8fd269a743c00fc6071865bbbd51243621b48a1226520e08a77b3d`.
+  Preservation replay and hosted checks remain pending until the final
+  documentation head exists.
+- Twelfth-candidate focused receipt/semantic/Git-state/session regressions pass
+  256 tests and the full indexed semantic corpus passes. Strict docs pass 5/5,
+  1,107 links have zero failures, quick passes 10/10, full passes 30/30, and
+  efficiency plus session-end pass on receipt commit
+  `c93d6ccfcc5eb3e45ec99559a63f0bbc285136d4`. The validated fail-closed HOLD
+  receipt hash is
+  `sha256:05100369e50b3c9fd495f160439171572bedb1ab0cf24204d1d1abb80473e091`.
+  Preservation and hosted checks remain pending until the final documentation
+  head exists.
+- Local-only follow-up candidate passes 292 focused semantic, receipt,
+  Git-state, and session tests plus the indexed semantic checker. Per the
+  orchestrator boundary, no full repository gate, push, hosted run, ready, or
+  merge action is performed before independent inspection of the local object.
+- Independent local audit granted PASS for immutable implementation head
+  `abfdb968991290504a8facaab2172fa09876bae1`, tree
+  `af8386cdc758e0231e108eda56f16f88e93825b5`, confirming the two frozen roots:
+  branch-mode parity rejects `HEAD`, and maintained session context has no
+  competing Git-state subprocess or false-clean path. The final receipt remains
+  HOLD/NOT_CHECKED until the separately authorized hosted closeout completes.
+
+### Preservation and next boundary
+
+- No cleanup, deletion, prune, reset, rebase, stash, force push, protected-lane
+  synchronization, release, product, or IS-code action is authorized or taken.
+- After local green, open a normal draft PR and pause. Ready/merge requires the
+  supervising orchestrator's independent audit of the unchanged exact base,
+  head, and tree.
+
 ## 2026-08-15 — Session: Eight-Branch Retirement Authorization Proposal
 
 **Agent:** Codex (`ops`, sole writer/integration owner; no subagents)

@@ -13,12 +13,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
+import re
 import subprocess
 import sys
 import time
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Callable, Sequence
 
@@ -26,6 +28,32 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SCHEMA_VERSION = 1
 DEFAULT_COMMAND_TIMEOUT_SECONDS = 1.0
 SIBLING_COMMAND_TIMEOUT_SECONDS = 0.5
+SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+RELATION_STATUSES = frozenset(
+    {"ahead", "behind", "diverged", "equal", "none", "unknown"}
+)
+OPERATION_STATUSES = frozenset(
+    {"none", "merge", "cherry_pick", "revert", "bisect", "rebase"}
+)
+DERIVED_ACTIONS = frozenset(
+    {
+        "READY_LOCAL",
+        "HOLD_UNKNOWN",
+        "HOLD_OPERATION",
+        "HOLD_LOCKED",
+        "HOLD_DETACHED",
+        "HOLD_MAIN",
+        "HOLD_DIVERGED",
+        "HOLD_BEHIND",
+        "HOLD_DIRTY",
+    }
+)
+REMOTE_FRESHNESS_STATUSES = frozenset({"NOT_CHECKED"})
+# Local state is consumed immediately during session closeout. A small bounded
+# skew admits ordinary clock precision while preventing old or future evidence
+# from being upgraded to current authority.
+MAX_EVIDENCE_AGE = timedelta(minutes=5)
+MAX_FUTURE_SKEW = timedelta(seconds=5)
 
 
 @dataclass
@@ -355,6 +383,324 @@ def _derive_action(
     if not reasons:
         return "READY_LOCAL", []
     return reasons[0][0], [message for _action, message in reasons]
+
+
+def _is_nonnegative_int(value: object) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
+
+
+def _is_valid_git_refname(value: object, *, branch: bool = False) -> bool:
+    """Apply Git's ref-format constraints without invoking Git."""
+    if not isinstance(value, str) or not value or (not branch and value == "@"):
+        return False
+    if branch and (value.startswith("-") or value == "HEAD"):
+        return False
+    if (
+        value.startswith("/")
+        or value.endswith("/")
+        or value.endswith(".")
+        or "//" in value
+        or ".." in value
+        or "@{" in value
+    ):
+        return False
+    if any(ord(char) < 32 or ord(char) == 127 for char in value):
+        return False
+    if any(char in " ~^:?*[\\" for char in value):
+        return False
+    components = value.split("/")
+    return all(
+        component and not component.startswith(".") and not component.endswith(".lock")
+        for component in components
+    )
+
+
+def _validate_relation(
+    relation: object,
+    *,
+    name: str,
+    allow_none: bool,
+    query_failed: bool,
+) -> list[str]:
+    errors: list[str] = []
+    required = ("ref", "sha", "ahead", "behind", "status")
+    if not all(hasattr(relation, field) for field in required):
+        return [f"{name} relation is malformed"]
+    ref = relation.ref
+    sha = relation.sha
+    ahead = relation.ahead
+    behind = relation.behind
+    status = relation.status
+    if (
+        not isinstance(status, str)
+        or status not in RELATION_STATUSES
+        or (status == "none" and not allow_none)
+    ):
+        errors.append(f"{name} relation status is unsupported: {status!r}")
+        return errors
+    if status in {"ahead", "behind", "diverged", "equal"}:
+        if ref == "NONE" or not _is_valid_git_refname(ref):
+            errors.append(f"{name} relation ref is malformed")
+        if not isinstance(sha, str) or SHA_RE.fullmatch(sha) is None:
+            errors.append(f"{name} relation SHA is malformed")
+        if not _is_nonnegative_int(ahead) or not _is_nonnegative_int(behind):
+            errors.append(f"{name} relation counts are malformed")
+        else:
+            expected = (
+                "diverged"
+                if ahead and behind
+                else "ahead" if ahead else "behind" if behind else "equal"
+            )
+            if status != expected:
+                errors.append(f"{name} relation status contradicts counts")
+    elif status == "none":
+        if ref != "NONE" or any(value is not None for value in (sha, ahead, behind)):
+            errors.append(f"{name} none relation is contradictory")
+    elif status == "unknown":
+        if ref != "NONE" and not _is_valid_git_refname(ref):
+            errors.append(f"{name} relation ref is malformed")
+        if any(value is not None for value in (sha, ahead, behind)):
+            errors.append(f"{name} unknown relation is contradictory")
+        if not query_failed:
+            errors.append(f"{name} unknown relation lacks query failure evidence")
+    return errors
+
+
+def validate_repository_state_consistency(
+    state: object, *, now_utc: datetime | None = None
+) -> list[str]:
+    """Validate the full canonical evidence contract without Git or network I/O."""
+    required_fields = (
+        "schema_version",
+        "observed_at_utc",
+        "repository_root",
+        "worktree_root",
+        "git_dir",
+        "git_common_dir",
+        "linked_worktree",
+        "branch",
+        "head_sha",
+        "default_base",
+        "upstream",
+        "tree",
+        "operation",
+        "operation_markers",
+        "locks",
+        "remote_freshness",
+        "derived_action",
+        "hold_reasons",
+        "query_failures",
+        "duration_ms",
+    )
+    missing = [field for field in required_fields if not hasattr(state, field)]
+    if missing:
+        return [f"repository-state evidence is missing: {', '.join(missing)}"]
+
+    errors: list[str] = []
+    if state.schema_version != SCHEMA_VERSION or isinstance(state.schema_version, bool):
+        errors.append(
+            f"repository-state schema is unsupported: {state.schema_version!r}"
+        )
+    observed: datetime | None = None
+    if not isinstance(state.observed_at_utc, str):
+        errors.append("observed_at_utc is malformed")
+    else:
+        try:
+            observed = datetime.fromisoformat(
+                state.observed_at_utc.replace("Z", "+00:00")
+            )
+            if observed.tzinfo is None:
+                errors.append("observed_at_utc lacks timezone")
+                observed = None
+        except ValueError:
+            errors.append("observed_at_utc is malformed")
+    current = now_utc or datetime.now(timezone.utc)
+    if not isinstance(current, datetime) or current.tzinfo is None:
+        errors.append("validation clock is malformed")
+    elif observed is not None:
+        current = current.astimezone(timezone.utc)
+        observed = observed.astimezone(timezone.utc)
+        if observed - current > MAX_FUTURE_SKEW:
+            errors.append("observed_at_utc is in the future")
+        elif current - observed > MAX_EVIDENCE_AGE:
+            errors.append("observed_at_utc is stale")
+
+    path_fields = ("repository_root", "worktree_root", "git_dir", "git_common_dir")
+    for path_field in path_fields:
+        value = getattr(state, path_field)
+        if path_field == "repository_root" and (
+            not isinstance(value, str) or not value or not Path(value).is_absolute()
+        ):
+            errors.append(f"{path_field} is malformed")
+        elif value is not None and (
+            not isinstance(value, str) or not value or not Path(value).is_absolute()
+        ):
+            errors.append(f"{path_field} is malformed")
+    if isinstance(state.repository_root, str) and isinstance(state.worktree_root, str):
+        if Path(state.repository_root) != Path(state.worktree_root):
+            errors.append("repository_root contradicts worktree_root")
+    if state.linked_worktree is not None and not isinstance(
+        state.linked_worktree, bool
+    ):
+        errors.append("linked_worktree is malformed")
+    if isinstance(state.git_dir, str) and isinstance(state.git_common_dir, str):
+        expected_linked = state.git_dir != state.git_common_dir
+        if state.linked_worktree is not expected_linked:
+            errors.append("linked_worktree contradicts Git directory evidence")
+        if state.linked_worktree is True and Path(state.git_dir).parent != (
+            Path(state.git_common_dir) / "worktrees"
+        ):
+            errors.append("linked worktree Git directories are incoherent")
+    elif state.linked_worktree is not None:
+        errors.append("linked_worktree lacks complete Git directory evidence")
+
+    if not isinstance(state.query_failures, list):
+        errors.append("query_failures is malformed")
+        query_failed = False
+    else:
+        query_failed = bool(state.query_failures)
+        for failure in state.query_failures:
+            if not all(
+                hasattr(failure, field) for field in ("command", "reason")
+            ) or not all(
+                isinstance(getattr(failure, field, None), str)
+                and bool(getattr(failure, field, None))
+                for field in ("command", "reason")
+            ):
+                errors.append("query failure evidence is malformed")
+                break
+    if not query_failed and any(
+        not isinstance(getattr(state, field), str)
+        for field in ("worktree_root", "git_dir", "git_common_dir")
+    ):
+        errors.append("successful state lacks required Git path evidence")
+
+    if not isinstance(state.branch, str) or not state.branch:
+        errors.append("branch is malformed")
+    if state.branch == "UNKNOWN":
+        if state.head_sha is not None:
+            errors.append("UNKNOWN branch contradicts HEAD SHA")
+    elif state.branch != "DETACHED" and not _is_valid_git_refname(
+        state.branch, branch=True
+    ):
+        errors.append("branch is malformed")
+    if state.branch != "UNKNOWN" and (
+        not isinstance(state.head_sha, str) or SHA_RE.fullmatch(state.head_sha) is None
+    ):
+        errors.append("head_sha is malformed")
+
+    errors.extend(
+        _validate_relation(
+            state.default_base,
+            name="default_base",
+            allow_none=False,
+            query_failed=query_failed,
+        )
+    )
+    errors.extend(
+        _validate_relation(
+            state.upstream,
+            name="upstream",
+            allow_none=True,
+            query_failed=query_failed,
+        )
+    )
+
+    tree_fields = (
+        "staged_paths",
+        "modified_paths",
+        "untracked_paths",
+        "conflicted_paths",
+        "clean",
+        "dirty_count",
+    )
+    if not all(hasattr(state.tree, field) for field in tree_fields):
+        errors.append("tree evidence is malformed")
+    else:
+        path_groups = [
+            getattr(state.tree, field)
+            for field in (
+                "staged_paths",
+                "modified_paths",
+                "untracked_paths",
+                "conflicted_paths",
+            )
+        ]
+        if any(
+            not isinstance(group, list)
+            or any(not isinstance(path, str) or not path for path in group)
+            or len(group) != len(set(group))
+            for group in path_groups
+        ):
+            errors.append("tree path evidence is malformed")
+        else:
+            expected_count = len(set(path for group in path_groups for path in group))
+            if state.tree.dirty_count != expected_count:
+                errors.append("tree dirty_count contradicts paths")
+            if not isinstance(state.tree.clean, bool):
+                errors.append("tree clean flag is malformed")
+            elif state.tree.clean and expected_count:
+                errors.append("tree clean flag contradicts paths")
+            elif not state.tree.clean and not expected_count and not query_failed:
+                errors.append("tree dirty flag lacks paths or query failure")
+
+    if (
+        not isinstance(state.operation, str)
+        or state.operation not in OPERATION_STATUSES
+    ):
+        errors.append(f"operation is unsupported: {state.operation!r}")
+    if not isinstance(state.operation_markers, list) or any(
+        not isinstance(marker, str) or not marker for marker in state.operation_markers
+    ):
+        errors.append("operation_markers is malformed")
+    elif (state.operation == "none") != (not state.operation_markers):
+        errors.append("operation contradicts operation markers")
+    if not isinstance(state.locks, list) or any(
+        not isinstance(lock, str) or not lock for lock in state.locks
+    ):
+        errors.append("locks are malformed")
+    if (
+        not isinstance(state.remote_freshness, str)
+        or state.remote_freshness not in REMOTE_FRESHNESS_STATUSES
+    ):
+        errors.append(f"remote_freshness is unsupported: {state.remote_freshness!r}")
+    if (
+        not isinstance(state.derived_action, str)
+        or state.derived_action not in DERIVED_ACTIONS
+    ):
+        errors.append(f"derived_action is unsupported: {state.derived_action!r}")
+    if not isinstance(state.hold_reasons, list) or any(
+        not isinstance(reason, str) or not reason for reason in state.hold_reasons
+    ):
+        errors.append("hold_reasons are malformed")
+    if (
+        not isinstance(state.duration_ms, (int, float))
+        or isinstance(state.duration_ms, bool)
+        or not math.isfinite(state.duration_ms)
+        or state.duration_ms < 0
+    ):
+        errors.append("duration_ms is malformed")
+
+    if errors:
+        return errors
+    expected_action, expected_reasons = _derive_action(
+        branch=state.branch,
+        head_sha=state.head_sha,
+        tree=state.tree,
+        operation=state.operation,
+        locks=state.locks,
+        default_base=state.default_base,
+        upstream=state.upstream,
+        failures=state.query_failures,
+    )
+    if state.derived_action != expected_action:
+        errors.append(
+            "derived_action contradicts canonical evidence: "
+            f"expected {expected_action}, got {state.derived_action}"
+        )
+    if state.hold_reasons != expected_reasons:
+        errors.append("hold_reasons contradict canonical evidence")
+    return errors
 
 
 def collect_repository_state(
