@@ -43,12 +43,19 @@ at the locally and hosted green draft PR head for independent audit
   rollback, deletion, reset, and force-push recovery.
 - Session handoff persisted prose and optional PR numbers only; session end could
   not validate durable local/hosted identity, freshness, hashes, or contradictory
-  claims. The automation map also classified a writing handoff as read-only.
+  claims. The automation map also classified a writing handoff as read-only,
+  while `run.sh` did not dispatch its maintained `handoff` alias at all.
 - The first focused run exposed three implementation defects: receipt local
   payload construction referenced an unset variable, deprecated frontmatter was
   incorrectly accepted as its own historical marker, and the new receipt alias
   was absent from the automation registry.
 - A targeted `rg` search beginning with `--delete` was parsed as an option.
+- The first receipt command left the `refs/**` boundary unquoted, so zsh
+  rejected the unmatched glob before the receipt tool ran.
+- The first real handoff reported success but left the current brief unchanged
+  because its maintained legacy heading lacked the newer `(auto)` suffix.
+- A formatter check was mistakenly aimed at the shell dispatcher; it made no
+  change, and the correct `bash -n run.sh` syntax check passed.
 - The first commit attempt was stopped by the end-of-file hook because the
   generated global docs index omitted its required final newline.
 
@@ -70,10 +77,19 @@ at the locally and hosted green draft PR head for independent audit
   consumed it; historical detection treated a metadata status as narrative; the
   automation registry had no receipt entry. Resolution: construct the payload in
   `build_receipt`, require an explicit historical banner, and register read-only
-  validation plus `WorkspaceWrite` output/handoff modes. Evidence: the corrected
-  focused suite passes 64 tests.
+  validation plus `WorkspaceWrite` output/handoff modes and route the alias
+  through `session.py`. Evidence: the corrected focused suite and live
+  `./run.sh session handoff --help` dispatch pass.
+- Root cause: the handoff updater detected generic markers but its replacement
+  regex accepted only the newer heading, creating a false-success no-op on the
+  live brief. Resolution: accept both maintained heading forms and regress the
+  legacy form; the real receipt-bound handoff now writes exact identity lines.
 - Terminal issue resolution: insert `--` before a ripgrep pattern that begins
   with a hyphen; the corrected search completed without changing scope.
+- Terminal issue resolution: quote the literal `refs/**` receipt argument; the
+  corrected command produced and validated the intended receipt.
+- Terminal issue resolution: use Black only for Python paths and `bash -n` for
+  `run.sh`; both relevant formatter/syntax checks then passed.
 - Root cause: the docs-index generator emitted JSON without the repository's
   hook-required terminal newline. Resolution: retain the hook's normalization,
   restage the exact generated file, and require a clean second hook pass before
@@ -83,7 +99,7 @@ at the locally and hosted green draft PR head for independent audit
 
 - Worktree-bound runtime diagnosis reported `source_bound=true`; startup local
   state was clean and ready at the verified PR #750 merge SHA.
-- Focused receipt, semantic, and session regression suite: 64 passed.
+- Focused receipt, semantic, and session regression suite: 66 passed.
 - Remaining semantic, docs/index, quick 10/10, full 30/30, efficiency,
   session-end, preservation replay, and hosted checks are recorded before PR
   audit handoff.

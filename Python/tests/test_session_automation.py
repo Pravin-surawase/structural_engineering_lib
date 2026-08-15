@@ -22,6 +22,38 @@ session = importlib.import_module("scripts.session")
 check_api = importlib.import_module("scripts.check_api")
 validate_script_refs = importlib.import_module("scripts.validate_script_refs")
 prompt_router = importlib.import_module("scripts.prompt_router")
+
+
+def test_run_sh_routes_receipt_bound_handoff_help():
+    result = subprocess.run(
+        [str(REPO_ROOT / "run.sh"), "session", "handoff", "--help"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "--git-receipt" in result.stdout
+
+
+def test_handoff_replaces_maintained_legacy_heading(monkeypatch, tmp_path):
+    brief = tmp_path / "next-session-brief.md"
+    brief.write_text(
+        "# Brief\n\n## Latest Handoff\n\n"
+        f"{session.HANDOFF_START}\n- Date: old\n{session.HANDOFF_END}\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(session, "NEXT_BRIEF", brief)
+
+    session._update_next_brief(["- Date: 2026-08-15", "- Git receipt: exact"])
+
+    updated = brief.read_text(encoding="utf-8")
+    assert "## Latest Handoff (auto)" in updated
+    assert "- Git receipt: exact" in updated
+    assert "- Date: old" not in updated
+
+
 git_state = importlib.import_module("scripts.git_state")
 git_handoff_receipt = importlib.import_module("scripts.git_handoff_receipt")
 

@@ -1,10 +1,14 @@
 # Next Session Briefing
 
-## Latest Handoff
+## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
-- Focus: PR #750 integrated the held retirement proposal; GIT-7E is active on a fresh verified-main lane and remains paused before any ready/merge transition
+- Focus: Add semantic coherence over deterministically discovered maintained
+- Git receipt: docs/research/git-governance/GIT-001-phase-7E-task-git-handoff.json | sha256:25d20a03c4cc6e7b16b2eb52826b8475a7220d35ce3ea91022d96755cf5fbdad | HOLD
+- Git identity: codex/git-7e-semantic-handoff@6694e8b99d7c37f8e7b5954e321b896ef29e92f9 | upstream=origin/main@b91838f594a04aff1d21c43bf6f87a64710b0748 | base=origin/main@b91838f594a04aff1d21c43bf6f87a64710b0748 | tree=clean | operation=none
+- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
+- Next action: PUBLISH_DRAFT_PR_AND_PAUSE_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha

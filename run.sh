@@ -118,6 +118,10 @@ _cmd_session() {
             _require_venv
             "$VENV" "$SCRIPTS/session.py" end "$@"
             ;;
+        handoff)
+            _require_venv
+            "$VENV" "$SCRIPTS/session.py" handoff "$@"
+            ;;
         summary)
             _require_venv
             "$VENV" "$SCRIPTS/session.py" summary "$@"
@@ -158,6 +162,7 @@ Manage agent work sessions.
 Subcommands:
   start      Begin session (verify env, read priorities)
   end        Validate closeout; --fix updates handoff, --log-cost records a proxy
+  handoff    Write a receipt-bound durable task handoff
   summary    Preview summary from git log; pass --write to update docs
   sync       Check stale doc numbers; pass --fix to update them
   check      Check session docs for issues
@@ -982,7 +987,7 @@ _run_sh() {
     )
     local -a check_opts=('--quick' '--changed' '--pre-commit' '--category' '--fix' '--json' '--list' '--serial')
     local -a categories=('api' 'docs' 'arch' 'governance' 'fastapi' 'git' 'stale' 'code')
-    local -a session_subs=('start' 'end' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'costs' 'compact' 'trust')
+    local -a session_subs=('start' 'end' 'handoff' 'summary' 'sync' 'check' 'context' 'brief' 'usage' 'costs' 'compact' 'trust')
     local -a task_subs=('brief')
     local -a generate_subs=('indexes' 'sdk' 'manifest' 'docs-index' 'scaffold')
     local -a health_opts=('--fix' '--score' '--quick' '--category' '--json')

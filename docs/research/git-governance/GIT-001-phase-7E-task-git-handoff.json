@@ -1,0 +1,121 @@
+{
+  "authorization": {
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "OPEN_DRAFT_PR"
+    ],
+    "next_action": "PUBLISH_DRAFT_PR_AND_PAUSE_FOR_EXACT_HEAD_AUDIT",
+    "prohibited_actions": [
+      "MARK_PR_READY_BEFORE_EXACT_HEAD_AUDIT",
+      "MERGE_BEFORE_EXACT_HEAD_AUDIT",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF"
+    ],
+    "status": "OBSERVED"
+  },
+  "holds": [
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "DRAFT_PR_NOT_OPEN_AT_RECEIPT_OBSERVATION",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "25d20a03c4cc6e7b16b2eb52826b8475a7220d35ce3ea91022d96755cf5fbdad",
+    "state": {
+      "branch": "codex/git-7e-semantic-handoff",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "b91838f594a04aff1d21c43bf6f87a64710b0748",
+        "status": "ahead"
+      },
+      "derived_action": "READY_LOCAL",
+      "duration_ms": 85.11,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib9",
+      "head_sha": "6694e8b99d7c37f8e7b5954e321b896ef29e92f9",
+      "hold_reasons": [],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-15T09:42:42.177207+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": true,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/.codex/worktrees/0753/structural_engineering_lib",
+      "schema_version": 1,
+      "tree": {
+        "clean": true,
+        "conflicted_paths": [],
+        "dirty_count": 0,
+        "modified_paths": [],
+        "staged_paths": [],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "b91838f594a04aff1d21c43bf6f87a64710b0748",
+        "status": "ahead"
+      },
+      "worktree_root": "/Users/pravinsurawase/.codex/worktrees/0753/structural_engineering_lib"
+    }
+  },
+  "local_state_receipt_hash": "sha256:25d20a03c4cc6e7b16b2eb52826b8475a7220d35ce3ea91022d96755cf5fbdad",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-15T09:42:42.177344+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-15T09:42:12Z",
+    "owner": "supervising orchestrator task delegation",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "refs/**"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "scripts/git_handoff_receipt.py",
+      "scripts/check_codex_git_workflow.py",
+      "scripts/session.py"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "GIT-7E"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

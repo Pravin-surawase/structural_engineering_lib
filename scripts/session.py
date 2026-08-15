@@ -1299,7 +1299,7 @@ def _update_next_brief(handoff_lines: list[str]) -> None:
     )
     if HANDOFF_START in text and HANDOFF_END in text:
         pattern = re.compile(
-            r"## Latest Handoff \(auto\)\n\n"
+            r"## Latest Handoff(?: \(auto\))?\n\n"
             + re.escape(HANDOFF_START)
             + r"[\s\S]*?"
             + re.escape(HANDOFF_END)

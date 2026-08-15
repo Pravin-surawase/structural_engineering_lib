@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-15",
-  "file_count": 22,
+  "file_count": 23,
   "files": [
     {
       "name": "GIT-001-README.md",
@@ -204,8 +204,26 @@
       "last_updated": "2026-08-15",
       "description": "GIT-7E started at 2026-08-15T09:12:34Z on codex/git-7e-semantic-handoff from freshly fetched and independently verified",
       "content_hash": "f5a8e49bb516"
+    },
+    {
+      "name": "GIT-001-phase-7E-task-git-handoff.json",
+      "type": "config",
+      "last_updated": "2026-08-15",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_kind",
+        "receipt_status"
+      ],
+      "content_hash": "13f0ecc7997b"
     }
   ],
   "subfolders": [],
-  "content_hash": "37f544c34add4c2e"
+  "content_hash": "165e52f911398ffc"
 }

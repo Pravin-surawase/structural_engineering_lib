@@ -3650,10 +3650,20 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 858,
+      "size_lines": 890,
       "last_updated": "2026-08-15",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
+        {
+          "name": "test_run_sh_routes_receipt_bound_handoff_help"
+        },
+        {
+          "name": "test_handoff_replaces_maintained_legacy_heading",
+          "params": [
+            "monkeypatch",
+            "tmp_path"
+          ]
+        },
         {
           "name": "test_session_heading_marker_accepts_descriptive_titles",
           "params": [
@@ -3748,21 +3758,12 @@
           "params": [
             "tmp_path"
           ]
-        },
-        {
-          "name": "test_api_route_shape_matches_dynamic_segments"
-        },
-        {
-          "name": "test_api_contract_scan_fails_closed_without_typescript",
-          "params": [
-            "tmp_path"
-          ]
         }
       ],
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "76744a2f80de"
+      "content_hash": "1f75dfd1fc3b"
     },
     {
       "name": "test_session_store.py",
@@ -4520,5 +4521,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "e3f02f525d4be678"
+  "content_hash": "be0a5560dc4e7f36"
 }
