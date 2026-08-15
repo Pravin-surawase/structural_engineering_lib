@@ -3451,7 +3451,7 @@
     {
       "name": "git_state.py",
       "type": "python",
-      "size_lines": 948,
+      "size_lines": 1004,
       "last_updated": "2026-08-15",
       "description": "Read-only, worktree-aware Git state authority.",
       "classes": [
@@ -3531,9 +3531,10 @@
         "RELATION_STATUSES",
         "OPERATION_STATUSES",
         "DERIVED_ACTIONS",
-        "REMOTE_FRESHNESS_STATUSES"
+        "REMOTE_FRESHNESS_STATUSES",
+        "MAX_EVIDENCE_AGE"
       ],
-      "content_hash": "31931ac2ac57"
+      "content_hash": "4d8581eb3500"
     },
     {
       "name": "governance_health_score.py",
@@ -5537,5 +5538,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "1e059a9c21fb6a84"
+  "content_hash": "db047dbf992b684a"
 }

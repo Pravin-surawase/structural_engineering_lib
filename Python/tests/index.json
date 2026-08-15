@@ -2398,7 +2398,7 @@
     {
       "name": "test_git_state.py",
       "type": "python",
-      "size_lines": 538,
+      "size_lines": 635,
       "last_updated": "2026-08-15",
       "description": "Outcome tests for the read-only, worktree-aware Git state authority.",
       "functions": [
@@ -2434,6 +2434,24 @@
           "name": "test_state_consistency_accepts_canonical_unknown_only_with_query_failure",
           "params": [
             "tmp_path"
+          ]
+        },
+        {
+          "name": "test_state_consistency_rejects_ref_identity_and_freshness_tampering_without_io",
+          "params": [
+            "tmp_path",
+            "monkeypatch",
+            "case",
+            "expected"
+          ]
+        },
+        {
+          "name": "test_state_consistency_accepts_valid_linked_ref_time_and_duration_contract",
+          "params": [
+            "tmp_path",
+            "monkeypatch",
+            "observed_at",
+            "duration_ms"
           ]
         },
         {
@@ -2516,9 +2534,10 @@
         }
       ],
       "constants": [
-        "REPO_ROOT"
+        "REPO_ROOT",
+        "VALIDATION_NOW"
       ],
-      "content_hash": "1022c84432fe"
+      "content_hash": "aa2be65be1b6"
     },
     {
       "name": "test_inputs.py",
@@ -3755,7 +3774,7 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 1236,
+      "size_lines": 1276,
       "last_updated": "2026-08-15",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
@@ -3886,7 +3905,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "f6db956817fe"
+      "content_hash": "f629a968f1b6"
     },
     {
       "name": "test_session_store.py",
@@ -4644,5 +4663,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "060e799620533ee0"
+  "content_hash": "24170f169f67e4fc"
 }

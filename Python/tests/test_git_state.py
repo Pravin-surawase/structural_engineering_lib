@@ -7,6 +7,7 @@ import importlib
 import json
 import subprocess
 import sys
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -19,6 +20,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 git_state = importlib.import_module("scripts.git_state")
+VALIDATION_NOW = datetime(2026, 8, 15, 12, 30, tzinfo=UTC)
 
 
 def _git(repo: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess:
@@ -217,6 +219,101 @@ def test_state_consistency_accepts_canonical_unknown_only_with_query_failure(
     assert state.default_base.status == "unknown"
     assert state.query_failures
     assert git_state.validate_repository_state_consistency(state) == []
+
+
+@pytest.mark.parametrize(
+    ("case", "expected"),
+    [
+        ("default_none_observed", "default_base relation ref is malformed"),
+        ("default_bad_ref", "default_base relation ref is malformed"),
+        ("upstream_none_observed", "upstream relation ref is malformed"),
+        ("double_slash_branch", "branch is malformed"),
+        ("leading_dash_branch", "branch is malformed"),
+        ("worktree_identity", "repository_root contradicts worktree_root"),
+        ("nan_duration", "duration_ms is malformed"),
+        ("infinite_duration", "duration_ms is malformed"),
+        ("future_timestamp", "observed_at_utc is in the future"),
+        ("stale_timestamp", "observed_at_utc is stale"),
+    ],
+)
+def test_state_consistency_rejects_ref_identity_and_freshness_tampering_without_io(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    case: str,
+    expected: str,
+):
+    repo = _repo(tmp_path)
+    _feature(repo)
+    state = copy.deepcopy(git_state.collect_repository_state(repo, default_ref="main"))
+    state.observed_at_utc = VALIDATION_NOW.isoformat()
+    if case == "default_none_observed":
+        state.default_base.ref = "NONE"
+    elif case == "default_bad_ref":
+        state.default_base.ref = "bad ref"
+    elif case == "upstream_none_observed":
+        state.upstream = git_state.Relation("NONE", state.head_sha, 0, 0, "equal")
+    elif case == "double_slash_branch":
+        state.branch = "codex//x"
+    elif case == "leading_dash_branch":
+        state.branch = "-bad"
+    elif case == "worktree_identity":
+        state.worktree_root = str(repo / "other")
+    elif case == "nan_duration":
+        state.duration_ms = float("nan")
+    elif case == "infinite_duration":
+        state.duration_ms = float("inf")
+    elif case == "future_timestamp":
+        state.observed_at_utc = (VALIDATION_NOW + timedelta(minutes=1)).isoformat()
+    elif case == "stale_timestamp":
+        state.observed_at_utc = (VALIDATION_NOW - timedelta(minutes=6)).isoformat()
+
+    monkeypatch.setattr(
+        git_state.subprocess,
+        "run",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("state validation must not query Git")
+        ),
+    )
+
+    errors = git_state.validate_repository_state_consistency(
+        state, now_utc=VALIDATION_NOW
+    )
+
+    assert any(expected in error for error in errors)
+
+
+@pytest.mark.parametrize(
+    ("observed_at", "duration_ms"),
+    [
+        (VALIDATION_NOW, 0.0),
+        (VALIDATION_NOW - git_state.MAX_EVIDENCE_AGE, 1.25),
+        (VALIDATION_NOW + git_state.MAX_FUTURE_SKEW, 2),
+    ],
+)
+def test_state_consistency_accepts_valid_linked_ref_time_and_duration_contract(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    observed_at: datetime,
+    duration_ms: float,
+):
+    repo = _repo(tmp_path)
+    linked = tmp_path / "linked"
+    _git(repo, "worktree", "add", "-b", "codex/linked-test", str(linked))
+    state = git_state.collect_repository_state(linked, default_ref="main")
+    state.observed_at_utc = observed_at.isoformat()
+    state.duration_ms = duration_ms
+    monkeypatch.setattr(
+        git_state.subprocess,
+        "run",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("state validation must not query Git")
+        ),
+    )
+
+    assert (
+        git_state.validate_repository_state_consistency(state, now_utc=VALIDATION_NOW)
+        == []
+    )
 
 
 def test_conflicted_paths_never_return_ready(tmp_path: Path):

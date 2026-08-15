@@ -8,7 +8,7 @@ import json
 import os
 import subprocess
 import sys
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -82,7 +82,7 @@ def _closeout_state(
         hold_reasons = [f"changed paths: {len(modified)}"]
     return git_state.RepositoryState(
         schema_version=schema_version,
-        observed_at_utc="2026-08-15T00:00:00+00:00",
+        observed_at_utc=datetime.now(UTC).isoformat(),
         repository_root="/tmp/repo",
         worktree_root="/tmp/repo",
         git_dir="/tmp/repo/.git",
@@ -118,6 +118,26 @@ def _malformed_clean_state(case: str):
         state.schema_version = 999
     elif case == "remote_freshness":
         state.remote_freshness = "CURRENT"
+    elif case == "default_none_observed":
+        state.default_base.ref = "NONE"
+    elif case == "default_bad_ref":
+        state.default_base.ref = "bad ref"
+    elif case == "upstream_none_observed":
+        state.upstream.ref = "NONE"
+    elif case == "double_slash_branch":
+        state.branch = "codex//x"
+    elif case == "leading_dash_branch":
+        state.branch = "-bad"
+    elif case == "worktree_identity":
+        state.worktree_root = "/tmp/other"
+    elif case == "nan_duration":
+        state.duration_ms = float("nan")
+    elif case == "infinite_duration":
+        state.duration_ms = float("inf")
+    elif case == "future_timestamp":
+        state.observed_at_utc = (datetime.now(UTC) + timedelta(days=1)).isoformat()
+    elif case == "stale_timestamp":
+        state.observed_at_utc = (datetime.now(UTC) - timedelta(days=1)).isoformat()
     return state
 
 
@@ -162,6 +182,16 @@ def test_session_closeout_reports_canonical_dirty_paths(
         "uppercase_unknown_relation",
         "schema",
         "remote_freshness",
+        "default_none_observed",
+        "default_bad_ref",
+        "upstream_none_observed",
+        "double_slash_branch",
+        "leading_dash_branch",
+        "worktree_identity",
+        "nan_duration",
+        "infinite_duration",
+        "future_timestamp",
+        "stale_timestamp",
     ],
 )
 def test_session_closeout_holds_malformed_canonical_contract_without_subprocess(
@@ -386,6 +416,16 @@ def test_session_end_query_failure_cannot_pass_or_print_clean(
         "uppercase_unknown_relation",
         "schema",
         "remote_freshness",
+        "default_none_observed",
+        "default_bad_ref",
+        "upstream_none_observed",
+        "double_slash_branch",
+        "leading_dash_branch",
+        "worktree_identity",
+        "nan_duration",
+        "infinite_duration",
+        "future_timestamp",
+        "stale_timestamp",
     ],
 )
 def test_session_end_malformed_canonical_contract_fails_closed(

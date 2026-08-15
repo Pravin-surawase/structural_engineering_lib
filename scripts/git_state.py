@@ -13,13 +13,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import re
 import subprocess
 import sys
 import time
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Callable, Sequence
 
@@ -48,6 +49,11 @@ DERIVED_ACTIONS = frozenset(
     }
 )
 REMOTE_FRESHNESS_STATUSES = frozenset({"NOT_CHECKED"})
+# Local state is consumed immediately during session closeout. A small bounded
+# skew admits ordinary clock precision while preventing old or future evidence
+# from being upgraded to current authority.
+MAX_EVIDENCE_AGE = timedelta(minutes=5)
+MAX_FUTURE_SKEW = timedelta(seconds=5)
 
 
 @dataclass
@@ -383,6 +389,32 @@ def _is_nonnegative_int(value: object) -> bool:
     return isinstance(value, int) and not isinstance(value, bool) and value >= 0
 
 
+def _is_valid_git_refname(value: object, *, branch: bool = False) -> bool:
+    """Apply Git's ref-format constraints without invoking Git."""
+    if not isinstance(value, str) or not value or value == "@":
+        return False
+    if branch and value.startswith("-"):
+        return False
+    if (
+        value.startswith("/")
+        or value.endswith("/")
+        or value.endswith(".")
+        or "//" in value
+        or ".." in value
+        or "@{" in value
+    ):
+        return False
+    if any(ord(char) < 32 or ord(char) == 127 for char in value):
+        return False
+    if any(char in " ~^:?*[\\" for char in value):
+        return False
+    components = value.split("/")
+    return all(
+        component and not component.startswith(".") and not component.endswith(".lock")
+        for component in components
+    )
+
+
 def _validate_relation(
     relation: object,
     *,
@@ -399,8 +431,6 @@ def _validate_relation(
     ahead = relation.ahead
     behind = relation.behind
     status = relation.status
-    if not isinstance(ref, str) or not ref:
-        errors.append(f"{name} relation ref is malformed")
     if (
         not isinstance(status, str)
         or status not in RELATION_STATUSES
@@ -409,6 +439,8 @@ def _validate_relation(
         errors.append(f"{name} relation status is unsupported: {status!r}")
         return errors
     if status in {"ahead", "behind", "diverged", "equal"}:
+        if ref == "NONE" or not _is_valid_git_refname(ref):
+            errors.append(f"{name} relation ref is malformed")
         if not isinstance(sha, str) or SHA_RE.fullmatch(sha) is None:
             errors.append(f"{name} relation SHA is malformed")
         if not _is_nonnegative_int(ahead) or not _is_nonnegative_int(behind):
@@ -425,6 +457,8 @@ def _validate_relation(
         if ref != "NONE" or any(value is not None for value in (sha, ahead, behind)):
             errors.append(f"{name} none relation is contradictory")
     elif status == "unknown":
+        if ref != "NONE" and not _is_valid_git_refname(ref):
+            errors.append(f"{name} relation ref is malformed")
         if any(value is not None for value in (sha, ahead, behind)):
             errors.append(f"{name} unknown relation is contradictory")
         if not query_failed:
@@ -432,7 +466,9 @@ def _validate_relation(
     return errors
 
 
-def validate_repository_state_consistency(state: object) -> list[str]:
+def validate_repository_state_consistency(
+    state: object, *, now_utc: datetime | None = None
+) -> list[str]:
     """Validate the full canonical evidence contract without Git or network I/O."""
     required_fields = (
         "schema_version",
@@ -465,6 +501,7 @@ def validate_repository_state_consistency(state: object) -> list[str]:
         errors.append(
             f"repository-state schema is unsupported: {state.schema_version!r}"
         )
+    observed: datetime | None = None
     if not isinstance(state.observed_at_utc, str):
         errors.append("observed_at_utc is malformed")
     else:
@@ -474,20 +511,34 @@ def validate_repository_state_consistency(state: object) -> list[str]:
             )
             if observed.tzinfo is None:
                 errors.append("observed_at_utc lacks timezone")
+                observed = None
         except ValueError:
             errors.append("observed_at_utc is malformed")
+    current = now_utc or datetime.now(timezone.utc)
+    if not isinstance(current, datetime) or current.tzinfo is None:
+        errors.append("validation clock is malformed")
+    elif observed is not None:
+        current = current.astimezone(timezone.utc)
+        observed = observed.astimezone(timezone.utc)
+        if observed - current > MAX_FUTURE_SKEW:
+            errors.append("observed_at_utc is in the future")
+        elif current - observed > MAX_EVIDENCE_AGE:
+            errors.append("observed_at_utc is stale")
 
     path_fields = ("repository_root", "worktree_root", "git_dir", "git_common_dir")
-    for field in path_fields:
-        value = getattr(state, field)
-        if field == "repository_root" and (
+    for path_field in path_fields:
+        value = getattr(state, path_field)
+        if path_field == "repository_root" and (
             not isinstance(value, str) or not value or not Path(value).is_absolute()
         ):
-            errors.append(f"{field} is malformed")
+            errors.append(f"{path_field} is malformed")
         elif value is not None and (
             not isinstance(value, str) or not value or not Path(value).is_absolute()
         ):
-            errors.append(f"{field} is malformed")
+            errors.append(f"{path_field} is malformed")
+    if isinstance(state.repository_root, str) and isinstance(state.worktree_root, str):
+        if Path(state.repository_root) != Path(state.worktree_root):
+            errors.append("repository_root contradicts worktree_root")
     if state.linked_worktree is not None and not isinstance(
         state.linked_worktree, bool
     ):
@@ -496,6 +547,10 @@ def validate_repository_state_consistency(state: object) -> list[str]:
         expected_linked = state.git_dir != state.git_common_dir
         if state.linked_worktree is not expected_linked:
             errors.append("linked_worktree contradicts Git directory evidence")
+        if state.linked_worktree is True and Path(state.git_dir).parent != (
+            Path(state.git_common_dir) / "worktrees"
+        ):
+            errors.append("linked worktree Git directories are incoherent")
     elif state.linked_worktree is not None:
         errors.append("linked_worktree lacks complete Git directory evidence")
 
@@ -520,16 +575,16 @@ def validate_repository_state_consistency(state: object) -> list[str]:
     ):
         errors.append("successful state lacks required Git path evidence")
 
-    if (
-        not isinstance(state.branch, str)
-        or not state.branch
-        or any(char.isspace() for char in state.branch)
-    ):
+    if not isinstance(state.branch, str) or not state.branch:
         errors.append("branch is malformed")
     if state.branch == "UNKNOWN":
         if state.head_sha is not None:
             errors.append("UNKNOWN branch contradicts HEAD SHA")
-    elif (
+    elif state.branch != "DETACHED" and not _is_valid_git_refname(
+        state.branch, branch=True
+    ):
+        errors.append("branch is malformed")
+    if state.branch != "UNKNOWN" and (
         not isinstance(state.head_sha, str) or SHA_RE.fullmatch(state.head_sha) is None
     ):
         errors.append("head_sha is malformed")
@@ -621,6 +676,7 @@ def validate_repository_state_consistency(state: object) -> list[str]:
     if (
         not isinstance(state.duration_ms, (int, float))
         or isinstance(state.duration_ms, bool)
+        or not math.isfinite(state.duration_ms)
         or state.duration_ms < 0
     ):
         errors.append("duration_ms is malformed")

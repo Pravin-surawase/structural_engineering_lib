@@ -125,6 +125,13 @@ at the locally and hosted green draft PR head for independent audit
   stale while the new code head was not yet available.
 - The eleventh pre-hook Ruff check rejected import ordering in the two edited
   test modules before staging.
+- A twelfth exact-head audit found nine remaining canonical-schema mutations
+  could still validate as READY_LOCAL and let session-end print CLEAN: observed
+  relations using placeholder or malformed refs, invalid branch refnames,
+  contradictory worktree identity, non-finite duration, and future evidence.
+- The first twelfth focused replay used an actual `none` upstream fixture when
+  reproducing the auditor's observed/equal `ref="NONE"` mutation, so it did not
+  construct the claimed contradictory relation and one assertion failed.
 - The first ninth-head focused replay rejected valid canonical state fixtures
   loaded through the package alias and one past-tense historical control.
 - A read-only inventory regex containing a backtick was initially passed with
@@ -343,6 +350,20 @@ at the locally and hosted green draft PR head for independent audit
 - Formatter resolution: apply Ruff's scoped import ordering to only the two
   edited tests, regenerate the maintained tests index, and replay Ruff clean;
   no hook or unrelated path was involved.
+- Twelfth state root cause: the canonical consistency validator checked
+  relation refs only as nonempty strings, branches only for whitespace, paths
+  only for absolute shape, timestamps only for parseability, and durations only
+  for numeric/nonnegative shape. Resolution: add a pure Git-ref/refname grammar,
+  status-aware `NONE` placeholder rules, repository/worktree and linked Git-dir
+  identity checks, finite duration enforcement, and an injectable validation
+  clock with five-minute maximum age and five-second future skew. All rules
+  remain in `git_state.py`; session closeout still delegates to that one
+  validator. Evidence: all nine exact auditor mutations plus stale evidence
+  return UNKNOWN without subprocess access, while valid linked-worktree refs,
+  boundary timestamps, and finite durations pass.
+- Focused-replay resolution: replace the no-upstream fixture with an explicit
+  observed/equal relation carrying `ref="NONE"`; the exact mutation then fails
+  for the intended relation-ref reason without changing production behavior.
 - Focused-replay root cause: Python loaded `git_state` and `scripts.git_state`
   as distinct module identities, so nominal `isinstance` checks rejected the
   same schema; historical grammar included `says` but omitted `said`.
@@ -391,6 +412,10 @@ at the locally and hosted green draft PR head for independent audit
   `sha256:ca5c3e527a8fd269a743c00fc6071865bbbd51243621b48a1226520e08a77b3d`.
   Preservation replay and hosted checks remain pending until the final
   documentation head exists.
+- Twelfth-candidate focused receipt/semantic/Git-state/session regressions pass
+  256 tests and the full indexed semantic corpus passes. Final docs, repository,
+  receipt, session-end, preservation, and hosted gates are replayed only after
+  the exact receipt-bound candidate head exists.
 
 ### Preservation and next boundary
 
