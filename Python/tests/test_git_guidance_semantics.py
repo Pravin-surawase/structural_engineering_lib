@@ -172,6 +172,12 @@ def test_live_aliases_route_to_receipt_and_not_retired_mutation():
             "Never ignore ownership. Create a recovery branch with "
             "`git checkout -b recovery abc123`."
         ),
+        "Do not forget to run git reset --hard.",
+        "Never hesitate to recover with git cherry-pick abc123.",
+        "Never fail to create a branch with git checkout -b recovery.",
+        "Do not fail to run git reset --soft HEAD~1.",
+        "Never remember to recover with git cherry-pick abc123.",
+        "Do not omit to create a branch with git checkout -b recovery.",
     ],
 )
 def test_live_indexed_unsafe_instruction_context_fails(instruction, tmp_path):
@@ -188,6 +194,9 @@ def test_live_indexed_unsafe_instruction_context_fails(instruction, tmp_path):
     "prohibition",
     [
         "Never use `git commit --amend --no-edit`.",
+        "Never use git reset --hard.",
+        "Do not run git reset --soft HEAD~1.",
+        "NEVER: git push --force-with-lease.",
         "Do not recover with `git cherry-pick abc123`.",
         "`git checkout -b recovery abc123` is forbidden.",
         "Using `git switch -c recovery` is prohibited.",

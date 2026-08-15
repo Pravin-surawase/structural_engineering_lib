@@ -72,6 +72,14 @@ NEGATING_DIRECTIVE = re.compile(
     r"|\b(?:forbidden|prohibited)\s*:\s*$",
     re.IGNORECASE,
 )
+DIRECTLY_PROHIBITED_ACTION = re.compile(
+    r"^[\s`*_:~-]*(?:use|run|execute|invoke|issue|perform|stage|restore|undo|"
+    r"recover|amend|cherry-pick|create|checkout|switch|reset|commit|push|"
+    r"pull|revert|merge|rebase|stash|clean|prune|delete|remove|force|replay|"
+    r"apply|move|fetch)\b",
+    re.IGNORECASE,
+)
+DIRECTIVE_PUNCTUATION_ONLY = re.compile(r"^[\s`*_:~-]*$")
 NEGATING_PREDICATE = re.compile(
     r"\b(?:is|are)\s+(?:strictly\s+)?(?:forbidden|prohibited|not allowed)\b"
     r"|\b(?:must|should|shall)\s+not\s+be\s+"
@@ -95,9 +103,14 @@ def _local_clause(line: str, start: int, end: int) -> tuple[str, str]:
 def _is_governing_prohibition(line: str, start: int, end: int) -> bool:
     """True only when local negation governs this unsafe Git expression."""
     before, after = _local_clause(line, start, end)
-    return NEGATING_DIRECTIVE.search(before) is not None or (
-        NEGATING_PREDICATE.search(after) is not None
-    )
+    directives = list(NEGATING_DIRECTIVE.finditer(before))
+    if directives:
+        governed_text = before[directives[-1].end() :]
+        if DIRECTLY_PROHIBITED_ACTION.match(
+            governed_text
+        ) is not None or DIRECTIVE_PUNCTUATION_ONLY.fullmatch(governed_text):
+            return True
+    return NEGATING_PREDICATE.search(after) is not None
 
 
 def _is_historical_narration(line: str, start: int) -> bool:

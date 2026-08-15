@@ -34,10 +34,13 @@ receipt, source-bound runtime diagnosis, inspection-only disposition, explicit
 unknowns, and reasoned `NOT_APPLICABLE`.
 
 Unsafe Git expressions in maintained guidance fail closed regardless of the
-surrounding imperative verb. A negation is safe only when its local clause
-governs that exact expression; unrelated earlier `never`/`do not` text cannot
-suppress a later instruction. Clearly labeled past-tense historical narration
-remains evidence rather than current authority.
+surrounding imperative verb. A negation is safe only when the unsafe action
+verb directly follows and is governed by that negation, or when a tested suffix
+prohibition governs the exact matched expression. Negated reminders or
+encouragement such as `do not forget to run` remain instructions. Unrelated
+earlier `never`/`do not` text cannot suppress a later instruction. Clearly
+labeled past-tense historical narration remains evidence rather than current
+authority.
 
 ## Receipt contract
 

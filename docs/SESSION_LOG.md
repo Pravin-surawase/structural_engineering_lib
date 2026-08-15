@@ -82,6 +82,10 @@ at the locally and hosted green draft PR head for independent audit
   line containing `never`/`do not` and recognized only seven instruction verbs,
   so equivalent imperative prose such as amend, cherry-pick, create, or replay
   could bypass otherwise-correct unsafe-command patterns.
+- A fifth exact-head audit found that clause-local negation still accepted
+  negated reminder/encouragement auxiliaries such as `do not forget to run`,
+  `never hesitate to recover`, and `never fail to create`; those sentences
+  direct the unsafe action rather than prohibit it.
 - A read-only inventory regex containing a backtick was initially passed with
   unsafe shell quoting and zsh rejected it before the search ran.
 
@@ -187,6 +191,19 @@ at the locally and hosted green draft PR head for independent audit
   create, replay, and adversarial-negation fixtures fail; four governing-
   prohibition and four historical controls pass; the repository semantic check
   remains green.
+- Root cause: the governing-prohibition check treated any negating directive in
+  the local clause as governing the later Git expression, even when the
+  negation governed an auxiliary such as forget, hesitate, fail, remember, or
+  omit. Resolution: require a lifecycle action verb to directly follow the
+  negating directive; retain exact-expression suffix prohibitions separately.
+  Evidence: the three auditor reproductions and equivalent auxiliary forms fail
+  closed, while direct `do not run`/`never use` prohibitions and historical
+  narration remain safe.
+- Focused tests passed after the direct-governance change, but the live semantic
+  replay rejected canonical `NEVER: git ...` prohibition lines because the
+  colon was not admitted between the directive and direct action. Resolution:
+  allow only intervening Markdown/directive punctuation before the action and
+  add the exact colon form as a safe regression; auxiliary words remain unsafe.
 - Terminal issue resolution: rerun the read-only inventory with the regex in
   literal single quotes; it completed without any repository mutation.
 
@@ -194,8 +211,8 @@ at the locally and hosted green draft PR head for independent audit
 
 - Worktree-bound runtime diagnosis reported `source_bound=true`; startup local
   state was clean and ready at the verified PR #750 merge SHA.
-- Focused receipt, semantic, and session regression suite: 114 passed after the
-  fourth independent-audit blocker fix.
+- Focused receipt, semantic, and session regression suite: 123 passed after the
+  fifth independent-audit blocker fix.
 - Remaining semantic, docs/index, quick 10/10, full 30/30, efficiency,
   session-end, preservation replay, and hosted checks are recorded before PR
   audit handoff.
