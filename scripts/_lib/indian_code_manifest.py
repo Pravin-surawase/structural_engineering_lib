@@ -61,9 +61,7 @@ _STANDARD_ALIASES = {
 _IS456_EVIDENCE = {
     "beam": ("docs/verification/is456-library-first-evidence.md",),
     "column": ("docs/verification/is456-library-first-evidence.md",),
-    "isolated_footing": (
-        "docs/verification/footing-release-inclusion.json",
-    ),
+    "isolated_footing": ("docs/verification/footing-release-inclusion.json",),
     "solid_slab": ("docs/verification/is456-slab-evidence.md",),
     "stair": (
         "docs/verification/india-2a-staircase-scope-evidence.md",
@@ -77,6 +75,7 @@ _IS456_EVIDENCE = {
         "docs/verification/india-2-wall-b-reinforcement-evidence.md",
         "docs/verification/india-2-wall-c-public-workflow-evidence.md",
         "docs/verification/india-2-wall-d-publication-evidence.md",
+        "docs/verification/india-2-wall-family-acceptance-evidence.md",
     ),
 }
 
@@ -97,7 +96,9 @@ _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
         {
             "family": "combined_footing",
             "claim": "Combined-footing design is not implemented.",
-            "limitations": ["A distinct soil-pressure and structural analysis model is required."],
+            "limitations": [
+                "A distinct soil-pressure and structural analysis model is required."
+            ],
         },
         {
             "family": "strap_footing",
@@ -107,43 +108,57 @@ _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
         {
             "family": "raft_foundation",
             "claim": "Raft-foundation design is not implemented.",
-            "limitations": ["Soil-structure interaction remains outside the supported subset."],
+            "limitations": [
+                "Soil-structure interaction remains outside the supported subset."
+            ],
         },
         {
             "family": "pile_cap",
             "claim": "Pile-cap design is not implemented.",
-            "limitations": ["Pile reactions and strut-and-tie behavior require a separate program."],
+            "limitations": [
+                "Pile reactions and strut-and-tie behavior require a separate program."
+            ],
         },
     ),
     "IS13920:2016": (
         {
             "family": "wall_detailing",
             "claim": "IS 13920 wall provisions are not implemented.",
-            "limitations": ["Wall and boundary-element provisions require a separate packet."],
+            "limitations": [
+                "Wall and boundary-element provisions require a separate packet."
+            ],
         },
         {
             "family": "foundation_detailing",
             "claim": "IS 13920 foundation provisions are not implemented.",
-            "limitations": ["Foundation capacity-design provisions require a separate packet."],
+            "limitations": [
+                "Foundation capacity-design provisions require a separate packet."
+            ],
         },
     ),
     "IS875": (
         {
             "family": "gravity_load_generation",
             "claim": "IS 875 gravity-load generation is not implemented.",
-            "limitations": ["Applicable parts and editions must be selected before implementation."],
+            "limitations": [
+                "Applicable parts and editions must be selected before implementation."
+            ],
         },
         {
             "family": "wind_load_generation",
             "claim": "IS 875 wind-load generation is not implemented.",
-            "limitations": ["Wind inputs and pressure generation require a separate program."],
+            "limitations": [
+                "Wind inputs and pressure generation require a separate program."
+            ],
         },
     ),
     "IS1893": (
         {
             "family": "equivalent_static_seismic",
             "claim": "IS 1893 equivalent-static force generation is not implemented.",
-            "limitations": ["Edition, inputs, load combinations, and validation must be selected first."],
+            "limitations": [
+                "Edition, inputs, load combinations, and validation must be selected first."
+            ],
         },
         {
             "family": "response_spectrum_analysis",
@@ -158,7 +173,9 @@ _IS13920_SUPPORTED: tuple[dict[str, Any], ...] = (
         "family": "beam_detailing_checks",
         "claim": "Bounded beam geometry, longitudinal-steel, and confinement-spacing checks exist.",
         "workflows": ["check_beam_ductility"],
-        "limitations": ["This is a bounded detailing check, not a complete seismic design workflow."],
+        "limitations": [
+            "This is a bounded detailing check, not a complete seismic design workflow."
+        ],
         "evidence": [
             "Python/structural_lib/codes/is13920/beam.py",
             "Python/tests/property/test_ductile_hypothesis.py",
@@ -168,7 +185,9 @@ _IS13920_SUPPORTED: tuple[dict[str, Any], ...] = (
         "family": "column_detailing_checks",
         "claim": "Bounded column geometry and special-confinement checks exist.",
         "workflows": ["check_column_ductility_is13920"],
-        "limitations": ["This is a bounded detailing check, not a complete seismic design workflow."],
+        "limitations": [
+            "This is a bounded detailing check, not a complete seismic design workflow."
+        ],
         "evidence": [
             "Python/structural_lib/codes/is13920/column.py",
             "Python/tests/codes/is13920/test_column.py",
@@ -178,7 +197,9 @@ _IS13920_SUPPORTED: tuple[dict[str, Any], ...] = (
         "family": "beam_column_joint_scwb_check",
         "claim": "A pure-math strong-column weak-beam joint check exists.",
         "workflows": ["structural_lib.codes.is13920.joint.check_scwb"],
-        "limitations": ["No complete joint design or public service workflow is claimed."],
+        "limitations": [
+            "No complete joint design or public service workflow is claimed."
+        ],
         "evidence": [
             "Python/structural_lib/codes/is13920/joint.py",
             "Python/tests/codes/is13920/test_joint.py",
@@ -236,7 +257,9 @@ def _build_capability_families() -> dict[str, list[dict[str, Any]]]:
         raise ValueError(
             "Manifest namespace disagrees with the runtime IS 456 capability registry"
         )
-    result: dict[str, list[dict[str, Any]]] = {item["namespace"]: [] for item in STANDARD_DEFINITIONS}
+    result: dict[str, list[dict[str, Any]]] = {
+        item["namespace"]: [] for item in STANDARD_DEFINITIONS
+    }
     for capability in get_supported_is456_capabilities():
         result["IS456:2000"].append(
             _supported_family(
@@ -287,7 +310,10 @@ def _discover_registrations() -> dict[str, dict[str, list[str]]]:
                 if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                     continue
                 for decorator in node.decorator_list:
-                    if not isinstance(decorator, ast.Call) or _decorator_name(decorator.func) != "clause":
+                    if (
+                        not isinstance(decorator, ast.Call)
+                        or _decorator_name(decorator.func) != "clause"
+                    ):
                         continue
                     standard = "IS 456"
                     for keyword in decorator.keywords:
@@ -299,13 +325,26 @@ def _discover_registrations() -> dict[str, dict[str, list[str]]]:
                             standard = keyword.value.value
                     namespace = _STANDARD_ALIASES.get(standard)
                     if namespace is None:
-                        raise ValueError(f"Unsupported clause namespace {standard!r} in {path}")
-                    module = path.relative_to(PYTHON_ROOT).with_suffix("").as_posix().replace("/", ".")
+                        raise ValueError(
+                            f"Unsupported clause namespace {standard!r} in {path}"
+                        )
+                    module = (
+                        path.relative_to(PYTHON_ROOT)
+                        .with_suffix("")
+                        .as_posix()
+                        .replace("/", ".")
+                    )
                     function = f"{module}.{node.name}"
                     for argument in decorator.args:
-                        if not isinstance(argument, ast.Constant) or not isinstance(argument.value, str):
-                            raise ValueError(f"Non-literal clause reference in {path}:{node.lineno}")
-                        registrations.setdefault(namespace, {}).setdefault(argument.value, []).append(function)
+                        if not isinstance(argument, ast.Constant) or not isinstance(
+                            argument.value, str
+                        ):
+                            raise ValueError(
+                                f"Non-literal clause reference in {path}:{node.lineno}"
+                            )
+                        registrations.setdefault(namespace, {}).setdefault(
+                            argument.value, []
+                        ).append(function)
     return registrations
 
 
@@ -379,9 +418,9 @@ def _reference_records(
         "registered_known_references": registered_known,
         "metadata_only_references": len(set(metadata) - set(registrations)),
         "registration_only_references": len(set(registrations) - set(metadata)),
-        "registration_pct": round(registered_known / known_count * 100, 1)
-        if known_count
-        else None,
+        "registration_pct": (
+            round(registered_known / known_count * 100, 1) if known_count else None
+        ),
     }
     return records, summary
 
@@ -411,9 +450,9 @@ def build_manifest() -> dict[str, Any]:
                     "supported_families": supported,
                     "held_families": held,
                     "total_declared_families": len(families),
-                    "supported_pct": round(supported / len(families) * 100, 1)
-                    if families
-                    else 0.0,
+                    "supported_pct": (
+                        round(supported / len(families) * 100, 1) if families else 0.0
+                    ),
                 },
                 "capability_families": families,
                 "registration_summary": registration_summary,
@@ -421,7 +460,9 @@ def build_manifest() -> dict[str, Any]:
             }
         )
 
-    all_families = [family for standard in standards for family in standard["capability_families"]]
+    all_families = [
+        family for standard in standards for family in standard["capability_families"]
+    ]
     supported_total = sum(item["scope_status"] == "SUPPORTED" for item in all_families)
     return {
         "schema_version": SCHEMA_VERSION,

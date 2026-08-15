@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — INDIA-2-WALL-C is integrated and WALL-D is a verified local publication candidate; focused wall-family acceptance is next
+**Updated:** 2026-08-16 — INDIA-2-WALL is accepted through its bounded Clause 32 workflow; INDIA-2-DEEP-G0 is next
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| INDIA-2-WALL | Implement the accepted braced empirical vertical-compression wall workflow through A-D and focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — WALL-A-C integrated; WALL-D candidate complete; focused acceptance next after integration |
+| INDIA-2-DEEP | Select and implement one clause-bounded Clause 29 deep-beam workflow through G0, A-D, and focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 source, scope, benchmark, units, and fail-closed decision is next; no calculation code before GO |
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
 
 ## Up Next
@@ -158,7 +158,8 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| INDIA-2-WALL-D | Added thin typed FastAPI transport, canonical wall capability/semantic truth, manifest promotion, and publication evidence | Main Agent + API developer | ✅ LOCAL CANDIDATE — 20 focused publication/manifest/API tests pass; family acceptance remains next |
+| INDIA-2-WALL | Implemented and accepted one bounded braced empirical vertical-compression wall workflow with public Clause 32 provenance | Main Agent + structural engineer | ✅ DONE — A-D integrated; 135-test focused family selection and independent hand benchmark pass; qualified review and excluded wall systems remain held |
+| INDIA-2-WALL-D | Added thin typed FastAPI transport, canonical wall capability/semantic truth, manifest promotion, and publication evidence | Main Agent + API developer | ✅ INTEGRATED — PR #772 merged as `46094a8c`; family acceptance passed from that exact integrated head |
 | INDIA-2-WALL-C | Published one typed Python workflow composing the axial and provided-reinforcement checks with retained provenance and holds | Main Agent + backend | ✅ INTEGRATED — PR #771 merged as `ea282b6d` |
 | INDIA-2-WALL-B | Implemented provided vertical/horizontal reinforcement area, material-ratio, spacing, and transverse-enclosure boundary checks | Main Agent + structural math | ✅ INTEGRATED — PR #770 merged as `e9e589d2`; capability remains held until WALL-D |
 | INDIA-2-WALL-A | Implemented typed bracing/geometry/action contracts, effective height, slenderness, eccentricity, empirical axial capacity, exact Clause 32 registration, and fail-closed tests | Main Agent + structural math | ✅ INTEGRATED — PR #769 merged as `7eb55746`; capability remains held until WALL-D |

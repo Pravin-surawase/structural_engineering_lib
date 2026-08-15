@@ -5,6 +5,88 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-WALL Focused Family Acceptance
+
+**Agent:** Codex (`reviewer`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-wall-acceptance` from integrated WALL-D main at
+`46094a8c35c75fcfb0644f23a851087cc3297c60`
+
+**Git handoff receipt:** `docs/verification/india-2-wall-acceptance-git-handoff-receipt.json`
+
+**Focus:** Accept the bounded wall family from integrated A-D using cumulative focused gates and retain its exclusions.
+
+### Summary
+
+- Replayed the frozen hand benchmark independently and ran the cumulative wall
+  behavior, unsafe-case, provenance, capability, manifest, and traceability
+  selection.
+- Corrected the capability semantic path for typed wall inputs and extended
+  the existing verifier to inspect typed dataclass inputs and public computed
+  result properties.
+- Froze the focused family receipt, added it to deterministic wall evidence,
+  closed the bounded wall task, and advanced the execution boundary to
+  `INDIA-2-DEEP-G0`.
+
+### Issues encountered
+
+- The first cumulative command referenced two inferred clause-test paths that
+  do not exist at the Python test root, so pytest stopped before collection.
+- The corrected cumulative selection found that three advertised wall inputs
+  were not named at their actual typed-request path; after correcting those
+  paths, it also found that the verifier did not recognize the public computed
+  `reinforcement.status` property.
+- The first index-generation command omitted its now-required owned-folder
+  argument and printed usage without changing files.
+- The first handoff-receipt command passed literal glob policy values unquoted,
+  so zsh rejected them before the receipt script ran.
+
+### Root causes and resolutions
+
+- Root cause: the clause tests are maintained as
+  `Python/tests/test_clause_traceability.py` and
+  `Python/tests/unit/test_clauses_json.py`, not under the inferred historical
+  names. Resolution: discover the maintained paths with `rg --files`, rerun the
+  intended selection, and record the command correction.
+- Root cause: WALL-D mixed top-level names with a typed `request` parameter and
+  the generic semantic verifier inspected dataclass fields only. Resolution:
+  advertise the exact `request.<field>` paths and teach the verifier to inspect
+  one typed dataclass input level plus public result properties. The focused
+  semantic test and complete 135-test selection then passed.
+- Root cause: the maintained index command no longer defaults to a repository-
+  wide write. Resolution: regenerate only the explicitly touched owned folders
+  and verify their hashes.
+- Root cause: zsh expands unquoted `**` tokens before invoking the command.
+  Resolution: quote the literal forbidden-path values and rerun the same
+  evidence-bound receipt command.
+
+### Evidence
+
+- The corrected cumulative family selection passed 135 tests.
+- Independent arithmetic matched effective height, capacity, demand, vertical
+  steel, and horizontal steel with zero displayed absolute error; status was
+  `PASS`.
+- Valid overload and inadequate reinforcement remain typed `FAIL`; unsupported
+  and malformed cases remain fail-closed.
+- Architecture reports 0 violations across 170 files and imports report 0
+  broken across 205 files; API compatibility and exact snapshot checks pass at
+  77 endpoints and 293 schemas.
+- Black, Ruff, mypy, Bandit, deterministic manifest, parity, touched indexes,
+  token-efficiency, and all 1,157-link checks pass; quick gate passed 10/10.
+- Hosted evidence is bound to the unchanged reviewed PR head before merge.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: the first cumulative test command used two inferred,
+  nonexistent clause-test paths -> discovered the maintained paths with
+  `rg --files` and reran the intended selection successfully.
+- ⚠️ TERMINAL ISSUE: `./run.sh generate indexes` requires an owned-folder
+  argument -> regenerated only the touched folders explicitly.
+- ⚠️ TERMINAL ISSUE: zsh expanded the unquoted receipt policy globs -> quoted
+  the literal forbidden-path values and reran the receipt command.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-WALL-D API and Capability Publication
 
 **Agent:** Codex (`api-developer`, sole writer; no subagents)
