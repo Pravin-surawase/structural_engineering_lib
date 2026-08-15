@@ -153,7 +153,7 @@ held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| INDIA-0 | Reconciled supported and held Indian RC scope into one generated, standard-namespaced capability/registration manifest; repaired both coverage consumers | Main Agent | ✅ LOCALLY COMPLETE — focused contracts green; commit/push/draft PR and CI are intentionally left to the Git handoff |
+| INDIA-0 | Reconciled supported and held Indian RC scope into one generated, standard-namespaced capability/registration manifest; repaired both coverage consumers | Main Agent | 🚧 DRAFT PR #753 — local gates and review passed; hosted CI, exact-head review, and merge remain |
 | COLUMN-PMM-001 | Recovered and independently benchmarked the experimental rectangular-column P-Mx-My fiber surface | Main Agent | ✅ SOFTWARE COMPLETE — PR #738 merged; module remains experimental and outside the stable API |
 | ALPHA-0231-CANDIDATE | Published the exact 0.23.1a1 Alpha through exact-head CI, TestPyPI, production PyPI, and GitHub prerelease gates | Main Agent + ops | ✅ DONE — production run `31468341946`; exact public package UAT green |
 | IS456-SLAB-PRELAUNCH | Record and enforce source/licensing permission for public distribution of approved-scope normalized IS 456 data | Owner + Main Agent | ✅ DONE — owner confirmed 2026-08-11; canonical record, preflight, candidate, and publish-CI gates added |

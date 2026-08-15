@@ -5,6 +5,110 @@
 
 ---
 
+## 2026-08-15 — Session: INDIA-0 Draft PR Publication and INDIA-1 Handoff
+
+**Agent:** Codex (`ops`, sole writer; no subagents)
+
+**Branch:** `codex/india-0-truth-baseline`
+
+**Focus:** Validate the durable INDIA-0 handoff, commit and push only its owned
+paths, open draft PR #753 without waiting for CI, and replace the stale central
+handoff with a bounded INDIA-1 startup brief.
+
+### Summary
+
+- Revalidated the INDIA-0 receipt, 29-path ownership boundary, GitHub
+  authentication, clean operation state, and exact equality with freshly
+  fetched `origin/main = 96f193bd45a21f05698cf64de47808a2e5f82640`.
+- Committed only the receipt-owned INDIA-0 paths as
+  `cfe02b3d47b671097358cf2feff16ecd4319cf89`, pushed the feature branch
+  without rewriting history, and opened draft PR #753 against `main`.
+- Replaced the prior GIT-7E central handoff with the INDIA-0 integration
+  boundary and an executable INDIA-1 plan split into beam, column, isolated-
+  footing, and solid-slab closure packets.
+- Did not wait for hosted CI. Exact-head check review, ready transition, and
+  merge remain the next session's first task; release and cleanup are not
+  authorized.
+
+### Issues encountered
+
+- `git diff --cached --check` exposed three trailing-space violations in the
+  new truth-baseline document only after the previously untracked file was
+  staged.
+- The first commit attempt stopped because the Black pre-commit hook reformatted
+  the new manifest test file.
+- `gh pr view --head ...` failed because this installed GitHub CLI accepts the
+  branch as a positional argument rather than a `--head` flag.
+- The patch tool rejected a single request that deleted and recreated
+  `docs/planning/next-session-brief.md` at the same path.
+- The documentation metadata hook reported missing canonical metadata on the
+  newly added truth-baseline reference while operating in warning mode.
+- Verification-index regeneration again proposed current dates for 14 unchanged
+  evidence files in the linked worktree.
+
+### Root causes and resolutions
+
+- Root cause: Markdown hard-break spaces were present in an untracked file, so
+  the earlier tracked-only diff check could not inspect them. Resolution:
+  replace hard breaks with blank paragraphs, stage the file, and require the
+  cached diff check before commit. Evidence: `git diff --cached --check` and
+  the whitespace pre-commit hook passed.
+- Root cause: the test file had not been run through the repository's exact
+  Black formatting profile before staging. Resolution: accept the hook's
+  formatter-only edit, rerun all 15 focused manifest/capability/API tests,
+  restage only that path, and retry the commit. Evidence: 15 tests and every
+  commit hook passed.
+- Root cause: the command used the list-style PR filter on the view command.
+  Resolution: use `gh pr view codex/india-0-truth-baseline --json ...`.
+  Evidence: it returned draft PR #753 at the pushed implementation head.
+- Root cause: `apply_patch` permits only one operation per target path in a
+  request. Resolution: split the versioned central-handoff replacement into
+  one delete and one add patch, then validate its length, structure, and links.
+- Root cause: the initial reference header used a descriptive publication
+  sentence as `Status` instead of the repository's metadata vocabulary.
+  Resolution: add canonical type, audience, status, dates, and importance while
+  keeping hosted state in a separate evidence-boundary field.
+- Root cause: the index generator derives displayed dates from linked-worktree
+  filesystem mtimes rather than content history. Resolution: retain the genuine
+  truth-baseline hash/description update while restoring the 14 unchanged
+  evidence dates to their committed historical values. Evidence: the final
+  index diff contains no unrelated date drift and the focused index check
+  passes.
+
+### Verification
+
+- Durable pre-publication handoff validated as `INDIA-0 | HOLD`; the hold was
+  expected because it captured the uncommitted and unchecked hosted state.
+- Refreshed local base, `FETCH_HEAD`, and `origin/main` were identical before
+  commit; no PR already existed for the feature branch.
+- Pre-publication `./run.sh check --quick`: 10/10 passed.
+- Focused manifest, capability-semantic, and FastAPI capability tests: 15 passed
+  after Black's formatter-only change.
+- Commit hooks passed JSON, whitespace, Black, Ruff, mypy, Bandit, governance,
+  link, API-document, index, and session checks.
+- Draft PR #753 opened successfully; its first hosted check began running and
+  was intentionally not awaited in this session.
+
+### Remaining Git/PR handoff
+
+- Push the final documentation handoff commit to PR #753, then treat the live
+  PR head as authoritative rather than the implementation commit recorded
+  above.
+- In the next session, inspect the exact live head, base, tree, required checks,
+  mergeability, and unresolved review state. Mark ready and merge only if every
+  required gate passes for that unchanged head.
+- After merge, fetch and verify the integrated result, then start INDIA-1 in a
+  fresh isolated `codex/india-1-<packet>` lane from current `origin/main`.
+- Do not delete the feature branch/worktree, synchronize the preserved dirty
+  primary checkout, publish a release, or claim engineering approval.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `gh pr view --head ...` is unsupported by the installed
+  CLI -> use the branch as the positional argument.
+- ⚠️ TERMINAL ISSUE: a same-path delete/add patch was rejected -> split it into
+  separate `apply_patch` operations.
+
 ## 2026-08-15 — Session: INDIA-0 Indian-Code Truth Baseline
 
 **Agent:** Codex (`orchestrator`, sole writer; one bounded read-only reviewer)

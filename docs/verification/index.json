@@ -109,11 +109,11 @@
     {
       "name": "indian-code-truth-baseline.md",
       "type": "documentation",
-      "size_lines": 84,
+      "size_lines": 92,
       "last_updated": "2026-08-15",
       "title": "INDIA-0 Indian-Code Truth Baseline",
-      "description": "indian-code-capability-coverage.json structural-engineering review remains required before stable or engineering-use",
-      "content_hash": "e23ea7d47f12"
+      "description": "merge pending indian-code-capability-coverage.json",
+      "content_hash": "97b85669d0b9"
     },
     {
       "name": "insights-verification-pack.md",
@@ -193,5 +193,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "b060696a630ed5fd"
+  "content_hash": "bdfec0cc8d033a6f"
 }

@@ -1,6 +1,13 @@
 # INDIA-0 Indian-Code Truth Baseline
 
-**Status:** Locally complete; Git publication and CI handoff pending
+**Type:** Reference
+**Audience:** Developers
+**Status:** In Progress
+**Created:** 2026-08-15
+**Last Updated:** 2026-08-15
+**Importance:** Critical
+**Evidence boundary:** Draft PR #753 open; hosted CI, exact-head review, and
+merge pending
 
 **Manifest:**
 [`indian-code-capability-coverage.json`](indian-code-capability-coverage.json)
@@ -75,10 +82,9 @@ composite; intentionally held families are not failed parity checks.
 
 ## Remaining gates
 
-- The fail-closed Git handoff records `LOCAL_HOLD_DIRTY` plus unchecked
-  remote/PR/review evidence. The next Git/PR session must review the intended
-  path set, commit it, refresh exact-head evidence, push, and open a draft PR;
-  this session does not wait for CI.
+- The fail-closed Git handoff is the retained pre-publication receipt. Draft PR
+  #753 now carries the committed baseline; hosted CI, exact-head review, and
+  merge remain pending, and this session does not wait for CI.
 - INDIA-1 must use the manifest's held cases to close or retain limitations in
   the already supported beam, column, isolated-footing, and solid-slab families.
 - Release, stable approval, engineering-use approval, and branch/worktree
