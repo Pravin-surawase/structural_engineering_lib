@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-15 — INDIA-1A through INDIA-1D are integrated; cumulative software gates are green and qualified engineering review remains held
+**Updated:** 2026-08-15 — INDIA-1 software and cumulative gates are integrated; INDIA-2A is the decision-first next packet
 
 ---
 
@@ -128,20 +128,22 @@
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
-| INDIA-1-CUMULATIVE | Run broad Python, full repository, manifest reconciliation, and cumulative essential review after A-D integration | Main Agent + reviewer | 🚧 DRAFT PR #758 — 5,926 Python tests and full 30/30 gate green; exact-head hosted review pending |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| INDIA-2A | Select and freeze exactly one new bounded IS 456 family, with a straight-flight staircase as the recommendation to verify against source and benchmark readiness | Main Agent + structural engineer | decision packet | P1 | 📋 READY AFTER PLANNING PR — no calculation code before GO |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL QUALIFIED REVIEW |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
 
-The version roadmap and historical backlog remain below. INDIA-0 now provides
-the generated [Indian-code truth manifest](verification/indian-code-capability-coverage.json);
-INDIA-1 is the next implementation wave after publication of this baseline.
+The version roadmap and historical backlog remain below. INDIA-0 provides the
+generated [Indian-code truth manifest](verification/indian-code-capability-coverage.json),
+and INDIA-1 closed limitations in the four already supported families. INDIA-2
+begins with one decision packet because the remaining held families require
+separate analysis models; it does not authorize a broad multi-element wave.
 The v0.23.1a1 Alpha is published.
 UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded
@@ -153,6 +155,7 @@ held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-1-CUMULATIVE | Ran broad Python, full repository, manifest reconciliation, and cumulative essential review after A-D integration | Main Agent + reviewer | ✅ DONE — PR #758 exact-head gate passed; 5,926 Python tests and full 30/30 gate green; reviewed tree squash-merged as `4e92f3d7` |
 | INDIA-1D | Closed solid-slab direct-deflection, crack-width, automatic-shear-reinforcement, and single-action load-envelope decisions with machine-visible holds | Main Agent | ✅ DONE — PR #757 exact-head gate passed; reviewed tree squash-merged as `ca55f22d` |
 | INDIA-1C | Published the bounded concentric isolated-footing composition with typed provenance, accepted benchmark, and explicit eccentric/other-foundation holds | Main Agent | ✅ DONE — PR #756 exact-head gate passed; reviewed tree squash-merged as `236ce646` |
 | INDIA-1B | Reconfirmed stable solid rectangular tied-column routes as a symmetric two-face reinforcement idealization and retained circular, arbitrary-layout, and experimental PMM cases | Main Agent | ✅ DONE — PR #755 exact-head gate passed; reviewed tree squash-merged as `f44452dd` |

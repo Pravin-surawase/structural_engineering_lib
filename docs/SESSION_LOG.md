@@ -5,6 +5,67 @@
 
 ---
 
+## 2026-08-15 — Session: INDIA-2 Planning and Milestone-Gate Cadence
+
+**Agent:** Codex (`orchestrator`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-session-plan` from integrated `origin/main` at
+`4e92f3d76f7cb16d5b92ed84aa7243d76b09e508`
+
+**Focus:** Make the proven multi-packet gate cadence durable and prepare a
+bounded, decision-first INDIA-2 handoff for a new chat.
+
+### Summary
+
+- Preserved the stale, dirty primary checkout and created a clean fresh
+  documentation worktree from the exact cumulative INDIA-1 merge.
+- Updated `AGENTS.md` and the canonical token-efficiency policy so each packet
+  retains focused evidence, quick/commit controls, and every required hosted PR
+  check, while broad Python and the full repository gate run once after the
+  intended packet set is integrated unless an outcome-changing risk appears.
+- Reconciled the task board with merged PR #758 and moved INDIA-1-CUMULATIVE to
+  done without granting qualified engineering or release approval.
+- Audited the generated manifest and current roadmaps. Defined INDIA-2A as a
+  GO/NO-GO source, scope, and benchmark decision for exactly one new IS 456
+  family rather than treating eight unrelated held families as one code wave.
+- Recommended a bounded straight-flight staircase for INDIA-2A to verify,
+  followed provisionally by geometry/action, structural-design, and public-
+  workflow packets only after GO.
+
+### Issues encountered
+
+- The primary `main` checkout was 14 commits behind `origin/main` and contained
+  an existing `docs/SESSION_LOG.md` modification.
+- `INDIA-2` was mentioned in the prior handoff, but no current plan defined its
+  objective or packet boundaries; live roadmaps separately held eight IS 456
+  families plus IS 875/IS 1893 work.
+
+### Root causes and resolutions
+
+- Existing user work and a stale local `main` made that checkout unsuitable as
+  an integration anchor. Fetched live `origin/main`, verified the cumulative
+  merge SHA, and created `codex/india-2-session-plan` in a separate worktree;
+  no reset, stash, cleanup, branch deletion, or worktree deletion was used.
+- The earlier brief named later waves without an accepted new-family decision,
+  while the generated capability manifest correctly kept each system separate.
+  Replaced the completed INDIA-1 handoff with INDIA-2A decision criteria,
+  candidate boundaries, provisional post-GO packets, explicit non-goals, and
+  the cumulative gate cadence. Capability status remains unchanged.
+
+### Evidence
+
+- Fresh-lane runtime diagnosis reports `source_bound=true`.
+- Fresh branch base equals live `origin/main` merge `4e92f3d7` from PR #758.
+- Manifest inventory reports eight held, unimplemented IS 456 families and no
+  source-selected IS 875 or IS 1893 implementation program.
+- `./run.sh efficiency check`: PASS.
+- Indian-code manifest check: current; no capability status changed.
+- Session-end handoff checks and document links: pass; task-to-Git receipt waits
+  for the planning PR identity.
+- `./run.sh check --quick`: 10/10 passed.
+
+---
+
 ## 2026-08-15 — Session: INDIA-1 Cumulative Integration Gates
 
 **Agent:** Codex (`reviewer`, sole writer; no subagents)

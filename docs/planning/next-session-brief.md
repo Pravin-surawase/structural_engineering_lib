@@ -4,38 +4,34 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
-- Focus: Publish the cumulative INDIA-1 gate evidence and stale CI-contract repair
-- Draft PR: [#758](https://github.com/Pravin-surawase/structural_engineering_lib/pull/758)
-- Branch: `codex/india-1-cumulative-gates`
-- Base: verified integrated `origin/main` at `ca55f22d3f8b6664e42ad41eb6d3ef9a0d1d96c3`
-- Implementation commit: `75089e8ad178d7d7ca8f7a5793cdf1f57c9ffbf4`
-- Next action: commit and publish the cumulative evidence packet; after its exact-head hosted gate passes, merge and verify integrated main. Keep stable/engineering-use approval held for qualified review and keep release authorization separate
-- Holds: no release, engineering-use approval, branch/worktree deletion, or historical-lane cleanup
+- Focus: Launch INDIA-2A by selecting and freezing exactly one new bounded IS 456 family
+- Planning branch: `codex/india-2-session-plan`
+- Base: verified integrated `origin/main` at `4e92f3d76f7cb16d5b92ed84aa7243d76b09e508`
+- Next action: merge the planning packet after its exact-head checks, then start a new chat and fresh `codex/india-2a-scope-foundation` worktree from the verified integrated `main`
+- Holds: no new calculation code before the INDIA-2A source/benchmark contract; no stable/engineering-use approval, release, branch/worktree deletion, or historical-lane cleanup
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-15
 
 | Release state | Target |
 |---|---|
-| **Current** | `v0.23.1a1` Alpha; qualified engineering review still required |
-| **Next** | Publish the cumulative INDIA-1 evidence; qualified review remains a separate gate |
+| **Current** | `v0.23.1a1` Alpha; INDIA-1 software and cumulative gates complete |
+| **Next** | INDIA-2A decision packet; qualified review remains a separate gate |
 
 ## Required Reading
 
-1. [INDIA-0 truth baseline](../verification/indian-code-truth-baseline.md)
-2. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
+1. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
+2. [INDIA-1 cumulative evidence](../verification/india-1-cumulative-gate-evidence.md)
 3. [Current task board](../TASKS.md)
 4. [IS 456 library-first plan](is456-library-first-master-plan.md)
 5. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
 
 ## Start Boundary
 
-INDIA-1A through INDIA-1D are integrated. The deferred broad Python, full
-repository, deterministic manifest, and cumulative essential-review gates have
-run on a fresh integrated lane. Publish only the stale CI-contract repair and
-cumulative evidence from that lane. Preserve the dirty primary checkout and all
-unrelated worktrees; do not bypass checks or convert software evidence into
-qualified engineering or release approval.
+INDIA-1A through INDIA-1D and their cumulative software gates are integrated.
+They do not provide qualified engineering approval. INDIA-2 starts a separate
+new-family program and must not reopen INDIA-1 or combine multiple held systems
+into one implementation wave.
 
 ```bash
 ./run.sh session brief --agent structural-math
@@ -45,88 +41,100 @@ qualified engineering or release approval.
 ./scripts/python_runtime.sh scripts/generate_indian_code_manifest.py --check
 ```
 
-Require `source_bound=true` before producing test or benchmark evidence.
+Require a clean fresh branch from verified current `origin/main` and
+`source_bound=true`. Preserve the dirty primary checkout and every unrelated
+worktree.
 
-## INDIA-1 Objective
+## Why INDIA-2 Begins With a Decision Packet
 
-Close or explicitly retain every material limitation inside the already
-supported IS 456 beam, rectangular-column, isolated-footing, and solid-slab
-families. “Close” means an independently benchmarked, provenance-bearing,
-fail-closed supported route. “Retain” means the manifest and public capability
-wording clearly exclude the case and identify the analysis or evidence needed.
+The generated manifest holds eight unimplemented IS 456 families: wall, stair,
+deep beam, flat slab, combined footing, strap footing, raft foundation, and
+pile cap. None has a frozen supported case or accepted benchmark program.
+IS 875 and IS 1893 also remain held with editions and analysis boundaries not
+selected, so they are not INDIA-2 implementation candidates.
 
-This wave does not add walls, stairs, deep beams, flat slabs, combined/strap/
-raft/pile-cap foundations, IS 875 load generation, or IS 1893 analysis. Those
-remain INDIA-2 or INDIA-3 work.
+Do not treat those holds as one backlog to code in parallel. INDIA-2 selects
+one coherent family, proves that it has a bounded useful route, and leaves all
+other families explicitly held.
 
-## Recommended Packet Sequence
+## INDIA-2A — Scope and Evidence Foundation
 
-### INDIA-1A — Beam route closure
+**Objective:** produce a GO/NO-GO decision for exactly one new IS 456 family
+before adding calculation code.
 
-- Inventory existing flanged-flexure, torsion, shear, detailing, deflection,
-  and crack-width math before adding code.
-- Decide and implement the smallest coherent combined flanged-beam route.
-- Propagate only explicit serviceability inputs supported by maintained math.
-- State load-envelope and torsion-redistribution exclusions fail-closed.
-- Do not claim hollow/box, deep, prestressed, or axially loaded beam support.
+The initial recommendation is a bounded straight-flight staircase because its
+RC design can potentially reuse maintained slab/beam patterns. INDIA-2A must
+verify that assumption against sources and benchmarks; recommendation is not
+implementation evidence.
 
-### INDIA-1B — Rectangular-column decision closure
+### Required decisions
 
-- Reconfirm the supported symmetric/two-face rectangular reinforcement model.
-- Decide whether circular, asymmetric, and arbitrary multilayer layouts remain
-  held or need separate approved packets; do not silently broaden geometry.
-- Keep experimental PMM work outside the stable capability unless its separate
-  numerical and API acceptance gates are completed.
+- Confirm the selected family is owner-activated despite its historical
+  post-v1.0 roadmap position; INDIA-2A planning alone does not activate B-D.
+- Select one governing edition and source set with clause/table provenance.
+- Freeze one useful geometry, support, span, load-action, material, and
+  reinforcement model with explicit units.
+- Separate caller-supplied actions from any self-weight calculation; do not
+  imply IS 875 load generation.
+- Define result dispositions and fail-closed exclusions before public naming.
+- Map reusable accepted functions versus genuinely new pure math.
+- Define independent safe, unsafe, boundary, and out-of-domain benchmarks with
+  justified tolerances.
+- Record GO, REVISE, or NO-GO and update the task board. Do not change the
+  capability manifest from `HELD` until executable evidence exists.
 
-### INDIA-1C — Isolated-footing composed workflow
+### Candidate boundaries to compare
 
-- Compose sizing, flexure, one-way shear, punching, bearing pressure, detailing,
-  and concentric load transfer into one reviewable supported workflow.
-- Add eccentric pressure only after documenting load reference, contact model,
-  units, kern/tension assumptions, and unsafe/out-of-domain behavior.
-- Keep combined, strap, raft, pile-cap, settlement, lateral stability, and soil-
-  structure interaction outside this packet.
+| Candidate | Minimum decision needed before implementation |
+|---|---|
+| Straight-flight stair | support/span model, flight/landing scope, load projection, serviceability, detailing |
+| RC wall | axial-flexure model, slenderness, reinforcement layout, openings, frame-analysis boundary |
+| Combined footing | column actions, contact-pressure model, rigidity assumption, soil/geotechnical boundary |
+| Flat slab | column/drop strips, punching perimeters, openings, moment transfer, analysis method |
+| Deep beam | load path, nodal zones, reinforcement model, ordinary-beam transition |
 
-### INDIA-1D — Solid-slab serviceability and shear boundary
+Strap, raft, pile-cap, IS 875, and IS 1893 work remains held unless a later
+owner-approved program replaces this order.
 
-- Evaluate direct deflection and crack-width routes with explicit required
-  geometry, material, load-duration, reinforcement, and service-stress inputs.
-- Add automatic shear reinforcement only for a justified supported slab model;
-  otherwise retain the exclusion explicitly.
-- Define the load-envelope boundary. Concentrated loads, openings, irregular
-  panels, flat slabs, and FEM remain held unless separately approved.
+## Provisional Staircase Packets After INDIA-2A GO
 
-## Acceptance Per Packet
+### INDIA-2B — Types, geometry, and action contract
 
-- Governing edition, clause/table identifier, and source provenance are explicit.
-- Units, geometry, loading, topology, and support assumptions are explicit.
-- Pure math is accepted before service, FastAPI, or React expansion.
-- At least one independent benchmark has a justified tolerance.
-- Governing safe, unsafe, boundary, and out-of-domain cases are tested.
-- Unsupported inputs fail closed; capability wording matches executable behavior.
-- Focused tests and the narrow benchmark pass while iterating; quick gate and
-  normal commit hooks remain the per-commit controls.
-- Required hosted PR checks remain mandatory for every packet and are not bypassed.
-- Run the broad Python suite, full repository gate, manifest reconciliation,
-  and cumulative review once after INDIA-1A through INDIA-1D are integrated.
-- Repeat a broad/full local gate earlier only when an outcome-changing failure
-  or repository-wide surface makes it necessary.
-- Record material issues, confirmed root causes, resolutions, and evidence in
-  the newest task-owned `docs/SESSION_LOG.md` entry.
+- Add explicit types for the accepted straight-flight case only.
+- Implement and benchmark geometry and action transformation as pure math.
+- Reject unsupported support, landing, transverse, cantilever, helical,
+  folded, precast, and stringer/rib cases.
 
-## Git and Review Strategy
+### INDIA-2C — Structural design and checks
 
-Use one PR per coherent packet when packets are independently reviewable; do
-not keep all INDIA-1 work on a long-lived mega-branch. A named integration owner
-alone updates shared/generated surfaces such as the manifest, capability
-registry, `TASKS.md`, indexes, and session log. Read-only engineering review can
-run in parallel, but qualified structural-engineering review remains a distinct
-acceptance gate.
+- Compose accepted flexure, shear, detailing, and serviceability logic without
+  bypassing the four-layer architecture.
+- Add provenance-bearing independent benchmarks and fail-closed outcomes.
 
-## INDIA-1 Exit
+### INDIA-2D — Public workflow and capability truth
 
-INDIA-1 is complete only when every original limitation is either supported by
-executable evidence or retained as an explicit hold, the generated manifest is
-current with no unknown status, focused and repository gates pass, and the
-cumulative engineering-review boundary is unchanged. Release remains separately
-owner-authorized.
+- Publish one typed Python service/facade route after pure-math acceptance.
+- Add a thin FastAPI consumer only if it preserves the exact supported case.
+- Update capability truth, API manifests, docs, and evidence as a single-writer
+  closeout. React/UI expansion is outside INDIA-2 unless separately approved.
+
+If INDIA-2A selects another family, replace B-D with equivalently bounded
+packets before implementation; do not reuse staircase-specific acceptance rows.
+
+## Gate Cadence
+
+For every packet, run focused tests, independent benchmarks, architecture and
+import checks, `./run.sh check --quick`, normal commit hooks, and every required
+hosted PR check. After INDIA-2A through the activated final packet are
+integrated, run the broad Python suite, `./run.sh check` (currently 30 checks),
+manifest reconciliation, provenance review, and cumulative essential review
+once. Run a broad gate earlier only for an outcome-changing failure or a
+repository-wide surface. Never bypass required hosted checks.
+
+## INDIA-2 Exit
+
+INDIA-2 is complete only when one newly approved family is either supported by
+executable, independently benchmarked, provenance-bearing evidence or returned
+to an explicit hold; all other families remain truthful holds; manifests have
+no unknown status; cumulative software gates pass; and qualified engineering
+review and release authorization remain separate.
