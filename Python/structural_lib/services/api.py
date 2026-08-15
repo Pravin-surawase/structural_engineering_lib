@@ -171,6 +171,12 @@ from structural_lib.services.staircase_api import (  # noqa: F401
     StraightFlightStaircaseResult,
     design_straight_flight_staircase_is456,
 )
+from structural_lib.services.wall_api import (  # noqa: F401
+    BracedWallDesignInput,
+    BracedWallDesignProvenance,
+    BracedWallDesignResult,
+    design_braced_wall_is456,
+)
 from structural_lib.services.workflow_catalog import (  # noqa: F401
     WorkflowCatalog,
     get_workflow_catalog,
@@ -371,6 +377,11 @@ __all__ = [
     "StraightFlightStaircaseInput",
     "StraightFlightStaircaseProvenance",
     "StraightFlightStaircaseResult",
+    # Braced wall (bounded supported case)
+    "design_braced_wall_is456",
+    "BracedWallDesignInput",
+    "BracedWallDesignProvenance",
+    "BracedWallDesignResult",
     # Capability discovery
     "get_supported_is456_capability_document",
     "get_supported_is456_capabilities",

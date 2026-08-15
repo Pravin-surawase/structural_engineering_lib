@@ -1,8 +1,8 @@
 # Services
 
 **Type:** Python Package
-**Last Updated:** 2026-08-15
-**Files:** 40
+**Last Updated:** 2026-08-16
+**Files:** 41
 
 ## Python Files
 
@@ -10,7 +10,7 @@
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) | structural_lib.services — Auto-generated package. | 0 | 0 | 2 |
 | [adapters.py](adapters.py) | Adapters for converting various input formats to canonical m | 6 | 0 | 2006 |
-| [api.py](api.py) | Module:       api | 0 | 0 | 384 |
+| [api.py](api.py) | Module:       api | 0 | 0 | 395 |
 | [api_hub.py](api_hub.py) | Module:       api | 0 | 0 | 238 |
 | [api_results.py](api_results.py) | Module:       api_results | 8 | 0 | 507 |
 | [audit.py](audit.py) | Module:       audit | 3 | 3 | 595 |
@@ -46,5 +46,6 @@
 | [staircase_api.py](staircase_api.py) | Stable orchestration for the bounded IS 456 straight-flight  | 3 | 1 | 209 |
 | [testing_strategies.py](testing_strategies.py) | Module:       testing_strategies | 9 | 2 | 655 |
 | [tool_manifest.py](tool_manifest.py) | Deterministic AI-tool descriptors projected from the workflo | 1 | 3 | 162 |
+| [wall_api.py](wall_api.py) | Stable orchestration for the bounded IS 456 braced-wall work | 3 | 1 | 226 |
 | [workflow_catalog.py](workflow_catalog.py) | Versioned, transport-neutral catalogue for approved applicat | 6 | 6 | 377 |
 | [workflow_runner.py](workflow_runner.py) | Bounded in-memory runner for one approved beam review workfl | 5 | 3 | 486 |

@@ -5,6 +5,82 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-WALL-C Public Python Workflow
+
+**Agent:** Codex (`backend`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-wall-c` from integrated WALL-B main at
+`e9e589d242967ac92f8b57017e1819531686e6a2`
+
+**Focus:** Publish one canonical typed Python workflow composing the accepted
+wall axial and reinforcement kernels without advertising capability early.
+
+### Summary
+
+- Added `services/wall_api.py` with typed request, result, and provenance
+  records plus `design_braced_wall_is456`.
+- Published the same objects through the services, compatibility, and package-
+  root facades and regenerated the public API manifest.
+- Added public-contract tests and API reference/stability documentation while
+  keeping wall absent from supported capabilities until WALL-D.
+
+### Issues encountered
+
+- WALL-B's post-merge session-end check reported `HOLD_DIVERGED` and a missing
+  task-to-Git handoff receipt after PR #770 had already squash-merged.
+- The first WALL-C brief/start command continued in the primary checkout after
+  creating the linked worktree, so it inspected `main` instead of the new lane.
+- The new public symbols made the API manifest stale, as expected.
+- Two API-document validation command names were inferred from archived names
+  before the maintained `check_api.py` entry point was discovered.
+- Targeted index generation refused to create new index files in the
+  unmaintained `Python/tests/integration/` folder.
+
+### Root causes and resolutions
+
+- Root cause: squash integration changes ancestry and the packet had no
+  versioned receipt before session end. Resolution: verify PR #770's exact
+  merge and start from clean integrated `e9e589d2`; retain the old lane.
+- Root cause: command working directories do not change when a worktree is
+  created. Resolution: rerun diagnosis, brief, and session start with the new
+  WALL-C worktree as the explicit working directory; it returned
+  `source_bound=true` and `READY_LOCAL`.
+- Root cause: the canonical manifest freezes `services.api.__all__`.
+  Resolution: regenerate it after the four intentional public additions and
+  validate compatibility.
+- Root cause: older API-doc scripts were archived behind the unified checker.
+  Resolution: discover and run `check_api.py --docs` and `--sync`; both passed.
+- Root cause: the integration-test folder intentionally has no maintained local
+  index. Resolution: leave it unindexed and regenerate only the existing
+  `Python/tests/` parent index, which records the new test.
+
+### Evidence
+
+- 39 wall/publication tests and 119 combined wall/API/traceability tests passed;
+  overload and inadequate reinforcement each produce composed `FAIL`, and the
+  full result serializes to JSON.
+- The 76-endpoint/286-schema API compatibility validator reports no breaking
+  changes; API manifest and API documentation checks pass.
+- Black, Ruff, and mypy pass for the new service and public tests.
+- Architecture validation found 0 violations across 168 files; import
+  validation found 0 broken imports across 205 files; quick gate passed 10/10.
+- Wall remains absent from supported capability discovery pending WALL-D.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: WALL-B session end reported the already squash-merged
+  branch as diverged and missing a receipt -> verified PR #770 and started this
+  lane from clean integrated main without mutating the retained WALL-B lane.
+- ⚠️ TERMINAL ISSUE: the first WALL-C session commands ran in primary `main`
+  after worktree creation -> reran all lane checks with the explicit WALL-C
+  working directory before any edits.
+- ⚠️ TERMINAL ISSUE: guessed API-doc script names were archived/nonexistent ->
+  discovered and ran the maintained unified `check_api.py` commands.
+- ⚠️ TERMINAL ISSUE: index generation refused the unmaintained integration-test
+  folder -> preserved that boundary and regenerated its maintained parent.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-WALL-B Reinforcement Checks
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

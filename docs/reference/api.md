@@ -53,6 +53,8 @@ types include `api.LoadTransferResult`, `api.OneWaySlabDesignResult`,
 The bounded staircase route returns `api.StraightFlightStaircaseResult` from
 `api.StraightFlightStaircaseInput` and retains
 `api.StraightFlightStaircaseProvenance`.
+The bounded braced-wall Python route returns `api.BracedWallDesignResult` from
+`api.BracedWallDesignInput` and retains `api.BracedWallDesignProvenance`.
 
 ```python
 from structural_lib import api
@@ -4098,6 +4100,55 @@ automatic bar selection remain held. `StraightFlightStaircaseProvenance`
 retains workflow, load-basis, benchmark, clause, and source identities.
 
 **FastAPI Endpoint:** `POST /api/v1/design/staircase/straight-flight`
+
+---
+
+## 19. Braced-Wall Workflow — Development Preview
+
+```python
+from structural_lib import BracedWallDesignInput
+from structural_lib import design_braced_wall_is456
+
+result = design_braced_wall_is456(
+    BracedWallDesignInput(
+        case_id="WALL-01",
+        unsupported_height_mm=3000,
+        lateral_restraint_spacing_mm=4000,
+        wall_length_mm=4000,
+        wall_thickness_mm=150,
+        concrete_grade_nmm2=20,
+        factored_axial_load_kn=2000,
+        supplied_eccentricity_mm=0,
+        vertical_bar_diameter_mm=8,
+        vertical_bar_spacing_mm=250,
+        horizontal_bar_diameter_mm=10,
+        horizontal_bar_spacing_mm=250,
+        bracing_basis_reference="reviewed-bracing:WALL-01",
+        action_basis_reference="factored-actions:WALL-01",
+        reinforcement_basis_reference="provided-bars:WALL-01",
+    )
+)
+```
+
+```python
+def design_braced_wall_is456(
+    request: BracedWallDesignInput,
+) -> BracedWallDesignResult
+```
+
+The service composes the public IS 456:2000 Clause 32.2 braced-wall effective-
+height, slenderness, eccentricity, empirical axial-capacity, demand, and
+utilization checks with the Clause 32.5 minimum/provided vertical and
+horizontal reinforcement checks. `BracedWallDesignProvenance` retains the
+workflow, benchmark, clause, standard-source, bracing, action, and
+reinforcement identities.
+
+The only accepted case is one regular 100-200 mm thick one-grid braced wall
+under caller-supplied factored in-plane vertical compression. Applied moments,
+horizontal actions, shear, openings, two-grid walls, transverse-enclosure
+design, seismic detailing, load generation, bar selection, and qualified
+approval remain held. FastAPI publication and capability advertisement are
+added only by WALL-D.
 
 ---
 

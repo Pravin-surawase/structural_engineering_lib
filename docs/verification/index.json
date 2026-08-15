@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 41,
+  "file_count": 42,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -245,6 +245,14 @@
       "content_hash": "dccc2142b26b"
     },
     {
+      "name": "india-2-wall-c-public-workflow-evidence.md",
+      "type": "documentation",
+      "size_lines": 80,
+      "last_updated": "2026-08-16",
+      "description": "WALL-C publishes one canonical typed Python function, design_braced_wall_is456, through structural_lib.services.api, the",
+      "content_hash": "6a75d034217a"
+    },
+    {
       "name": "india-2-wall-g0-scope-evidence.md",
       "type": "documentation",
       "size_lines": 125,
@@ -447,5 +455,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "09011f267a04d2fa"
+  "content_hash": "6edaabd4f35b8455"
 }
