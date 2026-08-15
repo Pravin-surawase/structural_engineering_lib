@@ -104,7 +104,7 @@
       "size_lines": 73,
       "last_updated": "2026-08-15",
       "description": "The stable IS 456 column decision remains bounded to solid rectangular tied sections. design_column_is456() and design_long_column_is456() accept one",
-      "content_hash": "2e2dddd20452"
+      "content_hash": "5ed855d6483f"
     },
     {
       "name": "indian-code-capability-coverage.json",
@@ -209,5 +209,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "e232f373a5458802"
+  "content_hash": "21ade6f3cfe8440a"
 }

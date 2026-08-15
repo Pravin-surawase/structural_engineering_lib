@@ -44,6 +44,8 @@ stable capability without changing accepted structural math.
 - Index regeneration proposed unrelated linked-worktree date/topology drift,
   and correctly refused to create a new index in the unmaintained integration-
   test folder.
+- The first documentation-category closeout rejected the new evidence file's
+  front-matter vocabulary.
 
 ### Root causes and resolutions
 
@@ -64,6 +66,11 @@ stable capability without changing accepted structural math.
   changed API entries in the reference index, generated task-owned docs and
   verification entries, and did not create a new integration index. Evidence:
   the final index diff contains only INDIA-1B-owned records.
+- Root cause: the new evidence file used descriptive `complete`/`verification`
+  front-matter values instead of the checker's closed lowercase vocabulary.
+  Resolution: changed them to supported `active`/`reference` values. Evidence:
+  the direct consolidated documentation check passes; its unrelated repository-
+  wide metadata and 353-versus-350 soft-budget findings remain warnings.
 
 ### Verification
 
@@ -75,6 +82,9 @@ stable capability without changing accepted structural math.
   155 files with 0 violations, import validation checked 194 files with 0
   broken imports, and the quick repository gate passed 10/10.
 - Commit-hook and hosted-PR results are recorded at publication closeout.
+- Committed the 18-path decision packet as `64a75d5f`, pushed without history
+  rewriting, and opened draft PR #755; exact-head hosted acceptance remains the
+  integration boundary.
 - Broad Python and full repository gates remain deferred to cumulative
   INDIA-1A through INDIA-1D closeout under the owner-approved cadence.
 - Software verification is not qualified structural-engineering review or

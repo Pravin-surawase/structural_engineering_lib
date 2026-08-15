@@ -128,7 +128,7 @@
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
-| INDIA-1B | Close or retain rectangular-column geometry and reinforcement-layout decisions without promoting experimental PMM | Main Agent + structural engineer | 🚧 SOFTWARE COMPLETE IN FRESH LANE — focused validation and publication closeout in progress |
+| INDIA-1B | Close or retain rectangular-column geometry and reinforcement-layout decisions without promoting experimental PMM | Main Agent + structural engineer | 🚧 DRAFT PR #755 — decision/evidence complete; exact-head hosted review pending |
 
 ## Up Next
 

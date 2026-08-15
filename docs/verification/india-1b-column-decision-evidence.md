@@ -1,8 +1,8 @@
 ---
 owner: Main Agent
-status: complete
+status: active
 last_updated: 2026-08-15
-doc_type: verification
+doc_type: reference
 task: INDIA-1B
 ---
 
