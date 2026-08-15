@@ -17,13 +17,13 @@
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 427,
+      "size_lines": 436,
       "last_updated": "2026-08-16",
       "description": "Package:      structural_lib",
       "constants": [
         "_LAZY_MODULES"
       ],
-      "content_hash": "64540b5a225e"
+      "content_hash": "4a6c989f0c48"
     },
     {
       "name": "__main__.py",
@@ -513,7 +513,7 @@
     {
       "name": "codes",
       "path": "codes/",
-      "file_count": 88,
+      "file_count": 94,
       "is_package": true
     },
     {
@@ -543,7 +543,7 @@
     {
       "name": "services",
       "path": "services/",
-      "file_count": 43,
+      "file_count": 44,
       "is_package": true
     },
     {
@@ -576,5 +576,5 @@
     "serviceability",
     "shear"
   ],
-  "content_hash": "7493a9520924a7b9"
+  "content_hash": "fb7ca012be063122"
 }

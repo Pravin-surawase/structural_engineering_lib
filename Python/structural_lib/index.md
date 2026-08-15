@@ -39,7 +39,7 @@
 
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
-| [__init__.py](__init__.py) | Package:      structural_lib | 0 | 0 | 427 |
+| [__init__.py](__init__.py) | Package:      structural_lib | 0 | 0 | 436 |
 | [__main__.py](__main__.py) | Unified CLI entrypoint for structural_lib. | 0 | 12 | 1573 |
 | [adapters.py](adapters.py) | Backward compatibility stub. | 0 | 0 | 17 |
 | [api.py](api.py) | Backward compatibility stub. | 0 | 0 | 14 |
@@ -94,10 +94,10 @@
 | Folder | Files | Description |
 |--------|-------|-------------|
 | [cli/](cli/) 📦 | 2 |  |
-| [codes/](codes/) 📦 | 88 |  |
+| [codes/](codes/) 📦 | 94 |  |
 | [core/](core/) 📦 | 20 |  |
 | [insights/](insights/) 📦 | 12 |  |
 | [reports/](reports/) 📦 | 7 |  |
 | [research/](research/) 📦 | 4 |  |
-| [services/](services/) 📦 | 43 |  |
+| [services/](services/) 📦 | 44 |  |
 | [visualization/](visualization/) 📦 | 4 |  |

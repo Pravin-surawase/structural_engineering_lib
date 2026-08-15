@@ -544,6 +544,13 @@ staircase_provenance: api.StraightFlightStaircaseProvenance = (
 wall_request = api.BracedWallDesignInput(...)
 wall: api.BracedWallDesignResult = api.design_braced_wall_is456(wall_request)
 wall_provenance: api.BracedWallDesignProvenance = wall.provenance
+deep_beam_request = api.SimplySupportedDeepBeamDesignInput(...)
+deep_beam: api.SimplySupportedDeepBeamDesignResult = (
+    api.design_simply_supported_deep_beam_is456(deep_beam_request)
+)
+deep_beam_provenance: api.SimplySupportedDeepBeamDesignProvenance = (
+    deep_beam.provenance
+)
 capabilities: tuple[api.IS456Capability, ...] = (
     api.get_supported_is456_capabilities()
 )

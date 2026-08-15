@@ -5,6 +5,73 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-DEEP-C Public Python Workflow
+
+**Agent:** Codex (`backend`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-deep-c` from integrated DEEP-B main at
+`9a9ca233bd63eb95d458ec08cc5e9a3225350f8c`
+
+**Git handoff receipt:** `docs/verification/india-2-deep-c-git-handoff-receipt.json`
+
+**Focus:** Publish only the typed Python composition and executable benchmark
+over the integrated DEEP-A/B kernels.
+
+### Summary
+
+- Added one flat typed service input, public result/provenance carrier, and
+  stable `design_simply_supported_deep_beam_is456` composition.
+- Exported the same canonical objects through services and the package root,
+  updated the public API manifest/reference/stability docs, and kept capability
+  truth held until the transport/publication packet.
+- Added an executable JSON-safe public benchmark plus composed failure and
+  contract-error tests without duplicating engineering formulas.
+
+### Issues encountered
+
+- The first direct API documentation command referenced an archived checker
+  filename rather than the maintained consolidated checker.
+- The maintained checker then found the new result/provenance/input types were
+  described without `api.`-qualified identity in the API manifest section.
+- Index generation correctly refused to create a new index in the historically
+  unmaintained `Python/tests/integration` folder.
+
+### Root causes and resolutions
+
+- Root cause: the inferred historical script path is now under
+  `scripts/_archive`. Resolution: use `./run.sh find` and run the maintained
+  `scripts/check_api.py --all` entrypoint.
+- Root cause: the docs checker discovers public data types from explicit
+  `api.<symbol>` tokens, while the new workflow section used root-import names.
+  Resolution: add the canonical services-API identities to the API manifest
+  narrative; all documentation, sync, and React/FastAPI contract checks pass.
+- Root cause: `Python/tests/integration` has no maintained folder index and the
+  generator requires an explicit new-index decision. Resolution: preserve that
+  structure and regenerate only the existing parent `Python/tests` index.
+
+### Evidence
+
+- The direct-plus-public selection passes 47 tests; the combined deep-beam,
+  public-workflow, clause, traceability, Indian-manifest, and API-manifest
+  selection passes 141 tests and reproduces all frozen benchmark values through
+  the canonical package-root function.
+- Black, Ruff, mypy, and Bandit pass; architecture reports 0 violations across
+  175 files and imports report 0 broken across 604 scanned files.
+- The API manifest is current and all three consolidated API checks pass.
+- All 1,176 internal links, touched indexes, and quick gate 10/10 pass.
+- Manifest, index, link, quick, and hosted evidence is recorded in
+  `india-2-deep-c-public-workflow-evidence.md` and the exact PR checks.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `scripts/check_api_docs_signatures.py` does not exist on
+  the maintained surface → discovered and passed `scripts/check_api.py --all`.
+- ⚠️ TERMINAL ISSUE: index generation refused the unmaintained
+  `Python/tests/integration` folder → preserved the folder and updated its
+  maintained `Python/tests` parent index.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-DEEP-B Reinforcement and Anchorage
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

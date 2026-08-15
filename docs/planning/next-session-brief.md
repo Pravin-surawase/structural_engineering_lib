@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Implement only the frozen positive tie, placement, continuity,
-- Git receipt: docs/verification/india-2-deep-b-git-handoff-receipt.json | sha256:d15b352d1086c9ac0d8e1c9769c8f85e1f97cb99e96de28686e9d7d86dedf45d | HOLD
-- Git identity: codex/india-2-deep-b@57ee2bad7a4b8cd16858d5b5d4306f9abf886b3b | upstream=NONE@UNKNOWN | base=origin/main@57ee2bad7a4b8cd16858d5b5d4306f9abf886b3b | tree=dirty | operation=none
+- Focus: Publish only the typed Python composition and executable benchmark
+- Git receipt: docs/verification/india-2-deep-c-git-handoff-receipt.json | sha256:16a13b0923758a5a6e576dfb3c76978f7737e063fabeba8932c4bb4f3c71d0b7 | HOLD
+- Git identity: codex/india-2-deep-c@9a9ca233bd63eb95d458ec08cc5e9a3225350f8c | upstream=NONE@UNKNOWN | base=origin/main@9a9ca233bd63eb95d458ec08cc5e9a3225350f8c | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Implement `INDIA-2-DEEP-C` from integrated B: typed public Python workflow and executable benchmark |
+| **Next** | Implement `INDIA-2-DEEP-D` from integrated C: thin FastAPI route, capability/semantic truth, manifest promotion, and publication evidence |
 
 ## Required Reading
 
@@ -75,8 +75,10 @@ reinforcement check. [`india-2-deep-a-geometry-evidence.md`](../verification/ind
 records the implemented typed effective-span, classification, lever-arm,
 caller-action, and fail-closed contracts. [`india-2-deep-b-reinforcement-evidence.md`](../verification/india-2-deep-b-reinforcement-evidence.md)
 records the required/provided positive tie, placement, continuity, anchorage,
-side-face, and composed checks. DEEP-C may expose only a typed Python workflow
-over those integrated kernels. Bearing and compression-nodal regions require a caller-supplied external verification;
+side-face, and composed checks. [`india-2-deep-c-public-workflow-evidence.md`](../verification/india-2-deep-c-public-workflow-evidence.md)
+records the typed public Python composition, executable benchmark, public API
+docs, and retained holds. DEEP-D may add only thin transport and truthful
+capability/semantic publication over that exact workflow. Bearing and compression-nodal regions require a caller-supplied external verification;
 continuous beams, openings, hanging action, negative moment, load generation,
 generalized strut-and-tie, nonlinear analysis, and FEM remain held.
 

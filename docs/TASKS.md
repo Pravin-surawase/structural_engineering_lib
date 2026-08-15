@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — INDIA-2-DEEP-B implements the bounded positive-tie, anchorage, side-face, and composed checks; DEEP-C is next
+**Updated:** 2026-08-16 — INDIA-2-DEEP-C publishes the typed Python workflow and executable benchmark; DEEP-D is next
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| INDIA-2-DEEP | Implement one bounded simply supported Clause 29 positive-reinforcement check through A-D and focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 and DEEP-A/B are complete; DEEP-C typed public Python workflow and executable benchmark are next |
+| INDIA-2-DEEP | Implement one bounded simply supported Clause 29 positive-reinforcement check through A-D and focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 and DEEP-A-C are complete; DEEP-D thin FastAPI route, capability truth, manifest promotion, and publication evidence are next |
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
 
 ## Up Next
@@ -158,6 +158,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-DEEP-C | Published one typed Python workflow composing geometry, action, positive tie, anchorage, side-face, provenance, and retained holds | Main Agent + backend | ✅ COMPLETE — canonical root/services API, executable hand benchmark, JSON-safe result, and public docs pass; capability remains held until DEEP-D |
 | INDIA-2-DEEP-B | Added required/provided positive tie, placement, continuity, exact 0.8Ld anchorage, side-face area/spacing/grid, transverse-enclosure boundary, and composed dispositions | Main Agent + structural math | ✅ COMPLETE — 42 direct deep-beam tests pass; capability remains held until DEEP-D |
 | INDIA-2-DEEP-A | Added typed geometry/material/action contracts, effective-span classification, both Clause 29.2 lever-arm branches, tension-zone depth, exact clause registration, and fail-closed tests | Main Agent + structural math | ✅ COMPLETE — 109 focused geometry/clause-database/traceability/manifest tests pass; no capability claim before DEEP-D |
 | INDIA-2-DEEP-G0 | Froze one simply supported solid rectangular deep-beam positive-reinforcement check with public clause provenance and a pre-implementation hand benchmark | Main Agent + structural engineer | ✅ GO — caller-supplied positive factored moment; bearing/nodal verification is an external prerequisite; openings, hanging action, continuous beams, generalized strut-and-tie, and alternate systems remain held |
