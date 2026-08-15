@@ -4,12 +4,14 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-15
-**Files:** 32
+**Files:** 34
 
 ## Config Files
 
 - [INDIA-0-git-handoff.json](INDIA-0-git-handoff.json)
 - [footing-release-inclusion.json](footing-release-inclusion.json)
+- [git-primary-session-log-reconcile-handoff-receipt.json](git-primary-session-log-reconcile-handoff-receipt.json)
+- [git-primary-session-log-reconcile-handoff-source-evidence.json](git-primary-session-log-reconcile-handoff-source-evidence.json)
 - [india-2-cumulative-git-handoff-receipt.json](india-2-cumulative-git-handoff-receipt.json)
 - [india-2-cumulative-git-handoff-source-evidence.json](india-2-cumulative-git-handoff-source-evidence.json)
 - [india-2d-git-handoff-receipt.json](india-2d-git-handoff-receipt.json)

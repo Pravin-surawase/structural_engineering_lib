@@ -5,6 +5,191 @@
 
 ---
 
+## 2026-08-15 — Session: Primary Session-Log Reconciliation
+
+**Agent:** Codex (`ops`, sole writer; no subagents)
+
+**Branch:** `codex/git-primary-session-log-reconcile` from exact
+`origin/main` at `9d68f53e70dc088c3ee7034ca99d0ed1c418717a`
+
+**Git handoff receipt:** `docs/verification/git-primary-session-log-reconcile-handoff-receipt.json`
+
+**Focus:** Preserve the unique audit entry from stale dirty primary main before any INDIA-3 lane or destructive cleanup.
+
+### Summary
+
+- Inspected the dirty primary checkout with the canonical Git-state authority
+  and identified one unique 107-line session record rather than disposable
+  generated noise.
+- Created a fresh clean reconciliation worktree from exact current
+  `origin/main` and verified `source_bound=true` before editing.
+- Recovered only the complete historical `Indian-Code Completion Audit` entry,
+  without importing the stale checkout's surrounding file or changing its
+  recorded historical facts.
+- Kept primary-working-copy cleanup and all local/remote branch or worktree
+  deletion outside this preservation commit pending exact user approval.
+
+### Issues encountered
+
+- Primary `main` was 20 commits behind and dirty because the audit session entry
+  had been inserted near the bottom of the log instead of at the newest-entry
+  boundary. The entry was absent from current `origin/main`.
+- The first recovered-block comparison selected the audit title mentioned in
+  the reconciliation summary instead of the exact historical session heading.
+- Targeted index checks reported stale hashes after the session log, handoff,
+  and verification receipt/source files changed.
+
+### Root causes and resolutions
+
+- The historical session itself traced the placement defect to
+  `add_session_log_entry()` selecting an embedded separator while the latest-
+  session reader uses the first top-level session. Publishing from stale dirty
+  `main` would have mixed outdated surrounding content with the unique entry.
+  Resolution: recovered only the entry into a fresh exact-main lane and placed
+  it immediately after this reconciliation record. Evidence: source working
+  blob `caf8a8481b52c7367539329d9fbd98c2f3a4fb42`, stale index blob
+  `bcdd9edaba84e920bb01f140d9a7301ae6f40a8d`, and current-main blob
+  `63ffe9f54d80be8e029e42718d6eba08f95c1fff` were distinct; the source diff was
+  exactly 107 insertions in `docs/SESSION_LOG.md`.
+- The comparison selector matched unanchored title text. Anchoring it to the
+  exact `## ... Indian-Code Completion Audit` heading produced a zero-diff
+  comparison between the stale-primary source block and the recovered block.
+- The three intended document folders use content-bound generated indexes, so
+  the owned changes correctly invalidated `docs`, `docs/planning`, and
+  `docs/verification`. Resolution: preview and regenerate only those existing
+  indexes, then recheck them; do not run the suggested repository-wide update.
+
+### Evidence
+
+- Remote `main` and local `origin/main` both resolved to
+  `9d68f53e70dc088c3ee7034ca99d0ed1c418717a` before lane creation.
+- Reconciliation lane started `READY_LOCAL` with zero dirty paths and runtime
+  diagnosis reported `source_bound=true`.
+- The recovered audit retains its original 1,661 IS 456 and 73 IS 13920 focused
+  test receipts, issue/root-cause analysis, and historical non-publication
+  boundary.
+- INDIA-2 branch/worktree retirement remains separate; the six clean merged
+  lanes and their exact squash-tree identities were inspected but not deleted.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: the first `awk` comparison matched a summary reference to
+  the audit title and exited with a misleading diff -> anchored the selector to
+  the exact session heading; the repeated comparison returned zero diff.
+- ⚠️ TERMINAL ISSUE: the three targeted index checks exited 1 after intended
+  content changes -> limited regeneration to those exact folders and rechecked
+  their hashes instead of using the broad `--all` suggestion.
+
+---
+
+## 2026-08-15 — Session: Indian-Code Completion Audit
+
+**Agent:** Codex (`orchestrator`)
+**Branch:** `main` (read-only planning audit; locally known `origin/main` is eight
+Git-governance-only commits ahead)
+**Focus:** Reconcile implemented IS 456/IS 13920 capability, evidence, trackers,
+and remaining Indian-code scope into a dependency-ordered finish plan.
+
+### Summary
+
+- Confirmed the supported IS 456 product families from the executable capability
+  registry: beam, rectangular column, square/rectangular isolated footing, and
+  solid one-way/two-way slab workflows.
+- Verified the supported calculation scope with 1,661 focused IS 456 tests and
+  73 focused IS 13920 tests; all passed. This proves current software behavior,
+  not engineering certification or whole-standard completeness.
+- Separated real scope gaps (walls, stairs, deep/flat slabs, broader footing
+  systems, Indian load/seismic codes) from stale coverage metadata and
+  traceability-registration gaps.
+- Produced a staged recommendation: repair the truth baseline first, close
+  current-family workflow gaps, then add missing IS 456 elements, complete the
+  IS 13920 supported surface, and only then add IS 875/IS 1893 load generation.
+
+### PRs Merged
+
+- None. This was a read-only audit and planning session.
+
+### Key Deliverables
+
+- Live capability and held-case matrix for the four supported IS 456 families.
+- Reconciled distinction between the stale 88% parity score, the incomplete
+  43.3% decorator-registration score, and actual supported product behavior.
+- Bounded Indian-code completion sequence with per-packet acceptance evidence.
+
+### Issues encountered
+
+- `scripts/parity_dashboard.py` reported Clause 24 and Annex D as planned even
+  though solid-slab S0-S13, built-in coefficient lookup/interpolation, API, and
+  React workflows are implemented.
+- `scripts/check_clause_coverage.py` reported 58/134 coverage while omitting all
+  slab, footing, and IS 13920 modules from its import list and counting 16
+  IS 13920 identifiers inside a report titled only IS 456 coverage.
+- `docs/TASKS.md` and `library-expansion-blueprint-v5.md` retain pre-closeout
+  slab, footing, IS 13920 column/joint, and capability-discovery statuses that
+  conflict with the live capability registry and later evidence plans.
+- The current checkout is `main` at `0fdb48ed`, eight commits behind the locally
+  known `origin/main`; session startup added only this required log entry. The
+  eight newer commits touch Git-governance/docs surfaces, not IS-code source.
+- Session closeout did not recognize today's complete entry even though session
+  startup created it and the entry contains both required issue sections.
+
+### Root causes and resolutions
+
+- Root cause: the parity dashboard uses a manually hard-coded 17-item clause
+  table whose slab statuses were never updated after the slab program landed.
+  Resolution for this audit: reject 88% as a completion metric and use the live
+  capability registry, source modules, tests, and evidence ledgers. Evidence:
+  `slab/` contains the completed providers/workflows and the focused IS 456
+  suite passed all 1,661 tests. Planned implementation must replace the hard-
+  coded table with a generated, status-typed manifest.
+- Root cause: the clause checker has a static module import list ending at beam
+  and column modules, and its dataset mixes IS 456 and IS 13920 identifiers
+  without a standard namespace in the report. Resolution for this audit: treat
+  43.3% as decorator-registration coverage only, not feature completeness.
+  Planned implementation must discover modules, namespace standards, and
+  classify computational, metadata-only, outside-library, and held clauses.
+- Root cause: task and blueprint tables were historical execution plans, while
+  later slab/evidence documents and runtime contracts became the accepted
+  state without back-propagating every summary table. Resolution: rank the
+  executable capability registry and focused evidence above those stale tables;
+  add a single generated status source before new element work.
+- Root cause: newer Git-governance work advanced `origin/main` after this
+  checkout's head; repository policy correctly classified the lane as
+  `HOLD_MAIN`. Resolution: perform only read-only source/object inspection and
+  do not create implementation or plan commits from this lane. Evidence:
+  `git diff --name-status HEAD..origin/main` contains no IS-code source changes.
+- Root cause: `add_session_log_entry()` inserts after the first `---` occurring
+  after line 2, but this log's title/separator is embedded below newer entries;
+  `_latest_session_block()` instead treats the first top-level session as
+  newest. Resolution for this audit: retain the complete generated entry and
+  record the control drift; do not alter unrelated session automation from the
+  stale main lane. Evidence: today's entry is at line 1209 while the first
+  session heading is dated 2026-08-13, so `session end` reports the mismatch.
+
+### Verification
+
+- `./scripts/python_runtime.sh --diagnose`: `source_bound=true`.
+- Focused IS 456 calculation, integration, property, regression, and semantic
+  contract suite: 1,661 passed.
+- Focused IS 13920 beam, column, and joint suite: 73 passed.
+- Capability registry inspection confirmed four supported families and their
+  explicit held cases.
+- Git state authority: `HOLD_MAIN`, zero ahead/eight behind, with only
+  `docs/SESSION_LOG.md` modified by the required session workflow.
+- `./run.sh check --quick`: 9/10; all software/docs/import checks passed and only
+  the expected Git-state check failed on the recorded `HOLD_MAIN` condition.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: a diagnostic command included the unmatched zsh glob
+  `Python/tests/test_beam*.py`, so that subcommand stopped -> discovered exact
+  maintained paths with `rg --files` and ran the explicit focused suite.
+- ⚠️ TERMINAL ISSUE: an ad hoc capability print assumed a non-existent
+  `IS456Capability.limitations` attribute -> inspected the dataclass and reran
+  against the actual `held_cases` field and workflow-level `limitations`.
+
+---
+
 ## 2026-08-15 — Session: INDIA-2 Cumulative Gates
 
 **Agent:** Codex (`reviewer`, sole writer; no subagents)
