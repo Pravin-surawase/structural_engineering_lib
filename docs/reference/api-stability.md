@@ -541,6 +541,9 @@ staircase: api.StraightFlightStaircaseResult = (
 staircase_provenance: api.StraightFlightStaircaseProvenance = (
     staircase.provenance
 )
+wall_request = api.BracedWallDesignInput(...)
+wall: api.BracedWallDesignResult = api.design_braced_wall_is456(wall_request)
+wall_provenance: api.BracedWallDesignProvenance = wall.provenance
 capabilities: tuple[api.IS456Capability, ...] = (
     api.get_supported_is456_capabilities()
 )
@@ -566,6 +569,16 @@ uses explicit caller load provenance and returns `PASS`, `REVIEW_REQUIRED`, or
 `FAIL`. Alternate stair systems, load generation/envelopes, unresolved
 serviceability calculations, qualified approval, and release remain outside
 the preview contract.
+
+The braced-wall Python route is limited to one regular 100-200 mm thick,
+one-grid Clause 32.2 wall under caller-supplied factored in-plane vertical
+compression. It composes empirical axial capacity with Clause 32.5 provided-
+reinforcement checks and retains explicit bracing, action, reinforcement,
+clause, source, and benchmark provenance. Moments, horizontal actions, shear,
+openings, two-grid walls, transverse-enclosure design, seismic detailing, load
+generation, automatic bar selection, qualified approval, and release remain
+outside the preview contract. The capability registry and FastAPI route remain
+held until WALL-D.
 
 Complete slab workflow results expose only reviewed span/depth serviceability
 and ordinary one-way concrete shear for beam/wall-supported UDL panels. Their
@@ -705,6 +718,7 @@ If you find a breaking change:
 
 ## Changelog
 
+- **2026-08-16**: Published the bounded braced-wall Python composition with explicit public Clause 32 provenance and held-case boundaries
 - **2026-08-15**: Published the bounded straight-flight staircase composition with explicit review and held-case boundaries
 - **2026-08-15**: Closed solid-slab serviceability, shear-reinforcement, and single-action load-envelope boundaries without promoting unvalidated slab math
 - **2026-08-15**: Published the bounded concentric isolated-footing composition through the canonical services and package-root APIs

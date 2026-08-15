@@ -2,7 +2,7 @@
   "generated": "2026-08-15",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 142,
+  "count": 146,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -43,6 +43,21 @@
       "name": "BearingStressEnhancementResult",
       "kind": "class",
       "signature": "(basic_stress_mpa: 'float', enhancement_factor: 'float', permissible_stress_mpa: 'float', A1_mm2: 'float', A2_mm2: 'float', clause_ref: 'str' = 'Cl. 34.4') -> None"
+    },
+    {
+      "name": "BracedWallDesignInput",
+      "kind": "class",
+      "signature": "(case_id: 'str', unsupported_height_mm: 'float', lateral_restraint_spacing_mm: 'float', wall_length_mm: 'float', wall_thickness_mm: 'float', concrete_grade_nmm2: 'float', factored_axial_load_kn: 'float', supplied_eccentricity_mm: 'float', vertical_bar_diameter_mm: 'float', vertical_bar_spacing_mm: 'float', horizontal_bar_diameter_mm: 'float', horizontal_bar_spacing_mm: 'float', bracing_basis_reference: 'str', action_basis_reference: 'str', reinforcement_basis_reference: 'str', rotation_restraint: \"Literal['restrained_both_ends', 'not_restrained_both_ends']\" = 'restrained_both_ends', reinforcement_kind: \"Literal['deformed_415_or_greater', 'other_bars', 'welded_wire_fabric']\" = 'deformed_415_or_greater', bracing_elements_in_two_directions: 'Literal[True]' = True, lateral_forces_resisted_by_bracing_system: 'Literal[True]' = True, diaphragm_transfer_confirmed: 'Literal[True]' = True, lateral_connection_capacity_confirmed: 'Literal[True]' = True) -> None"
+    },
+    {
+      "name": "BracedWallDesignProvenance",
+      "kind": "class",
+      "signature": "(schema_version: 'str', code_edition: 'str', workflow: 'str', case_id: 'str', benchmark_id: 'str', load_generation_status: 'str', bracing_basis_reference: 'str', action_basis_reference: 'str', reinforcement_basis_reference: 'str', clause_refs: 'tuple[str, ...]', source_refs: 'tuple[str, ...]') -> None"
+    },
+    {
+      "name": "BracedWallDesignResult",
+      "kind": "class",
+      "signature": "(case_id: 'str', status: 'WallAxialStatus', axial: 'BracedWallAxialResult', reinforcement: 'WallReinforcementResult', supported_case: 'str', held_cases: 'tuple[str, ...]', provenance: 'BracedWallDesignProvenance', qualified_review_required: 'bool' = True, complete_engineering_design_approved: 'bool' = False) -> None"
     },
     {
       "name": "CalculationHash",
@@ -488,6 +503,11 @@
       "name": "design_beam_is456",
       "kind": "function",
       "signature": "(*, units: 'str', case_id: 'str' = 'CASE-1', mu_knm: 'float', vu_kn: 'float', b_mm: 'float', D_mm: 'float', d_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, deflection_params: 'DeflectionParams | None' = None, crack_width_params: 'CrackWidthParams | None' = None, tu_knm: 'float' = 0.0, cover_mm: 'float | None' = None, stirrup_dia_mm: 'float' = 8.0) -> 'ComplianceCaseResult'"
+    },
+    {
+      "name": "design_braced_wall_is456",
+      "kind": "function",
+      "signature": "(request: 'BracedWallDesignInput') -> 'BracedWallDesignResult'"
     },
     {
       "name": "design_column_axial_is456",

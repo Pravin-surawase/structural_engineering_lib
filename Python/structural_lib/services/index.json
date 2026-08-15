@@ -2,14 +2,14 @@
   "folder": "Python/structural_lib/services",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-15",
-  "file_count": 40,
+  "last_updated": "2026-08-16",
+  "file_count": 41,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
       "size_lines": 2,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "structural_lib.services — Auto-generated package.",
       "content_hash": "7eccc38783bb"
     },
@@ -17,7 +17,7 @@
       "name": "adapters.py",
       "type": "python",
       "size_lines": 2006,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Adapters for converting various input formats to canonical models.",
       "classes": [
         {
@@ -83,16 +83,16 @@
     {
       "name": "api.py",
       "type": "python",
-      "size_lines": 384,
-      "last_updated": "2026-08-15",
+      "size_lines": 395,
+      "last_updated": "2026-08-16",
       "description": "Module:       api",
-      "content_hash": "f79bc935b21e"
+      "content_hash": "5f3e69a28712"
     },
     {
       "name": "api_hub.py",
       "type": "python",
       "size_lines": 238,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Module:       api",
       "content_hash": "0a5035a01f54"
     },
@@ -100,7 +100,7 @@
       "name": "api_results.py",
       "type": "python",
       "size_lines": 507,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Module:       api_results",
       "classes": [
         {
@@ -164,7 +164,7 @@
       "name": "audit.py",
       "type": "python",
       "size_lines": 595,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Module:       audit",
       "classes": [
         {
@@ -235,7 +235,7 @@
       "name": "batch.py",
       "type": "python",
       "size_lines": 215,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Batch design helpers for streaming and bulk execution.",
       "functions": [
         {
@@ -259,7 +259,7 @@
       "name": "bbs.py",
       "type": "python",
       "size_lines": 1134,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Bar Bending Schedule (BBS) Module — IS 2502:1999 / SP 34:1987",
       "classes": [
         {
@@ -448,7 +448,7 @@
       "name": "beam_api.py",
       "type": "python",
       "size_lines": 2297,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Module:       beam_api",
       "functions": [
         {
@@ -624,7 +624,7 @@
       "name": "beam_pipeline.py",
       "type": "python",
       "size_lines": 636,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "beam_pipeline — Unified application-layer pipeline for beam design.",
       "classes": [
         {
@@ -702,7 +702,7 @@
       "name": "boq.py",
       "type": "python",
       "size_lines": 209,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Project Bill of Quantities (BOQ) — Aggregation Module",
       "classes": [
         {
@@ -741,7 +741,7 @@
       "name": "calculation_report.py",
       "type": "python",
       "size_lines": 722,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Module:       calculation_report",
       "classes": [
         {
@@ -789,7 +789,7 @@
       "name": "capabilities.py",
       "type": "python",
       "size_lines": 1264,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Discoverable supported-case registry for the IS 456 public library.",
       "classes": [
         {
@@ -853,7 +853,7 @@
       "name": "column_api.py",
       "type": "python",
       "size_lines": 1534,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Module:       column_api",
       "functions": [
         {
@@ -1005,7 +1005,7 @@
       "name": "common_api.py",
       "type": "python",
       "size_lines": 721,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Module:       common_api",
       "functions": [
         {
@@ -1048,7 +1048,7 @@
       "name": "costing.py",
       "type": "python",
       "size_lines": 376,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Cost calculation utilities for structural elements.",
       "classes": [
         {
@@ -1148,7 +1148,7 @@
       "name": "dashboard.py",
       "type": "python",
       "size_lines": 512,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Insights module for dashboard aggregation and live code checks.",
       "classes": [
         {
@@ -1215,7 +1215,7 @@
       "name": "dxf_export.py",
       "type": "python",
       "size_lines": 1833,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "DXF Export Module — Beam Detail Drawing Generation",
       "functions": [
         {
@@ -1414,7 +1414,7 @@
       "name": "etabs_import.py",
       "type": "python",
       "size_lines": 1018,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "ETABS CSV Import Module.",
       "classes": [
         {
@@ -1531,7 +1531,7 @@
       "name": "evidence.py",
       "type": "python",
       "size_lines": 234,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Canonical evidence identity for the supported IS 456 beam design route.",
       "functions": [
         {
@@ -1561,7 +1561,7 @@
       "name": "excel_bridge.py",
       "type": "python",
       "size_lines": 305,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Excel UDF Bridge - Exposes structural_lib functions to Excel via xlwings",
       "functions": [
         {
@@ -1635,7 +1635,7 @@
       "name": "excel_integration.py",
       "type": "python",
       "size_lines": 489,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Excel Integration Module — Bridge between Excel data and Detailing/DXF",
       "classes": [
         {
@@ -1725,7 +1725,7 @@
       "name": "footing_api.py",
       "type": "python",
       "size_lines": 800,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Bounded orchestration for concentric isolated footings (IS 456:2000).",
       "classes": [
         {
@@ -1776,7 +1776,7 @@
       "name": "imports.py",
       "type": "python",
       "size_lines": 175,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Import helpers for multi-format CSV ingestion.",
       "classes": [
         {
@@ -1815,7 +1815,7 @@
       "name": "intelligence.py",
       "type": "python",
       "size_lines": 36,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Compatibility shim for legacy imports.",
       "content_hash": "dbe6a54d2800"
     },
@@ -1823,7 +1823,7 @@
       "name": "job_cli.py",
       "type": "python",
       "size_lines": 203,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "job_cli",
       "functions": [
         {
@@ -1839,7 +1839,7 @@
       "name": "job_runner.py",
       "type": "python",
       "size_lines": 317,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "job_runner",
       "functions": [
         {
@@ -1871,7 +1871,7 @@
       "name": "multi_objective_optimizer.py",
       "type": "python",
       "size_lines": 642,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Multi-Objective Optimization Module",
       "classes": [
         {
@@ -1924,7 +1924,7 @@
       "name": "optimization.py",
       "type": "python",
       "size_lines": 311,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Optimization algorithms for structural design.",
       "classes": [
         {
@@ -1958,7 +1958,7 @@
       "name": "rebar.py",
       "type": "python",
       "size_lines": 251,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Rebar configuration validation and application helpers.",
       "functions": [
         {
@@ -1984,7 +1984,7 @@
       "name": "rebar_optimizer.py",
       "type": "python",
       "size_lines": 322,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Rebar arrangement optimizer (deterministic).",
       "classes": [
         {
@@ -2003,7 +2003,7 @@
       "name": "report.py",
       "type": "python",
       "size_lines": 1772,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Report generation module for beam design results.",
       "classes": [
         {
@@ -2137,7 +2137,7 @@
       "name": "report_svg.py",
       "type": "python",
       "size_lines": 279,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "SVG helpers for report visuals (stdlib only).",
       "functions": [
         {
@@ -2158,7 +2158,7 @@
       "name": "serialization.py",
       "type": "python",
       "size_lines": 449,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "JSON serialization utilities for canonical data models.",
       "functions": [
         {
@@ -2259,7 +2259,7 @@
       "name": "slab_api.py",
       "type": "python",
       "size_lines": 851,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Stable orchestration entry points for the bounded IS 456 slab workflows.",
       "classes": [
         {
@@ -2323,7 +2323,7 @@
       "name": "staircase_api.py",
       "type": "python",
       "size_lines": 209,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Stable orchestration for the bounded IS 456 straight-flight staircase.",
       "classes": [
         {
@@ -2358,7 +2358,7 @@
       "name": "testing_strategies.py",
       "type": "python",
       "size_lines": 655,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Module:       testing_strategies",
       "classes": [
         {
@@ -2458,7 +2458,7 @@
       "name": "tool_manifest.py",
       "type": "python",
       "size_lines": 162,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Deterministic AI-tool descriptors projected from the workflow catalogue.",
       "classes": [
         {
@@ -2498,10 +2498,45 @@
       "content_hash": "ca33bca03feb"
     },
     {
+      "name": "wall_api.py",
+      "type": "python",
+      "size_lines": 226,
+      "last_updated": "2026-08-16",
+      "description": "Stable orchestration for the bounded IS 456 braced-wall workflow.",
+      "classes": [
+        {
+          "name": "BracedWallDesignInput",
+          "description": "Explicit geometry, action, material, reinforcement, and provenance input."
+        },
+        {
+          "name": "BracedWallDesignProvenance",
+          "description": "Stable workflow identity and source boundary for one wall result."
+        },
+        {
+          "name": "BracedWallDesignResult",
+          "description": "Composed wall evidence with retained supported and held boundaries."
+        }
+      ],
+      "functions": [
+        {
+          "name": "design_braced_wall_is456",
+          "description": "Compose the sole supported braced-wall axial and detailing workflow.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "constants": [
+        "_SUPPORTED_CASE",
+        "_HELD_CASES"
+      ],
+      "content_hash": "f1f6b9ff2210"
+    },
+    {
       "name": "workflow_catalog.py",
       "type": "python",
       "size_lines": 377,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Versioned, transport-neutral catalogue for approved application workflows.",
       "classes": [
         {
@@ -2587,7 +2622,7 @@
       "name": "workflow_runner.py",
       "type": "python",
       "size_lines": 486,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Bounded in-memory runner for one approved beam review workflow.",
       "classes": [
         {
@@ -2649,5 +2684,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "a47b5d4e8da08e11"
+  "content_hash": "9299548f2ad6e891"
 }
