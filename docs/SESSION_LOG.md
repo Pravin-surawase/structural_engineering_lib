@@ -132,6 +132,10 @@ at the locally and hosted green draft PR head for independent audit
 - The first twelfth focused replay used an actual `none` upstream fixture when
   reproducing the auditor's observed/equal `ref="NONE"` mutation, so it did not
   construct the claimed contradictory relation and one assertion failed.
+- The first twelfth receipt commit command placed `&& git commit` on the same
+  line as a Python here-document terminator, so Python parsed the shell suffix
+  and raised `SyntaxError` before the commit ran. The intended two receipt paths
+  remained staged with zero unstaged paths.
 - The first ninth-head focused replay rejected valid canonical state fixtures
   loaded through the package alias and one past-tense historical control.
 - A read-only inventory regex containing a backtick was initially passed with
@@ -364,6 +368,12 @@ at the locally and hosted green draft PR head for independent audit
 - Focused-replay resolution: replace the no-upstream fixture with an explicit
   observed/equal relation carrying `ref="NONE"`; the exact mutation then fails
   for the intended relation-ref reason without changing production behavior.
+- Terminal issue resolution: end the here-document on its own line, replay the
+  two-path staged inventory and hash, then run the commit separately. Evidence:
+  the staged set remained exactly the receipt JSON plus its maintained index,
+  with SHA-256 `d4be2299c68df90db6d9896dbb92299d0d292a7cc7e24967311131b6cd12d21c`,
+  zero unstaged paths, and no symlinks or non-regular files; the separate commit
+  and all hooks passed.
 - Focused-replay root cause: Python loaded `git_state` and `scripts.git_state`
   as distinct module identities, so nominal `isinstance` checks rejected the
   same schema; historical grammar included `says` but omitted `said`.
@@ -413,9 +423,14 @@ at the locally and hosted green draft PR head for independent audit
   Preservation replay and hosted checks remain pending until the final
   documentation head exists.
 - Twelfth-candidate focused receipt/semantic/Git-state/session regressions pass
-  256 tests and the full indexed semantic corpus passes. Final docs, repository,
-  receipt, session-end, preservation, and hosted gates are replayed only after
-  the exact receipt-bound candidate head exists.
+  256 tests and the full indexed semantic corpus passes. Strict docs pass 5/5,
+  1,107 links have zero failures, quick passes 10/10, full passes 30/30, and
+  efficiency plus session-end pass on receipt commit
+  `c93d6ccfcc5eb3e45ec99559a63f0bbc285136d4`. The validated fail-closed HOLD
+  receipt hash is
+  `sha256:05100369e50b3c9fd495f160439171572bedb1ab0cf24204d1d1abb80473e091`.
+  Preservation and hosted checks remain pending until the final documentation
+  head exists.
 
 ### Preservation and next boundary
 
