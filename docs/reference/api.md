@@ -3697,6 +3697,15 @@ Master entry point for column design per IS 456:2000. Automatically routes to th
 4. Short column: uniaxial or biaxial checks (Cl 39.5, 39.6)
 5. Slender column: additional moments + biaxial (Cl 39.7)
 
+**Supported decision boundary:** solid rectangular tied columns only. The
+stable route represents total longitudinal steel as `Asc_mm2 / 2` on each of
+two opposite faces at one `d_prime_mm`. Circular-section design, asymmetric or
+perimeter-resolved layouts, arbitrary multilayer layouts, load-envelope/frame
+analysis, and automatic reinforcement sizing are excluded. The separate
+supplied-helix check is not a circular-column design workflow. The experimental
+rectangular P-M-M fiber module remains an internal calculation experiment and
+is not a stable design-decision API.
+
 | Param | Type | Description |
 |-------|------|-------------|
 | `Pu_kN` | `float` | Factored axial load (kN). Must be ≥ 0 |

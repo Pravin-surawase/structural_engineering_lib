@@ -1061,8 +1061,12 @@ def design_column_is456(
     4. Short column checks: uniaxial or biaxial (Cl 39.5, 39.6)
     5. Slender column checks with additional moments (Cl 39.7)
 
-    This function provides a single, consistent interface for all column
-    design scenarios, automatically selecting the appropriate IS 456 clauses.
+    This function provides a single interface for the supported solid
+    rectangular-column cases, automatically selecting the applicable IS 456
+    member route. ``Asc_mm2`` is represented as equal steel area on two
+    opposite faces at the single ``d_prime_mm`` depth. Circular sections,
+    asymmetric/perimeter-resolved layouts, arbitrary multilayer layouts, and
+    the experimental P-M-M fiber surface are not supported by this workflow.
 
     Args:
         Pu_kN: Factored axial load (kN). Must be >= 0.

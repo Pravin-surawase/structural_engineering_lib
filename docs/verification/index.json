@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-15",
-  "file_count": 19,
+  "file_count": 20,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -99,6 +99,14 @@
       "content_hash": "97194ff486b7"
     },
     {
+      "name": "india-1b-column-decision-evidence.md",
+      "type": "documentation",
+      "size_lines": 73,
+      "last_updated": "2026-08-15",
+      "description": "The stable IS 456 column decision remains bounded to solid rectangular tied sections. design_column_is456() and design_long_column_is456() accept one",
+      "content_hash": "2e2dddd20452"
+    },
+    {
       "name": "indian-code-capability-coverage.json",
       "type": "config",
       "last_updated": "2026-08-15",
@@ -112,7 +120,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "a255bc11d6bf"
+      "content_hash": "0aac529e3955"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -201,5 +209,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "99f6903b00f392a9"
+  "content_hash": "e232f373a5458802"
 }

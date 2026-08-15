@@ -62,18 +62,18 @@
     {
       "name": "api-stability.md",
       "type": "documentation",
-      "size_lines": 669,
+      "size_lines": 676,
       "last_updated": "2026-08-15",
       "description": "> This document defines which parts of the library are safe to depend on and which may change. This library follows Semantic Versioning:",
-      "content_hash": "d3efbd9a3958"
+      "content_hash": "88ecc169770c"
     },
     {
       "name": "api.md",
       "type": "documentation",
-      "size_lines": 4054,
+      "size_lines": 4063,
       "last_updated": "2026-08-15",
       "description": "geometry, loading, reinforcement, and evidence boundaries. The primary combined beam route covers rectangular flexure and shear (plus optional serviceability),",
-      "content_hash": "f05f9af75859"
+      "content_hash": "6dfd6d62d5e6"
     },
     {
       "name": "automation-catalog.md",
@@ -261,5 +261,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "47bc070c07fa1ee3"
+  "content_hash": "4ea98970f1dbc4a3"
 }

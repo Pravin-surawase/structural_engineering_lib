@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import inspect
+
 import pytest
 
 import structural_lib
@@ -142,6 +144,32 @@ def test_capability_registry_names_every_supported_core_element():
         "design_two_way_slab_panel_builtin_is456",
     } <= set(slab_capability.public_workflows)
     assert any("Flat/drop/ribbed slabs" in item for item in slab_capability.held_cases)
+
+
+def test_column_capability_retains_geometry_layout_and_experimental_pmm_holds():
+    column = next(
+        item
+        for item in services_api.get_supported_is456_capabilities()
+        if item.element == "column"
+    )
+    stable_parameters = inspect.signature(services_api.design_column_is456).parameters
+
+    assert "Solid rectangular tied columns" in column.supported_case
+    assert "split equally between two opposite faces" in column.supported_case
+    assert {"Asc_mm2", "d_prime_mm"} <= stable_parameters.keys()
+    assert "reinforcement" not in stable_parameters
+    assert "section_shape" not in stable_parameters
+    assert any("Circular-section column design" in item for item in column.held_cases)
+    assert any("arbitrary multilayer" in item for item in column.held_cases)
+    assert any(
+        "P-M-M fiber module remains experimental" in item for item in column.held_cases
+    )
+    for name in (
+        "experimental_pmm_interaction_surface",
+        "pm_interaction_slice_for_layout",
+    ):
+        assert name not in services_api.__all__
+        assert name not in structural_lib.__all__
 
 
 def test_capability_document_is_json_native_and_preserves_review_boundaries():

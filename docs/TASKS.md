@@ -128,13 +128,12 @@
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
-| INDIA-1A | Close the beam-family gap with one benchmarked sagging T-beam flexure/web-shear/serviceability route and explicit retained boundaries | Main Agent | 🚧 DRAFT PR #754 — software/benchmark evidence complete; exact-head hosted review pending |
+| INDIA-1B | Close or retain rectangular-column geometry and reinforcement-layout decisions without promoting experimental PMM | Main Agent + structural engineer | 🚧 SOFTWARE COMPLETE IN FRESH LANE — focused validation and publication closeout in progress |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-1B | Close or retain rectangular-column geometry and reinforcement-layout decisions without promoting experimental PMM | Main Agent + structural engineer | one packet | P0 | 📋 READY AFTER INDIA-1A |
 | INDIA-1C/1D | Compose the isolated-footing workflow, then close solid-slab serviceability/shear boundaries | Main Agent + structural engineer | two packets | P0 | 📋 SEQUENCED AFTER INDIA-1B |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL STABLE GATE |
@@ -155,6 +154,7 @@ held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-1A | Added a benchmarked monolithic sagging T-beam flexure/web-shear/explicit-serviceability composition with fail-closed retained boundaries | Main Agent | ✅ DONE — PR #754 exact-head gate passed; reviewed tree squash-merged as `3a7e162e` |
 | INDIA-0 | Reconciled supported and held Indian RC scope into one generated, standard-namespaced capability/registration manifest; repaired both coverage consumers | Main Agent | ✅ DONE — PR #753 exact-head gate passed; reviewed tree squash-merged as `0373de68` |
 | COLUMN-PMM-001 | Recovered and independently benchmarked the experimental rectangular-column P-Mx-My fiber surface | Main Agent | ✅ SOFTWARE COMPLETE — PR #738 merged; module remains experimental and outside the stable API |
 | ALPHA-0231-CANDIDATE | Published the exact 0.23.1a1 Alpha through exact-head CI, TestPyPI, production PyPI, and GitHub prerelease gates | Main Agent + ops | ✅ DONE — production run `31468341946`; exact public package UAT green |

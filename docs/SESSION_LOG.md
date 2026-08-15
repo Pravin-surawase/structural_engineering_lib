@@ -5,6 +5,97 @@
 
 ---
 
+## 2026-08-15 — Session: INDIA-1B Rectangular-Column Decision Closure
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-1b-column-decision-closure` from integrated
+`origin/main` at `3a7e162e049f28a9c9f63438f44ff116aa408e26`
+
+**Focus:** Reconfirm the stable rectangular symmetric/two-face column model,
+retain unsupported geometry/layout cases, and keep experimental PMM outside the
+stable capability without changing accepted structural math.
+
+### Summary
+
+- Integrated INDIA-1A PR #754 only after exact head `5df4e996`, applicable
+  hosted validations, final `PR Gate`, clean mergeability, and zero review
+  blockers were rechecked; squash merge `3a7e162e` has the same tree as the
+  reviewed head.
+- Created a fresh isolated INDIA-1B lane from that integrated main and verified
+  `READY_LOCAL` with `source_bound=true`.
+- Reconciled the stable column claim to solid rectangular tied sections with
+  total `Asc_mm2` split equally between two opposite faces at one
+  `d_prime_mm`, for the maintained short/long and uniaxial/biaxial routes.
+- Explicitly retained circular design, asymmetric/perimeter-resolved and
+  arbitrary multilayer layouts, load-envelope/frame analysis, wider effective-
+  length derivation, and automatic reinforcement sizing as held cases.
+- Kept the arbitrary-layout P-M-M fiber module experimental and absent from the
+  stable service/package facades; the supplied-helix check remains a bounded
+  check rather than a complete circular-column route.
+
+### Issues encountered
+
+- The first post-worktree orientation command remained scoped to the old 1A
+  working directory, so its source/Git/session evidence described the retired
+  packet rather than the new lane.
+- The first focused manifest test found the committed manifest still contained
+  the prior column wording after the runtime capability registry changed.
+- Index regeneration proposed unrelated linked-worktree date/topology drift,
+  and correctly refused to create a new index in the unmaintained integration-
+  test folder.
+
+### Root causes and resolutions
+
+- Root cause: adding a worktree does not change the caller process directory,
+  and the chained command retained the explicitly configured 1A workdir.
+  Resolution: reran every orientation command with the 1B worktree as its
+  explicit working directory. Evidence: the corrected receipt reports branch
+  `codex/india-1b-column-decision-closure`, exact base `3a7e162e`,
+  `READY_LOCAL`, and `source_bound=true`; the old lane remained clean.
+- Root cause: `generate_indian_code_manifest.py` defaults to printing JSON;
+  writing the canonical file requires `--write`. Resolution: reran the
+  maintained generator with `--write`. Evidence: the manifest-current test and
+  all focused capability/benchmark tests pass.
+- Root cause: fresh worktree mtimes differ from the historical per-file dates,
+  while the services index predates unrelated integrated topology; the
+  integration-test folder intentionally has no maintained index. Resolution:
+  restored the service indexes to integrated-main content, retained only the
+  changed API entries in the reference index, generated task-owned docs and
+  verification entries, and did not create a new integration index. Evidence:
+  the final index diff contains only INDIA-1B-owned records.
+
+### Verification
+
+- Column golden vectors plus capability, facade, semantic-contract, and
+  manifest tests: 42 passed.
+- Experimental oblique PMM analytical benchmark boundary: 2 passed, with the
+  module still excluded from the stable API.
+- Black and Ruff passed on the changed Python paths; architecture scan checked
+  155 files with 0 violations, import validation checked 194 files with 0
+  broken imports, and the quick repository gate passed 10/10.
+- Commit-hook and hosted-PR results are recorded at publication closeout.
+- Broad Python and full repository gates remain deferred to cumulative
+  INDIA-1A through INDIA-1D closeout under the owner-approved cadence.
+- Software verification is not qualified structural-engineering review or
+  professional design approval.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: orientation chained after `git worktree add` still ran
+  in the configured INDIA-1A workdir -> reran the full orientation with the
+  explicit INDIA-1B workdir and obtained correct trusted evidence.
+- ⚠️ TERMINAL ISSUE: initial `jq` and `rg` inventory guesses assumed the
+  wrong manifest nesting and obsolete candidate paths -> used `jq keys`,
+  `rg --files`, and the manifest's declared source list to locate maintained
+  inputs.
+- ⚠️ TERMINAL ISSUE: the manifest generator without a mode printed JSON
+  instead of updating the canonical file -> reran it with `--write`; the
+  deterministic-current regression then passed.
+- ⚠️ TERMINAL ISSUE: live generation refused the unmaintained
+  `Python/tests/integration` folder after the dry-run -> did not use
+  `--allow-new-index`; no new index was created.
+
 ## 2026-08-15 — Session: PR #753 Integration and INDIA-1A Beam Closure
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

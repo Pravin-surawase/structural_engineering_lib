@@ -128,9 +128,18 @@ _CAPABILITIES = (
     IS456Capability(
         element="column",
         public_workflows=("design_column_is456", "design_long_column_is456"),
-        supported_case="Rectangular columns with the declared symmetric/two-face reinforcement assumptions.",
+        supported_case=(
+            "Solid rectangular tied columns under factored compression with "
+            "uniaxial or biaxial bending, using one total longitudinal-steel area "
+            "split equally between two opposite faces at one centroidal depth; "
+            "short and slender member routes are selected by the declared IS 456 "
+            "effective-length inputs."
+        ),
         held_cases=(
-            "Circular, asymmetric and arbitrary multilayer layouts are excluded.",
+            "Circular-section column design is excluded; the separate supplied-helix check does not constitute a circular-column design workflow.",
+            "Asymmetric, perimeter-resolved, and arbitrary multilayer reinforcement layouts are excluded because the stable routes accept only Asc_mm2 and one d_prime_mm.",
+            "The rectangular arbitrary-layout P-M-M fiber module remains experimental, is not exported by the stable service or package facades, and does not return a supported design decision.",
+            "Load-envelope generation, frame analysis, effective-length derivation beyond the declared end-condition model, and automatic reinforcement sizing are excluded.",
         ),
         qualified_review_required=True,
     ),
@@ -466,7 +475,8 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             ),
             statuses=(),
             limitations=(
-                "Only declared rectangular reinforcement assumptions are supported.",
+                "Solid rectangular section only, with Asc_mm2 split equally between two opposite faces at one d_prime_mm; circular and arbitrary-layout design are excluded.",
+                "The experimental arbitrary-layout P-M-M fiber surface is not a stable design-decision route.",
             ),
         ),
         IS456WorkflowContract(
@@ -481,7 +491,8 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             ),
             statuses=(),
             limitations=(
-                "The public route remains bounded to its declared section assumptions.",
+                "Solid rectangular section only, with Asc_mm2 split equally between two opposite faces at one d_prime_mm.",
+                "Frame analysis, circular sections, arbitrary reinforcement layouts, and the experimental P-M-M surface are excluded.",
             ),
         ),
         IS456WorkflowContract(
