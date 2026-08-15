@@ -203,7 +203,7 @@
           "claim": "IS 456 deep-beam design is not implemented.",
           "workflows": [],
           "limitations": [
-            "Clause 29 requires a separately verified program."
+            "INDIA-2-DEEP-G0 accepted one simply supported positive-moment reinforcement check; implementation and publication remain pending."
           ],
           "evidence": [],
           "qualified_review_required": true
