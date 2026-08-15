@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 41,
+  "file_count": 42,
   "files": [
     {
       "name": "__init__.py",
@@ -83,10 +83,10 @@
     {
       "name": "api.py",
       "type": "python",
-      "size_lines": 395,
+      "size_lines": 406,
       "last_updated": "2026-08-16",
       "description": "Module:       api",
-      "content_hash": "5f3e69a28712"
+      "content_hash": "8e4487ec690f"
     },
     {
       "name": "api_hub.py",
@@ -1210,6 +1210,44 @@
         "_PT_MIN_COEFF"
       ],
       "content_hash": "b93b595378a7"
+    },
+    {
+      "name": "deep_beam_api.py",
+      "type": "python",
+      "size_lines": 247,
+      "last_updated": "2026-08-16",
+      "description": "Stable orchestration for the bounded IS 456 simply supported deep beam.",
+      "classes": [
+        {
+          "name": "SimplySupportedDeepBeamDesignInput",
+          "description": "Explicit geometry, action, reinforcement, topology, and evidence input."
+        },
+        {
+          "name": "SimplySupportedDeepBeamDesignProvenance",
+          "description": "Workflow, public clause/source, benchmark, and caller evidence identity."
+        },
+        {
+          "name": "SimplySupportedDeepBeamDesignResult",
+          "description": "Public composed evidence with its supported and held boundaries.",
+          "public_methods": [
+            "shear_deemed_satisfied_within_clause_29_scope"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "design_simply_supported_deep_beam_is456",
+          "description": "Compose the sole bounded Clause 29 positive-reinforcement workflow.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "constants": [
+        "_SUPPORTED_CASE",
+        "_HELD_CASES"
+      ],
+      "content_hash": "bf25917aeca3"
     },
     {
       "name": "dxf_export.py",
@@ -2684,5 +2722,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "aeeb3b72420850cb"
+  "content_hash": "e471c3c54245a0bb"
 }

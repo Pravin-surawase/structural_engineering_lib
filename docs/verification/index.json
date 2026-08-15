@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 55,
+  "file_count": 58,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -273,6 +273,44 @@
       "last_updated": "2026-08-16",
       "description": "DEEP-B implements the remaining pure-math checks for the G0-approved simply supported solid rectangular top-loaded deep beam. It accepts one caller-",
       "content_hash": "82c98695be8a"
+    },
+    {
+      "name": "india-2-deep-c-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "dcfd39e850b7"
+    },
+    {
+      "name": "india-2-deep-c-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "88d9ce998aa0"
+    },
+    {
+      "name": "india-2-deep-c-public-workflow-evidence.md",
+      "type": "documentation",
+      "size_lines": 61,
+      "last_updated": "2026-08-16",
+      "description": "design_simply_supported_deep_beam_is456 is the single typed Python workflow for the G0-approved case. It is exported identically from",
+      "content_hash": "076377ad8318"
     },
     {
       "name": "india-2-deep-g0-git-handoff-receipt.json",
@@ -615,5 +653,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "7761d09abcd4d609"
+  "content_hash": "d4bfb610d857f02d"
 }

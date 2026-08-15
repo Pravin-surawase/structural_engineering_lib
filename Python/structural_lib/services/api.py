@@ -137,6 +137,12 @@ from structural_lib.services.common_api import (  # noqa: F401
 
 # ── Domain modules (beam, column, common) ──────────────────────────────
 from structural_lib.services.costing import CostProfile  # noqa: F401
+from structural_lib.services.deep_beam_api import (  # noqa: F401
+    SimplySupportedDeepBeamDesignInput,
+    SimplySupportedDeepBeamDesignProvenance,
+    SimplySupportedDeepBeamDesignResult,
+    design_simply_supported_deep_beam_is456,
+)
 from structural_lib.services.footing_api import (  # noqa: F401
     ConcentricIsolatedFootingInput,
     ConcentricIsolatedFootingResult,
@@ -382,6 +388,11 @@ __all__ = [
     "BracedWallDesignInput",
     "BracedWallDesignProvenance",
     "BracedWallDesignResult",
+    # Simply supported deep beam (bounded supported case)
+    "design_simply_supported_deep_beam_is456",
+    "SimplySupportedDeepBeamDesignInput",
+    "SimplySupportedDeepBeamDesignProvenance",
+    "SimplySupportedDeepBeamDesignResult",
     # Capability discovery
     "get_supported_is456_capability_document",
     "get_supported_is456_capabilities",

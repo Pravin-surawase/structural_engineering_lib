@@ -2,7 +2,7 @@
   "generated": "2026-08-15",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 146,
+  "count": 150,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -253,6 +253,21 @@
       "name": "ResultSection",
       "kind": "class",
       "signature": "(flexure: 'dict[str, Any]' = <factory>, shear: 'dict[str, Any]' = <factory>, serviceability: 'dict[str, Any]' = <factory>, detailing: 'dict[str, Any]' = <factory>, summary: 'dict[str, Any]' = <factory>) -> None"
+    },
+    {
+      "name": "SimplySupportedDeepBeamDesignInput",
+      "kind": "class",
+      "signature": "(case_id: 'str', centre_to_centre_span_mm: 'float', clear_span_mm: 'float', overall_depth_mm: 'float', beam_width_mm: 'float', concrete_grade_nmm2: 'float', steel_grade_nmm2: 'float', factored_positive_moment_knm: 'float', main_bar_count: 'int', main_bar_diameter_mm: 'float', furthest_main_bar_from_tension_face_mm: 'float', main_bars_continuous_between_supports: 'bool', main_bars_bundled: 'Literal[False]', main_bar_splices_present: 'Literal[False]', left_support_embedment_mm: 'float', right_support_embedment_mm: 'float', face_grid_count: 'int', vertical_side_bar_diameter_mm: 'float', vertical_side_bar_spacing_mm: 'float', horizontal_side_bar_diameter_mm: 'float', horizontal_side_bar_spacing_mm: 'float', geometry_basis_reference: 'str', bearing_nodal_zone_reference: 'str', action_basis_reference: 'str', reinforcement_basis_reference: 'str', support_type: \"Literal['simply_supported']\", solid_rectangular_section: 'Literal[True]', openings_present: 'Literal[False]', dapped_ends_present: 'Literal[False]', top_loaded: 'Literal[True]', hanging_action_required: 'Literal[False]', bearing_nodal_zone_verified: 'Literal[True]') -> None"
+    },
+    {
+      "name": "SimplySupportedDeepBeamDesignProvenance",
+      "kind": "class",
+      "signature": "(schema_version: 'str', code_edition: 'str', workflow: 'str', case_id: 'str', benchmark_id: 'str', action_generation_status: 'str', bearing_nodal_zone_status: 'str', geometry_basis_reference: 'str', bearing_nodal_zone_reference: 'str', action_basis_reference: 'str', reinforcement_basis_reference: 'str', clause_refs: 'tuple[str, ...]', source_refs: 'tuple[str, ...]') -> None"
+    },
+    {
+      "name": "SimplySupportedDeepBeamDesignResult",
+      "kind": "class",
+      "signature": "(case_id: 'str', status: 'DeepBeamCheckStatus', reinforcement: 'DeepBeamReinforcementResult', supported_case: 'str', held_cases: 'tuple[str, ...]', provenance: 'SimplySupportedDeepBeamDesignProvenance', qualified_review_required: 'bool' = True, complete_engineering_design_approved: 'bool' = False) -> None"
     },
     {
       "name": "StirrupLoop",
@@ -563,6 +578,11 @@
       "name": "design_short_column_uniaxial_is456",
       "kind": "function",
       "signature": "(Pu_kN: 'float', Mu_kNm: 'float', b_mm: 'float', D_mm: 'float', le_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, l_unsupported_mm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnUniaxialResult'"
+    },
+    {
+      "name": "design_simply_supported_deep_beam_is456",
+      "kind": "function",
+      "signature": "(request: 'SimplySupportedDeepBeamDesignInput') -> 'SimplySupportedDeepBeamDesignResult'"
     },
     {
       "name": "design_straight_flight_staircase_is456",

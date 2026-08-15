@@ -2,7 +2,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-16
-**Files:** 41
+**Files:** 42
 
 ## Python Files
 
@@ -10,7 +10,7 @@
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) | structural_lib.services — Auto-generated package. | 0 | 0 | 2 |
 | [adapters.py](adapters.py) | Adapters for converting various input formats to canonical m | 6 | 0 | 2006 |
-| [api.py](api.py) | Module:       api | 0 | 0 | 395 |
+| [api.py](api.py) | Module:       api | 0 | 0 | 406 |
 | [api_hub.py](api_hub.py) | Module:       api | 0 | 0 | 238 |
 | [api_results.py](api_results.py) | Module:       api_results | 8 | 0 | 507 |
 | [audit.py](audit.py) | Module:       audit | 3 | 3 | 595 |
@@ -25,6 +25,7 @@
 | [common_api.py](common_api.py) | Module:       common_api | 0 | 5 | 721 |
 | [costing.py](costing.py) | Cost calculation utilities for structural elements. | 2 | 8 | 376 |
 | [dashboard.py](dashboard.py) | Insights module for dashboard aggregation and live code chec | 4 | 3 | 512 |
+| [deep_beam_api.py](deep_beam_api.py) | Stable orchestration for the bounded IS 456 simply supported | 3 | 1 | 247 |
 | [dxf_export.py](dxf_export.py) | DXF Export Module — Beam Detail Drawing Generation | 0 | 18 | 1833 |
 | [etabs_import.py](etabs_import.py) | ETABS CSV Import Module. | 3 | 12 | 1018 |
 | [evidence.py](evidence.py) | Canonical evidence identity for the supported IS 456 beam de | 0 | 2 | 234 |

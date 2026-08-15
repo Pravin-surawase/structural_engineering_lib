@@ -55,6 +55,11 @@ The bounded staircase route returns `api.StraightFlightStaircaseResult` from
 `api.StraightFlightStaircaseProvenance`.
 The bounded braced-wall Python route returns `api.BracedWallDesignResult` from
 `api.BracedWallDesignInput` and retains `api.BracedWallDesignProvenance`.
+The bounded simply supported deep-beam route returns
+`api.SimplySupportedDeepBeamDesignResult` from
+`api.SimplySupportedDeepBeamDesignInput` through
+`api.design_simply_supported_deep_beam_is456` and retains
+`api.SimplySupportedDeepBeamDesignProvenance`.
 
 ```python
 from structural_lib import api
@@ -4150,6 +4155,72 @@ design, seismic detailing, load generation, bar selection, and qualified
 approval remain held.
 
 **FastAPI Endpoint:** `POST /api/v1/design/wall/braced-axial`
+
+---
+
+## 20. Simply Supported Deep-Beam Workflow — Development Preview
+
+```python
+from structural_lib import SimplySupportedDeepBeamDesignInput
+from structural_lib import design_simply_supported_deep_beam_is456
+
+result = design_simply_supported_deep_beam_is456(
+    SimplySupportedDeepBeamDesignInput(
+        case_id="DEEP-01",
+        centre_to_centre_span_mm=3000,
+        clear_span_mm=2800,
+        overall_depth_mm=2000,
+        beam_width_mm=300,
+        concrete_grade_nmm2=30,
+        steel_grade_nmm2=500,
+        factored_positive_moment_knm=900,
+        main_bar_count=4,
+        main_bar_diameter_mm=22,
+        furthest_main_bar_from_tension_face_mm=250,
+        main_bars_continuous_between_supports=True,
+        main_bars_bundled=False,
+        main_bar_splices_present=False,
+        left_support_embedment_mm=850,
+        right_support_embedment_mm=850,
+        face_grid_count=2,
+        vertical_side_bar_diameter_mm=10,
+        vertical_side_bar_spacing_mm=300,
+        horizontal_side_bar_diameter_mm=10,
+        horizontal_side_bar_spacing_mm=250,
+        geometry_basis_reference="reviewed-geometry:DEEP-01",
+        bearing_nodal_zone_reference="qualified-bearing-nodal:DEEP-01",
+        action_basis_reference="factored-positive-moment:DEEP-01",
+        reinforcement_basis_reference="provided-bars:DEEP-01",
+        support_type="simply_supported",
+        solid_rectangular_section=True,
+        openings_present=False,
+        dapped_ends_present=False,
+        top_loaded=True,
+        hanging_action_required=False,
+        bearing_nodal_zone_verified=True,
+    )
+)
+```
+
+```python
+def design_simply_supported_deep_beam_is456(
+    request: SimplySupportedDeepBeamDesignInput,
+) -> SimplySupportedDeepBeamDesignResult
+```
+
+The service composes public IS 456:2000 Clause 29 effective-span,
+classification, lever-arm, positive tie, placement, continuity and anchorage
+checks with Amendment-3-corrected Clause 32.5 side-face reinforcement. It
+retains the normalized Clause 26.2.1 development-length calculation and every
+geometry, action, reinforcement, clause, amendment, and benchmark reference.
+
+The only accepted case is one simply supported solid rectangular top-loaded
+deep beam without openings, dapped ends, hanging action, or negative moment.
+The caller supplies the positive factored moment and externally verifies
+bearing/compression-nodal regions. Load/reaction generation, bearing or nodal
+capacity, automatic sizing, bundles, splices, transverse-enclosure design,
+generalized strut-and-tie, seismic design, nonlinear analysis, FEM, and
+professional approval remain held.
 
 ---
 
