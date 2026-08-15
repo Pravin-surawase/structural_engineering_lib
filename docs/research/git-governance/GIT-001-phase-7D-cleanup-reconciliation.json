@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "receipt_id": "GIT-001-7D-CLEANUP-RECONCILIATION-2026-08-15",
+  "task": "GIT-001",
+  "phase": "7D-closeout",
+  "cleanup_disposition_mutation_policy": "INSPECTION_ONLY",
+  "cleanup_disposition_mutation_policy_scope": "PRE_EXISTING_BRANCH_REF_WORKTREE_AND_GITHUB_DISPOSITION_ACTIONS_ONLY",
+  "packet_documentation_and_git_lifecycle": "NORMAL_AUTHORIZED_WRITES",
+  "cleanup_actions_performed": [],
+  "authorization": {
+    "normal_packet_git_lifecycle": "AUTHORIZED",
+    "branch_deletion": "NOT_AUTHORIZED",
+    "remote_ref_deletion": "NOT_AUTHORIZED",
+    "worktree_removal": "NOT_AUTHORIZED",
+    "settings_change": "NOT_AUTHORIZED",
+    "git_7e_implementation": "NOT_IN_SCOPE"
+  },
+  "observation": {
+    "started_at_utc": "2026-08-15T06:52:07Z",
+    "audit_completed_at_utc": "2026-08-15T07:00:18Z",
+    "default_ref": "refs/remotes/origin/main",
+    "default_sha": "bf4065f071f1245461df6d3c42f1cc070efbae70",
+    "remote_freshness": "REFRESHED_BY_CALLER",
+    "classifier_without_supplied_evidence": {
+      "remote_freshness": "NOT_CHECKED",
+      "status": "UNKNOWN",
+      "mutation_policy": "INSPECTION_ONLY",
+      "authorization": "SEPARATE_EXACT_TARGET_APPROVAL_REQUIRED"
+    }
+  },
+  "packet_lane": {
+    "branch": "codex/git-cleanup-reconciliation",
+    "start_sha": "bf4065f071f1245461df6d3c42f1cc070efbae70",
+    "worktree": "/Users/pravinsurawase/.codex/worktrees/git-cleanup-reconciliation",
+    "source_bound": true
+  },
+  "count_reconciliation": {
+    "delegated_prior_audit": {
+      "local_codex_branches": 18,
+      "worktrees": 12
+    },
+    "live_before_packet_lane": {
+      "local_codex_branches": 18,
+      "worktrees": 13,
+      "difference": "clean detached b94c desktop task worktree"
+    },
+    "live_after_packet_lane": {
+      "local_codex_branches": 19,
+      "worktrees": 14,
+      "difference": "authorized packet branch and worktree only"
+    }
+  },
+  "preservation_blockers": [
+    {
+      "target": "/Users/pravinsurawase/.codex/worktrees/e54a/structural_engineering_lib",
+      "branch": "DETACHED",
+      "head_sha": "0fdb48edbb73114288feb8a246d6f30b80ac4d95",
+      "dirty_paths": ["docs/SESSION_LOG.md"],
+      "insertions": 119,
+      "deletions": 7,
+      "working_blob_sha1": "2c3d7ac8277953256c7c46d12b923180a99f9c14",
+      "head_blob_sha1": "bcdd9edaba84e920bb01f140d9a7301ae6f40a8d",
+      "stable_patch_id": "be157118f0267af328051ffbacc18d79c49ffd8c",
+      "binary_diff_sha256": "cf70f18f57ea3c7e14c85fe06cdd00d0171ac65da42dce08eef6a286b4930394",
+      "decision": "PRESERVE_BYTE_FOR_BYTE"
+    },
+    {
+      "target": "codex/git-governance-research",
+      "local_head": "657037364bbb49f2ef834c70f3a3c704bac83c7b",
+      "remote_head": "51a8a57a7e4eaba5841f2fee86c83ae6287182bf",
+      "unique_patch_count": 3,
+      "attached": true,
+      "decision": "PRESERVE_DIVERGED_EVIDENCE"
+    },
+    {
+      "target": "codex/excel-product-planning",
+      "local_head": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+      "remote_head": null,
+      "pull_requests": [],
+      "attached": true,
+      "decision": "OWNER_DECISION_REQUIRED"
+    },
+    {
+      "target": "codex/release-preflight-alpha-policy",
+      "local_head": "5da9c66a0f962fc08a6431fe95e39ec664a353f6",
+      "remote_head": "20180a40137cb43f8a4d8f51093c6337ac94ced1",
+      "attached": true,
+      "decision": "PRESERVE_DUAL_HEAD_EVIDENCE"
+    }
+  ],
+  "attached_integrated_worktrees": [
+    {"branch": "codex/git-7b-state-kernel", "head": "5c22cc05f1ed42139a54ff3a4072b8dc62a1e1ae", "pr": 744, "merge": "0fdb48edbb73114288feb8a246d6f30b80ac4d95", "tree": "30036fe6df7dbc9f034220b524624b1e2dc5e6c4"},
+    {"branch": "codex/git-7c-ci-enforcement", "head": "c3edd24783df0f14efe1854f411dbc6735b44f40", "pr": 745, "merge": "729cc41bfb68e1381ddf3125d6365f40d9ff8738", "tree": "33d94f67834ea8cc669f73678022e89a927c0b02"},
+    {"branch": "codex/git-7d1-index-routing", "head": "f156f9341a195a76da3f95b82b0340f7d2ff532f", "pr": 746, "merge": "ff6c919cca92964c11711b3f2b8648baaded80df", "tree": "7403239db5ae397eb5d26cfdddc8ac935ef2d9e5"},
+    {"branch": "codex/git-7d2-disposition-classifier", "head": "8742061604f75ad0807cb012a1192ebf997143bf", "pr": 747, "merge": "0a784de5cd519b661105846c4dfb2cf5bac51928", "tree": "c6f4a6f7f65eaf3561ab226a2e9b28dfd6436eae"},
+    {"branch": "codex/git-7d2-session-lessons", "head": "cb2750b9f2c0eaf2cbecff33f3ed09db1b82585e", "pr": 748, "merge": "bf4065f071f1245461df6d3c42f1cc070efbae70", "tree": "2b8e3cdb32e342c43a41af98e868c717feaca646"},
+    {"branch": "codex/alpha-0231-release-closeout", "head": "127afb64c52c0cac6cb3a90d0fe68fef3883b49c", "pr": 733, "decision": "ATTACHED_HOLD"},
+    {"branch": "codex/alpha-0231-integration", "head": "e3b9a6cbc35c3d4da9fbbdff975f92b88eec0c61", "pr": 730, "decision": "ATTACHED_HOLD"}
+  ],
+  "unattached_merged_branches": [
+    {"branch": "codex/alpha-0231-candidate-evidence", "head": "adb161b85489f530b42e78abd7039e59160c83d6", "pr": 732},
+    {"branch": "codex/ci-fastapi-load-lane-fix", "head": "21b9df1fd0d655d5976f73b8672502da4a6fbc60", "pr": 729},
+    {"branch": "codex/column-rectangular-e2e", "head": "007dfa0c012404515907779f396ed94cf7a6694d", "pr": 725},
+    {"branch": "codex/footing-isolated-v1", "head": "886871aef93d9a955a3cc2fa613fe49bad589ce7", "pr": 727},
+    {"branch": "codex/gpt-5-3-spark-work-program", "head": "6cd22dcbd073b599e4a2faef80352b294295f32e", "pr": 734},
+    {"branch": "codex/is456-beam-primary-route", "head": "aa4fe606ee685240648c88db75e0d1052350fcb4", "pr": 726},
+    {"branch": "codex/is456-slabs-closeout", "head": "d79a1558a0cfa5078f6ddea91c4166100bdc4d04", "pr": 724},
+    {"branch": "codex/is456-slabs-plan", "head": "7e623984e027141fff62e5129c23fdc16264f8e0", "pr": 728}
+  ],
+  "unattached_branch_common_facts": {
+    "attached": false,
+    "local_matches_live_remote": true,
+    "reachable_from_refreshed_main": true,
+    "merged_pr_head_matches": true,
+    "decision": "FUTURE_DISPOSITION_CANDIDATE_NOT_DELETION_READY",
+    "missing_authority": ["fresh owner evidence", "fresh dependent PR evidence", "fresh retention evidence", "classifier pending-approval receipt", "separate exact-target approval"]
+  },
+  "github": {
+    "repository_settings": {
+      "default_branch": "main",
+      "allow_squash_merge": true,
+      "allow_merge_commit": true,
+      "allow_rebase_merge": false,
+      "delete_branch_on_merge": false,
+      "allow_auto_merge": false,
+      "allow_update_branch": false
+    },
+    "ruleset": {
+      "id": 11390214,
+      "enforcement": "active",
+      "bypass_actors": [],
+      "required_check": "PR Gate",
+      "strict": true,
+      "pull_request_required": true,
+      "allowed_merge_methods": ["merge", "squash"],
+      "deletion_protected": true,
+      "non_fast_forward_protected": true
+    },
+    "open_pull_requests": [
+      {"number": 683, "author": "app/dependabot", "head": "dependabot/npm_and_yarn/react_app/eslint/js-10.0.1"},
+      {"number": 684, "author": "app/dependabot", "head": "dependabot/npm_and_yarn/react_app/vitejs/plugin-react-6.0.5"},
+      {"number": 713, "author": "app/dependabot", "head": "dependabot/npm_and_yarn/react_app/eslint-10.8.0"},
+      {"number": 714, "author": "app/dependabot", "head": "dependabot/npm_and_yarn/react_app/types/node-26.1.2"},
+      {"number": 715, "author": "app/dependabot", "head": "dependabot/pip/Python/mypy-gte-1.19-and-lt-3"},
+      {"number": 716, "author": "app/dependabot", "head": "dependabot/npm_and_yarn/react_app/framer-motion-13.0.0"},
+      {"number": 717, "author": "app/dependabot", "head": "dependabot/pip/mypy-2.3.0"}
+    ],
+    "open_issues": []
+  },
+  "immutability_fingerprints": {
+    "scope_note": "Packet branch/worktree excluded. The post-merge comparison will also exclude remote main and the packet branch because those refs belong to the authorized packet lifecycle.",
+    "before": {
+      "existing_local_codex_refs_sha256": "6dcfd5853293a33a2211d5a23fbf3004269a0435f88787cd70ec4701f3263f15",
+      "existing_remote_heads_sha256": "97d6dbb0c6c7d0950929ff43510a4370ddef42f7c4079b9ca189d27a23129524",
+      "existing_worktrees_sha256": "ae52e05f1a3c773367c292c348bd2fc12547ebda229a16a97e4801c9e971ff79",
+      "shared_local_config_sha256": "d03fbabe033dd7b2b5cf51ecc387a082bcf581db3c2009160d368b57f8710c0f",
+      "repository_settings_sha256": "47dd5a3a2a59ca1625b3d4dc38375ae003cd3dd5b77a06013e0b9ef69dfbca49",
+      "ruleset_sha256": "6e87df64b40e392eeff554a8cc158dd2e48da97fe8bd515b23464985c9a01a45",
+      "open_pr_identities_sha256": "db573efcc17e3f18559ba21f85cac28ebe59b16a9be52cac41b228b54877ac3a",
+      "open_issue_identities_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "after_document_writes": {
+      "existing_local_codex_refs_sha256": "6dcfd5853293a33a2211d5a23fbf3004269a0435f88787cd70ec4701f3263f15",
+      "existing_remote_heads_sha256": "97d6dbb0c6c7d0950929ff43510a4370ddef42f7c4079b9ca189d27a23129524",
+      "existing_worktrees_sha256": "ae52e05f1a3c773367c292c348bd2fc12547ebda229a16a97e4801c9e971ff79",
+      "shared_local_config_sha256": "d03fbabe033dd7b2b5cf51ecc387a082bcf581db3c2009160d368b57f8710c0f",
+      "repository_settings_sha256": "47dd5a3a2a59ca1625b3d4dc38375ae003cd3dd5b77a06013e0b9ef69dfbca49",
+      "ruleset_sha256": "6e87df64b40e392eeff554a8cc158dd2e48da97fe8bd515b23464985c9a01a45",
+      "open_pr_identities_sha256": "db573efcc17e3f18559ba21f85cac28ebe59b16a9be52cac41b228b54877ac3a",
+      "open_issue_identities_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "e54a_working_blob_sha1": "2c3d7ac8277953256c7c46d12b923180a99f9c14",
+      "e54a_stable_patch_id": "be157118f0267af328051ffbacc18d79c49ffd8c",
+      "e54a_binary_diff_sha256": "cf70f18f57ea3c7e14c85fe06cdd00d0171ac65da42dce08eef6a286b4930394"
+    }
+  },
+  "post_merge_replay": {
+    "status": "PENDING_UNTIL_PACKET_INTEGRATION",
+    "versioning_boundary": "A result produced after merge cannot be committed into the unchanged reviewed head that it verifies.",
+    "reporting_surface": "Final Codex task handoff plus the GitHub pull request merge and post-merge workflow receipt.",
+    "required_comparison": [
+      "pre-existing local codex refs excluding the packet branch",
+      "live remote heads excluding main and the packet branch",
+      "pre-existing worktrees excluding the packet worktree",
+      "shared local Git config excluding packet-branch tracking",
+      "e54a exact dirty evidence identities",
+      "repository settings and ruleset",
+      "seven pre-existing Dependabot PR identities and open issues"
+    ]
+  },
+  "deletion_approval_prerequisites": [
+    "same-session remote and target refresh",
+    "worktree-aware local reinspection",
+    "exact owner, ref, head, time, freshness, PR dependency, and retention evidence",
+    "reviewed-head and merge patch or tree comparison for squash histories",
+    "RETIREMENT_READY_PENDING_APPROVAL classifier result",
+    "separate exact approval for local branch, remote branch, and worktree",
+    "immediate pre-action drift check",
+    "exact post-action inventory"
+  ],
+  "next_boundary": {
+    "packet": "GIT-7E",
+    "scope": "semantic live-guidance coherence and durable read-only task-to-Git handoff receipt",
+    "not_authorized_here": ["remote refresh implementation", "GitHub mutation", "cleanup classification changes", "cleanup or deletion", "preserved lane synchronization"]
+  }
+}

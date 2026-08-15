@@ -115,6 +115,26 @@ The Control Plane Validation job runs this regression family at the exact PR
 head. Strict documentation, semantic Git workflow, quick, and full repository
 gates remain required before integration.
 
+## Integration completion
+
+GIT-7D2 completed through two unchanged-head squash integrations:
+
+| Evidence | Exact result |
+|---|---|
+| Implementation PR | #747, reviewed head `8742061604f75ad0807cb012a1192ebf997143bf` |
+| Implementation merge | `0a784de5cd519b661105846c4dfb2cf5bac51928` |
+| Implementation tree | reviewed and merged tree `c6f4a6f7f65eaf3561ab226a2e9b28dfd6436eae` |
+| Closeout-lessons PR | #748, reviewed head `cb2750b9f2c0eaf2cbecff33f3ed09db1b82585e` |
+| Closeout-lessons merge | `bf4065f071f1245461df6d3c42f1cc070efbae70` |
+| Closeout-lessons tree | reviewed and merged tree `2b8e3cdb32e342c43a41af98e868c717feaca646` |
+| Required checks | `PR Gate` passed at both unchanged reviewed heads |
+| Post-merge workflows | `PR Validation` and `Validate Documentation` passed at both merge SHAs |
+
+The original feature and lessons branches/worktrees remain retained. Squash
+tree equivalence proves integrated content but does not make either attached
+lane a deletion candidate. The Phase 7D cleanup reconciliation records the
+current preservation and disposition boundary without performing deletion.
+
 ## Non-goals and retained state
 
 No local/remote branch or worktree is deleted, detached, pruned, cleaned, or

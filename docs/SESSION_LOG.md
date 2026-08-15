@@ -5,6 +5,185 @@
 
 ---
 
+## 2026-08-15 — Session: GIT-7D Cleanup and Retrospective Reconciliation
+
+**Agent:** Codex (`ops`, with two bounded read-only reviewers)
+
+**Branch:** `codex/git-cleanup-reconciliation`, created from freshly verified
+`origin/main = bf4065f071f1245461df6d3c42f1cc070efbae70`
+
+**Focus:** Complete the non-destructive preservation/disposition receipt,
+reconcile GIT-7D2 status, capture the material retrospective, and leave GIT-7E
+as the next separate packet
+
+### Summary
+
+- Read the current repository instructions and canonical Git workflow, then
+  ran the mandated session brief/start, runtime diagnosis, and worktree-aware
+  Git-state authority before mutation.
+- Refreshed `origin/main`, confirmed the delegated expected SHA `bf4065f0`, and
+  created one fresh isolated packet branch/worktree with `source_bound=true`.
+- Re-audited all local `codex/*` refs, worktrees, live remote heads, Git config,
+  repository/ruleset settings, PRs #744-#748, open PRs/issues, and the exact
+  detached `e54a` dirty evidence without cleanup or deletion.
+- Verified PRs #744-#748 were merged at their exact reviewed heads, required
+  checks passed, each squash-result tree equals its reviewed tree, and both
+  post-merge push workflows passed at every result SHA.
+- Preserved the unique semantic boundary from `e54a` on current main while
+  leaving its path, head, dirty file, blobs, patch, and diff bytes unchanged.
+- Reconciled the task board, handoff, phase ledger, GIT-7D2 receipt, disposition
+  plan, generated projections, and learning material so GIT-7D is complete and
+  GIT-7E is next.
+- Added a readable and machine-readable non-mutation receipt, a repository case
+  study, and a separately verifiable external learning addendum. No timing,
+  productivity, usage, or learning-rate trend is claimed.
+
+### Key deliverables
+
+- `docs/research/git-governance/GIT-001-phase-7D-cleanup-reconciliation.md`
+- `docs/research/git-governance/GIT-001-phase-7D-cleanup-reconciliation.json`
+- `docs/git-automation/git-governance-case-study-git-7d2-cleanup-audit.md`
+- Reconciled `docs/TASKS.md`, `docs/planning/next-session-brief.md`, GIT-001
+  ledger/disposition records, and affected generated projections
+- External `git-study-addendum-git-7d2-cleanup-audit.md` in the existing
+  personal Git learning package
+
+### Issues encountered
+
+- The delegated audit reported 18 local `codex/*` branches and 12 worktrees,
+  while live intake before packet-lane creation found 18 and 13. Without
+  attribution, the extra worktree could look like cleanup drift.
+- Detached worktree `e54a` still carried one unique dirty session-log record at
+  pre-merge head `0fdb48ed`. Removing, attaching, copying, or normalizing it
+  would change the evidence and could lose its unique detached-session fact.
+- Same-day task/handoff/phase surfaces still said GIT-7D2 was validating after
+  PRs #747-#748 were integrated. The current date could make completed work look
+  live and cause repetition.
+- The earlier disposition plan described attached Alpha lanes and eight
+  unattached branches as retirement-ready from pre-classifier evidence. That
+  wording could turn reachability/PR facts into deletion authority without the
+  new owner, dependency, retention, freshness, and classifier gates.
+- A read-only reviewer first used an unsupported `git show-ref --remotes`
+  option and omitted the `structural_engineering_lib` subdirectory from the
+  `e54a` path; both probes stopped without mutation.
+- One parent audit command asked for primary-main status while still using the
+  packet worktree as its implicit current directory. The first output therefore
+  described the packet lane rather than primary `main`.
+- The first session-document closeout check rejected the rebuilt handoff because
+  its semantically correct `Required reading` heading did not match the exact
+  maintained `Required Reading` schema. Its rerun then exposed the separate
+  literal `| **Current** |` row contract, which the semantically equivalent
+  `Reconciled` row did not satisfy.
+- Orchestrator review found that the receipt's top-level `mutation_policy` could
+  be read as claiming the whole packet was write-free even though task-owned
+  documentation and its normal Git/PR lifecycle are authorized. The same
+  review required an explicit reporting boundary for evidence available only
+  after the packet merges.
+
+### Root causes and resolutions
+
+- Root cause: the earlier count predated the clean detached `b94c` desktop task
+  worktree. Resolution: record delegated, live-before-packet, and live-after-
+  packet counts separately; the packet itself accounts for exactly one new
+  branch and one new worktree. Evidence: canonical `git_state.py --worktrees`
+  and `git worktree list --porcelain` inventories.
+- Root cause: the GIT-7C1/GIT-7C2 evidence-producing task deliberately remained
+  detached at a prohibited-to-mutate pre-merge base, so its task-owned session
+  entry had no truthful local commit route. Most semantic content later entered
+  current main through the Phase 7C2 and session receipts, but the detached dirty
+  identity itself remained unique. Resolution: compare first, preserve only
+  that non-duplicated semantic boundary plus exact path/head/diff/blob/patch
+  identities in the current packet, and leave `e54a` byte-for-byte unchanged.
+  Evidence: 119/7 diff, working blob `2c3d7ac8`, HEAD blob `bcdd9eda`, patch ID
+  `be157118`, and binary-diff SHA-256 `cf70f18f...b4930394` remained stable.
+- Root cause: PR #748 intentionally expanded the GIT-7D2 session issue ledger
+  but did not own the task board, handoff, phase ledger, or cleanup audit. A date
+  alone was used as a freshness cue. Resolution: reconcile every current status
+  surface in one single-writer packet and bind claims to exact PR/head/merge/
+  tree/check identities. Evidence: status searches and strict docs/projection
+  checks are part of closeout.
+- Root cause: the old plan predated the inspection-only supplied-evidence
+  schema and treated attachment/reachability/merged-PR tables as sufficient to
+  request deletion approval. Resolution: downgrade every row to a hold or
+  future disposition candidate until exact owner, ref/head/time/freshness,
+  dependent-PR, retention, classifier pending-approval, and separate action
+  authorization are complete. Evidence: the no-evidence classifier receipt
+  truthfully reports `NOT_CHECKED` and `UNKNOWN`.
+- Root cause: the review packet used one Git option unavailable in the installed
+  version and shortened the actual nested worktree root. Resolution: use
+  `git for-each-ref` and the exact `/e54a/structural_engineering_lib` path.
+  Evidence: corrected read-only probes produced the independently verified
+  heads and hashes without changing state.
+- Root cause: the combined parent command relied on implicit cwd for a fact
+  that belonged to another checkout. Resolution: rerun with explicit
+  `git -C /Users/pravinsurawase/VS_code_project/structural_engineering_lib`.
+  Evidence: primary `main` is clean and `0 4` behind refreshed `origin/main`.
+- Root cause: the handoff rewrite preserved the intended meaning but did not
+  inspect the session parser's literal heading and row-label contracts.
+  Resolution: inspect the maintained parser, restore canonical
+  `## Required Reading`, and use its exact `| **Current** |` and
+  `| **Next** |` row labels before rerunning `scripts/session.py check`.
+  Evidence: the corrected session-document check passes at closeout.
+- Root cause: one packet-level key compressed the narrower cleanup/disposition
+  safety policy and the authorized publication lifecycle into a single
+  ambiguous label; a post-merge result also cannot be versioned in the
+  unchanged reviewed head that it verifies. Resolution: scope
+  `INSPECTION_ONLY` to pre-existing disposition surfaces, record normal packet
+  writes separately, mark the replay pending rather than predicting it, and
+  name the final task handoff plus GitHub PR/workflow receipts as its reporting
+  surface. Evidence: receipt schema/topic checks pass before publication, and
+  the final preservation snapshot is replayed and compared only after merge.
+
+### Verification
+
+- Worktree-bound runtime diagnosis: `source_bound=true`.
+- Local/remote/tree/PR/settings/e54a preservation facts were independently
+  reviewed and then reproduced by the parent with corrected commands.
+- Focused classifier regression: `12 passed`; semantic Git workflow: passed;
+  task, handoff, and session schemas: passed.
+- Strict documentation: all five checks passed with zero invalid frontmatters;
+  link validation checked 342 Markdown files and 1,107 internal links with zero
+  broken links. Affected projections were dry-run first, then regenerated.
+- Repository gates: quick `10/10` and full `30/30`; token-efficiency policy,
+  machine-readable receipt parsing, and `git diff --check` also passed.
+- Existing refs, worktrees, shared Git config, GitHub settings/ruleset, open
+  dependency PRs/issues, and the exact `e54a` identities matched their recorded
+  pre-write fingerprints after document writes.
+- The external learning addendum is verified separately by exact path, required
+  topic/teach-back/review markers, no trailing whitespace, and SHA-256
+  `af3d47e5263adf6406a1b0d28171932414926862d0040699e14498744a8588f1`.
+- Normal PR publication, exact diff/comment/review/thread/check/mergeability
+  inspection, unchanged-green squash merge, tree comparison, and post-merge
+  workflow receipts complete the remote verification.
+
+### Preservation and next boundary
+
+- No branch, remote ref, worktree, issue, dependency PR, setting, release, or
+  primary-main synchronization was changed by cleanup; no cleanup action ran.
+- `e54a`, `codex/git-governance-research`, Excel, Alpha policy, every attached
+  GIT lane, every existing local/remote ref, and every existing worktree remain
+  held exactly as recorded in the machine-readable receipt.
+- GIT-7E may implement indexed semantic live-guidance coherence and a durable
+  read-only task-to-Git receipt. It does not refresh remotes, mutate GitHub,
+  reclassify or execute cleanup, synchronize preserved lanes, or alter GIT-7D1/
+  GIT-7D2 behavior.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `git show-ref --remotes` was unsupported and the first
+  reviewer probe used the parent `e54a` directory instead of its repository
+  subdirectory -> reran with `git for-each-ref` and the exact nested worktree;
+  all required read-only evidence was obtained.
+- ⚠️ TERMINAL ISSUE: the first primary-main status probe inherited the packet
+  cwd -> reran with explicit `git -C` against the validated primary path and
+  confirmed a clean worktree four commits behind `origin/main`.
+- ⚠️ TERMINAL ISSUE: `scripts/session.py check` rejected the handoff's
+  noncanonical heading capitalization, then its semantically equivalent
+  `Reconciled` row -> inspected the maintained parser, restored exact
+  `## Required Reading`, `| **Current** |`, and `| **Next** |` literals, and
+  reran the maintained session checker.
+
+
 ## 2026-08-15 — Session: GIT-7D2 Inspection-Only Branch Disposition
 
 **Agent:** Codex (`ops`)

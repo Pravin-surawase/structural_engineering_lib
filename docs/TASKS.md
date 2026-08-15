@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-15 — GIT-7D1 merged through PR #746 and GIT-7D2 inspection-only branch disposition is in validation
+**Updated:** 2026-08-15 — GIT-7D complete; GIT-7D2 integrated through PRs #747-#748 and the non-destructive reconciliation leaves GIT-7E next
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7D2 IN VALIDATION — GIT-7D1 merged through PR #746; inspection-only classifier regressions pass locally; deletion and GIT-7E remain separate |
+| GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | ✅ GIT-7D COMPLETE — GIT-7D2 integrated through PRs #747-#748; preservation/disposition reconciliation is non-destructive; GIT-7E is next and separate |
 
 ## Up Next
 
