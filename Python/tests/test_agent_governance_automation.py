@@ -142,8 +142,13 @@ def test_control_paths_use_python_runtime_launcher():
     workflow = (REPO_ROOT / ".github" / "workflows" / "fast-checks.yml").read_text(
         encoding="utf-8"
     )
-    install_offset = workflow.index("python -m pip install -e Python pytest PyYAML")
-    smoke_offset = workflow.index("python scripts/test_cli_smoke.py")
+    repository_validation = workflow.partition("  repository-validation:\n")[
+        2
+    ].partition("  pr-gate:\n")[0]
+    install_offset = repository_validation.index(
+        "python -m pip install -e 'Python/[dev]' PyYAML"
+    )
+    smoke_offset = repository_validation.index("python scripts/test_cli_smoke.py")
     assert install_offset < smoke_offset
 
 

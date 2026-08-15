@@ -22,6 +22,7 @@ jobs:
       fastapi: ${{ steps.filter.outputs.fastapi }}
       react: ${{ steps.filter.outputs.react }}
       control_plane: ${{ steps.filter.outputs.control_plane }}
+      docs: ${{ steps.filter.outputs.docs }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -43,18 +44,33 @@ jobs:
               - 'react_app/**'
               - '**/package-lock.json'
             control_plane:
-              - 'scripts/git_state.py'
-              - 'scripts/prompt_router.py'
-              - 'scripts/session.py'
-              - 'scripts/check_all.py'
-              - 'scripts/automation-map.json'
-              - 'scripts/validate_git_state.sh'
-              - 'scripts/check_unfinished_merge.sh'
-              - 'scripts/check_not_main.sh'
-              - 'scripts/check_codex_git_workflow.py'
+              - 'scripts/**'
+              - 'run.sh'
+              - 'agents/**'
+              - '.codex/**'
+              - '.github/agents/**'
+              - '.github/instructions/**'
+              - '.github/prompts/**'
+              - '.github/skills/**'
+              - '.github/workflows/**'
+              - '.github/copilot-instructions.md'
+              - '.pre-commit-config.yaml'
+              - 'AGENTS.md'
+              - 'CLAUDE.md'
+              - 'docs/git-automation/**'
+              - 'docs/guidelines/ai-token-efficiency.md'
+              - 'docs/research/git-governance/**'
+              - 'Python/tests/test_agent_governance_automation.py'
+              - 'Python/tests/test_ci_workflow_contract.py'
               - 'Python/tests/test_git_state.py'
+              - 'Python/tests/test_pipeline_state.py'
               - 'Python/tests/test_session_automation.py'
-              - '.github/workflows/fast-checks.yml'
+              - 'Python/tests/test_session_store.py'
+            docs:
+              - 'docs/**'
+              - 'mkdocs.yml'
+              - 'Python/pyproject.toml'
+              - 'Python/structural_lib/**'
 
   python-validation:
     name: Python Validation
@@ -170,6 +186,63 @@ jobs:
           npm run build
           npx vitest run
 
+  control-plane-validation:
+    name: Control Plane Validation
+    needs: changes
+    if: needs.changes.outputs.control_plane == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: Python/pyproject.toml
+
+      - name: Install control-plane test dependencies
+        run: python -m pip install -e 'Python/[dev]' PyYAML
+
+      - name: Validate Git, intake, session, and governance controls
+        run: |
+          STRUCTURAL_LIB_PYTHON="$(command -v python)" python scripts/check_codex_git_workflow.py
+          STRUCTURAL_LIB_PYTHON="$(command -v python)" python -m pytest \
+            Python/tests/test_git_state.py \
+            Python/tests/test_session_automation.py \
+            Python/tests/test_session_store.py \
+            Python/tests/test_pipeline_state.py \
+            Python/tests/test_agent_governance_automation.py \
+            Python/tests/test_ci_workflow_contract.py \
+            -q
+
+  documentation-validation:
+    name: Documentation Validation
+    needs: changes
+    if: needs.changes.outputs.docs == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.11'
+
+      - name: Install documentation dependencies
+        run: |
+          python -m pip install "mkdocs-material>=9.5,<10" "mkdocstrings[python]>=0.25,<1"
+          python -m pip install -e Python/
+
+      - name: Build documentation strictly
+        run: mkdocs build --strict
+
   repository-validation:
     name: Repository Validation
     needs: changes
@@ -219,15 +292,6 @@ jobs:
           python scripts/check_architecture_boundaries.py
           python scripts/skill_tiers.py validate
 
-      - name: Validate Git state and intake control plane
-        if: needs.changes.outputs.control_plane == 'true'
-        run: >-
-          STRUCTURAL_LIB_PYTHON="$(command -v python)"
-          python -m pytest
-          Python/tests/test_git_state.py
-          Python/tests/test_session_automation.py
-          -q
-
       - name: Validate maintenance scripts
         run: |
           bash -n scripts/validate_git_state.sh
@@ -235,7 +299,6 @@ jobs:
           bash -n scripts/check_not_main.sh
           bash -n scripts/agent_start.sh
           python scripts/git_state.py --json > /dev/null
-          python scripts/check_codex_git_workflow.py
           python -m pytest tests/integration/test_migration_scripts.py -q
 
   pr-gate:
@@ -246,6 +309,8 @@ jobs:
       - python-validation
       - fastapi-validation
       - react-validation
+      - control-plane-validation
+      - documentation-validation
       - repository-validation
     runs-on: ubuntu-latest
     steps:
@@ -258,6 +323,10 @@ jobs:
           FASTAPI_RESULT: ${{ needs.fastapi-validation.result }}
           REACT_CHANGED: ${{ needs.changes.outputs.react }}
           REACT_RESULT: ${{ needs.react-validation.result }}
+          CONTROL_PLANE_CHANGED: ${{ needs.changes.outputs.control_plane }}
+          CONTROL_PLANE_RESULT: ${{ needs.control-plane-validation.result }}
+          DOCS_CHANGED: ${{ needs.changes.outputs.docs }}
+          DOCS_RESULT: ${{ needs.documentation-validation.result }}
           REPOSITORY_RESULT: ${{ needs.repository-validation.result }}
         run: |
           failed=0
@@ -288,6 +357,8 @@ jobs:
           require_component 'Python Validation' "$PYTHON_CHANGED" "$PYTHON_RESULT"
           require_component 'FastAPI Validation' "$FASTAPI_CHANGED" "$FASTAPI_RESULT"
           require_component 'React Validation' "$REACT_CHANGED" "$REACT_RESULT"
+          require_component 'Control Plane Validation' "$CONTROL_PLANE_CHANGED" "$CONTROL_PLANE_RESULT"
+          require_component 'Documentation Validation' "$DOCS_CHANGED" "$DOCS_RESULT"
 
           if [[ "$failed" -ne 0 ]]; then
             exit 1
