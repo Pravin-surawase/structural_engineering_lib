@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-12
+last_updated: 2026-08-15
 doc_type: reference
 task: GIT-001
 ---
@@ -21,31 +21,35 @@ workflow remains
 
 ## Snapshot and reading rule
 
-- Live refresh and inspection date: `2026-08-12`.
-- Refreshed integration anchor: `main = origin/main = 951f5e1d`.
-- The primary worktree was clean when inspected.
-- All five linked worktrees were clean when inspected.
+- Original plan inspection date: `2026-08-12`; current disposition claims are
+  superseded by the 2026-08-15 Phase 7D cleanup reconciliation.
+- Refreshed 2026-08-15 integration anchor: `origin/main = bf4065f0`; the clean
+  primary `main` worktree remains intentionally four commits behind at
+  `0fdb48ed`.
+- The current worktree inventory includes preserved dirty detached evidence;
+  never reuse the older “all linked worktrees clean” observation as live proof.
 - Ahead/behind counts below are commit-graph facts only. Squash integration is
   checked separately with patch equivalence, PR receipts, and main reachability.
-- “Ready to retire” means the evidence packet is complete enough to request the
-  owner's destructive-action approval. It does not itself authorize removal.
+- Older “ready to retire” wording in this plan is not a current classifier
+  result. The current gate is complete identity-bound evidence followed by
+  `RETIREMENT_READY_PENDING_APPROVAL` and separate exact-target approval.
 
 ## Outcome first: the revised order
 
 The old list mixed completed recovery with future work. The current order is:
 
-1. **Synchronize and continue GIT-001 Phase 1 research.** The active research
-   lane is clean but behind current `main`; bring current receipts into view,
-   finish official-source coverage, then write the factual lifecycle map.
+1. **Preserve the diverged GIT-001 research lane.** Phases 1-7D are integrated;
+   the local research head now carries unique evidence relative to its remote,
+   so a future continuation must use a fresh current-main lane.
 2. **Decide Excel planning ownership.** It has no unique commits and no PR, so
-   one owner decision determines whether it remains active or becomes a safe
-   retirement candidate.
-3. **Retire the three merged Alpha worktrees after explicit approval.** Their
-   exact heads are preserved and reachable; this is the largest immediate disk
-   recovery, roughly 650 MB.
-4. **Prepare and execute a separately approved branch-cleanup packet.** The old
-   count of seven is stale; eight unattached merged local branches are now
-   verified candidates. Local and remote deletion are separate decisions.
+   one owner decision determines whether it remains active or may enter a
+   separately evidenced retirement assessment.
+3. **Preserve the three attached Alpha worktrees pending a complete refreshed
+   disposition and exact approval.** Treat the dual-head Alpha policy lane
+   separately; no current deletion-ready claim is made.
+4. **Keep eight unattached merged branches as future disposition candidates.**
+   Their merge/reachability facts are refreshed, but owner, dependent-PR,
+   retention, classifier, and exact-approval gates remain incomplete.
 5. **Handle the seven remaining dependency PRs as four coordinated tasks.** Do
    not merge old, behind Dependabot branches one by one.
 
@@ -57,10 +61,10 @@ They stay in the completed ledger below so a future agent does not repeat them.
 | Original priority | Current result | Updated disposition |
 |---|---|---|
 | 1 — protect unique PMM work | Complete and superseded by safe integration | Keep remote forensic refs; no Git recovery action remains |
-| 2 — complete Phase 1 and study PR #723 | PR #723 study/recovery complete; Phase 1 incomplete | Continue only the remaining official research and lifecycle map |
-| 3 — decide Excel ownership | Still open | Make this the first ownership decision after research-lane synchronization |
-| 4 — retire merged Alpha worktrees | Evidence now complete; no deletion performed | Request exact approval, then retire in a controlled sequence |
-| 5 — branch cleanup packet for seven branches | Count changed from seven to eight | Publish the refreshed table and obtain separate local/remote approval |
+| 2 — complete Phase 1 and study PR #723 | Complete; lifecycle research and selective recovery are integrated | Preserve the diverged research lane; do not synchronize or rewrite it |
+| 3 — decide Excel ownership | Still open | Ask for a named owner/next action before any retirement assessment |
+| 4 — retire merged Alpha worktrees | Historical integration evidence exists; all remain attached and the policy lane is dual-head | Preserve; rerun complete disposition before requesting any exact action |
+| 5 — branch cleanup packet for seven branches | Count changed from seven to eight | Keep as future candidates until the classifier receives complete evidence and returns pending approval |
 | 6 — dependency maintenance | Still open; all seven PRs are behind `main` | Replace one-by-one merging with four tested compatibility packets |
 
 ## Completed ledger — do not repeat
@@ -111,78 +115,37 @@ silently import obsolete architecture.
 
 | Worktree / branch | Head | Relation to current `main` | Disposition |
 |---|---:|---|---|
-| Primary / `main` | `951f5e1d` | Exact `origin/main` | Clean integration anchor |
-| GIT-001 / `codex/git-governance-research` | `3be4790d` | 1 commit ahead, 6 behind by ancestry; patch already squash-integrated | Active; synchronize before continuing |
-| Excel / `codex/excel-product-planning` | `a0e115e1` | 0 ahead, 59 behind; head is ancestor of main | Ownership decision required |
-| Alpha closeout / `codex/alpha-0231-release-closeout` | `127afb64` | 0 ahead, 12 behind; ancestor of main | Retirement-ready after approval |
-| Alpha integration / `codex/alpha-0231-integration` | `e3b9a6cb` | 0 ahead, 30 behind; ancestor of main | Retirement-ready after approval |
-| Alpha policy / `codex/release-preflight-alpha-policy` | `5da9c66a` | Local head is ancestor of main | Retirement-ready after dual-head receipt |
+| Primary / `main` | `0fdb48ed` | Clean; four commits behind refreshed `origin/main = bf4065f0` | Preserve integration anchor; no synchronization in this packet |
+| GIT-001 / `codex/git-governance-research` | `65703736` | Local differs from remote `51a8a57a`; three locally unique patches | Preserve diverged evidence unchanged |
+| Excel / `codex/excel-product-planning` | `a0e115e1` | 67 behind; no feature remote or PR | Attached; ownership decision required |
+| Alpha closeout / `codex/alpha-0231-release-closeout` | `127afb64` | Matching remote; ancestor of main | Attached hold; complete evidence and approval required |
+| Alpha integration / `codex/alpha-0231-integration` | `e3b9a6cb` | Matching remote; ancestor of main | Attached hold; complete evidence and approval required |
+| Alpha policy / `codex/release-preflight-alpha-policy` | `5da9c66a` | Local differs from remote `20180a40`; both integrated | Preserve attached dual-head evidence separately |
 
 The GIT-001 branch looks “ahead” only because its research commit was
 squash-merged. `git cherry origin/main codex/git-governance-research` reports
 `- 3be4790d`, which means an equivalent patch already exists on `main`. This is
 why ahead/behind alone cannot decide integration or cleanup.
 
-## Priority 1 — synchronize and complete GIT-001 Phase 1
+## Priority 1 — preserve completed GIT-001 evidence and start fresh
 
-### Why this is first
+### Current state
 
-GIT-001 is the active governance program. Its research lane predates the PMM
-and PR #723 closeouts, so continuing without synchronization would cause the
-agent to repeat old facts or contradict current receipts. The lane is clean,
-published, and shared; preserving its history is preferable to silently
-replacing it.
+GIT-001 Phases 1-7D are complete through the integrated research, state,
+enforcement, generator, classifier, and reconciliation receipts. The local
+`codex/git-governance-research` head is now `65703736`, differs from remote
+`51a8a57a`, and has three locally unique patches relative to refreshed `main`.
+That exact lane is historical evidence, not the next write lane.
 
-### Recommended lane action
+### Required continuation rule
 
-1. Refresh `origin` and prove the GIT-001 worktree is clean, attached to
-   `codex/git-governance-research`, and exactly at its upstream head.
-2. Verify again that `3be4790d` is patch-equivalent to work already on `main`.
-3. Merge refreshed `origin/main` into the research branch. Do not rebase or
-   force-push the shared research branch.
-4. If the merge conflicts, stop and classify each conflict against the current
-   Phase 7A and PMM receipts. Do not choose “ours” or “theirs” across the tree.
-5. Run the documentation and quick gates, commit only deliberate reconciliation
-   edits if required, and push without history rewriting.
-
-If the existing lane has become unavailable or externally owned, create a
-fresh `codex/git-governance-phase1-continuation` worktree from current `main`
-and record the old branch as predecessor. Do not have two writers in the same
-research directory.
-
-### Research scope after synchronization
-
-Complete the open coverage listed in
-[`GIT-001-official-evidence-register.md`](GIT-001-official-evidence-register.md):
-
-- commits, branches, upstreams, fetch, pull, and push;
-- merge, rebase, cherry-pick, revert, reset, restore, stash, and clean;
-- hooks, configuration scope, pruning, garbage collection, and worktree repair;
-- tags, signatures, release ancestry, submodules, shallow and partial clones;
-- GitHub merge methods, merge queue/auto-merge, rulesets and branch protection,
-  environments, releases, Dependabot, forks, and external contributors;
-- verified Codex task/worktree lifecycle, archival, snapshot, and handoff facts.
-
-Then write one source-backed factual map for normal work, parallel work,
-integration, release, cleanup, and recovery. Label every statement as external
-fact, project observation, unresolved choice, or not applicable.
-
-### Non-goals
-
-- Do not change canonical Git policy, GitHub settings, hooks, or cleanup rules.
-- Do not delete historical branches or worktrees during research.
-- Do not advance to Phase 2 merely because a source list is long; each open
-  area must be covered, declared not applicable, or explicitly unresolved.
-- Treat PR #723 and the PMM incident as Phase 2 inputs, not as permission to
-  rewrite policy during Phase 1.
-
-### Acceptance evidence
-
-- Research worktree clean and current with its remote before mutation.
-- Current `origin/main` integrated without history rewriting.
-- Evidence register has no silent coverage gaps.
-- Factual lifecycle map exists and separates facts from decisions.
-- Phase 1 coverage review explicitly passes before Phase 2 begins.
+1. Preserve the existing research branch/worktree and remote ref unchanged.
+2. Refresh and verify `origin/main` in an existing checkout.
+3. Create a fresh `codex/<task-slug>` worktree from the verified current main.
+4. Recover only explicitly scoped current-compatible facts when needed; do not
+   extend, merge into, reset, rebase, or reconcile the preserved research lane.
+5. Keep GIT-7E limited to semantic live-guidance and durable read-only handoff
+   acceptance. Cleanup/deletion remains a separate exact-target workflow.
 
 ## Priority 2 — decide Excel planning ownership
 
@@ -221,13 +184,13 @@ Stop if the worktree becomes dirty, an operation marker exists, a new remote or
 PR appears, the task owner says it is active, or branch-only commits appear.
 Never stash, reset, clean, or copy files out as an implicit retirement method.
 
-## Priority 3 — retire merged Alpha worktrees after approval
+## Priority 3 — preserve and reassess merged Alpha worktrees
 
-### Why they are now retirement-ready
+### Historical integration evidence and current hold
 
-All three Alpha worktrees are clean. Their meaningful heads have exact PR and
-main-reachability receipts. Together they occupy about 651 MB; approximately
-418 MB is the old Alpha candidate's `react_app/node_modules`.
+All three Alpha worktrees were clean when refreshed and their meaningful heads
+retain PR/main-reachability evidence. They remain attached, so none is a branch-
+deletion candidate. Disk size is context only and cannot change disposition.
 
 | Worktree | Local head | Remote/PR evidence | Main evidence | Approx. size |
 |---|---:|---|---|---:|
@@ -240,53 +203,56 @@ to its own remote branch, but it is not lost or unintegrated because that exact
 commit is reachable from current `main`. Record both heads; do not “fix” the
 old remote by rewriting it.
 
-### Approved execution sequence
+### Prerequisites before any future execution proposal
 
-After the owner explicitly approves these exact three paths:
+Before asking the owner about any exact path:
 
 1. Refresh and repeat the clean/head/attachment/reachability checks.
-2. Retire Alpha closeout first because it reclaims the most space.
-3. Retire Alpha integration second.
-4. Retire Alpha policy last, preserving the dual-head receipt in the handoff.
-5. For each lane, remove the worktree before deleting its local branch.
-6. Verify the remaining worktree inventory and primary clean state after every
-   removal. Stop on the first unexpected result.
-7. Leave remote branches untouched until the separate branch-cleanup approval.
+2. Supply exact owner, remote-ref, PR/dependency, retention, and freshness
+   evidence to the inspection-only classifier.
+3. Require `RETIREMENT_READY_PENDING_APPROVAL`; every other result remains a
+   hold.
+4. Keep Alpha policy separate and retain both local and remote heads.
+5. Obtain separate exact approval for worktree, local branch, and remote branch
+   actions. No approval is granted by this plan.
 
 Use Git's worktree removal for the validated exact worktree, not a recursive
 filesystem deletion. Do not prune first, because pruning is not a substitute
 for proving or removing the actual worktree.
 
-## Priority 4 — branch-cleanup approval packet
+## Priority 4 — future branch-disposition packet
 
 ### Updated candidate count
 
-The original count of seven is obsolete. Eight unattached local branches are
-exact ancestors of current `origin/main`, have matching remote heads, and have
-merged PR receipts:
+The original count of seven is obsolete. Eight unattached local branches were
+refreshed on 2026-08-15 as exact ancestors of `origin/main`, with matching
+remote heads and merged PR receipts. Those facts make them future disposition
+candidates, not deletion-ready targets:
 
 | Local branch | Head | Merged PR | Local decision | Remote decision |
 |---|---:|---:|---|---|
-| `codex/alpha-0231-candidate-evidence` | `adb161b8` | #732 | Awaiting approval | Awaiting approval |
-| `codex/ci-fastapi-load-lane-fix` | `21b9df1f` | #729 | Awaiting approval | Awaiting approval |
-| `codex/column-rectangular-e2e` | `007dfa0c` | #725 | Awaiting approval | Awaiting approval |
-| `codex/footing-isolated-v1` | `886871ae` | #727 | Awaiting approval | Awaiting approval |
-| `codex/gpt-5-3-spark-work-program` | `6cd22dcb` | #734 | Awaiting approval | Awaiting approval |
-| `codex/is456-beam-primary-route` | `aa4fe606` | #726 | Awaiting approval | Awaiting approval |
-| `codex/is456-slabs-closeout` | `d79a1558` | #724 | Awaiting approval | Awaiting approval |
-| `codex/is456-slabs-plan` | `7e623984` | #728 | Awaiting approval | Awaiting approval |
+| `codex/alpha-0231-candidate-evidence` | `adb161b8` | #732 | Evidence incomplete | Evidence incomplete |
+| `codex/ci-fastapi-load-lane-fix` | `21b9df1f` | #729 | Evidence incomplete | Evidence incomplete |
+| `codex/column-rectangular-e2e` | `007dfa0c` | #725 | Evidence incomplete | Evidence incomplete |
+| `codex/footing-isolated-v1` | `886871ae` | #727 | Evidence incomplete | Evidence incomplete |
+| `codex/gpt-5-3-spark-work-program` | `6cd22dcb` | #734 | Evidence incomplete | Evidence incomplete |
+| `codex/is456-beam-primary-route` | `aa4fe606` | #726 | Evidence incomplete | Evidence incomplete |
+| `codex/is456-slabs-closeout` | `d79a1558` | #724 | Evidence incomplete | Evidence incomplete |
+| `codex/is456-slabs-plan` | `7e623984` | #728 | Evidence incomplete | Evidence incomplete |
 
 Before seeking approval, refresh every row for worktree attachment, local/remote
-head identity, main reachability, PR state, and new activity. A branch becoming
-attached, advancing, diverging, or gaining an open PR removes it from the batch.
+head identity, main reachability, PR state/dependencies, owner, retention, and
+new activity, then run the maintained classifier with that exact evidence. A
+branch becoming attached, advancing, diverging, gaining an open/dependent PR,
+or carrying a retention hold remains outside any action batch.
 
 ### Why the cleanup script did not list them
 
-The dry-run `cleanup_stale_branches.py` reported no stale branches because its
-current selection is age-oriented and remote-oriented with a minimum-age rule.
-That output does not prove that recently merged, unattached local branches do
-not exist. For this packet, the authoritative evidence is the explicit
-worktree/ref/reachability/PR table above.
+The historical `cleanup_stale_branches.py` result is superseded. The maintained
+`classify_branch_disposition.py` performs local inspection only and preserves
+`NOT_CHECKED`/missing supplied evidence as `UNKNOWN`. The explicit table above
+is an audit queue, not authorization and not a substitute for its complete
+identity-bound receipt.
 
 ### Approval and execution rules
 
@@ -294,8 +260,9 @@ worktree/ref/reachability/PR table above.
   other.
 - Delete only the exact approved rows and only after a same-session refresh.
 - Local deletion follows worktree-detachment proof.
-- Remote deletion uses the maintained cleanup workflow and a reviewed dry run;
-  do not issue an ad hoc remote-delete command.
+- No repository cleanup workflow performs deletion. After a pending-approval
+  receipt and explicit exact authorization, Codex performs only the approved
+  native Git action and records it.
 - Preserve a receipt containing branch name, local head, remote head, PR,
   reachability result, approval scope, action result, and post-action inventory.
 - Do not include GIT-001, Excel, Alpha attached branches, PMM forensic refs, or
@@ -341,18 +308,20 @@ session/task records are single-writer surfaces.
 
 1. Read `AGENTS.md`, this packet, the GIT-001 index, evidence register, and
    lifecycle research.
-2. Run `./run.sh task brief "continue GIT-001 Phase 1 official research"`.
+2. Run `./run.sh session brief --agent ops`, `./run.sh session start`, and the
+   worktree-bound runtime/state diagnostics.
 3. Refresh refs, inspect all worktrees read-only, and compare the result with
    this dated snapshot. Record drift; do not normalize it away.
-4. Take ownership of exactly one write lane. The preferred first lane is the
-   existing GIT-001 research worktree after clean/upstream verification.
-5. Synchronize the research lane with current `main` using a normal merge; stop
-   and classify if conflicts appear.
-6. Complete the official-source register and factual lifecycle map.
-7. Ask the owner the single Excel ownership question while research proceeds:
+4. For authorized GIT-7E work, create exactly one fresh current-main write lane;
+   do not reuse the preserved GIT research lane.
+5. Keep GIT-7E to semantic live-guidance coverage and the durable read-only
+   handoff receipt. It does not refresh remotes or authorize cleanup.
+6. Ask the owner the single Excel ownership question when disposition work is
+   separately resumed:
    “Is the Excel planning task still active with a named next action?”
-8. Do not delete Alpha lanes or branches until exact-target approval is given.
-9. At handoff, record issues, confirmed root causes, solutions, and command/test
+7. Do not delete Alpha lanes or branches until a complete pending-approval
+   receipt and separate exact-target approval exist.
+8. At handoff, record issues, confirmed root causes, solutions, and command/test
    evidence in the newest `docs/SESSION_LOG.md` entry.
 
 ## Maintained script guide
@@ -399,7 +368,8 @@ disposition. No single script answers the ownership and recoverability question.
 
 This plan is fulfilled when:
 
-- Phase 1 coverage and the factual lifecycle map pass review;
+- Phases 1-7D remain integrated and their preserved evidence is not reopened or
+  reconciled without new authorization;
 - Excel has a named active owner/next action or an approved retirement receipt;
 - the three Alpha worktrees are either explicitly retained or safely retired
   under exact approval;

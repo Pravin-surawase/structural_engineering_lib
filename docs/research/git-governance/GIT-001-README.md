@@ -18,9 +18,10 @@ policy.
 The current normative policy is
 [`docs/git-automation/git-workflow-single-source.md`](../../git-automation/git-workflow-single-source.md)
 and now includes the owner-accepted GIT-7B read-only state/intake contract.
-GIT-7C1 is integrated, GIT-7C2 server enforcement is applied, and GIT-7D1 is
-integrated through PR #746. GIT-7D2 owns inspection-only branch disposition;
-GIT-7E remains separate.
+GIT-7C1 is integrated, GIT-7C2 server enforcement is applied, and GIT-7D is
+complete: GIT-7D1 integrated through PR #746, while GIT-7D2 integrated through
+PRs #747-#748 and has a non-destructive preservation/disposition reconciliation.
+GIT-7E semantic guidance and durable handoff remain the next separate packet.
 
 ## Objective
 
@@ -49,7 +50,7 @@ work, make recovery deterministic, and remain efficient during normal work.
 | 4 | Operating-model design | Complete as proposal | Four control planes, one typed state model, lane lifecycle, permissions, CI/server policy, recovery, and four packets defined |
 | 5 | Scenario validation | Complete for proposal | Disposable Git and live read-only checks reproduce current defects, validate primitives, and define falsifiable GIT-7B–7E gates |
 | 6 | Canonical policy proposal | Accepted 2026-08-13 | Owner accepted the operating model and authorized GIT-7B only |
-| 7 | Controlled implementation | 7A–7D1 complete; GIT-7D2 implementation in validation | GIT-7D1 merged through PR #746; the deletion-oriented cleanup path is replaced by an inspection-only, fail-closed classifier |
+| 7 | Controlled implementation | 7A-7D complete; GIT-7E next | GIT-7D2 merged through PRs #747-#748; non-destructive cleanup reconciliation preserves every held lane and makes no deletion-ready claim without complete evidence |
 | 8 | Adoption and closeout | Not started | Integrated workflow verified; supersession and maintenance established |
 
 ## Artifact map
@@ -69,6 +70,8 @@ work, make recovery deterministic, and remain efficient during normal work.
 - [Phase 7C2 server enforcement](GIT-001-phase-7C2-server-enforcement.md)
 - [Phase 7D1 targeted index generation](GIT-001-phase-7D1-targeted-index-generation.md)
 - [Phase 7D2 inspection-only branch disposition](GIT-001-phase-7D2-branch-disposition.md)
+- [Phase 7D cleanup reconciliation](GIT-001-phase-7D-cleanup-reconciliation.md)
+- [Phase 7D machine-readable preservation receipt](GIT-001-phase-7D-cleanup-reconciliation.json)
 - Phase 7E durable handoff — planned
 - Phase 8 adoption/closeout report — planned
 

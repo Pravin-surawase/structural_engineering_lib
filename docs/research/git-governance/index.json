@@ -3,15 +3,15 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-15",
-  "file_count": 16,
+  "file_count": 18,
   "files": [
     {
       "name": "GIT-001-README.md",
       "type": "documentation",
-      "size_lines": 99,
+      "size_lines": 102,
       "last_updated": "2026-08-15",
       "description": "This directory is the task-owned, non-normative research record for GIT-001. Its contents may describe official Git/GitHub/Codex facts, observed project",
-      "content_hash": "2654f5b084a6"
+      "content_hash": "1cc6819f6b0b"
     },
     {
       "name": "GIT-001-lifecycle-research.md",
@@ -24,10 +24,10 @@
     {
       "name": "GIT-001-next-agent-disposition-plan.md",
       "type": "documentation",
-      "size_lines": 411,
+      "size_lines": 381,
       "last_updated": "2026-08-15",
       "description": "This packet converts the original six-priority cleanup and recovery list into a current, evidence-backed handoff. It tells the next agent what is already done,",
-      "content_hash": "9e8d050f8766"
+      "content_hash": "c9555c6ad9bd"
     },
     {
       "name": "GIT-001-official-evidence-register.md",
@@ -118,6 +118,32 @@
       "content_hash": "494e0c9d67de"
     },
     {
+      "name": "GIT-001-phase-7D-cleanup-reconciliation.json",
+      "type": "config",
+      "last_updated": "2026-08-15",
+      "top_level_keys": [
+        "schema_version",
+        "receipt_id",
+        "task",
+        "phase",
+        "cleanup_disposition_mutation_policy",
+        "cleanup_disposition_mutation_policy_scope",
+        "packet_documentation_and_git_lifecycle",
+        "cleanup_actions_performed",
+        "authorization",
+        "observation"
+      ],
+      "content_hash": "cccf64989d0b"
+    },
+    {
+      "name": "GIT-001-phase-7D-cleanup-reconciliation.md",
+      "type": "documentation",
+      "size_lines": 206,
+      "last_updated": "2026-08-15",
+      "description": "GIT-7D is complete as an inspection and control packet. GIT-7D1 targeted index generation is integrated through PR #746. GIT-7D2 inspection-only branch",
+      "content_hash": "2644ecdaae12"
+    },
+    {
       "name": "GIT-001-phase-7D1-targeted-index-generation.md",
       "type": "documentation",
       "size_lines": 93,
@@ -128,12 +154,12 @@
     {
       "name": "GIT-001-phase-7D2-branch-disposition.md",
       "type": "documentation",
-      "size_lines": 124,
+      "size_lines": 144,
       "last_updated": "2026-08-15",
       "description": "GIT-7D2 replaces the deletion-oriented scripts/cleanup_stale_branches.py path with",
-      "content_hash": "5a34e7a396cc"
+      "content_hash": "a51ad88ca239"
     }
   ],
   "subfolders": [],
-  "content_hash": "e9ffc88f6bff2c65"
+  "content_hash": "425d9e77fd81e375"
 }
