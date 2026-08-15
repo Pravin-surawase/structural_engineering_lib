@@ -5,6 +5,69 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-WALL-B Reinforcement Checks
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-wall-b` from integrated WALL-A main at
+`7eb55746bc28c5948941261ce3450c1f6e960f74`
+
+**Focus:** Implement the Clause 32.5 minimum/provided wall reinforcement and
+spacing checks for the accepted one-grid wall.
+
+### Summary
+
+- Added typed reinforcement material, bar, spacing, and caller provenance
+  inputs to the pure wall package.
+- Implemented vertical/horizontal required and provided area, exact material
+  category ratios, `min(3t, 450 mm)` spacing, and overall dispositions.
+- Retained two-grid and transverse-enclosure design as held routes and kept the
+  wall capability unadvertised pending WALL-C-D.
+
+### Issues encountered
+
+- WALL-A's post-merge session-end check reported `HOLD_DIVERGED` and a missing
+  task-to-Git handoff receipt after PR #769 had already squash-merged.
+- The first Poppler lookup used the dependency fallback directory, but the
+  maintained `pdftotext` binary is under the native Poppler runtime.
+- Adding the Clause 32.5 decorator made the generated Indian-code manifest
+  stale.
+
+### Root causes and resolutions
+
+- Root cause: squash integration changes ancestry and the packet had no
+  versioned receipt before session end. Resolution: verify PR #769's exact
+  merged head, retain the old lane, and start WALL-B from clean integrated
+  `7eb55746`; no branch/worktree cleanup was attempted.
+- Root cause: the dependency listing did not expose the nested native Poppler
+  binary path. Resolution: locate the bundled binary read-only, then extract
+  the complete relevant Clause 32 pages from the controlled source.
+- Root cause: the manifest derives decorated references from the live source
+  tree. Resolution: regenerate it after the reinforcement function was added;
+  capability truth remains held.
+
+### Evidence
+
+- Runtime diagnosis returned `source_bound=true` in the fresh WALL-B worktree.
+- The frozen 150 mm wall benchmark returns 201.061930 mm2/m vertical steel
+  against 180 mm2/m required and 314.159265 mm2/m horizontal steel against
+  300 mm2/m required, with a 450 mm spacing limit and overall `PASS`.
+- 33 focused wall tests and 108 combined wall/clause/traceability tests passed;
+  Black, Ruff, and mypy passed.
+- Architecture validation found 0 violations across 167 files; import
+  validation found 0 broken imports across 204 files; quick gate passed 10/10.
+- The manifest registers Clause 32.5-32.5.2 without advertising wall support.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: WALL-A session end reported the already squash-merged
+  branch as diverged and missing a receipt -> verified PR #769 and started this
+  lane from clean integrated main without mutating the retained WALL-A lane.
+- ⚠️ TERMINAL ISSUE: `pdftotext` was not in the guessed dependency fallback
+  directory -> located and used the bundled native Poppler binary.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-WALL-A Geometry and Axial Kernel
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

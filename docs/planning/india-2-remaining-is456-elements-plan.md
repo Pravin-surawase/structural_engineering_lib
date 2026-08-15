@@ -43,7 +43,7 @@ Historical staircase task IDs, PRs, and evidence remain unchanged. The former
 
 | Family | Current truth | INDIA-2 treatment |
 |---|---|---|
-| Clause 32 walls | G0 integrated; A kernel is a local candidate and capability remains held | One braced empirical vertical-compression wall check activated |
+| Clause 32 walls | G0 and A integrated; B reinforcement check is a local candidate and capability remains held | One braced empirical vertical-compression wall check activated |
 | Clause 33 stairs | One bounded longitudinal straight waist-slab flight supported | Complete; alternate stair systems remain held |
 | Clause 29 deep beams | Not implemented | Planned after the wall program |
 | Flat slabs and column punching | Not implemented | Planned after deep beams |
@@ -59,7 +59,7 @@ boundary, held with a written reason, or not implemented.
 
 | Order | Program | Why it is placed here | State |
 |---:|---|---|---|
-| 1 | `INDIA-2-WALL` | Next clause-bounded practical element; establishes the new-family workflow | G0 integrated; A candidate; B-D activated |
+| 1 | `INDIA-2-WALL` | Next clause-bounded practical element; establishes the new-family workflow | G0 and A integrated; B candidate; C-D activated |
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
 | 2 | `INDIA-2-DEEP` | Extends beam capability but requires its own geometry, action, and detailing boundary | Planned |
 | 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Planned |
@@ -156,9 +156,10 @@ analysis, seismic/shear-wall provisions, FEM, and IS 13920 detailing.
 Provisional packets:
 
 1. `INDIA-2-WALL-G0` — integrated GO; bounded case, sources, and benchmark.
-2. `INDIA-2-WALL-A` — candidate complete; types, geometry, effective height,
+2. `INDIA-2-WALL-A` — integrated; types, geometry, effective height,
    slenderness, eccentricity, and empirical axial-capacity contract.
-3. `INDIA-2-WALL-B` — bounded axial strength and detailing checks.
+3. `INDIA-2-WALL-B` — candidate complete; bounded minimum/provided
+   reinforcement and spacing checks.
 4. `INDIA-2-WALL-C` — typed public Python workflow and benchmark example.
 5. `INDIA-2-WALL-D` — thin API, capability truth, and evidence freeze.
 6. `INDIA-2-WALL-ACCEPTANCE` — focused family acceptance after A-D integration.
@@ -297,7 +298,7 @@ authorized programs.
 
 ## 9. Exact next action
 
-Integrate the `INDIA-2-WALL-A` candidate, then start `INDIA-2-WALL-B` from the
+Integrate the `INDIA-2-WALL-B` candidate, then start `INDIA-2-WALL-C` from the
 verified integrated head. The owner's 2026-08-16 request activates WALL-A-D and
 the later INDIA-2 families subject to each family's own G0 returning GO. No G0
 may be bypassed, and a HOLD remains a truthful non-implementation outcome.

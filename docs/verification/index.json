@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 40,
+  "file_count": 41,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -237,6 +237,14 @@
       "content_hash": "f64b2ddf2842"
     },
     {
+      "name": "india-2-wall-b-reinforcement-evidence.md",
+      "type": "documentation",
+      "size_lines": 82,
+      "last_updated": "2026-08-16",
+      "description": "WALL-B adds one pure IS 456 provided-reinforcement check to the accepted Clause 32.2 braced-wall case. It does not select bars. The caller supplies one",
+      "content_hash": "dccc2142b26b"
+    },
+    {
       "name": "india-2-wall-g0-scope-evidence.md",
       "type": "documentation",
       "size_lines": 125,
@@ -350,7 +358,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "897f658396f9"
+      "content_hash": "4c4cc51e8871"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -439,5 +447,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "fef48e7bef42a50b"
+  "content_hash": "09011f267a04d2fa"
 }

@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 2,
+  "file_count": 3,
   "files": [
     {
       "name": "__init__.py",
@@ -65,9 +65,55 @@
         }
       ],
       "content_hash": "3617ec4a1232"
+    },
+    {
+      "name": "test_reinforcement.py",
+      "type": "python",
+      "size_lines": 192,
+      "last_updated": "2026-08-16",
+      "description": "INDIA-2-WALL-B Clause 32.5 reinforcement-check tests.",
+      "functions": [
+        {
+          "name": "test_frozen_benchmark_minimum_reinforcement_passes"
+        },
+        {
+          "name": "test_material_category_selects_exact_minimum_ratios",
+          "params": [
+            "kind",
+            "vertical_ratio",
+            "horizontal_ratio"
+          ]
+        },
+        {
+          "name": "test_maximum_spacing_uses_three_times_thickness_or_450"
+        },
+        {
+          "name": "test_inadequate_area_and_excess_spacing_return_fail"
+        },
+        {
+          "name": "test_vertical_ratio_above_one_percent_requires_held_enclosure_route"
+        },
+        {
+          "name": "test_invalid_bar_geometry_fails_closed",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_sixteen_millimetre_category_limit_is_enforced"
+        },
+        {
+          "name": "test_wrong_type_and_blank_reference_fail_closed"
+        },
+        {
+          "name": "test_clause_and_source_provenance_is_machine_visible"
+        }
+      ],
+      "content_hash": "eb7b6888eb67"
     }
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "47aa2edc35034d79"
+  "content_hash": "54a0d53dd98555bc"
 }
