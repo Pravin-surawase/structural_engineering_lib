@@ -2,14 +2,14 @@
   "folder": "fastapi_app/tests",
   "type": "python-package",
   "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
-  "last_updated": "2026-08-11",
-  "file_count": 34,
+  "last_updated": "2026-08-15",
+  "file_count": 38,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 33,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-15",
       "title": "FastAPI Tests",
       "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming. | File | Scope |",
       "content_hash": "1df0bb09bec8"
@@ -18,7 +18,7 @@
       "name": "__init__.py",
       "type": "python",
       "size_lines": 6,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-15",
       "description": "FastAPI Tests Package.",
       "content_hash": "419d87c58f98"
     },
@@ -26,7 +26,7 @@
       "name": "conftest.py",
       "type": "python",
       "size_lines": 159,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-15",
       "description": "Test Fixtures for FastAPI Tests.",
       "functions": [
         {
@@ -71,7 +71,7 @@
       "name": "test_auth.py",
       "type": "python",
       "size_lines": 243,
-      "last_updated": "2026-04-04",
+      "last_updated": "2026-08-15",
       "description": "Tests for Authentication and Rate Limiting.",
       "classes": [
         {
@@ -118,10 +118,99 @@
       "content_hash": "fea73f682b6c"
     },
     {
+      "name": "test_beam_primary_route.py",
+      "type": "python",
+      "size_lines": 311,
+      "last_updated": "2026-08-15",
+      "description": "Focused FastAPI contract tests for the primary IS 456 beam route.",
+      "functions": [
+        {
+          "name": "ordinary_payload"
+        },
+        {
+          "name": "test_zero_torsion_preserves_primary_route_contract",
+          "params": [
+            "client",
+            "ordinary_payload"
+          ]
+        },
+        {
+          "name": "test_safe_torsion_is_integrated_into_primary_demands",
+          "params": [
+            "client",
+            "ordinary_payload"
+          ]
+        },
+        {
+          "name": "test_unsafe_torsion_fails_primary_result",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_out_of_scope_primary_torsion_is_an_explicit_hold",
+          "params": [
+            "client",
+            "ordinary_payload"
+          ]
+        },
+        {
+          "name": "test_serviceability_true_forwards_and_false_opts_out",
+          "params": [
+            "client",
+            "ordinary_payload"
+          ]
+        },
+        {
+          "name": "test_unsupported_serviceability_exposure_is_rejected",
+          "params": [
+            "client",
+            "ordinary_payload"
+          ]
+        },
+        {
+          "name": "test_combined_report_binds_current_identity_and_exports_governing_results",
+          "params": [
+            "client",
+            "ordinary_payload"
+          ]
+        },
+        {
+          "name": "test_stale_report_and_combined_bbs_dxf_fail_closed",
+          "params": [
+            "client",
+            "ordinary_payload"
+          ]
+        },
+        {
+          "name": "test_serviceability_missing_or_invalid_inputs_are_explicit",
+          "params": [
+            "client",
+            "ordinary_payload",
+            "serviceability"
+          ]
+        },
+        {
+          "name": "test_primary_shear_quantity_is_asv_per_spacing",
+          "params": [
+            "client",
+            "ordinary_payload"
+          ]
+        },
+        {
+          "name": "test_separate_torsion_endpoint_contract_is_unchanged",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "content_hash": "c09fdb152d89"
+    },
+    {
       "name": "test_bundled_sample_evidence.py",
       "type": "python",
       "size_lines": 84,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Reproducible software evidence for the bundled 153-beam acceptance sample.",
       "functions": [
         {
@@ -137,7 +226,7 @@
       "name": "test_capabilities.py",
       "type": "python",
       "size_lines": 32,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Cross-surface tests for canonical capability discovery.",
       "functions": [
         {
@@ -159,7 +248,7 @@
       "name": "test_catalog.py",
       "type": "python",
       "size_lines": 41,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Cross-layer tests for the thin workflow catalogue transport.",
       "functions": [
         {
@@ -187,7 +276,7 @@
       "name": "test_column_additional_moment.py",
       "type": "python",
       "size_lines": 203,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-15",
       "description": "Tests for POST /api/v1/design/column/additional-moment endpoint.",
       "classes": [
         {
@@ -214,7 +303,7 @@
       "name": "test_column_biaxial.py",
       "type": "python",
       "size_lines": 179,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-15",
       "description": "Tests for POST /api/v1/design/column/biaxial-check endpoint.",
       "classes": [
         {
@@ -271,7 +360,7 @@
       "name": "test_column_detailing.py",
       "type": "python",
       "size_lines": 150,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-15",
       "description": "Tests for POST /api/v1/design/column/detailing endpoint.",
       "classes": [
         {
@@ -321,7 +410,7 @@
       "name": "test_column_effective_length.py",
       "type": "python",
       "size_lines": 169,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-15",
       "description": "Tests for POST /api/v1/design/column/effective-length endpoint.",
       "classes": [
         {
@@ -358,7 +447,7 @@
       "name": "test_column_pm_interaction.py",
       "type": "python",
       "size_lines": 106,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-15",
       "description": "Tests for POST /api/v1/design/column/interaction-curve endpoint.",
       "classes": [
         {
@@ -388,10 +477,39 @@
       "content_hash": "f5c728aaad3e"
     },
     {
+      "name": "test_column_review_response.py",
+      "type": "python",
+      "size_lines": 140,
+      "last_updated": "2026-08-15",
+      "description": "Focused contracts for the rectangular-column check-and-review slice.",
+      "functions": [
+        {
+          "name": "test_short_axial_capacity_route_remains_available"
+        },
+        {
+          "name": "test_short_uniaxial_route_reports_capacity_and_classification"
+        },
+        {
+          "name": "test_short_biaxial_unified_route_retains_review_fields"
+        },
+        {
+          "name": "test_slender_route_retains_additional_moments_and_axis_disposition"
+        },
+        {
+          "name": "test_inadequate_column_remains_an_explicit_failed_check"
+        }
+      ],
+      "constants": [
+        "UNIFIED_ENDPOINT",
+        "BASE_REQUEST"
+      ],
+      "content_hash": "ad03fed11ca2"
+    },
+    {
       "name": "test_column_uniaxial.py",
       "type": "python",
       "size_lines": 142,
-      "last_updated": "2026-04-06",
+      "last_updated": "2026-08-15",
       "description": "Tests for POST /api/v1/design/column/uniaxial endpoint.",
       "classes": [
         {
@@ -435,7 +553,7 @@
       "name": "test_config.py",
       "type": "python",
       "size_lines": 126,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Tests for safe, environment-configurable FastAPI settings.",
       "functions": [
         {
@@ -498,7 +616,7 @@
       "name": "test_design_compliance.py",
       "type": "python",
       "size_lines": 381,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-15",
       "description": "Tests for design router compliance endpoints.",
       "classes": [
         {
@@ -564,7 +682,7 @@
       "name": "test_detailing_anchorage.py",
       "type": "python",
       "size_lines": 98,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-15",
       "description": "Tests for detailing router anchorage endpoint.",
       "classes": [
         {
@@ -589,8 +707,8 @@
     {
       "name": "test_endpoints.py",
       "type": "python",
-      "size_lines": 1049,
-      "last_updated": "2026-08-10",
+      "size_lines": 1057,
+      "last_updated": "2026-08-15",
       "description": "Integration Tests for FastAPI Endpoints.",
       "classes": [
         {
@@ -712,13 +830,13 @@
           ]
         }
       ],
-      "content_hash": "3f514f5dff70"
+      "content_hash": "1b1b98277504"
     },
     {
       "name": "test_error_sanitization.py",
       "type": "python",
       "size_lines": 118,
-      "last_updated": "2026-04-07",
+      "last_updated": "2026-08-15",
       "description": "Tests for error sanitization utilities (TASK-796).",
       "classes": [
         {
@@ -755,7 +873,7 @@
       "name": "test_export_bbs_dxf.py",
       "type": "python",
       "size_lines": 202,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-15",
       "description": "Tests for export router endpoints.",
       "classes": [
         {
@@ -797,10 +915,44 @@
       "content_hash": "2a7cab3f3e43"
     },
     {
+      "name": "test_footing.py",
+      "type": "python",
+      "size_lines": 236,
+      "last_updated": "2026-08-15",
+      "description": "Contract tests for the isolated concentric-footing FastAPI slice.",
+      "functions": [
+        {
+          "name": "test_concentric_footing_completed_benchmark_is_typed_pass"
+        },
+        {
+          "name": "test_concentric_footing_without_detailing_is_calculation_pass_and_hold"
+        },
+        {
+          "name": "test_concentric_rectangular_wire_type_reaches_the_same_service_authority"
+        },
+        {
+          "name": "test_concentric_footing_openapi_exposes_typed_path_and_success_schema"
+        },
+        {
+          "name": "test_concentric_footing_rejects_unknown_and_nonfinite_values"
+        },
+        {
+          "name": "test_concentric_footing_service_validation_uses_canonical_safe_envelope"
+        },
+        {
+          "name": "test_main_app_mount_and_error_openapi_contract",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "content_hash": "7a6e0ad239a8"
+    },
+    {
       "name": "test_geometry_full.py",
       "type": "python",
       "size_lines": 244,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-15",
       "description": "Tests for geometry router advanced endpoints.",
       "classes": [
         {
@@ -844,7 +996,7 @@
       "name": "test_imports_formats.py",
       "type": "python",
       "size_lines": 82,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-15",
       "description": "Tests for import router extended endpoints.",
       "classes": [
         {
@@ -874,8 +1026,8 @@
     {
       "name": "test_insights_dashboard.py",
       "type": "python",
-      "size_lines": 387,
-      "last_updated": "2026-08-10",
+      "size_lines": 388,
+      "last_updated": "2026-08-15",
       "description": "Tests for insights router endpoints.",
       "classes": [
         {
@@ -922,13 +1074,13 @@
           "name": "client"
         }
       ],
-      "content_hash": "97f6af18d787"
+      "content_hash": "67ed5adf7cfa"
     },
     {
       "name": "test_integration.py",
       "type": "python",
       "size_lines": 390,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Integration tests for FastAPI structural design endpoints.",
       "classes": [
         {
@@ -1002,8 +1154,8 @@
     {
       "name": "test_library_core.py",
       "type": "python",
-      "size_lines": 353,
-      "last_updated": "2026-08-10",
+      "size_lines": 397,
+      "last_updated": "2026-08-15",
       "description": "Request-to-public-library evidence for the new footing and slab consumers.",
       "functions": [
         {
@@ -1033,6 +1185,12 @@
         },
         {
           "name": "test_one_way_slab_endpoint_rejects_two_way_geometry",
+          "params": [
+            "client"
+          ]
+        },
+        {
+          "name": "test_complete_one_way_slab_endpoint_serializes_composed_workflow_truth",
           "params": [
             "client"
           ]
@@ -1092,13 +1250,13 @@
           ]
         }
       ],
-      "content_hash": "6f0cab2e4255"
+      "content_hash": "e0b65c959cc9"
     },
     {
       "name": "test_load.py",
       "type": "python",
-      "size_lines": 286,
-      "last_updated": "2026-08-07",
+      "size_lines": 278,
+      "last_updated": "2026-08-15",
       "description": "Load Tests for FastAPI Application.",
       "classes": [
         {
@@ -1161,15 +1319,15 @@
         "LOAD_P95_MS",
         "LOAD_HEALTH_MAX_MS",
         "LOAD_DEGRADATION_PCT",
-        "LOAD_AVG_MS"
+        "REQUEST_TIMEOUT_SECONDS"
       ],
-      "content_hash": "2dc6ebdf8395"
+      "content_hash": "a5060518c3ae"
     },
     {
       "name": "test_maintenance_route_coverage.py",
       "type": "python",
       "size_lines": 150,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-15",
       "description": "Direct contract coverage for routes identified by the MAINT-004 parity audit.",
       "functions": [
         {
@@ -1227,7 +1385,7 @@
       "name": "test_optimization_pareto.py",
       "type": "python",
       "size_lines": 158,
-      "last_updated": "2026-04-06",
+      "last_updated": "2026-08-15",
       "description": "Tests for Pareto multi-objective beam optimization endpoint.",
       "classes": [
         {
@@ -1251,7 +1409,7 @@
       "name": "test_plausibility_validators.py",
       "type": "python",
       "size_lines": 761,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-15",
       "description": "Tests for cross-field plausibility validators (TASK-729).",
       "classes": [
         {
@@ -1394,7 +1552,7 @@
       "name": "test_public_documentation_contract.py",
       "type": "python",
       "size_lines": 70,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Executable contracts for the public REST documentation.",
       "functions": [
         {
@@ -1425,7 +1583,7 @@
       "name": "test_security.py",
       "type": "python",
       "size_lines": 407,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-15",
       "description": "Security Tests for FastAPI Application.",
       "classes": [
         {
@@ -1510,10 +1668,41 @@
       "content_hash": "1045cfefe897"
     },
     {
+      "name": "test_staircase.py",
+      "type": "python",
+      "size_lines": 146,
+      "last_updated": "2026-08-15",
+      "description": "Contract tests for the straight-flight staircase FastAPI slice.",
+      "functions": [
+        {
+          "name": "test_staircase_benchmark_is_typed_review_required"
+        },
+        {
+          "name": "test_staircase_rejects_unknown_nonfinite_and_unsupported_scope"
+        },
+        {
+          "name": "test_staircase_service_validation_uses_safe_error_envelope"
+        },
+        {
+          "name": "test_staircase_capacity_failure_remains_json_safe_fail"
+        },
+        {
+          "name": "test_staircase_openapi_exposes_typed_success_schema"
+        },
+        {
+          "name": "test_staircase_is_mounted_in_main_app",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "content_hash": "9a68a1ca9c84"
+    },
+    {
       "name": "test_streaming.py",
       "type": "python",
       "size_lines": 276,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Tests for SSE Streaming Endpoint.",
       "classes": [
         {
@@ -1545,7 +1734,7 @@
       "name": "test_typed_response_contracts.py",
       "type": "python",
       "size_lines": 72,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "OpenAPI and envelope contracts for the typed column and library-core routes.",
       "functions": [
         {
@@ -1579,7 +1768,7 @@
       "name": "test_websocket.py",
       "type": "python",
       "size_lines": 211,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Tests for WebSocket Live Design Endpoint.",
       "classes": [
         {
@@ -1603,7 +1792,7 @@
       "name": "test_workflows.py",
       "type": "python",
       "size_lines": 176,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Transport gates for the explicitly activated bounded workflow runner.",
       "functions": [
         {
@@ -1646,5 +1835,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "95fd9e86e49875ae"
+  "content_hash": "4480d732a2d30812"
 }

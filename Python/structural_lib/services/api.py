@@ -165,6 +165,12 @@ from structural_lib.services.slab_api import (  # noqa: F401
     design_two_way_slab_panel_builtin_is456,
     design_two_way_slab_panel_is456,
 )
+from structural_lib.services.staircase_api import (  # noqa: F401
+    StraightFlightStaircaseInput,
+    StraightFlightStaircaseProvenance,
+    StraightFlightStaircaseResult,
+    design_straight_flight_staircase_is456,
+)
 from structural_lib.services.workflow_catalog import (  # noqa: F401
     WorkflowCatalog,
     get_workflow_catalog,
@@ -360,6 +366,11 @@ __all__ = [
     "CompleteOneWaySlabDesignResult",
     "ContinuousOneWaySlabDesignResult",
     "TwoWaySlabPanelWorkflowResult",
+    # Straight-flight staircase (bounded supported case)
+    "design_straight_flight_staircase_is456",
+    "StraightFlightStaircaseInput",
+    "StraightFlightStaircaseProvenance",
+    "StraightFlightStaircaseResult",
     # Capability discovery
     "get_supported_is456_capability_document",
     "get_supported_is456_capabilities",

@@ -50,6 +50,9 @@ types include `api.LoadTransferResult`, `api.OneWaySlabDesignResult`,
 `api.CompleteOneWaySlabDesignResult`,
 `api.ContinuousOneWaySlabDesignResult`,
 `api.TwoWaySlabPanelWorkflowResult`, and `api.IS456Capability`.
+The bounded staircase route returns `api.StraightFlightStaircaseResult` from
+`api.StraightFlightStaircaseInput` and retains
+`api.StraightFlightStaircaseProvenance`.
 
 ```python
 from structural_lib import api
@@ -4034,6 +4037,67 @@ Frozen dataclass: `tau_v_nmm2`, `tau_c_nmm2`, `Vu_kN`, `d_mm`, `critical_section
 ### `api.FootingPunchingResult`
 
 Frozen dataclass: `tau_v_nmm2`, `tau_c_nmm2`, `perimeter_mm`, `Vu_punch_kN`, `d_mm`, `beta_c`, `ks`, `utilization_ratio`, `is_safe`, `clause_ref`, `warnings`. IS 456 Cl 31.6.1.
+
+---
+
+## 18. Straight-Flight Staircase Workflow — Development Preview
+
+```python
+from structural_lib import StraightFlightStaircaseInput
+from structural_lib import design_straight_flight_staircase_is456
+
+result = design_straight_flight_staircase_is456(
+    StraightFlightStaircaseInput(
+        case_id="STAIR-01",
+        lower_landing_effective_length_mm=750,
+        going_mm=2700,
+        upper_landing_effective_length_mm=1650,
+        flight_width_mm=1500,
+        riser_mm=160,
+        tread_mm=270,
+        waist_thickness_mm=250,
+        landing_thickness_mm=200,
+        lower_landing_superimposed_service_load_kn_per_m2=6,
+        flight_superimposed_service_load_kn_per_m2=6,
+        upper_landing_superimposed_service_load_kn_per_m2=6,
+        lower_landing_load_share=0.5,
+        upper_landing_load_share=1.0,
+        concrete_unit_weight_kn_per_m3=25,
+        ultimate_load_factor=1.5,
+        load_basis_reference="reviewed-load-schedule:STAIR-01",
+        effective_depth_mm=224,
+        fck_n_per_mm2=20,
+        fy_n_per_mm2=415,
+        main_bar_diameter_mm=12,
+        main_bar_spacing_mm=120,
+        distribution_bar_diameter_mm=8,
+        distribution_bar_spacing_mm=160,
+    )
+)
+```
+
+```python
+def design_straight_flight_staircase_is456(
+    request: StraightFlightStaircaseInput,
+) -> StraightFlightStaircaseResult
+```
+
+The service composes horizontal effective-span geometry, explicit concrete
+self-weight, caller-supplied superimposed service loads and load shares,
+three-segment simply supported actions, singly reinforced flexure, supplied-bar
+checks, ordinary one-way shear, and the unmodified basic span/depth boundary.
+It returns `PASS`, `REVIEW_REQUIRED`, or `FAIL`; it never converts an unresolved
+serviceability boundary into approval.
+
+The only supported case is one cast-in-situ solid longitudinal straight
+waist-slab flight with two collinear landing effective segments between outer
+beam or wall supports. Alternate stair systems, transverse/stringer action,
+IS 875 load generation, project combinations and envelopes, continuity,
+modification factors, direct deflection, crack width, landing torsion, and
+automatic bar selection remain held. `StraightFlightStaircaseProvenance`
+retains workflow, load-basis, benchmark, clause, and source identities.
+
+**FastAPI Endpoint:** `POST /api/v1/design/staircase/straight-flight`
 
 ---
 

@@ -84,7 +84,7 @@
         "_SOURCE_REFS",
         "_LIMITATIONS"
       ],
-      "content_hash": "72c9b8e223cd"
+      "content_hash": "e6eaef425419"
     },
     {
       "name": "geometry.py",
@@ -187,5 +187,5 @@
     "design_straight_flight_staircase",
     "resolve_straight_flight_geometry"
   ],
-  "content_hash": "9498a9ad228d1789"
+  "content_hash": "63d4dd9586b0bf1b"
 }

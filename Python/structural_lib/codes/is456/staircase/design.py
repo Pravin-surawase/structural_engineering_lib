@@ -72,7 +72,7 @@ class StaircaseDesignCheck:
 
     check_id: str
     actual: float
-    limit: float
+    limit: float | None
     unit: str
     comparison: str
     passed: bool
@@ -286,7 +286,7 @@ def design_straight_flight_staircase(
         StaircaseDesignCheck(
             "INDIA-2C-MAIN-STEEL-01",
             main_provided,
-            main_required if main_required is not None else math.inf,
+            main_required,
             "mm2/m",
             ">=",
             main_steel_satisfied,

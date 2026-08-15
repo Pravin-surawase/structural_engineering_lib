@@ -2,14 +2,14 @@
   "folder": "fastapi_app/models",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-11",
-  "file_count": 15,
+  "last_updated": "2026-08-15",
+  "file_count": 17,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
       "size_lines": 88,
-      "last_updated": "2026-04-02",
+      "last_updated": "2026-08-15",
       "description": "Pydantic Models Package.",
       "content_hash": "ef8eea18fcda"
     },
@@ -17,7 +17,7 @@
       "name": "analysis.py",
       "type": "python",
       "size_lines": 264,
-      "last_updated": "2026-04-07",
+      "last_updated": "2026-08-15",
       "description": "Smart Analysis Pydantic Models.",
       "classes": [
         {
@@ -69,13 +69,20 @@
     {
       "name": "beam.py",
       "type": "python",
-      "size_lines": 679,
-      "last_updated": "2026-08-10",
+      "size_lines": 797,
+      "last_updated": "2026-08-15",
       "description": "Beam Design and Detailing Pydantic Models.",
       "classes": [
         {
           "name": "RebarLayerConfig",
           "description": "Configuration for a single rebar layer in multi-layer reinforcement."
+        },
+        {
+          "name": "BeamCrackWidthParams",
+          "description": "Explicit maintained inputs for the primary-route crack-width check.",
+          "public_methods": [
+            "validate_crack_width_inputs"
+          ]
         },
         {
           "name": "BeamDesignRequest",
@@ -119,6 +126,14 @@
           "description": "Result of crack width check."
         },
         {
+          "name": "CombinedBeamActions",
+          "description": "Original and IS 456 equivalent actions used by the primary route."
+        },
+        {
+          "name": "IntegratedTorsionResult",
+          "description": "Torsion calculation details embedded in the primary beam result."
+        },
+        {
           "name": "BeamDesignResponse",
           "description": "Response model for beam design calculation."
         },
@@ -129,30 +144,15 @@
         {
           "name": "BarArrangement",
           "description": "Reinforcement bar arrangement."
-        },
-        {
-          "name": "StirrupArrangement",
-          "description": "Stirrup arrangement."
-        },
-        {
-          "name": "BeamDetailingResponse",
-          "description": "Response model for beam detailing."
-        },
-        {
-          "name": "TorsionDesignRequest",
-          "description": "Request model for torsion design per IS 456 Cl 41.",
-          "public_methods": [
-            "validate_depth_relationships"
-          ]
         }
       ],
-      "content_hash": "15ef555cacf0"
+      "content_hash": "430d29d73364"
     },
     {
       "name": "boq.py",
       "type": "python",
       "size_lines": 107,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Pydantic models for Project BOQ endpoint.",
       "classes": [
         {
@@ -194,7 +194,7 @@
       "name": "capabilities.py",
       "type": "python",
       "size_lines": 79,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Typed transport models for canonical IS 456 capability discovery.",
       "classes": [
         {
@@ -236,7 +236,7 @@
       "name": "catalog.py",
       "type": "python",
       "size_lines": 56,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Typed transport models for the application workflow catalogue.",
       "classes": [
         {
@@ -257,8 +257,8 @@
     {
       "name": "column.py",
       "type": "python",
-      "size_lines": 1174,
-      "last_updated": "2026-08-10",
+      "size_lines": 1192,
+      "last_updated": "2026-08-15",
       "description": "Column Design Pydantic Models.",
       "classes": [
         {
@@ -334,13 +334,13 @@
           "description": "Response model for biaxial bending check per IS 456 Cl 39.6."
         }
       ],
-      "content_hash": "2b81a2987ad9"
+      "content_hash": "950c5f1059f8"
     },
     {
       "name": "common.py",
       "type": "python",
       "size_lines": 137,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Common Pydantic Models.",
       "classes": [
         {
@@ -370,7 +370,7 @@
       "name": "compliance.py",
       "type": "python",
       "size_lines": 325,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-15",
       "description": "IS 456 Compliance Check Pydantic Models.",
       "classes": [
         {
@@ -440,10 +440,65 @@
       "content_hash": "7e381857ccc2"
     },
     {
+      "name": "footing.py",
+      "type": "python",
+      "size_lines": 266,
+      "last_updated": "2026-08-15",
+      "description": "Transport models for the bounded concentric isolated-footing workflow.",
+      "classes": [
+        {
+          "name": "FootingPlanType",
+          "description": "Stable public footing-plan identifiers; mapped by the router."
+        },
+        {
+          "name": "ConcentricIsolatedFootingRequest",
+          "description": "Explicit inputs for the sole supported concentric isolated footing case."
+        },
+        {
+          "name": "FootingBearingResponse"
+        },
+        {
+          "name": "FootingFlexureResponse"
+        },
+        {
+          "name": "FootingOneWayShearResponse"
+        },
+        {
+          "name": "FootingPunchingResponse"
+        },
+        {
+          "name": "FootingDepthCandidateResponse"
+        },
+        {
+          "name": "FootingReinforcementDemandResponse"
+        },
+        {
+          "name": "FootingReinforcementZoneResponse"
+        },
+        {
+          "name": "FootingDirectionDetailResponse"
+        },
+        {
+          "name": "FootingDowelScheduleLinkResponse"
+        },
+        {
+          "name": "FootingDetailingResponse"
+        },
+        {
+          "name": "FootingProvenanceResponse"
+        },
+        {
+          "name": "ConcentricIsolatedFootingResponse",
+          "description": "Typed evidence returned by the bounded C1 design service."
+        }
+      ],
+      "content_hash": "fb855613f669"
+    },
+    {
       "name": "geometry.py",
       "type": "python",
       "size_lines": 412,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-15",
       "description": "3D Geometry Pydantic Models.",
       "classes": [
         {
@@ -519,7 +574,7 @@
       "name": "library_core.py",
       "type": "python",
       "size_lines": 367,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Requests for the bounded footing and slab public-library workflows.",
       "classes": [
         {
@@ -589,7 +644,7 @@
       "name": "metadata.py",
       "type": "python",
       "size_lines": 97,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Typed payload models for maintained static JSON metadata routes.",
       "classes": [
         {
@@ -635,7 +690,7 @@
       "name": "optimization.py",
       "type": "python",
       "size_lines": 298,
-      "last_updated": "2026-04-06",
+      "last_updated": "2026-08-15",
       "description": "Cost Optimization Pydantic Models.",
       "classes": [
         {
@@ -681,7 +736,7 @@
       "name": "response.py",
       "type": "python",
       "size_lines": 71,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Standardized API response wrappers.",
       "classes": [
         {
@@ -720,10 +775,46 @@
       "content_hash": "303815ec1f8d"
     },
     {
+      "name": "staircase.py",
+      "type": "python",
+      "size_lines": 139,
+      "last_updated": "2026-08-15",
+      "description": "Transport models for the bounded straight-flight staircase workflow.",
+      "classes": [
+        {
+          "name": "StraightFlightStaircaseRequest",
+          "description": "Explicit inputs for the sole supported staircase case."
+        },
+        {
+          "name": "StraightFlightGeometryResponse"
+        },
+        {
+          "name": "StraightFlightActionResponse"
+        },
+        {
+          "name": "StaircaseShearResponse"
+        },
+        {
+          "name": "StaircaseDesignCheckResponse"
+        },
+        {
+          "name": "StraightFlightDesignResponse"
+        },
+        {
+          "name": "StraightFlightStaircaseProvenanceResponse"
+        },
+        {
+          "name": "StraightFlightStaircaseResponse",
+          "description": "Typed transport subset of the composed service result."
+        }
+      ],
+      "content_hash": "e748e2b911e6"
+    },
+    {
       "name": "workflows.py",
       "type": "python",
       "size_lines": 99,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Typed models for the default-disabled bounded beam workflow transport.",
       "classes": [
         {
@@ -787,5 +878,5 @@
     "DuctilityCheckRequest",
     "DuctilityCheckResponse"
   ],
-  "content_hash": "05dc88a1c3e5abe0"
+  "content_hash": "095b02f2bdcf5d08"
 }

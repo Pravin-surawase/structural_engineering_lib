@@ -4,7 +4,7 @@ This document describes the test taxonomy and structure for the structural_engin
 
 **Type:** Python Package
 **Last Updated:** 2026-08-15
-**Files:** 68
+**Files:** 69
 
 ## Documentation Files
 
@@ -53,18 +53,19 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_git_guidance_semantics.py](test_git_guidance_semantics.py) | Semantic live-guidance discovery and coherence regressions. | 0 | 10 | 362 |
 | [test_git_handoff_receipt.py](test_git_handoff_receipt.py) | Regressions for the durable, fail-closed task-to-Git handoff | 0 | 20 | 429 |
 | [test_git_state.py](test_git_state.py) | Outcome tests for the read-only, worktree-aware Git state au | 0 | 20 | 682 |
-| [test_indian_code_manifest.py](test_indian_code_manifest.py) | INDIA-0 truth-manifest and reporting contract tests. | 0 | 6 | 136 |
+| [test_indian_code_manifest.py](test_indian_code_manifest.py) | INDIA-0 truth-manifest and reporting contract tests. | 0 | 6 | 139 |
 | [test_inputs.py](test_inputs.py) | Tests for the inputs module (TASK-276: Input Flexibility). | 7 | 0 | 464 |
 | [test_is456_common.py](test_is456_common.py) | Tests for IS 456:2000 common modules - stress_blocks, reinfo | 15 | 0 | 854 |
 | [test_is456_constants.py](test_is456_constants.py) | Tests for IS 456:2000 named design constants. | 1 | 0 | 163 |
 | [test_model_picker.py](test_model_picker.py) | Tests for the deterministic low-token model picker. | 0 | 8 | 132 |
 | [test_multi_objective_optimizer.py](test_multi_objective_optimizer.py) | Tests for the multi-objective optimizer module (NSGA-II). | 5 | 0 | 319 |
+| [test_new_element_completeness.py](test_new_element_completeness.py) | Regression tests for nested element completeness discovery. | 0 | 3 | 45 |
 | [test_numerics.py](test_numerics.py) | Tests for structural_lib.core.numerics - safe arithmetic uti | 4 | 0 | 136 |
 | [test_packaging.py](test_packaging.py) | Tests for package distribution correctness. | 9 | 0 | 452 |
 | [test_pipeline_state.py](test_pipeline_state.py) | Tests for scripts/pipeline_state.py — Pipeline step tracking | 7 | 0 | 353 |
 | [test_private_source_boundary.py](test_private_source_boundary.py) | Protected engineering-source material stays local and outsid | 0 | 2 | 40 |
 | [test_release_environment.py](test_release_environment.py) | Regression tests for local release preflight environment sel | 0 | 13 | 263 |
-| [test_release_scripts.py](test_release_scripts.py) | Tests for release scripts (bump_version.py, release.py). | 15 | 1 | 693 |
+| [test_release_scripts.py](test_release_scripts.py) | Tests for release scripts (bump_version.py, release.py). | 15 | 1 | 699 |
 | [test_report_edge_cases.py](test_report_edge_cases.py) | Edge case tests for report generation modules (TASK-520). | 4 | 0 | 303 |
 | [test_report_svg.py](test_report_svg.py) | Tests for the SVG report generation module. | 4 | 0 | 141 |
 | [test_reports.py](test_reports.py) | Tests for the reports module. | 8 | 0 | 447 |
@@ -87,11 +88,11 @@ This document describes the test taxonomy and structure for the structural_engin
 
 | Folder | Files | Description |
 |--------|-------|-------------|
-| [codes/](codes/) 📦 | 19 |  |
+| [codes/](codes/) 📦 | 24 |  |
 | [data/](data/) | 5 |  |
 | [fixtures/](fixtures/) | 11 |  |
 | [helpers/](helpers/) 📦 | 2 |  |
-| [integration/](integration/) 📦 | 46 |  |
+| [integration/](integration/) 📦 | 49 |  |
 | [performance/](performance/) 📦 | 3 |  |
 | [property/](property/) 📦 | 9 |  |
 | [regression/](regression/) 📦 | 11 |  |

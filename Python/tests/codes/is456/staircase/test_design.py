@@ -115,6 +115,12 @@ def test_singly_reinforced_capacity_exceedance_returns_fail_without_fake_ast() -
     assert result.status is StaircaseDesignStatus.FAIL
     assert result.ast_required_mm2_per_m is None
     assert result.main_reinforcement_required_mm2_per_m is None
+    main_check = next(
+        check
+        for check in result.governing_checks
+        if check.check_id == "INDIA-2C-MAIN-STEEL-01"
+    )
+    assert main_check.limit is None
 
 
 def test_effective_depth_outside_waist_fails_closed() -> None:

@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-15",
-  "file_count": 26,
+  "file_count": 29,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -155,6 +155,44 @@
       "content_hash": "ccbd767ff6fb"
     },
     {
+      "name": "india-2d-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-15",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "06c9c3cb5558"
+    },
+    {
+      "name": "india-2d-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-15",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "29db929d83d7"
+    },
+    {
+      "name": "india-2d-staircase-publication-evidence.md",
+      "type": "documentation",
+      "size_lines": 85,
+      "last_updated": "2026-08-15",
+      "description": "INDIA-2D publishes one typed Python service and one thin FastAPI transport for the bounded straight-flight staircase developed in INDIA-2A-C. It does not add",
+      "content_hash": "be7ac2e157a6"
+    },
+    {
       "name": "indian-code-capability-coverage.json",
       "type": "config",
       "last_updated": "2026-08-15",
@@ -168,7 +206,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "ae3bde140083"
+      "content_hash": "ae127d33e8c0"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -257,5 +295,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "e07a7c5c3d910470"
+  "content_hash": "12b4f5a5bb5f42a3"
 }

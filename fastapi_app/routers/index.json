@@ -2,22 +2,22 @@
   "folder": "fastapi_app/routers",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-11",
-  "file_count": 18,
+  "last_updated": "2026-08-15",
+  "file_count": 20,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 44,
-      "last_updated": "2026-08-10",
+      "size_lines": 48,
+      "last_updated": "2026-08-15",
       "description": "FastAPI Routers Package.",
-      "content_hash": "4235ead08b65"
+      "content_hash": "4b42c977ea21"
     },
     {
       "name": "analysis.py",
       "type": "python",
       "size_lines": 338,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Smart Analysis Router.",
       "functions": [
         {
@@ -45,7 +45,7 @@
       "name": "capabilities.py",
       "type": "python",
       "size_lines": 23,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Public discovery route for the canonical supported IS 456 contract.",
       "functions": [
         {
@@ -59,7 +59,7 @@
       "name": "catalog.py",
       "type": "python",
       "size_lines": 51,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Thin read-only transport for the canonical application workflow catalogue.",
       "functions": [
         {
@@ -76,8 +76,8 @@
     {
       "name": "column.py",
       "type": "python",
-      "size_lines": 750,
-      "last_updated": "2026-08-10",
+      "size_lines": 764,
+      "last_updated": "2026-08-15",
       "description": "Column Design Router.",
       "functions": [
         {
@@ -172,18 +172,18 @@
           ]
         }
       ],
-      "content_hash": "75c71eaa8352"
+      "content_hash": "a2bd89bb85de"
     },
     {
       "name": "design.py",
       "type": "python",
-      "size_lines": 931,
-      "last_updated": "2026-08-10",
+      "size_lines": 1027,
+      "last_updated": "2026-08-15",
       "description": "Beam Design Router.",
       "functions": [
         {
           "name": "design_beam",
-          "description": "Design a beam section for flexure and shear.",
+          "description": "Design a rectangular beam section for flexure, shear, and optional torsion.",
           "params": [
             "request"
           ]
@@ -249,13 +249,13 @@
           ]
         }
       ],
-      "content_hash": "94d8bfdc7b3d"
+      "content_hash": "29136770d0f3"
     },
     {
       "name": "detailing.py",
       "type": "python",
       "size_lines": 412,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Beam Detailing Router.",
       "functions": [
         {
@@ -292,17 +292,23 @@
     {
       "name": "export.py",
       "type": "python",
-      "size_lines": 661,
-      "last_updated": "2026-08-10",
+      "size_lines": 805,
+      "last_updated": "2026-08-15",
       "description": "Export Router — BBS, DXF, and Report exports.",
       "classes": [
         {
           "name": "ExportBeamRequest",
-          "description": "Beam parameters for generating export artifacts."
+          "description": "Beam parameters for generating export artifacts.",
+          "public_methods": [
+            "reject_unrepresentable_combined_result"
+          ]
         },
         {
           "name": "ExportReportRequest",
-          "description": "Design results for report generation."
+          "description": "Design results for report generation.",
+          "public_methods": [
+            "validate_combined_report_scope"
+          ]
         },
         {
           "name": "BatchBeamRow",
@@ -350,13 +356,30 @@
           ]
         }
       ],
-      "content_hash": "bae2c6afe783"
+      "content_hash": "f4fe102fc87c"
+    },
+    {
+      "name": "footing.py",
+      "type": "python",
+      "size_lines": 69,
+      "last_updated": "2026-08-15",
+      "description": "FastAPI transport for the bounded concentric isolated-footing service.",
+      "functions": [
+        {
+          "name": "design_concentric_isolated_footing",
+          "description": "Validate transport inputs and delegate all calculation to the service.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "b141176f189c"
     },
     {
       "name": "geometry.py",
       "type": "python",
       "size_lines": 653,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "3D Geometry Router.",
       "functions": [
         {
@@ -398,7 +421,7 @@
       "name": "health.py",
       "type": "python",
       "size_lines": 208,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-15",
       "description": "Health Check Router.",
       "classes": [
         {
@@ -437,7 +460,7 @@
       "name": "imports.py",
       "type": "python",
       "size_lines": 992,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "CSV Import Router.",
       "classes": [
         {
@@ -525,7 +548,7 @@
       "name": "insights.py",
       "type": "python",
       "size_lines": 579,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Insights Router.",
       "classes": [
         {
@@ -613,7 +636,7 @@
       "name": "library_core.py",
       "type": "python",
       "size_lines": 229,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Thin FastAPI consumers for the supported footing and slab library routes.",
       "functions": [
         {
@@ -672,7 +695,7 @@
       "name": "optimization.py",
       "type": "python",
       "size_lines": 331,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Cost Optimization Router.",
       "functions": [
         {
@@ -700,7 +723,7 @@
       "name": "rebar.py",
       "type": "python",
       "size_lines": 269,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Rebar Validation and Application Router.",
       "classes": [
         {
@@ -751,10 +774,27 @@
       "content_hash": "74775647e3ef"
     },
     {
+      "name": "staircase.py",
+      "type": "python",
+      "size_lines": 66,
+      "last_updated": "2026-08-15",
+      "description": "FastAPI transport for the bounded straight-flight staircase service.",
+      "functions": [
+        {
+          "name": "design_straight_flight_staircase",
+          "description": "Validate transport inputs and delegate all calculation to the service.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "c06975ad5779"
+    },
+    {
       "name": "streaming.py",
       "type": "python",
       "size_lines": 351,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Server-Sent Events (SSE) Router for Batch Processing.",
       "classes": [
         {
@@ -810,7 +850,7 @@
       "name": "websocket.py",
       "type": "python",
       "size_lines": 428,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "WebSocket Router for Live Design Updates.",
       "classes": [
         {
@@ -865,7 +905,7 @@
       "name": "workflows.py",
       "type": "python",
       "size_lines": 172,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-15",
       "description": "Default-disabled transport for the one allowlisted beam workflow.",
       "functions": [
         {
@@ -905,6 +945,7 @@
     "design",
     "detailing",
     "export",
+    "footing",
     "geometry",
     "health",
     "imports",
@@ -912,9 +953,10 @@
     "library_core",
     "optimization",
     "rebar",
+    "staircase",
     "streaming",
     "websocket",
     "workflows"
   ],
-  "content_hash": "8f881e426fd03c26"
+  "content_hash": "5e178a70e312bf6c"
 }

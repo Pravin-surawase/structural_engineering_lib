@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
   "last_updated": "2026-08-15",
-  "file_count": 68,
+  "file_count": 69,
   "files": [
     {
       "name": "README.md",
@@ -2548,7 +2548,7 @@
     {
       "name": "test_indian_code_manifest.py",
       "type": "python",
-      "size_lines": 136,
+      "size_lines": 139,
       "last_updated": "2026-08-15",
       "description": "INDIA-0 truth-manifest and reporting contract tests.",
       "functions": [
@@ -2575,7 +2575,7 @@
         "REPO_ROOT",
         "SCRIPTS_ROOT"
       ],
-      "content_hash": "5830e3678613"
+      "content_hash": "f67566619b11"
     },
     {
       "name": "test_inputs.py",
@@ -2968,6 +2968,29 @@
       "content_hash": "2c69faffb29d"
     },
     {
+      "name": "test_new_element_completeness.py",
+      "type": "python",
+      "size_lines": 45,
+      "last_updated": "2026-08-15",
+      "description": "Regression tests for nested element completeness discovery.",
+      "functions": [
+        {
+          "name": "test_nested_staircase_test_package_is_discovered"
+        },
+        {
+          "name": "test_code_or_service_layer_staircase_result_type_is_discovered"
+        },
+        {
+          "name": "test_reexported_staircase_public_api_is_discovered"
+        }
+      ],
+      "constants": [
+        "SCRIPT_PATH",
+        "SPEC"
+      ],
+      "content_hash": "27fdbced019b"
+    },
+    {
       "name": "test_numerics.py",
       "type": "python",
       "size_lines": 136,
@@ -3312,7 +3335,7 @@
     {
       "name": "test_release_scripts.py",
       "type": "python",
-      "size_lines": 693,
+      "size_lines": 699,
       "last_updated": "2026-08-15",
       "description": "Tests for release scripts (bump_version.py, release.py).",
       "classes": [
@@ -3464,7 +3487,7 @@
         "RELEASE_SCRIPT",
         "VERSION_TRACKED_FILES"
       ],
-      "content_hash": "0fa109f36cd1"
+      "content_hash": "2454c9b109e8"
     },
     {
       "name": "test_report_edge_cases.py",
@@ -4653,7 +4676,7 @@
     {
       "name": "codes",
       "path": "codes/",
-      "file_count": 19,
+      "file_count": 24,
       "is_package": true
     },
     {
@@ -4675,7 +4698,7 @@
     {
       "name": "integration",
       "path": "integration/",
-      "file_count": 46,
+      "file_count": 49,
       "is_package": true
     },
     {
@@ -4704,5 +4727,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "b229c88f7c19298a"
+  "content_hash": "fc219336206b1672"
 }
