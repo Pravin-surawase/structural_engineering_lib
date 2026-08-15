@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-15",
-  "file_count": 29,
+  "file_count": 32,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -129,6 +129,44 @@
       "last_updated": "2026-08-15",
       "description": "INDIA-1D closes the decision boundary around already supported solid-slab serviceability, shear, and loading behavior. It does not add or promote new",
       "content_hash": "76b8e456fffe"
+    },
+    {
+      "name": "india-2-cumulative-gate-evidence.md",
+      "type": "documentation",
+      "size_lines": 71,
+      "last_updated": "2026-08-15",
+      "description": "INDIA-2A-D are integrated through exact origin/main 18da6c112e67af49d8adf32bf0babf65285e2cd4. The cumulative gate packet ran",
+      "content_hash": "e72e21fb5707"
+    },
+    {
+      "name": "india-2-cumulative-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-15",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "a43d069872ab"
+    },
+    {
+      "name": "india-2-cumulative-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-15",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "aab91df123a3"
     },
     {
       "name": "india-2a-staircase-scope-evidence.md",
@@ -295,5 +333,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "12b4f5a5bb5f42a3"
+  "content_hash": "c39f4e8b11372ab3"
 }

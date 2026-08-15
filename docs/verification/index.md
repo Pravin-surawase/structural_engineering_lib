@@ -4,12 +4,14 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-15
-**Files:** 29
+**Files:** 32
 
 ## Config Files
 
 - [INDIA-0-git-handoff.json](INDIA-0-git-handoff.json)
 - [footing-release-inclusion.json](footing-release-inclusion.json)
+- [india-2-cumulative-git-handoff-receipt.json](india-2-cumulative-git-handoff-receipt.json)
+- [india-2-cumulative-git-handoff-source-evidence.json](india-2-cumulative-git-handoff-source-evidence.json)
 - [india-2d-git-handoff-receipt.json](india-2d-git-handoff-receipt.json)
 - [india-2d-git-handoff-source-evidence.json](india-2d-git-handoff-source-evidence.json)
 - [indian-code-capability-coverage.json](indian-code-capability-coverage.json)
@@ -30,6 +32,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [india-1b-column-decision-evidence.md](india-1b-column-decision-evidence.md) |  | The stable IS 456 column decision remains bounded to solid r | 73 |
 | [india-1c-isolated-footing-workflow-evidence.md](india-1c-isolated-footing-workflow-evidence.md) |  | INDIA-1C publishes the existing bounded concentric isolated- | 53 |
 | [india-1d-slab-boundary-evidence.md](india-1d-slab-boundary-evidence.md) |  | INDIA-1D closes the decision boundary around already support | 71 |
+| [india-2-cumulative-gate-evidence.md](india-2-cumulative-gate-evidence.md) |  | INDIA-2A-D are integrated through exact origin/main 18da6c11 | 71 |
 | [india-2a-staircase-scope-evidence.md](india-2a-staircase-scope-evidence.md) |  | activated INDIA-2A through INDIA-2D on 2026-08-15 by request | 111 |
 | [india-2b-staircase-actions-evidence.md](india-2b-staircase-actions-evidence.md) |  | INDIA-2B implements only the typed geometry, concrete self-w | 70 |
 | [india-2c-staircase-design-evidence.md](india-2c-staircase-design-evidence.md) |  | INDIA-2C composes the accepted INDIA-2B per-metre actions in | 66 |

@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
-- Focus: Publish the typed staircase Python/FastAPI workflow and promote only its verified straight-flight capability.
-- Git receipt: docs/verification/india-2d-git-handoff-receipt.json | sha256:1d7c13e35fd53e0b47dbbc716d8a316b726253f1e7443096af034cfdc327543a | HOLD
-- Git identity: codex/india-2d-staircase-public@bb1abd1818028118f92b1f7c8b0ed1ba57994fdf | upstream=origin/main@bb1abd1818028118f92b1f7c8b0ed1ba57994fdf | base=origin/main@bb1abd1818028118f92b1f7c8b0ed1ba57994fdf | tree=dirty | operation=none
+- Focus: Run the one cumulative INDIA-2 software gate packet and reconcile its bounded public claim.
+- Git receipt: docs/verification/india-2-cumulative-git-handoff-receipt.json | sha256:9cde9bd0cb38139fdfe07d0be864c652d00547b2d331fd379d548d63f3a11791 | HOLD
+- Git identity: codex/india-2-cumulative-gates@18da6c112e67af49d8adf32bf0babf65285e2cd4 | upstream=origin/main@18da6c112e67af49d8adf32bf0babf65285e2cd4 | base=origin/main@18da6c112e67af49d8adf32bf0babf65285e2cd4 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
@@ -15,25 +15,26 @@
 
 | Release state | Target |
 |---|---|
-| **Current** | `v0.23.1a1` Alpha; INDIA-1 software and cumulative gates complete |
-| **Next** | One cumulative broad-gate packet after INDIA-2D integration; qualified review remains separate |
+| **Current** | `v0.23.1a1` Alpha; INDIA-1 and INDIA-2 software and cumulative gates complete |
+| **Next** | Qualified structural-engineering review; no release or further stair scope is activated |
 
 ## Required Reading
 
-1. [INDIA-2D public-workflow evidence](../verification/india-2d-staircase-publication-evidence.md)
-2. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
-3. [Current task board](../TASKS.md)
-4. [Canonical efficiency policy](../guidelines/ai-token-efficiency.md)
+1. [INDIA-2 cumulative gate evidence](../verification/india-2-cumulative-gate-evidence.md)
+2. [INDIA-2D public-workflow evidence](../verification/india-2d-staircase-publication-evidence.md)
+3. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
+4. [Current task board](../TASKS.md)
 5. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
 
 ## Start Boundary
 
-INDIA-2A-C are integrated. INDIA-2D is complete on its isolated branch and must
-be merged unchanged after required checks pass. Start the cumulative packet only
-from that verified merge SHA; do not reuse an earlier worktree or reopen A-D.
+INDIA-2A-D and the cumulative software gates are complete. Do not reopen those
+packets, add another stair topology, add React, or begin release work without a
+new owner-approved scope. The next engineering step is independent qualified
+review of the bounded workflow and its retained assumptions.
 
 ```bash
-./run.sh session brief --agent reviewer
+./run.sh session brief --agent structural-engineer
 ./run.sh session start
 ./scripts/python_runtime.sh --diagnose
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
@@ -41,28 +42,26 @@ from that verified merge SHA; do not reuse an earlier worktree or reopen A-D.
 ```
 
 Require a clean fresh branch from verified current `origin/main` and
-`source_bound=true`. Preserve the dirty primary checkout and every unrelated
-worktree.
+`source_bound=true`. Preserve the dirty primary checkout, every unrelated
+worktree, and all INDIA-2 branches/worktrees until cleanup is explicitly
+authorized.
 
-## Cumulative Packet
+## Qualified-review boundary
 
-Create `codex/india-2-cumulative-gates` from verified integrated `origin/main`.
-Run exactly once:
+The qualified reviewer should assess the accepted NPTEL benchmark, Clause 33
+geometry/action interpretation, flexure, supplied-bar and ordinary-shear checks,
+basic span/depth disposition, public provenance, and all retained holds. Record
+review findings separately from software-gate evidence.
 
-1. the broad Python suite through `./run.sh test`;
-2. the full repository gate through `./run.sh check`;
-3. Indian-code manifest generation/check and capability truth review;
-4. an essential review of the supported route, benchmark provenance, public
-   facade/FastAPI identity, and retained holds; and
-5. a cumulative evidence document plus task/session reconciliation.
-
-Fix only outcome-changing INDIA-2 or repository-wide failures. Do not add
-adjacent stair features, React, or release work during the gate packet.
+Software completion does not grant professional approval, stable-release
+authorization, or engineering-use authorization. Any outcome-changing review
+finding must be resolved in a separately bounded packet and revalidated in
+proportion to the change.
 
 ## INDIA-2 Exit
 
-INDIA-2 is complete when this bounded stair family remains executable,
+INDIA-2 meets its software exit: the bounded stair family is executable,
 independently benchmarked, provenance-bearing, and truthfully limited; every
-other held family remains unchanged; manifests contain no unknown status; and
-the cumulative software gates pass. Qualified engineering review, professional
-approval, release authorization, and branch/worktree cleanup remain separate.
+other held family is unchanged; manifests contain no unknown status; and the
+cumulative gates pass. Qualified engineering review, professional approval,
+release authorization, and branch/worktree cleanup remain separate.
