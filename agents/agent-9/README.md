@@ -201,7 +201,7 @@ What type of governance session?
 
 ### 4. **Technical Debt Management**
 - Run monthly maintenance sessions (20% of 80/20 rule)
-- Clean up stale branches and worktrees
+- Inspect branch/worktree disposition; cleanup remains separately authorized
 - Update stale references and links
 - Address minor technical debt items
 

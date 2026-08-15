@@ -8,11 +8,13 @@ reintroduced. It is intentionally read-only and performs no Git mutation.
 from __future__ import annotations
 
 import subprocess
+import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CANONICAL = REPO_ROOT / "docs/git-automation/git-workflow-single-source.md"
 GIT_STATE_AUTHORITY = REPO_ROOT / "scripts/git_state.py"
+DISPOSITION_CLASSIFIER = REPO_ROOT / "scripts/classify_branch_disposition.py"
 GIT_STATE_CONSUMERS = (
     "scripts/prompt_router.py",
     "scripts/session.py",
@@ -37,6 +39,19 @@ RETIRED_PATHS = (
     "scripts/git-hooks/pre-commit",
     "scripts/git-hooks/pre-push",
     "scripts/git-hooks/commit-msg",
+    "scripts/cleanup_stale_branches.py",
+)
+
+DISPOSITION_GUIDANCE = (
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".github/copilot-instructions.md",
+    ".github/instructions/terminal-rules.instructions.md",
+    "docs/git-automation/git-workflow-single-source.md",
+    "docs/governance/maintenance-playbook.md",
+    "docs/guides/maintenance-checklist.md",
+    "scripts/README.md",
+    "scripts/automation-map.json",
 )
 
 LIVE_FILES_WITHOUT_WRAPPER_CALLS = (
@@ -104,6 +119,57 @@ def main() -> int:
         if "ls-remote" in source:
             errors.append("Git state authority must not contact a remote")
 
+    if not DISPOSITION_CLASSIFIER.exists():
+        errors.append(
+            "inspection-only classifier is missing: "
+            "scripts/classify_branch_disposition.py"
+        )
+    else:
+        source = DISPOSITION_CLASSIFIER.read_text(encoding="utf-8")
+        for token in (
+            "GIT_OPTIONAL_LOCKS",
+            "NOT_CHECKED",
+            "HOLD_ATTACHED_OR_DIRTY",
+            "HOLD_UNKNOWN_OWNER",
+            "HOLD_OPEN_OR_DEPENDENT_PR",
+            "HOLD_UNIQUE_OR_UNPUBLISHED_WORK",
+            "HOLD_EVIDENCE_RETENTION",
+            "PATCH_EQUIVALENT_REVIEW_REQUIRED",
+            "RETIREMENT_READY_PENDING_APPROVAL",
+            "SEPARATE_EXACT_TARGET_APPROVAL_REQUIRED",
+        ):
+            if token not in source:
+                errors.append(
+                    f"branch disposition classifier is missing contract: {token}"
+                )
+        help_result = subprocess.run(
+            [sys.executable, str(DISPOSITION_CLASSIFIER), "--help"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if help_result.returncode != 0:
+            errors.append("branch disposition classifier help is not executable")
+        for action_flag in ("--delete", "--execute", "--apply"):
+            if action_flag in help_result.stdout:
+                errors.append(
+                    f"branch disposition classifier exposes action flag: {action_flag}"
+                )
+
+    for relative in DISPOSITION_GUIDANCE:
+        path = REPO_ROOT / relative
+        if not path.exists():
+            errors.append(f"branch disposition guidance is missing: {relative}")
+            continue
+        content = path.read_text(encoding="utf-8")
+        if "cleanup_stale_branches.py" in content:
+            errors.append(f"{relative} still routes to deletion-oriented cleanup")
+        if "classify_branch_disposition.py" not in content:
+            errors.append(
+                f"{relative} does not route to the inspection-only classifier"
+            )
+
     for relative in GIT_STATE_CONSUMERS:
         path = REPO_ROOT / relative
         if not path.exists():
@@ -158,6 +224,7 @@ def main() -> int:
             "needs.changes.outputs.control_plane == 'true'",
             "needs.changes.outputs.docs == 'true'",
             "Python/tests/test_git_state.py",
+            "Python/tests/test_branch_disposition.py",
             "Python/tests/test_session_automation.py",
             "Python/tests/test_session_store.py",
             "Python/tests/test_pipeline_state.py",

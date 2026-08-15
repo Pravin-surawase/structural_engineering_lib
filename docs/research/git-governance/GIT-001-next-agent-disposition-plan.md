@@ -368,7 +368,7 @@ judgment or Codex's native branch/commit/PR lifecycle.
 | `./scripts/python_runtime.sh --diagnose` | Which Python is selected and whether imports resolve to the invoking worktree | That the code is correct or fully tested |
 | `./run.sh check --quick` | Fast 10-check repository validation before commit | Full product, release, or exact-head GitHub CI acceptance |
 | `./run.sh check` | Full local repository gate at closeout | GitHub ruleset state or unchanged-head remote checks after a push |
-| `scripts/cleanup_stale_branches.py` | Maintained, dry-run-first remote stale-branch cleanup path | Recently merged local candidates outside its age/remote selection rules |
+| `scripts/classify_branch_disposition.py` | Inspection-only local/worktree, reachability, patch/tree, and caller-supplied remote/PR evidence receipt | Remote freshness when `NOT_CHECKED`, deletion authority, or post-action proof |
 | `scripts/safe_file_delete.py` | Validated in-repository file deletion with reference checks | Git worktree or branch retirement; use Git's own worktree/ref operations |
 | `./run.sh generate indexes --help` | Read-only usage information | Index freshness; actual generation is intentionally write-capable |
 | `./run.sh generate indexes` | Regenerates maintained documentation indexes through the invoking lane's Python runtime | Authority to create new index topology or overwrite another lane's shared output |

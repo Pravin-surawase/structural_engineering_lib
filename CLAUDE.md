@@ -37,7 +37,7 @@ not own the Git/GitHub lifecycle.
 NEVER: gh pr merge --admin            ← bypasses required CI checks
 NEVER: gh pr merge <N> --squash (with failing CI) ← fix failures first, then merge
 NEVER: gh issue close (without user approval) ← destructive, ask first
-NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py (dry-run by default)
+NEVER: git push origin --delete (without user approval) ← inspect with ./scripts/python_runtime.sh scripts/classify_branch_disposition.py; deletion remains separate
 NEVER: --no-verify / --force          ← breaks CI, causes rework
 NEVER: git rebase --skip              ← silently drops conflicting commits
 NEVER: git push --force-with-lease     ← rewrites shared history

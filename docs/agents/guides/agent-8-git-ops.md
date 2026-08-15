@@ -189,11 +189,11 @@ Background Agent 2 → commits locally → notifies GIT agent → continues work
    fi
    ```
 
-5. **Branch Cleanup**
+5. **Branch Disposition Inspection**
    ```bash
-   # After merge (dry run first, then apply)
-   ./scripts/cleanup_stale_branches.sh
-   ./scripts/cleanup_stale_branches.sh --apply
+   # Inspection only; this command never performs cleanup.
+   ./scripts/python_runtime.sh scripts/classify_branch_disposition.py --all-local --json
+   # Any later cleanup requires separate exact-target approval and reinspection.
    ```
 
 **Audit Trail:**
@@ -314,10 +314,10 @@ notify-background-agent "CI Failed: Fix Required
 ./scripts/git_ops.sh --status
 notify-main "Auto-synced main branch via automation"
 
-# Issue: Stale feature branch (merged but not deleted)
-# Safe auto-fix:
-./scripts/cleanup_stale_branches.sh --apply
-notify-main "Cleaned up merged branches via cleanup_stale_branches.sh"
+# Issue: Feature branch needing disposition evidence
+# Inspection only:
+./scripts/python_runtime.sh scripts/classify_branch_disposition.py --all-local --json
+notify-main "Inspected branch disposition; no cleanup action was performed"
 
 # Issue: Unfinished merge
 # NOT safe - alert MAIN:
@@ -488,9 +488,9 @@ alert-main "❌ Manual conflict resolution required
 # If behind, recover safely:
 ./scripts/recover_git_state.sh
 
-# 3. Check Stale Branches
-./scripts/cleanup_stale_branches.sh
-./scripts/cleanup_stale_branches.sh --apply
+# 3. Inspect Branch Disposition
+./scripts/python_runtime.sh scripts/classify_branch_disposition.py --all-local --json
+# Any later cleanup requires separate exact-target approval and reinspection.
 
 # 4. Review Pending PRs
 gh pr list --state open
@@ -554,9 +554,9 @@ report-queue-status
 report-ci-health
 # Shows: Success rate today, average duration, failure patterns
 
-# 3. Branch Cleanup
-cleanup-merged-branches
-# Deletes local+remote branches for merged PRs
+# 3. Branch Disposition Inspection
+./scripts/python_runtime.sh scripts/classify_branch_disposition.py --all-local --json
+# Inspection only; any later cleanup requires separate exact-target approval.
 
 # 4. Audit Log Summary
 generate-audit-summary
@@ -1198,14 +1198,14 @@ alert-main "Pre-commit hooks issue:
 **Deliverables:**
 1. ✅ Session start health check (validate_git_state.sh)
 2. ✅ Continuous branch monitoring (stale, diverged, unfinished merges)
-3. ✅ Auto-cleanup merged branches
+3. ✅ Inspection-only branch disposition receipts
 4. ✅ Conflict detection before push (proactive)
 5. ✅ Safe auto-recovery (diverged main, stale branches)
 
 **Success Criteria:**
 - Zero unfinished merge states
 - Zero diverged branches
-- <3 stale branches at any time
+- Every inspected branch has a fail-closed disposition receipt
 
 ### Phase 3: Intelligence & Optimization (Week 3)
 

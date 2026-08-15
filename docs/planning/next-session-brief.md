@@ -4,21 +4,23 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
-- Focus: GIT-7C1 and GIT-7C2 complete; GIT-7D1 targeted index routing in exact-head validation
+- Focus: GIT-7D1 integrated; GIT-7D2 inspection-only branch disposition in exact-head validation
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
 
 **Integrated GIT-7C1 receipt:** PR #745 merged as `729cc41b`; refresh `main` before work
 
+**Integrated GIT-7D1 receipt:** PR #746 merged as `ff6c919c`; refresh `main` before work
+
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
 | **Complete** | GIT-7C1 and GIT-7C2 | Required CI merged; main now requires PR plus strict `PR Gate`, has no bypass actor, retains deletion/non-fast-forward protection, permits merge/squash, and disables rebase |
-| **Current** | GIT-7D1 targeted generation | Preferred no-arg route is help; one-folder and explicit all-folder dry-runs are non-writing; focused tests pass |
-| **Next** | GIT-7D1 exact-head integration | Require Control Plane, Documentation, Repository, and aggregate `PR Gate` outcomes at the unchanged head |
-| **Held** | GIT-7D2 and GIT-7E | Inspection-only disposition and durable handoff remain separate packets; cleanup/deletion remains prohibited |
+| **Current** | GIT-7D2 branch disposition | Deletion-oriented cleanup is replaced by a fail-closed, inspection-only classifier; focused scenarios pass |
+| **Next** | GIT-7D2 exact-head integration | Require Control Plane, Documentation, Repository, and aggregate `PR Gate` outcomes at the unchanged head |
+| **Held** | Cleanup/deletion and GIT-7E | Deletion remains a separate exact-target approval/action; durable handoff is a separate packet |
 | **Parallel owner decision** | Excel planning lane | Confirm a named active owner/next action or approve retirement |
 | **Approval-gated** | Alpha worktrees and merged branches | Exact evidence is ready; deletion still requires explicit target approval |
 | **Separate maintenance** | Seven dependency PRs | Replace one-by-one merging with four current-base compatibility packets |
@@ -38,13 +40,14 @@
 11. [Phase 7C1 required CI topology](../research/git-governance/GIT-001-phase-7C1-required-ci-topology.md)
 12. [Phase 7C2 server enforcement](../research/git-governance/GIT-001-phase-7C2-server-enforcement.md)
 13. [Phase 7D1 targeted index generation](../research/git-governance/GIT-001-phase-7D1-targeted-index-generation.md)
-14. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
-15. [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
+14. [Phase 7D2 branch disposition](../research/git-governance/GIT-001-phase-7D2-branch-disposition.md)
+15. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+16. [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
 
 ## Start command
 
 ```bash
-./run.sh task brief "validate GIT-7D1 targeted index generation at the exact PR head"
+./run.sh task brief "validate GIT-7D2 inspection-only branch disposition at the exact PR head"
 ./run.sh session brief --agent ops
 ./run.sh session start
 ```
@@ -63,7 +66,10 @@ replacement for live inspection.
   squash remain enabled; rebase is disabled; branch deletion remains disabled.
 - GIT-7D1 reproduced the preferred-generator defect, reversed only 31
   generator-created paths, and routes folder/`--dry-run` arguments to the
-  worktree-bound maintained generator. The focused contract passes 45 tests.
+  worktree-bound maintained generator. PR #746 integrated it as `ff6c919c`.
+- GIT-7D2 replaces the former fetch/prune/age/deletion path with a local
+  inspection-only classifier. Ref/PR freshness is caller-supplied and SHA-bound;
+  errors and `NOT_CHECKED` hold as `UNKNOWN`; age is metadata only.
 - The dedicated GIT-001 branch was synchronized without history rewriting at
   `54a03557`; its tree exactly matched `origin/main = 69d9f68c`, its quick gate
   passed 10/10, and the merge was fast-forward pushed to its existing remote.
@@ -101,9 +107,9 @@ gates. The owner accepted Phase 6 and authorized GIT-7B on 2026-08-13. The
 read-only kernel integrated through PR #744 as `0fdb48ed`. GIT-7C1 then
 integrated through PR #745 as `729cc41b`; the owner authorized and the agent
 applied the exact GIT-7C2 server delta with guarded rollback and postcondition
-checks. GIT-7D1 is the current targeted-generator packet. GIT-7D2 and GIT-7E
-remain separate; no cleanup, deletion, recovery, or release mutation is
-authorized.
+checks. GIT-7D1 integrated through PR #746. GIT-7D2 is the current
+inspection-only disposition packet; GIT-7E remains separate. No cleanup,
+deletion, recovery, or release mutation is authorized.
 
 ## Destructive-action holds
 

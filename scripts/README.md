@@ -46,6 +46,7 @@ hook enforcement and scripts that automate the Git lifecycle are prohibited.
 | Docs | `check_docs.py` | Metadata and documentation checks |
 | Governance | `check_governance.py` | Folder and policy validation |
 | Git diagnosis | `validate_git_state.sh` | Read-only Git state report |
+| Branch disposition | `classify_branch_disposition.py` | Inspection-only worktree/ref/patch facts plus supplied remote and PR evidence |
 | Task intake | `run.sh task brief` | Read-only lane, base, worktree, route, and safe-start summary |
 | Python runtime | `python_runtime.sh --diagnose` | Prove linked-worktree import identity with `source_bound=true` |
 | Discovery | `find_automation.py` | Find an existing project automation |

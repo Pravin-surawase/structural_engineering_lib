@@ -112,8 +112,8 @@ Run every 5th session or weekly:
 # 6. Bootstrap freshness
 .venv/bin/python scripts/check_bootstrap_freshness.py
 
-# 7. Stale branch cleanup (dry-run first)
-.venv/bin/python scripts/cleanup_stale_branches.py  # dry-run by default
+# 7. Inspection-only branch/worktree disposition
+./scripts/python_runtime.sh scripts/classify_branch_disposition.py --all-local --json
 
 # 8. Instruction drift check
 # Compare .github/instructions/*.instructions.md with .claude/rules/*.md
@@ -127,7 +127,7 @@ Run every 5th session or weekly:
 | Circular imports | `check_circular_imports.py` | Delegate to @backend |
 | Broken imports | `validate_imports.py` | Delegate to @backend |
 | Stale GitHub issues | `gh issue list --state open` | Close with user approval |
-| Merged branches still remote | `cleanup_stale_branches.py` | Delete with user approval |
+| Branch/worktree disposition | `classify_branch_disposition.py` | Refresh remote/PR evidence; review holds/candidates; request exact deletion approval separately |
 | Agent instruction drift | Compare instruction files | Delegate to @doc-master |
 | Test coverage | `./run.sh test` | Delegate to @tester |
 | React build | `cd react_app && npm run build` | Delegate to @frontend |
@@ -156,7 +156,7 @@ Run every 5th session or weekly:
 | Broken links | Manual fix or `safe_file_move.py` | doc-master |
 | Architecture violations | Fix imports in violating file | backend |
 | Retired wrapper hook path active | Unset `core.hooksPath`; rerun `check_codex_git_workflow.py` | Codex |
-| Stale branches | `cleanup_stale_branches.py --execute` | ops (needs approval) |
+| Branch retirement candidate | `classify_branch_disposition.py` | ops inspects only; deletion is a separate exact-target approval/action |
 | Import cycle | Refactor module dependencies | backend |
 | Agent instruction drift | Sync instruction files | doc-master |
 
