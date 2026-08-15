@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-15 — PR #753 integrated the INDIA-0 truth baseline at `0373de68`; INDIA-1A sagging T-beam closure is active in a fresh lane
+**Updated:** 2026-08-15 — INDIA-1A through INDIA-1D are integrated; cumulative software gates are green and qualified engineering review remains held
 
 ---
 
@@ -128,15 +128,14 @@
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
-| INDIA-1D | Close solid-slab serviceability, shear-reinforcement, and single-action load-envelope boundaries without promoting unvalidated slab math | Main Agent + structural engineer | 🚧 DRAFT PR #757 — focused 115 tests, architecture/import validation, and quick 10/10 green; exact-head hosted review pending |
+| INDIA-1-CUMULATIVE | Run broad Python, full repository, manifest reconciliation, and cumulative essential review after A-D integration | Main Agent + reviewer | 🚧 SOFTWARE EVIDENCE COMPLETE — 5,926 Python tests and full 30/30 gate green; stale CI-contract repair publication pending |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-1-CUMULATIVE | Run broad Python, full repository, manifest reconciliation, and cumulative engineering review gates | Main Agent + qualified reviewer | milestone gate | P0 | 📋 SEQUENCED AFTER INDIA-1D INTEGRATION |
+| LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL QUALIFIED REVIEW |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
-| LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL STABLE GATE |
 
 ## Backlog
 
@@ -154,6 +153,7 @@ held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-1D | Closed solid-slab direct-deflection, crack-width, automatic-shear-reinforcement, and single-action load-envelope decisions with machine-visible holds | Main Agent | ✅ DONE — PR #757 exact-head gate passed; reviewed tree squash-merged as `ca55f22d` |
 | INDIA-1C | Published the bounded concentric isolated-footing composition with typed provenance, accepted benchmark, and explicit eccentric/other-foundation holds | Main Agent | ✅ DONE — PR #756 exact-head gate passed; reviewed tree squash-merged as `236ce646` |
 | INDIA-1B | Reconfirmed stable solid rectangular tied-column routes as a symmetric two-face reinforcement idealization and retained circular, arbitrary-layout, and experimental PMM cases | Main Agent | ✅ DONE — PR #755 exact-head gate passed; reviewed tree squash-merged as `f44452dd` |
 | INDIA-1A | Added a benchmarked monolithic sagging T-beam flexure/web-shear/explicit-serviceability composition with fail-closed retained boundaries | Main Agent | ✅ DONE — PR #754 exact-head gate passed; reviewed tree squash-merged as `3a7e162e` |

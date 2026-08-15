@@ -460,12 +460,18 @@ class TestPublishWorkflow:
         workflow = (REPO_ROOT / ".github" / "workflows" / "deploy-docs.yml").read_text(
             encoding="utf-8"
         )
+        pr_workflow = (
+            REPO_ROOT / ".github" / "workflows" / "fast-checks.yml"
+        ).read_text(encoding="utf-8")
         mkdocs = (REPO_ROOT / "mkdocs.yml").read_text(encoding="utf-8")
 
         assert "mkdocs build --strict" in workflow
         assert "gh-deploy" not in workflow
         assert "contents: write" not in workflow
-        assert "pull_request:" in workflow
+        assert "pull_request:" not in workflow
+        assert "pull_request:" in pr_workflow
+        assert "name: Documentation Validation" in pr_workflow
+        assert "mkdocs build --strict" in pr_workflow
         assert "site_url:" not in mkdocs
 
 

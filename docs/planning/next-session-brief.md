@@ -4,12 +4,12 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
-- Focus: Publish INDIA-1D solid-slab boundary closure, then run the cumulative INDIA-1 gates
-- Draft PR: [#757](https://github.com/Pravin-surawase/structural_engineering_lib/pull/757)
-- Branch: `codex/india-1d-slab-boundary`
-- Base: verified integrated `origin/main` at `236ce6462543aa36df307a0a9b4ef463ac98d085`
-- Implementation commit: `782a4b79fd8cc19dce5a9a9fd0cada65ebc52673`
-- Next action: finish the narrow INDIA-1D gates, commit and publish the packet; after its exact-head hosted gate passes, merge and run the deferred broad Python, full repository, manifest reconciliation, and cumulative review gates on integrated A-D
+- Focus: Publish the cumulative INDIA-1 gate evidence and stale CI-contract repair
+- Draft PR: pending
+- Branch: `codex/india-1-cumulative-gates`
+- Base: verified integrated `origin/main` at `ca55f22d3f8b6664e42ad41eb6d3ef9a0d1d96c3`
+- Implementation commit: pending
+- Next action: commit and publish the cumulative evidence packet; after its exact-head hosted gate passes, merge and verify integrated main. Keep stable/engineering-use approval held for qualified review and keep release authorization separate
 - Holds: no release, engineering-use approval, branch/worktree deletion, or historical-lane cleanup
 <!-- HANDOFF:END -->
 
@@ -18,7 +18,7 @@
 | Release state | Target |
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; qualified engineering review still required |
-| **Next** | Publish INDIA-1D, then run the cumulative INDIA-1 gates on integrated A-D |
+| **Next** | Publish the cumulative INDIA-1 evidence; qualified review remains a separate gate |
 
 ## Required Reading
 
@@ -30,11 +30,12 @@
 
 ## Start Boundary
 
-INDIA-1A through INDIA-1C are integrated. Finish INDIA-1D only from its isolated
-branch. After its exact-head PR checks pass with no conflicts or blockers,
-merge normally, fetch `origin/main`, verify tree identity, and run the deferred
-cumulative gates from a fresh integrated lane. Preserve the dirty primary
-checkout and all unrelated worktrees; do not bypass checks.
+INDIA-1A through INDIA-1D are integrated. The deferred broad Python, full
+repository, deterministic manifest, and cumulative essential-review gates have
+run on a fresh integrated lane. Publish only the stale CI-contract repair and
+cumulative evidence from that lane. Preserve the dirty primary checkout and all
+unrelated worktrees; do not bypass checks or convert software evidence into
+qualified engineering or release approval.
 
 ```bash
 ./run.sh session brief --agent structural-math
