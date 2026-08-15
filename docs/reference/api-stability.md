@@ -65,6 +65,12 @@ api.check_deflection_span_depth(span_mm, d_mm, support_condition, ...)
 api.check_crack_width(exposure_class, limit_mm, ...)
 api.check_compliance_report(cases, b_mm, D_mm, d_mm, fck_nmm2, fy_nmm2, ...)
 api.design_beam_is456(units, case_id, mu_knm, vu_kn, b_mm, D_mm, d_mm, ...)
+api.design_flanged_beam_is456(
+    units, case_id, beam_type, moment_region, load_case_basis,
+    mu_knm, vu_kn, bw_mm, D_mm, d_mm, span_mm, flange_thickness_mm,
+    flange_overhang_left_mm, flange_overhang_right_mm, ...
+)
+api.FlangedBeamDesignResult
 api.check_beam_is456(
     units, cases, b_mm, D_mm, d_mm, fck_nmm2, fy_nmm2, ...
 )

@@ -156,7 +156,7 @@ facts at packet start if the baseline commit changes.
 | Area | Current evidence | Program treatment |
 |---|---|---|
 | Architecture | Four-layer boundary scan reported 0 violations across 119 files; library import validation reported 0 broken internal imports | Preserve; rerun after cross-layer changes |
-| Beam | Flexure, shear, torsion, detailing, deflection/crack serviceability implemented | Capability and evidence closure audit; no broad redesign |
+| Beam | Rectangular combined route plus independently benchmarked sagging T-beam flexure/web-shear composition; explicit serviceability inputs supported | INDIA-1A retains L-beam, hogging, flanged torsion/redistribution, envelope generation, and flanged detailing as explicit holds |
 | Column | Axial, uniaxial, biaxial, slender/long, helical, and detailing modules implemented | Publish the supported-case boundary; close only outcome-changing gaps |
 | Footing | Isolated square/rectangular bearing, flexure, one-way shear, punching, and bearing enhancement implemented | Complete dowel/bearing-transfer slice; defer combined and other footing families |
 | Slab | No dedicated `codes/is456/slab/` package | New bounded element program: types/classification, one-way, then two-way |

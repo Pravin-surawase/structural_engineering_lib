@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-15
-**Files:** 18
+**Files:** 19
 
 ## Config Files
 
@@ -23,7 +23,8 @@ Benchmark examples and verification packs for validating library calculations ag
 | [column-pmm-benchmark.md](column-pmm-benchmark.md) |  | This record independently checks the experimental rectangula | 107 |
 | [examples.md](examples.md) |  | This document provides benchmark examples that engineers can | 1550 |
 | [external-cli-test.md](external-cli-test.md) |  | Purpose: capture a repeatable, human-run CLI test from a fre | 98 |
-| [indian-code-truth-baseline.md](indian-code-truth-baseline.md) | INDIA-0 Indian-Code Truth Baseline | merge pending indian-code-capability-coverage.json | 92 |
+| [india-1a-beam-route-evidence.md](india-1a-beam-route-evidence.md) |  | design_flanged_beam_is456() composes one monolithic sagging  | 85 |
+| [indian-code-truth-baseline.md](indian-code-truth-baseline.md) | INDIA-0 Indian-Code Truth Baseline | was squash-merged as 0373de68; INDIA-1 packets now update th | 93 |
 | [insights-verification-pack.md](insights-verification-pack.md) |  | This pack provides benchmark test cases for the insights mod | 101 |
 | [is456-library-first-evidence.md](is456-library-first-evidence.md) | IS 456 Library-First Evidence and Claim  | | Source | SHA-256 | Pages | Use | |---|---|---:|---| | 169 |
 | [is456-slab-evidence.md](is456-slab-evidence.md) | IS 456 Solid Slab Source and Benchmark L | | ID | Identity | Permitted implementation use | State | |-- | 115 |

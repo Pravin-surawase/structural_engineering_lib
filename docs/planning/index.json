@@ -69,7 +69,7 @@
       "size_lines": 1500,
       "last_updated": "2026-08-15",
       "description": "The Python package is the product. FastAPI, React, command-line workflows, reports, ETABS adapters, and future integrations are consumers of that product.",
-      "content_hash": "2b56fd9cd0e7"
+      "content_hash": "6578a824e80e"
     },
     {
       "name": "is456-solid-slabs-master-plan.md",
@@ -149,5 +149,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "552300ea8541f991"
+  "content_hash": "0ed7a0fe14930f68"
 }

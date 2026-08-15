@@ -1,8 +1,8 @@
 {
-  "generated": "2026-08-11",
+  "generated": "2026-08-15",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 130,
+  "count": 132,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -98,6 +98,11 @@
       "name": "ETABSForceRow",
       "kind": "class",
       "signature": "(story: 'str', beam_id: 'str', case_id: 'str', station: 'float', m3: 'float', v2: 'float', unique_name: 'str' = '', p: 'float' = 0.0) -> None"
+    },
+    {
+      "name": "FlangedBeamDesignResult",
+      "kind": "class",
+      "signature": "(design: 'Any', beam_type: 'str', moment_region: 'str', load_case_basis: 'str', bw_mm: 'float', bf_geometric_mm: 'float', bf_effective_mm: 'float', Df_mm: 'float', D_mm: 'float', d_mm: 'float', span_mm: 'float', source: 'str', clause_refs: 'dict[str, str]', assumptions: 'tuple[str, ...]', holds: 'tuple[str, ...]', is_ok: 'bool') -> None"
     },
     {
       "name": "FootingBearingResult",
@@ -468,6 +473,11 @@
       "name": "design_continuous_one_way_slab_is456",
       "kind": "function",
       "signature": "(*, short_effective_span_mm: 'float', long_effective_span_mm: 'float', thickness_mm: 'float', d_mm: 'float', factored_area_load_kn_per_m2: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', positive_moment_coefficient: 'float', negative_moment_coefficient: 'float', shear_coefficient: 'float', coefficient_source_reference: 'str', coefficient_source_is_approved: 'bool', qualified_coefficient_acceptance_reference: 'str', qualified_coefficient_acceptance_acknowledged: 'bool', number_of_spans: 'int', maximum_span_variation_percent: 'float', uniform_cross_section_acknowledged: 'bool', substantially_uniform_load_acknowledged: 'bool', redistribution_applied: 'bool', positive_bar_diameter_mm: 'float', positive_bar_spacing_mm: 'float', negative_bar_diameter_mm: 'float', negative_bar_spacing_mm: 'float', distribution_bar_diameter_mm: 'float', distribution_bar_spacing_mm: 'float', reviewed_base_span_depth_limit: 'float', reviewed_aggregate_modification_factor: 'float', serviceability_limit_source_reference: 'str', serviceability_limit_source_is_approved: 'bool', qualified_serviceability_acceptance_reference: 'str', qualified_serviceability_acceptance_acknowledged: 'bool', strip_width_mm: 'float' = 1000.0) -> 'ContinuousOneWaySlabDesignResult'"
+    },
+    {
+      "name": "design_flanged_beam_is456",
+      "kind": "function",
+      "signature": "(*, units: 'str', case_id: 'str' = 'CASE-1', beam_type: 'str', moment_region: 'str', load_case_basis: 'str', mu_knm: 'float', vu_kn: 'float', bw_mm: 'float', D_mm: 'float', d_mm: 'float', span_mm: 'float', flange_thickness_mm: 'float', flange_overhang_left_mm: 'float', flange_overhang_right_mm: 'float', fck_nmm2: 'float', fy_nmm2: 'float', d_dash_mm: 'float' = 50.0, asv_mm2: 'float' = 100.0, pt_percent: 'float | None' = None, ast_mm2_for_shear: 'float | None' = None, deflection_params: 'DeflectionParams | None' = None, crack_width_params: 'CrackWidthParams | None' = None, tu_knm: 'float' = 0.0, torsion_redistribution_basis: 'str | None' = None) -> 'FlangedBeamDesignResult'"
     },
     {
       "name": "design_from_input",

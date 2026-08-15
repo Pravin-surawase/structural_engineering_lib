@@ -1,7 +1,7 @@
 # Reference
 
 **Type:** Mixed
-**Last Updated:** 2026-08-11
+**Last Updated:** 2026-08-15
 **Files:** 30
 
 ## Config Files
@@ -19,8 +19,8 @@
 | [README.md](README.md) | Reference Documentation | Comprehensive lookup documentation for APIs, formulas, contr | 81 |
 | [agent-automation-pitfalls.md](agent-automation-pitfalls.md) |  | <!-- lint-ignore-git --> > ⚠️ **Note:** This document includ | 634 |
 | [api-levels.md](api-levels.md) |  | structural_lib exposes three API levels. Pick the one that m | 117 |
-| [api-stability.md](api-stability.md) |  | > This document defines which parts of the library are safe  | 663 |
-| [api.md](api.md) |  | geometry, loading, reinforcement, and evidence boundaries. T | 3987 |
+| [api-stability.md](api-stability.md) |  | > This document defines which parts of the library are safe  | 669 |
+| [api.md](api.md) |  | geometry, loading, reinforcement, and evidence boundaries. T | 4054 |
 | [automation-catalog.md](automation-catalog.md) |  | The exhaustive machine-generated script inventory is scripts | 61 |
 | [bbs-dxf-contract.md](bbs-dxf-contract.md) |  | This document defines the stable contracts for Bar Bending S | 116 |
 | [beam-tool-manifest.md](beam-tool-manifest.md) |  | The generated beam tool manifest describes the one approved  | 32 |

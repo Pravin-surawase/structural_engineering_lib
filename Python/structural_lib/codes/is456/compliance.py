@@ -23,6 +23,7 @@ from enum import Enum
 from typing import Any
 
 from structural_lib.core.data_types import (
+    BeamType,
     ComplianceCaseResult,
     ComplianceReport,
     CrackWidthParams,
@@ -192,6 +193,11 @@ def check_compliance_case(
     tu_knm: float = 0.0,
     cover_mm: float | None = None,
     stirrup_dia_mm: float = 8.0,
+    # Optional flanged flexure selection.  Public callers should use the
+    # dedicated service wrapper rather than constructing these directly.
+    beam_type: BeamType = BeamType.RECTANGULAR,
+    bf_mm: float | None = None,
+    Df_mm: float | None = None,
 ) -> ComplianceCaseResult:
     """Run a single compliance case.
 
@@ -225,15 +231,39 @@ def check_compliance_case(
             "flexure and shear design."
         )
 
-    flex = flexure.design_doubly_reinforced(
-        b=b_mm,
-        d=d_mm,
-        d_dash=d_dash_mm,
-        d_total=D_mm,
-        mu_knm=design_mu_knm,
-        fck=fck_nmm2,
-        fy=fy_nmm2,
-    )
+    if beam_type == BeamType.RECTANGULAR:
+        flex = flexure.design_doubly_reinforced(
+            b=b_mm,
+            d=d_mm,
+            d_dash=d_dash_mm,
+            d_total=D_mm,
+            mu_knm=design_mu_knm,
+            fck=fck_nmm2,
+            fy=fy_nmm2,
+        )
+    elif beam_type in {BeamType.FLANGED_T, BeamType.FLANGED_L}:
+        if tu_knm > 0:
+            raise ValueError(
+                "FLANGED_TORSION_SCOPE_HOLD: the maintained torsion model is "
+                "limited to ordinary solid rectangular beams."
+            )
+        if bf_mm is None or Df_mm is None:
+            raise ValueError(
+                "bf_mm and Df_mm are required for a flanged compliance case."
+            )
+        flex = flexure.design_flanged_beam(
+            bw=b_mm,
+            bf=bf_mm,
+            d=d_mm,
+            Df=Df_mm,
+            d_total=D_mm,
+            mu_knm=design_mu_knm,
+            fck=fck_nmm2,
+            fy=fy_nmm2,
+            d_dash=d_dash_mm,
+        )
+    else:
+        raise ValueError(f"Unsupported beam_type: {beam_type!r}.")
 
     # Determine pt for shear table lookup.
     if pt_percent is None:
@@ -345,7 +375,11 @@ def check_compliance_case(
         remarks = remarks + " | " + " | ".join(assumptions)
 
     clause_refs = {
-        "flexure": "IS 456 Cl 38.1",
+        "flexure": (
+            "IS 456 Cl 38.1"
+            if beam_type == BeamType.RECTANGULAR
+            else "IS 456 Cl 23.1.2 and 38.1; Annex G"
+        ),
         "shear": "IS 456 Cl 40",
         "deflection": "IS 456 Cl 23.2",
         "crack_width": "IS 456 Cl 35.3.2",

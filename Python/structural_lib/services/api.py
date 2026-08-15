@@ -88,6 +88,7 @@ from structural_lib.services.beam_api import (  # noqa: F401
     compute_report,
     design_and_detail_beam_is456,
     design_beam_is456,
+    design_flanged_beam_is456,
     design_from_input,
     detail_beam_is456,
     enhanced_shear_strength_is456,
@@ -175,7 +176,10 @@ from structural_lib.visualization.geometry_3d import (  # noqa: F401
     compute_stirrup_positions,
 )
 
-from .api_results import DesignAndDetailResult  # noqa: F401
+from .api_results import (
+    DesignAndDetailResult,  # noqa: F401
+    FlangedBeamDesignResult,  # noqa: F401
+)
 from .audit import (  # noqa: F401
     AuditLogEntry,
     AuditTrail,
@@ -208,6 +212,8 @@ __all__ = [
     "CheckCodeReport",
     # Core design functions
     "design_beam_is456",
+    "design_flanged_beam_is456",
+    "FlangedBeamDesignResult",
     "check_beam_is456",
     "detail_beam_is456",
     "design_and_detail_beam_is456",

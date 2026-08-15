@@ -65,6 +65,7 @@ from .services.api import (  # Audit & Verification; Input dataclasses; Calculat
     DetailingConfigInput,
     ETABSEnvelopeResult,
     ETABSForceRow,
+    FlangedBeamDesignResult,
     FootingBearingResult,
     FootingFlexureResult,
     FootingOneWayShearResult,
@@ -128,6 +129,7 @@ from .services.api import (  # Audit & Verification; Input dataclasses; Calculat
     design_complete_one_way_slab_is456,
     design_continuous_one_way_slab_builtin_is456,
     design_continuous_one_way_slab_is456,
+    design_flanged_beam_is456,
     design_from_input,
     design_long_column_is456,
     design_one_way_slab_is456,
@@ -237,6 +239,7 @@ __all__ = [
     "validate_design_results",
     # Core design functions
     "design_beam_is456",
+    "design_flanged_beam_is456",
     "check_beam_is456",
     "detail_beam_is456",
     "design_and_detail_beam_is456",
@@ -244,6 +247,7 @@ __all__ = [
     "ComplianceCaseResult",
     "ComplianceReport",
     "DesignAndDetailResult",
+    "FlangedBeamDesignResult",
     # Input dataclasses
     "BeamInput",
     "BeamGeometryInput",

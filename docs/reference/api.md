@@ -218,6 +218,54 @@ def design_beam_is456(
 ) -> ComplianceCaseResult
 ```
 
+### 1A.1A Bounded Sagging T-Beam (`design_flanged_beam_is456`)
+
+This dedicated route computes effective flange width from the declared span
+and physical flange geometry, then composes maintained flanged flexure,
+web-width shear, and optional explicit serviceability checks. It accepts
+already-factored supplied actions; it does not generate a load envelope.
+
+```python
+def design_flanged_beam_is456(
+    *,
+    units: str,
+    case_id: str = "CASE-1",
+    beam_type: str,                  # "T"
+    moment_region: str,              # "sagging"
+    load_case_basis: str,            # single_factored_case or supplied_governing_envelope
+    mu_knm: float,
+    vu_kn: float,
+    bw_mm: float,
+    D_mm: float,
+    d_mm: float,
+    span_mm: float,
+    flange_thickness_mm: float,
+    flange_overhang_left_mm: float,
+    flange_overhang_right_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    pt_percent: float | None = None,
+    ast_mm2_for_shear: float | None = None,
+    deflection_params: dict | None = None,
+    crack_width_params: dict | None = None,
+    tu_knm: float = 0.0,
+    torsion_redistribution_basis: str | None = None,
+) -> FlangedBeamDesignResult
+```
+
+`api.FlangedBeamDesignResult` serializes the composed `design`, physical and
+effective section geometry, explicit units, source/clause identifiers,
+assumptions, held boundaries, and the combined `is_ok` outcome.
+
+The supported section is a monolithic T-beam in sagging bending with positive
+flange overhangs on both sides. L-beams, hogging/flange-in-tension, flanged
+torsion and redistribution, load-envelope generation, composed flanged
+detailing, hollow/box, deep, prestressed, and axially loaded beams fail closed
+or remain explicit holds. Qualified structural-engineering review is still
+required before stable or engineering use.
+
 ### 1A.2 Multi-Case Compliance (`check_beam_is456`)
 
 ```python
@@ -3934,6 +3982,25 @@ from structural_lib.services import api
 result = api.design_beam_is456(
     units="IS456", b_mm=300, D_mm=500, d_mm=450,
     fck_nmm2=25, fy_nmm2=500, mu_knm=150, vu_kn=100,
+)
+
+# Bounded sagging T-beam route from supplied factored actions
+t_beam = api.design_flanged_beam_is456(
+    units="IS456",
+    beam_type="T",
+    moment_region="sagging",
+    load_case_basis="single_factored_case",
+    mu_knm=200,
+    vu_kn=150,
+    bw_mm=300,
+    D_mm=550,
+    d_mm=500,
+    span_mm=6000,
+    flange_thickness_mm=150,
+    flange_overhang_left_mm=350,
+    flange_overhang_right_mm=350,
+    fck_nmm2=25,
+    fy_nmm2=500,
 )
 
 # Design + detailing in one call
