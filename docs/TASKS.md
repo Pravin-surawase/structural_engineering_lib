@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-15 — GIT-7D complete; GIT-7D2 integrated through PRs #747-#748 and the non-destructive reconciliation leaves GIT-7E next
+**Updated:** 2026-08-15 — GIT-7D complete; the eight-branch retirement proposal holds every exact target on unknown retention; GIT-7E is not started
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | ✅ GIT-7D COMPLETE — GIT-7D2 integrated through PRs #747-#748; preservation/disposition reconciliation is non-destructive; GIT-7E is next and separate |
+| GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🔎 RETIREMENT PROPOSAL — eight exact unattached merged tips are `HOLD_UNKNOWN_OWNER` / `RETENTION_EVIDENCE_UNKNOWN`; no deletion is authorized; GIT-7E is not started |
 
 ## Up Next
 

@@ -2,19 +2,22 @@
 
 **Type:** Documentation
 **Last Updated:** 2026-08-15
-**Files:** 18
+**Files:** 21
 
 ## Config Files
 
+- [GIT-001-eight-branch-retirement-authorization-proposal.json](GIT-001-eight-branch-retirement-authorization-proposal.json)
+- [GIT-001-eight-branch-retirement-classifier-evidence.json](GIT-001-eight-branch-retirement-classifier-evidence.json)
 - [GIT-001-phase-7D-cleanup-reconciliation.json](GIT-001-phase-7D-cleanup-reconciliation.json)
 
 ## Documentation Files
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [GIT-001-README.md](GIT-001-README.md) |  | This directory is the task-owned, non-normative research rec | 102 |
+| [GIT-001-README.md](GIT-001-README.md) |  | This directory is the task-owned, non-normative research rec | 107 |
+| [GIT-001-eight-branch-retirement-authorization-proposal.md](GIT-001-eight-branch-retirement-authorization-proposal.md) |  | All eight exact targets remain held. The integrated classifi | 118 |
 | [GIT-001-lifecycle-research.md](GIT-001-lifecycle-research.md) |  | This is a source-backed, non-normative map. It does not repl | 192 |
-| [GIT-001-next-agent-disposition-plan.md](GIT-001-next-agent-disposition-plan.md) |  | This packet converts the original six-priority cleanup and r | 381 |
+| [GIT-001-next-agent-disposition-plan.md](GIT-001-next-agent-disposition-plan.md) |  | This packet converts the original six-priority cleanup and r | 384 |
 | [GIT-001-official-evidence-register.md](GIT-001-official-evidence-register.md) |  | Only primary, official sources belong in the source tables.  | 147 |
 | [GIT-001-phase-0-preservation-baseline.md](GIT-001-phase-0-preservation-baseline.md) |  | - Observation time: 2026-08-12T21:17:05+05:30 - Repository:  | 165 |
 | [GIT-001-phase-2-incident-register.md](GIT-001-phase-2-incident-register.md) |  | This register traces confirmed Git, worktree, automation, CI | 350 |

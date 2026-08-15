@@ -3,15 +3,53 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-15",
-  "file_count": 18,
+  "file_count": 21,
   "files": [
     {
       "name": "GIT-001-README.md",
       "type": "documentation",
-      "size_lines": 102,
+      "size_lines": 107,
       "last_updated": "2026-08-15",
       "description": "This directory is the task-owned, non-normative research record for GIT-001. Its contents may describe official Git/GitHub/Codex facts, observed project",
-      "content_hash": "1cc6819f6b0b"
+      "content_hash": "3e30669bc28a"
+    },
+    {
+      "name": "GIT-001-eight-branch-retirement-authorization-proposal.json",
+      "type": "config",
+      "last_updated": "2026-08-15",
+      "top_level_keys": [
+        "schema_version",
+        "packet",
+        "packet_status",
+        "observed_at_utc",
+        "default_ref",
+        "default_sha",
+        "mutation_policy",
+        "authorization",
+        "classifier",
+        "shared_finding"
+      ],
+      "content_hash": "ee52dd98a28f"
+    },
+    {
+      "name": "GIT-001-eight-branch-retirement-authorization-proposal.md",
+      "type": "documentation",
+      "size_lines": 118,
+      "last_updated": "2026-08-15",
+      "description": "All eight exact targets remain held. The integrated classifier returned HOLD_UNKNOWN_OWNER with reason code RETENTION_EVIDENCE_UNKNOWN for every",
+      "content_hash": "4dab788cb748"
+    },
+    {
+      "name": "GIT-001-eight-branch-retirement-classifier-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-15",
+      "top_level_keys": [
+        "schema_version",
+        "remote_freshness",
+        "authority_provenance",
+        "branches"
+      ],
+      "content_hash": "1909cf8b1365"
     },
     {
       "name": "GIT-001-lifecycle-research.md",
@@ -24,10 +62,10 @@
     {
       "name": "GIT-001-next-agent-disposition-plan.md",
       "type": "documentation",
-      "size_lines": 381,
+      "size_lines": 384,
       "last_updated": "2026-08-15",
       "description": "This packet converts the original six-priority cleanup and recovery list into a current, evidence-backed handoff. It tells the next agent what is already done,",
-      "content_hash": "c9555c6ad9bd"
+      "content_hash": "29d8c057cdc4"
     },
     {
       "name": "GIT-001-official-evidence-register.md",
@@ -161,5 +199,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "425d9e77fd81e375"
+  "content_hash": "91f820b313c40c4e"
 }

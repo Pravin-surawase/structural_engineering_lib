@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "remote_freshness": {
+    "status": "OBSERVED_AT",
+    "observed_at_utc": "2026-08-15T08:49:01Z",
+    "default_ref": "origin/main",
+    "default_sha": "670ea4beeb2a8765fff59e05bb130ff54752369e"
+  },
+  "authority_provenance": {
+    "source_task": "01a003e5-18ec-7be1-9299-0292bd3052f4",
+    "scope": "Inspection-only target-by-target retirement authorization proposal for the eight exact branch tips listed by the repository owner",
+    "authorization_boundary": "No deletion, ref removal, worktree removal, prune, cleanup, or proposal-side authorization"
+  },
+  "branches": {
+    "codex/alpha-0231-candidate-evidence": {
+      "owner": "repository owner via source task 01a003e5-18ec-7be1-9299-0292bd3052f4",
+      "remote_ref": {
+        "status": "PRESENT",
+        "ref": "refs/heads/codex/alpha-0231-candidate-evidence",
+        "sha": "adb161b85489f530b42e78abd7039e59160c83d6"
+      },
+      "pull_requests": {
+        "status": "NONE_OPEN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "adb161b85489f530b42e78abd7039e59160c83d6",
+        "items": [
+          {
+            "number": 732,
+            "state": "MERGED",
+            "head_sha": "adb161b85489f530b42e78abd7039e59160c83d6",
+            "merge_commit_sha": "95bed5621c2ff6e5bbcf1a25b7ac476f92ae4307",
+            "reviews": [],
+            "comments": [],
+            "open_head_or_base_dependencies": []
+          }
+        ]
+      },
+      "retention": {
+        "status": "UNKNOWN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "adb161b85489f530b42e78abd7039e59160c83d6",
+        "reason": "No authoritative record declares this exact historical branch tip unneeded; explicit target approval remains future authority"
+      }
+    },
+    "codex/ci-fastapi-load-lane-fix": {
+      "owner": "repository owner via source task 01a003e5-18ec-7be1-9299-0292bd3052f4",
+      "remote_ref": {
+        "status": "PRESENT",
+        "ref": "refs/heads/codex/ci-fastapi-load-lane-fix",
+        "sha": "21b9df1fd0d655d5976f73b8672502da4a6fbc60"
+      },
+      "pull_requests": {
+        "status": "NONE_OPEN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "21b9df1fd0d655d5976f73b8672502da4a6fbc60",
+        "items": [
+          {
+            "number": 729,
+            "state": "MERGED",
+            "head_sha": "21b9df1fd0d655d5976f73b8672502da4a6fbc60",
+            "merge_commit_sha": "06d14b7f69ea0b355d9999a372a3592c22be3852",
+            "reviews": [],
+            "comments": [],
+            "open_head_or_base_dependencies": []
+          }
+        ]
+      },
+      "retention": {
+        "status": "UNKNOWN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "21b9df1fd0d655d5976f73b8672502da4a6fbc60",
+        "reason": "No authoritative record declares this exact historical branch tip unneeded; explicit target approval remains future authority"
+      }
+    },
+    "codex/column-rectangular-e2e": {
+      "owner": "repository owner via source task 01a003e5-18ec-7be1-9299-0292bd3052f4",
+      "remote_ref": {
+        "status": "PRESENT",
+        "ref": "refs/heads/codex/column-rectangular-e2e",
+        "sha": "007dfa0c012404515907779f396ed94cf7a6694d"
+      },
+      "pull_requests": {
+        "status": "NONE_OPEN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "007dfa0c012404515907779f396ed94cf7a6694d",
+        "items": [
+          {
+            "number": 725,
+            "state": "MERGED",
+            "head_sha": "007dfa0c012404515907779f396ed94cf7a6694d",
+            "merge_commit_sha": "bcb181fa8a6046663de2e4bd14f891a201d1a577",
+            "reviews": [],
+            "comments": [],
+            "open_head_or_base_dependencies": []
+          }
+        ]
+      },
+      "retention": {
+        "status": "UNKNOWN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "007dfa0c012404515907779f396ed94cf7a6694d",
+        "reason": "No authoritative record declares this exact historical branch tip unneeded; explicit target approval remains future authority"
+      }
+    },
+    "codex/footing-isolated-v1": {
+      "owner": "repository owner via source task 01a003e5-18ec-7be1-9299-0292bd3052f4",
+      "remote_ref": {
+        "status": "PRESENT",
+        "ref": "refs/heads/codex/footing-isolated-v1",
+        "sha": "886871aef93d9a955a3cc2fa613fe49bad589ce7"
+      },
+      "pull_requests": {
+        "status": "NONE_OPEN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "886871aef93d9a955a3cc2fa613fe49bad589ce7",
+        "items": [
+          {
+            "number": 727,
+            "state": "MERGED",
+            "head_sha": "886871aef93d9a955a3cc2fa613fe49bad589ce7",
+            "merge_commit_sha": "dedebaae9af186ede0f287c9582adf73002bad5f",
+            "reviews": [],
+            "comments": [],
+            "open_head_or_base_dependencies": []
+          }
+        ]
+      },
+      "retention": {
+        "status": "UNKNOWN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "886871aef93d9a955a3cc2fa613fe49bad589ce7",
+        "reason": "No authoritative record declares this exact historical branch tip unneeded; explicit target approval remains future authority"
+      }
+    },
+    "codex/gpt-5-3-spark-work-program": {
+      "owner": "repository owner via source task 01a003e5-18ec-7be1-9299-0292bd3052f4",
+      "remote_ref": {
+        "status": "PRESENT",
+        "ref": "refs/heads/codex/gpt-5-3-spark-work-program",
+        "sha": "6cd22dcbd073b599e4a2faef80352b294295f32e"
+      },
+      "pull_requests": {
+        "status": "NONE_OPEN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "6cd22dcbd073b599e4a2faef80352b294295f32e",
+        "items": [
+          {
+            "number": 734,
+            "state": "MERGED",
+            "head_sha": "6cd22dcbd073b599e4a2faef80352b294295f32e",
+            "merge_commit_sha": "6bc356c37f094ff6dba1c5c2f06527bf1cda4966",
+            "reviews": [],
+            "comments": [],
+            "open_head_or_base_dependencies": []
+          }
+        ]
+      },
+      "retention": {
+        "status": "UNKNOWN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "6cd22dcbd073b599e4a2faef80352b294295f32e",
+        "reason": "No authoritative record declares this exact historical branch tip unneeded; explicit target approval remains future authority"
+      }
+    },
+    "codex/is456-beam-primary-route": {
+      "owner": "repository owner via source task 01a003e5-18ec-7be1-9299-0292bd3052f4",
+      "remote_ref": {
+        "status": "PRESENT",
+        "ref": "refs/heads/codex/is456-beam-primary-route",
+        "sha": "aa4fe606ee685240648c88db75e0d1052350fcb4"
+      },
+      "pull_requests": {
+        "status": "NONE_OPEN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "aa4fe606ee685240648c88db75e0d1052350fcb4",
+        "items": [
+          {
+            "number": 726,
+            "state": "MERGED",
+            "head_sha": "aa4fe606ee685240648c88db75e0d1052350fcb4",
+            "merge_commit_sha": "421790bbe70a9bb75c8b60b4354e243098660c46",
+            "reviews": [],
+            "comments": [],
+            "open_head_or_base_dependencies": []
+          }
+        ]
+      },
+      "retention": {
+        "status": "UNKNOWN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "aa4fe606ee685240648c88db75e0d1052350fcb4",
+        "reason": "No authoritative record declares this exact historical branch tip unneeded; explicit target approval remains future authority"
+      }
+    },
+    "codex/is456-slabs-closeout": {
+      "owner": "repository owner via source task 01a003e5-18ec-7be1-9299-0292bd3052f4",
+      "remote_ref": {
+        "status": "PRESENT",
+        "ref": "refs/heads/codex/is456-slabs-closeout",
+        "sha": "d79a1558a0cfa5078f6ddea91c4166100bdc4d04"
+      },
+      "pull_requests": {
+        "status": "NONE_OPEN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "d79a1558a0cfa5078f6ddea91c4166100bdc4d04",
+        "items": [
+          {
+            "number": 724,
+            "state": "MERGED",
+            "head_sha": "d79a1558a0cfa5078f6ddea91c4166100bdc4d04",
+            "merge_commit_sha": "a4721836e83ea6d98e732dc6a327f42d3f42688e",
+            "reviews": [],
+            "comments": [],
+            "open_head_or_base_dependencies": []
+          }
+        ]
+      },
+      "retention": {
+        "status": "UNKNOWN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "d79a1558a0cfa5078f6ddea91c4166100bdc4d04",
+        "reason": "No authoritative record declares this exact historical branch tip unneeded; explicit target approval remains future authority"
+      }
+    },
+    "codex/is456-slabs-plan": {
+      "owner": "repository owner via source task 01a003e5-18ec-7be1-9299-0292bd3052f4",
+      "remote_ref": {
+        "status": "PRESENT",
+        "ref": "refs/heads/codex/is456-slabs-plan",
+        "sha": "7e623984e027141fff62e5129c23fdc16264f8e0"
+      },
+      "pull_requests": {
+        "status": "NONE_OPEN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "7e623984e027141fff62e5129c23fdc16264f8e0",
+        "items": [
+          {
+            "number": 728,
+            "state": "MERGED",
+            "head_sha": "7e623984e027141fff62e5129c23fdc16264f8e0",
+            "merge_commit_sha": "be148d392d4c2f0c9e286ff46bb269039f8943c5",
+            "reviews": [],
+            "comments": [],
+            "open_head_or_base_dependencies": []
+          }
+        ]
+      },
+      "retention": {
+        "status": "UNKNOWN",
+        "observed_at_utc": "2026-08-15T08:49:01Z",
+        "head_sha": "7e623984e027141fff62e5129c23fdc16264f8e0",
+        "reason": "No authoritative record declares this exact historical branch tip unneeded; explicit target approval remains future authority"
+      }
+    }
+  }
+}
