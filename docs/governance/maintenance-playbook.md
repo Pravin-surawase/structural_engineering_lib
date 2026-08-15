@@ -96,8 +96,11 @@ git branch --show-current
 # Full readiness audit
 ./run.sh audit
 
-# IS 456 clause coverage dashboard
+# Declared Indian-code capability and cross-layer dashboard
 ./run.sh parity
+
+# Standard-namespaced decorator registration (not implementation coverage)
+./run.sh coverage --summary
 
 # Element completeness check
 .venv/bin/python scripts/check_new_element_completeness.py

@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
   "last_updated": "2026-08-15",
-  "file_count": 67,
+  "file_count": 68,
   "files": [
     {
       "name": "README.md",
@@ -2546,6 +2546,38 @@
       "content_hash": "40ceabc73929"
     },
     {
+      "name": "test_indian_code_manifest.py",
+      "type": "python",
+      "size_lines": 140,
+      "last_updated": "2026-08-15",
+      "description": "INDIA-0 truth-manifest and reporting contract tests.",
+      "functions": [
+        {
+          "name": "test_committed_manifest_is_deterministic_and_current"
+        },
+        {
+          "name": "test_manifest_uses_closed_namespaced_statuses_without_unknowns"
+        },
+        {
+          "name": "test_is456_supported_families_are_generated_from_runtime_registry"
+        },
+        {
+          "name": "test_is456_and_is13920_registration_cannot_cross_match"
+        },
+        {
+          "name": "test_clause_checker_reports_registration_not_implementation"
+        },
+        {
+          "name": "test_parity_dashboard_consumes_declared_capability_families"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "SCRIPTS_ROOT"
+      ],
+      "content_hash": "03523611dd71"
+    },
+    {
       "name": "test_inputs.py",
       "type": "python",
       "size_lines": 464,
@@ -4672,5 +4704,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "8dcb6b97fa2d632a"
+  "content_hash": "3e6082ef5935ab72"
 }

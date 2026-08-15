@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "> Development, validation, discovery, release-preparation, and maintenance tools.",
   "last_updated": "2026-08-15",
-  "file_count": 110,
+  "file_count": 111,
   "files": [
     {
       "name": "README.md",
@@ -912,7 +912,7 @@
         "_coverage",
         "tasks"
       ],
-      "content_hash": "509c9fc38593"
+      "content_hash": "f007b5052439"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1380,78 +1380,50 @@
     {
       "name": "check_clause_coverage.py",
       "type": "python",
-      "size_lines": 488,
+      "size_lines": 254,
       "last_updated": "2026-08-15",
-      "description": "IS 456 clause coverage gap detection.",
+      "description": "Report standard-namespaced clause/reference decorator registration.",
       "functions": [
         {
-          "name": "load_clauses_json",
-          "description": "Load clauses.json and return (clauses, annexures, metadata)."
-        },
-        {
-          "name": "get_implemented_clauses",
-          "description": "Import IS 456 modules to populate the clause registry."
-        },
-        {
-          "name": "build_coverage_matrix",
-          "description": "Build coverage matrix: which clauses are implemented.",
+          "name": "build_report",
+          "description": "Build the machine-readable registration report.",
           "params": [
-            "all_clauses",
-            "annexures",
-            "implemented"
-          ]
-        },
-        {
-          "name": "group_by_category",
-          "description": "Group coverage matrix by category.",
-          "params": [
-            "matrix"
+            "manifest"
           ]
         },
         {
           "name": "format_summary",
-          "description": "Format summary statistics only.",
+          "description": "Format compact, explicitly bounded registration statistics.",
           "params": [
-            "matrix",
-            "metadata"
+            "report"
           ]
         },
         {
           "name": "format_json_output",
-          "description": "Format full JSON output.",
+          "description": "Format the complete report as JSON.",
           "params": [
-            "matrix",
-            "metadata"
+            "report"
           ]
         },
         {
           "name": "format_detailed_report",
-          "description": "Format detailed coverage report.",
+          "description": "Format a detailed report without calling registrations implemented.",
           "params": [
-            "matrix",
-            "metadata",
-            "gaps_only",
-            "implemented_only",
-            "filter_category"
+            "report"
           ]
         },
         {
-          "name": "main",
-          "description": "Main entry point."
+          "name": "main"
         }
       ],
       "constants": [
-        "SCRIPT_DIR",
-        "REPO_ROOT",
-        "CLAUSES_JSON",
         "COLOR_GREEN",
         "COLOR_YELLOW",
-        "COLOR_RED",
         "COLOR_BLUE",
         "COLOR_RESET",
         "COLOR_BOLD"
       ],
-      "content_hash": "528bd8b95fd0"
+      "content_hash": "1f1586c50401"
     },
     {
       "name": "check_cli_reference.py",
@@ -3407,6 +3379,19 @@
       "content_hash": "47a4073cd002"
     },
     {
+      "name": "generate_indian_code_manifest.py",
+      "type": "python",
+      "size_lines": 43,
+      "last_updated": "2026-08-15",
+      "description": "Generate or verify the INDIA-0 Indian-code truth manifest.",
+      "functions": [
+        {
+          "name": "main"
+        }
+      ],
+      "content_hash": "3cc4c8550d72"
+    },
+    {
       "name": "git_handoff_receipt.py",
       "type": "python",
       "size_lines": 573,
@@ -3808,13 +3793,13 @@
     {
       "name": "parity_dashboard.py",
       "type": "python",
-      "size_lines": 519,
+      "size_lines": 466,
       "last_updated": "2026-08-15",
-      "description": "Parity Dashboard — coverage/parity across IS 456, API, endpoints, and React hooks.",
+      "description": "Parity dashboard across declared Indian-code scope and application layers.",
       "functions": [
         {
           "name": "check_clause_coverage",
-          "description": "Dimension 1: IS 456 clause coverage."
+          "description": "Dimension 1: declared Indian-code capability-family coverage."
         },
         {
           "name": "check_api_endpoint_coverage",
@@ -3839,14 +3824,13 @@
       "constants": [
         "SCRIPT_DIR",
         "REPO_ROOT",
-        "IS456_DIR",
         "API_PY",
         "ROUTERS_DIR",
         "FASTAPI_TESTS",
         "HOOKS_DIR",
         "LOCAL_ONLY_HOOKS"
       ],
-      "content_hash": "447d5ea2c617"
+      "content_hash": "d1c93075f774"
     },
     {
       "name": "pipeline_state.py",
@@ -5538,5 +5522,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "3c741ce61e0e0c75"
+  "content_hash": "73dac58404929a1f"
 }

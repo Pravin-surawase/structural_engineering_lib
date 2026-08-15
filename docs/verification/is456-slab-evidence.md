@@ -79,7 +79,7 @@ provenance; external coefficient carriers remain available.
   `10.688/12.825 kN m/m` with Table 12/13 provenance; editing its span made the
   result stale and disabled passport export. The oriented B04 two-way sample
   returned `18.600/13.888/11.656/8.680 kN m/m` with exact Table 26 provenance.
--- This evidence supports the bounded software behavior only. The normalized-data
+- This evidence supports the bounded software behavior only. The normalized-data
   public-distribution permission gate passed on 2026-08-11; each release still
   requires separate owner authorization, and project use still requires
   qualified structural-engineering review.
@@ -109,5 +109,6 @@ provenance; external coefficient carriers remain available.
   `7bb1512f`. After the explicitly authorized surgical restoration to the
   origin/main module-qualified annotations, the narrow manifest check and final
   full repository gate passed 30/30 without editing the generated manifest.
-- These are software and interface results only. The source/licensing pre-launch
-  gate and qualified structural-engineering review remain unchanged.
+- These are software and interface results only. Approved-scope normalized-data
+  distribution permission passed on 2026-08-11. Per-release owner authorization
+  and qualified structural-engineering review remain separate gates.

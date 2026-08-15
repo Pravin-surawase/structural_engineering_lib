@@ -5,6 +5,145 @@
 
 ---
 
+## 2026-08-15 — Session: INDIA-0 Indian-Code Truth Baseline
+
+**Agent:** Codex (`orchestrator`, sole writer; one bounded read-only reviewer)
+
+**Branch:** `codex/india-0-truth-baseline`, created in an isolated worktree from
+freshly fetched and verified `origin/main = 96f193bd45a21f05698cf64de47808a2e5f82640`
+
+**Focus:** Create one deterministic, standard-namespaced Indian-code capability
+and decorator-registration manifest; repair both coverage consumers; reconcile
+current tasks, strategic planning, capability identity, and evidence ledgers.
+
+### Summary
+
+- Added a deterministic manifest covering `IS456:2000`, `IS13920:2016`,
+  `IS875`, and `IS1893` with closed supported/held, bounded/not-implemented,
+  and registered/metadata-only/registration-only status vocabularies.
+- Generated supported IS 456 families directly from the runtime capability
+  registry and retained its exact supported workflows, held cases, evidence
+  boundaries, and qualified-review requirement.
+- Replaced the dashboard's hand-maintained 17-item clause/file table with
+  declared capability-family status; the historical `88%` is no longer emitted.
+- Replaced the static-import clause checker with manifest consumption and
+  deterministic AST discovery. Reports are namespaced per standard and call the
+  metric decorator registration, not implementation or clause completeness.
+- Reconciled current `TASKS.md`, archived-in-place stale blueprint tables,
+  slab permission wording, maintained command descriptions, and only the
+  task-owned generated folder indexes.
+- Preserved the dirty, eight-commits-behind primary `main` checkout and its
+  earlier session-log edit without stash, reset, checkout, or copying it into
+  this lane.
+
+### Issues encountered
+
+- The primary checkout was `HOLD_MAIN`: local `main` was eight commits behind
+  verified `origin/main` and had one user-owned `docs/SESSION_LOG.md` edit.
+- The parity dashboard reported Clause 24 and Annex D as planned and classified
+  implementation only by the existence of a manually named file.
+- The clause checker called its output IS 456 coverage while its metadata set
+  contained 16 IS 13920 identifiers, its static imports omitted slab and footing
+  modules, and its registry projection discarded the decorator standard.
+- Legacy IS 13920 metadata does not match all 14 distinct decorator identifiers;
+  nine working registrations therefore have no matching metadata identity.
+- Index generation in a fresh linked worktree proposed current dates for
+  unchanged verification files because their worktree mtimes are new.
+- Independent review found that the truthful 33% supported-family planning
+  metric was still averaged into a 78% headline `Overall Parity Score`, treating
+  intentionally held families like failed cross-layer checks.
+- A single `apply_patch` request attempted to delete and recreate the clause
+  checker at the same path, which the patch tool rejected.
+- Initial session closeout reported a missing task-to-Git handoff receipt, so
+  prose alone did not satisfy the repository's newly merged GIT-7E handoff
+  contract.
+
+### Root causes and resolutions
+
+- Root cause: using a stale dirty integration anchor would mix prior evidence
+  with new implementation and start from superseded source. Resolution: fetched
+  and verified remote `main`, created a separate `codex/india-0-truth-baseline`
+  worktree at exact head `96f193bd`, and required `source_bound=true`. Evidence:
+  the initial task brief reported `READY_LOCAL`, equal to `origin/main`, and the
+  runtime diagnosis resolved imports to this worktree.
+- Root cause: capability status, decorator traceability, and professional
+  acceptance were collapsed into one manually maintained percentage.
+  Resolution: the generated manifest keeps these evidence classes separate and
+  carries explicit claim ceilings. Evidence: slab is `SUPPORTED` while flat
+  slab is `HELD`; every capability still requires qualified review; the parity
+  result is 7 supported and 14 held declared families, not an IS 456 clause
+  score.
+- Root cause: static runtime imports plus unnamespaced reference matching could
+  neither discover maintained modules nor prevent identical clause numbers in
+  different standards from colliding. Resolution: recursively scan the two
+  maintained code roots with AST, require literal references and a supported
+  standard name, namespace before aggregation, and make IS 875/IS 1893 holds
+  explicit. Evidence: IS 456 reports 59/127 known reference registrations with
+  zero registration-only identifiers; IS 13920 separately reports 5/16 known
+  plus nine registration-only identifiers.
+- Root cause: historic execution plans remained formatted as live status after
+  bounded slab, footing, and IS 13920 work landed. Resolution: update current
+  task rows, replace the blueprint's manual clause appendix with generated-tool
+  commands, and retain the historical footing D1 receipt unchanged as historical
+  evidence. Evidence: current task, blueprint, capability, and slab ledgers now
+  point to the generated manifest without elevating held scope.
+- Root cause: the index generator derives per-file dates from filesystem mtimes,
+  which change when a linked worktree is created. Resolution: retain new and
+  genuinely modified index entries while restoring unchanged per-file dates;
+  all three focused index checks pass. This prevents unrelated generated drift.
+- Root cause: the dashboard's existing composite included every section not
+  marked informational; the new declared-scope section initially omitted that
+  marker. Resolution: mark capability scope informational, exclude it from the
+  actionable composite, and state the exclusion in JSON and terminal output.
+  Evidence: the capability section remains 7 supported/14 held while the
+  separately labelled actionable cross-layer score excludes it.
+- Root cause: `apply_patch` does not allow two operations on the same path in one
+  patch. Resolution: split the delete and add into two patch calls. Evidence:
+  the replacement checker is executable and its Ruff/CLI tests pass.
+- Root cause: this task started after GIT-7E added a durable handoff contract,
+  while the initial INDIA-0 plan accounted only for the user-requested prose
+  Git/PR handoff. Resolution: create and validate
+  `docs/verification/INDIA-0-git-handoff.json` with the exact local dirty state,
+  path ownership, authorized next actions, retention decision, and explicit
+  remote/PR/review holds. The receipt grants no authority and prohibits merge,
+  deletion, ref retirement, and release.
+
+### Verification
+
+- `./scripts/python_runtime.sh --diagnose`: `source_bound=true`.
+- Manifest write/check and all task-owned maintained folder-index checks passed.
+- Ruff passed for the manifest, generator, both coverage consumers, capability
+  registry change, and focused tests.
+- INDIA-0, existing capability-semantic, and FastAPI capability tests: 15 passed.
+- Independent read-only reviewer reproduced both original contradictions, found
+  and rejected the first composite-score treatment, then confirmed the repaired
+  standard-namespace and evidence-boundary requirements.
+- Final `./run.sh check --quick`: 10/10 passed.
+- Final `./run.sh check`: 30/30 passed.
+
+### Remaining Git/PR handoff
+
+- Do not reuse or clean the primary `main` checkout; it still owns the earlier
+  uncommitted session audit record.
+- Validate and refresh `docs/verification/INDIA-0-git-handoff.json`; its expected
+  pre-publication status is `HOLD` for local dirty and unchecked hosted evidence.
+- Review and stage only the INDIA-0 paths from this isolated worktree, create a
+  conventional commit, push without rewriting history, and open a draft PR.
+- Record exact head/base/tree and hosted checks in the next session. Per owner
+  instruction, this session does not wait for CI.
+- Do not merge, release, delete a branch/worktree, or retire any historical lane
+  from this handoff. Release and cleanup remain separately authorized actions.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: one patch tried to delete and add the same file in a single
+  operation and was rejected -> split the deletion and creation into two
+  `apply_patch` calls; the resulting executable passes focused validation.
+- ⚠️ TERMINAL ISSUE: the final reviewer initially named nonexistent
+  `Python/tests/test_capabilities.py` -> it discovered and ran the maintained
+  `Python/tests/integration/test_capability_semantics.py` plus FastAPI capability
+  tests; the focused set passed 15/15.
+
 ## 2026-08-15 — Session: Compact Audited Orchestrator Workflow
 
 **Agent:** Codex (`doc-master`, sole writer/integration owner; no subagents)

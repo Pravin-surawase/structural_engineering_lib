@@ -853,18 +853,24 @@
     "parity dashboard": {
       "group": "Quality",
       "script": "./scripts/python_runtime.sh scripts/parity_dashboard.py",
-      "description": "Cross-stack parity dashboard showing coverage across layers"
+      "description": "Declared Indian-code capability-family and cross-stack parity dashboard"
+    },
+    "generate indian code manifest": {
+      "group": "Quality",
+      "script": "./scripts/python_runtime.sh scripts/generate_indian_code_manifest.py --check",
+      "description": "Verify the generated standard-namespaced Indian-code capability and registration manifest"
     },
     "check clause coverage": {
       "group": "Quality",
       "script": "./scripts/python_runtime.sh scripts/check_clause_coverage.py",
-      "description": "IS 456 clause coverage gap detection — compares clauses.json against @clause() decorated functions",
+      "description": "Standard-namespaced decorator registration report; not implementation or engineering completeness",
       "options": {
-        "--gaps-only": "Show only unimplemented clauses",
+        "--gaps-only": "Show metadata-only and registration-only discrepancies",
+        "--standard X": "Select a standard id or namespace",
         "--category X": "Filter by category (e.g. flexure)",
         "--json": "Machine-readable output",
         "--summary": "Just totals",
-        "--implemented": "Show only implemented clauses"
+        "--registered": "Show only registered known references"
       }
     },
     "check function quality": {

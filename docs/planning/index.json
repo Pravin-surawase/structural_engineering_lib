@@ -66,10 +66,10 @@
     {
       "name": "is456-library-first-master-plan.md",
       "type": "documentation",
-      "size_lines": 1497,
+      "size_lines": 1500,
       "last_updated": "2026-08-15",
       "description": "The Python package is the product. FastAPI, React, command-line workflows, reports, ETABS adapters, and future integrations are consumers of that product.",
-      "content_hash": "3c22c1017a09"
+      "content_hash": "2b56fd9cd0e7"
     },
     {
       "name": "is456-solid-slabs-master-plan.md",
@@ -82,11 +82,11 @@
     {
       "name": "library-expansion-blueprint-v5.md",
       "type": "documentation",
-      "size_lines": 1139,
+      "size_lines": 1118,
       "last_updated": "2026-08-15",
       "title": "Library Expansion Blueprint v5.0 — Multi-Code, Multi-Element",
       "description": "> Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with comple",
-      "content_hash": "ead8ebc9e2eb"
+      "content_hash": "cf6fe9e58706"
     },
     {
       "name": "memory.md",
@@ -149,5 +149,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "501eda91b4b8e5f6"
+  "content_hash": "052d684a52c04fce"
 }

@@ -763,6 +763,7 @@ publication until P12 resolves it.
 - `docs/reference/clause-map.md`
 - `docs/verification/`
 - `scripts/parity_dashboard.py`
+- `docs/verification/indian-code-capability-coverage.json`
 - `README.md`
 - `Python/README.md`
 
@@ -781,8 +782,10 @@ rg -n "@clause|Limitations|unsupported|NotImplemented" Python/structural_lib/cod
 rg --files Python/tests | rg "beam|column|footing|slab"
 ```
 
-**Acceptance:** matrix covers every public beam/column/footing route and records
-slab as planned; parity is not used as whole-code evidence.
+**Acceptance (reconciled by INDIA-0):** the generated manifest covers every
+declared supported and held family. Solid slabs are bounded supported scope;
+flat slabs remain held. Capability-family and decorator-registration metrics
+are not used as whole-code or engineering-approval evidence.
 
 **Return format:** capability -> source state -> benchmark state -> claim state
 -> limitations -> blocking packet. Report only confirmed outcome-changing gaps.

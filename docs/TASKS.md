@@ -133,14 +133,16 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| INDIA-1 | Close or explicitly hold the remaining beam, rectangular-column, isolated-footing, and solid-slab workflow limitations recorded by the INDIA-0 manifest | Main Agent + structural engineer | multi-packet | P0 | 📋 READY AFTER INDIA-0 PUBLICATION |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL STABLE GATE |
 
 ## Backlog
 
-The version roadmap and historical backlog remain below. The owner-selected next
-program is [IS456-SLAB-001](planning/is456-solid-slabs-master-plan.md); broad
-multi-code infrastructure remains future work. The v0.23.1a1 Alpha is published.
+The version roadmap and historical backlog remain below. INDIA-0 now provides
+the generated [Indian-code truth manifest](verification/indian-code-capability-coverage.json);
+INDIA-1 is the next implementation wave after publication of this baseline.
+The v0.23.1a1 Alpha is published.
 UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded
 development workflow, generated beam manifest, canonical routes, and integrated
@@ -151,6 +153,7 @@ held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-0 | Reconciled supported and held Indian RC scope into one generated, standard-namespaced capability/registration manifest; repaired both coverage consumers | Main Agent | ✅ LOCALLY COMPLETE — focused contracts green; commit/push/draft PR and CI are intentionally left to the Git handoff |
 | COLUMN-PMM-001 | Recovered and independently benchmarked the experimental rectangular-column P-Mx-My fiber surface | Main Agent | ✅ SOFTWARE COMPLETE — PR #738 merged; module remains experimental and outside the stable API |
 | ALPHA-0231-CANDIDATE | Published the exact 0.23.1a1 Alpha through exact-head CI, TestPyPI, production PyPI, and GitHub prerelease gates | Main Agent + ops | ✅ DONE — production run `31468341946`; exact public package UAT green |
 | IS456-SLAB-PRELAUNCH | Record and enforce source/licensing permission for public distribution of approved-scope normalized IS 456 data | Owner + Main Agent | ✅ DONE — owner confirmed 2026-08-11; canonical record, preflight, candidate, and publish-CI gates added |
@@ -356,7 +359,7 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 | **Undocumented API ergonomics** | EA-3, EA-5, EA-12, EA-13 | API grew incrementally without UX design review | API levels doc, build_detailing_input() factory, e2e examples | ✅ Fixed |
 | **Mixed API patterns** | EA-4, EA-14 | Features added fast without consistency enforcement | to_dict() added, task-oriented README | ✅ Fixed |
 | **Security in exception messages** | EA-17, EA-18, EA-20 | Error messages treated as debug output, CORS hardcoded | sanitize_error() utility, Settings-based CORS, RateLimitMiddleware | ✅ Fixed |
-| **Incomplete IS 456 coverage** | EA-21, EA-22, EA-23 | Code added without IS 456 clause coverage checklist | Clause audit list created, bearing_stress_enhancement(), SCWB check, D_mm param | ✅ Fixed |
+| **Incomplete IS 456 coverage** | EA-21, EA-22, EA-23 | Code added without a namespaced capability/traceability contract | INDIA-0 generated manifest separates supported scope, held scope, decorator registration, and qualified review | ✅ Reclassified; remaining work is explicit |
 
 ### Are We Protected Against Recurrence?
 
@@ -368,7 +371,7 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 | E2E pipeline test | ✅ Yes — test_full_pipeline_e2e.py (8 tests) | No gap |
 | RateLimitMiddleware on all endpoints | ✅ Yes — global middleware | No gap |
 | sanitize_error() for all routers | ⚠️ Partial — 2-4 HTTP-exposed ImportError leaks (38 total catch sites properly sanitized) | OL-08 above |
-| IS 456 clause checklist | ⚠️ Partial — @clause decorators exist but ~26 public IS 456 functions lack them (detailing: 11, common/: 8, footing/_common: 4, slenderness: 3; serviceability has full coverage) | IS-NEW-01, IS-NEW-02 |
+| Indian-code traceability | ⚠️ Explicit — INDIA-0 reports namespaced `REGISTERED`, `METADATA_ONLY`, and `REGISTRATION_ONLY` records separately from capability support; registration is not implementation evidence | Generated `indian-code-capability-coverage.json`; follow-on traceability packets only when they change supported workflow evidence |
 | Cross-field input validation | ✅ Yes — _validate_plausibility in common_api.py raises ValueError for d>D | ✅ Fixed (was UX-01) |
 | TestPyPI before prod publish | ❌ No — publish goes direct to PyPI | OL-10 above |
 | OWASP 2025 A03 (Supply Chain) | ⚠️ Partial — Trusted Publishers ✅, but no attestations/provenance | OL-03, OL-04 |
@@ -520,7 +523,7 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 | TASK-737 | Bounded one-way slab design umbrella | — | Cl 24.1–24.2 | ✅ DONE |
 | TASK-750 | Slab types + errors | `SolidRectangularSlabGeometry`, result records | — | ✅ DONE |
 | TASK-751 | Slab classification | `classify_solid_rectangular_slab()` | ly/lx ratio | ✅ DONE |
-| TASK-752 | General one-way coefficient tables | — | Table 12/13 | ⏸ OUT OF SCOPE |
+| TASK-752 | Bounded continuous one-way coefficient lookup | `design_continuous_one_way_slab_builtin_is456()` | Table 12/13 | ✅ DONE FOR DECLARED DOMAIN |
 | TASK-753 | Simply supported one-way design | `design_one_way_slab_is456()` | Cl 24.1–24.2 | ✅ DONE |
 | TASK-754 | Bounded slab detailing/serviceability | `check_one_way_slab_detailing()` | Cl 26.5 | ✅ DONE |
 
@@ -529,11 +532,11 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 | ID | Task | Function | IS 456 Clause | Status |
 |----|------|----------|---------------|--------|
 | TASK-738 | Bounded external-coefficient two-way flexure | — | Cl 24.3, Annex D | ✅ DONE |
-| TASK-760 | Built-in protected moment-coefficient lookup | — | Table 26 | ⏸ OUT OF SCOPE |
-| TASK-761 | Two-way shear coefficients | — | Table 27 | ⏸ OUT OF SCOPE |
+| TASK-760 | Built-in normalized moment-coefficient lookup/interpolation | `design_two_way_slab_panel_builtin_is456()` | Table 26 | ✅ DONE FOR DECLARED DOMAIN |
+| TASK-761 | Built-in simply-supported/free-corner coefficient route | `design_two_way_slab_panel_builtin_is456()` | Table 27 | ✅ DONE FOR DECLARED DOMAIN |
 | TASK-762 | Interior-panel bounded flexure | `design_two_way_slab_is456()` | Annex D-1 | ✅ DONE |
-| TASK-763 | Complete torsion reinforcement | — | Annex D-1.7/D-1.8 | ⏸ OUT OF SCOPE |
-| TASK-764 | Complete strip distribution | — | Annex D-1.2 | ⏸ OUT OF SCOPE |
+| TASK-763 | Bounded corner-torsion reinforcement disposition | complete two-way panel workflows | Annex D | ✅ DONE FOR DECLARED DOMAIN |
+| TASK-764 | Middle/edge strip distribution | complete two-way panel workflows | Annex D | ✅ DONE FOR DECLARED DOMAIN |
 | — | Flat slab with drop panels | — | IS 456 Cl 31 | ⏸ OUT OF SCOPE |
 
 ### Punching Shear (Shared — Slab + Footing)
@@ -548,7 +551,7 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 |----|------|--------|
 | TASK-780 | Bounded slab Python facade wiring | ✅ DONE |
 | TASK-781 | One-way slab FastAPI consumer | ✅ DONE FOR BOUNDED SCOPE |
-| TASK-782 | New slab React form + results panel | ⏸ OUT OF SCOPE |
+| TASK-782 | Revision-safe slab React workbench and review surface | ✅ DONE FOR DECLARED DOMAIN |
 
 ### Additional v0.23 Deliverables (from architecture doc §20.6)
 
@@ -616,7 +619,7 @@ We analyzed WHY each external audit finding was missed. Six patterns emerge:
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| — | IS 456 complete (beam + column + slab + footing) | @structural-math | 📋 |
+| — | INDIA-4 acceptance for the explicitly declared supported Indian RC subset; no whole-standard-complete claim | @structural-math + qualified structural engineer | 📋 |
 | — | ACI 318 beam + column | @structural-math | 📋 |
 | — | EC2 beam (basic) | @structural-math | 📋 |
 | — | CalculationProvenance on all results (§11) | @backend | 📋 |
