@@ -77,17 +77,17 @@ _IS456_EVIDENCE = {
         "docs/verification/india-2-wall-d-publication-evidence.md",
         "docs/verification/india-2-wall-family-acceptance-evidence.md",
     ),
+    "deep_beam": (
+        "docs/verification/india-2-deep-g0-scope-evidence.md",
+        "docs/verification/india-2-deep-a-geometry-evidence.md",
+        "docs/verification/india-2-deep-b-reinforcement-evidence.md",
+        "docs/verification/india-2-deep-c-public-workflow-evidence.md",
+        "docs/verification/india-2-deep-d-publication-evidence.md",
+    ),
 }
 
 _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
     "IS456:2000": (
-        {
-            "family": "deep_beam",
-            "claim": "IS 456 deep-beam design is not implemented.",
-            "limitations": [
-                "INDIA-2-DEEP-G0 accepted one simply supported positive-moment reinforcement check; implementation and publication remain pending."
-            ],
-        },
         {
             "family": "flat_slab",
             "claim": "Flat-slab and column-supported punching design are held.",

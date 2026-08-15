@@ -23,6 +23,11 @@ def test_capability_route_matches_python_contract(client: TestClient):
     )
     assert wall["public_workflows"] == ["design_braced_wall_is456"]
     assert "100-200 mm" in wall["supported_case"]
+    deep_beam = next(
+        item for item in body["data"]["capabilities"] if item["element"] == "deep_beam"
+    )
+    assert deep_beam["public_workflows"] == ["design_simply_supported_deep_beam_is456"]
+    assert "simply supported" in deep_beam["supported_case"]
 
 
 def test_capability_route_has_a_typed_openapi_success_schema(client: TestClient):

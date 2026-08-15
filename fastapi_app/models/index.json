@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 18,
+  "file_count": 19,
   "files": [
     {
       "name": "__init__.py",
@@ -438,6 +438,45 @@
         }
       ],
       "content_hash": "7e381857ccc2"
+    },
+    {
+      "name": "deep_beam.py",
+      "type": "python",
+      "size_lines": 143,
+      "last_updated": "2026-08-16",
+      "description": "Transport models for the bounded simply supported deep-beam workflow.",
+      "classes": [
+        {
+          "name": "SimplySupportedDeepBeamRequest",
+          "description": "Explicit inputs for the sole supported Clause 29 deep-beam case."
+        },
+        {
+          "name": "DeepBeamGeometryResponse"
+        },
+        {
+          "name": "DeepBeamTieResponse"
+        },
+        {
+          "name": "DeepBeamPlacementResponse"
+        },
+        {
+          "name": "DeepBeamAnchorageResponse"
+        },
+        {
+          "name": "DeepBeamSideFaceDirectionResponse"
+        },
+        {
+          "name": "DeepBeamReinforcementResponse"
+        },
+        {
+          "name": "SimplySupportedDeepBeamProvenanceResponse"
+        },
+        {
+          "name": "SimplySupportedDeepBeamResponse",
+          "description": "Typed transport subset of the composed deep-beam result."
+        }
+      ],
+      "content_hash": "8fa4a0b406eb"
     },
     {
       "name": "footing.py",
@@ -908,5 +947,5 @@
     "DuctilityCheckRequest",
     "DuctilityCheckResponse"
   ],
-  "content_hash": "84435c45ba871991"
+  "content_hash": "9d52534fdd4b67ab"
 }

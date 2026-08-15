@@ -39,6 +39,7 @@ from fastapi_app.routers import (
     catalog,
     capabilities,
     column,
+    deep_beam,
     design,
     detailing,
     export,
@@ -79,6 +80,7 @@ boundary and qualified engineering review.
 - **Slab Design**: Bounded simply supported one-way slab strip
 - **Staircase Design**: Bounded longitudinal straight waist-slab flight
 - **Wall Design**: Bounded Clause 32 braced-wall axial and reinforcement checks
+- **Deep-Beam Design**: Bounded Clause 29 simply supported positive-reinforcement checks
 - **Detailing**: Reinforcement layout, spacing, and development lengths
 - **Optimization**: Cost-optimized beam cross-section selection
 - **Smart Analysis**: AI-assisted design suggestions and insights
@@ -131,6 +133,10 @@ API_TAGS_METADATA = [
     {
         "name": "wall",
         "description": "Bounded Clause 32 braced-wall checks and maintained evidence.",
+    },
+    {
+        "name": "deep-beam",
+        "description": "Bounded Clause 29 deep-beam checks and maintained evidence.",
     },
     {
         "name": "detailing",
@@ -521,6 +527,10 @@ app.include_router(
 )
 app.include_router(
     wall.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    deep_beam.router,
     prefix=API_V1_PREFIX,
 )
 app.include_router(

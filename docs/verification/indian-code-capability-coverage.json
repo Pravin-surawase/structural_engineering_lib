@@ -29,10 +29,10 @@
     "Python/structural_lib/codes/is13920/**/*.py"
   ],
   "capability_summary": {
-    "supported_families": 9,
-    "held_families": 12,
+    "supported_families": 10,
+    "held_families": 11,
     "total_declared_families": 21,
-    "supported_pct": 42.9
+    "supported_pct": 47.6
   },
   "standards": [
     {
@@ -43,10 +43,10 @@
       "source_root": "Python/structural_lib/codes/is456",
       "status": "SUPPORTED_SUBSET",
       "capability_summary": {
-        "supported_families": 6,
-        "held_families": 6,
+        "supported_families": 7,
+        "held_families": 5,
         "total_declared_families": 12,
-        "supported_pct": 50.0
+        "supported_pct": 58.3
       },
       "capability_families": [
         {
@@ -198,14 +198,25 @@
         {
           "capability_id": "IS456:2000:deep_beam",
           "family": "deep_beam",
-          "scope_status": "HELD",
-          "implementation_status": "NOT_IMPLEMENTED",
-          "claim": "IS 456 deep-beam design is not implemented.",
-          "workflows": [],
-          "limitations": [
-            "INDIA-2-DEEP-G0 accepted one simply supported positive-moment reinforcement check; implementation and publication remain pending."
+          "scope_status": "SUPPORTED",
+          "implementation_status": "IMPLEMENTED_BOUNDED",
+          "claim": "One simply supported, single-span, solid rectangular, top-loaded Clause 29 deep beam without openings, dapped ends, or hanging action; the caller supplies one positive factored moment, provided positive tie/detailing, and external bearing/compression-nodal verification.",
+          "workflows": [
+            "design_simply_supported_deep_beam_is456"
           ],
-          "evidence": [],
+          "limitations": [
+            "Continuous and cantilever deep beams, negative moment, openings, dapped ends, corbels, coupling beams, hollow/flanged/irregular sections, prestress, and hanging action are excluded.",
+            "The workflow does not generate loads or reactions and does not calculate bearing, support, compression-strut, or nodal-zone capacity.",
+            "Automatic section or bar selection, bundles, splices, transverse-enclosure design, crack width, deflection, fire, and seismic/IS 13920 checks are excluded.",
+            "Generalized strut-and-tie modelling, nonlinear analysis, FEM, professional approval, and release authorization are excluded."
+          ],
+          "evidence": [
+            "docs/verification/india-2-deep-g0-scope-evidence.md",
+            "docs/verification/india-2-deep-a-geometry-evidence.md",
+            "docs/verification/india-2-deep-b-reinforcement-evidence.md",
+            "docs/verification/india-2-deep-c-public-workflow-evidence.md",
+            "docs/verification/india-2-deep-d-publication-evidence.md"
+          ],
           "qualified_review_required": true
         },
         {

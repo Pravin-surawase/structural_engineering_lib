@@ -164,3 +164,35 @@ def test_invalid_public_contract_fails_closed() -> None:
         services_api.design_simply_supported_deep_beam_is456(
             _benchmark_request(bearing_nodal_zone_verified=False)
         )
+
+
+def test_deep_beam_capability_and_semantic_contract_are_exact() -> None:
+    capability = next(
+        item
+        for item in services_api.get_supported_is456_capabilities()
+        if item.element == "deep_beam"
+    )
+    assert capability.public_workflows == ("design_simply_supported_deep_beam_is456",)
+    assert "simply supported" in capability.supported_case
+    assert any("bearing" in item for item in capability.held_cases)
+    assert any("strut-and-tie" in item for item in capability.held_cases)
+    assert capability.qualified_review_required is True
+
+    contract = services_api.get_supported_is456_semantic_contract()
+    workflow = next(
+        item
+        for item in contract.workflows
+        if item.workflow == "design_simply_supported_deep_beam_is456"
+    )
+    field_names = {field.canonical_name for field in workflow.fields}
+    assert {
+        "request.factored_positive_moment_knm",
+        "request.bearing_nodal_zone_verified",
+        "reinforcement.geometry",
+        "reinforcement.positive_tie",
+        "reinforcement.anchorage",
+        "reinforcement.status",
+        "complete_engineering_design_approved",
+    }.issubset(field_names)
+    assert workflow.statuses[0].canonical_name == "status"
+    assert any("professional" in item for item in workflow.statuses[0].limitations)
