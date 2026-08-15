@@ -3,21 +3,22 @@
 ## Latest Handoff
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-14
-- Focus: GIT-7B merged; GIT-7C1 required CI topology locally complete and authorized for draft validation
+- Date: 2026-08-15
+- Focus: GIT-7C1 and GIT-7C2 complete; GIT-7D1 targeted index routing in exact-head validation
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
 
-**Integrated GIT-7B receipt:** PR #744 merged as `0fdb48ed`; refresh `main` before work
+**Integrated GIT-7C1 receipt:** PR #745 merged as `729cc41b`; refresh `main` before work
 
 **Task board:** [TASKS.md](../TASKS.md)
 
 | State | Target | Decision |
 |---|---|---|
-| **Current** | GIT-7C1 locally complete | Required control-plane/docs routes, fail-closed PR Gate aggregation, scoped cancellation, and 173 control-plane tests pass |
-| **Next** | Draft PR exact-head validation | Require Control Plane, Documentation, Repository, and aggregate PR Gate outcomes at the unchanged head |
-| **Held** | GIT-7C2 server settings | No ruleset, bypass, merge-method, or branch-deletion change without a fresh exact-delta owner decision after GIT-7C1 is green on `main` |
+| **Complete** | GIT-7C1 and GIT-7C2 | Required CI merged; main now requires PR plus strict `PR Gate`, has no bypass actor, retains deletion/non-fast-forward protection, permits merge/squash, and disables rebase |
+| **Current** | GIT-7D1 targeted generation | Preferred no-arg route is help; one-folder and explicit all-folder dry-runs are non-writing; focused tests pass |
+| **Next** | GIT-7D1 exact-head integration | Require Control Plane, Documentation, Repository, and aggregate `PR Gate` outcomes at the unchanged head |
+| **Held** | GIT-7D2 and GIT-7E | Inspection-only disposition and durable handoff remain separate packets; cleanup/deletion remains prohibited |
 | **Parallel owner decision** | Excel planning lane | Confirm a named active owner/next action or approve retirement |
 | **Approval-gated** | Alpha worktrees and merged branches | Exact evidence is ready; deletion still requires explicit target approval |
 | **Separate maintenance** | Seven dependency PRs | Replace one-by-one merging with four current-base compatibility packets |
@@ -35,13 +36,15 @@
 9. [Phase 6 canonical-policy proposal](../research/git-governance/GIT-001-phase-6-canonical-policy-proposal.md)
 10. [Phase 7B implementation receipt](../research/git-governance/GIT-001-phase-7B-state-intake-kernel.md)
 11. [Phase 7C1 required CI topology](../research/git-governance/GIT-001-phase-7C1-required-ci-topology.md)
-12. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
-13. [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
+12. [Phase 7C2 server enforcement](../research/git-governance/GIT-001-phase-7C2-server-enforcement.md)
+13. [Phase 7D1 targeted index generation](../research/git-governance/GIT-001-phase-7D1-targeted-index-generation.md)
+14. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+15. [AI token-efficiency policy](../guidelines/ai-token-efficiency.md)
 
 ## Start command
 
 ```bash
-./run.sh task brief "validate GIT-7C1 required CI topology at the exact draft PR head"
+./run.sh task brief "validate GIT-7D1 targeted index generation at the exact PR head"
 ./run.sh session brief --agent ops
 ./run.sh session start
 ```
@@ -52,6 +55,15 @@ replacement for live inspection.
 
 ## Current Git facts
 
+- GIT-7C1 PR #745 was independently reviewed at `c3edd247`, squash-merged as
+  `729cc41b`, tree-equivalent to the reviewed head, and both post-merge main
+  workflows passed.
+- Active ruleset `11390214` now requires PRs and strict `PR Gate`, retains
+  deletion/non-fast-forward protection, and has no bypass actor. Merge and
+  squash remain enabled; rebase is disabled; branch deletion remains disabled.
+- GIT-7D1 reproduced the preferred-generator defect, reversed only 31
+  generator-created paths, and routes folder/`--dry-run` arguments to the
+  worktree-bound maintained generator. The focused contract passes 45 tests.
 - The dedicated GIT-001 branch was synchronized without history rewriting at
   `54a03557`; its tree exactly matched `origin/main = 69d9f68c`, its quick gate
   passed 10/10, and the merge was fast-forward pushed to its existing remote.
@@ -86,12 +98,12 @@ state/intake, publication/server enforcement, generated-data/cleanup, and
 guidance/handoff control planes, with the read-only state kernel first. Phase 5
 reproduces the current abnormal-state defects and defines falsifiable packet
 gates. The owner accepted Phase 6 and authorized GIT-7B on 2026-08-13. The
-read-only kernel integrated through PR #744 as `0fdb48ed`. On 2026-08-14 the
-owner authorized publication of the planned GIT-7C1 workflow packet as a draft
-PR. Required control-plane and strict-documentation routes, fail-closed
-aggregation, and scoped cancellation are implemented locally. GIT-7C2 GitHub
-settings and GIT-7D–7E remain held; no cleanup, deletion, recovery, or release
-mutation is authorized.
+read-only kernel integrated through PR #744 as `0fdb48ed`. GIT-7C1 then
+integrated through PR #745 as `729cc41b`; the owner authorized and the agent
+applied the exact GIT-7C2 server delta with guarded rollback and postcondition
+checks. GIT-7D1 is the current targeted-generator packet. GIT-7D2 and GIT-7E
+remain separate; no cleanup, deletion, recovery, or release mutation is
+authorized.
 
 ## Destructive-action holds
 

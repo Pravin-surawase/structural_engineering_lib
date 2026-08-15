@@ -2,14 +2,14 @@
   "folder": "docs/research",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-13",
+  "last_updated": "2026-08-15",
   "file_count": 6,
   "files": [
     {
       "name": "2026-python-toolchain-report.md",
       "type": "documentation",
       "size_lines": 625,
-      "last_updated": "2026-08-13",
+      "last_updated": "2026-08-15",
       "description": "| Attribute | Value | |-----------|-------|",
       "content_hash": "7edf43b81123"
     },
@@ -17,7 +17,7 @@
       "name": "2026-state-of-the-art-report.md",
       "type": "documentation",
       "size_lines": 585,
-      "last_updated": "2026-08-13",
+      "last_updated": "2026-08-15",
       "description": "> **See also:** 2026 Python Toolchain Report for the definitive tools/versions guide. - **Learning mode**: Show formulas alongside results. \"Why is Ast = 1256 mm²?\" not just \"Ast = 1256 mm²\"",
       "content_hash": "4b3c1240fe05"
     },
@@ -25,7 +25,7 @@
       "name": "claw-code-harness-ideas.md",
       "type": "documentation",
       "size_lines": 1770,
-      "last_updated": "2026-08-13",
+      "last_updated": "2026-08-15",
       "description": "The claw-code repo reveals how production-grade AI agent systems wire tools, manage sessions, enforce permissions, and orchestrate multi-turn workflows. After analyzing ~40 source files, 200+ tool def",
       "content_hash": "82f22386de56"
     },
@@ -33,7 +33,7 @@
       "name": "innovation-generative-design-intelligence.md",
       "type": "documentation",
       "size_lines": 141,
-      "last_updated": "2026-08-13",
+      "last_updated": "2026-08-15",
       "title": "Innovation: Generative Design Intelligence — Pareto-Optimal Beam Explorer with Engineering Narratives",
       "description": "Every structural engineering tool in existence today — ETABS, SAP2000, STAAD Pro, SAFE — works the same way: the engineer inputs dimensions and loads, and the software returns **one answer**. If the e",
       "content_hash": "1bb3a412bf8f"
@@ -42,7 +42,7 @@
       "name": "innovation-structural-design-companion.md",
       "type": "documentation",
       "size_lines": 176,
-      "last_updated": "2026-08-13",
+      "last_updated": "2026-08-15",
       "title": "Innovation: The Structural Design Companion",
       "description": "Every structural engineering tool in the world — ETABS, STAAD, SAP2000, SAFE, OpenSees, SkyCiv, RFEM, PROKON — is a **calculator**. Input → output. No explanation. No reasoning. No context. Engineers ",
       "content_hash": "05a6e95b8e6d"
@@ -51,7 +51,7 @@
       "name": "innovation-sustainability-scoring.md",
       "type": "documentation",
       "size_lines": 182,
-      "last_updated": "2026-08-13",
+      "last_updated": "2026-08-15",
       "description": "Every beam design in our library produces structural results (area of steel, utilization, safety checks) and cost estimates — but **zero information about environmental impact**. Engineers designing R",
       "content_hash": "aea35db632ce"
     }
@@ -60,8 +60,8 @@
     {
       "name": "git-governance",
       "path": "git-governance/",
-      "file_count": 14
+      "file_count": 17
     }
   ],
-  "content_hash": "b7ead3da7b195627"
+  "content_hash": "ad5b0bf189c78090"
 }

@@ -5,6 +5,119 @@
 
 ---
 
+## 2026-08-15 — Session: GIT-7C2 Receipt and GIT-7D1 Targeted Generation
+
+**Agent:** Codex (`ops`)
+
+**Branch:** `codex/git-7d1-index-routing`
+
+**Focus:** Preserve the completed GIT-7C1/GIT-7C2 integration receipt, then
+implement the bounded preferred index-generator route as GIT-7D1
+
+### Summary
+
+- Independently reviewed and squash-merged GIT-7C1 PR #745 as `729cc41b`,
+  proved tree equivalence with reviewed head `c3edd247`, and verified both
+  post-merge main workflows passed.
+- Applied the explicitly authorized GIT-7C2 ruleset and merge-method delta with
+  guarded rollback, exact readback, and effective-branch verification.
+- Reproduced the GIT-7D generator-scope defect from a fresh current-main lane,
+  reversed only its 31 generated paths, and preserved the task-owned log.
+- Changed the preferred route so no arguments show non-writing help, folder
+  scope is retained, and all-folder generation requires explicit `--all`.
+- Added executable acceptance coverage and refreshed only the task-owned child
+  and parent generated projections after exact dry-run previews.
+
+### PRs Merged
+
+| PR | Summary |
+|----|---------|
+| #745 | GIT-7C1 required CI topology, squash result `729cc41b` |
+
+### Key Deliverables
+
+- `run.sh`
+- `Python/tests/test_session_automation.py`
+- `docs/research/git-governance/GIT-001-phase-7C2-server-enforcement.md`
+- `docs/research/git-governance/GIT-001-phase-7D1-targeted-index-generation.md`
+- Current task board, next-session brief, research map, and owned indexes
+
+### Issues encountered
+
+- `./run.sh generate indexes docs/research/git-governance --dry-run` ignored
+  both the folder and dry-run arguments, ran live, and changed 31 unrelated
+  index files.
+- The first focused test run failed one help-text assertion after the help
+  contract intentionally changed.
+- The first live-evidence refresh used a repository slug without the account
+  name's hyphen, so GitHub rejected the query before later chained API reads.
+- The first authorized GIT-7C2 update failed its exact response assertion even
+  though GitHub accepted the ruleset payload; the transaction rolled back.
+- The first full repository gate failed documentation front-matter validation
+  for the three updated GIT phase receipts.
+
+### Root causes and resolutions
+
+- Root cause: `run.sh` routed every index request to
+  `generate_all_indexes.sh`, whose hard-coded global loop consumes no caller
+  arguments. Resolution: route non-help requests through the worktree-bound
+  maintained Python generator; retain no-argument/help as read-only usage.
+  Evidence: the reproduced command now reports one dry-run target, explicit
+  `--all --dry-run` reports 32 targets, 45 focused tests pass, and Git status is
+  unchanged by both previews.
+- Root cause: the existing test asserted the former single-line usage prefix,
+  while the safer help now has two explicit forms. Resolution: assert the
+  folder-scoped form and rerun the maintained test file. Evidence: 45 tests
+  pass.
+- Root cause: the remote URL is `Pravin-surawase`, but the first command used
+  `pravinsurawase`. Resolution: derive and use the exact remote owner/repository
+  slug. Evidence: PR, ruleset, effective rules, repository settings, and
+  workflow API reads all succeeded on retry.
+- Root cause: GitHub normalizes a pull-request rule by adding
+  `required_reviewers: []`; the first verifier compared against the unnormalized
+  request. Resolution: confirm automatic rollback, run a controlled
+  apply/read/rollback probe, include the normalized field, and rerun the guarded
+  transaction. Evidence: ruleset `11390214` now has PR enforcement, strict
+  `PR Gate`, no bypass actor, and retained deletion/non-fast-forward rules;
+  repository settings retain merge/squash and disable rebase.
+- Root cause: the receipts used descriptive lifecycle values (`complete` and
+  `implementation`) instead of the front-matter schema's allowed `status`
+  vocabulary. Resolution: use `active` for maintained live references and keep
+  completion/implementation detail in phase prose and the task ledger.
+  Evidence: direct all-document validation and the rerun full gate pass.
+
+### Verification
+
+- Worktree-bound Python diagnosis: `source_bound=true`.
+- Focused session/generator plus CI-topology contracts: 58 tests passed.
+- No-argument help, one-folder dry-run, and explicit all-folder dry-run are
+  non-writing; isolated one-folder live generation creates only two indexes;
+  unexpected new topology fails without opt-in.
+- Remote `main` and post-merge workflows remain green at `729cc41b`.
+- Current and effective ruleset plus repository merge settings match GIT-7C2.
+- Black, Ruff, Bash syntax, diff whitespace, semantic Git workflow, token
+  efficiency, strict MkDocs, and direct all-document validation passed.
+- Quick repository gate: 10/10; full repository gate: 30/30 after correcting
+  the receipt front-matter vocabulary.
+- Exact-head required PR checks remain the publication gate.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: the canonical folder-scoped `--dry-run` ran the legacy
+  live all-folder generator -> reversed only the enumerated generated drift and
+  corrected the dispatcher before any owned live generation.
+- ⚠️ TERMINAL ISSUE: the first GitHub refresh used `pravinsurawase` instead of
+  the exact remote account `Pravin-surawase` -> reran with the derived slug and
+  completed all live reads.
+
+### Notes
+
+- GIT-7D2 classification, cleanup/deletion, GIT-7E, releases, product code, and
+  adjacent hardening remain out of scope.
+- Git-process timing starts only at the first publication action after local
+  verification; implementation/debugging time is reported separately.
+
+
 ## 2026-08-14 — Session: GIT-001 Phase 7C1 Required CI Topology
 
 **Agent:** Codex (`ops`)

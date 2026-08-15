@@ -2,22 +2,22 @@
   "folder": "docs/research/git-governance",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-14",
-  "file_count": 13,
+  "last_updated": "2026-08-15",
+  "file_count": 15,
   "files": [
     {
       "name": "GIT-001-README.md",
       "type": "documentation",
-      "size_lines": 95,
-      "last_updated": "2026-08-14",
+      "size_lines": 97,
+      "last_updated": "2026-08-15",
       "description": "This directory is the task-owned, non-normative research record for GIT-001. Its contents may describe official Git/GitHub/Codex facts, observed project",
-      "content_hash": "234824c3c75f"
+      "content_hash": "529af567b0bd"
     },
     {
       "name": "GIT-001-lifecycle-research.md",
       "type": "documentation",
       "size_lines": 192,
-      "last_updated": "2026-08-14",
+      "last_updated": "2026-08-15",
       "description": "This is a source-backed, non-normative map. It does not replace the canonical workflow and does not authorize policy, settings, cleanup, or release changes.",
       "content_hash": "8a2c9f510b77"
     },
@@ -25,7 +25,7 @@
       "name": "GIT-001-next-agent-disposition-plan.md",
       "type": "documentation",
       "size_lines": 411,
-      "last_updated": "2026-08-14",
+      "last_updated": "2026-08-15",
       "description": "This packet converts the original six-priority cleanup and recovery list into a current, evidence-backed handoff. It tells the next agent what is already done,",
       "content_hash": "eb05a95fb3ae"
     },
@@ -33,7 +33,7 @@
       "name": "GIT-001-official-evidence-register.md",
       "type": "documentation",
       "size_lines": 147,
-      "last_updated": "2026-08-14",
+      "last_updated": "2026-08-15",
       "description": "Only primary, official sources belong in the source tables. A source supports a bounded external fact; it does not create project policy. Project observations,",
       "content_hash": "2fb0b91dbc96"
     },
@@ -41,7 +41,7 @@
       "name": "GIT-001-phase-0-preservation-baseline.md",
       "type": "documentation",
       "size_lines": 165,
-      "last_updated": "2026-08-14",
+      "last_updated": "2026-08-15",
       "description": "- Observation time: 2026-08-12T21:17:05+05:30 - Repository: Pravin-surawase/structural_engineering_lib",
       "content_hash": "6d737c63cb6d"
     },
@@ -49,7 +49,7 @@
       "name": "GIT-001-phase-2-incident-register.md",
       "type": "documentation",
       "size_lines": 350,
-      "last_updated": "2026-08-14",
+      "last_updated": "2026-08-15",
       "description": "This register traces confirmed Git, worktree, automation, CI, release, and recovery failures from this repository. It is forensic evidence for the later",
       "content_hash": "e94fe169b0f7"
     },
@@ -57,7 +57,7 @@
       "name": "GIT-001-phase-3-gap-risk-matrix.md",
       "type": "documentation",
       "size_lines": 234,
-      "last_updated": "2026-08-14",
+      "last_updated": "2026-08-15",
       "description": "This matrix compares five evidence layers: 1. official Git/GitHub/Codex facts from Phase 1;",
       "content_hash": "c4c66d7f8b7e"
     },
@@ -65,7 +65,7 @@
       "name": "GIT-001-phase-4-operating-model.md",
       "type": "documentation",
       "size_lines": 429,
-      "last_updated": "2026-08-14",
+      "last_updated": "2026-08-15",
       "description": "Use a **preservation-first, evidence-separated, Codex-native** operating model: - one task, one attached worktree, one branch, and one named integration owner;",
       "content_hash": "2648d526bef2"
     },
@@ -73,7 +73,7 @@
       "name": "GIT-001-phase-5-scenario-validation.md",
       "type": "documentation",
       "size_lines": 227,
-      "last_updated": "2026-08-14",
+      "last_updated": "2026-08-15",
       "description": "Phase 5 tests whether the proposed operating model is grounded in observable Git/GitHub behavior and whether every implementation packet has a falsifiable",
       "content_hash": "c58cdf2724e1"
     },
@@ -81,7 +81,7 @@
       "name": "GIT-001-phase-6-canonical-policy-proposal.md",
       "type": "documentation",
       "size_lines": 264,
-      "last_updated": "2026-08-14",
+      "last_updated": "2026-08-15",
       "description": "state and intake kernel, as the first implementation packet.** Do not yet authorize GitHub ruleset changes, CI topology changes, generated-data",
       "content_hash": "8bb49d830e7b"
     },
@@ -89,7 +89,7 @@
       "name": "GIT-001-phase-7A-preservation-workflow-recovery.md",
       "type": "documentation",
       "size_lines": 82,
-      "last_updated": "2026-08-14",
+      "last_updated": "2026-08-15",
       "description": "The repository owner authorized Git operations, merge/deletion when proven safe, parallel subagents, preservation of Column PMM, and selective recovery of",
       "content_hash": "3a5222567115"
     },
@@ -97,7 +97,7 @@
       "name": "GIT-001-phase-7B-state-intake-kernel.md",
       "type": "documentation",
       "size_lines": 149,
-      "last_updated": "2026-08-14",
+      "last_updated": "2026-08-15",
       "description": "The repository owner accepted Phase 6 and authorized GIT-7B on 2026-08-13. This packet implements only the read-only Git state authority, task intake,",
       "content_hash": "66c215280a81"
     },
@@ -105,11 +105,27 @@
       "name": "GIT-001-phase-7C1-required-ci-topology.md",
       "type": "documentation",
       "size_lines": 148,
-      "last_updated": "2026-08-14",
+      "last_updated": "2026-08-15",
       "description": "After GIT-7B merged through PR #744, the repository owner authorized the next planned workflow packet for publication as a draft PR on 2026-08-14. This",
-      "content_hash": "ff780318f964"
+      "content_hash": "bb370fb77675"
+    },
+    {
+      "name": "GIT-001-phase-7C2-server-enforcement.md",
+      "type": "documentation",
+      "size_lines": 93,
+      "last_updated": "2026-08-15",
+      "description": "The owner explicitly authorized the documented GIT-7C2 settings delta and autonomous verification/rollback on 2026-08-15. The change was applied only",
+      "content_hash": "494e0c9d67de"
+    },
+    {
+      "name": "GIT-001-phase-7D1-targeted-index-generation.md",
+      "type": "documentation",
+      "size_lines": 93,
+      "last_updated": "2026-08-15",
+      "description": "GIT-7D is split so the incident-producing generator route can be corrected without combining it with branch/worktree disposition logic. This packet owns",
+      "content_hash": "612cc39c216d"
     }
   ],
   "subfolders": [],
-  "content_hash": "ccc27f23f29d19b2"
+  "content_hash": "5d2bd7e75171e8d4"
 }
