@@ -1,4 +1,14 @@
+---
+owner: Main Agent
+status: deprecated
+last_updated: 2026-08-15
+doc_type: reference
+---
+
 # Agent Guides
+
+> Historical navigation only. Current agent roles and Git/GitHub instructions
+> are in `.github/agents/`, `AGENTS.md`, and the Codex-native Git workflow.
 
 **Purpose:** Stable reference documentation for each agent's protocols, tools, and best practices.
 

@@ -3,7 +3,7 @@
 Guides for developers and maintainers of the structural engineering library.
 
 **Type:** Documentation
-**Last Updated:** 2026-08-12
+**Last Updated:** 2026-08-15
 **Files:** 24
 
 ## Documentation Files
@@ -24,7 +24,7 @@ Guides for developers and maintainers of the structural engineering library.
 | [git-workflow-ai-agents.md](git-workflow-ai-agents.md) |  | The canonical workflow is git-workflow-single-source.md. | 29 |
 | [git-workflow-testing.md](git-workflow-testing.md) |  | > Historical test strategy for the retired wrapper layer. Do | 346 |
 | [github-workflow.md](github-workflow.md) |  | Codex owns the repository's Git and GitHub lifecycle. The ol | 55 |
-| [handoff.md](handoff.md) |  | Goal: enable the next agent to resume in under 2 minutes. 1. | 96 |
+| [handoff.md](handoff.md) |  | > Current Git/session boundary: start with ./run.sh session  | 114 |
 | [learning-paths.md](learning-paths.md) |  | Pick the smallest reading path that still protects quality.  | 99 |
 | [lesson-incomplete-implementation.md](lesson-incomplete-implementation.md) |  | > Historical incident lesson. Wrapper commands below were re | 374 |
 | [naming-conventions.md](naming-conventions.md) |  | This document defines naming standards for files, modules, a | 77 |

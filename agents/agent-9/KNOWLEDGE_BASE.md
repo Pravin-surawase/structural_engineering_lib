@@ -1,13 +1,18 @@
 ---
 owner: Governance Agent
 status: active
-last_updated: 2026-08-07
+last_updated: 2026-08-15
 doc_type: reference
 complexity: advanced
 tags: [agents, governance]
 ---
 
 # Agent 9: Git & CI Governance Knowledge Base
+
+> Current repository boundary: `AGENTS.md` and the canonical Codex-native Git
+> workflow control. Use `scripts/git_state.py` for local facts. Codex performs
+> authorized Git/GitHub mutations; this guide never authorizes recovery,
+> cleanup, deletion, history rewriting, or bypass.
 
 **Purpose:** Git/CI best practices, troubleshooting guides, and research citations
 **Source:** Extracted from `docs/_internal/git-governance.md` + sustainability research
@@ -136,8 +141,9 @@ gh pr create --title "..." --body "..."
 # WAIT for CI (don't merge immediately!)
 gh pr checks <PR_NUMBER> --watch
 
-# Only after all checks pass
-gh pr merge <PR_NUMBER> --squash --delete-branch
+# Only after all checks pass, have Codex recheck the unchanged reviewed head,
+# required checks, mergeability, and unresolved blockers before normal merge.
+# Retain the branch/worktree until a separate disposition decision.
 ```
 
 ---
@@ -153,19 +159,11 @@ gh pr merge <PR_NUMBER> --squash --delete-branch
 
 **Cause:** Remote has commits you don't have locally
 
-**Solution:**
-```bash
-# Pull and rebase
-git pull --rebase origin main
-git push
-
-# Alternative: fetch and reset
-git fetch origin
-git rebase origin/main
-git push
-```
-
-**Prevention:** Always pull before pushing
+**Solution:** Stop and inspect with `scripts/git_state.py --json --worktrees`.
+Refresh remote evidence through Codex, then choose a normal non-rewriting
+integration path only after ownership and exact heads are known. A query
+failure, `NOT_CHECKED`, behind, or diverged result remains an `UNKNOWN`/hold;
+never reset or rewrite a published lane to make the push succeed.
 
 ---
 
@@ -289,60 +287,39 @@ git commit --no-edit
 - ✅ Required status checks must pass
 - ✅ Force pushes disabled
 - ✅ Branch deletion disabled
-- ✅ PR-first for code/CI/deps
-- ✅ Direct commits allowed for docs only
+- ✅ PR-required for every change to `main`
 
 ### Branch Naming Convention
 
-- `feat/task-XXX-description` - Feature branches
-- `fix/task-XXX-description` - Bug fix branches
-- `docs/task-XXX-description` - Documentation branches
-- `refactor/task-XXX-description` - Refactoring branches
+- `codex/<task-slug>` - all normal task branches
 
 **Examples:**
 ```
-feat/task-017-etabs-import
-fix/task-012-shear-bug
-docs/task-025-api-reference
+codex/task-017-etabs-import
+codex/task-012-shear-bug
+codex/task-025-api-reference
 ```
 
-### Branch Cleanup
+### Branch Disposition
 
-```bash
-# Delete local merged branches
-git branch --merged | grep -v "\*\|main" | xargs -n 1 git branch -d
-
-# Delete remote merged branches
-gh pr list --state merged --limit 20 --json headRefName | \
-  jq -r '.[].headRefName' | \
-  xargs -I {} git push origin --delete {}
-
-# Prune remote references
-git remote prune origin
-git fetch --prune
-```
+Use `scripts/classify_branch_disposition.py` only after exact caller-supplied
+remote, PR, ownership, and retention evidence is available. `NOT_CHECKED`,
+missing, stale, contradictory, or query-failed evidence is `UNKNOWN`. Even
+`RETIREMENT_READY_PENDING_APPROVAL` requires separate exact local-branch,
+remote-branch, and worktree authorization plus immediate reinspection. The
+classifier never fetches, prunes, removes a worktree, or deletes a ref.
 
 ### Worktree Management
 
-**Create Worktree:**
+Inspect the current and sibling topology without changing it:
+
 ```bash
-git worktree add ../worktree-agent-6 -b feat/ui-feature
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
 
-**List Worktrees:**
-```bash
-git worktree list
-```
-
-**Remove Worktree:**
-```bash
-git worktree remove ../worktree-agent-6
-```
-
-**Prune Stale Worktrees:**
-```bash
-git worktree prune
-```
+Codex may create a fresh `codex/<task-slug>` worktree after verifying current
+main and ownership. Removal or pruning is never a routine follow-up: it needs
+complete exact-target disposition evidence and separate authorization.
 
 ---
 
@@ -379,19 +356,11 @@ git push
 
 **Detection:** History rewritten, commits lost
 
-**Recovery:**
-```bash
-# Find lost commit in reflog
-git reflog
-
-# Reset to lost commit
-git reset --hard <lost-commit-hash>
-
-# Force push (only if you're sure!)
-git push --force-with-lease
-```
-
-**Prevention:** Branch protection prevents force push
+**Recovery:** Inspect the reflog and current `git_state.py` receipt without
+moving a ref. Preserve the exact candidate commit/tree as evidence, establish
+ownership, and recover intended paths onto a fresh lane. Never hard-reset or
+force-push as a shortcut; a published-history decision needs explicit owner
+authority beyond this guide.
 
 ---
 
@@ -402,27 +371,10 @@ git push --force-with-lease
 - Commands failing unexpectedly
 - Merge states stuck
 
-**Recovery:**
-```bash
-# Check for unfinished merges
-ls .git/MERGE_*
-
-# If unfinished merge exists:
-git commit --no-edit  # Complete merge
-# OR
-git merge --abort     # Abort merge
-
-# Check for unfinished rebases
-ls .git/rebase-*
-
-# If unfinished rebase:
-git rebase --continue  # Complete rebase
-# OR
-git rebase --abort     # Abort rebase
-
-# Nuclear option (last resort):
-git reset --hard origin/main
-```
+**Recovery:** Run `scripts/git_state.py --json --worktrees`; it resolves real
+linked-worktree operation markers and locks. Stop on `HOLD_OPERATION`,
+`HOLD_LOCKED`, or `HOLD_UNKNOWN`. Inspect the owning operation and exact paths;
+do not delete markers, abort/continue blindly, reset, stash, or switch lanes.
 
 ---
 
@@ -576,8 +528,8 @@ gh pr create --draft --fill
 # Wait for CI
 gh pr checks <PR_NUM> --watch
 
-# Merge PR
-gh pr merge <PR_NUM> --squash --delete-branch
+# Merge only after Codex rechecks the unchanged reviewed head and required
+# checks. Branch/worktree retention is separate.
 
 # Sync after merge
 git pull --ff-only
@@ -591,24 +543,15 @@ git pull --ff-only
 # Check version consistency
 ./scripts/check_version_consistency.sh
 
-# Check git state
-git status
-git worktree list
-gh pr list --state open
+# Check local Git state through the sole authority
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
 
-### Cleanup
-```bash
-# Archive old docs
-./scripts/archive_old_sessions.sh
+### Disposition review
 
-# Clean worktrees
-git worktree prune
-
-# Clean branches
-git remote prune origin
-git fetch --prune
-```
+Run the inspection-only classifier with exact evidence. Do not infer cleanup
+authority from age, reachability, a merged PR, task archive state, or a clean
+tree. No pruning or deletion is part of routine health checks.
 
 ### Emergency
 ```bash

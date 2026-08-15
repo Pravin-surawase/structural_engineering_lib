@@ -118,8 +118,8 @@ rg "old/path.md" docs/ agents/ .github/
 # 4. Validate links
 .venv/bin/python scripts/check_links.py
 
-# 5. Commit with Agent 8
-./scripts/ai_commit.sh "docs: move X to follow governance rules"
+# 5. Have Codex inspect and stage only the intended paths, then create a
+# conventional commit and normal draft PR without rewriting history.
 ```
 
 ### Task 2: Create Agent Entry Point
@@ -185,8 +185,9 @@ open docs/guidelines/migration-workflow-guide.md
 ## PR Workflow for Structure Changes
 
 ```bash
-# 1. Create task branch
-./scripts/create_task_pr.sh GOV-001 "Reorganize X per rules"
+# 1. Inspect with git_state.py, then have Codex create a codex/<task-slug>
+# branch from verified current main.
+./scripts/python_runtime.sh scripts/git_state.py --json
 
 # 2. Make changes (safe_file_move.py for moves)
 .venv/bin/python scripts/safe_file_move.py old/path.md new/path.md
@@ -198,14 +199,10 @@ open docs/guidelines/migration-workflow-guide.md
 .venv/bin/python scripts/check_governance.py --structure
 .venv/bin/python scripts/check_links.py
 
-# 5. Commit
-./scripts/ai_commit.sh "docs: reorganize X per governance rules"
-
-# 6. Create PR
-./scripts/finish_task_pr.sh GOV-001 "Reorganize X"
-
-# 7. Merge when green
-gh pr merge <num> --squash --delete-branch
+# 5. Have Codex stage only intended paths and create a conventional commit.
+# 6. Push without rewriting history and open a normal draft PR.
+# 7. Recheck the unchanged head, required checks, conflicts, and blockers
+# before normal merge. Branch/worktree retention remains a separate decision.
 ```
 
 ---

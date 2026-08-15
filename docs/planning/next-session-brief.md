@@ -4,12 +4,12 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
-- Focus: eight-branch retirement proposal holds every target on unknown retention; exact-head PR audit is the next gate; GIT-7E is not started
+- Focus: PR #750 integrated the held retirement proposal; GIT-7E is active on a fresh verified-main lane and remains paused before any ready/merge transition
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha
 
-**Refreshed Git anchor:** `origin/main = 670ea4beeb2a8765fff59e05bb130ff54752369e`
+**Refreshed Git anchor:** `origin/main = b91838f594a04aff1d21c43bf6f87a64710b0748`
 
 **Task board:** [TASKS.md](../TASKS.md)
 
@@ -17,9 +17,9 @@
 |---|---|---|
 | **Complete** | GIT-7B, GIT-7C, and GIT-7D | State kernel, exact-head CI/server enforcement, targeted generation, and inspection-only disposition are integrated |
 | **Complete** | GIT-7D2 | PR #747 merged as `0a784de5`; closeout lessons PR #748 merged as `bf4065f0`; both reviewed/merge trees were equal |
-| **Current** | Eight-branch retirement proposal | All eight exact targets are held as `HOLD_UNKNOWN_OWNER` / `RETENTION_EVIDENCE_UNKNOWN`; proposal integration awaits independent exact-head audit |
+| **Complete** | Eight-branch retirement proposal | PR #750 squash-merged as `b91838f`; all eight exact targets remain `HOLD_UNKNOWN_OWNER` / `RETENTION_EVIDENCE_UNKNOWN` and no deletion is authorized |
 | **Next** | Retention decision | Owner must state `NO_RETENTION` or `RETAIN` for each exact SHA before any fresh classifier run or approval request |
-| **Not started** | GIT-7E | Semantic live-guidance coherence and durable read-only task-to-Git handoff remains separate |
+| **Current** | GIT-7E | Semantic live-guidance coherence and durable read-only task-to-Git handoff are being implemented; exact-head audit remains the ready/merge boundary |
 | **Owner decision** | Excel planning lane | Name an active owner/next action or separately authorize a complete retirement assessment |
 | **Separate maintenance** | Seven dependency PRs | Do not close or merge the existing Dependabot PRs in GIT-001 |
 
@@ -43,10 +43,11 @@
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
 
-Refresh and verify `origin/main` before relying on this handoff. Create a fresh
-`codex/<task-slug>` branch/worktree from verified current main for separately
-authorized GIT-7E work. Do not extend, reset, rebase, merge into, or reconcile a
-preserved squash-diverged lane.
+Refresh and verify `origin/main` before relying on this handoff. Resume GIT-7E
+only from its exact receipt-bound branch/head, or create another fresh
+`codex/<task-slug>` lane from verified current main if that evidence is unknown.
+Do not extend, reset, rebase, merge into, or reconcile a preserved
+squash-diverged lane.
 
 ## Verified current Git facts
 
@@ -106,10 +107,11 @@ GIT-7E must prove:
 5. task/transcript archive state is never represented as Git retention proof;
 6. aliases resolve maintained commands without permitting obsolete mutations.
 
-GIT-7E does not refresh remote state, mutate GitHub, change disposition logic,
+GIT-7E does not itself refresh remote state, mutate GitHub, change disposition logic,
 authorize cleanup/deletion, synchronize preserved lanes, modify GIT-7D1/7D2
-behavior, publish a release, or change product code. It requires separate owner
-authorization before implementation.
+behavior, publish a release, or change product code. Implementation was
+authorized in the GIT-7E task delegation; ready/merge remains held for
+independent exact-head audit.
 
 ## Destructive-action holds
 

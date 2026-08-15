@@ -34,6 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
 from _lib.output import StatusLine
 from git_state import RepositoryState, collect_repository_state
+from git_handoff_receipt import load_receipt, validate_receipt
 
 SESSION_LOG = REPO_ROOT / "docs" / "SESSION_LOG.md"
 TASKS_MD = REPO_ROOT / "docs" / "TASKS.md"
@@ -1018,7 +1019,29 @@ def cmd_end(args: argparse.Namespace) -> int:
         all_passed = False
     print()
 
-    # 5. Link check
+    # 5. Durable task-to-Git handoff receipt
+    print("🧾 Task-to-Git Handoff Receipt:")
+    try:
+        _date_str, latest_block = _latest_session_block(
+            SESSION_LOG.read_text(encoding="utf-8").splitlines()
+        )
+        receipt, receipt_path, receipt_errors = _resolve_git_receipt(
+            latest_block, args.git_receipt
+        )
+    except (OSError, ValueError) as exc:
+        receipt, receipt_path, receipt_errors = None, None, [str(exc)]
+    if receipt_errors:
+        for issue in receipt_errors:
+            print(f"  ⚠️  {issue}")
+        all_passed = False
+    else:
+        print(
+            f"  ✅ {receipt_path} | {receipt['local_state_receipt_hash']} | "
+            f"{receipt['receipt_status']}"
+        )
+    print()
+
+    # 6. Link check
     print("🔗 Doc Links:")
     passed, msg = check_doc_links()
     if passed:
@@ -1027,7 +1050,7 @@ def cmd_end(args: argparse.Namespace) -> int:
         print(f"  ⚠️  {msg}")
     print()
 
-    # 6. README updates
+    # 7. README updates
     print("📚 README Index Updates:")
     changed_folders = get_changed_doc_folders()
     if changed_folders:
@@ -1186,7 +1209,67 @@ def _parse_prs(block: list[str]) -> list[str]:
     return prs
 
 
-def _build_handoff_lines(date_str: str, block: list[str]) -> list[str]:
+def _parse_git_receipt_path(block: list[str]) -> str | None:
+    for line in block:
+        match = re.match(r"\*\*Git handoff receipt:\*\*\s+`?([^`\s]+)`?", line)
+        if match:
+            return match.group(1)
+    return None
+
+
+def _resolve_git_receipt(
+    block: list[str], explicit_path: Path | None = None
+) -> tuple[dict | None, str | None, list[str]]:
+    raw_path = str(explicit_path) if explicit_path else _parse_git_receipt_path(block)
+    if not raw_path:
+        return None, None, ["Missing task-to-Git handoff receipt"]
+    path = Path(raw_path)
+    if not path.is_absolute():
+        path = REPO_ROOT / path
+    try:
+        resolved = path.resolve()
+        resolved.relative_to(REPO_ROOT.resolve())
+    except (OSError, ValueError):
+        return None, raw_path, ["Git handoff receipt must be inside the repository"]
+    try:
+        receipt = load_receipt(resolved)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        return None, raw_path, [f"Git handoff receipt is malformed: {exc}"]
+    errors = validate_receipt(receipt)
+    if errors:
+        return receipt, raw_path, errors
+    return receipt, resolved.relative_to(REPO_ROOT).as_posix(), []
+
+
+def _git_handoff_lines(receipt: dict, relative_path: str) -> list[str]:
+    state = receipt["local"]["state"]
+    upstream = state["upstream"]
+    default_base = state["default_base"]
+    pr = receipt["pull_request"]
+    remote = receipt["remote"]
+    return [
+        f"- Git receipt: {relative_path} | {receipt['local_state_receipt_hash']} | "
+        f"{receipt['receipt_status']}",
+        f"- Git identity: {state['branch']}@{state['head_sha']} | "
+        f"upstream={upstream['ref']}@{upstream['sha'] or 'UNKNOWN'} | "
+        f"base={default_base['ref']}@{default_base['sha'] or 'UNKNOWN'} | "
+        f"tree={'clean' if state['tree']['clean'] else 'dirty'} | "
+        f"operation={state['operation']}",
+        f"- Hosted evidence: remote={remote['status']} | "
+        f"PR={pr['status']}#{pr.get('number', 'UNKNOWN')} | "
+        f"review={receipt['review']['status']} | "
+        f"retention={receipt['retention']['status']}",
+        f"- Next action: {receipt['authorization']['next_action']}",
+    ]
+
+
+def _build_handoff_lines(
+    date_str: str,
+    block: list[str],
+    *,
+    receipt: dict | None = None,
+    receipt_path: str | None = None,
+) -> list[str]:
     focus = _parse_focus(block)
     completed = _parse_completed(block)[:3]
     prs = _parse_prs(block)[:6]
@@ -1197,6 +1280,8 @@ def _build_handoff_lines(date_str: str, block: list[str]) -> list[str]:
         lines.append(f"- Completed: {'; '.join(completed)}")
     if prs:
         lines.append(f"- PRs: {', '.join(prs)}")
+    if receipt is not None and receipt_path is not None:
+        lines.extend(_git_handoff_lines(receipt, receipt_path))
     return lines
 
 
@@ -1234,7 +1319,11 @@ def _update_next_brief(handoff_lines: list[str]) -> None:
     NEXT_BRIEF.write_text(new_text.strip() + "\n", encoding="utf-8")
 
 
-def _do_handoff(*, preserve_current_same_day: bool = False) -> tuple[bool, str]:
+def _do_handoff(
+    *,
+    preserve_current_same_day: bool = False,
+    git_receipt: Path | None = None,
+) -> tuple[bool, str]:
     if not SESSION_LOG.exists():
         return False, "docs/SESSION_LOG.md not found"
     if not NEXT_BRIEF.exists():
@@ -1242,6 +1331,9 @@ def _do_handoff(*, preserve_current_same_day: bool = False) -> tuple[bool, str]:
     try:
         lines = SESSION_LOG.read_text(encoding="utf-8").splitlines()
         date_str, block = _latest_session_block(lines)
+        receipt, receipt_path, receipt_errors = _resolve_git_receipt(block, git_receipt)
+        if receipt_errors:
+            return False, "Git handoff receipt hold: " + ", ".join(receipt_errors)
         if preserve_current_same_day:
             current_brief = NEXT_BRIEF.read_text(encoding="utf-8")
             current_match = re.search(
@@ -1249,9 +1341,16 @@ def _do_handoff(*, preserve_current_same_day: bool = False) -> tuple[bool, str]:
                 current_brief,
             )
             current_block = current_match.group(1) if current_match else ""
-            if f"- Date: {date_str}" in current_block and "- Focus:" in current_block:
+            receipt_hash = receipt["local_state_receipt_hash"] if receipt else ""
+            if (
+                f"- Date: {date_str}" in current_block
+                and "- Focus:" in current_block
+                and receipt_hash in current_block
+            ):
                 return True, "Preserved current same-day handoff block"
-        handoff_lines = _build_handoff_lines(date_str, block)
+        handoff_lines = _build_handoff_lines(
+            date_str, block, receipt=receipt, receipt_path=receipt_path
+        )
         if not handoff_lines:
             return False, "Could not build handoff lines from SESSION_LOG.md"
         _update_next_brief(handoff_lines)
@@ -1261,7 +1360,7 @@ def _do_handoff(*, preserve_current_same_day: bool = False) -> tuple[bool, str]:
 
 
 def cmd_handoff(args: argparse.Namespace) -> int:
-    ok, msg = _do_handoff()
+    ok, msg = _do_handoff(git_receipt=args.git_receipt)
     print(msg)
     return 0 if ok else 1
 
@@ -2190,9 +2289,21 @@ def build_parser() -> argparse.ArgumentParser:
     p_end.add_argument(
         "--agent", type=str, default=None, help="Agent name for cost logging"
     )
+    p_end.add_argument(
+        "--git-receipt",
+        type=Path,
+        help="Versioned task-to-Git handoff receipt (otherwise read from SESSION_LOG)",
+    )
 
     # handoff
-    sub.add_parser("handoff", help="Update next-session-brief.md from SESSION_LOG")
+    p_handoff = sub.add_parser(
+        "handoff", help="Update next-session-brief.md from SESSION_LOG"
+    )
+    p_handoff.add_argument(
+        "--git-receipt",
+        type=Path,
+        help="Versioned task-to-Git receipt to validate and embed",
+    )
 
     # check
     sub.add_parser("check", help="Validate session docs consistency")

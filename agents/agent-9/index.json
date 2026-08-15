@@ -2,98 +2,89 @@
   "folder": "agents/agent-9",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-03-25",
+  "last_updated": "2026-08-15",
   "file_count": 10,
   "files": [
     {
       "name": "AGENT_9_IMPLEMENTATION_ROADMAP.md",
       "type": "documentation",
-      "size_lines": 1159,
-      "last_updated": "2026-01-23",
-      "title": "Agent 9 Implementation Roadmap",
+      "size_lines": 1168,
+      "last_updated": "2026-08-15",
       "description": "- **Phase A (v0.17.0):** Critical infrastructure (archive, CI checks, metrics) - **Phase B (v0.18.0):** Automation & observability (dashboards, alerts)",
-      "content_hash": "8bd9fbb6986a"
+      "content_hash": "21bb16c31511"
     },
     {
       "name": "AUTOMATION.md",
       "type": "documentation",
-      "size_lines": 840,
-      "last_updated": "2026-01-23",
-      "title": "Agent 9: Automation Scripts Specifications",
+      "size_lines": 849,
+      "last_updated": "2026-08-15",
       "description": "1. Archive Old Sessions Script 2. Check WIP Limits Script",
-      "content_hash": "2b7bc8b95a4e"
+      "content_hash": "a3f3725fb2a8"
     },
     {
       "name": "CHECKLISTS.md",
       "type": "documentation",
-      "size_lines": 504,
-      "last_updated": "2026-01-23",
-      "title": "Agent 9: Operational Checklists",
+      "size_lines": 513,
+      "last_updated": "2026-08-15",
       "description": "1. Weekly Maintenance Checklist 2. Pre-Release Checklist",
-      "content_hash": "1cb57c0fc81c"
+      "content_hash": "dac833683939"
     },
     {
       "name": "KNOWLEDGE_BASE.md",
       "type": "documentation",
-      "size_lines": 631,
-      "last_updated": "2026-01-23",
-      "title": "Agent 9: Git & CI Governance Knowledge Base",
-      "description": "1. Git Workflow Best Practices 2. Pre-Commit Hooks & CI",
-      "content_hash": "2d4793718942"
+      "size_lines": 584,
+      "last_updated": "2026-08-15",
+      "description": "> Current repository boundary: AGENTS.md and the canonical Codex-native Git > workflow control. Use scripts/git_state.py for local facts. Codex performs",
+      "content_hash": "e57a9dd452a6"
     },
     {
       "name": "METRICS.md",
       "type": "documentation",
-      "size_lines": 598,
-      "last_updated": "2026-01-23",
-      "title": "Agent 9: Metrics & Tracking Templates",
+      "size_lines": 607,
+      "last_updated": "2026-08-15",
       "description": "1. Weekly Metrics Dashboard 2. Monthly Metrics Dashboard",
-      "content_hash": "fba35f7ef515"
+      "content_hash": "c658cc11629d"
     },
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 408,
-      "last_updated": "2026-01-23",
+      "last_updated": "2026-08-15",
       "title": "Agent 9: Governance & Sustainability Agent",
       "description": "| Document | Purpose | |----------|---------|",
-      "content_hash": "170af38a152c"
+      "content_hash": "3bec4ae81334"
     },
     {
       "name": "RESEARCH_PLAN.md",
       "type": "documentation",
-      "size_lines": 811,
-      "last_updated": "2026-01-23",
-      "title": "Agent 9 Research Plan",
+      "size_lines": 822,
+      "last_updated": "2026-08-15",
       "description": "- ✅ Research complete in 3-5 hours - ✅ Findings documented with citations",
-      "content_hash": "46db5e7220f2"
+      "content_hash": "2e9f3129b7cc"
     },
     {
       "name": "RESEARCH_QUICK_REF.md",
       "type": "documentation",
-      "size_lines": 259,
-      "last_updated": "2026-01-23",
-      "title": "Agent 9 Research Plan - Quick Reference Card",
+      "size_lines": 268,
+      "last_updated": "2026-08-15",
       "description": "Research evidence-based governance for sustainable AI-assisted development (3-5 hours, 5-10 actionable tasks) - [ ] **RESEARCH-001** - Historical patterns (SESSION_LOG analysis) — 15 min",
-      "content_hash": "e2b21d0769df"
+      "content_hash": "784bdc2093d5"
     },
     {
       "name": "SESSION_TEMPLATES.md",
       "type": "documentation",
-      "size_lines": 975,
-      "last_updated": "2026-01-23",
-      "title": "Agent 9: Session Planning Templates",
+      "size_lines": 984,
+      "last_updated": "2026-08-15",
       "description": "1. Weekly Maintenance Session Template 2. Pre-Release Session Template",
-      "content_hash": "e90bfff6289e"
+      "content_hash": "5eed967084a3"
     },
     {
       "name": "WORKFLOWS.md",
       "type": "documentation",
-      "size_lines": 646,
-      "last_updated": "2026-01-23",
-      "title": "Agent 9: Operational Workflows",
+      "size_lines": 655,
+      "last_updated": "2026-08-15",
       "description": "1. Weekly Maintenance Session 2. Pre-Release Governance",
-      "content_hash": "08229a01e0b0"
+      "content_hash": "de144273cfab"
     }
   ],
   "subfolders": [
@@ -108,5 +99,5 @@
       "file_count": 1
     }
   ],
-  "content_hash": "17587bba4823caa5"
+  "content_hash": "cab33f90610decec"
 }

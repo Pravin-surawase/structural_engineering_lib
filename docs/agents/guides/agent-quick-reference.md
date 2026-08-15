@@ -1,13 +1,16 @@
 ---
 owner: Main Agent
-status: active
-last_updated: 2026-03-30
+status: deprecated
+last_updated: 2026-08-15
 doc_type: reference
 complexity: intermediate
 tags: []
 ---
 
 # Agent Workflow Quick Reference Card
+
+> Historical only. Use `AGENTS.md`, `.github/agents/`, and the canonical
+> Codex-native Git workflow for current instructions.
 **Version:** 1.2.0 | **Print this and keep it visible!**
 
 ---

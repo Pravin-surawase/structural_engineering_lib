@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "> Development, validation, discovery, release-preparation, and maintenance tools.",
   "last_updated": "2026-08-15",
-  "file_count": 109,
+  "file_count": 110,
   "files": [
     {
       "name": "README.md",
@@ -912,7 +912,7 @@
         "_coverage",
         "tasks"
       ],
-      "content_hash": "e72e30a4b4ba"
+      "content_hash": "509c9fc38593"
     },
     {
       "name": "batch_migrate_runner.py",
@@ -1474,10 +1474,26 @@
     {
       "name": "check_codex_git_workflow.py",
       "type": "python",
-      "size_lines": 298,
+      "size_lines": 402,
       "last_updated": "2026-08-15",
       "description": "Guard the Codex-native Git/GitHub workflow contract.",
       "functions": [
+        {
+          "name": "discover_guidance_surfaces",
+          "description": "Resolve live guidance from the maintained index, failing on ambiguity.",
+          "params": [
+            "repo_root",
+            "index_path"
+          ]
+        },
+        {
+          "name": "check_semantic_guidance",
+          "description": "Reject lifecycle contradictions across every indexed live surface.",
+          "params": [
+            "repo_root",
+            "index_path"
+          ]
+        },
         {
           "name": "main"
         }
@@ -1486,15 +1502,15 @@
         "REPO_ROOT",
         "CANONICAL",
         "GIT_STATE_AUTHORITY",
+        "HANDOFF_RECEIPT",
         "DISPOSITION_CLASSIFIER",
         "GIT_STATE_CONSUMERS",
         "GIT_STATE_COMPATIBILITY",
         "FAST_CHECKS",
         "DEPLOY_DOCS",
-        "RETIRED_PATHS",
-        "DISPOSITION_GUIDANCE"
+        "GUIDANCE_INDEX"
       ],
-      "content_hash": "31fc5eed5a46"
+      "content_hash": "9456903a9430"
     },
     {
       "name": "check_doc_versions.py",
@@ -3391,6 +3407,47 @@
       "content_hash": "47a4073cd002"
     },
     {
+      "name": "git_handoff_receipt.py",
+      "type": "python",
+      "size_lines": 454,
+      "last_updated": "2026-08-15",
+      "description": "Build and validate fail-closed task-to-Git handoff receipts.",
+      "functions": [
+        {
+          "name": "build_receipt",
+          "description": "Create one receipt. Missing or inconsistent facts become explicit holds."
+        },
+        {
+          "name": "validate_receipt",
+          "description": "Validate a stored receipt without upgrading unknown evidence to success.",
+          "params": [
+            "receipt"
+          ]
+        },
+        {
+          "name": "load_receipt",
+          "params": [
+            "path"
+          ]
+        },
+        {
+          "name": "main",
+          "params": [
+            "argv"
+          ]
+        }
+      ],
+      "constants": [
+        "SCHEMA_VERSION",
+        "RECEIPT_KIND",
+        "UNKNOWN",
+        "NOT_CHECKED",
+        "MAX_EVIDENCE_AGE_SECONDS",
+        "SHA_RE"
+      ],
+      "content_hash": "c7720d3e142a"
+    },
+    {
       "name": "git_state.py",
       "type": "python",
       "size_lines": 658,
@@ -4337,7 +4394,7 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 2306,
+      "size_lines": 2417,
       "last_updated": "2026-08-15",
       "description": "Unified session management CLI.",
       "functions": [
@@ -4448,7 +4505,7 @@
         "HANDOFF_DATE_RE",
         "COMMIT_HASH_RE"
       ],
-      "content_hash": "cf690cae634e"
+      "content_hash": "09c26e99cad8"
     },
     {
       "name": "session_store.py",
@@ -5462,5 +5519,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "00cc8212e284953c"
+  "content_hash": "b37adb7217578d70"
 }

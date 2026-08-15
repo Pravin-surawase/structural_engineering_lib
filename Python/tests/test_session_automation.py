@@ -7,7 +7,7 @@ import json
 import os
 import subprocess
 import sys
-from datetime import date
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 import pytest
@@ -23,6 +23,7 @@ check_api = importlib.import_module("scripts.check_api")
 validate_script_refs = importlib.import_module("scripts.validate_script_refs")
 prompt_router = importlib.import_module("scripts.prompt_router")
 git_state = importlib.import_module("scripts.git_state")
+git_handoff_receipt = importlib.import_module("scripts.git_handoff_receipt")
 
 
 @pytest.mark.parametrize(
@@ -623,17 +624,137 @@ def test_session_end_preserves_current_same_day_handoff(
 <!-- HANDOFF:START -->
 - Date: 2026-08-07
 - Focus: obtain approval for the focused CI fixes
+- Git receipt: docs/receipt.json | sha256:test-hash | READY
 <!-- HANDOFF:END -->
 """
     next_brief.write_text(expected, encoding="utf-8")
     monkeypatch.setattr(session, "SESSION_LOG", session_log)
     monkeypatch.setattr(session, "NEXT_BRIEF", next_brief)
+    monkeypatch.setattr(
+        session,
+        "_resolve_git_receipt",
+        lambda block, explicit_path=None: (
+            {"local_state_receipt_hash": "sha256:test-hash"},
+            "docs/receipt.json",
+            [],
+        ),
+    )
 
     ok, message = session._do_handoff(preserve_current_same_day=True)
 
     assert ok is True
     assert "Preserved" in message
     assert next_brief.read_text(encoding="utf-8") == expected
+
+
+def test_handoff_round_trip_embeds_valid_receipt_identity(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    now = datetime(2026, 8, 15, 9, 30, tzinfo=UTC)
+    head = "a" * 40
+    base = "b" * 40
+    state = git_state.RepositoryState(
+        schema_version=1,
+        observed_at_utc=now.isoformat(),
+        repository_root=str(tmp_path),
+        worktree_root=str(tmp_path),
+        git_dir=str(tmp_path / ".git"),
+        git_common_dir=str(tmp_path / ".git"),
+        linked_worktree=False,
+        branch="codex/git-7e",
+        head_sha=head,
+        default_base=git_state.Relation("origin/main", base, 1, 0, "ahead"),
+        upstream=git_state.Relation("origin/codex/git-7e", head, 0, 0, "equal"),
+        tree=git_state.TreeState(clean=True),
+        operation="none",
+        operation_markers=[],
+        locks=[],
+        remote_freshness="NOT_CHECKED",
+        derived_action="READY_LOCAL",
+        hold_reasons=[],
+        query_failures=[],
+        duration_ms=1.0,
+    )
+    not_applicable = {
+        "status": "NOT_APPLICABLE",
+        "reason_code": "LOCAL_ONLY_TASK_AT_HANDOFF",
+    }
+    receipt = git_handoff_receipt.build_receipt(
+        task_id="GIT-7E",
+        integration_owner="Main Agent",
+        local_state=state,
+        evidence={
+            "remote": not_applicable,
+            "pull_request": not_applicable,
+            "review": not_applicable,
+            "integration": not_applicable,
+            "retention": {
+                "status": "NOT_APPLICABLE",
+                "reason_code": "NO_RETENTION_ACTION_IN_SCOPE",
+            },
+            "authorization": {
+                "status": "OBSERVED",
+                "authorized_actions": ["CONTINUE_LOCAL_WORK"],
+                "prohibited_actions": ["DELETE_BRANCH"],
+                "next_action": "CONTINUE_LOCAL_VALIDATION",
+            },
+        },
+        now=now,
+    )
+    repo = tmp_path / "repo"
+    docs = repo / "docs"
+    docs.mkdir(parents=True)
+    receipt_path = docs / "receipt.json"
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    session_log = docs / "SESSION_LOG.md"
+    session_log.write_text(
+        """# Log
+
+## 2026-08-15 — GIT-7E Session
+**Focus:** durable handoff
+
+**Completed:**
+- receipt contract
+""",
+        encoding="utf-8",
+    )
+    next_brief = docs / "next-session-brief.md"
+    next_brief.write_text("# Brief\n", encoding="utf-8")
+    monkeypatch.setattr(session, "REPO_ROOT", repo)
+    monkeypatch.setattr(session, "SESSION_LOG", session_log)
+    monkeypatch.setattr(session, "NEXT_BRIEF", next_brief)
+
+    ok, message = session._do_handoff(git_receipt=receipt_path)
+
+    handoff = next_brief.read_text(encoding="utf-8")
+    assert ok is True, message
+    assert receipt["local_state_receipt_hash"] in handoff
+    assert f"codex/git-7e@{head}" in handoff
+    assert "remote=NOT_APPLICABLE" in handoff
+    assert "Next action: CONTINUE_LOCAL_VALIDATION" in handoff
+
+
+def test_handoff_missing_receipt_is_an_explicit_hold(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    session_log = tmp_path / "SESSION_LOG.md"
+    next_brief = tmp_path / "next-session-brief.md"
+    session_log.write_text(
+        """# Log
+
+## 2026-08-15 — GIT-7E Session
+**Focus:** missing receipt
+""",
+        encoding="utf-8",
+    )
+    next_brief.write_text("# Brief\n", encoding="utf-8")
+    monkeypatch.setattr(session, "SESSION_LOG", session_log)
+    monkeypatch.setattr(session, "NEXT_BRIEF", next_brief)
+
+    ok, message = session._do_handoff()
+
+    assert ok is False
+    assert "Missing task-to-Git handoff receipt" in message
 
 
 def test_session_log_completeness_uses_only_newest_same_day_entry(

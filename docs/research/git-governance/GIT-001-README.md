@@ -21,9 +21,9 @@ and now includes the owner-accepted GIT-7B read-only state/intake contract.
 GIT-7C1 is integrated, GIT-7C2 server enforcement is applied, and GIT-7D is
 complete: GIT-7D1 integrated through PR #746, while GIT-7D2 integrated through
 PRs #747-#748 and has a non-destructive preservation/disposition reconciliation.
-The follow-on eight-branch retirement proposal holds all exact targets on
-unknown retention. GIT-7E semantic guidance and durable handoff are explicitly
-not started and remain a separate packet.
+The follow-on eight-branch retirement proposal was integrated by PR #750 as
+`b91838f` and still holds all exact targets on unknown retention. GIT-7E
+semantic guidance and durable handoff are active as a separate packet.
 
 ## Objective
 
@@ -52,7 +52,7 @@ work, make recovery deterministic, and remain efficient during normal work.
 | 4 | Operating-model design | Complete as proposal | Four control planes, one typed state model, lane lifecycle, permissions, CI/server policy, recovery, and four packets defined |
 | 5 | Scenario validation | Complete for proposal | Disposable Git and live read-only checks reproduce current defects, validate primitives, and define falsifiable GIT-7B–7E gates |
 | 6 | Canonical policy proposal | Accepted 2026-08-13 | Owner accepted the operating model and authorized GIT-7B only |
-| 7 | Controlled implementation | 7A-7D complete; eight-branch proposal held; GIT-7E not started | GIT-7D2 merged through PRs #747-#748; the exact follow-on proposal returns `RETENTION_EVIDENCE_UNKNOWN` for all eight targets and authorizes no deletion |
+| 7 | Controlled implementation | 7A-7D complete; retirement proposal integrated with holds; GIT-7E active | GIT-7D2 merged through PRs #747-#748; PR #750 integrated the held proposal; GIT-7E exact-head audit is pending and no deletion is authorized |
 | 8 | Adoption and closeout | Not started | Integrated workflow verified; supersession and maintenance established |
 
 ## Artifact map
@@ -77,7 +77,7 @@ work, make recovery deterministic, and remain efficient during normal work.
 - [Eight-branch retirement authorization proposal](GIT-001-eight-branch-retirement-authorization-proposal.md)
 - [Eight-branch machine-readable proposal receipt](GIT-001-eight-branch-retirement-authorization-proposal.json)
 - [Eight-branch classifier caller evidence](GIT-001-eight-branch-retirement-classifier-evidence.json)
-- Phase 7E durable handoff — planned
+- [Phase 7E semantic coherence and durable handoff](GIT-001-phase-7E-semantic-handoff.md)
 - Phase 8 adoption/closeout report — planned
 
 ## Ownership and non-goals

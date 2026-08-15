@@ -1,8 +1,8 @@
 {
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
-  "_updated": "2026-08-13",
+  "_updated": "2026-08-15",
   "_usage": "Run: ./scripts/python_runtime.sh scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "107/107 scripts mapped",
+  "_coverage": "108/108 scripts mapped",
   "tasks": {
     "resolve python runtime": {
       "group": "Infrastructure",
@@ -224,7 +224,26 @@
     "session handoff": {
       "group": "Session",
       "script": "./scripts/python_runtime.sh scripts/session.py handoff",
-      "description": "Write next-session-brief.md for the next agent"
+      "description": "Validate a durable task-to-Git receipt and write next-session-brief.md for the next agent",
+      "aliases": ["session receipt handoff", "durable handoff"],
+      "permission": "WorkspaceWrite",
+      "options": {
+        "--git-receipt PATH": "Validate and embed the versioned receipt identity"
+      }
+    },
+    "task git handoff receipt": {
+      "group": "Git",
+      "script": "./scripts/python_runtime.sh scripts/git_handoff_receipt.py create",
+      "description": "Build or validate a fail-closed task-to-Git handoff receipt from git_state.py plus caller-supplied hosted evidence",
+      "aliases": ["git receipt", "handoff receipt", "task to git"],
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "--output": "WorkspaceWrite"
+      },
+      "options": {
+        "create": "Build receipt; missing hosted facts remain UNKNOWN or NOT_CHECKED holds",
+        "validate": "Validate schema, hashes, exact-head binding, and contradictions"
+      }
     },
     "session check": {
       "group": "Session",

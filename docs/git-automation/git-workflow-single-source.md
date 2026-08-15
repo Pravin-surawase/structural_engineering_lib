@@ -55,6 +55,27 @@ Ahead and no-upstream are publication facts rather than local-safety failures.
 The retained shell entrypoints are compatibility delegates and must not contain
 independent Git classification.
 
+## Durable task-to-Git handoff
+
+Use `scripts/git_handoff_receipt.py` for a versioned machine-readable handoff.
+It consumes local facts only from `scripts/git_state.py`; remote, PR, review,
+check, integration, retention, authorization, and next-action facts must be
+caller-supplied and identity-bound. The receipt records its
+`local_state_receipt_hash`, exact branch/head/upstream/base/worktree/tree/
+operation state, hosted identities or explicit `UNKNOWN`/`NOT_CHECKED`, reviewed
+head/base/tree, retention evidence, and authorization boundaries.
+
+Missing, malformed, stale, query-failed, or contradictory facts are holds.
+`NOT_APPLICABLE` requires a reason and cannot replace unknown evidence. A
+squash-merged PR requires reviewed-tree/merged-tree equivalence and never makes
+ancestry or task archive state into retirement authority. Receipt validation is
+read-only and performs no fetch, prune, ref/worktree mutation, or GitHub query.
+
+Session handoff validates the versioned receipt, embeds its path/hash and exact
+identity summary into `next-session-brief.md`, and fails closed if the receipt
+is missing or invalid. The full JSON remains the audit contract; prose and PR
+numbers alone are not a durable Git receipt.
+
 ## Verification before publication
 
 - Run focused checks while editing.

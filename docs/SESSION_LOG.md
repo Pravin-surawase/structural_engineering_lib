@@ -5,6 +5,97 @@
 
 ---
 
+## 2026-08-15 — Session: GIT-7E Semantic Guidance and Durable Handoff
+
+**Agent:** Codex (`ops`, sole writer/integration owner; no subagents)
+
+**Branch:** `codex/git-7e-semantic-handoff`, created from freshly fetched and
+verified `origin/main = b91838f594a04aff1d21c43bf6f87a64710b0748`
+
+**Task start:** `2026-08-15T09:12:34Z`
+
+**Focus:** Add semantic coherence over deterministically discovered maintained
+Git guidance and a durable, fail-closed task-to-Git handoff receipt, then pause
+at the locally and hosted green draft PR head for independent audit
+
+**Git handoff receipt:** `docs/research/git-governance/GIT-001-phase-7E-task-git-handoff.json`
+
+### Summary
+
+- Replaced the hand-maintained semantic surface list with an indexed discovery
+  contract whose live, generated-index, and historical boundaries are tested.
+- Corrected only the confirmed main-process live contradictions in Git learning,
+  migration, governance, Agent 9, and maintained guide surfaces.
+- Added a versioned task-to-Git receipt that consumes `git_state.py` for local
+  facts and caller evidence for hosted facts, without an independent Git/network
+  reader or any mutation path.
+- Routed session handoff/end through receipt path, hash, freshness,
+  contradiction, and round-trip validation; corrected the handoff automation
+  permission to `WorkspaceWrite`.
+- Updated the task, handoff, phase, canonical workflow, session skill, CI, and
+  generated indexes only where GIT-7E changed current truth. GIT-7D1/GIT-7D2
+  behavior and all protected lanes remain unchanged.
+
+### Issues encountered
+
+- The old semantic checker passed while indexed live guidance still recommended
+  retired wrappers, non-Codex branch/main-checkout flows, stash/destructive
+  rollback, deletion, reset, and force-push recovery.
+- Session handoff persisted prose and optional PR numbers only; session end could
+  not validate durable local/hosted identity, freshness, hashes, or contradictory
+  claims. The automation map also classified a writing handoff as read-only.
+- The first focused run exposed three implementation defects: receipt local
+  payload construction referenced an unset variable, deprecated frontmatter was
+  incorrectly accepted as its own historical marker, and the new receipt alias
+  was absent from the automation registry.
+- A targeted `rg` search beginning with `--delete` was parsed as an option.
+- The first commit attempt was stopped by the end-of-file hook because the
+  generated global docs index omitted its required final newline.
+
+### Root causes and resolutions
+
+- Root cause: semantic coverage depended on hard-coded files/tokens rather than
+  the maintained indexes and explicit historical boundary. Resolution: add the
+  deterministic live-guidance index, discover active indexed entries and globs,
+  require explicit historical wording, and reject lifecycle contradictions by
+  semantic category. Evidence: live contradiction/coherent/archive fixtures and
+  the repository semantic check pass.
+- Root cause: prose-only handoff had no schema or exact evidence binding.
+  Resolution: add the read-only receipt builder/validator, canonical hash,
+  explicit `UNKNOWN`/`NOT_CHECKED`/reasoned `NOT_APPLICABLE`, exact-head/check
+  binding, squash-tree rules, and session validation. Evidence: receipt and real
+  session-handoff round-trip regressions pass, including malformed, stale,
+  query-failed, dirty, contradictory, and squash cases.
+- Root cause: the initial local payload assignment was placed in the helper that
+  consumed it; historical detection treated a metadata status as narrative; the
+  automation registry had no receipt entry. Resolution: construct the payload in
+  `build_receipt`, require an explicit historical banner, and register read-only
+  validation plus `WorkspaceWrite` output/handoff modes. Evidence: the corrected
+  focused suite passes 64 tests.
+- Terminal issue resolution: insert `--` before a ripgrep pattern that begins
+  with a hyphen; the corrected search completed without changing scope.
+- Root cause: the docs-index generator emitted JSON without the repository's
+  hook-required terminal newline. Resolution: retain the hook's normalization,
+  restage the exact generated file, and require a clean second hook pass before
+  commit; no validation was bypassed.
+
+### Verification
+
+- Worktree-bound runtime diagnosis reported `source_bound=true`; startup local
+  state was clean and ready at the verified PR #750 merge SHA.
+- Focused receipt, semantic, and session regression suite: 64 passed.
+- Remaining semantic, docs/index, quick 10/10, full 30/30, efficiency,
+  session-end, preservation replay, and hosted checks are recorded before PR
+  audit handoff.
+
+### Preservation and next boundary
+
+- No cleanup, deletion, prune, reset, rebase, stash, force push, protected-lane
+  synchronization, release, product, or IS-code action is authorized or taken.
+- After local green, open a normal draft PR and pause. Ready/merge requires the
+  supervising orchestrator's independent audit of the unchanged exact base,
+  head, and tree.
+
 ## 2026-08-15 — Session: Eight-Branch Retirement Authorization Proposal
 
 **Agent:** Codex (`ops`, sole writer/integration owner; no subagents)

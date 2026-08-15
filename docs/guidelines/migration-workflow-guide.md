@@ -24,17 +24,17 @@ tags: []
 
 ```bash
 # Pre-flight check (run first!)
-.venv/bin/python scripts/pre_migration_check.py
+./scripts/python_runtime.sh scripts/pre_migration_check.py
 
 # Migrate a single module
-.venv/bin/python scripts/migrate_module.py tables --dry-run
-.venv/bin/python scripts/migrate_module.py tables
+./scripts/python_runtime.sh scripts/migrate_module.py tables --dry-run
+./scripts/python_runtime.sh scripts/migrate_module.py tables
 
 # Check migration status
-.venv/bin/python scripts/migrate_module.py --list
+./scripts/python_runtime.sh scripts/migrate_module.py --list
 
 # Validate after migration
-.venv/bin/python scripts/validate_migration.py --verbose
+./scripts/python_runtime.sh scripts/validate_migration.py --verbose
 ```
 
 ---
@@ -80,12 +80,14 @@ structural_lib/flexure.py              (re-export stub)
 
 ### Step 0.1: Initialize Session
 ```bash
-.venv/bin/python scripts/start_session.py --quick
+./run.sh session brief --agent backend
+./run.sh session start
+./scripts/python_runtime.sh --diagnose
 ```
 
 ### Step 0.2: Run Pre-Flight Checks
 ```bash
-.venv/bin/python scripts/pre_migration_check.py
+./scripts/python_runtime.sh scripts/pre_migration_check.py
 ```
 
 **Expected output:**
@@ -107,7 +109,7 @@ structural_lib/flexure.py              (re-export stub)
 
 ### Step 0.3: Create Feature Branch
 ```bash
-git checkout -b feat/migrate-is456-modules
+git switch -c codex/migrate-is456-modules
 ```
 
 **Important:** This provides rollback safety.
@@ -118,7 +120,7 @@ git checkout -b feat/migrate-is456-modules
 
 ### Step 1.1: Preview Migration
 ```bash
-.venv/bin/python scripts/migrate_module.py tables --dry-run
+./scripts/python_runtime.sh scripts/migrate_module.py tables --dry-run
 ```
 
 **Review:**
@@ -128,7 +130,7 @@ git checkout -b feat/migrate-is456-modules
 
 ### Step 1.2: Execute Migration
 ```bash
-.venv/bin/python scripts/migrate_module.py tables
+./scripts/python_runtime.sh scripts/migrate_module.py tables
 ```
 
 **Expected:**
@@ -140,7 +142,7 @@ git checkout -b feat/migrate-is456-modules
 
 ### Step 1.3: Run Module Tests
 ```bash
-.venv/bin/python -m pytest Python/tests/test_tables*.py Python/tests/test_shear*.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/test_tables*.py Python/tests/test_shear*.py -v
 ```
 
 Tests should pass unchanged.
@@ -157,14 +159,14 @@ git commit -m "refactor: migrate tables.py to codes/is456/"
 
 ### Step 2.1: Preview and Execute
 ```bash
-.venv/bin/python scripts/migrate_module.py shear --dry-run
-.venv/bin/python scripts/migrate_module.py shear
+./scripts/python_runtime.sh scripts/migrate_module.py shear --dry-run
+./scripts/python_runtime.sh scripts/migrate_module.py shear
 ```
 
 ### Step 2.2: Verify
 ```bash
-.venv/bin/python -m pytest Python/tests/test_shear*.py -v
-.venv/bin/python -c "from structural_lib.shear import design_shear; print('OK')"
+./scripts/python_runtime.sh -m pytest Python/tests/test_shear*.py -v
+./scripts/python_runtime.sh -c "from structural_lib.shear import design_shear; print('OK')"
 ```
 
 ### Step 2.3: Commit
@@ -179,14 +181,14 @@ git commit -m "refactor: migrate shear.py to codes/is456/"
 
 ### Step 3.1: Preview and Execute
 ```bash
-.venv/bin/python scripts/migrate_module.py flexure --dry-run
-.venv/bin/python scripts/migrate_module.py flexure
+./scripts/python_runtime.sh scripts/migrate_module.py flexure --dry-run
+./scripts/python_runtime.sh scripts/migrate_module.py flexure
 ```
 
 ### Step 3.2: Verify
 ```bash
-.venv/bin/python -m pytest Python/tests/test_flexure*.py -v
-.venv/bin/python -c "from structural_lib.flexure import design_singly_reinforced; print('OK')"
+./scripts/python_runtime.sh -m pytest Python/tests/test_flexure*.py -v
+./scripts/python_runtime.sh -c "from structural_lib.flexure import design_singly_reinforced; print('OK')"
 ```
 
 ### Step 3.3: Commit
@@ -201,13 +203,13 @@ git commit -m "refactor: migrate flexure.py to codes/is456/"
 
 ### Step 4.1: Preview and Execute
 ```bash
-.venv/bin/python scripts/migrate_module.py detailing --dry-run
-.venv/bin/python scripts/migrate_module.py detailing
+./scripts/python_runtime.sh scripts/migrate_module.py detailing --dry-run
+./scripts/python_runtime.sh scripts/migrate_module.py detailing
 ```
 
 ### Step 4.2: Verify
 ```bash
-.venv/bin/python -m pytest Python/tests/test_detailing*.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/test_detailing*.py -v
 ```
 
 ### Step 4.3: Commit
@@ -222,13 +224,13 @@ git commit -m "refactor: migrate detailing.py to codes/is456/"
 
 ### Step 5.1: Preview and Execute
 ```bash
-.venv/bin/python scripts/migrate_module.py serviceability --dry-run
-.venv/bin/python scripts/migrate_module.py serviceability
+./scripts/python_runtime.sh scripts/migrate_module.py serviceability --dry-run
+./scripts/python_runtime.sh scripts/migrate_module.py serviceability
 ```
 
 ### Step 5.2: Verify
 ```bash
-.venv/bin/python -m pytest Python/tests/test_serviceability*.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/test_serviceability*.py -v
 ```
 
 ### Step 5.3: Commit
@@ -243,13 +245,13 @@ git commit -m "refactor: migrate serviceability.py to codes/is456/"
 
 ### Step 6.1: Preview and Execute
 ```bash
-.venv/bin/python scripts/migrate_module.py compliance --dry-run
-.venv/bin/python scripts/migrate_module.py compliance
+./scripts/python_runtime.sh scripts/migrate_module.py compliance --dry-run
+./scripts/python_runtime.sh scripts/migrate_module.py compliance
 ```
 
 ### Step 6.2: Verify
 ```bash
-.venv/bin/python -m pytest Python/tests/test_compliance*.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/test_compliance*.py -v
 ```
 
 ### Step 6.3: Commit
@@ -264,13 +266,13 @@ git commit -m "refactor: migrate compliance.py to codes/is456/"
 
 ### Step 7.1: Preview and Execute
 ```bash
-.venv/bin/python scripts/migrate_module.py ductile --dry-run
-.venv/bin/python scripts/migrate_module.py ductile
+./scripts/python_runtime.sh scripts/migrate_module.py ductile --dry-run
+./scripts/python_runtime.sh scripts/migrate_module.py ductile
 ```
 
 ### Step 7.2: Verify
 ```bash
-.venv/bin/python -m pytest Python/tests/test_ductile*.py -v
+./scripts/python_runtime.sh -m pytest Python/tests/test_ductile*.py -v
 ```
 
 ### Step 7.3: Commit
@@ -285,7 +287,7 @@ git commit -m "refactor: migrate ductile.py to codes/is456/"
 
 ### Step 8.1: Full Validation
 ```bash
-.venv/bin/python scripts/validate_migration.py --verbose --run-tests
+./scripts/python_runtime.sh scripts/validate_migration.py --verbose --run-tests
 ```
 
 **Expected:**
@@ -297,14 +299,14 @@ git commit -m "refactor: migrate ductile.py to codes/is456/"
 
 ### Step 8.2: Full Test Suite
 ```bash
-.venv/bin/python -m pytest Python/tests/ -v --tb=short
+./scripts/python_runtime.sh -m pytest Python/tests/ -v --tb=short
 ```
 
 All tests should pass.
 
 ### Step 8.3: API Verification
 ```bash
-.venv/bin/python -c "
+./scripts/python_runtime.sh -c "
 from structural_lib.api import design_beam_is456
 from structural_lib import flexure, shear, detailing
 from structural_lib.codes.is456 import IS456Code
@@ -340,29 +342,20 @@ git commit -m "refactor: complete IS 456 module migration"
 
 ### Rollback Single Module
 
-```bash
-# Restore original from git
-git checkout HEAD~1 -- Python/structural_lib/flexure.py
-
-# Remove migrated file
-rm Python/structural_lib/codes/is456/flexure.py
-
-# Verify
-.venv/bin/python -c "from structural_lib.flexure import design_singly_reinforced; print('OK')"
-```
+Stop and inspect the exact diff/commit. Have Codex restore only the intended
+file content after confirming ownership; do not discard a whole tree or lane.
+Preview any file removal with `scripts/safe_file_delete.py --dry-run` and stop
+if references or ownership are unresolved. Then rerun the focused import and
+module tests through `scripts/python_runtime.sh` before publication.
 
 ### Rollback All (Emergency)
 
-```bash
-# Return to main branch
-git checkout main
-
-# Delete feature branch
-git branch -D feat/migrate-is456-modules
-
-# Verify clean state
-.venv/bin/python scripts/pre_migration_check.py
-```
+Stop and preserve the exact branch, head, tree, operation, and worktree state.
+Use `scripts/git_state.py --json --worktrees`; failed or missing evidence is an
+`UNKNOWN` hold. Do not reset, switch away, stash, delete a branch/worktree, or
+rewrite history as rollback. Recover intended content on a fresh
+`codex/<task-slug>` lane only after ownership is known. Any later branch or
+worktree retirement is a separate exact-target decision.
 
 ---
 
@@ -380,7 +373,7 @@ git branch -D feat/migrate-is456-modules
 ls Python/structural_lib/codes/is456/flexure.py
 
 # If missing, re-run migration
-.venv/bin/python scripts/migrate_module.py flexure
+./scripts/python_runtime.sh scripts/migrate_module.py flexure
 ```
 
 ### Circular Import Error
@@ -407,7 +400,7 @@ cat Python/structural_lib/flexure.py
 
 # Should show "Backward compatibility stub"
 # If not, recreate:
-.venv/bin/python scripts/create_reexport_stub.py flexure
+./scripts/python_runtime.sh scripts/create_reexport_stub.py flexure
 ```
 
 ### Stub Has Wrong Content
@@ -419,7 +412,7 @@ cat Python/structural_lib/flexure.py
 **Fix:**
 ```bash
 # Manually create stub
-.venv/bin/python scripts/create_reexport_stub.py flexure
+./scripts/python_runtime.sh scripts/create_reexport_stub.py flexure
 ```
 
 ---

@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "canonical": "docs/git-automation/git-workflow-single-source.md",
+  "live_surfaces": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".github/copilot-instructions.md",
+    "docs/git-automation/git-workflow-single-source.md",
+    "docs/governance/maintenance-playbook.md",
+    "docs/guides/maintenance-checklist.md",
+    "docs/guidelines/migration-workflow-guide.md",
+    "docs/guidelines/folder-cleanup-workflow.md",
+    "docs/guidelines/file-operations-safety-guide.md",
+    "docs/contributing/handoff.md",
+    "docs/learning-foundations/09-git.md",
+    "agents/agent-9/KNOWLEDGE_BASE.md",
+    "scripts/README.md",
+    "scripts/automation-map.json"
+  ],
+  "live_globs": [
+    ".github/agents/*.agent.md",
+    ".github/instructions/*.md",
+    ".github/skills/*/SKILL.md"
+  ],
+  "indexed_surface_sets": [
+    {
+      "index": "docs/agents/guides/index.json",
+      "root": "docs/agents/guides",
+      "historical_statuses": ["deprecated"],
+      "ignore_names": ["index.md"]
+    }
+  ],
+  "historical_exclusions": [
+    {
+      "glob": "docs/_archive/**",
+      "boundary": "archive_path"
+    },
+    {
+      "glob": "scripts/_archive/**",
+      "boundary": "archive_path"
+    }
+  ],
+  "forbidden_tokens": [
+    "ai_commit.sh",
+    "safe_push.sh",
+    "recover_git_state.sh",
+    "finish_task_pr.sh",
+    "create_task_pr.sh",
+    "should_use_pr.sh",
+    "cleanup_stale_branches.py",
+    "--finish",
+    "--delete-branch"
+  ],
+  "forbidden_command_patterns": [
+    "(^|[` ])git\\s+reset\\s+--hard(?:[` ]|$)",
+    "(^|[` ])git\\s+push\\b[^\\n]*--force(?:-with-lease)?(?:[` ]|$)",
+    "(^|[` ])git\\s+checkout\\s+main(?:[` ]|$)",
+    "(^|[` ])git\\s+branch\\s+-D(?:[` ]|$)",
+    "(^|[` ])git\\s+stash(?:\\s|`|$)",
+    "(^|[` ])git\\s+worktree\\s+(remove|prune)(?:\\s|`|$)",
+    "(^|[` ])git\\s+(fetch|remote)\\b[^\\n]*--prune(?:[` ]|$)"
+  ],
+  "required_contracts": {
+    "AGENTS.md": [
+      "scripts/git_state.py",
+      "NOT_CHECKED",
+      "classify_branch_disposition.py"
+    ],
+    ".github/skills/session-management/SKILL.md": [
+      "git_handoff_receipt.py",
+      "local_state_receipt_hash"
+    ],
+    "docs/git-automation/git-workflow-single-source.md": [
+      "scripts/git_state.py",
+      "NOT_CHECKED",
+      "UNKNOWN",
+      "git_handoff_receipt.py"
+    ],
+    "docs/contributing/handoff.md": [
+      "git_handoff_receipt.py",
+      "NOT_CHECKED",
+      "UNKNOWN"
+    ]
+  }
+}

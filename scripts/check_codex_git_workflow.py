@@ -9,11 +9,14 @@ from __future__ import annotations
 
 import subprocess
 import sys
+import json
+import re
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CANONICAL = REPO_ROOT / "docs/git-automation/git-workflow-single-source.md"
 GIT_STATE_AUTHORITY = REPO_ROOT / "scripts/git_state.py"
+HANDOFF_RECEIPT = REPO_ROOT / "scripts/git_handoff_receipt.py"
 DISPOSITION_CLASSIFIER = REPO_ROOT / "scripts/classify_branch_disposition.py"
 GIT_STATE_CONSUMERS = (
     "scripts/prompt_router.py",
@@ -27,6 +30,7 @@ GIT_STATE_COMPATIBILITY = (
 )
 FAST_CHECKS = REPO_ROOT / ".github/workflows/fast-checks.yml"
 DEPLOY_DOCS = REPO_ROOT / ".github/workflows/deploy-docs.yml"
+GUIDANCE_INDEX = REPO_ROOT / "docs/git-automation/live-git-guidance-index.json"
 
 RETIRED_PATHS = (
     "scripts/ai_commit.sh",
@@ -42,33 +46,133 @@ RETIRED_PATHS = (
     "scripts/cleanup_stale_branches.py",
 )
 
-DISPOSITION_GUIDANCE = (
-    "AGENTS.md",
-    "CLAUDE.md",
-    ".github/copilot-instructions.md",
-    ".github/instructions/terminal-rules.instructions.md",
-    "docs/git-automation/git-workflow-single-source.md",
-    "docs/governance/maintenance-playbook.md",
-    "docs/guides/maintenance-checklist.md",
-    "scripts/README.md",
-    "scripts/automation-map.json",
-)
+HISTORICAL_MARKERS = ("historical", "archive", "legacy")
 
-LIVE_FILES_WITHOUT_WRAPPER_CALLS = (
-    "AGENTS.md",
-    "CLAUDE.md",
-    ".github/copilot-instructions.md",
-    "run.sh",
-    "scripts/agent_start.sh",
-    "agents/agent-9/KNOWLEDGE_BASE.md",
-    "agents/agent-9/RESEARCH_PLAN.md",
-    "agents/agent-9/research/AGENT_9_CONSTRAINTS.md",
-    "agents/agent-9/workflows/LINK_GOVERNANCE.md",
-    "agents/roles/GOVERNANCE.md",
-    "docs/guidelines/migration-workflow-guide.md",
-    "docs/guidelines/folder-cleanup-workflow.md",
-    "docs/guidelines/file-operations-safety-guide.md",
-)
+
+def _front_matter_status(content: str) -> str | None:
+    if not content.startswith("---\n"):
+        return None
+    front_matter = content.split("---", 2)[1]
+    match = re.search(r"^status:\s*([^\s]+)\s*$", front_matter, re.MULTILINE)
+    return match.group(1).lower() if match else None
+
+
+def _historical_boundary_is_explicit(path: Path, boundary: str) -> bool:
+    if boundary == "archive_path":
+        return "_archive" in path.parts
+    content = path.read_text(encoding="utf-8", errors="replace")
+    first_lines = "\n".join(content.splitlines()[:24]).lower()
+    if boundary == "front_matter_status_deprecated":
+        return _front_matter_status(content) == "deprecated" and any(
+            marker in first_lines for marker in HISTORICAL_MARKERS
+        )
+    return False
+
+
+def discover_guidance_surfaces(
+    repo_root: Path = REPO_ROOT, index_path: Path = GUIDANCE_INDEX
+) -> tuple[list[Path], list[str], dict]:
+    """Resolve live guidance from the maintained index, failing on ambiguity."""
+    errors: list[str] = []
+    try:
+        config = json.loads(index_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return [], [f"live guidance index is missing or malformed: {exc}"], {}
+    if config.get("schema_version") != 1:
+        errors.append("live guidance index schema is unknown")
+
+    surfaces: set[Path] = set()
+    for relative in config.get("live_surfaces", []):
+        path = repo_root / relative
+        if path.is_file():
+            surfaces.add(path)
+        else:
+            errors.append(f"indexed live guidance is missing: {relative}")
+    for pattern in config.get("live_globs", []):
+        matches = sorted(repo_root.glob(pattern))
+        if not matches:
+            errors.append(f"indexed live guidance glob matched nothing: {pattern}")
+        surfaces.update(path for path in matches if path.is_file())
+
+    for surface_set in config.get("indexed_surface_sets", []):
+        index = repo_root / surface_set.get("index", "")
+        root = repo_root / surface_set.get("root", "")
+        try:
+            entries = json.loads(index.read_text(encoding="utf-8")).get("files", [])
+        except (OSError, json.JSONDecodeError, AttributeError) as exc:
+            errors.append(f"indexed guidance set is malformed: {index}: {exc}")
+            continue
+        ignored = set(surface_set.get("ignore_names", []))
+        historical_statuses = set(surface_set.get("historical_statuses", []))
+        for entry in entries:
+            name = entry.get("name") if isinstance(entry, dict) else None
+            if not name or name in ignored or not name.endswith(".md"):
+                continue
+            path = root / name
+            if not path.is_file():
+                errors.append(
+                    f"indexed guidance entry is missing: {path.relative_to(repo_root)}"
+                )
+                continue
+            content = path.read_text(encoding="utf-8", errors="replace")
+            status = _front_matter_status(content)
+            if status in historical_statuses:
+                if not _historical_boundary_is_explicit(
+                    path, "front_matter_status_deprecated"
+                ):
+                    errors.append(
+                        f"historical exclusion lacks an explicit boundary: "
+                        f"{path.relative_to(repo_root)}"
+                    )
+                continue
+            surfaces.add(path)
+
+    for exclusion in config.get("historical_exclusions", []):
+        pattern = exclusion.get("glob", "")
+        boundary = exclusion.get("boundary", "")
+        for path in repo_root.glob(pattern):
+            if path.is_file() and not _historical_boundary_is_explicit(path, boundary):
+                errors.append(
+                    f"historical exclusion lacks an explicit boundary: "
+                    f"{path.relative_to(repo_root)}"
+                )
+    return sorted(surfaces), errors, config
+
+
+def check_semantic_guidance(
+    repo_root: Path = REPO_ROOT, index_path: Path = GUIDANCE_INDEX
+) -> list[str]:
+    """Reject lifecycle contradictions across every indexed live surface."""
+    surfaces, errors, config = discover_guidance_surfaces(repo_root, index_path)
+    forbidden_tokens = tuple(config.get("forbidden_tokens", []))
+    patterns: list[re.Pattern[str]] = []
+    for raw in config.get("forbidden_command_patterns", []):
+        try:
+            patterns.append(re.compile(raw, re.IGNORECASE))
+        except re.error as exc:
+            errors.append(f"invalid semantic guidance pattern {raw!r}: {exc}")
+    required = config.get("required_contracts", {})
+
+    for path in surfaces:
+        relative = path.relative_to(repo_root).as_posix()
+        content = path.read_text(encoding="utf-8", errors="replace")
+        for token in forbidden_tokens:
+            if token in content:
+                errors.append(f"{relative} prescribes retired lifecycle token: {token}")
+        for line_number, line in enumerate(content.splitlines(), start=1):
+            lowered = line.lower()
+            if any(marker in lowered for marker in ("never:", "never ", "do not ")):
+                continue
+            for pattern in patterns:
+                if pattern.search(line):
+                    errors.append(
+                        f"{relative}:{line_number} prescribes prohibited Git mutation: "
+                        f"{line.strip()}"
+                    )
+        for phrase in required.get(relative, []):
+            if phrase not in content:
+                errors.append(f"{relative} is missing semantic contract: {phrase}")
+    return errors
 
 
 def main() -> int:
@@ -119,6 +223,26 @@ def main() -> int:
         if "ls-remote" in source:
             errors.append("Git state authority must not contact a remote")
 
+    if not HANDOFF_RECEIPT.exists():
+        errors.append("task-to-Git handoff receipt contract is missing")
+    else:
+        source = HANDOFF_RECEIPT.read_text(encoding="utf-8")
+        for token in (
+            "collect_repository_state",
+            "receipt_sha256",
+            "NOT_CHECKED",
+            "UNKNOWN",
+            "is_git_retention_evidence",
+            "REVIEWED_HEAD_MISMATCH",
+            "SQUASH_TREE_EQUIVALENCE_UNKNOWN",
+        ):
+            if token not in source:
+                errors.append(f"handoff receipt is missing required contract: {token}")
+        if "subprocess" in source or "ls-remote" in source:
+            errors.append(
+                "handoff receipt must not read Git or remote state independently"
+            )
+
     if not DISPOSITION_CLASSIFIER.exists():
         errors.append(
             "inspection-only classifier is missing: "
@@ -157,18 +281,7 @@ def main() -> int:
                     f"branch disposition classifier exposes action flag: {action_flag}"
                 )
 
-    for relative in DISPOSITION_GUIDANCE:
-        path = REPO_ROOT / relative
-        if not path.exists():
-            errors.append(f"branch disposition guidance is missing: {relative}")
-            continue
-        content = path.read_text(encoding="utf-8")
-        if "cleanup_stale_branches.py" in content:
-            errors.append(f"{relative} still routes to deletion-oriented cleanup")
-        if "classify_branch_disposition.py" not in content:
-            errors.append(
-                f"{relative} does not route to the inspection-only classifier"
-            )
+    errors.extend(check_semantic_guidance())
 
     for relative in GIT_STATE_CONSUMERS:
         path = REPO_ROOT / relative
@@ -224,6 +337,8 @@ def main() -> int:
             "needs.changes.outputs.control_plane == 'true'",
             "needs.changes.outputs.docs == 'true'",
             "Python/tests/test_git_state.py",
+            "Python/tests/test_git_handoff_receipt.py",
+            "Python/tests/test_git_guidance_semantics.py",
             "Python/tests/test_branch_disposition.py",
             "Python/tests/test_session_automation.py",
             "Python/tests/test_session_store.py",
@@ -271,17 +386,6 @@ def main() -> int:
             errors.append("post-merge documentation concurrency is not scoped per ref")
         if "group: deploy-docs" in deploy_docs:
             errors.append("global documentation concurrency group is still active")
-
-    retired_names = tuple(Path(path).name for path in RETIRED_PATHS[:7])
-    for relative in LIVE_FILES_WITHOUT_WRAPPER_CALLS:
-        path = REPO_ROOT / relative
-        if not path.exists():
-            errors.append(f"required live instruction file is missing: {relative}")
-            continue
-        content = path.read_text(encoding="utf-8")
-        for name in retired_names:
-            if name in content:
-                errors.append(f"{relative} still invokes or prescribes retired {name}")
 
     if errors:
         print("Codex-native Git workflow check failed:")

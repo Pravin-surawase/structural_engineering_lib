@@ -9,6 +9,10 @@ tags: [learning, foundations]
 
 # Module 9: Git and Version Control
 
+> Repository-specific rule: use the canonical Codex-native workflow for live
+> work. `scripts/git_state.py` is the sole local-state authority; Codex owns
+> branch, commit, push, pull-request, and merge mutations after inspection.
+
 ## The Big Idea
 
 **Git** tracks every change to every file in your project. It's like an infinite undo button — you can go back to any point in history. More importantly, it lets multiple people work on the same project without overwriting each other's work.
@@ -164,28 +168,28 @@ Examples:
 ### Branch strategy:
 ```
 main (stable)
-├── TASK-042-column-design      ← Feature branch
-├── TASK-043-fix-shear-table    ← Bug fix branch
-└── TASK-044-update-docs        ← Docs branch
+├── codex/task-042-column-design      ← Feature branch
+├── codex/task-043-fix-shear-table    ← Bug fix branch
+└── codex/task-044-update-docs        ← Docs branch
 ```
 
 **Rules:**
 - `main` is always stable and deployable
 - Each task gets its own branch
 - Work on your branch, then merge via Pull Request
-- Never commit directly to `main` (for production code)
+- Never commit directly to `main`
 
 ### Create a branch:
 ```bash
 # Create and switch to a new branch
-git checkout -b TASK-042-column-design
+git switch -c codex/task-042-column-design
 
 # Work on it...
 git commit -m "feat(column): add axial capacity calculation"
 git commit -m "test(column): add benchmark tests"
 
 # Push the branch
-git push -u origin TASK-042-column-design
+git push -u origin codex/task-042-column-design
 ```
 
 ---
@@ -267,35 +271,24 @@ scripts/hooks/
 
 ---
 
-## Part 8: Git Automation — ai_commit.sh
+## Part 8: Repository Git Control Plane
 
-This project wraps Git in a safety script that prevents common mistakes.
+This project deliberately does not wrap the Git/GitHub lifecycle in a script.
+That prevents a helper from silently staging unrelated files, rewriting a
+branch, compressing failed evidence into success, or coupling merge to cleanup.
 
-### Why?
-```
-PROBLEM: Manual git is error-prone
-  git add .                      ← Might add temp files
-  git commit -m "fix stuff"      ← Bad message
-  git push                       ← Might push to wrong branch
+Start with the read-only authority:
 
-SOLUTION: One script handles everything
-  ./scripts/ai_commit.sh "fix(shear): correct tau_c for M25"
-  → Stages all changes
-  → Validates commit message
-  → Runs pre-commit hooks
-  → Pulls latest changes
-  → Pushes safely
-```
-
-### Script flags:
 ```bash
-./scripts/ai_commit.sh "type: message"    # Standard commit + push
-./scripts/ai_commit.sh "msg" --preview    # Show what would be committed
-./scripts/ai_commit.sh --undo             # Undo last unpushed commit
-./scripts/ai_commit.sh --status           # Show project state
-./scripts/ai_commit.sh --branch TASK-042 "column design"  # Create task branch
-./scripts/ai_commit.sh --finish "done"    # Merge PR + cleanup
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
+
+The output keeps local branch, head, upstream, default base, tree, operation,
+locks, and `NOT_CHECKED` remote freshness separate. A failed or missing query is
+`UNKNOWN` and therefore a hold. After reviewing that evidence, Codex creates a
+`codex/<task-slug>` lane, stages only intended paths, commits conventionally,
+pushes without rewriting history, and opens or updates a draft pull request.
+Merge and later branch/worktree retention are separate decisions.
 
 ---
 
@@ -342,7 +335,7 @@ __pycache__/
 | Mistake | What Happens | Fix |
 |---------|-------------|-----|
 | Committed secrets | Secrets in public history | Rotate credentials IMMEDIATELY. Use `git filter-branch` to remove |
-| Committed to wrong branch | Changes on main instead of feature | `git stash`, checkout correct branch, `git stash pop` |
+| Committed to wrong branch | Changes on main instead of feature | Stop, inspect exact state with `git_state.py`, preserve the commit/tree, and choose an authorized fresh-lane recovery path |
 | Bad commit message | "fix stuff" in history | `git commit --amend -m "fix(shear): correct tau_c"` (before push only) |
 | Merge conflicts | Two people changed same line | Edit the file, remove conflict markers, commit |
 | Accidentally deleted file | File gone | `git checkout HEAD -- path/to/file` |
