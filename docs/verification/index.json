@@ -3,12 +3,12 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 36,
+  "file_count": 38,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -27,7 +27,7 @@
       "name": "README.md",
       "type": "documentation",
       "size_lines": 64,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "title": "Verification",
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards. | Document | Description |",
       "content_hash": "4763d5ab8b48"
@@ -36,7 +36,7 @@
       "name": "alpha-0231-local-prepublication-rehearsal.md",
       "type": "documentation",
       "size_lines": 72,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "title": "v0.23.1a1 Local Prepublication Rehearsal",
       "description": "not a CI artifact identity, tag, or publication approval | Artifact | Bytes | Members | SHA-256 |",
       "content_hash": "d6a173859f50"
@@ -45,7 +45,7 @@
       "name": "bundled-sample-boq-evidence.md",
       "type": "documentation",
       "size_lines": 58,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "This is the reproducible software record for the bundled ETABS sample. It is not a bill approved for procurement or construction and is not professional",
       "content_hash": "78b84b5474bc"
     },
@@ -53,7 +53,7 @@
       "name": "column-pmm-benchmark.md",
       "type": "documentation",
       "size_lines": 107,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "This record independently checks the experimental rectangular-column fiber kernel at an oblique neutral-axis orientation. It is a calculation benchmark,",
       "content_hash": "fcc6aaad58e3"
     },
@@ -61,7 +61,7 @@
       "name": "examples.md",
       "type": "documentation",
       "size_lines": 1550,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "This document provides benchmark examples that engineers can use to verify the library's calculations against: - Hand calculations",
       "content_hash": "79cb3add7cbe"
     },
@@ -69,14 +69,14 @@
       "name": "external-cli-test.md",
       "type": "documentation",
       "size_lines": 98,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Purpose: capture a repeatable, human-run CLI test from a fresh user. Preferred: use the automated smoke script so the output is consistent and easy to share.",
       "content_hash": "a81223e8c701"
     },
     {
       "name": "footing-release-inclusion.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "schema_version",
         "record_id",
@@ -93,7 +93,7 @@
     {
       "name": "git-primary-session-log-reconcile-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -111,7 +111,7 @@
     {
       "name": "git-primary-session-log-reconcile-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -124,7 +124,7 @@
       "name": "india-1-cumulative-gate-evidence.md",
       "type": "documentation",
       "size_lines": 56,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "INDIA-1A through INDIA-1D are integrated on main as four independently gated packets:",
       "content_hash": "06bfd83e531d"
     },
@@ -132,7 +132,7 @@
       "name": "india-1a-beam-route-evidence.md",
       "type": "documentation",
       "size_lines": 85,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "design_flanged_beam_is456() composes one monolithic sagging T-beam case from already-factored supplied actions. It calculates the effective flange width,",
       "content_hash": "97194ff486b7"
     },
@@ -140,7 +140,7 @@
       "name": "india-1b-column-decision-evidence.md",
       "type": "documentation",
       "size_lines": 73,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "The stable IS 456 column decision remains bounded to solid rectangular tied sections. design_column_is456() and design_long_column_is456() accept one",
       "content_hash": "5ed855d6483f"
     },
@@ -148,7 +148,7 @@
       "name": "india-1c-isolated-footing-workflow-evidence.md",
       "type": "documentation",
       "size_lines": 53,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "INDIA-1C publishes the existing bounded concentric isolated-footing composition through structural_lib.services.api and the package root. No footing structural",
       "content_hash": "e6ec5ffc6d7b"
     },
@@ -156,7 +156,7 @@
       "name": "india-1d-slab-boundary-evidence.md",
       "type": "documentation",
       "size_lines": 71,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "INDIA-1D closes the decision boundary around already supported solid-slab serviceability, shear, and loading behavior. It does not add or promote new",
       "content_hash": "76b8e456fffe"
     },
@@ -164,14 +164,14 @@
       "name": "india-2-cumulative-gate-evidence.md",
       "type": "documentation",
       "size_lines": 71,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "INDIA-2A-D are integrated through exact origin/main 18da6c112e67af49d8adf32bf0babf65285e2cd4. The cumulative gate packet ran",
       "content_hash": "e72e21fb5707"
     },
     {
       "name": "india-2-cumulative-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -189,7 +189,7 @@
     {
       "name": "india-2-cumulative-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -199,10 +199,40 @@
       "content_hash": "aab91df123a3"
     },
     {
+      "name": "india-2-plan-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "32e20d5b8373"
+    },
+    {
+      "name": "india-2-plan-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "78d94af83e93"
+    },
+    {
       "name": "india-2a-staircase-scope-evidence.md",
       "type": "documentation",
       "size_lines": 111,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "activated INDIA-2A through INDIA-2D on 2026-08-15 by requesting that INDIA-2 be started and finished. This decision selects only the case below; it does not",
       "content_hash": "6d6defbea3ed"
     },
@@ -210,7 +240,7 @@
       "name": "india-2b-staircase-actions-evidence.md",
       "type": "documentation",
       "size_lines": 70,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "INDIA-2B implements only the typed geometry, concrete self-weight, and three-segment simply supported action contract selected by INDIA-2A. It adds no",
       "content_hash": "1f9680c591ed"
     },
@@ -218,14 +248,14 @@
       "name": "india-2c-staircase-design-evidence.md",
       "type": "documentation",
       "size_lines": 66,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "INDIA-2C composes the accepted INDIA-2B per-metre actions into one bounded waist-slab design check. It does not add public consumers or promote staircase",
       "content_hash": "ccbd767ff6fb"
     },
     {
       "name": "india-2d-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -243,7 +273,7 @@
     {
       "name": "india-2d-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -256,7 +286,7 @@
       "name": "india-2d-staircase-publication-evidence.md",
       "type": "documentation",
       "size_lines": 85,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "INDIA-2D publishes one typed Python service and one thin FastAPI transport for the bounded straight-flight staircase developed in INDIA-2A-C. It does not add",
       "content_hash": "be7ac2e157a6"
     },
@@ -293,7 +323,7 @@
     {
       "name": "indian-code-capability-coverage.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "schema_version",
         "manifest_id",
@@ -310,7 +340,7 @@
       "name": "indian-code-truth-baseline.md",
       "type": "documentation",
       "size_lines": 93,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "title": "INDIA-0 Indian-Code Truth Baseline",
       "description": "was squash-merged as 0373de68; INDIA-1 packets now update the generated manifest from fresh integrated-main lanes",
       "content_hash": "e8d850af25d8"
@@ -319,7 +349,7 @@
       "name": "insights-verification-pack.md",
       "type": "documentation",
       "size_lines": 101,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "This pack provides benchmark test cases for the insights module to ensure accuracy and prevent regressions. Tests are automatically run in CI on every PR. Run all insights benchmark tests:",
       "content_hash": "62116e5ed5fe"
     },
@@ -327,7 +357,7 @@
       "name": "is456-library-first-evidence.md",
       "type": "documentation",
       "size_lines": 169,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "title": "IS 456 Library-First Evidence and Claim Crosswalk",
       "description": "| Source | SHA-256 | Pages | Use | |---|---|---:|---|",
       "content_hash": "3a47d498ba82"
@@ -335,7 +365,7 @@
     {
       "name": "is456-public-distribution-permission.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "schema_version",
         "record_id",
@@ -353,7 +383,7 @@
       "name": "is456-slab-evidence.md",
       "type": "documentation",
       "size_lines": 125,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "title": "IS 456 Solid Slab Source and Benchmark Ledger",
       "description": "| ID | Identity | Permitted implementation use | State | |---|---|---|---|",
       "content_hash": "087b5c252695"
@@ -362,7 +392,7 @@
       "name": "pack.md",
       "type": "documentation",
       "size_lines": 56,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "This repo’s unit tests validate correctness and edge cases, but they don’t always answer the question: **“did the numerical design outputs change?”** The **Verification Pack** is a small set of **pinn",
       "content_hash": "fa4fe75b3d05"
     },
@@ -370,7 +400,7 @@
       "name": "release-artifact-evidence-template.md",
       "type": "documentation",
       "size_lines": 38,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "title": "Release Artifact Evidence Template",
       "description": "Complete this record from the CI run that built the exact candidate. | Field | Value |",
       "content_hash": "dd7652006f11"
@@ -379,7 +409,7 @@
       "name": "ui-experience-session-2-acceptance.md",
       "type": "documentation",
       "size_lines": 70,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "This is the software acceptance record for UIX-001 P9-P15. It does not certify the formulas, approve a structural design, or authorize professional use.",
       "content_hash": "82dbbd6cae09"
     },
@@ -387,11 +417,11 @@
       "name": "validation-pack.md",
       "type": "documentation",
       "size_lines": 396,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "This pack provides 5 benchmark beams and 3 benchmark columns with IS 456 references that you can use to validate the library's calculations against hand calculations, SP 16 design aids, or other trust",
       "content_hash": "63fd4822c78c"
     }
   ],
   "subfolders": [],
-  "content_hash": "e6494ef79e65782a"
+  "content_hash": "fbee75768764566b"
 }

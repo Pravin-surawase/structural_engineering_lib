@@ -3,13 +3,13 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 18,
+  "file_count": 19,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 154,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "title": "Planning",
       "description": "Internal planning documents and research notes. | Document | Purpose |",
       "content_hash": "56281c1a3fd2"
@@ -18,7 +18,7 @@
       "name": "adoption-trust-surface-plan.md",
       "type": "documentation",
       "size_lines": 380,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Make the released Alpha straightforward to evaluate from four perspectives: - a user can copy every public quick start and receive the documented result;",
       "content_hash": "ce4b11ed46d5"
     },
@@ -26,7 +26,7 @@
       "name": "compact-modernization-plan.md",
       "type": "documentation",
       "size_lines": 794,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Modernize the repository's CI, maintenance controls, and agent-facing workflow without changing the structural-engineering product outcome. The finished repository must have:",
       "content_hash": "b0efe5bf80fd"
     },
@@ -34,7 +34,7 @@
       "name": "democratization-vision.md",
       "type": "documentation",
       "size_lines": 273,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> **\"What was not possible few years back, or only possible for big firms — now everyone can use them free.\"** This project is not just about building a structural engineering library. It's about **de",
       "content_hash": "248d22c61e51"
     },
@@ -42,7 +42,7 @@
       "name": "dependency-security-baseline.md",
       "type": "documentation",
       "size_lines": 69,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "This record makes MAINT-003 reproducible. It separates confirmed vulnerabilities from transferred-environment residue and records every temporary exception.",
       "content_hash": "7870e2a5028a"
     },
@@ -50,7 +50,7 @@
       "name": "etabs-killer-masterplan.md",
       "type": "documentation",
       "size_lines": 2855,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "title": "Project BHEEM: Open-Source Structural Design Software Masterplan",
       "description": "> **BHEEM** — **B**uilding **H**olistic **E**ngineering **E**nvironment with **M**achine-intelligence > An open-source, AI-native structural design platform that aims to surpass ETABS in usability, tr",
       "content_hash": "88e3dfd24f78"
@@ -59,17 +59,25 @@
       "name": "gpt-5-3-codex-spark-work-program.md",
       "type": "documentation",
       "size_lines": 614,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Use GPT-5.3-Codex-Spark as a high-throughput implementation lane for small, explicit, rapidly verifiable tasks. The program targets truthful documentation,",
       "content_hash": "4160ef25ca5e"
     },
     {
+      "name": "india-2-remaining-is456-elements-plan.md",
+      "type": "documentation",
+      "size_lines": 305,
+      "last_updated": "2026-08-16",
+      "description": "INDIA-2 finishes a practical, explicitly limited set of IS 456 reinforced concrete elements that are still missing from the library.",
+      "content_hash": "db399d9a9f4d"
+    },
+    {
       "name": "indian-code-completion-plan.md",
       "type": "documentation",
-      "size_lines": 125,
+      "size_lines": 129,
       "last_updated": "2026-08-16",
       "description": "This is the canonical finish plan for the repository's Indian-code program. It defines the meaning and order of INDIA-0 through INDIA-4 without claiming",
-      "content_hash": "d48559d90cb0"
+      "content_hash": "d8ad6701def2"
     },
     {
       "name": "is456-library-first-master-plan.md",
@@ -83,7 +91,7 @@
       "name": "is456-solid-slabs-master-plan.md",
       "type": "documentation",
       "size_lines": 1123,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "The next element program will complete a useful, evidence-backed solid-slab workflow under IS 456 without pretending to solve every slab system.",
       "content_hash": "bcd3ec19ce4d"
     },
@@ -100,7 +108,7 @@
       "name": "memory.md",
       "type": "documentation",
       "size_lines": 411,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "- Development resumed after a four-month pause and a Mac laptop → Mac Mini transfer. - Git history, reachable objects, sample data, package source, and ARM64 Python environment transferred intact.",
       "content_hash": "78a539f85b53"
     },
@@ -108,24 +116,24 @@
       "name": "next-phase-improvements-plan.md",
       "type": "documentation",
       "size_lines": 1445,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> This document is a result of a full audit of the beam library, FastAPI layer, and React app. > Nothing here assumes — it traces every suggestion back to what already exists and what is missing.",
       "content_hash": "9be9935445ee"
     },
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 74,
+      "size_lines": 75,
       "last_updated": "2026-08-16",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-16",
-      "content_hash": "5ee4167eecd4"
+      "content_hash": "03ab4ccec99e"
     },
     {
       "name": "pre-release-checklist.md",
       "type": "documentation",
       "size_lines": 92,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "title": "Pre-Release Checklist",
       "description": "Release-ready source metadata: 0.23.1a1 Current public release: v0.23.1a1 Alpha",
       "content_hash": "aa14481f9a4b"
@@ -134,7 +142,7 @@
       "name": "professional-library-remediation-plan.md",
       "type": "documentation",
       "size_lines": 562,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "title": "Professional Library Remediation Plan",
       "description": "This document is no longer the active implementation plan. T0 and R1-R8 are complete, and their findings, packet definitions, and verification remain here",
       "content_hash": "31095ffcf998"
@@ -143,7 +151,7 @@
       "name": "react-ux-improvement-plan.md",
       "type": "documentation",
       "size_lines": 709,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> **Historical implementation record.** Execution status in this document is > superseded by",
       "content_hash": "706c92bd3f7a"
     },
@@ -151,11 +159,11 @@
       "name": "ui-experience-foundation-master-plan.md",
       "type": "documentation",
       "size_lines": 2408,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "The product will move from a collection of equally weighted pages to one compact, professional structural workbench.",
       "content_hash": "fc8042fee46a"
     }
   ],
   "subfolders": [],
-  "content_hash": "9ccf093e1339898d"
+  "content_hash": "c70a36458b61b47e"
 }

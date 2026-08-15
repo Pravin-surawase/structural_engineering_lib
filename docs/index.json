@@ -9,7 +9,7 @@
       "name": "README.md",
       "type": "documentation",
       "size_lines": 253,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "title": "Docs Index (Start Here)",
       "description": "Guides, references, evidence, and contributor material for the structural-lib-is456 Python package and the React/FastAPI workbench.",
       "content_hash": "09e22d932251"
@@ -17,33 +17,33 @@
     {
       "name": "SESSION_LOG.md",
       "type": "documentation",
-      "size_lines": 6149,
+      "size_lines": 6207,
       "last_updated": "2026-08-16",
       "title": "Session Log",
       "description": "> Append-only decision log for AI agent sessions. > Earlier sessions (1-100): SESSION_LOG_through_session_100.md",
-      "content_hash": "65ee4e62f834"
+      "content_hash": "a43830e237a7"
     },
     {
       "name": "TASKS.md",
       "type": "documentation",
-      "size_lines": 695,
+      "size_lines": 698,
       "last_updated": "2026-08-16",
       "title": "Task Board",
       "description": "> **Single source of truth for active work.** Keep it short and current. - **WIP = 2** (max 2 active tasks at once)",
-      "content_hash": "04b6d0e5d48f"
+      "content_hash": "6a6abe3d070e"
     },
     {
       "name": "WORKLOG.md",
       "type": "documentation",
       "size_lines": 354,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> **One line per item. Compact. Append-only.** > Format: DATE | TASK-ID | what changed | commit",
       "content_hash": "99219f077170"
     },
     {
       "name": "docs-canonical.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "_comment",
         "_updated",
@@ -57,7 +57,7 @@
     {
       "name": "docs-index.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "version",
         "generated",
@@ -181,7 +181,7 @@
     {
       "name": "planning",
       "path": "planning/",
-      "file_count": 20
+      "file_count": 21
     },
     {
       "name": "publications",
@@ -208,9 +208,9 @@
     {
       "name": "verification",
       "path": "verification/",
-      "file_count": 38,
+      "file_count": 40,
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards."
     }
   ],
-  "content_hash": "dde75e62c9edc18c"
+  "content_hash": "100c1f4ce90a069d"
 }

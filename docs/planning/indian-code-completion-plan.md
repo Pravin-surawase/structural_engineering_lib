@@ -51,6 +51,10 @@ Every family starts with a decision packet that freezes one useful case, its
 source, independent benchmark, assumptions, and exclusions before calculation
 code is authorized.
 
+The complete packet sequence, family boundaries, and exit criteria are in the
+dedicated [INDIA-2 execution plan](india-2-remaining-is456-elements-plan.md).
+That document controls INDIA-2 execution within this parent wave.
+
 | Packet | Bounded objective | State and boundary |
 |---|---|---|
 | `INDIA-2-WALL` | IS 456 Clause 32 wall program | **Next decision candidate.** No implementation is activated by this plan update. |
