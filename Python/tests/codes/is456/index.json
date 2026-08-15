@@ -21,6 +21,12 @@
       "is_package": true
     },
     {
+      "name": "deep_beam",
+      "path": "deep_beam/",
+      "file_count": 4,
+      "is_package": true
+    },
+    {
       "name": "slab",
       "path": "slab/",
       "file_count": 7
@@ -39,5 +45,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "c48fab64113dbe81"
+  "content_hash": "9469e7850a641cee"
 }

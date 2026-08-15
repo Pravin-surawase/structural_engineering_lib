@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-16
-**Files:** 49
+**Files:** 52
 
 ## Config Files
 
@@ -14,6 +14,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [git-primary-session-log-reconcile-handoff-source-evidence.json](git-primary-session-log-reconcile-handoff-source-evidence.json)
 - [india-2-cumulative-git-handoff-receipt.json](india-2-cumulative-git-handoff-receipt.json)
 - [india-2-cumulative-git-handoff-source-evidence.json](india-2-cumulative-git-handoff-source-evidence.json)
+- [india-2-deep-a-git-handoff-receipt.json](india-2-deep-a-git-handoff-receipt.json)
+- [india-2-deep-a-git-handoff-source-evidence.json](india-2-deep-a-git-handoff-source-evidence.json)
 - [india-2-deep-g0-git-handoff-receipt.json](india-2-deep-g0-git-handoff-receipt.json)
 - [india-2-deep-g0-git-handoff-source-evidence.json](india-2-deep-g0-git-handoff-source-evidence.json)
 - [india-2-plan-git-handoff-receipt.json](india-2-plan-git-handoff-receipt.json)
@@ -43,6 +45,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [india-1c-isolated-footing-workflow-evidence.md](india-1c-isolated-footing-workflow-evidence.md) |  | INDIA-1C publishes the existing bounded concentric isolated- | 53 |
 | [india-1d-slab-boundary-evidence.md](india-1d-slab-boundary-evidence.md) |  | INDIA-1D closes the decision boundary around already support | 71 |
 | [india-2-cumulative-gate-evidence.md](india-2-cumulative-gate-evidence.md) |  | INDIA-2A-D are integrated through exact origin/main 18da6c11 | 71 |
+| [india-2-deep-a-geometry-evidence.md](india-2-deep-a-geometry-evidence.md) |  | DEEP-A implements the typed pure-math foundation for the G0- | 73 |
 | [india-2-deep-g0-scope-evidence.md](india-2-deep-g0-scope-evidence.md) |  | supported, solid rectangular, top-loaded deep beam without o | 166 |
 | [india-2-wall-a-axial-kernel-evidence.md](india-2-wall-a-axial-kernel-evidence.md) |  | WALL-A implements the pure IS 456 layer for the accepted Cla | 83 |
 | [india-2-wall-b-reinforcement-evidence.md](india-2-wall-b-reinforcement-evidence.md) |  | WALL-B adds one pure IS 456 provided-reinforcement check to  | 82 |

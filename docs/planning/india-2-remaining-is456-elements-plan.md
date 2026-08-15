@@ -45,7 +45,7 @@ Historical staircase task IDs, PRs, and evidence remain unchanged. The former
 |---|---|---|
 | Clause 32 walls | Focused family acceptance complete after A-D integration | One braced empirical vertical-compression wall check supported; alternate wall systems held |
 | Clause 33 stairs | One bounded longitudinal straight waist-slab flight supported | Complete; alternate stair systems remain held |
-| Clause 29 deep beams | G0 is GO; calculation code remains unimplemented | One simply supported positive-moment reinforcement check activated |
+| Clause 29 deep beams | G0 GO; A geometry/classification/lever-arm kernel complete | One simply supported positive-moment reinforcement check active; B-D pending |
 | Flat slabs and column punching | Not implemented | Planned after deep beams |
 | Combined footing | Not implemented | Separate foundation program |
 | Strap footing | Not implemented | Separate foundation program |
@@ -61,7 +61,7 @@ boundary, held with a written reason, or not implemented.
 |---:|---|---|---|
 | 1 | `INDIA-2-WALL` | First clause-bounded remaining element; established the new-family workflow | Complete within the written bounded case |
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
-| 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | G0 GO; A-D and acceptance pending |
+| 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | G0 and A complete; B-D and acceptance pending |
 | 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Planned |
 | 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Planned, order provisional |
 | 5 | `INDIA-2-CLOSEOUT` | Reconcile truth, run final cumulative gates, and freeze the INDIA-2 evidence set | Pending |
@@ -203,7 +203,7 @@ sections, prestressing, cyclic/seismic design, generalized strut-and-tie
 modelling, nonlinear analysis, and FEM.
 
 Packets are G0 decision (GO); A typed geometry/classification, effective-span,
-lever-arm, action, and fail-closed contract; B positive tie, placement,
+lever-arm, action, and fail-closed contract (complete); B positive tie, placement,
 anchorage, side-face, and composed dispositions; C public Python workflow; D
 thin API/capability/evidence; then one focused family acceptance bundle.
 
@@ -306,7 +306,7 @@ authorized programs.
 
 ## 9. Exact next action
 
-Implement `INDIA-2-DEEP-A` from the verified integrated G0 head without adding
+Implement `INDIA-2-DEEP-B` from the verified integrated A head without adding
 continuous beams, openings, hanging action, load analysis, bearing/nodal-zone
 design, or generalized strut-and-tie scope. The owner's 2026-08-16 request
 activates the remaining INDIA-2 families subject to each family's own G0

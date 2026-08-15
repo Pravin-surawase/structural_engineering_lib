@@ -196,3 +196,24 @@ WALL_CLAUSES = ["32.1", "32.2", "32.3", "32.4", "32.5"]
 def test_clauses_walls_section(clauses, clause_id):
     """Wall clause exists in clauses.json."""
     assert clause_id in clauses, f"Missing wall clause: {clause_id}"
+
+
+# --- Coverage tests: deep beams ---
+
+
+DEEP_BEAM_CLAUSES = [
+    "29",
+    "29.1",
+    "29.2",
+    "29.3",
+    "29.3.1",
+    "29.3.2",
+    "29.3.3",
+    "29.3.4",
+]
+
+
+@pytest.mark.parametrize("clause_id", DEEP_BEAM_CLAUSES)
+def test_clauses_deep_beam_section(clauses, clause_id):
+    """Deep-beam clause identity exists in clauses.json."""
+    assert clause_id in clauses, f"Missing deep-beam clause: {clause_id}"

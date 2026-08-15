@@ -1,0 +1,74 @@
+{
+  "folder": "Python/tests/codes/is456/deep_beam",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-08-16",
+  "file_count": 2,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 2,
+      "last_updated": "2026-08-16",
+      "description": "Tests for the bounded IS 456 deep-beam package.",
+      "content_hash": "fee493bfa478"
+    },
+    {
+      "name": "test_geometry.py",
+      "type": "python",
+      "size_lines": 194,
+      "last_updated": "2026-08-16",
+      "description": "INDIA-2-DEEP-A benchmark and fail-closed geometry tests.",
+      "functions": [
+        {
+          "name": "test_hand_benchmark_effective_span_classification_and_lever_arm"
+        },
+        {
+          "name": "test_clear_span_component_can_govern_effective_span"
+        },
+        {
+          "name": "test_ratio_below_one_uses_point_six_span_lever_arm"
+        },
+        {
+          "name": "test_ratio_one_is_continuous_between_lever_arm_branches"
+        },
+        {
+          "name": "test_ratio_just_below_two_is_accepted_and_two_fails_closed"
+        },
+        {
+          "name": "test_invalid_dimensions_fail_closed",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_clear_span_must_be_less_than_support_centre_span"
+        },
+        {
+          "name": "test_each_topology_and_external_confirmation_is_required",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_support_type_and_references_fail_closed"
+        },
+        {
+          "name": "test_action_material_and_reference_contracts"
+        },
+        {
+          "name": "test_wrong_types_fail_closed"
+        },
+        {
+          "name": "test_clause_and_source_provenance_is_machine_visible"
+        }
+      ],
+      "content_hash": "c52a6789bf22"
+    }
+  ],
+  "subfolders": [],
+  "has_init": true,
+  "content_hash": "c1e1a1b2a5a1a474"
+}

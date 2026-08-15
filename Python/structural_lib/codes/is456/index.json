@@ -40,7 +40,7 @@
         "figures",
         "annexures"
       ],
-      "content_hash": "56afab4418e5"
+      "content_hash": "8d7652e119eb"
     },
     {
       "name": "compliance.py",
@@ -398,6 +398,12 @@
       "is_package": true
     },
     {
+      "name": "deep_beam",
+      "path": "deep_beam/",
+      "file_count": 5,
+      "is_package": true
+    },
+    {
       "name": "footing",
       "path": "footing/",
       "file_count": 10,
@@ -444,5 +450,5 @@
     "list_clauses_by_category",
     "search_clauses"
   ],
-  "content_hash": "cde6adc5424a1a92"
+  "content_hash": "568f71f875819e66"
 }

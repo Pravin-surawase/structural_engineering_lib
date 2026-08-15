@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — INDIA-2-DEEP-G0 is GO for one bounded simply supported Clause 29 positive-reinforcement check; DEEP-A is next
+**Updated:** 2026-08-16 — INDIA-2-DEEP-A implements the bounded geometry/classification/lever-arm foundation; DEEP-B is next
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| INDIA-2-DEEP | Implement one bounded simply supported Clause 29 positive-reinforcement check through A-D and focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 is GO; DEEP-A geometry, classification, lever-arm, action, and typed fail-closed contracts are next |
+| INDIA-2-DEEP | Implement one bounded simply supported Clause 29 positive-reinforcement check through A-D and focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 is GO and DEEP-A is complete; DEEP-B positive tie, placement, anchorage, side-face, and composed dispositions are next |
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
 
 ## Up Next
@@ -158,6 +158,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-DEEP-A | Added typed geometry/material/action contracts, effective-span classification, both Clause 29.2 lever-arm branches, tension-zone depth, exact clause registration, and fail-closed tests | Main Agent + structural math | ✅ COMPLETE — 65 focused geometry/clause-database tests pass; no reinforcement or capability claim before DEEP-B-D |
 | INDIA-2-DEEP-G0 | Froze one simply supported solid rectangular deep-beam positive-reinforcement check with public clause provenance and a pre-implementation hand benchmark | Main Agent + structural engineer | ✅ GO — caller-supplied positive factored moment; bearing/nodal verification is an external prerequisite; openings, hanging action, continuous beams, generalized strut-and-tie, and alternate systems remain held |
 | INDIA-2-WALL | Implemented and accepted one bounded braced empirical vertical-compression wall workflow with public Clause 32 provenance | Main Agent + structural engineer | ✅ DONE — A-D integrated; 135-test focused family selection and independent hand benchmark pass; qualified review and excluded wall systems remain held |
 | INDIA-2-WALL-D | Added thin typed FastAPI transport, canonical wall capability/semantic truth, manifest promotion, and publication evidence | Main Agent + API developer | ✅ INTEGRATED — PR #772 merged as `46094a8c`; family acceptance passed from that exact integrated head |

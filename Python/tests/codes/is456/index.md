@@ -15,6 +15,7 @@
 | Folder | Files | Description |
 |--------|-------|-------------|
 | [column/](column/) 📦 | 7 |  |
+| [deep_beam/](deep_beam/) 📦 | 4 |  |
 | [slab/](slab/) | 7 |  |
 | [staircase/](staircase/) 📦 | 5 |  |
 | [wall/](wall/) 📦 | 5 |  |
