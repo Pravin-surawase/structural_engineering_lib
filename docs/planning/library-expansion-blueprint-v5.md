@@ -5,18 +5,17 @@
 **Status:** Future strategic roadmap; not active during bounded IS 456 closeout
 **Importance:** Critical
 **Created:** 2026-03-31
-**Last Updated:** 2026-08-09
+**Last Updated:** 2026-08-15
 **Supersedes:** [library-expansion-blueprint-v4.md](../_archive/planning-completed-2026-03/library-expansion-blueprint-v4.md) (IS 456-only)
 
 > Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with complete companion code support.
 
-> **Execution note (2026-08-09):** Current work is governed by
-> [is456-library-first-master-plan.md](is456-library-first-master-plan.md).
-> Several current-state and Phase 1 tables below predate the implemented
-> bounded slab/footing/facade work and must not be used as task status. The
-> canonical current state is in `docs/TASKS.md`. Phase 2 multi-code work starts
-> only after the bounded milestone completes C0-C4 and the owner activates a
-> separate packet.
+> **Execution note (reconciled 2026-08-15):** This document is a strategic
+> architecture blueprint, not a live status ledger. Current scope comes from
+> the generated
+> [Indian-code capability/coverage manifest](../verification/indian-code-capability-coverage.json)
+> and `docs/TASKS.md`. Historical task tables below are retained as design
+> context only where explicitly labelled; they must not override the manifest.
 
 ---
 
@@ -214,7 +213,7 @@ class DesignEnvelope:
 | torsion.py | Cl 41.1–41.4 | ✅ Done | 533 | 6 |
 | detailing.py | Cl 26.2–26.5 | ✅ Done | 1189 | 16 |
 | serviceability.py | Cl 43.1–43.4 | ✅ Done | 1356 | 17 |
-| ductile.py | IS 13920 Cl 6 | ✅ Done (beam only) | — | — |
+| `codes/is13920/{beam,column,joint}.py` | Namespaced IS 13920 registrations | ✅ Bounded beam, column and SCWB checks | — | — |
 | materials.py | Cl 6.2, 38.1 | ✅ Done | — | — |
 | tables.py | Table 19, 20 | ✅ Done | — | — |
 | slenderness.py | Cl 23.3 | ✅ Done (beam only) | — | — |
@@ -232,32 +231,25 @@ class DesignEnvelope:
 | DetailingRules ABC | ✅ Exists | Not implemented by IS456Code |
 | CodeRegistry | ✅ Exists | **Dead code** — never called in production |
 | IS456Code class | ✅ Exists | Registered but doesn't implement ABCs |
-| @clause() decorator | ✅ Exists | IS 456-only, no code namespace |
-| clauses.json | ✅ Exists | IS 456 clauses, ~100 entries |
+| @clause() decorator | ✅ Exists | Decorators declare a standard; INDIA-0 discovers and namespaces them without treating registration as implementation |
+| Indian-code truth manifest | ✅ Generated | `IS456:2000`, `IS13920:2016`, `IS875`, and `IS1893`; closed supported/held and registration statuses |
+| clauses.json | ✅ Exists | Identifier/search metadata input; mixed legacy records are separated by namespace in the generated manifest |
 | Backward-compat shims | ✅ 46 exist | @deprecated decorator available in core/deprecation.py |
 | @deprecated decorator | ✅ Done | In core/deprecation.py (TASK-614) |
 | Code-specific input types | ❌ Missing | Only IS456 BeamInput exists |
 | DesignEnvelope result | ❌ Missing | Two parallel result hierarchies |
 | Unit conversion layer | ❌ Missing | No core/units.py |
-| Code discovery API | ❌ Missing | No list_codes(), get_capabilities() |
+| Code discovery API | ✅ Bounded IS 456 discovery | Public IS 456 capability contract exists; broader standard discovery is not claimed |
 
-### 3.3 NOT Implemented (IS 456)
+### 3.3 Reconciled bounded scope
 
-| Element | Clauses | Priority |
-|---------|---------|----------|
-| Column | Cl 25, 39, Annex E/G | ✅ COMPLETE — 14/14 tasks: classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, helical, additional_moment, long_column, column_detailing, ductile_detailing (IS 13920). 500+ tests, SP:16 benchmarks ±0.1% |
-| One-way slab | Cl 24.1–24.2 | P1 |
-| Two-way slab | Cl 24.3, Annex D, Table 26 | P1 |
-| Footing | Cl 34, 31.6 | 🔄 5/7 done — bearing sizing, flexure, one-way shear, punching shear, bearing pressure done. Missing: dowel bars (TASK-655), FastAPI endpoint (TASK-656) |
-| Wall | Cl 32 | P2 |
-| Staircase | Cl 33 | P2 |
-| Deep beam | Cl 29 | P2 |
-| Flat slab | Cl 31.6 (punching) | P2 |
-| Enhanced shear near supports | Cl 40.3 | ✅ Done (TASK-712) |
-| Punching shear | Cl 31.6 | P1 |
-| Moment redistribution | Annex C | P2 |
-| Effective flange width (L-beam) | Cl 36.4.2 | P1 |
-| Continuous beam coefficients | Annex B | P2 |
+| Scope | Manifest status | Boundary |
+|-------|-----------------|----------|
+| Beam, rectangular column, isolated footing, solid slab | `SUPPORTED` / `IMPLEMENTED_BOUNDED` | Exact supported workflows and held cases come from the runtime IS 456 capability registry |
+| Walls, stairs, deep beams, flat slabs | `HELD` / `NOT_IMPLEMENTED` | Separate IS 456 programs required |
+| Combined/strap/raft/pile-cap foundations | `HELD` / `NOT_IMPLEMENTED` | Each requires a distinct analysis model |
+| IS 13920 beam, column and SCWB checks | `SUPPORTED` / `IMPLEMENTED_BOUNDED` | Does not claim complete seismic member/building design |
+| IS 13920 walls/foundations, IS 875, IS 1893 | `HELD` / `NOT_IMPLEMENTED` | Companion-code waves remain separate |
 
 ---
 
@@ -356,24 +348,24 @@ warnings.warn(
 - d'/d > threshold where compression steel doesn't yield
 - Non-standard column shapes (L, C, hollow) — Phase 5 only
 
-### 5.2 One-Way Slab Design (IS 456 Cl 24.1–24.2)
+### 5.2 One-Way Slab Design (IS 456 Cl 24.1–24.2) — bounded scope complete
 
-| # | Function | IS 456 Reference |
-|---|----------|-----------------|
-| 1 | `classify_slab()` | ly/lx ratio check |
-| 2 | `oneway_coefficients()` | Table 12/13 |
-| 3 | `design_oneway_slab()` | Cl 24.1–24.2 |
-| 4 | `slab_detailing()` | Cl 26.5 (min steel, max spacing) |
+| # | Current workflow area | IS 456 Reference | Status |
+|---|-----------------------|------------------|--------|
+| 1 | Solid-slab classification | ly/lx ratio check | ✅ Bounded |
+| 2 | Built-in continuous coefficients | Table 12/13 | ✅ Bounded lookup/interpolation |
+| 3 | Simply-supported and continuous one-way design | Cl 24.1–24.2 | ✅ Bounded |
+| 4 | Detailing, span/depth carrier and ordinary shear | Cl 26.5, 23.2.1, 40 | ✅ Bounded; direct deflection/crack width and shear reinforcement held |
 
-### 5.3 Two-Way Slab Design (IS 456 Cl 24.3, Annex D)
+### 5.3 Two-Way Slab Design (IS 456 Cl 24.3, Annex D) — bounded scope complete
 
-| # | Function | IS 456 Reference |
-|---|----------|-----------------|
-| 1 | `twoway_moment_coefficients()` | Table 26 (9 cases × αx, αy) |
-| 2 | `twoway_shear_coefficients()` | Table 27 |
-| 3 | `design_twoway_slab()` | Annex D-1 |
-| 4 | `torsion_reinforcement()` | Annex D-1.7/D-1.8 |
-| 5 | `strip_distribution()` | Annex D-1.2 (middle/edge strips) |
+| # | Current workflow area | IS 456 Reference | Status |
+|---|-----------------------|------------------|--------|
+| 1 | Restrained-panel moment coefficients | Table 26 | ✅ Bounded cases with no extrapolation |
+| 2 | Simply-supported/free-corner coefficients | Table 27 | ✅ Bounded cases |
+| 3 | Oriented two-way panel design | Annex D | ✅ Bounded |
+| 4 | Corner-torsion disposition | Annex D | ✅ Bounded topology |
+| 5 | Middle/edge strip distribution | Annex D | ✅ Bounded topology |
 
 **Edge Case:** ly/lx exactly = 2.0 — IS 456 says "may be designed as one-way" — library should default to two-way and document the choice.
 
@@ -385,7 +377,7 @@ warnings.warn(
 | 2 | `footing_flexure()` | Cl 34.2.1–34.2.3 | ✅ Done |
 | 3 | `footing_oneway_shear()` | Cl 34.2.4 (at d from face) | ✅ Done |
 | 4 | `footing_punching_shear()` | Cl 31.6 (at d/2 from face) | ✅ Done |
-| 5 | `footing_detailing()` | Cl 34.3 (rebar distribution) | 📋 |
+| 5 | `footing_detailing()` | Cl 34.3 (rebar distribution) | ✅ Done for declared isolated-footing scope |
 | 6 | `bearing_check()` | Cl 34.4 (σbr ≤ 0.45·fck·√(A1/A2)) | ✅ Done |
 
 **Edge Cases:**
@@ -437,9 +429,9 @@ class LoadCombination(ABC):
 
 ### 5.7 Phase 1 Success Criteria
 - [x] IS 456 column design: 14/14 tasks COMPLETE (classify, min_ecc, axial, uniaxial, biaxial, P-M curve, effective_length, additional_moment, helical, long_column, column_detailing, ductile_detailing (IS 13920)). 500+ column tests, SP:16 benchmarks passing ±0.1%
-- [ ] IS 456 one-way slab: 4 functions
-- [ ] IS 456 two-way slab: 5 functions with all 9 Table 26 cases
-- [ ] IS 456 footing: 6 functions including punching shear
+- [x] IS 456 one-way solid-slab bounded workflows
+- [x] IS 456 two-way solid-slab bounded workflows and accepted coefficient cases
+- [x] IS 456 isolated-footing bounded workflows including footing-specific punching
 - [x] Enhanced shear (Cl 40.3) implemented
 - [ ] New ABCs added to core/base.py
 - [ ] IS456Code implements all ABCs
@@ -1069,32 +1061,19 @@ Every IS 456 function must pass the 9-step pipeline from `/function-quality-pipe
 
 ## 16. Appendices
 
-### A. IS 456 Clause Coverage (Complete List)
+### A. Indian-code coverage reporting
 
-| Clause | Description | Status | Phase |
-|--------|-------------|--------|-------|
-| Cl 24.1–24.2 | One-way slab | ❌ | P1 |
-| Cl 24.3, Annex D | Two-way slab | ❌ | P1 |
-| Cl 25.1–25.4 | Column classification & eccentricity | ✅ Done | P1 |
-| Cl 26.2–26.5 | Detailing (beam) | ✅ | Done |
-| Cl 29 | Deep beams | ❌ | P5 |
-| Cl 31.6 | Punching shear | ❌ | P1 |
-| Cl 32 | Walls | ❌ | P5 |
-| Cl 33 | Stairs | ❌ | P5 |
-| Cl 34 | Footings | ❌ | P1 |
-| Cl 38.1–38.4 | Flexure (beam) | ✅ | Done |
-| Cl 39.1–39.7 | Column design | 🔄 Partial — 39.3/39.5/39.6 ✅, 39.4/39.7 ❌ | P1 |
-| Cl 40.1–40.5 | Shear (beam) | ✅ | Done |
-| Cl 40.3 | Enhanced shear near supports | ✅ Done | Done |
-| Cl 41 | Torsion | ✅ | Done |
-| Cl 43 | Serviceability | ✅ | Done |
-| Annex B | Continuous beam coefficients | ❌ | P2 |
-| Annex C | Moment redistribution | ❌ | P2 |
-| Annex D | Two-way slab coefficients | ❌ | P1 |
-| Annex E | Column effective length (stiffness method) | ❌ | P1 |
-| Annex G | P-M interaction | ✅ Done | P1 |
-| Table 26 | Two-way moment coefficients | ❌ | P1 |
-| Table 28 | Column effective length ratios | ✅ Done | P1 |
+The former hand-maintained clause table was archived in place by replacement
+because it contradicted implemented slab, footing, and column behavior. Use:
+
+```bash
+./scripts/python_runtime.sh scripts/check_clause_coverage.py --summary
+./scripts/python_runtime.sh scripts/parity_dashboard.py --section capabilities
+```
+
+The first command reports standard-namespaced decorator registration only. The
+second reports declared supported versus held capability families. Neither is a
+whole-standard-completeness score or professional approval.
 
 ### B. Seismic Detailing Comparison
 

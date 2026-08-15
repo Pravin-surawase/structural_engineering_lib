@@ -8,6 +8,8 @@ from dataclasses import asdict, dataclass
 from typing import Any
 
 __all__ = [
+    "IS456_STANDARD_ID",
+    "IS456_STANDARD_NAMESPACE",
     "IS456AdapterContract",
     "IS456Capability",
     "IS456FieldAlias",
@@ -21,6 +23,8 @@ __all__ = [
 ]
 
 CAPABILITY_SCHEMA_VERSION = "2.0"
+IS456_STANDARD_ID = "IS456"
+IS456_STANDARD_NAMESPACE = "IS456:2000"
 IS456_CODE_EDITION = "IS 456:2000"
 
 

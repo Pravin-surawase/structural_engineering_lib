@@ -2,9 +2,27 @@
   "folder": "docs/verification",
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
-  "last_updated": "2026-08-12",
-  "file_count": 15,
+  "last_updated": "2026-08-15",
+  "file_count": 18,
   "files": [
+    {
+      "name": "INDIA-0-git-handoff.json",
+      "type": "config",
+      "last_updated": "2026-08-15",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "e33f336515f1"
+    },
     {
       "name": "README.md",
       "type": "documentation",
@@ -73,6 +91,31 @@
       "content_hash": "e15f6ebeb790"
     },
     {
+      "name": "indian-code-capability-coverage.json",
+      "type": "config",
+      "last_updated": "2026-08-15",
+      "top_level_keys": [
+        "schema_version",
+        "manifest_id",
+        "last_reconciled",
+        "claim_boundaries",
+        "status_vocabularies",
+        "sources",
+        "capability_summary",
+        "standards"
+      ],
+      "content_hash": "4cecc72906d0"
+    },
+    {
+      "name": "indian-code-truth-baseline.md",
+      "type": "documentation",
+      "size_lines": 92,
+      "last_updated": "2026-08-15",
+      "title": "INDIA-0 Indian-Code Truth Baseline",
+      "description": "merge pending indian-code-capability-coverage.json",
+      "content_hash": "97b85669d0b9"
+    },
+    {
       "name": "insights-verification-pack.md",
       "type": "documentation",
       "size_lines": 101,
@@ -109,11 +152,11 @@
     {
       "name": "is456-slab-evidence.md",
       "type": "documentation",
-      "size_lines": 114,
-      "last_updated": "2026-08-12",
+      "size_lines": 115,
+      "last_updated": "2026-08-15",
       "title": "IS 456 Solid Slab Source and Benchmark Ledger",
       "description": "| ID | Identity | Permitted implementation use | State | |---|---|---|---|",
-      "content_hash": "c8ef17a438a0"
+      "content_hash": "fd3c5179fd1c"
     },
     {
       "name": "pack.md",
@@ -150,5 +193,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "a39b239ab3396604"
+  "content_hash": "bdfec0cc8d033a6f"
 }

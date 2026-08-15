@@ -4,7 +4,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-15
-**Files:** 110
+**Files:** 111
 
 ## Config Files
 
@@ -41,7 +41,7 @@
 | [check_architecture_boundaries.py](check_architecture_boundaries.py) | Architecture Boundary Linter. | 3 | 9 | 495 |
 | [check_bootstrap_freshness.py](check_bootstrap_freshness.py) | Check if bootstrap docs are stale compared to actual codebas | 0 | 4 | 290 |
 | [check_circular_imports.py](check_circular_imports.py) | Circular Import Detector for the Python Structural Library | 5 | 1 | 464 |
-| [check_clause_coverage.py](check_clause_coverage.py) | IS 456 clause coverage gap detection. | 0 | 8 | 488 |
+| [check_clause_coverage.py](check_clause_coverage.py) | Report standard-namespaced clause/reference decorator regist | 0 | 5 | 254 |
 | [check_cli_reference.py](check_cli_reference.py) | Ensure CLI reference includes required commands. | 0 | 1 | 48 |
 | [check_codex_git_workflow.py](check_codex_git_workflow.py) | Guard the Codex-native Git/GitHub workflow contract. | 0 | 3 | 638 |
 | [check_doc_versions.py](check_doc_versions.py) | Doc Version Drift Check — Validate no stale *library* versio | 0 | 2 | 72 |
@@ -81,6 +81,7 @@
 | [generate_docs_index.py](generate_docs_index.py) | Generate machine-readable JSON index of documentation. | 0 | 7 | 246 |
 | [generate_enhanced_index.py](generate_enhanced_index.py) | Generate enhanced index.json + index.md for ANY folder type. | 0 | 11 | 866 |
 | [generate_error_docs.py](generate_error_docs.py) | Generate docs/reference/error-codes.md from core/errors.py. | 0 | 4 | 139 |
+| [generate_indian_code_manifest.py](generate_indian_code_manifest.py) | Generate or verify the INDIA-0 Indian-code truth manifest. | 0 | 1 | 43 |
 | [git_handoff_receipt.py](git_handoff_receipt.py) | Build and validate fail-closed task-to-Git handoff receipts. | 0 | 4 | 573 |
 | [git_state.py](git_state.py) | Read-only, worktree-aware Git state authority. | 5 | 5 | 1004 |
 | [governance_health_score.py](governance_health_score.py) | Governance Health Score - TASK-289 | 3 | 1 | 515 |
@@ -88,7 +89,7 @@
 | [migrate_react_component.py](migrate_react_component.py) | Migrate a React component to a new feature-grouped folder. | 0 | 9 | 475 |
 | [model_picker.py](model_picker.py) | Recommend a supported model and reasoning effort for a repos | 1 | 2 | 305 |
 | [node_runtime.py](node_runtime.py) | Select and run the healthy Node.js major pinned by ``.nvmrc` | 0 | 4 | 205 |
-| [parity_dashboard.py](parity_dashboard.py) | Parity Dashboard — coverage/parity across IS 456, API, endpo | 0 | 6 | 519 |
+| [parity_dashboard.py](parity_dashboard.py) | Parity dashboard across declared Indian-code scope and appli | 0 | 6 | 466 |
 | [pipeline_state.py](pipeline_state.py) | Pipeline state tracking for multi-step agent workflows. | 2 | 17 | 868 |
 | [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 203 |
 | [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 908 |

@@ -1,134 +1,129 @@
 # Next Session Briefing
 
-## Latest Handoff (auto)
+## Latest Handoff
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
-- Focus: Add semantic coherence over deterministically discovered maintained
-- Git receipt: docs/research/git-governance/GIT-001-phase-7E-task-git-handoff.json | sha256:8ff1c88f16c39aa5ecb22d32916d199585bc6946ac87844d160ce04134132a97 | HOLD
-- Git identity: codex/git-7e-semantic-handoff@f7fcdb26a576399dd7b6462dc6e6132fa4798e2b | upstream=origin/codex/git-7e-semantic-handoff@942eddeca7ca225b62e8514826305e00d2322e48 | base=origin/main@b91838f594a04aff1d21c43bf6f87a64710b0748 | tree=clean | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: WAIT_FOR_EXACT_HEAD_AUDIT
+- Focus: Finish INDIA-0 exact-head integration, then start INDIA-1 existing-family closure from merged `main`
+- Draft PR: [#753](https://github.com/Pravin-surawase/structural_engineering_lib/pull/753)
+- Branch: `codex/india-0-truth-baseline`
+- Base: verified `origin/main` at `96f193bd45a21f05698cf64de47808a2e5f82640`
+- Implementation commit: `cfe02b3d47b671097358cf2feff16ecd4319cf89`
+- Next action: inspect the live PR head, required checks, mergeability, and review; merge only if the exact head is unchanged and all gates pass
+- Holds: no release, engineering-use approval, branch/worktree deletion, or historical-lane cleanup
 <!-- HANDOFF:END -->
 
-**Current release:** `v0.23.1a1` Alpha
+**Date:** 2026-08-15
 
-**Refreshed Git anchor:** `origin/main = b91838f594a04aff1d21c43bf6f87a64710b0748`
-
-**Task board:** [TASKS.md](../TASKS.md)
-
-| State | Target | Decision |
-|---|---|---|
-| **Complete** | GIT-7B, GIT-7C, and GIT-7D | State kernel, exact-head CI/server enforcement, targeted generation, and inspection-only disposition are integrated |
-| **Complete** | GIT-7D2 | PR #747 merged as `0a784de5`; closeout lessons PR #748 merged as `bf4065f0`; both reviewed/merge trees were equal |
-| **Complete** | Eight-branch retirement proposal | PR #750 squash-merged as `b91838f`; all eight exact targets remain `HOLD_UNKNOWN_OWNER` / `RETENTION_EVIDENCE_UNKNOWN` and no deletion is authorized |
-| **Next** | Retention decision | Owner must state `NO_RETENTION` or `RETAIN` for each exact SHA before any fresh classifier run or approval request |
-| **Current** | GIT-7E | Semantic live-guidance coherence and durable read-only task-to-Git handoff are being implemented; exact-head audit remains the ready/merge boundary |
-| **Owner decision** | Excel planning lane | Name an active owner/next action or separately authorize a complete retirement assessment |
-| **Separate maintenance** | Seven dependency PRs | Do not close or merge the existing Dependabot PRs in GIT-001 |
+| Release state | Target |
+|---|---|
+| **Current** | `v0.23.1a1` Alpha; qualified engineering review still required |
+| **Next** | Merge INDIA-0, then execute INDIA-1 as bounded existing-family packets |
 
 ## Required Reading
 
-1. [Eight-branch retirement proposal](../research/git-governance/GIT-001-eight-branch-retirement-authorization-proposal.md)
-2. [Machine-readable proposal receipt](../research/git-governance/GIT-001-eight-branch-retirement-authorization-proposal.json)
-3. [Classifier caller evidence](../research/git-governance/GIT-001-eight-branch-retirement-classifier-evidence.json)
-4. [Phase 7D cleanup reconciliation](../research/git-governance/GIT-001-phase-7D-cleanup-reconciliation.md)
-5. [GIT-001 research and phase ledger](../research/git-governance/GIT-001-README.md)
-6. [Phase 7D2 branch disposition](../research/git-governance/GIT-001-phase-7D2-branch-disposition.md)
-7. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
-8. [GIT-7D2 cleanup-audit case study](../git-automation/git-governance-case-study-git-7d2-cleanup-audit.md)
+1. [INDIA-0 truth baseline](../verification/indian-code-truth-baseline.md)
+2. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
+3. [Current task board](../TASKS.md)
+4. [IS 456 library-first plan](is456-library-first-master-plan.md)
+5. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
 
-## Start commands
+## Start Boundary
+
+Do not begin INDIA-1 implementation on the INDIA-0 branch. First inspect PR
+#753 live. If its exact head is unchanged, all required checks pass, there are
+no conflicts or unresolved blockers, and the reviewed tree is accepted, the
+owner has authorized the normal exact-head merge. Do not bypass checks.
+
+After merge, fetch `origin/main`, verify the merge result contains the INDIA-0
+manifest and tests, and create a fresh isolated `codex/india-1-<packet>` lane.
+Preserve the dirty primary checkout and all unrelated worktrees.
 
 ```bash
-./run.sh session brief --agent ops
+./run.sh session brief --agent structural-math
 ./run.sh session start
 ./scripts/python_runtime.sh --diagnose
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
+./scripts/python_runtime.sh scripts/generate_indian_code_manifest.py --check
 ```
 
-Refresh and verify `origin/main` before relying on this handoff. Resume GIT-7E
-only from its exact receipt-bound branch/head, or create another fresh
-`codex/<task-slug>` lane from verified current main if that evidence is unknown.
-Do not extend, reset, rebase, merge into, or reconcile a preserved
-squash-diverged lane.
+Require `source_bound=true` before producing test or benchmark evidence.
 
-## Verified current Git facts
+## INDIA-1 Objective
 
-- PRs #744-#748 are merged at their exact reviewed heads with successful
-  `PR Gate`. Each reviewed-head tree equals its squash-result tree, and both
-  `PR Validation` and `Validate Documentation` passed after every merge.
-- GIT-7D1 is integrated through PR #746. GIT-7D2 is integrated through PRs
-  #747-#748. The old deletion-oriented route is absent; the classifier remains
-  local, inspection-only, fail-closed, and non-authorizing.
-- The clean primary `main` worktree remains at `0fdb48ed`, five commits behind
-  refreshed `origin/main = 670ea4be`. Synchronizing it is outside this packet.
-- Live proposal intake found 20 local `codex/*` branches and 16 worktrees after
-  the isolated proposal lane was created. Topology is evidence, not cleanup
-  authority; preserve concurrent task lanes without normalization.
-- Active ruleset `11390214` still requires a PR and strict `PR Gate`, protects
-  deletion/non-fast-forward, has no bypass actor, allows merge/squash, and
-  excludes rebase. Repository branch deletion after merge remains disabled.
-- The only pre-existing open PRs are Dependabot #683, #684, and #713-#717.
-  There are no open issues. None was changed by the audit.
+Close or explicitly retain every material limitation inside the already
+supported IS 456 beam, rectangular-column, isolated-footing, and solid-slab
+families. “Close” means an independently benchmarked, provenance-bearing,
+fail-closed supported route. “Retain” means the manifest and public capability
+wording clearly exclude the case and identify the analysis or evidence needed.
 
-## Preservation and disposition holds
+This wave does not add walls, stairs, deep beams, flat slabs, combined/strap/
+raft/pile-cap foundations, IS 875 load generation, or IS 1893 analysis. Those
+remain INDIA-2 or INDIA-3 work.
 
-- Detached `e54a` at `0fdb48ed` still has exactly one dirty path,
-  `docs/SESSION_LOG.md` (119 insertions, 7 deletions; patch ID `be157118`;
-  binary-diff SHA-256 begins `cf70f18f`). Preserve it byte-for-byte. Do not
-  attach, checkout, stage, copy, reset, stash, clean, or remove it.
-- `codex/git-governance-research` remains attached at local `65703736`, differs
-  from remote `51a8a57a`, and contains three locally unique patches. Preserve.
-- `codex/excel-product-planning` remains attached at `a0e115e1`, has no feature
-  remote or PR, and needs an owner decision. Git evidence cannot make it
-  deletion-ready.
-- `codex/release-preflight-alpha-policy` remains attached at local `5da9c66a`
-  while its remote is `20180a40`. Both are integrated, but the dual-head lane is
-  separate preserved evidence.
-- GIT-7B, GIT-7C1, GIT-7D1, GIT-7D2, GIT-7D2 lessons, Alpha closeout, and Alpha
-  integration branches remain attached worktree holds even where integration
-  evidence is complete.
-- Eight other local branches are unattached, remote-matching, main-reachable,
-  and linked to merged PRs with no open head/base dependency. Exact supplied
-  evidence still produced `HOLD_UNKNOWN_OWNER` with
-  `RETENTION_EVIDENCE_UNKNOWN` for every target because no authoritative exact-
-  SHA retention decision exists.
-- Proposal authority and autonomous orchestration do not imply `NO_RETENTION`.
-  Never translate merged/reachable evidence or routine Git authority into a
-  claim that historical evidence is unneeded.
+## Recommended Packet Sequence
 
-## GIT-7E exact boundary
+### INDIA-1A — Beam route closure
 
-GIT-7E must prove:
+- Inventory existing flanged-flexure, torsion, shear, detailing, deflection,
+  and crack-width math before adding code.
+- Decide and implement the smallest coherent combined flanged-beam route.
+- Propagate only explicit serviceability inputs supported by maintained math.
+- State load-envelope and torsion-redistribution exclusions fail-closed.
+- Do not claim hollow/box, deep, prestressed, or axially loaded beam support.
 
-1. every live indexed instruction rejects retired command and flag fixtures;
-2. archive/historical exclusions are explicit rather than accidental;
-3. branch, head, upstream, default base, tree, and operation identity survives
-   session handoff;
-4. remote, PR, reviewed-head, and required-check fields are exact or explicitly
-   unknown;
-5. task/transcript archive state is never represented as Git retention proof;
-6. aliases resolve maintained commands without permitting obsolete mutations.
+### INDIA-1B — Rectangular-column decision closure
 
-GIT-7E does not itself refresh remote state, mutate GitHub, change disposition logic,
-authorize cleanup/deletion, synchronize preserved lanes, modify GIT-7D1/7D2
-behavior, publish a release, or change product code. Implementation was
-authorized in the GIT-7E task delegation; ready/merge remains held for
-independent exact-head audit.
+- Reconfirm the supported symmetric/two-face rectangular reinforcement model.
+- Decide whether circular, asymmetric, and arbitrary multilayer layouts remain
+  held or need separate approved packets; do not silently broaden geometry.
+- Keep experimental PMM work outside the stable capability unless its separate
+  numerical and API acceptance gates are completed.
 
-## Destructive-action holds
+### INDIA-1C — Isolated-footing composed workflow
 
-- No branch, remote ref, or worktree deletion is authorized.
-- No prune, reset, rebase, stash/drop, clean, force push, or primary-main sync.
-- A future action needs a same-session refresh, complete identity-bound evidence,
-  `RETIREMENT_READY_PENDING_APPROVAL`, separate exact local/remote/worktree
-  authorization, immediate drift recheck, and post-action receipt.
+- Compose sizing, flexure, one-way shear, punching, bearing pressure, detailing,
+  and concentric load transfer into one reviewable supported workflow.
+- Add eccentric pressure only after documenting load reference, contact model,
+  units, kern/tension assumptions, and unsafe/out-of-domain behavior.
+- Keep combined, strap, raft, pile-cap, settlement, lateral stability, and soil-
+  structure interaction outside this packet.
 
-## Session closeout
+### INDIA-1D — Solid-slab serviceability and shear boundary
 
-Discover maintained tests/scripts with `rg --files`. Run focused checks, the
-semantic Git check, strict docs, quick gate, full gate once stable, session end,
-and `git diff --check`. Record every material issue with symptom/impact, root
-cause or explicit unconfirmed boundary, resolution, and proving evidence in the
-newest task-owned `docs/SESSION_LOG.md` entry.
+- Evaluate direct deflection and crack-width routes with explicit required
+  geometry, material, load-duration, reinforcement, and service-stress inputs.
+- Add automatic shear reinforcement only for a justified supported slab model;
+  otherwise retain the exclusion explicitly.
+- Define the load-envelope boundary. Concentrated loads, openings, irregular
+  panels, flat slabs, and FEM remain held unless separately approved.
+
+## Acceptance Per Packet
+
+- Governing edition, clause/table identifier, and source provenance are explicit.
+- Units, geometry, loading, topology, and support assumptions are explicit.
+- Pure math is accepted before service, FastAPI, or React expansion.
+- At least one independent benchmark has a justified tolerance.
+- Governing safe, unsafe, boundary, and out-of-domain cases are tested.
+- Unsupported inputs fail closed; capability wording matches executable behavior.
+- Focused tests pass while iterating; quick gate passes before every commit.
+- Run one full repository gate at each integrated INDIA-1 milestone.
+- Record material issues, confirmed root causes, resolutions, and evidence in
+  the newest task-owned `docs/SESSION_LOG.md` entry.
+
+## Git and Review Strategy
+
+Use one PR per coherent packet when packets are independently reviewable; do
+not keep all INDIA-1 work on a long-lived mega-branch. A named integration owner
+alone updates shared/generated surfaces such as the manifest, capability
+registry, `TASKS.md`, indexes, and session log. Read-only engineering review can
+run in parallel, but qualified structural-engineering review remains a distinct
+acceptance gate.
+
+## INDIA-1 Exit
+
+INDIA-1 is complete only when every original limitation is either supported by
+executable evidence or retained as an explicit hold, the generated manifest is
+current with no unknown status, focused and repository gates pass, and the
+cumulative engineering-review boundary is unchanged. Release remains separately
+owner-authorized.

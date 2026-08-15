@@ -3,12 +3,14 @@
 Benchmark examples and verification packs for validating library calculations against IS 456 standards.
 
 **Type:** Documentation
-**Last Updated:** 2026-08-12
-**Files:** 15
+**Last Updated:** 2026-08-15
+**Files:** 18
 
 ## Config Files
 
+- [INDIA-0-git-handoff.json](INDIA-0-git-handoff.json)
 - [footing-release-inclusion.json](footing-release-inclusion.json)
+- [indian-code-capability-coverage.json](indian-code-capability-coverage.json)
 - [is456-public-distribution-permission.json](is456-public-distribution-permission.json)
 
 ## Documentation Files
@@ -21,9 +23,10 @@ Benchmark examples and verification packs for validating library calculations ag
 | [column-pmm-benchmark.md](column-pmm-benchmark.md) |  | This record independently checks the experimental rectangula | 107 |
 | [examples.md](examples.md) |  | This document provides benchmark examples that engineers can | 1550 |
 | [external-cli-test.md](external-cli-test.md) |  | Purpose: capture a repeatable, human-run CLI test from a fre | 98 |
+| [indian-code-truth-baseline.md](indian-code-truth-baseline.md) | INDIA-0 Indian-Code Truth Baseline | merge pending indian-code-capability-coverage.json | 92 |
 | [insights-verification-pack.md](insights-verification-pack.md) |  | This pack provides benchmark test cases for the insights mod | 101 |
 | [is456-library-first-evidence.md](is456-library-first-evidence.md) | IS 456 Library-First Evidence and Claim  | | Source | SHA-256 | Pages | Use | |---|---|---:|---| | 169 |
-| [is456-slab-evidence.md](is456-slab-evidence.md) | IS 456 Solid Slab Source and Benchmark L | | ID | Identity | Permitted implementation use | State | |-- | 114 |
+| [is456-slab-evidence.md](is456-slab-evidence.md) | IS 456 Solid Slab Source and Benchmark L | | ID | Identity | Permitted implementation use | State | |-- | 115 |
 | [pack.md](pack.md) |  | This repo’s unit tests validate correctness and edge cases,  | 56 |
 | [release-artifact-evidence-template.md](release-artifact-evidence-template.md) | Release Artifact Evidence Template | Complete this record from the CI run that built the exact ca | 38 |
 | [ui-experience-session-2-acceptance.md](ui-experience-session-2-acceptance.md) |  | This is the software acceptance record for UIX-001 P9-P15. I | 70 |

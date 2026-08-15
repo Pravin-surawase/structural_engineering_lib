@@ -71,7 +71,7 @@ Core CANNOT import from Services or UI. Services CANNOT import from UI.
 - **Session Persistence:** `scripts/session_store.py` — JSON session state in logs/sessions/
 - **Pipeline Resume:** `scripts/pipeline_state.py` — resumable 8-step task pipeline
 - **Hooks Framework:** `scripts/hooks/` — non-Git execution hooks such as `pre_route`
-- **Parity Dashboard:** `scripts/parity_dashboard.py` — IS 456 clause/endpoint/test coverage
+- **Parity Dashboard:** `scripts/parity_dashboard.py` — declared Indian-code capability plus endpoint/test/hook coverage
 - **Skill Tiers:** Core (always), Specialist (role-based), Experimental (explicit)
 
 ## IMPORTANT: Search before coding
@@ -116,7 +116,7 @@ Key patterns: CSV import → `useCSVFileImport` | 3D geometry → `useBeamGeomet
 ./run.sh release run 0.X.Y         # Bump version + release flow
 ./run.sh route "task description"   # Route task to best agent (NLP-based)
 ./run.sh tools [--list|--find|--agent] # Unified tool/script registry
-./run.sh parity                     # IS 456 clause/endpoint/test coverage dashboard
+./run.sh parity                     # Indian-code capability and cross-layer parity dashboard
 ./run.sh pipeline status TASK-XXX   # Check pipeline step for a task
 ./run.sh session compact            # Archive old SESSION_LOG entries (<50KB)
 ./run.sh efficiency check           # Validate low-token project controls

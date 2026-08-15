@@ -829,8 +829,9 @@ _help_parity() {
     cat <<'EOF'
 Usage: ./run.sh parity [--json] [--missing] [--section <name>]
 
-Show cross-layer coverage for IS 456 clauses, public API functions, FastAPI
-endpoints/tests, and frontend API hooks.
+Show declared supported/held Indian-code capability families, public API
+exposure, FastAPI endpoint tests, and frontend API hooks. Capability percentages
+are planning indicators, not clause completeness or engineering approval.
 EOF
 }
 
@@ -914,8 +915,8 @@ _print_usage() {
     echo -e "  ${GREEN}task${NC}        Build a lane-safe task intake brief"
     echo -e "  ${GREEN}tools${NC}       Tool & script discovery (list, find,stats)"
     echo -e "  ${GREEN}pipeline${NC}    Pipeline state tracking (new, advance, show)"
-    echo -e "  ${GREEN}coverage${NC}    IS 456 clause coverage gap detection"
-    echo -e "  ${GREEN}parity${NC}      Cross-layer implementation/test parity dashboard"
+    echo -e "  ${GREEN}coverage${NC}    Namespaced decorator registration report"
+    echo -e "  ${GREEN}parity${NC}      Declared capability and cross-layer parity dashboard"
     echo -e "  ${GREEN}efficiency${NC}  Validate low-token agent and context controls"
     echo -e "  ${GREEN}model${NC}       Recommend a model and reasoning level for a task"
     echo -e "  ${GREEN}diagnose${NC}    Diagnose CI failures (--pr N, --local, --fix)"

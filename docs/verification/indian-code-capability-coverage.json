@@ -1,0 +1,2034 @@
+{
+  "schema_version": "1.0",
+  "manifest_id": "INDIA-0-INDIAN-RC-TRUTH-BASELINE",
+  "last_reconciled": "2026-08-15",
+  "claim_boundaries": {
+    "capability_status": "Declared bounded software scope, not whole-standard completeness or engineering approval.",
+    "registration_status": "Decorator-to-identifier traceability only; it does not prove implementation, numerical verification, or provenance.",
+    "professional_review": "Qualified structural-engineering review remains required before stable or engineering-use approval."
+  },
+  "status_vocabularies": {
+    "scope_status": [
+      "SUPPORTED",
+      "HELD"
+    ],
+    "implementation_status": [
+      "IMPLEMENTED_BOUNDED",
+      "NOT_IMPLEMENTED"
+    ],
+    "registration_status": [
+      "REGISTERED",
+      "METADATA_ONLY",
+      "REGISTRATION_ONLY"
+    ]
+  },
+  "sources": [
+    "Python/structural_lib/services/capabilities.py",
+    "Python/structural_lib/codes/is456/clauses.json",
+    "Python/structural_lib/codes/is456/**/*.py",
+    "Python/structural_lib/codes/is13920/**/*.py"
+  ],
+  "capability_summary": {
+    "supported_families": 7,
+    "held_families": 14,
+    "total_declared_families": 21,
+    "supported_pct": 33.3
+  },
+  "standards": [
+    {
+      "standard_id": "IS456",
+      "namespace": "IS456:2000",
+      "edition": "2000",
+      "title": "Plain and reinforced concrete code of practice",
+      "source_root": "Python/structural_lib/codes/is456",
+      "status": "SUPPORTED_SUBSET",
+      "capability_summary": {
+        "supported_families": 4,
+        "held_families": 8,
+        "total_declared_families": 12,
+        "supported_pct": 33.3
+      },
+      "capability_families": [
+        {
+          "capability_id": "IS456:2000:beam",
+          "family": "beam",
+          "scope_status": "SUPPORTED",
+          "implementation_status": "IMPLEMENTED_BOUNDED",
+          "claim": "Ordinary solid rectangular beam primary design for flexure and shear, with optional IS 456 torsion within fck 15-40 N/mm2 and fy <= 500 N/mm2, plus maintained Level-A deflection and crack-width checks when their explicit inputs are supplied.",
+          "workflows": [
+            "design_beam_is456",
+            "check_beam_is456",
+            "detail_beam_is456"
+          ],
+          "limitations": [
+            "Flanged, hollow/box, deep, prestressed, or axially loaded torsion cases are excluded.",
+            "Compatibility-versus-equilibrium torsion redistribution decisions are excluded.",
+            "Beam check, detailing, batch, import, and other automation surfaces that do not accept Tu and serviceability inputs remain outside the combined route.",
+            "Serviceability is held unless span, support condition, crack geometry, and service strain or stress are explicitly supplied."
+          ],
+          "evidence": [
+            "docs/verification/is456-library-first-evidence.md"
+          ],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS456:2000:column",
+          "family": "column",
+          "scope_status": "SUPPORTED",
+          "implementation_status": "IMPLEMENTED_BOUNDED",
+          "claim": "Rectangular columns with the declared symmetric/two-face reinforcement assumptions.",
+          "workflows": [
+            "design_column_is456",
+            "design_long_column_is456"
+          ],
+          "limitations": [
+            "Circular, asymmetric and arbitrary multilayer layouts are excluded."
+          ],
+          "evidence": [
+            "docs/verification/is456-library-first-evidence.md"
+          ],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS456:2000:isolated_footing",
+          "family": "isolated_footing",
+          "scope_status": "SUPPORTED",
+          "implementation_status": "IMPLEMENTED_BOUNDED",
+          "claim": "Square/rectangular isolated footing checks, including bounded bearing pressure and concentric dowel transfer.",
+          "workflows": [
+            "size_footing",
+            "footing_flexure",
+            "footing_one_way_shear",
+            "footing_punching_shear",
+            "check_bearing_pressure",
+            "check_isolated_footing_load_transfer"
+          ],
+          "limitations": [
+            "Bearing-pressure results remain bounded checks requiring qualified review of the approved supporting-area basis and the complete footing design.",
+            "Combined, strap, raft, pile-cap, settlement and lateral stability design are excluded."
+          ],
+          "evidence": [
+            "docs/verification/footing-release-inclusion.json"
+          ],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS456:2000:solid_slab",
+          "family": "solid_slab",
+          "scope_status": "SUPPORTED",
+          "implementation_status": "IMPLEMENTED_BOUNDED",
+          "claim": "Simply supported and coefficient-method continuous one-way solid strips; common oriented two-way beam/wall-supported panels with built-in bounded IS 456 coefficient lookup/interpolation or reviewed external coefficients, strip distribution, corner torsion, provided-bar checks, span/depth serviceability carriers, and ordinary one-way shear.",
+          "workflows": [
+            "design_one_way_slab_is456",
+            "design_complete_one_way_slab_is456",
+            "design_continuous_one_way_slab_is456",
+            "design_continuous_one_way_slab_builtin_is456",
+            "design_two_way_slab_is456",
+            "design_two_way_slab_panel_is456",
+            "design_two_way_slab_panel_builtin_is456"
+          ],
+          "limitations": [
+            "Direct deflection, crack width, concentrated loads, openings, irregular panels, load-envelope analysis and automatic slab shear reinforcement are excluded.",
+            "Flat/drop/ribbed slabs, column strips, column-supported punching and FEM require a separately approved extension."
+          ],
+          "evidence": [
+            "docs/verification/is456-slab-evidence.md"
+          ],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS456:2000:wall",
+          "family": "wall",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "IS 456 wall design is not implemented.",
+          "workflows": [],
+          "limitations": [
+            "Clause 32 requires a separately verified program."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS456:2000:stair",
+          "family": "stair",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "IS 456 stair design is not implemented.",
+          "workflows": [],
+          "limitations": [
+            "Clause 33 requires a separately verified program."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS456:2000:deep_beam",
+          "family": "deep_beam",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "IS 456 deep-beam design is not implemented.",
+          "workflows": [],
+          "limitations": [
+            "Clause 29 requires a separately verified program."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS456:2000:flat_slab",
+          "family": "flat_slab",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "Flat-slab and column-supported punching design are held.",
+          "workflows": [],
+          "limitations": [
+            "Column strips, drops, punching perimeters, openings, and moment transfer require a separate analysis program."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS456:2000:combined_footing",
+          "family": "combined_footing",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "Combined-footing design is not implemented.",
+          "workflows": [],
+          "limitations": [
+            "A distinct soil-pressure and structural analysis model is required."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS456:2000:strap_footing",
+          "family": "strap_footing",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "Strap-footing design is not implemented.",
+          "workflows": [],
+          "limitations": [
+            "A distinct analysis model is required."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS456:2000:raft_foundation",
+          "family": "raft_foundation",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "Raft-foundation design is not implemented.",
+          "workflows": [],
+          "limitations": [
+            "Soil-structure interaction remains outside the supported subset."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS456:2000:pile_cap",
+          "family": "pile_cap",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "Pile-cap design is not implemented.",
+          "workflows": [],
+          "limitations": [
+            "Pile reactions and strut-and-tie behavior require a separate program."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        }
+      ],
+      "registration_summary": {
+        "known_references": 127,
+        "registered_known_references": 59,
+        "metadata_only_references": 68,
+        "registration_only_references": 0,
+        "registration_pct": 46.5
+      },
+      "references": [
+        {
+          "reference_id": "IS456:2000:21.1",
+          "reference": "21.1",
+          "reference_type": "clause",
+          "title": "Cover to Reinforcement",
+          "category": "durability",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:23.1",
+          "reference": "23.1",
+          "reference_type": "clause",
+          "title": "Effective Span",
+          "category": "analysis",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:23.1.1",
+          "reference": "23.1.1",
+          "reference_type": "clause",
+          "title": "Effective Span - Simply Supported",
+          "category": "analysis",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:23.1.2",
+          "reference": "23.1.2",
+          "reference_type": "clause",
+          "title": "Effective Span - Continuous",
+          "category": "analysis",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.flexure.calculate_effective_flange_width",
+            "structural_lib.codes.is456.beam.flexure.design_flanged_beam"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:23.2",
+          "reference": "23.2",
+          "reference_type": "clause",
+          "title": "Assumptions in Design for Flexure",
+          "category": "flexure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.serviceability.calculate_short_term_deflection",
+            "structural_lib.codes.is456.beam.serviceability.check_deflection_level_b"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:23.2.1",
+          "reference": "23.2.1",
+          "reference_type": "clause",
+          "title": "Slenderness Limits - Beams",
+          "category": "design_limits",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.serviceability.check_deflection_span_depth",
+            "structural_lib.codes.is456.beam.serviceability.get_long_term_deflection_factor",
+            "structural_lib.codes.is456.slab.serviceability.check_slab_span_depth_serviceability"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:24.1",
+          "reference": "24.1",
+          "reference_type": "clause",
+          "title": "Effective Span of Slabs",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.slab.classification.classify_solid_rectangular_slab",
+            "structural_lib.codes.is456.slab.one_way.design_simply_supported_one_way_slab_flexure",
+            "structural_lib.codes.is456.slab.one_way_continuous.design_continuous_one_way_slab_flexure",
+            "structural_lib.codes.is456.slab.one_way_detailing.check_simply_supported_one_way_slab_detailing",
+            "structural_lib.codes.is456.slab.serviceability.check_slab_span_depth_serviceability",
+            "structural_lib.codes.is456.slab.two_way.design_supported_interior_two_way_slab_flexure"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:24.2",
+          "reference": "24.2",
+          "reference_type": "clause",
+          "title": "Slabs Continuous Over Supports",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:24.3",
+          "reference": "24.3",
+          "reference_type": "clause",
+          "title": "Slabs Spanning in Two Directions at Right Angles",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.slab.classification.classify_solid_rectangular_slab"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:24.3.1",
+          "reference": "24.3.1",
+          "reference_type": "clause",
+          "title": "Reinforcement in Slabs — Minimum",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:24.3.2",
+          "reference": "24.3.2",
+          "reference_type": "clause",
+          "title": "Maximum Diameter of Bars in Slabs",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:24.4",
+          "reference": "24.4",
+          "reference_type": "clause",
+          "title": "Spacing of Reinforcement in Slabs",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.slab.two_way.design_supported_interior_two_way_slab_flexure",
+            "structural_lib.codes.is456.slab.two_way_complete.design_two_way_slab_panel"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:25.1",
+          "reference": "25.1",
+          "reference_type": "clause",
+          "title": "General — Compression Members",
+          "category": "columns",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:25.1.1",
+          "reference": "25.1.1",
+          "reference_type": "clause",
+          "title": "Unsupported Length",
+          "category": "columns",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:25.1.2",
+          "reference": "25.1.2",
+          "reference_type": "clause",
+          "title": "Slenderness Limits for Columns",
+          "category": "columns",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.column.axial.classify_column"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:25.2",
+          "reference": "25.2",
+          "reference_type": "clause",
+          "title": "Effective Length of Compression Members",
+          "category": "columns",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.column.axial.effective_length"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:25.3",
+          "reference": "25.3",
+          "reference_type": "clause",
+          "title": "Short and Long Column Classification",
+          "category": "columns",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:25.4",
+          "reference": "25.4",
+          "reference_type": "clause",
+          "title": "Minimum Eccentricity",
+          "category": "columns",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.column.axial.min_eccentricity"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.2.1",
+          "reference": "26.2.1",
+          "reference_type": "clause",
+          "title": "Development Length of Bars",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.detailing.calculate_development_length",
+            "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
+            "structural_lib.codes.is456.footing.load_transfer.check_isolated_footing_load_transfer"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.2.1.1",
+          "reference": "26.2.1.1",
+          "reference_type": "clause",
+          "title": "Design Bond Stress",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.detailing.get_bond_stress"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.2.2",
+          "reference": "26.2.2",
+          "reference_type": "clause",
+          "title": "Anchoring Reinforcement",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.detailing.calculate_standard_hook"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.2.2.1",
+          "reference": "26.2.2.1",
+          "reference_type": "clause",
+          "title": "Minimum Bend Radius",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.detailing.get_min_bend_radius"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.2.2.2",
+          "reference": "26.2.2.2",
+          "reference_type": "clause",
+          "title": "Stirrup Anchorage",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.detailing.calculate_stirrup_anchorage"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.2.3",
+          "reference": "26.2.3",
+          "reference_type": "clause",
+          "title": "Standard Hooks and Bends",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.detailing.calculate_anchorage_length"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.2.3.3",
+          "reference": "26.2.3.3",
+          "reference_type": "clause",
+          "title": "Anchorage at Simple Supports",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.detailing.check_anchorage_at_simple_support"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.2.5",
+          "reference": "26.2.5",
+          "reference_type": "clause",
+          "title": "Lap Splices",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.detailing.calculate_lap_length"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.3.2",
+          "reference": "26.3.2",
+          "reference_type": "clause",
+          "title": "Minimum Spacing of Reinforcement",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.3.3",
+          "reference": "26.3.3",
+          "reference_type": "clause",
+          "title": "Maximum Spacing of Reinforcement",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
+            "structural_lib.codes.is456.slab.one_way_detailing.check_simply_supported_one_way_slab_detailing"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.5.1.1",
+          "reference": "26.5.1.1",
+          "reference_type": "clause",
+          "title": "Minimum Shear Reinforcement",
+          "category": "shear",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:26.5.1.2",
+          "reference": "26.5.1.2",
+          "reference_type": "clause",
+          "title": "Stirrup Spacing",
+          "category": "shear",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:26.5.1.3",
+          "reference": "26.5.1.3",
+          "reference_type": "clause",
+          "title": "Side Face Reinforcement",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.detailing.check_side_face_reinforcement"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.5.1.5",
+          "reference": "26.5.1.5",
+          "reference_type": "clause",
+          "title": "Stirrup Legs",
+          "category": "shear",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.shear.design_shear"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.5.1.6",
+          "reference": "26.5.1.6",
+          "reference_type": "clause",
+          "title": "Bent-up Bars",
+          "category": "shear",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.shear.design_shear"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.5.2.1",
+          "reference": "26.5.2.1",
+          "reference_type": "clause",
+          "title": "Slab Reinforcement Detailing",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
+            "structural_lib.codes.is456.slab.one_way_detailing.check_simply_supported_one_way_slab_detailing"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.5.3",
+          "reference": "26.5.3",
+          "reference_type": "clause",
+          "title": "Columns",
+          "category": "columns",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.column.detailing.create_column_detailing"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.5.3.1",
+          "reference": "26.5.3.1",
+          "reference_type": "clause",
+          "title": "Longitudinal Reinforcement in Columns",
+          "category": "columns",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:26.5.3.2",
+          "reference": "26.5.3.2",
+          "reference_type": "clause",
+          "title": "Transverse Reinforcement in Columns",
+          "category": "columns",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.6",
+          "reference": "31.6",
+          "reference_type": "clause",
+          "title": "Two-Way Shear (Punching Shear)",
+          "category": "footings",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.6.1",
+          "reference": "31.6.1",
+          "reference_type": "clause",
+          "title": "Critical Section for Punching Shear",
+          "category": "footings",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.footing.punching_shear.footing_punching_shear"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31.6.2",
+          "reference": "31.6.2",
+          "reference_type": "clause",
+          "title": "Nominal Shear Stress in Punching",
+          "category": "footings",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.6.3",
+          "reference": "31.6.3",
+          "reference_type": "clause",
+          "title": "Permissible Punching Shear Stress",
+          "category": "footings",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:32.1",
+          "reference": "32.1",
+          "reference_type": "clause",
+          "title": "Empirical Design Method for Walls",
+          "category": "walls",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:32.2",
+          "reference": "32.2",
+          "reference_type": "clause",
+          "title": "Design of Reinforced Concrete Walls",
+          "category": "walls",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:32.3",
+          "reference": "32.3",
+          "reference_type": "clause",
+          "title": "Eccentricity of Vertical Load on Walls",
+          "category": "walls",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:32.4",
+          "reference": "32.4",
+          "reference_type": "clause",
+          "title": "Reinforcement in Walls",
+          "category": "walls",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:32.5",
+          "reference": "32.5",
+          "reference_type": "clause",
+          "title": "Maximum Axial Load Capacity of Wall",
+          "category": "walls",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:33.1",
+          "reference": "33.1",
+          "reference_type": "clause",
+          "title": "Effective Span of Stairs",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:33.2",
+          "reference": "33.2",
+          "reference_type": "clause",
+          "title": "Distribution of Loading on Stairs",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:33.3",
+          "reference": "33.3",
+          "reference_type": "clause",
+          "title": "Depth of Section",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:34.1",
+          "reference": "34.1",
+          "reference_type": "clause",
+          "title": "General Requirements for Footings",
+          "category": "footings",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.footing.bearing.size_footing"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:34.2",
+          "reference": "34.2",
+          "reference_type": "clause",
+          "title": "Moments and Forces",
+          "category": "footings",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:34.2.1",
+          "reference": "34.2.1",
+          "reference_type": "clause",
+          "title": "General — Footing Moment Computation",
+          "category": "footings",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:34.2.2",
+          "reference": "34.2.2",
+          "reference_type": "clause",
+          "title": "Critical Sections for Bending Moment in Footings",
+          "category": "footings",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:34.2.3",
+          "reference": "34.2.3",
+          "reference_type": "clause",
+          "title": "Bending Moment in Footings",
+          "category": "footings",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:34.2.3.1",
+          "reference": "34.2.3.1",
+          "reference_type": "clause",
+          "title": "Critical Section for Bending — Column Footings",
+          "category": "footings",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
+            "structural_lib.codes.is456.footing.flexure.footing_flexure"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:34.2.4",
+          "reference": "34.2.4",
+          "reference_type": "clause",
+          "title": "Shear in Footings",
+          "category": "footings",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:34.2.4.1",
+          "reference": "34.2.4.1",
+          "reference_type": "clause",
+          "title": "One-Way Shear in Footings — Unsupported Length",
+          "category": "footings",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
+            "structural_lib.codes.is456.footing.one_way_shear.footing_one_way_shear"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:34.3",
+          "reference": "34.3",
+          "reference_type": "clause",
+          "title": "Tensile Reinforcement in Footings",
+          "category": "footings",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:34.4",
+          "reference": "34.4",
+          "reference_type": "clause",
+          "title": "Transfer of Load at Base of Column",
+          "category": "footings",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.footing.bearing.bearing_stress_enhancement",
+            "structural_lib.codes.is456.footing.bearing.check_bearing_pressure",
+            "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
+            "structural_lib.codes.is456.footing.load_transfer.check_isolated_footing_load_transfer"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:34.4.1",
+          "reference": "34.4.1",
+          "reference_type": "clause",
+          "title": "Concrete Bearing Transfer",
+          "category": "footings",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.footing.load_transfer.check_isolated_footing_load_transfer"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:34.4.2",
+          "reference": "34.4.2",
+          "reference_type": "clause",
+          "title": "Transfer Reinforcement Development",
+          "category": "footings",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.footing.load_transfer.check_isolated_footing_load_transfer"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:34.4.3",
+          "reference": "34.4.3",
+          "reference_type": "clause",
+          "title": "Transfer Bar Arrangement",
+          "category": "footings",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.footing.load_transfer.check_isolated_footing_load_transfer"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:34.4.4",
+          "reference": "34.4.4",
+          "reference_type": "clause",
+          "title": "Large Column Bar Transfer Case",
+          "category": "footings",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:36.1",
+          "reference": "36.1",
+          "reference_type": "clause",
+          "title": "Limit State of Collapse - Flexure",
+          "category": "flexure",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:36.4.2",
+          "reference": "36.4.2",
+          "reference_type": "clause",
+          "title": "Effective Width of Flange",
+          "category": "flexure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.flexure.calculate_effective_flange_width"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:38.1",
+          "reference": "38.1",
+          "reference_type": "clause",
+          "title": "Assumptions in Design",
+          "category": "flexure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.flexure.calculate_mu_lim",
+            "structural_lib.codes.is456.beam.flexure.calculate_mu_lim_flanged",
+            "structural_lib.codes.is456.beam.flexure.design_doubly_reinforced",
+            "structural_lib.codes.is456.beam.flexure.design_flanged_beam",
+            "structural_lib.codes.is456.beam.flexure.design_singly_reinforced",
+            "structural_lib.codes.is456.column.pmm.experimental_pmm_interaction_surface",
+            "structural_lib.codes.is456.column.pmm.pm_interaction_slice_for_layout",
+            "structural_lib.codes.is456.slab.one_way.design_simply_supported_one_way_slab_flexure",
+            "structural_lib.codes.is456.slab.one_way_continuous.design_continuous_one_way_slab_flexure",
+            "structural_lib.codes.is456.slab.two_way.design_supported_interior_two_way_slab_flexure"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:38.1.1",
+          "reference": "38.1.1",
+          "reference_type": "clause",
+          "title": "Neutral Axis Depth",
+          "category": "flexure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.flexure.calculate_mu_lim"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:38.1.2",
+          "reference": "38.1.2",
+          "reference_type": "clause",
+          "title": "Stress Block Parameters",
+          "category": "flexure",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:38.2",
+          "reference": "38.2",
+          "reference_type": "clause",
+          "title": "Singly Reinforced Sections",
+          "category": "flexure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.flexure.calculate_ast_required",
+            "structural_lib.codes.is456.beam.flexure.design_doubly_reinforced",
+            "structural_lib.codes.is456.beam.flexure.design_singly_reinforced"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:38.3",
+          "reference": "38.3",
+          "reference_type": "clause",
+          "title": "Doubly Reinforced Sections",
+          "category": "flexure",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:38.4",
+          "reference": "38.4",
+          "reference_type": "clause",
+          "title": "Flanged Beams",
+          "category": "flexure",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:39.1",
+          "reference": "39.1",
+          "reference_type": "clause",
+          "title": "Minimum Eccentricity for Column Design",
+          "category": "columns",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:39.3",
+          "reference": "39.3",
+          "reference_type": "clause",
+          "title": "Short Axially Loaded Members in Compression",
+          "category": "columns",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.column.axial.short_axial_capacity",
+            "structural_lib.codes.is456.column.pmm.experimental_pmm_interaction_surface",
+            "structural_lib.codes.is456.column.pmm.pm_interaction_slice_for_layout"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:39.4",
+          "reference": "39.4",
+          "reference_type": "clause",
+          "title": "Compression Members with Helical Reinforcement",
+          "category": "columns",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.column.helical.check_helical_reinforcement"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:39.5",
+          "reference": "39.5",
+          "reference_type": "clause",
+          "title": "Members Subjected to Combined Axial Load and Uniaxial Bending",
+          "category": "columns",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.column.pmm.experimental_pmm_interaction_surface",
+            "structural_lib.codes.is456.column.pmm.pm_interaction_slice_for_layout",
+            "structural_lib.codes.is456.column.uniaxial.design_short_column_uniaxial",
+            "structural_lib.codes.is456.column.uniaxial.pm_interaction_curve"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:39.6",
+          "reference": "39.6",
+          "reference_type": "clause",
+          "title": "Members Subjected to Combined Axial Load and Biaxial Bending",
+          "category": "columns",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.column.biaxial.biaxial_bending_check"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:39.7",
+          "reference": "39.7",
+          "reference_type": "clause",
+          "title": "Slender Compression Members",
+          "category": "columns",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.column.long_column.design_long_column"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:39.7.1",
+          "reference": "39.7.1",
+          "reference_type": "clause",
+          "title": "Additional Moment in Slender Columns",
+          "category": "columns",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.column.slenderness.calculate_additional_moment"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:40.1",
+          "reference": "40.1",
+          "reference_type": "clause",
+          "title": "Limit State of Collapse: Shear",
+          "category": "shear",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.shear.calculate_tv",
+            "structural_lib.codes.is456.beam.shear.design_shear",
+            "structural_lib.codes.is456.slab.shear.check_solid_slab_one_way_shear"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:40.2",
+          "reference": "40.2",
+          "reference_type": "clause",
+          "title": "Design Shear Strength of Concrete",
+          "category": "shear",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.shear.design_shear",
+            "structural_lib.codes.is456.slab.shear.check_solid_slab_one_way_shear",
+            "structural_lib.codes.is456.slab.two_way_complete.design_two_way_slab_panel"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:40.3",
+          "reference": "40.3",
+          "reference_type": "clause",
+          "title": "Enhanced Shear Strength Near Supports",
+          "category": "shear",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.shear.enhanced_shear_strength"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:40.4",
+          "reference": "40.4",
+          "reference_type": "clause",
+          "title": "Shear Reinforcement Design",
+          "category": "shear",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.shear.design_shear"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:40.5.1",
+          "reference": "40.5.1",
+          "reference_type": "clause",
+          "title": "Maximum Shear Stress",
+          "category": "shear",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:41.1",
+          "reference": "41.1",
+          "reference_type": "clause",
+          "title": "General - Design for Torsion",
+          "category": "torsion",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.torsion.design_torsion"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:41.3",
+          "reference": "41.3",
+          "reference_type": "clause",
+          "title": "Critical Section for Torsion",
+          "category": "torsion",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.torsion.calculate_torsion_shear_stress",
+            "structural_lib.codes.is456.beam.torsion.design_torsion"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:41.3.1",
+          "reference": "41.3.1",
+          "reference_type": "clause",
+          "title": "Equivalent Shear",
+          "category": "torsion",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.torsion.calculate_equivalent_shear"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:41.4",
+          "reference": "41.4",
+          "reference_type": "clause",
+          "title": "Reinforcement for Torsion",
+          "category": "torsion",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.torsion.design_torsion"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:41.4.2",
+          "reference": "41.4.2",
+          "reference_type": "clause",
+          "title": "Longitudinal Reinforcement for Torsion",
+          "category": "torsion",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.torsion.calculate_equivalent_moment",
+            "structural_lib.codes.is456.beam.torsion.calculate_longitudinal_torsion_steel"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:41.4.3",
+          "reference": "41.4.3",
+          "reference_type": "clause",
+          "title": "Transverse Reinforcement for Torsion",
+          "category": "torsion",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.torsion.calculate_torsion_stirrup_area"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:43.1",
+          "reference": "43.1",
+          "reference_type": "clause",
+          "title": "Limit State of Serviceability: Deflection",
+          "category": "serviceability",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.serviceability.check_crack_width"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:43.2",
+          "reference": "43.2",
+          "reference_type": "clause",
+          "title": "Control of Deflection - Span/Depth Ratios",
+          "category": "serviceability",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:43.2.1",
+          "reference": "43.2.1",
+          "reference_type": "clause",
+          "title": "Modification Factors",
+          "category": "serviceability",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:43.3",
+          "reference": "43.3",
+          "reference_type": "clause",
+          "title": "Crack Control",
+          "category": "serviceability",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:43.4",
+          "reference": "43.4",
+          "reference_type": "clause",
+          "title": "Minimum Reinforcement",
+          "category": "detailing",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:5.1",
+          "reference": "5.1",
+          "reference_type": "clause",
+          "title": "Cement",
+          "category": "materials",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:5.2",
+          "reference": "5.2",
+          "reference_type": "clause",
+          "title": "Mineral Admixtures",
+          "category": "materials",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:5.3",
+          "reference": "5.3",
+          "reference_type": "clause",
+          "title": "Aggregates",
+          "category": "materials",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:5.4",
+          "reference": "5.4",
+          "reference_type": "clause",
+          "title": "Water",
+          "category": "materials",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:5.6",
+          "reference": "5.6",
+          "reference_type": "clause",
+          "title": "Reinforcement",
+          "category": "materials",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:6.1",
+          "reference": "6.1",
+          "reference_type": "clause",
+          "title": "Grades of Concrete",
+          "category": "materials",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:6.2",
+          "reference": "6.2",
+          "reference_type": "clause",
+          "title": "Properties of Concrete",
+          "category": "materials",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:6.2.2",
+          "reference": "6.2.2",
+          "reference_type": "clause",
+          "title": "Modulus of Elasticity",
+          "category": "materials",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:Annex E",
+          "reference": "Annex E",
+          "reference_type": "annexure",
+          "title": "Effective Length of Compression Members",
+          "category": "annexure",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:Annex G",
+          "reference": "Annex G",
+          "reference_type": "annexure",
+          "title": "Moments of Resistance of Beams and Slabs",
+          "category": "annexure",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:AnnexD-1",
+          "reference": "AnnexD-1",
+          "reference_type": "clause",
+          "title": "Restrained Slabs — Moment Coefficients",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:AnnexD-1.1",
+          "reference": "AnnexD-1.1",
+          "reference_type": "clause",
+          "title": "Conditions for Table 26 Coefficients",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:AnnexD-1.2",
+          "reference": "AnnexD-1.2",
+          "reference_type": "clause",
+          "title": "Division into Middle and Edge Strips",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:AnnexD-1.3",
+          "reference": "AnnexD-1.3",
+          "reference_type": "clause",
+          "title": "Maximum Moments in Middle Strip",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:AnnexD-1.4",
+          "reference": "AnnexD-1.4",
+          "reference_type": "clause",
+          "title": "Moments in Edge Strips",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:AnnexD-1.5",
+          "reference": "AnnexD-1.5",
+          "reference_type": "clause",
+          "title": "Negative Moments at Continuous Edge",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:AnnexD-1.6",
+          "reference": "AnnexD-1.6",
+          "reference_type": "clause",
+          "title": "Negative Moments at Discontinuous Edge",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:AnnexD-1.7",
+          "reference": "AnnexD-1.7",
+          "reference_type": "clause",
+          "title": "Torsion Reinforcement — Two Discontinuous Edges",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:AnnexD-1.8",
+          "reference": "AnnexD-1.8",
+          "reference_type": "clause",
+          "title": "Torsion Reinforcement — One Discontinuous Edge",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:AnnexD-2",
+          "reference": "AnnexD-2",
+          "reference_type": "clause",
+          "title": "Simply Supported Slabs Spanning in Two Directions",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:C-2",
+          "reference": "C-2",
+          "reference_type": "annexure",
+          "title": "Concrete Stress Block Parameters — Creep and Shrinkage",
+          "category": "serviceability",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.serviceability.calculate_cracked_moment_of_inertia",
+            "structural_lib.codes.is456.beam.serviceability.calculate_cracking_moment",
+            "structural_lib.codes.is456.beam.serviceability.calculate_creep_deflection",
+            "structural_lib.codes.is456.beam.serviceability.calculate_effective_moment_of_inertia",
+            "structural_lib.codes.is456.beam.serviceability.calculate_gross_moment_of_inertia",
+            "structural_lib.codes.is456.beam.serviceability.check_deflection_level_c",
+            "structural_lib.codes.is456.beam.serviceability.get_creep_coefficient"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:C-3",
+          "reference": "C-3",
+          "reference_type": "annexure",
+          "title": "Shrinkage",
+          "category": "serviceability",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.serviceability.calculate_shrinkage_curvature",
+            "structural_lib.codes.is456.beam.serviceability.calculate_shrinkage_deflection",
+            "structural_lib.codes.is456.beam.serviceability.check_deflection_level_c"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:Fig. 23",
+          "reference": "Fig. 23",
+          "reference_type": "figure",
+          "title": "Representative Stress-Strain Curve for Steel",
+          "category": "figure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.common.stress_blocks.steel_stress_from_strain_5point"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:Figure 3",
+          "reference": "Figure 3",
+          "reference_type": "figure",
+          "title": "Stress-Strain Curve for Concrete",
+          "category": "figure",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:Figure 4",
+          "reference": "Figure 4",
+          "reference_type": "figure",
+          "title": "Modification Factor for Tension Reinforcement",
+          "category": "figure",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:Figure 5",
+          "reference": "Figure 5",
+          "reference_type": "figure",
+          "title": "Modification Factor for Compression Reinforcement",
+          "category": "figure",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:G-1.1",
+          "reference": "G-1.1",
+          "reference_type": "annexure",
+          "title": "Doubly Reinforced Rectangular Sections",
+          "category": "flexure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.flexure.design_doubly_reinforced"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:G-2.2",
+          "reference": "G-2.2",
+          "reference_type": "annexure",
+          "title": "Flanged Beams - Neutral Axis in Web",
+          "category": "flexure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.flexure.calculate_mu_lim_flanged",
+            "structural_lib.codes.is456.beam.flexure.design_flanged_beam"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:Table 19",
+          "reference": "Table 19",
+          "reference_type": "table",
+          "title": "Design Shear Strength of Concrete",
+          "category": "table",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:Table 2",
+          "reference": "Table 2",
+          "reference_type": "table",
+          "title": "Grades of Concrete",
+          "category": "table",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:Table 20",
+          "reference": "Table 20",
+          "reference_type": "table",
+          "title": "Maximum Shear Stress",
+          "category": "table",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:Table 21",
+          "reference": "Table 21",
+          "reference_type": "table",
+          "title": "Design Bond Stress",
+          "category": "table",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:Table 23",
+          "reference": "Table 23",
+          "reference_type": "table",
+          "title": "Basic Span to Effective Depth Ratios",
+          "category": "table",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        }
+      ]
+    },
+    {
+      "standard_id": "IS13920",
+      "namespace": "IS13920:2016",
+      "edition": "2016",
+      "title": "Ductile detailing of reinforced concrete structures",
+      "source_root": "Python/structural_lib/codes/is13920",
+      "status": "SUPPORTED_SUBSET",
+      "capability_summary": {
+        "supported_families": 3,
+        "held_families": 2,
+        "total_declared_families": 5,
+        "supported_pct": 60.0
+      },
+      "capability_families": [
+        {
+          "capability_id": "IS13920:2016:beam_detailing_checks",
+          "family": "beam_detailing_checks",
+          "scope_status": "SUPPORTED",
+          "implementation_status": "IMPLEMENTED_BOUNDED",
+          "claim": "Bounded beam geometry, longitudinal-steel, and confinement-spacing checks exist.",
+          "workflows": [
+            "check_beam_ductility"
+          ],
+          "limitations": [
+            "This is a bounded detailing check, not a complete seismic design workflow."
+          ],
+          "evidence": [
+            "Python/structural_lib/codes/is13920/beam.py",
+            "Python/tests/property/test_ductile_hypothesis.py"
+          ],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS13920:2016:column_detailing_checks",
+          "family": "column_detailing_checks",
+          "scope_status": "SUPPORTED",
+          "implementation_status": "IMPLEMENTED_BOUNDED",
+          "claim": "Bounded column geometry and special-confinement checks exist.",
+          "workflows": [
+            "check_column_ductility_is13920"
+          ],
+          "limitations": [
+            "This is a bounded detailing check, not a complete seismic design workflow."
+          ],
+          "evidence": [
+            "Python/structural_lib/codes/is13920/column.py",
+            "Python/tests/codes/is13920/test_column.py"
+          ],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS13920:2016:beam_column_joint_scwb_check",
+          "family": "beam_column_joint_scwb_check",
+          "scope_status": "SUPPORTED",
+          "implementation_status": "IMPLEMENTED_BOUNDED",
+          "claim": "A pure-math strong-column weak-beam joint check exists.",
+          "workflows": [
+            "structural_lib.codes.is13920.joint.check_scwb"
+          ],
+          "limitations": [
+            "No complete joint design or public service workflow is claimed."
+          ],
+          "evidence": [
+            "Python/structural_lib/codes/is13920/joint.py",
+            "Python/tests/codes/is13920/test_joint.py"
+          ],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS13920:2016:wall_detailing",
+          "family": "wall_detailing",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "IS 13920 wall provisions are not implemented.",
+          "workflows": [],
+          "limitations": [
+            "Wall and boundary-element provisions require a separate packet."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS13920:2016:foundation_detailing",
+          "family": "foundation_detailing",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "IS 13920 foundation provisions are not implemented.",
+          "workflows": [],
+          "limitations": [
+            "Foundation capacity-design provisions require a separate packet."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        }
+      ],
+      "registration_summary": {
+        "known_references": 16,
+        "registered_known_references": 5,
+        "metadata_only_references": 11,
+        "registration_only_references": 9,
+        "registration_pct": 31.2
+      },
+      "references": [
+        {
+          "reference_id": "IS13920:2016:10.1",
+          "reference": "10.1",
+          "reference_type": "clause",
+          "title": "Foundation — General",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS13920:2016:5.1",
+          "reference": "5.1",
+          "reference_type": "clause",
+          "title": "General Requirements — IS 13920",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS13920:2016:6.1",
+          "reference": "6.1",
+          "reference_type": "clause",
+          "title": "",
+          "category": "unregistered_metadata",
+          "registration_status": "REGISTRATION_ONLY",
+          "functions": [
+            "structural_lib.codes.is13920.beam.check_beam_ductility"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:6.1.1",
+          "reference": "6.1.1",
+          "reference_type": "clause",
+          "title": "Flexural Members — Dimensional Limits",
+          "category": "seismic",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is13920.beam.check_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:6.1.2",
+          "reference": "6.1.2",
+          "reference_type": "clause",
+          "title": "Flexural Members — Longitudinal Reinforcement",
+          "category": "seismic",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is13920.beam.check_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:6.2.1",
+          "reference": "6.2.1",
+          "reference_type": "clause",
+          "title": "Flexural Members — Shear Reinforcement",
+          "category": "seismic",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is13920.beam.check_beam_ductility",
+            "structural_lib.codes.is13920.beam.get_min_tension_steel_percentage"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:6.2.2",
+          "reference": "6.2.2",
+          "reference_type": "clause",
+          "title": "",
+          "category": "unregistered_metadata",
+          "registration_status": "REGISTRATION_ONLY",
+          "functions": [
+            "structural_lib.codes.is13920.beam.check_beam_ductility",
+            "structural_lib.codes.is13920.beam.get_max_tension_steel_percentage"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:6.3",
+          "reference": "6.3",
+          "reference_type": "clause",
+          "title": "Lap Splices in Flexural Members",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS13920:2016:6.3.5",
+          "reference": "6.3.5",
+          "reference_type": "clause",
+          "title": "",
+          "category": "unregistered_metadata",
+          "registration_status": "REGISTRATION_ONLY",
+          "functions": [
+            "structural_lib.codes.is13920.beam.calculate_confinement_spacing",
+            "structural_lib.codes.is13920.beam.check_beam_ductility"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:7.1",
+          "reference": "7.1",
+          "reference_type": "clause",
+          "title": "Columns — General Requirements",
+          "category": "seismic",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is13920.column.check_column_ductility"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:7.1.2",
+          "reference": "7.1.2",
+          "reference_type": "clause",
+          "title": "",
+          "category": "unregistered_metadata",
+          "registration_status": "REGISTRATION_ONLY",
+          "functions": [
+            "structural_lib.codes.is13920.column.check_column_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:7.1.3",
+          "reference": "7.1.3",
+          "reference_type": "clause",
+          "title": "",
+          "category": "unregistered_metadata",
+          "registration_status": "REGISTRATION_ONLY",
+          "functions": [
+            "structural_lib.codes.is13920.column.check_column_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:7.2",
+          "reference": "7.2",
+          "reference_type": "clause",
+          "title": "Columns — Longitudinal Reinforcement",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS13920:2016:7.2.1",
+          "reference": "7.2.1",
+          "reference_type": "clause",
+          "title": "",
+          "category": "unregistered_metadata",
+          "registration_status": "REGISTRATION_ONLY",
+          "functions": [
+            "structural_lib.codes.is13920.column.check_column_ductility",
+            "structural_lib.codes.is13920.column.get_max_longitudinal_steel",
+            "structural_lib.codes.is13920.column.get_min_longitudinal_steel",
+            "structural_lib.codes.is13920.joint.check_scwb"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:7.3",
+          "reference": "7.3",
+          "reference_type": "clause",
+          "title": "Columns — Transverse Reinforcement",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS13920:2016:7.4",
+          "reference": "7.4",
+          "reference_type": "clause",
+          "title": "Columns — Special Confining Reinforcement Area",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS13920:2016:7.4.1",
+          "reference": "7.4.1",
+          "reference_type": "clause",
+          "title": "Area of Special Confining Reinforcement",
+          "category": "seismic",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is13920.column.calculate_confining_length",
+            "structural_lib.codes.is13920.column.check_column_ductility"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:7.4.6",
+          "reference": "7.4.6",
+          "reference_type": "clause",
+          "title": "",
+          "category": "unregistered_metadata",
+          "registration_status": "REGISTRATION_ONLY",
+          "functions": [
+            "structural_lib.codes.is13920.column.calculate_special_confining_spacing",
+            "structural_lib.codes.is13920.column.check_column_ductility"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:7.4.7",
+          "reference": "7.4.7",
+          "reference_type": "clause",
+          "title": "",
+          "category": "unregistered_metadata",
+          "registration_status": "REGISTRATION_ONLY",
+          "functions": [
+            "structural_lib.codes.is13920.column.calculate_ash_required",
+            "structural_lib.codes.is13920.column.check_column_ductility"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:7.4.8",
+          "reference": "7.4.8",
+          "reference_type": "clause",
+          "title": "",
+          "category": "unregistered_metadata",
+          "registration_status": "REGISTRATION_ONLY",
+          "functions": [
+            "structural_lib.codes.is13920.column.calculate_ash_required",
+            "structural_lib.codes.is13920.column.check_column_ductility"
+          ]
+        },
+        {
+          "reference_id": "IS13920:2016:8.1",
+          "reference": "8.1",
+          "reference_type": "clause",
+          "title": "Beam-Column Joint Requirements",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS13920:2016:9.1",
+          "reference": "9.1",
+          "reference_type": "clause",
+          "title": "Shear Walls — General",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS13920:2016:9.2",
+          "reference": "9.2",
+          "reference_type": "clause",
+          "title": "Design Shear Strength of Walls",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS13920:2016:9.3",
+          "reference": "9.3",
+          "reference_type": "clause",
+          "title": "Boundary Elements in Shear Walls",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS13920:2016:9.4",
+          "reference": "9.4",
+          "reference_type": "clause",
+          "title": "Shear Walls — Boundary Elements",
+          "category": "seismic",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        }
+      ]
+    },
+    {
+      "standard_id": "IS875",
+      "namespace": "IS875",
+      "edition": "SERIES_NOT_SELECTED",
+      "title": "Structural loading series",
+      "source_root": null,
+      "status": "HELD",
+      "capability_summary": {
+        "supported_families": 0,
+        "held_families": 2,
+        "total_declared_families": 2,
+        "supported_pct": 0.0
+      },
+      "capability_families": [
+        {
+          "capability_id": "IS875:gravity_load_generation",
+          "family": "gravity_load_generation",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "IS 875 gravity-load generation is not implemented.",
+          "workflows": [],
+          "limitations": [
+            "Applicable parts and editions must be selected before implementation."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS875:wind_load_generation",
+          "family": "wind_load_generation",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "IS 875 wind-load generation is not implemented.",
+          "workflows": [],
+          "limitations": [
+            "Wind inputs and pressure generation require a separate program."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        }
+      ],
+      "registration_summary": {
+        "known_references": 0,
+        "registered_known_references": 0,
+        "metadata_only_references": 0,
+        "registration_only_references": 0,
+        "registration_pct": null
+      },
+      "references": []
+    },
+    {
+      "standard_id": "IS1893",
+      "namespace": "IS1893",
+      "edition": "EDITION_NOT_SELECTED",
+      "title": "Earthquake-resistant design criteria",
+      "source_root": null,
+      "status": "HELD",
+      "capability_summary": {
+        "supported_families": 0,
+        "held_families": 2,
+        "total_declared_families": 2,
+        "supported_pct": 0.0
+      },
+      "capability_families": [
+        {
+          "capability_id": "IS1893:equivalent_static_seismic",
+          "family": "equivalent_static_seismic",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "IS 1893 equivalent-static force generation is not implemented.",
+          "workflows": [],
+          "limitations": [
+            "Edition, inputs, load combinations, and validation must be selected first."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        },
+        {
+          "capability_id": "IS1893:response_spectrum_analysis",
+          "family": "response_spectrum_analysis",
+          "scope_status": "HELD",
+          "implementation_status": "NOT_IMPLEMENTED",
+          "claim": "Response-spectrum and FEM analysis are not implemented.",
+          "workflows": [],
+          "limitations": [
+            "This remains a separate analysis program."
+          ],
+          "evidence": [],
+          "qualified_review_required": true
+        }
+      ],
+      "registration_summary": {
+        "known_references": 0,
+        "registered_known_references": 0,
+        "metadata_only_references": 0,
+        "registration_only_references": 0,
+        "registration_pct": null
+      },
+      "references": []
+    }
+  ]
+}

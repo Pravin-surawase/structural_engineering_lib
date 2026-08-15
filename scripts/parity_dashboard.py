@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
-"""Parity Dashboard — coverage/parity across IS 456, API, endpoints, and React hooks.
+"""Parity dashboard across declared Indian-code scope and application layers.
 
-Scans actual source files to measure four parity dimensions:
-  1. IS 456 Clause Coverage — implemented vs known clauses
+Uses the generated INDIA-0 manifest and source scans for four dimensions:
+  1. Declared Indian-code capability families — supported vs explicitly held
   2. API → Endpoint Coverage — library functions with FastAPI routes
   3. Endpoint → Test Coverage — FastAPI endpoints with tests
   4. React Hook → API Coverage — hooks connected to API endpoints
+
+Capability-family percentages are planning indicators only. They are not
+clause coverage, whole-standard completeness, or engineering approval.
 
 When to use: after cross-layer API changes or before parity planning and release review.
 
 Usage:
     ./scripts/python_runtime.sh scripts/parity_dashboard.py
     ./scripts/python_runtime.sh scripts/parity_dashboard.py --json
-    ./scripts/python_runtime.sh scripts/parity_dashboard.py --section clauses
+    ./scripts/python_runtime.sh scripts/parity_dashboard.py --section capabilities
     ./scripts/python_runtime.sh scripts/parity_dashboard.py --missing
 """
 
@@ -27,94 +30,19 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from _lib.indian_code_manifest import load_manifest
+
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
-IS456_DIR = REPO_ROOT / "Python" / "structural_lib" / "codes" / "is456"
 API_PY = REPO_ROOT / "Python" / "structural_lib" / "services" / "api.py"
 ROUTERS_DIR = REPO_ROOT / "fastapi_app" / "routers"
 FASTAPI_TESTS = REPO_ROOT / "fastapi_app" / "tests"
 HOOKS_DIR = REPO_ROOT / "react_app" / "src" / "hooks"
 LOCAL_ONLY_HOOKS = {"useReducedMotion", "useWebGLContextLoss"}
-
-# ---------------------------------------------------------------------------
-# IS 456 Clause Reference
-# ---------------------------------------------------------------------------
-
-IS456_CLAUSES: dict[str, dict[str, str]] = {
-    "Cl 38.1": {
-        "desc": "Flexural design",
-        "status": "implemented",
-        "module": "flexure.py",
-    },
-    "Cl 40": {"desc": "Shear design", "status": "implemented", "module": "shear.py"},
-    "Cl 26.5.1": {
-        "desc": "Detailing - spacing",
-        "status": "implemented",
-        "module": "detailing.py",
-    },
-    "Cl 41": {"desc": "Torsion", "status": "implemented", "module": "torsion.py"},
-    "Cl 43": {
-        "desc": "Serviceability",
-        "status": "implemented",
-        "module": "serviceability.py",
-    },
-    "Cl 25.4": {
-        "desc": "Effective length columns",
-        "status": "implemented",
-        "module": "column/axial.py",
-    },
-    "Cl 39.3": {
-        "desc": "Short column axial",
-        "status": "implemented",
-        "module": "column/axial.py",
-    },
-    "Cl 39.5": {
-        "desc": "Uniaxial bending",
-        "status": "implemented",
-        "module": "column/uniaxial.py",
-    },
-    "Cl 39.6": {
-        "desc": "Biaxial bending",
-        "status": "implemented",
-        "module": "column/biaxial.py",
-    },
-    "Cl 39.7.1": {
-        "desc": "Additional moment slender",
-        "status": "implemented",
-        "module": "column/slenderness.py",
-    },
-    "Cl 24": {"desc": "Slab design", "status": "planned"},
-    "Annex D": {"desc": "Two-way slab coefficients", "status": "planned"},
-    "Cl 34": {
-        "desc": "Footing design",
-        "status": "implemented",
-        "module": "footing/bearing.py",
-    },
-    "Cl 31.6": {
-        "desc": "Punching shear",
-        "status": "implemented",
-        "module": "footing/punching_shear.py",
-    },
-    "Cl 42": {
-        "desc": "Development length",
-        "status": "implemented",
-        "module": "detailing.py",
-    },
-    "Cl 26.2": {
-        "desc": "Min reinforcement",
-        "status": "implemented",
-        "module": "detailing.py",
-    },
-    "Cl 23.2": {
-        "desc": "Deflection control",
-        "status": "implemented",
-        "module": "serviceability.py",
-    },
-}
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -205,38 +133,41 @@ def _scan_hooks(hooks_dir: Path) -> list[str]:
 
 
 def check_clause_coverage() -> dict[str, Any]:
-    """Dimension 1: IS 456 clause coverage."""
-    implemented = []
-    planned = []
-    verified: list[dict[str, Any]] = []
+    """Dimension 1: declared Indian-code capability-family coverage.
 
-    for clause, info in IS456_CLAUSES.items():
-        entry: dict[str, Any] = {
-            "clause": clause,
-            "desc": info["desc"],
-            "status": info["status"],
+    The historical function name remains as a compatibility shim for callers;
+    the returned metric is explicitly not clause coverage.
+    """
+    manifest = load_manifest()
+    summary = manifest["capability_summary"]
+    items = [
+        {
+            "capability_id": family["capability_id"],
+            "standard": standard["namespace"],
+            "family": family["family"],
+            "scope_status": family["scope_status"],
+            "implementation_status": family["implementation_status"],
+            "claim": family["claim"],
         }
-        if info["status"] == "implemented":
-            module_path = IS456_DIR / info.get("module", "")
-            entry["file_exists"] = module_path.is_file()
-            if module_path.is_file():
-                implemented.append(clause)
-            else:
-                entry["status"] = "missing_file"
-                planned.append(clause)
-        else:
-            planned.append(clause)
-        verified.append(entry)
-
-    total = len(IS456_CLAUSES)
-    impl_count = len(implemented)
+        for standard in manifest["standards"]
+        for family in standard["capability_families"]
+    ]
     return {
-        "name": "IS 456 Clause Coverage",
-        "implemented": impl_count,
-        "planned": len(planned),
-        "total": total,
-        "pct": round(impl_count / total * 100) if total else 0,
-        "items": verified,
+        "name": "Declared Indian-code Capability Families",
+        "metric_kind": "DECLARED_CAPABILITY_FAMILY_COVERAGE",
+        "claim_boundary": manifest["claim_boundaries"]["capability_status"],
+        "informational": True,
+        "gap_label": "Held (declared)",
+        "supported": summary["supported_families"],
+        "held": summary["held_families"],
+        "total": summary["total_declared_families"],
+        "pct": round(summary["supported_pct"]),
+        "items": items,
+        "missing_items": [
+            f"{item['capability_id']}: {item['claim']}"
+            for item in items
+            if item["scope_status"] == "HELD"
+        ],
     }
 
 
@@ -382,7 +313,10 @@ def _print_section(data: dict[str, Any], *, show_missing: bool = False) -> None:
     total = data["total"]
 
     # Determine numerator key
-    if "implemented" in data:
+    if "supported" in data:
+        num = data["supported"]
+        label1 = "Supported"
+    elif "implemented" in data:
         num = data["implemented"]
         label1 = "Implemented"
     elif "covered" in data:
@@ -399,13 +333,17 @@ def _print_section(data: dict[str, Any], *, show_missing: bool = False) -> None:
         label1 = "Done"
 
     gap = data.get(
-        "missing", data.get("planned", data.get("library_only", total - num))
+        "missing",
+        data.get("held", data.get("planned", data.get("library_only", total - num))),
     )
 
     print(f"  {name}")
     print("  \u2501" * 24)
     print(f"  {label1}:{num:>5}/{total}  ({pct}%)")
-    gap_label = data.get("gap_label", "Planned" if "planned" in data else "Missing")
+    gap_label = data.get(
+        "gap_label",
+        "Held" if "held" in data else "Planned" if "planned" in data else "Missing",
+    )
     print(f"  {gap_label}:{gap:>6}/{total}  ({100 - pct}%)")
     print(f"  {_progress_bar(pct / 100)}  {pct}%")
 
@@ -413,9 +351,11 @@ def _print_section(data: dict[str, Any], *, show_missing: bool = False) -> None:
         items = data.get("missing_items", [])
         if not items and "items" in data:
             items = [
-                f"{it['clause']}: {it['desc']}"
+                f"{it.get('clause', it.get('capability_id'))}: "
+                f"{it.get('desc', it.get('claim'))}"
                 for it in data["items"]
                 if it.get("status") != "implemented"
+                and it.get("scope_status") != "SUPPORTED"
             ]
         if items:
             print()
@@ -427,14 +367,14 @@ def _print_section(data: dict[str, Any], *, show_missing: bool = False) -> None:
     print()
 
 
-def _overall_score(sections: list[dict[str, Any]]) -> int:
+def _overall_score(sections: list[dict[str, Any]]) -> int | None:
     """Average actionable parity dimensions.
 
     Informational exposure metrics are displayed but do not lower the score.
     """
     actionable = [section for section in sections if not section.get("informational")]
     if not actionable:
-        return 0
+        return None
     total_pct = sum(s["pct"] for s in actionable)
     return round(total_pct / len(actionable))
 
@@ -448,7 +388,7 @@ def run_dashboard(
     """Run all parity checks and display results."""
 
     checks = {
-        "clauses": check_clause_coverage,
+        "capabilities": check_clause_coverage,
         "api": check_api_endpoint_coverage,
         "tests": check_endpoint_test_coverage,
         "hooks": check_hook_api_coverage,
@@ -456,6 +396,8 @@ def run_dashboard(
 
     if section_filter:
         key = section_filter.lower()
+        if key == "clauses":
+            key = "capabilities"
         if key not in checks:
             print(f"Unknown section: {key}. Available: {', '.join(checks.keys())}")
             return 1
@@ -469,6 +411,10 @@ def run_dashboard(
         output = {
             "sections": results,
             "overall_pct": _overall_score(results),
+            "overall_scope": (
+                "Actionable non-informational cross-layer sections only; "
+                "declared capability scope and public API exposure are excluded."
+            ),
         }
         print(json.dumps(output, indent=2))
         return 0
@@ -483,7 +429,8 @@ def run_dashboard(
 
     if len(results) > 1:
         score = _overall_score(results)
-        print(f"  Overall Parity Score: {score}%")
+        print(f"  Actionable Cross-Layer Score: {score}%")
+        print("  (Declared capability scope and API exposure are excluded.)")
     print("\u2501" * 45)
     print()
     return 0
@@ -501,7 +448,7 @@ def main() -> None:
         "--section",
         type=str,
         default=None,
-        help="Show single section: clauses, api, tests, hooks",
+        help="Show single section: capabilities, api, tests, hooks (clauses is a legacy alias)",
     )
     parser.add_argument(
         "--missing", action="store_true", help="Show only gaps/missing items"
