@@ -34,6 +34,12 @@ def _write_index(root: Path, **overrides) -> Path:
             r"(^|[` ])git\s+cherry-pick(?:\s|`|$)",
             r"(^|[` ])git\s+checkout\s+-b(?:\s|`|$)",
             r"(^|[` ])git\s+switch\s+-c\s+(?!codex/)",
+            (
+                r"(?:(?<![A-Za-z0-9])(?:do not|don't|never)\s+push\b"
+                r"[^\n.;!?]*\bwithout\s+pull(?:ing)?\s+first\b|"
+                r"\bpull(?:\s+(?:the\s+)?(?:PR\s+)?branch)?\s+before"
+                r"\s+push(?:ing)?\b|\bpull\s+first\b)"
+            ),
         ],
         "required_contracts": {},
     }
@@ -216,6 +222,57 @@ def test_live_indexed_unsafe_instruction_context_fails(instruction, tmp_path):
 def test_genuine_governing_prohibition_is_safe(prohibition, tmp_path):
     guide = tmp_path / "guide.md"
     guide.write_text(prohibition + "\n", encoding="utf-8")
+    index = _write_index(tmp_path)
+
+    assert checker.check_semantic_guidance(tmp_path, index) == []
+
+
+@pytest.mark.parametrize(
+    "instruction",
+    [
+        "Pull before pushing to the PR branch.",
+        "Pull the PR branch before pushing.",
+        "Pull first, then push the change.",
+        "Don't push to the PR branch without pulling first.",
+    ],
+)
+def test_data_driven_omitted_git_pull_before_push_instruction_fails(
+    instruction, tmp_path
+):
+    guide = tmp_path / "guide.md"
+    guide.write_text(instruction + "\n", encoding="utf-8")
+    live_config = json.loads(
+        (REPO_ROOT / "docs/git-automation/live-git-guidance-index.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    pull_patterns = [
+        pattern
+        for pattern in live_config["forbidden_instruction_patterns"]
+        if "pull" in pattern and "push" in pattern
+    ]
+    assert len(pull_patterns) == 1
+    index = _write_index(tmp_path, forbidden_instruction_patterns=pull_patterns)
+
+    errors = checker.check_semantic_guidance(tmp_path, index)
+
+    assert any("unsafe Git instruction" in error for error in errors)
+
+
+@pytest.mark.parametrize(
+    "safe_context",
+    [
+        "Do not pull before pushing; inspect branch and upstream first.",
+        "Never pull first; inspect with git_state.py.",
+        "Historical incident evidence says the old guide required pull before pushing.",
+        "Deprecated guidance says pull first, then push.",
+    ],
+)
+def test_omitted_git_pull_pattern_respects_prohibition_and_history(
+    safe_context, tmp_path
+):
+    guide = tmp_path / "guide.md"
+    guide.write_text(safe_context + "\n", encoding="utf-8")
     index = _write_index(tmp_path)
 
     assert checker.check_semantic_guidance(tmp_path, index) == []

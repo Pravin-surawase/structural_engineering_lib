@@ -89,6 +89,10 @@ at the locally and hosted green draft PR head for independent audit
 - A sixth exact-head audit found the direct-prefix approximation rejected four
   genuine prohibitions: Markdown exact-object suffixes using `do not run` or
   `never use`, inner `not to run`, and `do not fail to avoid`.
+- A seventh exact-head audit found maintained Agent 9 guidance still required
+  pulling before every PR-branch push, bypassing branch/upstream/ownership and
+  behind/diverged inspection. The semantic index missed the prose-equivalent
+  because its patterns required a literal `git` command.
 - A read-only inventory regex containing a backtick was initially passed with
   unsafe shell quoting and zsh rejected it before the search ran.
 - The first sixth-head session-end replay held because it was intentionally run
@@ -97,6 +101,9 @@ at the locally and hosted green draft PR head for independent audit
   controls while all prefix-polarity controls passed.
 - The first seventh-head Black check required mechanical multiline formatting
   in the checker before the validation sequence could continue.
+- Eighth-head index generation refused a live write for `docs/git-automation`
+  because that folder has no maintained index topology, although dry-run listed
+  the prospective target.
 
 ### Root causes and resolutions
 
@@ -220,6 +227,14 @@ at the locally and hosted green draft PR head for independent audit
   exact-object suffix independently within the local clause. Evidence: all four
   auditor forms and Markdown variants pass, their auxiliary/directly-negated
   contrasts fail, clause boundaries stay isolated, and history controls pass.
+- Root cause: semantic mutation patterns covered `git pull`-style command text
+  but not unconditional pull-before-push prose, while Agent 9 retained one stale
+  checklist bullet inconsistent with its own correct inspection-first recovery
+  procedure. Resolution: replace that bullet with exact `git_state.py
+  --json --worktrees` inspection and fail-closed holds, and add a data-driven
+  omitted-`git` pattern for pull-before-push/pull-first forms. Evidence:
+  unconditional and double-negative mandate fixtures fail; direct prohibitions
+  plus historical/deprecated narration pass; the full indexed corpus is green.
 - Terminal issue resolution: rerun the read-only inventory with the regex in
   literal single quotes; it completed without any repository mutation.
 - Session-end correctly treats uncommitted receipt evidence as incomplete.
@@ -236,16 +251,19 @@ at the locally and hosted green draft PR head for independent audit
   embedded words such as `whenever`.
 - Formatter resolution: run Black only on the two scoped Python paths and replay
   `--check`; both then passed without touching unrelated files.
+- Index resolution: do not use `--allow-new-index`; refresh the maintained
+  Python/tests, Agent 9, and top-level docs indexes only. The refusal created no
+  files and prevented an unintended parallel index authority.
 
 ### Verification
 
 - Worktree-bound runtime diagnosis reported `source_bound=true`; startup local
   state was clean and ready at the verified PR #750 merge SHA.
-- Focused receipt, semantic, and session regression suite: 135 passed after the
-  sixth independent-audit blocker fix.
-- Semantic workflow, strict docs 5/5, links, quick 10/10, full 30/30, and
-  efficiency pass for the seventh candidate. Session-end, preservation replay,
-  and hosted checks are replayed on the committed/published exact head.
+- Focused receipt, semantic, and session regression suite: 143 passed after the
+  seventh independent-audit blocker fix.
+- The full indexed semantic corpus passes for the eighth candidate. Strict docs,
+  links, quick, full, efficiency, session-end, preservation replay, and hosted
+  checks are replayed before exact-head audit handoff.
 
 ### Preservation and next boundary
 

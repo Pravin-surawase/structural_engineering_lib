@@ -2227,7 +2227,7 @@
     {
       "name": "test_git_guidance_semantics.py",
       "type": "python",
-      "size_lines": 245,
+      "size_lines": 302,
       "last_updated": "2026-08-15",
       "description": "Semantic live-guidance discovery and coherence regressions.",
       "functions": [
@@ -2267,6 +2267,20 @@
           ]
         },
         {
+          "name": "test_data_driven_omitted_git_pull_before_push_instruction_fails",
+          "params": [
+            "instruction",
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_omitted_git_pull_pattern_respects_prohibition_and_history",
+          "params": [
+            "safe_context",
+            "tmp_path"
+          ]
+        },
+        {
           "name": "test_harmless_historical_prose_is_not_treated_as_live_instruction",
           "params": [
             "historical",
@@ -2277,7 +2291,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "459b84ef4a4f"
+      "content_hash": "4b4b9a8560dc"
     },
     {
       "name": "test_git_handoff_receipt.py",
@@ -4587,5 +4601,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "d84f605cac5ac6ca"
+  "content_hash": "ab6faf0ddf9132d5"
 }

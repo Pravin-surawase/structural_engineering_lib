@@ -450,7 +450,9 @@ Agent 9's WIP limits (2 worktrees, 5 PRs, 10 docs, 3 research) prevent context f
 
 **Git Operations:**
 - Don't merge immediately after creating PR (wait for CI)
-- Don't push to PR branch without pulling first
+- Don't push until `scripts/git_state.py --json --worktrees` proves the branch,
+  upstream, ownership, and ahead/behind state. Behind, diverged, query-failed,
+  or `NOT_CHECKED` evidence remains a hold.
 - Don't force-push to main (branch protection prevents this)
 - Don't skip pre-commit hooks (they catch issues early)
 - Don't commit generated files (use .gitignore)

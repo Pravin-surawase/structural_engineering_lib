@@ -68,7 +68,8 @@
     "(^|[` ])git\\s+commit\\b[^\\n]*--amend(?:[` ]|$)",
     "(^|[` ])git\\s+cherry-pick(?:\\s|`|$)",
     "(^|[` ])git\\s+checkout\\s+-b(?:\\s|`|$)",
-    "(^|[` ])git\\s+switch\\s+-c\\s+(?!codex/)"
+    "(^|[` ])git\\s+switch\\s+-c\\s+(?!codex/)",
+    "(?:(?<![A-Za-z0-9])(?:do not|don't|never)\\s+push\\b[^\\n.;!?]*\\bwithout\\s+pull(?:ing)?\\s+first\\b|\\bpull(?:\\s+(?:the\\s+)?(?:PR\\s+)?branch)?\\s+before\\s+push(?:ing)?\\b|\\bpull\\s+first\\b)"
   ],
   "required_contracts": {
     "AGENTS.md": [
