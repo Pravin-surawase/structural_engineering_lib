@@ -84,7 +84,9 @@ _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
         {
             "family": "deep_beam",
             "claim": "IS 456 deep-beam design is not implemented.",
-            "limitations": ["Clause 29 requires a separately verified program."],
+            "limitations": [
+                "INDIA-2-DEEP-G0 accepted one simply supported positive-moment reinforcement check; implementation and publication remain pending."
+            ],
         },
         {
             "family": "flat_slab",

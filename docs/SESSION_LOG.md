@@ -5,6 +5,73 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-DEEP-G0 Scope and Evidence Decision
+
+**Agent:** Codex (`structural-engineer`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-deep-g0` from integrated wall-family acceptance at
+`90ea7c1e4adf05c04e986dc3657e0403d598930d`
+
+**Git handoff receipt:** `docs/verification/india-2-deep-g0-git-handoff-receipt.json`
+
+**Focus:** Decide one public-source, benchmarked Clause 29 deep-beam boundary before calculation implementation.
+
+### Summary
+
+- Returned GO for one simply supported solid rectangular top-loaded deep beam
+  under a caller-supplied positive factored moment, with no openings or hanging
+  action.
+- Froze public clause/source identities, normalized formulas and limits,
+  explicit units, external bearing/nodal prerequisite, unsafe boundaries,
+  pre-implementation hand benchmark, and A-D/acceptance packet split.
+- Kept the deterministic capability truth held while recording that G0 is GO;
+  no deep-beam calculation function or supported capability was added.
+
+### Issues encountered
+
+- Extracted scan text rendered the short-ratio simply supported lever-arm
+  expression as `0.61`, which could be misread as a decimal constant.
+- The original Clause 29.3.4 page points side-face reinforcement to Clause
+  32.4, which is the horizontal-shear clause in the consolidated standard.
+- The bounded public-source search found an official NPTEL course syllabus
+  promising deep-beam examples but no exact retrievable numerical worked
+  example suitable for a frozen benchmark.
+
+### Root causes and resolutions
+
+- Root cause: OCR confused the italic span symbol `l` with the digit `1`.
+  Resolution: render and visually inspect the governing page, confirming the
+  normalized expression is `z = 0.6l` for `l / D < 1`.
+- Root cause: the original cross-reference is an acknowledged standard erratum.
+  Resolution: inspect the consolidated amendment pages and bind Clause 29.3.4
+  side-face reinforcement to Clause 32.5 as directed by Amendment No. 3.
+- Root cause: the located NPTEL result was a course-outline claim rather than a
+  numerical source record. Resolution: do not overstate it; freeze
+  `INDIA-2-DEEP-HAND-01` before implementation and require exact intermediate
+  agreement plus public clause provenance.
+
+### Evidence
+
+- Visual inspection confirms Clause 29.1 classification, both simply supported
+  Clause 29.2 lever-arm branches, and Clause 29.3.1 positive-reinforcement
+  placement/anchorage requirements.
+- Amendment text explicitly substitutes Clause 32.5 for the printed 32.4 in
+  Clause 29.3.4.
+- Independent benchmark arithmetic gives `l/D = 1.5`, `z = 1400 mm`, required
+  main steel 1477.832512 mm2, provided main steel 1520.530844 mm2, required
+  embedment 797.5 mm, and passing vertical/horizontal side-face steel.
+- All 13 benchmark intermediate values reproduce; all 6 manifest tests pass.
+- Black, Ruff, mypy, Bandit, deterministic manifest, 0/170 architecture,
+  0/205 imports, touched indexes, token-efficiency, and all 1,164-link checks
+  pass; quick gate passed 10/10.
+- Hosted evidence is bound to the unchanged reviewed PR head before integration.
+
+### Terminal issues
+
+- None encountered.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-WALL Focused Family Acceptance
 
 **Agent:** Codex (`reviewer`, sole writer; no subagents)

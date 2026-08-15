@@ -45,7 +45,7 @@ Historical staircase task IDs, PRs, and evidence remain unchanged. The former
 |---|---|---|
 | Clause 32 walls | Focused family acceptance complete after A-D integration | One braced empirical vertical-compression wall check supported; alternate wall systems held |
 | Clause 33 stairs | One bounded longitudinal straight waist-slab flight supported | Complete; alternate stair systems remain held |
-| Clause 29 deep beams | Not implemented | Planned after the wall program |
+| Clause 29 deep beams | G0 is GO; calculation code remains unimplemented | One simply supported positive-moment reinforcement check activated |
 | Flat slabs and column punching | Not implemented | Planned after deep beams |
 | Combined footing | Not implemented | Separate foundation program |
 | Strap footing | Not implemented | Separate foundation program |
@@ -61,7 +61,7 @@ boundary, held with a written reason, or not implemented.
 |---:|---|---|---|
 | 1 | `INDIA-2-WALL` | First clause-bounded remaining element; established the new-family workflow | Complete within the written bounded case |
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
-| 2 | `INDIA-2-DEEP` | Extends beam capability but requires its own geometry, action, and detailing boundary | Planned |
+| 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | G0 GO; A-D and acceptance pending |
 | 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Planned |
 | 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Planned, order provisional |
 | 5 | `INDIA-2-CLOSEOUT` | Reconcile truth, run final cumulative gates, and freeze the INDIA-2 evidence set | Pending |
@@ -181,10 +181,14 @@ families are considered.
 
 ### 6.3 INDIA-2-DEEP — Clause 29 deep-beam program
 
-`INDIA-2-DEEP-G0` must choose one deep-beam geometry and loading model. The
-initial case to investigate is a simply supported solid rectangular deep beam
-with caller-supplied factored actions and no openings, subject to source and
-benchmark confirmation.
+`INDIA-2-DEEP-G0` returned GO for one simply supported solid rectangular deep
+beam with no openings or hanging action. The caller supplies one governing
+positive factored moment and externally verifies bearing/compression-nodal
+regions. The bounded software route checks effective span and classification,
+Clause 29.2 lever arm, required/provided positive tie steel, placement zone,
+continuity, anchorage, and Amendment-3-corrected Clause 32.5 side-face steel.
+The exact source interpretation and pre-implementation benchmark are frozen in
+[`india-2-deep-g0-scope-evidence.md`](../verification/india-2-deep-g0-scope-evidence.md).
 
 The decision must settle:
 
@@ -198,9 +202,10 @@ Initial exclusions are openings, dapped ends, corbels, coupling beams, hollow
 sections, prestressing, cyclic/seismic design, generalized strut-and-tie
 modelling, nonlinear analysis, and FEM.
 
-Provisional packets are G0 decision; A geometry/classification/action contract;
-B strength and reinforcement checks; C public workflow; D capability/evidence;
-then one focused family acceptance bundle.
+Packets are G0 decision (GO); A typed geometry/classification, effective-span,
+lever-arm, action, and fail-closed contract; B positive tie, placement,
+anchorage, side-face, and composed dispositions; C public Python workflow; D
+thin API/capability/evidence; then one focused family acceptance bundle.
 
 ### 6.4 INDIA-2-FLAT — Flat slab and column-punching program
 
@@ -301,7 +306,9 @@ authorized programs.
 
 ## 9. Exact next action
 
-Run `INDIA-2-DEEP-G0` from the verified integrated wall-acceptance head. The
-owner's 2026-08-16 request activates the remaining INDIA-2 families subject to
-each family's own G0 returning GO. No G0 may be bypassed, and a HOLD remains a
-truthful non-implementation outcome.
+Implement `INDIA-2-DEEP-A` from the verified integrated G0 head without adding
+continuous beams, openings, hanging action, load analysis, bearing/nodal-zone
+design, or generalized strut-and-tie scope. The owner's 2026-08-16 request
+activates the remaining INDIA-2 families subject to each family's own G0
+returning GO. No G0 may be bypassed, and a HOLD remains a truthful
+non-implementation outcome.

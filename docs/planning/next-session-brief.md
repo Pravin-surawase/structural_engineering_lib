@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Accept the bounded wall family from integrated A-D using cumulative focused gates and retain its exclusions.
-- Git receipt: docs/verification/india-2-wall-acceptance-git-handoff-receipt.json | sha256:560e669e73f4aba0ab2ff87c5ce55863d3ef2d5752264b3dbb1a5db14c927670 | HOLD
-- Git identity: codex/india-2-wall-acceptance@46094a8c35c75fcfb0644f23a851087cc3297c60 | upstream=NONE@UNKNOWN | base=origin/main@46094a8c35c75fcfb0644f23a851087cc3297c60 | tree=dirty | operation=none
+- Focus: Decide one public-source, benchmarked Clause 29 deep-beam boundary before calculation implementation.
+- Git receipt: docs/verification/india-2-deep-g0-git-handoff-receipt.json | sha256:cc7f9a80b62148dd4ba68c392f981ef1cea91945fa3e149eec4ee94ad0e3fba9 | HOLD
+- Git identity: codex/india-2-deep-g0@90ea7c1e4adf05c04e986dc3657e0403d598930d | upstream=NONE@UNKNOWN | base=origin/main@90ea7c1e4adf05c04e986dc3657e0403d598930d | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Run `INDIA-2-DEEP-G0`; do not write deep-beam calculation code unless its source/scope/benchmark decision is GO |
+| **Next** | Implement `INDIA-2-DEEP-A` from the integrated G0 head within the frozen simply supported positive-moment boundary |
 
 ## Required Reading
 
@@ -38,7 +38,7 @@ add React, or begin release work without a new owner-approved scope.
 braced empirical vertical-compression workflow. WALL-A-D are integrated and the
 focused family receipt is
 [`india-2-wall-family-acceptance-evidence.md`](../verification/india-2-wall-family-acceptance-evidence.md).
-Do not expand the accepted wall topology while starting deep-beam G0.
+Do not expand the accepted wall topology while implementing deep-beam A.
 
 ```bash
 ./run.sh session brief --agent orchestrator
@@ -66,6 +66,16 @@ WALL-A-D packet split. No wall calculation or capability claim is part of G0.
 records the integrated A-D head, public clause/source visibility, independent
 benchmark, unsafe and fail-closed behavior, semantic-contract correction,
 focused validation, retained holds, and deferred broad-gate boundary.
+
+## INDIA-2-DEEP-G0 decision result
+
+[`india-2-deep-g0-scope-evidence.md`](../verification/india-2-deep-g0-scope-evidence.md)
+records GO for one simply supported solid rectangular deep-beam positive-
+reinforcement check. DEEP-A may implement only the typed effective-span,
+classification, lever-arm, caller-action, and fail-closed contracts. Bearing
+and compression-nodal regions require a caller-supplied external verification;
+continuous beams, openings, hanging action, negative moment, load generation,
+generalized strut-and-tie, nonlinear analysis, and FEM remain held.
 
 ## Review and gate boundary
 

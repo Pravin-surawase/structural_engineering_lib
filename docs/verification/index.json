@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 46,
+  "file_count": 49,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -197,6 +197,44 @@
         "task_archive"
       ],
       "content_hash": "aab91df123a3"
+    },
+    {
+      "name": "india-2-deep-g0-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "e9b17ac462e2"
+    },
+    {
+      "name": "india-2-deep-g0-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "0182f6001a43"
+    },
+    {
+      "name": "india-2-deep-g0-scope-evidence.md",
+      "type": "documentation",
+      "size_lines": 166,
+      "last_updated": "2026-08-16",
+      "description": "supported, solid rectangular, top-loaded deep beam without openings, under one caller-supplied governing positive factored moment. The route checks the",
+      "content_hash": "300737e95db2"
     },
     {
       "name": "india-2-plan-git-handoff-receipt.json",
@@ -412,7 +450,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "23fb23fa3436"
+      "content_hash": "438a4cff928c"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -501,5 +539,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "2c945a64839b6f79"
+  "content_hash": "bb6968753013eb9c"
 }
