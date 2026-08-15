@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Integrate `INDIA-2-WALL-G0`, then begin `INDIA-2-WALL-A` from the verified integrated head |
+| **Next** | Integrate `INDIA-2-WALL-A`, then begin `INDIA-2-WALL-B` from the verified integrated head |
 
 ## Required Reading
 
@@ -34,10 +34,10 @@ The historical INDIA-2A-D packets and their cumulative software gate are the
 completed `INDIA-2-STAIR` family. Do not reopen them, add another stair topology,
 add React, or begin release work without a new owner-approved scope.
 
-`INDIA-2-WALL-G0` is GO for one Clause 32.2 braced empirical wall check under
-caller-supplied factored vertical compression. The owner activated WALL-A-D and
-the remaining INDIA-2 family sequence, with each later family still required to
-return GO from its own source/scope/benchmark decision.
+`INDIA-2-WALL-G0` is integrated. WALL-A now has a verified local pure-math
+candidate for the Clause 32.2 braced empirical wall geometry and axial-capacity
+kernel. The capability remains held until reinforcement, service, API, and
+evidence work completes through WALL-D.
 
 ```bash
 ./run.sh session brief --agent orchestrator
@@ -58,6 +58,14 @@ The GO record is
 It freezes the supported wall case, IS 456 clauses, public normalized-content
 boundary, hand benchmark and tolerance, units, fail-closed exclusions, and
 WALL-A-D packet split. No wall calculation or capability claim is part of G0.
+
+## INDIA-2-WALL-A candidate result
+
+[`india-2-wall-a-axial-kernel-evidence.md`](../verification/india-2-wall-a-axial-kernel-evidence.md)
+records the exact Clause 32.2.1-32.2.5 functions, units, source IDs, frozen
+benchmark, fail-closed cases, and focused validation. After its exact reviewed
+head is integrated, WALL-B adds only the accepted minimum/provided
+reinforcement and spacing checks.
 
 ## Review and gate boundary
 

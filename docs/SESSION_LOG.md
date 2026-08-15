@@ -5,6 +5,97 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-WALL-A Geometry and Axial Kernel
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-wall-a` from integrated WALL-G0 main at
+`cd57b4f57a9b2ec4c92a548306f5c82cc7132f48`
+
+**Focus:** Implement the typed Clause 32.2 braced-wall geometry, eccentricity, slenderness, and empirical axial-capacity kernel.
+
+### Summary
+
+- Added a new pure `codes/is456/wall/` package with explicit-mm geometry,
+  caller-confirmed bracing assertions, standard M20-M60 material input, and
+  caller-supplied factored compression.
+- Implemented exact effective-height, slenderness, minimum/additional
+  eccentricity, axial-capacity, demand, utilization, and PASS/FAIL results with
+  public Clause 32.2.1-32.2.5 provenance.
+- Corrected the Clause 32 metadata from shifted coarse titles to exact public
+  subclause identifiers and regenerated the truth manifest without promoting
+  the held wall capability.
+- Froze WALL-A evidence and retained reinforcement, services, FastAPI, React,
+  moment, shear, seismic, and alternate wall systems outside this packet.
+
+### Issues encountered
+
+- The G0 branch session-end check reported `HOLD_DIVERGED` and a missing Git
+  handoff receipt after its exact tree had already been squash-merged as PR
+  #768.
+- A selective inspection guessed a nonexistent `slab/contracts.py` path.
+- The first Black check found two new wall source files requiring formatting.
+- Exact Clause 32 subclause insertion made the clause database metadata count
+  stale, causing the focused clause test to fail 135 actual versus 128 declared.
+- The generated Indian-code manifest became stale after adding new decorated
+  wall functions and exact clause metadata.
+- Two validation command names were initially inferred as `check_imports.py`
+  and `validate_metadata.py`; neither script exists in the maintained tree.
+- `check_links.py` was initially given an unsupported `--check` option.
+
+### Root causes and resolutions
+
+- Root cause: squash integration changes commit ancestry and the G0 packet did
+  not create a versioned task-to-Git receipt before session end. Resolution:
+  verify the merged PR identity directly, refresh clean main, and start WALL-A
+  from exact integrated `cd57b4f5`; no G0 branch/worktree cleanup was attempted.
+- Root cause: the slab filename was inferred rather than discovered.
+  Resolution: use `rg --files` for the maintained model paths and base the new
+  package on the discovered staircase and column patterns.
+- Root cause: the initial source layout differed from Black's stable formatting.
+  Resolution: run Black on only the new wall package/tests, then rerun Ruff,
+  mypy, and the focused tests.
+- Root cause: `metadata.total_clauses` is a manually bound count. Resolution:
+  update it to the exact 135-entry database and rerun the clause/traceability
+  suite.
+- Root cause: the manifest derives decorator registration and metadata from the
+  source tree. Resolution: regenerate it; five exact wall subclauses are now
+  registered while the family remains truthfully `HELD`/`NOT_IMPLEMENTED`.
+- Root cause: validation entry points and arguments were guessed instead of
+  read from their maintained skill/help output. Resolution: use
+  `validate_imports.py --scope structural_lib`, `check_docs.py --metadata`, and
+  `check_links.py` with its scan-only default; all three then passed.
+
+### Evidence
+
+- Runtime diagnosis returned `source_bound=true` in the fresh WALL-A worktree.
+- The frozen benchmark returns 2250 mm effective height, 7.5 mm design
+  eccentricity, 13.5 mm additional eccentricity, 684 N/mm capacity, 500 N/mm
+  demand, 0.7309941520 utilization, and `PASS`.
+- 19 wall tests and 94 combined wall/clause/traceability tests passed.
+- Black, Ruff, and mypy passed for the new wall package and focused tests.
+- Architecture validation found 0 violations across 166 files; import
+  validation found 0 broken imports across 203 files.
+- The generated Indian-code manifest is current and retains the wall capability
+  as held pending WALL-B-D.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: G0 session end reported the already squash-merged branch
+  as diverged and missing a receipt -> verified PR #768 and started this lane
+  from clean integrated main without mutating the retained G0 lane.
+- ⚠️ TERMINAL ISSUE: `slab/contracts.py` did not exist -> discovered maintained
+  paths with `rg --files` before implementation.
+- ⚠️ TERMINAL ISSUE: Black check stopped on two unformatted new files -> applied
+  Black only to the new wall paths and reran focused quality checks.
+- ⚠️ TERMINAL ISSUE: the first combined traceability run failed on the stale
+  declared clause count -> updated the count to 135 and reran successfully.
+- ⚠️ TERMINAL ISSUE: inferred import, metadata, and link-check commands did not
+  exist or used an unsupported flag -> read the architecture skill and script
+  help, then ran the maintained commands successfully.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-WALL-G0 Scope and Evidence Decision
 
 **Agent:** Codex (`structural-engineer`, sole writer; no subagents)

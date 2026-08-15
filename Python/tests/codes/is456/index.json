@@ -1,0 +1,43 @@
+{
+  "folder": "Python/tests/codes/is456",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-08-16",
+  "file_count": 1,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 1,
+      "last_updated": "2026-08-16",
+      "content_hash": "e3b0c44298fc"
+    }
+  ],
+  "subfolders": [
+    {
+      "name": "column",
+      "path": "column/",
+      "file_count": 7,
+      "is_package": true
+    },
+    {
+      "name": "slab",
+      "path": "slab/",
+      "file_count": 7
+    },
+    {
+      "name": "staircase",
+      "path": "staircase/",
+      "file_count": 5,
+      "is_package": true
+    },
+    {
+      "name": "wall",
+      "path": "wall/",
+      "file_count": 4,
+      "is_package": true
+    }
+  ],
+  "has_init": true,
+  "content_hash": "5a10f85b061f901b"
+}
