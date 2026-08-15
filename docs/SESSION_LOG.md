@@ -36,6 +36,8 @@ manifest promotion, and bounded evidence without adding calculation scope.
 - The safe error sanitizer intentionally replaced the detailed engineering
   message with an opaque reference.
 - Mypy rejects float values inside `Literal` even though Pydantic accepts them.
+- Hosted FastAPI validation failed because the committed OpenAPI baseline still
+  described 76 endpoints and 286 schemas.
 
 ### Root causes and resolutions
 
@@ -54,6 +56,11 @@ manifest promotion, and bounded evidence without adding calculation scope.
 - Root cause: Python typing permits string/integer but not float literals.
   Resolution: express standard concrete grades as integer literals; JSON 20.0
   remains accepted and the service normalizes it to float.
+- Root cause: local compatibility validation permits additive API changes but
+  the hosted FastAPI job also requires an exact generated OpenAPI snapshot.
+  Resolution: regenerate the baseline to 77 endpoints and 293 schemas, verify
+  the semantic diff contains only the wall endpoint and seven wall schemas with
+  no removals, then rerun the exact snapshot check successfully.
 
 ### Evidence
 
@@ -81,6 +88,9 @@ manifest promotion, and bounded evidence without adding calculation scope.
   minimum-component rule.
 - ⚠️ TERMINAL ISSUE: mypy rejected Pydantic float literals -> used equivalent
   integer grade literals and verified JSON float inputs still pass.
+- ⚠️ TERMINAL ISSUE: PR #772 FastAPI validation failed on intentional OpenAPI
+  drift -> regenerated and semantically inspected the maintained snapshot;
+  local exact snapshot validation now passes with no removed paths or schemas.
 
 ---
 

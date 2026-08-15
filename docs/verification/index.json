@@ -255,10 +255,10 @@
     {
       "name": "india-2-wall-d-publication-evidence.md",
       "type": "documentation",
-      "size_lines": 77,
+      "size_lines": 80,
       "last_updated": "2026-08-16",
       "description": "WALL-D publishes the integrated design_braced_wall_is456 workflow through POST /api/v1/design/wall/braced-axial and promotes exactly one bounded wall",
-      "content_hash": "0d4884916d24"
+      "content_hash": "3e70433c516b"
     },
     {
       "name": "india-2-wall-g0-scope-evidence.md",
@@ -463,5 +463,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "07110225f9624cd3"
+  "content_hash": "d3f983b950a48f5e"
 }

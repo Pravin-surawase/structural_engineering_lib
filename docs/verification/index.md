@@ -42,7 +42,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [india-2-wall-a-axial-kernel-evidence.md](india-2-wall-a-axial-kernel-evidence.md) |  | WALL-A implements the pure IS 456 layer for the accepted Cla | 83 |
 | [india-2-wall-b-reinforcement-evidence.md](india-2-wall-b-reinforcement-evidence.md) |  | WALL-B adds one pure IS 456 provided-reinforcement check to  | 82 |
 | [india-2-wall-c-public-workflow-evidence.md](india-2-wall-c-public-workflow-evidence.md) |  | WALL-C publishes one canonical typed Python function, design | 80 |
-| [india-2-wall-d-publication-evidence.md](india-2-wall-d-publication-evidence.md) |  | WALL-D publishes the integrated design_braced_wall_is456 wor | 77 |
+| [india-2-wall-d-publication-evidence.md](india-2-wall-d-publication-evidence.md) |  | WALL-D publishes the integrated design_braced_wall_is456 wor | 80 |
 | [india-2-wall-g0-scope-evidence.md](india-2-wall-g0-scope-evidence.md) |  | activated the remaining INDIA-2 work on 2026-08-16 by asking | 125 |
 | [india-2a-staircase-scope-evidence.md](india-2a-staircase-scope-evidence.md) |  | activated INDIA-2A through INDIA-2D on 2026-08-15 by request | 111 |
 | [india-2b-staircase-actions-evidence.md](india-2b-staircase-actions-evidence.md) |  | INDIA-2B implements only the typed geometry, concrete self-w | 70 |

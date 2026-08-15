@@ -65,6 +65,9 @@ and alternate wall systems remain outside the supported capability.
   passed 128 tests.
 - Black, Ruff, mypy, and Bandit passed on the changed Python/FastAPI paths.
 - API compatibility reports no break across 77 endpoints and 293 schemas.
+- The exact OpenAPI snapshot was regenerated to the same counts; semantic diff
+  inspection found only the one wall endpoint and seven wall schemas added,
+  with no path or schema removals.
 - Architecture validation found 0 violations across 170 files and structural-
   library import validation found 0 broken imports across 205 files.
 - The generated Indian-code manifest reports 9 supported and 12 held declared
