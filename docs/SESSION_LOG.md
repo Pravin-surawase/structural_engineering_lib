@@ -5,6 +5,64 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2 One-Document Execution Plan
+
+**Agent:** Codex (`governance`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-detailed-plan` from exact `origin/main` at
+`b3fed846210d3460cf4d6d6f326d2d6d6caf100d`
+
+**Git handoff receipt:** `docs/verification/india-2-plan-git-handoff-receipt.json`
+
+**Focus:** Consolidate all INDIA-2 work into one understandable, executable plan without starting calculation implementation.
+
+### Summary
+
+- Added one dedicated INDIA-2 execution plan covering the completed staircase,
+  next wall decision, deep beams, flat slabs/punching, four separate foundation
+  programs, validation cadence, and final exit criteria.
+- Added one reusable G0/A-D packet pattern while keeping family-specific
+  analysis models and exclusions separate.
+- Linked the parent Indian-code plan, task board, and next-session brief to the
+  detailed plan.
+- Kept `INDIA-2-WALL-G0` decision-only; no calculation, API, UI, release, or
+  cleanup work was activated.
+
+### Issues encountered
+
+- The parent completion document listed INDIA-2 families and status but did not
+  contain an executable family-by-family packet sequence in one place.
+- Foundation extensions could be misread as one generic footing enhancement
+  even though combined, strap, pile-cap, and raft systems require different
+  analysis models.
+
+### Root causes and resolutions
+
+- Root cause: the parent plan was intentionally concise and established the
+  umbrella hierarchy, leaving detailed execution spread across historical stair
+  evidence and future decision language. Resolution: add one subordinate
+  INDIA-2 execution authority with current truth, ordered family programs,
+  packet gates, exclusions, and completion criteria.
+- Root cause: shared concrete/material/detailing concepts can obscure the
+  distinct load-path and analysis decisions for each foundation system.
+  Resolution: require an independent G0, benchmark, pure-math workflow, public
+  contract, and cumulative gate for each foundation family.
+
+### Evidence
+
+- The lane started clean from exact current `origin/main`; Git-state authority
+  returned `READY_LOCAL` and runtime diagnosis returned `source_bound=true`.
+- The generated manifest remains the support-truth authority; the new document
+  changes planning only and preserves the completed stair boundary.
+- Focused documentation, manifest, index, link, and quick-gate evidence are
+  recorded at closeout.
+
+### Terminal issues
+
+- None encountered.
+
+---
+
 ## 2026-08-16 — Session: Indian-Code Completion Plan Reconciliation
 
 **Agent:** Codex (`governance`, sole writer; no subagents)

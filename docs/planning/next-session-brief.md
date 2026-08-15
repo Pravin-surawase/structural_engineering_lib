@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Establish one durable INDIA-0 through INDIA-4 finish plan before any new calculation work begins.
-- Git receipt: docs/verification/india-completion-plan-git-handoff-receipt.json | sha256:5d5255d0098303e2ee2663d011cddad3cbdbba292eb013cd6640b37b207746a8 | HOLD
-- Git identity: codex/india-finish-plan-reconcile@ca65c165ba3abc23497f15ba5e305f2324b91191 | upstream=NONE@UNKNOWN | base=origin/main@62f4ba06b6287c1b74ddd41e7cdfefa71b08e515 | tree=dirty | operation=none
+- Focus: Consolidate all INDIA-2 work into one understandable, executable plan without starting calculation implementation.
+- Git receipt: docs/verification/india-2-plan-git-handoff-receipt.json | sha256:ecbc84c246e9f7e8bdaa19cac60ba0fa8ef12aea115bee9ddd1db077d5aa75f6 | HOLD
+- Git identity: codex/india-2-detailed-plan@b3fed846210d3460cf4d6d6f326d2d6d6caf100d | upstream=NONE@UNKNOWN | base=origin/main@b3fed846210d3460cf4d6d6f326d2d6d6caf100d | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
@@ -21,11 +21,12 @@
 
 ## Required Reading
 
-1. [Canonical Indian-code completion waves](indian-code-completion-plan.md)
-2. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
-3. [Current task board](../TASKS.md)
-4. [INDIA-2 staircase cumulative evidence](../verification/india-2-cumulative-gate-evidence.md)
-5. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+1. [INDIA-2 remaining-elements execution plan](india-2-remaining-is456-elements-plan.md)
+2. [Canonical Indian-code completion waves](indian-code-completion-plan.md)
+3. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
+4. [Current task board](../TASKS.md)
+5. [INDIA-2 staircase cumulative evidence](../verification/india-2-cumulative-gate-evidence.md)
+6. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
 
 ## Start Boundary
 

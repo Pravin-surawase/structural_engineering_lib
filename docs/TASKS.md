@@ -133,15 +133,17 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2-WALL-G0 | Discuss and, if accepted, freeze one bounded Clause 32 wall case with exact source, benchmark, assumptions, and exclusions | repository owner + structural engineer | decision gate | P0 | 📋 READY FOR SCOPE DISCUSSION — implementation not activated |
+| INDIA-2-WALL-G0 | Discuss and, if accepted, freeze one bounded Clause 32 wall case using the [INDIA-2 execution plan](planning/india-2-remaining-is456-elements-plan.md) | repository owner + structural engineer | decision gate | P0 | 📋 READY FOR SCOPE DISCUSSION — implementation not activated |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
 
 The version roadmap and historical backlog remain below. The canonical
 [Indian-code completion plan](planning/indian-code-completion-plan.md) defines
-INDIA-0 through INDIA-4. INDIA-0 and INDIA-1 are complete. The historical
-INDIA-2A-D packets form the completed `INDIA-2-STAIR` family, but umbrella
+INDIA-0 through INDIA-4, and the dedicated
+[INDIA-2 execution plan](planning/india-2-remaining-is456-elements-plan.md)
+defines the remaining family packets. INDIA-0 and INDIA-1 are complete. The
+historical INDIA-2A-D packets form the completed `INDIA-2-STAIR` family, but umbrella
 INDIA-2 remains in progress while wall, deep-beam, flat-slab/punching, and
 distinct foundation-system packets remain held.
 The v0.23.1a1 Alpha is published.
@@ -156,6 +158,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-PLAN | Consolidated INDIA-2 scope, family order, packet gates, exclusions, validation cadence, and completion criteria into one execution document | Main Agent + repository owner | ✅ DONE — INDIA-2-WALL-G0 remains the next decision; no engineering implementation activated |
 | INDIA-COMPLETION-PLAN | Reconciled the canonical INDIA-0 through INDIA-4 finish waves and mapped historical staircase receipts to INDIA-2-STAIR without renaming them | Main Agent + repository owner | ✅ DONE — next discussion is INDIA-2-WALL-G0; no calculation implementation activated |
 | INDIA-2-STAIR | Completed one bounded longitudinal straight-flight staircase family | Main Agent + structural engineer | ✅ DONE — historical INDIA-2A-D and INDIA-2-CUMULATIVE remain the immutable evidence names |
 | INDIA-2-CUMULATIVE | Ran the broad Python suite, full repository gate, manifest reconciliation, and cumulative essential review after A-D integration | Main Agent + reviewer | ✅ DONE — 5,950 Python tests and full 30/30 gate green; staircase remains one bounded L2 API workflow and qualified review remains separate |
