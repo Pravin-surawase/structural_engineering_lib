@@ -143,6 +143,9 @@ at the locally and hosted green draft PR head for independent audit
 - The same audit found maintained `./run.sh session context` independently ran
   `git status --porcelain` and `git rev-parse`; blank stdout with return code 128
   produced an empty branch, `Working tree: clean`, and process exit 0.
+- The first final-closeout receipt generation ran after the LOCAL PASS session
+  note was edited, so canonical evidence truthfully added `LOCAL_HOLD_DIRTY`
+  instead of representing the clean audited implementation object.
 - The first ninth-head focused replay rejected valid canonical state fixtures
   loaded through the package alias and one past-tense historical control.
 - A read-only inventory regex containing a backtick was initially passed with
@@ -397,6 +400,13 @@ at the locally and hosted green draft PR head for independent audit
   malformed, query-failed, or exceptional evidence. Evidence: end-to-end clean,
   dirty, detached, behind, failed-query, malformed, and exception cases pass
   while a subprocess spy rejects every fallback Git command.
+- Final-closeout ordering root cause: the task-owned session note was written
+  before collecting the audited code-head state. Resolution: reverse only the
+  exact session/receipt edits with path-bounded patches, verify the worktree was
+  clean, generate the receipt from immutable head `abfdb968`, then reapply the
+  note for the single packet commit. Evidence: the corrected receipt records
+  `READY_LOCAL`, has no local hold, and retains only explicit remote, PR, and
+  review `NOT_CHECKED` holds.
 - Focused-replay root cause: Python loaded `git_state` and `scripts.git_state`
   as distinct module identities, so nominal `isinstance` checks rejected the
   same schema; historical grammar included `says` but omitted `said`.
@@ -458,6 +468,12 @@ at the locally and hosted green draft PR head for independent audit
   Git-state, and session tests plus the indexed semantic checker. Per the
   orchestrator boundary, no full repository gate, push, hosted run, ready, or
   merge action is performed before independent inspection of the local object.
+- Independent local audit granted PASS for immutable implementation head
+  `abfdb968991290504a8facaab2172fa09876bae1`, tree
+  `af8386cdc758e0231e108eda56f16f88e93825b5`, confirming the two frozen roots:
+  branch-mode parity rejects `HEAD`, and maintained session context has no
+  competing Git-state subprocess or false-clean path. The final receipt remains
+  HOLD/NOT_CHECKED until the separately authorized hosted closeout completes.
 
 ### Preservation and next boundary
 
