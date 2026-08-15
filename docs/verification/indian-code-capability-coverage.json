@@ -276,10 +276,10 @@
       ],
       "registration_summary": {
         "known_references": 142,
-        "registered_known_references": 73,
-        "metadata_only_references": 69,
+        "registered_known_references": 74,
+        "metadata_only_references": 68,
         "registration_only_references": 0,
-        "registration_pct": 51.4
+        "registration_pct": 52.1
       },
       "references": [
         {
@@ -482,6 +482,7 @@
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.beam.detailing.calculate_development_length",
+            "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
             "structural_lib.codes.is456.footing.load_transfer.check_isolated_footing_load_transfer"
           ]
@@ -494,7 +495,8 @@
           "category": "detailing",
           "registration_status": "REGISTERED",
           "functions": [
-            "structural_lib.codes.is456.beam.detailing.get_bond_stress"
+            "structural_lib.codes.is456.beam.detailing.get_bond_stress",
+            "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement"
           ]
         },
         {
@@ -697,7 +699,8 @@
           "category": "flexure",
           "registration_status": "REGISTERED",
           "functions": [
-            "structural_lib.codes.is456.deep_beam.geometry.resolve_simply_supported_deep_beam_geometry"
+            "structural_lib.codes.is456.deep_beam.geometry.resolve_simply_supported_deep_beam_geometry",
+            "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement"
           ]
         },
         {
@@ -708,7 +711,8 @@
           "category": "flexure",
           "registration_status": "REGISTERED",
           "functions": [
-            "structural_lib.codes.is456.deep_beam.geometry.resolve_simply_supported_deep_beam_geometry"
+            "structural_lib.codes.is456.deep_beam.geometry.resolve_simply_supported_deep_beam_geometry",
+            "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement"
           ]
         },
         {
@@ -728,7 +732,8 @@
           "category": "detailing",
           "registration_status": "REGISTERED",
           "functions": [
-            "structural_lib.codes.is456.deep_beam.geometry.resolve_simply_supported_deep_beam_geometry"
+            "structural_lib.codes.is456.deep_beam.geometry.resolve_simply_supported_deep_beam_geometry",
+            "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement"
           ]
         },
         {
@@ -755,8 +760,10 @@
           "reference_type": "clause",
           "title": "Side-Face Reinforcement in Deep Beams",
           "category": "detailing",
-          "registration_status": "METADATA_ONLY",
-          "functions": []
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement"
+          ]
         },
         {
           "reference_id": "IS456:2000:31.6",
@@ -895,6 +902,7 @@
           "category": "walls",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement",
             "structural_lib.codes.is456.wall.reinforcement.check_wall_minimum_reinforcement"
           ]
         },
@@ -906,6 +914,7 @@
           "category": "walls",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement",
             "structural_lib.codes.is456.wall.reinforcement.check_wall_minimum_reinforcement"
           ]
         },
@@ -917,6 +926,7 @@
           "category": "walls",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement",
             "structural_lib.codes.is456.wall.reinforcement.check_wall_minimum_reinforcement"
           ]
         },

@@ -1,0 +1,179 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-15T21:00:07Z",
+      "query_status": "OK",
+      "reference": "task:INDIA-2:user-request-start-and-finish",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-15T21:00:07Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/india-2-deep-b",
+      "head_sha": "57ee2bad7a4b8cd16858d5b5d4306f9abf886b3b",
+      "task_id": "INDIA-2-DEEP-B"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "d15b352d1086c9ac0d8e1c9769c8f85e1f97cb99e96de28686e9d7d86dedf45d",
+    "state": {
+      "branch": "codex/india-2-deep-b",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "57ee2bad7a4b8cd16858d5b5d4306f9abf886b3b",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 79.968,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-deep-b",
+      "head_sha": "57ee2bad7a4b8cd16858d5b5d4306f9abf886b3b",
+      "hold_reasons": [
+        "changed paths: 28"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-15T21:01:51.012281+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-deep-b",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 28,
+        "modified_paths": [
+          "Python/structural_lib/codes/is456/deep_beam/__init__.py",
+          "Python/structural_lib/codes/is456/deep_beam/index.json",
+          "Python/structural_lib/codes/is456/deep_beam/index.md",
+          "Python/structural_lib/codes/is456/deep_beam/models.py",
+          "Python/structural_lib/codes/is456/index.json",
+          "Python/structural_lib/codes/is456/index.md",
+          "Python/tests/codes/is456/deep_beam/index.json",
+          "Python/tests/codes/is456/deep_beam/index.md",
+          "Python/tests/codes/is456/index.json",
+          "Python/tests/codes/is456/index.md",
+          "Python/tests/index.json",
+          "Python/tests/index.md",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/index.json",
+          "docs/index.md",
+          "docs/planning/index.json",
+          "docs/planning/index.md",
+          "docs/planning/india-2-remaining-is456-elements-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/index.json",
+          "docs/verification/index.md",
+          "docs/verification/indian-code-capability-coverage.json"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "Python/structural_lib/codes/is456/deep_beam/reinforcement.py",
+          "Python/tests/codes/is456/deep_beam/test_reinforcement.py",
+          "docs/verification/india-2-deep-b-git-handoff-receipt.json",
+          "docs/verification/india-2-deep-b-git-handoff-source-evidence.json",
+          "docs/verification/india-2-deep-b-reinforcement-evidence.md"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-deep-b"
+    }
+  },
+  "local_state_receipt_hash": "sha256:d15b352d1086c9ac0d8e1c9769c8f85e1f97cb99e96de28686e9d7d86dedf45d",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-15T21:01:51.012415+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-15T21:00:07Z",
+    "owner": "Main Agent under user instruction to preserve Git state",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/services/**",
+      "fastapi_app/**",
+      "react_app/**",
+      "refs/**"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "Python/structural_lib/codes/is456/deep_beam",
+      "Python/tests/codes/is456/deep_beam",
+      "docs/verification/india-2-deep-b-reinforcement-evidence.md",
+      "docs/verification/india-2-deep-b-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/india-2-remaining-is456-elements-plan.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "INDIA-2-DEEP-B"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

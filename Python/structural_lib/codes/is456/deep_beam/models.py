@@ -11,9 +11,11 @@ from numbers import Real
 
 __all__ = [
     "DeepBeamActionInput",
+    "DeepBeamCheckStatus",
     "DeepBeamContractError",
     "DeepBeamGeometry",
     "DeepBeamLeverArmCase",
+    "DeepBeamReinforcementInput",
     "DeepBeamSupportType",
 ]
 
@@ -35,6 +37,13 @@ class DeepBeamLeverArmCase(StrEnum):
     RATIO_ONE_TO_TWO = "effective_span_to_depth_from_one_to_below_two"
 
 
+class DeepBeamCheckStatus(StrEnum):
+    """Disposition for each bounded Clause 29 check and their composition."""
+
+    PASS = "PASS"  # nosec B105
+    FAIL = "FAIL"
+
+
 def _positive_finite(value: float, field_name: str, unit: str) -> float:
     if isinstance(value, bool) or not isinstance(value, Real):
         raise DeepBeamContractError(f"{field_name} must be a real value in {unit}")
@@ -42,6 +51,17 @@ def _positive_finite(value: float, field_name: str, unit: str) -> float:
     if not math.isfinite(normalized) or normalized <= 0.0:
         raise DeepBeamContractError(
             f"{field_name} must be finite and positive in {unit}"
+        )
+    return normalized
+
+
+def _nonnegative_finite(value: float, field_name: str, unit: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, Real):
+        raise DeepBeamContractError(f"{field_name} must be a real value in {unit}")
+    normalized = float(value)
+    if not math.isfinite(normalized) or normalized < 0.0:
+        raise DeepBeamContractError(
+            f"{field_name} must be finite and non-negative in {unit}"
         )
     return normalized
 
@@ -184,4 +204,97 @@ class DeepBeamActionInput:
             self,
             "action_basis_reference",
             _non_blank(self.action_basis_reference, "action_basis_reference"),
+        )
+
+
+@dataclass(frozen=True)
+class DeepBeamReinforcementInput:
+    """Caller-provided positive tie, anchorage, and side-face reinforcement.
+
+    Bar diameters, spacings, tension-face distance, and support embedments are
+    in mm. Areas are computed; this contract never selects bars. Bundles and
+    splices are outside the first INDIA-2 deep-beam route.
+    """
+
+    action: DeepBeamActionInput
+    main_bar_count: int
+    main_bar_diameter_mm: float
+    furthest_main_bar_from_tension_face_mm: float
+    main_bars_continuous_between_supports: bool
+    main_bars_bundled: bool
+    main_bar_splices_present: bool
+    left_support_embedment_mm: float
+    right_support_embedment_mm: float
+    face_grid_count: int
+    vertical_side_bar_diameter_mm: float
+    vertical_side_bar_spacing_mm: float
+    horizontal_side_bar_diameter_mm: float
+    horizontal_side_bar_spacing_mm: float
+    reinforcement_basis_reference: str
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.action, DeepBeamActionInput):
+            raise DeepBeamContractError("action must be a DeepBeamActionInput")
+        if (
+            isinstance(self.main_bar_count, bool)
+            or not isinstance(self.main_bar_count, int)
+            or self.main_bar_count <= 0
+        ):
+            raise DeepBeamContractError("main_bar_count must be a positive integer")
+        for name in (
+            "main_bar_diameter_mm",
+            "furthest_main_bar_from_tension_face_mm",
+            "vertical_side_bar_diameter_mm",
+            "vertical_side_bar_spacing_mm",
+            "horizontal_side_bar_diameter_mm",
+            "horizontal_side_bar_spacing_mm",
+        ):
+            object.__setattr__(
+                self,
+                name,
+                _positive_finite(getattr(self, name), name, "mm"),
+            )
+        for name in ("left_support_embedment_mm", "right_support_embedment_mm"):
+            object.__setattr__(
+                self,
+                name,
+                _nonnegative_finite(getattr(self, name), name, "mm"),
+            )
+        if not isinstance(self.main_bars_continuous_between_supports, bool):
+            raise DeepBeamContractError(
+                "main_bars_continuous_between_supports must be a boolean"
+            )
+        if self.main_bars_bundled is not False:
+            raise DeepBeamContractError("main_bars_bundled must be explicitly False")
+        if self.main_bar_splices_present is not False:
+            raise DeepBeamContractError(
+                "main_bar_splices_present must be explicitly False"
+            )
+        if (
+            isinstance(self.face_grid_count, bool)
+            or not isinstance(self.face_grid_count, int)
+            or self.face_grid_count not in {1, 2}
+        ):
+            raise DeepBeamContractError("face_grid_count must be integer 1 or 2")
+        required_grid_count = 2 if self.action.geometry.beam_width_mm > 200.0 else 1
+        if self.face_grid_count != required_grid_count:
+            raise DeepBeamContractError(
+                f"face_grid_count must be {required_grid_count} for the supplied "
+                "beam_width_mm"
+            )
+        if (
+            self.vertical_side_bar_diameter_mm > 16.0
+            or self.horizontal_side_bar_diameter_mm > 16.0
+        ):
+            raise DeepBeamContractError(
+                "side-face bar diameter must not exceed 16 mm for the Clause "
+                "32.5 deformed-bar minimum-ratio category"
+            )
+        object.__setattr__(
+            self,
+            "reinforcement_basis_reference",
+            _non_blank(
+                self.reinforcement_basis_reference,
+                "reinforcement_basis_reference",
+            ),
         )

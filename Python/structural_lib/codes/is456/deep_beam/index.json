@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 3,
+  "file_count": 4,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 26,
+      "size_lines": 44,
       "last_updated": "2026-08-16",
       "description": "Bounded IS 456 Clause 29 simply supported deep-beam contracts.",
-      "content_hash": "879b3a47ed25"
+      "content_hash": "0d56264b7055"
     },
     {
       "name": "geometry.py",
@@ -42,7 +42,7 @@
     {
       "name": "models.py",
       "type": "python",
-      "size_lines": 188,
+      "size_lines": 301,
       "last_updated": "2026-08-16",
       "description": "Typed contracts for the bounded INDIA-2 Clause 29 deep-beam case.",
       "classes": [
@@ -59,27 +59,99 @@
           "description": "Normalized Clause 29.2 simply supported lever-arm branches."
         },
         {
+          "name": "DeepBeamCheckStatus",
+          "description": "Disposition for each bounded Clause 29 check and their composition."
+        },
+        {
           "name": "DeepBeamGeometry",
           "description": "Caller-confirmed geometry and external bearing/nodal prerequisite."
         },
         {
           "name": "DeepBeamActionInput",
           "description": "Geometry, material grades, and caller-supplied positive design moment."
+        },
+        {
+          "name": "DeepBeamReinforcementInput",
+          "description": "Caller-provided positive tie, anchorage, and side-face reinforcement."
         }
       ],
-      "content_hash": "fa064b8ad53e"
+      "content_hash": "4f56a218a155"
+    },
+    {
+      "name": "reinforcement.py",
+      "type": "python",
+      "size_lines": 315,
+      "last_updated": "2026-08-16",
+      "description": "Clause 29 positive tie, anchorage, and side-face reinforcement checks.",
+      "classes": [
+        {
+          "name": "DeepBeamTieResult",
+          "description": "Required and caller-provided positive tension-tie steel."
+        },
+        {
+          "name": "DeepBeamPlacementResult",
+          "description": "Positive tie placement within the Clause 29.3.1 tension-face zone."
+        },
+        {
+          "name": "DeepBeamAnchorageResult",
+          "description": "Development length and both support-face embedment checks.",
+          "public_methods": [
+            "status"
+          ]
+        },
+        {
+          "name": "DeepBeamSideFaceDirectionResult",
+          "description": "Minimum area and spacing check for one side-face direction.",
+          "public_methods": [
+            "status"
+          ]
+        },
+        {
+          "name": "DeepBeamReinforcementResult",
+          "description": "Composed disposition for the bounded Clause 29 reinforcement route.",
+          "public_methods": [
+            "status",
+            "shear_deemed_satisfied_within_clause_29_scope"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "check_simply_supported_deep_beam_reinforcement",
+          "description": "Check the caller-provided positive tie and side-face reinforcement.",
+          "params": [
+            "reinforcement_input"
+          ]
+        }
+      ],
+      "constants": [
+        "_SOURCE_REFS",
+        "_PLAIN_TENSION_BOND_STRESS_NMM2",
+        "_DEFORMED_BAR_BOND_FACTOR",
+        "_DESIGN_STEEL_STRESS_FACTOR",
+        "_DEEP_BEAM_EMBEDMENT_FACTOR"
+      ],
+      "content_hash": "f9facc6e06dc"
     }
   ],
   "subfolders": [],
   "has_init": true,
   "public_api": [
     "DeepBeamActionInput",
+    "DeepBeamAnchorageResult",
+    "DeepBeamCheckStatus",
     "DeepBeamContractError",
     "DeepBeamGeometry",
     "DeepBeamGeometryResult",
     "DeepBeamLeverArmCase",
+    "DeepBeamPlacementResult",
+    "DeepBeamReinforcementInput",
+    "DeepBeamReinforcementResult",
+    "DeepBeamSideFaceDirectionResult",
     "DeepBeamSupportType",
+    "DeepBeamTieResult",
+    "check_simply_supported_deep_beam_reinforcement",
     "resolve_simply_supported_deep_beam_geometry"
   ],
-  "content_hash": "dc58edd70174b232"
+  "content_hash": "9b7bb077d8a9ac4e"
 }

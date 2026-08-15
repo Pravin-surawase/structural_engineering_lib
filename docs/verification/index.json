@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 52,
+  "file_count": 55,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -235,6 +235,44 @@
         "task_archive"
       ],
       "content_hash": "8639954ae9ee"
+    },
+    {
+      "name": "india-2-deep-b-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "4dc03ab77739"
+    },
+    {
+      "name": "india-2-deep-b-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "ee05ec76b349"
+    },
+    {
+      "name": "india-2-deep-b-reinforcement-evidence.md",
+      "type": "documentation",
+      "size_lines": 75,
+      "last_updated": "2026-08-16",
+      "description": "DEEP-B implements the remaining pure-math checks for the G0-approved simply supported solid rectangular top-loaded deep beam. It accepts one caller-",
+      "content_hash": "82c98695be8a"
     },
     {
       "name": "india-2-deep-g0-git-handoff-receipt.json",
@@ -488,7 +526,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "34c3062e24dc"
+      "content_hash": "c900c8c60550"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -577,5 +615,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "e0ba5c90d73989c3"
+  "content_hash": "7761d09abcd4d609"
 }
