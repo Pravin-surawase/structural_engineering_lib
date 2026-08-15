@@ -11,6 +11,10 @@
 
 **Branch:** `codex/git-7d2-disposition-classifier`
 
+**Closeout lessons branch:** `codex/git-7d2-session-lessons` from verified
+post-merge `main`; the original squash-diverged feature branch/worktree remains
+preserved without reconciliation or deletion
+
 **Focus:** Replace the unsafe deletion-oriented stale-branch decision path with
 a worktree-aware, fail-closed, inspection-only disposition classifier
 
@@ -63,6 +67,22 @@ a worktree-aware, fail-closed, inspection-only disposition classifier
 - The first session-end validation was sequenced before the task commit and
   correctly returned nonzero because the 33 intended worktree changes were
   still uncommitted.
+- A targeted caller update still left destructive narrative in the maintained
+  Agent 8 guide (`Branch Cleanup`, `cleanup-merged-branches`, and a claim that
+  local and remote branches would be deleted). That guidance could have
+  restored the retired operational behavior even though the preferred command
+  had become inspection-only.
+- The final PR-review GraphQL query had one extra closing brace. Because it was
+  placed among semicolon-separated commands, GitHub reported a parse error but
+  the later successful command masked the composite shell exit status.
+- The first post-merge classifier receipt passed the branch name positionally
+  even though the CLI requires `--branch`. Argparse correctly failed before
+  inspection, and the fail-fast `&&` chain prevented state telemetry and the
+  timing end marker from being recorded on incomplete evidence.
+- After the squash merge, the preserved feature branch became ancestry-
+  divergent from `origin/main` even though the reviewed and merged trees were
+  byte-for-byte equivalent. Appending closeout documentation on that held lane
+  would have mixed new work with a deliberately preserved recovery surface.
 
 ### Root causes and resolutions
 
@@ -109,6 +129,36 @@ a worktree-aware, fail-closed, inspection-only disposition classifier
   commit only its exact paths, then rerun session-end from the clean committed
   lane before PR creation. Evidence is the final session-end receipt in the PR
   closeout record.
+- Root cause: the first guidance pass replaced executable command references
+  but did not search for deletion-oriented headings, prose, and retired aliases.
+  Resolution: run a targeted semantic search over the maintained guide and
+  replace every live cleanup instruction with
+  `classify_branch_disposition.py --all-local --json` plus the separate-
+  authorization boundary. Evidence: the semantic Git workflow check and strict
+  documentation build pass, and the maintained guide no longer exposes
+  `cleanup-merged-branches`.
+- Root cause: a manually composed GraphQL selection had unbalanced braces, and
+  semicolon sequencing returned only the last command's status. Resolution:
+  rerun the review-thread query as a standalone command with balanced syntax;
+  keep required evidence calls independently checked or fail-fast. Evidence:
+  GitHub returned `totalCount: 0`, while PR #747 remained at unchanged reviewed
+  head `87420616` with no comments, reviews, or unresolved threads.
+- Root cause: the final receipt command guessed a positional CLI contract rather
+  than using the documented required selector. Resolution: rerun with
+  `--branch codex/git-7d2-disposition-classifier`; retain the fail-fast chain so
+  no closeout timestamp can be emitted after an earlier evidence failure.
+  Evidence: the corrected classifier receipt is machine-readable, explicitly
+  reports freshness as `NOT_CHECKED`, and makes no mutation claim beyond its
+  inspection-only contract.
+- Root cause: squash merge created new main commit `0a784de5` rather than making
+  reviewed feature commit `87420616` an ancestor of `main`; ancestry divergence
+  is therefore expected and does not contradict content integration. Resolution:
+  verify both commits use tree `c6f4a6f7`, retain the original branch/worktree,
+  and create the closeout-lessons lane from verified current `origin/main`
+  instead of resetting, rebasing, switching, or extending the held lane.
+  Evidence: PR #747 is merged, `origin/main` equals `0a784de5`, both trees are
+  identical, the original remote branch still points to `87420616`, and the
+  original worktree remains attached and clean.
 
 ### Verification
 
@@ -122,6 +172,29 @@ a worktree-aware, fail-closed, inspection-only disposition classifier
 - Targeted dry-run and live generation changed only the expected maintained
   indexes. Strict documentation, quick, and full gates pass as closeout
   evidence.
+- PR #747 required checks passed at unchanged head `87420616`; GitHub reported
+  `CLEAN`/mergeable and the squash merge produced `0a784de5` with exact tree
+  equivalence. Post-merge `Validate Documentation` run `31868516481` and
+  `PR Validation` run `31868516486` both passed on the merge SHA.
+
+### Learning controls retained
+
+- Discover maintained test/script paths and CLI selectors with targeted
+  `rg --files`, `--help`, or repository discovery commands before composing a
+  gate. Descriptive labels are not filenames or signatures.
+- Run each required hosted-evidence query standalone or in a fail-fast chain;
+  never let a later successful command hide an earlier review failure.
+- Bind external evidence to the exact target ref, head SHA, observation time,
+  and declared freshness. An absent ref or no-retention assertion is not useful
+  evidence without those identities.
+- Protect the configured default ref, not a list of familiar branch names, and
+  keep age as metadata only.
+- Treat ancestry, patch equivalence, and tree/content equivalence as separate
+  facts. A squash-merged branch may correctly be `HOLD_DIVERGED` while its
+  reviewed content is exactly integrated.
+- Sequence session-end cleanliness after the intentional commit boundary; its
+  earlier refusal is a control working as designed, not authority to stash,
+  reset, clean, or broaden staging.
 
 ### Terminal issues
 
@@ -139,6 +212,13 @@ a worktree-aware, fail-closed, inspection-only disposition classifier
   task commit and returned nonzero for 33 intended uncommitted changes → retain
   the inspected diff, commit its exact paths, and rerun session-end on the clean
   committed lane before PR creation.
+- ⚠️ TERMINAL ISSUE: the first final review-thread GraphQL query had one
+  extra closing brace, and later semicolon-separated successes masked that
+  subcommand's failure → rerun it standalone with balanced syntax; the receipt
+  showed zero review threads.
+- ⚠️ TERMINAL ISSUE: the first post-merge classifier call omitted the
+  required `--branch` selector → rerun with the documented flag before state,
+  usage, or timing closeout; argparse's nonzero exit prevented a false finish.
 
 ### Notes
 
