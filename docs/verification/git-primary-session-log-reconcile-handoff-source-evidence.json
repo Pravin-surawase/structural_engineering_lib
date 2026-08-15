@@ -1,0 +1,54 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-15T18:03:16Z",
+      "query_status": "OK",
+      "reference": "task:git:finish-git-work-before-india-3",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-15T18:03:16Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DISCARD_PRIMARY_WORKING_COPY",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/git-primary-session-log-reconcile",
+      "head_sha": "9d68f53e70dc088c3ee7034ca99d0ed1c418717a",
+      "task_id": "GIT-PRIMARY-SESSION-LOG-RECONCILE"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-15T18:03:16Z",
+    "owner": "Main Agent under user instruction to preserve Git state; exact destructive cleanup approval remains pending",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

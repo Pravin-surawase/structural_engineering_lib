@@ -1,0 +1,161 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-15T18:03:16Z",
+      "query_status": "OK",
+      "reference": "task:git:finish-git-work-before-india-3",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-15T18:03:16Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DISCARD_PRIMARY_WORKING_COPY",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/git-primary-session-log-reconcile",
+      "head_sha": "9d68f53e70dc088c3ee7034ca99d0ed1c418717a",
+      "task_id": "GIT-PRIMARY-SESSION-LOG-RECONCILE"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "899b385ab0227bb7d5dbf3a19e72107cd09cb303c03f33f4394c1c5341e157db",
+    "state": {
+      "branch": "codex/git-primary-session-log-reconcile",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "9d68f53e70dc088c3ee7034ca99d0ed1c418717a",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 86.505,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-git-primary-session-log-reconcile",
+      "head_sha": "9d68f53e70dc088c3ee7034ca99d0ed1c418717a",
+      "hold_reasons": [
+        "changed paths: 9"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-15T18:05:06.532981+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-git-primary-session-log-reconcile",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 9,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/index.json",
+          "docs/index.md",
+          "docs/planning/index.json",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/index.json",
+          "docs/verification/index.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/git-primary-session-log-reconcile-handoff-receipt.json",
+          "docs/verification/git-primary-session-log-reconcile-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "9d68f53e70dc088c3ee7034ca99d0ed1c418717a",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-git-primary-session-log-reconcile"
+    }
+  },
+  "local_state_receipt_hash": "sha256:899b385ab0227bb7d5dbf3a19e72107cd09cb303c03f33f4394c1c5341e157db",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-15T18:05:06.533126+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-15T18:03:16Z",
+    "owner": "Main Agent under user instruction to preserve Git state; exact destructive cleanup approval remains pending",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/**",
+      "fastapi_app/**",
+      "react_app/**"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/verification/git-primary-session-log-reconcile-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/planning/next-session-brief.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md"
+    ],
+    "task_id": "GIT-PRIMARY-SESSION-LOG-RECONCILE"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

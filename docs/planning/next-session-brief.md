@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
-- Focus: Run the one cumulative INDIA-2 software gate packet and reconcile its bounded public claim.
-- Git receipt: docs/verification/india-2-cumulative-git-handoff-receipt.json | sha256:9cde9bd0cb38139fdfe07d0be864c652d00547b2d331fd379d548d63f3a11791 | HOLD
-- Git identity: codex/india-2-cumulative-gates@18da6c112e67af49d8adf32bf0babf65285e2cd4 | upstream=origin/main@18da6c112e67af49d8adf32bf0babf65285e2cd4 | base=origin/main@18da6c112e67af49d8adf32bf0babf65285e2cd4 | tree=dirty | operation=none
+- Focus: Preserve the unique audit entry from stale dirty primary main before any INDIA-3 lane or destructive cleanup.
+- Git receipt: docs/verification/git-primary-session-log-reconcile-handoff-receipt.json | sha256:899b385ab0227bb7d5dbf3a19e72107cd09cb303c03f33f4394c1c5341e157db | HOLD
+- Git identity: codex/git-primary-session-log-reconcile@9d68f53e70dc088c3ee7034ca99d0ed1c418717a | upstream=origin/main@9d68f53e70dc088c3ee7034ca99d0ed1c418717a | base=origin/main@9d68f53e70dc088c3ee7034ca99d0ed1c418717a | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
