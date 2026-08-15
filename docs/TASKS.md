@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-15 — INDIA-2B implements benchmarked staircase geometry/actions; INDIA-2C is next
+**Updated:** 2026-08-15 — INDIA-2C composes benchmarked staircase design dispositions; INDIA-2D is next
 
 ---
 
@@ -133,7 +133,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2C | Compose flexure, provided-bar detailing, shear, and serviceability dispositions for the accepted staircase actions | Main Agent + structural math | focused implementation | P1 | 📋 READY AFTER INDIA-2B MERGE |
+| INDIA-2D | Publish the typed staircase Python service/facade and thin FastAPI route, then reconcile capability truth | Main Agent + API developer | focused implementation | P1 | 📋 READY AFTER INDIA-2C MERGE |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL QUALIFIED REVIEW |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
@@ -155,6 +155,7 @@ held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2C | Composed accepted actions into singly reinforced flexure, supplied-bar detailing, ordinary shear, action-integrity, and basic span/depth dispositions | Main Agent + structural math | ✅ DONE — NPTEL Example 9.1 strength/detailing targets pass and truthfully return REVIEW_REQUIRED for unmodified L/d; unsafe cases return FAIL |
 | INDIA-2B | Implemented typed Clause 33 geometry, explicit concrete self-weight, and equilibrated three-segment actions for the accepted straight-flight case | Main Agent + structural math | ✅ DONE — NPTEL Example 9.1 geometry/load/action targets and fail-closed boundaries pass; capability remains HELD until INDIA-2D |
 | INDIA-2A | Selected and froze one longitudinal straight waist-slab flight with collinear landings against controlled Clause 33 sources and the IIT Kharagpur NPTEL Example 9.1 benchmark | Main Agent + structural engineer | ✅ GO — B-D owner-activated; alternate stairs, other families, IS 875/IS 1893, qualified review, and release remain held |
 | INDIA-1-CUMULATIVE | Ran broad Python, full repository, manifest reconciliation, and cumulative essential review after A-D integration | Main Agent + reviewer | ✅ DONE — PR #758 exact-head gate passed; 5,926 Python tests and full 30/30 gate green; reviewed tree squash-merged as `4e92f3d7` |

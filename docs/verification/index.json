@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-15",
-  "file_count": 25,
+  "file_count": 26,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -147,6 +147,14 @@
       "content_hash": "1f9680c591ed"
     },
     {
+      "name": "india-2c-staircase-design-evidence.md",
+      "type": "documentation",
+      "size_lines": 66,
+      "last_updated": "2026-08-15",
+      "description": "INDIA-2C composes the accepted INDIA-2B per-metre actions into one bounded waist-slab design check. It does not add public consumers or promote staircase",
+      "content_hash": "ccbd767ff6fb"
+    },
+    {
       "name": "indian-code-capability-coverage.json",
       "type": "config",
       "last_updated": "2026-08-15",
@@ -160,7 +168,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "3fb66f059bc2"
+      "content_hash": "ae3bde140083"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -249,5 +257,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "db6d2f451ad2cd43"
+  "content_hash": "e07a7c5c3d910470"
 }

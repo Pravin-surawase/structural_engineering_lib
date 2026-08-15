@@ -412,7 +412,7 @@
     {
       "name": "staircase",
       "path": "staircase/",
-      "file_count": 6,
+      "file_count": 7,
       "is_package": true
     }
   ],
@@ -438,5 +438,5 @@
     "list_clauses_by_category",
     "search_clauses"
   ],
-  "content_hash": "8182bc737b78e302"
+  "content_hash": "82f377cd63f28f9d"
 }

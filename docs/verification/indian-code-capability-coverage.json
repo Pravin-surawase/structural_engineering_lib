@@ -322,7 +322,8 @@
           "functions": [
             "structural_lib.codes.is456.beam.serviceability.check_deflection_span_depth",
             "structural_lib.codes.is456.beam.serviceability.get_long_term_deflection_factor",
-            "structural_lib.codes.is456.slab.serviceability.check_slab_span_depth_serviceability"
+            "structural_lib.codes.is456.slab.serviceability.check_slab_span_depth_serviceability",
+            "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
           ]
         },
         {
@@ -561,7 +562,8 @@
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
-            "structural_lib.codes.is456.slab.one_way_detailing.check_simply_supported_one_way_slab_detailing"
+            "structural_lib.codes.is456.slab.one_way_detailing.check_simply_supported_one_way_slab_detailing",
+            "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
           ]
         },
         {
@@ -624,7 +626,8 @@
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
-            "structural_lib.codes.is456.slab.one_way_detailing.check_simply_supported_one_way_slab_detailing"
+            "structural_lib.codes.is456.slab.one_way_detailing.check_simply_supported_one_way_slab_detailing",
+            "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
           ]
         },
         {
@@ -958,7 +961,8 @@
             "structural_lib.codes.is456.column.pmm.pm_interaction_slice_for_layout",
             "structural_lib.codes.is456.slab.one_way.design_simply_supported_one_way_slab_flexure",
             "structural_lib.codes.is456.slab.one_way_continuous.design_continuous_one_way_slab_flexure",
-            "structural_lib.codes.is456.slab.two_way.design_supported_interior_two_way_slab_flexure"
+            "structural_lib.codes.is456.slab.two_way.design_supported_interior_two_way_slab_flexure",
+            "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
           ]
         },
         {
@@ -1102,7 +1106,8 @@
           "functions": [
             "structural_lib.codes.is456.beam.shear.calculate_tv",
             "structural_lib.codes.is456.beam.shear.design_shear",
-            "structural_lib.codes.is456.slab.shear.check_solid_slab_one_way_shear"
+            "structural_lib.codes.is456.slab.shear.check_solid_slab_one_way_shear",
+            "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
           ]
         },
         {
@@ -1115,7 +1120,8 @@
           "functions": [
             "structural_lib.codes.is456.beam.shear.design_shear",
             "structural_lib.codes.is456.slab.shear.check_solid_slab_one_way_shear",
-            "structural_lib.codes.is456.slab.two_way_complete.design_two_way_slab_panel"
+            "structural_lib.codes.is456.slab.two_way_complete.design_two_way_slab_panel",
+            "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
           ]
         },
         {

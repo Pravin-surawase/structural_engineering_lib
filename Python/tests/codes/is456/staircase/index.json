@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-15",
-  "file_count": 2,
+  "file_count": 3,
   "files": [
     {
       "name": "__init__.py",
@@ -12,6 +12,37 @@
       "last_updated": "2026-08-15",
       "description": "Focused staircase tests.",
       "content_hash": "c44590fc1fb3"
+    },
+    {
+      "name": "test_design.py",
+      "type": "python",
+      "size_lines": 136,
+      "last_updated": "2026-08-15",
+      "description": "INDIA-2C structural design benchmarks and dispositions.",
+      "functions": [
+        {
+          "name": "test_nptel_example_9_1_flexure_shear_and_reinforcement_benchmark"
+        },
+        {
+          "name": "test_nptel_example_requires_serviceability_review_without_invented_factor"
+        },
+        {
+          "name": "test_shorter_supported_member_can_pass_basic_span_depth_boundary"
+        },
+        {
+          "name": "test_insufficient_provided_main_steel_returns_fail"
+        },
+        {
+          "name": "test_singly_reinforced_capacity_exceedance_returns_fail_without_fake_ast"
+        },
+        {
+          "name": "test_effective_depth_outside_waist_fails_closed"
+        },
+        {
+          "name": "test_forged_action_result_fails_integrity_check"
+        }
+      ],
+      "content_hash": "b10ce2fa6706"
     },
     {
       "name": "test_geometry_actions.py",
@@ -54,5 +85,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "f0478d8cdc76e135"
+  "content_hash": "1877a9d331eea9a0"
 }
