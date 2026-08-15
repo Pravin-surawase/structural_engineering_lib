@@ -5,7 +5,7 @@
 **Status:** Future strategic roadmap; not active during bounded IS 456 closeout
 **Importance:** Critical
 **Created:** 2026-03-31
-**Last Updated:** 2026-08-15
+**Last Updated:** 2026-08-16
 **Supersedes:** [library-expansion-blueprint-v4.md](../_archive/planning-completed-2026-03/library-expansion-blueprint-v4.md) (IS 456-only)
 
 > Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with complete companion code support.
@@ -14,8 +14,10 @@
 > architecture blueprint, not a live status ledger. Current scope comes from
 > the generated
 > [Indian-code capability/coverage manifest](../verification/indian-code-capability-coverage.json)
-> and `docs/TASKS.md`. Historical task tables below are retained as design
-> context only where explicitly labelled; they must not override the manifest.
+> and `docs/TASKS.md`; current Indian-code wave order comes from the
+> [Indian-code completion plan](indian-code-completion-plan.md). Historical task
+> tables below are retained as design context only where explicitly labelled;
+> they must not override the manifest or current wave plan.
 
 ---
 
@@ -246,7 +248,8 @@ class DesignEnvelope:
 | Scope | Manifest status | Boundary |
 |-------|-----------------|----------|
 | Beam, rectangular column, isolated footing, solid slab | `SUPPORTED` / `IMPLEMENTED_BOUNDED` | Exact supported workflows and held cases come from the runtime IS 456 capability registry |
-| Walls, stairs, deep beams, flat slabs | `HELD` / `NOT_IMPLEMENTED` | Separate IS 456 programs required |
+| Staircase | `SUPPORTED` / `IMPLEMENTED_BOUNDED` | One longitudinal straight waist-slab flight is complete; alternate stair systems remain held |
+| Walls, deep beams, flat slabs | `HELD` / `NOT_IMPLEMENTED` | Separate IS 456 family programs required |
 | Combined/strap/raft/pile-cap foundations | `HELD` / `NOT_IMPLEMENTED` | Each requires a distinct analysis model |
 | IS 13920 beam, column and SCWB checks | `SUPPORTED` / `IMPLEMENTED_BOUNDED` | Does not claim complete seismic member/building design |
 | IS 13920 walls/foundations, IS 875, IS 1893 | `HELD` / `NOT_IMPLEMENTED` | Companion-code waves remain separate |

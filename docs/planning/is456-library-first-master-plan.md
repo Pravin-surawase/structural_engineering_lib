@@ -1,10 +1,10 @@
 ---
 task: LIB-IS456-V1
 title: IS 456 Library-First Completion and PyPI Master Plan
-status: active
+status: completed
 owner: Main Agent and repository owner
 created: 2026-08-09
-last_updated: 2026-08-10
+last_updated: 2026-08-16
 doc_type: spec
 baseline_commit: d4eb9e9dda4a
 release_decision: v0.21.7 deferred
@@ -14,10 +14,10 @@ current_blocker: Qualified review before stable or engineering-use approval
 
 **Type:** Plan
 **Audience:** All Agents
-**Status:** C0-C4 Complete — v0.23.0 Alpha Released
+**Status:** Complete — bounded Alpha milestone released; successor program active
 **Importance:** Critical
 **Created:** 2026-08-09
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-16
 
 ---
 
@@ -61,6 +61,13 @@ library-first IS 456 lane activated by the owner. C0-C4 and the v0.23.0 Alpha
 release are complete. Qualified structural-engineering review is a cumulative
 final gate before stable/engineering-use approval, not a blocker for each
 development packet or Alpha release.
+
+The [Indian-code completion plan](indian-code-completion-plan.md) is the
+successor authority for INDIA-0 through INDIA-4. It preserves this program as a
+completed bounded milestone, maps the later staircase packets under
+`INDIA-2-STAIR`, and schedules cumulative qualified review in INDIA-4 after the
+accepted INDIA-2 and INDIA-3 scope is frozen. Historical packet and evidence
+names in this document remain unchanged.
 
 It narrows the immediate IS 456 execution order in
 `docs/planning/library-expansion-blueprint-v5.md`. It does not reverse that
