@@ -34,11 +34,12 @@ receipt, source-bound runtime diagnosis, inspection-only disposition, explicit
 unknowns, and reasoned `NOT_APPLICABLE`.
 
 Unsafe Git expressions in maintained guidance fail closed regardless of the
-surrounding imperative verb. A negation is safe only when the unsafe action
-verb directly follows and is governed by that negation, or when a tested suffix
-prohibition governs the exact matched expression. Negated reminders or
-encouragement such as `do not forget to run` remain instructions. Unrelated
-earlier `never`/`do not` text cannot suppress a later instruction. Clearly
+surrounding imperative verb. The nearest governing action determines whether a
+negation is safe: a direct prefix or exact-object suffix prohibition, inner
+`not to <action>`, or non-negated `avoid <action>` prohibits the expression.
+Negated reminders or encouragement such as `do not forget to run` remain
+instructions, while `never forget not to run` preserves the inner prohibition.
+Unrelated earlier or later clauses cannot suppress an instruction. Clearly
 labeled past-tense historical narration remains evidence rather than current
 authority.
 

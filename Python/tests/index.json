@@ -2227,7 +2227,7 @@
     {
       "name": "test_git_guidance_semantics.py",
       "type": "python",
-      "size_lines": 233,
+      "size_lines": 245,
       "last_updated": "2026-08-15",
       "description": "Semantic live-guidance discovery and coherence regressions.",
       "functions": [
@@ -2277,7 +2277,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "78e36bb84a23"
+      "content_hash": "459b84ef4a4f"
     },
     {
       "name": "test_git_handoff_receipt.py",
@@ -4587,5 +4587,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "1464440469a8b468"
+  "content_hash": "d84f605cac5ac6ca"
 }

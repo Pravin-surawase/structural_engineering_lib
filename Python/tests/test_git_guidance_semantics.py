@@ -178,6 +178,10 @@ def test_live_aliases_route_to_receipt_and_not_retired_mutation():
         "Do not fail to run git reset --soft HEAD~1.",
         "Never remember to recover with git cherry-pick abc123.",
         "Do not omit to create a branch with git checkout -b recovery.",
+        "`git reset --hard` — do not forget to run this command.",
+        "`git cherry-pick abc123` — never hesitate to use this form.",
+        "`git reset --hard`; do not run tests.",
+        "Do not avoid git reset --hard.",
     ],
 )
 def test_live_indexed_unsafe_instruction_context_fails(instruction, tmp_path):
@@ -200,6 +204,13 @@ def test_live_indexed_unsafe_instruction_context_fails(instruction, tmp_path):
         "Do not recover with `git cherry-pick abc123`.",
         "`git checkout -b recovery abc123` is forbidden.",
         "Using `git switch -c recovery` is prohibited.",
+        "`git reset --hard` — **do not run this command**.",
+        "`git cherry-pick abc123` — _never use this form_.",
+        "Never forget not to run git reset --hard.",
+        "Do not fail to avoid git cherry-pick abc123.",
+        "Do not fail to avoid running git reset --hard.",
+        "Avoid using git reset --hard.",
+        "Do not run git reset --hard; however, preserve the worktree.",
     ],
 )
 def test_genuine_governing_prohibition_is_safe(prohibition, tmp_path):
@@ -217,6 +228,7 @@ def test_genuine_governing_prohibition_is_safe(prohibition, tmp_path):
         "The 2024 incident record says git commit --amend was used.",
         "Historical evidence records git cherry-pick during the old recovery.",
         "The archived incident narrative mentions git checkout -b recovery-old.",
+        "Historical evidence records that operators were told not to run git reset.",
     ],
 )
 def test_harmless_historical_prose_is_not_treated_as_live_instruction(

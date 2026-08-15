@@ -68,18 +68,30 @@ CLAUSE_BOUNDARY = re.compile(
     re.IGNORECASE,
 )
 NEGATING_DIRECTIVE = re.compile(
-    r"\b(?:never|do not|don't|must not|should not|shall not|cannot|can't)\b"
+    r"(?<![A-Za-z0-9])(?:never|do not|don't|must not|should not|shall not|"
+    r"cannot|can't)\b"
     r"|\b(?:forbidden|prohibited)\s*:\s*$",
     re.IGNORECASE,
 )
-DIRECTLY_PROHIBITED_ACTION = re.compile(
-    r"^[\s`*_:~-]*(?:use|run|execute|invoke|issue|perform|stage|restore|undo|"
+DIRECT_ACTION = re.compile(
+    r"\b(?:use|run|execute|invoke|issue|perform|stage|restore|undo|"
     r"recover|amend|cherry-pick|create|checkout|switch|reset|commit|push|"
     r"pull|revert|merge|rebase|stash|clean|prune|delete|remove|force|replay|"
     r"apply|move|fetch)\b",
     re.IGNORECASE,
 )
-DIRECTIVE_PUNCTUATION_ONLY = re.compile(r"^[\s`*_:~-]*$")
+DIRECTIVE_PUNCTUATION_ONLY = re.compile(r"^[\s`*_:~—–\-()\[\]]*$")
+SUFFIX_EXACT_OBJECT_LEAD = re.compile(
+    r"^[^.;!?]*[—–][\s`*_~()\[\]-]*$",
+    re.IGNORECASE,
+)
+INNER_ACTION_NEGATION = re.compile(r"\bnot\s+to[\s`*_~]*$", re.IGNORECASE)
+AVOID_GOVERNOR = re.compile(r"\bavoid\b", re.IGNORECASE)
+EXACT_OBJECT_SUFFIX = re.compile(
+    r"^[\s`*_~]*(?:(?:this|that)\s+"
+    r"(?:command|form|expression|example))?[\s`*_~.!,:;()\[\]-]*$",
+    re.IGNORECASE,
+)
 NEGATING_PREDICATE = re.compile(
     r"\b(?:is|are)\s+(?:strictly\s+)?(?:forbidden|prohibited|not allowed)\b"
     r"|\b(?:must|should|shall)\s+not\s+be\s+"
@@ -101,15 +113,56 @@ def _local_clause(line: str, start: int, end: int) -> tuple[str, str]:
 
 
 def _is_governing_prohibition(line: str, start: int, end: int) -> bool:
-    """True only when local negation governs this unsafe Git expression."""
+    """True only when the nearest action prohibits this Git expression."""
     before, after = _local_clause(line, start, end)
-    directives = list(NEGATING_DIRECTIVE.finditer(before))
-    if directives:
-        governed_text = before[directives[-1].end() :]
-        if DIRECTLY_PROHIBITED_ACTION.match(
-            governed_text
-        ) is not None or DIRECTIVE_PUNCTUATION_ONLY.fullmatch(governed_text):
+    actions = list(DIRECT_ACTION.finditer(before))
+    if actions:
+        action = actions[-1]
+        action_prefix = before[: action.start()]
+        if INNER_ACTION_NEGATION.search(action_prefix) is not None:
             return True
+        directives = list(NEGATING_DIRECTIVE.finditer(action_prefix))
+        if directives and DIRECTIVE_PUNCTUATION_ONLY.fullmatch(
+            action_prefix[directives[-1].end() :]
+        ):
+            return True
+
+    avoidances = list(AVOID_GOVERNOR.finditer(before))
+    if avoidances and (not actions or avoidances[-1].start() > actions[-1].end()):
+        avoid = avoidances[-1]
+        directives = list(NEGATING_DIRECTIVE.finditer(before[: avoid.start()]))
+        directly_negated = directives and DIRECTIVE_PUNCTUATION_ONLY.fullmatch(
+            before[directives[-1].end() : avoid.start()]
+        )
+        if not directly_negated:
+            return True
+
+    directives = list(NEGATING_DIRECTIVE.finditer(before))
+    if directives and DIRECTIVE_PUNCTUATION_ONLY.fullmatch(
+        before[directives[-1].end() :]
+    ):
+        return True
+
+    suffix_directives = list(NEGATING_DIRECTIVE.finditer(after))
+    if suffix_directives:
+        directive = suffix_directives[0]
+        suffix_actions = list(DIRECT_ACTION.finditer(after[directive.end() :]))
+        if suffix_actions:
+            action = suffix_actions[0]
+            action_start = directive.end() + action.start()
+            action_end = directive.end() + action.end()
+            suffix_lead = after[: directive.start()]
+            if (
+                (
+                    DIRECTIVE_PUNCTUATION_ONLY.fullmatch(suffix_lead)
+                    or SUFFIX_EXACT_OBJECT_LEAD.fullmatch(suffix_lead)
+                )
+                and DIRECTIVE_PUNCTUATION_ONLY.fullmatch(
+                    after[directive.end() : action_start]
+                )
+                and EXACT_OBJECT_SUFFIX.fullmatch(after[action_end:])
+            ):
+                return True
     return NEGATING_PREDICATE.search(after) is not None
 
 

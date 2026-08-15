@@ -86,10 +86,17 @@ at the locally and hosted green draft PR head for independent audit
   negated reminder/encouragement auxiliaries such as `do not forget to run`,
   `never hesitate to recover`, and `never fail to create`; those sentences
   direct the unsafe action rather than prohibit it.
+- A sixth exact-head audit found the direct-prefix approximation rejected four
+  genuine prohibitions: Markdown exact-object suffixes using `do not run` or
+  `never use`, inner `not to run`, and `do not fail to avoid`.
 - A read-only inventory regex containing a backtick was initially passed with
   unsafe shell quoting and zsh rejected it before the search ran.
 - The first sixth-head session-end replay held because it was intentionally run
   before the newly generated receipt and index were committed.
+- The first seventh-head focused replay rejected the two Markdown suffix
+  controls while all prefix-polarity controls passed.
+- The first seventh-head Black check required mechanical multiline formatting
+  in the checker before the validation sequence could continue.
 
 ### Root causes and resolutions
 
@@ -206,21 +213,39 @@ at the locally and hosted green draft PR head for independent audit
   colon was not admitted between the directive and direct action. Resolution:
   allow only intervening Markdown/directive punctuation before the action and
   add the exact colon form as a safe regression; auxiliary words remain unsafe.
+- Root cause: direct governance was modeled only as the first action after a
+  prefix negation, so it could not represent a suffix referring to the matched
+  expression or the nearest inner action/polarity of `not to` and `avoid`.
+  Resolution: evaluate the nearest prefix action, non-negated avoidance, and an
+  exact-object suffix independently within the local clause. Evidence: all four
+  auditor forms and Markdown variants pass, their auxiliary/directly-negated
+  contrasts fail, clause boundaries stay isolated, and history controls pass.
 - Terminal issue resolution: rerun the read-only inventory with the regex in
   literal single quotes; it completed without any repository mutation.
 - Session-end correctly treats uncommitted receipt evidence as incomplete.
   Resolution: validate and commit the exact receipt packet first, then replay
   session-end on the clean tree; no hold was suppressed or auto-fixed.
+- Root cause: indexed unsafe-command patterns intentionally match the unsafe
+  token prefix rather than every argument, so the suffix classifier saw
+  `--hard` or a commit ID between the match end and the em-dash prohibition.
+  Resolution: recognize that bounded same-clause command continuation only when
+  it terminates at an em-dash exact-object suffix; semicolon/period clause
+  boundaries and non-deictic suffixes remain instructions. The remaining italic
+  `_never` case exposed Python's underscore-as-word boundary; directive starts
+  now exclude only letters/digits, so Markdown delimiters work without matching
+  embedded words such as `whenever`.
+- Formatter resolution: run Black only on the two scoped Python paths and replay
+  `--check`; both then passed without touching unrelated files.
 
 ### Verification
 
 - Worktree-bound runtime diagnosis reported `source_bound=true`; startup local
   state was clean and ready at the verified PR #750 merge SHA.
-- Focused receipt, semantic, and session regression suite: 123 passed after the
-  fifth independent-audit blocker fix.
-- Semantic workflow, strict docs 5/5, links, quick 10/10, full 30/30, and
-  efficiency passed for the sixth candidate. Session-end, preservation replay,
-  and hosted checks are replayed on the committed/published exact head.
+- Focused receipt, semantic, and session regression suite: 135 passed after the
+  sixth independent-audit blocker fix.
+- Semantic workflow passes for the seventh candidate. Strict docs, links, quick,
+  full, efficiency, session-end, preservation replay, and hosted checks are
+  replayed before the exact-head audit handoff.
 
 ### Preservation and next boundary
 
