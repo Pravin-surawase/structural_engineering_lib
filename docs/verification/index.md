@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-15
-**Files:** 19
+**Files:** 20
 
 ## Config Files
 
@@ -24,6 +24,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [examples.md](examples.md) |  | This document provides benchmark examples that engineers can | 1550 |
 | [external-cli-test.md](external-cli-test.md) |  | Purpose: capture a repeatable, human-run CLI test from a fre | 98 |
 | [india-1a-beam-route-evidence.md](india-1a-beam-route-evidence.md) |  | design_flanged_beam_is456() composes one monolithic sagging  | 85 |
+| [india-1b-column-decision-evidence.md](india-1b-column-decision-evidence.md) |  | The stable IS 456 column decision remains bounded to solid r | 73 |
 | [indian-code-truth-baseline.md](indian-code-truth-baseline.md) | INDIA-0 Indian-Code Truth Baseline | was squash-merged as 0373de68; INDIA-1 packets now update th | 93 |
 | [insights-verification-pack.md](insights-verification-pack.md) |  | This pack provides benchmark test cases for the insights mod | 101 |
 | [is456-library-first-evidence.md](is456-library-first-evidence.md) | IS 456 Library-First Evidence and Claim  | | Source | SHA-256 | Pages | Use | |---|---|---:|---| | 169 |

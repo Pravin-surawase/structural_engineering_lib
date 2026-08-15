@@ -4,12 +4,12 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
-- Focus: Integrate INDIA-1A, then execute INDIA-1B through INDIA-1D with milestone-level gate efficiency
-- Draft PR: [#754](https://github.com/Pravin-surawase/structural_engineering_lib/pull/754)
-- Branch: `codex/india-1a-beam-route-closure`
-- Base: verified integrated `origin/main` at `0373de68ed6b29717da4200f3f9de05bb53f8cc5`
-- Implementation commit: `63d13bc6f35ecfd576fec731e95322d152a119fe`
-- Next action: inspect PR #754 at its live exact head; if required checks pass with no conflicts or blockers, mark ready, merge, verify integrated main, and start INDIA-1B from a fresh lane
+- Focus: Integrate INDIA-1B rectangular-column decision closure, then start INDIA-1C with milestone-level gate efficiency
+- Draft PR: [#755](https://github.com/Pravin-surawase/structural_engineering_lib/pull/755)
+- Branch: `codex/india-1b-column-decision-closure`
+- Base: verified integrated `origin/main` at `3a7e162e049f28a9c9f63438f44ff116aa408e26`
+- Implementation commit: `64a75d5f7543928154ae8072f27dd2a948a04bbb`
+- Next action: inspect PR #755 at its live exact head; if required checks pass with no conflicts or blockers, mark ready, merge, verify integrated main, and start INDIA-1C from a fresh lane
 - Holds: no release, engineering-use approval, branch/worktree deletion, or historical-lane cleanup
 <!-- HANDOFF:END -->
 
@@ -18,7 +18,7 @@
 | Release state | Target |
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; qualified engineering review still required |
-| **Next** | Integrate INDIA-1A, then execute INDIA-1B, 1C, and 1D as bounded packets |
+| **Next** | Publish INDIA-1B, then execute INDIA-1C and 1D as bounded packets |
 
 ## Required Reading
 
@@ -30,14 +30,11 @@
 
 ## Start Boundary
 
-Do not begin INDIA-1B implementation on the INDIA-1A branch. First inspect PR
-#754 live. If its exact head is unchanged, all required checks pass, there are
-no conflicts or unresolved blockers, and the reviewed tree is accepted, the
-owner has authorized the normal exact-head merge. Do not bypass checks.
-
-After merge, fetch `origin/main`, verify the merge result contains the INDIA-1A
-service, manifest, and tests, and create a fresh isolated `codex/india-1b-<packet>` lane.
-Preserve the dirty primary checkout and all unrelated worktrees.
+INDIA-1A is integrated. Finish INDIA-1B only from its isolated branch. After its
+exact-head PR checks pass with no conflicts or blockers, merge normally, fetch
+`origin/main`, verify tree identity, and create a fresh isolated
+`codex/india-1c-<packet>` lane. Preserve the dirty primary checkout and all
+unrelated worktrees; do not bypass checks.
 
 ```bash
 ./run.sh session brief --agent structural-math

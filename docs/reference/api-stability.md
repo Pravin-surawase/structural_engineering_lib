@@ -300,6 +300,13 @@ api.ETABSEnvelopeResult  # Dataclass: beam_id, story, envelope data
 
 The following column design functions are **stable** and safe to depend on:
 
+Their stable design boundary is a solid rectangular tied section with total
+longitudinal steel split equally between two opposite faces at one centroidal
+depth. Circular-section design, asymmetric/perimeter-resolved or arbitrary
+multilayer layouts, and the experimental rectangular P-M-M fiber surface are
+not included. The stable supplied-helix function is a bounded reinforcement
+check, not a complete circular-column design route.
+
 ```python
 from structural_lib import api
 
