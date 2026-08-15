@@ -218,12 +218,12 @@
         "mutation_policy",
         "observed_at_utc",
         "pull_request",
-        "receipt_kind",
-        "receipt_status"
+        "receipt_grants_authority",
+        "receipt_kind"
       ],
-      "content_hash": "13f0ecc7997b"
+      "content_hash": "b477e04075dc"
     }
   ],
   "subfolders": [],
-  "content_hash": "fc581a0f7628ff3e"
+  "content_hash": "7c30e60d5d20bab8"
 }

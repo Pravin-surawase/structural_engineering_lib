@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-15T15:28:09.470045",
+  "generated": "2026-08-15T15:29:03.563035",
   "total_docs": 322,
   "docs": {
     "docs/SESSION_LOG.md": {
@@ -2226,7 +2226,7 @@
         "Destructive-action holds",
         "Session closeout"
       ],
-      "size_bytes": 7869
+      "size_bytes": 7895
     },
     "docs/planning/is456-solid-slabs-master-plan.md": {
       "title": "IS 456 Solid Slabs Expansion Master Plan",

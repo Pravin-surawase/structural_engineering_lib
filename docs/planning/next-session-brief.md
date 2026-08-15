@@ -5,10 +5,10 @@
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
 - Focus: Add semantic coherence over deterministically discovered maintained
-- Git receipt: docs/research/git-governance/GIT-001-phase-7E-task-git-handoff.json | sha256:25d20a03c4cc6e7b16b2eb52826b8475a7220d35ce3ea91022d96755cf5fbdad | HOLD
-- Git identity: codex/git-7e-semantic-handoff@6694e8b99d7c37f8e7b5954e321b896ef29e92f9 | upstream=origin/main@b91838f594a04aff1d21c43bf6f87a64710b0748 | base=origin/main@b91838f594a04aff1d21c43bf6f87a64710b0748 | tree=clean | operation=none
+- Git receipt: docs/research/git-governance/GIT-001-phase-7E-task-git-handoff.json | sha256:1f3757962fd982c356d2f261356f0f5a919350fc81ead16f4382d214012a47d5 | HOLD
+- Git identity: codex/git-7e-semantic-handoff@253e2524555f19fc475f29bc09b73c2d0040274b | upstream=origin/codex/git-7e-semantic-handoff@f452c5c32d9cd1fe89767fbfda26dc1719e5cc35 | base=origin/main@b91838f594a04aff1d21c43bf6f87a64710b0748 | tree=clean | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: PUBLISH_DRAFT_PR_AND_PAUSE_FOR_EXACT_HEAD_AUDIT
+- Next action: PUSH_UPDATED_HEAD_AND_PAUSE_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
 
 **Current release:** `v0.23.1a1` Alpha

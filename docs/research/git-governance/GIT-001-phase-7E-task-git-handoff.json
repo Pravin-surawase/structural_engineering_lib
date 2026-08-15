@@ -1,11 +1,16 @@
 {
   "authorization": {
+    "authority_source": {
+      "kind": "ORCHESTRATOR_DELEGATION",
+      "observed_at_utc": "2026-08-15T09:58:35Z",
+      "reference": "task:GIT-7E:auditor-blocker-fix"
+    },
     "authorized_actions": [
       "COMMIT_INTENDED_PATHS",
       "PUSH_FEATURE_BRANCH",
-      "OPEN_DRAFT_PR"
+      "UPDATE_DRAFT_PR"
     ],
-    "next_action": "PUBLISH_DRAFT_PR_AND_PAUSE_FOR_EXACT_HEAD_AUDIT",
+    "next_action": "PUSH_UPDATED_HEAD_AND_PAUSE_FOR_EXACT_HEAD_AUDIT",
     "prohibited_actions": [
       "MARK_PR_READY_BEFORE_EXACT_HEAD_AUDIT",
       "MERGE_BEFORE_EXACT_HEAD_AUDIT",
@@ -13,7 +18,17 @@
       "DELETE_WORKTREE",
       "DELETE_REF"
     ],
-    "status": "OBSERVED"
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/git-7e-semantic-handoff",
+      "head_sha": "253e2524555f19fc475f29bc09b73c2d0040274b",
+      "task_id": "GIT-7E"
+    }
   },
   "holds": [
     "PULL_REQUEST_NOT_CHECKED",
@@ -27,25 +42,25 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "25d20a03c4cc6e7b16b2eb52826b8475a7220d35ce3ea91022d96755cf5fbdad",
+    "receipt_sha256": "1f3757962fd982c356d2f261356f0f5a919350fc81ead16f4382d214012a47d5",
     "state": {
       "branch": "codex/git-7e-semantic-handoff",
       "default_base": {
-        "ahead": 1,
+        "ahead": 3,
         "behind": 0,
         "ref": "origin/main",
         "sha": "b91838f594a04aff1d21c43bf6f87a64710b0748",
         "status": "ahead"
       },
       "derived_action": "READY_LOCAL",
-      "duration_ms": 85.11,
+      "duration_ms": 85.354,
       "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
       "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib9",
-      "head_sha": "6694e8b99d7c37f8e7b5954e321b896ef29e92f9",
+      "head_sha": "253e2524555f19fc475f29bc09b73c2d0040274b",
       "hold_reasons": [],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-08-15T09:42:42.177207+00:00",
+      "observed_at_utc": "2026-08-15T09:58:55.275167+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -64,20 +79,21 @@
       "upstream": {
         "ahead": 1,
         "behind": 0,
-        "ref": "origin/main",
-        "sha": "b91838f594a04aff1d21c43bf6f87a64710b0748",
+        "ref": "origin/codex/git-7e-semantic-handoff",
+        "sha": "f452c5c32d9cd1fe89767fbfda26dc1719e5cc35",
         "status": "ahead"
       },
       "worktree_root": "/Users/pravinsurawase/.codex/worktrees/0753/structural_engineering_lib"
     }
   },
-  "local_state_receipt_hash": "sha256:25d20a03c4cc6e7b16b2eb52826b8475a7220d35ce3ea91022d96755cf5fbdad",
+  "local_state_receipt_hash": "sha256:1f3757962fd982c356d2f261356f0f5a919350fc81ead16f4382d214012a47d5",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-08-15T09:42:42.177344+00:00",
+  "observed_at_utc": "2026-08-15T09:58:55.275302+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
   },
+  "receipt_grants_authority": false,
   "receipt_kind": "task_to_git_handoff",
   "receipt_status": "HOLD",
   "remote": {
@@ -87,7 +103,7 @@
   "retention": {
     "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
     "holds": [],
-    "observed_at_utc": "2026-08-15T09:42:12Z",
+    "observed_at_utc": "2026-08-15T09:58:35Z",
     "owner": "supervising orchestrator task delegation",
     "query_status": "OK",
     "status": "OBSERVED"
