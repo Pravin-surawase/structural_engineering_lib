@@ -5,6 +5,75 @@
 
 ---
 
+## 2026-08-15 — Session: INDIA-1C Composed Isolated-Footing Workflow
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-1c-isolated-footing-workflow` from integrated
+`origin/main` at `f44452ddc6b0bdf837f59a97917af8cf9d61c1dd`
+
+**Focus:** Publish the existing bounded concentric isolated-footing composition
+through the canonical public API, prove its numerical and semantic contract,
+and retain unsupported foundation and loading cases explicitly.
+
+### Summary
+
+- Integrated INDIA-1B PR #755 only after exact head `1f10778ce`, required
+  hosted `PR Gate`, clean mergeability, and zero review blockers were rechecked;
+  squash merge `f44452dd` has the same tree as the reviewed head.
+- Created a fresh isolated INDIA-1C lane from that integrated main and verified
+  `READY_LOCAL` with `source_bound=true`.
+- Found that the complete concentric workflow already existed in
+  `services/footing_api.py`; kept its accepted structural calculations intact
+  and closed the missing public-facade, capability, manifest, documentation,
+  and contract-test surfaces.
+- Published one typed route that composes service-load sizing, factored
+  flexure, deterministic depth selection, one-way and punching shear, approved-
+  basis load transfer, and optional provided-bar detailing.
+- Retained eccentric/partial-contact/moment-transfer loading, other foundation
+  systems, settlement/soil-structure interaction, lateral stability, and
+  arbitrary geometry as explicit holds.
+- Applied the owner-approved milestone cadence: focused numerical/semantic
+  tests, architecture/import validation, the quick gate, and required hosted
+  PR checks here; broad Python and full repository gates remain deferred until
+  INDIA-1A through INDIA-1D are integrated.
+
+### Issues encountered
+
+- The INDIA-1C plan described composition as new work, but repository inventory
+  found a complete maintained service and focused test suite that were not
+  published through the canonical facade or capability contract.
+- `./run.sh docs check` failed because `docs` is not a supported `run.sh`
+  command.
+- The first commit attempt failed its API-documentation hook because the five
+  newly public carrier types were named in prose without the canonical `api.`
+  qualifier recognized by the documentation contract checker.
+
+### Root causes and resolutions
+
+- The footing service had been implemented in earlier work without closing its
+  public export and discovery surfaces. INDIA-1C therefore became a publication
+  and contract-closure packet rather than a calculation rewrite. Public identity,
+  manifest generation, capability semantics, JSON serialization, and the fixed
+  benchmark are proved by the focused integration and footing suites.
+- Documentation validation is part of `./run.sh check --quick`, not a standalone
+  `run.sh docs` command. `./run.sh find "documentation validation"` confirmed no
+  such wrapper; the corrected quick gate passed all 10 checks.
+- Qualified all five public carrier names as `api.<Type>` in both synchronized
+  API documents; the repeat commit hook is the acceptance evidence.
+
+### Evidence
+
+- Focused footing, public-contract, capability, and manifest suites: 215 passed.
+- Accepted public benchmark: 2000 mm square plan, 500 mm thickness, 192.0 kNm
+  moment per direction, 0.95648558 final one-way shear utilization, 0.63
+  punching utilization, 1256.6371 mm2 load-transfer steel, aggregate `PASS`.
+- Architecture boundaries: 155 files, zero violations.
+- Structural-library imports: 194 files, 1061 imports, zero broken imports.
+- Quick repository gate: 10/10 passed.
+
+---
+
 ## 2026-08-15 — Session: INDIA-1B Rectangular-Column Decision Closure
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

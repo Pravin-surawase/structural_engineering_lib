@@ -2,7 +2,7 @@
   "generated": "2026-08-15",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 132,
+  "count": 138,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -65,6 +65,16 @@
       "signature": "(reinforcement: 'OneWaySlabDesignResult', shear: 'SlabShearResult', serviceability: 'SlabServiceabilityResult', punching_shear_disposition: 'str', complete_engineering_design_approved: 'bool' = False) -> None"
     },
     {
+      "name": "ConcentricIsolatedFootingInput",
+      "kind": "class",
+      "signature": "(case_id: 'str', service_axial_load_kN: 'float', service_load_combination_id: 'str', service_load_basis: \"Literal['includes_footing_self_weight_and_overburden']\", factored_axial_load_kN: 'float', factored_load_combination_id: 'str', allowable_soil_pressure_kPa: 'float', allowable_soil_pressure_source_reference: 'str', allowable_soil_pressure_is_externally_approved: 'bool', footing_type: 'FootingType', column_L_mm: 'float', column_B_mm: 'float', minimum_overall_thickness_mm: 'float', maximum_overall_thickness_mm: 'float', thickness_increment_mm: 'float', effective_depth_offset_L_mm: 'float', effective_depth_offset_B_mm: 'float', footing_concrete_fck_nmm2: 'float', column_concrete_fck_nmm2: 'float', steel_fy_nmm2: 'float', effective_supporting_area_A1_mm2: 'float', effective_supporting_area_basis: \"Literal['largest_frustum_1v_2h']\", effective_supporting_area_is_approved: 'bool', dowel_count: 'int', dowel_diameter_mm: 'float', column_longitudinal_bar_diameter_mm: 'float', available_dowel_development_length_into_footing_mm: 'float', available_dowel_development_length_into_column_mm: 'float', dowel_bar_type: \"Literal['deformed', 'plain']\" = 'deformed', nominal_cover_mm: 'float | None' = None, cover_exposure_basis: 'str | None' = None, cover_exposure_basis_is_approved: 'bool' = False, nominal_max_aggregate_size_mm: 'float | None' = None, lower_bottom_bar_direction: \"Literal['L', 'B'] | None\" = None, upper_bottom_bar_direction: \"Literal['L', 'B'] | None\" = None, permitted_bottom_bar_diameters_mm: 'tuple[int, ...]' = (), footing_bottom_bar_type: \"Literal['deformed', 'plain'] | None\" = None) -> None"
+    },
+    {
+      "name": "ConcentricIsolatedFootingResult",
+      "kind": "class",
+      "signature": "(case_id: 'str', status: \"Literal['PASS', 'FAIL', 'HOLD']\", calculation_status: \"Literal['PASS', 'FAIL', 'NOT_EVALUATED']\", detailing_status: \"Literal['PASS', 'FAIL', 'HOLD']\", detailing_hold_reason: 'str | None', qualified_review_required: 'bool', supported_case: 'str', exclusions: 'tuple[str, ...]', service_axial_load_kN: 'float', factored_axial_load_kN: 'float', selected_overall_thickness_mm: 'float | None', selected_effective_depth_L_mm: 'float | None', selected_effective_depth_B_mm: 'float | None', depth_candidates: 'tuple[FootingDepthCandidate, ...]', bearing: 'FootingBearingResult', flexure: 'FootingFlexureResult | None', one_way_shear: 'FootingOneWayShearResult | None', one_way_shear_basis: \"Literal['not_evaluated', 'required_pt_screening', 'actual_provided_pt_final']\", one_way_shear_screening: 'FootingOneWayShearResult | None', screening_pt_passed_to_one_way_shear_percent: 'dict[str, float]', punching: 'FootingPunchingResult | None', load_transfer: 'LoadTransferResult', detailing: 'FootingDetailingResult | None', reinforcement_demands: 'tuple[FootingDirectionalReinforcementDemand, ...]', pt_passed_to_one_way_shear_percent: 'dict[str, float]', failed_checks: 'tuple[str, ...]', hold_reasons: 'tuple[str, ...]', provenance: 'FootingProvenance') -> None"
+    },
+    {
       "name": "ContinuousOneWaySlabDesignResult",
       "kind": "class",
       "signature": "(flexure: 'ContinuousOneWaySlabResult', positive_reinforcement: 'SlabReinforcementRegionResult', negative_reinforcement: 'SlabReinforcementRegionResult', distribution_reinforcement: 'SlabReinforcementRegionResult', shear: 'SlabShearResult', serviceability: 'SlabServiceabilityResult', punching_shear_disposition: 'str', complete_engineering_design_approved: 'bool' = False) -> None"
@@ -110,6 +120,16 @@
       "signature": "(L_mm: 'float', B_mm: 'float', q_max_kPa: 'float', q_min_kPa: 'float', q_safe_kPa: 'float', pressure_type: 'str', utilization_ratio: 'float', is_safe: 'bool', clause_ref: 'str' = 'Cl. 34.1', warnings: 'tuple[str, ...]' = ()) -> None"
     },
     {
+      "name": "FootingDepthCandidate",
+      "kind": "class",
+      "signature": "(overall_thickness_mm: 'float', effective_depth_L_mm: 'float', effective_depth_B_mm: 'float', structural_status: \"Literal['PASS', 'FAIL', 'HOLD']\", one_way_shear_utilization: 'float | None', punching_shear_utilization: 'float | None', reasons: 'tuple[str, ...]') -> None"
+    },
+    {
+      "name": "FootingDirectionalReinforcementDemand",
+      "kind": "class",
+      "signature": "(direction: \"Literal['L', 'B']\", effective_depth_mm: 'float', moment_kNm: 'float', required_steel_area_mm2: 'float', required_steel_percent: 'float', central_band_fraction: 'float | None', required_steel_basis: 'str', provided_steel_area_mm2: 'float | None', provided_steel_percent: 'float | None', detailing_status: \"Literal['PASS', 'FAIL', 'HOLD']\" = 'HOLD') -> None"
+    },
+    {
       "name": "FootingFlexureResult",
       "kind": "class",
       "signature": "(Mu_L_kNm: 'float', Ast_L_mm2: 'float', pt_L_percent: 'float', cantilever_L_mm: 'float', Mu_B_kNm: 'float', Ast_B_mm2: 'float', pt_B_percent: 'float', cantilever_B_mm: 'float', d_mm: 'float', is_safe: 'bool', central_band_fraction: 'float' = 1.0, clause_ref: 'str' = 'Cl. 34.2.3.1', warnings: 'tuple[str, ...]' = ()) -> None"
@@ -118,6 +138,11 @@
       "name": "FootingOneWayShearResult",
       "kind": "class",
       "signature": "(tau_v_nmm2: 'float', tau_c_nmm2: 'float', Vu_kN: 'float', d_mm: 'float', critical_section_mm: 'float', utilization_ratio: 'float', is_safe: 'bool', governing_direction: 'str' = 'L', clause_ref: 'str' = 'Cl. 34.2.4.1(a)', warnings: 'tuple[str, ...]' = ()) -> None"
+    },
+    {
+      "name": "FootingProvenance",
+      "kind": "class",
+      "signature": "(schema_version: 'str', code_edition: 'str', units: 'dict[str, str]', service_load_combination_id: 'str', service_load_basis: 'str', factored_load_combination_id: 'str', allowable_soil_pressure_source_reference: 'str', allowable_soil_pressure_role: 'str', loaded_area_A2_basis: 'str', effective_supporting_area_basis: 'str', core_function_ids: 'tuple[str, ...]', clause_bases: 'dict[str, str]', source_ids: 'tuple[str, ...]', qualified_review_requirement: 'str') -> None"
     },
     {
       "name": "FootingPunchingResult",
@@ -463,6 +488,11 @@
       "name": "design_complete_one_way_slab_is456",
       "kind": "function",
       "signature": "(*, short_effective_span_mm: 'float', long_effective_span_mm: 'float', thickness_mm: 'float', d_mm: 'float', factored_area_load_kn_per_m2: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', main_bar_diameter_mm: 'float', main_bar_spacing_mm: 'float', distribution_bar_diameter_mm: 'float', distribution_bar_spacing_mm: 'float', reviewed_base_span_depth_limit: 'float', reviewed_aggregate_modification_factor: 'float', serviceability_limit_source_reference: 'str', serviceability_limit_source_is_approved: 'bool', qualified_serviceability_acceptance_reference: 'str', qualified_serviceability_acceptance_acknowledged: 'bool', strip_width_mm: 'float' = 1000.0) -> 'CompleteOneWaySlabDesignResult'"
+    },
+    {
+      "name": "design_concentric_isolated_footing_is456",
+      "kind": "function",
+      "signature": "(request: 'ConcentricIsolatedFootingInput') -> 'ConcentricIsolatedFootingResult'"
     },
     {
       "name": "design_continuous_one_way_slab_builtin_is456",

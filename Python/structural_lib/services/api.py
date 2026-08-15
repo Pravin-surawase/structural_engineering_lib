@@ -137,6 +137,14 @@ from structural_lib.services.common_api import (  # noqa: F401
 
 # ── Domain modules (beam, column, common) ──────────────────────────────
 from structural_lib.services.costing import CostProfile  # noqa: F401
+from structural_lib.services.footing_api import (  # noqa: F401
+    ConcentricIsolatedFootingInput,
+    ConcentricIsolatedFootingResult,
+    FootingDepthCandidate,
+    FootingDirectionalReinforcementDemand,
+    FootingProvenance,
+    design_concentric_isolated_footing_is456,
+)
 
 # ── Multi-objective optimization ────────────────────────────────────────
 from structural_lib.services.multi_objective_optimizer import (  # noqa: F401
@@ -334,6 +342,12 @@ __all__ = [
     "FootingPunchingResult",
     "check_isolated_footing_load_transfer",
     "LoadTransferResult",
+    "design_concentric_isolated_footing_is456",
+    "ConcentricIsolatedFootingInput",
+    "ConcentricIsolatedFootingResult",
+    "FootingDepthCandidate",
+    "FootingDirectionalReinforcementDemand",
+    "FootingProvenance",
     # Solid slab design (bounded supported cases)
     "design_one_way_slab_is456",
     "design_complete_one_way_slab_is456",
