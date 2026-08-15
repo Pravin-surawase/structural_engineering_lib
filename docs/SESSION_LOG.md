@@ -5,6 +5,74 @@
 
 ---
 
+## 2026-08-15 — Session: INDIA-1 Cumulative Integration Gates
+
+**Agent:** Codex (`reviewer`, sole writer; no subagents)
+
+**Branch:** `codex/india-1-cumulative-gates` from integrated `origin/main` at
+`ca55f22d3f8b6664e42ad41eb6d3ef9a0d1d96c3`
+
+**Focus:** Run the deferred broad Python, full repository, manifest, and
+cumulative essential-review gates after INDIA-1A through INDIA-1D integration.
+
+### Summary
+
+- Integrated INDIA-1D PR #757 only after exact head `9d7fe61d`, required hosted
+  `PR Gate`, clean mergeability, and zero review blockers were rechecked; squash
+  merge `ca55f22d` has the same tree as the reviewed head.
+- Created a fresh cumulative lane from exact integrated main and verified
+  `READY_LOCAL` with `source_bound=true`.
+- Reconciled the generated API and Indian-code capability manifests. The latter
+  contains 21 capability records, no unknown state, and reports beam, column,
+  isolated footing, and solid slab as bounded supported families.
+- Reviewed the integrated INDIA-1 code, public facade identities, benchmarks,
+  provenance, semantic holds, and result dispositions. No outcome-changing
+  calculation or public-claim defect was found.
+- Repaired one stale CI contract test discovered by the deferred broad suite;
+  no workflow policy or structural calculation changed.
+- Final broad Python and full repository gates pass. Qualified professional
+  review and any stable/engineering-use approval remain separate holds.
+- Published cumulative evidence commit `75089e8a` in draft PR #758; exact-head
+  hosted review remains the publication gate.
+
+### Issues encountered
+
+- The first broad Python run had one failure among 5,929 selected tests:
+  `test_docs_workflow_is_build_only_until_pages_is_configured` still required a
+  `pull_request:` trigger in `deploy-docs.yml`.
+- The broad folder-index audit reported 29 of 32 maintained indexes stale even
+  though the cumulative lane began from a clean integrated commit.
+
+### Root causes and resolutions
+
+- PR #745 (`729cc41b`) deliberately moved PR MkDocs evidence into the required
+  `Documentation Validation` job in `fast-checks.yml` and limited
+  `deploy-docs.yml` to relevant main pushes/manual dispatch, but the older
+  release regression from `176f5319` was not updated. Changed the test to verify
+  both halves of the current contract: no duplicated PR trigger in the main-only
+  workflow and strict PR docs validation in the consolidated workflow. The
+  focused regression and repeated broad suite pass.
+- `generate_enhanced_index.py` includes per-file `last_updated` values derived
+  from filesystem `st_mtime` inside its hash payload. Fresh linked worktrees
+  therefore make untouched folders look stale. This is a known generator-
+  signal problem, not INDIA-1 content drift; no 29-folder bulk rewrite was
+  introduced. Deterministic API and capability manifests were checked directly
+  and are current.
+
+### Evidence
+
+- First broad run: 5,925 passed, 3 skipped, 6 deselected, 1 stale CI-contract
+  failure.
+- Focused corrected CI regression: passed; Ruff and Black check passed.
+- Final broad Python run: 5,926 passed, 3 skipped, 6 deselected.
+- Full integrated repository gate: 30/30 passed.
+- Indian-code manifest: 21 capability records, zero unknown; the four INDIA-1
+  families are `SUPPORTED` / `IMPLEMENTED_BOUNDED`.
+- Cumulative essential review: no outcome-changing INDIA-1 finding; qualified
+  engineering review and release authorization remain ungranted.
+
+---
+
 ## 2026-08-15 — Session: INDIA-1D Solid-Slab Boundary Closure
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)
