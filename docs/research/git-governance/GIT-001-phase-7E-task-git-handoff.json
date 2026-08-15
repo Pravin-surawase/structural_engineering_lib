@@ -41,7 +41,7 @@
   ],
   "integration": {
     "query_status": "UNKNOWN",
-    "reason_code": "DRAFT_PR_NOT_OPEN_AT_RECEIPT_OBSERVATION",
+    "reason_code": "NO_INTEGRATION_CLAIM_PRE_AUDIT",
     "status": "NOT_APPLICABLE"
   },
   "local": {

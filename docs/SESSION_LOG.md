@@ -111,6 +111,9 @@ at the locally and hosted green draft PR head for independent audit
   created and no path outside the 14 staged task paths changed.
 - A post-generation receipt display snippet assumed `task_id` was top-level and
   raised `KeyError` after the receipt had already validated successfully.
+- Final receipt inspection found its inherited integration reason said the draft
+  PR was not open, although PR #751 existed; the section made no integration
+  claim, but its explanation was stale.
 - The first ninth-head focused replay rejected valid canonical state fixtures
   loaded through the package alias and one past-tense historical control.
 - A read-only inventory regex containing a backtick was initially passed with
@@ -296,6 +299,12 @@ at the locally and hosted green draft PR head for independent audit
 - Terminal issue resolution: inspect the schema directly and read
   `task.task_id`; validation remained green and no receipt field was changed by
   the failed display-only snippet.
+- Receipt root cause: the caller evidence retained a pre-PR reason code across
+  later exact-head refreshes. Resolution: keep integration reasoned
+  `NOT_APPLICABLE` before audit/merge but replace the false fact with
+  `NO_INTEGRATION_CLAIM_PRE_AUDIT`; remote, PR, and review facts remain explicit
+  `NOT_CHECKED` holds rather than being inferred from that section. Evidence:
+  stored receipt validation and session-end remain fail-closed.
 - Focused-replay root cause: Python loaded `git_state` and `scripts.git_state`
   as distinct module identities, so nominal `isinstance` checks rejected the
   same schema; historical grammar included `says` but omitted `said`.
