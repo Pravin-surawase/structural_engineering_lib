@@ -2,8 +2,8 @@
   "folder": "docs/planning",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-15",
-  "file_count": 17,
+  "last_updated": "2026-08-16",
+  "file_count": 18,
   "files": [
     {
       "name": "README.md",
@@ -64,12 +64,20 @@
       "content_hash": "4160ef25ca5e"
     },
     {
+      "name": "indian-code-completion-plan.md",
+      "type": "documentation",
+      "size_lines": 125,
+      "last_updated": "2026-08-16",
+      "description": "This is the canonical finish plan for the repository's Indian-code program. It defines the meaning and order of INDIA-0 through INDIA-4 without claiming",
+      "content_hash": "d48559d90cb0"
+    },
+    {
       "name": "is456-library-first-master-plan.md",
       "type": "documentation",
-      "size_lines": 1500,
-      "last_updated": "2026-08-15",
+      "size_lines": 1507,
+      "last_updated": "2026-08-16",
       "description": "The Python package is the product. FastAPI, React, command-line workflows, reports, ETABS adapters, and future integrations are consumers of that product.",
-      "content_hash": "6578a824e80e"
+      "content_hash": "a4fd1d2c1971"
     },
     {
       "name": "is456-solid-slabs-master-plan.md",
@@ -82,11 +90,11 @@
     {
       "name": "library-expansion-blueprint-v5.md",
       "type": "documentation",
-      "size_lines": 1118,
-      "last_updated": "2026-08-15",
+      "size_lines": 1121,
+      "last_updated": "2026-08-16",
       "title": "Library Expansion Blueprint v5.0 — Multi-Code, Multi-Element",
       "description": "> Master plan for expanding structural_engineering_lib from single-code beam-only (IS 456) to multi-code (IS 456, ACI 318-19, EC2), multi-element (beam, column, slab, footing, wall, stair) with comple",
-      "content_hash": "cf6fe9e58706"
+      "content_hash": "c03aeee26b45"
     },
     {
       "name": "memory.md",
@@ -107,11 +115,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 68,
-      "last_updated": "2026-08-15",
+      "size_lines": 74,
+      "last_updated": "2026-08-16",
       "title": "Next Session Briefing",
-      "description": "<!-- HANDOFF:START --> - Date: 2026-08-15",
-      "content_hash": "871801126480"
+      "description": "<!-- HANDOFF:START --> - Date: 2026-08-16",
+      "content_hash": "5ee4167eecd4"
     },
     {
       "name": "pre-release-checklist.md",
@@ -149,5 +157,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "cbbf4b92e4c59d53"
+  "content_hash": "9ccf093e1339898d"
 }

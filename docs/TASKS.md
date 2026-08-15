@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-15 — INDIA-2 software and cumulative gates are complete; qualified review is next
+**Updated:** 2026-08-16 — umbrella finish plan reconciled; INDIA-2-STAIR is complete and INDIA-2 remains in progress
 
 ---
 
@@ -133,27 +133,31 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL QUALIFIED REVIEW |
+| INDIA-2-WALL-G0 | Discuss and, if accepted, freeze one bounded Clause 32 wall case with exact source, benchmark, assumptions, and exclusions | repository owner + structural engineer | decision gate | P0 | 📋 READY FOR SCOPE DISCUSSION — implementation not activated |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
 
-The version roadmap and historical backlog remain below. INDIA-0 provides the
-generated [Indian-code truth manifest](verification/indian-code-capability-coverage.json),
-and INDIA-1 closed limitations in the four already supported families. INDIA-2
-adds one bounded longitudinal straight-flight staircase workflow; alternate
-stair systems and every other held family remain outside the approved scope.
+The version roadmap and historical backlog remain below. The canonical
+[Indian-code completion plan](planning/indian-code-completion-plan.md) defines
+INDIA-0 through INDIA-4. INDIA-0 and INDIA-1 are complete. The historical
+INDIA-2A-D packets form the completed `INDIA-2-STAIR` family, but umbrella
+INDIA-2 remains in progress while wall, deep-beam, flat-slab/punching, and
+distinct foundation-system packets remain held.
 The v0.23.1a1 Alpha is published.
 UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded
 development workflow, generated beam manifest, canonical routes, and integrated
-live acceptance are complete. Stable-release and engineering-use approval remain
-held for the cumulative qualified review.
+live acceptance are complete. INDIA-4 cumulative qualified review and separate
+owner authorization remain required before stable-release or engineering-use
+approval.
 
 ## Recently Done
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-COMPLETION-PLAN | Reconciled the canonical INDIA-0 through INDIA-4 finish waves and mapped historical staircase receipts to INDIA-2-STAIR without renaming them | Main Agent + repository owner | ✅ DONE — next discussion is INDIA-2-WALL-G0; no calculation implementation activated |
+| INDIA-2-STAIR | Completed one bounded longitudinal straight-flight staircase family | Main Agent + structural engineer | ✅ DONE — historical INDIA-2A-D and INDIA-2-CUMULATIVE remain the immutable evidence names |
 | INDIA-2-CUMULATIVE | Ran the broad Python suite, full repository gate, manifest reconciliation, and cumulative essential review after A-D integration | Main Agent + reviewer | ✅ DONE — 5,950 Python tests and full 30/30 gate green; staircase remains one bounded L2 API workflow and qualified review remains separate |
 | INDIA-2D | Published one typed Python/FastAPI straight-flight workflow and reconciled capability truth | Main Agent + API developer | ✅ DONE — public benchmark returns REVIEW_REQUIRED truthfully; unsafe and passing cases preserve FAIL/PASS boundaries; React remains excluded |
 | INDIA-2C | Composed accepted actions into singly reinforced flexure, supplied-bar detailing, ordinary shear, action-integrity, and basic span/depth dispositions | Main Agent + structural math | ✅ DONE — NPTEL Example 9.1 strength/detailing targets pass and truthfully return REVIEW_REQUIRED for unmodified L/d; unsafe cases return FAIL |

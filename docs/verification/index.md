@@ -3,8 +3,8 @@
 Benchmark examples and verification packs for validating library calculations against IS 456 standards.
 
 **Type:** Documentation
-**Last Updated:** 2026-08-15
-**Files:** 34
+**Last Updated:** 2026-08-16
+**Files:** 36
 
 ## Config Files
 
@@ -16,6 +16,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [india-2-cumulative-git-handoff-source-evidence.json](india-2-cumulative-git-handoff-source-evidence.json)
 - [india-2d-git-handoff-receipt.json](india-2d-git-handoff-receipt.json)
 - [india-2d-git-handoff-source-evidence.json](india-2d-git-handoff-source-evidence.json)
+- [india-completion-plan-git-handoff-receipt.json](india-completion-plan-git-handoff-receipt.json)
+- [india-completion-plan-git-handoff-source-evidence.json](india-completion-plan-git-handoff-source-evidence.json)
 - [indian-code-capability-coverage.json](indian-code-capability-coverage.json)
 - [is456-public-distribution-permission.json](is456-public-distribution-permission.json)
 

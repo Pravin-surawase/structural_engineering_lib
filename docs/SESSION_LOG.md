@@ -5,6 +5,84 @@
 
 ---
 
+## 2026-08-16 — Session: Indian-Code Completion Plan Reconciliation
+
+**Agent:** Codex (`governance`, sole writer; no subagents)
+
+**Branch:** `codex/india-finish-plan-reconcile` from exact `origin/main` at
+`62f4ba06b6287c1b74ddd41e7cdfefa71b08e515`
+
+**Git handoff receipt:** `docs/verification/india-completion-plan-git-handoff-receipt.json`
+
+**Focus:** Establish one durable INDIA-0 through INDIA-4 finish plan before any new calculation work begins.
+
+### Summary
+
+- Added one canonical Indian-code completion plan that separates truth
+  baseline, existing-family closure, remaining IS 456 elements, companion
+  Indian codes, and final acceptance.
+- Preserved the historical INDIA-2A-D staircase task and evidence names while
+  mapping them to the completed `INDIA-2-STAIR` family inside umbrella INDIA-2.
+- Reconciled the task board, next-session brief, completed library-first plan,
+  and strategic blueprint around that hierarchy.
+- Set `INDIA-2-WALL-G0` as the next scope discussion only; no engineering
+  calculation, API, UI, release, or cleanup work was activated.
+
+### Issues encountered
+
+- Current planning called the completed bounded staircase program all of
+  `INDIA-2`, while the recovered finish plan used INDIA-2 for all remaining
+  practical IS 456 elements.
+- The strategic blueprint still classified every staircase as not implemented
+  after the bounded straight-flight workflow was merged.
+- The handoff scheduled cumulative qualified review immediately after the
+  staircase, conflicting with the recovered plan's INDIA-4 acceptance order.
+- The first generated handoff clipped the session focus at its Markdown line
+  break, leaving an incomplete sentence in the next-session brief.
+- Session closeout crossed midnight in India after the first commit, so the
+  August 15 entry and briefing date no longer satisfied the current-day check.
+
+### Root causes and resolutions
+
+- Root cause: a narrow implementation sequence reused the umbrella INDIA-2
+  label without a durable parent/family mapping. Resolution: preserve immutable
+  PR/evidence names and introduce `INDIA-2-STAIR` as their parent-family alias;
+  umbrella INDIA-2 remains in progress.
+- Root cause: the strategic blueprint is manually maintained and was not
+  updated when the generated manifest gained bounded staircase support.
+  Resolution: correct only the current-state table and link it to the canonical
+  generated manifest and wave plan.
+- Root cause: the prior handoff treated the staircase milestone boundary as the
+  end of the recovered Indian-code program. Resolution: keep packet-level
+  engineering/source checks, but place cumulative qualified review in INDIA-4
+  after accepted INDIA-2 and INDIA-3 scope is frozen.
+- Root cause: the handoff extractor reads the physical `**Focus:**` line rather
+  than joining wrapped Markdown continuation lines. Resolution: keep this
+  session's focus on one physical line and regenerate the handoff block.
+- Root cause: the session began immediately before the local date boundary and
+  the closeout checker intentionally matches the current local date. Resolution:
+  update only the current planning/session dates to August 16, bind the receipt
+  to the current local head, and rerun closeout before publication.
+
+### Evidence
+
+- The planning lane began clean from exact current `origin/main`; Git-state
+  authority returned `READY_LOCAL` and runtime diagnosis returned
+  `source_bound=true`.
+- Historical INDIA-2A-D rows, PR references, and evidence filenames are
+  unchanged; only the new parent-family mapping and future wave status changed.
+- Focused plan consistency, generated manifest, documentation, and quick-gate
+  evidence are recorded at closeout.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `./run.sh session end --agent governance` reported that
+  the briefing and session log were not updated today after the local date
+  rolled from August 15 to August 16 -> updated only the current closeout dates,
+  regenerated the handoff receipt/indexes, and reran the check.
+
+---
+
 ## 2026-08-15 — Session: Primary Session-Log Reconciliation
 
 **Agent:** Codex (`ops`, sole writer; no subagents)

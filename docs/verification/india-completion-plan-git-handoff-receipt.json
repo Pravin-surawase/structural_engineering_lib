@@ -1,0 +1,166 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-15T18:27:48Z",
+      "query_status": "OK",
+      "reference": "task:INDIA-COMPLETION:user-request-update-plans-first",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-15T18:27:48Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "IMPLEMENT_ENGINEERING_CALCULATION",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/india-finish-plan-reconcile",
+      "head_sha": "ca65c165ba3abc23497f15ba5e305f2324b91191",
+      "task_id": "INDIA-COMPLETION-PLAN"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "5d5255d0098303e2ee2663d011cddad3cbdbba292eb013cd6640b37b207746a8",
+    "state": {
+      "branch": "codex/india-finish-plan-reconcile",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "62f4ba06b6287c1b74ddd41e7cdfefa71b08e515",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 83.856,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-finish-plan",
+      "head_sha": "ca65c165ba3abc23497f15ba5e305f2324b91191",
+      "hold_reasons": [
+        "changed paths: 11"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-15T18:34:30.167284+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-finish-plan",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 11,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/index.json",
+          "docs/index.md",
+          "docs/planning/index.json",
+          "docs/planning/indian-code-completion-plan.md",
+          "docs/planning/is456-library-first-master-plan.md",
+          "docs/planning/library-expansion-blueprint-v5.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/index.json",
+          "docs/verification/india-completion-plan-git-handoff-source-evidence.json"
+        ],
+        "staged_paths": [],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-finish-plan"
+    }
+  },
+  "local_state_receipt_hash": "sha256:5d5255d0098303e2ee2663d011cddad3cbdbba292eb013cd6640b37b207746a8",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-15T18:34:30.167424+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-15T18:27:48Z",
+    "owner": "Main Agent under repository retention policy; destructive cleanup remains separately owner-authorized",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/**",
+      "fastapi_app/**",
+      "react_app/**"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "docs/planning/indian-code-completion-plan.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/library-expansion-blueprint-v5.md",
+      "docs/planning/is456-library-first-master-plan.md",
+      "docs/SESSION_LOG.md",
+      "docs/verification/india-completion-plan-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/index.json",
+      "docs/index.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md"
+    ],
+    "task_id": "INDIA-COMPLETION-PLAN"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
