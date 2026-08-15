@@ -1474,7 +1474,7 @@
     {
       "name": "check_codex_git_workflow.py",
       "type": "python",
-      "size_lines": 566,
+      "size_lines": 638,
       "last_updated": "2026-08-15",
       "description": "Guard the Codex-native Git/GitHub workflow contract.",
       "functions": [
@@ -1510,7 +1510,7 @@
         "DEPLOY_DOCS",
         "GUIDANCE_INDEX"
       ],
-      "content_hash": "086087bf8fee"
+      "content_hash": "480a59b69a6d"
     },
     {
       "name": "check_doc_versions.py",
@@ -3451,7 +3451,7 @@
     {
       "name": "git_state.py",
       "type": "python",
-      "size_lines": 685,
+      "size_lines": 948,
       "last_updated": "2026-08-15",
       "description": "Read-only, worktree-aware Git state authority.",
       "classes": [
@@ -3489,7 +3489,7 @@
       "functions": [
         {
           "name": "validate_repository_state_consistency",
-          "description": "Recompute derived action/holds from supplied evidence without Git I/O.",
+          "description": "Validate the full canonical evidence contract without Git or network I/O.",
           "params": [
             "state"
           ]
@@ -3526,9 +3526,14 @@
         "REPO_ROOT",
         "SCHEMA_VERSION",
         "DEFAULT_COMMAND_TIMEOUT_SECONDS",
-        "SIBLING_COMMAND_TIMEOUT_SECONDS"
+        "SIBLING_COMMAND_TIMEOUT_SECONDS",
+        "SHA_RE",
+        "RELATION_STATUSES",
+        "OPERATION_STATUSES",
+        "DERIVED_ACTIONS",
+        "REMOTE_FRESHNESS_STATUSES"
       ],
-      "content_hash": "15c15cb64c65"
+      "content_hash": "31931ac2ac57"
     },
     {
       "name": "governance_health_score.py",
@@ -4402,7 +4407,7 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 2488,
+      "size_lines": 2456,
       "last_updated": "2026-08-15",
       "description": "Unified session management CLI.",
       "functions": [
@@ -4518,7 +4523,7 @@
         "HANDOFF_DATE_RE",
         "COMMIT_HASH_RE"
       ],
-      "content_hash": "8850582e1aa6"
+      "content_hash": "c5bf85c20a9c"
     },
     {
       "name": "session_store.py",
@@ -5532,5 +5537,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "e18abc3d37b9fd72"
+  "content_hash": "1e059a9c21fb6a84"
 }

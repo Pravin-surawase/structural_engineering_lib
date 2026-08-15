@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib
 import json
+import re
 import subprocess
 from pathlib import Path
 
@@ -35,20 +36,28 @@ def _write_index(root: Path, **overrides) -> Path:
             r"(^|[` ])git\s+checkout\s+-b(?:\s|`|$)",
             r"(^|[` ])git\s+switch\s+-c\s+(?!codex/)",
             (
-                r"(?:(?<![A-Za-z0-9])(?:do not|don't|never)\s+push\b"
-                r"[^\n.;!?]*\bwithout\s+pull(?:ing)?\s+first\b|"
-                r"(?=[^\n]*(?:git|PR|branch|remote|repository|upstream|commit))"
-                r"[^\n.;!?]*\bpull(?:\s+(?:the\s+)?(?:PR\s+)?branch)?"
-                r"\s+before\s+(?:you\s+)?push(?:ing)?\b|"
-                r"(?=[^\n]*(?:git|PR|branch|remote|repository|upstream|commit))"
-                r"[^\n.;!?]*\bpull\s+first\b[^\n.;!?]{0,40}"
-                r"\b(?:then\s+)?push(?:ing)?\b|"
-                r"^\s*(?:always\s+)?pull\s+before\s+you\s+push"
-                r"(?:\s+to\s+(?:the\s+)?PR\s+branch)?[.!]?\s*$|"
-                r"^\s*pull\s+first\s*,?\s*then\s+push"
-                r"(?:\s+the\s+change)?[.!]?\s*$|"
-                r"^\s*before\s+you\s+push\s*,\s*pull\s+first[.!]?\s*$)"
+                r"(?<![A-Za-z0-9])(?:do not|don't|never)\s+push\b"
+                r"[^\n.;!?]*\bwithout\s+pull(?:ing)?\s+first\b"
             ),
+            {
+                "kind": "clause_action",
+                "action_pattern": (
+                    r"\bpull(?:\s+(?:the\s+)?(?:(?:pr|remote|upstream)\s+)?"
+                    r"branch)?\s+before\s+(?:you\s+)?push(?:ing)?\b|"
+                    r"\bpull\s+first\b[^\n.;!?]{0,40}\b(?:then\s+)?"
+                    r"push(?:ing)?\b|\bpull\s+first\b"
+                ),
+                "context_pattern": (
+                    r"\b(?:git|pr|branch|remote|repository|upstream|commit)\b"
+                ),
+                "standalone_clause_patterns": [
+                    r"(?:then\s+)?(?:always\s+)?pull\s+before\s+you\s+push"
+                    r"(?:\s+to\s+(?:the\s+)?pr\s+branch)?",
+                    r"(?:then\s+)?pull\s+first\s*,?\s*then\s+push"
+                    r"(?:\s+the\s+change)?",
+                    r"(?:then\s+)?before\s+you\s+push\s*,\s*pull\s+first",
+                ],
+            },
         ],
         "required_contracts": {},
     }
@@ -247,6 +256,8 @@ def test_genuine_governing_prohibition_is_safe(prohibition, tmp_path):
         "Before you push, pull first.",
         "For the PR branch, pull first, then push the change.",
         "Don't push to the PR branch without pulling first.",
+        "Pull the remote branch before pushing.",
+        "Do not delete the worktree; then pull before you push.",
     ],
 )
 def test_data_driven_omitted_git_pull_before_push_instruction_fails(
@@ -262,14 +273,41 @@ def test_data_driven_omitted_git_pull_before_push_instruction_fails(
     pull_patterns = [
         pattern
         for pattern in live_config["forbidden_instruction_patterns"]
-        if "pull" in pattern and "push" in pattern
+        if (isinstance(pattern, str) and "pull" in pattern and "push" in pattern)
+        or (isinstance(pattern, dict) and pattern.get("kind") == "clause_action")
     ]
-    assert len(pull_patterns) == 1
+    assert len(pull_patterns) == 2
     index = _write_index(tmp_path, forbidden_instruction_patterns=pull_patterns)
 
     errors = checker.check_semantic_guidance(tmp_path, index)
 
     assert any("unsafe Git instruction" in error for error in errors)
+
+
+def test_clause_local_pull_rule_matches_from_the_governed_action():
+    config = json.loads(
+        (REPO_ROOT / "docs/git-automation/live-git-guidance-index.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    rule = next(
+        item
+        for item in config["forbidden_instruction_patterns"]
+        if isinstance(item, dict) and item.get("kind") == "clause_action"
+    )
+    line = "Do not delete the worktree; then Pull the remote branch before pushing."
+    spans = checker._structured_instruction_errors(
+        line,
+        re.compile(rule["action_pattern"], re.IGNORECASE),
+        re.compile(rule["context_pattern"], re.IGNORECASE),
+        tuple(
+            re.compile(pattern, re.IGNORECASE)
+            for pattern in rule["standalone_clause_patterns"]
+        ),
+    )
+
+    assert len(spans) == 1
+    assert line[slice(*spans[0])] == "Pull the remote branch before pushing"
 
 
 @pytest.mark.parametrize(
@@ -283,6 +321,9 @@ def test_data_driven_omitted_git_pull_before_push_instruction_fails(
         "Pull first aid supplies from the cabinet.",
         "For the sled exercise, pull first, then push the load.",
         "The actuator will pull before you push the test lever.",
+        "For the sled exercise, pull first, then push the spring-loaded cart.",
+        "The actuator will pull before you push the appropriate test lever.",
+        "For the sled exercise, pull first, then push the load. The repository records the result.",
         "Do not pull before you push; inspect branch and upstream first.",
         "Historical guidance said pull before you push.",
     ],

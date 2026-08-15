@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import copy
 import importlib
 import json
 import subprocess
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -122,11 +124,99 @@ def test_state_consistency_recomputes_action_and_holds_without_git_io(
         ),
     )
     state.operation = "merge"
+    state.operation_markers = ["MERGE_HEAD:/tmp/repo/.git/MERGE_HEAD"]
 
     errors = git_state.validate_repository_state_consistency(state)
 
     assert any("derived_action contradicts" in error for error in errors)
     assert any("hold_reasons contradict" in error for error in errors)
+
+
+@pytest.mark.parametrize(
+    ("case", "expected"),
+    [
+        ("head_sha", "head_sha is malformed"),
+        ("empty_branch", "branch is malformed"),
+        ("banana_relation", "relation status is unsupported"),
+        ("uppercase_unknown_relation", "relation status is unsupported"),
+        ("schema", "schema is unsupported"),
+        ("remote_freshness", "remote_freshness is unsupported"),
+        ("relation_counts", "relation status contradicts counts"),
+        ("lowercase_unknown_without_failure", "lacks query failure evidence"),
+        ("operation_enum", "operation is unsupported"),
+        ("operation_markers", "operation contradicts operation markers"),
+        ("linked_worktree", "linked_worktree contradicts"),
+        ("query_failure", "query failure evidence is malformed"),
+        ("tree_count", "tree dirty_count contradicts paths"),
+    ],
+)
+def test_state_consistency_rejects_malformed_schema_and_enums_without_git_io(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    case: str,
+    expected: str,
+):
+    repo = _repo(tmp_path)
+    _feature(repo)
+    state = copy.deepcopy(git_state.collect_repository_state(repo, default_ref="main"))
+    if case == "head_sha":
+        state.head_sha = "not-a-sha"
+    elif case == "empty_branch":
+        state.branch = ""
+    elif case == "banana_relation":
+        state.default_base.status = "BANANA"
+    elif case == "uppercase_unknown_relation":
+        state.default_base.status = "UNKNOWN"
+    elif case == "schema":
+        state.schema_version = 999
+    elif case == "remote_freshness":
+        state.remote_freshness = "CURRENT"
+    elif case == "relation_counts":
+        state.default_base.behind = 1
+    elif case == "lowercase_unknown_without_failure":
+        state.default_base.status = "unknown"
+        state.default_base.sha = None
+        state.default_base.ahead = None
+        state.default_base.behind = None
+    elif case == "operation_enum":
+        state.operation = "teleport"
+    elif case == "operation_markers":
+        state.operation_markers = ["MERGE_HEAD:/tmp/repo/.git/MERGE_HEAD"]
+    elif case == "linked_worktree":
+        state.linked_worktree = not state.linked_worktree
+    elif case == "query_failure":
+        state.query_failures = [SimpleNamespace(command="", reason="exit 128")]
+    elif case == "tree_count":
+        state.tree = SimpleNamespace(
+            staged_paths=[],
+            modified_paths=[],
+            untracked_paths=[],
+            conflicted_paths=[],
+            clean=True,
+            dirty_count=1,
+        )
+
+    monkeypatch.setattr(
+        git_state.subprocess,
+        "run",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("state validation must not query Git")
+        ),
+    )
+
+    errors = git_state.validate_repository_state_consistency(state)
+
+    assert any(expected in error for error in errors)
+
+
+def test_state_consistency_accepts_canonical_unknown_only_with_query_failure(
+    tmp_path: Path,
+):
+    state = git_state.collect_repository_state(tmp_path / "missing")
+
+    assert state.default_base.status == "unknown"
+    assert state.query_failures
+    assert git_state.validate_repository_state_consistency(state) == []
 
 
 def test_conflicted_paths_never_return_ready(tmp_path: Path):

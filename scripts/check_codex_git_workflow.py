@@ -68,6 +68,7 @@ CLAUSE_BOUNDARY = re.compile(
     r"(?:[.;!?]\s+|\b(?:but|however|then|instead|nevertheless|yet)\b[:,]?\s*)",
     re.IGNORECASE,
 )
+GUIDANCE_CONTEXT_BOUNDARY = re.compile(r"[.;!?](?:\s+|$)")
 NEGATING_DIRECTIVE = re.compile(
     r"(?<![A-Za-z0-9])(?:never|do not|don't|must not|should not|shall not|"
     r"cannot|can't)\b"
@@ -181,8 +182,11 @@ def _is_historical_narration(line: str, start: int) -> bool:
 
 def _unsafe_match_is_instruction(line: str, match: re.Match[str]) -> bool:
     """Fail closed unless the command is locally prohibited or historical."""
-    start = match.start()
-    matched = match.group(0)
+    return _instruction_span_is_unsafe(line, match.start(), match.end(), match.group(0))
+
+
+def _instruction_span_is_unsafe(line: str, start: int, end: int, matched: str) -> bool:
+    """Classify one action-starting span with the shared semantic grammar."""
     directive = NEGATING_DIRECTIVE.search(matched)
     if (
         directive is not None
@@ -192,9 +196,47 @@ def _unsafe_match_is_instruction(line: str, match: re.Match[str]) -> bool:
         action = DIRECT_ACTION.search(matched, directive.end())
         if action is not None:
             start += action.start()
-    return not _is_governing_prohibition(line, start, match.end()) and not (
+    return not _is_governing_prohibition(line, start, end) and not (
         _is_historical_narration(line, start)
     )
+
+
+def _clause_spans(line: str) -> list[tuple[int, int]]:
+    """Return sentence/semicolon-local spans without crossing context boundaries."""
+    spans: list[tuple[int, int]] = []
+    start = 0
+    for boundary in GUIDANCE_CONTEXT_BOUNDARY.finditer(line):
+        if boundary.start() > start:
+            spans.append((start, boundary.start()))
+        start = boundary.end()
+    if start < len(line):
+        spans.append((start, len(line)))
+    return spans
+
+
+def _structured_instruction_errors(
+    line: str,
+    action_pattern: re.Pattern[str],
+    context_pattern: re.Pattern[str],
+    standalone_patterns: tuple[re.Pattern[str], ...],
+) -> list[tuple[int, int]]:
+    """Match one data-driven action rule within its own lexical context clause."""
+    errors: list[tuple[int, int]] = []
+    for clause_start, clause_end in _clause_spans(line):
+        clause = line[clause_start:clause_end]
+        has_context = context_pattern.search(clause) is not None
+        is_standalone = any(
+            pattern.fullmatch(clause.strip()) is not None
+            for pattern in standalone_patterns
+        )
+        if not has_context and not is_standalone:
+            continue
+        for match in action_pattern.finditer(clause):
+            start = clause_start + match.start()
+            end = clause_start + match.end()
+            if _instruction_span_is_unsafe(line, start, end, match.group(0)):
+                errors.append((start, end))
+    return errors
 
 
 def _front_matter_status(content: str) -> str | None:
@@ -300,7 +342,31 @@ def check_semantic_guidance(
         except re.error as exc:
             errors.append(f"invalid semantic guidance pattern {raw!r}: {exc}")
     instruction_patterns: list[re.Pattern[str]] = []
+    structured_instruction_rules: list[
+        tuple[re.Pattern[str], re.Pattern[str], tuple[re.Pattern[str], ...]]
+    ] = []
     for raw in config.get("forbidden_instruction_patterns", []):
+        if isinstance(raw, dict):
+            if raw.get("kind") != "clause_action":
+                errors.append(f"invalid semantic instruction rule kind: {raw!r}")
+                continue
+            try:
+                structured_instruction_rules.append(
+                    (
+                        re.compile(raw["action_pattern"], re.IGNORECASE),
+                        re.compile(raw["context_pattern"], re.IGNORECASE),
+                        tuple(
+                            re.compile(pattern, re.IGNORECASE)
+                            for pattern in raw["standalone_clause_patterns"]
+                        ),
+                    )
+                )
+            except (KeyError, TypeError, re.error) as exc:
+                errors.append(f"invalid semantic instruction rule {raw!r}: {exc}")
+            continue
+        if not isinstance(raw, str):
+            errors.append(f"invalid semantic instruction pattern: {raw!r}")
+            continue
         try:
             instruction_patterns.append(re.compile(raw, re.IGNORECASE))
         except re.error as exc:
@@ -329,6 +395,12 @@ def check_semantic_guidance(
             for pattern in instruction_patterns:
                 match = pattern.search(line)
                 if match and _unsafe_match_is_instruction(line, match):
+                    errors.append(
+                        f"{relative}:{line_number} prescribes unsafe Git "
+                        f"instruction: {stripped}"
+                    )
+            for action, context, standalone in structured_instruction_rules:
+                if _structured_instruction_errors(line, action, context, standalone):
                     errors.append(
                         f"{relative}:{line_number} prescribes unsafe Git "
                         f"instruction: {stripped}"

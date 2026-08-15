@@ -114,6 +114,17 @@ at the locally and hosted green draft PR head for independent audit
 - Final receipt inspection found its inherited integration reason said the draft
   PR was not open, although PR #751 existed; the section made no integration
   claim, but its explanation was stale.
+- An eleventh exact-head audit found the pull rule missed an intervening remote-
+  branch object and a later unsafe clause, while unbounded/case-insensitive
+  context tokens matched `PR` inside `spring`/`appropriate` and crossed into a
+  later repository sentence. It also proved `git_state` derivation accepted
+  malformed schema, SHA, branch, relation, and freshness inputs as READY_LOCAL.
+- The first eleventh focused replay treated a failed status query's fail-closed
+  `clean=false`/zero-path state as contradictory and used an unchanged relation
+  count in one adversarial fixture. The prior receipt also correctly became
+  stale while the new code head was not yet available.
+- The eleventh pre-hook Ruff check rejected import ordering in the two edited
+  test modules before staging.
 - The first ninth-head focused replay rejected valid canonical state fixtures
   loaded through the package alias and one past-tense historical control.
 - A read-only inventory regex containing a backtick was initially passed with
@@ -305,6 +316,33 @@ at the locally and hosted green draft PR head for independent audit
   `NO_INTEGRATION_CLAIM_PRE_AUDIT`; remote, PR, and review facts remain explicit
   `NOT_CHECKED` holds rather than being inferred from that section. Evidence:
   stored receipt validation and session-end remain fail-closed.
+- Eleventh semantic root cause: one monolithic regex searched context to the end
+  of the line, lacked lexical boundaries, consumed prose before the governed
+  action, and encoded only the PR-branch object. Resolution: replace only that
+  rule with a data-driven clause-action contract containing an action pattern,
+  word-bounded lifecycle context, and narrow standalone full-clause forms;
+  split context at sentence/semicolon boundaries and pass the action-starting
+  span to the existing prohibition/history grammar. Evidence: all five auditor
+  strings have verbatim polarity tests, the remote object match starts at
+  `Pull`, and every earlier physical/history/prohibition/double-negation case
+  remains green.
+- Eleventh state root cause: the consistency API recomputed derived action and
+  holds but assumed every source field already conformed to the canonical
+  schema. Resolution: make `git_state.py` validate its own full evidence
+  contract—supported schema, timestamps/paths/types, SHA/branch coherence,
+  relation counts/status, tree count/clean state, operation markers, locks,
+  query failures, freshness and derived enums—before recomputation; session-end
+  now consumes that one validator without a partial schema. Evidence: exact
+  malformed auditor inputs and paired relation/tree/operation/query cases return
+  UNKNOWN without subprocess I/O, and malformed cmd_end runs return nonzero
+  without printing CLEAN.
+- Focused-replay resolution: permit `clean=false` with zero known paths only
+  when required query-failure evidence exists, and change the relation-count
+  fixture to an actual count/status contradiction. Receipt staleness remains a
+  hold until exact-head evidence is regenerated after the code commit.
+- Formatter resolution: apply Ruff's scoped import ordering to only the two
+  edited tests, regenerate the maintained tests index, and replay Ruff clean;
+  no hook or unrelated path was involved.
 - Focused-replay root cause: Python loaded `git_state` and `scripts.git_state`
   as distinct module identities, so nominal `isinstance` checks rejected the
   same schema; historical grammar included `says` but omitted `said`.
@@ -344,6 +382,11 @@ at the locally and hosted green draft PR head for independent audit
   1,107 links have zero failures; and quick 10/10 plus full 30/30 pass. Final
   efficiency, session-end, preservation, and hosted checks are replayed only on
   the exact receipt-bound head.
+- Eleventh-candidate focused receipt/semantic/Git-state/session regressions pass
+  223 tests and the full indexed semantic corpus passes. Strict docs pass 5/5,
+  1,107 links have zero failures, quick passes 10/10, full passes 30/30, and
+  efficiency passes. Session-end, preservation, and hosted checks remain
+  pending until the exact receipt-bound head exists.
 
 ### Preservation and next boundary
 

@@ -2227,7 +2227,7 @@
     {
       "name": "test_git_guidance_semantics.py",
       "type": "python",
-      "size_lines": 321,
+      "size_lines": 362,
       "last_updated": "2026-08-15",
       "description": "Semantic live-guidance discovery and coherence regressions.",
       "functions": [
@@ -2274,6 +2274,9 @@
           ]
         },
         {
+          "name": "test_clause_local_pull_rule_matches_from_the_governed_action"
+        },
+        {
           "name": "test_omitted_git_pull_pattern_respects_prohibition_and_history",
           "params": [
             "safe_context",
@@ -2291,7 +2294,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "2d4f3045c23a"
+      "content_hash": "c005b465b8e6"
     },
     {
       "name": "test_git_handoff_receipt.py",
@@ -2395,7 +2398,7 @@
     {
       "name": "test_git_state.py",
       "type": "python",
-      "size_lines": 448,
+      "size_lines": 538,
       "last_updated": "2026-08-15",
       "description": "Outcome tests for the read-only, worktree-aware Git state authority.",
       "functions": [
@@ -2416,6 +2419,21 @@
           "params": [
             "tmp_path",
             "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_state_consistency_rejects_malformed_schema_and_enums_without_git_io",
+          "params": [
+            "tmp_path",
+            "monkeypatch",
+            "case",
+            "expected"
+          ]
+        },
+        {
+          "name": "test_state_consistency_accepts_canonical_unknown_only_with_query_failure",
+          "params": [
+            "tmp_path"
           ]
         },
         {
@@ -2500,7 +2518,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "c1445882b756"
+      "content_hash": "1022c84432fe"
     },
     {
       "name": "test_inputs.py",
@@ -3737,7 +3755,7 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 1158,
+      "size_lines": 1236,
       "last_updated": "2026-08-15",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
@@ -3761,6 +3779,14 @@
           "name": "test_session_closeout_reports_canonical_dirty_paths",
           "params": [
             "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_session_closeout_holds_malformed_canonical_contract_without_subprocess",
+          "params": [
+            "case",
+            "monkeypatch",
+            "capsys"
           ]
         },
         {
@@ -3820,6 +3846,14 @@
           ]
         },
         {
+          "name": "test_session_end_malformed_canonical_contract_fails_closed",
+          "params": [
+            "case",
+            "monkeypatch",
+            "capsys"
+          ]
+        },
+        {
           "name": "test_session_heading_marker_accepts_descriptive_titles",
           "params": [
             "heading"
@@ -3847,22 +3881,12 @@
           "params": [
             "tmp_path"
           ]
-        },
-        {
-          "name": "test_latest_session_block_does_not_rewind_descriptive_heading"
-        },
-        {
-          "name": "test_last_session_date_reads_multiline_log",
-          "params": [
-            "tmp_path",
-            "monkeypatch"
-          ]
         }
       ],
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "c4c7b166c1fe"
+      "content_hash": "f6db956817fe"
     },
     {
       "name": "test_session_store.py",
@@ -4620,5 +4644,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "395e81a86fdd3fca"
+  "content_hash": "060e799620533ee0"
 }

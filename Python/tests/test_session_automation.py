@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import importlib
 import json
 import os
@@ -103,6 +104,23 @@ def _closeout_state(
     )
 
 
+def _malformed_clean_state(case: str):
+    state = copy.deepcopy(_closeout_state(clean=True))
+    if case == "head_sha":
+        state.head_sha = "not-a-sha"
+    elif case == "empty_branch":
+        state.branch = ""
+    elif case == "banana_relation":
+        state.default_base.status = "BANANA"
+    elif case == "uppercase_unknown_relation":
+        state.default_base.status = "UNKNOWN"
+    elif case == "schema":
+        state.schema_version = 999
+    elif case == "remote_freshness":
+        state.remote_freshness = "CURRENT"
+    return state
+
+
 def test_session_closeout_uses_canonical_clean_evidence_without_subprocess(
     monkeypatch: pytest.MonkeyPatch,
 ):
@@ -133,6 +151,39 @@ def test_session_closeout_reports_canonical_dirty_paths(
 
     assert status == "DIRTY"
     assert paths == ["docs/SESSION_LOG.md"]
+
+
+@pytest.mark.parametrize(
+    "case",
+    [
+        "head_sha",
+        "empty_branch",
+        "banana_relation",
+        "uppercase_unknown_relation",
+        "schema",
+        "remote_freshness",
+    ],
+)
+def test_session_closeout_holds_malformed_canonical_contract_without_subprocess(
+    case: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    state = _malformed_clean_state(case)
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+    monkeypatch.setattr(
+        session.subprocess,
+        "run",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("closeout validation must not invoke a subprocess")
+        ),
+    )
+
+    evidence = session.get_closeout_git_evidence()
+
+    assert evidence[0] == "UNKNOWN"
+    assert session.report_closeout_git_evidence(evidence) is False
+    assert "Working tree clean" not in capsys.readouterr().out
 
 
 def test_session_closeout_holds_clean_action_hold_contradiction(
@@ -323,6 +374,33 @@ def test_session_end_query_failure_cannot_pass_or_print_clean(
     assert authority_calls == [["collect_repository_state"]]
     assert "Git state UNKNOWN/hold" in output
     assert "Doc-folder set UNKNOWN" in output
+    assert "Working tree clean" not in output
+
+
+@pytest.mark.parametrize(
+    "case",
+    [
+        "head_sha",
+        "empty_branch",
+        "banana_relation",
+        "uppercase_unknown_relation",
+        "schema",
+        "remote_freshness",
+    ],
+)
+def test_session_end_malformed_canonical_contract_fails_closed(
+    case: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    authority_calls, args = _patch_cmd_end_dependencies(
+        monkeypatch, _malformed_clean_state(case)
+    )
+
+    assert session.cmd_end(args) == 1
+    output = capsys.readouterr().out
+    assert authority_calls == [["collect_repository_state"]]
+    assert "Git state UNKNOWN/hold" in output
     assert "Working tree clean" not in output
 
 

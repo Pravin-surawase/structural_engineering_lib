@@ -34,7 +34,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
 from _lib.output import StatusLine
 from git_state import (
-    SCHEMA_VERSION as GIT_STATE_SCHEMA_VERSION,
     RepositoryState,
     collect_repository_state,
     validate_repository_state_consistency,
@@ -808,49 +807,23 @@ def get_closeout_git_evidence() -> tuple[str, list[str], str]:
         state = collect_repository_state(REPO_ROOT)
     except Exception as exc:
         return "UNKNOWN", [], f"Git-state authority raised: {exc}"
-    if not all(
-        hasattr(state, field)
-        for field in (
-            "schema_version",
-            "tree",
-            "query_failures",
-            "derived_action",
-            "hold_reasons",
-        )
-    ):
-        return "UNKNOWN", [], "Git-state authority returned malformed evidence"
-    if state.schema_version != GIT_STATE_SCHEMA_VERSION:
-        return "UNKNOWN", [], f"Git-state schema is unknown: {state.schema_version}"
-    if not isinstance(state.query_failures, list):
-        return "UNKNOWN", [], "Git-state query-failure evidence is malformed"
-    if (
-        not isinstance(state.derived_action, str)
-        or not isinstance(state.hold_reasons, list)
-        or any(not isinstance(reason, str) for reason in state.hold_reasons)
-    ):
-        return "UNKNOWN", [], "Git-state action/hold evidence is malformed"
     consistency_errors = validate_repository_state_consistency(state)
     if consistency_errors:
         return (
             "UNKNOWN",
             [],
-            "Git-state evidence contradicts: " + "; ".join(consistency_errors),
+            "Git-state evidence is malformed or contradictory: "
+            + "; ".join(consistency_errors),
         )
     if state.query_failures:
-        if not all(
-            hasattr(failure, "command") and hasattr(failure, "reason")
-            for failure in state.query_failures
-        ):
-            return "UNKNOWN", [], "Git-state query-failure evidence is malformed"
         detail = "; ".join(
             f"{failure.command}: {failure.reason}" for failure in state.query_failures
         )
         return "UNKNOWN", [], f"Git-state query failed: {detail}"
 
     tree = state.tree
-    clean = getattr(tree, "clean", None)
     path_groups = [
-        getattr(tree, field, None)
+        getattr(tree, field)
         for field in (
             "staged_paths",
             "modified_paths",
@@ -858,22 +831,17 @@ def get_closeout_git_evidence() -> tuple[str, list[str], str]:
             "conflicted_paths",
         )
     ]
-    if not isinstance(clean, bool) or any(
-        not isinstance(group, list) or any(not isinstance(path, str) for path in group)
-        for group in path_groups
-    ):
-        return "UNKNOWN", [], "Git-state tree evidence is malformed"
     paths = sorted(set(path for group in path_groups for path in group))
-    if clean and paths:
-        return "UNKNOWN", [], "Git-state clean flag contradicts dirty paths"
-    if not clean and not paths:
-        return "UNKNOWN", [], "Git-state dirty flag has no path evidence"
-    if clean:
+    if tree.clean:
         if state.derived_action != "READY_LOCAL" or state.hold_reasons:
-            return "UNKNOWN", [], "Git-state clean/action/hold evidence contradicts"
+            return (
+                "UNKNOWN",
+                [],
+                f"Canonical Git state is held: {state.derived_action}",
+            )
         return "CLEAN", [], "Canonical Git-state tree is clean"
     if state.derived_action != "HOLD_DIRTY" or not state.hold_reasons:
-        return "UNKNOWN", [], "Git-state dirty/action/hold evidence contradicts"
+        return "UNKNOWN", [], f"Canonical Git state is held: {state.derived_action}"
     return "DIRTY", paths, "Canonical Git-state tree contains changes"
 
 
