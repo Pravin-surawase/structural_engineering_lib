@@ -128,7 +128,7 @@
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
-| INDIA-1-CUMULATIVE | Run broad Python, full repository, manifest reconciliation, and cumulative essential review after A-D integration | Main Agent + reviewer | 🚧 SOFTWARE EVIDENCE COMPLETE — 5,926 Python tests and full 30/30 gate green; stale CI-contract repair publication pending |
+| INDIA-1-CUMULATIVE | Run broad Python, full repository, manifest reconciliation, and cumulative essential review after A-D integration | Main Agent + reviewer | 🚧 DRAFT PR #758 — 5,926 Python tests and full 30/30 gate green; exact-head hosted review pending |
 
 ## Up Next
 

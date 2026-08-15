@@ -32,6 +32,8 @@ cumulative essential-review gates after INDIA-1A through INDIA-1D integration.
   no workflow policy or structural calculation changed.
 - Final broad Python and full repository gates pass. Qualified professional
   review and any stable/engineering-use approval remain separate holds.
+- Published cumulative evidence commit `75089e8a` in draft PR #758; exact-head
+  hosted review remains the publication gate.
 
 ### Issues encountered
 

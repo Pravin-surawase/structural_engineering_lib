@@ -5,10 +5,10 @@
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
 - Focus: Publish the cumulative INDIA-1 gate evidence and stale CI-contract repair
-- Draft PR: pending
+- Draft PR: [#758](https://github.com/Pravin-surawase/structural_engineering_lib/pull/758)
 - Branch: `codex/india-1-cumulative-gates`
 - Base: verified integrated `origin/main` at `ca55f22d3f8b6664e42ad41eb6d3ef9a0d1d96c3`
-- Implementation commit: pending
+- Implementation commit: `75089e8ad178d7d7ca8f7a5793cdf1f57c9ffbf4`
 - Next action: commit and publish the cumulative evidence packet; after its exact-head hosted gate passes, merge and verify integrated main. Keep stable/engineering-use approval held for qualified review and keep release authorization separate
 - Holds: no release, engineering-use approval, branch/worktree deletion, or historical-lane cleanup
 <!-- HANDOFF:END -->
