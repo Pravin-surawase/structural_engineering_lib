@@ -577,8 +577,9 @@ reinforcement checks and retains explicit bracing, action, reinforcement,
 clause, source, and benchmark provenance. Moments, horizontal actions, shear,
 openings, two-grid walls, transverse-enclosure design, seismic detailing, load
 generation, automatic bar selection, qualified approval, and release remain
-outside the preview contract. The capability registry and FastAPI route remain
-held until WALL-D.
+outside the preview contract. The capability registry names only this bounded
+workflow, and the equivalent REST route is
+`POST /api/v1/design/wall/braced-axial`.
 
 Complete slab workflow results expose only reviewed span/depth serviceability
 and ordinary one-way concrete shear for beam/wall-supported UDL panels. Their

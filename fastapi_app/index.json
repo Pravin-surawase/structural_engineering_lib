@@ -2,14 +2,14 @@
   "folder": "fastapi_app",
   "type": "python-package",
   "description": "REST API + WebSocket bridge between the React frontend and the Python `structural_lib`.",
-  "last_updated": "2026-08-15",
+  "last_updated": "2026-08-16",
   "file_count": 9,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 50,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "title": "FastAPI Backend",
       "description": "REST API + WebSocket bridge between the React frontend and the Python structural_lib. bash",
       "content_hash": "174e3838edd5"
@@ -18,7 +18,7 @@
       "name": "__init__.py",
       "type": "python",
       "size_lines": 11,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "FastAPI backend for structural_engineering_lib.",
       "content_hash": "a054fbd5a6f9"
     },
@@ -26,7 +26,7 @@
       "name": "auth.py",
       "type": "python",
       "size_lines": 378,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Authentication and Authorization Module.",
       "classes": [
         {
@@ -114,7 +114,7 @@
       "name": "config.py",
       "type": "python",
       "size_lines": 124,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Application Configuration.",
       "classes": [
         {
@@ -149,7 +149,7 @@
       "name": "error_utils.py",
       "type": "python",
       "size_lines": 74,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Error sanitization utilities for API responses.",
       "functions": [
         {
@@ -181,8 +181,8 @@
     {
       "name": "main.py",
       "type": "python",
-      "size_lines": 585,
-      "last_updated": "2026-08-15",
+      "size_lines": 595,
+      "last_updated": "2026-08-16",
       "description": "FastAPI Application Entry Point.",
       "classes": [
         {
@@ -243,12 +243,12 @@
         "API_TAGS_METADATA",
         "API_V1_PREFIX"
       ],
-      "content_hash": "aa886f99470a"
+      "content_hash": "238e1f59b057"
     },
     {
       "name": "openapi_baseline.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "components",
         "info",
@@ -261,7 +261,7 @@
     {
       "name": "ruff.toml",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": ".TOML configuration file",
       "content_hash": "a86a2bd7f0e7"
     }
@@ -275,23 +275,23 @@
     {
       "name": "models",
       "path": "models/",
-      "file_count": 19,
+      "file_count": 20,
       "is_package": true
     },
     {
       "name": "routers",
       "path": "routers/",
-      "file_count": 22,
+      "file_count": 23,
       "is_package": true
     },
     {
       "name": "tests",
       "path": "tests/",
-      "file_count": 40,
+      "file_count": 41,
       "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
       "is_package": true
     }
   ],
   "has_init": true,
-  "content_hash": "c9f07cbbba6dd19b"
+  "content_hash": "a217894918003e1e"
 }

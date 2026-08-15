@@ -13,6 +13,7 @@ from structural_lib.codes.is456.wall import (
     BracedWallGeometry,
     WallAxialStatus,
     WallContractError,
+    WallDirectionalReinforcementResult,  # noqa: F401 - typed transport mapping
     WallReinforcementInput,
     WallReinforcementKind,
     WallReinforcementResult,

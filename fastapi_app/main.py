@@ -52,6 +52,7 @@ from fastapi_app.routers import (
     rebar,
     staircase,
     streaming,
+    wall,
     websocket,
     workflows,
 )
@@ -77,6 +78,7 @@ boundary and qualified engineering review.
 - **Footing Design**: Isolated-footing checks and concentric load transfer
 - **Slab Design**: Bounded simply supported one-way slab strip
 - **Staircase Design**: Bounded longitudinal straight waist-slab flight
+- **Wall Design**: Bounded Clause 32 braced-wall axial and reinforcement checks
 - **Detailing**: Reinforcement layout, spacing, and development lengths
 - **Optimization**: Cost-optimized beam cross-section selection
 - **Smart Analysis**: AI-assisted design suggestions and insights
@@ -125,6 +127,10 @@ API_TAGS_METADATA = [
     {
         "name": "staircase",
         "description": "Bounded straight-flight staircase design and maintained evidence.",
+    },
+    {
+        "name": "wall",
+        "description": "Bounded Clause 32 braced-wall checks and maintained evidence.",
     },
     {
         "name": "detailing",
@@ -511,6 +517,10 @@ app.include_router(
 )
 app.include_router(
     staircase.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    wall.router,
     prefix=API_V1_PREFIX,
 )
 app.include_router(

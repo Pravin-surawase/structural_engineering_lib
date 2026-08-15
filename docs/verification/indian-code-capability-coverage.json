@@ -29,10 +29,10 @@
     "Python/structural_lib/codes/is13920/**/*.py"
   ],
   "capability_summary": {
-    "supported_families": 8,
-    "held_families": 13,
+    "supported_families": 9,
+    "held_families": 12,
     "total_declared_families": 21,
-    "supported_pct": 38.1
+    "supported_pct": 42.9
   },
   "standards": [
     {
@@ -43,10 +43,10 @@
       "source_root": "Python/structural_lib/codes/is456",
       "status": "SUPPORTED_SUBSET",
       "capability_summary": {
-        "supported_families": 5,
-        "held_families": 7,
+        "supported_families": 6,
+        "held_families": 6,
         "total_declared_families": 12,
-        "supported_pct": 41.7
+        "supported_pct": 50.0
       },
       "capability_families": [
         {
@@ -173,14 +173,25 @@
         {
           "capability_id": "IS456:2000:wall",
           "family": "wall",
-          "scope_status": "HELD",
-          "implementation_status": "NOT_IMPLEMENTED",
-          "claim": "IS 456 wall design is not implemented.",
-          "workflows": [],
-          "limitations": [
-            "Clause 32 requires a separately verified program."
+          "scope_status": "SUPPORTED",
+          "implementation_status": "IMPLEMENTED_BOUNDED",
+          "claim": "One regular 100-200 mm thick, one-grid, Clause 32.2 braced reinforced-concrete wall under caller-supplied factored in-plane vertical compression, with empirical axial-capacity and Clause 32.5 caller-provided minimum-reinforcement checks.",
+          "workflows": [
+            "design_braced_wall_is456"
           ],
-          "evidence": [],
+          "limitations": [
+            "Applied moment, horizontal action, wall shear, combined flexure, openings, and out-of-plane behavior are excluded.",
+            "Walls thicker than 200 mm, two reinforcement grids, and transverse-enclosure design are excluded.",
+            "Global analysis, load generation, load combinations, bar selection, anchorage, lap, crack width, and direct deflection are excluded.",
+            "Seismic/shear-wall provisions and IS 13920 detailing are excluded."
+          ],
+          "evidence": [
+            "docs/verification/india-2-wall-g0-scope-evidence.md",
+            "docs/verification/india-2-wall-a-axial-kernel-evidence.md",
+            "docs/verification/india-2-wall-b-reinforcement-evidence.md",
+            "docs/verification/india-2-wall-c-public-workflow-evidence.md",
+            "docs/verification/india-2-wall-d-publication-evidence.md"
+          ],
           "qualified_review_required": true
         },
         {
