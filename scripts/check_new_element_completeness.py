@@ -45,7 +45,7 @@ def discover_elements():
 
 
 def check_types(element, verbose=False):
-    """Check Layer 1: Type definitions in core/."""
+    """Check Layer 1: typed public or code-layer contracts."""
     checks = {"layer": "types", "files": []}
 
     # Check for result type in data_types.py
@@ -68,6 +68,37 @@ def check_types(element, verbose=False):
             checks["files"].append(str(dt_file.relative_to(REPO_ROOT)))
     else:
         checks["result_type"] = False
+
+    # IS-specific request/result carriers belong with their code or service
+    # layer, not necessarily in the code-independent core package.
+    if not checks["result_type"]:
+        candidate_files = []
+        element_path = (
+            REPO_ROOT / "Python" / "structural_lib" / "codes" / "is456" / element
+        )
+        if element_path.is_dir():
+            candidate_files.extend(element_path.glob("*.py"))
+        service_file = (
+            REPO_ROOT / "Python" / "structural_lib" / "services" / f"{element}_api.py"
+        )
+        if service_file.exists():
+            candidate_files.append(service_file)
+        for candidate in candidate_files:
+            try:
+                tree = ast.parse(candidate.read_text(encoding="utf-8"))
+            except (SyntaxError, UnicodeDecodeError):
+                continue
+            class_names = {
+                node.name for node in ast.walk(tree) if isinstance(node, ast.ClassDef)
+            }
+            if any(
+                element.lower() in name.lower() and name.endswith(("Input", "Result"))
+                for name in class_names
+            ):
+                checks["result_type"] = True
+                if verbose:
+                    checks["files"].append(str(candidate.relative_to(REPO_ROOT)))
+                break
 
     # Check for error codes in errors.py
     err_file = REPO_ROOT / "Python" / "structural_lib" / "core" / "errors.py"
@@ -166,12 +197,13 @@ def check_tests(element, verbose=False):
     checks = {"layer": "tests", "files": []}
     tests_dir = REPO_ROOT / "Python" / "tests"
 
-    # Search for test files matching element name
-    test_files = list(tests_dir.rglob(f"test_{element}*.py")) + list(
-        tests_dir.rglob(f"test_*{element}*.py")
-    )
-    # Deduplicate
-    test_files = list(set(test_files))
+    # A maintained element package commonly keeps generic test filenames such
+    # as test_design.py below a named directory. Count both path and filename.
+    test_files = [
+        path
+        for path in tests_dir.rglob("test_*.py")
+        if element.lower() in path.relative_to(tests_dir).as_posix().lower()
+    ]
     checks["test_files"] = len(test_files)
 
     if verbose:
@@ -202,18 +234,27 @@ def check_api(element, verbose=False):
         content = api_file.read_text()
         # Look for design_<element>_is456 or <element> related functions
         elem_lower = element.lower()
-        # Count public functions related to element
-        func_count = 0
-        func_names = []
+        # Count defined and re-exported public functions related to element.
+        func_names = set()
         try:
             tree = ast.parse(content)
             for node in ast.walk(tree):
                 if isinstance(node, ast.FunctionDef) and not node.name.startswith("_"):
                     if elem_lower in node.name.lower():
-                        func_count += 1
-                        func_names.append(node.name)
+                        func_names.add(node.name)
+                elif isinstance(node, ast.ImportFrom):
+                    for imported in node.names:
+                        name = imported.asname or imported.name
+                        if (
+                            elem_lower in name.lower()
+                            and not name.startswith("_")
+                            and name[:1].islower()
+                        ):
+                            func_names.add(name)
         except (SyntaxError, UnicodeDecodeError):
             pass
+        func_names = sorted(func_names)
+        func_count = len(func_names)
         checks["api_functions"] = func_count
         checks["has_api"] = func_count > 0
 
@@ -256,7 +297,11 @@ def check_endpoint(element, verbose=False):
     # Check for endpoint tests
     tests_dir = REPO_ROOT / "fastapi_app" / "tests"
     if tests_dir.exists():
-        test_files = list(tests_dir.rglob(f"*{element}*"))
+        test_files = [
+            path
+            for path in tests_dir.rglob(f"*{element}*")
+            if path.is_file() and path.suffix == ".py"
+        ]
         checks["endpoint_tests"] = len(test_files)
         if verbose and test_files:
             checks["files"].extend([str(f.relative_to(REPO_ROOT)) for f in test_files])

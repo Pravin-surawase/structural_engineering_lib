@@ -16,7 +16,7 @@
     {
       "name": "test_design.py",
       "type": "python",
-      "size_lines": 136,
+      "size_lines": 142,
       "last_updated": "2026-08-15",
       "description": "INDIA-2C structural design benchmarks and dispositions.",
       "functions": [
@@ -42,7 +42,7 @@
           "name": "test_forged_action_result_fails_integrity_check"
         }
       ],
-      "content_hash": "b10ce2fa6706"
+      "content_hash": "d3257c084f97"
     },
     {
       "name": "test_geometry_actions.py",
@@ -85,5 +85,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "1877a9d331eea9a0"
+  "content_hash": "b948a82dfd30bc7c"
 }

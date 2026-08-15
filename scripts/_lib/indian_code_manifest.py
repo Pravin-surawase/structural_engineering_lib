@@ -65,6 +65,12 @@ _IS456_EVIDENCE = {
         "docs/verification/footing-release-inclusion.json",
     ),
     "solid_slab": ("docs/verification/is456-slab-evidence.md",),
+    "stair": (
+        "docs/verification/india-2a-staircase-scope-evidence.md",
+        "docs/verification/india-2b-staircase-actions-evidence.md",
+        "docs/verification/india-2c-staircase-design-evidence.md",
+        "docs/verification/india-2d-staircase-publication-evidence.md",
+    ),
 }
 
 _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
@@ -73,11 +79,6 @@ _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
             "family": "wall",
             "claim": "IS 456 wall design is not implemented.",
             "limitations": ["Clause 32 requires a separately verified program."],
-        },
-        {
-            "family": "stair",
-            "claim": "IS 456 stair design is not implemented.",
-            "limitations": ["Clause 33 requires a separately verified program."],
         },
         {
             "family": "deep_beam",

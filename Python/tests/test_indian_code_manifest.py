@@ -84,6 +84,9 @@ def test_is456_supported_families_are_generated_from_runtime_registry() -> None:
     assert generated_supported["solid_slab"]["implementation_status"] == (
         "IMPLEMENTED_BOUNDED"
     )
+    assert generated_supported["stair"]["workflows"] == [
+        "design_straight_flight_staircase_is456"
+    ]
     flat_slab = next(
         item for item in is456["capability_families"] if item["family"] == "flat_slab"
     )
@@ -123,9 +126,9 @@ def test_parity_dashboard_consumes_declared_capability_families() -> None:
     report = _run_json("parity_dashboard.py", "--section", "capabilities", "--json")
     section = report["sections"][0]
     assert section["metric_kind"] == "DECLARED_CAPABILITY_FAMILY_COVERAGE"
-    assert section["supported"] == 7
-    assert section["held"] == 14
-    assert section["pct"] == 33
+    assert section["supported"] == 8
+    assert section["held"] == 13
+    assert section["pct"] == 38
     assert section["informational"] is True
     assert report["overall_pct"] is None
     assert "capability scope" in report["overall_scope"]

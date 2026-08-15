@@ -2846,6 +2846,58 @@
         "title": "APIResponse[SmartAnalysisResponse]",
         "type": "object"
       },
+      "APIResponse_StraightFlightStaircaseResponse_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/StraightFlightStaircaseResponse"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[StraightFlightStaircaseResponse]",
+        "type": "object"
+      },
       "APIResponse_TorsionDesignResponse_": {
         "example": {
           "data": {
@@ -16441,6 +16493,74 @@
         "title": "SmartAnalysisResponse",
         "type": "object"
       },
+      "StaircaseDesignCheckResponse": {
+        "properties": {
+          "actual": {
+            "title": "Actual",
+            "type": "number"
+          },
+          "check_id": {
+            "title": "Check Id",
+            "type": "string"
+          },
+          "comparison": {
+            "title": "Comparison",
+            "type": "string"
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit"
+          },
+          "passed": {
+            "title": "Passed",
+            "type": "boolean"
+          },
+          "unit": {
+            "title": "Unit",
+            "type": "string"
+          }
+        },
+        "required": [
+          "check_id",
+          "actual",
+          "limit",
+          "unit",
+          "comparison",
+          "passed"
+        ],
+        "title": "StaircaseDesignCheckResponse",
+        "type": "object"
+      },
+      "StaircaseShearResponse": {
+        "properties": {
+          "design_tau_c_n_per_mm2": {
+            "title": "Design Tau C N Per Mm2",
+            "type": "number"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "tau_v_n_per_mm2": {
+            "title": "Tau V N Per Mm2",
+            "type": "number"
+          }
+        },
+        "required": [
+          "tau_v_n_per_mm2",
+          "design_tau_c_n_per_mm2",
+          "status"
+        ],
+        "title": "StaircaseShearResponse",
+        "type": "object"
+      },
       "SteelSummaryResponse": {
         "description": "Steel quantities for one grade.",
         "properties": {
@@ -16611,6 +16731,579 @@
           "cost_inr"
         ],
         "title": "StorySummaryResponse",
+        "type": "object"
+      },
+      "StraightFlightActionResponse": {
+        "properties": {
+          "equilibrium_residual_kn": {
+            "title": "Equilibrium Residual Kn",
+            "type": "number"
+          },
+          "flight_factored_load_kn_per_m2": {
+            "title": "Flight Factored Load Kn Per M2",
+            "type": "number"
+          },
+          "flight_service_load_kn_per_m2": {
+            "title": "Flight Service Load Kn Per M2",
+            "type": "number"
+          },
+          "landing_self_weight_kn_per_m2": {
+            "title": "Landing Self Weight Kn Per M2",
+            "type": "number"
+          },
+          "load_generation_status": {
+            "title": "Load Generation Status",
+            "type": "string"
+          },
+          "lower_landing_factored_load_kn_per_m2": {
+            "title": "Lower Landing Factored Load Kn Per M2",
+            "type": "number"
+          },
+          "lower_support_reaction_kn": {
+            "title": "Lower Support Reaction Kn",
+            "type": "number"
+          },
+          "maximum_factored_moment_knm_per_m": {
+            "title": "Maximum Factored Moment Knm Per M",
+            "type": "number"
+          },
+          "maximum_factored_shear_kn_per_m": {
+            "title": "Maximum Factored Shear Kn Per M",
+            "type": "number"
+          },
+          "maximum_moment_location_mm": {
+            "title": "Maximum Moment Location Mm",
+            "type": "number"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "step_self_weight_kn_per_m2": {
+            "title": "Step Self Weight Kn Per M2",
+            "type": "number"
+          },
+          "total_factored_load_kn": {
+            "title": "Total Factored Load Kn",
+            "type": "number"
+          },
+          "upper_landing_factored_load_kn_per_m2": {
+            "title": "Upper Landing Factored Load Kn Per M2",
+            "type": "number"
+          },
+          "upper_support_reaction_kn": {
+            "title": "Upper Support Reaction Kn",
+            "type": "number"
+          },
+          "waist_self_weight_kn_per_m2": {
+            "title": "Waist Self Weight Kn Per M2",
+            "type": "number"
+          }
+        },
+        "required": [
+          "waist_self_weight_kn_per_m2",
+          "step_self_weight_kn_per_m2",
+          "landing_self_weight_kn_per_m2",
+          "flight_service_load_kn_per_m2",
+          "lower_landing_factored_load_kn_per_m2",
+          "flight_factored_load_kn_per_m2",
+          "upper_landing_factored_load_kn_per_m2",
+          "total_factored_load_kn",
+          "lower_support_reaction_kn",
+          "upper_support_reaction_kn",
+          "maximum_factored_shear_kn_per_m",
+          "maximum_moment_location_mm",
+          "maximum_factored_moment_knm_per_m",
+          "equilibrium_residual_kn",
+          "source_refs",
+          "load_generation_status"
+        ],
+        "title": "StraightFlightActionResponse",
+        "type": "object"
+      },
+      "StraightFlightDesignResponse": {
+        "properties": {
+          "actual_span_to_depth_ratio": {
+            "title": "Actual Span To Depth Ratio",
+            "type": "number"
+          },
+          "ast_required_mm2_per_m": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ast Required Mm2 Per M"
+          },
+          "basic_span_to_depth_limit": {
+            "title": "Basic Span To Depth Limit",
+            "type": "number"
+          },
+          "complete_engineering_design_approved": {
+            "const": false,
+            "title": "Complete Engineering Design Approved",
+            "type": "boolean"
+          },
+          "distribution_reinforcement_provided_mm2_per_m": {
+            "title": "Distribution Reinforcement Provided Mm2 Per M",
+            "type": "number"
+          },
+          "distribution_reinforcement_required_mm2_per_m": {
+            "title": "Distribution Reinforcement Required Mm2 Per M",
+            "type": "number"
+          },
+          "factored_moment_knm_per_m": {
+            "title": "Factored Moment Knm Per M",
+            "type": "number"
+          },
+          "factored_shear_kn_per_m": {
+            "title": "Factored Shear Kn Per M",
+            "type": "number"
+          },
+          "governing_checks": {
+            "items": {
+              "$ref": "#/components/schemas/StaircaseDesignCheckResponse"
+            },
+            "title": "Governing Checks",
+            "type": "array"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "limiting_moment_knm_per_m": {
+            "title": "Limiting Moment Knm Per M",
+            "type": "number"
+          },
+          "main_reinforcement_provided_mm2_per_m": {
+            "title": "Main Reinforcement Provided Mm2 Per M",
+            "type": "number"
+          },
+          "main_reinforcement_required_mm2_per_m": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Main Reinforcement Required Mm2 Per M"
+          },
+          "minimum_reinforcement_mm2_per_m": {
+            "title": "Minimum Reinforcement Mm2 Per M",
+            "type": "number"
+          },
+          "serviceability_status": {
+            "title": "Serviceability Status",
+            "type": "string"
+          },
+          "shear": {
+            "$ref": "#/components/schemas/StaircaseShearResponse"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "REVIEW_REQUIRED",
+              "FAIL"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "factored_moment_knm_per_m",
+          "factored_shear_kn_per_m",
+          "limiting_moment_knm_per_m",
+          "ast_required_mm2_per_m",
+          "minimum_reinforcement_mm2_per_m",
+          "main_reinforcement_required_mm2_per_m",
+          "main_reinforcement_provided_mm2_per_m",
+          "distribution_reinforcement_required_mm2_per_m",
+          "distribution_reinforcement_provided_mm2_per_m",
+          "shear",
+          "actual_span_to_depth_ratio",
+          "basic_span_to_depth_limit",
+          "serviceability_status",
+          "governing_checks",
+          "status",
+          "source_refs",
+          "limitations",
+          "complete_engineering_design_approved"
+        ],
+        "title": "StraightFlightDesignResponse",
+        "type": "object"
+      },
+      "StraightFlightGeometryResponse": {
+        "properties": {
+          "effective_span_mm": {
+            "title": "Effective Span Mm",
+            "type": "number"
+          },
+          "inclined_going_length_mm": {
+            "title": "Inclined Going Length Mm",
+            "type": "number"
+          },
+          "inclined_step_length_mm": {
+            "title": "Inclined Step Length Mm",
+            "type": "number"
+          },
+          "slope_angle_degrees": {
+            "title": "Slope Angle Degrees",
+            "type": "number"
+          },
+          "slope_factor": {
+            "title": "Slope Factor",
+            "type": "number"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "effective_span_mm",
+          "inclined_step_length_mm",
+          "slope_factor",
+          "slope_angle_degrees",
+          "inclined_going_length_mm",
+          "source_refs"
+        ],
+        "title": "StraightFlightGeometryResponse",
+        "type": "object"
+      },
+      "StraightFlightStaircaseProvenanceResponse": {
+        "properties": {
+          "benchmark_id": {
+            "title": "Benchmark Id",
+            "type": "string"
+          },
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "clause_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "code_edition": {
+            "title": "Code Edition",
+            "type": "string"
+          },
+          "load_basis_reference": {
+            "title": "Load Basis Reference",
+            "type": "string"
+          },
+          "load_generation_status": {
+            "title": "Load Generation Status",
+            "type": "string"
+          },
+          "schema_version": {
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "workflow": {
+            "title": "Workflow",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "code_edition",
+          "workflow",
+          "case_id",
+          "load_basis_reference",
+          "load_generation_status",
+          "benchmark_id",
+          "clause_refs",
+          "source_refs"
+        ],
+        "title": "StraightFlightStaircaseProvenanceResponse",
+        "type": "object"
+      },
+      "StraightFlightStaircaseRequest": {
+        "additionalProperties": false,
+        "description": "Explicit inputs for the sole supported staircase case.",
+        "properties": {
+          "case_id": {
+            "minLength": 1,
+            "title": "Case Id",
+            "type": "string"
+          },
+          "concrete_unit_weight_kn_per_m3": {
+            "exclusiveMinimum": 0.0,
+            "title": "Concrete Unit Weight Kn Per M3",
+            "type": "number"
+          },
+          "distribution_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Distribution Bar Diameter Mm",
+            "type": "number"
+          },
+          "distribution_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Distribution Bar Spacing Mm",
+            "type": "number"
+          },
+          "effective_depth_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Effective Depth Mm",
+            "type": "number"
+          },
+          "fck_n_per_mm2": {
+            "maximum": 40.0,
+            "minimum": 20.0,
+            "title": "Fck N Per Mm2",
+            "type": "number"
+          },
+          "flight_superimposed_service_load_kn_per_m2": {
+            "minimum": 0.0,
+            "title": "Flight Superimposed Service Load Kn Per M2",
+            "type": "number"
+          },
+          "flight_width_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Flight Width Mm",
+            "type": "number"
+          },
+          "fy_n_per_mm2": {
+            "enum": [
+              250.0,
+              415.0,
+              500.0
+            ],
+            "title": "Fy N Per Mm2",
+            "type": "number"
+          },
+          "going_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Going Mm",
+            "type": "number"
+          },
+          "has_stringer_beams": {
+            "const": false,
+            "default": false,
+            "title": "Has Stringer Beams",
+            "type": "boolean"
+          },
+          "is_cast_in_situ_solid": {
+            "const": true,
+            "default": true,
+            "title": "Is Cast In Situ Solid",
+            "type": "boolean"
+          },
+          "landing_thickness_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Landing Thickness Mm",
+            "type": "number"
+          },
+          "landings_collinear": {
+            "const": true,
+            "default": true,
+            "title": "Landings Collinear",
+            "type": "boolean"
+          },
+          "load_basis_reference": {
+            "minLength": 1,
+            "title": "Load Basis Reference",
+            "type": "string"
+          },
+          "lower_landing_effective_length_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Lower Landing Effective Length Mm",
+            "type": "number"
+          },
+          "lower_landing_load_share": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 1.0,
+            "title": "Lower Landing Load Share",
+            "type": "number"
+          },
+          "lower_landing_superimposed_service_load_kn_per_m2": {
+            "minimum": 0.0,
+            "title": "Lower Landing Superimposed Service Load Kn Per M2",
+            "type": "number"
+          },
+          "main_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Main Bar Diameter Mm",
+            "type": "number"
+          },
+          "main_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Main Bar Spacing Mm",
+            "type": "number"
+          },
+          "riser_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Riser Mm",
+            "type": "number"
+          },
+          "span_direction": {
+            "const": "longitudinal",
+            "default": "longitudinal",
+            "title": "Span Direction",
+            "type": "string"
+          },
+          "support_case": {
+            "const": "landings_span_with_flight",
+            "default": "landings_span_with_flight",
+            "title": "Support Case",
+            "type": "string"
+          },
+          "tread_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Tread Mm",
+            "type": "number"
+          },
+          "ultimate_load_factor": {
+            "exclusiveMinimum": 0.0,
+            "title": "Ultimate Load Factor",
+            "type": "number"
+          },
+          "upper_landing_effective_length_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Upper Landing Effective Length Mm",
+            "type": "number"
+          },
+          "upper_landing_load_share": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 1.0,
+            "title": "Upper Landing Load Share",
+            "type": "number"
+          },
+          "upper_landing_superimposed_service_load_kn_per_m2": {
+            "minimum": 0.0,
+            "title": "Upper Landing Superimposed Service Load Kn Per M2",
+            "type": "number"
+          },
+          "waist_thickness_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Waist Thickness Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "case_id",
+          "lower_landing_effective_length_mm",
+          "going_mm",
+          "upper_landing_effective_length_mm",
+          "flight_width_mm",
+          "riser_mm",
+          "tread_mm",
+          "waist_thickness_mm",
+          "landing_thickness_mm",
+          "lower_landing_superimposed_service_load_kn_per_m2",
+          "flight_superimposed_service_load_kn_per_m2",
+          "upper_landing_superimposed_service_load_kn_per_m2",
+          "lower_landing_load_share",
+          "upper_landing_load_share",
+          "concrete_unit_weight_kn_per_m3",
+          "ultimate_load_factor",
+          "load_basis_reference",
+          "effective_depth_mm",
+          "fck_n_per_mm2",
+          "fy_n_per_mm2",
+          "main_bar_diameter_mm",
+          "main_bar_spacing_mm",
+          "distribution_bar_diameter_mm",
+          "distribution_bar_spacing_mm"
+        ],
+        "title": "StraightFlightStaircaseRequest",
+        "type": "object"
+      },
+      "StraightFlightStaircaseResponse": {
+        "description": "Typed transport subset of the composed service result.",
+        "properties": {
+          "actions": {
+            "$ref": "#/components/schemas/StraightFlightActionResponse"
+          },
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "complete_engineering_design_approved": {
+            "const": false,
+            "title": "Complete Engineering Design Approved",
+            "type": "boolean"
+          },
+          "design": {
+            "$ref": "#/components/schemas/StraightFlightDesignResponse"
+          },
+          "geometry": {
+            "$ref": "#/components/schemas/StraightFlightGeometryResponse"
+          },
+          "held_cases": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Held Cases",
+            "type": "array"
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/StraightFlightStaircaseProvenanceResponse"
+          },
+          "qualified_review_required": {
+            "const": true,
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "REVIEW_REQUIRED",
+              "FAIL"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "supported_case": {
+            "title": "Supported Case",
+            "type": "string"
+          }
+        },
+        "required": [
+          "case_id",
+          "status",
+          "geometry",
+          "actions",
+          "design",
+          "supported_case",
+          "held_cases",
+          "provenance",
+          "qualified_review_required",
+          "complete_engineering_design_approved"
+        ],
+        "title": "StraightFlightStaircaseResponse",
         "type": "object"
       },
       "Suggestion": {
@@ -18026,7 +18719,7 @@
       "name": "Structural Engineering Library",
       "url": "https://github.com/yourusername/structural_engineering_lib"
     },
-    "description": "\n## IS 456:2000 Compliant Structural Engineering Library\n\nThis API exposes the library's route-specific supported IS 456:2000 reinforced\nconcrete calculations. Each result remains subject to the documented case\nboundary and qualified engineering review.\n\n### Features\n\n- **Beam Design**: Flexure, shear, and combined design calculations\n- **Column Design**: Bounded rectangular short/long-column workflows\n- **Footing Design**: Isolated-footing checks and concentric load transfer\n- **Slab Design**: Bounded simply supported one-way slab strip\n- **Detailing**: Reinforcement layout, spacing, and development lengths\n- **Optimization**: Cost-optimized beam cross-section selection\n- **Smart Analysis**: AI-assisted design suggestions and insights\n- **3D Geometry**: Visualization-ready mesh generation\n\n### Design Codes\n\n- IS 456:2000 - Plain and Reinforced Concrete\n- IS 13920 - Ductile Detailing for Seismic Resistance\n\n### Units\n\nAll inputs and outputs use consistent units:\n- **Length**: millimeters (mm)\n- **Force**: kilonewtons (kN)\n- **Moment**: kilonewton-meters (kN·m)\n- **Stress**: N/mm² (MPa)\n- **Area**: mm²\n",
+    "description": "\n## IS 456:2000 Compliant Structural Engineering Library\n\nThis API exposes the library's route-specific supported IS 456:2000 reinforced\nconcrete calculations. Each result remains subject to the documented case\nboundary and qualified engineering review.\n\n### Features\n\n- **Beam Design**: Flexure, shear, and combined design calculations\n- **Column Design**: Bounded rectangular short/long-column workflows\n- **Footing Design**: Isolated-footing checks and concentric load transfer\n- **Slab Design**: Bounded simply supported one-way slab strip\n- **Staircase Design**: Bounded longitudinal straight waist-slab flight\n- **Detailing**: Reinforcement layout, spacing, and development lengths\n- **Optimization**: Cost-optimized beam cross-section selection\n- **Smart Analysis**: AI-assisted design suggestions and insights\n- **3D Geometry**: Visualization-ready mesh generation\n\n### Design Codes\n\n- IS 456:2000 - Plain and Reinforced Concrete\n- IS 13920 - Ductile Detailing for Seismic Resistance\n\n### Units\n\nAll inputs and outputs use consistent units:\n- **Length**: millimeters (mm)\n- **Force**: kilonewtons (kN)\n- **Moment**: kilonewton-meters (kN·m)\n- **Stress**: N/mm² (MPa)\n- **Area**: mm²\n",
     "license": {
       "name": "MIT License",
       "url": "https://opensource.org/licenses/MIT"
@@ -19530,6 +20223,48 @@
         "tags": [
           "footing",
           "slab"
+        ]
+      }
+    },
+    "/api/v1/design/staircase/straight-flight": {
+      "post": {
+        "description": "Validate transport inputs and delegate all calculation to the service.",
+        "operationId": "design_straight_flight_staircase_api_v1_design_staircase_straight_flight_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StraightFlightStaircaseRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_StraightFlightStaircaseResponse_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Design a bounded straight-flight waist-slab staircase",
+        "tags": [
+          "staircase"
         ]
       }
     },
@@ -21158,6 +21893,10 @@
     {
       "description": "Bounded isolated-footing design and maintained evidence.",
       "name": "footing"
+    },
+    {
+      "description": "Bounded straight-flight staircase design and maintained evidence.",
+      "name": "staircase"
     },
     {
       "description": "Reinforcement detailing including bar layout, spacing, and anchorage.",

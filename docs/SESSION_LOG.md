@@ -5,6 +5,90 @@
 
 ---
 
+## 2026-08-15 — Session: INDIA-2D Staircase Public Workflow
+
+**Agent:** Codex (`api-developer`, sole writer; no subagents)
+
+**Branch:** `codex/india-2d-staircase-public` from integrated `origin/main` at
+`bb1abd1818028118f92b1f7c8b0ed1ba57994fdf`
+
+**Git handoff receipt:** `docs/verification/india-2d-git-handoff-receipt.json`
+
+**Focus:** Publish the typed staircase Python/FastAPI workflow and promote only its verified straight-flight capability.
+
+### Summary
+
+- Added the typed request/result/provenance service composition and canonical
+  package/service exports.
+- Added a strictly validated typed FastAPI route at
+  `/api/v1/design/staircase/straight-flight` with no transport-layer math.
+- Reconciled semantic capability discovery and the generated Indian-code
+  manifest from held stair design to one bounded supported workflow.
+- Corrected the generic element-completeness scanner so nested test packages,
+  code/service-layer types, public re-exports, and Python-only endpoint tests
+  are measured truthfully; staircase now reports `L2 API Complete`.
+- Preserved `REVIEW_REQUIRED` for the NPTEL serviceability boundary, plus
+  explicit passing and failing public cases.
+
+### Issues encountered
+
+- The completeness checker reported no staircase tests/API despite their
+  maintained nested package and re-exported public function.
+- Initial FastAPI response validation required a computed shear property that
+  is not a dataclass field and therefore is not emitted by `asdict()`.
+- The first essential public-route review found that a singly reinforced
+  capacity exceedance serialized `math.inf` as a placeholder check limit.
+- The first focused manifest/parity run used the pre-regeneration committed
+  artifact, and a standalone-router test expected the main app's custom Pydantic
+  error envelope.
+
+### Root causes and resolutions
+
+- The checker matched only staircase text in test filenames, scanned only
+  function definitions physically declared in the re-export hub, and required
+  types in the code-independent core. It now recognizes named parent paths,
+  imported public functions, and IS-specific code/service request-result types;
+  focused regression tests prove all three paths and the L2 result.
+- `SlabShearResult.is_safe_without_shear_reinforcement` is a computed property,
+  not serialized dataclass state. The typed transport now exposes the serialized
+  shear `status`; focused response validation passes while the Python result
+  retains the convenience property.
+- The capacity-failure branch had no finite required-steel limit because the
+  rectangular singly reinforced model was already outside capacity. The check
+  contract now uses `limit=None` for that explicit not-evaluated quantity;
+  focused FastAPI evidence proves the complete result remains a JSON-safe
+  `FAIL` instead of causing response serialization failure.
+- The parity dashboard correctly consumes the committed canonical manifest, so
+  the maintained generator now runs before parity assertions. Standalone router
+  tests assert status only for framework validation, while the mounted-main-app
+  test proves the canonical safe envelope. The repeated focused set passed 53
+  tests.
+
+### Evidence
+
+- Fresh-lane Git state: `READY_LOCAL`; runtime diagnosis: `source_bound=true`.
+- NPTEL public route: 5100 mm span, 68.048997 kNm/m, 921.196 mm2/m required
+  steel, `REVIEW_REQUIRED`; explicit shorter/unsafe cases return `PASS`/`FAIL`.
+- Focused set: 54 passed, including JSON-safe capacity failure.
+- Completeness checker: `L2 API Complete`; one Python API function, one router,
+  19 discovered Python test functions, and no React claim.
+- API manifest, OpenAPI baseline, and Indian-code capability manifest are
+  regenerated and current.
+- Maintained mypy: 200 source files passed; architecture: 0 violations across
+  163 files; import validator: 0 broken imports across 583 files; quick gate:
+  10/10.
+
+### Terminal issues
+
+- Initial validation commands guessed retired script names
+  `check_architecture.py`, `check_imports.py`, and
+  `check_api_docs_sync.py`. Targeted `rg --files`, automation discovery, and
+  the pre-commit registry identified the maintained commands
+  `check_architecture_boundaries.py`, `validate_imports.py`, and
+  `check_api.py --sync`; all three maintained checks then passed.
+
+---
+
 ## 2026-08-15 — Session: INDIA-2C Staircase Structural Design
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

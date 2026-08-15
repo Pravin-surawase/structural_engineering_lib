@@ -2,7 +2,7 @@
   "generated": "2026-08-15",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 138,
+  "count": 142,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -243,6 +243,21 @@
       "name": "StirrupLoop",
       "kind": "class",
       "signature": "(position_x: 'float', path: 'list[Point3D]', diameter: 'float', legs: 'int' = 2, hook_type: 'str' = '90') -> None"
+    },
+    {
+      "name": "StraightFlightStaircaseInput",
+      "kind": "class",
+      "signature": "(case_id: 'str', lower_landing_effective_length_mm: 'float', going_mm: 'float', upper_landing_effective_length_mm: 'float', flight_width_mm: 'float', riser_mm: 'float', tread_mm: 'float', waist_thickness_mm: 'float', landing_thickness_mm: 'float', lower_landing_superimposed_service_load_kn_per_m2: 'float', flight_superimposed_service_load_kn_per_m2: 'float', upper_landing_superimposed_service_load_kn_per_m2: 'float', lower_landing_load_share: 'float', upper_landing_load_share: 'float', concrete_unit_weight_kn_per_m3: 'float', ultimate_load_factor: 'float', load_basis_reference: 'str', effective_depth_mm: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', main_bar_diameter_mm: 'float', main_bar_spacing_mm: 'float', distribution_bar_diameter_mm: 'float', distribution_bar_spacing_mm: 'float', support_case: \"Literal['landings_span_with_flight']\" = 'landings_span_with_flight', span_direction: \"Literal['longitudinal']\" = 'longitudinal', landings_collinear: 'Literal[True]' = True, has_stringer_beams: 'Literal[False]' = False, is_cast_in_situ_solid: 'Literal[True]' = True) -> None"
+    },
+    {
+      "name": "StraightFlightStaircaseProvenance",
+      "kind": "class",
+      "signature": "(schema_version: 'str', code_edition: 'str', workflow: 'str', case_id: 'str', load_basis_reference: 'str', load_generation_status: 'str', benchmark_id: 'str', clause_refs: 'tuple[str, ...]', source_refs: 'tuple[str, ...]') -> None"
+    },
+    {
+      "name": "StraightFlightStaircaseResult",
+      "kind": "class",
+      "signature": "(case_id: 'str', status: 'StaircaseDesignStatus', geometry: 'StraightFlightGeometryResult', actions: 'StraightFlightActionResult', design: 'StraightFlightDesignResult', supported_case: 'str', held_cases: 'tuple[str, ...]', provenance: 'StraightFlightStaircaseProvenance', qualified_review_required: 'bool' = True, complete_engineering_design_approved: 'bool' = False) -> None"
     },
     {
       "name": "TorsionResult",
@@ -528,6 +543,11 @@
       "name": "design_short_column_uniaxial_is456",
       "kind": "function",
       "signature": "(Pu_kN: 'float', Mu_kNm: 'float', b_mm: 'float', D_mm: 'float', le_mm: 'float', fck_nmm2: 'float | None' = None, fy_nmm2: 'float | None' = None, Asc_mm2: 'float' = 0.0, d_prime_mm: 'float' = 0.0, l_unsupported_mm: 'float | None' = None, *, fck: 'float | None' = None, fy: 'float | None' = None) -> 'ColumnUniaxialResult'"
+    },
+    {
+      "name": "design_straight_flight_staircase_is456",
+      "kind": "function",
+      "signature": "(request: 'StraightFlightStaircaseInput') -> 'StraightFlightStaircaseResult'"
     },
     {
       "name": "design_torsion",

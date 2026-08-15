@@ -29,10 +29,10 @@
     "Python/structural_lib/codes/is13920/**/*.py"
   ],
   "capability_summary": {
-    "supported_families": 7,
-    "held_families": 14,
+    "supported_families": 8,
+    "held_families": 13,
     "total_declared_families": 21,
-    "supported_pct": 33.3
+    "supported_pct": 38.1
   },
   "standards": [
     {
@@ -43,10 +43,10 @@
       "source_root": "Python/structural_lib/codes/is456",
       "status": "SUPPORTED_SUBSET",
       "capability_summary": {
-        "supported_families": 4,
-        "held_families": 8,
+        "supported_families": 5,
+        "held_families": 7,
         "total_declared_families": 12,
-        "supported_pct": 33.3
+        "supported_pct": 41.7
       },
       "capability_families": [
         {
@@ -149,6 +149,28 @@
           "qualified_review_required": true
         },
         {
+          "capability_id": "IS456:2000:stair",
+          "family": "stair",
+          "scope_status": "SUPPORTED",
+          "implementation_status": "IMPLEMENTED_BOUNDED",
+          "claim": "One cast-in-situ solid longitudinal straight waist-slab flight with two collinear landing effective segments spanning between outer beam or wall supports; explicit horizontal-plan self-weight, caller-supplied superimposed service loads and load shares, three-segment actions, flexure, supplied-bar checks, ordinary one-way shear, and the basic span/depth serviceability boundary.",
+          "workflows": [
+            "design_straight_flight_staircase_is456"
+          ],
+          "limitations": [
+            "Dog-legged, open-well, quarter-turn, half-turn, bifurcated, cantilever, spiral, transverse, precast, and stringer-supported stairs are excluded.",
+            "IS 875 load generation, project load combinations, load patterns, continuity, redistribution, concentrated actions, and seismic behavior are excluded.",
+            "Modification factors, direct deflection, crack width, development-length layout, landing torsion, and automatic bar selection remain held."
+          ],
+          "evidence": [
+            "docs/verification/india-2a-staircase-scope-evidence.md",
+            "docs/verification/india-2b-staircase-actions-evidence.md",
+            "docs/verification/india-2c-staircase-design-evidence.md",
+            "docs/verification/india-2d-staircase-publication-evidence.md"
+          ],
+          "qualified_review_required": true
+        },
+        {
           "capability_id": "IS456:2000:wall",
           "family": "wall",
           "scope_status": "HELD",
@@ -157,19 +179,6 @@
           "workflows": [],
           "limitations": [
             "Clause 32 requires a separately verified program."
-          ],
-          "evidence": [],
-          "qualified_review_required": true
-        },
-        {
-          "capability_id": "IS456:2000:stair",
-          "family": "stair",
-          "scope_status": "HELD",
-          "implementation_status": "NOT_IMPLEMENTED",
-          "claim": "IS 456 stair design is not implemented.",
-          "workflows": [],
-          "limitations": [
-            "Clause 33 requires a separately verified program."
           ],
           "evidence": [],
           "qualified_review_required": true

@@ -1974,7 +1974,7 @@
     {
       "name": "check_new_element_completeness.py",
       "type": "python",
-      "size_lines": 624,
+      "size_lines": 669,
       "last_updated": "2026-08-15",
       "description": "Check structural element completeness across all 7 layers.",
       "functions": [
@@ -1984,7 +1984,7 @@
         },
         {
           "name": "check_types",
-          "description": "Check Layer 1: Type definitions in core/.",
+          "description": "Check Layer 1: typed public or code-layer contracts.",
           "params": [
             "element",
             "verbose"
@@ -2082,7 +2082,7 @@
         "REPO_ROOT",
         "KNOWN_ELEMENTS"
       ],
-      "content_hash": "c45ca382a032"
+      "content_hash": "f7efe7ed7552"
     },
     {
       "name": "check_next_session_brief_length.py",
@@ -5522,5 +5522,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "73dac58404929a1f"
+  "content_hash": "0cf8fdb5a8ae3dc4"
 }

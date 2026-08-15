@@ -505,7 +505,7 @@ footing.footing_punching_shear(...)
 
 **Status:** Preview - Function signatures and return types may change before v1.0.
 
-### Library-First Footing and Slab APIs (Development Preview)
+### Library-First Footing, Slab, and Staircase APIs (Development Preview)
 
 The bounded LIB-IS456-V1 routes are public for evaluation, but are not yet a
 pre-1.0 stability promise:
@@ -534,6 +534,13 @@ two_way: api.TwoWaySlabPanelWorkflowResult = (
 )
 two_way_external = api.design_two_way_slab_panel_is456(...)
 interior_flexure_compatibility = api.design_two_way_slab_is456(...)
+staircase_request = api.StraightFlightStaircaseInput(...)
+staircase: api.StraightFlightStaircaseResult = (
+    api.design_straight_flight_staircase_is456(staircase_request)
+)
+staircase_provenance: api.StraightFlightStaircaseProvenance = (
+    staircase.provenance
+)
 capabilities: tuple[api.IS456Capability, ...] = (
     api.get_supported_is456_capabilities()
 )
@@ -552,6 +559,13 @@ load transfer, and optional provided-bar detailing. Eccentric/partial-contact
 loading, other foundation systems, settlement/soil-structure interaction,
 lateral/uplift/global-overturning checks, and arbitrary geometry are outside the
 contract.
+
+The staircase route is limited to one cast-in-situ solid longitudinal straight
+waist-slab flight with collinear landing segments between outer supports. It
+uses explicit caller load provenance and returns `PASS`, `REVIEW_REQUIRED`, or
+`FAIL`. Alternate stair systems, load generation/envelopes, unresolved
+serviceability calculations, qualified approval, and release remain outside
+the preview contract.
 
 Complete slab workflow results expose only reviewed span/depth serviceability
 and ordinary one-way concrete shear for beam/wall-supported UDL panels. Their
@@ -691,6 +705,7 @@ If you find a breaking change:
 
 ## Changelog
 
+- **2026-08-15**: Published the bounded straight-flight staircase composition with explicit review and held-case boundaries
 - **2026-08-15**: Closed solid-slab serviceability, shear-reinforcement, and single-action load-envelope boundaries without promoting unvalidated slab math
 - **2026-08-15**: Published the bounded concentric isolated-footing composition through the canonical services and package-root APIs
 - **2026-04-04**: Added Column Design API (stable) and Footing Design API (experimental) for v0.21.0

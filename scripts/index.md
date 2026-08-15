@@ -52,7 +52,7 @@
 | [check_governance.py](check_governance.py) | Unified governance checker — folder structure + compliance v | 2 | 19 | 1042 |
 | [check_instruction_drift.py](check_instruction_drift.py) | Check for content drift between .github/instructions/ and .c | 0 | 2 | 219 |
 | [check_links.py](check_links.py) | Check and fix broken internal links in markdown files. | 0 | 2 | 351 |
-| [check_new_element_completeness.py](check_new_element_completeness.py) | Check structural element completeness across all 7 layers. | 0 | 14 | 624 |
+| [check_new_element_completeness.py](check_new_element_completeness.py) | Check structural element completeness across all 7 layers. | 0 | 14 | 669 |
 | [check_next_session_brief_length.py](check_next_session_brief_length.py) | Ensure next-session-brief.md stays concise. | 0 | 1 | 31 |
 | [check_openapi_drift.py](check_openapi_drift.py) | Check OpenAPI spec for drift against baseline. | 0 | 5 | 193 |
 | [check_openapi_snapshot.py](check_openapi_snapshot.py) | Check OpenAPI spec against baseline snapshot to detect API d | 0 | 1 | 231 |

@@ -196,6 +196,24 @@ _CAPABILITIES = (
         ),
         qualified_review_required=True,
     ),
+    IS456Capability(
+        element="stair",
+        public_workflows=("design_straight_flight_staircase_is456",),
+        supported_case=(
+            "One cast-in-situ solid longitudinal straight waist-slab flight "
+            "with two collinear landing effective segments spanning between "
+            "outer beam or wall supports; explicit horizontal-plan self-weight, "
+            "caller-supplied superimposed service loads and load shares, "
+            "three-segment actions, flexure, supplied-bar checks, ordinary "
+            "one-way shear, and the basic span/depth serviceability boundary."
+        ),
+        held_cases=(
+            "Dog-legged, open-well, quarter-turn, half-turn, bifurcated, cantilever, spiral, transverse, precast, and stringer-supported stairs are excluded.",
+            "IS 875 load generation, project load combinations, load patterns, continuity, redistribution, concentrated actions, and seismic behavior are excluded.",
+            "Modification factors, direct deflection, crack width, development-length layout, landing torsion, and automatic bar selection remain held.",
+        ),
+        qualified_review_required=True,
+    ),
 )
 
 
@@ -576,6 +594,62 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                 "Service and factored actions are independent supplied inputs; the service action must include footing self-weight and overburden.",
                 "Allowable soil pressure and effective supporting-area geometry must be externally established and explicitly approved.",
                 "Eccentric/contact-pressure envelopes and all other foundation systems remain excluded.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_straight_flight_staircase_is456",
+            element="stair",
+            fields=(
+                _field(
+                    "request",
+                    "typed straight-flight staircase request",
+                    "StraightFlightStaircaseInput",
+                    True,
+                    "validated explicit input contract",
+                ),
+                _field(
+                    "status",
+                    "aggregate bounded design disposition",
+                    "enumeration",
+                    True,
+                    "PASS, REVIEW_REQUIRED or FAIL",
+                ),
+                _field(
+                    "geometry.effective_span_mm",
+                    "horizontal effective support span",
+                    "mm",
+                    True,
+                    _MM,
+                ),
+                _field(
+                    "actions.maximum_factored_moment_knm_per_m",
+                    "maximum factored sagging moment per metre width",
+                    "kN m/m",
+                    True,
+                    "finite non-negative",
+                ),
+                _field(
+                    "complete_engineering_design_approved",
+                    "complete engineering approval",
+                    "boolean",
+                    True,
+                    "always false",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "status",
+                    "PASS only when represented strength, supplied-bar, ordinary-shear, and basic span/depth checks pass.",
+                    (
+                        "REVIEW_REQUIRED preserves an unresolved basic serviceability boundary.",
+                        "PASS is bounded software evidence, not professional design approval.",
+                    ),
+                ),
+            ),
+            limitations=(
+                "Only the declared cast-in-situ longitudinal straight-flight waist-slab case is supported.",
+                "Loads, shares, and ultimate factor are caller supplied; IS 875 actions and project combinations are not generated.",
+                "Alternate stair systems, continuity, modification factors, direct deflection, crack width, landing torsion, and automatic bar selection remain held.",
             ),
         ),
         IS456WorkflowContract(
