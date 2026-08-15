@@ -61,7 +61,7 @@ boundary, held with a written reason, or not implemented.
 |---:|---|---|---|
 | 1 | `INDIA-2-WALL` | First clause-bounded remaining element; established the new-family workflow | Complete within the written bounded case |
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
-| 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | G0 and A-C complete; D and acceptance pending |
+| 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | G0 and A-D complete; focused acceptance pending |
 | 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Planned |
 | 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Planned, order provisional |
 | 5 | `INDIA-2-CLOSEOUT` | Reconcile truth, run final cumulative gates, and freeze the INDIA-2 evidence set | Pending |
@@ -306,9 +306,11 @@ authorized programs.
 
 ## 9. Exact next action
 
-Implement `INDIA-2-DEEP-D` from the verified integrated C head without adding
-continuous beams, openings, hanging action, load analysis, bearing/nodal-zone
-design, or generalized strut-and-tie scope. The owner's 2026-08-16 request
+Run `INDIA-2-DEEP-ACCEPTANCE` from the verified integrated D head without
+adding continuous beams, openings, hanging action, load analysis,
+bearing/nodal-zone design, or generalized strut-and-tie scope. This acceptance
+packet is intentionally deferred to the next work session at the owner's
+request. The owner's 2026-08-16 request
 activates the remaining INDIA-2 families subject to each family's own G0
 returning GO. No G0 may be bypassed, and a HOLD remains a truthful
 non-implementation outcome.

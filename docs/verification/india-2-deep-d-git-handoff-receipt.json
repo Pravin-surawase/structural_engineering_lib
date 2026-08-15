@@ -1,0 +1,201 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-15T21:20:25Z",
+      "query_status": "OK",
+      "reference": "task:INDIA-2:user-request-start-and-finish",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-15T21:20:25Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/india-2-deep-d",
+      "head_sha": "33522c6c0ceb4658a34442d6b48a698d88bc2022",
+      "task_id": "INDIA-2-DEEP-D"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "b2ef5e98bac4534547a3ceb98bc8d0d532fc8e322fb620031b4b75e93d714fe3",
+    "state": {
+      "branch": "codex/india-2-deep-d",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "33522c6c0ceb4658a34442d6b48a698d88bc2022",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 79.617,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-deep-d",
+      "head_sha": "33522c6c0ceb4658a34442d6b48a698d88bc2022",
+      "hold_reasons": [
+        "changed paths: 41"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-15T21:24:50.869125+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-deep-d",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 41,
+        "modified_paths": [
+          "Python/structural_lib/services/capabilities.py",
+          "Python/structural_lib/services/index.json",
+          "Python/structural_lib/services/index.md",
+          "Python/tests/index.json",
+          "Python/tests/index.md",
+          "Python/tests/integration/test_deep_beam_publication.py",
+          "Python/tests/test_indian_code_manifest.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/index.json",
+          "docs/index.md",
+          "docs/planning/index.json",
+          "docs/planning/index.md",
+          "docs/planning/india-2-remaining-is456-elements-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/reference/api.md",
+          "docs/reference/index.json",
+          "docs/reference/index.md",
+          "docs/verification/index.json",
+          "docs/verification/index.md",
+          "docs/verification/indian-code-capability-coverage.json",
+          "fastapi_app/index.json",
+          "fastapi_app/index.md",
+          "fastapi_app/main.py",
+          "fastapi_app/models/index.json",
+          "fastapi_app/models/index.md",
+          "fastapi_app/routers/__init__.py",
+          "fastapi_app/routers/index.json",
+          "fastapi_app/routers/index.md",
+          "fastapi_app/tests/index.json",
+          "fastapi_app/tests/index.md",
+          "fastapi_app/tests/test_capabilities.py",
+          "scripts/_lib/indian_code_manifest.py",
+          "scripts/index.json",
+          "scripts/index.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/india-2-deep-d-git-handoff-receipt.json",
+          "docs/verification/india-2-deep-d-git-handoff-source-evidence.json",
+          "docs/verification/india-2-deep-d-publication-evidence.md",
+          "fastapi_app/models/deep_beam.py",
+          "fastapi_app/routers/deep_beam.py",
+          "fastapi_app/tests/test_deep_beam.py"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-deep-d"
+    }
+  },
+  "local_state_receipt_hash": "sha256:b2ef5e98bac4534547a3ceb98bc8d0d532fc8e322fb620031b4b75e93d714fe3",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-15T21:24:50.869272+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-15T21:20:25Z",
+    "owner": "Main Agent under user instruction to preserve Git state",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "react_app/**",
+      "refs/**",
+      "pyproject.toml",
+      "CHANGELOG.md"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "Python/structural_lib/services/capabilities.py",
+      "Python/tests/integration/test_deep_beam_publication.py",
+      "Python/tests/test_indian_code_manifest.py",
+      "scripts/_lib/indian_code_manifest.py",
+      "fastapi_app/models/deep_beam.py",
+      "fastapi_app/routers/deep_beam.py",
+      "fastapi_app/routers/__init__.py",
+      "fastapi_app/main.py",
+      "fastapi_app/tests/test_deep_beam.py",
+      "fastapi_app/tests/test_capabilities.py",
+      "docs/reference/api.md",
+      "docs/verification/india-2-deep-d-publication-evidence.md",
+      "docs/verification/india-2-deep-d-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/india-2-remaining-is456-elements-plan.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "INDIA-2-DEEP-D"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

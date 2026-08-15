@@ -5,6 +5,79 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-DEEP-D Transport and Truth Publication
+
+**Agent:** Codex (`api-developer`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-deep-d` from integrated DEEP-C main at
+`33522c6c0ceb4658a34442d6b48a698d88bc2022`
+
+**Git handoff receipt:** `docs/verification/india-2-deep-d-git-handoff-receipt.json`
+
+**Focus:** Add only thin FastAPI transport, capability/semantic truth,
+deterministic manifest promotion, and publication evidence.
+
+### Summary
+
+- Added strict Pydantic request/response models and one thin mounted deep-beam
+  route delegating all calculation to the canonical DEEP-C service.
+- Published the single bounded `deep_beam` capability and its exact units,
+  statuses, approval semantics, caller prerequisites, and held systems.
+- Promoted deterministic Indian truth only after binding the complete G0/A-D
+  evidence chain; React, release, and family acceptance remain outside D.
+
+### Issues encountered
+
+- The first semantic-contract gate rejected result paths nested two levels
+  below the public workflow result.
+- Deterministic parity tests still expected the pre-DEEP-D 9-supported/
+  12-held family count.
+- The final validation chain stopped after the passing focused, manifest, and
+  API checks because it named a retired architecture-check script.
+
+### Root causes and resolutions
+
+- Root cause: the maintained verifier intentionally discovers the public result
+  and one typed nested level; the first contract named internal fields one
+  level deeper. Resolution: describe the public typed geometry/tie/placement/
+  anchorage/side-face carriers and composed reinforcement status at their
+  discoverable canonical paths while preserving units and meanings.
+- Root cause: capability promotion changes the declared 21-family partition,
+  but the parity assertion encoded the previous snapshot. Resolution: assert
+  10 supported, 11 held, 48 percent and add the exact deep-beam workflow to the
+  manifest runtime-registry proof; semantic, manifest, and parity gates pass.
+- Root cause: the chain used the inferred filename `check_architecture.py`
+  instead of discovering the maintained registry entry. Resolution: use
+  `./run.sh find` and run `check_architecture_boundaries.py`, followed by the
+  maintained import and link validators; all three corrected checks and the
+  10-check quick gate pass.
+
+### Evidence
+
+- The transport reproduces the frozen benchmark and exposes typed PASS/FAIL,
+  provenance, held boundaries, and false complete approval.
+- The combined deep-beam, public workflow, semantic, traceability, manifest,
+  transport, and capability selection passes 157 tests.
+- Black, Ruff, mypy, and Bandit pass; architecture reports 0 violations across
+  177 files and imports report 0 broken across 607 scanned files.
+- Manifest truth is current at 10 supported and 11 held families; actionable
+  parity is 100 percent, all 78 endpoints are directly tested, all 1,180 links
+  are valid, schema/API/index checks pass, and quick gate passes 10/10.
+- Focused test, format, static, architecture/import, manifest, parity, API,
+  link, index, quick, and hosted evidence is recorded in
+  `india-2-deep-d-publication-evidence.md` and the exact PR checks.
+- Broad Python and 30-check repository gates remain deferred to whole-INDIA-2
+  closeout, and deep-family acceptance is deferred to the next work session.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `scripts/check_architecture.py` was not found after all
+  preceding checks passed → `./run.sh find` identified the maintained
+  `scripts/check_architecture_boundaries.py`; it passed with 0 violations
+  across 177 files, followed by 0 broken imports across 607 files.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-DEEP-C Public Python Workflow
 
 **Agent:** Codex (`backend`, sole writer; no subagents)

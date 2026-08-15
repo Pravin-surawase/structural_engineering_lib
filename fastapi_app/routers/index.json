@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 21,
+  "file_count": 22,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 50,
+      "size_lines": 52,
       "last_updated": "2026-08-16",
       "description": "FastAPI Routers Package.",
-      "content_hash": "b3d691cb13cb"
+      "content_hash": "8eb77c6f58f7"
     },
     {
       "name": "analysis.py",
@@ -173,6 +173,23 @@
         }
       ],
       "content_hash": "a2bd89bb85de"
+    },
+    {
+      "name": "deep_beam.py",
+      "type": "python",
+      "size_lines": 133,
+      "last_updated": "2026-08-16",
+      "description": "FastAPI transport for the bounded simply supported deep-beam service.",
+      "functions": [
+        {
+          "name": "design_simply_supported_deep_beam",
+          "description": "Validate transport input and delegate all calculation to the service.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "c116720a231e"
     },
     {
       "name": "design.py",
@@ -959,6 +976,7 @@
     "analysis",
     "catalog",
     "column",
+    "deep_beam",
     "design",
     "detailing",
     "export",
@@ -976,5 +994,5 @@
     "websocket",
     "workflows"
   ],
-  "content_hash": "2d77a2c89490743a"
+  "content_hash": "a239cba06dc4e4c1"
 }

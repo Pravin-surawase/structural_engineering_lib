@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
   "last_updated": "2026-08-16",
-  "file_count": 39,
+  "file_count": 40,
   "files": [
     {
       "name": "README.md",
@@ -225,7 +225,7 @@
     {
       "name": "test_capabilities.py",
       "type": "python",
-      "size_lines": 37,
+      "size_lines": 42,
       "last_updated": "2026-08-16",
       "description": "Cross-surface tests for canonical capability discovery.",
       "functions": [
@@ -242,7 +242,7 @@
           ]
         }
       ],
-      "content_hash": "e293b5c9b919"
+      "content_hash": "b936d17ed2ca"
     },
     {
       "name": "test_catalog.py",
@@ -611,6 +611,37 @@
         "_DEFAULT_DEVELOPMENT_SECRET"
       ],
       "content_hash": "e3051f7b7005"
+    },
+    {
+      "name": "test_deep_beam.py",
+      "type": "python",
+      "size_lines": 162,
+      "last_updated": "2026-08-16",
+      "description": "Contract tests for the bounded simply supported deep-beam FastAPI slice.",
+      "functions": [
+        {
+          "name": "test_deep_beam_benchmark_returns_typed_pass_with_provenance"
+        },
+        {
+          "name": "test_deep_beam_rejects_unknown_nonfinite_and_unsupported_scope"
+        },
+        {
+          "name": "test_deep_beam_service_validation_uses_safe_error_envelope"
+        },
+        {
+          "name": "test_deep_beam_valid_inadequacy_remains_json_safe_fail"
+        },
+        {
+          "name": "test_deep_beam_openapi_exposes_typed_success_schema"
+        },
+        {
+          "name": "test_deep_beam_is_mounted_in_main_app",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "content_hash": "4f1fed63d0bd"
     },
     {
       "name": "test_design_compliance.py",
@@ -1866,5 +1897,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "7054af87a2c24957"
+  "content_hash": "63c671eca156483b"
 }

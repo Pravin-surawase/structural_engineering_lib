@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Publish only the typed Python composition and executable benchmark
-- Git receipt: docs/verification/india-2-deep-c-git-handoff-receipt.json | sha256:16a13b0923758a5a6e576dfb3c76978f7737e063fabeba8932c4bb4f3c71d0b7 | HOLD
-- Git identity: codex/india-2-deep-c@9a9ca233bd63eb95d458ec08cc5e9a3225350f8c | upstream=NONE@UNKNOWN | base=origin/main@9a9ca233bd63eb95d458ec08cc5e9a3225350f8c | tree=dirty | operation=none
+- Focus: Add only thin FastAPI transport, capability/semantic truth,
+- Git receipt: docs/verification/india-2-deep-d-git-handoff-receipt.json | sha256:b2ef5e98bac4534547a3ceb98bc8d0d532fc8e322fb620031b4b75e93d714fe3 | HOLD
+- Git identity: codex/india-2-deep-d@33522c6c0ceb4658a34442d6b48a698d88bc2022 | upstream=NONE@UNKNOWN | base=origin/main@33522c6c0ceb4658a34442d6b48a698d88bc2022 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Implement `INDIA-2-DEEP-D` from integrated C: thin FastAPI route, capability/semantic truth, manifest promotion, and publication evidence |
+| **Next** | Run `INDIA-2-DEEP-ACCEPTANCE` from integrated D; do not begin flat slabs or foundations first |
 
 ## Required Reading
 
@@ -77,8 +77,10 @@ caller-action, and fail-closed contracts. [`india-2-deep-b-reinforcement-evidenc
 records the required/provided positive tie, placement, continuity, anchorage,
 side-face, and composed checks. [`india-2-deep-c-public-workflow-evidence.md`](../verification/india-2-deep-c-public-workflow-evidence.md)
 records the typed public Python composition, executable benchmark, public API
-docs, and retained holds. DEEP-D may add only thin transport and truthful
-capability/semantic publication over that exact workflow. Bearing and compression-nodal regions require a caller-supplied external verification;
+docs, and retained holds. [`india-2-deep-d-publication-evidence.md`](../verification/india-2-deep-d-publication-evidence.md)
+records the thin transport and truthful capability/semantic/manifest
+publication over that exact workflow. Next session begins with cumulative
+focused family acceptance. Bearing and compression-nodal regions require a caller-supplied external verification;
 continuous beams, openings, hanging action, negative moment, load generation,
 generalized strut-and-tie, nonlinear analysis, and FEM remain held.
 
@@ -88,6 +90,10 @@ Each calculation packet requires focused tests, benchmarks, architecture and PR
 checks, plus the quick gate. The expensive full Python and 30-check gate runs
 once after the whole accepted INDIA-2 wave is integrated unless an
 outcome-changing repository-wide issue appears earlier.
+
+Per the owner stop point, do not start flat slabs, foundation programs, deep-
+beam acceptance, or broad closeout gates again on 2026-08-16 after DEEP-D is
+integrated. Resume with DEEP acceptance in the next work session.
 
 Cumulative qualified structural-engineering review belongs to INDIA-4 after the
 accepted INDIA-2 and INDIA-3 scope is frozen. Packet-level source and engineering

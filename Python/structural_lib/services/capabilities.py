@@ -231,6 +231,23 @@ _CAPABILITIES = (
         ),
         qualified_review_required=True,
     ),
+    IS456Capability(
+        element="deep_beam",
+        public_workflows=("design_simply_supported_deep_beam_is456",),
+        supported_case=(
+            "One simply supported, single-span, solid rectangular, top-loaded Clause "
+            "29 deep beam without openings, dapped ends, or hanging action; the caller "
+            "supplies one positive factored moment, provided positive tie/detailing, and "
+            "external bearing/compression-nodal verification."
+        ),
+        held_cases=(
+            "Continuous and cantilever deep beams, negative moment, openings, dapped ends, corbels, coupling beams, hollow/flanged/irregular sections, prestress, and hanging action are excluded.",
+            "The workflow does not generate loads or reactions and does not calculate bearing, support, compression-strut, or nodal-zone capacity.",
+            "Automatic section or bar selection, bundles, splices, transverse-enclosure design, crack width, deflection, fire, and seismic/IS 13920 checks are excluded.",
+            "Generalized strut-and-tie modelling, nonlinear analysis, FEM, professional approval, and release authorization are excluded.",
+        ),
+        qualified_review_required=True,
+    ),
 )
 
 
@@ -751,6 +768,146 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                 "Only the declared regular 100-200 mm one-grid Clause 32.2 braced wall is supported.",
                 "Factored compression, eccentricity, bracing assertions, and provenance are caller supplied.",
                 "Two-grid and transverse-enclosure design, combined flexure, shear, openings, and seismic provisions remain held.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_simply_supported_deep_beam_is456",
+            element="deep_beam",
+            fields=(
+                _field(
+                    "request",
+                    "typed simply supported deep-beam request",
+                    "SimplySupportedDeepBeamDesignInput",
+                    True,
+                    "validated explicit input contract",
+                ),
+                _field(
+                    "status",
+                    "aggregate positive tie and detailing disposition",
+                    "enumeration",
+                    True,
+                    "PASS or FAIL",
+                ),
+                _field(
+                    "request.centre_to_centre_span_mm",
+                    "centre-to-centre support span",
+                    "mm",
+                    True,
+                    _MM,
+                ),
+                _field(
+                    "request.clear_span_mm",
+                    "clear support span",
+                    "mm",
+                    True,
+                    _MM,
+                ),
+                _field(
+                    "request.overall_depth_mm",
+                    "overall member depth",
+                    "mm",
+                    True,
+                    _MM,
+                ),
+                _field(
+                    "request.beam_width_mm",
+                    "solid rectangular web width",
+                    "mm",
+                    True,
+                    _MM,
+                ),
+                _field(
+                    "request.factored_positive_moment_knm",
+                    "caller-supplied positive factored moment",
+                    "kN m",
+                    True,
+                    "finite positive",
+                ),
+                _field(
+                    "request.bearing_nodal_zone_verified",
+                    "external bearing and compression-nodal prerequisite",
+                    "boolean",
+                    True,
+                    "literal true only",
+                ),
+                _field(
+                    "reinforcement.geometry",
+                    "Clause 29 classification, effective span, and lever arm",
+                    "DeepBeamGeometryResult",
+                    True,
+                    "typed finite geometry result with mm quantities",
+                ),
+                _field(
+                    "reinforcement.positive_tie",
+                    "required and provided positive tie check",
+                    "DeepBeamTieResult",
+                    True,
+                    "typed PASS or FAIL result with mm2 areas",
+                ),
+                _field(
+                    "reinforcement.placement",
+                    "positive tie placement-zone check",
+                    "DeepBeamPlacementResult",
+                    True,
+                    "typed PASS or FAIL result with mm distances",
+                ),
+                _field(
+                    "reinforcement.anchorage",
+                    "both-support 0.8Ld anchorage disposition",
+                    "DeepBeamAnchorageResult",
+                    True,
+                    "typed PASS or FAIL result with mm lengths and N/mm2 stresses",
+                ),
+                _field(
+                    "reinforcement.vertical_side_face",
+                    "vertical side-face area and spacing disposition",
+                    "DeepBeamSideFaceDirectionResult",
+                    True,
+                    "typed PASS or FAIL result with ratio, mm2/m, and mm quantities",
+                ),
+                _field(
+                    "reinforcement.horizontal_side_face",
+                    "horizontal side-face area and spacing disposition",
+                    "DeepBeamSideFaceDirectionResult",
+                    True,
+                    "typed PASS or FAIL result with ratio, mm2/m, and mm quantities",
+                ),
+                _field(
+                    "reinforcement.status",
+                    "composed Clause 29 reinforcement disposition",
+                    "enumeration",
+                    True,
+                    "PASS or FAIL",
+                ),
+                _field(
+                    "qualified_review_required",
+                    "qualified review boundary",
+                    "boolean",
+                    True,
+                    "always true",
+                ),
+                _field(
+                    "complete_engineering_design_approved",
+                    "complete engineering approval",
+                    "boolean",
+                    True,
+                    "always false",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "status",
+                    "PASS only when classification, positive tie, placement, continuity, both anchorages, both side-face directions, and the external prerequisite pass.",
+                    (
+                        "The bounded Clause 29 shear-deemed-satisfied statement is not a bearing or nodal-zone capacity approval.",
+                        "PASS is bounded software evidence, not professional design approval.",
+                    ),
+                ),
+            ),
+            limitations=(
+                "Only the declared simply supported solid rectangular top-loaded Clause 29 case is supported.",
+                "The positive factored moment and bearing/compression-nodal verification are caller supplied; loads, reactions, and those capacities are not generated.",
+                "Continuous beams, openings, hanging action, automatic sizing, transverse enclosure, generalized strut-and-tie, seismic design, nonlinear analysis, and FEM remain held.",
             ),
         ),
         IS456WorkflowContract(

@@ -4222,6 +4222,8 @@ capacity, automatic sizing, bundles, splices, transverse-enclosure design,
 generalized strut-and-tie, seismic design, nonlinear analysis, FEM, and
 professional approval remain held.
 
+**FastAPI Endpoint:** `POST /api/v1/design/deep-beam/simply-supported`
+
 ---
 
 ## API Levels — Which Should I Use?
