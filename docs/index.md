@@ -3,7 +3,7 @@
 Guides, references, evidence, and contributor material for the
 
 **Type:** Documentation
-**Last Updated:** 2026-08-13
+**Last Updated:** 2026-08-15
 **Files:** 6
 
 ## Config Files
@@ -16,7 +16,7 @@ Guides, references, evidence, and contributor material for the
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [README.md](README.md) | Docs Index (Start Here) | Guides, references, evidence, and contributor material for t | 253 |
-| [SESSION_LOG.md](SESSION_LOG.md) |  | > Append-only decision log for AI agent sessions. > Earlier  | 3499 |
+| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 3894 |
 | [TASKS.md](TASKS.md) | Task Board | > **Single source of truth for active work.** Keep it short  | 677 |
 | [WORKLOG.md](WORKLOG.md) |  | > **One line per item. Compact. Append-only.** > Format: DAT | 354 |
 
@@ -46,6 +46,6 @@ Guides, references, evidence, and contributor material for the
 | [planning/](planning/) | 19 |  |
 | [publications/](publications/) | 11 | This directory contains blog posts, technical articles, and academic papers docu |
 | [reference/](reference/) | 1792 |  |
-| [research/](research/) | 22 |  |
+| [research/](research/) | 26 |  |
 | [specs/](specs/) | 6 | Technical specifications for data formats and schemas. |
 | [verification/](verification/) | 17 | Benchmark examples and verification packs for validating library calculations ag |

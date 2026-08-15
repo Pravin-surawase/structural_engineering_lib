@@ -3,7 +3,7 @@
 > Development, validation, discovery, release-preparation, and maintenance tools.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-13
+**Last Updated:** 2026-08-15
 **Files:** 109
 
 ## Config Files
@@ -14,7 +14,7 @@
 
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
-| [README.md](README.md) | Scripts | > Development, validation, discovery, release-preparation, a | 79 |
+| [README.md](README.md) | Scripts | > Development, validation, discovery, release-preparation, a | 80 |
 
 ## Python Files
 
@@ -43,7 +43,7 @@
 | [check_circular_imports.py](check_circular_imports.py) | Circular Import Detector for the Python Structural Library | 5 | 1 | 464 |
 | [check_clause_coverage.py](check_clause_coverage.py) | IS 456 clause coverage gap detection. | 0 | 8 | 488 |
 | [check_cli_reference.py](check_cli_reference.py) | Ensure CLI reference includes required commands. | 0 | 1 | 48 |
-| [check_codex_git_workflow.py](check_codex_git_workflow.py) | Guard the Codex-native Git/GitHub workflow contract. | 0 | 1 | 183 |
+| [check_codex_git_workflow.py](check_codex_git_workflow.py) | Guard the Codex-native Git/GitHub workflow contract. | 0 | 1 | 298 |
 | [check_doc_versions.py](check_doc_versions.py) | Doc Version Drift Check — Validate no stale *library* versio | 0 | 2 | 72 |
 | [check_docker_config.py](check_docker_config.py) | Docker Configuration Validator. | 0 | 6 | 295 |
 | [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 6 | 675 |
@@ -62,7 +62,7 @@
 | [check_tasks_format.py](check_tasks_format.py) | Validate docs/TASKS.md structure and WIP rules. | 0 | 1 | 161 |
 | [check_token_efficiency.py](check_token_efficiency.py) | Validate repository-side Codex token-efficiency controls. | 0 | 2 | 206 |
 | [check_type_annotations.py](check_type_annotations.py) | Type Annotation Checker for the Python Structural Library | 4 | 1 | 542 |
-| [cleanup_stale_branches.py](cleanup_stale_branches.py) | Cleanup stale remote branches. | 0 | 7 | 187 |
+| [classify_branch_disposition.py](classify_branch_disposition.py) | Classify branch/worktree disposition from inspection-only ev | 2 | 3 | 823 |
 | [collect_diagnostics.py](collect_diagnostics.py) | Collect a compact diagnostics bundle for debugging and suppo | 0 | 2 | 123 |
 | [config_precedence.py](config_precedence.py) | Configuration precedence auditing for instruction files. | 2 | 10 | 564 |
 | [create_doc.py](create_doc.py) | Create a new documentation file with proper metadata header. | 0 | 5 | 259 |

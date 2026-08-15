@@ -473,7 +473,7 @@ The system maintains an explicit blocklist of operations that have historically 
 **Destructive GitHub operations (require user confirmation):**
 - `gh pr merge --admin` — Bypasses required CI checks
 - `gh issue close` — Destructive, requires explicit approval
-- `git push origin --delete` — Use `cleanup_stale_branches.py` (dry-run by default)
+- `git push origin --delete` — Inspect with `classify_branch_disposition.py`; deletion requires a separate exact-target approval and action
 
 **Force flags (strongly discouraged — not technically blocked but cause documented harm):**
 - `--no-verify` — Skips pre-commit hooks; forbidden in all agent instructions

@@ -5,6 +5,149 @@
 
 ---
 
+## 2026-08-15 — Session: GIT-7D2 Inspection-Only Branch Disposition
+
+**Agent:** Codex (`ops`)
+
+**Branch:** `codex/git-7d2-disposition-classifier`
+
+**Focus:** Replace the unsafe deletion-oriented stale-branch decision path with
+a worktree-aware, fail-closed, inspection-only disposition classifier
+
+### Summary
+
+- Refreshed `origin/main`, verified the expected GIT-7D1 integration SHA
+  `ff6c919c`, and attached the clean isolated Codex worktree to the task branch.
+- Replaced `cleanup_stale_branches.py` with the explicitly named
+  `classify_branch_disposition.py`; no deletion/action flag or network operation
+  remains in the maintained classifier route.
+- Bound local ref/worktree/reachability/cherry/tree/age facts to caller-supplied,
+  timestamped remote, pull-request, ownership, and retention evidence.
+- Made missing, malformed, inconsistent, stale, future-dated, failed, or timed-
+  out evidence an `UNKNOWN` hold. Age is emitted only as non-authoritative
+  metadata.
+- Routed live instructions, maintenance guidance, discovery metadata, semantic
+  policy checks, and exact-head Control Plane CI to the inspection-only command.
+- Preserved GIT-7D1 targeted generation and refreshed only the affected script,
+  GIT-governance, research, and docs projections after exact dry-run previews.
+
+### Key deliverables
+
+- `scripts/classify_branch_disposition.py`
+- `Python/tests/test_branch_disposition.py`
+- `scripts/check_codex_git_workflow.py`
+- `.github/workflows/fast-checks.yml`
+- `docs/research/git-governance/GIT-001-phase-7D2-branch-disposition.md`
+- Canonical Git policy, live classifier guidance, task/handoff records, and
+  affected generated indexes
+
+### Issues encountered
+
+- The maintained cleanup path could silently classify a failed Git query as
+  merged/old, used age as nomination authority, fetched with prune during
+  review, and exposed direct remote deletion. Its output could therefore put
+  unpublished or squash-integrated evidence on a destructive path.
+- The new isolated Codex worktree initially had a clean detached HEAD at the
+  expected main SHA, so session trust correctly returned `HOLD_DETACHED`.
+- The first focused safety test rejected the required read-only
+  `git worktree list --porcelain` query because its predicate treated every
+  `worktree` subcommand as mutation.
+- Independent review found that a caller-configured default branch other than
+  the hard-coded `main`/`master` names could satisfy the fully evidenced
+  candidate path.
+- Closeout evidence review found that an `ABSENT` remote-ref observation did
+  not prove it described the target ref, and a no-retention assertion was not
+  timestamped or bound to the inspected head.
+- Closeout validation stopped twice before completing because two guessed test
+  filenames and then a guessed index-checker filename did not exist.
+- The first session-end validation was sequenced before the task commit and
+  correctly returned nonzero because the 33 intended worktree changes were
+  still uncommitted.
+
+### Root causes and resolutions
+
+- Root cause: the former script ignored subprocess return codes, converted
+  missing dates to 999 days, used empty log output as merged, mixed age/ancestry
+  heuristics with fetch/prune, and owned remote deletion. Resolution: replace
+  it with a bounded local classifier plus explicit supplied-evidence schema,
+  typed holds, patch/tree review state, and pending-approval-only candidate.
+  Evidence: focused tests prove query failure becomes `UNKNOWN`, age cannot
+  authorize a candidate, the required outcomes are distinct, and the CLI has
+  no action flag.
+- Root cause: the desktop-created isolated worktree was provisioned detached,
+  although its clean head exactly matched freshly fetched `origin/main`.
+  Resolution: after exact SHA/ref/worktree inspection and collision checks,
+  create `codex/git-7d2-disposition-classifier` at the verified SHA without
+  touching any sibling lane. Evidence: the canonical state authority returned
+  `READY_LOCAL`, zero dirty paths, and exact equality with `origin/main`.
+- Root cause: the test predicate matched a command noun instead of prohibited
+  subcommands and therefore conflated `worktree list` with mutation. Resolution:
+  permit only the exact `worktree list` inspection while continuing to reject
+  fetch, prune, push, ref/config/history/worktree mutation, and action flags.
+  Evidence: all focused classifier and CI-contract scenarios pass.
+- Root cause: default-branch protection in the all-local selector relied on
+  conventional names rather than the configured `default_ref`. Resolution:
+  derive the configured default branch from the supplied ref and emit
+  `HOLD_EVIDENCE_RETENTION` with reason
+  `DEFAULT_BRANCH_INTEGRATION_ANCHOR` before any candidate disposition.
+  Evidence: focused scenarios prove both `main` and a custom `develop` default
+  remain holds despite otherwise complete candidate evidence.
+- Root cause: the evidence validator checked ref identity only for a present
+  remote ref, while retention accepted an unbound assertion. Resolution: require
+  exact target-ref identity for both present and absent observations, and require
+  fresh, target-head-bound retention evidence. Evidence: focused scenarios prove
+  exact absent-remote and fresh no-retention evidence can support a candidate;
+  mismatched, stale, or unbound evidence becomes `UNKNOWN`/hold.
+- Root cause: the closeout commands reused descriptive labels as filenames
+  instead of discovering the maintained paths. Resolution: use targeted
+  `rg --files` discovery and rerun with
+  `test_agent_governance_automation.py` and
+  `test_ci_workflow_contract.py`, then `scripts/check_scripts_index.py`.
+  Evidence: the corrected control-plane suite and maintained index check pass.
+- Root cause: session-end cleanliness validation ran before the normal
+  stage/commit boundary. Resolution: preserve and inspect the task-owned diff,
+  commit only its exact paths, then rerun session-end from the clean committed
+  lane before PR creation. Evidence is the final session-end receipt in the PR
+  closeout record.
+
+### Verification
+
+- Worktree-bound runtime diagnosis reports `source_bound=true`.
+- Classifier scenarios cover no mutation, simulated query failure, age-only,
+  attached, dirty, open/dependent PR, unique work, patch equivalence, retained
+  evidence, configured default branches, exact absent-remote evidence,
+  stale/unchecked evidence, and fully evidenced pending-approval candidates.
+- Black, Ruff, semantic Git workflow, automation-map/index consistency, diff
+  whitespace, focused classifier tests, and CI workflow contracts pass.
+- Targeted dry-run and live generation changed only the expected maintained
+  indexes. Strict documentation, quick, and full gates pass as closeout
+  evidence.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: closeout validation used guessed
+  paths `Python/tests/test_agent_governance.py` and
+  `Python/tests/test_ci_contract.py`, then `scripts/check_index.py`; each command
+  stopped at the first missing path.
+  Targeted `rg --files Python/tests` discovery found the maintained files
+  `test_agent_governance_automation.py` and
+  `test_ci_workflow_contract.py`, while targeted script discovery found
+  `scripts/check_scripts_index.py`; all passed in corrected reruns. The
+  initial detached state was a classified repository bootstrap condition, not
+  a terminal-path failure.
+- ⚠️ TERMINAL ISSUE: `./run.sh session end --agent ops` ran before the
+  task commit and returned nonzero for 33 intended uncommitted changes → retain
+  the inspected diff, commit its exact paths, and rerun session-end on the clean
+  committed lane before PR creation.
+
+### Notes
+
+- No fetch/prune occurs inside the classifier. The task's explicit initial
+  `git fetch origin main` was a separate caller-owned freshness action.
+- Branch/worktree deletion, cleanup execution, GIT-7E, settings, releases,
+  product code, and adjacent hardening remain out of scope.
+
+
 ## 2026-08-15 — Session: GIT-7C2 Receipt and GIT-7D1 Targeted Generation
 
 **Agent:** Codex (`ops`)

@@ -81,8 +81,8 @@ git branch --show-current
 # Run agent evolution (observe only during burn-in)
 ./run.sh evolve --status
 
-# Clean stale git branches (dry-run first!)
-.venv/bin/python scripts/cleanup_stale_branches.py  # dry-run by default
+# Inspect every non-default local branch; missing remote/PR evidence stays UNKNOWN
+./scripts/python_runtime.sh scripts/classify_branch_disposition.py --all-local --json
 ```
 
 ---

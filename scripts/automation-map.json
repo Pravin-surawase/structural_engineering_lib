@@ -617,10 +617,11 @@
         "--dry-run": "ReadOnly"
       }
     },
-    "cleanup stale branches": {
+    "classify branch disposition": {
       "group": "Infrastructure",
-      "script": "./scripts/python_runtime.sh scripts/cleanup_stale_branches.py",
-      "description": "Clean up stale remote branches that are already merged"
+      "script": "./scripts/python_runtime.sh scripts/classify_branch_disposition.py --all-local --json",
+      "description": "Inspect branch/worktree disposition; remote and PR evidence are caller-supplied",
+      "permission": "ReadOnly"
     },
     "collect diagnostics": {
       "group": "Infrastructure",

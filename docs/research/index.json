@@ -24,10 +24,10 @@
     {
       "name": "claw-code-harness-ideas.md",
       "type": "documentation",
-      "size_lines": 1770,
+      "size_lines": 1771,
       "last_updated": "2026-08-15",
       "description": "The claw-code repo reveals how production-grade AI agent systems wire tools, manage sessions, enforce permissions, and orchestrate multi-turn workflows. After analyzing ~40 source files, 200+ tool def",
-      "content_hash": "82f22386de56"
+      "content_hash": "b5cc8b0fd133"
     },
     {
       "name": "innovation-generative-design-intelligence.md",
@@ -60,8 +60,8 @@
     {
       "name": "git-governance",
       "path": "git-governance/",
-      "file_count": 17
+      "file_count": 18
     }
   ],
-  "content_hash": "ad5b0bf189c78090"
+  "content_hash": "763aee82aa7b162c"
 }

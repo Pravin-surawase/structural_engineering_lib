@@ -125,9 +125,9 @@ TOOL_REGISTRY = {
 | `DangerFullAccess` | Shell exec, git push, delete | `BashTool`, `PowerShellTool` |
 
 **Our idea:** Map to our operations:
-- **ReadOnly:** `discover_api_signatures.py`, `find_automation.py`, `agent_context.py`
+- **ReadOnly:** `discover_api_signatures.py`, `find_automation.py`, `agent_context.py`, `classify_branch_disposition.py`
 - **WorkspaceWrite:** `safe_file_move.py`, `create_doc.py`, `generate_enhanced_index.py`
-- **DangerFullAccess:** `ai_commit.sh`, `cleanup_stale_branches.py`, `safe_file_delete.py`
+- **DangerFullAccess:** `ai_commit.sh`, `safe_file_delete.py`
 
 ---
 

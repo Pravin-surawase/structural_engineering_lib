@@ -65,6 +65,20 @@ independent Git classification.
 - A green software gate is evidence about the software, not structural design
   approval or formula certification.
 
+## Inspection-only branch disposition
+
+Use `./scripts/python_runtime.sh scripts/classify_branch_disposition.py` to
+inspect exact branch targets. The classifier performs local, optional-lock-safe
+Git reads and consumes caller-supplied, timestamped remote/PR/retention evidence.
+It does not fetch, prune, mutate GitHub, change refs/config/worktrees, or delete.
+`NOT_CHECKED`, missing ownership, inconsistent SHAs, and query failures are
+`UNKNOWN` holds. Age is receipt metadata only.
+
+Even a fully evidenced target is only
+`RETIREMENT_READY_PENDING_APPROVAL`. Local branch, remote branch, and worktree
+actions remain separate exact-target authorization decisions followed by a
+same-session reinspection and post-action receipt.
+
 ## Fail-closed recovery
 
 When Git is detached, behind, diverged, conflicted, or in the middle of a merge,

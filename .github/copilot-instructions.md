@@ -41,7 +41,7 @@ Do not add repository wrappers that commit, push, create PRs, merge PRs, or reco
 NEVER: gh pr merge --admin            ← bypasses required CI checks
 NEVER: gh pr merge <N> --squash (with failing CI) ← fix failures first, then merge
 NEVER: gh issue close (without user approval) ← destructive, ask first
-NEVER: git push origin --delete (without user approval) ← use .venv/bin/python scripts/cleanup_stale_branches.py --dry-run
+NEVER: git push origin --delete (without user approval) ← inspect with ./scripts/python_runtime.sh scripts/classify_branch_disposition.py; deletion remains separate
 NEVER: GIT_HOOKS_BYPASS=1             ← bypasses all safety hooks
 NEVER: --no-verify / --force          ← breaks CI, causes rework
 ```

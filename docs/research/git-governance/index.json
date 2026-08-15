@@ -3,15 +3,15 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-15",
-  "file_count": 15,
+  "file_count": 16,
   "files": [
     {
       "name": "GIT-001-README.md",
       "type": "documentation",
-      "size_lines": 97,
+      "size_lines": 99,
       "last_updated": "2026-08-15",
       "description": "This directory is the task-owned, non-normative research record for GIT-001. Its contents may describe official Git/GitHub/Codex facts, observed project",
-      "content_hash": "529af567b0bd"
+      "content_hash": "2654f5b084a6"
     },
     {
       "name": "GIT-001-lifecycle-research.md",
@@ -27,7 +27,7 @@
       "size_lines": 411,
       "last_updated": "2026-08-15",
       "description": "This packet converts the original six-priority cleanup and recovery list into a current, evidence-backed handoff. It tells the next agent what is already done,",
-      "content_hash": "eb05a95fb3ae"
+      "content_hash": "9e8d050f8766"
     },
     {
       "name": "GIT-001-official-evidence-register.md",
@@ -124,8 +124,16 @@
       "last_updated": "2026-08-15",
       "description": "GIT-7D is split so the incident-producing generator route can be corrected without combining it with branch/worktree disposition logic. This packet owns",
       "content_hash": "612cc39c216d"
+    },
+    {
+      "name": "GIT-001-phase-7D2-branch-disposition.md",
+      "type": "documentation",
+      "size_lines": 124,
+      "last_updated": "2026-08-15",
+      "description": "GIT-7D2 replaces the deletion-oriented scripts/cleanup_stale_branches.py path with",
+      "content_hash": "5a34e7a396cc"
     }
   ],
   "subfolders": [],
-  "content_hash": "5d2bd7e75171e8d4"
+  "content_hash": "e9ffc88f6bff2c65"
 }

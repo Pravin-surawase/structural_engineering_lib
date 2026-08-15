@@ -114,7 +114,7 @@ require explicit user approval.
 ```
 NEVER: gh pr merge --admin            ← bypasses required CI checks
 NEVER: gh issue close (without user approval) ← destructive, ask first
-NEVER: git push origin --delete (without user approval) ← use ./scripts/python_runtime.sh scripts/cleanup_stale_branches.py --dry-run
+NEVER: git push origin --delete (without user approval) ← inspect with ./scripts/python_runtime.sh scripts/classify_branch_disposition.py; deletion remains separate
 ```
 
 Closing issues or pull requests and deleting branches require **explicit user
