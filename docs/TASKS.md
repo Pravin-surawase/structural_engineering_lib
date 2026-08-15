@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — umbrella finish plan reconciled; INDIA-2-STAIR is complete and INDIA-2 remains in progress
+**Updated:** 2026-08-16 — INDIA-2-WALL-G0 is GO; wall A-D and later families are activated subject to their own G0 decisions
 
 ---
 
@@ -127,13 +127,13 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
+| INDIA-2-WALL | Implement the accepted braced empirical vertical-compression wall workflow through A-D and focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 GO; WALL-A is next |
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2-WALL-G0 | Discuss and, if accepted, freeze one bounded Clause 32 wall case using the [INDIA-2 execution plan](planning/india-2-remaining-is456-elements-plan.md) | repository owner + structural engineer | decision gate | P0 | 📋 READY FOR SCOPE DISCUSSION — implementation not activated |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
@@ -158,6 +158,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-WALL-G0 | Froze one Clause 32.2 braced wall vertical-compression check with public clause provenance, pre-implementation benchmark, units, fail-closed boundaries, and focused-gate cadence | Main Agent + structural engineer | ✅ GO — owner activated WALL-A-D; applied moment, horizontal action, two-grid and alternate wall systems remain held |
 | INDIA-2-PLAN | Consolidated INDIA-2 scope, family order, packet gates, exclusions, validation cadence, and completion criteria into one execution document | Main Agent + repository owner | ✅ DONE — INDIA-2-WALL-G0 remains the next decision; no engineering implementation activated |
 | INDIA-COMPLETION-PLAN | Reconciled the canonical INDIA-0 through INDIA-4 finish waves and mapped historical staircase receipts to INDIA-2-STAIR without renaming them | Main Agent + repository owner | ✅ DONE — next discussion is INDIA-2-WALL-G0; no calculation implementation activated |
 | INDIA-2-STAIR | Completed one bounded longitudinal straight-flight staircase family | Main Agent + structural engineer | ✅ DONE — historical INDIA-2A-D and INDIA-2-CUMULATIVE remain the immutable evidence names |

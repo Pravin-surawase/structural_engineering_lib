@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 38,
+  "file_count": 39,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -229,6 +229,14 @@
       "content_hash": "78d94af83e93"
     },
     {
+      "name": "india-2-wall-g0-scope-evidence.md",
+      "type": "documentation",
+      "size_lines": 125,
+      "last_updated": "2026-08-16",
+      "description": "activated the remaining INDIA-2 work on 2026-08-16 by asking that INDIA-2 be implemented and finished. Each later family still has to pass its own G0 source,",
+      "content_hash": "a5addb19fbc4"
+    },
+    {
       "name": "india-2a-staircase-scope-evidence.md",
       "type": "documentation",
       "size_lines": 111,
@@ -423,5 +431,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "fbee75768764566b"
+  "content_hash": "16b6681ee338bb1c"
 }
