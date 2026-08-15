@@ -133,7 +133,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2A | Select and freeze exactly one new bounded IS 456 family, with a straight-flight staircase as the recommendation to verify against source and benchmark readiness | Main Agent + structural engineer | decision packet | P1 | 📋 READY AFTER PLANNING PR — no calculation code before GO |
+| INDIA-2A | Select and freeze exactly one new bounded IS 456 family, with a straight-flight staircase as the recommendation to verify against source and benchmark readiness | Main Agent + structural engineer | decision packet | P1 | 📋 READY AFTER PR #759 MERGE — no calculation code before GO |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL QUALIFIED REVIEW |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 

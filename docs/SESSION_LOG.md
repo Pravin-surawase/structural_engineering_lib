@@ -31,6 +31,8 @@ bounded, decision-first INDIA-2 handoff for a new chat.
 - Recommended a bounded straight-flight staircase for INDIA-2A to verify,
   followed provisionally by geometry/action, structural-design, and public-
   workflow packets only after GO.
+- Published the planning packet in draft PR #759; its exact-head required
+  checks and merge receipt remain the closeout gate.
 
 ### Issues encountered
 
