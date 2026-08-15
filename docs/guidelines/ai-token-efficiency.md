@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-10
+last_updated: 2026-08-15
 doc_type: guide
 ---
 
@@ -151,6 +151,30 @@ Then:
 5. Run `./run.sh check --quick` before committing.
 6. Run the full project or release gate once at closeout. Repeat only the failed
    portion unless the fix can affect other categories.
+
+For work requiring independent acceptance, use these stricter efficiency
+controls:
+
+- one writer owns all mutable, shared, and generated surfaces;
+- freeze acceptance rows, maintained callers, and index scope before editing;
+- use focused gates during iteration; after content freezes, update maintained
+  indexes once, rerun focused checks, and run the sole quick gate;
+- only then commit an immutable local candidate for a read-only independent
+  audit and return one consolidated blocker list after the full audit matrix;
+- run no hosted CI before `PASS <head> <tree>` from that local audit;
+- after PASS, run one full gate at closeout, then push once for one hosted run;
+- allow the initial candidate plus one consolidated repair candidate; a second
+  rejection requires contract/design re-planning; and
+- if the audited head changes, invalidate the PASS rather than spending another
+  hosted run on unaudited work.
+
+Use non-overlapping timing labels: `contract/intake`, `writer implementation +
+focused verification`, `independent local audit`, `writer rework`, `final local
+closeout`, `hosted/network wait`, and `merge + post-merge verification`. Report
+their sum as `total wall time`; do not count idle or network time in another
+interval. At closeout report `candidate_heads`, `audit_rejections`,
+`repair_batches`, `focused_gate_retries`, `full_gate_runs`,
+`hosted_validation_runs`, `rework_minutes`, and `network_wait_minutes`.
 
 Safety-critical structural calculations still require independent reference
 validation. Token efficiency never replaces practicing-engineer review or the

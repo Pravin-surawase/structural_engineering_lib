@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-13
+last_updated: 2026-08-15
 doc_type: guide
 complexity: intermediate
 tags: [git, github, codex, workflow]
@@ -34,6 +34,64 @@ feat|fix|docs|refactor|test|chore|ci(scope): description
 Do not add a repository script that automates this lifecycle. Validation scripts
 may inspect Git state, but they must not stage, commit, push, merge, reset,
 checkout, clean, stash, delete branches, or mutate GitHub state.
+
+## Compact audited integration
+
+Use three roles for work that needs independent acceptance:
+
+- the **orchestrator** freezes scope, non-goals, acceptance rows, maintained
+  callers, shared/generated owners, commands, timing labels, and the candidate
+  ceiling, then decides acceptance;
+- the **single writer** alone edits implementation, tests, receipts, shared
+  documents, session records, and generated indexes; and
+- the **independent auditor** stays read-only, derives falsification cases from
+  the frozen contract rather than writer fixtures, and audits one exact commit
+  and tree across every acceptance row before reporting.
+
+The stage gates are:
+
+1. **Contract freeze:** record the complete acceptance and schema/cross-field
+   matrices, adversarial cases, maintained callers, non-goals, path ownership,
+   focused commands, and evidence expected at closeout.
+2. **Focused implementation:** use focused checks while writing. After content
+   freezes, the sole writer updates already-maintained generated projections,
+   reruns focused checks, and runs the sole quick gate.
+3. **Immutable local audit:** only then commit a clean local candidate and pause
+   before push. Give the auditor its exact base, head, tree, diff, focused
+   evidence, and quick-gate result.
+4. **Consolidated decision:** the auditor returns either `PASS <head> <tree>` or
+   one deduplicated blocker list with reproduction, main-process impact, and
+   required outcome after completing the whole matrix.
+5. **Candidate ceiling:** allow the initial candidate and at most one
+   consolidated repair candidate. A second rejection triggers contract/design
+   re-planning; do not start another patch cycle.
+6. **Final local gate:** only after independent local PASS on the unchanged
+   head, run one final full gate.
+7. **Hosted closeout and merge:** push once, complete one hosted CI/review
+   closeout, and immediately recheck the exact head/tree, base, required checks,
+   reviews, unresolved threads, conflicts, and mergeability. Merge only the
+   unchanged auditor-approved head; a changed head returns to local audit.
+8. **Post-merge verification:** refresh `main` without destructive cleanup and
+   verify the merge identity, reviewed-tree equivalence where relevant,
+   integrated checks, and task/handoff/receipt truth. Retain branches and
+   worktrees unless deletion is separately authorized.
+
+Do not claim a candidate is complete, final, ready, or merge-eligible before the
+independent PASS bound to its unchanged head and tree. Do not start hosted CI
+before that PASS.
+
+Record every material issue in the task-owned session entry with this minimal
+shape (use `unconfirmed` until the root cause is proved):
+
+```markdown
+### <issue title>
+- Symptom:
+- Main-process impact:
+- Confirmed root cause:  # or `unconfirmed`
+- Fix:
+- Proof:
+- Recurrence control:
+```
 
 ## Read-only Git state authority
 
@@ -93,10 +151,10 @@ numbers alone are not a durable Git receipt.
 
 ## Verification before publication
 
-- Run focused checks while editing.
-- Run `./run.sh check --quick` before the reviewed commit.
-- Run the full `./run.sh check` gate once at closeout for high-risk, merge, or
-  release work.
+- Follow the compact audited-integration gates above when independent acceptance
+  is required. Routine low-risk work still uses focused checks, then
+  `./run.sh check --quick` before publication and the full `./run.sh check` once
+  at closeout when its risk or release scope requires it.
 - Never bypass pre-commit hooks or required GitHub checks.
 - A green software gate is evidence about the software, not structural design
   approval or formula certification.
