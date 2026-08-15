@@ -88,6 +88,8 @@ at the locally and hosted green draft PR head for independent audit
   direct the unsafe action rather than prohibit it.
 - A read-only inventory regex containing a backtick was initially passed with
   unsafe shell quoting and zsh rejected it before the search ran.
+- The first sixth-head session-end replay held because it was intentionally run
+  before the newly generated receipt and index were committed.
 
 ### Root causes and resolutions
 
@@ -206,6 +208,9 @@ at the locally and hosted green draft PR head for independent audit
   add the exact colon form as a safe regression; auxiliary words remain unsafe.
 - Terminal issue resolution: rerun the read-only inventory with the regex in
   literal single quotes; it completed without any repository mutation.
+- Session-end correctly treats uncommitted receipt evidence as incomplete.
+  Resolution: validate and commit the exact receipt packet first, then replay
+  session-end on the clean tree; no hold was suppressed or auto-fixed.
 
 ### Verification
 
@@ -213,9 +218,9 @@ at the locally and hosted green draft PR head for independent audit
   state was clean and ready at the verified PR #750 merge SHA.
 - Focused receipt, semantic, and session regression suite: 123 passed after the
   fifth independent-audit blocker fix.
-- Remaining semantic, docs/index, quick 10/10, full 30/30, efficiency,
-  session-end, preservation replay, and hosted checks are recorded before PR
-  audit handoff.
+- Semantic workflow, strict docs 5/5, links, quick 10/10, full 30/30, and
+  efficiency passed for the sixth candidate. Session-end, preservation replay,
+  and hosted checks are replayed on the committed/published exact head.
 
 ### Preservation and next boundary
 
