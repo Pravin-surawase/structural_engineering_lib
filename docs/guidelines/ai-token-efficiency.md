@@ -157,13 +157,12 @@ controls:
 
 - one writer owns all mutable, shared, and generated surfaces;
 - freeze acceptance rows, maintained callers, and index scope before editing;
-- use focused gates during iteration and update maintained indexes once after
-  content freezes;
-- commit an immutable local candidate for a read-only independent audit and
-  return one consolidated blocker list only after the full audit matrix;
+- use focused gates during iteration; after content freezes, update maintained
+  indexes once, rerun focused checks, and run the sole quick gate;
+- only then commit an immutable local candidate for a read-only independent
+  audit and return one consolidated blocker list after the full audit matrix;
 - run no hosted CI before `PASS <head> <tree>` from that local audit;
-- after PASS, run the quick gate and one full gate at closeout, then push once
-  for one hosted run;
+- after PASS, run one full gate at closeout, then push once for one hosted run;
 - allow the initial candidate plus one consolidated repair candidate; a second
   rejection requires contract/design re-planning; and
 - if the audited head changes, invalidate the PASS rather than spending another

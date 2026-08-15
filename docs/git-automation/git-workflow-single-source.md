@@ -53,10 +53,12 @@ The stage gates are:
 1. **Contract freeze:** record the complete acceptance and schema/cross-field
    matrices, adversarial cases, maintained callers, non-goals, path ownership,
    focused commands, and evidence expected at closeout.
-2. **Focused implementation:** use focused checks while writing; freeze content
-   before the sole writer updates already-maintained generated projections.
-3. **Immutable local audit:** commit a clean local candidate and pause before
-   push. Give the auditor its exact base, head, tree, diff, and focused evidence.
+2. **Focused implementation:** use focused checks while writing. After content
+   freezes, the sole writer updates already-maintained generated projections,
+   reruns focused checks, and runs the sole quick gate.
+3. **Immutable local audit:** only then commit a clean local candidate and pause
+   before push. Give the auditor its exact base, head, tree, diff, focused
+   evidence, and quick-gate result.
 4. **Consolidated decision:** the auditor returns either `PASS <head> <tree>` or
    one deduplicated blocker list with reproduction, main-process impact, and
    required outcome after completing the whole matrix.
@@ -64,7 +66,7 @@ The stage gates are:
    consolidated repair candidate. A second rejection triggers contract/design
    re-planning; do not start another patch cycle.
 6. **Final local gate:** only after independent local PASS on the unchanged
-   head, run the quick gate and one final full gate.
+   head, run one final full gate.
 7. **Hosted closeout and merge:** push once, complete one hosted CI/review
    closeout, and immediately recheck the exact head/tree, base, required checks,
    reviews, unresolved threads, conflicts, and mergeability. Merge only the

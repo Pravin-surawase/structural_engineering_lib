@@ -24,6 +24,9 @@ receipt, Git reader, or second authority
 - Added the local-PASS-before-hosted-CI rule, one consolidated blocker packet,
   initial-plus-one-repair candidate ceiling, one full/hosted closeout, unchanged-
   head merge rule, timing labels, and retry/rework counters.
+- Corrected the consolidated audit finding so focused checks and the sole quick
+  gate precede the immutable candidate commit, while the full gate remains after
+  LOCAL PASS.
 - Embedded the minimal issue-record template in the canonical Git workflow and
   refreshed only already-maintained generated indexes after content freeze.
 - Preserved GIT-7E behavior and every protected worktree; no branch, worktree,
@@ -39,8 +42,11 @@ receipt, Git reader, or second authority
   diff/status checks on that line.
 - The primary checkout's clean local `main` was at `0fdb48ed`, while freshly
   fetched `origin/main` and this isolated worktree were at the required merged
-  base `6bcbd9d3`; treating the primary local ref as the integration base would
-  have violated the frozen exact-base contract.
+  base `6bcbd9d3`; treating that stale local ref as current would have violated
+  the frozen exact-base contract.
+- Independent audit rejected initial candidate `1f842b9d` because both workflow
+  authorities placed the quick gate after LOCAL PASS, conflicting with the
+  mandatory pre-commit quick gate in `AGENTS.md`.
 
 ### Root causes and resolutions
 
@@ -56,13 +62,23 @@ receipt, Git reader, or second authority
   `Python/tests/test_git_guidance_semantics.py`, and both pass on the frozen
   content. Proof: their direct focused runs. Recurrence control: discover
   maintained commands with `rg --files`/references before execution.
-- Root cause: the primary checkout contains a distinct local-main commit not
-  present on freshly fetched `origin/main`. Resolution: preserve that checkout
-  untouched and create this branch in the isolated clean worktree from the exact
-  fetched base requested by the orchestrator. Proof: candidate base/head/tree and
-  canonical `git_state.py --json --worktrees` receipts. Recurrence control:
-  compare fetched remote identity and tree with the frozen contract before any
-  writer mutation; stop if the required remote base differs.
+- Root cause: the primary checkout's local `main` had not advanced through the
+  seven commits already present on the required remote main; `0fdb48ed` is the
+  ancestor and merge-base of `6bcbd9d3`, not a distinct commit absent from remote
+  main. Resolution: preserve that checkout untouched and create this branch in
+  the isolated clean worktree from the exact fetched base requested by the
+  orchestrator. Proof: `git merge-base --is-ancestor` succeeds, merge-base is
+  `0fdb48ed`, and `git rev-list --left-right --count` reports `0 7`.
+  Recurrence control: compare fetched remote identity, ancestry, and tree with
+  the frozen contract before any writer mutation.
+- Root cause: the initial wording combined quick and full validation in the
+  post-audit final gate, overlooking the repository's mandatory pre-commit quick
+  gate. Resolution: both authorities now require content/index freeze, focused
+  checks, and the sole quick gate before committing the immutable local
+  candidate; only the full gate waits for LOCAL PASS. Proof: focused checks and
+  `./run.sh check --quick` pass before the repair commit. Recurrence control:
+  reconcile proposed stage order against mandatory `AGENTS.md` gates during
+  contract freeze.
 
 ## 2026-08-15 — Session: GIT-7E Semantic Guidance and Durable Handoff
 
