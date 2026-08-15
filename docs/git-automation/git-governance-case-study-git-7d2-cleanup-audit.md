@@ -129,6 +129,33 @@ At any unknown, dirty, attached, operation, divergence, open/dependent PR,
 unique-work, or retention state, stop. A candidate table is a work queue, not
 deletion authority.
 
+## Eight-branch proposal: authority is not retention evidence
+
+The next exact proposal refreshed eight unattached merged tips. Local, tracking,
+and live remote heads matched; every tip was reachable from current `main`;
+the exact PRs were merged; and no open PR used or referenced a target. Those
+facts completed integration and dependency evidence, but not retention intent.
+
+An initial draft treated authority to inspect, publish the proposal, and use the
+normal PR lifecycle as `NO_RETENTION`. Orchestrator review caught the outcome-
+changing inference before publication. The controlling instruction said delete
+nothing until exact approval and never said these historical tips were unneeded.
+All eight inputs were corrected to retention `UNKNOWN`; the integrated
+classifier then returned `HOLD_UNKNOWN_OWNER` with
+`RETENTION_EVIDENCE_UNKNOWN` for every exact SHA.
+
+The lesson is narrower than “ask more often”:
+
+```text
+authority to orchestrate != evidence that history is unneeded
+authority to publish a proposal != approval to delete its targets
+known owner != known retention disposition
+```
+
+The generic `HOLD_UNKNOWN_OWNER` label is retained as the classifier's current
+unknown-evidence disposition; its exact reason code states the actual missing
+fact. GIT-7E remains not started.
+
 ## Teach-back
 
 1. Why does `NOT_CHECKED` prevent a retirement-ready result even if `git

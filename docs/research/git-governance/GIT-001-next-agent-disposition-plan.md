@@ -231,19 +231,22 @@ candidates, not deletion-ready targets:
 
 | Local branch | Head | Merged PR | Local decision | Remote decision |
 |---|---:|---:|---|---|
-| `codex/alpha-0231-candidate-evidence` | `adb161b8` | #732 | Evidence incomplete | Evidence incomplete |
-| `codex/ci-fastapi-load-lane-fix` | `21b9df1f` | #729 | Evidence incomplete | Evidence incomplete |
-| `codex/column-rectangular-e2e` | `007dfa0c` | #725 | Evidence incomplete | Evidence incomplete |
-| `codex/footing-isolated-v1` | `886871ae` | #727 | Evidence incomplete | Evidence incomplete |
-| `codex/gpt-5-3-spark-work-program` | `6cd22dcb` | #734 | Evidence incomplete | Evidence incomplete |
-| `codex/is456-beam-primary-route` | `aa4fe606` | #726 | Evidence incomplete | Evidence incomplete |
-| `codex/is456-slabs-closeout` | `d79a1558` | #724 | Evidence incomplete | Evidence incomplete |
-| `codex/is456-slabs-plan` | `7e623984` | #728 | Evidence incomplete | Evidence incomplete |
+| `codex/alpha-0231-candidate-evidence` | `adb161b8` | #732 | Hold: retention unknown | Hold: retention unknown |
+| `codex/ci-fastapi-load-lane-fix` | `21b9df1f` | #729 | Hold: retention unknown | Hold: retention unknown |
+| `codex/column-rectangular-e2e` | `007dfa0c` | #725 | Hold: retention unknown | Hold: retention unknown |
+| `codex/footing-isolated-v1` | `886871ae` | #727 | Hold: retention unknown | Hold: retention unknown |
+| `codex/gpt-5-3-spark-work-program` | `6cd22dcb` | #734 | Hold: retention unknown | Hold: retention unknown |
+| `codex/is456-beam-primary-route` | `aa4fe606` | #726 | Hold: retention unknown | Hold: retention unknown |
+| `codex/is456-slabs-closeout` | `d79a1558` | #724 | Hold: retention unknown | Hold: retention unknown |
+| `codex/is456-slabs-plan` | `7e623984` | #728 | Hold: retention unknown | Hold: retention unknown |
 
-Before seeking approval, refresh every row for worktree attachment, local/remote
-head identity, main reachability, PR state/dependencies, owner, retention, and
-new activity, then run the maintained classifier with that exact evidence. A
-branch becoming attached, advancing, diverging, gaining an open/dependent PR,
+The 2026-08-15 exact proposal refreshed every row for worktree attachment,
+local/remote head identity, main reachability, PR state/dependencies, owner,
+retention, and new activity, then ran the maintained classifier. Every row
+returned `HOLD_UNKNOWN_OWNER` / `RETENTION_EVIDENCE_UNKNOWN`: proposal authority
+did not establish that a historical tip was unneeded. Before any new approval
+request, obtain an authoritative exact-SHA retention decision and rerun fresh.
+A branch becoming attached, advancing, diverging, gaining an open/dependent PR,
 or carrying a retention hold remains outside any action batch.
 
 ### Why the cleanup script did not list them

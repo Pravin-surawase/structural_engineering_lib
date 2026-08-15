@@ -5,6 +5,111 @@
 
 ---
 
+## 2026-08-15 — Session: Eight-Branch Retirement Authorization Proposal
+
+**Agent:** Codex (`ops`, sole writer/integration owner; no subagents)
+
+**Branch:** `codex/git-retirement-authorization-proposal`, created from freshly
+verified `origin/main = 670ea4beeb2a8765fff59e05bb130ff54752369e`
+
+**Task start:** `2026-08-15T08:45:05Z`
+
+**Focus:** Produce an inspection-only, target-by-target local/remote/worktree
+retirement authorization proposal for eight exact unattached merged branch tips,
+then pause at the locally green PR head for independent audit
+
+### Summary
+
+- Read current instructions, the canonical Git workflow, and the structural-
+  library Git-governance memory skill before mutation.
+- Ran the required ops session brief/start, worktree-bound runtime diagnosis,
+  and worktree-aware Git state authority; `source_bound=true`.
+- Proved live GitHub `main` remained the delegated expected `670ea4be`, refreshed
+  `origin/main`, and created one fresh isolated proposal branch from that SHA.
+- Refreshed all target refs without prune and verified exact local, tracking,
+  live remote, worktree, ancestry, patch, tree, PR, review, comment, dependency,
+  ownership, and retention evidence.
+- Ran the integrated classifier on all eight exact branch selectors with caller-
+  supplied evidence. Every target returned `HOLD_UNKNOWN_OWNER` with reason
+  `RETENTION_EVIDENCE_UNKNOWN`; no target reached pending approval.
+- Added readable and machine-readable proposal receipts and reconciled only the
+  task, handoff, phase ledger, disposition plan, case study, and learning
+  addendum surfaces whose truth changed. GIT-7E remains not started.
+- Performed no target ref deletion, worktree removal, cleanup, prune, settings
+  change, issue/PR closure, release, protected-lane checkout, or primary-main
+  synchronization.
+
+### Key deliverables
+
+- `docs/research/git-governance/GIT-001-eight-branch-retirement-authorization-proposal.md`
+- `docs/research/git-governance/GIT-001-eight-branch-retirement-authorization-proposal.json`
+- `docs/research/git-governance/GIT-001-eight-branch-retirement-classifier-evidence.json`
+- Reconciled `docs/TASKS.md`, `docs/planning/next-session-brief.md`, GIT-001
+  phase/disposition records, and the cleanup-audit case study
+- Updated external learning addendum in the existing personal Git workbook
+  package; the general workbook needed no truth change
+
+### Issues encountered
+
+- An initial evidence draft encoded `NO_RETENTION` for all eight exact SHAs by
+  inferring that authority to inspect, publish this proposal, and autonomously
+  integrate a green PR also meant the historical tips were declared unneeded.
+  That would have changed every classifier outcome from a required unknown hold
+  toward `RETIREMENT_READY_PENDING_APPROVAL`, creating an unsafe deletion-
+  authorization path.
+
+### Root causes and resolutions
+
+- Root cause: two distinct authority classes were compressed into one—routine
+  orchestration/PR authority and target-retention intent. The controlling
+  instruction instead says to delete nothing until exact approval and contains
+  no exact-SHA `NO_RETENTION` declaration. Resolution: before publication,
+  replace every inferred retention value with `UNKNOWN`, preserve the reason
+  and source-task boundary in caller evidence, rerun the integrated classifier,
+  and update the proposal/case-study/learning record. Evidence: classifier
+  receipt status is `UNKNOWN`, all eight targets are
+  `HOLD_UNKNOWN_OWNER [RETENTION_EVIDENCE_UNKNOWN]`, and query failures are
+  empty.
+
+### Verification
+
+- Worktree-bound runtime diagnosis: `source_bound=true`.
+- Live default/target refs, exact merged PR heads, no open head/base dependency,
+  no open-PR reference, and empty review/comment sets were refreshed before the
+  classifier run.
+- Focused classifier regression: `12 passed`; semantic Codex-native Git workflow
+  check: passed; both machine receipts passed exact `jq` assertions; task,
+  handoff, and session schemas passed.
+- Strict docs passed all five checks with zero invalid frontmatters; 342 Markdown
+  files and 1,107 internal links had zero broken links; the task-owned Git-
+  governance indexes were dry-run, regenerated, and hash-checked.
+- Repository gates: quick `10/10` and full `30/30`; `git diff --check` passed.
+- Preservation replay reproduced all eight local/tracking heads, protected ref
+  heads, 16-worktree topology, common Git configuration SHA-256
+  `bfdc47e4096d756d71f4077c9581bc146160602a719ff6afe3aa5853f8d0e228`,
+  and exact `e54a` head/path/patch ID. The current repository filesystem diff
+  contained only the 11 intended task-owned paths.
+- External learning addendum SHA-256 after the truth update:
+  `22694e606eca22c3afb7b972b30b0931d9308f9d7585f7f8ef935c563c120d0d`.
+- Session-end validation and normal PR publication complete the local packet;
+  hosted exact-head audit remains the supervising orchestrator's next gate.
+
+### Preservation and next boundary
+
+- Detached dirty `e54a` remains at `0fdb48ed` with only `docs/SESSION_LOG.md`
+  modified and patch ID `be157118`; GIT research, Excel, Alpha policy, attached
+  GIT/Alpha lanes, all unrelated refs/worktrees/configuration, and primary
+  `main` remain held.
+- The next authority is an exact-SHA repository-owner retention decision. A
+  `NO_RETENTION` row then requires a fresh classifier result of
+  `RETIREMENT_READY_PENDING_APPROVAL` before separate local-ref, remote-ref,
+  and any then-present worktree action can be requested.
+- This proposal authorizes no deletion. GIT-7E is explicitly not started.
+
+### Terminal issues
+
+- None encountered.
+
 ## 2026-08-15 — Session: GIT-7D Cleanup and Retrospective Reconciliation
 
 **Agent:** Codex (`ops`, with two bounded read-only reviewers)
