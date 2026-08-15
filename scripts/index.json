@@ -1474,7 +1474,7 @@
     {
       "name": "check_codex_git_workflow.py",
       "type": "python",
-      "size_lines": 488,
+      "size_lines": 555,
       "last_updated": "2026-08-15",
       "description": "Guard the Codex-native Git/GitHub workflow contract.",
       "functions": [
@@ -1510,7 +1510,7 @@
         "DEPLOY_DOCS",
         "GUIDANCE_INDEX"
       ],
-      "content_hash": "da05527345ad"
+      "content_hash": "f62aa4b673e3"
     },
     {
       "name": "check_doc_versions.py",
@@ -4395,7 +4395,7 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 2417,
+      "size_lines": 2466,
       "last_updated": "2026-08-15",
       "description": "Unified session management CLI.",
       "functions": [
@@ -4475,7 +4475,12 @@
           ]
         },
         {
-          "name": "get_uncommitted_changes"
+          "name": "get_closeout_git_evidence",
+          "description": "Return CLEAN, DIRTY, or UNKNOWN from the canonical Git-state authority."
+        },
+        {
+          "name": "report_closeout_git_evidence",
+          "description": "Print fail-closed closeout evidence; return true only for CLEAN."
         },
         {
           "name": "check_session_log_complete"
@@ -4485,13 +4490,6 @@
         },
         {
           "name": "get_changed_doc_folders"
-        },
-        {
-          "name": "update_folder_readmes",
-          "params": [
-            "folders",
-            "fix"
-          ]
         }
       ],
       "constants": [
@@ -4506,7 +4504,7 @@
         "HANDOFF_DATE_RE",
         "COMMIT_HASH_RE"
       ],
-      "content_hash": "8b29c36a9199"
+      "content_hash": "76f98cf223c6"
     },
     {
       "name": "session_store.py",
@@ -5520,5 +5518,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "4b4d7cb693bd007e"
+  "content_hash": "ea446ebe6eaf20ee"
 }

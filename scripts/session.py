@@ -33,7 +33,11 @@ from typing import Optional
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib.utils import REPO_ROOT
 from _lib.output import StatusLine
-from git_state import RepositoryState, collect_repository_state
+from git_state import (
+    SCHEMA_VERSION as GIT_STATE_SCHEMA_VERSION,
+    RepositoryState,
+    collect_repository_state,
+)
 from git_handoff_receipt import load_receipt, validate_receipt
 
 SESSION_LOG = REPO_ROOT / "docs" / "SESSION_LOG.md"
@@ -797,19 +801,73 @@ def cmd_usage(args: argparse.Namespace) -> int:
 # ─── End Session ─────────────────────────────────────────────────────────────
 
 
-def get_uncommitted_changes() -> list[str]:
+def get_closeout_git_evidence() -> tuple[str, list[str], str]:
+    """Return CLEAN, DIRTY, or UNKNOWN from the canonical Git-state authority."""
     try:
-        result = subprocess.run(
-            ["git", "status", "--porcelain"],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
+        state = collect_repository_state(REPO_ROOT)
+    except Exception as exc:
+        return "UNKNOWN", [], f"Git-state authority raised: {exc}"
+    if not all(
+        hasattr(state, field) for field in ("schema_version", "tree", "query_failures")
+    ):
+        return "UNKNOWN", [], "Git-state authority returned malformed evidence"
+    if state.schema_version != GIT_STATE_SCHEMA_VERSION:
+        return "UNKNOWN", [], f"Git-state schema is unknown: {state.schema_version}"
+    if not isinstance(state.query_failures, list):
+        return "UNKNOWN", [], "Git-state query-failure evidence is malformed"
+    if state.query_failures:
+        if not all(
+            hasattr(failure, "command") and hasattr(failure, "reason")
+            for failure in state.query_failures
+        ):
+            return "UNKNOWN", [], "Git-state query-failure evidence is malformed"
+        detail = "; ".join(
+            f"{failure.command}: {failure.reason}" for failure in state.query_failures
         )
-        if not result.stdout.strip():
-            return []
-        return [line.strip() for line in result.stdout.strip().split("\n")]
-    except Exception:
-        return []
+        return "UNKNOWN", [], f"Git-state query failed: {detail}"
+
+    tree = state.tree
+    clean = getattr(tree, "clean", None)
+    path_groups = [
+        getattr(tree, field, None)
+        for field in (
+            "staged_paths",
+            "modified_paths",
+            "untracked_paths",
+            "conflicted_paths",
+        )
+    ]
+    if not isinstance(clean, bool) or any(
+        not isinstance(group, list) or any(not isinstance(path, str) for path in group)
+        for group in path_groups
+    ):
+        return "UNKNOWN", [], "Git-state tree evidence is malformed"
+    paths = sorted(set(path for group in path_groups for path in group))
+    if clean and paths:
+        return "UNKNOWN", [], "Git-state clean flag contradicts dirty paths"
+    if not clean and not paths:
+        return "UNKNOWN", [], "Git-state dirty flag has no path evidence"
+    if clean:
+        return "CLEAN", [], "Canonical Git-state tree is clean"
+    return "DIRTY", paths, "Canonical Git-state tree contains changes"
+
+
+def report_closeout_git_evidence() -> bool:
+    """Print fail-closed closeout evidence; return true only for CLEAN."""
+    print("📁 Uncommitted Changes:")
+    status, paths, reason = get_closeout_git_evidence()
+    if status == "UNKNOWN":
+        print(f"  ⚠️  Git state UNKNOWN/hold: {reason}")
+        return False
+    if status == "DIRTY":
+        print(f"  ⚠️  {len(paths)} uncommitted file(s):")
+        for path in paths[:5]:
+            print(f"     {path}")
+        if len(paths) > 5:
+            print(f"     ... and {len(paths) - 5} more")
+        return False
+    print("  ✅ Working tree clean (scripts/git_state.py)")
+    return True
 
 
 def check_session_log_complete() -> tuple[bool, list[str]]:
@@ -971,17 +1029,8 @@ def cmd_end(args: argparse.Namespace) -> int:
     all_passed = True
 
     # 1. Uncommitted changes
-    print("📁 Uncommitted Changes:")
-    uncommitted = get_uncommitted_changes()
-    if uncommitted:
-        print(f"  ⚠️  {len(uncommitted)} uncommitted file(s):")
-        for f in uncommitted[:5]:
-            print(f"     {f}")
-        if len(uncommitted) > 5:
-            print(f"     ... and {len(uncommitted) - 5} more")
+    if not report_closeout_git_evidence():
         all_passed = False
-    else:
-        print("  ✅ Working tree clean")
     print()
 
     # 2. Handoff brief update (if --fix)

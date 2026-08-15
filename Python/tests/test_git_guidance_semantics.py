@@ -38,7 +38,10 @@ def _write_index(root: Path, **overrides) -> Path:
                 r"(?:(?<![A-Za-z0-9])(?:do not|don't|never)\s+push\b"
                 r"[^\n.;!?]*\bwithout\s+pull(?:ing)?\s+first\b|"
                 r"\bpull(?:\s+(?:the\s+)?(?:PR\s+)?branch)?\s+before"
-                r"\s+push(?:ing)?\b|\bpull\s+first\b)"
+                r"\s+(?:you\s+)?push(?:ing)?\b|\bpull\s+first\b"
+                r"[^\n.;!?]{0,40}\b(?:then\s+)?push(?:ing)?\b|"
+                r"\bbefore\s+you\s+push\b[^\n.;!?]{0,40}"
+                r"\bpull\s+first\b)"
             ),
         ],
         "required_contracts": {},
@@ -232,7 +235,10 @@ def test_genuine_governing_prohibition_is_safe(prohibition, tmp_path):
     [
         "Pull before pushing to the PR branch.",
         "Pull the PR branch before pushing.",
+        "Pull before you push.",
+        "Always pull before you push to the PR branch.",
         "Pull first, then push the change.",
+        "Before you push, pull first.",
         "Don't push to the PR branch without pulling first.",
     ],
 )
@@ -266,6 +272,10 @@ def test_data_driven_omitted_git_pull_before_push_instruction_fails(
         "Never pull first; inspect with git_state.py.",
         "Historical incident evidence says the old guide required pull before pushing.",
         "Deprecated guidance says pull first, then push.",
+        "The lead horse should pull first in the team.",
+        "Pull first aid supplies from the cabinet.",
+        "Do not pull before you push; inspect branch and upstream first.",
+        "Historical guidance said pull before you push.",
     ],
 )
 def test_omitted_git_pull_pattern_respects_prohibition_and_history(

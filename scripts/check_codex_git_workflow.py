@@ -53,7 +53,8 @@ HISTORICAL_CONTEXT = re.compile(
     re.IGNORECASE,
 )
 HISTORICAL_NARRATION = re.compile(
-    r"\b(?:says?|records?|mentions?|describes?|documents?|was|were|used|ran|during)\b",
+    r"\b(?:says?|said|records?|mentions?|describes?|documents?|was|were|used|"
+    r"ran|during)\b",
     re.IGNORECASE,
 )
 IMPERATIVE_LIFECYCLE_VERBS = re.compile(

@@ -2227,7 +2227,7 @@
     {
       "name": "test_git_guidance_semantics.py",
       "type": "python",
-      "size_lines": 302,
+      "size_lines": 312,
       "last_updated": "2026-08-15",
       "description": "Semantic live-guidance discovery and coherence regressions.",
       "functions": [
@@ -2291,7 +2291,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "4b4b9a8560dc"
+      "content_hash": "b5f2bfd443ff"
     },
     {
       "name": "test_git_handoff_receipt.py",
@@ -3730,7 +3730,7 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 890,
+      "size_lines": 1019,
       "last_updated": "2026-08-15",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
@@ -3742,6 +3742,45 @@
           "params": [
             "monkeypatch",
             "tmp_path"
+          ]
+        },
+        {
+          "name": "test_session_closeout_uses_canonical_clean_evidence_without_subprocess",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_session_closeout_reports_canonical_dirty_paths",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_session_closeout_holds_nonzero_git_state_query",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_session_closeout_holds_git_state_exception",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_session_closeout_holds_malformed_or_unknown_evidence",
+          "params": [
+            "evidence",
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_session_closeout_never_prints_clean_for_hold",
+          "params": [
+            "status",
+            "monkeypatch",
+            "capsys"
           ]
         },
         {
@@ -3813,37 +3852,12 @@
         },
         {
           "name": "test_launcher_port_discovery_is_listener_only"
-        },
-        {
-          "name": "test_run_sh_does_not_own_git_or_github_lifecycle"
-        },
-        {
-          "name": "test_retired_git_lifecycle_paths_stay_absent"
-        },
-        {
-          "name": "test_p0_missing_script_control_paths_stay_removed"
-        },
-        {
-          "name": "test_script_reference_validator_fails_missing_control_target",
-          "params": [
-            "tmp_path",
-            "monkeypatch"
-          ]
-        },
-        {
-          "name": "test_api_endpoint_extraction_stops_before_query_template"
-        },
-        {
-          "name": "test_api_call_method_extraction_stops_at_each_fetch",
-          "params": [
-            "tmp_path"
-          ]
         }
       ],
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "1f75dfd1fc3b"
+      "content_hash": "f70081cd341f"
     },
     {
       "name": "test_session_store.py",
@@ -4601,5 +4615,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "ab6faf0ddf9132d5"
+  "content_hash": "29e2736cf53dbfa1"
 }

@@ -93,6 +93,13 @@ at the locally and hosted green draft PR head for independent audit
   pulling before every PR-branch push, bypassing branch/upstream/ownership and
   behind/diverged inspection. The semantic index missed the prose-equivalent
   because its patterns required a literal `git` command.
+- An eighth exact-head audit found the omitted-`git` prose pattern missed
+  intervening-pronoun mandates such as `pull before you push` and overreached
+  into non-Git objects such as a lead horse or first-aid supplies. The same audit
+  found session-end independently ran `git status --porcelain`, treated
+  exceptions/nonzero results as an empty list, and could print a false CLEAN.
+- The first ninth-head focused replay rejected valid canonical state fixtures
+  loaded through the package alias and one past-tense historical control.
 - A read-only inventory regex containing a backtick was initially passed with
   unsafe shell quoting and zsh rejected it before the search ran.
 - The first sixth-head session-end replay held because it was intentionally run
@@ -235,6 +242,21 @@ at the locally and hosted green draft PR head for independent audit
   omitted-`git` pattern for pull-before-push/pull-first forms. Evidence:
   unconditional and double-negative mandate fixtures fail; direct prohibitions
   plus historical/deprecated narration pass; the full indexed corpus is green.
+- Root cause: the prose pattern treated `pull first` as sufficient without a
+  paired push action and did not allow the subject `you`; session closeout also
+  retained a legacy subprocess calculation instead of consuming the already
+  imported Git-state kernel. Resolution: require a bounded pull/push action pair
+  (including `before you push`) and route closeout through
+  `collect_repository_state` only. Query failure, exception, schema/type
+  mismatch, or contradictory tree evidence is UNKNOWN/hold; only canonical
+  clean evidence prints CLEAN. Evidence: exact imperative/non-Git/history pairs
+  and clean/dirty/nonzero/exception/malformed authority regressions pass, with
+  no closeout Git/network/mutation subprocess.
+- Focused-replay root cause: Python loaded `git_state` and `scripts.git_state`
+  as distinct module identities, so nominal `isinstance` checks rejected the
+  same schema; historical grammar included `says` but omitted `said`.
+  Resolution: validate canonical evidence structurally by schema/required fields
+  and add the explicit past-tense narration token. Malformed fields still hold.
 - Terminal issue resolution: rerun the read-only inventory with the regex in
   literal single quotes; it completed without any repository mutation.
 - Session-end correctly treats uncommitted receipt evidence as incomplete.
@@ -259,11 +281,11 @@ at the locally and hosted green draft PR head for independent audit
 
 - Worktree-bound runtime diagnosis reported `source_bound=true`; startup local
   state was clean and ready at the verified PR #750 merge SHA.
-- Focused receipt, semantic, and session regression suite: 143 passed after the
-  seventh independent-audit blocker fix.
-- The full indexed semantic corpus, strict docs 5/5, 1,107 links, quick 10/10,
-  full 30/30, and efficiency pass for the eighth candidate. Session-end,
-  preservation replay, and hosted checks are replayed on the exact final head.
+- Focused receipt, semantic, and session regression suite: 160 passed after the
+  eighth independent-audit blocker fix.
+- The full indexed semantic corpus passes for the ninth candidate. Strict docs,
+  links, quick, full, efficiency, session-end, preservation replay, and hosted
+  checks are replayed before exact-head audit handoff.
 
 ### Preservation and next boundary
 

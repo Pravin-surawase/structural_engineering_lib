@@ -43,7 +43,7 @@
 | [check_circular_imports.py](check_circular_imports.py) | Circular Import Detector for the Python Structural Library | 5 | 1 | 464 |
 | [check_clause_coverage.py](check_clause_coverage.py) | IS 456 clause coverage gap detection. | 0 | 8 | 488 |
 | [check_cli_reference.py](check_cli_reference.py) | Ensure CLI reference includes required commands. | 0 | 1 | 48 |
-| [check_codex_git_workflow.py](check_codex_git_workflow.py) | Guard the Codex-native Git/GitHub workflow contract. | 0 | 3 | 488 |
+| [check_codex_git_workflow.py](check_codex_git_workflow.py) | Guard the Codex-native Git/GitHub workflow contract. | 0 | 3 | 555 |
 | [check_doc_versions.py](check_doc_versions.py) | Doc Version Drift Check — Validate no stale *library* versio | 0 | 2 | 72 |
 | [check_docker_config.py](check_docker_config.py) | Docker Configuration Validator. | 0 | 6 | 295 |
 | [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 6 | 675 |
@@ -96,7 +96,7 @@
 | [release.py](release.py) | Unified release management CLI. | 0 | 10 | 1776 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 355 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
-| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2417 |
+| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2466 |
 | [session_store.py](session_store.py) | JSON-based session state persistence for AI agent sessions. | 1 | 14 | 374 |
 | [skill_tiers.py](skill_tiers.py) | Skill tier classification and management for AI agents. | 1 | 11 | 485 |
 | [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 502 |

@@ -58,6 +58,135 @@ git_state = importlib.import_module("scripts.git_state")
 git_handoff_receipt = importlib.import_module("scripts.git_handoff_receipt")
 
 
+def _closeout_state(
+    *,
+    clean: bool,
+    paths: list[str] | None = None,
+    failures: list | None = None,
+    schema_version: int = 1,
+):
+    modified = list(paths or [])
+    return git_state.RepositoryState(
+        schema_version=schema_version,
+        observed_at_utc="2026-08-15T00:00:00+00:00",
+        repository_root="/tmp/repo",
+        worktree_root="/tmp/repo",
+        git_dir="/tmp/repo/.git",
+        git_common_dir="/tmp/repo/.git",
+        linked_worktree=False,
+        branch="codex/git-7e",
+        head_sha="a" * 40,
+        default_base=git_state.Relation("origin/main", "b" * 40, 1, 0, "ahead"),
+        upstream=git_state.Relation("origin/codex/git-7e", "a" * 40, 0, 0, "equal"),
+        tree=git_state.TreeState(modified_paths=modified, clean=clean),
+        operation="none",
+        operation_markers=[],
+        locks=[],
+        remote_freshness="NOT_CHECKED",
+        derived_action="READY_LOCAL" if clean else "HOLD_DIRTY",
+        hold_reasons=[] if clean else ["WORKTREE_DIRTY"],
+        query_failures=list(failures or []),
+        duration_ms=1.0,
+    )
+
+
+def test_session_closeout_uses_canonical_clean_evidence_without_subprocess(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    state = _closeout_state(clean=True)
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+    monkeypatch.setattr(
+        session.subprocess,
+        "run",
+        lambda *args, **kwargs: (_ for _ in ()).throw(
+            AssertionError("closeout evidence must not invoke a second subprocess")
+        ),
+    )
+
+    assert session.get_closeout_git_evidence() == (
+        "CLEAN",
+        [],
+        "Canonical Git-state tree is clean",
+    )
+
+
+def test_session_closeout_reports_canonical_dirty_paths(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    state = _closeout_state(clean=False, paths=["docs/SESSION_LOG.md"])
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+
+    status, paths, _reason = session.get_closeout_git_evidence()
+
+    assert status == "DIRTY"
+    assert paths == ["docs/SESSION_LOG.md"]
+
+
+def test_session_closeout_holds_nonzero_git_state_query(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    state = _closeout_state(
+        clean=False,
+        failures=[git_state.QueryFailure("git status --porcelain=v2", "exit 128")],
+    )
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+
+    status, paths, reason = session.get_closeout_git_evidence()
+
+    assert status == "UNKNOWN"
+    assert paths == []
+    assert "exit 128" in reason
+
+
+def test_session_closeout_holds_git_state_exception(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    def raise_query(_repo):
+        raise OSError("authority unavailable")
+
+    monkeypatch.setattr(session, "collect_repository_state", raise_query)
+
+    status, paths, reason = session.get_closeout_git_evidence()
+
+    assert status == "UNKNOWN"
+    assert paths == []
+    assert "authority unavailable" in reason
+
+
+@pytest.mark.parametrize(
+    "evidence",
+    [
+        {"tree": {"clean": True}},
+        _closeout_state(clean=True, schema_version=999),
+        _closeout_state(clean=True, paths=["contradiction.md"]),
+        _closeout_state(clean=False),
+    ],
+)
+def test_session_closeout_holds_malformed_or_unknown_evidence(
+    evidence, monkeypatch: pytest.MonkeyPatch
+):
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: evidence)
+
+    status, paths, _reason = session.get_closeout_git_evidence()
+
+    assert status == "UNKNOWN"
+    assert paths == []
+
+
+@pytest.mark.parametrize("status", ["DIRTY", "UNKNOWN"])
+def test_session_closeout_never_prints_clean_for_hold(
+    status: str, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    monkeypatch.setattr(
+        session,
+        "get_closeout_git_evidence",
+        lambda: (status, ["dirty.md"] if status == "DIRTY" else [], "held"),
+    )
+
+    assert session.report_closeout_git_evidence() is False
+    assert "Working tree clean" not in capsys.readouterr().out
+
+
 @pytest.mark.parametrize(
     "heading",
     [
