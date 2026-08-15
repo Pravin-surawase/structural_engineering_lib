@@ -5,6 +5,70 @@
 
 ---
 
+## 2026-08-15 — Session: INDIA-2 Cumulative Gates
+
+**Agent:** Codex (`reviewer`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-cumulative-gates` from integrated `origin/main` at
+`18da6c112e67af49d8adf32bf0babf65285e2cd4`
+
+**Git handoff receipt:** `docs/verification/india-2-cumulative-git-handoff-receipt.json`
+
+**Focus:** Run the one cumulative INDIA-2 software gate packet and reconcile its bounded public claim.
+
+### Summary
+
+- Verified that INDIA-2A-D were integrated through exact PR #763 merge SHA
+  `18da6c112e67af49d8adf32bf0babf65285e2cd4` before starting the clean,
+  source-bound cumulative lane.
+- Ran the broad Python suite and full 30-check repository gate against the
+  integrated A-D tree.
+- Reconciled the Indian-code capability manifest, staircase L2 completeness,
+  API/OpenAPI identity, benchmark provenance, and retained holds.
+- Completed an essential review of the public facade, service, FastAPI
+  transport, result serialization, and supported/held claim boundary without
+  finding an outcome-changing defect.
+
+### Issues encountered
+
+- The first broad Python process completed while tool context was compacting,
+  but its expired process identifier and absent app-terminal transcript made
+  the exact final result unavailable as durable evidence.
+
+### Root causes and resolutions
+
+- The long-running command's output existed only in a transient tool session
+  and had not been copied to a durable receipt before context compaction.
+  Re-ran only the required Python suite with `tee` to a temporary file outside
+  the repository, captured the exact green result, and did not repeat the full
+  30-check gate. Evidence: 5,950 passed, 3 skipped, and 6 deselected in 41.96
+  seconds; the subsequent full repository gate passed 30/30 in 10.0 seconds.
+
+### Evidence
+
+- Fresh-lane Git state was `READY_LOCAL`; runtime diagnosis reported
+  `source_bound=true`; exact base and `origin/main` were both
+  `18da6c112e67af49d8adf32bf0babf65285e2cd4`.
+- Broad Python: 5,950 passed, 3 skipped, 6 deselected, 46 warnings, 41.96
+  seconds.
+- Full repository gate: 30/30 passed in 10.0 seconds.
+- Indian-code manifest is current: 8 supported and 13 explicitly held families
+  out of 21; stair is one bounded supported workflow with no unknown state.
+- Staircase completeness is `L2 API Complete`; API manifest and OpenAPI are
+  current, and React remains outside the claim.
+- Essential review retained the NPTEL benchmark's `REVIEW_REQUIRED` result,
+  explicit `PASS`/`FAIL` cases, JSON-safe capacity failure, qualified-review
+  requirement, professional-approval hold, release hold, and cleanup hold.
+
+### Terminal issues
+
+- The expired first broad-test process could not be reattached after context
+  compaction. The controlled evidence rerun wrote its output to
+  `/tmp/india-2-cumulative-python.log`; the full gate wrote to
+  `/tmp/india-2-cumulative-full-check.log`.
+
+---
+
 ## 2026-08-15 — Session: INDIA-2D Staircase Public Workflow
 
 **Agent:** Codex (`api-developer`, sole writer; no subagents)

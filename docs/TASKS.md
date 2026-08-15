@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-15 — INDIA-2D publishes the bounded staircase workflow; cumulative gates are next
+**Updated:** 2026-08-15 — INDIA-2 software and cumulative gates are complete; qualified review is next
 
 ---
 
@@ -133,7 +133,6 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2-CUMULATIVE | Run broad Python, full repository, manifest, and essential-review gates after A-D integration | Main Agent + reviewer | one cumulative closeout | P1 | 📋 READY AFTER INDIA-2D MERGE |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL QUALIFIED REVIEW |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
@@ -142,8 +141,8 @@
 The version roadmap and historical backlog remain below. INDIA-0 provides the
 generated [Indian-code truth manifest](verification/indian-code-capability-coverage.json),
 and INDIA-1 closed limitations in the four already supported families. INDIA-2
-begins with one decision packet because the remaining held families require
-separate analysis models; it does not authorize a broad multi-element wave.
+adds one bounded longitudinal straight-flight staircase workflow; alternate
+stair systems and every other held family remain outside the approved scope.
 The v0.23.1a1 Alpha is published.
 UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded
@@ -155,6 +154,7 @@ held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-CUMULATIVE | Ran the broad Python suite, full repository gate, manifest reconciliation, and cumulative essential review after A-D integration | Main Agent + reviewer | ✅ DONE — 5,950 Python tests and full 30/30 gate green; staircase remains one bounded L2 API workflow and qualified review remains separate |
 | INDIA-2D | Published one typed Python/FastAPI straight-flight workflow and reconciled capability truth | Main Agent + API developer | ✅ DONE — public benchmark returns REVIEW_REQUIRED truthfully; unsafe and passing cases preserve FAIL/PASS boundaries; React remains excluded |
 | INDIA-2C | Composed accepted actions into singly reinforced flexure, supplied-bar detailing, ordinary shear, action-integrity, and basic span/depth dispositions | Main Agent + structural math | ✅ DONE — NPTEL Example 9.1 strength/detailing targets pass and truthfully return REVIEW_REQUIRED for unmodified L/d; unsafe cases return FAIL |
 | INDIA-2B | Implemented typed Clause 33 geometry, explicit concrete self-weight, and equilibrated three-segment actions for the accepted straight-flight case | Main Agent + structural math | ✅ DONE — NPTEL Example 9.1 geometry/load/action targets and fail-closed boundaries pass; capability remains HELD until INDIA-2D |
