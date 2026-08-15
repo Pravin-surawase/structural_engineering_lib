@@ -177,15 +177,7 @@ def _authorization_holds(
             or not source.get("reference", "").strip()
         ):
             holds.append("AUTHORIZATION_SOURCE_REFERENCE_UNKNOWN")
-        source_status, source_reason = _fresh_status(
-            {
-                "status": "OBSERVED",
-                "query_status": "OK",
-                "observed_at_utc": source.get("observed_at_utc"),
-            },
-            now,
-            max_age=max_age,
-        )
+        source_status, source_reason = _fresh_status(source, now, max_age=max_age)
         if source_status != "OBSERVED":
             holds.append("AUTHORIZATION_SOURCE_" + (source_reason or "TIME_UNKNOWN"))
 

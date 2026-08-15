@@ -3409,7 +3409,7 @@
     {
       "name": "git_handoff_receipt.py",
       "type": "python",
-      "size_lines": 581,
+      "size_lines": 573,
       "last_updated": "2026-08-15",
       "description": "Build and validate fail-closed task-to-Git handoff receipts.",
       "functions": [
@@ -3446,7 +3446,7 @@
         "SHA_RE",
         "SAFE_HOLD_NEXT_ACTIONS"
       ],
-      "content_hash": "8685e90d2ef8"
+      "content_hash": "97392ad102cb"
     },
     {
       "name": "git_state.py",
@@ -5520,5 +5520,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "98128a605a8612b2"
+  "content_hash": "794370ef5a651092"
 }

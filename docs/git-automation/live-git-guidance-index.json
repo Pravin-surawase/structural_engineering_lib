@@ -64,7 +64,11 @@
     "(^|[` ])git\\s+add\\s+(?:\\.|-A|--all)(?:[` ]|$)",
     "(^|[` ])git\\s+filter-branch(?:[` ]|$)",
     "(^|[` ])git\\s+checkout\\b[^\\n]*(?:HEAD|--)\\b",
-    "(^|[` ])git\\s+reset(?:\\s|`|$)"
+    "(^|[` ])git\\s+reset(?:\\s|`|$)",
+    "(^|[` ])git\\s+commit\\b[^\\n]*--amend(?:[` ]|$)",
+    "(^|[` ])git\\s+cherry-pick(?:\\s|`|$)",
+    "(^|[` ])git\\s+checkout\\s+-b(?:\\s|`|$)",
+    "(^|[` ])git\\s+switch\\s+-c\\s+(?!codex/)"
   ],
   "required_contracts": {
     "AGENTS.md": [

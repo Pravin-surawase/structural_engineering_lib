@@ -81,7 +81,7 @@
 | [generate_docs_index.py](generate_docs_index.py) | Generate machine-readable JSON index of documentation. | 0 | 7 | 246 |
 | [generate_enhanced_index.py](generate_enhanced_index.py) | Generate enhanced index.json + index.md for ANY folder type. | 0 | 11 | 866 |
 | [generate_error_docs.py](generate_error_docs.py) | Generate docs/reference/error-codes.md from core/errors.py. | 0 | 4 | 139 |
-| [git_handoff_receipt.py](git_handoff_receipt.py) | Build and validate fail-closed task-to-Git handoff receipts. | 0 | 4 | 581 |
+| [git_handoff_receipt.py](git_handoff_receipt.py) | Build and validate fail-closed task-to-Git handoff receipts. | 0 | 4 | 573 |
 | [git_state.py](git_state.py) | Read-only, worktree-aware Git state authority. | 5 | 4 | 658 |
 | [governance_health_score.py](governance_health_score.py) | Governance Health Score - TASK-289 | 3 | 1 | 515 |
 | [migrate_python_module.py](migrate_python_module.py) | Migrate a Python module to a new location with import update | 0 | 8 | 516 |

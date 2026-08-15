@@ -100,6 +100,8 @@ def _evidence() -> dict:
             "prohibited_actions": ["DELETE_BRANCH", "DELETE_WORKTREE"],
             "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
             "authority_source": {
+                "status": "OBSERVED",
+                "query_status": "OK",
                 "kind": "ORCHESTRATOR_DELEGATION",
                 "reference": "task:GIT-7E:test-fixture",
                 "observed_at_utc": NOW.isoformat(),
@@ -335,6 +337,49 @@ def test_stale_authorization_source_provenance_fails_closed():
     errors = receipt_module.validate_receipt(receipt, now=NOW)
 
     assert "MISSING_REQUIRED_HOLD:AUTHORIZATION_SOURCE_STALE_EVIDENCE" in errors
+    assert "FALSE_READY_CLAIM" in errors
+
+
+@pytest.mark.parametrize("query_status", ["FAILED", "UNKNOWN", None, 42])
+def test_nested_authorization_source_query_failure_fails_closed(query_status):
+    receipt = _receipt()
+    if query_status is None:
+        receipt["authorization"]["authority_source"].pop("query_status")
+    else:
+        receipt["authorization"]["authority_source"]["query_status"] = query_status
+
+    errors = receipt_module.validate_receipt(receipt, now=NOW)
+
+    assert "MISSING_REQUIRED_HOLD:AUTHORIZATION_SOURCE_QUERY_FAILED" in errors
+    assert "FALSE_READY_CLAIM" in errors
+
+
+def test_future_authorization_source_provenance_fails_closed():
+    receipt = _receipt()
+    receipt["authorization"]["authority_source"]["observed_at_utc"] = (
+        NOW + timedelta(minutes=1)
+    ).isoformat()
+
+    errors = receipt_module.validate_receipt(receipt, now=NOW)
+
+    assert "MISSING_REQUIRED_HOLD:AUTHORIZATION_SOURCE_FUTURE_EVIDENCE" in errors
+    assert "FALSE_READY_CLAIM" in errors
+
+
+@pytest.mark.parametrize("timestamp", [None, "not-a-time"])
+def test_missing_or_malformed_authorization_source_time_fails_closed(timestamp):
+    receipt = _receipt()
+    if timestamp is None:
+        receipt["authorization"]["authority_source"].pop("observed_at_utc")
+    else:
+        receipt["authorization"]["authority_source"]["observed_at_utc"] = timestamp
+
+    errors = receipt_module.validate_receipt(receipt, now=NOW)
+
+    assert (
+        "MISSING_REQUIRED_HOLD:AUTHORIZATION_SOURCE_MALFORMED_OBSERVATION_TIME"
+        in errors
+    )
     assert "FALSE_READY_CLAIM" in errors
 
 

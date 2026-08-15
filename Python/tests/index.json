@@ -2227,7 +2227,7 @@
     {
       "name": "test_git_guidance_semantics.py",
       "type": "python",
-      "size_lines": 176,
+      "size_lines": 195,
       "last_updated": "2026-08-15",
       "description": "Semantic live-guidance discovery and coherence regressions.",
       "functions": [
@@ -2262,6 +2262,7 @@
         {
           "name": "test_harmless_historical_prose_is_not_treated_as_live_instruction",
           "params": [
+            "historical",
             "tmp_path"
           ]
         }
@@ -2269,12 +2270,12 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "dbac1809f4b3"
+      "content_hash": "fc94cc81944a"
     },
     {
       "name": "test_git_handoff_receipt.py",
       "type": "python",
-      "size_lines": 384,
+      "size_lines": 429,
       "last_updated": "2026-08-15",
       "description": "Regressions for the durable, fail-closed task-to-Git handoff receipt.",
       "functions": [
@@ -2343,19 +2344,22 @@
           "name": "test_stale_authorization_source_provenance_fails_closed"
         },
         {
-          "name": "test_authorization_query_failure_fails_closed"
-        },
-        {
-          "name": "test_closed_safe_hold_next_actions_need_no_mutation_authority",
+          "name": "test_nested_authorization_source_query_failure_fails_closed",
           "params": [
-            "next_action"
+            "query_status"
           ]
         },
         {
-          "name": "test_receipt_cannot_claim_to_grant_authority"
+          "name": "test_future_authorization_source_provenance_fails_closed"
         },
         {
-          "name": "test_receipt_module_has_no_independent_git_or_network_reader"
+          "name": "test_missing_or_malformed_authorization_source_time_fails_closed",
+          "params": [
+            "timestamp"
+          ]
+        },
+        {
+          "name": "test_authorization_query_failure_fails_closed"
         }
       ],
       "constants": [
@@ -2365,7 +2369,7 @@
         "TREE",
         "MERGE"
       ],
-      "content_hash": "8fc3c8723ad3"
+      "content_hash": "07e27ee74292"
     },
     {
       "name": "test_git_state.py",
@@ -4576,5 +4580,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "4ed46b2bb74bd507"
+  "content_hash": "03bf742b165a0924"
 }

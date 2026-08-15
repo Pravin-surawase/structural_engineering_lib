@@ -30,6 +30,10 @@ def _write_index(root: Path, **overrides) -> Path:
             r"(^|[` ])git\s+filter-branch(?:[` ]|$)",
             r"(^|[` ])git\s+checkout\b[^\n]*(?:HEAD|--)\b",
             r"(^|[` ])git\s+reset(?:\s|`|$)",
+            r"(^|[` ])git\s+commit\b[^\n]*--amend(?:[` ]|$)",
+            r"(^|[` ])git\s+cherry-pick(?:\s|`|$)",
+            r"(^|[` ])git\s+checkout\s+-b(?:\s|`|$)",
+            r"(^|[` ])git\s+switch\s+-c\s+(?!codex/)",
         ],
         "required_contracts": {},
     }
@@ -152,6 +156,10 @@ def test_live_aliases_route_to_receipt_and_not_retired_mutation():
         "Use `git filter-branch` to remove the secret.",
         "`git checkout HEAD -- path/to/file`",
         "```bash\ngit reset --soft HEAD~1\n```",
+        "```bash\ngit commit --amend --no-edit\n```",
+        "Recover the work with `git cherry-pick abc123`.",
+        "```bash\ngit checkout -b recovery-branch abc123\n```",
+        "Use `git switch -c recovery-branch` to preserve the commit.",
     ],
 )
 def test_live_indexed_unsafe_instruction_context_fails(instruction, tmp_path):
@@ -164,10 +172,21 @@ def test_live_indexed_unsafe_instruction_context_fails(instruction, tmp_path):
     assert any("unsafe Git instruction" in error for error in errors)
 
 
-def test_harmless_historical_prose_is_not_treated_as_live_instruction(tmp_path):
+@pytest.mark.parametrize(
+    "historical",
+    [
+        "Historical incident evidence says git reset --soft was used in 2024.",
+        "The 2024 incident record says git commit --amend was used.",
+        "Historical evidence records git cherry-pick during the old recovery.",
+        "The archived incident narrative mentions git checkout -b recovery-old.",
+    ],
+)
+def test_harmless_historical_prose_is_not_treated_as_live_instruction(
+    historical, tmp_path
+):
     guide = tmp_path / "guide.md"
     guide.write_text(
-        "Historical incident evidence says git reset --soft was used in 2024.\n",
+        historical + "\n",
         encoding="utf-8",
     )
     index = _write_index(tmp_path)

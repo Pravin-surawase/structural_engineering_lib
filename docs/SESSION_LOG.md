@@ -74,6 +74,10 @@ at the locally and hosted green draft PR head for independent audit
   filter-branch, checkout-overwrite, and reset recovery. The first contextual
   semantic replay then exposed equivalent broad-staging and wholesale
   checkout-ours instructions in the maintained Agent 9 knowledge base.
+- A third exact-head audit found nested `authority_source.query_status` was
+  ignored and upgraded to `OK`, while the maintained Agent 9 knowledge base
+  still directly prescribed commit amendment, cherry-pick, ad-hoc recovery
+  branches, direct revert/push, and other outcome-changing lifecycle commands.
 
 ### Root causes and resolutions
 
@@ -153,13 +157,28 @@ at the locally and hosted green draft PR head for independent audit
   retain historical prose as non-authority. Evidence: five active unsafe forms
   fail in fixtures, harmless incident prose passes, and the live indexed
   repository semantic check passes.
+- Root cause: source freshness validation constructed a synthetic mapping with
+  `query_status: OK`, overwriting caller evidence. Resolution: validate the
+  nested source mapping itself and require its status, query result, and
+  timestamp to survive unchanged through hold derivation. Evidence: exact
+  FAILED, UNKNOWN, missing, malformed, future, stale, and missing/malformed-time
+  regressions all derive source-specific holds and reject false readiness.
+- Root cause: Agent 9 was correctly indexed and actively linked as maintained
+  authority, but its legacy examples mixed read-only inspection with imperative
+  Git mutation and the semantic patterns did not cover amendment, patch replay,
+  or ad-hoc/non-Codex branch creation. Resolution: audit the entire live file,
+  route all lifecycle mutations through `git_state.py`, preservation/ownership
+  checks, and Codex authority, and add instruction-context patterns while
+  allowing unambiguous historical incident prose. Evidence: the file contains
+  no imperative Git mutation command, nine unsafe context fixtures fail, four
+  historical-prose fixtures pass, and the live repository semantic check passes.
 
 ### Verification
 
 - Worktree-bound runtime diagnosis reported `source_bound=true`; startup local
   state was clean and ready at the verified PR #750 merge SHA.
-- Focused receipt, semantic, and session regression suite: 90 passed after the
-  second independent-audit blocker fix.
+- Focused receipt, semantic, and session regression suite: 104 passed after the
+  third independent-audit blocker fix.
 - Remaining semantic, docs/index, quick 10/10, full 30/30, efficiency,
   session-end, preservation replay, and hosted checks are recorded before PR
   audit handoff.

@@ -42,18 +42,16 @@ tags: [agents, governance]
 
 ### Recommended Workflow
 
-**For All Changes:**
+**For all changes, inspect first:**
 ```bash
-# Work on a task branch, inspect and stage only reviewed paths
-git switch -c codex/TASK-XXX-description
-git status --short
-git add <reviewed-paths>
-git commit -m "feat: implement X"
-git push -u origin codex/TASK-XXX-description
-# Create and inspect the PR with the connected GitHub integration or gh CLI.
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
 
-Merge and branch deletion remain explicit owner-confirmation actions. See
+Codex verifies current main, ownership, and source binding before creating the
+`codex/<task-slug>` lane. It inspects and stages exact owned paths, creates the
+conventional commit, pushes without rewriting history, and opens or updates the
+PR through the connected GitHub integration. Merge and branch deletion remain
+separate authority decisions. See
 `docs/git-automation/git-workflow-single-source.md` for the canonical workflow.
 
 ### Commit Message Convention
@@ -95,23 +93,16 @@ pre-commit install
 
 ### Hook Workflow
 
-**Normal Case:**
-```bash
-git add file.py
-git commit -m "feat: add function"
-# Hooks run automatically
-# If changes made: Files modified by hooks
-git add file.py  # Re-stage modified files
-git commit --amend --no-edit  # Amend commit
-```
+**Normal case:** Codex inspects the exact intended diff, stages only owned
+paths, and creates a conventional commit. If a hook changes files, stop and
+attribute every hook-created path before preserving the intended hook delta.
+Codex then restages only those exact reviewed paths and creates a normal
+follow-up commit when needed; this guide never authorizes amendment or history
+rewriting.
 
-**If Hooks Fail:**
-```bash
-# Read error message carefully
-# Fix the issue
-git add fixed-file.py
-git commit -m "feat: add function"
-```
+**If hooks fail:** Read the failure, trace its root cause, correct only the
+owned paths, rerun the focused gate, and return the reviewed diff to the same
+Codex lifecycle.
 
 ### CI/CD Workflows
 
@@ -135,10 +126,7 @@ git commit -m "feat: add function"
 ### Waiting for CI
 
 ```bash
-# After creating PR
-gh pr create --title "..." --body "..."
-
-# WAIT for CI (don't merge immediately!)
+# Read-only hosted wait after Codex creates or updates the PR
 gh pr checks <PR_NUMBER> --watch
 
 # Only after all checks pass, have Codex recheck the unchanged reviewed head,
@@ -181,8 +169,8 @@ never reset or rewrite a published lane to make the push succeed.
 
 # Inspect formatter changes, then stage only the exact owned paths
 git diff -- Python/path/to/owned_file.py
-git add -- Python/path/to/owned_file.py
-# Have Codex create the conventional commit and push without rewriting history.
+# Have Codex stage the reviewed path, create the conventional commit, and push
+# without rewriting history.
 ```
 
 **Prevention:** Use pre-commit hooks
@@ -232,7 +220,6 @@ sorted(items, key=lambda x: x.cost.total if x.cost else float('inf'))
 # conventional follow-up commit after the gate passes. Do not amend or rewrite
 # a published commit merely to absorb hook edits.
 git diff -- path/to/owned_file
-git add -- path/to/owned_file
 ```
 
 **Note:** This is NORMAL - hooks are doing their job!
@@ -306,23 +293,18 @@ complete exact-target disposition evidence and separate authorization.
 - Tests fail
 - Application won't run
 
-**Immediate Action:**
-```bash
-# Option A: Revert last commit
-git revert HEAD
-git push
-
-# Option B: Revert to specific commit
-git revert <bad-commit-hash>
-git push
-```
+**Immediate action:** Establish the failing main head and current hosted checks
+from fresh evidence. Preserve the exact bad and prior-good trees, identify the
+owning change, and hold if any identity or ownership fact is unknown. Codex may
+prepare a normal `codex/<task-slug>` revert/fix PR only after the exact target
+and authority are known; this guide does not authorize a direct main mutation.
 
 **Follow-Up:**
-1. Create fix branch
-2. Repair issue
-3. Test thoroughly
-4. Open PR
-5. Merge when CI passes
+1. Verify the source-bound task lane from current main.
+2. Repair only the owned issue.
+3. Run focused and repository gates.
+4. Have Codex open the normal PR.
+5. Recheck exact head, checks, review, and merge authority.
 
 ---
 
@@ -356,20 +338,17 @@ do not delete markers, abort/continue blindly, reset, stash, or switch lanes.
 
 **Detection:** Work disappeared after git operation
 
-**Recovery:**
+**Inspection only:**
 ```bash
-# Check reflog for lost commits
-git reflog
-
-# Find your work (look for commit messages)
-git show <commit-hash>
-
-# Recover work
-git cherry-pick <commit-hash>
-
-# OR create new branch from lost commit
-git checkout -b recovery-branch <commit-hash>
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
+
+Codex may inspect reflog/object candidates without moving a ref. Record exact
+commit and tree identities, prove ownership, preserve the candidate, and hold
+on conflicts or unknown provenance. Recovery onto a fresh verified
+`codex/<task-slug>` lane requires explicit target/action authority and the
+canonical Codex lifecycle; this guide authorizes neither broad patch replay nor
+ad-hoc recovery-branch creation.
 
 ---
 
@@ -448,10 +427,10 @@ Agent 9's WIP limits (2 worktrees, 5 PRs, 10 docs, 3 research) prevent context f
 **Git Operations:**
 - Use native scoped Git operations and the connected GitHub integration
 - Wait for CI before merging PRs
-- Pull before push (especially after merging PRs)
-- Use feature branches for significant changes
-- Amend commits when pre-commit modifies files (if not yet pushed)
-- Check git status before committing
+- Refresh remote evidence before publication decisions
+- Use verified `codex/<task-slug>` lanes for scoped changes
+- Attribute hook changes and use a normal follow-up commit when needed
+- Inspect with `git_state.py` before any lifecycle mutation
 
 **Commit Hygiene:**
 - Use conventional commits (`feat:`, `fix:`, `docs:`)
@@ -463,7 +442,7 @@ Agent 9's WIP limits (2 worktrees, 5 PRs, 10 docs, 3 research) prevent context f
 - Use pre-commit hooks (install once, saves time)
 - Run tests locally before pushing
 - Check formatting locally: `black Python/ && ruff check Python/`
-- Fix CI failures immediately or revert
+- Trace CI failures and route the scoped correction through the normal PR
 
 ---
 
@@ -486,28 +465,18 @@ Agent 9's WIP limits (2 worktrees, 5 PRs, 10 docs, 3 research) prevent context f
 
 ## Quick Reference Commands
 
-### Daily Operations
+### Daily inspection and hosted checks
 ```bash
-# Start work
-git pull --ff-only
+# Inspect the local lane and sibling worktrees
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 
-# Commit changes
-git add <reviewed-paths>
-git commit -m "type: description"
-
-# Create PR
-git push -u origin codex/TASK-XXX-description
-gh pr create --draft --fill
-
-# Wait for CI
+# After Codex creates or updates the exact-head PR, wait read-only for CI
 gh pr checks <PR_NUM> --watch
-
-# Merge only after Codex rechecks the unchanged reviewed head and required
-# checks. Branch/worktree retention is separate.
-
-# Sync after merge
-git pull --ff-only
 ```
+
+Codex owns branch creation, exact-path staging, commit, push, PR, readiness, and
+normal merge after the required unchanged-head rechecks. Branch/worktree
+retention and every deletion remain separate decisions.
 
 ### Health Checks
 ```bash
@@ -529,19 +498,13 @@ tree. No pruning or deletion is part of routine health checks.
 
 ### Emergency
 ```bash
-# Check for stuck states
-ls .git/MERGE_* .git/rebase-*
-
-# Inspect exact recovery state; stop before choosing a destructive action
-git status
-git reflog
-
-# Revert bad commit
-git revert HEAD
-
-# Find lost work
-git reflog
+# Inspect exact operation, lock, dirty, branch, and worktree state
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
+
+Stop on any hold. Codex may inspect exact object/reflog evidence read-only, but
+recovery, revert, ref movement, history replay, or lane creation requires known
+ownership and explicit target/action authority through the canonical workflow.
 
 ---
 
