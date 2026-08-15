@@ -56,7 +56,11 @@ The versioned JSON receipt records:
 The receipt is evidence, not an authorization grant:
 `receipt_grants_authority` is always `false`. A recorded authorization needs a
 typed external source/reference/time and an exact task/branch/head/action
-binding. Stored validation recomputes the authoritative hold set from the facts
+binding. Authorization and source observations use the same fail-closed
+freshness/query boundary as other evidence. `next_action` is limited to a closed
+safe hold/wait action or an externally authorized action bound to the exact
+target; an injected merge or destructive action is never self-authorizing.
+Stored validation recomputes the authoritative hold set from the facts
 instead of trusting serialized `holds` or `receipt_status`; editing actions,
 clearing holds, or writing `READY` cannot suppress independently required
 unknown, stale, query, identity, review, check, or retention holds.

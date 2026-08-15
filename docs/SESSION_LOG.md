@@ -56,11 +56,24 @@ at the locally and hosted green draft PR head for independent audit
   because its maintained legacy heading lacked the newer `(auto)` suffix.
 - A formatter check was mistakenly aimed at the shell dispatcher; it made no
   change, and the correct `bash -n run.sh` syntax check passed.
+- A targeted index-generation command correctly refused `docs/git-automation`
+  because that folder has no maintained index topology.
+- A repository-wide pre-commit invocation created 1,745 unstaged mechanical
+  edits across unrelated tracked files and surfaced known all-tree JSON/Bandit
+  baselines instead of a scoped task result. Before the hook the worktree had
+  exactly 22 staged task paths and zero unstaged paths.
 - The first commit attempt was stopped by the end-of-file hook because the
   generated global docs index omitted its required final newline.
 - Independent exact-head audit reproduced that clearing serialized `holds` and
   changing `receipt_status` to `READY` made stored validation return `[]`, even
   when `DELETE_BRANCH` and `MERGE` were also inserted into authorized actions.
+- A second exact-head audit found that changing only `authorization.next_action`
+  to `DELETE_BRANCH` or `MERGE`, aging the authorization source, or recording an
+  authorization query failure still validated successfully.
+- The maintained indexed Git learning guide still prescribed broad staging,
+  filter-branch, checkout-overwrite, and reset recovery. The first contextual
+  semantic replay then exposed equivalent broad-staging and wholesale
+  checkout-ours instructions in the maintained Agent 9 knowledge base.
 
 ### Root causes and resolutions
 
@@ -93,6 +106,22 @@ at the locally and hosted green draft PR head for independent audit
   corrected command produced and validated the intended receipt.
 - Terminal issue resolution: use Black only for Python paths and `bash -n` for
   `run.sh`; both relevant formatter/syntax checks then passed.
+- Terminal issue resolution: inspect the folder for existing index files, do
+  not use `--allow-new-index`, and regenerate only maintained parent/global
+  indexes; no new topology was created.
+- Terminal issue resolution: retain the staged task snapshot and stage the
+  intended `docs/docs-index.json` newline normalization, leaving 1,744 hook-only
+  unstaged paths. Verify every remaining path was a tracked regular-file
+  modification with no traversal or symlink, then restore exactly that
+  NUL-delimited path set and use scoped pre-commit paths thereafter. The staged
+  22-file task snapshot was preserved. A read-only replay of the hook algorithms
+  reconstructed all 1,745 paths with path-set SHA-256
+  `9f7d1ccd79326e4cf2d6cd0c52e51d81de5d0e519aea7404d0adb4f0e0d07976`;
+  the only trailing-whitespace path was historical
+  `docs/_archive/VALIDATION_COMPLETE.md`, with the union otherwise attributable
+  to end-of-file normalization. The later orchestrator restriction against
+  `git restore` arrived after this exact path-bounded reversal had completed;
+  no further reversal command was run.
 - Root cause: the docs-index generator emitted JSON without the repository's
   hook-required terminal newline. Resolution: retain the hook's normalization,
   restage the exact generated file, and require a clean second hook pass before
@@ -108,13 +137,29 @@ at the locally and hosted green draft PR head for independent audit
   and the missing evidence/authorization holds; focused regressions cover
   clearing all holds, removing one hold, invalid status/next action, authority-
   boundary tampering, and injected destructive/merge actions.
+- Root cause: authorization was structurally checked but did not pass through
+  freshness/query semantics, while `next_action` was not constrained to an
+  authorized exact-target action or a closed safe hold/wait set. Resolution:
+  derive authorization and source freshness/query holds, require every active
+  next action to be externally authorized and target-bound, and permit only four
+  explicit non-mutating hold/wait actions without mutation authority. Evidence:
+  direct DELETE_BRANCH/MERGE injection, stale provenance, and query-failure
+  regressions fail closed; all four safe hold actions round-trip.
+- Root cause: the semantic control covered lifecycle categories and destructive
+  command tokens but not instruction-context broad staging or history/file-
+  changing recovery forms. Resolution: add indexed instruction patterns applied
+  only to live command/instruction contexts, correct the active learning and
+  Agent 9 guidance to exact-path staging and preservation-first inspection, and
+  retain historical prose as non-authority. Evidence: five active unsafe forms
+  fail in fixtures, harmless incident prose passes, and the live indexed
+  repository semantic check passes.
 
 ### Verification
 
 - Worktree-bound runtime diagnosis reported `source_bound=true`; startup local
   state was clean and ready at the verified PR #750 merge SHA.
-- Focused receipt, semantic, and session regression suite: 76 passed after the
-  independent-audit blocker fix.
+- Focused receipt, semantic, and session regression suite: 90 passed after the
+  second independent-audit blocker fix.
 - Remaining semantic, docs/index, quick 10/10, full 30/30, efficiency,
   session-end, preservation replay, and hosted checks are recorded before PR
   audit handoff.

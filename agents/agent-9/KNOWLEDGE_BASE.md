@@ -179,10 +179,10 @@ never reset or rewrite a published lane to make the push succeed.
 .venv/bin/python -m black Python/
 .venv/bin/python -m ruff check --fix Python/
 
-# Commit fixes
-git add -A
-git commit -m "style: apply black/ruff formatting"
-git push
+# Inspect formatter changes, then stage only the exact owned paths
+git diff -- Python/path/to/owned_file.py
+git add -- Python/path/to/owned_file.py
+# Have Codex create the conventional commit and push without rewriting history.
 ```
 
 **Prevention:** Use pre-commit hooks
@@ -228,13 +228,11 @@ sorted(items, key=lambda x: x.cost.total if x.cost else float('inf'))
 
 **Solution:**
 ```bash
-# Re-stage modified files and amend commit
-git add -A
-git commit --amend --no-edit
-
-# OR create new commit
-git add -A
-git commit -m "chore: apply pre-commit fixes"
+# Inspect hook changes, stage only exact owned paths, and have Codex create a
+# conventional follow-up commit after the gate passes. Do not amend or rewrite
+# a published commit merely to absorb hook edits.
+git diff -- path/to/owned_file
+git add -- path/to/owned_file
 ```
 
 **Note:** This is NORMAL - hooks are doing their job!
@@ -246,36 +244,12 @@ git commit -m "chore: apply pre-commit fixes"
 **Symptom:** Git reports conflicts during pull/merge
 
 **Solution:**
-```bash
-# View conflicted files
-git status
-
-# For each file:
-# - Open in editor
-# - Find conflict markers: <<<<<<< ======= >>>>>>>
-# - Manually resolve conflicts
-# - Remove conflict markers
-
-# After fixing:
-git add <fixed-files>
-
-# If rebasing:
-git rebase --continue
-
-# If merging:
-git commit --no-edit
-
-# Push resolved changes
-git push
-```
-
-**Alternative (Ours Strategy):**
-```bash
-# Keep our version (use with caution!)
-git checkout --ours <file>
-git add <file>
-git commit --no-edit
-```
+Run `./scripts/python_runtime.sh scripts/git_state.py --json` and hold while an
+operation is active. Preserve every side, classify the exact conflicted paths
+and owners, and resolve only the authorized owned paths through the canonical
+Codex workflow. Codex stages exact paths and continues the known operation only
+after the conflict markers, diff, and preservation evidence are reviewed.
+Never choose one side wholesale merely to escape the conflict.
 
 ---
 

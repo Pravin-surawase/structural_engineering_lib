@@ -32,10 +32,10 @@
     {
       "name": "KNOWLEDGE_BASE.md",
       "type": "documentation",
-      "size_lines": 584,
+      "size_lines": 558,
       "last_updated": "2026-08-15",
       "description": "> Current repository boundary: AGENTS.md and the canonical Codex-native Git > workflow control. Use scripts/git_state.py for local facts. Codex performs",
-      "content_hash": "e57a9dd452a6"
+      "content_hash": "404b83cae735"
     },
     {
       "name": "METRICS.md",
@@ -99,5 +99,5 @@
       "file_count": 1
     }
   ],
-  "content_hash": "cab33f90610decec"
+  "content_hash": "d25048447a9e3f91"
 }

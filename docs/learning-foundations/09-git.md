@@ -102,27 +102,27 @@ main:     A ── B ── C ── D ── M    ← M includes changes from E
 | `git log --oneline -10` | Show recent history | Understanding what happened |
 | `git diff` | Show exact changes | Before committing |
 | `git branch` | List branches | See where you are |
-| `git checkout -b name` | Create new branch | Starting new work |
-| `git add .` | Stage all changes | Preparing to commit |
-| `git commit -m "msg"` | Save a snapshot | After meaningful changes |
-| `git push` | Upload to GitHub | Share with others |
-| `git pull` | Download from GitHub | Get others' changes |
+| `./scripts/python_runtime.sh scripts/git_state.py --json` | Inspect bounded local state | Before any Git mutation |
+| `git add -- path/to/owned-file` | Stage one verified owned path | Only after inspecting the exact diff |
+| Codex commit | Save the reviewed scoped snapshot | After focused and quick gates |
+| Codex push/PR | Publish without rewriting history | After exact branch/head recheck |
+| Fresh remote evidence | Establish current hosted state | Never infer it from `NOT_CHECKED` |
 
 ### Example workflow:
 ```bash
 # 1. Check current state
-git status                    # What files changed?
-git branch                    # What branch am I on?
+./scripts/python_runtime.sh scripts/git_state.py --json
+git diff -- path/to/owned-file
 
 # 2. Make changes
 # ... edit files ...
 
 # 3. Stage and commit
-git add .                     # Stage all changes
-git commit -m "feat: add column design"
+git add -- path/to/owned-file # Stage only the inspected owned path
+# Codex creates the conventional commit after the required gates.
 
 # 4. Push to remote
-git push
+# Codex rechecks the exact head, then pushes and opens/updates the PR.
 ```
 
 ---
@@ -334,12 +334,12 @@ __pycache__/
 
 | Mistake | What Happens | Fix |
 |---------|-------------|-----|
-| Committed secrets | Secrets in public history | Rotate credentials IMMEDIATELY. Use `git filter-branch` to remove |
+| Committed secrets | Secrets in public history | Rotate credentials immediately; preserve the exact state and obtain an authorized, reviewed history-remediation plan |
 | Committed to wrong branch | Changes on main instead of feature | Stop, inspect exact state with `git_state.py`, preserve the commit/tree, and choose an authorized fresh-lane recovery path |
-| Bad commit message | "fix stuff" in history | `git commit --amend -m "fix(shear): correct tau_c"` (before push only) |
-| Merge conflicts | Two people changed same line | Edit the file, remove conflict markers, commit |
-| Accidentally deleted file | File gone | `git checkout HEAD -- path/to/file` |
-| Want to undo last commit | Realize mistake after commit | `git reset --soft HEAD~1` (keeps changes) |
+| Bad commit message | "fix stuff" in history | Stop before publication; preserve and inspect the exact commit, then let Codex apply the authorized correction |
+| Merge conflicts | Two people changed same line | Hold the operation, inspect owned paths and operation markers, then resolve through the canonical Codex workflow |
+| Accidentally deleted file | File gone | Inspect the exact path diff and ownership; preserve current evidence before an authorized path-scoped restoration |
+| Want to undo last commit | Realize mistake after commit | Preserve the commit/tree, inspect with `git_state.py`, and recover compatible intent on an authorized fresh `codex/*` lane |
 
 ### Merge conflict example:
 ```

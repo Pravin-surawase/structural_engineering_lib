@@ -1474,7 +1474,7 @@
     {
       "name": "check_codex_git_workflow.py",
       "type": "python",
-      "size_lines": 402,
+      "size_lines": 432,
       "last_updated": "2026-08-15",
       "description": "Guard the Codex-native Git/GitHub workflow contract.",
       "functions": [
@@ -1510,7 +1510,7 @@
         "DEPLOY_DOCS",
         "GUIDANCE_INDEX"
       ],
-      "content_hash": "9456903a9430"
+      "content_hash": "71ae68233324"
     },
     {
       "name": "check_doc_versions.py",
@@ -3409,7 +3409,7 @@
     {
       "name": "git_handoff_receipt.py",
       "type": "python",
-      "size_lines": 555,
+      "size_lines": 581,
       "last_updated": "2026-08-15",
       "description": "Build and validate fail-closed task-to-Git handoff receipts.",
       "functions": [
@@ -3443,9 +3443,10 @@
         "UNKNOWN",
         "NOT_CHECKED",
         "MAX_EVIDENCE_AGE_SECONDS",
-        "SHA_RE"
+        "SHA_RE",
+        "SAFE_HOLD_NEXT_ACTIONS"
       ],
-      "content_hash": "90d32be6f3e5"
+      "content_hash": "8685e90d2ef8"
     },
     {
       "name": "git_state.py",
@@ -5519,5 +5520,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "c57139addba8b7c5"
+  "content_hash": "98128a605a8612b2"
 }

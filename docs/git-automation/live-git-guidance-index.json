@@ -60,6 +60,12 @@
     "(^|[` ])git\\s+worktree\\s+(remove|prune)(?:\\s|`|$)",
     "(^|[` ])git\\s+(fetch|remote)\\b[^\\n]*--prune(?:[` ]|$)"
   ],
+  "forbidden_instruction_patterns": [
+    "(^|[` ])git\\s+add\\s+(?:\\.|-A|--all)(?:[` ]|$)",
+    "(^|[` ])git\\s+filter-branch(?:[` ]|$)",
+    "(^|[` ])git\\s+checkout\\b[^\\n]*(?:HEAD|--)\\b",
+    "(^|[` ])git\\s+reset(?:\\s|`|$)"
+  ],
   "required_contracts": {
     "AGENTS.md": [
       "scripts/git_state.py",

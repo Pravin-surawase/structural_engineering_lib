@@ -94,6 +94,8 @@ def _evidence() -> dict:
         "task_archive": {"status": "NOT_CHECKED"},
         "authorization": {
             "status": "OBSERVED",
+            "query_status": "OK",
+            "observed_at_utc": NOW.isoformat(),
             "authorized_actions": ["OPEN_DRAFT_PR"],
             "prohibited_actions": ["DELETE_BRANCH", "DELETE_WORKTREE"],
             "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
@@ -311,6 +313,55 @@ def test_destructive_or_merge_actions_cannot_be_smuggled_into_ready_receipt():
 
     assert "MISSING_REQUIRED_HOLD:AUTHORIZATION_TARGET_ACTION_MISMATCH" in errors
     assert "FALSE_READY_CLAIM" in errors
+
+
+@pytest.mark.parametrize("next_action", ["DELETE_BRANCH", "MERGE"])
+def test_injected_destructive_or_merge_next_action_is_not_authorized(next_action):
+    receipt = _receipt()
+    receipt["authorization"]["next_action"] = next_action
+
+    errors = receipt_module.validate_receipt(receipt, now=NOW)
+
+    assert "MISSING_REQUIRED_HOLD:NEXT_ACTION_NOT_AUTHORIZED" in errors
+    assert "FALSE_READY_CLAIM" in errors
+
+
+def test_stale_authorization_source_provenance_fails_closed():
+    receipt = _receipt()
+    receipt["authorization"]["authority_source"]["observed_at_utc"] = (
+        NOW - timedelta(hours=1)
+    ).isoformat()
+
+    errors = receipt_module.validate_receipt(receipt, now=NOW)
+
+    assert "MISSING_REQUIRED_HOLD:AUTHORIZATION_SOURCE_STALE_EVIDENCE" in errors
+    assert "FALSE_READY_CLAIM" in errors
+
+
+def test_authorization_query_failure_fails_closed():
+    receipt = _receipt()
+    receipt["authorization"]["query_status"] = "FAILED"
+
+    errors = receipt_module.validate_receipt(receipt, now=NOW)
+
+    assert "MISSING_REQUIRED_HOLD:AUTHORIZATION_QUERY_FAILED" in errors
+    assert "FALSE_READY_CLAIM" in errors
+
+
+@pytest.mark.parametrize(
+    "next_action",
+    [
+        "HOLD_FOR_EXACT_EVIDENCE",
+        "WAIT_FOR_EXACT_HEAD_AUDIT",
+        "WAIT_FOR_OWNER_DECISION",
+        "STOP_AND_REINSPECT",
+    ],
+)
+def test_closed_safe_hold_next_actions_need_no_mutation_authority(next_action):
+    receipt = _receipt()
+    receipt["authorization"]["next_action"] = next_action
+
+    assert receipt_module.validate_receipt(receipt, now=NOW) == []
 
 
 def test_receipt_cannot_claim_to_grant_authority():

@@ -68,6 +68,10 @@ head/base/tree, retention evidence, and authorization boundaries.
 The receipt records authority evidence but grants no authority itself;
 `receipt_grants_authority` must be `false`. Authorization evidence requires a
 named external source plus exact task, branch, head, and action binding.
+Authorization observations and their source times must be fresh and
+query-successful. The next action must be either a closed safe hold/wait action
+or one of the externally authorized actions bound to that exact target;
+destructive or merge actions cannot be injected as an unbound next action.
 Serialized `holds` and `receipt_status` are not trusted: validation independently
 recomputes the required hold set from evidence and rejects missing holds, false
 `READY`, malformed next actions, or action/provenance contradictions. External

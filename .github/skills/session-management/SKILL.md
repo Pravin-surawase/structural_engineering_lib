@@ -47,7 +47,9 @@ archive path. Resolve the maintained command with `./run.sh find "task"`.
    as `**Git handoff receipt:** <path>`. Session handoff validates the
    `local_state_receipt_hash`, exact identities, independently derived
    fail-closed holds, `receipt_grants_authority: false`, and externally sourced
-   exact-target authorization evidence.
+   exact-target authorization evidence, including fresh/query-successful
+   provenance and a next action bound to that authority or the closed safe-hold
+   set.
 3. Run the pre-commit gate once:
 
    ```bash

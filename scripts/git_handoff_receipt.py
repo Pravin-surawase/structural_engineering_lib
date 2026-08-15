@@ -27,6 +27,14 @@ UNKNOWN = "UNKNOWN"
 NOT_CHECKED = "NOT_CHECKED"
 MAX_EVIDENCE_AGE_SECONDS = 900
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+SAFE_HOLD_NEXT_ACTIONS = frozenset(
+    {
+        "HOLD_FOR_EXACT_EVIDENCE",
+        "WAIT_FOR_EXACT_HEAD_AUDIT",
+        "WAIT_FOR_OWNER_DECISION",
+        "STOP_AND_REINSPECT",
+    }
+)
 
 
 def _canonical_json(value: object) -> str:
@@ -119,19 +127,19 @@ def _authorization_holds(
     *,
     task: object,
     local_state: object,
+    now: datetime,
+    max_age: int,
 ) -> list[str]:
     if not isinstance(authorization, Mapping):
         return ["AUTHORIZATION_MALFORMED"]
     holds: list[str] = []
-    status = authorization.get("status")
-    if status not in {"OBSERVED", UNKNOWN, NOT_CHECKED}:
-        holds.append("AUTHORIZATION_STATUS_INVALID")
-    elif status != "OBSERVED":
-        holds.append("AUTHORIZATION_UNKNOWN")
-    if (
-        not isinstance(authorization.get("next_action"), str)
-        or not authorization.get("next_action", "").strip()
-    ):
+    status, freshness_reason = _fresh_status(authorization, now, max_age=max_age)
+    if freshness_reason:
+        holds.append(f"AUTHORIZATION_{freshness_reason}")
+    elif status in {UNKNOWN, NOT_CHECKED}:
+        holds.append(f"AUTHORIZATION_{status}")
+    next_action = authorization.get("next_action")
+    if not isinstance(next_action, str) or not next_action.strip():
         holds.append("NEXT_ACTION_UNKNOWN")
     for field in ("authorized_actions", "prohibited_actions"):
         actions = authorization.get(field)
@@ -145,6 +153,13 @@ def _authorization_holds(
     if isinstance(authorized, list) and isinstance(prohibited, list):
         if set(authorized) & set(prohibited):
             holds.append("AUTHORIZATION_ACTION_CONTRADICTION")
+        if (
+            isinstance(next_action, str)
+            and next_action.strip()
+            and next_action not in SAFE_HOLD_NEXT_ACTIONS
+            and next_action not in authorized
+        ):
+            holds.append("NEXT_ACTION_NOT_AUTHORIZED")
 
     source = authorization.get("authority_source")
     if not isinstance(source, Mapping):
@@ -162,8 +177,17 @@ def _authorization_holds(
             or not source.get("reference", "").strip()
         ):
             holds.append("AUTHORIZATION_SOURCE_REFERENCE_UNKNOWN")
-        if _parse_time(source.get("observed_at_utc")) is None:
-            holds.append("AUTHORIZATION_SOURCE_TIME_UNKNOWN")
+        source_status, source_reason = _fresh_status(
+            {
+                "status": "OBSERVED",
+                "query_status": "OK",
+                "observed_at_utc": source.get("observed_at_utc"),
+            },
+            now,
+            max_age=max_age,
+        )
+        if source_status != "OBSERVED":
+            holds.append("AUTHORIZATION_SOURCE_" + (source_reason or "TIME_UNKNOWN"))
 
     binding = authorization.get("target_binding")
     if not isinstance(binding, Mapping):
@@ -324,6 +348,8 @@ def _derive_evidence_holds(
             receipt.get("authorization"),
             task=receipt.get("task"),
             local_state=state,
+            now=now,
+            max_age=max_age,
         )
     )
     return sorted(set(holds))

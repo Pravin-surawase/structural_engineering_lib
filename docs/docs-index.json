@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-15T15:29:03.563035",
+  "generated": "2026-08-15T15:47:36.957947",
   "total_docs": 322,
   "docs": {
     "docs/SESSION_LOG.md": {
@@ -21,7 +21,7 @@
         "2026-08-13 \u2014 Session: GIT-001 Phase 1 Completion",
         "2026-08-12 \u2014 Session: GIT-001 Future-Work Plan Closeout"
       ],
-      "size_bytes": 260117
+      "size_bytes": 263357
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",
@@ -460,7 +460,7 @@
         "Receipt contract",
         "Validation boundary"
       ],
-      "size_bytes": 4056
+      "size_bytes": 4351
     },
     "docs/research/git-governance/GIT-001-next-agent-disposition-plan.md": {
       "title": "GIT-001 \u2014 Reconciled Future-Work and Disposition Plan",
@@ -1011,7 +1011,7 @@
         "Part 8: Repository Git Control Plane",
         "Part 9: .gitignore \u2014 What NOT to Track"
       ],
-      "size_bytes": 12356
+      "size_bytes": 12943
     },
     "docs/learning-foundations/03-tech-stack.md": {
       "title": "Module 3: The Tech Stack \u2014 Languages, Tools, and Why",
@@ -2127,7 +2127,7 @@
         "Local hooks",
         "Historical material"
       ],
-      "size_bytes": 7495
+      "size_bytes": 7790
     },
     "docs/git-automation/README.md": {
       "title": "Codex-Native Git and GitHub",

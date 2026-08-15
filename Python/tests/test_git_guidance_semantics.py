@@ -25,6 +25,12 @@ def _write_index(root: Path, **overrides) -> Path:
         "historical_exclusions": [],
         "forbidden_tokens": ["ai_commit.sh", "--finish"],
         "forbidden_command_patterns": [r"(^|[` ])git\s+reset\s+--hard(?:[` ]|$)"],
+        "forbidden_instruction_patterns": [
+            r"(^|[` ])git\s+add\s+(?:\.|-A|--all)(?:[` ]|$)",
+            r"(^|[` ])git\s+filter-branch(?:[` ]|$)",
+            r"(^|[` ])git\s+checkout\b[^\n]*(?:HEAD|--)\b",
+            r"(^|[` ])git\s+reset(?:\s|`|$)",
+        ],
         "required_contracts": {},
     }
     payload.update(overrides)
@@ -136,3 +142,34 @@ def test_live_aliases_route_to_receipt_and_not_retired_mutation():
     assert "git_handoff_receipt.py" in result.stdout
     assert "ai_commit.sh" not in result.stdout
     assert "cleanup_stale_branches.py" not in result.stdout
+
+
+@pytest.mark.parametrize(
+    "instruction",
+    [
+        "| `git add .` | Stage everything |",
+        "```bash\ngit add -A\n```",
+        "Use `git filter-branch` to remove the secret.",
+        "`git checkout HEAD -- path/to/file`",
+        "```bash\ngit reset --soft HEAD~1\n```",
+    ],
+)
+def test_live_indexed_unsafe_instruction_context_fails(instruction, tmp_path):
+    guide = tmp_path / "guide.md"
+    guide.write_text(instruction + "\n", encoding="utf-8")
+    index = _write_index(tmp_path)
+
+    errors = checker.check_semantic_guidance(tmp_path, index)
+
+    assert any("unsafe Git instruction" in error for error in errors)
+
+
+def test_harmless_historical_prose_is_not_treated_as_live_instruction(tmp_path):
+    guide = tmp_path / "guide.md"
+    guide.write_text(
+        "Historical incident evidence says git reset --soft was used in 2024.\n",
+        encoding="utf-8",
+    )
+    index = _write_index(tmp_path)
+
+    assert checker.check_semantic_guidance(tmp_path, index) == []

@@ -151,6 +151,12 @@ def check_semantic_guidance(
             patterns.append(re.compile(raw, re.IGNORECASE))
         except re.error as exc:
             errors.append(f"invalid semantic guidance pattern {raw!r}: {exc}")
+    instruction_patterns: list[re.Pattern[str]] = []
+    for raw in config.get("forbidden_instruction_patterns", []):
+        try:
+            instruction_patterns.append(re.compile(raw, re.IGNORECASE))
+        except re.error as exc:
+            errors.append(f"invalid semantic instruction pattern {raw!r}: {exc}")
     required = config.get("required_contracts", {})
 
     for path in surfaces:
@@ -159,7 +165,12 @@ def check_semantic_guidance(
         for token in forbidden_tokens:
             if token in content:
                 errors.append(f"{relative} prescribes retired lifecycle token: {token}")
+        in_fence = False
         for line_number, line in enumerate(content.splitlines(), start=1):
+            stripped = line.strip()
+            if stripped.startswith("```"):
+                in_fence = not in_fence
+                continue
             lowered = line.lower()
             if any(marker in lowered for marker in ("never:", "never ", "do not ")):
                 continue
@@ -169,6 +180,25 @@ def check_semantic_guidance(
                         f"{relative}:{line_number} prescribes prohibited Git mutation: "
                         f"{line.strip()}"
                     )
+            instruction_context = (
+                in_fence
+                or stripped.startswith(
+                    ("| `git ", "- `git ", "* `git ", "`git ", "git ")
+                )
+                or re.search(
+                    r"\b(use|run|execute|stage|restore|undo|recover)\b[^\n]*`?git\s",
+                    line,
+                    re.IGNORECASE,
+                )
+                is not None
+            )
+            if instruction_context:
+                for pattern in instruction_patterns:
+                    if pattern.search(line):
+                        errors.append(
+                            f"{relative}:{line_number} prescribes unsafe Git "
+                            f"instruction: {stripped}"
+                        )
         for phrase in required.get(relative, []):
             if phrase not in content:
                 errors.append(f"{relative} is missing semantic contract: {phrase}")
