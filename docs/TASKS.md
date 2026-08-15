@@ -128,7 +128,7 @@
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
-| INDIA-1C | Publish and verify the bounded concentric isolated-footing composition while retaining eccentric and other-foundation cases | Main Agent + structural engineer | 🚧 SOFTWARE COMPLETE — focused 215 tests, architecture/import validation, and quick 10/10 green; publication pending |
+| INDIA-1C | Publish and verify the bounded concentric isolated-footing composition while retaining eccentric and other-foundation cases | Main Agent + structural engineer | 🚧 DRAFT PR #756 — focused 215 tests, architecture/import validation, and quick 10/10 green; exact-head hosted review pending |
 
 ## Up Next
 

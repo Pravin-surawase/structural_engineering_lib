@@ -37,6 +37,8 @@ and retain unsupported foundation and loading cases explicitly.
   tests, architecture/import validation, the quick gate, and required hosted
   PR checks here; broad Python and full repository gates remain deferred until
   INDIA-1A through INDIA-1D are integrated.
+- Published implementation commit `42157f29` in draft PR #756; exact-head
+  hosted review remains the publication gate.
 
 ### Issues encountered
 
