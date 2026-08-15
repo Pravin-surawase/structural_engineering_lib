@@ -5,8 +5,8 @@
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
 - Focus: Add semantic coherence over deterministically discovered maintained
-- Git receipt: docs/research/git-governance/GIT-001-phase-7E-task-git-handoff.json | sha256:378ab4bb4c8b1aa844dcd7b37c231f63d249f05948be10b31ff5a0ec31d68dc7 | HOLD
-- Git identity: codex/git-7e-semantic-handoff@866fb3e67092415578971d0c40f30b2323da14f6 | upstream=origin/codex/git-7e-semantic-handoff@84fb824e10ba19c701ff47294e44ef6021d5c07d | base=origin/main@b91838f594a04aff1d21c43bf6f87a64710b0748 | tree=clean | operation=none
+- Git receipt: docs/research/git-governance/GIT-001-phase-7E-task-git-handoff.json | sha256:5855f9b66f365c3c5de3d6c00bb216a1ca23e5f3bf09dd60cd96951901bcfae0 | HOLD
+- Git identity: codex/git-7e-semantic-handoff@64315d12b2647d85f60327856840c59c290a556f | upstream=origin/codex/git-7e-semantic-handoff@07d145e5cfd72230556fdd25b3eddcce7c0eaa18 | base=origin/main@b91838f594a04aff1d21c43bf6f87a64710b0748 | tree=clean | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
