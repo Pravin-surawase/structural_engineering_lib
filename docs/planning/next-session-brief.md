@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Consolidate all INDIA-2 work into one understandable, executable plan without starting calculation implementation.
-- Git receipt: docs/verification/india-2-plan-git-handoff-receipt.json | sha256:ecbc84c246e9f7e8bdaa19cac60ba0fa8ef12aea115bee9ddd1db077d5aa75f6 | HOLD
-- Git identity: codex/india-2-detailed-plan@b3fed846210d3460cf4d6d6f326d2d6d6caf100d | upstream=NONE@UNKNOWN | base=origin/main@b3fed846210d3460cf4d6d6f326d2d6d6caf100d | tree=dirty | operation=none
+- Focus: Accept the bounded wall family from integrated A-D using cumulative focused gates and retain its exclusions.
+- Git receipt: docs/verification/india-2-wall-acceptance-git-handoff-receipt.json | sha256:560e669e73f4aba0ab2ff87c5ce55863d3ef2d5752264b3dbb1a5db14c927670 | HOLD
+- Git identity: codex/india-2-wall-acceptance@46094a8c35c75fcfb0644f23a851087cc3297c60 | upstream=NONE@UNKNOWN | base=origin/main@46094a8c35c75fcfb0644f23a851087cc3297c60 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Integrate `INDIA-2-WALL-D`, then run focused wall-family acceptance from the verified integrated head |
+| **Next** | Run `INDIA-2-DEEP-G0`; do not write deep-beam calculation code unless its source/scope/benchmark decision is GO |
 
 ## Required Reading
 
@@ -34,10 +34,11 @@ The historical INDIA-2A-D packets and their cumulative software gate are the
 completed `INDIA-2-STAIR` family. Do not reopen them, add another stair topology,
 add React, or begin release work without a new owner-approved scope.
 
-`INDIA-2-WALL-G0` and WALL-A-C are integrated. WALL-D now has a verified local
-typed FastAPI route plus canonical capability/semantic truth and manifest
-promotion. After its exact head integrates, run focused family acceptance before
-starting deep-beam G0.
+`INDIA-2-WALL` is accepted through one regular 100-200 mm thick, one-grid,
+braced empirical vertical-compression workflow. WALL-A-D are integrated and the
+focused family receipt is
+[`india-2-wall-family-acceptance-evidence.md`](../verification/india-2-wall-family-acceptance-evidence.md).
+Do not expand the accepted wall topology while starting deep-beam G0.
 
 ```bash
 ./run.sh session brief --agent orchestrator
@@ -59,13 +60,12 @@ It freezes the supported wall case, IS 456 clauses, public normalized-content
 boundary, hand benchmark and tolerance, units, fail-closed exclusions, and
 WALL-A-D packet split. No wall calculation or capability claim is part of G0.
 
-## INDIA-2-WALL-D candidate result
+## INDIA-2-WALL acceptance result
 
-[`india-2-wall-d-publication-evidence.md`](../verification/india-2-wall-d-publication-evidence.md)
-records the thin REST schema/route, benchmark and unsafe-case behavior, public
-clause/source visibility, canonical capability/semantic contract, retained
-holds, manifest promotion, and focused validation. After integration, the
-acceptance packet verifies the whole wall family without new calculation scope.
+[`india-2-wall-family-acceptance-evidence.md`](../verification/india-2-wall-family-acceptance-evidence.md)
+records the integrated A-D head, public clause/source visibility, independent
+benchmark, unsafe and fail-closed behavior, semantic-contract correction,
+focused validation, retained holds, and deferred broad-gate boundary.
 
 ## Review and gate boundary
 

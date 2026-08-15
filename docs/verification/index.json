@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 43,
+  "file_count": 46,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -237,6 +237,36 @@
       "content_hash": "f64b2ddf2842"
     },
     {
+      "name": "india-2-wall-acceptance-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "06515ab80576"
+    },
+    {
+      "name": "india-2-wall-acceptance-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "cd1b0e4653bf"
+    },
+    {
       "name": "india-2-wall-b-reinforcement-evidence.md",
       "type": "documentation",
       "size_lines": 82,
@@ -259,6 +289,14 @@
       "last_updated": "2026-08-16",
       "description": "WALL-D publishes the integrated design_braced_wall_is456 workflow through POST /api/v1/design/wall/braced-axial and promotes exactly one bounded wall",
       "content_hash": "3e70433c516b"
+    },
+    {
+      "name": "india-2-wall-family-acceptance-evidence.md",
+      "type": "documentation",
+      "size_lines": 82,
+      "last_updated": "2026-08-16",
+      "description": "integrated A-D starting head was 46094a8c35c75fcfb0644f23a851087cc3297c60. The supported public route remains one regular 100-200 mm thick, one-grid,",
+      "content_hash": "086e03bbc9b8"
     },
     {
       "name": "india-2-wall-g0-scope-evidence.md",
@@ -374,7 +412,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "775f4041c294"
+      "content_hash": "23fb23fa3436"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -463,5 +501,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "d3f983b950a48f5e"
+  "content_hash": "2c945a64839b6f79"
 }

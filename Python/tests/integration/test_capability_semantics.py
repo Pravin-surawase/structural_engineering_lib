@@ -36,9 +36,23 @@ def _adapter(name: str):
 
 
 def _published_field_names(workflow: Callable[..., Any]) -> set[str]:
-    """Return public input/output field names, including one serialized level."""
+    """Return public input/result names, including one typed nested level."""
     names = set(inspect.signature(workflow).parameters)
-    result_type = get_type_hints(workflow).get("return")
+    type_hints = get_type_hints(workflow)
+    for parameter_name in inspect.signature(workflow).parameters:
+        parameter_type = type_hints.get(parameter_name)
+        if parameter_type and dataclasses.is_dataclass(parameter_type):
+            names.update(
+                f"{parameter_name}.{field.name}"
+                for field in dataclasses.fields(parameter_type)
+            )
+            names.update(
+                f"{parameter_name}.{name}"
+                for name, value in vars(parameter_type).items()
+                if isinstance(value, property) and not name.startswith("_")
+            )
+
+    result_type = type_hints.get("return")
     if not result_type or not dataclasses.is_dataclass(result_type):
         return names
 
@@ -49,6 +63,11 @@ def _published_field_names(workflow: Callable[..., Any]) -> set[str]:
             names.update(
                 f"{result_field.name}.{field.name}"
                 for field in dataclasses.fields(nested_type)
+            )
+            names.update(
+                f"{result_field.name}.{name}"
+                for name, value in vars(nested_type).items()
+                if isinstance(value, property) and not name.startswith("_")
             )
     return names
 
@@ -77,7 +96,7 @@ def test_contract_workflow_field_names_match_public_function_or_result() -> None
         for field in workflow_contract.fields:
             assert field.canonical_name in published_names, (
                 f"{workflow_contract.workflow}: {field.canonical_name} is not a "
-                "public input or serialized result field"
+                "public input or result field"
             )
 
 
