@@ -275,11 +275,11 @@
         }
       ],
       "registration_summary": {
-        "known_references": 134,
-        "registered_known_references": 70,
-        "metadata_only_references": 64,
+        "known_references": 142,
+        "registered_known_references": 73,
+        "metadata_only_references": 69,
         "registration_only_references": 0,
-        "registration_pct": 52.2
+        "registration_pct": 51.4
       },
       "references": [
         {
@@ -677,6 +677,84 @@
           "reference_type": "clause",
           "title": "Transverse Reinforcement in Columns",
           "category": "columns",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:29",
+          "reference": "29",
+          "reference_type": "clause",
+          "title": "Deep Beams",
+          "category": "flexure",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:29.1",
+          "reference": "29.1",
+          "reference_type": "clause",
+          "title": "Deep-Beam Classification and General Requirements",
+          "category": "flexure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.deep_beam.geometry.resolve_simply_supported_deep_beam_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:29.2",
+          "reference": "29.2",
+          "reference_type": "clause",
+          "title": "Deep-Beam Lever Arm",
+          "category": "flexure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.deep_beam.geometry.resolve_simply_supported_deep_beam_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:29.3",
+          "reference": "29.3",
+          "reference_type": "clause",
+          "title": "Deep-Beam Reinforcement",
+          "category": "detailing",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:29.3.1",
+          "reference": "29.3.1",
+          "reference_type": "clause",
+          "title": "Positive Reinforcement in Deep Beams",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.deep_beam.geometry.resolve_simply_supported_deep_beam_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:29.3.2",
+          "reference": "29.3.2",
+          "reference_type": "clause",
+          "title": "Negative Reinforcement in Deep Beams",
+          "category": "detailing",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:29.3.3",
+          "reference": "29.3.3",
+          "reference_type": "clause",
+          "title": "Vertical Reinforcement for Hanging Action",
+          "category": "detailing",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:29.3.4",
+          "reference": "29.3.4",
+          "reference_type": "clause",
+          "title": "Side-Face Reinforcement in Deep Beams",
+          "category": "detailing",
           "registration_status": "METADATA_ONLY",
           "functions": []
         },

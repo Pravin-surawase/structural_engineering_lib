@@ -5,6 +5,73 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-DEEP-A Geometry and Lever Arm
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-deep-a` from integrated DEEP-G0 main at
+`d3b9928f4e15573f10feb41de3d8981ed8ca14d6`
+
+**Git handoff receipt:** `docs/verification/india-2-deep-a-git-handoff-receipt.json`
+
+**Focus:** Implement the frozen Clause 29 geometry, action, classification, lever-arm, provenance, and fail-closed contracts only.
+
+### Summary
+
+- Added an internal `codes/is456/deep_beam` package with typed geometry,
+  material/action, support, and lever-arm branch contracts.
+- Implemented effective-span resolution, the simply supported `l/D < 2`
+  boundary, both Clause 29.2 lever-arm branches, and the Clause 29.3.1 positive-
+  reinforcement zone depth.
+- Added exact Clause 29 identities to the public identifier-only traceability
+  database and focused benchmark/boundary tests without publishing capability.
+
+### Issues encountered
+
+- The traceability database had no Clause 29 identifiers, so decorating the new
+  resolver would warn and public clause lookup could not resolve the source.
+- Initial source provenance included the frozen geometry benchmark ID both as a
+  static resolver source and as the caller's geometry-basis reference.
+
+### Root causes and resolutions
+
+- Root cause: prior supported families had never required Clause 29 records.
+  Resolution: add identifier-only records for Clause 29, 29.1, 29.2, 29.3, and
+  29.3.1-29.3.4; update the database count and coverage test.
+- Root cause: the static source tuple and caller evidence used the same
+  benchmark identity. Resolution: keep only the standard identities static and
+  append the caller geometry and bearing/nodal references once.
+
+### Evidence
+
+- The direct deep-beam package passes 20 tests; the combined geometry, clause-
+  database, traceability, and manifest selection passes 109 tests.
+- Benchmark outputs are effective span 3000 mm, `l/D = 1.5`, lever arm 1400
+  mm, and positive-reinforcement zone depth 350 mm.
+- Below-one, exactly-one, just-below-two, and exact-two ratio boundaries pass or
+  fail closed as specified; every topology and external-verification assertion
+  is directly exercised.
+- Black, Ruff, mypy, and Bandit pass; architecture reports 0 violations across
+  173 files and imports report 0 broken across 208 files.
+- Manifest/parity truth remains 9 supported and 12 held families with 100%
+  actionable parity and all 77 endpoints directly tested; touched indexes and
+  quick gate 10/10 pass.
+- Link and hosted evidence is recorded in `india-2-deep-a-geometry-evidence.md`
+  and the exact PR checks.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: three initially inferred validation paths did not exist
+  (`scripts/indian_code_manifest.py`,
+  `Python/tests/unit/test_clause_traceability.py`, and
+  `scripts/check_architecture.py`/`scripts/check_imports.py`) → discovered the
+  maintained entrypoints with `rg --files` and `./run.sh find`, then passed
+  `scripts/generate_indian_code_manifest.py --check`,
+  `Python/tests/test_clause_traceability.py`,
+  `scripts/check_architecture_boundaries.py`, and `scripts/validate_imports.py`.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-DEEP-G0 Scope and Evidence Decision
 
 **Agent:** Codex (`structural-engineer`, sole writer; no subagents)

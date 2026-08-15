@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Decide one public-source, benchmarked Clause 29 deep-beam boundary before calculation implementation.
-- Git receipt: docs/verification/india-2-deep-g0-git-handoff-receipt.json | sha256:cc7f9a80b62148dd4ba68c392f981ef1cea91945fa3e149eec4ee94ad0e3fba9 | HOLD
-- Git identity: codex/india-2-deep-g0@90ea7c1e4adf05c04e986dc3657e0403d598930d | upstream=NONE@UNKNOWN | base=origin/main@90ea7c1e4adf05c04e986dc3657e0403d598930d | tree=dirty | operation=none
+- Focus: Implement the frozen Clause 29 geometry, action, classification, lever-arm, provenance, and fail-closed contracts only.
+- Git receipt: docs/verification/india-2-deep-a-git-handoff-receipt.json | sha256:c677fdd8a70d80a958c72bbc071719ce13b3a04b65396e7ba27802ccda8c8ee8 | HOLD
+- Git identity: codex/india-2-deep-a@d3b9928f4e15573f10feb41de3d8981ed8ca14d6 | upstream=NONE@UNKNOWN | base=origin/main@d3b9928f4e15573f10feb41de3d8981ed8ca14d6 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Implement `INDIA-2-DEEP-A` from the integrated G0 head within the frozen simply supported positive-moment boundary |
+| **Next** | Implement `INDIA-2-DEEP-B` from integrated A: positive tie, placement, anchorage, side-face, and composed pure-math dispositions |
 
 ## Required Reading
 
@@ -71,8 +71,10 @@ focused validation, retained holds, and deferred broad-gate boundary.
 
 [`india-2-deep-g0-scope-evidence.md`](../verification/india-2-deep-g0-scope-evidence.md)
 records GO for one simply supported solid rectangular deep-beam positive-
-reinforcement check. DEEP-A may implement only the typed effective-span,
-classification, lever-arm, caller-action, and fail-closed contracts. Bearing
+reinforcement check. [`india-2-deep-a-geometry-evidence.md`](../verification/india-2-deep-a-geometry-evidence.md)
+records the implemented typed effective-span, classification, lever-arm,
+caller-action, and fail-closed contracts. DEEP-B may add only the frozen
+positive tie, placement, continuity, anchorage, side-face, and composed checks. Bearing
 and compression-nodal regions require a caller-supplied external verification;
 continuous beams, openings, hanging action, negative moment, load generation,
 generalized strut-and-tie, nonlinear analysis, and FEM remain held.

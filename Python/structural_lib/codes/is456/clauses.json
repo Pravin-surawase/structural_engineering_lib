@@ -6,7 +6,7 @@
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
     "last_updated": "2026-08-16",
-    "total_clauses": 135,
+    "total_clauses": 143,
     "includes_references": [
       "IS 13920:2016"
     ],
@@ -499,6 +499,86 @@
         "transverse reinforcement",
         "pitch",
         "lateral ties"
+      ]
+    },
+    "29": {
+      "title": "Deep Beams",
+      "section": "29 - Deep Beams",
+      "category": "flexure",
+      "keywords": [
+        "deep beam",
+        "lever arm",
+        "reinforcement"
+      ]
+    },
+    "29.1": {
+      "title": "Deep-Beam Classification and General Requirements",
+      "section": "29 - Deep Beams",
+      "category": "flexure",
+      "keywords": [
+        "effective span",
+        "overall depth",
+        "shear"
+      ]
+    },
+    "29.2": {
+      "title": "Deep-Beam Lever Arm",
+      "section": "29 - Deep Beams",
+      "category": "flexure",
+      "keywords": [
+        "lever arm",
+        "simply supported",
+        "continuous"
+      ]
+    },
+    "29.3": {
+      "title": "Deep-Beam Reinforcement",
+      "section": "29 - Deep Beams",
+      "category": "detailing",
+      "keywords": [
+        "reinforcement",
+        "anchorage",
+        "distribution"
+      ]
+    },
+    "29.3.1": {
+      "title": "Positive Reinforcement in Deep Beams",
+      "section": "29 - Deep Beams",
+      "category": "detailing",
+      "keywords": [
+        "positive reinforcement",
+        "development length",
+        "tension zone"
+      ]
+    },
+    "29.3.2": {
+      "title": "Negative Reinforcement in Deep Beams",
+      "section": "29 - Deep Beams",
+      "category": "detailing",
+      "keywords": [
+        "negative reinforcement",
+        "continuous beam",
+        "distribution"
+      ]
+    },
+    "29.3.3": {
+      "title": "Vertical Reinforcement for Hanging Action",
+      "section": "29 - Deep Beams",
+      "category": "detailing",
+      "keywords": [
+        "hanging action",
+        "suspension stirrups",
+        "vertical reinforcement"
+      ]
+    },
+    "29.3.4": {
+      "title": "Side-Face Reinforcement in Deep Beams",
+      "section": "29 - Deep Beams",
+      "category": "detailing",
+      "keywords": [
+        "side face",
+        "wall minimum reinforcement",
+        "Amendment 3"
       ]
     },
     "31.6": {

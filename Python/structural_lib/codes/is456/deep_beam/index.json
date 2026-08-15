@@ -1,0 +1,85 @@
+{
+  "folder": "Python/structural_lib/codes/is456/deep_beam",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-08-16",
+  "file_count": 3,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 26,
+      "last_updated": "2026-08-16",
+      "description": "Bounded IS 456 Clause 29 simply supported deep-beam contracts.",
+      "content_hash": "879b3a47ed25"
+    },
+    {
+      "name": "geometry.py",
+      "type": "python",
+      "size_lines": 84,
+      "last_updated": "2026-08-16",
+      "description": "Clause 29.1-29.3.1 geometry for simply supported deep beams.",
+      "classes": [
+        {
+          "name": "DeepBeamGeometryResult",
+          "description": "Resolved effective span, classification, lever arm, and tie zone."
+        }
+      ],
+      "functions": [
+        {
+          "name": "resolve_simply_supported_deep_beam_geometry",
+          "description": "Resolve the sole supported Clause 29 simply supported geometry.",
+          "params": [
+            "geometry"
+          ]
+        }
+      ],
+      "constants": [
+        "_SOURCE_REFS"
+      ],
+      "content_hash": "8f0bc42061c3"
+    },
+    {
+      "name": "models.py",
+      "type": "python",
+      "size_lines": 188,
+      "last_updated": "2026-08-16",
+      "description": "Typed contracts for the bounded INDIA-2 Clause 29 deep-beam case.",
+      "classes": [
+        {
+          "name": "DeepBeamContractError",
+          "description": "Raised when an input is outside the frozen INDIA-2 deep-beam scope."
+        },
+        {
+          "name": "DeepBeamSupportType",
+          "description": "Support systems admitted by the first Clause 29 workflow."
+        },
+        {
+          "name": "DeepBeamLeverArmCase",
+          "description": "Normalized Clause 29.2 simply supported lever-arm branches."
+        },
+        {
+          "name": "DeepBeamGeometry",
+          "description": "Caller-confirmed geometry and external bearing/nodal prerequisite."
+        },
+        {
+          "name": "DeepBeamActionInput",
+          "description": "Geometry, material grades, and caller-supplied positive design moment."
+        }
+      ],
+      "content_hash": "fa064b8ad53e"
+    }
+  ],
+  "subfolders": [],
+  "has_init": true,
+  "public_api": [
+    "DeepBeamActionInput",
+    "DeepBeamContractError",
+    "DeepBeamGeometry",
+    "DeepBeamGeometryResult",
+    "DeepBeamLeverArmCase",
+    "DeepBeamSupportType",
+    "resolve_simply_supported_deep_beam_geometry"
+  ],
+  "content_hash": "dc58edd70174b232"
+}
