@@ -149,8 +149,15 @@ Then:
 3. Run the narrowest relevant test or lint command while iterating.
 4. Add one or two independent reviews only when risk justifies them.
 5. Run `./run.sh check --quick` before committing.
-6. Run the full project or release gate once at closeout. Repeat only the failed
-   portion unless the fix can affect other categories.
+6. For a multi-packet milestone, keep each packet to focused tests, independent
+   benchmarks, architecture/import checks, the quick gate, normal commit hooks,
+   and all required hosted PR checks.
+7. After all intended packets are integrated, run the broad Python suite and
+   `./run.sh check` (currently 30 checks) once at the cumulative closeout.
+   Repeat only a failed portion unless the fix can affect other categories.
+8. Run either broad gate before cumulative closeout only when an
+   outcome-changing failure or repository-wide surface makes it necessary.
+   Required hosted checks are never deferred or bypassed.
 
 For work requiring independent acceptance, use these stricter efficiency
 controls:

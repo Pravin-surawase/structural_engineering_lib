@@ -44,7 +44,13 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
 - The orchestrator must add non-goals, likely pitfalls, measurable acceptance criteria, narrow tests, and a return format to each packet, then independently inspect and verify the result before acceptance.
 - Named handoff chains below are quality roles, not mandatory agent processes. The parent normally performs implementation, testing, documentation, and operations passes itself.
 - Start with `./run.sh session brief --agent <role>`, folder indexes, and targeted `rg`; do not load full agent files or large logs unless required.
-- Use targeted tests while iterating, `./run.sh check --quick` before commit, and the full gate once at closeout.
+- For a multi-packet milestone, run focused tests, independent benchmarks,
+  architecture/import checks, `./run.sh check --quick`, normal commit hooks,
+  and every required hosted PR check for each packet. Run the broad Python
+  suite and `./run.sh check` (currently 30 checks) once after all intended
+  packets are integrated. Run either broad gate earlier only when an
+  outcome-changing failure or repository-wide surface makes it necessary;
+  never bypass required hosted checks.
 - Use `/status` and Settings → Usage for Codex usage. Run `./run.sh efficiency check` for repository-side policy validation.
 - Run `./run.sh model "task"` only when the user asks for a recommendation,
   has not selected a model, or has delegated model choice. The picker is
