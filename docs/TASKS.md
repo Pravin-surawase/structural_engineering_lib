@@ -128,7 +128,7 @@
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
-| INDIA-1A | Close the beam-family gap with one benchmarked sagging T-beam flexure/web-shear/serviceability route and explicit retained boundaries | Main Agent | 🚧 SOFTWARE COMPLETE IN FRESH LANE — validation and publication closeout in progress |
+| INDIA-1A | Close the beam-family gap with one benchmarked sagging T-beam flexure/web-shear/serviceability route and explicit retained boundaries | Main Agent | 🚧 DRAFT PR #754 — software/benchmark evidence complete; exact-head hosted review pending |
 
 ## Up Next
 

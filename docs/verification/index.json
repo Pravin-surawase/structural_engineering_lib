@@ -121,7 +121,7 @@
       "last_updated": "2026-08-15",
       "title": "INDIA-0 Indian-Code Truth Baseline",
       "description": "was squash-merged as 0373de68; INDIA-1 packets now update the generated manifest from fresh integrated-main lanes",
-      "content_hash": "c971fcfa7633"
+      "content_hash": "e8d850af25d8"
     },
     {
       "name": "insights-verification-pack.md",
@@ -201,5 +201,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "cfa15ef705717afb"
+  "content_hash": "99f6903b00f392a9"
 }

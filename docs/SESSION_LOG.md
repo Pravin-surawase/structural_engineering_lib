@@ -117,6 +117,11 @@ broadening held beam cases.
 - Black check, Ruff, mypy, and Bandit passed on all changed Python paths.
 - Final repository gate passed 30/30 after the API manifest/documentation
   publication surfaces were corrected.
+- Owner set the remaining INDIA-1 validation cadence: focused benchmark/tests,
+  quick gate, commit hooks, and required hosted checks per packet; defer the
+  broad Python suite, full repository gate, manifest reconciliation, and
+  cumulative review until INDIA-1A through INDIA-1D are integrated, unless an
+  outcome-changing repository-wide issue requires an earlier run.
 
 ### Terminal issues
 

@@ -4,12 +4,12 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
-- Focus: Finish INDIA-0 exact-head integration, then start INDIA-1 existing-family closure from merged `main`
-- Draft PR: [#753](https://github.com/Pravin-surawase/structural_engineering_lib/pull/753)
-- Branch: `codex/india-0-truth-baseline`
-- Base: verified `origin/main` at `96f193bd45a21f05698cf64de47808a2e5f82640`
-- Implementation commit: `cfe02b3d47b671097358cf2feff16ecd4319cf89`
-- Next action: inspect the live PR head, required checks, mergeability, and review; merge only if the exact head is unchanged and all gates pass
+- Focus: Integrate INDIA-1A, then execute INDIA-1B through INDIA-1D with milestone-level gate efficiency
+- Draft PR: [#754](https://github.com/Pravin-surawase/structural_engineering_lib/pull/754)
+- Branch: `codex/india-1a-beam-route-closure`
+- Base: verified integrated `origin/main` at `0373de68ed6b29717da4200f3f9de05bb53f8cc5`
+- Implementation commit: `63d13bc6f35ecfd576fec731e95322d152a119fe`
+- Next action: inspect PR #754 at its live exact head; if required checks pass with no conflicts or blockers, mark ready, merge, verify integrated main, and start INDIA-1B from a fresh lane
 - Holds: no release, engineering-use approval, branch/worktree deletion, or historical-lane cleanup
 <!-- HANDOFF:END -->
 
@@ -18,7 +18,7 @@
 | Release state | Target |
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; qualified engineering review still required |
-| **Next** | Merge INDIA-0, then execute INDIA-1 as bounded existing-family packets |
+| **Next** | Integrate INDIA-1A, then execute INDIA-1B, 1C, and 1D as bounded packets |
 
 ## Required Reading
 
@@ -30,13 +30,13 @@
 
 ## Start Boundary
 
-Do not begin INDIA-1 implementation on the INDIA-0 branch. First inspect PR
-#753 live. If its exact head is unchanged, all required checks pass, there are
+Do not begin INDIA-1B implementation on the INDIA-1A branch. First inspect PR
+#754 live. If its exact head is unchanged, all required checks pass, there are
 no conflicts or unresolved blockers, and the reviewed tree is accepted, the
 owner has authorized the normal exact-head merge. Do not bypass checks.
 
-After merge, fetch `origin/main`, verify the merge result contains the INDIA-0
-manifest and tests, and create a fresh isolated `codex/india-1-<packet>` lane.
+After merge, fetch `origin/main`, verify the merge result contains the INDIA-1A
+service, manifest, and tests, and create a fresh isolated `codex/india-1b-<packet>` lane.
 Preserve the dirty primary checkout and all unrelated worktrees.
 
 ```bash
@@ -106,8 +106,13 @@ remain INDIA-2 or INDIA-3 work.
 - At least one independent benchmark has a justified tolerance.
 - Governing safe, unsafe, boundary, and out-of-domain cases are tested.
 - Unsupported inputs fail closed; capability wording matches executable behavior.
-- Focused tests pass while iterating; quick gate passes before every commit.
-- Run one full repository gate at each integrated INDIA-1 milestone.
+- Focused tests and the narrow benchmark pass while iterating; quick gate and
+  normal commit hooks remain the per-commit controls.
+- Required hosted PR checks remain mandatory for every packet and are not bypassed.
+- Run the broad Python suite, full repository gate, manifest reconciliation,
+  and cumulative review once after INDIA-1A through INDIA-1D are integrated.
+- Repeat a broad/full local gate earlier only when an outcome-changing failure
+  or repository-wide surface makes it necessary.
 - Record material issues, confirmed root causes, resolutions, and evidence in
   the newest task-owned `docs/SESSION_LOG.md` entry.
 
