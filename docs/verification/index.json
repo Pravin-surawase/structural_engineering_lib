@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-15",
-  "file_count": 24,
+  "file_count": 25,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -139,6 +139,14 @@
       "content_hash": "6d6defbea3ed"
     },
     {
+      "name": "india-2b-staircase-actions-evidence.md",
+      "type": "documentation",
+      "size_lines": 70,
+      "last_updated": "2026-08-15",
+      "description": "INDIA-2B implements only the typed geometry, concrete self-weight, and three-segment simply supported action contract selected by INDIA-2A. It adds no",
+      "content_hash": "1f9680c591ed"
+    },
+    {
       "name": "indian-code-capability-coverage.json",
       "type": "config",
       "last_updated": "2026-08-15",
@@ -152,7 +160,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "ea7c0722948b"
+      "content_hash": "3fb66f059bc2"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -241,5 +249,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "a74d2d90b9c0f5e1"
+  "content_hash": "db6d2f451ad2cd43"
 }

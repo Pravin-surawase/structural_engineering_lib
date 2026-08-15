@@ -255,10 +255,10 @@
       ],
       "registration_summary": {
         "known_references": 127,
-        "registered_known_references": 59,
-        "metadata_only_references": 68,
+        "registered_known_references": 62,
+        "metadata_only_references": 65,
         "registration_only_references": 0,
-        "registration_pct": 46.5
+        "registration_pct": 48.8
       },
       "references": [
         {
@@ -745,8 +745,11 @@
           "reference_type": "clause",
           "title": "Effective Span of Stairs",
           "category": "slabs",
-          "registration_status": "METADATA_ONLY",
-          "functions": []
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.staircase.actions.analyze_straight_flight_actions",
+            "structural_lib.codes.is456.staircase.geometry.resolve_straight_flight_geometry"
+          ]
         },
         {
           "reference_id": "IS456:2000:33.2",
@@ -754,8 +757,10 @@
           "reference_type": "clause",
           "title": "Distribution of Loading on Stairs",
           "category": "slabs",
-          "registration_status": "METADATA_ONLY",
-          "functions": []
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.staircase.actions.analyze_straight_flight_actions"
+          ]
         },
         {
           "reference_id": "IS456:2000:33.3",
@@ -763,8 +768,11 @@
           "reference_type": "clause",
           "title": "Depth of Section",
           "category": "slabs",
-          "registration_status": "METADATA_ONLY",
-          "functions": []
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.staircase.actions.analyze_straight_flight_actions",
+            "structural_lib.codes.is456.staircase.geometry.resolve_straight_flight_geometry"
+          ]
         },
         {
           "reference_id": "IS456:2000:34.1",

@@ -1,0 +1,58 @@
+{
+  "folder": "Python/tests/codes/is456/staircase",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-08-15",
+  "file_count": 2,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 2,
+      "last_updated": "2026-08-15",
+      "description": "Focused staircase tests.",
+      "content_hash": "c44590fc1fb3"
+    },
+    {
+      "name": "test_geometry_actions.py",
+      "type": "python",
+      "size_lines": 132,
+      "last_updated": "2026-08-15",
+      "description": "INDIA-2B benchmark and fail-closed staircase action tests.",
+      "functions": [
+        {
+          "name": "test_nptel_example_9_1_geometry_and_load_benchmark"
+        },
+        {
+          "name": "test_nptel_example_9_1_piecewise_action_benchmark"
+        },
+        {
+          "name": "test_unrounded_actions_retain_full_width_and_per_metre_identity"
+        },
+        {
+          "name": "test_invalid_geometry_fails_closed",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_unsupported_span_and_support_models_fail_closed"
+        },
+        {
+          "name": "test_landing_share_above_one_fails_closed"
+        },
+        {
+          "name": "test_zero_superimposed_actions_preserve_positive_self_weight_analysis"
+        },
+        {
+          "name": "test_geometry_resolver_rejects_wrong_type"
+        }
+      ],
+      "content_hash": "6c9050ab62ce"
+    }
+  ],
+  "subfolders": [],
+  "has_init": true,
+  "content_hash": "f0478d8cdc76e135"
+}

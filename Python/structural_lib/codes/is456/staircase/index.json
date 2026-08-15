@@ -1,0 +1,138 @@
+{
+  "folder": "Python/structural_lib/codes/is456/staircase",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-08-15",
+  "file_count": 4,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 34,
+      "last_updated": "2026-08-15",
+      "description": "Bounded IS 456 straight-flight staircase geometry and actions.",
+      "content_hash": "bcabe16a3ac0"
+    },
+    {
+      "name": "actions.py",
+      "type": "python",
+      "size_lines": 216,
+      "last_updated": "2026-08-15",
+      "description": "Self-weight and three-segment actions for the INDIA-2 staircase case.",
+      "classes": [
+        {
+          "name": "StraightFlightActionResult",
+          "description": "Self-weight, piecewise loads, reactions, shear, and sagging moment."
+        }
+      ],
+      "functions": [
+        {
+          "name": "analyze_straight_flight_actions",
+          "description": "Analyze three contiguous UDL segments over one simply supported span.",
+          "params": [
+            "design_input"
+          ]
+        }
+      ],
+      "constants": [
+        "_SOURCE_REFS"
+      ],
+      "content_hash": "a5500570cbb4"
+    },
+    {
+      "name": "geometry.py",
+      "type": "python",
+      "size_lines": 62,
+      "last_updated": "2026-08-15",
+      "description": "Clause 33 geometry for the bounded straight-flight staircase case.",
+      "classes": [
+        {
+          "name": "StraightFlightGeometryResult",
+          "description": "Resolved horizontal span and slope geometry with explicit mm units."
+        }
+      ],
+      "functions": [
+        {
+          "name": "resolve_straight_flight_geometry",
+          "description": "Resolve the frozen collinear-landing support and waist-depth geometry.",
+          "params": [
+            "geometry"
+          ]
+        }
+      ],
+      "constants": [
+        "_SOURCE_REFS"
+      ],
+      "content_hash": "52c7a78883b7"
+    },
+    {
+      "name": "models.py",
+      "type": "python",
+      "size_lines": 199,
+      "last_updated": "2026-08-15",
+      "description": "Typed contracts for the bounded INDIA-2 straight-flight staircase case.",
+      "classes": [
+        {
+          "name": "StaircaseContractError",
+          "description": "Raised when an input is outside the frozen INDIA-2 staircase scope."
+        },
+        {
+          "name": "StairSupportCase",
+          "description": "Support arrangements named at the boundary; only one is accepted."
+        },
+        {
+          "name": "StairSpanDirection",
+          "description": "Potential span directions; INDIA-2 accepts longitudinal behavior only."
+        },
+        {
+          "name": "StraightFlightStairGeometry",
+          "description": "Geometry for one longitudinal flight and two collinear landing segments."
+        },
+        {
+          "name": "StraightFlightLoads",
+          "description": "Caller load carriers plus explicit concrete self-weight inputs."
+        },
+        {
+          "name": "StraightFlightActionInput",
+          "description": "Accepted geometry and load carriers for the three-segment analysis."
+        }
+      ],
+      "functions": [
+        {
+          "name": "positive_finite",
+          "description": "Normalize a positive finite engineering input or fail closed.",
+          "params": [
+            "value",
+            "field_name",
+            "unit"
+          ]
+        },
+        {
+          "name": "nonnegative_finite",
+          "description": "Normalize a non-negative finite engineering input or fail closed.",
+          "params": [
+            "value",
+            "field_name",
+            "unit"
+          ]
+        }
+      ],
+      "content_hash": "6f5d652eb02e"
+    }
+  ],
+  "subfolders": [],
+  "has_init": true,
+  "public_api": [
+    "StairSpanDirection",
+    "StairSupportCase",
+    "StaircaseContractError",
+    "StraightFlightActionInput",
+    "StraightFlightActionResult",
+    "StraightFlightGeometryResult",
+    "StraightFlightLoads",
+    "StraightFlightStairGeometry",
+    "analyze_straight_flight_actions",
+    "resolve_straight_flight_geometry"
+  ],
+  "content_hash": "77b09fa017311510"
+}
