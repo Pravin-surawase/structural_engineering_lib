@@ -261,9 +261,9 @@ at the locally and hosted green draft PR head for independent audit
   state was clean and ready at the verified PR #750 merge SHA.
 - Focused receipt, semantic, and session regression suite: 143 passed after the
   seventh independent-audit blocker fix.
-- The full indexed semantic corpus passes for the eighth candidate. Strict docs,
-  links, quick, full, efficiency, session-end, preservation replay, and hosted
-  checks are replayed before exact-head audit handoff.
+- The full indexed semantic corpus, strict docs 5/5, 1,107 links, quick 10/10,
+  full 30/30, and efficiency pass for the eighth candidate. Session-end,
+  preservation replay, and hosted checks are replayed on the exact final head.
 
 ### Preservation and next boundary
 
