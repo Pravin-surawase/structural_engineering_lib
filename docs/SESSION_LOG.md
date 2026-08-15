@@ -5,6 +5,85 @@
 
 ---
 
+## 2026-08-15 — Session: INDIA-2B Staircase Geometry and Actions
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-2b-staircase-actions` from integrated `origin/main` at
+`1cd08b9cab20a34b9dad1806f500eef01a2f4739`
+
+**Focus:** Implement the frozen straight-flight geometry, self-weight, and
+three-segment action contract without adding design or public consumers.
+
+### Summary
+
+- Verified PR #760 merge-tree identity and started a clean source-bound lane.
+- Added typed, pure-math staircase geometry and load carriers with explicit
+  units, support/span flags, action provenance, and fail-closed exclusions.
+- Implemented explicit waist, step, and landing self-weight and a statically
+  determinate three-segment action solver with equilibrium evidence.
+- Matched the NPTEL Example 9.1 span, loads, reactions, zero-shear point,
+  maximum moment, and landing-boundary moment without rounding internals.
+- Added focused safe, boundary, invalid, and out-of-domain tests. Stair
+  capability remains held pending structural design and the public workflow.
+
+### Issues encountered
+
+- The first new-folder index dry-run targeted the staircase source folder
+  before that folder existed, so the generator correctly rejected the path.
+- The first Ruff pass found import-order drift in the new package export and
+  test module after Black formatting.
+- The deterministic Indian-code manifest became stale after the new Clause 33
+  decorators were added, and the generic element-completeness checker reported
+  zero staircase tests because it searches filenames rather than parent paths.
+- The first commit attempt failed mypy because a tuple comprehension inferred
+  the three segment line loads as variable-length `tuple[float, ...]`.
+- A manual mypy rerun from the repository root ignored `Python/pyproject.toml`
+  and surfaced 11 unrelated baseline typing errors.
+
+### Root causes and resolutions
+
+- A generator can preview new index files only after the owned folder topology
+  exists. Added the implementation files with `apply_patch`, reran dry-run with
+  `--allow-new-index`, and then generated the source and test indexes.
+- Black does not sort imports. Ran the maintained Ruff fixer on the two new
+  files, then repeated Black check, Ruff, and the focused test suite; all pass.
+- Clause registration is generated from live decorated functions. Regenerated
+  the manifest and verified that only Clauses 33.1-33.3 registration changed;
+  the staircase capability remains `HELD`. The completeness checker looks for
+  `test_*staircase*.py`, while the maintained test is nested at
+  `staircase/test_geometry_actions.py`; direct pytest evidence controls this
+  packet, and the checker must be reconciled with the completed vertical slice
+  during INDIA-2D rather than changing this pure-math packet's scope.
+- The action model always has exactly three frozen segments, but the tuple
+  comprehension erased that cardinality for static analysis. Replaced it with
+  an explicitly typed three-item tuple and reran mypy, focused tests, and the
+  commit hooks.
+- The maintained hook runs mypy from `Python/`, where its project configuration
+  applies. Repeated that exact command and verified all 198 source files pass;
+  the root-level output was not used as packet evidence.
+
+### Evidence
+
+- Fresh-lane Git state: `READY_LOCAL`; runtime diagnosis: `source_bound=true`.
+- Focused staircase suite: 10 passed.
+- Example 9.1 unrounded result: 142.85350 kN total load, 69.75472/73.09877 kN
+  reactions, 102.07350 kNm maximum moment, and zero equilibrium residual.
+- Unsupported support/span systems and invalid inputs fail closed.
+- Generated capability truth registers Clauses 33.1-33.3 while retaining the
+  stair family as `HELD` pending INDIA-2D.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: index dry-run rejected the not-yet-created
+  staircase folder -> created the scoped files, then dry-ran and generated both
+  new folder indexes with `--allow-new-index`.
+- ⚠️ TERMINAL ISSUE: manual mypy from the repository root did not load
+  `Python/pyproject.toml` -> repeated the maintained hook command from the
+  explicit `Python/` directory; 198 source files pass.
+
+---
+
 ## 2026-08-15 — Session: INDIA-2A Staircase Scope Foundation
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

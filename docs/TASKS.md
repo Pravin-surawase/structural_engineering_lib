@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-15 — INDIA-2A selected one bounded straight-flight staircase family; INDIA-2B is next
+**Updated:** 2026-08-15 — INDIA-2B implements benchmarked staircase geometry/actions; INDIA-2C is next
 
 ---
 
@@ -133,7 +133,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2B | Implement typed geometry, self-weight, and three-segment actions for the accepted straight-flight staircase case | Main Agent + structural math | focused implementation | P1 | 📋 READY AFTER INDIA-2A MERGE |
+| INDIA-2C | Compose flexure, provided-bar detailing, shear, and serviceability dispositions for the accepted staircase actions | Main Agent + structural math | focused implementation | P1 | 📋 READY AFTER INDIA-2B MERGE |
 | LIB-IS456-FINAL-REVIEW | Perform the cumulative qualified review before any stable or engineering-use approval | qualified structural engineer | final gate | P0 | ⏸ DEFERRED UNTIL QUALIFIED REVIEW |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
@@ -155,6 +155,7 @@ held for the cumulative qualified review.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2B | Implemented typed Clause 33 geometry, explicit concrete self-weight, and equilibrated three-segment actions for the accepted straight-flight case | Main Agent + structural math | ✅ DONE — NPTEL Example 9.1 geometry/load/action targets and fail-closed boundaries pass; capability remains HELD until INDIA-2D |
 | INDIA-2A | Selected and froze one longitudinal straight waist-slab flight with collinear landings against controlled Clause 33 sources and the IIT Kharagpur NPTEL Example 9.1 benchmark | Main Agent + structural engineer | ✅ GO — B-D owner-activated; alternate stairs, other families, IS 875/IS 1893, qualified review, and release remain held |
 | INDIA-1-CUMULATIVE | Ran broad Python, full repository, manifest reconciliation, and cumulative essential review after A-D integration | Main Agent + reviewer | ✅ DONE — PR #758 exact-head gate passed; 5,926 Python tests and full 30/30 gate green; reviewed tree squash-merged as `4e92f3d7` |
 | INDIA-1D | Closed solid-slab direct-deflection, crack-width, automatic-shear-reinforcement, and single-action load-envelope decisions with machine-visible holds | Main Agent | ✅ DONE — PR #757 exact-head gate passed; reviewed tree squash-merged as `ca55f22d` |
