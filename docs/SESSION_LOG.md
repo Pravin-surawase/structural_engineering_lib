@@ -78,6 +78,12 @@ at the locally and hosted green draft PR head for independent audit
   ignored and upgraded to `OK`, while the maintained Agent 9 knowledge base
   still directly prescribed commit amendment, cherry-pick, ad-hoc recovery
   branches, direct revert/push, and other outcome-changing lifecycle commands.
+- A fourth exact-head audit found the semantic checker blanket-skipped every
+  line containing `never`/`do not` and recognized only seven instruction verbs,
+  so equivalent imperative prose such as amend, cherry-pick, create, or replay
+  could bypass otherwise-correct unsafe-command patterns.
+- A read-only inventory regex containing a backtick was initially passed with
+  unsafe shell quoting and zsh rejected it before the search ran.
 
 ### Root causes and resolutions
 
@@ -172,13 +178,24 @@ at the locally and hosted green draft PR head for independent audit
   allowing unambiguous historical incident prose. Evidence: the file contains
   no imperative Git mutation command, nine unsafe context fixtures fail, four
   historical-prose fixtures pass, and the live repository semantic check passes.
+- Root cause: instruction classification depended on a narrow verb allowlist
+  and line-wide negation rather than the grammatical relationship to the unsafe
+  command. Resolution: treat every indexed unsafe Git expression as authority
+  unless its local clause genuinely prohibits that expression or it is explicit
+  past-tense historical narration; clause boundaries prevent unrelated earlier
+  negation from suppressing a later imperative. Evidence: amend, cherry-pick,
+  create, replay, and adversarial-negation fixtures fail; four governing-
+  prohibition and four historical controls pass; the repository semantic check
+  remains green.
+- Terminal issue resolution: rerun the read-only inventory with the regex in
+  literal single quotes; it completed without any repository mutation.
 
 ### Verification
 
 - Worktree-bound runtime diagnosis reported `source_bound=true`; startup local
   state was clean and ready at the verified PR #750 merge SHA.
-- Focused receipt, semantic, and session regression suite: 104 passed after the
-  third independent-audit blocker fix.
+- Focused receipt, semantic, and session regression suite: 114 passed after the
+  fourth independent-audit blocker fix.
 - Remaining semantic, docs/index, quick 10/10, full 30/30, efficiency,
   session-end, preservation replay, and hosted checks are recorded before PR
   audit handoff.

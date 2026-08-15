@@ -2227,7 +2227,7 @@
     {
       "name": "test_git_guidance_semantics.py",
       "type": "python",
-      "size_lines": 195,
+      "size_lines": 224,
       "last_updated": "2026-08-15",
       "description": "Semantic live-guidance discovery and coherence regressions.",
       "functions": [
@@ -2260,6 +2260,13 @@
           ]
         },
         {
+          "name": "test_genuine_governing_prohibition_is_safe",
+          "params": [
+            "prohibition",
+            "tmp_path"
+          ]
+        },
+        {
           "name": "test_harmless_historical_prose_is_not_treated_as_live_instruction",
           "params": [
             "historical",
@@ -2270,7 +2277,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "fc94cc81944a"
+      "content_hash": "8cb1f978a95c"
     },
     {
       "name": "test_git_handoff_receipt.py",
@@ -4580,5 +4587,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "03bf742b165a0924"
+  "content_hash": "d8578afefe46969c"
 }

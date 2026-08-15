@@ -200,10 +200,10 @@
     {
       "name": "GIT-001-phase-7E-semantic-handoff.md",
       "type": "documentation",
-      "size_lines": 90,
+      "size_lines": 96,
       "last_updated": "2026-08-15",
       "description": "GIT-7E started at 2026-08-15T09:12:34Z on codex/git-7e-semantic-handoff from freshly fetched and independently verified",
-      "content_hash": "8f4800e14897"
+      "content_hash": "23d6a294d519"
     },
     {
       "name": "GIT-001-phase-7E-task-git-handoff.json",
@@ -225,5 +225,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "7330e994cc2c0514"
+  "content_hash": "c370f92fe05d6bac"
 }

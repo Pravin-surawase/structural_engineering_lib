@@ -160,6 +160,18 @@ def test_live_aliases_route_to_receipt_and_not_retired_mutation():
         "Recover the work with `git cherry-pick abc123`.",
         "```bash\ngit checkout -b recovery-branch abc123\n```",
         "Use `git switch -c recovery-branch` to preserve the commit.",
+        "Amend the commit with `git commit --amend --no-edit`.",
+        "Cherry-pick the recovery using `git cherry-pick abc123`.",
+        "Create a recovery branch with `git checkout -b recovery abc123`.",
+        "Replay the change via `git cherry-pick abc123`.",
+        (
+            "Do not delete the worktree; then amend the commit with "
+            "`git commit --amend --no-edit`."
+        ),
+        (
+            "Never ignore ownership. Create a recovery branch with "
+            "`git checkout -b recovery abc123`."
+        ),
     ],
 )
 def test_live_indexed_unsafe_instruction_context_fails(instruction, tmp_path):
@@ -170,6 +182,23 @@ def test_live_indexed_unsafe_instruction_context_fails(instruction, tmp_path):
     errors = checker.check_semantic_guidance(tmp_path, index)
 
     assert any("unsafe Git instruction" in error for error in errors)
+
+
+@pytest.mark.parametrize(
+    "prohibition",
+    [
+        "Never use `git commit --amend --no-edit`.",
+        "Do not recover with `git cherry-pick abc123`.",
+        "`git checkout -b recovery abc123` is forbidden.",
+        "Using `git switch -c recovery` is prohibited.",
+    ],
+)
+def test_genuine_governing_prohibition_is_safe(prohibition, tmp_path):
+    guide = tmp_path / "guide.md"
+    guide.write_text(prohibition + "\n", encoding="utf-8")
+    index = _write_index(tmp_path)
+
+    assert checker.check_semantic_guidance(tmp_path, index) == []
 
 
 @pytest.mark.parametrize(

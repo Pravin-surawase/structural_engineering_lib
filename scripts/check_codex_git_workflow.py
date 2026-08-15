@@ -47,6 +47,76 @@ RETIRED_PATHS = (
 )
 
 HISTORICAL_MARKERS = ("historical", "archive", "legacy")
+HISTORICAL_CONTEXT = re.compile(
+    r"\b(?:historical|archived|deprecated|legacy|old workflow|"
+    r"incident (?:record|evidence|narrative))\b",
+    re.IGNORECASE,
+)
+HISTORICAL_NARRATION = re.compile(
+    r"\b(?:says?|records?|mentions?|describes?|documents?|was|were|used|ran|during)\b",
+    re.IGNORECASE,
+)
+IMPERATIVE_LIFECYCLE_VERBS = re.compile(
+    r"\b(?:use|run|execute|invoke|issue|perform|stage|restore|undo|recover|"
+    r"amend|cherry-pick|create|checkout|switch|reset|commit|push|pull|revert|"
+    r"merge|rebase|stash|clean|prune|delete|remove|force|replay|apply|move|"
+    r"branch|fetch)\b",
+    re.IGNORECASE,
+)
+CLAUSE_BOUNDARY = re.compile(
+    r"(?:[.;!?]\s+|\b(?:but|however|then|instead|nevertheless|yet)\b[:,]?\s*)",
+    re.IGNORECASE,
+)
+NEGATING_DIRECTIVE = re.compile(
+    r"\b(?:never|do not|don't|must not|should not|shall not|cannot|can't)\b"
+    r"|\b(?:forbidden|prohibited)\s*:\s*$",
+    re.IGNORECASE,
+)
+NEGATING_PREDICATE = re.compile(
+    r"\b(?:is|are)\s+(?:strictly\s+)?(?:forbidden|prohibited|not allowed)\b"
+    r"|\b(?:must|should|shall)\s+not\s+be\s+"
+    r"(?:used|run|executed)\b",
+    re.IGNORECASE,
+)
+
+
+def _local_clause(line: str, start: int, end: int) -> tuple[str, str]:
+    """Return text locally governing a command, excluding prior/later clauses."""
+    before = line[:start]
+    after = line[end:]
+    prior = list(CLAUSE_BOUNDARY.finditer(before))
+    following = CLAUSE_BOUNDARY.search(after)
+    return (
+        before[prior[-1].end() :] if prior else before,
+        after[: following.start()] if following else after,
+    )
+
+
+def _is_governing_prohibition(line: str, start: int, end: int) -> bool:
+    """True only when local negation governs this unsafe Git expression."""
+    before, after = _local_clause(line, start, end)
+    return NEGATING_DIRECTIVE.search(before) is not None or (
+        NEGATING_PREDICATE.search(after) is not None
+    )
+
+
+def _is_historical_narration(line: str, start: int) -> bool:
+    """Recognize explicit past evidence, not a historical-looking directive."""
+    prefix = line[:start]
+    if HISTORICAL_CONTEXT.search(line) is None:
+        return False
+    if HISTORICAL_NARRATION.search(line) is None:
+        return False
+    prior = list(CLAUSE_BOUNDARY.finditer(prefix))
+    local_prefix = prefix[prior[-1].end() :] if prior else prefix
+    return IMPERATIVE_LIFECYCLE_VERBS.search(local_prefix) is None
+
+
+def _unsafe_match_is_instruction(line: str, match: re.Match[str]) -> bool:
+    """Fail closed unless the command is locally prohibited or historical."""
+    return not _is_governing_prohibition(line, match.start(), match.end()) and not (
+        _is_historical_narration(line, match.start())
+    )
 
 
 def _front_matter_status(content: str) -> str | None:
@@ -171,34 +241,20 @@ def check_semantic_guidance(
             if stripped.startswith("```"):
                 in_fence = not in_fence
                 continue
-            lowered = line.lower()
-            if any(marker in lowered for marker in ("never:", "never ", "do not ")):
-                continue
             for pattern in patterns:
-                if pattern.search(line):
+                match = pattern.search(line)
+                if match and _unsafe_match_is_instruction(line, match):
                     errors.append(
                         f"{relative}:{line_number} prescribes prohibited Git mutation: "
                         f"{line.strip()}"
                     )
-            instruction_context = (
-                in_fence
-                or stripped.startswith(
-                    ("| `git ", "- `git ", "* `git ", "`git ", "git ")
-                )
-                or re.search(
-                    r"\b(use|run|execute|stage|restore|undo|recover)\b[^\n]*`?git\s",
-                    line,
-                    re.IGNORECASE,
-                )
-                is not None
-            )
-            if instruction_context:
-                for pattern in instruction_patterns:
-                    if pattern.search(line):
-                        errors.append(
-                            f"{relative}:{line_number} prescribes unsafe Git "
-                            f"instruction: {stripped}"
-                        )
+            for pattern in instruction_patterns:
+                match = pattern.search(line)
+                if match and _unsafe_match_is_instruction(line, match):
+                    errors.append(
+                        f"{relative}:{line_number} prescribes unsafe Git "
+                        f"instruction: {stripped}"
+                    )
         for phrase in required.get(relative, []):
             if phrase not in content:
                 errors.append(f"{relative} is missing semantic contract: {phrase}")

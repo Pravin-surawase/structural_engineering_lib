@@ -1474,7 +1474,7 @@
     {
       "name": "check_codex_git_workflow.py",
       "type": "python",
-      "size_lines": 432,
+      "size_lines": 488,
       "last_updated": "2026-08-15",
       "description": "Guard the Codex-native Git/GitHub workflow contract.",
       "functions": [
@@ -1510,7 +1510,7 @@
         "DEPLOY_DOCS",
         "GUIDANCE_INDEX"
       ],
-      "content_hash": "71ae68233324"
+      "content_hash": "da05527345ad"
     },
     {
       "name": "check_doc_versions.py",
@@ -5520,5 +5520,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "794370ef5a651092"
+  "content_hash": "4b4d7cb693bd007e"
 }

@@ -33,6 +33,12 @@ contracts bind maintained session and handoff surfaces to `git_state.py`, the
 receipt, source-bound runtime diagnosis, inspection-only disposition, explicit
 unknowns, and reasoned `NOT_APPLICABLE`.
 
+Unsafe Git expressions in maintained guidance fail closed regardless of the
+surrounding imperative verb. A negation is safe only when its local clause
+governs that exact expression; unrelated earlier `never`/`do not` text cannot
+suppress a later instruction. Clearly labeled past-tense historical narration
+remains evidence rather than current authority.
+
 ## Receipt contract
 
 `scripts/git_handoff_receipt.py` is a read-only evidence consumer. It obtains
