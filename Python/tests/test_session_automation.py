@@ -9,6 +9,7 @@ import subprocess
 import sys
 from datetime import UTC, date, datetime
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -66,6 +67,18 @@ def _closeout_state(
     schema_version: int = 1,
 ):
     modified = list(paths or [])
+    query_failures = list(failures or [])
+    if query_failures:
+        derived_action = "HOLD_UNKNOWN"
+        hold_reasons = ["required Git evidence is unknown"]
+        if modified:
+            hold_reasons.append(f"changed paths: {len(modified)}")
+    elif clean:
+        derived_action = "READY_LOCAL"
+        hold_reasons = []
+    else:
+        derived_action = "HOLD_DIRTY"
+        hold_reasons = [f"changed paths: {len(modified)}"]
     return git_state.RepositoryState(
         schema_version=schema_version,
         observed_at_utc="2026-08-15T00:00:00+00:00",
@@ -83,9 +96,9 @@ def _closeout_state(
         operation_markers=[],
         locks=[],
         remote_freshness="NOT_CHECKED",
-        derived_action="READY_LOCAL" if clean else "HOLD_DIRTY",
-        hold_reasons=[] if clean else ["WORKTREE_DIRTY"],
-        query_failures=list(failures or []),
+        derived_action=derived_action,
+        hold_reasons=hold_reasons,
+        query_failures=query_failures,
         duration_ms=1.0,
     )
 
@@ -120,6 +133,50 @@ def test_session_closeout_reports_canonical_dirty_paths(
 
     assert status == "DIRTY"
     assert paths == ["docs/SESSION_LOG.md"]
+
+
+def test_session_closeout_holds_clean_action_hold_contradiction(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    state = _closeout_state(clean=True)
+    state.derived_action = "HOLD_DIRTY"
+    state.hold_reasons = ["WORKTREE_DIRTY"]
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+
+    status, paths, reason = session.get_closeout_git_evidence()
+
+    assert status == "UNKNOWN"
+    assert paths == []
+    assert "contradicts" in reason
+
+
+def test_session_closeout_holds_dirty_ready_contradiction(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    state = _closeout_state(clean=False, paths=["docs/SESSION_LOG.md"])
+    state.derived_action = "READY_LOCAL"
+    state.hold_reasons = []
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+
+    status, paths, reason = session.get_closeout_git_evidence()
+
+    assert status == "UNKNOWN"
+    assert paths == []
+    assert "contradicts" in reason
+
+
+def test_changed_doc_folders_uses_only_canonical_dirty_paths():
+    status, folders, reason = session.get_changed_doc_folders(
+        (
+            "DIRTY",
+            ["docs/SESSION_LOG.md", "docs/git-automation/index.json", "source.py"],
+            "canonical dirty paths",
+        )
+    )
+
+    assert status == "OBSERVED"
+    assert folders == [session.REPO_ROOT / "docs"]
+    assert reason == "canonical dirty paths inspected"
 
 
 def test_session_closeout_holds_nonzero_git_state_query(
@@ -185,6 +242,88 @@ def test_session_closeout_never_prints_clean_for_hold(
 
     assert session.report_closeout_git_evidence() is False
     assert "Working tree clean" not in capsys.readouterr().out
+
+
+def _patch_cmd_end_dependencies(
+    monkeypatch: pytest.MonkeyPatch, state
+) -> tuple[list[list[str]], SimpleNamespace]:
+    authority_calls = []
+
+    def collect(_repo):
+        authority_calls.append(["collect_repository_state"])
+        return state
+
+    subprocess_calls: list[list[str]] = []
+
+    def run(args, **_kwargs):
+        command = [str(part) for part in args]
+        subprocess_calls.append(command)
+        assert not (
+            command[:1] == ["git"]
+            and len(command) > 1
+            and command[1] in {"diff", "status"}
+        ), f"session end invoked a second Git-state reader: {command}"
+        return subprocess.CompletedProcess(command, 0, "", "")
+
+    monkeypatch.setattr(session, "collect_repository_state", collect)
+    monkeypatch.setattr(session.subprocess, "run", run)
+    monkeypatch.setattr(
+        session, "run_handoff_check", lambda: (True, "All checks passed")
+    )
+    monkeypatch.setattr(session, "check_session_log_complete", lambda: (True, []))
+    monkeypatch.setattr(
+        session, "_latest_session_block", lambda _lines: ("2026-08-15", [])
+    )
+    monkeypatch.setattr(
+        session,
+        "_resolve_git_receipt",
+        lambda _block, _path: (
+            {
+                "local_state_receipt_hash": "sha256:" + "a" * 64,
+                "receipt_status": "HOLD",
+            },
+            "docs/research/git-governance/receipt.json",
+            [],
+        ),
+    )
+    monkeypatch.setattr(session, "check_doc_links", lambda: (True, "All links valid"))
+    monkeypatch.setattr(session, "archive_completed_tasks", lambda fix=False: (0, 0))
+    monkeypatch.setattr(session, "get_today_prs", list)
+    args = SimpleNamespace(fix=False, git_receipt=None, log_cost=False, agent="ops")
+    return authority_calls, args
+
+
+def test_session_end_reuses_one_clean_authority_query_and_skips_unknown_doc_set(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    authority_calls, args = _patch_cmd_end_dependencies(
+        monkeypatch, _closeout_state(clean=True)
+    )
+
+    assert session.cmd_end(args) == 0
+    output = capsys.readouterr().out
+    assert authority_calls == [["collect_repository_state"]]
+    assert "Working tree clean (scripts/git_state.py)" in output
+    assert "Doc-folder set UNKNOWN" in output
+    assert "no committed-diff path evidence" in output
+    assert "No doc folder changes detected" not in output
+
+
+def test_session_end_query_failure_cannot_pass_or_print_clean(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    state = _closeout_state(
+        clean=False,
+        failures=[git_state.QueryFailure("git status --porcelain=v2", "exit 128")],
+    )
+    authority_calls, args = _patch_cmd_end_dependencies(monkeypatch, state)
+
+    assert session.cmd_end(args) == 1
+    output = capsys.readouterr().out
+    assert authority_calls == [["collect_repository_state"]]
+    assert "Git state UNKNOWN/hold" in output
+    assert "Doc-folder set UNKNOWN" in output
+    assert "Working tree clean" not in output
 
 
 @pytest.mark.parametrize(

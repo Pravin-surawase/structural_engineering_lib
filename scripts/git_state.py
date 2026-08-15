@@ -357,6 +357,33 @@ def _derive_action(
     return reasons[0][0], [message for _action, message in reasons]
 
 
+def validate_repository_state_consistency(state: RepositoryState) -> list[str]:
+    """Recompute derived action/holds from supplied evidence without Git I/O."""
+    try:
+        expected_action, expected_reasons = _derive_action(
+            branch=state.branch,
+            head_sha=state.head_sha,
+            tree=state.tree,
+            operation=state.operation,
+            locks=state.locks,
+            default_base=state.default_base,
+            upstream=state.upstream,
+            failures=state.query_failures,
+        )
+    except (AttributeError, TypeError, ValueError) as exc:
+        return [f"repository-state evidence is malformed: {exc}"]
+
+    errors: list[str] = []
+    if state.derived_action != expected_action:
+        errors.append(
+            "derived_action contradicts canonical evidence: "
+            f"expected {expected_action}, got {state.derived_action}"
+        )
+    if state.hold_reasons != expected_reasons:
+        errors.append("hold_reasons contradict canonical evidence")
+    return errors
+
+
 def collect_repository_state(
     repo: Path | str = REPO_ROOT,
     *,

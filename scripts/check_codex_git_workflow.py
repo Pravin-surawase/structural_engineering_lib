@@ -181,8 +181,19 @@ def _is_historical_narration(line: str, start: int) -> bool:
 
 def _unsafe_match_is_instruction(line: str, match: re.Match[str]) -> bool:
     """Fail closed unless the command is locally prohibited or historical."""
-    return not _is_governing_prohibition(line, match.start(), match.end()) and not (
-        _is_historical_narration(line, match.start())
+    start = match.start()
+    matched = match.group(0)
+    directive = NEGATING_DIRECTIVE.search(matched)
+    if (
+        directive is not None
+        and DIRECTIVE_PUNCTUATION_ONLY.fullmatch(matched[: directive.start()])
+        and re.search(r"\bwithout\b", matched[directive.end() :], re.IGNORECASE) is None
+    ):
+        action = DIRECT_ACTION.search(matched, directive.end())
+        if action is not None:
+            start += action.start()
+    return not _is_governing_prohibition(line, start, match.end()) and not (
+        _is_historical_narration(line, start)
     )
 
 

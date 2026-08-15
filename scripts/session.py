@@ -37,6 +37,7 @@ from git_state import (
     SCHEMA_VERSION as GIT_STATE_SCHEMA_VERSION,
     RepositoryState,
     collect_repository_state,
+    validate_repository_state_consistency,
 )
 from git_handoff_receipt import load_receipt, validate_receipt
 
@@ -808,13 +809,33 @@ def get_closeout_git_evidence() -> tuple[str, list[str], str]:
     except Exception as exc:
         return "UNKNOWN", [], f"Git-state authority raised: {exc}"
     if not all(
-        hasattr(state, field) for field in ("schema_version", "tree", "query_failures")
+        hasattr(state, field)
+        for field in (
+            "schema_version",
+            "tree",
+            "query_failures",
+            "derived_action",
+            "hold_reasons",
+        )
     ):
         return "UNKNOWN", [], "Git-state authority returned malformed evidence"
     if state.schema_version != GIT_STATE_SCHEMA_VERSION:
         return "UNKNOWN", [], f"Git-state schema is unknown: {state.schema_version}"
     if not isinstance(state.query_failures, list):
         return "UNKNOWN", [], "Git-state query-failure evidence is malformed"
+    if (
+        not isinstance(state.derived_action, str)
+        or not isinstance(state.hold_reasons, list)
+        or any(not isinstance(reason, str) for reason in state.hold_reasons)
+    ):
+        return "UNKNOWN", [], "Git-state action/hold evidence is malformed"
+    consistency_errors = validate_repository_state_consistency(state)
+    if consistency_errors:
+        return (
+            "UNKNOWN",
+            [],
+            "Git-state evidence contradicts: " + "; ".join(consistency_errors),
+        )
     if state.query_failures:
         if not all(
             hasattr(failure, "command") and hasattr(failure, "reason")
@@ -848,14 +869,20 @@ def get_closeout_git_evidence() -> tuple[str, list[str], str]:
     if not clean and not paths:
         return "UNKNOWN", [], "Git-state dirty flag has no path evidence"
     if clean:
+        if state.derived_action != "READY_LOCAL" or state.hold_reasons:
+            return "UNKNOWN", [], "Git-state clean/action/hold evidence contradicts"
         return "CLEAN", [], "Canonical Git-state tree is clean"
+    if state.derived_action != "HOLD_DIRTY" or not state.hold_reasons:
+        return "UNKNOWN", [], "Git-state dirty/action/hold evidence contradicts"
     return "DIRTY", paths, "Canonical Git-state tree contains changes"
 
 
-def report_closeout_git_evidence() -> bool:
+def report_closeout_git_evidence(
+    evidence: tuple[str, list[str], str] | None = None,
+) -> bool:
     """Print fail-closed closeout evidence; return true only for CLEAN."""
     print("📁 Uncommitted Changes:")
-    status, paths, reason = get_closeout_git_evidence()
+    status, paths, reason = evidence or get_closeout_git_evidence()
     if status == "UNKNOWN":
         print(f"  ⚠️  Git state UNKNOWN/hold: {reason}")
         return False
@@ -937,37 +964,27 @@ def check_doc_links() -> tuple[bool, str]:
         return True, f"Link check skipped: {e}"
 
 
-def get_changed_doc_folders() -> list[Path]:
-    try:
-        result = subprocess.run(
-            ["git", "diff", "--name-only", "HEAD~5", "HEAD"],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
+def get_changed_doc_folders(
+    evidence: tuple[str, list[str], str],
+) -> tuple[str, list[Path], str]:
+    """Derive current dirty doc folders only from canonical state evidence."""
+    status, paths, reason = evidence
+    if status == "UNKNOWN":
+        return "UNKNOWN", [], reason
+    if status == "CLEAN":
+        return (
+            "UNKNOWN",
+            [],
+            "canonical state has no committed-diff path evidence; skipped",
         )
-        changed_files = (
-            result.stdout.strip().split("\n") if result.stdout.strip() else []
-        )
-        result2 = subprocess.run(
-            ["git", "status", "--porcelain"],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
-        )
-        for line in result2.stdout.strip().split("\n"):
-            if line.strip():
-                parts = line.strip().split(maxsplit=1)
-                if len(parts) > 1:
-                    changed_files.append(parts[1])
-        doc_folders = set()
-        for f in changed_files:
-            if f.startswith("docs/") and f.endswith(".md"):
-                folder = Path(f).parent
-                if len(folder.parts) >= 2:
-                    doc_folders.add(REPO_ROOT / folder)
-        return list(doc_folders)
-    except Exception:
-        return []
+    doc_folders = {
+        REPO_ROOT / Path(path).parent
+        for path in paths
+        if path.startswith("docs/")
+        and path.endswith(".md")
+        and len(Path(path).parts) >= 2
+    }
+    return "OBSERVED", sorted(doc_folders), "canonical dirty paths inspected"
 
 
 def update_folder_readmes(folders: list[Path], fix: bool = False) -> int:
@@ -1029,7 +1046,8 @@ def cmd_end(args: argparse.Namespace) -> int:
     all_passed = True
 
     # 1. Uncommitted changes
-    if not report_closeout_git_evidence():
+    closeout_evidence = get_closeout_git_evidence()
+    if not report_closeout_git_evidence(closeout_evidence):
         all_passed = False
     print()
 
@@ -1101,8 +1119,12 @@ def cmd_end(args: argparse.Namespace) -> int:
 
     # 7. README updates
     print("📚 README Index Updates:")
-    changed_folders = get_changed_doc_folders()
-    if changed_folders:
+    folder_status, changed_folders, folder_reason = get_changed_doc_folders(
+        closeout_evidence
+    )
+    if folder_status == "UNKNOWN":
+        print(f"  ⏭️  Doc-folder set UNKNOWN: {folder_reason}")
+    elif changed_folders:
         print(f"  📂 {len(changed_folders)} folder(s) with changes detected")
         updated = update_folder_readmes(changed_folders, fix=args.fix)
         if args.fix and updated:
@@ -1110,7 +1132,7 @@ def cmd_end(args: argparse.Namespace) -> int:
         elif not args.fix:
             print("  ℹ️  Run with --fix to auto-update READMEs")
     else:
-        print("  ✅ No doc folder changes detected")
+        print("  ✅ No doc folders in canonical current changed paths")
     print()
 
     # 7. TASKS.md auto-archival

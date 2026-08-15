@@ -50,9 +50,9 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_footing_load_transfer.py](test_footing_load_transfer.py) | Focused independent arithmetic checks for IS 456 Cl. 34.4 lo | 0 | 7 | 165 |
 | [test_function_quality_checker.py](test_function_quality_checker.py) | Focused regressions for the IS 456 function-quality checker. | 0 | 2 | 55 |
 | [test_generated_clients.py](test_generated_clients.py) | Contract checks for the checked-in basic generated clients. | 0 | 2 | 71 |
-| [test_git_guidance_semantics.py](test_git_guidance_semantics.py) | Semantic live-guidance discovery and coherence regressions. | 0 | 9 | 312 |
+| [test_git_guidance_semantics.py](test_git_guidance_semantics.py) | Semantic live-guidance discovery and coherence regressions. | 0 | 9 | 321 |
 | [test_git_handoff_receipt.py](test_git_handoff_receipt.py) | Regressions for the durable, fail-closed task-to-Git handoff | 0 | 20 | 429 |
-| [test_git_state.py](test_git_state.py) | Outcome tests for the read-only, worktree-aware Git state au | 0 | 14 | 425 |
+| [test_git_state.py](test_git_state.py) | Outcome tests for the read-only, worktree-aware Git state au | 0 | 15 | 448 |
 | [test_inputs.py](test_inputs.py) | Tests for the inputs module (TASK-276: Input Flexibility). | 7 | 0 | 464 |
 | [test_is456_common.py](test_is456_common.py) | Tests for IS 456:2000 common modules - stress_blocks, reinfo | 15 | 0 | 854 |
 | [test_is456_constants.py](test_is456_constants.py) | Tests for IS 456:2000 named design constants. | 1 | 0 | 163 |
@@ -69,7 +69,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_reports.py](test_reports.py) | Tests for the reports module. | 8 | 0 | 447 |
 | [test_research_prototypes.py](test_research_prototypes.py) | Tests for research prototypes: Sustainability, Generative De | 4 | 0 | 910 |
 | [test_result_base.py](test_result_base.py) | Tests for result_base module. | 7 | 0 | 217 |
-| [test_session_automation.py](test_session_automation.py) | Regression tests for maintenance session automation. | 0 | 20 | 1019 |
+| [test_session_automation.py](test_session_automation.py) | Regression tests for maintenance session automation. | 0 | 20 | 1158 |
 | [test_session_store.py](test_session_store.py) | Tests for scripts/session_store.py — JSON session persistenc | 7 | 0 | 287 |
 | [test_slenderness.py](test_slenderness.py) | Unit tests for slenderness module. | 5 | 0 | 360 |
 | [test_testing_strategies.py](test_testing_strategies.py) | Tests for the testing_strategies module (TASK-279). | 12 | 0 | 681 |

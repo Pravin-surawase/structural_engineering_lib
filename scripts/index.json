@@ -1474,7 +1474,7 @@
     {
       "name": "check_codex_git_workflow.py",
       "type": "python",
-      "size_lines": 555,
+      "size_lines": 566,
       "last_updated": "2026-08-15",
       "description": "Guard the Codex-native Git/GitHub workflow contract.",
       "functions": [
@@ -1510,7 +1510,7 @@
         "DEPLOY_DOCS",
         "GUIDANCE_INDEX"
       ],
-      "content_hash": "f62aa4b673e3"
+      "content_hash": "086087bf8fee"
     },
     {
       "name": "check_doc_versions.py",
@@ -3451,7 +3451,7 @@
     {
       "name": "git_state.py",
       "type": "python",
-      "size_lines": 658,
+      "size_lines": 685,
       "last_updated": "2026-08-15",
       "description": "Read-only, worktree-aware Git state authority.",
       "classes": [
@@ -3488,6 +3488,13 @@
       ],
       "functions": [
         {
+          "name": "validate_repository_state_consistency",
+          "description": "Recompute derived action/holds from supplied evidence without Git I/O.",
+          "params": [
+            "state"
+          ]
+        },
+        {
           "name": "collect_repository_state",
           "description": "Collect one local repository/worktree state without mutation or network.",
           "params": [
@@ -3521,7 +3528,7 @@
         "DEFAULT_COMMAND_TIMEOUT_SECONDS",
         "SIBLING_COMMAND_TIMEOUT_SECONDS"
       ],
-      "content_hash": "8a947cedc599"
+      "content_hash": "15c15cb64c65"
     },
     {
       "name": "governance_health_score.py",
@@ -4395,7 +4402,7 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 2466,
+      "size_lines": 2488,
       "last_updated": "2026-08-15",
       "description": "Unified session management CLI.",
       "functions": [
@@ -4480,7 +4487,10 @@
         },
         {
           "name": "report_closeout_git_evidence",
-          "description": "Print fail-closed closeout evidence; return true only for CLEAN."
+          "description": "Print fail-closed closeout evidence; return true only for CLEAN.",
+          "params": [
+            "evidence"
+          ]
         },
         {
           "name": "check_session_log_complete"
@@ -4489,7 +4499,11 @@
           "name": "check_doc_links"
         },
         {
-          "name": "get_changed_doc_folders"
+          "name": "get_changed_doc_folders",
+          "description": "Derive current dirty doc folders only from canonical state evidence.",
+          "params": [
+            "evidence"
+          ]
         }
       ],
       "constants": [
@@ -4504,7 +4518,7 @@
         "HANDOFF_DATE_RE",
         "COMMIT_HASH_RE"
       ],
-      "content_hash": "76f98cf223c6"
+      "content_hash": "8850582e1aa6"
     },
     {
       "name": "session_store.py",
@@ -5518,5 +5532,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "ea446ebe6eaf20ee"
+  "content_hash": "e18abc3d37b9fd72"
 }

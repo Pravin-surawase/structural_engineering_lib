@@ -106,6 +106,29 @@ def test_porcelain_v2_classifies_each_dirty_surface(tmp_path: Path):
     assert state.tree.conflicted_paths == []
 
 
+def test_state_consistency_recomputes_action_and_holds_without_git_io(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    repo = _repo(tmp_path)
+    _feature(repo)
+    state = git_state.collect_repository_state(repo, default_ref="main")
+    assert git_state.validate_repository_state_consistency(state) == []
+
+    monkeypatch.setattr(
+        git_state.subprocess,
+        "run",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("consistency validation must not query Git")
+        ),
+    )
+    state.operation = "merge"
+
+    errors = git_state.validate_repository_state_consistency(state)
+
+    assert any("derived_action contradicts" in error for error in errors)
+    assert any("hold_reasons contradict" in error for error in errors)
+
+
 def test_conflicted_paths_never_return_ready(tmp_path: Path):
     repo = _repo(tmp_path)
     _feature(repo, "left")

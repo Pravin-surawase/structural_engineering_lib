@@ -2227,7 +2227,7 @@
     {
       "name": "test_git_guidance_semantics.py",
       "type": "python",
-      "size_lines": 312,
+      "size_lines": 321,
       "last_updated": "2026-08-15",
       "description": "Semantic live-guidance discovery and coherence regressions.",
       "functions": [
@@ -2291,7 +2291,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "b5f2bfd443ff"
+      "content_hash": "2d4f3045c23a"
     },
     {
       "name": "test_git_handoff_receipt.py",
@@ -2395,7 +2395,7 @@
     {
       "name": "test_git_state.py",
       "type": "python",
-      "size_lines": 425,
+      "size_lines": 448,
       "last_updated": "2026-08-15",
       "description": "Outcome tests for the read-only, worktree-aware Git state authority.",
       "functions": [
@@ -2409,6 +2409,13 @@
           "name": "test_porcelain_v2_classifies_each_dirty_surface",
           "params": [
             "tmp_path"
+          ]
+        },
+        {
+          "name": "test_state_consistency_recomputes_action_and_holds_without_git_io",
+          "params": [
+            "tmp_path",
+            "monkeypatch"
           ]
         },
         {
@@ -2493,7 +2500,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "d9c97021b08a"
+      "content_hash": "c1445882b756"
     },
     {
       "name": "test_inputs.py",
@@ -3730,7 +3737,7 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 1019,
+      "size_lines": 1158,
       "last_updated": "2026-08-15",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
@@ -3757,6 +3764,21 @@
           ]
         },
         {
+          "name": "test_session_closeout_holds_clean_action_hold_contradiction",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_session_closeout_holds_dirty_ready_contradiction",
+          "params": [
+            "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_changed_doc_folders_uses_only_canonical_dirty_paths"
+        },
+        {
           "name": "test_session_closeout_holds_nonzero_git_state_query",
           "params": [
             "monkeypatch"
@@ -3779,6 +3801,20 @@
           "name": "test_session_closeout_never_prints_clean_for_hold",
           "params": [
             "status",
+            "monkeypatch",
+            "capsys"
+          ]
+        },
+        {
+          "name": "test_session_end_reuses_one_clean_authority_query_and_skips_unknown_doc_set",
+          "params": [
+            "monkeypatch",
+            "capsys"
+          ]
+        },
+        {
+          "name": "test_session_end_query_failure_cannot_pass_or_print_clean",
+          "params": [
             "monkeypatch",
             "capsys"
           ]
@@ -3821,43 +3857,12 @@
             "tmp_path",
             "monkeypatch"
           ]
-        },
-        {
-          "name": "test_active_task_reader_accepts_current_and_legacy_headings",
-          "params": [
-            "tmp_path",
-            "monkeypatch",
-            "heading",
-            "task_id"
-          ]
-        },
-        {
-          "name": "test_commit_summary_uses_exclusive_previous_day_boundary",
-          "params": [
-            "monkeypatch"
-          ]
-        },
-        {
-          "name": "test_session_trust_accepts_only_kernel_ready_local",
-          "params": [
-            "action",
-            "trusted"
-          ]
-        },
-        {
-          "name": "test_git_identity_helpers_reject_failed_commands",
-          "params": [
-            "monkeypatch"
-          ]
-        },
-        {
-          "name": "test_launcher_port_discovery_is_listener_only"
         }
       ],
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "f70081cd341f"
+      "content_hash": "c4c7b166c1fe"
     },
     {
       "name": "test_session_store.py",
@@ -4615,5 +4620,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "29e2736cf53dbfa1"
+  "content_hash": "395e81a86fdd3fca"
 }

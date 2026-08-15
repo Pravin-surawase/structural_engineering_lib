@@ -37,11 +37,17 @@ def _write_index(root: Path, **overrides) -> Path:
             (
                 r"(?:(?<![A-Za-z0-9])(?:do not|don't|never)\s+push\b"
                 r"[^\n.;!?]*\bwithout\s+pull(?:ing)?\s+first\b|"
-                r"\bpull(?:\s+(?:the\s+)?(?:PR\s+)?branch)?\s+before"
-                r"\s+(?:you\s+)?push(?:ing)?\b|\bpull\s+first\b"
-                r"[^\n.;!?]{0,40}\b(?:then\s+)?push(?:ing)?\b|"
-                r"\bbefore\s+you\s+push\b[^\n.;!?]{0,40}"
-                r"\bpull\s+first\b)"
+                r"(?=[^\n]*(?:git|PR|branch|remote|repository|upstream|commit))"
+                r"[^\n.;!?]*\bpull(?:\s+(?:the\s+)?(?:PR\s+)?branch)?"
+                r"\s+before\s+(?:you\s+)?push(?:ing)?\b|"
+                r"(?=[^\n]*(?:git|PR|branch|remote|repository|upstream|commit))"
+                r"[^\n.;!?]*\bpull\s+first\b[^\n.;!?]{0,40}"
+                r"\b(?:then\s+)?push(?:ing)?\b|"
+                r"^\s*(?:always\s+)?pull\s+before\s+you\s+push"
+                r"(?:\s+to\s+(?:the\s+)?PR\s+branch)?[.!]?\s*$|"
+                r"^\s*pull\s+first\s*,?\s*then\s+push"
+                r"(?:\s+the\s+change)?[.!]?\s*$|"
+                r"^\s*before\s+you\s+push\s*,\s*pull\s+first[.!]?\s*$)"
             ),
         ],
         "required_contracts": {},
@@ -239,6 +245,7 @@ def test_genuine_governing_prohibition_is_safe(prohibition, tmp_path):
         "Always pull before you push to the PR branch.",
         "Pull first, then push the change.",
         "Before you push, pull first.",
+        "For the PR branch, pull first, then push the change.",
         "Don't push to the PR branch without pulling first.",
     ],
 )
@@ -274,6 +281,8 @@ def test_data_driven_omitted_git_pull_before_push_instruction_fails(
         "Deprecated guidance says pull first, then push.",
         "The lead horse should pull first in the team.",
         "Pull first aid supplies from the cabinet.",
+        "For the sled exercise, pull first, then push the load.",
+        "The actuator will pull before you push the test lever.",
         "Do not pull before you push; inspect branch and upstream first.",
         "Historical guidance said pull before you push.",
     ],

@@ -98,6 +98,17 @@ at the locally and hosted green draft PR head for independent audit
   into non-Git objects such as a lead horse or first-aid supplies. The same audit
   found session-end independently ran `git status --porcelain`, treated
   exceptions/nonzero results as an empty list, and could print a false CLEAN.
+- A ninth exact-head audit found the paired pull/push regex still classified
+  physical sled/actuator instructions as Git guidance; clean tree evidence was
+  not reconciled with `derived_action`/holds; and session-end still queried
+  `git diff` plus `git status --porcelain` for README folder discovery.
+- The first tenth-head focused replay showed the lifecycle-context regex
+  consumed a leading direct prohibition, while the initial grammar correction
+  would have misclassified the double-negative mandate `don't push ... without
+  pulling first` as safe.
+- The first tenth-candidate commit attempt stopped after Ruff converted one
+  test-only zero-argument lambda to the equivalent callable; no commit was
+  created and no path outside the 14 staged task paths changed.
 - The first ninth-head focused replay rejected valid canonical state fixtures
   loaded through the package alias and one past-tense historical control.
 - A read-only inventory regex containing a backtick was initially passed with
@@ -252,6 +263,34 @@ at the locally and hosted green draft PR head for independent audit
   clean evidence prints CLEAN. Evidence: exact imperative/non-Git/history pairs
   and clean/dirty/nonzero/exception/malformed authority regressions pass, with
   no closeout Git/network/mutation subprocess.
+- Root cause: a bounded pull/push pair still lacked an explicit Git object or
+  lifecycle context, the closeout adapter validated tree fields independently
+  of the kernel action/holds, and README discovery retained its own historical
+  Git queries. Resolution: require Git lifecycle context except for three narrow
+  standalone imperative forms; add a read-only `git_state` consistency API that
+  recomputes action/holds from the supplied canonical evidence; require
+  READY_LOCAL plus empty holds for CLEAN and coherent HOLD_DIRTY evidence for
+  DIRTY; and reuse that one evidence tuple for README discovery. A clean state
+  has no committed-diff path set, so the advisory step reports UNKNOWN/skipped
+  instead of claiming no doc changes. Evidence: 191 focused receipt, semantic,
+  Git-state, and session tests pass with exact physical/Git pairs,
+  clean/dirty/action-hold contradictions, query failures, and cmd_end/subprocess
+  spies; the full indexed semantic corpus is green.
+- Focused-replay root cause: the Git-context lookahead deliberately included
+  leading prose, making the match start too early for direct-governance parsing;
+  blindly shifting to the first negated action would then hide a `without`
+  mandate. Resolution: locate the directly governed action only for a leading
+  negation without a same-match `without` clause. Evidence: direct `do not pull`
+  controls pass while the existing double-negative mandate and every prior
+  auxiliary, suffix, historical, and clause-boundary case retain their polarity.
+- Hook root cause: the new session-end spy used `lambda: []`, which Ruff's
+  unnecessary-lambda rule rewrites to `list`. Resolution: retain that exact
+  regular-file mechanical edit, regenerate the task-owned indexes, and rerun the
+  scoped tests/hooks. Evidence: before the hook there were 14 staged task paths,
+  zero unstaged paths, and staged SHA-256 `525049d9024920566ed6549290b2f61289dcb37e697915c89324f53333bec668`;
+  afterward the sole unstaged path was
+  `Python/tests/test_session_automation.py`, with binary-diff SHA-256
+  `f5835eff85348ecc7d723a87c2ed6e8e0bee7efdc07c085cee92dd8f456ed347`.
 - Focused-replay root cause: Python loaded `git_state` and `scripts.git_state`
   as distinct module identities, so nominal `isinstance` checks rejected the
   same schema; historical grammar included `says` but omitted `said`.
@@ -283,9 +322,14 @@ at the locally and hosted green draft PR head for independent audit
   state was clean and ready at the verified PR #750 merge SHA.
 - Focused receipt, semantic, and session regression suite: 160 passed after the
   eighth independent-audit blocker fix.
-- The full indexed semantic corpus, strict docs 5/5, 1,107 links, quick 10/10,
-  full 30/30, and efficiency pass for the ninth candidate. Session-end,
-  preservation replay, and hosted checks are replayed on the exact final head.
+- The ninth candidate completed the full indexed semantic corpus, strict docs,
+  links, quick/full gates, efficiency, session-end, preservation replay, and
+  hosted checks before its independent-audit rejection.
+- Tenth-candidate focused receipt/semantic/Git-state/session regressions pass
+  191 tests; the full indexed semantic corpus passes; strict docs pass 5/5;
+  1,107 links have zero failures; and quick 10/10 plus full 30/30 pass. Final
+  efficiency, session-end, preservation, and hosted checks are replayed only on
+  the exact receipt-bound head.
 
 ### Preservation and next boundary
 
