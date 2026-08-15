@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-14
+last_updated: 2026-08-15
 doc_type: reference
 task: GIT-001
 phase: 7C1
@@ -140,8 +140,8 @@ test enforces that version so later edits cannot reintroduce the mismatch.
 
 ## Next gate
 
-Publish this unchanged implementation to its draft PR and require the live
-control-plane, documentation, repository, and aggregate jobs to pass at the
-exact head. After this workflow packet merges and is green on `main`, prepare a
-read-only current-settings refresh and an exact GIT-7C2 delta for a separate
-owner decision. Do not mutate settings from this packet.
+Completed 2026-08-15: PR #745 passed every applicable job and `PR Gate` at
+reviewed head `c3edd247`, then squash-merged as `729cc41b` with an identical
+tree. Both post-merge main workflows passed. The separately authorized GIT-7C2
+delta is recorded in
+[`GIT-001-phase-7C2-server-enforcement.md`](GIT-001-phase-7C2-server-enforcement.md).

@@ -85,6 +85,13 @@ def test_run_task_brief_and_index_help_are_read_only():
         text=True,
         timeout=20,
     )
+    no_args_result = subprocess.run(
+        [str(REPO_ROOT / "run.sh"), "generate", "indexes"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
     task_help = subprocess.run(
         [str(REPO_ROOT / "run.sh"), "task", "brief", "--help"],
         cwd=REPO_ROOT,
@@ -105,9 +112,56 @@ def test_run_task_brief_and_index_help_are_read_only():
     assert "Route:" in brief.stdout
     assert "Safe start:" in brief.stdout
     assert help_result.returncode == 0, help_result.stderr
-    assert "Usage: ./run.sh generate indexes" in help_result.stdout
+    assert "./run.sh generate indexes <owned-folder> [options]" in help_result.stdout
+    assert no_args_result.returncode == 0, no_args_result.stderr
+    assert "No arguments or --help shows this non-writing help" in no_args_result.stdout
     assert task_help.returncode == 0, task_help.stderr
     assert "Usage: ./run.sh task brief" in task_help.stdout
+    assert before == after
+
+
+@pytest.mark.parametrize(
+    ("arguments", "expected"),
+    [
+        (
+            ["docs/research/git-governance", "--dry-run"],
+            "Would generate: docs/research/git-governance/index.json + "
+            "docs/research/git-governance/index.md",
+        ),
+        (["--all", "--dry-run"], "Folders to process:"),
+    ],
+)
+def test_run_index_generator_dry_run_routes_scope_without_writes(
+    arguments: list[str], expected: str
+):
+    before = subprocess.run(
+        ["git", "status", "--porcelain=v1"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout
+
+    result = subprocess.run(
+        [str(REPO_ROOT / "run.sh"), "generate", "indexes", *arguments],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    after = subprocess.run(
+        ["git", "status", "--porcelain=v1"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout
+
+    assert result.returncode == 0, result.stderr
+    assert "Mode: DRY RUN" in result.stdout
+    assert expected in result.stdout
+    if arguments[0] != "--all":
+        assert "Folders to process: 1" in result.stdout
     assert before == after
 
 
@@ -524,6 +578,26 @@ def test_index_generator_requires_opt_in_for_new_index_folder(
 
     assert (unmaintained / "index.json").is_file()
     assert (unmaintained / "index.md").is_file()
+
+
+def test_index_generator_owned_folder_write_changes_only_expected_indexes(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    generator = importlib.import_module("scripts.generate_enhanced_index")
+    owned = tmp_path / "owned"
+    owned.mkdir()
+    (owned / "sample.py").write_text("VALUE = 1\n", encoding="utf-8")
+    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
+    monkeypatch.setattr(generator, "KEY_FOLDERS", ["owned"])
+    monkeypatch.setattr(sys, "argv", ["generate_enhanced_index.py", "owned"])
+
+    generator.main()
+
+    generated = {
+        path.relative_to(tmp_path).as_posix() for path in tmp_path.rglob("index.*")
+    }
+    assert generated == {"owned/index.json", "owned/index.md"}
 
 
 def test_session_end_preserves_current_same_day_handoff(

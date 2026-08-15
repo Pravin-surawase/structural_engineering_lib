@@ -500,10 +500,10 @@ _cmd_generate() {
 
     case "$subcmd" in
         indexes)
-            if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+            if [[ $# -eq 0 || "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
                 _help_generate_indexes
             else
-                "$SCRIPTS/generate_all_indexes.sh" "$@"
+                "$VENV" "$SCRIPTS/generate_enhanced_index.py" "$@"
             fi
             ;;
         sdk)
@@ -538,14 +538,15 @@ Usage: ./run.sh generate <subcommand> [args]
 Generate indexes, SDKs, manifests, and scaffolds.
 
 Subcommands:
-  indexes              Regenerate all folder index.json + index.md
+  indexes              Preview or regenerate owned folder indexes
   sdk                  Generate TypeScript/Python client SDKs
   manifest             Generate/validate api-manifest.json
   docs-index           Generate docs-index.json from markdown
   scaffold <module>    Generate pytest test template for a module
 
 Examples:
-  ./run.sh generate indexes                     # Regenerate all indexes
+  ./run.sh generate indexes docs/reference --dry-run
+  ./run.sh generate indexes --all --dry-run
   ./run.sh generate sdk                         # Generate client SDKs
   ./run.sh generate scaffold structural_lib.core  # Test template
 EOF
@@ -553,10 +554,30 @@ EOF
 
 _help_generate_indexes() {
     cat <<'EOF'
-Usage: ./run.sh generate indexes
+Usage:
+  ./run.sh generate indexes <owned-folder> [options]
+  ./run.sh generate indexes --all [options]
 
-Regenerate folder index.json and index.md files using the Python runtime bound
-to the invoking worktree. This command writes generated index files.
+Preview or regenerate folder index.json and index.md files using the Python
+runtime bound to the invoking worktree.
+
+No arguments or --help shows this non-writing help. Target one owned folder by
+default; use --all explicitly for every canonical key folder.
+
+Options:
+  --dry-run            Show exact targets without writing
+  --all                Select every canonical key folder
+  --check              Check existing index hashes without writing
+  --allow-new-index    Permit intentional new index topology
+  --json-only          Generate only index.json
+  --md-only            Generate only index.md
+  --recursive          Include subfolders up to --depth (default: 3)
+
+Examples:
+  ./run.sh generate indexes docs/research/git-governance --dry-run
+  ./run.sh generate indexes docs/research/git-governance
+  ./run.sh generate indexes --all --dry-run
+  ./run.sh generate indexes --all
 EOF
 }
 

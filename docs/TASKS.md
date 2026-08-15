@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-14 — GIT-7B merged through PR #744; GIT-7C1 required CI topology is locally complete and authorized for draft-PR validation
+**Updated:** 2026-08-15 — GIT-7C1 merged through PR #745, GIT-7C2 server enforcement is applied, and GIT-7D1 targeted index routing is in validation
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7C1 READY FOR DRAFT PR — required control-plane/docs routing and fail-closed PR Gate contract pass locally; GIT-7C2 settings and GIT-7D–7E remain held |
+| GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7D1 IN VALIDATION — GIT-7C1 merged and green, GIT-7C2 server settings applied and verified, targeted non-writing index routing passes locally; GIT-7D2/GIT-7E remain separate |
 
 ## Up Next
 
