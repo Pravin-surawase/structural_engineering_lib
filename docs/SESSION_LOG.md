@@ -37,6 +37,8 @@ load-action boundaries without promoting unvalidated slab calculations.
 - Kept the milestone gate cadence: focused slab/contract tests, architecture/
   import validation, quick gate, and hosted exact-head PR gate in this packet;
   broad Python and the full repository gate follow A-D integration.
+- Published implementation commit `782a4b79` in draft PR #757; exact-head hosted
+  review remains the publication gate.
 
 ### Issues encountered
 
