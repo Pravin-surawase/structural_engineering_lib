@@ -17,4 +17,4 @@
 | [column/](column/) 📦 | 7 |  |
 | [slab/](slab/) | 7 |  |
 | [staircase/](staircase/) 📦 | 5 |  |
-| [wall/](wall/) 📦 | 4 |  |
+| [wall/](wall/) 📦 | 5 |  |

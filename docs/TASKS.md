@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — INDIA-2-WALL-G0 is integrated and WALL-A is a verified local candidate; WALL-B is next after integration
+**Updated:** 2026-08-16 — INDIA-2-WALL-A is integrated and WALL-B is a verified local candidate; WALL-C is next after integration
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| INDIA-2-WALL | Implement the accepted braced empirical vertical-compression wall workflow through A-D and focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 integrated; WALL-A candidate complete; WALL-B next after integration |
+| INDIA-2-WALL | Implement the accepted braced empirical vertical-compression wall workflow through A-D and focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — WALL-A integrated; WALL-B candidate complete; WALL-C next after integration |
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
 
 ## Up Next
@@ -158,7 +158,8 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| INDIA-2-WALL-A | Implemented typed bracing/geometry/action contracts, effective height, slenderness, eccentricity, empirical axial capacity, exact Clause 32 registration, and fail-closed tests | Main Agent + structural math | ✅ LOCAL CANDIDATE — 19 wall tests and 94 combined traceability tests pass; capability remains held until WALL-D |
+| INDIA-2-WALL-B | Implemented provided vertical/horizontal reinforcement area, material-ratio, spacing, and transverse-enclosure boundary checks | Main Agent + structural math | ✅ LOCAL CANDIDATE — 33 focused wall tests pass; capability remains held until WALL-D |
+| INDIA-2-WALL-A | Implemented typed bracing/geometry/action contracts, effective height, slenderness, eccentricity, empirical axial capacity, exact Clause 32 registration, and fail-closed tests | Main Agent + structural math | ✅ INTEGRATED — PR #769 merged as `7eb55746`; capability remains held until WALL-D |
 | INDIA-2-WALL-G0 | Froze one Clause 32.2 braced wall vertical-compression check with public clause provenance, pre-implementation benchmark, units, fail-closed boundaries, and focused-gate cadence | Main Agent + structural engineer | ✅ GO — owner activated WALL-A-D; applied moment, horizontal action, two-grid and alternate wall systems remain held |
 | INDIA-2-PLAN | Consolidated INDIA-2 scope, family order, packet gates, exclusions, validation cadence, and completion criteria into one execution document | Main Agent + repository owner | ✅ DONE — INDIA-2-WALL-G0 remains the next decision; no engineering implementation activated |
 | INDIA-COMPLETION-PLAN | Reconciled the canonical INDIA-0 through INDIA-4 finish waves and mapped historical staircase receipts to INDIA-2-STAIR without renaming them | Main Agent + repository owner | ✅ DONE — next discussion is INDIA-2-WALL-G0; no calculation implementation activated |

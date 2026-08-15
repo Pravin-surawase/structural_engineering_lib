@@ -58,4 +58,4 @@
 | [footing/](footing/) 📦 | 10 |  |
 | [slab/](slab/) 📦 | 16 |  |
 | [staircase/](staircase/) 📦 | 7 |  |
-| [wall/](wall/) 📦 | 5 |  |
+| [wall/](wall/) 📦 | 6 |  |

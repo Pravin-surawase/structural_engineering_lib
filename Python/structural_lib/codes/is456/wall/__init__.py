@@ -13,7 +13,14 @@ from structural_lib.codes.is456.wall.models import (
     BracedWallGeometry,
     WallAxialStatus,
     WallContractError,
+    WallReinforcementInput,
+    WallReinforcementKind,
     WallRotationRestraint,
+)
+from structural_lib.codes.is456.wall.reinforcement import (
+    WallDirectionalReinforcementResult,
+    WallReinforcementResult,
+    check_wall_minimum_reinforcement,
 )
 
 __all__ = [
@@ -23,7 +30,12 @@ __all__ = [
     "BracedWallGeometryResult",
     "WallAxialStatus",
     "WallContractError",
+    "WallDirectionalReinforcementResult",
+    "WallReinforcementInput",
+    "WallReinforcementKind",
+    "WallReinforcementResult",
     "WallRotationRestraint",
     "check_braced_wall_axial_capacity",
+    "check_wall_minimum_reinforcement",
     "resolve_braced_wall_geometry",
 ]

@@ -14,6 +14,8 @@ __all__ = [
     "BracedWallGeometry",
     "WallAxialStatus",
     "WallContractError",
+    "WallReinforcementInput",
+    "WallReinforcementKind",
     "WallRotationRestraint",
 ]
 
@@ -34,6 +36,14 @@ class WallAxialStatus(StrEnum):
 
     PASS = "PASS"  # nosec B105
     FAIL = "FAIL"
+
+
+class WallReinforcementKind(StrEnum):
+    """Clause 32.5 material categories for minimum wall reinforcement."""
+
+    DEFORMED_415_OR_GREATER = "deformed_415_or_greater"
+    OTHER_BARS = "other_bars"
+    WELDED_WIRE_FABRIC = "welded_wire_fabric"
 
 
 def positive_finite(value: float, field_name: str, unit: str) -> float:
@@ -173,4 +183,64 @@ class BracedWallAxialInput:
             )
         object.__setattr__(
             self, "action_basis_reference", self.action_basis_reference.strip()
+        )
+
+
+@dataclass(frozen=True)
+class WallReinforcementInput:
+    """Caller-provided one-grid vertical and horizontal wall reinforcement.
+
+    Bar diameters and spacings are in mm. The accepted wall geometry limits the
+    packet to a single reinforcement grid; this contract checks provided steel
+    and never selects bars.
+    """
+
+    geometry: BracedWallGeometry
+    reinforcement_kind: WallReinforcementKind
+    vertical_bar_diameter_mm: float
+    vertical_bar_spacing_mm: float
+    horizontal_bar_diameter_mm: float
+    horizontal_bar_spacing_mm: float
+    reinforcement_basis_reference: str
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.geometry, BracedWallGeometry):
+            raise WallContractError("geometry must be a BracedWallGeometry")
+        if not isinstance(self.reinforcement_kind, WallReinforcementKind):
+            raise WallContractError(
+                "reinforcement_kind must be a WallReinforcementKind"
+            )
+        for name in (
+            "vertical_bar_diameter_mm",
+            "vertical_bar_spacing_mm",
+            "horizontal_bar_diameter_mm",
+            "horizontal_bar_spacing_mm",
+        ):
+            object.__setattr__(
+                self,
+                name,
+                positive_finite(getattr(self, name), name, "mm"),
+            )
+        if self.reinforcement_kind in {
+            WallReinforcementKind.DEFORMED_415_OR_GREATER,
+            WallReinforcementKind.WELDED_WIRE_FABRIC,
+        } and (
+            self.vertical_bar_diameter_mm > 16.0
+            or self.horizontal_bar_diameter_mm > 16.0
+        ):
+            raise WallContractError(
+                "bar diameter must not exceed 16 mm for the selected Clause "
+                "32.5 minimum-ratio category"
+            )
+        if (
+            not isinstance(self.reinforcement_basis_reference, str)
+            or not self.reinforcement_basis_reference.strip()
+        ):
+            raise WallContractError(
+                "reinforcement_basis_reference must be a non-blank caller reference"
+            )
+        object.__setattr__(
+            self,
+            "reinforcement_basis_reference",
+            self.reinforcement_basis_reference.strip(),
         )
