@@ -5,6 +5,58 @@
 
 ---
 
+## 2026-08-15 — Session: INDIA-2C Staircase Structural Design
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-2c-staircase-design` from integrated `origin/main` at
+`5bf8c0b50c62f144847e032ec436f6d0522acf8e`
+
+**Focus:** Compose accepted staircase actions into flexure, supplied-bar,
+ordinary-shear, and basic serviceability dispositions.
+
+### Summary
+
+- Verified PR #761 merge-tree identity and started a clean source-bound lane.
+- Added per-metre singly reinforced flexure and action-carrier integrity checks.
+- Reused the maintained solid-slab Table 19/20 shear provider and implemented
+  supplied main/distribution bar area, diameter, spacing, and minimum checks.
+- Kept serviceability fail-closed: L/d at or below 20 passes the basic boundary;
+  higher ratios require review rather than an invented modification factor.
+- Matched NPTEL Example 9.1 strength, reinforcement, and shear targets; unsafe
+  steel/capacity cases return `FAIL` and a shorter basic-L/d case returns `PASS`.
+
+### Issues encountered
+
+- The commit hook blocked on Bandit B105 at the public `PASS = "PASS"`
+  design-status enum member.
+
+### Root causes and resolutions
+
+- Bandit's hardcoded-password heuristic classifies assignments containing
+  `pass` as credential candidates, although this value is an engineering
+  disposition and not a secret. Added the narrow `# nosec B105` annotation
+  with that reason; the repeated commit hook passed Bandit.
+
+### Evidence
+
+- Fresh-lane Git state: `READY_LOCAL`; runtime diagnosis: `source_bound=true`.
+- Focused staircase suite after INDIA-2C: 17 passed.
+- Example 9.1: 921.196 mm2/m required versus 942.478 mm2/m supplied main
+  steel; 0.21756 N/mm2 nominal shear versus 0.48616 N/mm2 design capacity.
+- Example 9.1 aggregate status is `REVIEW_REQUIRED` solely because unmodified
+  L/d is 22.7679 versus the basic limit of 20.
+- Maintained mypy command: 199 source files pass.
+
+### Terminal issues
+
+- An inspection command used the guessed underscore filename
+  `indian_code_capability_manifest.json`; `rg --files docs/verification`
+  identified the maintained hyphenated file
+  `indian-code-capability-coverage.json`, which was then inspected directly.
+
+---
+
 ## 2026-08-15 — Session: INDIA-2B Staircase Geometry and Actions
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

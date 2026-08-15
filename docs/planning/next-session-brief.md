@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
-- Focus: Complete INDIA-2B geometry/actions and launch INDIA-2C design from its integrated merge
-- Current branch: `codex/india-2b-staircase-actions`
-- Base: verified integrated `origin/main` at `1cd08b9cab20a34b9dad1806f500eef01a2f4739`
-- Next action: merge the unchanged INDIA-2B packet after required checks pass, then create a fresh `codex/india-2c-staircase-design` worktree from integrated `main`
-- Holds: structural design and capability promotion wait for later packets; alternate stairs, other held families, IS 875/IS 1893 generation, React, stable/engineering-use approval, release, and cleanup remain out of scope
+- Focus: Complete INDIA-2C structural design and launch INDIA-2D public workflow from its integrated merge
+- Current branch: `codex/india-2c-staircase-design`
+- Base: verified integrated `origin/main` at `5bf8c0b50c62f144847e032ec436f6d0522acf8e`
+- Next action: merge the unchanged INDIA-2C packet after required checks pass, then create a fresh `codex/india-2d-staircase-public` worktree from integrated `main`
+- Holds: public naming and capability promotion wait for INDIA-2D; alternate stairs, other held families, IS 875/IS 1893 generation, React, stable/engineering-use approval, release, and cleanup remain out of scope
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-15
@@ -16,7 +16,7 @@
 | Release state | Target |
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-1 software and cumulative gates complete |
-| **Next** | INDIA-2C structural design after INDIA-2B integration; qualified review remains separate |
+| **Next** | INDIA-2D typed public workflow after INDIA-2C integration; qualified review remains separate |
 
 ## Required Reading
 

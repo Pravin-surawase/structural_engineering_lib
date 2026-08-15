@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-15
-**Files:** 25
+**Files:** 26
 
 ## Config Files
 
@@ -30,6 +30,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [india-1d-slab-boundary-evidence.md](india-1d-slab-boundary-evidence.md) |  | INDIA-1D closes the decision boundary around already support | 71 |
 | [india-2a-staircase-scope-evidence.md](india-2a-staircase-scope-evidence.md) |  | activated INDIA-2A through INDIA-2D on 2026-08-15 by request | 111 |
 | [india-2b-staircase-actions-evidence.md](india-2b-staircase-actions-evidence.md) |  | INDIA-2B implements only the typed geometry, concrete self-w | 70 |
+| [india-2c-staircase-design-evidence.md](india-2c-staircase-design-evidence.md) |  | INDIA-2C composes the accepted INDIA-2B per-metre actions in | 66 |
 | [indian-code-truth-baseline.md](indian-code-truth-baseline.md) | INDIA-0 Indian-Code Truth Baseline | was squash-merged as 0373de68; INDIA-1 packets now update th | 93 |
 | [insights-verification-pack.md](insights-verification-pack.md) |  | This pack provides benchmark test cases for the insights mod | 101 |
 | [is456-library-first-evidence.md](is456-library-first-evidence.md) | IS 456 Library-First Evidence and Claim  | | Source | SHA-256 | Pages | Use | |---|---|---:|---| | 169 |

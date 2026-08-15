@@ -57,4 +57,4 @@
 | [common/](common/) 📦 | 5 |  |
 | [footing/](footing/) 📦 | 10 |  |
 | [slab/](slab/) 📦 | 16 |  |
-| [staircase/](staircase/) 📦 | 6 |  |
+| [staircase/](staircase/) 📦 | 7 |  |

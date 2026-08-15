@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-15",
-  "file_count": 4,
+  "file_count": 5,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 34,
+      "size_lines": 48,
       "last_updated": "2026-08-15",
       "description": "Bounded IS 456 straight-flight staircase geometry and actions.",
-      "content_hash": "bcabe16a3ac0"
+      "content_hash": "d7ce53933f24"
     },
     {
       "name": "actions.py",
@@ -38,6 +38,53 @@
         "_SOURCE_REFS"
       ],
       "content_hash": "a5500570cbb4"
+    },
+    {
+      "name": "design.py",
+      "type": "python",
+      "size_lines": 386,
+      "last_updated": "2026-08-15",
+      "description": "Structural design checks for the bounded straight-flight waist slab.",
+      "classes": [
+        {
+          "name": "StaircaseDesignStatus",
+          "description": "Aggregate bounded design disposition."
+        },
+        {
+          "name": "StaircaseServiceabilityStatus",
+          "description": "Basic simply-supported L/d disposition without invented modifiers."
+        },
+        {
+          "name": "StaircaseDesignCheck",
+          "description": "One explicit comparison with retained units."
+        },
+        {
+          "name": "StraightFlightDesignInput",
+          "description": "Accepted actions, material properties, depth, and supplied bars."
+        },
+        {
+          "name": "StraightFlightDesignResult",
+          "description": "Strength, supplied-bar, shear, and basic serviceability evidence.",
+          "public_methods": [
+            "is_strength_and_detailing_satisfied"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "design_straight_flight_staircase",
+          "description": "Check one metre of the accepted straight-flight waist-slab member.",
+          "params": [
+            "design_input"
+          ]
+        }
+      ],
+      "constants": [
+        "_SUPPORTED_FY_N_PER_MM2",
+        "_SOURCE_REFS",
+        "_LIMITATIONS"
+      ],
+      "content_hash": "72c9b8e223cd"
     },
     {
       "name": "geometry.py",
@@ -126,13 +173,19 @@
     "StairSpanDirection",
     "StairSupportCase",
     "StaircaseContractError",
+    "StaircaseDesignCheck",
+    "StaircaseDesignStatus",
+    "StaircaseServiceabilityStatus",
     "StraightFlightActionInput",
     "StraightFlightActionResult",
+    "StraightFlightDesignInput",
+    "StraightFlightDesignResult",
     "StraightFlightGeometryResult",
     "StraightFlightLoads",
     "StraightFlightStairGeometry",
     "analyze_straight_flight_actions",
+    "design_straight_flight_staircase",
     "resolve_straight_flight_geometry"
   ],
-  "content_hash": "77b09fa017311510"
+  "content_hash": "9498a9ad228d1789"
 }
