@@ -5,6 +5,88 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-WALL-G0 Scope and Evidence Decision
+
+**Agent:** Codex (`structural-engineer`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-wall-g0` from exact `origin/main` at
+`753ae7b32c85c01276546c7474c7225b98343c45`
+
+**Focus:** Freeze the first bounded Clause 32 wall case and align the INDIA-2 validation cadence before calculation implementation.
+
+### Summary
+
+- Returned GO for one regular, braced Clause 32.2 wall under caller-supplied
+  factored in-plane vertical compression, with applied moments and horizontal
+  actions held.
+- Recorded the public clause/formula/limit provenance boundary and a frozen
+  pre-implementation hand benchmark for effective height, eccentricity, axial
+  capacity, minimum reinforcement, spacing, and disposition.
+- Activated WALL-A-D from the owner's request to implement and finish INDIA-2,
+  while retaining a mandatory G0 GO/HOLD decision for every later family.
+- Corrected the plan so focused family acceptance replaces per-family broad
+  gates; the broad Python and 30-check gates run once at INDIA-2 closeout unless
+  an outcome-changing repository-wide issue appears earlier.
+
+### Issues encountered
+
+- The merged plan scheduled a broad Python and 30-check gate after every family,
+  which conflicted with the owner-selected whole-wave validation cadence.
+- The initial wall candidate included caller-supplied moments, but Clause 32.1
+  routes combined flexure and compression to the general section/Annex B path
+  rather than the bounded empirical Clause 32.2 method.
+- The first PDF text-extraction command could not find `pdftotext` on `PATH`.
+- A selective read guessed `geometry_actions.py`; the maintained staircase
+  implementation separates the calculation into `geometry.py` and `actions.py`.
+- A repository-wide strict documentation scan stopped on an existing invalid
+  `status: completed` front-matter value in the older library-first plan.
+
+### Root causes and resolutions
+
+- Root cause: the detailed plan preserved a family-cumulative cadence while the
+  active owner instruction explicitly reserves expensive broad gates for the
+  completed INDIA-2 wave. Resolution: use focused engineering, architecture,
+  quick, and hosted checks per family and one final broad closeout gate.
+- Root cause: the initial wall wording mixed two different Clause 32 design
+  paths. Resolution: freeze only the Clause 32.2 empirical vertical-compression
+  case and fail closed on applied moment or horizontal action.
+- Root cause: Poppler is bundled outside the normal shell `PATH`. Resolution:
+  use the dependency runtime's exact `pdftotext`/`pdftoppm` paths; extracted and
+  visually inspected the complete relevant Clause 32 pages.
+- Root cause: the filename was inferred instead of discovered. Resolution: use
+  `rg --files` before later selective reads; the maintained files were found
+  without changing any source.
+- Root cause: the broad front-matter scan includes unrelated historical files
+  and the older plan uses a lifecycle value outside the maintained schema.
+  Resolution: keep that unrelated historical status out of this surgical G0
+  packet, validate the two task-owned metadata files directly, and rely on the
+  maintained quick gate for the packet-level repository contract.
+
+### Evidence
+
+- Remote `main` was fetched and remained exactly
+  `753ae7b32c85c01276546c7474c7225b98343c45`; the new lane started clean.
+- Runtime diagnosis returned `source_bound=true` for the linked worktree.
+- The controlled IS 456:2000 through Amendment 6 corpus was checked at Clauses
+  32.1, 32.2.1-32.2.5, and 32.5-32.5.2; Amendment 6 does not modify them.
+- `INDIA-2-WALL-HAND-01` fixes exact expected values and `1e-6` tolerances before
+  implementation.
+- Task-owned metadata passed, all 1,148 internal links were valid, the generated
+  Indian-code manifest was current, and `./run.sh check --quick` passed 10/10.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `pdftotext` was not on `PATH` -> used the bundled Poppler
+  binary discovered under the Codex workspace dependencies.
+- ⚠️ TERMINAL ISSUE: a selective `sed` used the nonexistent
+  `staircase/geometry_actions.py` path -> discovered and used the maintained
+  `geometry.py` and `actions.py` paths with `rg --files`.
+- ⚠️ TERMINAL ISSUE: the broad strict documentation scan stopped on a
+  pre-existing invalid front-matter status outside the packet -> ran the
+  maintained targeted metadata, link, manifest, and 10-check quick gates.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2 One-Document Execution Plan
 
 **Agent:** Codex (`governance`, sole writer; no subagents)

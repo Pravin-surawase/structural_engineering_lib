@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Discuss `INDIA-2-WALL-G0`; no wall implementation, release, or new stair scope is activated |
+| **Next** | Integrate `INDIA-2-WALL-G0`, then begin `INDIA-2-WALL-A` from the verified integrated head |
 
 ## Required Reading
 
@@ -34,10 +34,10 @@ The historical INDIA-2A-D packets and their cumulative software gate are the
 completed `INDIA-2-STAIR` family. Do not reopen them, add another stair topology,
 add React, or begin release work without a new owner-approved scope.
 
-The next conversation is a decision packet, not implementation: decide whether
-to start `INDIA-2-WALL-G0` and freeze exactly one practical Clause 32 wall case,
-its controlled source, independent benchmark, explicit units and assumptions,
-unsafe/out-of-domain cases, and retained exclusions.
+`INDIA-2-WALL-G0` is GO for one Clause 32.2 braced empirical wall check under
+caller-supplied factored vertical compression. The owner activated WALL-A-D and
+the remaining INDIA-2 family sequence, with each later family still required to
+return GO from its own source/scope/benchmark decision.
 
 ```bash
 ./run.sh session brief --agent orchestrator
@@ -51,21 +51,20 @@ Require a clean fresh branch from verified current `origin/main` and
 `source_bound=true`. Preserve every unrelated worktree. Branch, remote-ref, or
 worktree cleanup remains a separate exact-target authorization.
 
-## INDIA-2-WALL-G0 decision exit
+## INDIA-2-WALL-G0 decision result
 
-The decision packet ends with GO or HOLD. A GO must identify one supported wall
-case, governing standard edition and provisions, lawful source provenance, an
-independent benchmark with tolerance, calculation inputs/outputs, fail-closed
-boundaries, and the proposed pure-math implementation packets. A HOLD must state
-the missing evidence or unresolved scope decision. It must not add calculation
-code, API, UI, or public capability claims.
+The GO record is
+[`india-2-wall-g0-scope-evidence.md`](../verification/india-2-wall-g0-scope-evidence.md).
+It freezes the supported wall case, IS 456 clauses, public normalized-content
+boundary, hand benchmark and tolerance, units, fail-closed exclusions, and
+WALL-A-D packet split. No wall calculation or capability claim is part of G0.
 
 ## Review and gate boundary
 
-Each calculation packet still requires focused tests, benchmarks, architecture
-and PR checks, plus the quick gate. The expensive full Python and 30-check gate
-runs once at the milestone boundary unless an outcome-changing repository-wide
-issue appears earlier.
+Each calculation packet requires focused tests, benchmarks, architecture and PR
+checks, plus the quick gate. The expensive full Python and 30-check gate runs
+once after the whole accepted INDIA-2 wave is integrated unless an
+outcome-changing repository-wide issue appears earlier.
 
 Cumulative qualified structural-engineering review belongs to INDIA-4 after the
 accepted INDIA-2 and INDIA-3 scope is frozen. Packet-level source and engineering

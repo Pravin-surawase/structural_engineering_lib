@@ -43,7 +43,7 @@ Historical staircase task IDs, PRs, and evidence remain unchanged. The former
 
 | Family | Current truth | INDIA-2 treatment |
 |---|---|---|
-| Clause 32 walls | Not implemented | Next decision candidate |
+| Clause 32 walls | G0 accepted; implementation not yet merged | One braced empirical vertical-compression wall check activated |
 | Clause 33 stairs | One bounded longitudinal straight waist-slab flight supported | Complete; alternate stair systems remain held |
 | Clause 29 deep beams | Not implemented | Planned after the wall program |
 | Flat slabs and column punching | Not implemented | Planned after deep beams |
@@ -59,7 +59,7 @@ boundary, held with a written reason, or not implemented.
 
 | Order | Program | Why it is placed here | State |
 |---:|---|---|---|
-| 1 | `INDIA-2-WALL` | Next clause-bounded practical element; establishes the new-family workflow | Ready for G0 discussion |
+| 1 | `INDIA-2-WALL` | Next clause-bounded practical element; establishes the new-family workflow | G0 GO; A-D activated |
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
 | 2 | `INDIA-2-DEEP` | Extends beam capability but requires its own geometry, action, and detailing boundary | Planned |
 | 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Planned |
@@ -134,10 +134,11 @@ cannot be safely split this way. It must preserve the same evidence gates.
 
 ### 6.1 INDIA-2-WALL — Clause 32 wall program
 
-`INDIA-2-WALL-G0` must select exactly one practical reinforced-concrete wall
-case before code begins. The initial case to investigate is a regular braced
-wall strip under caller-supplied axial load and moments, subject to source and
-benchmark confirmation.
+`INDIA-2-WALL-G0` selected one regular, laterally supported braced wall strip
+under caller-supplied factored in-plane vertical compression. The empirical
+Clause 32.2 case applies the minimum transverse eccentricity but does not accept
+an applied moment or horizontal action. The exact boundary and benchmark are in
+[`india-2-wall-g0-scope-evidence.md`](../verification/india-2-wall-g0-scope-evidence.md).
 
 The G0 decision must settle:
 
@@ -157,10 +158,10 @@ Provisional packets:
 1. `INDIA-2-WALL-G0` — bounded case, sources, benchmark, GO/HOLD.
 2. `INDIA-2-WALL-A` — types, classification, geometry, and effective-dimension
    contract.
-3. `INDIA-2-WALL-B` — bounded axial/flexural strength and detailing checks.
+3. `INDIA-2-WALL-B` — bounded axial strength and detailing checks.
 4. `INDIA-2-WALL-C` — typed public Python workflow and benchmark example.
-5. `INDIA-2-WALL-D` — optional thin API, capability truth, and evidence freeze.
-6. `INDIA-2-WALL-CUMULATIVE` — family-level full gate after A-D integration.
+5. `INDIA-2-WALL-D` — thin API, capability truth, and evidence freeze.
+6. `INDIA-2-WALL-ACCEPTANCE` — focused family acceptance after A-D integration.
 
 ### 6.2 INDIA-2-STAIR — Clause 33 staircase program
 
@@ -195,7 +196,7 @@ modelling, nonlinear analysis, and FEM.
 
 Provisional packets are G0 decision; A geometry/classification/action contract;
 B strength and reinforcement checks; C public workflow; D capability/evidence;
-then one family cumulative gate.
+then one focused family acceptance bundle.
 
 ### 6.4 INDIA-2-FLAT — Flat slab and column-punching program
 
@@ -230,7 +231,7 @@ Provisional packets:
 4. C flexure, serviceability, and detailing checks.
 5. D column-punching checks and fail-closed boundaries.
 6. E typed public workflow, capability truth, and evidence.
-7. One family cumulative gate after integration.
+7. One focused family acceptance bundle after integration.
 
 ### 6.5 Separate foundation programs
 
@@ -244,8 +245,8 @@ The following are four separate programs, not one generic “foundation” route
 | `INDIA-2-FOUNDATION-RAFT` | One bounded raft idealization, soil-pressure input/model, strip/panel action extraction, and settlement boundary | General plate/FEM soil-structure interaction, irregular rafts, basements, staged construction |
 
 Each program receives its own G0, pure-math packets, benchmark, public workflow,
-capability record, and cumulative gate. Shared material or detailing helpers do
-not justify sharing or guessing the analysis model.
+capability record, and focused family acceptance. Shared material or detailing
+helpers do not justify sharing or guessing the analysis model.
 
 ## 7. Validation and Git cadence
 
@@ -257,11 +258,11 @@ For each implementation packet:
 - require the normal hosted PR checks on the exact head;
 - merge only an unchanged reviewed head with required checks green.
 
-Run the expensive broad Python suite and 30-check repository gate once after a
-family's implementation packets are integrated. The final family's broad gate
-may also serve as `INDIA-2-CLOSEOUT` when no subsequent code or evidence change
-invalidates it. Run a broad gate earlier only when a confirmed repository-wide
-issue could change the result.
+Run the expensive broad Python suite and 30-check repository gate once at
+`INDIA-2-CLOSEOUT`, after every accepted family is integrated. Family
+acceptance uses focused engineering, benchmark, unsafe/out-of-domain,
+architecture/import, quick-gate, and hosted-check evidence. Run a broad gate
+earlier only when a confirmed repository-wide issue could change the result.
 
 Use one fresh `codex/<packet>` worktree per activated packet from verified
 current `main`. Preserve unrelated lanes. Branch, remote-ref, and worktree
@@ -279,7 +280,8 @@ The successful target is:
 - every unimplemented or out-of-domain case is `HELD` or `NOT_IMPLEMENTED`,
   with no contradictory or unknown status;
 - public Python/API behavior and generated capability truth agree;
-- family and final cumulative gates pass on exact integrated trees;
+- every family has focused acceptance evidence and the final cumulative broad
+  gates pass on the exact integrated INDIA-2 tree;
 - an INDIA-2 evidence index identifies source, benchmark, PR, test, and
   integrated-tree receipts for every accepted family.
 
@@ -295,10 +297,7 @@ authorized programs.
 
 ## 9. Exact next action
 
-Start with `INDIA-2-WALL-G0` as a decision-only packet. Its deliverable is one
-short GO/HOLD record that freezes the wall case, controlled source set,
-independent benchmark, units, assumptions, outputs, exclusions, downstream
-packet split, and acceptance commands.
-
-Do not write wall calculation code until that decision is reviewed and the
-owner activates the downstream packets.
+Integrate the `INDIA-2-WALL-G0` GO record, then start `INDIA-2-WALL-A` from the
+verified integrated head. The owner's 2026-08-16 request activates WALL-A-D and
+the later INDIA-2 families subject to each family's own G0 returning GO. No G0
+may be bypassed, and a HOLD remains a truthful non-implementation outcome.
