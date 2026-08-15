@@ -62,7 +62,7 @@
     {
       "name": "CompleteOneWaySlabDesignResult",
       "kind": "class",
-      "signature": "(reinforcement: 'OneWaySlabDesignResult', shear: 'SlabShearResult', serviceability: 'SlabServiceabilityResult', punching_shear_disposition: 'str', complete_engineering_design_approved: 'bool' = False) -> None"
+      "signature": "(reinforcement: 'OneWaySlabDesignResult', shear: 'SlabShearResult', serviceability: 'SlabServiceabilityResult', punching_shear_disposition: 'str', complete_engineering_design_approved: 'bool' = False, load_envelope_status: 'str' = 'not_generated_single_caller_supplied_factored_udl_or_coefficient_basis') -> None"
     },
     {
       "name": "ConcentricIsolatedFootingInput",
@@ -77,7 +77,7 @@
     {
       "name": "ContinuousOneWaySlabDesignResult",
       "kind": "class",
-      "signature": "(flexure: 'ContinuousOneWaySlabResult', positive_reinforcement: 'SlabReinforcementRegionResult', negative_reinforcement: 'SlabReinforcementRegionResult', distribution_reinforcement: 'SlabReinforcementRegionResult', shear: 'SlabShearResult', serviceability: 'SlabServiceabilityResult', punching_shear_disposition: 'str', complete_engineering_design_approved: 'bool' = False) -> None"
+      "signature": "(flexure: 'ContinuousOneWaySlabResult', positive_reinforcement: 'SlabReinforcementRegionResult', negative_reinforcement: 'SlabReinforcementRegionResult', distribution_reinforcement: 'SlabReinforcementRegionResult', shear: 'SlabShearResult', serviceability: 'SlabServiceabilityResult', punching_shear_disposition: 'str', complete_engineering_design_approved: 'bool' = False, load_envelope_status: 'str' = 'not_generated_single_caller_supplied_factored_udl_or_coefficient_basis') -> None"
     },
     {
       "name": "CostProfile",
@@ -202,7 +202,7 @@
     {
       "name": "OneWaySlabDesignResult",
       "kind": "class",
-      "signature": "(flexure: 'OneWaySlabFlexureResult', detailing: 'OneWaySlabDetailingResult') -> None"
+      "signature": "(flexure: 'OneWaySlabFlexureResult', detailing: 'OneWaySlabDetailingResult', load_envelope_status: 'str' = 'not_generated_single_caller_supplied_factored_udl_or_coefficient_basis') -> None"
     },
     {
       "name": "ParetoCandidate",
@@ -252,7 +252,7 @@
     {
       "name": "TwoWaySlabPanelWorkflowResult",
       "kind": "class",
-      "signature": "(panel: 'TwoWayPanelDesignResult', serviceability: 'SlabServiceabilityResult', complete_engineering_design_approved: 'bool' = False) -> None"
+      "signature": "(panel: 'TwoWayPanelDesignResult', serviceability: 'SlabServiceabilityResult', complete_engineering_design_approved: 'bool' = False, load_envelope_status: 'str' = 'not_generated_single_caller_supplied_factored_udl_or_coefficient_basis') -> None"
     },
     {
       "name": "ValidationReport",

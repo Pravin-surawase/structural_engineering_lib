@@ -188,7 +188,10 @@ _CAPABILITIES = (
             "serviceability carriers, and ordinary one-way shear."
         ),
         held_cases=(
-            "Direct deflection, crack width, concentrated loads, openings, irregular panels, load-envelope analysis and automatic slab shear reinforcement are excluded.",
+            "Direct deflection remains held until a slab-specific route validates explicit service-action combinations, load duration, reinforcement positions, cracking/effective inertia, creep and shrinkage against independent slab benchmarks.",
+            "Crack width remains held until explicit bar geometry, cover, neutral-axis depth, exposure limit and service steel stress or strain are validated for supported slab strips and panels.",
+            "Each public route consumes one caller-selected factored UDL or one declared coefficient-method action basis; concentrated loads, openings, irregular panels, load-combination/pattern generation and envelope analysis are excluded.",
+            "Ordinary one-way concrete shear is checked for beam/wall-supported UDL panels; when capacity is exceeded the result requires increased depth or separate engineering and never automatically designs slab shear reinforcement.",
             "Flat/drop/ribbed slabs, column strips, column-supported punching and FEM require a separately approved extension.",
         ),
         qualified_review_required=True,
@@ -760,7 +763,11 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                     ("Qualified review remains required.",),
                 ),
             ),
-            limitations=("The route is a simply supported one-way slab strip.",),
+            limitations=(
+                "The route is a simply supported one-way slab strip and checks flexure plus supplied bars only.",
+                "Use the complete route for reviewed span/depth serviceability and ordinary concrete shear; direct deflection, crack width and automatic shear reinforcement remain held.",
+                "One caller-supplied factored UDL is consumed; load combinations, patterns, concentrated loads, openings and envelope generation are not performed.",
+            ),
         ),
         IS456WorkflowContract(
             workflow="design_two_way_slab_is456",
@@ -828,7 +835,8 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                 ),
             ),
             limitations=(
-                "Reinforcement detailing, serviceability, shear/punching, load combinations/patterning, and other panel cases remain incomplete.",
+                "This compatibility route is flexure-only; reinforcement detailing, span/depth serviceability and ordinary shear require a complete panel route.",
+                "Direct deflection, crack width, automatic shear reinforcement, concentrated loads, openings and load-envelope generation remain held.",
             ),
         ),
         IS456WorkflowContract(
@@ -859,7 +867,10 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                 ),
             ),
             limitations=(
-                "Direct deflection and automatic shear reinforcement are not implemented.",
+                "Only reviewed span/depth serviceability and ordinary concrete shear are evaluated.",
+                "Direct deflection and crack width require separately validated slab-specific service actions, duration, reinforcement/geometry and service-stress inputs.",
+                "Automatic slab shear reinforcement is not designed; increase depth or perform separate engineering when concrete capacity is exceeded.",
+                "One caller-supplied factored UDL is checked; load combinations, patterns, concentrated loads, openings and envelope generation are not performed.",
             ),
         ),
         IS456WorkflowContract(
@@ -897,6 +908,8 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             ),
             limitations=(
                 "Requires at least three spans, no more than 15 percent span variation, a uniform section, substantially uniform load, and no redistribution.",
+                "Only reviewed span/depth serviceability and ordinary concrete shear are evaluated; direct deflection, crack width and automatic slab shear reinforcement remain held.",
+                "One declared coefficient-method action basis is checked; load-combination/pattern generation, concentrated loads, openings and envelope analysis are not performed.",
             ),
         ),
         IS456WorkflowContract(
@@ -936,6 +949,8 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             ),
             limitations=(
                 "Requires at least three spans, no more than 15 percent span variation, a uniform section, substantially uniform load, and no redistribution.",
+                "Built-in action-location coefficients do not generate project load combinations or an envelope; the caller supplies the governing factored load components.",
+                "Only reviewed span/depth serviceability and ordinary concrete shear are evaluated; direct deflection, crack width and automatic slab shear reinforcement remain held.",
             ),
         ),
         IS456WorkflowContract(
@@ -973,6 +988,8 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             ),
             limitations=(
                 "Flat slabs and column-supported punching are a separate held extension.",
+                "Only reviewed span/depth serviceability and ordinary concrete shear are evaluated; direct deflection, crack width and automatic slab shear reinforcement remain held.",
+                "One caller-supplied factored UDL and coefficient basis are checked; concentrated loads, openings and load-envelope generation are not performed.",
             ),
         ),
         IS456WorkflowContract(
@@ -1012,6 +1029,8 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             ),
             limitations=(
                 "Flat slabs and column-supported punching are a separate held extension.",
+                "Built-in panel coefficients do not generate project load combinations or an envelope; one caller-supplied factored UDL is checked.",
+                "Direct deflection, crack width, automatic slab shear reinforcement, concentrated loads and openings remain held.",
             ),
         ),
     ),

@@ -4,12 +4,12 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
-- Focus: Publish INDIA-1C composed concentric isolated-footing closure, then start INDIA-1D with milestone-level gate efficiency
-- Draft PR: [#756](https://github.com/Pravin-surawase/structural_engineering_lib/pull/756)
-- Branch: `codex/india-1c-isolated-footing-workflow`
-- Base: verified integrated `origin/main` at `f44452ddc6b0bdf837f59a97917af8cf9d61c1dd`
-- Implementation commit: `42157f291ec49ee33a5640490055dfe141c1fcae`
-- Next action: commit and publish the verified INDIA-1C packet; after its exact-head required checks pass with no conflicts or blockers, merge, verify integrated main, and start INDIA-1D from a fresh lane
+- Focus: Publish INDIA-1D solid-slab boundary closure, then run the cumulative INDIA-1 gates
+- Draft PR: pending
+- Branch: `codex/india-1d-slab-boundary`
+- Base: verified integrated `origin/main` at `236ce6462543aa36df307a0a9b4ef463ac98d085`
+- Implementation commit: pending
+- Next action: finish the narrow INDIA-1D gates, commit and publish the packet; after its exact-head hosted gate passes, merge and run the deferred broad Python, full repository, manifest reconciliation, and cumulative review gates on integrated A-D
 - Holds: no release, engineering-use approval, branch/worktree deletion, or historical-lane cleanup
 <!-- HANDOFF:END -->
 
@@ -18,7 +18,7 @@
 | Release state | Target |
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; qualified engineering review still required |
-| **Next** | Publish INDIA-1C, then execute INDIA-1D as the final bounded packet before cumulative gates |
+| **Next** | Publish INDIA-1D, then run the cumulative INDIA-1 gates on integrated A-D |
 
 ## Required Reading
 
@@ -30,11 +30,11 @@
 
 ## Start Boundary
 
-INDIA-1A and INDIA-1B are integrated. Finish INDIA-1C only from its isolated
+INDIA-1A through INDIA-1C are integrated. Finish INDIA-1D only from its isolated
 branch. After its exact-head PR checks pass with no conflicts or blockers,
-merge normally, fetch `origin/main`, verify tree identity, and create a fresh
-isolated `codex/india-1d-<packet>` lane. Preserve the dirty primary checkout and
-all unrelated worktrees; do not bypass checks.
+merge normally, fetch `origin/main`, verify tree identity, and run the deferred
+cumulative gates from a fresh integrated lane. Preserve the dirty primary
+checkout and all unrelated worktrees; do not bypass checks.
 
 ```bash
 ./run.sh session brief --agent structural-math

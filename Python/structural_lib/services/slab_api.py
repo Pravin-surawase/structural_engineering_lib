@@ -96,6 +96,9 @@ _COMPLETE_ONE_WAY_DETAILING_LIMITATIONS = (
     "HOLD: automatic slab shear reinforcement is not designed.",
     "REVIEW LIMITATION: qualified structural-engineering review remains required.",
 )
+_SINGLE_ACTION_LOAD_BOUNDARY = (
+    "not_generated_single_caller_supplied_factored_udl_or_coefficient_basis"
+)
 
 
 @dataclass(frozen=True)
@@ -104,6 +107,7 @@ class OneWaySlabDesignResult:
 
     flexure: OneWaySlabFlexureResult
     detailing: OneWaySlabDetailingResult
+    load_envelope_status: str = _SINGLE_ACTION_LOAD_BOUNDARY
 
     @property
     def is_detailing_adequate(self) -> bool:
@@ -120,6 +124,7 @@ class CompleteOneWaySlabDesignResult:
     serviceability: SlabServiceabilityResult
     punching_shear_disposition: str
     complete_engineering_design_approved: bool = False
+    load_envelope_status: str = _SINGLE_ACTION_LOAD_BOUNDARY
 
 
 @dataclass(frozen=True)
@@ -134,6 +139,7 @@ class ContinuousOneWaySlabDesignResult:
     serviceability: SlabServiceabilityResult
     punching_shear_disposition: str
     complete_engineering_design_approved: bool = False
+    load_envelope_status: str = _SINGLE_ACTION_LOAD_BOUNDARY
 
 
 @dataclass(frozen=True)
@@ -143,6 +149,7 @@ class TwoWaySlabPanelWorkflowResult:
     panel: TwoWayPanelDesignResult
     serviceability: SlabServiceabilityResult
     complete_engineering_design_approved: bool = False
+    load_envelope_status: str = _SINGLE_ACTION_LOAD_BOUNDARY
 
 
 def design_one_way_slab_is456(

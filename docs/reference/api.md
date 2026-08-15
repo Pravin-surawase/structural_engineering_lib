@@ -72,8 +72,19 @@ case from the declared physical edges and corner restraint, uses exact tabulated
 points or adjacent linear interpolation, and rejects extrapolation. External
 coefficient carriers remain available and never claim library verification.
 All complete routes return provenance, provided-bar checks, ordinary one-way
-shear and strict reviewed span/depth serviceability evidence. Flat slabs,
-column-supported punching and direct-deflection calculation remain held.
+concrete-shear and strict reviewed span/depth serviceability evidence. The
+serviceability carrier explicitly reports direct deflection and crack width as
+held pending slab-specific service-action, duration, reinforcement/geometry,
+effective-inertia and service-stress validation. If concrete shear capacity is
+exceeded, the result requires increased depth or separate engineering; it never
+automatically designs slab shear reinforcement.
+
+Every slab call consumes one caller-selected factored UDL or one declared
+coefficient-method action basis. Built-in coefficient lookup does not generate
+project load combinations, load patterns, concentrated/opening effects, or an
+envelope. Complete workflow results serialize this boundary in
+`load_envelope_status`. Flat slabs, column-supported punching, openings,
+concentrated loads, irregular panels, and FEM remain held.
 
 Supported-case discovery is available through
 `api.get_supported_is456_capabilities`. CLI and REST consumers use
