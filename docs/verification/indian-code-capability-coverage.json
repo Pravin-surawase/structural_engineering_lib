@@ -137,7 +137,10 @@
             "design_two_way_slab_panel_builtin_is456"
           ],
           "limitations": [
-            "Direct deflection, crack width, concentrated loads, openings, irregular panels, load-envelope analysis and automatic slab shear reinforcement are excluded.",
+            "Direct deflection remains held until a slab-specific route validates explicit service-action combinations, load duration, reinforcement positions, cracking/effective inertia, creep and shrinkage against independent slab benchmarks.",
+            "Crack width remains held until explicit bar geometry, cover, neutral-axis depth, exposure limit and service steel stress or strain are validated for supported slab strips and panels.",
+            "Each public route consumes one caller-selected factored UDL or one declared coefficient-method action basis; concentrated loads, openings, irregular panels, load-combination/pattern generation and envelope analysis are excluded.",
+            "Ordinary one-way concrete shear is checked for beam/wall-supported UDL panels; when capacity is exceeded the result requires increased depth or separate engineering and never automatically designs slab shear reinforcement.",
             "Flat/drop/ribbed slabs, column strips, column-supported punching and FEM require a separately approved extension."
           ],
           "evidence": [

@@ -5,6 +5,77 @@
 
 ---
 
+## 2026-08-15 — Session: INDIA-1D Solid-Slab Boundary Closure
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-1d-slab-boundary` from integrated `origin/main` at
+`236ce6462543aa36df307a0a9b4ef463ac98d085`
+
+**Focus:** Close the supported solid-slab serviceability, ordinary-shear, and
+load-action boundaries without promoting unvalidated slab calculations.
+
+### Summary
+
+- Integrated INDIA-1C PR #756 only after exact head `03a50688`, required hosted
+  `PR Gate`, clean mergeability, and zero review blockers were rechecked; squash
+  merge `236ce646` has the same tree as the reviewed head.
+- Created a fresh isolated INDIA-1D lane from that integrated main and verified
+  `READY_LOCAL` with `source_bound=true`.
+- Retained reviewed span/depth serviceability and ordinary one-way concrete
+  shear for beam/wall-supported UDL panels as the supported ceiling.
+- Made direct-deflection and crack-width holds explicit in the serialized
+  serviceability carrier, including the slab-specific actions, duration,
+  reinforcement/geometry, effective-inertia and service-stress evidence needed
+  before either can be promoted.
+- Made the one-action loading boundary explicit in complete result carriers and
+  the semantic contract: routes consume one caller-selected factored UDL or one
+  declared coefficient-method action basis and do not generate project load
+  combinations, patterns, concentrated/opening effects, or envelopes.
+- Retained automatic slab shear reinforcement as held; an ordinary concrete-
+  capacity failure requires increased depth or separate engineering.
+- Kept the milestone gate cadence: focused slab/contract tests, architecture/
+  import validation, quick gate, and hosted exact-head PR gate in this packet;
+  broad Python and the full repository gate follow A-D integration.
+- Published implementation commit `782a4b79` in draft PR #757; exact-head hosted
+  review remains the publication gate.
+
+### Issues encountered
+
+- Repository inventory showed the intended holds already existed in prose and
+  nested shear state, but crack width and load-envelope disposition were not
+  explicit serialized result fields and the capability rationale was too
+  compressed to state the evidence needed for future promotion.
+- The first focused boundary run had one test-authoring error: it dereferenced
+  `.shear` on a low-level `SlabShearResult`. The same run also correctly found
+  the generated Indian-code manifest stale after capability edits.
+
+### Root causes and resolutions
+
+- Earlier slab completion work established the correct calculation ceiling but
+  did not give every retained decision a machine-visible result field. Added
+  `crack_width_status` and `load_envelope_status`, tightened every public slab
+  semantic limitation, and added focused public regression evidence without
+  changing structural formulas.
+- The failing assertion confused a composed result with the low-level shear
+  carrier. It now checks `SlabShearResult.status` directly. Regenerated both
+  capability and API manifests after their source contracts changed; the
+  repeated focused suite passed.
+
+### Evidence
+
+- Baseline slab, capability, and manifest suite before edits: 111 passed.
+- Focused slab, boundary, capability, and manifest suite after closure: 115
+  passed.
+- Boundary benchmark: span/depth 24.0/24.0, shear stress 0.12 N/mm2, concrete
+  shear capacity 0.4688283053 N/mm2, no automatic reinforcement, and explicit
+  single-action load-envelope disposition.
+- Architecture boundaries: 155 files, zero violations.
+- Structural-library imports: 194 files, 1061 imports, zero broken imports.
+- API documentation/manifest checks passed; quick repository gate: 10/10.
+
+---
+
 ## 2026-08-15 — Session: INDIA-1C Composed Isolated-Footing Workflow
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

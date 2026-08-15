@@ -73,6 +73,7 @@ class SlabServiceabilityResult:
     utilization: float
     status: SlabServiceabilityStatus
     direct_deflection_status: str
+    crack_width_status: str
     source_reference: str
     qualified_acceptance_reference: str
     verified_by_library: bool
@@ -104,7 +105,14 @@ def check_slab_span_depth_serviceability(
         reviewed_modified_span_depth_limit=limit,
         utilization=actual / limit,
         status=status,
-        direct_deflection_status="held_not_implemented",
+        direct_deflection_status=(
+            "held_requires_slab_specific_service_actions_load_duration_"
+            "reinforcement_and_effective_inertia_validation"
+        ),
+        crack_width_status=(
+            "held_requires_explicit_bar_geometry_cover_neutral_axis_and_"
+            "service_stress_or_strain_validation"
+        ),
         source_reference=design_input.limit_source_reference,
         qualified_acceptance_reference=(design_input.qualified_acceptance_reference),
         verified_by_library=False,

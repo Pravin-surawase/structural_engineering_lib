@@ -553,6 +553,14 @@ loading, other foundation systems, settlement/soil-structure interaction,
 lateral/uplift/global-overturning checks, and arbitrary geometry are outside the
 contract.
 
+Complete slab workflow results expose only reviewed span/depth serviceability
+and ordinary one-way concrete shear for beam/wall-supported UDL panels. Their
+serviceability carrier explicitly holds direct deflection and crack width, and
+their shear carrier never claims automatic reinforcement design. Each result's
+`load_envelope_status` records that one caller-selected factored UDL or declared
+coefficient-method action basis was checked; project load combinations,
+patterns, concentrated/opening effects, and envelopes are not generated.
+
 The compatibility two-way route retains its documented interior-panel
 configuration with caller-supplied, qualified coefficients. The complete
 development-preview routes add common oriented beam/wall-supported panels,
@@ -683,6 +691,7 @@ If you find a breaking change:
 
 ## Changelog
 
+- **2026-08-15**: Closed solid-slab serviceability, shear-reinforcement, and single-action load-envelope boundaries without promoting unvalidated slab math
 - **2026-08-15**: Published the bounded concentric isolated-footing composition through the canonical services and package-root APIs
 - **2026-04-04**: Added Column Design API (stable) and Footing Design API (experimental) for v0.21.0
 - **2026-04-06**: Version references updated to v0.21.5 (test coverage & regression prevention release)

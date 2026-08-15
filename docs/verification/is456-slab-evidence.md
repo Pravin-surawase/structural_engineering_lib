@@ -5,7 +5,7 @@
 **Status:** Internal implementation evidence; qualified review required
 **Importance:** Critical
 **Created:** 2026-08-10
-**Last Updated:** 2026-08-11
+**Last Updated:** 2026-08-15
 
 ## Source lock
 
@@ -57,8 +57,18 @@ provenance; external coefficient carriers remain available.
   page images, and unrelated standard content remain excluded.
 - Unequal-span or unequal-load continuous analysis beyond the accepted
   coefficient-method domain is unsupported; no elastic envelope is inferred.
-- Direct deflection, crack-width calculation, concentrated loads, openings,
-  irregular panels, and automatic slab shear reinforcement are held.
+- Direct deflection remains held until a slab-specific route validates explicit
+  service actions and combinations, load duration, reinforcement positions,
+  cracking/effective inertia, creep and shrinkage against independent slab
+  benchmarks. Crack width likewise requires validated explicit bar geometry,
+  cover, neutral-axis depth, exposure limit, and service steel stress or strain.
+- Each public route consumes one caller-selected factored UDL or one declared
+  coefficient-method action basis. Built-in coefficient resolution does not
+  generate project load combinations, patterns, concentrated/opening effects,
+  or an envelope.
+- Ordinary one-way concrete shear is checked for the beam/wall-supported UDL
+  domain. A capacity failure requires increased depth or separate engineering;
+  automatic slab shear reinforcement design remains held.
 - Punching shear is not applicable to the supported beam/wall-supported UDL
   solid-panel routes. Column-supported and flat-slab punching is a separate held
   extension.
