@@ -89,13 +89,16 @@ def _normalise_section(
     if raw is None:
         return _unknown(NOT_CHECKED), [f"{name.upper()}_NOT_CHECKED"]
     if not isinstance(raw, Mapping):
-        return _unknown(), [f"{name.upper()}_MALFORMED"]
+        section = _unknown()
+        section["evidence_error"] = "MALFORMED"
+        return section, [f"{name.upper()}_MALFORMED"]
     section = dict(raw)
     status, reason = _fresh_status(section, now, max_age=max_age)
     section["status"] = status
     if status != "OBSERVED":
         section["query_status"] = UNKNOWN
     if reason:
+        section["evidence_error"] = reason
         return section, [f"{name.upper()}_{reason}"]
     if status in {UNKNOWN, NOT_CHECKED}:
         return section, [f"{name.upper()}_{status}"]
@@ -109,6 +112,221 @@ def _local_payload(state: RepositoryState) -> dict[str, Any]:
         "receipt_sha256": _sha256(state_payload),
         "state": state_payload,
     }
+
+
+def _authorization_holds(
+    authorization: object,
+    *,
+    task: object,
+    local_state: object,
+) -> list[str]:
+    if not isinstance(authorization, Mapping):
+        return ["AUTHORIZATION_MALFORMED"]
+    holds: list[str] = []
+    status = authorization.get("status")
+    if status not in {"OBSERVED", UNKNOWN, NOT_CHECKED}:
+        holds.append("AUTHORIZATION_STATUS_INVALID")
+    elif status != "OBSERVED":
+        holds.append("AUTHORIZATION_UNKNOWN")
+    if (
+        not isinstance(authorization.get("next_action"), str)
+        or not authorization.get("next_action", "").strip()
+    ):
+        holds.append("NEXT_ACTION_UNKNOWN")
+    for field in ("authorized_actions", "prohibited_actions"):
+        actions = authorization.get(field)
+        if not isinstance(actions, list) or any(
+            not isinstance(action, str) or not action.strip() for action in actions
+        ):
+            holds.append("AUTHORIZATION_ACTIONS_MALFORMED")
+            break
+    authorized = authorization.get("authorized_actions", [])
+    prohibited = authorization.get("prohibited_actions", [])
+    if isinstance(authorized, list) and isinstance(prohibited, list):
+        if set(authorized) & set(prohibited):
+            holds.append("AUTHORIZATION_ACTION_CONTRADICTION")
+
+    source = authorization.get("authority_source")
+    if not isinstance(source, Mapping):
+        holds.append("AUTHORIZATION_PROVENANCE_UNKNOWN")
+    else:
+        if source.get("kind") not in {
+            "USER_DELEGATION",
+            "ORCHESTRATOR_DELEGATION",
+            "REPOSITORY_POLICY",
+            "GITHUB_REVIEW",
+        }:
+            holds.append("AUTHORIZATION_SOURCE_KIND_INVALID")
+        if (
+            not isinstance(source.get("reference"), str)
+            or not source.get("reference", "").strip()
+        ):
+            holds.append("AUTHORIZATION_SOURCE_REFERENCE_UNKNOWN")
+        if _parse_time(source.get("observed_at_utc")) is None:
+            holds.append("AUTHORIZATION_SOURCE_TIME_UNKNOWN")
+
+    binding = authorization.get("target_binding")
+    if not isinstance(binding, Mapping):
+        holds.append("AUTHORIZATION_TARGET_BINDING_UNKNOWN")
+    else:
+        task_id = task.get("task_id") if isinstance(task, Mapping) else None
+        branch = local_state.get("branch") if isinstance(local_state, Mapping) else None
+        head_sha = (
+            local_state.get("head_sha") if isinstance(local_state, Mapping) else None
+        )
+        if (
+            binding.get("task_id") != task_id
+            or binding.get("branch") != branch
+            or binding.get("head_sha") != head_sha
+        ):
+            holds.append("AUTHORIZATION_TARGET_MISMATCH")
+        bound_actions = binding.get("actions")
+        if not isinstance(bound_actions, list) or bound_actions != authorized:
+            holds.append("AUTHORIZATION_TARGET_ACTION_MISMATCH")
+    return holds
+
+
+def _stored_section_holds(
+    receipt: Mapping[str, Any], name: str, now: datetime, *, max_age: int
+) -> list[str]:
+    section = receipt.get(name)
+    prefix = name.upper()
+    if not isinstance(section, Mapping):
+        return [f"{prefix}_MALFORMED"]
+    status, reason = _fresh_status(section, now, max_age=max_age)
+    if reason:
+        return [f"{prefix}_{reason}"]
+    if status in {UNKNOWN, NOT_CHECKED}:
+        evidence_error = section.get("evidence_error")
+        if isinstance(evidence_error, str) and evidence_error:
+            return [f"{prefix}_{evidence_error}"]
+        return [f"{prefix}_{status}"]
+    return []
+
+
+def _derive_evidence_holds(
+    receipt: Mapping[str, Any], now: datetime, *, max_age: int
+) -> list[str]:
+    """Derive authority holds from facts; never trust serialized hold claims."""
+    holds: list[str] = []
+    local = receipt.get("local")
+    state = local.get("state") if isinstance(local, Mapping) else None
+    if not isinstance(state, Mapping):
+        holds.append("LOCAL_STATE_UNKNOWN")
+        local_head = None
+    else:
+        local_head = state.get("head_sha")
+        if (
+            state.get("query_failures")
+            or state.get("branch") == UNKNOWN
+            or not _is_sha(local_head)
+            or state.get("operation") == "unknown"
+        ):
+            holds.append("LOCAL_STATE_UNKNOWN")
+        if (
+            state.get("ready_local") is not True
+            or state.get("derived_action") != "READY_LOCAL"
+        ):
+            derived_action = state.get("derived_action", UNKNOWN)
+            holds.append(f"LOCAL_{derived_action}")
+
+    for name in ("remote", "pull_request", "review", "integration", "retention"):
+        holds.extend(_stored_section_holds(receipt, name, now, max_age=max_age))
+
+    remote = receipt.get("remote")
+    pr = receipt.get("pull_request")
+    review = receipt.get("review")
+    integration = receipt.get("integration")
+    retention = receipt.get("retention")
+
+    if isinstance(remote, Mapping) and remote.get("status") == "OBSERVED":
+        remote_head = remote.get("head_sha")
+        if not _is_sha(remote_head):
+            holds.append("REMOTE_HEAD_UNKNOWN")
+        if remote.get("branch_state") == "PRESENT" and remote_head != local_head:
+            holds.append("REMOTE_HEAD_MISMATCH")
+
+    pr_head = pr.get("head_sha") if isinstance(pr, Mapping) else None
+    if isinstance(pr, Mapping) and pr.get("status") == "OBSERVED":
+        required_pr = (
+            "number",
+            "state",
+            "base_ref",
+            "base_sha",
+            "head_ref",
+            "head_sha",
+            "merge_state",
+            "required_checks",
+        )
+        if any(pr.get(field) in (None, "", UNKNOWN) for field in required_pr):
+            holds.append("PULL_REQUEST_IDENTITY_UNKNOWN")
+        if not _is_sha(pr.get("base_sha")) or not _is_sha(pr_head):
+            holds.append("PULL_REQUEST_SHA_MALFORMED")
+        if pr_head != local_head:
+            holds.append("PULL_REQUEST_HEAD_MISMATCH")
+        checks = pr.get("required_checks")
+        if not isinstance(checks, list):
+            holds.append("REQUIRED_CHECKS_MALFORMED")
+        elif not checks:
+            holds.append("REQUIRED_CHECKS_UNKNOWN")
+        else:
+            for check in checks:
+                if not isinstance(check, Mapping):
+                    holds.append("REQUIRED_CHECK_MALFORMED")
+                    continue
+                if check.get("head_sha") != pr_head:
+                    holds.append("REQUIRED_CHECK_HEAD_MISMATCH")
+                if (
+                    check.get("status") != "COMPLETED"
+                    or check.get("conclusion") != "SUCCESS"
+                ):
+                    holds.append("REQUIRED_CHECK_NOT_SUCCESSFUL")
+
+    if isinstance(review, Mapping) and review.get("status") == "OBSERVED":
+        if any(
+            not _is_sha(review.get(field))
+            for field in ("base_sha", "head_sha", "tree_sha")
+        ):
+            holds.append("REVIEW_IDENTITY_UNKNOWN")
+        if review.get("head_sha") != pr_head:
+            holds.append("REVIEWED_HEAD_MISMATCH")
+        if not isinstance(pr, Mapping) or review.get("base_sha") != pr.get("base_sha"):
+            holds.append("REVIEWED_BASE_MISMATCH")
+
+    if isinstance(integration, Mapping) and integration.get("status") == "OBSERVED":
+        if integration.get("method") == "squash" and (
+            not _is_sha(integration.get("merge_sha"))
+            or integration.get("reviewed_tree_sha")
+            != integration.get("merged_tree_sha")
+            or not _is_sha(integration.get("reviewed_tree_sha"))
+        ):
+            holds.append("SQUASH_TREE_EQUIVALENCE_UNKNOWN")
+
+    if isinstance(retention, Mapping):
+        retention_holds = retention.get("holds", [])
+        if not isinstance(retention_holds, list) or any(
+            not isinstance(item, str) or not item for item in retention_holds
+        ):
+            holds.append("RETENTION_HOLDS_MALFORMED")
+        else:
+            holds.extend(retention_holds)
+
+    task_archive = receipt.get("task_archive")
+    if (
+        not isinstance(task_archive, Mapping)
+        or task_archive.get("is_git_retention_evidence") is not False
+    ):
+        holds.append("TASK_ARCHIVE_RETENTION_CONTRADICTION")
+    if receipt.get("receipt_grants_authority") is not False:
+        holds.append("RECEIPT_AUTHORITY_BOUNDARY_MISSING")
+    holds.extend(
+        _authorization_holds(
+            receipt.get("authorization"),
+            task=receipt.get("task"),
+            local_state=state,
+        )
+    )
+    return sorted(set(holds))
 
 
 def build_receipt(
@@ -126,107 +344,17 @@ def build_receipt(
     """Create one receipt. Missing or inconsistent facts become explicit holds."""
     observed_now = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
     supplied = evidence or {}
-    holds: list[str] = []
-
-    if (
-        local_state.query_failures
-        or local_state.branch == UNKNOWN
-        or not _is_sha(local_state.head_sha)
-        or local_state.operation == "unknown"
-    ):
-        holds.append("LOCAL_STATE_UNKNOWN")
-    if not local_state.ready_local:
-        holds.append(f"LOCAL_{local_state.derived_action}")
-
-    remote, remote_holds = _normalise_section(
-        supplied, "remote", observed_now, max_age=max_age
-    )
-    pull_request, pr_holds = _normalise_section(
+    remote, _ = _normalise_section(supplied, "remote", observed_now, max_age=max_age)
+    pull_request, _ = _normalise_section(
         supplied, "pull_request", observed_now, max_age=max_age
     )
-    review, review_holds = _normalise_section(
-        supplied, "review", observed_now, max_age=max_age
-    )
-    retention, retention_holds = _normalise_section(
+    review, _ = _normalise_section(supplied, "review", observed_now, max_age=max_age)
+    retention, _ = _normalise_section(
         supplied, "retention", observed_now, max_age=max_age
     )
-    integration, integration_holds = _normalise_section(
+    integration, _ = _normalise_section(
         supplied, "integration", observed_now, max_age=max_age
     )
-    holds.extend(
-        remote_holds + pr_holds + review_holds + retention_holds + integration_holds
-    )
-
-    local_head = local_state.head_sha
-    remote_head = remote.get("head_sha")
-    pr_head = pull_request.get("head_sha")
-    reviewed_head = review.get("head_sha")
-    if remote.get("status") == "OBSERVED" and not _is_sha(remote_head):
-        holds.append("REMOTE_HEAD_UNKNOWN")
-    if pull_request.get("status") == "OBSERVED":
-        required_pr = (
-            "number",
-            "state",
-            "base_ref",
-            "base_sha",
-            "head_ref",
-            "head_sha",
-            "merge_state",
-            "required_checks",
-        )
-        if any(pull_request.get(field) in (None, "", UNKNOWN) for field in required_pr):
-            holds.append("PULL_REQUEST_IDENTITY_UNKNOWN")
-        if not _is_sha(pull_request.get("base_sha")) or not _is_sha(pr_head):
-            holds.append("PULL_REQUEST_SHA_MALFORMED")
-    if review.get("status") == "OBSERVED":
-        for field in ("base_sha", "head_sha", "tree_sha"):
-            if not _is_sha(review.get(field)):
-                holds.append("REVIEW_IDENTITY_UNKNOWN")
-                break
-
-    published_claim = (
-        remote.get("status") == "OBSERVED" and remote.get("branch_state") == "PRESENT"
-    )
-    if published_claim and local_head != remote_head:
-        holds.append("REMOTE_HEAD_MISMATCH")
-    if pull_request.get("status") == "OBSERVED" and pr_head != local_head:
-        holds.append("PULL_REQUEST_HEAD_MISMATCH")
-    if review.get("status") == "OBSERVED" and reviewed_head != pr_head:
-        holds.append("REVIEWED_HEAD_MISMATCH")
-    if (
-        review.get("status") == "OBSERVED"
-        and pull_request.get("status") == "OBSERVED"
-        and review.get("base_sha") != pull_request.get("base_sha")
-    ):
-        holds.append("REVIEWED_BASE_MISMATCH")
-
-    checks = pull_request.get("required_checks", [])
-    if checks not in (None, UNKNOWN) and not isinstance(checks, list):
-        holds.append("REQUIRED_CHECKS_MALFORMED")
-    if isinstance(checks, list):
-        if pull_request.get("status") == "OBSERVED" and not checks:
-            holds.append("REQUIRED_CHECKS_UNKNOWN")
-        for check in checks:
-            if not isinstance(check, Mapping):
-                holds.append("REQUIRED_CHECK_MALFORMED")
-                continue
-            if check.get("head_sha") != pr_head:
-                holds.append("REQUIRED_CHECK_HEAD_MISMATCH")
-            if (
-                check.get("status") != "COMPLETED"
-                or check.get("conclusion") != "SUCCESS"
-            ):
-                holds.append("REQUIRED_CHECK_NOT_SUCCESSFUL")
-
-    if integration.get("status") == "OBSERVED":
-        # Squash integration is content evidence, never ancestry/retention authority.
-        if integration.get("method") == "squash" and (
-            not _is_sha(integration.get("merge_sha"))
-            or integration.get("reviewed_tree_sha")
-            != integration.get("merged_tree_sha")
-            or not _is_sha(integration.get("reviewed_tree_sha"))
-        ):
-            holds.append("SQUASH_TREE_EQUIVALENCE_UNKNOWN")
 
     task_archive = supplied.get("task_archive", {"status": NOT_CHECKED})
     if not isinstance(task_archive, Mapping):
@@ -242,20 +370,17 @@ def build_receipt(
             "prohibited_actions": [],
             "next_action": "HOLD_FOR_EXACT_EVIDENCE",
         }
-        holds.append("AUTHORIZATION_UNKNOWN")
     else:
         authorization = dict(authorization)
         if not authorization.get("next_action"):
             authorization["next_action"] = "HOLD_FOR_EXACT_EVIDENCE"
-            holds.append("NEXT_ACTION_UNKNOWN")
 
-    holds.extend(str(item) for item in retention.get("holds", []) if item)
-    holds = sorted(set(holds))
     local = _local_payload(local_state)
-    return {
+    receipt = {
         "schema_version": SCHEMA_VERSION,
         "receipt_kind": RECEIPT_KIND,
-        "receipt_status": "HOLD" if holds else "READY",
+        "receipt_status": "HOLD",
+        "receipt_grants_authority": False,
         "observed_at_utc": observed_now.isoformat(),
         "task": {
             "task_id": task_id,
@@ -273,9 +398,13 @@ def build_receipt(
         "retention": retention,
         "task_archive": task_archive,
         "authorization": authorization,
-        "holds": holds,
+        "holds": [],
         "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
     }
+    derived_holds = _derive_evidence_holds(receipt, observed_now, max_age=max_age)
+    receipt["holds"] = derived_holds
+    receipt["receipt_status"] = "HOLD" if derived_holds else "READY"
+    return receipt
 
 
 def validate_receipt(
@@ -309,70 +438,42 @@ def validate_receipt(
         expected_hash = f"sha256:{local.get('receipt_sha256', '')}"
         if receipt.get("local_state_receipt_hash") != expected_hash:
             errors.append("LOCAL_STATE_RECEIPT_HASH_MISMATCH")
-    holds = receipt.get("holds")
-    if not isinstance(holds, list):
+    serialized_holds = receipt.get("holds")
+    if not isinstance(serialized_holds, list) or any(
+        not isinstance(hold, str) or not hold for hold in serialized_holds
+    ):
         errors.append("HOLDS_MALFORMED")
-    if receipt.get("receipt_status") == "READY" and (errors or holds):
-        errors.append("FALSE_READY_CLAIM")
+        serialized_hold_set: set[str] = set()
+    else:
+        serialized_hold_set = set(serialized_holds)
+        if len(serialized_hold_set) != len(serialized_holds):
+            errors.append("HOLDS_DUPLICATE")
+
+    receipt_status = receipt.get("receipt_status")
+    if receipt_status not in {"READY", "HOLD"}:
+        errors.append("RECEIPT_STATUS_INVALID")
     task_archive = receipt.get("task_archive")
     if (
         not isinstance(task_archive, Mapping)
         or task_archive.get("is_git_retention_evidence") is not False
     ):
         errors.append("TASK_ARCHIVE_RETENTION_CONTRADICTION")
-    for name in ("remote", "pull_request", "review", "integration", "retention"):
-        section = receipt.get(name)
-        if not isinstance(section, Mapping):
-            errors.append(f"{name.upper()}_MALFORMED")
-            continue
-        _status, reason = _fresh_status(section, observed_now, max_age=max_age)
-        if reason:
-            errors.append(f"{name.upper()}_{reason}")
-    if isinstance(local, Mapping) and isinstance(local.get("state"), Mapping):
-        local_state = local["state"]
-        local_head = local_state.get("head_sha")
-        remote = receipt.get("remote", {})
-        pr = receipt.get("pull_request", {})
-        review = receipt.get("review", {})
-        if isinstance(remote, Mapping) and remote.get("status") == "OBSERVED":
-            if (
-                remote.get("branch_state") == "PRESENT"
-                and remote.get("head_sha") != local_head
-            ):
-                errors.append("REMOTE_HEAD_MISMATCH")
-        if isinstance(pr, Mapping) and pr.get("status") == "OBSERVED":
-            if pr.get("head_sha") != local_head:
-                errors.append("PULL_REQUEST_HEAD_MISMATCH")
-            checks = pr.get("required_checks")
-            if not isinstance(checks, list):
-                errors.append("REQUIRED_CHECKS_MALFORMED")
-            else:
-                for check in checks:
-                    if not isinstance(check, Mapping):
-                        errors.append("REQUIRED_CHECK_MALFORMED")
-                    elif check.get("head_sha") != pr.get("head_sha"):
-                        errors.append("REQUIRED_CHECK_HEAD_MISMATCH")
-                    elif (
-                        check.get("status") != "COMPLETED"
-                        or check.get("conclusion") != "SUCCESS"
-                    ):
-                        errors.append("REQUIRED_CHECK_NOT_SUCCESSFUL")
-        if isinstance(review, Mapping) and review.get("status") == "OBSERVED":
-            if not isinstance(pr, Mapping) or review.get("head_sha") != pr.get(
-                "head_sha"
-            ):
-                errors.append("REVIEWED_HEAD_MISMATCH")
-            if not isinstance(pr, Mapping) or review.get("base_sha") != pr.get(
-                "base_sha"
-            ):
-                errors.append("REVIEWED_BASE_MISMATCH")
-    integration = receipt.get("integration")
-    if isinstance(integration, Mapping) and integration.get("status") == "OBSERVED":
-        if integration.get("method") == "squash" and (
-            integration.get("reviewed_tree_sha") != integration.get("merged_tree_sha")
-            or not _is_sha(integration.get("reviewed_tree_sha"))
-        ):
-            errors.append("SQUASH_TREE_EQUIVALENCE_UNKNOWN")
+    if receipt.get("receipt_grants_authority") is not False:
+        errors.append("RECEIPT_AUTHORITY_BOUNDARY_MISSING")
+
+    derived_holds = set(_derive_evidence_holds(receipt, observed_now, max_age=max_age))
+    for hold in sorted(derived_holds - serialized_hold_set):
+        errors.append(f"MISSING_REQUIRED_HOLD:{hold}")
+    for hold in sorted(serialized_hold_set - derived_holds):
+        errors.append(f"UNSUPPORTED_SERIALIZED_HOLD:{hold}")
+    if serialized_hold_set != derived_holds:
+        errors.append("HOLD_SET_MISMATCH")
+
+    expected_status = "HOLD" if derived_holds else "READY"
+    if receipt_status in {"READY", "HOLD"} and receipt_status != expected_status:
+        errors.append("RECEIPT_STATUS_CONTRADICTION")
+    if receipt_status == "READY" and (errors or derived_holds):
+        errors.append("FALSE_READY_CLAIM")
     return sorted(set(errors))
 
 

@@ -121,10 +121,10 @@
     {
       "name": "handoff.md",
       "type": "documentation",
-      "size_lines": 114,
+      "size_lines": 119,
       "last_updated": "2026-08-15",
       "description": "> Current Git/session boundary: start with ./run.sh session brief --agent > <role>, ./run.sh session start, scripts/python_runtime.sh --diagnose, and",
-      "content_hash": "8c226602f0d2"
+      "content_hash": "d110ef150429"
     },
     {
       "name": "learning-paths.md",
@@ -200,5 +200,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "99ed160407354ddb"
+  "content_hash": "7aaee256ae04db64"
 }

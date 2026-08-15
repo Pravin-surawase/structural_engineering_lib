@@ -21,11 +21,16 @@ operation identity, hosted PR/review/check facts or explicit `UNKNOWN`,
 retention evidence, authorization, prohibited actions, and next permitted
 action. `NOT_APPLICABLE` requires a reason and is never a substitute for
 unknown. Task or transcript archive state is not Git retention evidence.
+The receipt must state `receipt_grants_authority: false`: it records external
+authority evidence but never grants authority. Authorization requires source
+provenance and exact task/branch/head/action binding, and cannot override holds
+recomputed from the remaining evidence.
 
 Reference the receipt in the newest session entry as `**Git handoff receipt:**
 <tracked-path>`, then run `scripts/session.py handoff --git-receipt
 <tracked-path>`. Session end validates schema, hash, exact-head contradictions,
-and the round trip; missing or invalid evidence is a hold.
+and the round trip. It recomputes required holds/status rather than trusting the
+serialized values; missing or invalid evidence is a hold.
 
 Goal: enable the next agent to resume in under 2 minutes.
 

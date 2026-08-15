@@ -68,18 +68,21 @@
     ],
     ".github/skills/session-management/SKILL.md": [
       "git_handoff_receipt.py",
-      "local_state_receipt_hash"
+      "local_state_receipt_hash",
+      "receipt_grants_authority"
     ],
     "docs/git-automation/git-workflow-single-source.md": [
       "scripts/git_state.py",
       "NOT_CHECKED",
       "UNKNOWN",
-      "git_handoff_receipt.py"
+      "git_handoff_receipt.py",
+      "receipt_grants_authority"
     ],
     "docs/contributing/handoff.md": [
       "git_handoff_receipt.py",
       "NOT_CHECKED",
-      "UNKNOWN"
+      "UNKNOWN",
+      "receipt_grants_authority"
     ]
   }
 }

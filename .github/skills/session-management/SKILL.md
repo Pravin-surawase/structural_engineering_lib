@@ -45,7 +45,9 @@ archive path. Resolve the maintained command with `./run.sh find "task"`.
    Create or update the task's versioned receipt with
    `scripts/git_handoff_receipt.py`; include its path in the newest session entry
    as `**Git handoff receipt:** <path>`. Session handoff validates the
-   `local_state_receipt_hash`, exact identities, and fail-closed holds.
+   `local_state_receipt_hash`, exact identities, independently derived
+   fail-closed holds, `receipt_grants_authority: false`, and externally sourced
+   exact-target authorization evidence.
 3. Run the pre-commit gate once:
 
    ```bash

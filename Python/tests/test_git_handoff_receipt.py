@@ -97,6 +97,17 @@ def _evidence() -> dict:
             "authorized_actions": ["OPEN_DRAFT_PR"],
             "prohibited_actions": ["DELETE_BRANCH", "DELETE_WORKTREE"],
             "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+            "authority_source": {
+                "kind": "ORCHESTRATOR_DELEGATION",
+                "reference": "task:GIT-7E:test-fixture",
+                "observed_at_utc": NOW.isoformat(),
+            },
+            "target_binding": {
+                "task_id": "GIT-7E",
+                "branch": "codex/git-7e",
+                "head_sha": HEAD,
+                "actions": ["OPEN_DRAFT_PR"],
+            },
         },
     }
 
@@ -123,6 +134,7 @@ def test_valid_receipt_round_trips_with_exact_identity(tmp_path: Path):
 
     assert receipt["receipt_status"] == "READY"
     assert receipt["holds"] == []
+    assert receipt["receipt_grants_authority"] is False
     assert loaded == receipt
     assert receipt_module.validate_receipt(loaded, now=NOW) == []
     assert loaded["local"]["state"]["head_sha"] == HEAD
@@ -166,6 +178,7 @@ def test_missing_not_checked_stale_and_query_failed_evidence_hold(evidence, reas
 
     assert receipt["receipt_status"] == "HOLD"
     assert reason in receipt["holds"]
+    assert receipt_module.validate_receipt(receipt, now=NOW) == []
 
 
 def test_failed_git_state_is_unknown_even_when_hosted_evidence_is_green():
@@ -235,7 +248,7 @@ def test_stored_hash_or_identity_tampering_is_rejected():
     errors = receipt_module.validate_receipt(receipt, now=NOW)
 
     assert "LOCAL_STATE_HASH_MISMATCH" in errors
-    assert "REMOTE_HEAD_MISMATCH" in errors
+    assert "MISSING_REQUIRED_HOLD:REMOTE_HEAD_MISMATCH" in errors
 
 
 def test_stored_observed_evidence_expires_instead_of_remaining_authority():
@@ -243,8 +256,71 @@ def test_stored_observed_evidence_expires_instead_of_remaining_authority():
 
     errors = receipt_module.validate_receipt(receipt, now=NOW + timedelta(hours=1))
 
-    assert "REMOTE_STALE_EVIDENCE" in errors
-    assert "PULL_REQUEST_STALE_EVIDENCE" in errors
+    assert "MISSING_REQUIRED_HOLD:REMOTE_STALE_EVIDENCE" in errors
+    assert "MISSING_REQUIRED_HOLD:PULL_REQUEST_STALE_EVIDENCE" in errors
+
+
+def test_clearing_required_holds_cannot_upgrade_unknown_evidence_to_ready():
+    receipt = _receipt({})
+    required_holds = set(receipt["holds"])
+    receipt["receipt_status"] = "READY"
+    receipt["holds"] = []
+
+    errors = receipt_module.validate_receipt(receipt, now=NOW)
+
+    assert "FALSE_READY_CLAIM" in errors
+    assert "RECEIPT_STATUS_CONTRADICTION" in errors
+    assert "HOLD_SET_MISMATCH" in errors
+    assert {f"MISSING_REQUIRED_HOLD:{hold}" for hold in required_holds}.issubset(errors)
+
+
+def test_removing_one_required_hold_is_detected_independently():
+    receipt = _receipt({})
+    removed = receipt["holds"].pop()
+
+    errors = receipt_module.validate_receipt(receipt, now=NOW)
+
+    assert "HOLD_SET_MISMATCH" in errors
+    assert f"MISSING_REQUIRED_HOLD:{removed}" in errors
+
+
+@pytest.mark.parametrize("bad_status", ["GREEN", "", None])
+def test_receipt_status_enum_is_closed(bad_status):
+    receipt = _receipt()
+    receipt["receipt_status"] = bad_status
+
+    assert "RECEIPT_STATUS_INVALID" in receipt_module.validate_receipt(receipt, now=NOW)
+
+
+@pytest.mark.parametrize("next_action", [None, "", 42])
+def test_missing_or_invalid_authorization_next_action_fails_closed(next_action):
+    receipt = _receipt()
+    receipt["authorization"]["next_action"] = next_action
+
+    errors = receipt_module.validate_receipt(receipt, now=NOW)
+
+    assert "HOLD_SET_MISMATCH" in errors
+    assert "MISSING_REQUIRED_HOLD:NEXT_ACTION_UNKNOWN" in errors
+
+
+def test_destructive_or_merge_actions_cannot_be_smuggled_into_ready_receipt():
+    receipt = _receipt()
+    receipt["authorization"]["authorized_actions"].extend(["DELETE_BRANCH", "MERGE"])
+
+    errors = receipt_module.validate_receipt(receipt, now=NOW)
+
+    assert "MISSING_REQUIRED_HOLD:AUTHORIZATION_TARGET_ACTION_MISMATCH" in errors
+    assert "FALSE_READY_CLAIM" in errors
+
+
+def test_receipt_cannot_claim_to_grant_authority():
+    receipt = _receipt()
+    receipt["receipt_grants_authority"] = True
+
+    errors = receipt_module.validate_receipt(receipt, now=NOW)
+
+    assert "RECEIPT_AUTHORITY_BOUNDARY_MISSING" in errors
+    assert "FALSE_READY_CLAIM" in errors
 
 
 def test_receipt_module_has_no_independent_git_or_network_reader():

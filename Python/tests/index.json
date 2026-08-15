@@ -2261,7 +2261,7 @@
     {
       "name": "test_git_handoff_receipt.py",
       "type": "python",
-      "size_lines": 257,
+      "size_lines": 333,
       "last_updated": "2026-08-15",
       "description": "Regressions for the durable, fail-closed task-to-Git handoff receipt.",
       "functions": [
@@ -2300,6 +2300,30 @@
           "name": "test_stored_observed_evidence_expires_instead_of_remaining_authority"
         },
         {
+          "name": "test_clearing_required_holds_cannot_upgrade_unknown_evidence_to_ready"
+        },
+        {
+          "name": "test_removing_one_required_hold_is_detected_independently"
+        },
+        {
+          "name": "test_receipt_status_enum_is_closed",
+          "params": [
+            "bad_status"
+          ]
+        },
+        {
+          "name": "test_missing_or_invalid_authorization_next_action_fails_closed",
+          "params": [
+            "next_action"
+          ]
+        },
+        {
+          "name": "test_destructive_or_merge_actions_cannot_be_smuggled_into_ready_receipt"
+        },
+        {
+          "name": "test_receipt_cannot_claim_to_grant_authority"
+        },
+        {
           "name": "test_receipt_module_has_no_independent_git_or_network_reader"
         }
       ],
@@ -2310,7 +2334,7 @@
         "TREE",
         "MERGE"
       ],
-      "content_hash": "dd629d194925"
+      "content_hash": "5c9ea566105e"
     },
     {
       "name": "test_git_state.py",
@@ -4521,5 +4545,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "be0a5560dc4e7f36"
+  "content_hash": "36b2f66f02e43f35"
 }

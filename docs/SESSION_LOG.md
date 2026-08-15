@@ -58,6 +58,9 @@ at the locally and hosted green draft PR head for independent audit
   change, and the correct `bash -n run.sh` syntax check passed.
 - The first commit attempt was stopped by the end-of-file hook because the
   generated global docs index omitted its required final newline.
+- Independent exact-head audit reproduced that clearing serialized `holds` and
+  changing `receipt_status` to `READY` made stored validation return `[]`, even
+  when `DELETE_BRANCH` and `MERGE` were also inserted into authorized actions.
 
 ### Root causes and resolutions
 
@@ -94,12 +97,24 @@ at the locally and hosted green draft PR head for independent audit
   hook-required terminal newline. Resolution: retain the hook's normalization,
   restage the exact generated file, and require a clean second hook pass before
   commit; no validation was bypassed.
+- Root cause: stored validation treated caller-controlled serialized holds as
+  authority and checked false `READY` only against those stored values; it did
+  not independently derive semantic holds or validate the authorization source
+  and target. Resolution: use one evidence-to-holds derivation for creation and
+  validation, require an exact hold-set/status match, close the status enum,
+  require `receipt_grants_authority: false`, and validate external authorization
+  source plus task/branch/head/action binding. Evidence: both auditor tamper
+  reproductions now return `FALSE_READY_CLAIM`, hold-set/status contradictions,
+  and the missing evidence/authorization holds; focused regressions cover
+  clearing all holds, removing one hold, invalid status/next action, authority-
+  boundary tampering, and injected destructive/merge actions.
 
 ### Verification
 
 - Worktree-bound runtime diagnosis reported `source_bound=true`; startup local
   state was clean and ready at the verified PR #750 merge SHA.
-- Focused receipt, semantic, and session regression suite: 66 passed.
+- Focused receipt, semantic, and session regression suite: 76 passed after the
+  independent-audit blocker fix.
 - Remaining semantic, docs/index, quick 10/10, full 30/30, efficiency,
   session-end, preservation replay, and hosted checks are recorded before PR
   audit handoff.

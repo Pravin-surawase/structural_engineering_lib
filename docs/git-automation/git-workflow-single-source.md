@@ -65,6 +65,15 @@ caller-supplied and identity-bound. The receipt records its
 operation state, hosted identities or explicit `UNKNOWN`/`NOT_CHECKED`, reviewed
 head/base/tree, retention evidence, and authorization boundaries.
 
+The receipt records authority evidence but grants no authority itself;
+`receipt_grants_authority` must be `false`. Authorization evidence requires a
+named external source plus exact task, branch, head, and action binding.
+Serialized `holds` and `receipt_status` are not trusted: validation independently
+recomputes the required hold set from evidence and rejects missing holds, false
+`READY`, malformed next actions, or action/provenance contradictions. External
+authorization never erases remote, PR, review, check, retention, or local-state
+holds.
+
 Missing, malformed, stale, query-failed, or contradictory facts are holds.
 `NOT_APPLICABLE` requires a reason and cannot replace unknown evidence. A
 squash-merged PR requires reviewed-tree/merged-tree equivalence and never makes
