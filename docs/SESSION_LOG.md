@@ -5,6 +5,65 @@
 
 ---
 
+## 2026-08-15 — Session: Compact Audited Orchestrator Workflow
+
+**Agent:** Codex (`doc-master`, sole writer/integration owner; no subagents)
+
+**Branch:** `codex/compact-orchestrator-workflow`, created from freshly fetched
+and verified `origin/main = 6bcbd9d3e082ea41bcba1d3858fcfa7deb77fa75`
+with tree `f1b38e17e932e8e84c06cca23061aec97351c699`
+
+**Focus:** Add the compact three-role, immutable-local-audit workflow to the two
+existing authorities without adding a workflow document, wrapper, checker,
+receipt, Git reader, or second authority
+
+### Summary
+
+- Added the orchestrator, single-writer, and independent-auditor boundaries and
+  the exact contract-freeze through post-merge stage gates.
+- Added the local-PASS-before-hosted-CI rule, one consolidated blocker packet,
+  initial-plus-one-repair candidate ceiling, one full/hosted closeout, unchanged-
+  head merge rule, timing labels, and retry/rework counters.
+- Embedded the minimal issue-record template in the canonical Git workflow and
+  refreshed only already-maintained generated indexes after content freeze.
+- Preserved GIT-7E behavior and every protected worktree; no branch, worktree,
+  receipt, script, or Git/GitHub authority was removed or replaced.
+
+### Issues encountered
+
+- A shell inventory command referenced the absent
+  `docs/git-automation/index.*` glob. Zsh stopped with `no matches found`, so the
+  remaining read-only commands on that line did not run.
+- The first semantic-check command guessed a retired/nonexistent
+  `scripts/check_git_guidance_semantics.py` path and stopped before the remaining
+  diff/status checks on that line.
+- The primary checkout's clean local `main` was at `0fdb48ed`, while freshly
+  fetched `origin/main` and this isolated worktree were at the required merged
+  base `6bcbd9d3`; treating the primary local ref as the integration base would
+  have violated the frozen exact-base contract.
+
+### Root causes and resolutions
+
+- Root cause: the inventory assumed every documentation folder had maintained
+  index topology. Resolution: use `rg --files` and explicit existing index paths;
+  do not create an index under `docs/git-automation`. Proof: the generator dry-
+  run targets only existing maintained projections and the focused index check
+  passes. Recurrence control: discover topology before composing generator or
+  shell-glob commands.
+- Root cause: the focused command was composed from the test module's topic
+  rather than the maintained executable inventory. Resolution: targeted search
+  identified `scripts/check_codex_git_workflow.py` plus
+  `Python/tests/test_git_guidance_semantics.py`, and both pass on the frozen
+  content. Proof: their direct focused runs. Recurrence control: discover
+  maintained commands with `rg --files`/references before execution.
+- Root cause: the primary checkout contains a distinct local-main commit not
+  present on freshly fetched `origin/main`. Resolution: preserve that checkout
+  untouched and create this branch in the isolated clean worktree from the exact
+  fetched base requested by the orchestrator. Proof: candidate base/head/tree and
+  canonical `git_state.py --json --worktrees` receipts. Recurrence control:
+  compare fetched remote identity and tree with the frozen contract before any
+  writer mutation; stop if the required remote base differs.
+
 ## 2026-08-15 — Session: GIT-7E Semantic Guidance and Durable Handoff
 
 **Agent:** Codex (`ops`, sole writer/integration owner; no subagents)
