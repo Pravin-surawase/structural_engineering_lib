@@ -109,6 +109,8 @@ at the locally and hosted green draft PR head for independent audit
 - The first tenth-candidate commit attempt stopped after Ruff converted one
   test-only zero-argument lambda to the equivalent callable; no commit was
   created and no path outside the 14 staged task paths changed.
+- A post-generation receipt display snippet assumed `task_id` was top-level and
+  raised `KeyError` after the receipt had already validated successfully.
 - The first ninth-head focused replay rejected valid canonical state fixtures
   loaded through the package alias and one past-tense historical control.
 - A read-only inventory regex containing a backtick was initially passed with
@@ -291,6 +293,9 @@ at the locally and hosted green draft PR head for independent audit
   afterward the sole unstaged path was
   `Python/tests/test_session_automation.py`, with binary-diff SHA-256
   `f5835eff85348ecc7d723a87c2ed6e8e0bee7efdc07c085cee92dd8f456ed347`.
+- Terminal issue resolution: inspect the schema directly and read
+  `task.task_id`; validation remained green and no receipt field was changed by
+  the failed display-only snippet.
 - Focused-replay root cause: Python loaded `git_state` and `scripts.git_state`
   as distinct module identities, so nominal `isinstance` checks rejected the
   same schema; historical grammar included `says` but omitted `said`.
