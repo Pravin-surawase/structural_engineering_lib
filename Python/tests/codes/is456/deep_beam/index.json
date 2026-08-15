@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 2,
+  "file_count": 3,
   "files": [
     {
       "name": "__init__.py",
@@ -66,9 +66,66 @@
         }
       ],
       "content_hash": "c52a6789bf22"
+    },
+    {
+      "name": "test_reinforcement.py",
+      "type": "python",
+      "size_lines": 304,
+      "last_updated": "2026-08-16",
+      "description": "INDIA-2-DEEP-B positive tie, anchorage, and side-face tests.",
+      "functions": [
+        {
+          "name": "test_frozen_benchmark_passes_with_exact_intermediates"
+        },
+        {
+          "name": "test_inadequate_positive_tie_is_a_fail_disposition"
+        },
+        {
+          "name": "test_tie_placement_boundary_and_failure"
+        },
+        {
+          "name": "test_discontinuous_main_bars_return_fail"
+        },
+        {
+          "name": "test_each_support_anchorage_boundary_and_failure"
+        },
+        {
+          "name": "test_normalized_deformed_tension_bond_stress_lookup",
+          "params": [
+            "grade",
+            "expected_bond_stress"
+          ]
+        },
+        {
+          "name": "test_side_face_area_and_spacing_failures_are_visible"
+        },
+        {
+          "name": "test_one_and_two_grid_width_rules_are_fail_closed"
+        },
+        {
+          "name": "test_transverse_enclosure_boundary_is_held_fail_closed"
+        },
+        {
+          "name": "test_bundles_splices_and_large_side_bars_are_excluded"
+        },
+        {
+          "name": "test_invalid_reinforcement_geometry_fails_closed",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_count_continuity_type_reference_and_wrong_input_fail_closed"
+        },
+        {
+          "name": "test_clause_and_source_provenance_is_machine_visible"
+        }
+      ],
+      "content_hash": "1b1d2cdd699f"
     }
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "c1e1a1b2a5a1a474"
+  "content_hash": "8b503bf1ca9d197c"
 }

@@ -55,7 +55,7 @@
 | [beam/](beam/) 📦 | 6 |  |
 | [column/](column/) 📦 | 12 |  |
 | [common/](common/) 📦 | 5 |  |
-| [deep_beam/](deep_beam/) 📦 | 5 |  |
+| [deep_beam/](deep_beam/) 📦 | 6 |  |
 | [footing/](footing/) 📦 | 10 |  |
 | [slab/](slab/) 📦 | 16 |  |
 | [staircase/](staircase/) 📦 | 7 |  |

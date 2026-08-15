@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Implement the frozen Clause 29 geometry, action, classification, lever-arm, provenance, and fail-closed contracts only.
-- Git receipt: docs/verification/india-2-deep-a-git-handoff-receipt.json | sha256:c677fdd8a70d80a958c72bbc071719ce13b3a04b65396e7ba27802ccda8c8ee8 | HOLD
-- Git identity: codex/india-2-deep-a@d3b9928f4e15573f10feb41de3d8981ed8ca14d6 | upstream=NONE@UNKNOWN | base=origin/main@d3b9928f4e15573f10feb41de3d8981ed8ca14d6 | tree=dirty | operation=none
+- Focus: Implement only the frozen positive tie, placement, continuity,
+- Git receipt: docs/verification/india-2-deep-b-git-handoff-receipt.json | sha256:d15b352d1086c9ac0d8e1c9769c8f85e1f97cb99e96de28686e9d7d86dedf45d | HOLD
+- Git identity: codex/india-2-deep-b@57ee2bad7a4b8cd16858d5b5d4306f9abf886b3b | upstream=NONE@UNKNOWN | base=origin/main@57ee2bad7a4b8cd16858d5b5d4306f9abf886b3b | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Implement `INDIA-2-DEEP-B` from integrated A: positive tie, placement, anchorage, side-face, and composed pure-math dispositions |
+| **Next** | Implement `INDIA-2-DEEP-C` from integrated B: typed public Python workflow and executable benchmark |
 
 ## Required Reading
 
@@ -73,9 +73,10 @@ focused validation, retained holds, and deferred broad-gate boundary.
 records GO for one simply supported solid rectangular deep-beam positive-
 reinforcement check. [`india-2-deep-a-geometry-evidence.md`](../verification/india-2-deep-a-geometry-evidence.md)
 records the implemented typed effective-span, classification, lever-arm,
-caller-action, and fail-closed contracts. DEEP-B may add only the frozen
-positive tie, placement, continuity, anchorage, side-face, and composed checks. Bearing
-and compression-nodal regions require a caller-supplied external verification;
+caller-action, and fail-closed contracts. [`india-2-deep-b-reinforcement-evidence.md`](../verification/india-2-deep-b-reinforcement-evidence.md)
+records the required/provided positive tie, placement, continuity, anchorage,
+side-face, and composed checks. DEEP-C may expose only a typed Python workflow
+over those integrated kernels. Bearing and compression-nodal regions require a caller-supplied external verification;
 continuous beams, openings, hanging action, negative moment, load generation,
 generalized strut-and-tie, nonlinear analysis, and FEM remain held.
 

@@ -5,6 +5,68 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-DEEP-B Reinforcement and Anchorage
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-deep-b` from integrated DEEP-A main at
+`57ee2bad7a4b8cd16858d5b5d4306f9abf886b3b`
+
+**Git handoff receipt:** `docs/verification/india-2-deep-b-git-handoff-receipt.json`
+
+**Focus:** Implement only the frozen positive tie, placement, continuity,
+anchorage, side-face, and composed pure-math dispositions.
+
+### Summary
+
+- Added a typed provided-reinforcement contract and Clause 29 reinforcement
+  result types with explicit units, per-check statuses, source references, and
+  retained professional-review boundary.
+- Implemented required/provided positive tie, tension-zone placement,
+  continuity, exact deformed-bar development length, both 0.8Ld anchorages,
+  and Amendment-3-corrected Clause 32.5 side-face checks.
+- Kept unsupported bundles, splices, invalid grids, large side bars, and the
+  transverse-enclosure case fail closed; deep-beam capability remains held.
+
+### Issues encountered
+
+- The task board retained a `65`-test DEEP-A statement after the final packet
+  evidence had established the 109-test combined selection.
+- The first combined focused run found the committed Indian-code manifest
+  stale after the new Clause 29 decorator registration.
+
+### Root causes and resolutions
+
+- Root cause: the task row preserved an earlier narrower selection count while
+  the final geometry, clause-database, traceability, and manifest selection was
+  expanded before DEEP-A closeout. Resolution: align the task row to the
+  existing 109-test evidence while adding the DEEP-B row.
+- Root cause: `generate_indian_code_manifest.py` renders to stdout by default;
+  the initial generation command omitted its explicit `--write` mutation flag.
+  Resolution: regenerate with `--write`, refresh the verification/docs indexes,
+  and prove `--check` plus the 131-test combined selection passes.
+
+### Evidence
+
+- The direct deep-beam package passes 42 tests and the combined deep-beam,
+  clause-database, traceability, and manifest selection passes 131 tests,
+  including every frozen benchmark intermediate and unsafe/fail-closed boundary.
+- Benchmark required/provided tie steel is 1477.832512/1520.530844 mm2;
+  development/required embedment is 996.875/797.5 mm; and both side-face
+  directions reproduce the independent hand values.
+- Black, Ruff, mypy, and Bandit pass; architecture reports 0 violations across
+  174 files and imports report 0 broken across 602 scanned files.
+- Manifest, index, link, quick, and hosted evidence is recorded in
+  `india-2-deep-b-reinforcement-evidence.md` and the exact PR checks.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `generate_indian_code_manifest.py` was first run without
+  `--write`, leaving the committed manifest stale → reran with `--write`, then
+  passed its deterministic `--check` and the full focused selection.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-DEEP-A Geometry and Lever Arm
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)
