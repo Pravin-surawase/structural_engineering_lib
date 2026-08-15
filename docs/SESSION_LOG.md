@@ -385,8 +385,12 @@ at the locally and hosted green draft PR head for independent audit
 - Eleventh-candidate focused receipt/semantic/Git-state/session regressions pass
   223 tests and the full indexed semantic corpus passes. Strict docs pass 5/5,
   1,107 links have zero failures, quick passes 10/10, full passes 30/30, and
-  efficiency passes. Session-end, preservation, and hosted checks remain
-  pending until the exact receipt-bound head exists.
+  efficiency passes. On receipt commit `4ae58117695e9993f4dcd7d0faf47b9d942f7087`,
+  session-end passes using canonical `git_state.py` evidence and validates the
+  fail-closed HOLD receipt with hash
+  `sha256:ca5c3e527a8fd269a743c00fc6071865bbbd51243621b48a1226520e08a77b3d`.
+  Preservation replay and hosted checks remain pending until the final
+  documentation head exists.
 
 ### Preservation and next boundary
 
