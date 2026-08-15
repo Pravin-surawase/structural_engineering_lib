@@ -135,10 +135,55 @@ def test_state_consistency_recomputes_action_and_holds_without_git_io(
 
 
 @pytest.mark.parametrize(
+    "name",
+    [
+        "HEAD",
+        "head",
+        "FETCH_HEAD",
+        "main",
+        "codex/git-7e",
+        "refs/heads/feature",
+        "@",
+        "feature.x",
+        "-bad",
+        "codex//x",
+        "feature.lock",
+        "foo/.bar",
+        "foo..bar",
+        "foo@{bar",
+        "foo\\bar",
+        "foo~bar",
+        "foo^bar",
+        "foo:bar",
+        "foo?bar",
+        "foo*bar",
+        "foo[bar",
+        "foo bar",
+        "foo/",
+        "/foo",
+        ".foo",
+        "foo.",
+    ],
+)
+def test_pure_branch_validator_matches_read_only_git_check_ref_format(name: str):
+    oracle = subprocess.run(
+        ["git", "check-ref-format", "--branch", name],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert git_state._is_valid_git_refname(name, branch=True) is (
+        oracle.returncode == 0
+    )
+
+
+@pytest.mark.parametrize(
     ("case", "expected"),
     [
         ("head_sha", "head_sha is malformed"),
         ("empty_branch", "branch is malformed"),
+        ("head_branch", "branch is malformed"),
         ("banana_relation", "relation status is unsupported"),
         ("uppercase_unknown_relation", "relation status is unsupported"),
         ("schema", "schema is unsupported"),
@@ -165,6 +210,8 @@ def test_state_consistency_rejects_malformed_schema_and_enums_without_git_io(
         state.head_sha = "not-a-sha"
     elif case == "empty_branch":
         state.branch = ""
+    elif case == "head_branch":
+        state.branch = "HEAD"
     elif case == "banana_relation":
         state.default_base.status = "BANANA"
     elif case == "uppercase_unknown_relation":

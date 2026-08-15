@@ -1968,33 +1968,38 @@ def cmd_context(args: argparse.Namespace) -> int:
                 print(f"  {al}")
             print()
 
-    # 3. Git status summary
-    result = subprocess.run(
-        ["git", "status", "--porcelain"], capture_output=True, text=True, cwd=REPO_ROOT
-    )
-    changes = len([line for line in result.stdout.strip().split("\n") if line.strip()])
-    result2 = subprocess.run(
-        ["git", "rev-parse", "--abbrev-ref", "HEAD"],
-        capture_output=True,
-        text=True,
-        cwd=REPO_ROOT,
-    )
-    branch = result2.stdout.strip()
-    result3 = subprocess.run(
-        ["git", "log", "-1", "--format=%h %s (%cr)"],
-        capture_output=True,
-        text=True,
-        cwd=REPO_ROOT,
-    )
-    last_commit = result3.stdout.strip()
-
+    # 3. Canonical Git-state summary
+    context_exit = 0
+    state = None
+    state_errors: list[str] = []
+    try:
+        state = collect_repository_state(REPO_ROOT)
+        state_errors = validate_repository_state_consistency(state)
+    except Exception as exc:
+        state_errors = [f"Git-state authority raised: {exc}"]
     print(f"{BOLD}🔀 Git:{NC}")
-    print(f"  Branch: {GREEN}{branch}{NC}")
-    print(f"  Last commit: {last_commit}")
-    if changes > 0:
-        print(f"  {YELLOW}Uncommitted changes: {changes} file(s){NC}")
+    if state is None or state_errors or state.query_failures:
+        context_exit = 1
+        detail = "; ".join(state_errors) or "required Git evidence is unknown"
+        print(f"  Branch: {YELLOW}UNKNOWN{NC}")
+        print(f"  HEAD: {YELLOW}UNKNOWN{NC}")
+        print(f"  Working tree: {YELLOW}UNKNOWN/hold ({detail}){NC}")
     else:
-        print(f"  Working tree: {DIM}clean{NC}")
+        print(f"  Branch: {GREEN}{state.branch}{NC}")
+        print(f"  HEAD: {state.head_sha or 'UNKNOWN'}")
+        if state.tree.dirty_count:
+            context_exit = 1
+            print(
+                f"  {YELLOW}Uncommitted changes: "
+                f"{state.tree.dirty_count} file(s){NC}"
+            )
+        elif state.derived_action != "READY_LOCAL":
+            context_exit = 1
+            print(
+                f"  Working tree: {YELLOW}UNKNOWN/hold " f"({state.derived_action}){NC}"
+            )
+        else:
+            print(f"  Working tree: {DIM}clean{NC}")
     print()
 
     # 4. Recent session log entries (last 3)
@@ -2021,7 +2026,7 @@ def cmd_context(args: argparse.Namespace) -> int:
     print(f"  {DIM}./run.sh test --changed{NC}   Test only changed files")
     print()
 
-    return 0
+    return context_exit
 
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────

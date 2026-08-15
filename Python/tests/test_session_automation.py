@@ -110,6 +110,8 @@ def _malformed_clean_state(case: str):
         state.head_sha = "not-a-sha"
     elif case == "empty_branch":
         state.branch = ""
+    elif case == "head_branch":
+        state.branch = "HEAD"
     elif case == "banana_relation":
         state.default_base.status = "BANANA"
     elif case == "uppercase_unknown_relation":
@@ -178,6 +180,7 @@ def test_session_closeout_reports_canonical_dirty_paths(
     [
         "head_sha",
         "empty_branch",
+        "head_branch",
         "banana_relation",
         "uppercase_unknown_relation",
         "schema",
@@ -412,6 +415,7 @@ def test_session_end_query_failure_cannot_pass_or_print_clean(
     [
         "head_sha",
         "empty_branch",
+        "head_branch",
         "banana_relation",
         "uppercase_unknown_relation",
         "schema",
@@ -442,6 +446,83 @@ def test_session_end_malformed_canonical_contract_fails_closed(
     assert authority_calls == [["collect_repository_state"]]
     assert "Git state UNKNOWN/hold" in output
     assert "Working tree clean" not in output
+
+
+@pytest.mark.parametrize(
+    ("case", "expected_return", "expected_text"),
+    [
+        ("clean", 0, "Working tree: \x1b[2mclean"),
+        ("dirty", 1, "Uncommitted changes: 1 file(s)"),
+        ("detached", 1, "Branch: \x1b[32mDETACHED"),
+        ("held", 1, "UNKNOWN/hold (HOLD_BEHIND)"),
+        ("query_failed", 1, "Branch: \x1b[33mUNKNOWN"),
+        ("malformed", 1, "Branch: \x1b[33mUNKNOWN"),
+    ],
+)
+def test_session_context_uses_only_canonical_git_state_and_fails_closed(
+    case: str,
+    expected_return: int,
+    expected_text: str,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    state = _closeout_state(clean=True)
+    if case == "dirty":
+        state = _closeout_state(clean=False, paths=["docs/SESSION_LOG.md"])
+    elif case == "detached":
+        state.branch = "DETACHED"
+        state.derived_action = "HOLD_DETACHED"
+        state.hold_reasons = ["HEAD is detached"]
+    elif case == "held":
+        state.default_base = git_state.Relation("origin/main", "b" * 40, 0, 1, "behind")
+        state.derived_action = "HOLD_BEHIND"
+        state.hold_reasons = ["HEAD is behind a required ref"]
+    elif case == "query_failed":
+        state = _closeout_state(
+            clean=True,
+            failures=[git_state.QueryFailure("git status --porcelain=v2", "exit 128")],
+        )
+    elif case == "malformed":
+        state.branch = "HEAD"
+
+    monkeypatch.setattr(session, "collect_repository_state", lambda _repo: state)
+    monkeypatch.setattr(
+        session.subprocess,
+        "run",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("session context must not invoke a Git subprocess")
+        ),
+    )
+
+    assert session.cmd_context(SimpleNamespace()) == expected_return
+    output = capsys.readouterr().out
+    assert expected_text in output
+    assert "Branch: \x1b[32m\x1b[0m" not in output
+    if case != "clean":
+        assert "Working tree: \x1b[2mclean" not in output
+
+
+def test_session_context_holds_authority_exception_without_subprocess_fallback(
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+):
+    def raise_authority(_repo):
+        raise OSError("canonical authority unavailable")
+
+    monkeypatch.setattr(session, "collect_repository_state", raise_authority)
+    monkeypatch.setattr(
+        session.subprocess,
+        "run",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            AssertionError("session context must not invoke a Git subprocess")
+        ),
+    )
+
+    assert session.cmd_context(SimpleNamespace()) == 1
+    output = capsys.readouterr().out
+    assert "Branch: \x1b[33mUNKNOWN" in output
+    assert "canonical authority unavailable" in output
+    assert "Working tree: \x1b[2mclean" not in output
 
 
 @pytest.mark.parametrize(

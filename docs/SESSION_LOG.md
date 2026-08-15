@@ -136,6 +136,13 @@ at the locally and hosted green draft PR head for independent audit
   line as a Python here-document terminator, so Python parsed the shell suffix
   and raised `SyntaxError` before the commit ran. The intended two receipt paths
   remained staged with zero unstaged paths.
+- A completed twelfth-head audit found the pure branch grammar accepted the
+  exact pseudo-ref `HEAD`, although read-only
+  `git check-ref-format --branch HEAD` exits 128; tampered canonical evidence
+  could therefore remain READY_LOCAL and let session closeout report CLEAN.
+- The same audit found maintained `./run.sh session context` independently ran
+  `git status --porcelain` and `git rev-parse`; blank stdout with return code 128
+  produced an empty branch, `Working tree: clean`, and process exit 0.
 - The first ninth-head focused replay rejected valid canonical state fixtures
   loaded through the package alias and one past-tense historical control.
 - A read-only inventory regex containing a backtick was initially passed with
@@ -374,6 +381,22 @@ at the locally and hosted green draft PR head for independent audit
   with SHA-256 `d4be2299c68df90db6d9896dbb92299d0d292a7cc7e24967311131b6cd12d21c`,
   zero unstaged paths, and no symlinks or non-regular files; the separate commit
   and all hooks passed.
+- Local-only branch root cause: the pure grammar implemented general ref-format
+  character/component rules but omitted Git's branch-mode special rejection of
+  uppercase `HEAD`, while also rejecting the branch-valid one-level name `@`.
+  Resolution: make those two branch-mode rules exact and add a representative
+  parity corpus against read-only `git check-ref-format --branch`, retaining
+  earlier valid names and every malformed separator, component, suffix, and
+  character boundary. Evidence: the parity corpus and canonical/session `HEAD`
+  tamper regressions pass without any production subprocess or network access.
+- Local-only context root cause: `cmd_context` predated the canonical state
+  kernel and never checked the three Git subprocess return codes, forming a
+  second fail-open authority. Resolution: remove its status, rev-parse, and log
+  subprocesses; collect and validate the canonical evidence once, print its
+  branch/HEAD/tree facts, and return nonzero for dirty, detached, held,
+  malformed, query-failed, or exceptional evidence. Evidence: end-to-end clean,
+  dirty, detached, behind, failed-query, malformed, and exception cases pass
+  while a subprocess spy rejects every fallback Git command.
 - Focused-replay root cause: Python loaded `git_state` and `scripts.git_state`
   as distinct module identities, so nominal `isinstance` checks rejected the
   same schema; historical grammar included `says` but omitted `said`.
@@ -431,6 +454,10 @@ at the locally and hosted green draft PR head for independent audit
   `sha256:05100369e50b3c9fd495f160439171572bedb1ab0cf24204d1d1abb80473e091`.
   Preservation and hosted checks remain pending until the final documentation
   head exists.
+- Local-only follow-up candidate passes 292 focused semantic, receipt,
+  Git-state, and session tests plus the indexed semantic checker. Per the
+  orchestrator boundary, no full repository gate, push, hosted run, ready, or
+  merge action is performed before independent inspection of the local object.
 
 ### Preservation and next boundary
 

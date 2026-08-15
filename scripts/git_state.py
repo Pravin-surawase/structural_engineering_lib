@@ -391,9 +391,9 @@ def _is_nonnegative_int(value: object) -> bool:
 
 def _is_valid_git_refname(value: object, *, branch: bool = False) -> bool:
     """Apply Git's ref-format constraints without invoking Git."""
-    if not isinstance(value, str) or not value or value == "@":
+    if not isinstance(value, str) or not value or (not branch and value == "@"):
         return False
-    if branch and value.startswith("-"):
+    if branch and (value.startswith("-") or value == "HEAD"):
         return False
     if (
         value.startswith("/")

@@ -2398,7 +2398,7 @@
     {
       "name": "test_git_state.py",
       "type": "python",
-      "size_lines": 635,
+      "size_lines": 682,
       "last_updated": "2026-08-15",
       "description": "Outcome tests for the read-only, worktree-aware Git state authority.",
       "functions": [
@@ -2419,6 +2419,12 @@
           "params": [
             "tmp_path",
             "monkeypatch"
+          ]
+        },
+        {
+          "name": "test_pure_branch_validator_matches_read_only_git_check_ref_format",
+          "params": [
+            "name"
           ]
         },
         {
@@ -2537,7 +2543,7 @@
         "REPO_ROOT",
         "VALIDATION_NOW"
       ],
-      "content_hash": "aa2be65be1b6"
+      "content_hash": "40ceabc73929"
     },
     {
       "name": "test_inputs.py",
@@ -3774,7 +3780,7 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 1276,
+      "size_lines": 1357,
       "last_updated": "2026-08-15",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
@@ -3873,6 +3879,23 @@
           ]
         },
         {
+          "name": "test_session_context_uses_only_canonical_git_state_and_fails_closed",
+          "params": [
+            "case",
+            "expected_return",
+            "expected_text",
+            "monkeypatch",
+            "capsys"
+          ]
+        },
+        {
+          "name": "test_session_context_holds_authority_exception_without_subprocess_fallback",
+          "params": [
+            "monkeypatch",
+            "capsys"
+          ]
+        },
+        {
           "name": "test_session_heading_marker_accepts_descriptive_titles",
           "params": [
             "heading"
@@ -3886,26 +3909,12 @@
         },
         {
           "name": "test_run_task_brief_and_index_help_are_read_only"
-        },
-        {
-          "name": "test_run_index_generator_dry_run_routes_scope_without_writes",
-          "params": [
-            "arguments",
-            "expected"
-          ]
-        },
-        {
-          "name": "test_index_generator_uses_worktree_runtime_in_temp_project",
-          "description": "The index launcher must resolve its runtime from its own worktree.",
-          "params": [
-            "tmp_path"
-          ]
         }
       ],
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "f629a968f1b6"
+      "content_hash": "6d82a69832c8"
     },
     {
       "name": "test_session_store.py",
@@ -4663,5 +4672,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "24170f169f67e4fc"
+  "content_hash": "8dcb6b97fa2d632a"
 }

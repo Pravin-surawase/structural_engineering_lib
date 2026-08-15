@@ -3534,7 +3534,7 @@
         "REMOTE_FRESHNESS_STATUSES",
         "MAX_EVIDENCE_AGE"
       ],
-      "content_hash": "4d8581eb3500"
+      "content_hash": "3cbad0ae60d3"
     },
     {
       "name": "governance_health_score.py",
@@ -4408,7 +4408,7 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 2456,
+      "size_lines": 2461,
       "last_updated": "2026-08-15",
       "description": "Unified session management CLI.",
       "functions": [
@@ -4524,7 +4524,7 @@
         "HANDOFF_DATE_RE",
         "COMMIT_HASH_RE"
       ],
-      "content_hash": "c5bf85c20a9c"
+      "content_hash": "8a951de8d836"
     },
     {
       "name": "session_store.py",
@@ -5538,5 +5538,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "db047dbf992b684a"
+  "content_hash": "3c741ce61e0e0c75"
 }
