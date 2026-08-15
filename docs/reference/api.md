@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-03-30
+last_updated: 2026-08-15
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -15,7 +15,7 @@ tags: []
 **Importance:** Critical
 **Document Version:** 0.23.1a1
 **Created:** 2025-01-01
-**Last Updated:** 2026-08-11<br>
+**Last Updated:** 2026-08-15<br>
 
 ---
 
@@ -3750,7 +3750,10 @@ print(f"Governing: {result['governing_check']}")
 
 ## 17. Footing Design Module (`codes/is456/footing/`) — v0.21+
 
-IS 456 isolated footing design functions. These functions are in the **IS 456 codes layer** (`codes/is456/footing/`). They are **not yet exposed** through the services API (`services/api.py`).
+IS 456 isolated-footing calculation functions live in the **IS 456 codes layer**
+(`codes/is456/footing/`). The bounded concentric workflow described in Section
+17.0 composes them through the canonical services API. The low-level functions
+remain available for callers that need individual checks.
 
 **Import path:**
 ```python
@@ -3761,6 +3764,51 @@ from structural_lib.codes.is456.footing import (
     footing_punching_shear,
 )
 ```
+
+### 17.0 Composed Concentric Isolated-Footing Workflow
+
+```python
+from structural_lib import (
+    ConcentricIsolatedFootingInput,
+    design_concentric_isolated_footing_is456,
+)
+
+result = design_concentric_isolated_footing_is456(
+    ConcentricIsolatedFootingInput(...)
+)
+```
+
+```python
+def design_concentric_isolated_footing_is456(
+    request: ConcentricIsolatedFootingInput,
+) -> ConcentricIsolatedFootingResult
+```
+
+This development-preview route composes service-load plan sizing, factored-load
+flexure, deterministic thickness search, one-way and punching shear, column-to-
+footing load transfer, and optional provided-bar detailing. The final one-way
+shear result uses the actual reinforcement selected by the detailing step; a
+required-steel screening result is retained separately as evidence.
+
+The request keeps service and factored actions independent and requires their
+load-combination identifiers. Service axial load must already include footing
+self-weight and overburden. Allowable soil pressure and the effective supporting
+area basis are externally approved inputs with explicit source/provenance fields.
+Every result retains the supported-case identity, exclusions, clause/source
+bases, depth candidates, aggregate `PASS`/`FAIL`/`HOLD` statuses, and a qualified-
+review requirement.
+
+Supported geometry is a centred, concentrically loaded square or rectangular
+isolated footing with uniform trial thickness. Eccentric or partial-contact
+loading, moment transfer, combined/strap/raft/pile foundations, settlement and
+soil-structure interaction, lateral/sliding/uplift/global-overturning checks,
+and edge/corner punching or arbitrary geometry remain held.
+
+Public support types are `api.ConcentricIsolatedFootingInput`,
+`api.ConcentricIsolatedFootingResult`, `api.FootingDepthCandidate`,
+`api.FootingDirectionalReinforcementDemand`, and `api.FootingProvenance`.
+
+---
 
 ### 17.1 Footing Sizing (`size_footing`)
 

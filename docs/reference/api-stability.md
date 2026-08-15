@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-04-04
+last_updated: 2026-08-15
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-04-04
+**Last Updated:** 2026-08-15
 
 ---
 
@@ -483,9 +483,9 @@ api.create_jobs_from_etabs_csv(...)
 
 **Status:** Preview - CSV column mapping and normalization may change.
 
-### Footing Design API (Added v0.21.0 — Experimental)
+### Low-Level Footing Calculation API (Added v0.21.0 — Preview)
 
-Footing functions are in **experimental** status. API may change in v0.22:
+The individual codes-layer footing functions remain development-preview APIs:
 
 ```python
 from structural_lib.codes.is456 import footing
@@ -513,6 +513,13 @@ pre-1.0 stability promise:
 ```python
 from structural_lib import api
 
+footing_request = api.ConcentricIsolatedFootingInput(...)
+footing: api.ConcentricIsolatedFootingResult = (
+    api.design_concentric_isolated_footing_is456(footing_request)
+)
+api.FootingDepthCandidate
+api.FootingDirectionalReinforcementDemand
+api.FootingProvenance
 transfer: api.LoadTransferResult = api.check_isolated_footing_load_transfer(...)
 one_way: api.OneWaySlabDesignResult = api.design_one_way_slab_is456(...)
 one_way_complete: api.CompleteOneWaySlabDesignResult = (
@@ -536,6 +543,15 @@ workflow_catalog: api.WorkflowCatalog = api.get_workflow_catalog()
 workflow_catalog_document = api.get_workflow_catalog_document()
 workflow_catalog_json = api.serialize_workflow_catalog()
 ```
+
+The composed footing route is limited to centred concentric square or
+rectangular isolated footings with uniform trial thickness. It keeps service and
+factored loads separate, requires externally approved soil-pressure and bearing-
+area provenance, and combines plan sizing, flexure, one-way and punching shear,
+load transfer, and optional provided-bar detailing. Eccentric/partial-contact
+loading, other foundation systems, settlement/soil-structure interaction,
+lateral/uplift/global-overturning checks, and arbitrary geometry are outside the
+contract.
 
 The compatibility two-way route retains its documented interior-panel
 configuration with caller-supplied, qualified coefficients. The complete
@@ -667,6 +683,7 @@ If you find a breaking change:
 
 ## Changelog
 
+- **2026-08-15**: Published the bounded concentric isolated-footing composition through the canonical services and package-root APIs
 - **2026-04-04**: Added Column Design API (stable) and Footing Design API (experimental) for v0.21.0
 - **2026-04-06**: Version references updated to v0.21.5 (test coverage & regression prevention release)
 - **2026-04-05**: Version references updated to v0.21.4 (P0/P1 sprint + external audit fixes release)

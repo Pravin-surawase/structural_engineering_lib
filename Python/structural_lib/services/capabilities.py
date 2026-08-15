@@ -146,6 +146,7 @@ _CAPABILITIES = (
     IS456Capability(
         element="isolated_footing",
         public_workflows=(
+            "design_concentric_isolated_footing_is456",
             "size_footing",
             "footing_flexure",
             "footing_one_way_shear",
@@ -153,10 +154,18 @@ _CAPABILITIES = (
             "check_bearing_pressure",
             "check_isolated_footing_load_transfer",
         ),
-        supported_case="Square/rectangular isolated footing checks, including bounded bearing pressure and concentric dowel transfer.",
+        supported_case=(
+            "Centred, concentrically loaded square or rectangular isolated "
+            "footings with a uniform trial thickness: service-load sizing from "
+            "an externally approved allowable soil pressure, factored flexure, "
+            "one-way shear, punching shear, approved-basis bearing/load transfer, "
+            "and provided-bar detailing when every detailing input is explicit."
+        ),
         held_cases=(
-            "Bearing-pressure results remain bounded checks requiring qualified review of the approved supporting-area basis and the complete footing design.",
-            "Combined, strap, raft, pile-cap, settlement and lateral stability design are excluded.",
+            "Eccentric loading, moment transfer, partial contact or soil tension, and pressure-envelope generation are excluded from the composed route.",
+            "Bearing/load-transfer results require an explicitly approved effective supporting-area basis and qualified review of the complete footing design.",
+            "Combined, strap, raft, pile-cap, settlement, soil-structure interaction, lateral, sliding, uplift and global-overturning design are excluded.",
+            "Stepped, sloped, circular, edge/corner punching and arbitrary footing geometry are excluded.",
         ),
         qualified_review_required=True,
     ),
@@ -493,6 +502,77 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             limitations=(
                 "Solid rectangular section only, with Asc_mm2 split equally between two opposite faces at one d_prime_mm.",
                 "Frame analysis, circular sections, arbitrary reinforcement layouts, and the experimental P-M-M surface are excluded.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_concentric_isolated_footing_is456",
+            element="isolated_footing",
+            fields=(
+                _field(
+                    "request",
+                    "typed concentric isolated-footing request",
+                    "ConcentricIsolatedFootingInput",
+                    True,
+                    "validated explicit input contract",
+                ),
+                _field(
+                    "status",
+                    "aggregate workflow disposition",
+                    "enumeration",
+                    True,
+                    "PASS, FAIL or HOLD",
+                ),
+                _field(
+                    "service_axial_load_kN",
+                    "echoed service axial action used for sizing",
+                    "kN",
+                    True,
+                    "finite positive",
+                ),
+                _field(
+                    "factored_axial_load_kN",
+                    "echoed factored axial action used for structural checks",
+                    "kN",
+                    True,
+                    "finite positive",
+                ),
+                _field(
+                    "selected_overall_thickness_mm",
+                    "first passing uniform trial thickness",
+                    "mm",
+                    True,
+                    "positive or null when no candidate passes",
+                ),
+                _field(
+                    "detailing_status",
+                    "provided-bar detailing disposition",
+                    "enumeration",
+                    True,
+                    "PASS, FAIL or HOLD",
+                ),
+                _field(
+                    "qualified_review_required",
+                    "qualified review boundary",
+                    "boolean",
+                    True,
+                    "always true",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "status",
+                    "All composed calculation and detailing checks passed without a retained hold.",
+                    (
+                        "PASS is bounded software evidence, not professional design approval.",
+                        "Missing explicit detailing inputs return HOLD rather than a complete-design PASS.",
+                    ),
+                ),
+            ),
+            limitations=(
+                "Centred concentric square/rectangular isolated footing with uniform thickness only.",
+                "Service and factored actions are independent supplied inputs; the service action must include footing self-weight and overburden.",
+                "Allowable soil pressure and effective supporting-area geometry must be externally established and explicitly approved.",
+                "Eccentric/contact-pressure envelopes and all other foundation systems remain excluded.",
             ),
         ),
         IS456WorkflowContract(
