@@ -5,6 +5,85 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-WALL-D API and Capability Publication
+
+**Agent:** Codex (`api-developer`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-wall-d` from integrated WALL-C main at
+`ea282b6da34c40d17a4a6090d0d284a4eb6693c7`
+
+**Focus:** Publish the thin typed wall REST route, capability/semantic truth,
+manifest promotion, and bounded evidence without adding calculation scope.
+
+### Summary
+
+- Added strict Pydantic request/response schemas and
+  `POST /api/v1/design/wall/braced-axial`, delegating all math to `wall_api`.
+- Added the sole bounded wall capability and semantic contract, removing the
+  obsolete broad IS 456 wall hold while retaining IS 13920 wall detailing.
+- Updated manifest generation, public docs, route/OpenAPI tests, unsafe-case
+  behavior, and publication evidence.
+
+### Issues encountered
+
+- WALL-C's post-merge session-end check reported `HOLD_DIVERGED` and a missing
+  task-to-Git handoff receipt after PR #771 had already squash-merged.
+- The first focused run saw the expected stale manifest plus a parity count
+  derived from that committed stale manifest.
+- The service-level 422 test changed only unsupported height; the independent
+  lateral-restraint spacing still governed effective height and kept the case
+  within the Clause 32.2 ratio limit.
+- The safe error sanitizer intentionally replaced the detailed engineering
+  message with an opaque reference.
+- Mypy rejects float values inside `Literal` even though Pydantic accepts them.
+
+### Root causes and resolutions
+
+- Root cause: squash integration changes ancestry and the packet had no
+  versioned receipt before session end. Resolution: verify PR #771's exact
+  merge, retain its lane, and start WALL-D from clean `ea282b6d`.
+- Root cause: capability promotion changes the deterministic manifest.
+  Resolution: regenerate it after adding runtime truth and rerun the manifest
+  and parity tests, which now report 9 supported and 12 held families.
+- Root cause: Clause 32.2.4 uses the lesser effective component. Resolution:
+  set both independent unsupported-height and lateral-spacing components above
+  the limit in the unsafe transport test.
+- Root cause: transport sanitization deliberately withholds detailed internal
+  error text. Resolution: assert the standard safe reference envelope while
+  core tests continue to verify the exact engineering failure.
+- Root cause: Python typing permits string/integer but not float literals.
+  Resolution: express standard concrete grades as integer literals; JSON 20.0
+  remains accepted and the service normalizes it to float.
+
+### Evidence
+
+- 20 focused publication, manifest, FastAPI, and capability tests passed.
+- The combined wall, API, manifest, clause-database, and traceability selection
+  passed 128 tests.
+- Benchmark REST output, overload `FAIL`, inadequate-reinforcement `FAIL`,
+  malformed/unsupported 422, main-app mounting, and typed OpenAPI all pass.
+- Ruff, mypy, Black, and Bandit pass on the changed paths.
+- API compatibility reports no break across 77 endpoints and 293 schemas;
+  architecture reports 0 violations across 170 files and imports report 0
+  broken across 205 files.
+- Packet quick gate passed 10/10 and all 1,153 internal links are valid.
+- The wall capability names one workflow and retains qualified review plus all
+  bounded exclusions.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: WALL-C session end reported the already squash-merged
+  branch as diverged and missing a receipt -> verified PR #771 and started this
+  lane from clean integrated main without mutating the retained WALL-C lane.
+- ⚠️ TERMINAL ISSUE: the first focused test run stopped on stale generated
+  manifest/parity evidence and a mistaken one-component slenderness fixture ->
+  regenerated truth and corrected the fixture from the confirmed governing
+  minimum-component rule.
+- ⚠️ TERMINAL ISSUE: mypy rejected Pydantic float literals -> used equivalent
+  integer grade literals and verified JSON float inputs still pass.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-WALL-C Public Python Workflow
 
 **Agent:** Codex (`backend`, sole writer; no subagents)

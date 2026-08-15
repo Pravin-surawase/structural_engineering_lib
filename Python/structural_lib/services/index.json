@@ -788,7 +788,7 @@
     {
       "name": "capabilities.py",
       "type": "python",
-      "size_lines": 1264,
+      "size_lines": 1365,
       "last_updated": "2026-08-16",
       "description": "Discoverable supported-case registry for the IS 456 public library.",
       "classes": [
@@ -847,7 +847,7 @@
         "_REPORT_IS_SAFE_ALIAS",
         "_SLAB_REVIEW_ALIAS"
       ],
-      "content_hash": "bed0fff4eda2"
+      "content_hash": "d63b9299a2e5"
     },
     {
       "name": "column_api.py",
@@ -2500,7 +2500,7 @@
     {
       "name": "wall_api.py",
       "type": "python",
-      "size_lines": 226,
+      "size_lines": 227,
       "last_updated": "2026-08-16",
       "description": "Stable orchestration for the bounded IS 456 braced-wall workflow.",
       "classes": [
@@ -2530,7 +2530,7 @@
         "_SUPPORTED_CASE",
         "_HELD_CASES"
       ],
-      "content_hash": "f1f6b9ff2210"
+      "content_hash": "15f7f316e7e9"
     },
     {
       "name": "workflow_catalog.py",
@@ -2684,5 +2684,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "9299548f2ad6e891"
+  "content_hash": "40bc04cf177ddba9"
 }

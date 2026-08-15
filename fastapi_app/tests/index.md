@@ -3,8 +3,8 @@
 Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-15
-**Files:** 38
+**Last Updated:** 2026-08-16
+**Files:** 39
 
 ## Documentation Files
 
@@ -21,7 +21,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_auth.py](test_auth.py) | Tests for Authentication and Rate Limiting. | 3 | 2 | 243 |
 | [test_beam_primary_route.py](test_beam_primary_route.py) | Focused FastAPI contract tests for the primary IS 456 beam r | 0 | 12 | 311 |
 | [test_bundled_sample_evidence.py](test_bundled_sample_evidence.py) | Reproducible software evidence for the bundled 153-beam acce | 0 | 1 | 84 |
-| [test_capabilities.py](test_capabilities.py) | Cross-surface tests for canonical capability discovery. | 0 | 2 | 32 |
+| [test_capabilities.py](test_capabilities.py) | Cross-surface tests for canonical capability discovery. | 0 | 2 | 37 |
 | [test_catalog.py](test_catalog.py) | Cross-layer tests for the thin workflow catalogue transport. | 0 | 3 | 41 |
 | [test_column_additional_moment.py](test_column_additional_moment.py) | Tests for POST /api/v1/design/column/additional-moment endpo | 1 | 0 | 203 |
 | [test_column_biaxial.py](test_column_biaxial.py) | Tests for POST /api/v1/design/column/biaxial-check endpoint. | 4 | 0 | 179 |
@@ -51,5 +51,6 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_staircase.py](test_staircase.py) | Contract tests for the straight-flight staircase FastAPI sli | 0 | 6 | 146 |
 | [test_streaming.py](test_streaming.py) | Tests for SSE Streaming Endpoint. | 2 | 0 | 276 |
 | [test_typed_response_contracts.py](test_typed_response_contracts.py) | OpenAPI and envelope contracts for the typed column and libr | 0 | 3 | 72 |
+| [test_wall.py](test_wall.py) | Contract tests for the bounded braced-wall FastAPI slice. | 0 | 6 | 163 |
 | [test_websocket.py](test_websocket.py) | Tests for WebSocket Live Design Endpoint. | 1 | 0 | 211 |
 | [test_workflows.py](test_workflows.py) | Transport gates for the explicitly activated bounded workflo | 0 | 5 | 176 |

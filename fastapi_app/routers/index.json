@@ -2,22 +2,22 @@
   "folder": "fastapi_app/routers",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-15",
-  "file_count": 20,
+  "last_updated": "2026-08-16",
+  "file_count": 21,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 48,
-      "last_updated": "2026-08-15",
+      "size_lines": 50,
+      "last_updated": "2026-08-16",
       "description": "FastAPI Routers Package.",
-      "content_hash": "4b42c977ea21"
+      "content_hash": "b3d691cb13cb"
     },
     {
       "name": "analysis.py",
       "type": "python",
       "size_lines": 338,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Smart Analysis Router.",
       "functions": [
         {
@@ -45,7 +45,7 @@
       "name": "capabilities.py",
       "type": "python",
       "size_lines": 23,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Public discovery route for the canonical supported IS 456 contract.",
       "functions": [
         {
@@ -59,7 +59,7 @@
       "name": "catalog.py",
       "type": "python",
       "size_lines": 51,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Thin read-only transport for the canonical application workflow catalogue.",
       "functions": [
         {
@@ -77,7 +77,7 @@
       "name": "column.py",
       "type": "python",
       "size_lines": 764,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Column Design Router.",
       "functions": [
         {
@@ -178,7 +178,7 @@
       "name": "design.py",
       "type": "python",
       "size_lines": 1027,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Beam Design Router.",
       "functions": [
         {
@@ -255,7 +255,7 @@
       "name": "detailing.py",
       "type": "python",
       "size_lines": 412,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Beam Detailing Router.",
       "functions": [
         {
@@ -293,7 +293,7 @@
       "name": "export.py",
       "type": "python",
       "size_lines": 805,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Export Router — BBS, DXF, and Report exports.",
       "classes": [
         {
@@ -362,7 +362,7 @@
       "name": "footing.py",
       "type": "python",
       "size_lines": 69,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "FastAPI transport for the bounded concentric isolated-footing service.",
       "functions": [
         {
@@ -379,7 +379,7 @@
       "name": "geometry.py",
       "type": "python",
       "size_lines": 653,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "3D Geometry Router.",
       "functions": [
         {
@@ -421,7 +421,7 @@
       "name": "health.py",
       "type": "python",
       "size_lines": 208,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Health Check Router.",
       "classes": [
         {
@@ -460,7 +460,7 @@
       "name": "imports.py",
       "type": "python",
       "size_lines": 992,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "CSV Import Router.",
       "classes": [
         {
@@ -548,7 +548,7 @@
       "name": "insights.py",
       "type": "python",
       "size_lines": 579,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Insights Router.",
       "classes": [
         {
@@ -636,7 +636,7 @@
       "name": "library_core.py",
       "type": "python",
       "size_lines": 229,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Thin FastAPI consumers for the supported footing and slab library routes.",
       "functions": [
         {
@@ -695,7 +695,7 @@
       "name": "optimization.py",
       "type": "python",
       "size_lines": 331,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Cost Optimization Router.",
       "functions": [
         {
@@ -723,7 +723,7 @@
       "name": "rebar.py",
       "type": "python",
       "size_lines": 269,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Rebar Validation and Application Router.",
       "classes": [
         {
@@ -777,7 +777,7 @@
       "name": "staircase.py",
       "type": "python",
       "size_lines": 66,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "FastAPI transport for the bounded straight-flight staircase service.",
       "functions": [
         {
@@ -794,7 +794,7 @@
       "name": "streaming.py",
       "type": "python",
       "size_lines": 351,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Server-Sent Events (SSE) Router for Batch Processing.",
       "classes": [
         {
@@ -847,10 +847,27 @@
       "content_hash": "43cf71831126"
     },
     {
+      "name": "wall.py",
+      "type": "python",
+      "size_lines": 117,
+      "last_updated": "2026-08-16",
+      "description": "FastAPI transport for the bounded braced-wall service.",
+      "functions": [
+        {
+          "name": "design_braced_wall",
+          "description": "Validate transport inputs and delegate all calculation to the service.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "86ff00d4e37c"
+    },
+    {
       "name": "websocket.py",
       "type": "python",
       "size_lines": 428,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "WebSocket Router for Live Design Updates.",
       "classes": [
         {
@@ -905,7 +922,7 @@
       "name": "workflows.py",
       "type": "python",
       "size_lines": 172,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Default-disabled transport for the one allowlisted beam workflow.",
       "functions": [
         {
@@ -955,8 +972,9 @@
     "rebar",
     "staircase",
     "streaming",
+    "wall",
     "websocket",
     "workflows"
   ],
-  "content_hash": "5e178a70e312bf6c"
+  "content_hash": "2d77a2c89490743a"
 }

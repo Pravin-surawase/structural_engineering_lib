@@ -18,6 +18,11 @@ def test_capability_route_matches_python_contract(client: TestClient):
     assert all(
         item["qualified_review_required"] for item in body["data"]["capabilities"]
     )
+    wall = next(
+        item for item in body["data"]["capabilities"] if item["element"] == "wall"
+    )
+    assert wall["public_workflows"] == ["design_braced_wall_is456"]
+    assert "100-200 mm" in wall["supported_case"]
 
 
 def test_capability_route_has_a_typed_openapi_success_schema(client: TestClient):

@@ -137,8 +137,16 @@ def test_invalid_public_contract_fails_closed() -> None:
         )
 
 
-def test_wall_is_not_advertised_before_wall_d_capability_packet() -> None:
-    assert all(
-        item.element != "wall"
+def test_wall_capability_names_only_the_bounded_public_workflow() -> None:
+    wall = next(
+        item
         for item in services_api.get_supported_is456_capabilities()
+        if item.element == "wall"
     )
+
+    assert wall.public_workflows == ("design_braced_wall_is456",)
+    assert "100-200 mm" in wall.supported_case
+    assert any("Applied moment" in item for item in wall.held_cases)
+    assert any("two reinforcement grids" in item for item in wall.held_cases)
+    assert any("IS 13920" in item for item in wall.held_cases)
+    assert wall.qualified_review_required

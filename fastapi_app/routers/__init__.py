@@ -21,6 +21,7 @@ from fastapi_app.routers import (
     rebar,
     staircase,
     streaming,
+    wall,
     websocket,
     workflows,
 )
@@ -42,6 +43,7 @@ __all__ = [
     "rebar",
     "staircase",
     "streaming",
+    "wall",
     "websocket",
     "workflows",
 ]

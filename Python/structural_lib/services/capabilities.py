@@ -214,6 +214,23 @@ _CAPABILITIES = (
         ),
         qualified_review_required=True,
     ),
+    IS456Capability(
+        element="wall",
+        public_workflows=("design_braced_wall_is456",),
+        supported_case=(
+            "One regular 100-200 mm thick, one-grid, Clause 32.2 braced "
+            "reinforced-concrete wall under caller-supplied factored in-plane "
+            "vertical compression, with empirical axial-capacity and Clause "
+            "32.5 caller-provided minimum-reinforcement checks."
+        ),
+        held_cases=(
+            "Applied moment, horizontal action, wall shear, combined flexure, openings, and out-of-plane behavior are excluded.",
+            "Walls thicker than 200 mm, two reinforcement grids, and transverse-enclosure design are excluded.",
+            "Global analysis, load generation, load combinations, bar selection, anchorage, lap, crack width, and direct deflection are excluded.",
+            "Seismic/shear-wall provisions and IS 13920 detailing are excluded.",
+        ),
+        qualified_review_required=True,
+    ),
 )
 
 
@@ -650,6 +667,90 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                 "Only the declared cast-in-situ longitudinal straight-flight waist-slab case is supported.",
                 "Loads, shares, and ultimate factor are caller supplied; IS 875 actions and project combinations are not generated.",
                 "Alternate stair systems, continuity, modification factors, direct deflection, crack width, landing torsion, and automatic bar selection remain held.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_braced_wall_is456",
+            element="wall",
+            fields=(
+                _field(
+                    "request",
+                    "typed braced-wall request",
+                    "BracedWallDesignInput",
+                    True,
+                    "validated explicit input contract",
+                ),
+                _field(
+                    "status",
+                    "aggregate axial and reinforcement disposition",
+                    "enumeration",
+                    True,
+                    "PASS or FAIL",
+                ),
+                _field(
+                    "wall_thickness_mm",
+                    "wall thickness",
+                    "mm",
+                    True,
+                    "finite from 100 through 200",
+                ),
+                _field(
+                    "factored_axial_load_kn",
+                    "caller-supplied factored vertical compression",
+                    "kN",
+                    True,
+                    "finite positive",
+                ),
+                _field(
+                    "supplied_eccentricity_mm",
+                    "caller-supplied transverse load eccentricity",
+                    "mm",
+                    True,
+                    "finite non-negative",
+                ),
+                _field(
+                    "axial.utilization_ratio",
+                    "empirical axial demand-to-capacity ratio",
+                    "dimensionless",
+                    True,
+                    "finite non-negative",
+                ),
+                _field(
+                    "reinforcement.status",
+                    "provided minimum-reinforcement disposition",
+                    "enumeration",
+                    True,
+                    "PASS or FAIL",
+                ),
+                _field(
+                    "qualified_review_required",
+                    "qualified review boundary",
+                    "boolean",
+                    True,
+                    "always true",
+                ),
+                _field(
+                    "complete_engineering_design_approved",
+                    "complete engineering approval",
+                    "boolean",
+                    True,
+                    "always false",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "status",
+                    "PASS only when empirical axial capacity and both provided-reinforcement directions pass within the one-grid scope.",
+                    (
+                        "PASS is bounded software evidence, not professional design approval.",
+                        "Load generation, moments, horizontal actions, shear, openings, and seismic detailing are not represented.",
+                    ),
+                ),
+            ),
+            limitations=(
+                "Only the declared regular 100-200 mm one-grid Clause 32.2 braced wall is supported.",
+                "Factored compression, eccentricity, bracing assertions, and provenance are caller supplied.",
+                "Two-grid and transverse-enclosure design, combined flexure, shear, openings, and seismic provisions remain held.",
             ),
         ),
         IS456WorkflowContract(

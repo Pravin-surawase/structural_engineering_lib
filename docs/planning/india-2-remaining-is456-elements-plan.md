@@ -43,7 +43,7 @@ Historical staircase task IDs, PRs, and evidence remain unchanged. The former
 
 | Family | Current truth | INDIA-2 treatment |
 |---|---|---|
-| Clause 32 walls | G0 and A-B integrated; C public Python workflow is a local candidate and capability remains held | One braced empirical vertical-compression wall check activated |
+| Clause 32 walls | G0 and A-C integrated; D publication/capability promotion is a local candidate | One braced empirical vertical-compression wall check activated |
 | Clause 33 stairs | One bounded longitudinal straight waist-slab flight supported | Complete; alternate stair systems remain held |
 | Clause 29 deep beams | Not implemented | Planned after the wall program |
 | Flat slabs and column punching | Not implemented | Planned after deep beams |
@@ -59,7 +59,7 @@ boundary, held with a written reason, or not implemented.
 
 | Order | Program | Why it is placed here | State |
 |---:|---|---|---|
-| 1 | `INDIA-2-WALL` | Next clause-bounded practical element; establishes the new-family workflow | G0 and A-B integrated; C candidate; D activated |
+| 1 | `INDIA-2-WALL` | Next clause-bounded practical element; establishes the new-family workflow | G0 and A-C integrated; D candidate; acceptance next |
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
 | 2 | `INDIA-2-DEEP` | Extends beam capability but requires its own geometry, action, and detailing boundary | Planned |
 | 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Planned |
@@ -160,9 +160,10 @@ Provisional packets:
    slenderness, eccentricity, and empirical axial-capacity contract.
 3. `INDIA-2-WALL-B` — integrated; bounded minimum/provided
    reinforcement and spacing checks.
-4. `INDIA-2-WALL-C` — candidate complete; typed public Python workflow and
+4. `INDIA-2-WALL-C` — integrated; typed public Python workflow and
    frozen end-to-end benchmark example.
-5. `INDIA-2-WALL-D` — thin API, capability truth, and evidence freeze.
+5. `INDIA-2-WALL-D` — candidate complete; thin API, capability truth, and
+   evidence freeze.
 6. `INDIA-2-WALL-ACCEPTANCE` — focused family acceptance after A-D integration.
 
 ### 6.2 INDIA-2-STAIR — Clause 33 staircase program
@@ -299,7 +300,8 @@ authorized programs.
 
 ## 9. Exact next action
 
-Integrate the `INDIA-2-WALL-C` candidate, then start `INDIA-2-WALL-D` from the
-verified integrated head. The owner's 2026-08-16 request activates WALL-A-D and
+Integrate the `INDIA-2-WALL-D` candidate, then run focused wall-family
+acceptance from the verified integrated head. The owner's 2026-08-16 request
+activates WALL-A-D and
 the later INDIA-2 families subject to each family's own G0 returning GO. No G0
 may be bypassed, and a HOLD remains a truthful non-implementation outcome.

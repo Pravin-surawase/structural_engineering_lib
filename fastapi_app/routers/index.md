@@ -1,8 +1,8 @@
 # Routers
 
 **Type:** Python Package
-**Last Updated:** 2026-08-15
-**Files:** 20
+**Last Updated:** 2026-08-16
+**Files:** 21
 
 ## Public API
 
@@ -22,6 +22,7 @@
 - `rebar`
 - `staircase`
 - `streaming`
+- `wall`
 - `websocket`
 - `workflows`
 
@@ -29,7 +30,7 @@
 
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
-| [__init__.py](__init__.py) | FastAPI Routers Package. | 0 | 0 | 48 |
+| [__init__.py](__init__.py) | FastAPI Routers Package. | 0 | 0 | 50 |
 | [analysis.py](analysis.py) | Smart Analysis Router. | 0 | 3 | 338 |
 | [capabilities.py](capabilities.py) | Public discovery route for the canonical supported IS 456 co | 0 | 1 | 23 |
 | [catalog.py](catalog.py) | Thin read-only transport for the canonical application workf | 0 | 1 | 51 |
@@ -47,5 +48,6 @@
 | [rebar.py](rebar.py) | Rebar Validation and Application Router. | 7 | 2 | 269 |
 | [staircase.py](staircase.py) | FastAPI transport for the bounded straight-flight staircase  | 0 | 1 | 66 |
 | [streaming.py](streaming.py) | Server-Sent Events (SSE) Router for Batch Processing. | 3 | 3 | 351 |
+| [wall.py](wall.py) | FastAPI transport for the bounded braced-wall service. | 0 | 1 | 117 |
 | [websocket.py](websocket.py) | WebSocket Router for Live Design Updates. | 3 | 3 | 428 |
 | [workflows.py](workflows.py) | Default-disabled transport for the one allowlisted beam work | 0 | 4 | 172 |

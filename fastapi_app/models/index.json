@@ -2,14 +2,14 @@
   "folder": "fastapi_app/models",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-15",
-  "file_count": 17,
+  "last_updated": "2026-08-16",
+  "file_count": 18,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
       "size_lines": 88,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Pydantic Models Package.",
       "content_hash": "ef8eea18fcda"
     },
@@ -17,7 +17,7 @@
       "name": "analysis.py",
       "type": "python",
       "size_lines": 264,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Smart Analysis Pydantic Models.",
       "classes": [
         {
@@ -70,7 +70,7 @@
       "name": "beam.py",
       "type": "python",
       "size_lines": 797,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Beam Design and Detailing Pydantic Models.",
       "classes": [
         {
@@ -152,7 +152,7 @@
       "name": "boq.py",
       "type": "python",
       "size_lines": 107,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Pydantic models for Project BOQ endpoint.",
       "classes": [
         {
@@ -194,7 +194,7 @@
       "name": "capabilities.py",
       "type": "python",
       "size_lines": 79,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Typed transport models for canonical IS 456 capability discovery.",
       "classes": [
         {
@@ -236,7 +236,7 @@
       "name": "catalog.py",
       "type": "python",
       "size_lines": 56,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Typed transport models for the application workflow catalogue.",
       "classes": [
         {
@@ -258,7 +258,7 @@
       "name": "column.py",
       "type": "python",
       "size_lines": 1192,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Column Design Pydantic Models.",
       "classes": [
         {
@@ -340,7 +340,7 @@
       "name": "common.py",
       "type": "python",
       "size_lines": 137,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Common Pydantic Models.",
       "classes": [
         {
@@ -370,7 +370,7 @@
       "name": "compliance.py",
       "type": "python",
       "size_lines": 325,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "IS 456 Compliance Check Pydantic Models.",
       "classes": [
         {
@@ -443,7 +443,7 @@
       "name": "footing.py",
       "type": "python",
       "size_lines": 266,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Transport models for the bounded concentric isolated-footing workflow.",
       "classes": [
         {
@@ -498,7 +498,7 @@
       "name": "geometry.py",
       "type": "python",
       "size_lines": 412,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "3D Geometry Pydantic Models.",
       "classes": [
         {
@@ -574,7 +574,7 @@
       "name": "library_core.py",
       "type": "python",
       "size_lines": 367,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Requests for the bounded footing and slab public-library workflows.",
       "classes": [
         {
@@ -644,7 +644,7 @@
       "name": "metadata.py",
       "type": "python",
       "size_lines": 97,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Typed payload models for maintained static JSON metadata routes.",
       "classes": [
         {
@@ -690,7 +690,7 @@
       "name": "optimization.py",
       "type": "python",
       "size_lines": 298,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Cost Optimization Pydantic Models.",
       "classes": [
         {
@@ -736,7 +736,7 @@
       "name": "response.py",
       "type": "python",
       "size_lines": 71,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Standardized API response wrappers.",
       "classes": [
         {
@@ -778,7 +778,7 @@
       "name": "staircase.py",
       "type": "python",
       "size_lines": 139,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Transport models for the bounded straight-flight staircase workflow.",
       "classes": [
         {
@@ -811,10 +811,40 @@
       "content_hash": "e748e2b911e6"
     },
     {
+      "name": "wall.py",
+      "type": "python",
+      "size_lines": 110,
+      "last_updated": "2026-08-16",
+      "description": "Transport models for the bounded braced-wall workflow.",
+      "classes": [
+        {
+          "name": "BracedWallRequest",
+          "description": "Explicit inputs for the sole supported Clause 32 wall case."
+        },
+        {
+          "name": "BracedWallAxialResponse"
+        },
+        {
+          "name": "WallDirectionalReinforcementResponse"
+        },
+        {
+          "name": "WallReinforcementResponse"
+        },
+        {
+          "name": "BracedWallProvenanceResponse"
+        },
+        {
+          "name": "BracedWallResponse",
+          "description": "Typed transport subset of the composed wall result."
+        }
+      ],
+      "content_hash": "0c084de6d87f"
+    },
+    {
       "name": "workflows.py",
       "type": "python",
       "size_lines": 99,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Typed models for the default-disabled bounded beam workflow transport.",
       "classes": [
         {
@@ -878,5 +908,5 @@
     "DuctilityCheckRequest",
     "DuctilityCheckResponse"
   ],
-  "content_hash": "095b02f2bdcf5d08"
+  "content_hash": "84435c45ba871991"
 }

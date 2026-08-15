@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Integrate `INDIA-2-WALL-C`, then begin `INDIA-2-WALL-D` from the verified integrated head |
+| **Next** | Integrate `INDIA-2-WALL-D`, then run focused wall-family acceptance from the verified integrated head |
 
 ## Required Reading
 
@@ -34,10 +34,10 @@ The historical INDIA-2A-D packets and their cumulative software gate are the
 completed `INDIA-2-STAIR` family. Do not reopen them, add another stair topology,
 add React, or begin release work without a new owner-approved scope.
 
-`INDIA-2-WALL-G0` and WALL-A-B are integrated. WALL-C now has a verified local
-typed Python workflow composing the axial and reinforcement checks with public
-clause/source provenance. The capability and FastAPI route remain held until
-WALL-D.
+`INDIA-2-WALL-G0` and WALL-A-C are integrated. WALL-D now has a verified local
+typed FastAPI route plus canonical capability/semantic truth and manifest
+promotion. After its exact head integrates, run focused family acceptance before
+starting deep-beam G0.
 
 ```bash
 ./run.sh session brief --agent orchestrator
@@ -59,13 +59,13 @@ It freezes the supported wall case, IS 456 clauses, public normalized-content
 boundary, hand benchmark and tolerance, units, fail-closed exclusions, and
 WALL-A-D packet split. No wall calculation or capability claim is part of G0.
 
-## INDIA-2-WALL-C candidate result
+## INDIA-2-WALL-D candidate result
 
-[`india-2-wall-c-public-workflow-evidence.md`](../verification/india-2-wall-c-public-workflow-evidence.md)
-records the canonical public types/function, frozen composed example, explicit
-units and provenance, held cases, API-manifest result, and focused validation.
-After its exact reviewed head is integrated, WALL-D adds only the thin FastAPI
-route, supported-capability truth, examples, and wall-family acceptance freeze.
+[`india-2-wall-d-publication-evidence.md`](../verification/india-2-wall-d-publication-evidence.md)
+records the thin REST schema/route, benchmark and unsafe-case behavior, public
+clause/source visibility, canonical capability/semantic contract, retained
+holds, manifest promotion, and focused validation. After integration, the
+acceptance packet verifies the whole wall family without new calculation scope.
 
 ## Review and gate boundary
 

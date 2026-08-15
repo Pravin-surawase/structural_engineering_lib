@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 42,
+  "file_count": 43,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -253,6 +253,14 @@
       "content_hash": "6a75d034217a"
     },
     {
+      "name": "india-2-wall-d-publication-evidence.md",
+      "type": "documentation",
+      "size_lines": 77,
+      "last_updated": "2026-08-16",
+      "description": "WALL-D publishes the integrated design_braced_wall_is456 workflow through POST /api/v1/design/wall/braced-axial and promotes exactly one bounded wall",
+      "content_hash": "0d4884916d24"
+    },
+    {
       "name": "india-2-wall-g0-scope-evidence.md",
       "type": "documentation",
       "size_lines": 125,
@@ -366,7 +374,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "4c4cc51e8871"
+      "content_hash": "775f4041c294"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -455,5 +463,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "6edaabd4f35b8455"
+  "content_hash": "07110225f9624cd3"
 }

@@ -71,15 +71,17 @@ _IS456_EVIDENCE = {
         "docs/verification/india-2c-staircase-design-evidence.md",
         "docs/verification/india-2d-staircase-publication-evidence.md",
     ),
+    "wall": (
+        "docs/verification/india-2-wall-g0-scope-evidence.md",
+        "docs/verification/india-2-wall-a-axial-kernel-evidence.md",
+        "docs/verification/india-2-wall-b-reinforcement-evidence.md",
+        "docs/verification/india-2-wall-c-public-workflow-evidence.md",
+        "docs/verification/india-2-wall-d-publication-evidence.md",
+    ),
 }
 
 _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
     "IS456:2000": (
-        {
-            "family": "wall",
-            "claim": "IS 456 wall design is not implemented.",
-            "limitations": ["Clause 32 requires a separately verified program."],
-        },
         {
             "family": "deep_beam",
             "claim": "IS 456 deep-beam design is not implemented.",

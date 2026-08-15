@@ -4147,8 +4147,9 @@ The only accepted case is one regular 100-200 mm thick one-grid braced wall
 under caller-supplied factored in-plane vertical compression. Applied moments,
 horizontal actions, shear, openings, two-grid walls, transverse-enclosure
 design, seismic detailing, load generation, bar selection, and qualified
-approval remain held. FastAPI publication and capability advertisement are
-added only by WALL-D.
+approval remain held.
+
+**FastAPI Endpoint:** `POST /api/v1/design/wall/braced-axial`
 
 ---
 
