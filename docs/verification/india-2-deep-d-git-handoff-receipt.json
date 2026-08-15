@@ -35,6 +35,7 @@
     }
   },
   "holds": [
+    "AUTHORIZATION_TARGET_MISMATCH",
     "LOCAL_HOLD_DIRTY",
     "PULL_REQUEST_NOT_CHECKED",
     "REMOTE_NOT_CHECKED",
@@ -47,27 +48,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "b2ef5e98bac4534547a3ceb98bc8d0d532fc8e322fb620031b4b75e93d714fe3",
+    "receipt_sha256": "6186a32333a0bc01d1032939d514eadb4193bde857c42246d8cce8a85d8178cf",
     "state": {
       "branch": "codex/india-2-deep-d",
       "default_base": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "33522c6c0ceb4658a34442d6b48a698d88bc2022",
-        "status": "equal"
+        "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 79.617,
+      "duration_ms": 83.096,
       "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
       "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-deep-d",
-      "head_sha": "33522c6c0ceb4658a34442d6b48a698d88bc2022",
+      "head_sha": "758000913687fdc9ab2afe07a7115ddf86027ad8",
       "hold_reasons": [
-        "changed paths: 41"
+        "changed paths: 2"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-08-15T21:24:50.869125+00:00",
+      "observed_at_utc": "2026-08-15T21:29:40.653999+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -78,67 +79,27 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 41,
+        "dirty_count": 2,
         "modified_paths": [
-          "Python/structural_lib/services/capabilities.py",
-          "Python/structural_lib/services/index.json",
-          "Python/structural_lib/services/index.md",
-          "Python/tests/index.json",
-          "Python/tests/index.md",
-          "Python/tests/integration/test_deep_beam_publication.py",
-          "Python/tests/test_indian_code_manifest.py",
           "docs/SESSION_LOG.md",
-          "docs/TASKS.md",
-          "docs/index.json",
-          "docs/index.md",
-          "docs/planning/index.json",
-          "docs/planning/index.md",
-          "docs/planning/india-2-remaining-is456-elements-plan.md",
-          "docs/planning/next-session-brief.md",
-          "docs/reference/api.md",
-          "docs/reference/index.json",
-          "docs/reference/index.md",
-          "docs/verification/index.json",
-          "docs/verification/index.md",
-          "docs/verification/indian-code-capability-coverage.json",
-          "fastapi_app/index.json",
-          "fastapi_app/index.md",
-          "fastapi_app/main.py",
-          "fastapi_app/models/index.json",
-          "fastapi_app/models/index.md",
-          "fastapi_app/routers/__init__.py",
-          "fastapi_app/routers/index.json",
-          "fastapi_app/routers/index.md",
-          "fastapi_app/tests/index.json",
-          "fastapi_app/tests/index.md",
-          "fastapi_app/tests/test_capabilities.py",
-          "scripts/_lib/indian_code_manifest.py",
-          "scripts/index.json",
-          "scripts/index.md"
+          "fastapi_app/openapi_baseline.json"
         ],
         "staged_paths": [],
-        "untracked_paths": [
-          "docs/verification/india-2-deep-d-git-handoff-receipt.json",
-          "docs/verification/india-2-deep-d-git-handoff-source-evidence.json",
-          "docs/verification/india-2-deep-d-publication-evidence.md",
-          "fastapi_app/models/deep_beam.py",
-          "fastapi_app/routers/deep_beam.py",
-          "fastapi_app/tests/test_deep_beam.py"
-        ]
+        "untracked_paths": []
       },
       "upstream": {
-        "ahead": null,
-        "behind": null,
-        "ref": "NONE",
-        "sha": null,
-        "status": "none"
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/codex/india-2-deep-d",
+        "sha": "758000913687fdc9ab2afe07a7115ddf86027ad8",
+        "status": "equal"
       },
       "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-deep-d"
     }
   },
-  "local_state_receipt_hash": "sha256:b2ef5e98bac4534547a3ceb98bc8d0d532fc8e322fb620031b4b75e93d714fe3",
+  "local_state_receipt_hash": "sha256:6186a32333a0bc01d1032939d514eadb4193bde857c42246d8cce8a85d8178cf",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-08-15T21:24:50.869272+00:00",
+  "observed_at_utc": "2026-08-15T21:29:40.654139+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
@@ -180,6 +141,7 @@
       "fastapi_app/routers/deep_beam.py",
       "fastapi_app/routers/__init__.py",
       "fastapi_app/main.py",
+      "fastapi_app/openapi_baseline.json",
       "fastapi_app/tests/test_deep_beam.py",
       "fastapi_app/tests/test_capabilities.py",
       "docs/reference/api.md",

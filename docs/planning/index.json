@@ -127,7 +127,7 @@
       "last_updated": "2026-08-16",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-16",
-      "content_hash": "253afb68585c"
+      "content_hash": "30c5912043d5"
     },
     {
       "name": "pre-release-checklist.md",
@@ -165,5 +165,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "a2c672c028213d8c"
+  "content_hash": "9f3b01a8953f8555"
 }

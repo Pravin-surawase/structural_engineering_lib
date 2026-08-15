@@ -5,8 +5,8 @@
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
 - Focus: Add only thin FastAPI transport, capability/semantic truth,
-- Git receipt: docs/verification/india-2-deep-d-git-handoff-receipt.json | sha256:b2ef5e98bac4534547a3ceb98bc8d0d532fc8e322fb620031b4b75e93d714fe3 | HOLD
-- Git identity: codex/india-2-deep-d@33522c6c0ceb4658a34442d6b48a698d88bc2022 | upstream=NONE@UNKNOWN | base=origin/main@33522c6c0ceb4658a34442d6b48a698d88bc2022 | tree=dirty | operation=none
+- Git receipt: docs/verification/india-2-deep-d-git-handoff-receipt.json | sha256:6186a32333a0bc01d1032939d514eadb4193bde857c42246d8cce8a85d8178cf | HOLD
+- Git identity: codex/india-2-deep-d@758000913687fdc9ab2afe07a7115ddf86027ad8 | upstream=origin/codex/india-2-deep-d@758000913687fdc9ab2afe07a7115ddf86027ad8 | base=origin/main@33522c6c0ceb4658a34442d6b48a698d88bc2022 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->

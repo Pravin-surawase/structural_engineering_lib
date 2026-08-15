@@ -2794,6 +2794,58 @@
         "title": "APIResponse[SampleDataResponse]",
         "type": "object"
       },
+      "APIResponse_SimplySupportedDeepBeamResponse_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SimplySupportedDeepBeamResponse"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[SimplySupportedDeepBeamResponse]",
+        "type": "object"
+      },
       "APIResponse_SlendernessCheckResponse_": {
         "example": {
           "data": {
@@ -10744,6 +10796,315 @@
         "title": "DatasetReference",
         "type": "object"
       },
+      "DeepBeamAnchorageResponse": {
+        "properties": {
+          "design_bond_stress_nmm2": {
+            "title": "Design Bond Stress Nmm2",
+            "type": "number"
+          },
+          "design_steel_stress_nmm2": {
+            "title": "Design Steel Stress Nmm2",
+            "type": "number"
+          },
+          "development_length_mm": {
+            "title": "Development Length Mm",
+            "type": "number"
+          },
+          "left_embedment_mm": {
+            "title": "Left Embedment Mm",
+            "type": "number"
+          },
+          "left_status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Left Status",
+            "type": "string"
+          },
+          "required_embedment_mm": {
+            "title": "Required Embedment Mm",
+            "type": "number"
+          },
+          "right_embedment_mm": {
+            "title": "Right Embedment Mm",
+            "type": "number"
+          },
+          "right_status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Right Status",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "design_steel_stress_nmm2",
+          "design_bond_stress_nmm2",
+          "development_length_mm",
+          "required_embedment_mm",
+          "left_embedment_mm",
+          "right_embedment_mm",
+          "left_status",
+          "right_status",
+          "status"
+        ],
+        "title": "DeepBeamAnchorageResponse",
+        "type": "object"
+      },
+      "DeepBeamGeometryResponse": {
+        "properties": {
+          "effective_span_mm": {
+            "title": "Effective Span Mm",
+            "type": "number"
+          },
+          "effective_span_to_depth_ratio": {
+            "title": "Effective Span To Depth Ratio",
+            "type": "number"
+          },
+          "lever_arm_case": {
+            "title": "Lever Arm Case",
+            "type": "string"
+          },
+          "lever_arm_mm": {
+            "title": "Lever Arm Mm",
+            "type": "number"
+          },
+          "positive_reinforcement_zone_depth_mm": {
+            "title": "Positive Reinforcement Zone Depth Mm",
+            "type": "number"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "effective_span_mm",
+          "effective_span_to_depth_ratio",
+          "lever_arm_case",
+          "lever_arm_mm",
+          "positive_reinforcement_zone_depth_mm",
+          "source_refs"
+        ],
+        "title": "DeepBeamGeometryResponse",
+        "type": "object"
+      },
+      "DeepBeamPlacementResponse": {
+        "properties": {
+          "furthest_bar_distance_mm": {
+            "title": "Furthest Bar Distance Mm",
+            "type": "number"
+          },
+          "permitted_zone_depth_mm": {
+            "title": "Permitted Zone Depth Mm",
+            "type": "number"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "permitted_zone_depth_mm",
+          "furthest_bar_distance_mm",
+          "status"
+        ],
+        "title": "DeepBeamPlacementResponse",
+        "type": "object"
+      },
+      "DeepBeamReinforcementResponse": {
+        "properties": {
+          "anchorage": {
+            "$ref": "#/components/schemas/DeepBeamAnchorageResponse"
+          },
+          "continuity_status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Continuity Status",
+            "type": "string"
+          },
+          "external_bearing_nodal_prerequisite_satisfied": {
+            "const": true,
+            "title": "External Bearing Nodal Prerequisite Satisfied",
+            "type": "boolean"
+          },
+          "geometry": {
+            "$ref": "#/components/schemas/DeepBeamGeometryResponse"
+          },
+          "horizontal_side_face": {
+            "$ref": "#/components/schemas/DeepBeamSideFaceDirectionResponse"
+          },
+          "placement": {
+            "$ref": "#/components/schemas/DeepBeamPlacementResponse"
+          },
+          "positive_tie": {
+            "$ref": "#/components/schemas/DeepBeamTieResponse"
+          },
+          "shear_deemed_satisfied_within_clause_29_scope": {
+            "title": "Shear Deemed Satisfied Within Clause 29 Scope",
+            "type": "boolean"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "vertical_side_face": {
+            "$ref": "#/components/schemas/DeepBeamSideFaceDirectionResponse"
+          }
+        },
+        "required": [
+          "geometry",
+          "positive_tie",
+          "placement",
+          "continuity_status",
+          "anchorage",
+          "vertical_side_face",
+          "horizontal_side_face",
+          "external_bearing_nodal_prerequisite_satisfied",
+          "status",
+          "shear_deemed_satisfied_within_clause_29_scope",
+          "source_refs"
+        ],
+        "title": "DeepBeamReinforcementResponse",
+        "type": "object"
+      },
+      "DeepBeamSideFaceDirectionResponse": {
+        "properties": {
+          "area_status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Area Status",
+            "type": "string"
+          },
+          "maximum_spacing_mm": {
+            "title": "Maximum Spacing Mm",
+            "type": "number"
+          },
+          "minimum_ratio": {
+            "title": "Minimum Ratio",
+            "type": "number"
+          },
+          "provided_area_mm2_per_m": {
+            "title": "Provided Area Mm2 Per M",
+            "type": "number"
+          },
+          "provided_face_grid_count": {
+            "title": "Provided Face Grid Count",
+            "type": "integer"
+          },
+          "provided_ratio": {
+            "title": "Provided Ratio",
+            "type": "number"
+          },
+          "provided_spacing_mm": {
+            "title": "Provided Spacing Mm",
+            "type": "number"
+          },
+          "required_area_mm2_per_m": {
+            "title": "Required Area Mm2 Per M",
+            "type": "number"
+          },
+          "required_face_grid_count": {
+            "title": "Required Face Grid Count",
+            "type": "integer"
+          },
+          "spacing_status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Spacing Status",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "minimum_ratio",
+          "required_area_mm2_per_m",
+          "provided_area_mm2_per_m",
+          "provided_ratio",
+          "required_face_grid_count",
+          "provided_face_grid_count",
+          "maximum_spacing_mm",
+          "provided_spacing_mm",
+          "area_status",
+          "spacing_status",
+          "status"
+        ],
+        "title": "DeepBeamSideFaceDirectionResponse",
+        "type": "object"
+      },
+      "DeepBeamTieResponse": {
+        "properties": {
+          "design_steel_stress_nmm2": {
+            "title": "Design Steel Stress Nmm2",
+            "type": "number"
+          },
+          "provided_area_mm2": {
+            "title": "Provided Area Mm2",
+            "type": "number"
+          },
+          "required_area_mm2": {
+            "title": "Required Area Mm2",
+            "type": "number"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "required_area_mm2",
+          "provided_area_mm2",
+          "design_steel_stress_nmm2",
+          "status"
+        ],
+        "title": "DeepBeamTieResponse",
+        "type": "object"
+      },
       "DeflectionCheckRequest": {
         "description": "Request for deflection span/depth ratio check.",
         "properties": {
@@ -16535,6 +16896,365 @@
         "title": "ShearResult",
         "type": "object"
       },
+      "SimplySupportedDeepBeamProvenanceResponse": {
+        "properties": {
+          "action_basis_reference": {
+            "title": "Action Basis Reference",
+            "type": "string"
+          },
+          "action_generation_status": {
+            "title": "Action Generation Status",
+            "type": "string"
+          },
+          "bearing_nodal_zone_reference": {
+            "title": "Bearing Nodal Zone Reference",
+            "type": "string"
+          },
+          "bearing_nodal_zone_status": {
+            "title": "Bearing Nodal Zone Status",
+            "type": "string"
+          },
+          "benchmark_id": {
+            "title": "Benchmark Id",
+            "type": "string"
+          },
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "clause_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "code_edition": {
+            "title": "Code Edition",
+            "type": "string"
+          },
+          "geometry_basis_reference": {
+            "title": "Geometry Basis Reference",
+            "type": "string"
+          },
+          "reinforcement_basis_reference": {
+            "title": "Reinforcement Basis Reference",
+            "type": "string"
+          },
+          "schema_version": {
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "workflow": {
+            "title": "Workflow",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "code_edition",
+          "workflow",
+          "case_id",
+          "benchmark_id",
+          "action_generation_status",
+          "bearing_nodal_zone_status",
+          "geometry_basis_reference",
+          "bearing_nodal_zone_reference",
+          "action_basis_reference",
+          "reinforcement_basis_reference",
+          "clause_refs",
+          "source_refs"
+        ],
+        "title": "SimplySupportedDeepBeamProvenanceResponse",
+        "type": "object"
+      },
+      "SimplySupportedDeepBeamRequest": {
+        "additionalProperties": false,
+        "description": "Explicit inputs for the sole supported Clause 29 deep-beam case.",
+        "properties": {
+          "action_basis_reference": {
+            "minLength": 1,
+            "title": "Action Basis Reference",
+            "type": "string"
+          },
+          "beam_width_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Beam Width Mm",
+            "type": "number"
+          },
+          "bearing_nodal_zone_reference": {
+            "minLength": 1,
+            "title": "Bearing Nodal Zone Reference",
+            "type": "string"
+          },
+          "bearing_nodal_zone_verified": {
+            "const": true,
+            "title": "Bearing Nodal Zone Verified",
+            "type": "boolean"
+          },
+          "case_id": {
+            "minLength": 1,
+            "title": "Case Id",
+            "type": "string"
+          },
+          "centre_to_centre_span_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Centre To Centre Span Mm",
+            "type": "number"
+          },
+          "clear_span_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Clear Span Mm",
+            "type": "number"
+          },
+          "concrete_grade_nmm2": {
+            "enum": [
+              20,
+              25,
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60
+            ],
+            "title": "Concrete Grade Nmm2",
+            "type": "integer"
+          },
+          "dapped_ends_present": {
+            "const": false,
+            "title": "Dapped Ends Present",
+            "type": "boolean"
+          },
+          "face_grid_count": {
+            "enum": [
+              1,
+              2
+            ],
+            "title": "Face Grid Count",
+            "type": "integer"
+          },
+          "factored_positive_moment_knm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Factored Positive Moment Knm",
+            "type": "number"
+          },
+          "furthest_main_bar_from_tension_face_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Furthest Main Bar From Tension Face Mm",
+            "type": "number"
+          },
+          "geometry_basis_reference": {
+            "minLength": 1,
+            "title": "Geometry Basis Reference",
+            "type": "string"
+          },
+          "hanging_action_required": {
+            "const": false,
+            "title": "Hanging Action Required",
+            "type": "boolean"
+          },
+          "horizontal_side_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 16.0,
+            "title": "Horizontal Side Bar Diameter Mm",
+            "type": "number"
+          },
+          "horizontal_side_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Horizontal Side Bar Spacing Mm",
+            "type": "number"
+          },
+          "left_support_embedment_mm": {
+            "minimum": 0.0,
+            "title": "Left Support Embedment Mm",
+            "type": "number"
+          },
+          "main_bar_count": {
+            "exclusiveMinimum": 0.0,
+            "title": "Main Bar Count",
+            "type": "integer"
+          },
+          "main_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Main Bar Diameter Mm",
+            "type": "number"
+          },
+          "main_bar_splices_present": {
+            "const": false,
+            "title": "Main Bar Splices Present",
+            "type": "boolean"
+          },
+          "main_bars_bundled": {
+            "const": false,
+            "title": "Main Bars Bundled",
+            "type": "boolean"
+          },
+          "main_bars_continuous_between_supports": {
+            "title": "Main Bars Continuous Between Supports",
+            "type": "boolean"
+          },
+          "openings_present": {
+            "const": false,
+            "title": "Openings Present",
+            "type": "boolean"
+          },
+          "overall_depth_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Overall Depth Mm",
+            "type": "number"
+          },
+          "reinforcement_basis_reference": {
+            "minLength": 1,
+            "title": "Reinforcement Basis Reference",
+            "type": "string"
+          },
+          "right_support_embedment_mm": {
+            "minimum": 0.0,
+            "title": "Right Support Embedment Mm",
+            "type": "number"
+          },
+          "solid_rectangular_section": {
+            "const": true,
+            "title": "Solid Rectangular Section",
+            "type": "boolean"
+          },
+          "steel_grade_nmm2": {
+            "enum": [
+              415,
+              500
+            ],
+            "title": "Steel Grade Nmm2",
+            "type": "integer"
+          },
+          "support_type": {
+            "const": "simply_supported",
+            "title": "Support Type",
+            "type": "string"
+          },
+          "top_loaded": {
+            "const": true,
+            "title": "Top Loaded",
+            "type": "boolean"
+          },
+          "vertical_side_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 16.0,
+            "title": "Vertical Side Bar Diameter Mm",
+            "type": "number"
+          },
+          "vertical_side_bar_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Vertical Side Bar Spacing Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "case_id",
+          "centre_to_centre_span_mm",
+          "clear_span_mm",
+          "overall_depth_mm",
+          "beam_width_mm",
+          "concrete_grade_nmm2",
+          "steel_grade_nmm2",
+          "factored_positive_moment_knm",
+          "main_bar_count",
+          "main_bar_diameter_mm",
+          "furthest_main_bar_from_tension_face_mm",
+          "main_bars_continuous_between_supports",
+          "main_bars_bundled",
+          "main_bar_splices_present",
+          "left_support_embedment_mm",
+          "right_support_embedment_mm",
+          "face_grid_count",
+          "vertical_side_bar_diameter_mm",
+          "vertical_side_bar_spacing_mm",
+          "horizontal_side_bar_diameter_mm",
+          "horizontal_side_bar_spacing_mm",
+          "geometry_basis_reference",
+          "bearing_nodal_zone_reference",
+          "action_basis_reference",
+          "reinforcement_basis_reference",
+          "support_type",
+          "solid_rectangular_section",
+          "openings_present",
+          "dapped_ends_present",
+          "top_loaded",
+          "hanging_action_required",
+          "bearing_nodal_zone_verified"
+        ],
+        "title": "SimplySupportedDeepBeamRequest",
+        "type": "object"
+      },
+      "SimplySupportedDeepBeamResponse": {
+        "description": "Typed transport subset of the composed deep-beam result.",
+        "properties": {
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "complete_engineering_design_approved": {
+            "const": false,
+            "title": "Complete Engineering Design Approved",
+            "type": "boolean"
+          },
+          "held_cases": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Held Cases",
+            "type": "array"
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/SimplySupportedDeepBeamProvenanceResponse"
+          },
+          "qualified_review_required": {
+            "const": true,
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "reinforcement": {
+            "$ref": "#/components/schemas/DeepBeamReinforcementResponse"
+          },
+          "shear_deemed_satisfied_within_clause_29_scope": {
+            "title": "Shear Deemed Satisfied Within Clause 29 Scope",
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "supported_case": {
+            "title": "Supported Case",
+            "type": "string"
+          }
+        },
+        "required": [
+          "case_id",
+          "status",
+          "reinforcement",
+          "supported_case",
+          "held_cases",
+          "provenance",
+          "qualified_review_required",
+          "complete_engineering_design_approved",
+          "shear_deemed_satisfied_within_clause_29_scope"
+        ],
+        "title": "SimplySupportedDeepBeamResponse",
+        "type": "object"
+      },
       "SlabGeometryResponse": {
         "description": "Normalized one-way slab geometry used by the service.",
         "properties": {
@@ -19247,7 +19967,7 @@
       "name": "Structural Engineering Library",
       "url": "https://github.com/yourusername/structural_engineering_lib"
     },
-    "description": "\n## IS 456:2000 Compliant Structural Engineering Library\n\nThis API exposes the library's route-specific supported IS 456:2000 reinforced\nconcrete calculations. Each result remains subject to the documented case\nboundary and qualified engineering review.\n\n### Features\n\n- **Beam Design**: Flexure, shear, and combined design calculations\n- **Column Design**: Bounded rectangular short/long-column workflows\n- **Footing Design**: Isolated-footing checks and concentric load transfer\n- **Slab Design**: Bounded simply supported one-way slab strip\n- **Staircase Design**: Bounded longitudinal straight waist-slab flight\n- **Wall Design**: Bounded Clause 32 braced-wall axial and reinforcement checks\n- **Detailing**: Reinforcement layout, spacing, and development lengths\n- **Optimization**: Cost-optimized beam cross-section selection\n- **Smart Analysis**: AI-assisted design suggestions and insights\n- **3D Geometry**: Visualization-ready mesh generation\n\n### Design Codes\n\n- IS 456:2000 - Plain and Reinforced Concrete\n- IS 13920 - Ductile Detailing for Seismic Resistance\n\n### Units\n\nAll inputs and outputs use consistent units:\n- **Length**: millimeters (mm)\n- **Force**: kilonewtons (kN)\n- **Moment**: kilonewton-meters (kN\u00b7m)\n- **Stress**: N/mm\u00b2 (MPa)\n- **Area**: mm\u00b2\n",
+    "description": "\n## IS 456:2000 Compliant Structural Engineering Library\n\nThis API exposes the library's route-specific supported IS 456:2000 reinforced\nconcrete calculations. Each result remains subject to the documented case\nboundary and qualified engineering review.\n\n### Features\n\n- **Beam Design**: Flexure, shear, and combined design calculations\n- **Column Design**: Bounded rectangular short/long-column workflows\n- **Footing Design**: Isolated-footing checks and concentric load transfer\n- **Slab Design**: Bounded simply supported one-way slab strip\n- **Staircase Design**: Bounded longitudinal straight waist-slab flight\n- **Wall Design**: Bounded Clause 32 braced-wall axial and reinforcement checks\n- **Deep-Beam Design**: Bounded Clause 29 simply supported positive-reinforcement checks\n- **Detailing**: Reinforcement layout, spacing, and development lengths\n- **Optimization**: Cost-optimized beam cross-section selection\n- **Smart Analysis**: AI-assisted design suggestions and insights\n- **3D Geometry**: Visualization-ready mesh generation\n\n### Design Codes\n\n- IS 456:2000 - Plain and Reinforced Concrete\n- IS 13920 - Ductile Detailing for Seismic Resistance\n\n### Units\n\nAll inputs and outputs use consistent units:\n- **Length**: millimeters (mm)\n- **Force**: kilonewtons (kN)\n- **Moment**: kilonewton-meters (kN\u00b7m)\n- **Stress**: N/mm\u00b2 (MPa)\n- **Area**: mm\u00b2\n",
     "license": {
       "name": "MIT License",
       "url": "https://opensource.org/licenses/MIT"
@@ -20376,6 +21096,48 @@
         "summary": "Short Column Uniaxial Bending Design",
         "tags": [
           "column"
+        ]
+      }
+    },
+    "/api/v1/design/deep-beam/simply-supported": {
+      "post": {
+        "description": "Validate transport input and delegate all calculation to the service.",
+        "operationId": "design_simply_supported_deep_beam_api_v1_design_deep_beam_simply_supported_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SimplySupportedDeepBeamRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_SimplySupportedDeepBeamResponse_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Check a bounded Clause 29 simply supported deep beam",
+        "tags": [
+          "deep-beam"
         ]
       }
     },
@@ -22471,6 +23233,10 @@
     {
       "description": "Bounded Clause 32 braced-wall checks and maintained evidence.",
       "name": "wall"
+    },
+    {
+      "description": "Bounded Clause 29 deep-beam checks and maintained evidence.",
+      "name": "deep-beam"
     },
     {
       "description": "Reinforcement detailing including bar layout, spacing, and anchorage.",

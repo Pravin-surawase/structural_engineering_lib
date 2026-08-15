@@ -34,6 +34,8 @@ deterministic manifest promotion, and publication evidence.
   12-held family count.
 - The final validation chain stopped after the passing focused, manifest, and
   API checks because it named a retired architecture-check script.
+- The first exact-head FastAPI hosted check rejected intentional OpenAPI drift:
+  one new endpoint and ten typed schemas were absent from the baseline.
 
 ### Root causes and resolutions
 
@@ -51,6 +53,12 @@ deterministic manifest promotion, and publication evidence.
   `./run.sh find` and run `check_architecture_boundaries.py`, followed by the
   maintained import and link validators; all three corrected checks and the
   10-check quick gate pass.
+- Root cause: the local API-contract command validated routing and public API
+  documentation but did not update the separate OpenAPI snapshot owned by
+  FastAPI CI. Resolution: regenerate `fastapi_app/openapi_baseline.json` with
+  the maintained snapshot command, then rerun it in check mode; the baseline
+  and live app now agree at 78 endpoints and 303 schemas. The unchanged-scope
+  PR must rerun all hosted checks at the new exact head.
 
 ### Evidence
 
