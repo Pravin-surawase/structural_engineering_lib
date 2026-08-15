@@ -2,12 +2,13 @@
 
 **Type:** Reference
 **Audience:** Developers
-**Status:** In Progress
+**Status:** Complete
 **Created:** 2026-08-15
 **Last Updated:** 2026-08-15
 **Importance:** Critical
-**Evidence boundary:** Draft PR #753 open; hosted CI, exact-head review, and
-merge pending
+**Evidence boundary:** PR #753 exact-head checks passed and the reviewed tree
+was squash-merged as `0373de68`; INDIA-1 packets now update the generated
+manifest from fresh integrated-main lanes
 
 **Manifest:**
 [`indian-code-capability-coverage.json`](indian-code-capability-coverage.json)
@@ -82,9 +83,9 @@ composite; intentionally held families are not failed parity checks.
 
 ## Remaining gates
 
-- The fail-closed Git handoff is the retained pre-publication receipt. Draft PR
-  #753 now carries the committed baseline; hosted CI, exact-head review, and
-  merge remain pending, and this session does not wait for CI.
+- The fail-closed Git handoff remains a retained pre-publication receipt. PR
+  #753 passed its exact-head gate and its reviewed tree equals the integrated
+  squash-result tree at `0373de68`.
 - INDIA-1 must use the manifest's held cases to close or retain limitations in
   the already supported beam, column, isolated-footing, and solid-slab families.
 - Release, stable approval, engineering-use approval, and branch/worktree

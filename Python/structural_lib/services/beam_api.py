@@ -15,10 +15,11 @@ from pathlib import Path
 from typing import Any, TypeVar
 
 from structural_lib.codes.is456 import compliance, slenderness
-from structural_lib.codes.is456.beam import detailing, serviceability
+from structural_lib.codes.is456.beam import detailing, flexure, serviceability
 from structural_lib.codes.is456.beam.shear import enhanced_shear_strength
 from structural_lib.codes.is13920 import beam as ductile
 from structural_lib.core.data_types import (
+    BeamType,
     ComplianceCaseResult,
     ComplianceReport,
     CrackWidthParams,
@@ -38,6 +39,7 @@ from .api_results import (
     CostOptimizationResult,
     DesignAndDetailResult,
     DesignSuggestionsResult,
+    FlangedBeamDesignResult,
     OptimalDesign,
     SmartAnalysisResult,
 )
@@ -1230,6 +1232,231 @@ def design_beam_is456(
         tu_knm=tu_knm,
         cover_mm=cover_mm,
         stirrup_dia_mm=stirrup_dia_mm,
+    )
+
+
+def design_flanged_beam_is456(
+    *,
+    units: str,
+    case_id: str = "CASE-1",
+    beam_type: str,
+    moment_region: str,
+    load_case_basis: str,
+    mu_knm: float,
+    vu_kn: float,
+    bw_mm: float,
+    D_mm: float,
+    d_mm: float,
+    span_mm: float,
+    flange_thickness_mm: float,
+    flange_overhang_left_mm: float,
+    flange_overhang_right_mm: float,
+    fck_nmm2: float,
+    fy_nmm2: float,
+    d_dash_mm: float = 50.0,
+    asv_mm2: float = 100.0,
+    pt_percent: float | None = None,
+    ast_mm2_for_shear: float | None = None,
+    deflection_params: DeflectionParams | None = None,
+    crack_width_params: CrackWidthParams | None = None,
+    tu_knm: float = 0.0,
+    torsion_redistribution_basis: str | None = None,
+) -> FlangedBeamDesignResult:
+    """Design one bounded sagging T-beam case per IS 456:2000.
+
+    The route composes maintained effective-flange-width, flanged-flexure,
+    web-shear, and optional Level-A serviceability calculations.  It consumes
+    already-factored actions; it does not generate or validate a load envelope.
+
+    Args:
+        units: IS 456 unit-system label.
+        case_id: Stable caller-provided case identity.
+        beam_type: Must be ``"T"`` for this benchmarked route.
+        moment_region: Must be ``"sagging"`` (flange in compression).
+        load_case_basis: ``"single_factored_case"`` or
+            ``"supplied_governing_envelope"``.
+        mu_knm: Supplied factored sagging bending moment (kN·m).
+        vu_kn: Supplied factored shear force (kN).
+        bw_mm: Web width (mm); also governs the shear-stress calculation.
+        D_mm: Overall beam depth (mm).
+        d_mm: Effective depth (mm).
+        span_mm: Effective span used for flange-width calculation (mm).
+        flange_thickness_mm: Compression flange thickness (mm).
+        flange_overhang_left_mm: Physical flange beyond the web, left (mm).
+        flange_overhang_right_mm: Physical flange beyond the web, right (mm).
+        fck_nmm2: Concrete characteristic strength (N/mm²).
+        fy_nmm2: Reinforcement yield strength (N/mm²).
+        d_dash_mm: Compression-steel depth (mm).
+        asv_mm2: Area of stirrup legs used by the shear design (mm²).
+        pt_percent: Optional tension-steel percentage for shear lookup (%).
+        ast_mm2_for_shear: Optional supplied tension steel for shear lookup (mm²).
+        deflection_params: Explicit maintained span/depth inputs, if evaluated.
+        crack_width_params: Explicit maintained Annex F inputs, if evaluated.
+        tu_knm: Must remain zero; flanged torsion is outside this route.
+        torsion_redistribution_basis: Must remain ``None``; compatibility versus
+            equilibrium redistribution is outside this route.
+
+    Returns:
+        A provenance-bearing composed result with explicit geometry and holds.
+
+    Supported boundary:
+        Monolithic T-beams in positive/sagging bending with both flange
+        overhangs present.  L-beams, hogging, hollow/box, deep, prestressed,
+        axially loaded, flanged-torsion, load-envelope generation, and composed
+        flanged detailing are excluded.
+    """
+
+    _require_is456_units(units)
+    numeric_inputs = (
+        ("mu_knm", mu_knm),
+        ("vu_kn", vu_kn),
+        ("bw_mm", bw_mm),
+        ("D_mm", D_mm),
+        ("d_mm", d_mm),
+        ("span_mm", span_mm),
+        ("flange_thickness_mm", flange_thickness_mm),
+        ("flange_overhang_left_mm", flange_overhang_left_mm),
+        ("flange_overhang_right_mm", flange_overhang_right_mm),
+        ("fck_nmm2", fck_nmm2),
+        ("fy_nmm2", fy_nmm2),
+        ("d_dash_mm", d_dash_mm),
+        ("asv_mm2", asv_mm2),
+        ("tu_knm", tu_knm),
+    )
+    for name, value in numeric_inputs:
+        _require_finite_real(name, value)
+
+    normalized_type = beam_type.strip().upper()
+    if normalized_type not in {"T", "FLANGED_T", "T_BEAM"}:
+        raise ValueError(
+            "FLANGED_SECTION_SCOPE_HOLD: INDIA-1A currently supports only "
+            "the independently benchmarked T-beam route; L-beams are held."
+        )
+    if moment_region.strip().lower() != "sagging":
+        raise ValueError(
+            "FLANGED_MOMENT_SCOPE_HOLD: the flange must be in compression; "
+            "hogging/flange-in-tension cases are held."
+        )
+    normalized_basis = load_case_basis.strip().lower()
+    allowed_bases = {"single_factored_case", "supplied_governing_envelope"}
+    if normalized_basis not in allowed_bases:
+        raise ValueError(
+            "LOAD_ENVELOPE_SCOPE_HOLD: provide already-factored actions as "
+            "single_factored_case or supplied_governing_envelope; this route "
+            "does not generate a load envelope."
+        )
+    if tu_knm != 0:
+        raise ValueError(
+            "FLANGED_TORSION_SCOPE_HOLD: the maintained torsion model is "
+            "limited to ordinary solid rectangular beams."
+        )
+    if torsion_redistribution_basis is not None:
+        raise ValueError(
+            "TORSION_REDISTRIBUTION_SCOPE_HOLD: compatibility-versus-equilibrium "
+            "torsion redistribution is outside this route."
+        )
+    if mu_knm < 0 or vu_kn < 0:
+        raise ValueError("mu_knm and vu_kn must be non-negative supplied actions.")
+    if flange_overhang_left_mm <= 0 or flange_overhang_right_mm <= 0:
+        raise ValueError(
+            "FLANGED_SECTION_SCOPE_HOLD: a T-beam requires positive flange "
+            "overhangs on both sides of the web."
+        )
+
+    _validate_plausibility(
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        b_mm=bw_mm,
+        d_mm=d_mm,
+        D_mm=D_mm,
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+        d_dash_mm=d_dash_mm,
+        asv_mm2=asv_mm2,
+        pt_percent=pt_percent,
+        ast_mm2_for_shear=ast_mm2_for_shear,
+    )
+
+    if deflection_params is not None:
+        if float(deflection_params.get("span_mm", -1.0)) != float(span_mm):
+            raise ValueError(
+                "SERVICEABILITY_GEOMETRY_HOLD: deflection span_mm must match "
+                "the effective span used by the flanged route."
+            )
+        if float(deflection_params.get("d_mm", -1.0)) != float(d_mm):
+            raise ValueError(
+                "SERVICEABILITY_GEOMETRY_HOLD: deflection d_mm must match the "
+                "flanged-route effective depth."
+            )
+    if crack_width_params is not None:
+        if float(crack_width_params.get("h_mm", -1.0)) != float(D_mm):
+            raise ValueError(
+                "SERVICEABILITY_GEOMETRY_HOLD: crack-width h_mm must match "
+                "the flanged-route overall depth."
+            )
+
+    bf_geometric_mm = bw_mm + flange_overhang_left_mm + flange_overhang_right_mm
+    bf_effective_mm = flexure.calculate_effective_flange_width(
+        bw_mm=bw_mm,
+        span_mm=span_mm,
+        df_mm=flange_thickness_mm,
+        flange_overhang_left_mm=flange_overhang_left_mm,
+        flange_overhang_right_mm=flange_overhang_right_mm,
+        beam_type=BeamType.FLANGED_T,
+    )
+    design = compliance.check_compliance_case(
+        case_id=case_id,
+        mu_knm=mu_knm,
+        vu_kn=vu_kn,
+        b_mm=bw_mm,
+        D_mm=D_mm,
+        d_mm=d_mm,
+        fck_nmm2=fck_nmm2,
+        fy_nmm2=fy_nmm2,
+        d_dash_mm=d_dash_mm,
+        asv_mm2=asv_mm2,
+        pt_percent=pt_percent,
+        ast_mm2_for_shear=ast_mm2_for_shear,
+        deflection_params=deflection_params,
+        crack_width_params=crack_width_params,
+        beam_type=BeamType.FLANGED_T,
+        bf_mm=bf_effective_mm,
+        Df_mm=flange_thickness_mm,
+    )
+
+    return FlangedBeamDesignResult(
+        design=design,
+        beam_type="FLANGED_T",
+        moment_region="SAGGING",
+        load_case_basis=normalized_basis.upper(),
+        bw_mm=bw_mm,
+        bf_geometric_mm=bf_geometric_mm,
+        bf_effective_mm=bf_effective_mm,
+        Df_mm=flange_thickness_mm,
+        D_mm=D_mm,
+        d_mm=d_mm,
+        span_mm=span_mm,
+        source="IS 456:2000",
+        clause_refs={
+            "effective_flange_width": "IS 456 Cl 23.1.2",
+            "flexure": "IS 456 Cl 38.1 and Annex G",
+            "shear": "IS 456 Cl 40",
+            "deflection": "IS 456 Cl 23.2",
+            "crack_width": "IS 456 Annex F",
+        },
+        assumptions=(
+            "The supplied actions are already factored and are not generated by this workflow.",
+            "The flange is monolithic and in compression under sagging bending.",
+            "Shear stress and reinforcement are evaluated using the web width bw_mm.",
+        ),
+        holds=(
+            "Load-envelope generation and completeness validation are excluded.",
+            "L-beam and hogging/flange-in-tension flexure are excluded.",
+            "Flanged torsion and compatibility-versus-equilibrium redistribution are excluded.",
+            "Hollow/box, deep, prestressed, and axially loaded beams are excluded.",
+            "Composed flanged detailing is not included in this workflow.",
+        ),
+        is_ok=design.is_ok,
     )
 
 

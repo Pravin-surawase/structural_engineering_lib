@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-15",
-  "file_count": 18,
+  "file_count": 19,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -27,7 +27,7 @@
       "name": "README.md",
       "type": "documentation",
       "size_lines": 64,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "title": "Verification",
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards. | Document | Description |",
       "content_hash": "4763d5ab8b48"
@@ -36,7 +36,7 @@
       "name": "alpha-0231-local-prepublication-rehearsal.md",
       "type": "documentation",
       "size_lines": 72,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "title": "v0.23.1a1 Local Prepublication Rehearsal",
       "description": "not a CI artifact identity, tag, or publication approval | Artifact | Bytes | Members | SHA-256 |",
       "content_hash": "d6a173859f50"
@@ -45,7 +45,7 @@
       "name": "bundled-sample-boq-evidence.md",
       "type": "documentation",
       "size_lines": 58,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "description": "This is the reproducible software record for the bundled ETABS sample. It is not a bill approved for procurement or construction and is not professional",
       "content_hash": "78b84b5474bc"
     },
@@ -53,7 +53,7 @@
       "name": "column-pmm-benchmark.md",
       "type": "documentation",
       "size_lines": 107,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "description": "This record independently checks the experimental rectangular-column fiber kernel at an oblique neutral-axis orientation. It is a calculation benchmark,",
       "content_hash": "fcc6aaad58e3"
     },
@@ -61,7 +61,7 @@
       "name": "examples.md",
       "type": "documentation",
       "size_lines": 1550,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "description": "This document provides benchmark examples that engineers can use to verify the library's calculations against: - Hand calculations",
       "content_hash": "79cb3add7cbe"
     },
@@ -69,14 +69,14 @@
       "name": "external-cli-test.md",
       "type": "documentation",
       "size_lines": 98,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "description": "Purpose: capture a repeatable, human-run CLI test from a fresh user. Preferred: use the automated smoke script so the output is consistent and easy to share.",
       "content_hash": "a81223e8c701"
     },
     {
       "name": "footing-release-inclusion.json",
       "type": "config",
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "top_level_keys": [
         "schema_version",
         "record_id",
@@ -89,6 +89,14 @@
         "required_shared_markers"
       ],
       "content_hash": "e15f6ebeb790"
+    },
+    {
+      "name": "india-1a-beam-route-evidence.md",
+      "type": "documentation",
+      "size_lines": 85,
+      "last_updated": "2026-08-15",
+      "description": "design_flanged_beam_is456() composes one monolithic sagging T-beam case from already-factored supplied actions. It calculates the effective flange width,",
+      "content_hash": "97194ff486b7"
     },
     {
       "name": "indian-code-capability-coverage.json",
@@ -104,22 +112,22 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "4cecc72906d0"
+      "content_hash": "a255bc11d6bf"
     },
     {
       "name": "indian-code-truth-baseline.md",
       "type": "documentation",
-      "size_lines": 92,
+      "size_lines": 93,
       "last_updated": "2026-08-15",
       "title": "INDIA-0 Indian-Code Truth Baseline",
-      "description": "merge pending indian-code-capability-coverage.json",
-      "content_hash": "97b85669d0b9"
+      "description": "was squash-merged as 0373de68; INDIA-1 packets now update the generated manifest from fresh integrated-main lanes",
+      "content_hash": "e8d850af25d8"
     },
     {
       "name": "insights-verification-pack.md",
       "type": "documentation",
       "size_lines": 101,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "description": "This pack provides benchmark test cases for the insights module to ensure accuracy and prevent regressions. Tests are automatically run in CI on every PR. Run all insights benchmark tests:",
       "content_hash": "62116e5ed5fe"
     },
@@ -127,7 +135,7 @@
       "name": "is456-library-first-evidence.md",
       "type": "documentation",
       "size_lines": 169,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "title": "IS 456 Library-First Evidence and Claim Crosswalk",
       "description": "| Source | SHA-256 | Pages | Use | |---|---|---:|---|",
       "content_hash": "3a47d498ba82"
@@ -135,7 +143,7 @@
     {
       "name": "is456-public-distribution-permission.json",
       "type": "config",
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "top_level_keys": [
         "schema_version",
         "record_id",
@@ -162,7 +170,7 @@
       "name": "pack.md",
       "type": "documentation",
       "size_lines": 56,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "description": "This repo’s unit tests validate correctness and edge cases, but they don’t always answer the question: **“did the numerical design outputs change?”** The **Verification Pack** is a small set of **pinn",
       "content_hash": "fa4fe75b3d05"
     },
@@ -170,7 +178,7 @@
       "name": "release-artifact-evidence-template.md",
       "type": "documentation",
       "size_lines": 38,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "title": "Release Artifact Evidence Template",
       "description": "Complete this record from the CI run that built the exact candidate. | Field | Value |",
       "content_hash": "dd7652006f11"
@@ -179,7 +187,7 @@
       "name": "ui-experience-session-2-acceptance.md",
       "type": "documentation",
       "size_lines": 70,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "description": "This is the software acceptance record for UIX-001 P9-P15. It does not certify the formulas, approve a structural design, or authorize professional use.",
       "content_hash": "82dbbd6cae09"
     },
@@ -187,11 +195,11 @@
       "name": "validation-pack.md",
       "type": "documentation",
       "size_lines": 396,
-      "last_updated": "2026-08-12",
+      "last_updated": "2026-08-15",
       "description": "This pack provides 5 benchmark beams and 3 benchmark columns with IS 456 references that you can use to validate the library's calculations against hand calculations, SP 16 design aids, or other trust",
       "content_hash": "63fd4822c78c"
     }
   ],
   "subfolders": [],
-  "content_hash": "bdfec0cc8d033a6f"
+  "content_hash": "99f6903b00f392a9"
 }

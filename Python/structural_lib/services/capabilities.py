@@ -101,16 +101,25 @@ class IS456SemanticContract:
 _CAPABILITIES = (
     IS456Capability(
         element="beam",
-        public_workflows=("design_beam_is456", "check_beam_is456", "detail_beam_is456"),
+        public_workflows=(
+            "design_beam_is456",
+            "design_flanged_beam_is456",
+            "check_beam_is456",
+            "detail_beam_is456",
+        ),
         supported_case=(
             "Ordinary solid rectangular beam primary design for flexure and shear, "
             "with optional IS 456 torsion within fck 15-40 N/mm2 and fy <= 500 "
             "N/mm2, plus maintained Level-A deflection and crack-width checks when "
-            "their explicit inputs are supplied."
+            "their explicit inputs are supplied; and monolithic sagging T-beam "
+            "flexure with effective-flange-width calculation, web shear, and the "
+            "same explicit serviceability boundary."
         ),
         held_cases=(
-            "Flanged, hollow/box, deep, prestressed, or axially loaded torsion cases are excluded.",
+            "L-beam, hogging/flange-in-tension, flanged torsion, hollow/box, deep, prestressed, or axially loaded cases are excluded.",
             "Compatibility-versus-equilibrium torsion redistribution decisions are excluded.",
+            "Load-envelope generation and completeness validation are excluded; the flanged route accepts only declared supplied factored actions.",
+            "Composed flanged detailing remains excluded.",
             "Beam check, detailing, batch, import, and other automation surfaces that do not accept Tu and serviceability inputs remain outside the combined route.",
             "Serviceability is held unless span, support condition, crack geometry, and service strain or stress are explicitly supplied.",
         ),
@@ -260,6 +269,86 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
             limitations=(
                 "Optional torsion is limited to the ordinary solid rectangular route.",
                 "Serviceability requires explicit maintained inputs.",
+                "Qualified engineering review remains required.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_flanged_beam_is456",
+            element="beam",
+            fields=(
+                _field(
+                    "mu_knm",
+                    "supplied factored sagging moment",
+                    "kN m",
+                    True,
+                    "finite non-negative",
+                ),
+                _field(
+                    "vu_kn",
+                    "supplied factored shear force",
+                    "kN",
+                    True,
+                    "finite non-negative",
+                ),
+                _field("bw_mm", "web width", "mm", True, _MM),
+                _field("D_mm", "overall section depth", "mm", True, _MM),
+                _field("d_mm", "effective section depth", "mm", True, _MM),
+                _field("span_mm", "effective span", "mm", True, _MM),
+                _field(
+                    "flange_thickness_mm",
+                    "compression flange thickness",
+                    "mm",
+                    True,
+                    _MM,
+                ),
+                _field(
+                    "flange_overhang_left_mm",
+                    "left physical flange overhang",
+                    "mm",
+                    True,
+                    _MM,
+                ),
+                _field(
+                    "flange_overhang_right_mm",
+                    "right physical flange overhang",
+                    "mm",
+                    True,
+                    _MM,
+                ),
+                _field(
+                    "bf_effective_mm",
+                    "calculated effective flange width",
+                    "mm",
+                    True,
+                    _MM,
+                ),
+                _field("fck_nmm2", "concrete strength", "N/mm2", True, _N_PER_MM2),
+                _field("fy_nmm2", "steel strength", "N/mm2", True, _N_PER_MM2),
+                _field(
+                    "load_case_basis",
+                    "supplied action basis",
+                    "enumeration",
+                    True,
+                    "single factored case or supplied governing envelope",
+                ),
+                _field(
+                    "is_ok", "combined compliance outcome", "boolean", True, _BOOLEAN
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "is_ok",
+                    "The supported sagging T-beam flexure, web shear, and every enabled serviceability check pass.",
+                    (
+                        "Only supplied already-factored actions are evaluated.",
+                        "It is software evidence, not professional design approval.",
+                    ),
+                ),
+            ),
+            limitations=(
+                "Only the independently benchmarked monolithic sagging T-beam route is supported.",
+                "L-beam, hogging, flanged torsion, torsion redistribution, load-envelope generation, and composed detailing are held.",
+                "Serviceability requires explicit maintained inputs matching the section geometry.",
                 "Qualified engineering review remains required.",
             ),
         ),

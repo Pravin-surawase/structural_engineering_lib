@@ -14,7 +14,8 @@ Related:
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
+from enum import Enum
 from typing import Any
 
 from structural_lib.core.result_base import BaseResult
@@ -22,6 +23,73 @@ from structural_lib.core.result_base import BaseResult
 # =============================================================================
 # Design and Detail Combined Result
 # =============================================================================
+
+
+@dataclass(frozen=True)
+class FlangedBeamDesignResult:
+    """Composed sagging T-beam design result for the bounded INDIA-1A route.
+
+    ``design`` contains the maintained flexure, web-shear, and optional
+    serviceability results.  The remaining fields preserve the section
+    geometry, load-case meaning, provenance, and explicit held boundaries that
+    distinguish this route from the ordinary rectangular beam workflow.
+    """
+
+    design: Any  # ComplianceCaseResult; Any avoids a service/core import cycle.
+    beam_type: str
+    moment_region: str
+    load_case_basis: str
+    bw_mm: float
+    bf_geometric_mm: float
+    bf_effective_mm: float
+    Df_mm: float
+    D_mm: float
+    d_mm: float
+    span_mm: float
+    source: str
+    clause_refs: dict[str, str]
+    assumptions: tuple[str, ...]
+    holds: tuple[str, ...]
+    is_ok: bool
+
+    def to_dict(self) -> dict[str, Any]:
+        """Return a serialization-ready result with explicit units."""
+
+        def _jsonable(value: Any) -> Any:
+            if isinstance(value, Enum):
+                return value.name
+            if isinstance(value, dict):
+                return {key: _jsonable(item) for key, item in value.items()}
+            if isinstance(value, (list, tuple)):
+                return [_jsonable(item) for item in value]
+            return value
+
+        return {
+            "design": _jsonable(asdict(self.design)),
+            "beam_type": self.beam_type,
+            "moment_region": self.moment_region,
+            "load_case_basis": self.load_case_basis,
+            "geometry": {
+                "bw_mm": self.bw_mm,
+                "bf_geometric_mm": self.bf_geometric_mm,
+                "bf_effective_mm": self.bf_effective_mm,
+                "Df_mm": self.Df_mm,
+                "D_mm": self.D_mm,
+                "d_mm": self.d_mm,
+                "span_mm": self.span_mm,
+            },
+            "explicit_units": {
+                "length": "mm",
+                "force": "kN",
+                "moment": "kN·m",
+                "stress": "N/mm²",
+            },
+            "source": self.source,
+            "clause_refs": dict(self.clause_refs),
+            "assumptions": list(self.assumptions),
+            "holds": list(self.holds),
+            "is_ok": self.is_ok,
+        }
 
 
 @dataclass

@@ -5,6 +5,131 @@
 
 ---
 
+## 2026-08-15 — Session: PR #753 Integration and INDIA-1A Beam Closure
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branches:** `codex/india-0-truth-baseline`, then fresh
+`codex/india-1a-beam-route-closure` from integrated `origin/main`
+
+**Focus:** Exact-head merge PR #753, verify the squash result, and close the
+smallest independently benchmarked sagging T-beam composition without
+broadening held beam cases.
+
+### Summary
+
+- Rechecked PR #753 at exact reviewed head `dd6c1f85`, with base `96f193bd`,
+  clean mergeability, no unresolved review threads, and passing required
+  `PR Gate`; marked it ready and squash-merged it as `0373de68`.
+- Verified the reviewed and integrated tree hashes are both
+  `f02f22b7526598a21ccbf34728e92572f71442e6`; the generated INDIA-0 manifest
+  and its regression test exist on integrated main.
+- Created the isolated `codex/india-1a-beam-route-closure` worktree from exact
+  integrated main, with a clean `READY_LOCAL` state and `source_bound=true`.
+- Added `design_flanged_beam_is456()` as a dedicated Python service composition
+  over maintained effective-width, flanged-flexure, web-shear, and explicit
+  serviceability math. The stable rectangular route is unchanged.
+- Published the route through both Python facades and the semantic capability
+  registry; regenerated the deterministic Indian-code manifest and recorded
+  source, benchmark, units, tolerances, assumptions, and held boundaries in
+  `india-1a-beam-route-evidence.md`.
+- Retained L-beams, hogging/flange-in-tension, flanged torsion and redistribution,
+  load-envelope generation, composed flanged detailing, hollow/box, deep,
+  prestressed, and axially loaded beams as explicit fail-closed holds.
+
+### Issues encountered
+
+- The first narrow Ruff pass stopped on import ordering after the new public
+  result/function symbols were added.
+- The first semantic-contract run found that the new function was exported by
+  `services.api` but not by the package top-level facade, and that `is_ok` was a
+  property rather than a dataclass field visible to contract introspection.
+- Regenerating the services folder index proposed hundreds of unrelated
+  linked-worktree date and previously omitted-file changes.
+- The broad Python suite found one release-workflow regression already present
+  on integrated main: `test_docs_workflow_is_build_only_until_pages_is_configured`
+  expects a `pull_request:` trigger that `deploy-docs.yml` no longer contains.
+- The first full repository gate stopped at 28/30 because the new facade symbols
+  were absent from the generated API manifest and public API/stability docs.
+- Regenerating the reference index proposed current linked-worktree dates for
+  every untouched reference file.
+- `./run.sh check --pre-commit` could not start because the selected shared
+  Python environment does not have the `pre-commit` package installed.
+
+### Root causes and resolutions
+
+- Root cause: Black does not sort imports and the new imports were inserted by
+  semantic location rather than Ruff order. Resolution: applied Ruff's
+  mechanical import fix and reran Black/Ruff. Evidence: the focused static pass
+  is green.
+- Root cause: capability validation requires every declared workflow to be the
+  same object from `structural_lib` and `services.api`, and recognizes serialized
+  dataclass fields rather than properties. Resolution: exported the function
+  and result class through the top-level facade and made `is_ok` an explicit
+  serialized field set from the composed compliance result. Evidence: all
+  capability-semantic and manifest tests pass.
+- Root cause: the index generator derives dates from fresh worktree mtimes and
+  the maintained services index predates several unrelated integrated files.
+  Resolution: after the required dry-run, restored the two services indexes to
+  byte-identical integrated-main content and retained only task-relevant test,
+  verification, planning, and root-doc indexes. Evidence: both services index
+  files have zero diff from `origin/main`; unrelated topology drift is absent.
+- Root cause: integrated `deploy-docs.yml` is push/manual only while the
+  unchanged release regression still encodes the earlier PR-trigger contract.
+  Resolution: classified it as an unrelated pre-existing release/CI mismatch
+  and did not alter workflow policy in a beam packet. Evidence: both the
+  workflow and test have zero diff from `origin/main`; the remaining 5,917
+  Python tests passed, with 3 skipped and 6 deselected.
+- Root cause: adding top-level public symbols requires regenerating
+  `docs/reference/api-manifest.json` and documenting them in both synchronized
+  API contract documents. Resolution: ran the maintained generator and added
+  the bounded signature/result/hold contract to `api.md` and
+  `api-stability.md`. Evidence: API-manifest check and the two formerly failed
+  repository checks pass on the final rerun.
+- Root cause: the reference index shares the linked-worktree mtime behavior.
+  Resolution: retained the generated folder date, new folder hash, and exact
+  `api-manifest.json`, `api-stability.md`, and `api.md` entries while restoring
+  every untouched entry from integrated main. Evidence: the final index diff
+  contains only those task-owned records.
+- Root cause: the worktree-bound runtime correctly selected the shared project
+  interpreter, but that environment lacks the optional `pre_commit` module.
+  Resolution: did not mutate dependencies; ran Black check, Ruff, mypy, and
+  Bandit directly against every changed Python source/test path, then retained
+  the normal commit hook as the final hook authority. Evidence: every direct
+  static/security command passed.
+
+### Verification
+
+- INDIA-0 merge boundary: exact head unchanged, required `PR Gate` passed,
+  mergeability `CLEAN`, no review/comment blockers, and reviewed/integrated tree
+  equality proved after squash merge.
+- Fresh INDIA-1A runtime: `source_bound=true`, `READY_LOCAL`, zero ahead/behind
+  from integrated `origin/main` at lane creation.
+- Accepted B3 T-beam benchmark: `bf,eff=1000 mm`, `Mu,lim=835.038 kN·m`,
+  `Ast=956.6 mm²`, `xu=46.24 mm`; the composed `150 kN` shear case returns
+  exactly `1.000 N/mm²` from `bw=300 mm` and `d=500 mm`.
+- Focused safe, unsafe, boundary, serviceability, and out-of-domain tests pass;
+  existing flanged-flexure and validation-pack regressions remain green.
+- Generated Indian-code manifest is current; capability and public-facade
+  semantic tests pass.
+- Broad Python suite: 5,917 passed, 3 skipped, 6 deselected, with one confirmed
+  pre-existing release-workflow assertion outside INDIA-1A scope.
+- Black check, Ruff, mypy, and Bandit passed on all changed Python paths.
+- Final repository gate passed 30/30 after the API manifest/documentation
+  publication surfaces were corrected.
+- Owner set the remaining INDIA-1 validation cadence: focused benchmark/tests,
+  quick gate, commit hooks, and required hosted checks per packet; defer the
+  broad Python suite, full repository gate, manifest reconciliation, and
+  cumulative review until INDIA-1A through INDIA-1D are integrated, unless an
+  outcome-changing repository-wide issue requires an earlier run.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `./run.sh check --pre-commit` reported
+  `pre-commit not installed` in the selected shared environment -> ran the
+  maintained Black, Ruff, mypy, and Bandit modules directly; all passed, and
+  the normal Git commit hook remains the final hook execution path.
+
 ## 2026-08-15 — Session: INDIA-0 Draft PR Publication and INDIA-1 Handoff
 
 **Agent:** Codex (`ops`, sole writer; no subagents)
