@@ -4,12 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-15
-- Focus: Launch INDIA-2A by selecting and freezing exactly one new bounded IS 456 family
-- Draft PR: [#759](https://github.com/Pravin-surawase/structural_engineering_lib/pull/759)
-- Planning branch: `codex/india-2-session-plan`
-- Base: verified integrated `origin/main` at `4e92f3d76f7cb16d5b92ed84aa7243d76b09e508`
-- Next action: review PR #759 at its live exact head; merge only after required checks pass with no conflicts or blockers, then start a new chat and fresh `codex/india-2a-scope-foundation` worktree from the verified integrated `main`
-- Holds: no new calculation code before the INDIA-2A source/benchmark contract; no stable/engineering-use approval, release, branch/worktree deletion, or historical-lane cleanup
+- Focus: Complete INDIA-2A GO and launch INDIA-2B geometry/actions from its integrated merge
+- Current branch: `codex/india-2a-scope-foundation`
+- Base: verified integrated `origin/main` at `1fcbc6001d27ebfdc5f2a4644d405e50bdb862f7`
+- Next action: merge the unchanged INDIA-2A decision packet after required checks pass, then create a fresh `codex/india-2b-staircase-actions` worktree from integrated `main`
+- Holds: no calculation code before INDIA-2A integration; alternate stairs, other held families, IS 875/IS 1893 generation, React, stable/engineering-use approval, release, and cleanup remain out of scope
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-15
@@ -17,7 +16,7 @@
 | Release state | Target |
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-1 software and cumulative gates complete |
-| **Next** | INDIA-2A decision packet; qualified review remains a separate gate |
+| **Next** | INDIA-2B typed geometry/actions after INDIA-2A integration; qualified review remains separate |
 
 ## Required Reading
 

@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-15",
-  "file_count": 20,
+  "file_count": 24,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -91,6 +91,14 @@
       "content_hash": "e15f6ebeb790"
     },
     {
+      "name": "india-1-cumulative-gate-evidence.md",
+      "type": "documentation",
+      "size_lines": 56,
+      "last_updated": "2026-08-15",
+      "description": "INDIA-1A through INDIA-1D are integrated on main as four independently gated packets:",
+      "content_hash": "06bfd83e531d"
+    },
+    {
       "name": "india-1a-beam-route-evidence.md",
       "type": "documentation",
       "size_lines": 85,
@@ -107,6 +115,30 @@
       "content_hash": "5ed855d6483f"
     },
     {
+      "name": "india-1c-isolated-footing-workflow-evidence.md",
+      "type": "documentation",
+      "size_lines": 53,
+      "last_updated": "2026-08-15",
+      "description": "INDIA-1C publishes the existing bounded concentric isolated-footing composition through structural_lib.services.api and the package root. No footing structural",
+      "content_hash": "e6ec5ffc6d7b"
+    },
+    {
+      "name": "india-1d-slab-boundary-evidence.md",
+      "type": "documentation",
+      "size_lines": 71,
+      "last_updated": "2026-08-15",
+      "description": "INDIA-1D closes the decision boundary around already supported solid-slab serviceability, shear, and loading behavior. It does not add or promote new",
+      "content_hash": "76b8e456fffe"
+    },
+    {
+      "name": "india-2a-staircase-scope-evidence.md",
+      "type": "documentation",
+      "size_lines": 111,
+      "last_updated": "2026-08-15",
+      "description": "activated INDIA-2A through INDIA-2D on 2026-08-15 by requesting that INDIA-2 be started and finished. This decision selects only the case below; it does not",
+      "content_hash": "6d6defbea3ed"
+    },
+    {
       "name": "indian-code-capability-coverage.json",
       "type": "config",
       "last_updated": "2026-08-15",
@@ -120,7 +152,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "0aac529e3955"
+      "content_hash": "ea7c0722948b"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -168,11 +200,11 @@
     {
       "name": "is456-slab-evidence.md",
       "type": "documentation",
-      "size_lines": 115,
+      "size_lines": 125,
       "last_updated": "2026-08-15",
       "title": "IS 456 Solid Slab Source and Benchmark Ledger",
       "description": "| ID | Identity | Permitted implementation use | State | |---|---|---|---|",
-      "content_hash": "fd3c5179fd1c"
+      "content_hash": "087b5c252695"
     },
     {
       "name": "pack.md",
@@ -209,5 +241,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "21ade6f3cfe8440a"
+  "content_hash": "a74d2d90b9c0f5e1"
 }

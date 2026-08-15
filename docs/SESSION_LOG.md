@@ -5,6 +5,60 @@
 
 ---
 
+## 2026-08-15 — Session: INDIA-2A Staircase Scope Foundation
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-2a-scope-foundation` from integrated `origin/main` at
+`1fcbc6001d27ebfdc5f2a4644d405e50bdb862f7`
+
+**Focus:** Select exactly one new IS 456 family and freeze its source, geometry,
+action, benchmark, result, and exclusion contracts before calculation code.
+
+### Summary
+
+- Preserved the stale dirty primary checkout and created a clean linked
+  worktree from the exact PR #759 merge.
+- Verified the controlled IS 456 source identity and public-distribution
+  authority, the Clause 33.1-33.3 traceability records, and Amendment 6 scope.
+- Selected one longitudinal straight waist-slab flight with two collinear
+  landing segments and outer beam/wall supports.
+- Froze caller-supplied superimposed actions, explicit self-weight calculation,
+  three-segment analysis, supplied-bar checks, and fail-closed dispositions.
+- Accepted IIT Kharagpur NPTEL Module 9 Lesson 20 Example 9.1 as the independent
+  benchmark and retained all alternate stair systems and load-code generation.
+
+### Issues encountered
+
+- The local slab subpackage has no `index.md`, although the structural-element
+  workflow asks agents to inspect the nearest folder index.
+
+### Root causes and resolutions
+
+- The slab folder was added without a maintained local Markdown index; the
+  attempted read therefore failed. Inspected the live slab modules, service
+  facade, tests, and the neighboring footing index directly instead. Evidence:
+  source search located the accepted one-way flexure, shear, detailing, and
+  serviceability contracts used to shape the staircase boundary.
+
+### Evidence
+
+- New worktree Git state: `READY_LOCAL`; runtime diagnosis: `source_bound=true`.
+- Indian-code manifest is current and still holds stair capability pending
+  executable B-D evidence.
+- Controlled primary source hashes and the owner distribution record are
+  unchanged.
+- NPTEL Example 9.1 supplies exact 5.1 m span, load, reaction, moment, shear,
+  and reinforcement targets retained in the INDIA-2A evidence record.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: attempted to read the non-existent
+  `Python/structural_lib/codes/is456/slab/index.md` -> inspected the live slab
+  modules and service contracts directly.
+
+---
+
 ## 2026-08-15 — Session: INDIA-2 Planning and Milestone-Gate Cadence
 
 **Agent:** Codex (`orchestrator`, sole writer; no subagents)
