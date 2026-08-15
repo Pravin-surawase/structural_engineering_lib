@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 39,
+  "file_count": 40,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -229,6 +229,14 @@
       "content_hash": "78d94af83e93"
     },
     {
+      "name": "india-2-wall-a-axial-kernel-evidence.md",
+      "type": "documentation",
+      "size_lines": 83,
+      "last_updated": "2026-08-16",
+      "description": "WALL-A implements the pure IS 456 layer for the accepted Clause 32.2 braced wall case. It resolves effective height, enforces the maximum effective-height",
+      "content_hash": "f64b2ddf2842"
+    },
+    {
       "name": "india-2-wall-g0-scope-evidence.md",
       "type": "documentation",
       "size_lines": 125,
@@ -342,7 +350,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "ae127d33e8c0"
+      "content_hash": "897f658396f9"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -431,5 +439,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "16b6681ee338bb1c"
+  "content_hash": "fef48e7bef42a50b"
 }

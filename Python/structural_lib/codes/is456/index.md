@@ -1,7 +1,7 @@
 # Is456
 
 **Type:** Python Package
-**Last Updated:** 2026-08-15
+**Last Updated:** 2026-08-16
 **Files:** 14
 
 ## Public API
@@ -58,3 +58,4 @@
 | [footing/](footing/) 📦 | 10 |  |
 | [slab/](slab/) 📦 | 16 |  |
 | [staircase/](staircase/) 📦 | 7 |  |
+| [wall/](wall/) 📦 | 5 |  |

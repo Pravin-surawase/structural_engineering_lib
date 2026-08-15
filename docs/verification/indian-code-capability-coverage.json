@@ -263,11 +263,11 @@
         }
       ],
       "registration_summary": {
-        "known_references": 127,
-        "registered_known_references": 62,
-        "metadata_only_references": 65,
+        "known_references": 134,
+        "registered_known_references": 67,
+        "metadata_only_references": 67,
         "registration_only_references": 0,
-        "registration_pct": 48.8
+        "registration_pct": 50.0
       },
       "references": [
         {
@@ -710,7 +710,7 @@
           "reference_id": "IS456:2000:32.1",
           "reference": "32.1",
           "reference_type": "clause",
-          "title": "Empirical Design Method for Walls",
+          "title": "Walls - General",
           "category": "walls",
           "registration_status": "METADATA_ONLY",
           "functions": []
@@ -719,16 +719,71 @@
           "reference_id": "IS456:2000:32.2",
           "reference": "32.2",
           "reference_type": "clause",
-          "title": "Design of Reinforced Concrete Walls",
+          "title": "Empirical Design Method for In-Plane Vertical Loads",
           "category": "walls",
           "registration_status": "METADATA_ONLY",
           "functions": []
         },
         {
+          "reference_id": "IS456:2000:32.2.1",
+          "reference": "32.2.1",
+          "reference_type": "clause",
+          "title": "Braced Walls",
+          "category": "walls",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.wall.axial.resolve_braced_wall_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:32.2.2",
+          "reference": "32.2.2",
+          "reference_type": "clause",
+          "title": "Eccentricity of Vertical Load",
+          "category": "walls",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.wall.axial.check_braced_wall_axial_capacity"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:32.2.3",
+          "reference": "32.2.3",
+          "reference_type": "clause",
+          "title": "Maximum Effective Height to Thickness Ratio",
+          "category": "walls",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.wall.axial.resolve_braced_wall_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:32.2.4",
+          "reference": "32.2.4",
+          "reference_type": "clause",
+          "title": "Effective Height of Braced Wall",
+          "category": "walls",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.wall.axial.resolve_braced_wall_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:32.2.5",
+          "reference": "32.2.5",
+          "reference_type": "clause",
+          "title": "Design Axial Strength of Wall",
+          "category": "walls",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.wall.axial.check_braced_wall_axial_capacity"
+          ]
+        },
+        {
           "reference_id": "IS456:2000:32.3",
           "reference": "32.3",
           "reference_type": "clause",
-          "title": "Eccentricity of Vertical Load on Walls",
+          "title": "Walls Subjected to Combined Horizontal and Vertical Forces",
           "category": "walls",
           "registration_status": "METADATA_ONLY",
           "functions": []
@@ -737,7 +792,7 @@
           "reference_id": "IS456:2000:32.4",
           "reference": "32.4",
           "reference_type": "clause",
-          "title": "Reinforcement in Walls",
+          "title": "Design for Horizontal Shear",
           "category": "walls",
           "registration_status": "METADATA_ONLY",
           "functions": []
@@ -746,7 +801,25 @@
           "reference_id": "IS456:2000:32.5",
           "reference": "32.5",
           "reference_type": "clause",
-          "title": "Maximum Axial Load Capacity of Wall",
+          "title": "Minimum Requirements for Reinforcement in Walls",
+          "category": "walls",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:32.5.1",
+          "reference": "32.5.1",
+          "reference_type": "clause",
+          "title": "Reinforcement Grids for Thick Walls",
+          "category": "walls",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:32.5.2",
+          "reference": "32.5.2",
+          "reference_type": "clause",
+          "title": "Transverse Enclosure of Vertical Wall Reinforcement",
           "category": "walls",
           "registration_status": "METADATA_ONLY",
           "functions": []

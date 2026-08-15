@@ -5,8 +5,8 @@
     "title": "Plain and Reinforced Concrete - Code of Practice",
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
-    "last_updated": "2026-03-30",
-    "total_clauses": 128,
+    "last_updated": "2026-08-16",
+    "total_clauses": 135,
     "includes_references": [
       "IS 13920:2016"
     ],
@@ -545,59 +545,126 @@
       ]
     },
     "32.1": {
-      "title": "Empirical Design Method for Walls",
+      "title": "Walls - General",
       "section": "32 - Walls",
       "category": "walls",
       "keywords": [
         "wall design",
-        "empirical",
-        "braced wall",
-        "Puw",
-        "eccentricity"
+        "direct compression",
+        "combined flexure",
+        "minimum thickness"
       ]
     },
     "32.2": {
-      "title": "Design of Reinforced Concrete Walls",
+      "title": "Empirical Design Method for In-Plane Vertical Loads",
       "section": "32 - Walls",
       "category": "walls",
       "keywords": [
-        "RC wall",
-        "minimum thickness",
-        "load-bearing",
-        "design"
+        "empirical",
+        "vertical compression",
+        "braced wall"
       ]
     },
-    "32.3": {
-      "title": "Eccentricity of Vertical Load on Walls",
+    "32.2.1": {
+      "title": "Braced Walls",
+      "section": "32 - Walls",
+      "category": "walls",
+      "keywords": [
+        "braced wall",
+        "lateral stability",
+        "diaphragm",
+        "connection"
+      ]
+    },
+    "32.2.2": {
+      "title": "Eccentricity of Vertical Load",
       "section": "32 - Walls",
       "category": "walls",
       "keywords": [
         "eccentricity",
-        "wall",
-        "lateral deflection",
-        "e/t ratio"
+        "vertical load",
+        "minimum eccentricity"
       ]
     },
-    "32.4": {
-      "title": "Reinforcement in Walls",
+    "32.2.3": {
+      "title": "Maximum Effective Height to Thickness Ratio",
       "section": "32 - Walls",
       "category": "walls",
       "keywords": [
-        "wall reinforcement",
-        "vertical",
-        "horizontal",
-        "minimum",
-        "spacing"
+        "effective height",
+        "wall thickness",
+        "slenderness"
       ]
     },
-    "32.5": {
-      "title": "Maximum Axial Load Capacity of Wall",
+    "32.2.4": {
+      "title": "Effective Height of Braced Wall",
+      "section": "32 - Walls",
+      "category": "walls",
+      "keywords": [
+        "effective height",
+        "rotation restraint",
+        "lateral restraint"
+      ]
+    },
+    "32.2.5": {
+      "title": "Design Axial Strength of Wall",
       "section": "32 - Walls",
       "category": "walls",
       "keywords": [
         "wall capacity",
-        "maximum load",
-        "slenderness limit"
+        "Puw",
+        "additional eccentricity"
+      ]
+    },
+    "32.3": {
+      "title": "Walls Subjected to Combined Horizontal and Vertical Forces",
+      "section": "32 - Walls",
+      "category": "walls",
+      "keywords": [
+        "horizontal force",
+        "vertical force",
+        "combined actions"
+      ]
+    },
+    "32.4": {
+      "title": "Design for Horizontal Shear",
+      "section": "32 - Walls",
+      "category": "walls",
+      "keywords": [
+        "wall shear",
+        "nominal shear stress",
+        "shear reinforcement"
+      ]
+    },
+    "32.5": {
+      "title": "Minimum Requirements for Reinforcement in Walls",
+      "section": "32 - Walls",
+      "category": "walls",
+      "keywords": [
+        "wall reinforcement",
+        "vertical reinforcement",
+        "horizontal reinforcement",
+        "spacing"
+      ]
+    },
+    "32.5.1": {
+      "title": "Reinforcement Grids for Thick Walls",
+      "section": "32 - Walls",
+      "category": "walls",
+      "keywords": [
+        "two grids",
+        "wall faces",
+        "wall thickness"
+      ]
+    },
+    "32.5.2": {
+      "title": "Transverse Enclosure of Vertical Wall Reinforcement",
+      "section": "32 - Walls",
+      "category": "walls",
+      "keywords": [
+        "transverse reinforcement",
+        "vertical reinforcement",
+        "wall detailing"
       ]
     },
     "33.1": {

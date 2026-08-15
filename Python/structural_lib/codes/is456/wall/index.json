@@ -1,0 +1,118 @@
+{
+  "folder": "Python/structural_lib/codes/is456/wall",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-08-16",
+  "file_count": 3,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 30,
+      "last_updated": "2026-08-16",
+      "description": "Bounded IS 456 Clause 32 braced-wall geometry and axial capacity.",
+      "content_hash": "12bba3fa2494"
+    },
+    {
+      "name": "axial.py",
+      "type": "python",
+      "size_lines": 160,
+      "last_updated": "2026-08-16",
+      "description": "Clause 32.2 geometry and empirical axial capacity for braced walls.",
+      "classes": [
+        {
+          "name": "BracedWallGeometryResult",
+          "description": "Resolved Clause 32.2.4 effective height and wall slenderness."
+        },
+        {
+          "name": "BracedWallAxialResult",
+          "description": "Empirical axial-capacity check with explicit N/mm and kN outputs."
+        }
+      ],
+      "functions": [
+        {
+          "name": "resolve_braced_wall_geometry",
+          "description": "Resolve effective height and enforce the Clause 32.2 slenderness limit.",
+          "params": [
+            "geometry"
+          ]
+        },
+        {
+          "name": "check_braced_wall_axial_capacity",
+          "description": "Check caller-supplied factored compression using Clause 32.2.5.",
+          "params": [
+            "design_input"
+          ]
+        }
+      ],
+      "constants": [
+        "_SOURCE_REFS"
+      ],
+      "content_hash": "e25b6b31ef64"
+    },
+    {
+      "name": "models.py",
+      "type": "python",
+      "size_lines": 177,
+      "last_updated": "2026-08-16",
+      "description": "Typed contracts for the bounded INDIA-2 Clause 32 braced-wall case.",
+      "classes": [
+        {
+          "name": "WallContractError",
+          "description": "Raised when an input is outside the frozen INDIA-2 wall scope."
+        },
+        {
+          "name": "WallRotationRestraint",
+          "description": "Clause 32.2.4 end-rotation cases for a braced wall."
+        },
+        {
+          "name": "WallAxialStatus",
+          "description": "Strength disposition for the accepted empirical axial check."
+        },
+        {
+          "name": "BracedWallGeometry",
+          "description": "Caller-confirmed geometry and bracing basis for one wall strip."
+        },
+        {
+          "name": "BracedWallAxialInput",
+          "description": "Geometry, material, and caller-supplied factored axial compression."
+        }
+      ],
+      "functions": [
+        {
+          "name": "positive_finite",
+          "description": "Normalize a positive finite engineering input or fail closed.",
+          "params": [
+            "value",
+            "field_name",
+            "unit"
+          ]
+        },
+        {
+          "name": "nonnegative_finite",
+          "description": "Normalize a non-negative finite engineering input or fail closed.",
+          "params": [
+            "value",
+            "field_name",
+            "unit"
+          ]
+        }
+      ],
+      "content_hash": "5679ba76bce7"
+    }
+  ],
+  "subfolders": [],
+  "has_init": true,
+  "public_api": [
+    "BracedWallAxialInput",
+    "BracedWallAxialResult",
+    "BracedWallGeometry",
+    "BracedWallGeometryResult",
+    "WallAxialStatus",
+    "WallContractError",
+    "WallRotationRestraint",
+    "check_braced_wall_axial_capacity",
+    "resolve_braced_wall_geometry"
+  ],
+  "content_hash": "d3491de5268fbedc"
+}
