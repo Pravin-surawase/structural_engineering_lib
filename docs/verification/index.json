@@ -1130,7 +1130,7 @@
       "size_lines": 192,
       "last_updated": "2026-08-16",
       "description": "The exact integrated G0/A-D starting head is b75daa970b2976cbd5d51e9a951926a7946d5fa6, tree",
-      "content_hash": "a023ebbef245"
+      "content_hash": "abe4929e3c8c"
     },
     {
       "name": "india-2-foundation-strap-g0-git-handoff-receipt.json",
@@ -1473,5 +1473,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "c6710dc528e0a556"
+  "content_hash": "55fda3c531242b05"
 }
