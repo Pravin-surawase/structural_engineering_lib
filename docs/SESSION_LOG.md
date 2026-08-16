@@ -5,6 +5,121 @@
 
 ---
 
+## 2026-08-16 — Session: Post-INDIA-2 Cleanup Audit
+
+**Agent:** Codex (`ops`, sole writer)
+
+**Branch:** `codex/post-india2-cleanup-audit` from freshly fetched
+`origin/main = d8202fef2566cd4955b2ba041914ff318d15d043`
+
+**Focus:** Build one inspection-only union inventory of every pre-existing
+worktree, local branch, GitHub branch, and associated pull-request integration
+receipt. Freeze exact cleanup candidates and holds without removing any Git or
+filesystem surface in Phase A.
+
+### Summary
+
+- Verified the fresh default anchor, clean primary, `source_bound=true`,
+  `READY_LOCAL`, exact base equality, and no operation marker before writing.
+- Inventoried 67 pre-existing worktrees, 70 pre-existing local branches, and 86
+  GitHub branches; the audit lane raises the live local totals to 68 worktrees
+  and 71 branches while the packet is active.
+- Bound PR heads, submitted-review heads, merge commits, branch/merge trees,
+  live owners, remote/API identities, open dependencies, worktree state, and
+  disk estimates for every union member.
+- Froze candidate set `POST-INDIA2-2499DF4ADE0DF704`: 71 evidence-complete
+  branches and 193 separately bound worktree/local/remote actions, with about
+  7.8 GiB recoverable only from the 58 worktree surfaces.
+- Retained `main`, dirty detached `e54a`, `gh-pages`, the current audit lane,
+  and Dependabot-managed refs; held Excel, all detached lanes, every mismatch,
+  and every owner/integration-unknown branch.
+- Performed no worktree removal, branch/ref deletion, prune, PR/issue closure,
+  stash operation, history rewrite, release, or cleanup mutation in Phase A.
+
+### Issues encountered
+
+- ⚠️ TERMINAL ISSUE: immediately after `git worktree add`, the first runtime
+  diagnosis and session command still ran from the primary checkout.
+- The inherited planning snapshot said there were no open PRs, while the live
+  GitHub query found seven open Dependabot PRs.
+- The first full evidence-generator pass failed when it treated the nullable
+  `mergeCommit` field on an open PR as an object; no partial artifact was
+  produced.
+- The first strict documentation metadata check rejected the new proposal's
+  noncanonical `doc_type: verification` value.
+- The first commit attempt was blocked by the 500 KB added-file limit because
+  the evidence JSON repeated classifier inputs/outputs already present in the
+  union rows; no commit was created.
+- The first full repository gate passed 29/30 and failed only the hard
+  documentation budget: the required proposal raised the non-archived count
+  from the existing limit of 400 to 401.
+- ⚠️ TERMINAL ISSUE: the first exact-commit invariant command used escaped
+  quotes inside an f-string expression and stopped with `SyntaxError`; the
+  committed candidate and repository were unchanged.
+
+### Root causes and resolutions
+
+- Confirmed root cause: creating a worktree does not change the caller's
+  process working directory. Resolution: rerun diagnosis and every evidence or
+  validation command with the audit path as the explicit working directory.
+  Proof: runtime diagnosis resolves `structural_lib` under the audit lane and
+  reports `source_bound=true`; `git_state.py` reports `READY_LOCAL` there.
+- Confirmed root cause: GitHub state changed after the planning snapshot.
+  Resolution: use fresh branch API, `ls-remote`, and all-state PR observations;
+  all seven open heads are Dependabot-managed and remain excluded. Proof: the
+  JSON packet reports seven open PRs and zero non-Dependabot open PRs.
+- Confirmed root cause: GitHub represents an unmerged PR with
+  `mergeCommit: null`, not an empty merge object. Resolution: normalize the
+  nullable field before reading its OID and rerun the complete union build.
+  Proof: the regenerated JSON parses and every candidate has an
+  exact equal branch/merge tree reachable from current `origin/main`.
+- Confirmed root cause: the content category was incorrectly reused as a
+  metadata type. Resolution: keep the artifact in `docs/verification/` but use
+  canonical `doc_type: reference`. Proof: the repeated strict metadata check
+  passes.
+- Confirmed root cause: the indented evidence serialized the same remote, PR,
+  worktree, and classifier fields up to three times. Resolution: deduplicate
+  projections, retain all decision-bearing classifier identities/facts, and
+  use compact JSON. Proof: the artifact is 329,393 bytes, its candidate-set
+  hash remains `POST-INDIA2-2499DF4ADE0DF704`, and all invariant checks pass.
+- Confirmed root cause: `origin/main` was already at the 400-document ceiling,
+  while this packet requires a new non-archived Markdown proposal. Resolution:
+  advance one already-authorized maintenance action: dry-run then safely move
+  the explicitly superseded Git-hardening plan to `docs/_archive/planning/`,
+  update its maintained links, and reconcile `_active/README.md` to two plans.
+  Proof: the safe mover preserves zero broken links; the corrective full gate
+  must accept the restored 400-document count.
+- Confirmed root cause: Python forbids backslashes inside f-string expression
+  segments. Resolution: compute `head` and `tree` before formatting the line.
+  Proof: the repeated committed-data audit passes at head `4240cc12`, tree
+  `321fb684`, candidate set `POST-INDIA2-2499DF4ADE0DF704`, and 193 actions.
+
+### Validation
+
+- JSON syntax and invariant assertions pass for counts, protected exclusions,
+  owner evidence, remote/API SHA equality, exact squash-tree equality, current-
+  main reachability, and complete worktree action identities.
+- `Python/tests/test_branch_disposition.py` and
+  `Python/tests/test_git_state.py` pass all focused tests.
+- `scripts/check_links.py` passes 1,319 internal links with zero broken links;
+  strict metadata and semantic Git-workflow checks pass.
+- Targeted `docs/verification` dry-run, live generation, and hash check pass;
+  the maintained index advances from 141 to 143 files.
+- Initial and final `./run.sh check --quick` runs pass 10/10.
+- Immutable-candidate inspection, the full repository gate, exact-head hosted
+  checks, and post-merge tree comparison remain before Phase A integration.
+
+### Timing
+
+- Orientation and live-state reconciliation started at approximately
+  `2026-08-16T16:22:00Z`.
+- Inventory/evidence implementation and first corrective passes took about 14
+  minutes through the initial focused validation boundary.
+- Hosted CI wait, Phase A closeout, and total elapsed workflow time are recorded
+  in the cleanup execution receipt after the audit packet merges.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2 Final Closeout
 
 **Agent:** Codex (`reviewer`, sole writer)
