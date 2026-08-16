@@ -69,7 +69,7 @@ risk and a preservation hold prevented loss.
 - **Recovery and verification:** TASK-900-series controls were later completed,
   then the entire wrapper/enforcement layer was retired. The current
   `check_codex_git_workflow.py` rejects reintroduction of the retired paths.
-- **Evidence:** [`git-workflow-hardening-plan.md`](../../_active/git-workflow-hardening-plan.md)
+- **Evidence:** [`git-workflow-hardening-plan.md`](../../_archive/planning/git-workflow-hardening-plan.md)
   lines 17-68 and the current canonical workflow.
 
 ## GIT-I02 — dirty Spark lane and shared-surface collision

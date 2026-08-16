@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-16
-**Files:** 141
+**Files:** 143
 
 ## Config Files
 
@@ -90,6 +90,7 @@ Benchmark examples and verification packs for validating library calculations ag
 - [is456-public-distribution-permission.json](is456-public-distribution-permission.json)
 - [next-session-git-issues-plan-git-handoff-receipt.json](next-session-git-issues-plan-git-handoff-receipt.json)
 - [next-session-git-issues-plan-git-handoff-source-evidence.json](next-session-git-issues-plan-git-handoff-source-evidence.json)
+- [post-india2-cleanup-disposition-evidence.json](post-india2-cleanup-disposition-evidence.json)
 
 ## Documentation Files
 
@@ -151,6 +152,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [is456-library-first-evidence.md](is456-library-first-evidence.md) | IS 456 Library-First Evidence and Claim  | | Source | SHA-256 | Pages | Use | |---|---|---:|---| | 169 |
 | [is456-slab-evidence.md](is456-slab-evidence.md) | IS 456 Solid Slab Source and Benchmark L | | ID | Identity | Permitted implementation use | State | |-- | 125 |
 | [pack.md](pack.md) |  | This repo’s unit tests validate correctness and edge cases,  | 56 |
+| [post-india2-cleanup-authorization-proposal.md](post-india2-cleanup-authorization-proposal.md) |  | Exact candidate set POST-INDIA2-2499DF4ADE0DF704 contains ** | 162 |
 | [release-artifact-evidence-template.md](release-artifact-evidence-template.md) | Release Artifact Evidence Template | Complete this record from the CI run that built the exact ca | 38 |
 | [ui-experience-session-2-acceptance.md](ui-experience-session-2-acceptance.md) |  | This is the software acceptance record for UIX-001 P9-P15. I | 70 |
 | [validation-pack.md](validation-pack.md) |  | This pack provides 5 benchmark beams and 3 benchmark columns | 396 |

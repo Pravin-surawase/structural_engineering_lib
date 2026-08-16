@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 141,
+  "file_count": 143,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -1689,6 +1689,32 @@
       "content_hash": "fa4fe75b3d05"
     },
     {
+      "name": "post-india2-cleanup-authorization-proposal.md",
+      "type": "documentation",
+      "size_lines": 162,
+      "last_updated": "2026-08-16",
+      "description": "Exact candidate set POST-INDIA2-2499DF4ADE0DF704 contains **71 branches** and **193 separately bound actions**. Its worktree actions are expected to recover approximately **7.8 GiB**. The repository o",
+      "content_hash": "2ff7f7bd38c7"
+    },
+    {
+      "name": "post-india2-cleanup-disposition-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "audit_branch",
+        "audit_head_sha",
+        "audit_tree_sha_before_packet",
+        "authorization",
+        "branches",
+        "candidate_actions",
+        "classifier_receipt",
+        "commands",
+        "default_ref",
+        "default_sha"
+      ],
+      "content_hash": "7220349be92b"
+    },
+    {
       "name": "release-artifact-evidence-template.md",
       "type": "documentation",
       "size_lines": 38,
@@ -1715,5 +1741,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "e4b122e7d6ba1cbb"
+  "content_hash": "32a3579b50db1f29"
 }

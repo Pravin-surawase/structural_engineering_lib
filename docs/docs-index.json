@@ -111,7 +111,7 @@
       ],
       "size_bytes": 16808
     },
-    "docs/_active/git-workflow-hardening-plan.md": {
+    "docs/_archive/planning/git-workflow-hardening-plan.md": {
       "title": "Git Workflow Hardening Plan v1.0",
       "type": "documentation",
       "complexity": "advanced",
