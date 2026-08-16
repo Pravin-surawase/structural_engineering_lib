@@ -89,6 +89,7 @@ _IS456_EVIDENCE = {
         "docs/verification/india-2-flat-g0-scope-evidence.md",
         "docs/verification/india-2-flat-a-geometry-evidence.md",
         "docs/verification/india-2-flat-b-moment-evidence.md",
+        "docs/verification/india-2-flat-c-reinforcement-evidence.md",
     ),
 }
 

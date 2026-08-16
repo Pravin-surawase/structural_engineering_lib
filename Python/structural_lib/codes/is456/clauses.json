@@ -6,7 +6,7 @@
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
     "last_updated": "2026-08-16",
-    "total_clauses": 162,
+    "total_clauses": 166,
     "includes_references": [
       "IS 13920:2016"
     ],
@@ -770,6 +770,46 @@
         "middle strip",
         "remaining moment",
         "panel distribution"
+      ]
+    },
+    "31.7": {
+      "title": "Flat Slab Reinforcement",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "flat slab reinforcement",
+        "bar spacing",
+        "bar extension"
+      ]
+    },
+    "31.7.1": {
+      "title": "Flat Slab Bar Spacing",
+      "section": "31 - Flat Slabs",
+      "category": "detailing",
+      "keywords": [
+        "bar spacing",
+        "slab thickness",
+        "flat slab"
+      ]
+    },
+    "31.7.2": {
+      "title": "Flat Slab Reinforcement Area",
+      "section": "31 - Flat Slabs",
+      "category": "detailing",
+      "keywords": [
+        "reinforcement area",
+        "drop panel",
+        "slab thickness"
+      ]
+    },
+    "31.7.3": {
+      "title": "Minimum Length of Flat Slab Reinforcement",
+      "section": "31 - Flat Slabs",
+      "category": "detailing",
+      "keywords": [
+        "bar length",
+        "bar extension",
+        "Figure 16"
       ]
     },
     "31.6": {
@@ -1767,6 +1807,12 @@
     }
   },
   "figures": {
+    "Figure 16": {
+      "title": "Minimum Reinforcement Extensions in Flat Slabs",
+      "referenced_in": [
+        "31.7.3"
+      ]
+    },
     "Figure 3": {
       "title": "Stress-Strain Curve for Concrete",
       "referenced_in": [

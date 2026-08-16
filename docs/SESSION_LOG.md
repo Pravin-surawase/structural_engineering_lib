@@ -5,6 +5,73 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FLAT-C Reinforcement and Serviceability
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-flat-c` from integrated FLAT-B main at
+`0603f853124b8cba5a4b5f48686aef9ee1e097e7`
+
+**Git handoff receipt:** `docs/verification/india-2-flat-c-git-handoff-receipt.json`
+
+**Focus:** Implement only bounded strip flexure, caller-provided straight bars,
+no-drop extension, and the reviewed span/depth comparison.
+
+### Summary
+
+- Reused the maintained rectangular stress-block, slab provided-bar, and
+  reviewed span/depth kernels rather than introducing parallel engineering
+  formulas.
+- Added four reinforcement regions in each direction with explicit strip-total
+  and per-metre steel, limiting capacity, provided area, diameter, general slab
+  spacing, and flat-slab spacing results.
+- Retained direct deflection, crack width, bends, splices, automatic selection,
+  punching, and the public workflow as explicit holds.
+
+### Issues encountered
+
+- The first file-edit patch was rejected before mutation because it contained
+  two separate update operations targeting `clauses.json`.
+- A later evidence-count patch was rejected because its session-log hunk was
+  accidentally assigned to the evidence file.
+
+### Root causes and resolutions
+
+- Root cause: the patch utility requires all changes to one file to be grouped
+  in one update block. Resolution: split file creation from registry/export/test
+  edits and combine both `clauses.json` hunks into one operation; the intended
+  scoped edits then applied cleanly.
+- Root cause: the multi-file patch omitted the second file header. Resolution:
+  restore the explicit `docs/SESSION_LOG.md` update header and apply both exact
+  1,204-link replacements; no partial mutation occurred.
+
+### Evidence
+
+- All 12 direct tests reproduce the eight both-direction strip steel results,
+  360 mm2/m minimum, supplied areas, 1650 mm extension, and reviewed L/d values.
+- Inadequate area, spacing, extension, and span/depth outcomes plus every held
+  detailing/review flag and exact provenance are directly tested.
+- The combined reinforcement/moment/geometry/clause/traceability selection
+  passes all 157 tests; the complete selection with manifest truth passes 163,
+  and Black, Ruff, mypy, and Bandit pass.
+- Architecture validation reports zero violations across 182 files; import
+  validation reports zero broken imports across 616 Python files.
+- All 1,204 internal links are valid, all seven touched indexes are current,
+  token efficiency passes, and the quick repository gate passes 10/10.
+- Capability remains held until FLAT-E; broad Python and 30-check gates remain
+  deferred to final INDIA-2 closeout.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: the initial patch repeated `clauses.json` as two update
+  operations and was rejected before mutation → combined the hunks into one
+  file operation and applied the scoped edits successfully.
+- ⚠️ TERMINAL ISSUE: the first 1,204-link evidence patch targeted its
+  session-log hunk at the wrong file and was rejected → restored the missing
+  file header and applied both exact replacements.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-FLAT-B Direct-Design Moments
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)
