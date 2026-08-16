@@ -2,7 +2,7 @@
   "authorization": {
     "authority_source": {
       "kind": "USER_DELEGATION",
-      "observed_at_utc": "2026-08-16T15:11:11Z",
+      "observed_at_utc": "2026-08-16T15:17:35Z",
       "query_status": "OK",
       "reference": "task:INDIA-2-TRUTH-HYGIENE-38-2:user-request-continue-and-finish-india-2",
       "status": "OBSERVED"
@@ -13,7 +13,7 @@
       "CREATE_OR_UPDATE_DRAFT_PR"
     ],
     "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
-    "observed_at_utc": "2026-08-16T15:11:11Z",
+    "observed_at_utc": "2026-08-16T15:17:35Z",
     "prohibited_actions": [
       "MERGE_BEFORE_REQUIRED_CHECKS",
       "DELETE_BRANCH",
@@ -32,7 +32,7 @@
         "CREATE_OR_UPDATE_DRAFT_PR"
       ],
       "branch": "codex/india-2-truth-hygiene-38-2",
-      "head_sha": "47f75ce01fc10b30eb7cd271d24f04d9d80b8ca6",
+      "head_sha": "991851aed712b1026150941023cfc00420df9ce2",
       "task_id": "INDIA-2-TRUTH-HYGIENE-38-2"
     }
   },
@@ -49,27 +49,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "354a02d1efa1e92233c28b26fa1e5a708d01d59b5a3ee4ecd5d8133683672a81",
+    "receipt_sha256": "bbe7d73adbd136f4dbb3d96214b625e29e98be3923aba7ed490d4a63fdf520c3",
     "state": {
       "branch": "codex/india-2-truth-hygiene-38-2",
       "default_base": {
-        "ahead": 1,
+        "ahead": 3,
         "behind": 0,
         "ref": "origin/main",
         "sha": "df3635e8811a4d7e69f8786349ce3507f8a28001",
         "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 80.712,
+      "duration_ms": 94.504,
       "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
       "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-38-2",
-      "head_sha": "47f75ce01fc10b30eb7cd271d24f04d9d80b8ca6",
+      "head_sha": "991851aed712b1026150941023cfc00420df9ce2",
       "hold_reasons": [
         "changed paths: 1"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-08-16T15:11:40.454196+00:00",
+      "observed_at_utc": "2026-08-16T15:17:54.790293+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -81,25 +81,25 @@
         "clean": false,
         "conflicted_paths": [],
         "dirty_count": 1,
-        "modified_paths": [],
-        "staged_paths": [],
-        "untracked_paths": [
+        "modified_paths": [
           "docs/verification/india-2-truth-hygiene-38-2-git-handoff-source-evidence.json"
-        ]
+        ],
+        "staged_paths": [],
+        "untracked_paths": []
       },
       "upstream": {
-        "ahead": null,
-        "behind": null,
-        "ref": "NONE",
-        "sha": null,
-        "status": "none"
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/codex/india-2-truth-hygiene-38-2",
+        "sha": "cd5d67c6281e1e41e3c5f38a3638ddd533941037",
+        "status": "ahead"
       },
       "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-38-2"
     }
   },
-  "local_state_receipt_hash": "sha256:354a02d1efa1e92233c28b26fa1e5a708d01d59b5a3ee4ecd5d8133683672a81",
+  "local_state_receipt_hash": "sha256:bbe7d73adbd136f4dbb3d96214b625e29e98be3923aba7ed490d4a63fdf520c3",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-08-16T15:11:40.454340+00:00",
+  "observed_at_utc": "2026-08-16T15:17:54.790468+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
@@ -114,7 +114,7 @@
   "retention": {
     "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
     "holds": [],
-    "observed_at_utc": "2026-08-16T15:11:11Z",
+    "observed_at_utc": "2026-08-16T15:17:35Z",
     "owner": "Main Agent under user instruction to preserve retained Git lanes",
     "query_status": "OK",
     "status": "OBSERVED"
