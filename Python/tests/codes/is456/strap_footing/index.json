@@ -1,0 +1,94 @@
+{
+  "folder": "Python/tests/codes/is456/strap_footing",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-08-16",
+  "file_count": 2,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 2,
+      "last_updated": "2026-08-16",
+      "description": "Tests for the bounded INDIA-2 strap-footing workflow.",
+      "content_hash": "905acba6a654"
+    },
+    {
+      "name": "test_analysis.py",
+      "type": "python",
+      "size_lines": 364,
+      "last_updated": "2026-08-16",
+      "description": "INDIA-2-FOUNDATION-STRAP-A benchmark and boundary tests.",
+      "functions": [
+        {
+          "name": "test_frozen_geometry_is_resolved_exactly"
+        },
+        {
+          "name": "test_frozen_reactions_bearing_and_equilibrium_are_exact"
+        },
+        {
+          "name": "test_frozen_clear_strap_actions_are_exact"
+        },
+        {
+          "name": "test_zero_strap_load_reduces_to_source_reaction_equations"
+        },
+        {
+          "name": "test_valid_bearing_failure_is_reported"
+        },
+        {
+          "name": "test_pressure_mismatch_fails_closed"
+        },
+        {
+          "name": "test_invalid_geometry_scalars_fail_closed",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_each_geometry_scope_carrier_fails_closed",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_geometry_boundaries_fail_closed"
+        },
+        {
+          "name": "test_invalid_action_scalars_fail_closed",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_action_factor_boundaries_fail_closed"
+        },
+        {
+          "name": "test_each_action_scope_carrier_fails_closed",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_external_approvals_and_references_are_required"
+        },
+        {
+          "name": "test_wrong_typed_inputs_fail_closed"
+        },
+        {
+          "name": "test_results_are_frozen_deterministic_and_source_bound"
+        },
+        {
+          "name": "test_clause_registration_is_exact"
+        }
+      ],
+      "content_hash": "20a93ab4eb7a"
+    }
+  ],
+  "subfolders": [],
+  "has_init": true,
+  "content_hash": "4ead26f666195df4"
+}

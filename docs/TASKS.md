@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — STRAP-G0 returned GO; STRAP-A is next
+**Updated:** 2026-08-16 — STRAP-A analysis complete; STRAP-B is next after merge
 
 ---
 
@@ -133,7 +133,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2-FOUNDATION-STRAP-A | Implement typed strap geometry/action/approval contracts, equal-pressure/common-factor eligibility, reactions, bearing, clear-strap actions, and equilibrium | Main Agent + structural math | focused analysis packet | P0 | 🚧 NEXT after STRAP-G0 merges unchanged; strength/publication remain held |
+| INDIA-2-FOUNDATION-STRAP-B | Implement exact strap flexure, shear, detailing, anchorage, and composed disposition | Main Agent + structural math | focused strength packet | P0 | 🚧 NEXT after STRAP-A merges unchanged; publication remains held |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
@@ -159,6 +159,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-FOUNDATION-STRAP-A | Implemented typed strap geometry/action/approval contracts, equal-pressure/common-factor eligibility, reactions, bearing, clear-strap actions, and equilibrium | Main Agent + structural math | ✅ COMPLETE — frozen benchmark, source-equation reduction, valid bearing failure, and fail-closed boundaries pass; strength/publication remain held |
 | INDIA-2-FOUNDATION-STRAP-G0 | Froze one property-line two-footing system with equal uniform pressure, an explicit no-soil-contact strap model, independent benchmark, and externally verified footing-slab prerequisites | Main Agent + structural engineer | ✅ GO — STRAP-A-D and focused acceptance activated; public capability remains held |
 | INDIA-2-FOUNDATION-COMBINED | Implemented, published, and focused-accepted one bounded symmetric equal-load two-column rigid rectangular combined-footing workflow | Main Agent + structural engineer | ✅ DONE — G0/A-D integrated; 84 family tests, 339 focused public-contract tests, frozen and non-frozen benchmarks, exact-head audit, and hosted checks pass; qualified review and excluded systems remain held |
 | INDIA-2-FOUNDATION-COMBINED-D | Published strict nested FastAPI transport, exact OpenAPI drift, capability/semantic truth, and deterministic manifest promotion | Main Agent + API developer | ✅ COMPLETE — one bounded workflow is supported at 12/21 truth and all 80 routes have direct tests; integration receipt remains live-closeout evidence |
