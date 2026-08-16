@@ -13,9 +13,10 @@ doc_type: spec
 ## 1. Outcome and stop boundary
 
 Combined-footing and strap-footing G0/A-D plus focused family acceptance are
-integrated within their recorded bounded cases. GIT-001 Phase 8 closes through
-its adoption packet; the next session starts with the confirmed frontmatter
-contract/data repair before any new foundation decision.
+integrated within their recorded bounded cases. GIT-001 Phase 8 is integrated,
+and the frontmatter contract/data repair closes on merge of its unchanged
+candidate. The next session starts with Clause 38.2 truth hygiene before any
+new foundation decision.
 
 This document remains the sequence plan. Phase 8 execution is recorded in
 [`GIT-001-phase-8-adoption-closeout.md`](../research/git-governance/GIT-001-phase-8-adoption-closeout.md).
@@ -29,9 +30,9 @@ time:
 1. `GIT-001-P8-RECONCILIATION` — complete on merge of its unchanged adoption
    packet; primary/e54a are retained and all other pre-existing lanes remain
    `UNKNOWN/HOLD` without cleanup.
-2. `DOC-FRONTMATTER-CONTRACT` — next; repair the JSON-mode exit-code defect and
-   the eight currently invalid frontmatter records.
-3. `INDIA-2-TRUTH-HYGIENE-38-2` — source-audit every live `38.2` consumer,
+2. `DOC-FRONTMATTER-CONTRACT` — complete on merge; JSON/text modes agree, the
+   eight invalid records are repaired, and 60 permitted legacy records remain.
+3. `INDIA-2-TRUTH-HYGIENE-38-2` — next; source-audit every live `38.2` consumer,
    correct provenance, and change arithmetic only if an independently checked
    benchmark proves an outcome defect.
 4. `INDIA-2-FOUNDATION-PILE-CAP-G0` — decision and benchmark only.
@@ -75,10 +76,10 @@ Live inspection for this plan established:
   still register `38.2` for three beam-flexure functions even though the prior
   controlled-source review found the relevant identities under Clause `38.1`
   and Annex G;
-- `scripts/check_docs.py --frontmatter --json` currently reports 341 scanned
-  documents, 281 with frontmatter, 60 permitted legacy/no-frontmatter records,
-  and eight invalid records, but exits `0`; code inspection confirms JSON mode
-  returns before applying the invalid-count failure rule;
+- before repair, `scripts/check_docs.py --frontmatter --json` reported 342
+  scanned documents, 282 with frontmatter, 60 permitted legacy/no-frontmatter
+  records, and eight invalid records while exiting `0`; the bounded repair now
+  makes JSON/text modes agree and reports zero invalid without changing the 60;
 - the controlled private source set currently retains IS 456:2000 through
   Amendment 5 and Amendment 6 only. It contains no retained IS 2911/IS 2950
   companion source and no accepted pile-cap or raft structural benchmark.
@@ -200,13 +201,13 @@ If that path is absent in a later checkout, rediscover the replacement with
 `rg --files scripts | rg 'check.*git.*workflow'` and record the changed
 entrypoint instead of guessing or using an archived script.
 
-## 4. Packet 2 — frontmatter checker and record repair
+## 4. Packet 2 — frontmatter checker and record repair (complete on merge)
 
 ### Confirmed root cause
 
-`check_frontmatter()` correctly computes `invalid_frontmatter`, but its
-`json_output` branch prints the report and returns `0` unconditionally. The
-normal text branch applies `return 1 if invalid_frontmatter else 0`. This makes
+`check_frontmatter()` correctly computed `invalid_frontmatter`, but its
+`json_output` branch printed the report and returned `0` unconditionally. The
+normal text branch applied `return 1 if invalid_frontmatter else 0`. This made
 machine-readable validation say “passed” while returning eight invalid records.
 
 The eight records are separate data defects:
@@ -221,7 +222,7 @@ and are not automatically in scope because current policy permits their legacy
 metadata/no-frontmatter forms. Expand scope only if a maintained gate proves a
 main-process failure.
 
-### Fix and acceptance
+### Implemented fix and acceptance
 
 1. Make JSON mode return the same pass/fail result as text mode without changing
    its JSON payload.
@@ -233,6 +234,11 @@ main-process failure.
 4. Require live JSON output to report `invalid_frontmatter: 0`, text mode to
    pass, focused checker tests, links/indexes, quick `10/10`, normal hooks, and
    hosted documentation checks to pass.
+
+The bounded candidate implements items 1-3: JSON preserves its report and now
+shares text-mode failure semantics, two direct valid/invalid payload-and-exit
+regressions pass, and exactly the eight named records use schema-valid lifecycle
+or reference values. Item 4 completes through candidate and hosted closeout.
 
 ## 5. Packet 3 — Clause 38.2 flexure truth hygiene
 
@@ -356,40 +362,42 @@ benchmark means `HOLD`, not an improvised model.
 
 ## 7. Next-agent execution card
 
-The next agent starts and finishes only `DOC-FRONTMATTER-CONTRACT`.
+The next agent starts and finishes only `INDIA-2-TRUTH-HYGIENE-38-2`.
 
 ### First 15 minutes
 
 1. Fetch `origin/main`; record the exact commit and tree.
-2. Create `codex/doc-frontmatter-contract` from that ref; never write on
-   primary or reuse Phase 8 or another retained lane.
+2. Create `codex/india-2-truth-hygiene-38-2` from that ref; never write on
+   primary or reuse the frontmatter or another retained lane.
 3. Run the compact brief's four start commands and require
    `source_bound=true` plus `READY_LOCAL`.
-4. Read only this plan, the compact brief, `scripts/check_docs.py`, the nearest
-   script-level test layout discovered with `rg --files`, and the eight named
-   invalid records.
-5. Reproduce JSON exit `0` with eight invalid records and freeze the exact
-   payload plus the text-mode result before editing.
+4. Read only this plan, the compact brief, the controlled-source registry and
+   clause database, the beam flexure/decorator/provenance paths discovered with
+   `rg --files`, and their nearest focused tests.
+5. Freeze every live `38.2` consumer and independently replay the supported
+   rectangular stress-block equilibrium before editing.
 
 ### Work loop
 
-1. Freeze the checker, focused tests, and exactly eight record paths before
-   edits; the 60 permitted legacy records are non-goals.
-2. Make JSON mode return the same pass/fail result as text mode without changing
-   its JSON payload.
-3. Add direct valid/invalid exit-code regressions and give only the eight named
-   records schema-valid lifecycle/doc types without rewriting evidence.
-4. Generate maintained indexes once after human-owned content freezes.
-5. Run focused tests, live JSON/text replay, links/indexes, one quick gate, one
-   candidate review, one push, and one hosted-check cycle.
+1. Freeze source identities, live consumers, supported beam cases, public
+   signatures, and focused tests before edits.
+2. Bind each formula/provenance identity to Clause 38.1 or Annex G evidence;
+   never mass-replace labels or copy protected prose.
+3. Compare legacy approximation and exact equilibrium on independently checked
+   benchmarks. Change arithmetic only if a supported outcome can change.
+4. Add semantic regressions against unsupported `38.2` identities and generate
+   the maintained manifest once after executable truth freezes.
+5. Run focused flexure/traceability/manifest/public-contract gates, links and
+   indexes, one quick gate, one candidate review, one push, and one hosted-check
+   cycle.
 6. Merge only the unchanged reviewed head, verify squash-tree equality and
    refreshed `origin/main`, retain the lane, and stop.
 
 ### Stop and handoff
 
-Stop after `DOC-FRONTMATTER-CONTRACT` merges. Name
-`INDIA-2-TRUTH-HYGIENE-38-2` as the sole next packet. Do not use remaining time
-to start Clause 38.2 work in the frontmatter lane.
+Stop after `INDIA-2-TRUTH-HYGIENE-38-2` merges. Name decision-only
+`INDIA-2-FOUNDATION-PILE-CAP-G0` as the sole next packet. Do not use remaining
+time to start pile-cap work in the Clause 38.2 lane.
 
 ## 8. Efficiency and speed controls
 
@@ -426,7 +434,7 @@ repository-wide mutation, or a second repair cycle breaks that boundary.
 |---|---|---|
 | Primary output-detail drift | Confirmed and resolved | Codex persisted a project output-detail selection into tracked `.codex/config.toml`; keep repository `low`, verify primary clean, and do not publish personal preference drift |
 | Stale primary/config wording in this plan and brief | Confirmed and resolved here | PR #799 described the pre-cleanup snapshot; refresh current mutable facts at packet start and do not treat a planning receipt as live state |
-| JSON frontmatter exits zero with eight invalid records | Confirmed, open | Fix the early JSON return, add direct valid/invalid exit-code tests, and repair only the eight invalid records |
+| JSON frontmatter exits zero with eight invalid records | Confirmed and resolved on merge | JSON now returns the invalid-count result; direct valid/invalid payload tests pass; exactly eight records were repaired while 60 permitted legacy records stayed unchanged |
 | Live `38.2` identities | Origin and arithmetic impact unconfirmed | Source-audit every consumer and benchmark exact equilibrium before deciding metadata-only versus arithmetic repair |
 | Pydantic-version OpenAPI drift | Confirmed and already guarded | Preserve explicit schema mode and the cross-version regression in every future D packet |
 | Public-call wrapper mismatch | Confirmed and already guarded | Discover the maintained signature; construct the typed request wrapper before calling the service in acceptance replays |

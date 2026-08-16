@@ -416,7 +416,7 @@
       "size_lines": 93,
       "last_updated": "2026-08-16",
       "description": "exact integrated G0/A-D starting head was ce45e22032ea234f588ce88c601db5f6a42af166. The supported public route remains",
-      "content_hash": "bec54ccc855d"
+      "content_hash": "6f058b49b1ea"
     },
     {
       "name": "india-2-deep-g0-git-handoff-receipt.json",
@@ -682,7 +682,7 @@
       "size_lines": 100,
       "last_updated": "2026-08-16",
       "description": "exact integrated G0/A-E starting head was b04d80653484a8dc43e8ff73936d8171e4b65d40. The supported public route remains",
-      "content_hash": "4a42ec953539"
+      "content_hash": "ac0c238727b4"
     },
     {
       "name": "india-2-flat-g0-git-handoff-receipt.json",
@@ -875,7 +875,7 @@
       "size_lines": 146,
       "last_updated": "2026-08-16",
       "description": "COMBINED-C publishes one typed Python workflow, design_symmetric_combined_footing_is456, over the already accepted",
-      "content_hash": "b1b71be9bb1e"
+      "content_hash": "8d7b847e8992"
     },
     {
       "name": "india-2-foundation-combined-d-git-handoff-receipt.json",
@@ -967,7 +967,7 @@
       "size_lines": 56,
       "last_updated": "2026-08-16",
       "description": "This packet implements only the G0-frozen two-footing property-line analysis: strict typed topology/action/approval inputs, reaction statics, equal uniform",
-      "content_hash": "5b631211d8f0"
+      "content_hash": "d8aa9a13773d"
     },
     {
       "name": "india-2-foundation-strap-a-git-handoff-receipt.json",
@@ -1076,7 +1076,7 @@
       "size_lines": 61,
       "last_updated": "2026-08-16",
       "description": "This packet composes A actions with caller-supplied M20-M40 concrete, Fe415/ Fe500 uncoated deformed bars, longitudinal/side-face reinforcement, vertical",
-      "content_hash": "24f166c00a95"
+      "content_hash": "1c995a8306f6"
     },
     {
       "name": "india-2-foundation-strap-c-git-handoff-receipt.json",
@@ -1114,7 +1114,7 @@
       "size_lines": 52,
       "last_updated": "2026-08-16",
       "description": "design_property_line_strap_footing_is456 is the sole canonical public Python composition over STRAP-A/B. It accepts one immutable case wrapper around the",
-      "content_hash": "d01514c18565"
+      "content_hash": "0f31237bfd01"
     },
     {
       "name": "india-2-foundation-strap-d-git-handoff-receipt.json",
@@ -1328,7 +1328,7 @@
       "size_lines": 82,
       "last_updated": "2026-08-16",
       "description": "integrated A-D starting head was 46094a8c35c75fcfb0644f23a851087cc3297c60. The supported public route remains one regular 100-200 mm thick, one-grid,",
-      "content_hash": "086e03bbc9b8"
+      "content_hash": "fafe9e88fdce"
     },
     {
       "name": "india-2-wall-g0-scope-evidence.md",
@@ -1563,5 +1563,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "765267657eb82d2a"
+  "content_hash": "a9d9827377aa90c8"
 }

@@ -4,41 +4,40 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: frontmatter checker contract and exactly eight invalid records
-- Baseline: GIT-001 Phase 8 started from fetched origin/main 86f92ed16164a97b7cbb1edacd64a50a5a71e13d, tree 1bb7e448fd26208ba2227b1d9e2f3f0f976ed46e
+- Focus: Clause 38.2 beam-flexure truth hygiene
+- Baseline: DOC-FRONTMATTER-CONTRACT started from fetched origin/main c8fcd2f0f9b933eb8e8787dc901ee440e05ae984, tree 41d878c0681e5e51d159615d14290d5c3964c822
 - Truth: 13 supported / 8 held; 81/81 endpoints directly tested
-- Git outcome: Phases 0-8 close on merge of the unchanged adoption packet; transition receipts are time-bound and final merge facts require a fresh successor observation
-- Primary/e54a: primary was clean/equal at packet start; detached dirty e54a remains retained and untouched
-- Other lanes: Excel is HOLD_UNKNOWN_OWNER; every other pre-existing lane remains UNKNOWN/HOLD; no cleanup authority exists
-- Confirmed next defect: frontmatter JSON mode reports eight invalid records but exits zero because it returns before applying the text-mode failure rule
-- Scope guard: repair only that exit-code contract, its direct regression tests, and the eight named lifecycle/doc-type records; leave 60 permitted legacy records alone
-- Next action: begin only DOC-FRONTMATTER-CONTRACT in a fresh fetched-current-main lane
+- Frontmatter outcome: JSON and text modes agree; zero invalid records; 60 permitted legacy/no-frontmatter records unchanged; two direct payload/exit regressions pass
+- Scope guard: source-audit every live 38.2 consumer and independently benchmark equilibrium before deciding metadata-only versus arithmetic repair
+- Retained lanes: primary, detached dirty e54a, Excel HOLD_UNKNOWN_OWNER, and every other pre-existing lane remain untouched; no cleanup authority exists
+- Next action: begin only INDIA-2-TRUTH-HYGIENE-38-2 in a fresh fetched-current-main lane after the frontmatter candidate merges
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-16
 
 | State | Boundary |
 |---|---|
-| **Current** | `v0.23.1a1` Alpha; GIT-001 adoption closes with retained holds and no cleanup |
-| **Next** | `DOC-FRONTMATTER-CONTRACT` only |
-| **Later** | Clause 38.2 truth hygiene, pile-cap G0, raft G0, accepted GO packets, INDIA-2 broad closeout |
+| **Current** | `v0.23.1a1` Alpha; frontmatter contract repair complete on merge |
+| **Next** | `INDIA-2-TRUTH-HYGIENE-38-2` only |
+| **Later** | Pile-cap G0, raft G0, accepted GO packets, INDIA-2 broad closeout |
 | **Held** | Cleanup/deletion, release, React expansion, professional approval, dependency majors |
 
 ## Required Reading
 
 1. [Next-session Git/issues/INDIA-2 plan](india-2-next-session-publication-and-closeout-plan.md)
 2. [Current task board](../TASKS.md)
-3. [Phase 8 adoption closeout](../research/git-governance/GIT-001-phase-8-adoption-closeout.md)
-4. [`check_docs.py`](../../scripts/check_docs.py)
+3. [IS 456 public-distribution permission](../verification/is456-public-distribution-permission.json)
+4. Discover the live clause database, beam flexure, decorator, provenance,
+   manifest, and nearest focused-test paths with `rg --files` before reading.
 
 ## Exact start
 
 Fetch and verify `origin/main`, then create one fresh
-`codex/doc-frontmatter-contract` worktree. Do not write on primary, reuse the
-Phase 8 lane, or touch retained worktrees.
+`codex/india-2-truth-hygiene-38-2` worktree. Do not write on primary, reuse the
+frontmatter lane, or touch retained worktrees.
 
 ```bash
-./run.sh session brief --agent doc-master
+./run.sh session brief --agent structural-engineer
 ./run.sh session start
 ./scripts/python_runtime.sh --diagnose
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
@@ -49,65 +48,64 @@ equality with fetched `origin/main` before editing.
 
 ## Packet order
 
-1. `DOC-FRONTMATTER-CONTRACT`
-   - make JSON mode return nonzero whenever `invalid_frontmatter` is nonzero;
-   - preserve the JSON payload exactly;
-   - add direct invalid/valid exit-code regressions;
-   - repair exactly the eight already identified status/doc-type records;
-   - do not bulk-add frontmatter to 60 permitted legacy documents.
-2. `INDIA-2-TRUTH-HYGIENE-38-2`
-   - trace live metadata/decorator/provenance/arithmetic consumers;
-   - rebind supported source identities;
-   - change arithmetic only if an independent benchmark proves an outcome
-     defect.
-3. Decision-only `PILE-CAP-G0`, then its A-D/acceptance chain only after `GO`.
-4. Decision-only `RAFT-G0`, then any owner-accepted chain.
-5. `INDIA-2-CLOSEOUT` with broad Python and the full 30-check gate once.
-6. Post-INDIA-2 dependency-major compatibility packets only afterward.
+1. `INDIA-2-TRUTH-HYGIENE-38-2`
+   - enumerate every live `38.2` metadata, decorator, result-provenance, test,
+     documentation, and generated-manifest consumer;
+   - bind each supported identity to the controlled Clause 38.1 or Annex G
+     evidence actually used;
+   - independently replay rectangular stress-block equilibrium and compare the
+     legacy `4.6` approximation with the shared exact helper;
+   - change arithmetic only if benchmark evidence proves a supported outcome
+     can change.
+2. Decision-only `PILE-CAP-G0`, then A-D/acceptance only after accepted `GO`.
+3. Decision-only `RAFT-G0`, then any owner-accepted chain.
+4. `INDIA-2-CLOSEOUT` with broad Python and the full 30-check gate once.
+5. Post-INDIA-2 dependency-major compatibility packets only afterward.
 
-## Frozen frontmatter scope
+## Frozen Clause 38.2 scope
 
-The confirmed root cause is the early unconditional JSON return in
-`check_frontmatter()`. The eight data defects are:
+The open defect is a source/provenance contradiction, not permission to delete
+a label mechanically. The clause database, beam decorators,
+`calculate_ast_required`, singly/doubly reinforced design, serialized
+`sources_used`, tests, docs, and generated manifest must be traced together.
 
-- invalid `status`: the library-first master plan, combined-C public-workflow
-  evidence, and wall/deep/flat family-acceptance evidence; and
-- invalid `doc_type: verification`: strap A, B, and C evidence.
+Back-substitute required steel into the exact equilibrium independently. If
+the legacy approximation cannot change a supported PASS/FAIL or public result,
+leave arithmetic stable and repair only unsupported identities. If it can,
+fix the shared root cause with compatibility and benchmark evidence.
 
-Give each record a schema-valid lifecycle/doc type while preserving its
-narrative completion/acceptance meaning. Do not rewrite engineering evidence,
-expand the schema, or sweep unrelated legacy metadata.
+Do not copy protected clause prose, mass-replace `38.2`, change unrelated beam
+behavior, infer approval from metadata, or expand supported cases.
 
 ## Owner-decision boundaries
 
-- Primary, `e54a`, Excel, Phase 8, and every other retained lane stay untouched.
-- Historical task-to-Git receipts are time-bound evidence; do not rewrite them
-  to suppress stale holds.
-- Closing dependency PRs, deleting branches/worktrees, release/tag/package
-  publication, and professional approval require separate authority.
+- Primary, `e54a`, Excel, the frontmatter lane, and every other retained lane
+  stay untouched.
+- Public-source distribution permission is already recorded; do not reopen it.
+- Pile-cap/raft implementation, cleanup/deletion, release/tag/package
+  publication, and professional approval remain separately gated.
 
 ## Gate cadence
 
-Run focused checker tests, both live JSON and text modes, exact eight-record
-replay, links/indexes, quick `10/10`, normal hooks, exact-head review, hosted
-documentation checks, and merge-tree verification. Broad Python and the full
-30-check gate remain deferred to final INDIA-2 closeout unless a confirmed
-repository-wide failure forces them earlier.
+Run focused flexure, traceability, manifest, public-contract, architecture, and
+import gates; generate the maintained manifest/indexes once; then run links,
+quick `10/10`, normal hooks, exact-head review, hosted checks, and merge-tree
+verification. Broad Python and the full 30-check gate remain deferred to final
+INDIA-2 closeout unless a repository-wide failure forces them earlier.
 
 The session entry must contain `Issues encountered` and `Root causes and
-resolutions`, including visible symptom, main-process impact, confirmed cause,
-implemented correction, and executable proof.
+resolutions`, with executable evidence for the corrected outcome.
 
 ## Efficiency card
 
-- Freeze the eight paths and checker/test paths before editing.
+- Freeze consumers, source identities, benchmark cases, tests, and public
+  signatures before editing.
 - Use one writer, one candidate, one generator pass, one quick gate, one push,
   and one hosted-check cycle.
-- Preserve the JSON payload while changing only the exit status.
 - Record orientation, implementation, repair, CI wait, closeout, and total
   elapsed workflow time separately.
 
 ## Stop rule
 
-Start and finish only `DOC-FRONTMATTER-CONTRACT`. Do not begin Clause 38.2,
-pile-cap, raft, dependency, broad-gate, or cleanup work in that lane.
+Start and finish only `INDIA-2-TRUTH-HYGIENE-38-2`. Do not begin pile-cap,
+raft, dependency, broad-gate, cleanup, release, or React work in that lane.

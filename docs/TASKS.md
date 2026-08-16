@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — GIT-001 Phase 8 closes with retained holds; the sole next packet is the bounded frontmatter contract/data repair
+**Updated:** 2026-08-16 — frontmatter contract/data repair closes on merge; Clause 38.2 truth hygiene is the sole next packet
 
 ---
 
@@ -125,15 +125,14 @@
 
 ## Active
 
-No implementation packet is active after Phase 8 closeout. Start only the
-next bounded packet below from refreshed `origin/main`.
+No implementation packet is active after the frontmatter candidate closes.
+Start only the next bounded packet below from refreshed `origin/main`.
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| DOC-FRONTMATTER-CONTRACT | Fix JSON-mode false success and the eight currently invalid frontmatter records | Main Agent + doc-master | one packet | P0 | ⏭️ NEXT — repair only the exit-code contract and exactly eight invalid records |
-| INDIA-2-TRUTH-HYGIENE-38-2 | Source-audit and correct live Clause 38.2 flexure metadata, decorators, provenance, and any benchmark-proven arithmetic defect | Main Agent + structural engineer | one bounded packet | P0 | ⏸ AFTER DOC CONTRACT |
+| INDIA-2-TRUTH-HYGIENE-38-2 | Source-audit and correct live Clause 38.2 flexure metadata, decorators, provenance, and any benchmark-proven arithmetic defect | Main Agent + structural engineer | one bounded packet | P0 | ⏭️ NEXT — audit source identity and equilibrium before deciding metadata-only versus arithmetic repair |
 | INDIA-2-FOUNDATION-PILE-CAP-G0 | Decide one source-bound pile-cap case or retain an explicit hold before any implementation | Main Agent + structural engineer | decision only | P0 | ⏸ AFTER ISSUE REPAIRS — investigate one centred axial two-pile cap; controlled companion source and benchmark remain prerequisites |
 | INDIA-2-FOUNDATION-RAFT-G0 | Decide one source-bound non-FEM raft case or retain an explicit hold before any implementation | Main Agent + structural engineer | decision only | P0 | ⏸ AFTER PILE-CAP DECISION — not started |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
@@ -147,10 +146,11 @@ INDIA-0 through INDIA-4, and the dedicated
 defines the remaining family packets. INDIA-0 and INDIA-1 are complete. The
 historical INDIA-2A-D packets form the completed `INDIA-2-STAIR` family. Bounded
 wall, deep-beam, flat-slab/punching, combined-footing, and strap-footing
-families are accepted, but umbrella INDIA-2 remains in progress while the
-frontmatter contract repair, Clause 38.2 truth hygiene, and pile-cap/raft G0
-decisions remain pending. Git/status reconciliation is complete with retained
-lanes explicitly held and no cleanup authority.
+families are accepted, but umbrella INDIA-2 remains in progress while Clause
+38.2 truth hygiene and pile-cap/raft G0 decisions remain pending. The
+frontmatter contract repair closes on merge with 60 permitted legacy records
+unchanged. Git/status reconciliation is complete with retained lanes explicitly
+held and no cleanup authority.
 The v0.23.1a1 Alpha is published.
 UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded
@@ -163,6 +163,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| DOC-FRONTMATTER-CONTRACT | Made JSON frontmatter validation fail on invalid records, added direct valid/invalid report regressions, and repaired exactly eight invalid lifecycle/type records | Main Agent + doc-master | ✅ COMPLETE ON MERGE — live JSON/text modes pass with zero invalid and 60 permitted legacy records unchanged |
 | GIT-001-P8-RECONCILIATION | Verified GIT-7E adoption, corrected transition-versus-closeout receipt semantics, reconciled current ledgers, and refreshed preservation holds | Main Agent + ops | ✅ COMPLETE ON MERGE — primary/e54a retained; Excel and all other pre-existing lanes remain `UNKNOWN/HOLD`; no cleanup performed |
 | GIT-001 | Researched and implemented the evidence-backed Git operating model through adoption closeout | Main Agent + repository owner | ✅ COMPLETE ON MERGE — Phases 0-8 close with fail-closed maintenance/reactivation rules and preserved unknown lanes |
 | INDIA-2-FOUNDATION-STRAP | Implemented, published, and focused-accepted one bounded property-line two-footing equal-pressure no-soil-contact strap workflow | Main Agent + structural engineer | ✅ DONE — G0/A-D integrated; frozen and non-frozen benchmarks, exact-head audit, focused gates, and hosted checks pass; qualified review and excluded systems remain held |

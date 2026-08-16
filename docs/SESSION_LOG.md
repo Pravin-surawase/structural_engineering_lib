@@ -5,6 +5,95 @@
 
 ---
 
+## 2026-08-16 — Session: Documentation Frontmatter Contract Repair
+
+**Agent:** Codex (`doc-master`, sole writer)
+
+**Branch:** `codex/doc-frontmatter-contract` from freshly fetched
+`origin/main = c8fcd2f0f9b933eb8e8787dc901ee440e05ae984`, tree
+`41d878c0681e5e51d159615d14290d5c3964c822`
+
+**Focus:** Make machine-readable frontmatter validation fail whenever invalid
+records exist, add direct valid/invalid regressions, and repair exactly the
+eight frozen lifecycle/type records. Do not bulk-add frontmatter to 60
+permitted legacy documents or start Clause 38.2, pile-cap, raft, cleanup,
+release, React, dependency, or broad-gate work.
+
+### Summary
+
+- Reproduced the defect on the clean source-bound lane: JSON mode reported
+  `342` checked, `282` with frontmatter, `60` without frontmatter, and `8`
+  invalid, but exited `0`; text mode exited `1` on the same records.
+- Made JSON mode return the same invalid-count result as text mode without
+  changing the report object, and added direct valid/invalid payload-and-exit
+  regressions.
+- Changed only the eight frozen metadata values: the closed library-first plan
+  is `archived`; live combined/flat/deep/wall evidence is `active`; strap A/B/C
+  evidence uses `doc_type: reference`. Narrative engineering outcomes remain
+  unchanged.
+- Reconciled the task board, execution plan, and compact handoff so
+  `INDIA-2-TRUTH-HYGIENE-38-2` is the sole next packet after merge.
+
+### Issues encountered
+
+- JSON validation visibly printed eight invalid records but returned success,
+  allowing a machine consumer to accept an invalid documentation state.
+- Eight documents used completion/acceptance/evidence words as schema lifecycle
+  or type values, conflating narrative engineering outcome with maintained
+  document metadata.
+- The first normal commit-hook run stopped because the compact brief used
+  `## Required reading` instead of the exact required heading
+  `## Required Reading`, blocking candidate publication.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `check_frontmatter()` returned `0` unconditionally
+  immediately after printing its JSON report, before applying the invalid-count
+  rule used by text mode. Resolution: return `1` when
+  `report["invalid_frontmatter"]` is nonzero in that branch. Evidence: the
+  direct invalid fixture preserves the full report and returns `1`; the direct
+  valid fixture preserves its report and returns `0`; both tests pass.
+- Confirmed root cause: record authors used `completed`, `complete`, `accepted`,
+  and `verification` to describe the body outcome/purpose even though the
+  maintained schema defines document lifecycle as active, draft, deprecated,
+  or archived and type as guide, reference, tutorial, index, spec, or log.
+  Resolution:
+  map the closed plan to `archived`, live evidence to `active`, and strap
+  evidence to `reference`, without changing any engineering statement.
+  Evidence: live JSON and text modes both exit `0`, report zero invalid, and
+  retain exactly 60 permitted no-frontmatter records.
+- Confirmed root cause: the handoff rewrite normalized heading capitalization
+  without first checking the exact string contract enforced by
+  `check_session_docs.py`; generic link, brief-length, and quick checks did not
+  exercise that constraint. Resolution: restore the exact required heading and
+  retain normal hooks as the publication guard. Evidence: the repaired hook
+  run must pass before the candidate commit is accepted. ⚠️ TERMINAL ISSUE:
+  normal commit hooks rejected the compact brief heading -> restored the exact
+  maintained heading and reran the candidate gates.
+
+### Validation through content freeze
+
+- Startup: `source_bound=true`, `READY_LOCAL`, no operation marker, exact base
+  equality with fetched `origin/main`, and a clean fresh lane.
+- Focused regressions: `2 passed`; Ruff and Black pass for the checker and new
+  test module.
+- Live replay: JSON reports `invalid_frontmatter: 0` with `files_invalid: []`;
+  JSON and text both exit `0`; total/with/without/skipped counts remain
+  `342/282/60/462`.
+- Maintained indexes, links, quick `10/10`, normal hooks, hosted checks, and
+  merge-tree equality complete during candidate/publication closeout.
+
+### Timing through content freeze
+
+- Orientation and source binding: `14:23:14Z` to `14:24:24Z` — 1 minute 10
+  seconds.
+- Reproduction, implementation, and focused validation: `14:24:24Z` to
+  `14:26:36Z` — 2 minutes 12 seconds.
+- Task/plan/handoff reconciliation: `14:26:36Z` to `14:28:30Z` — 1 minute 54
+  seconds.
+- Generator/gates, hosted CI wait, merge closeout, and total wall time are
+  reported by the final closeout observation.
+
 ## 2026-08-16 — Session: GIT-001 Phase 8 Adoption and Reconciliation
 
 **Agent:** Codex (`orchestrator` and `ops`, sole writer)

@@ -2,7 +2,7 @@
 owner: Main Agent
 status: active
 last_updated: 2026-08-16
-doc_type: verification
+doc_type: reference
 task: INDIA-2-FOUNDATION-STRAP-B
 ---
 
