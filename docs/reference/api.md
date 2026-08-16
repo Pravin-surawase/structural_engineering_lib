@@ -4317,6 +4317,55 @@ strength, provenance, held-case, review, and false-approval result.
 
 ---
 
+## 23. Property-Line Strap-Footing Workflow — Development Preview
+
+```python
+from structural_lib import (
+    PropertyLineStrapFootingDesignInput,
+    design_property_line_strap_footing_is456,
+)
+from structural_lib.codes.is456.strap_footing import StrapFootingDesignInput
+
+request = PropertyLineStrapFootingDesignInput(
+    case_id="STRAP-01",
+    footing=StrapFootingDesignInput(...),
+    qualified_review_required=True,
+)
+result = design_property_line_strap_footing_is456(request)
+```
+
+```python
+def design_property_line_strap_footing_is456(
+    request: PropertyLineStrapFootingDesignInput,
+) -> PropertyLineStrapFootingDesignResult
+```
+
+The service composes the typed equal-pressure analysis and strap strength/
+detailing kernels without duplicating structural math. Its provenance retains
+the code edition, workflow, benchmark, clause/source identities, and every
+caller basis for geometry, rigidity, strap isolation, loads, bearing/
+settlement, footing carriers, strap line load, load pattern, both footing
+slabs, transfer, construction, materials, detailing, and durability cover.
+
+The only accepted case is two separate rectangular constant-depth footings on
+soil with one exterior square column eccentric toward the property line, one
+centred interior square column, and one straight prismatic strap isolated from
+soil bearing. Equal uniform net pressure and a common service/factored action
+multiplier are required. Footing-slab design, transfer regions, connections,
+soil capacity, settlement, alternate layouts/actions, automatic sizing or
+reinforcement, React, release, and professional approval remain held.
+
+Public support types are `api.PropertyLineStrapFootingDesignInput`,
+`api.PropertyLineStrapFootingDesignProvenance`,
+`api.PropertyLineStrapFootingDesignResult`, and
+`api.PropertyLineStrapFootingDesignStatus`. A valid inadequate provision
+returns `FAIL`; unsupported input fails closed. The result always requires
+qualified review and never grants complete engineering approval.
+
+FastAPI publication remains held until STRAP-D.
+
+---
+
 ## API Levels — Which Should I Use?
 
 structural_lib provides three API levels. Choose based on your use case:

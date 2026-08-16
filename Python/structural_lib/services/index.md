@@ -2,7 +2,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-16
-**Files:** 44
+**Files:** 45
 
 ## Public API
 
@@ -11,14 +11,19 @@
 - `SymmetricCombinedFootingDesignResult`
 - `SymmetricCombinedFootingDesignStatus`
 - `design_symmetric_combined_footing_is456`
+- `PropertyLineStrapFootingDesignInput`
+- `PropertyLineStrapFootingDesignProvenance`
+- `PropertyLineStrapFootingDesignResult`
+- `PropertyLineStrapFootingDesignStatus`
+- `design_property_line_strap_footing_is456`
 
 ## Python Files
 
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
-| [__init__.py](__init__.py) | Application-layer public workflow exports. | 0 | 0 | 18 |
+| [__init__.py](__init__.py) | Application-layer public workflow exports. | 0 | 0 | 30 |
 | [adapters.py](adapters.py) | Adapters for converting various input formats to canonical m | 6 | 0 | 2006 |
-| [api.py](api.py) | Module:       api | 0 | 0 | 432 |
+| [api.py](api.py) | Module:       api | 0 | 0 | 445 |
 | [api_hub.py](api_hub.py) | Module:       api | 0 | 0 | 238 |
 | [api_results.py](api_results.py) | Module:       api_results | 8 | 0 | 507 |
 | [audit.py](audit.py) | Module:       audit | 3 | 3 | 595 |
@@ -55,6 +60,7 @@
 | [serialization.py](serialization.py) | JSON serialization utilities for canonical data models. | 0 | 12 | 449 |
 | [slab_api.py](slab_api.py) | Stable orchestration entry points for the bounded IS 456 sla | 4 | 7 | 851 |
 | [staircase_api.py](staircase_api.py) | Stable orchestration for the bounded IS 456 straight-flight  | 3 | 1 | 209 |
+| [strap_footing_api.py](strap_footing_api.py) | Stable orchestration for the bounded property-line strap-foo | 4 | 2 | 280 |
 | [testing_strategies.py](testing_strategies.py) | Module:       testing_strategies | 9 | 2 | 655 |
 | [tool_manifest.py](tool_manifest.py) | Deterministic AI-tool descriptors projected from the workflo | 1 | 3 | 162 |
 | [wall_api.py](wall_api.py) | Stable orchestration for the bounded IS 456 braced-wall work | 3 | 1 | 227 |

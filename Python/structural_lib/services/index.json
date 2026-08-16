@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 44,
+  "file_count": 45,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 18,
+      "size_lines": 30,
       "last_updated": "2026-08-16",
       "description": "Application-layer public workflow exports.",
-      "content_hash": "8bf3a93f7fea"
+      "content_hash": "bad70205f642"
     },
     {
       "name": "adapters.py",
@@ -83,10 +83,10 @@
     {
       "name": "api.py",
       "type": "python",
-      "size_lines": 432,
+      "size_lines": 445,
       "last_updated": "2026-08-16",
       "description": "Module:       api",
-      "content_hash": "9fb5502599b9"
+      "content_hash": "8881b13784a4"
     },
     {
       "name": "api_hub.py",
@@ -2489,6 +2489,55 @@
       "content_hash": "afe720f2fd86"
     },
     {
+      "name": "strap_footing_api.py",
+      "type": "python",
+      "size_lines": 280,
+      "last_updated": "2026-08-16",
+      "description": "Stable orchestration for the bounded property-line strap-footing workflow.",
+      "classes": [
+        {
+          "name": "PropertyLineStrapFootingDesignStatus",
+          "description": "Aggregate disposition for the bounded public Python workflow."
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignInput",
+          "description": "Case identity, A/B design input, and review acknowledgement."
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignProvenance",
+          "description": "Stable workflow, source, benchmark, and caller-basis identity."
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignResult",
+          "description": "Composed A/B result with supported and held case truth.",
+          "public_methods": [
+            "is_safe_within_supported_scope"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "build_property_line_strap_footing_design_input",
+          "description": "Build the service contract from an already transport-validated mapping.",
+          "params": [
+            "payload"
+          ]
+        },
+        {
+          "name": "design_property_line_strap_footing_is456",
+          "description": "Compose the sole G0-approved property-line strap-footing workflow.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "constants": [
+        "_SUPPORTED_CASE",
+        "_HELD_CASES"
+      ],
+      "content_hash": "e9d75cc256be"
+    },
+    {
       "name": "testing_strategies.py",
       "type": "python",
       "size_lines": 655,
@@ -2823,7 +2872,12 @@
     "SymmetricCombinedFootingDesignProvenance",
     "SymmetricCombinedFootingDesignResult",
     "SymmetricCombinedFootingDesignStatus",
-    "design_symmetric_combined_footing_is456"
+    "design_symmetric_combined_footing_is456",
+    "PropertyLineStrapFootingDesignInput",
+    "PropertyLineStrapFootingDesignProvenance",
+    "PropertyLineStrapFootingDesignResult",
+    "PropertyLineStrapFootingDesignStatus",
+    "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "cdd22758a600a614"
+  "content_hash": "7c26676d6b281a41"
 }

@@ -191,6 +191,13 @@ from structural_lib.services.staircase_api import (  # noqa: F401
     StraightFlightStaircaseResult,
     design_straight_flight_staircase_is456,
 )
+from structural_lib.services.strap_footing_api import (  # noqa: F401
+    PropertyLineStrapFootingDesignInput,
+    PropertyLineStrapFootingDesignProvenance,
+    PropertyLineStrapFootingDesignResult,
+    PropertyLineStrapFootingDesignStatus,
+    design_property_line_strap_footing_is456,
+)
 from structural_lib.services.wall_api import (  # noqa: F401
     BracedWallDesignInput,
     BracedWallDesignProvenance,
@@ -386,6 +393,12 @@ __all__ = [
     "SymmetricCombinedFootingDesignProvenance",
     "SymmetricCombinedFootingDesignResult",
     "SymmetricCombinedFootingDesignStatus",
+    # Property-line strap footing (bounded supported case)
+    "design_property_line_strap_footing_is456",
+    "PropertyLineStrapFootingDesignInput",
+    "PropertyLineStrapFootingDesignProvenance",
+    "PropertyLineStrapFootingDesignResult",
+    "PropertyLineStrapFootingDesignStatus",
     # Solid slab design (bounded supported cases)
     "design_one_way_slab_is456",
     "design_complete_one_way_slab_is456",

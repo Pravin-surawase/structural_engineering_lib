@@ -108,9 +108,17 @@ _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
     "IS456:2000": (
         {
             "family": "strap_footing",
-            "claim": "Strap-footing design is not implemented.",
+            "implementation_status": "IMPLEMENTED_BOUNDED",
+            "claim": "A bounded property-line strap-footing Python workflow exists but is not yet published as a supported capability.",
+            "workflows": ["design_property_line_strap_footing_is456"],
             "limitations": [
-                "G0 plus bounded analysis and strap-strength kernels are implemented; public composition and publication remain pending."
+                "FastAPI transport, supported capability registration, and focused family acceptance remain pending."
+            ],
+            "evidence": [
+                "docs/verification/india-2-foundation-strap-g0-scope-evidence.md",
+                "docs/verification/india-2-foundation-strap-a-analysis-evidence.md",
+                "docs/verification/india-2-foundation-strap-b-strength-evidence.md",
+                "docs/verification/india-2-foundation-strap-c-public-workflow-evidence.md",
             ],
         },
         {

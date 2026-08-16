@@ -5,6 +5,74 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FOUNDATION-STRAP-C
+
+**Agent:** Codex (`backend`, sole writer; one bounded independent exact-head
+audit after the candidate is committed)
+
+**Branch:** `codex/india-2-foundation-strap-c` from merged STRAP-B
+`ec6a81b32b9fc2ae227d041ec19bb848a99ac3eb`
+
+**Git handoff receipt:** `docs/verification/india-2-foundation-strap-c-git-handoff-receipt.json`
+
+**Focus:** Publish only the typed Python composition, immutable provenance/
+result/status types, nested mapping builder, canonical exports, executable
+benchmark, and public docs. FastAPI/capability, React, broad Python, and the
+full 30-check gate remain outside C.
+
+### Summary
+
+- Added the sole canonical public property-line strap workflow over A/B with
+  stable PASS/FAIL, source-bound provenance, held-case truth, required review,
+  and false complete-engineering approval.
+- Added strict nested mapping reconstruction for D and canonical exports at
+  every maintained Python import surface.
+- Recorded the existing public workflow as held/implemented in the manifest;
+  supported capability and semantic publication remain deferred to D.
+
+### Issues encountered
+
+- The first orientation command guessed a package-local
+  `combined_footing/workflow.py`, but the maintained public composition lives
+  in `services/combined_footing_api.py`.
+- The first multi-file export patch assumed a direct service import block in
+  the package root and failed before applying; a later combined test/docs patch
+  used a non-exact API-document sentence as its anchor and also failed before
+  applying.
+- Targeted index generation refused to create new indexes in the unmaintained
+  `Python/tests/integration` folder.
+- The first commit attempt was stopped after the Ruff hook reordered the new
+  strap service import in the edited API export hub.
+
+### Root causes and resolutions
+
+- Root cause: the C composition location was inferred from the packet name
+  instead of discovered from the public workflow symbol. Resolution: use
+  targeted `rg --files`/symbol search and follow the established service-layer
+  module. Evidence: architecture remains one-way and canonical export identity
+  tests pass.
+  ⚠️ TERMINAL ISSUE: guessed workflow file did not exist -> symbol discovery
+  identified `services/combined_footing_api.py`.
+- Root cause: patch anchors were based on assumed nearby text rather than the
+  exact live import/document structure. Resolution: inspect each narrow target
+  and apply exact per-file anchors; failed patches made no changes. Evidence:
+  export identity, API docs/signatures, formatting, and focused gates pass.
+- Root cause: index maintenance was inferred from the edited folder rather
+  than discovered from its existing files. Resolution: do not create a new
+  index; update only already maintained service/package indexes and rely on the
+  global index/link checks for the integration test. Evidence: maintained
+  index checks and focused documentation gates pass.
+  ⚠️ TERMINAL ISSUE: generator refused an unmaintained index target -> kept
+  repository index policy unchanged and validated maintained indexes.
+- Root cause: the pre-commit lint command covered the new service and test but
+  omitted the edited export hubs, so it did not see their import-order issue.
+  Resolution: accept Ruff's deterministic import move, expand focused lint to
+  every edited Python file, regenerate the affected maintained index, and
+  recommit normally. Evidence: expanded Ruff/Black/mypy/public-contract gates
+  and commit hooks pass; no semantic diff was introduced.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-FOUNDATION-STRAP-B
 
 **Agent:** Codex (`structural-math`, sole writer; one bounded independent
