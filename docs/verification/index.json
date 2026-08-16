@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 76,
+  "file_count": 79,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -541,6 +541,44 @@
       "content_hash": "b3348eb6b4bc"
     },
     {
+      "name": "india-2-flat-d-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "ccefcc545748"
+    },
+    {
+      "name": "india-2-flat-d-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "1e8c9b28354b"
+    },
+    {
+      "name": "india-2-flat-d-punching-evidence.md",
+      "type": "documentation",
+      "size_lines": 82,
+      "last_updated": "2026-08-16",
+      "description": "FLAT-D adds the centred concentric punching check for the G0-frozen square interior column. It consumes the fail-closed FLAT-A panel contract and requires",
+      "content_hash": "102df860ad9f"
+    },
+    {
       "name": "india-2-flat-g0-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -792,7 +830,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "8e42d5215115"
+      "content_hash": "6dd73b85ee70"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -881,5 +919,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "24e4e35ae7b19383"
+  "content_hash": "fc34ea2c3c05cc02"
 }

@@ -94,7 +94,7 @@
 | Folder | Files | Description |
 |--------|-------|-------------|
 | [cli/](cli/) 📦 | 2 |  |
-| [codes/](codes/) 📦 | 94 |  |
+| [codes/](codes/) 📦 | 102 |  |
 | [core/](core/) 📦 | 20 |  |
 | [insights/](insights/) 📦 | 12 |  |
 | [reports/](reports/) 📦 | 7 |  |

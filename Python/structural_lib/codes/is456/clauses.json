@@ -6,7 +6,7 @@
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
     "last_updated": "2026-08-16",
-    "total_clauses": 166,
+    "total_clauses": 169,
     "includes_references": [
       "IS 13920:2016"
     ],
@@ -844,6 +844,16 @@
         "bo"
       ]
     },
+    "31.6.2.1": {
+      "title": "Nominal Shear Stress in Flat Slabs",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "nominal shear stress",
+        "critical perimeter",
+        "effective depth"
+      ]
+    },
     "31.6.3": {
       "title": "Permissible Punching Shear Stress",
       "section": "31 - Limit State of Collapse: Shear",
@@ -853,6 +863,27 @@
         "punching",
         "ks",
         "beta_c"
+      ]
+    },
+    "31.6.3.1": {
+      "title": "Flat Slab Shear Stress Without Reinforcement",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "punching shear",
+        "no shear reinforcement",
+        "ks",
+        "beta_c"
+      ]
+    },
+    "31.6.3.2": {
+      "title": "Flat Slab Shear Reinforcement and Redesign Boundary",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "punching reinforcement",
+        "redesign",
+        "shear stress"
       ]
     },
     "32.1": {

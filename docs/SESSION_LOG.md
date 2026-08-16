@@ -5,6 +5,82 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FLAT-D Centred Punching
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-flat-d` from integrated FLAT-C main at
+`1a0e34bca300ee23f659c2cd131f6766a41570fc`
+
+**Git handoff receipt:** `docs/verification/india-2-flat-d-git-handoff-receipt.json`
+
+**Focus:** Implement only the G0-frozen centred square interior-column
+concrete punching check and its fail-closed redesign boundaries.
+
+### Summary
+
+- Added an immutable typed support-reaction contract and pure Clause 31.6
+  calculation with explicit kN, mm, mm2, and N/mm2 carriers.
+- Reproduced the independent G0 reaction, critical perimeter, shear, stress,
+  concrete capacity, and utilization without designing punching reinforcement.
+- Distinguished concrete-only adequacy, reinforcement-or-redesign, and
+  mandatory-redesign dispositions while retaining qualified review.
+
+### Issues encountered
+
+- The first all-folder index generation rewrote timestamps and exposed stale
+  generated content in unrelated clean folders, expanding the diff from the
+  intended packet to 54 paths.
+- The first index-generation command omitted the now-required folder or
+  explicit `--all` argument and printed help without updating an index.
+- The first handoff-receipt command left wildcard forbidden paths unquoted, so
+  zsh rejected the command before receipt creation.
+
+### Root causes and resolutions
+
+- Root cause: the all-folder generator derives dates and content from every
+  worktree file, so a linked worktree created today can rewrite unrelated index
+  timestamps and surface pre-existing index drift. Resolution: inspect the
+  exact diff, retain only the four parent index families whose file counts
+  genuinely changed, and restore the explicitly enumerated unrelated generated
+  files from the known-clean FLAT-D base. Evidence: the resulting status is
+  limited to owned FLAT-D code, tests, registry/manifest, evidence/session, and
+  their affected parent indexes.
+- Root cause: the maintained index command now requires a target folder or
+  explicit all-folder intent. Resolution: inspect its printed usage before the
+  later bounded regeneration/check; no mutation occurred from the first call.
+- Root cause: zsh expands unquoted wildcard arguments before the receipt tool
+  can read them. Resolution: quote each wildcard-bearing forbidden path and
+  rerun the same bounded receipt command; validation then controls the result.
+
+### Evidence
+
+- All 14 direct tests reproduce the frozen benchmark and exercise both unsafe
+  dispositions, reaction consistency, held flags, exact provenance, immutability,
+  moment-transfer rejection, and non-input rejection.
+- The complete flat-slab/clause/traceability/manifest selection passes 184
+  tests; Black, Ruff, mypy, and Bandit pass.
+- Architecture validation reports zero violations across 183 files; import
+  validation reports zero broken imports across 618 Python files.
+- All 1,207 internal links are valid, all eight touched folder indexes are
+  current, token efficiency passes, and the quick repository gate passes 10/10.
+- Capability remains held until FLAT-E; broad Python and 30-check gates remain
+  deferred to final INDIA-2 closeout.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `./run.sh generate indexes` without a target printed
+  usage and made no change → inspected the maintained invocation contract.
+- ⚠️ TERMINAL ISSUE: `./run.sh generate indexes --all` expanded the packet to
+  54 paths through unrelated timestamp/index drift → retained only indexes
+  with genuine owned count/hash changes and restored the enumerated unrelated
+  generated files from the known-clean packet base.
+- ⚠️ TERMINAL ISSUE: the first handoff-receipt command used unquoted `**`
+  arguments and zsh stopped before creating a receipt → quoted all wildcard
+  path arguments and reran the unchanged bounded command.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-FLAT-C Reinforcement and Serviceability
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

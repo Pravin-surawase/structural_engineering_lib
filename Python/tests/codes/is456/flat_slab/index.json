@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 4,
+  "file_count": 5,
   "files": [
     {
       "name": "__init__.py",
@@ -114,6 +114,52 @@
       "content_hash": "aaa495c2609a"
     },
     {
+      "name": "test_punching.py",
+      "type": "python",
+      "size_lines": 217,
+      "last_updated": "2026-08-16",
+      "description": "INDIA-2-FLAT-D centred interior-column punching tests.",
+      "functions": [
+        {
+          "name": "test_frozen_centred_interior_column_punching_benchmark"
+        },
+        {
+          "name": "test_no_reinforcement_limit_exceedance_fails_bounded_route"
+        },
+        {
+          "name": "test_mandatory_redesign_boundary_is_distinguished"
+        },
+        {
+          "name": "test_support_reaction_must_match_frozen_tributary_basis"
+        },
+        {
+          "name": "test_held_punching_boundaries_fail_closed",
+          "params": [
+            "field"
+          ]
+        },
+        {
+          "name": "test_missing_punching_provenance_fails_closed",
+          "params": [
+            "field"
+          ]
+        },
+        {
+          "name": "test_clause_source_and_held_case_provenance_is_exact"
+        },
+        {
+          "name": "test_non_punching_input_fails_closed"
+        },
+        {
+          "name": "test_punching_contract_is_immutable"
+        },
+        {
+          "name": "test_panel_contract_still_rejects_moment_transfer"
+        }
+      ],
+      "content_hash": "54b38312c07f"
+    },
+    {
       "name": "test_reinforcement.py",
       "type": "python",
       "size_lines": 229,
@@ -151,5 +197,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "a4308bc8a0534f46"
+  "content_hash": "13770975228af822"
 }
