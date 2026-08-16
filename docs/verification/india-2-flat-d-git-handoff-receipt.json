@@ -1,0 +1,193 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T05:28:20Z",
+      "query_status": "OK",
+      "reference": "task:INDIA-2:user-request-continue-and-complete",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T05:28:20Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/india-2-flat-d",
+      "head_sha": "1a0e34bca300ee23f659c2cd131f6766a41570fc",
+      "task_id": "INDIA-2-FLAT-D"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "2b88e3ae6682f14e11860ef854b58ec51dd38b9df827b1c1c0ede9d7e2c2593c",
+    "state": {
+      "branch": "codex/india-2-flat-d",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "1a0e34bca300ee23f659c2cd131f6766a41570fc",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 89.895,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-flat-d",
+      "head_sha": "1a0e34bca300ee23f659c2cd131f6766a41570fc",
+      "hold_reasons": [
+        "changed paths: 23"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T05:29:08.362251+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-flat-d",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 23,
+        "modified_paths": [
+          "Python/structural_lib/codes/index.json",
+          "Python/structural_lib/codes/index.md",
+          "Python/structural_lib/codes/is456/clauses.json",
+          "Python/structural_lib/codes/is456/flat_slab/__init__.py",
+          "Python/structural_lib/codes/is456/flat_slab/index.json",
+          "Python/structural_lib/codes/is456/flat_slab/index.md",
+          "Python/structural_lib/codes/is456/index.json",
+          "Python/structural_lib/codes/is456/index.md",
+          "Python/structural_lib/index.json",
+          "Python/structural_lib/index.md",
+          "Python/tests/codes/is456/flat_slab/index.json",
+          "Python/tests/codes/is456/flat_slab/index.md",
+          "Python/tests/index.json",
+          "Python/tests/index.md",
+          "Python/tests/unit/test_clauses_json.py",
+          "docs/SESSION_LOG.md",
+          "docs/index.json",
+          "docs/index.md",
+          "docs/verification/indian-code-capability-coverage.json"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "Python/structural_lib/codes/is456/flat_slab/punching.py",
+          "Python/tests/codes/is456/flat_slab/test_punching.py",
+          "docs/verification/india-2-flat-d-git-handoff-source-evidence.json",
+          "docs/verification/india-2-flat-d-punching-evidence.md"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "1a0e34bca300ee23f659c2cd131f6766a41570fc",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-flat-d"
+    }
+  },
+  "local_state_receipt_hash": "sha256:2b88e3ae6682f14e11860ef854b58ec51dd38b9df827b1c1c0ede9d7e2c2593c",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T05:29:08.362446+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T05:28:20Z",
+    "owner": "Main Agent under user instruction to preserve Git state",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/codes/is456/flat_slab/models.py",
+      "Python/structural_lib/codes/is456/flat_slab/geometry.py",
+      "Python/structural_lib/codes/is456/flat_slab/moments.py",
+      "Python/structural_lib/codes/is456/flat_slab/reinforcement.py",
+      "Python/structural_lib/services/**",
+      "fastapi_app/**",
+      "react_app/**",
+      "private_sources/**"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "Python/structural_lib/codes/is456/flat_slab/punching.py",
+      "Python/tests/codes/is456/flat_slab/test_punching.py",
+      "docs/verification/india-2-flat-d-punching-evidence.md",
+      "docs/verification/india-2-flat-d-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "Python/structural_lib/codes/is456/clauses.json",
+      "Python/structural_lib/codes/is456/flat_slab/__init__.py",
+      "Python/structural_lib/codes/is456/flat_slab/index.json",
+      "Python/structural_lib/codes/is456/flat_slab/index.md",
+      "Python/structural_lib/codes/is456/index.json",
+      "Python/structural_lib/codes/is456/index.md",
+      "Python/structural_lib/codes/index.json",
+      "Python/structural_lib/codes/index.md",
+      "Python/structural_lib/index.json",
+      "Python/structural_lib/index.md",
+      "Python/tests/codes/is456/flat_slab/index.json",
+      "Python/tests/codes/is456/flat_slab/index.md",
+      "Python/tests/index.json",
+      "Python/tests/index.md",
+      "Python/tests/unit/test_clauses_json.py",
+      "docs/SESSION_LOG.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/verification/indian-code-capability-coverage.json"
+    ],
+    "task_id": "INDIA-2-FLAT-D"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

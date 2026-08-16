@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 5,
+  "file_count": 6,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 56,
+      "size_lines": 66,
       "last_updated": "2026-08-16",
       "description": "Bounded IS 456 Clause 31 interior flat-slab contracts.",
-      "content_hash": "8d0fb9b40f8e"
+      "content_hash": "294ce20a5c22"
     },
     {
       "name": "geometry.py",
@@ -116,6 +116,44 @@
       "content_hash": "70e05d19ff46"
     },
     {
+      "name": "punching.py",
+      "type": "python",
+      "size_lines": 247,
+      "last_updated": "2026-08-16",
+      "description": "Centred interior-column punching check for the bounded flat-slab route.",
+      "classes": [
+        {
+          "name": "FlatSlabPunchingStatus",
+          "description": "Outcomes admitted by the no-punching-reinforcement route."
+        },
+        {
+          "name": "FlatSlabPunchingInput",
+          "description": "Explicit reaction and applicability evidence for FLAT-D."
+        },
+        {
+          "name": "FlatSlabPunchingResult",
+          "description": "Punching demand, concrete boundaries, and bounded route disposition.",
+          "public_methods": [
+            "is_adequate_without_punching_reinforcement"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "check_regular_interior_flat_slab_punching",
+          "description": "Check the full centred square-column punching perimeter.",
+          "params": [
+            "punching_input"
+          ]
+        }
+      ],
+      "constants": [
+        "_SOURCE_REFS",
+        "_REACTION_ABS_TOL_KN"
+      ],
+      "content_hash": "8dbdd9bfd5fb"
+    },
+    {
       "name": "reinforcement.py",
       "type": "python",
       "size_lines": 463,
@@ -189,11 +227,11 @@
     "FlatSlabMomentResult",
     "FlatSlabPanelInput",
     "FlatSlabPanelLocation",
+    "FlatSlabPunchingInput",
+    "FlatSlabPunchingResult",
+    "FlatSlabPunchingStatus",
     "FlatSlabRegionReinforcementResult",
-    "FlatSlabReinforcementResult",
-    "calculate_regular_interior_flat_slab_moments",
-    "design_regular_interior_flat_slab_reinforcement",
-    "resolve_regular_interior_flat_slab_geometry"
+    "FlatSlabReinforcementResult"
   ],
-  "content_hash": "c9dec716c1bbda32"
+  "content_hash": "45656def92d34060"
 }

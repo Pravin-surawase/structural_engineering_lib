@@ -22,6 +22,12 @@ from structural_lib.codes.is456.flat_slab.moments import (
     FlatSlabMomentResult,
     calculate_regular_interior_flat_slab_moments,
 )
+from structural_lib.codes.is456.flat_slab.punching import (
+    FlatSlabPunchingInput,
+    FlatSlabPunchingResult,
+    FlatSlabPunchingStatus,
+    check_regular_interior_flat_slab_punching,
+)
 from structural_lib.codes.is456.flat_slab.reinforcement import (
     FlatSlabDetailingInput,
     FlatSlabDirectionDetailingInput,
@@ -47,9 +53,13 @@ __all__ = [
     "FlatSlabMomentResult",
     "FlatSlabPanelInput",
     "FlatSlabPanelLocation",
+    "FlatSlabPunchingInput",
+    "FlatSlabPunchingResult",
+    "FlatSlabPunchingStatus",
     "FlatSlabRegionReinforcementResult",
     "FlatSlabReinforcementResult",
     "calculate_regular_interior_flat_slab_moments",
+    "check_regular_interior_flat_slab_punching",
     "design_regular_interior_flat_slab_reinforcement",
     "resolve_regular_interior_flat_slab_geometry",
 ]

@@ -288,11 +288,11 @@
         }
       ],
       "registration_summary": {
-        "known_references": 166,
-        "registered_known_references": 88,
+        "known_references": 169,
+        "registered_known_references": 91,
         "metadata_only_references": 78,
         "registration_only_references": 0,
-        "registration_pct": 53.0
+        "registration_pct": 53.8
       },
       "references": [
         {
@@ -990,6 +990,7 @@
           "category": "footings",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.flat_slab.punching.check_regular_interior_flat_slab_punching",
             "structural_lib.codes.is456.footing.punching_shear.footing_punching_shear"
           ]
         },
@@ -1003,6 +1004,17 @@
           "functions": []
         },
         {
+          "reference_id": "IS456:2000:31.6.2.1",
+          "reference": "31.6.2.1",
+          "reference_type": "clause",
+          "title": "Nominal Shear Stress in Flat Slabs",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.punching.check_regular_interior_flat_slab_punching"
+          ]
+        },
+        {
           "reference_id": "IS456:2000:31.6.3",
           "reference": "31.6.3",
           "reference_type": "clause",
@@ -1010,6 +1022,28 @@
           "category": "footings",
           "registration_status": "METADATA_ONLY",
           "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.6.3.1",
+          "reference": "31.6.3.1",
+          "reference_type": "clause",
+          "title": "Flat Slab Shear Stress Without Reinforcement",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.punching.check_regular_interior_flat_slab_punching"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31.6.3.2",
+          "reference": "31.6.3.2",
+          "reference_type": "clause",
+          "title": "Flat Slab Shear Reinforcement and Redesign Boundary",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.punching.check_regular_interior_flat_slab_punching"
+          ]
         },
         {
           "reference_id": "IS456:2000:31.7",
