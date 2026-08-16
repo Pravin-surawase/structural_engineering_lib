@@ -25,6 +25,15 @@ Codex owns the normal development path after the user requests a change:
 6. create or update a draft pull request through connected GitHub;
 7. inspect required checks and report their exact state.
 
+Before publishing or merging any side packet, run an active-candidate
+dependency check across task-owned worktrees: bind each unmerged candidate's
+base/head, compare changed paths, and identify shared/generated owners. If the
+side packet would advance `main` ahead of an active candidate or overlaps its
+shared/generated paths, hold the side merge until the predecessor integrates
+or the candidate is explicitly replanned and rebound. Worktree isolation
+protects working files and indexes; it does not freeze shared refs or make
+merge ordering independent.
+
 Use commit messages in the form:
 
 ```text
@@ -83,6 +92,15 @@ candidate. PR numbers, hosted-check results, and merge identities are external
 facts and must not be appended to that same candidate after push. A material
 post-push defect creates an explicit repair candidate and invalidates the prior
 audit; routine status reporting never creates a second documentation commit.
+
+An authorized merge-resolution candidate is the narrow exception to the
+pre-commit quick-gate order: `git_state.py` must report `HOLD_OPERATION` until
+the resolving merge commit exists. After all conflicts are resolved and the
+unmerged-path set is empty, run focused/content checks, create the merge commit
+through normal hooks, then run the sole quick gate immediately on that clean
+merge head before independent audit or push. A content or hook failure remains
+a blocker; this exception never permits bypassing hooks or auditing an open
+merge.
 
 Do not claim a candidate is complete, final, ready, or merge-eligible before the
 independent PASS bound to its unchanged head and tree. Do not start hosted CI

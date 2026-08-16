@@ -109,6 +109,12 @@ recreate that lifecycle in repository scripts. The canonical process is
 - Use a `codex/<task-slug>` branch when a new branch is needed.
 - Stage only intended paths; preserve unrelated staged, unstaged, untracked, and
   stashed work.
+- Before publishing or merging a side packet, inspect every task-owned
+  unmerged candidate worktree and compare its base/head plus changed paths. If
+  the side packet would advance `main` ahead of an active candidate or overlaps
+  shared/generated paths, integrate the predecessor first or explicitly
+  replan/rebind the candidate. A clean isolated worktree is not sufficient
+  evidence that merge ordering is safe.
 - Use `feat|fix|docs|refactor|test|chore|ci(scope): description` commits.
 - Push without rewriting history and create/update the PR through connected
   GitHub. Never bypass required checks.

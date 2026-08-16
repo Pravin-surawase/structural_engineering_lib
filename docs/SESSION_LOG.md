@@ -5,6 +5,162 @@
 
 ---
 
+## 2026-08-17 — Session: LIB-PRO-002-A Strict Service Intake
+
+**Agent:** Codex (`backend` and `tester`, sole writer)
+
+**Branch:** `codex/lib-pro-002-a-strict-input` from freshly fetched
+`origin/main = 55104e11257937b0a42fb06f931a70b8484cef39`
+
+**Git handoff receipt:** `docs/verification/lib-pro-002-a-forward-integration-git-handoff-receipt.json`
+
+**Focus:** Replace the beam batch service's silent structural defaulting and
+implicit effective-depth derivation with the versioned strict project contract
+frozen by G0. Do not edit imports, FastAPI/React transports, other element
+families, release automation, API classification, or whole-building behavior.
+
+### Summary
+
+- Added strict versioned project beam input and result types with explicit-unit
+  fields, stable issue codes and paths, orthogonal intake/calculation/
+  engineering/review states, and a summary in which zero evaluated members can
+  never PASS.
+- Required every calculation-bearing value and exactly one explicit `d_mm` or
+  complete cover/stirrup/tension-bar depth basis; malformed, empty, non-finite,
+  out-of-range, unknown, conflicting, or duplicate inputs now block.
+- Made the legacy batch functions a compatibility adapter that maps only known
+  aliases, applies no structural defaults or alias precedence, and delegates to
+  the canonical validator and calculation path.
+- Preserved the accepted synthetic beam arithmetic and the completed unsafe-
+  shear FAIL while proving every blocked member avoids `design_beam_is456`.
+- Forward-integrated the subsequently merged workflow-policy packet without
+  rewriting the original Packet A commit or touching unrelated worktrees.
+
+### Issues encountered
+
+- The live G0 task board and handoff still described G0 as a local candidate
+  even though PR #812 had been independently accepted, merged, and synchronized
+  to `main`; following that state literally would repeat the completed packet.
+- The original batch path combined alias selection, numeric coercion, fallback
+  structural values, fabricated member identity, and `D - cover - 8` depth
+  derivation before invoking the calculation core.
+- The first duplicate-identity implementation counted only otherwise-valid
+  inputs, so a valid row could still calculate when its duplicate twin was
+  independently blocked for another field error.
+- Final pre-candidate review found that whole-batch duplicate validation also
+  caused both strict and legacy iterators to calculate every accepted member
+  before returning the first result, weakening streaming/cancellation behavior.
+- The first focused Mypy run rejected the concrete `list[dict[str, Any]]`
+  compatibility payload against an invariant `list[Mapping[...] | Input]`
+  internal annotation.
+- The first handoff-receipt command left zsh glob patterns unquoted, so the
+  shell expanded the forbidden FastAPI/React/workflow paths and the receipt
+  parser rejected the resulting arguments before writing a receipt.
+- The first normal commit-hook run stopped because canonical Black reformatted
+  one conditional-comprehension expression that Ruff format had left unchanged.
+- Although Packet A started from a clean, current, isolated worktree, merging
+  the later workflow-policy side packet advanced `main` and changed the same
+  session/index surfaces before Packet A was published. Packet A therefore
+  became `HOLD_DIVERGED` despite remaining clean.
+- The first post-resolution quick gate passed all content checks but failed its
+  two Git checks because the authorized merge operation necessarily remained
+  open until the merge commit existed.
+
+### Root causes and resolutions
+
+- Confirmed root cause: immutable G0 closeout correctly froze versioned records
+  before hosted review/merge facts existed, so the successor packet had to
+  reconcile those external facts rather than mutate the prior candidate.
+  Resolution: bind Packet A to fetched merge `55104e11`, mark G0 merged, and
+  make Packet A the sole active task. Evidence: startup reports the new lane at
+  exact base equality, `READY_LOCAL`, clean, and `source_bound=true`.
+- Confirmed root cause: `_pick_first()` and `_to_float()` treated parsing,
+  aliases, and assumptions as one operation and supplied 300/500/100/50/25/500/
+  40 plus a generated ID whenever source values were absent or malformed.
+  Resolution: one strict validator now accepts only canonical JSON numbers and
+  a separately named compatibility adapter maps aliases without filling any
+  structural value. Evidence: the table-driven service matrix and calculation
+  spies pass; blocked/duplicate members make zero core calls.
+- Confirmed root cause: duplicate counting used only validations that still
+  held a constructed value, excluding invalid rows even when their non-blank
+  `member_id` remained known. Resolution: count all validated member-ID hints,
+  block every occurrence, and preserve each row's other issues. Evidence: the
+  valid-plus-invalid duplicate-twin regression passes with two blocked members
+  and zero calculation calls.
+- Confirmed root cause: the first iterator delegated to a helper that eagerly
+  constructed the complete typed batch result, coupling required whole-batch
+  validation to calculation execution. Resolution: prepare all validations
+  first but yield each blocked/calculated member lazily. Evidence: strict and
+  legacy iterator regressions observe zero core calls before iteration and
+  exactly one call after requesting the first of two members.
+- Confirmed root cause: Python mutable lists are invariant even when their item
+  types are compatible. Resolution: accept `Sequence` at the internal
+  read-only batch boundary. Evidence: focused Mypy reports success for both new
+  service modules.
+- Confirmed root cause: zsh expands `**` before the called program can preserve
+  it as a policy pattern. Resolution: quote every glob-valued receipt argument
+  and rerun creation/validation. Evidence: the literal forbidden paths appear
+  in the validated receipt. ⚠️ TERMINAL ISSUE: unquoted receipt globs expanded
+  into repository paths -> quoted the patterns and reran the maintained tool.
+- Confirmed root cause: Ruff format and the repository's pinned Black do not
+  produce identical wrapping for the conditional-comprehension expression.
+  Resolution: use the repository's normal Black hook result, run Black against
+  all owned Python files, then rerun focused checks before restaging. Evidence:
+  the retry must pass the unmodified normal hooks. ⚠️ TERMINAL ISSUE: commit
+  hook reformatted one file -> accepted canonical Black output and reran gates.
+- Confirmed root cause: worktree cleanliness and isolation were checked, but no
+  active-candidate dependency/path-overlap gate was run before the later policy
+  PR merged. Worktrees isolate files and indexes; they share refs, so advancing
+  `main` made Packet A diverge, and the two packets overlapped
+  `docs/SESSION_LOG.md` plus generated indexes. Resolution: preserve
+  `22066d0d`, merge current `origin/main` into the existing Packet A branch,
+  resolve only the predicted governance/index conflicts, and add a durable
+  pre-publication active-candidate overlap gate to `AGENTS.md` and the canonical
+  Git workflow. Evidence: the pre-merge comparison identifies only five shared
+  governance/index paths, the merge reports conflicts only in those five paths,
+  and no runtime source conflict occurs. ⚠️ TERMINAL ISSUE: a later side packet
+  made the clean Packet A candidate diverge -> forward-integrated without
+  rebase/reset/force and recorded the missing sequencing guard.
+- Confirmed root cause: `git_state.py` correctly classifies any live merge as
+  `HOLD_OPERATION`, while a merge cannot leave that state until its resolving
+  commit is created. Resolution: for an authorized, fully resolved merge, run
+  focused/content checks first, create the merge commit through normal hooks,
+  then run the sole quick gate on the clean merge head before audit or push.
+  Evidence: the premature quick run passes 8/10 content/governance checks and
+  fails only `Git state` and `Unfinished operation` with the same explicit
+  `operation: merge` hold. ⚠️ TERMINAL ISSUE: quick cannot pass inside an open
+  merge -> move the single quick gate to the clean merge head.
+
+### Validation through content freeze
+
+- Startup: freshly fetched base equality at `55104e11257937b0a42fb06f931a70b8484cef39`,
+  fresh linked worktree, `READY_LOCAL`, no operation marker, clean tree, and
+  `source_bound=true`; the unrelated dirty detached `e54a` worktree remains
+  untouched.
+- Focused strict/compatibility service contract: 43 passed, including the
+  complete negative matrix, calculation spies, accounted mixed/empty batches,
+  explicit-versus-derived depth equivalence, lazy iterator execution, unchanged
+  pilot numbers, and retained unsafe-shear FAIL.
+- Ruff passes the three owned Python files; focused Mypy passes both service
+  modules; `git diff --check` is clean.
+- Architecture boundary check passes with 201 files and zero violations;
+  import validation passes with 650 files, 4,416 imports, and zero broken
+  imports.
+- Forward integration started from clean heads `22066d0d` and `87205d64` with
+  `source_bound=true`; all five conflicts were confined to the predicted shared
+  session/generated-index paths.
+- Receipt, affected indexes, quick `10/10`, session-end validation, immutable
+  candidate commit, exact-head independent review, and hosted closeout remain
+  after the final content freeze.
+
+### Timing through content freeze
+
+- Plan/Git/worktree safety and source binding: approximately 2 minutes.
+- Test-first implementation, root-cause repair, and focused validation:
+  approximately 14 minutes.
+- Receipt/index/quick, immutable review, hosted wait, merge closeout, and total
+  wall time remain to be recorded externally.
+
 ## 2026-08-17 — Session: Implementation-First Verification Policy
 
 **Agent:** Codex (`governance`, sole writer)
