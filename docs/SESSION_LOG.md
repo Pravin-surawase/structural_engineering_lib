@@ -12,8 +12,7 @@
 **Branch:** `codex/implementation-first-verification-policy` from freshly
 fetched `origin/main = 55104e11257937b0a42fb06f931a70b8484cef39`
 
-**Git handoff receipt:**
-`docs/verification/implementation-first-verification-policy-git-handoff-receipt.json`
+**Git handoff receipt:** `docs/verification/implementation-first-verification-policy-git-handoff-receipt.json`
 
 **Focus:** Make the owner's implementation-first, batched-verification cadence
 durable for future repository chats. Preserve the clean Packet A candidate and
@@ -38,6 +37,8 @@ adapters, release behavior, or the active LIB-PRO-002 handoff.
   duplicated gates, but did not explicitly say that routine verification
   starts only after the whole bounded packet is implemented and frozen. That
   ambiguity could make future chats rerun unchanged checks after small edits.
+- The first session-end check did not discover the committed handoff receipt
+  because its path was wrapped onto the line after the bold label.
 
 ### Root causes and resolutions
 
@@ -49,6 +50,12 @@ adapters, release behavior, or the active LIB-PRO-002 handoff.
   checks, and one cumulative full gate. Evidence: the efficiency policy check,
   documentation checks, affected indexes, quick gate, session-end contract,
   and normal commit hooks complete after content freeze.
+- Confirmed root cause: the session-end parser requires the receipt path on the
+  same line as the bold `Git handoff receipt` label. Resolution: place the
+  committed path on that label line and retain this exact format for future
+  entries. Evidence: the repaired session-end check discovers and validates
+  the receipt. ⚠️ TERMINAL ISSUE: session end reported a missing receipt ->
+  matched the maintained same-line parser contract.
 
 ### Validation through content freeze
 
