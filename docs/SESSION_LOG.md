@@ -5,6 +5,104 @@
 
 ---
 
+## 2026-08-16 — Session: Post-INDIA-2 Cleanup Execution
+
+**Agent:** Codex (`ops`, sole writer)
+
+**Branch:** `codex/post-india2-cleanup-execution` from audited merge
+`cbe10638fcba3f8919f8776462af34247b0604d0`, tree
+`83804f8c3af4edcc7454c8f916e4f0fb3ca36231`
+
+**Git handoff receipt:** `docs/verification/post-india2-cleanup-execution-git-handoff-receipt.json`
+
+**Focus:** Execute only frozen candidate set
+`POST-INDIA2-2499DF4ADE0DF704`, preserve every audit hold/exclusion, and publish
+an action-level receipt with exact identities and postconditions.
+
+### Summary
+
+- Revalidated all 193 frozen actions against the audited merge, current local
+  and GitHub refs, open pull requests, worktree states, protected branches, and
+  held lanes before mutation.
+- Removed exactly 58 clean inactive worktrees, 64 detached local branches, and
+  71 remote branches; every action was immediately checked and recorded.
+- Recovered 8,388,911,104 bytes from worktree surfaces, exactly matching the
+  audited estimate; no force option, prune, reset, stash, history rewrite, PR
+  closure, issue closure, or non-candidate deletion was used.
+- Preserved 17 held/excluded union branches, including dirty detached `e54a`,
+  Excel, `gh-pages`, all seven open Dependabot heads, and every detached,
+  mismatched, owner-unknown, or integration-unknown lane.
+- Final state has 11 worktrees, 8 local branches, and 16 remote branches. The
+  receipt proves every candidate worktree/local/remote surface absent and every
+  required protection postcondition true.
+
+### Issues encountered
+
+- After all 58 worktrees were removed, the first local-branch classification
+  stopped before deletion because 28 squash-integrated branches were reported
+  as `HOLD_UNIQUE_OR_UNPUBLISHED_WORK` with
+  `UNIQUE_COMMITS_OR_PATCHES`. No local or remote branch had yet been deleted.
+- ⚠️ TERMINAL ISSUE: a read-only `jq` projection assumed the worktree list was
+  nested under a second `worktrees` key; the projection failed after the
+  independent exact-tree assertion had already passed.
+- ⚠️ TERMINAL ISSUE: the first semantic-workflow command guessed the obsolete
+  direct path `scripts/check_git_workflow_semantics.py`; metadata passed, but
+  the chained command stopped before the quick gate.
+- The first session-end check accepted the session content but reported that
+  the action receipt was not declared as a task-to-Git handoff contract.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the inspection-only classifier intentionally treats
+  commit/patch ancestry as a hold, while a multi-commit PR that was squash
+  merged can retain unique commits/patches even when its complete head tree is
+  byte-for-byte equal to the reachable merge tree. Resolution: stop closed,
+  preserve the 58 completed removals in the receipt, then resume only after
+  rechecking exact local/remote heads, selected PR identity, equal branch and
+  merge trees, and merge-commit reachability for every named exception. Proof:
+  the receipt binds 56 conservative classifier exceptions to those exact facts,
+  all 193 actions are `REMOVED`, and all candidate refs are absent.
+- Confirmed root cause: `git_state.py --json --worktrees` emits `worktrees` as a
+  top-level array. Resolution: query its actual shape and repeat the read-only
+  counts. Proof: the corrected projection reports 11 worktrees and no inventory
+  query failures; no mutation occurred in either command.
+- Confirmed root cause: semantic Git-workflow validation is maintained as
+  `scripts/check_codex_git_workflow.py`. Resolution: discover it with
+  `./run.sh find` and invoke that maintained path. Proof: the semantic check and
+  the repeated quick gate pass.
+- Confirmed root cause: the action-level cleanup receipt proves deletion and
+  preservation outcomes but intentionally does not implement the repository's
+  task-to-Git handoff schema. Resolution: generate the separate fail-closed
+  handoff receipt from `git_state.py` plus fresh owner-authority evidence and
+  declare its path on one line in this entry. Proof: the maintained receipt
+  validator returns `CLEAN-001-POST-INDIA2-PHASE-B | HOLD`, and the repeated
+  session-end check must discover it.
+
+### Validation
+
+- Receipt invariant checks pass: candidate-set hash is unchanged; 193/193
+  actions are removed; failed actions are zero; expected and observed recovery
+  are equal; all candidate absence flags and protection postconditions are true.
+- `Python/tests/test_branch_disposition.py` and
+  `Python/tests/test_git_state.py` pass all 89 focused tests.
+- `scripts/check_links.py` validates 1,317 internal links with zero broken
+  links; strict metadata, the maintained semantic Git-workflow check, and the
+  targeted `docs/verification` index hash check pass.
+- `./run.sh check --quick` passes 10/10 and `./run.sh check` passes 30/30 in
+  11.7 reported seconds. Immutable-candidate audit, hosted checks, and
+  post-merge tree comparison remain before Phase B integration.
+
+### Timing
+
+- Execution preflight began at `2026-08-16T16:42:32Z`.
+- The fail-closed first pass removed worktrees through
+  `2026-08-16T16:56:34Z`; root-cause confirmation and the independent resume
+  boundary took about 4 minutes.
+- Local and remote deletion completed at `2026-08-16T17:17:09Z`; focused
+  postcondition validation completed by `2026-08-16T17:18:43Z`.
+
+---
+
 ## 2026-08-16 — Session: Post-INDIA-2 Cleanup Audit
 
 **Agent:** Codex (`ops`, sole writer)
