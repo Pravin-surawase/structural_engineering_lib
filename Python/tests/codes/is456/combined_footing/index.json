@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 2,
+  "file_count": 3,
   "files": [
     {
       "name": "__init__.py",
@@ -102,9 +102,79 @@
         }
       ],
       "content_hash": "93d53b7b6319"
+    },
+    {
+      "name": "test_strength.py",
+      "type": "python",
+      "size_lines": 464,
+      "last_updated": "2026-08-16",
+      "description": "INDIA-2-COMBINED-B strength, detailing, and transfer tests.",
+      "functions": [
+        {
+          "name": "test_frozen_benchmark_passes_with_review_boundary"
+        },
+        {
+          "name": "test_exact_stress_block_minimum_and_provided_steel_benchmark"
+        },
+        {
+          "name": "test_spacing_cover_and_tension_anchorage_benchmark"
+        },
+        {
+          "name": "test_frozen_longitudinal_and_transverse_one_way_shear"
+        },
+        {
+          "name": "test_frozen_concrete_only_punching_at_both_columns"
+        },
+        {
+          "name": "test_frozen_bearing_dowels_and_compression_development"
+        },
+        {
+          "name": "test_valid_inadequate_reinforcement_or_detailing_returns_fail",
+          "params": [
+            "reinforcement",
+            "field_name"
+          ]
+        },
+        {
+          "name": "test_valid_service_bearing_exceedance_returns_fail"
+        },
+        {
+          "name": "test_valid_one_way_shear_exceedance_returns_fail"
+        },
+        {
+          "name": "test_valid_punching_and_singly_reinforced_capacity_exceedance_returns_fail"
+        },
+        {
+          "name": "test_valid_inadequate_transfer_provision_returns_fail",
+          "params": [
+            "transfer",
+            "field_name"
+          ]
+        },
+        {
+          "name": "test_out_of_domain_material_and_approval_inputs_fail_closed",
+          "params": [
+            "factory",
+            "message"
+          ]
+        },
+        {
+          "name": "test_effective_supporting_area_smaller_than_column_fails_closed"
+        },
+        {
+          "name": "test_wrong_top_level_type_fails_closed"
+        },
+        {
+          "name": "test_result_is_frozen_deterministic_and_finite"
+        },
+        {
+          "name": "test_clause_and_source_traceability_are_explicit"
+        }
+      ],
+      "content_hash": "93eae28e6790"
     }
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "975a608f39169de8"
+  "content_hash": "ce0e4afaf0926def"
 }

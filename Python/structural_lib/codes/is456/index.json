@@ -40,7 +40,7 @@
         "figures",
         "annexures"
       ],
-      "content_hash": "c16a6d506dc9"
+      "content_hash": "095d4affbcdd"
     },
     {
       "name": "compliance.py",
@@ -394,7 +394,7 @@
     {
       "name": "combined_footing",
       "path": "combined_footing/",
-      "file_count": 5,
+      "file_count": 6,
       "is_package": true
     },
     {
@@ -462,5 +462,5 @@
     "list_clauses_by_category",
     "search_clauses"
   ],
-  "content_hash": "a0fbd22190f0f466"
+  "content_hash": "16f7816120c3fdc6"
 }

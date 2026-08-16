@@ -301,11 +301,11 @@
         }
       ],
       "registration_summary": {
-        "known_references": 169,
-        "registered_known_references": 91,
+        "known_references": 173,
+        "registered_known_references": 95,
         "metadata_only_references": 78,
         "registration_only_references": 0,
-        "registration_pct": 53.8
+        "registration_pct": 54.9
       },
       "references": [
         {
@@ -509,6 +509,7 @@
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.beam.detailing.calculate_development_length",
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
             "structural_lib.codes.is456.footing.load_transfer.check_isolated_footing_load_transfer"
@@ -523,6 +524,7 @@
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.beam.detailing.get_bond_stress",
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement"
           ]
         },
@@ -600,6 +602,7 @@
           "category": "detailing",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel"
           ]
         },
@@ -611,10 +614,22 @@
           "category": "detailing",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
             "structural_lib.codes.is456.slab.one_way_detailing.check_simply_supported_one_way_slab_detailing",
             "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.4.2.2",
+          "reference": "26.4.2.2",
+          "reference_type": "clause",
+          "title": "Minimum Nominal Cover for Footings",
+          "category": "footings",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength"
           ]
         },
         {
@@ -676,10 +691,22 @@
           "category": "slabs",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
             "structural_lib.codes.is456.slab.one_way_detailing.check_simply_supported_one_way_slab_detailing",
             "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:26.5.2.2",
+          "reference": "26.5.2.2",
+          "reference_type": "clause",
+          "title": "Maximum Bar Diameter in Slabs",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength"
           ]
         },
         {
@@ -1003,6 +1030,7 @@
           "category": "footings",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.flat_slab.punching.check_regular_interior_flat_slab_punching",
             "structural_lib.codes.is456.footing.punching_shear.footing_punching_shear"
           ]
@@ -1024,6 +1052,7 @@
           "category": "slabs",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.flat_slab.punching.check_regular_interior_flat_slab_punching"
           ]
         },
@@ -1044,6 +1073,7 @@
           "category": "slabs",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.flat_slab.punching.check_regular_interior_flat_slab_punching"
           ]
         },
@@ -1272,6 +1302,7 @@
           "functions": [
             "structural_lib.codes.is456.combined_footing.analysis.analyze_symmetric_combined_footing",
             "structural_lib.codes.is456.combined_footing.analysis.resolve_symmetric_combined_footing_geometry",
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.footing.bearing.size_footing"
           ]
         },
@@ -1321,6 +1352,7 @@
           "functions": [
             "structural_lib.codes.is456.combined_footing.analysis.analyze_symmetric_combined_footing",
             "structural_lib.codes.is456.combined_footing.analysis.resolve_symmetric_combined_footing_geometry",
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
             "structural_lib.codes.is456.footing.flexure.footing_flexure"
           ]
@@ -1344,8 +1376,20 @@
           "functions": [
             "structural_lib.codes.is456.combined_footing.analysis.analyze_symmetric_combined_footing",
             "structural_lib.codes.is456.combined_footing.analysis.resolve_symmetric_combined_footing_geometry",
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
             "structural_lib.codes.is456.footing.one_way_shear.footing_one_way_shear"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:34.2.4.3",
+          "reference": "34.2.4.3",
+          "reference_type": "clause",
+          "title": "Development-Length Critical Sections in Footings",
+          "category": "footings",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength"
           ]
         },
         {
@@ -1356,6 +1400,7 @@
           "category": "footings",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel"
           ]
         },
@@ -1367,6 +1412,7 @@
           "category": "footings",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.footing.bearing.bearing_stress_enhancement",
             "structural_lib.codes.is456.footing.bearing.check_bearing_pressure",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
@@ -1381,6 +1427,7 @@
           "category": "footings",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.footing.load_transfer.check_isolated_footing_load_transfer"
           ]
         },
@@ -1392,6 +1439,7 @@
           "category": "footings",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.footing.load_transfer.check_isolated_footing_load_transfer"
           ]
         },
@@ -1403,6 +1451,7 @@
           "category": "footings",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.footing.load_transfer.check_isolated_footing_load_transfer"
           ]
         },
@@ -1414,6 +1463,17 @@
           "category": "footings",
           "registration_status": "METADATA_ONLY",
           "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:34.5.1",
+          "reference": "34.5.1",
+          "reference_type": "clause",
+          "title": "Minimum Reinforcement and Spacing in Footings",
+          "category": "footings",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength"
+          ]
         },
         {
           "reference_id": "IS456:2000:36.1",
@@ -1450,6 +1510,7 @@
             "structural_lib.codes.is456.beam.flexure.design_singly_reinforced",
             "structural_lib.codes.is456.column.pmm.experimental_pmm_interaction_surface",
             "structural_lib.codes.is456.column.pmm.pm_interaction_slice_for_layout",
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement",
             "structural_lib.codes.is456.slab.one_way.design_simply_supported_one_way_slab_flexure",
             "structural_lib.codes.is456.slab.one_way_continuous.design_continuous_one_way_slab_flexure",
@@ -1598,6 +1659,7 @@
           "functions": [
             "structural_lib.codes.is456.beam.shear.calculate_tv",
             "structural_lib.codes.is456.beam.shear.design_shear",
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.slab.shear.check_solid_slab_one_way_shear",
             "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
           ]
@@ -1611,6 +1673,7 @@
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.beam.shear.design_shear",
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.slab.shear.check_solid_slab_one_way_shear",
             "structural_lib.codes.is456.slab.two_way_complete.design_two_way_slab_panel",
             "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
@@ -2025,11 +2088,12 @@
           "reference_id": "IS456:2000:G-1.1",
           "reference": "G-1.1",
           "reference_type": "annexure",
-          "title": "Doubly Reinforced Rectangular Sections",
+          "title": "Rectangular Sections Without Compression Reinforcement",
           "category": "flexure",
           "registration_status": "REGISTERED",
           "functions": [
-            "structural_lib.codes.is456.beam.flexure.design_doubly_reinforced"
+            "structural_lib.codes.is456.beam.flexure.design_doubly_reinforced",
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength"
           ]
         },
         {
