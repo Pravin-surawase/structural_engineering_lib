@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 104,
+  "file_count": 107,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -932,6 +932,44 @@
       "content_hash": "1f4ee33aff2e"
     },
     {
+      "name": "india-2-foundation-strap-g0-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "cebf34c2726d"
+    },
+    {
+      "name": "india-2-foundation-strap-g0-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "8101ca67e4de"
+    },
+    {
+      "name": "india-2-foundation-strap-g0-scope-evidence.md",
+      "type": "documentation",
+      "size_lines": 267,
+      "last_updated": "2026-08-16",
+      "description": "rectangular constant-depth footings on soil, one exterior square column eccentric to its footing centroid and one interior square column centred on its",
+      "content_hash": "8704b0e57f8a"
+    },
+    {
       "name": "india-2-plan-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -1145,7 +1183,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "8a3680609411"
+      "content_hash": "4feaedd0431a"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -1234,5 +1272,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "3b5624fdb1b574c6"
+  "content_hash": "6f7f5aa5b18a4f4b"
 }

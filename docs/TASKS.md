@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — bounded combined-footing family accepted; STRAP-G0 is next
+**Updated:** 2026-08-16 — STRAP-G0 returned GO; STRAP-A is next
 
 ---
 
@@ -133,7 +133,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2-FOUNDATION-STRAP-G0 | Decide one strap-footing analysis model, source set, benchmark, boundary, and exclusions without calculation code | Next Main Agent + structural engineer | decision-only packet | P0 | 🚧 NEXT — do not implement before a documented GO; combined-footing scope does not transfer |
+| INDIA-2-FOUNDATION-STRAP-A | Implement typed strap geometry/action/approval contracts, equal-pressure/common-factor eligibility, reactions, bearing, clear-strap actions, and equilibrium | Main Agent + structural math | focused analysis packet | P0 | 🚧 NEXT after STRAP-G0 merges unchanged; strength/publication remain held |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
@@ -145,8 +145,8 @@ INDIA-0 through INDIA-4, and the dedicated
 defines the remaining family packets. INDIA-0 and INDIA-1 are complete. The
 historical INDIA-2A-D packets form the completed `INDIA-2-STAIR` family. Bounded
 wall, deep-beam, flat-slab/punching, and combined-footing families are accepted,
-but umbrella INDIA-2 remains in progress while strap footing, pile cap, and
-raft remain pending their own G0 decisions.
+but umbrella INDIA-2 remains in progress while strap A-D/acceptance and the
+pile-cap/raft G0 decisions remain pending.
 The v0.23.1a1 Alpha is published.
 UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded
@@ -159,6 +159,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-FOUNDATION-STRAP-G0 | Froze one property-line two-footing system with equal uniform pressure, an explicit no-soil-contact strap model, independent benchmark, and externally verified footing-slab prerequisites | Main Agent + structural engineer | ✅ GO — STRAP-A-D and focused acceptance activated; public capability remains held |
 | INDIA-2-FOUNDATION-COMBINED | Implemented, published, and focused-accepted one bounded symmetric equal-load two-column rigid rectangular combined-footing workflow | Main Agent + structural engineer | ✅ DONE — G0/A-D integrated; 84 family tests, 339 focused public-contract tests, frozen and non-frozen benchmarks, exact-head audit, and hosted checks pass; qualified review and excluded systems remain held |
 | INDIA-2-FOUNDATION-COMBINED-D | Published strict nested FastAPI transport, exact OpenAPI drift, capability/semantic truth, and deterministic manifest promotion | Main Agent + API developer | ✅ COMPLETE — one bounded workflow is supported at 12/21 truth and all 80 routes have direct tests; integration receipt remains live-closeout evidence |
 | INDIA-2-FOUNDATION-COMBINED-C | Published one typed Python composition with immutable provenance/result/status types, canonical exports, executable benchmark, public API docs, and retained held truth | Main Agent + backend | ✅ COMPLETE — 7 direct C and 78 combined A/B/C tests pass; capability remains held until D |
