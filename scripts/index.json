@@ -1610,7 +1610,7 @@
         "META_REQUIRED_FIELDS",
         "META_VALID_VALUES"
       ],
-      "content_hash": "32b709983c49"
+      "content_hash": "0e9f4fd9c930"
     },
     {
       "name": "check_fastapi_issues.py",
@@ -5522,5 +5522,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "27b859d3cb9d656f"
+  "content_hash": "60e35116fb6ee56d"
 }

@@ -13,10 +13,10 @@ doc_type: spec
 ## 1. Outcome and stop boundary
 
 Combined-footing and strap-footing G0/A-D plus focused family acceptance are
-integrated within their recorded bounded cases. GIT-001 Phase 8 and the
-frontmatter contract/data repair are integrated, and Clause 38.2 truth hygiene
-closes on merge of its unchanged candidate. The next session starts with the
-decision-only pile-cap G0.
+integrated within their recorded bounded cases. GIT-001 Phase 8, the
+frontmatter contract/data repair, and Clause 38.2 truth hygiene are integrated.
+Pile-cap G0 closes as `HOLD` on merge of its unchanged decision candidate. The
+next session starts with decision-only raft G0.
 
 This document remains the sequence plan. Phase 8 execution is recorded in
 [`GIT-001-phase-8-adoption-closeout.md`](../research/git-governance/GIT-001-phase-8-adoption-closeout.md).
@@ -36,9 +36,10 @@ time:
    removed unsupported Clause 38.2/38.3/38.4 identities and an independent
    benchmark required exact shared stress-block arithmetic to prevent a false
    safe maximum-steel result.
-4. `INDIA-2-FOUNDATION-PILE-CAP-G0` — decision and benchmark only.
-5. Implement pile-cap A/B/C/D/acceptance only if G0 returns an owner-accepted
-   `GO`; otherwise record `HOLD` and its reactivation condition.
+4. `INDIA-2-FOUNDATION-PILE-CAP-G0` — completes as `HOLD`; no controlled IS
+   2911 companion source or accepted structural benchmark was retained.
+5. Pile-cap A/B/C/D/acceptance remains dormant until a new G0 reactivation
+   packet satisfies the recorded source and benchmark contract.
 6. `INDIA-2-FOUNDATION-RAFT-G0` — decision and benchmark only.
 7. Implement raft A/B/C/D/acceptance only if G0 returns an owner-accepted
    `GO`; otherwise record `HOLD` and its reactivation condition.
@@ -313,7 +314,14 @@ focused family acceptance. For a `HOLD`, publish the blocker, retained truth,
 and exact reactivation condition; do not manufacture implementation to avoid a
 hold.
 
-### Pile-cap G0 candidate to investigate, not assume
+**Pile-cap G0 outcome:** `HOLD`. The exact source inventory, structural-model
+ambiguity, retained candidate, decision matrix, and reactivation conditions are
+recorded in
+[`india-2-foundation-pile-cap-g0-hold-evidence.md`](../verification/india-2-foundation-pile-cap-g0-hold-evidence.md).
+No pile-cap calculation or publication file was created. Raft G0 is next after
+the unchanged pile-cap decision candidate merges.
+
+### Pile-cap G0 frozen candidate and HOLD boundary
 
 The smallest useful candidate is one constant-depth rectangular cap over two
 identical circular piles on a single axis, with one centred rectangular column,
@@ -379,31 +387,31 @@ benchmark means `HOLD`, not an improvised model.
 
 ## 7. Next-agent execution card
 
-The next agent starts and finishes only `INDIA-2-FOUNDATION-PILE-CAP-G0`.
+The next agent starts and finishes only `INDIA-2-FOUNDATION-RAFT-G0`.
 
 ### First 15 minutes
 
 1. Fetch `origin/main`; record the exact commit and tree.
-2. Create `codex/india-2-foundation-pile-cap-g0` from that ref; never write on
-   primary or reuse the Clause 38.2 or another retained lane.
+2. Create `codex/india-2-foundation-raft-g0` from that ref; never write on
+   primary or reuse the pile-cap or another retained lane.
 3. Run the compact brief's four start commands and require
    `source_bound=true` plus `READY_LOCAL`.
 4. Read only this plan, the compact brief, the controlled-source registry, the
-   existing footing/deep-region boundaries discovered with `rg --files`, and
-   the nearest G0 evidence patterns.
-5. Freeze the centred axial two-pile candidate, source/benchmark prerequisites,
-   decision matrix, and reactivation conditions before editing.
+   existing footing/flat-slab boundaries discovered with `rg --files`, and the
+   nearest G0 evidence patterns.
+5. Freeze the regular rectangular rigid-raft candidate, source/benchmark
+   prerequisites, decision matrix, and reactivation conditions before editing.
 
 ### Work loop
 
 1. Search existing code and evidence before deciding whether the candidate can
    be source-bound without calculation implementation.
-2. Bind exact IS 456 and companion-source identities, plus one accepted
+2. Bind exact IS 456 and IS 2950 companion-source identities, plus one accepted
    independently replayable structural benchmark; catalogue discovery alone is
    insufficient.
-3. Decide action model, caller-owned geotechnical inputs, topology, bearing or
-   nodal checks, anchorage, deep-region treatment, supported/fail/unsupported
-   matrices, and proposed A-D signatures.
+3. Decide soil-pressure model, caller-owned geotechnical inputs, topology,
+   strip/panel action extraction, strength/check boundaries, settlement
+   ownership, supported/fail/unsupported matrices, and proposed A-D signatures.
 4. Return `GO`, `REVISE`, or `HOLD`. Missing controlled companion source or
    accepted structural benchmark requires `HOLD` with exact reactivation
    conditions and no calculation files.
@@ -414,9 +422,9 @@ The next agent starts and finishes only `INDIA-2-FOUNDATION-PILE-CAP-G0`.
 
 ### Stop and handoff
 
-Stop after `INDIA-2-FOUNDATION-PILE-CAP-G0` merges. If it returns `GO`, name
-pile-cap A as the sole next packet; if it returns `HOLD`, name decision-only
-`INDIA-2-FOUNDATION-RAFT-G0`. Do not start calculation code in the G0 lane.
+Stop after `INDIA-2-FOUNDATION-RAFT-G0` merges. If it returns `GO`, name raft A
+as the sole next packet; if it returns `HOLD`, name `INDIA-2-CLOSEOUT`. Do not
+start calculation code in the G0 lane.
 
 ## 8. Efficiency and speed controls
 
@@ -458,7 +466,8 @@ repository-wide mutation, or a second repair cycle breaks that boundary.
 | Pydantic-version OpenAPI drift | Confirmed and already guarded | Preserve explicit schema mode and the cross-version regression in every future D packet |
 | Public-call wrapper mismatch | Confirmed and already guarded | Discover the maintained signature; construct the typed request wrapper before calling the service in acceptance replays |
 | Stale audit candidate identities | Confirmed and already guarded | Propagate final reviewed head/tree/merge to evidence, brief, and receipt together; tree equality, not PR prose, closes the packet |
-| Pile-cap/raft source and benchmark gap | Confirmed planning precondition | Acquire/record the controlled companion source and an independently replayable structural benchmark or publish `HOLD` with an exact reactivation condition |
+| Pile-cap source and benchmark gap | Confirmed and held by G0 | No controlled IS 2911 companion source or accepted structural two-pile-cap benchmark is retained; pile-cap stays `HELD / NOT_IMPLEMENTED` until the exact reactivation contract is met |
+| Raft source and benchmark gap | Confirmed planning precondition | Acquire/record the controlled IS 2950 companion source and an independently replayable structural benchmark or publish `HOLD` with an exact reactivation condition |
 
 ## 10. INDIA-2 final boundary
 

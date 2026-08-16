@@ -317,9 +317,12 @@
           "claim": "Pile-cap design is not implemented.",
           "workflows": [],
           "limitations": [
-            "Pile reactions and strut-and-tie behavior require a separate program."
+            "Pile reactions and strut-and-tie behavior require a separate program.",
+            "INDIA-2 pile-cap G0 is held until a controlled companion source and an independently replayable structural benchmark are bound."
           ],
-          "evidence": [],
+          "evidence": [
+            "docs/verification/india-2-foundation-pile-cap-g0-hold-evidence.md"
+          ],
           "qualified_review_required": true
         }
       ],

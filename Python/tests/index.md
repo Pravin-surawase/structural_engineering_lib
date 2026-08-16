@@ -53,8 +53,8 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_git_guidance_semantics.py](test_git_guidance_semantics.py) | Semantic live-guidance discovery and coherence regressions. | 0 | 10 | 362 |
 | [test_git_handoff_receipt.py](test_git_handoff_receipt.py) | Regressions for the durable, fail-closed task-to-Git handoff | 0 | 20 | 429 |
 | [test_git_state.py](test_git_state.py) | Outcome tests for the read-only, worktree-aware Git state au | 0 | 20 | 682 |
-| [test_india_2_truth_hygiene_38_2.py](test_india_2_truth_hygiene_38_2.py) | INDIA-2 Clause 38.2 truth-hygiene acceptance tests. | 0 | 5 | 111 |
-| [test_indian_code_manifest.py](test_indian_code_manifest.py) | INDIA-0 truth-manifest and reporting contract tests. | 0 | 8 | 192 |
+| [test_india_2_truth_hygiene_38_2.py](test_india_2_truth_hygiene_38_2.py) | INDIA-2 Clause 38.2 truth-hygiene acceptance tests. | 0 | 5 | 109 |
+| [test_indian_code_manifest.py](test_indian_code_manifest.py) | INDIA-0 truth-manifest and reporting contract tests. | 0 | 9 | 210 |
 | [test_inputs.py](test_inputs.py) | Tests for the inputs module (TASK-276: Input Flexibility). | 7 | 0 | 464 |
 | [test_is456_common.py](test_is456_common.py) | Tests for IS 456:2000 common modules - stress_blocks, reinfo | 15 | 0 | 854 |
 | [test_is456_constants.py](test_is456_constants.py) | Tests for IS 456:2000 named design constants. | 1 | 0 | 163 |

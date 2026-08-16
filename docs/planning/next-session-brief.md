@@ -4,22 +4,22 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: decision-only pile-cap G0
-- Baseline: INDIA-2-TRUTH-HYGIENE-38-2 started from fetched origin/main df3635e8811a4d7e69f8786349ce3507f8a28001, tree 4de5ae83cdc115fe1984e2b97b616676e094e578
+- Focus: decision-only raft G0
+- Baseline: pile-cap G0 started from fetched origin/main 1139e9ea06751c72b66098a575c1f5e327c56ef5, tree 0abefcd0255157bd1444549f2066eb937f45e5a0
 - Truth: 13 supported / 8 held; 81/81 endpoints directly tested
-- Clause outcome: controlled Clause 38.1/Annex G provenance, one shared exact beam/slab stress-block solver, and a supported false-safe discriminator repaired; 190 focused tests pass
-- Scope guard: G0 is decision/benchmark only; missing controlled companion source or accepted structural benchmark requires HOLD
+- Pile-cap outcome: HOLD; no controlled IS 2911 companion source or accepted replayable structural two-pile-cap benchmark was retained, and no calculation file was created
+- Scope guard: raft G0 is decision/benchmark only; missing controlled IS 2950 source or accepted structural benchmark requires HOLD
 - Retained lanes: primary, detached dirty e54a, Excel HOLD_UNKNOWN_OWNER, and every other pre-existing lane remain untouched; no cleanup authority exists
-- Next action: begin only INDIA-2-FOUNDATION-PILE-CAP-G0 in a fresh fetched-current-main lane after the Clause 38.2 candidate merges
+- Next action: begin only INDIA-2-FOUNDATION-RAFT-G0 in a fresh fetched-current-main lane after the pile-cap HOLD candidate merges
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-16
 
 | State | Boundary |
 |---|---|
-| **Current** | `v0.23.1a1` Alpha; frontmatter contract repair complete on merge |
-| **Next** | Decision-only `INDIA-2-FOUNDATION-PILE-CAP-G0` |
-| **Later** | Pile-cap chain only after GO; raft G0; INDIA-2 broad closeout |
+| **Current** | `v0.23.1a1` Alpha; pile-cap G0 closes as HOLD on merge |
+| **Next** | Decision-only `INDIA-2-FOUNDATION-RAFT-G0` |
+| **Later** | Raft chain only after GO; INDIA-2 broad closeout |
 | **Held** | Cleanup/deletion, release, React expansion, professional approval, dependency majors |
 
 ## Required Reading
@@ -27,14 +27,14 @@
 1. [Next-session Git/issues/INDIA-2 plan](india-2-next-session-publication-and-closeout-plan.md)
 2. [Current task board](../TASKS.md)
 3. [IS 456 public-distribution permission](../verification/is456-public-distribution-permission.json)
-4. Discover the live clause database, beam flexure, decorator, provenance,
-   manifest, and nearest focused-test paths with `rg --files` before reading.
+4. Discover the existing footing/flat-slab analysis boundaries, manifest,
+   controlled-source registry, and nearest G0 evidence with `rg --files`.
 
 ## Exact start
 
 Fetch and verify `origin/main`, then create one fresh
-`codex/india-2-foundation-pile-cap-g0` worktree. Do not write on primary, reuse
-the Clause 38.2 lane, or touch retained worktrees.
+`codex/india-2-foundation-raft-g0` worktree. Do not write on primary, reuse the
+pile-cap lane, or touch retained worktrees.
 
 ```bash
 ./run.sh session brief --agent structural-engineer
@@ -48,33 +48,33 @@ equality with fetched `origin/main` before editing.
 
 ## Packet order
 
-1. Decision-only `PILE-CAP-G0`; publish `GO`, `REVISE`, or `HOLD`.
-2. Execute pile-cap A-D/acceptance only after an accepted `GO`.
-3. Decision-only `RAFT-G0`, then any owner-accepted chain.
-4. `INDIA-2-CLOSEOUT` with broad Python and the full 30-check gate once.
-5. Post-INDIA-2 dependency-major compatibility packets only afterward.
+1. Decision-only `RAFT-G0`; publish `GO`, `REVISE`, or `HOLD`.
+2. Execute raft A-D/acceptance only after an accepted `GO`.
+3. `INDIA-2-CLOSEOUT` with broad Python and the full 30-check gate once.
+4. Post-INDIA-2 dependency-major compatibility packets only afterward.
 
-## Frozen pile-cap G0 scope
+## Frozen raft G0 scope
 
-Investigate exactly one centred axial two-pile structural cap with caller-owned
-pile reactions/capacity/geotechnical approval. Decide the pile-reaction model,
-layout and topology discriminator, bearing/nodal checks, anchorage, deep-region
-treatment, and companion-code dependencies. Freeze one independently replayed
-benchmark and the supported/fail/unsupported matrices without creating
-calculation modules.
+Investigate exactly one regular rectangular rigid raft under mainly vertical,
+regularly arranged column loads using one conventional non-FEM analysis and
+caller-approved soil-pressure and settlement bases. Decide the soil-pressure
+input/model, strip or panel action extraction, punching/one-way/flexural
+boundaries, settlement ownership, topology discriminator, and companion-code
+dependencies. Freeze one independently replayed benchmark and the supported,
+valid-failure, and unsupported matrices without creating calculation modules.
 
 The repository currently retains controlled IS 456 sources but no controlled
-IS 2911 companion source or accepted structural pile-cap benchmark. Official
-catalogue discovery and previews are scope evidence only. If both prerequisites
-cannot be bound, publish `HOLD` with exact reactivation conditions; do not
-improvise calculation authority.
+IS 2950 (Part 1) companion source or accepted structural raft benchmark.
+Official catalogue discovery and previews are scope evidence only. If both
+prerequisites cannot be bound, publish `HOLD` with exact reactivation
+conditions; do not improvise a rigid, strip, plate, Winkler, or FEM model.
 
 ## Owner-decision boundaries
 
 - Primary, `e54a`, Excel, the frontmatter lane, and every other retained lane
   stay untouched.
 - Public-source distribution permission is already recorded; do not reopen it.
-- Pile-cap/raft implementation without accepted GO, cleanup/deletion, release/tag/package
+- Pile-cap remains held. Raft implementation without accepted GO, cleanup/deletion, release/tag/package
   publication, and professional approval remain separately gated.
 
 ## Gate cadence
@@ -98,6 +98,6 @@ resolutions`, with executable evidence for the corrected outcome.
 
 ## Stop rule
 
-Start and finish only decision-only `INDIA-2-FOUNDATION-PILE-CAP-G0`. Do not
-begin calculation code, raft, dependency, broad-gate, cleanup, release, or
-React work in that lane.
+Start and finish only decision-only `INDIA-2-FOUNDATION-RAFT-G0`. Do not begin
+calculation code, reactivate pile-cap, dependency, broad-gate, cleanup, release,
+or React work in that lane.
