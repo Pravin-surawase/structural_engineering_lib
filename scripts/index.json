@@ -3257,7 +3257,7 @@
     {
       "name": "generate_enhanced_index.py",
       "type": "python",
-      "size_lines": 877,
+      "size_lines": 879,
       "last_updated": "2026-08-16",
       "description": "Generate enhanced index.json + index.md for ANY folder type.",
       "functions": [
@@ -3342,7 +3342,7 @@
         "SKIP_DIRS",
         "KEY_FOLDERS"
       ],
-      "content_hash": "53d8cc940a05"
+      "content_hash": "5cdc98e56451"
     },
     {
       "name": "generate_error_docs.py",
@@ -5522,5 +5522,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "f531fad1fa9f8922"
+  "content_hash": "20f618983a475721"
 }

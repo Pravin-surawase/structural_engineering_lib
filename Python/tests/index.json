@@ -3876,7 +3876,7 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 1443,
+      "size_lines": 1465,
       "last_updated": "2026-08-16",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
@@ -4010,7 +4010,7 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "80cd1dd85670"
+      "content_hash": "4b105414fbb8"
     },
     {
       "name": "test_session_store.py",
@@ -4768,5 +4768,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "219c31608496e3b3"
+  "content_hash": "0ec999d414857508"
 }

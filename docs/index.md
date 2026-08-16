@@ -16,7 +16,7 @@ Guides, references, evidence, and contributor material for the
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [README.md](README.md) | Docs Index (Start Here) | Guides, references, evidence, and contributor material for t | 253 |
-| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 1154 |
+| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 1077 |
 | [TASKS.md](TASKS.md) | Task Board | > **Single source of truth for active work.** Keep it short  | 698 |
 | [WORKLOG.md](WORKLOG.md) |  | > **One line per item. Compact. Append-only.** > Format: DAT | 354 |
 
@@ -28,7 +28,7 @@ Guides, references, evidence, and contributor material for the
 | [agents/](agents/) | 22 | > **For AI Agents:** Use the semantic registry below to find the right docs quic |
 | [api-reference/](api-reference/) | 1 |  |
 | [architecture/](architecture/) | 16 | Deep dives into project structure, design decisions, and system architecture. |
-| [audit/](audit/) | 12 |  |
+| [audit/](audit/) | 11 |  |
 | [blog-drafts/](blog-drafts/) | 7 | Draft blog posts for publication about structural engineering software and IS 45 |
 | [contributing/](contributing/) | 26 | Guides for developers and maintainers of the structural engineering library. |
 | [cookbook/](cookbook/) | 5 | Task-focused recipes and code snippets for common structural engineering workflo |
@@ -48,4 +48,4 @@ Guides, references, evidence, and contributor material for the
 | [reference/](reference/) | 1792 |  |
 | [research/](research/) | 36 |  |
 | [specs/](specs/) | 6 | Technical specifications for data formats and schemas. |
-| [verification/](verification/) | 154 | Benchmark examples and verification packs for validating library calculations ag |
+| [verification/](verification/) | 157 | Benchmark examples and verification packs for validating library calculations ag |

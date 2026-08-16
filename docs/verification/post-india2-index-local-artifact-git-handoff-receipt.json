@@ -1,0 +1,167 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T18:04:43Z",
+      "query_status": "OK",
+      "reference": "task:MAINT-010-INDEX-LOCAL-ARTIFACT-REPAIR:user-request-finish-carefully-decide-without-approval-prompts-and-stop-log-index-rework",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T18:04:43Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_RETAINED_BRANCH",
+      "DELETE_RETAINED_WORKTREE",
+      "DELETE_RETAINED_REF",
+      "DELETE_LOCAL_ARTIFACT",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE",
+      "CHANGE_ENGINEERING_BEHAVIOR"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/index-local-artifact-determinism",
+      "head_sha": "755ed9d95c0a8f7e8c4a2165ddb748262df54482",
+      "task_id": "MAINT-010-INDEX-LOCAL-ARTIFACT-REPAIR"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "5f674d867e0b4b41aa0598912ec0f76fdd1d41165787cf30fcf7985af3538dfc",
+    "state": {
+      "branch": "codex/index-local-artifact-determinism",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "755ed9d95c0a8f7e8c4a2165ddb748262df54482",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 89.297,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-index-local-artifact-determinism",
+      "head_sha": "755ed9d95c0a8f7e8c4a2165ddb748262df54482",
+      "hold_reasons": [
+        "changed paths: 8"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T18:05:34.667464+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-local-artifact-determinism",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 8,
+        "modified_paths": [
+          "Python/tests/test_session_automation.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/_archive/session-logs/2026-08-part-2.md",
+          "docs/planning/next-session-brief.md",
+          "scripts/generate_enhanced_index.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/post-india2-index-local-artifact-evidence.json",
+          "docs/verification/post-india2-index-local-artifact-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "755ed9d95c0a8f7e8c4a2165ddb748262df54482",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-local-artifact-determinism"
+    }
+  },
+  "local_state_receipt_hash": "sha256:5f674d867e0b4b41aa0598912ec0f76fdd1d41165787cf30fcf7985af3538dfc",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T18:05:34.667660+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_WORKTREE_AND_PRIMARY_LOCAL_ARTIFACTS",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T18:04:43Z",
+    "owner": "Main Agent under owner instruction to preserve every retained lane and local user file",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "pyproject.toml",
+      "CHANGELOG.md",
+      "fastapi_app",
+      "react_app",
+      "Python/structural_lib"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "scripts/generate_enhanced_index.py",
+      "Python/tests/test_session_automation.py",
+      "docs/verification/post-india2-index-local-artifact-evidence.json",
+      "docs/verification/post-india2-index-local-artifact-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "docs/_archive/session-logs",
+      "Python",
+      "scripts",
+      "docs"
+    ],
+    "task_id": "MAINT-010-INDEX-LOCAL-ARTIFACT-REPAIR"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
