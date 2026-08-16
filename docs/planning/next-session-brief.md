@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Decide one source-bound flat-slab/direct-design and column-punching
-- Git receipt: docs/verification/india-2-flat-g0-git-handoff-receipt.json | sha256:a450bf672bada20ce299f55963831ca94bc1a9952d29eecb6f0b7ccf7658bef7 | HOLD
-- Git identity: codex/india-2-flat-g0@f7eb91c3f2719dd04e5739e67572e9530b60ad3e | upstream=origin/main@f7eb91c3f2719dd04e5739e67572e9530b60ad3e | base=origin/main@f7eb91c3f2719dd04e5739e67572e9530b60ad3e | tree=dirty | operation=none
+- Focus: Implement only the G0-frozen typed grid/panel/material/load,
+- Git receipt: docs/verification/india-2-flat-a-git-handoff-receipt.json | sha256:057607da422b50e5248a035856ffef71a72a166bd0d6b6057856a8417bdba2e0 | HOLD
+- Git identity: codex/india-2-flat-a@d5cad72a1a4ce36c44520a0e9f5dd6a151b93eb6 | upstream=origin/main@d5cad72a1a4ce36c44520a0e9f5dd6a151b93eb6 | base=origin/main@d5cad72a1a4ce36c44520a0e9f5dd6a151b93eb6 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Implement `INDIA-2-FLAT-A` from the frozen G0 topology without expanding scope |
+| **Next** | Implement `INDIA-2-FLAT-B` moment distribution from the FLAT-A contracts without expanding scope |
 
 ## Required Reading
 
@@ -96,6 +96,14 @@ span/depth, and no-reinforcement punching. Unequal/exterior/drop/head/opening,
 patterned-load, moment-transfer, punching-reinforcement, equivalent-frame, and
 FEM cases remain held.
 
+## INDIA-2-FLAT-A implementation result
+
+[`india-2-flat-a-geometry-evidence.md`](../verification/india-2-flat-a-geometry-evidence.md)
+records typed grid/panel/material/load contracts, both clear-span and strip
+directions, direct-design eligibility, exact Clause 31 identifier registration,
+and fail-closed behavior for every topology outside G0. Flat slab remains held
+until FLAT-E publication.
+
 ## Review and gate boundary
 
 Each calculation packet requires focused tests, benchmarks, architecture and PR
@@ -103,10 +111,10 @@ checks, plus the quick gate. The expensive full Python and 30-check gate runs
 once after the whole accepted INDIA-2 wave is integrated unless an
 outcome-changing repository-wide issue appears earlier.
 
-Deep-beam acceptance and flat-slab G0 are complete. Begin `INDIA-2-FLAT-A`
-with only typed geometry, direct-design eligibility, clear-span, and strip
-contracts for the frozen case. Foundation programs remain later, separate G0
-decisions.
+Deep-beam acceptance, flat-slab G0, and FLAT-A are complete. Begin
+`INDIA-2-FLAT-B` with only total static moment and bounded interior/strip
+distribution in both directions. Foundation programs remain later, separate
+G0 decisions.
 
 Cumulative qualified structural-engineering review belongs to INDIA-4 after the
 accepted INDIA-2 and INDIA-3 scope is frozen. Packet-level source and engineering

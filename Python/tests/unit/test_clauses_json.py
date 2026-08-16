@@ -217,3 +217,25 @@ DEEP_BEAM_CLAUSES = [
 def test_clauses_deep_beam_section(clauses, clause_id):
     """Deep-beam clause identity exists in clauses.json."""
     assert clause_id in clauses, f"Missing deep-beam clause: {clause_id}"
+
+
+# --- Coverage tests: flat slabs ---
+
+
+FLAT_SLAB_CLAUSES = [
+    "31",
+    "31.1",
+    "31.1.1",
+    "31.2",
+    "31.2.1",
+    "31.3",
+    "31.3.1",
+    "31.4",
+    "31.4.1",
+]
+
+
+@pytest.mark.parametrize("clause_id", FLAT_SLAB_CLAUSES)
+def test_clauses_flat_slab_section(clauses, clause_id):
+    """Flat-slab clause identity exists in clauses.json."""
+    assert clause_id in clauses, f"Missing flat-slab clause: {clause_id}"

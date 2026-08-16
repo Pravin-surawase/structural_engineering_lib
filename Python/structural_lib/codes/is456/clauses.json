@@ -6,7 +6,7 @@
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
     "last_updated": "2026-08-16",
-    "total_clauses": 143,
+    "total_clauses": 152,
     "includes_references": [
       "IS 13920:2016"
     ],
@@ -579,6 +579,97 @@
         "side face",
         "wall minimum reinforcement",
         "Amendment 3"
+      ]
+    },
+    "31": {
+      "title": "Flat Slabs",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "flat slab",
+        "column supported slab",
+        "direct design"
+      ]
+    },
+    "31.1": {
+      "title": "Flat Slabs - General",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "flat slab",
+        "drop",
+        "column head"
+      ]
+    },
+    "31.1.1": {
+      "title": "Column Strip, Middle Strip and Panel Definitions",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "column strip",
+        "middle strip",
+        "panel"
+      ]
+    },
+    "31.2": {
+      "title": "Flat Slab Proportioning",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "proportioning",
+        "thickness",
+        "drop"
+      ]
+    },
+    "31.2.1": {
+      "title": "Thickness of Flat Slab",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "thickness",
+        "span depth",
+        "minimum thickness"
+      ]
+    },
+    "31.3": {
+      "title": "Determination of Flat Slab Bending Moment",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "bending moment",
+        "analysis method",
+        "panel"
+      ]
+    },
+    "31.3.1": {
+      "title": "Methods of Flat Slab Analysis and Design",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "direct design",
+        "equivalent frame",
+        "analysis"
+      ]
+    },
+    "31.4": {
+      "title": "Direct Design Method",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "direct design",
+        "gravity load",
+        "moment distribution"
+      ]
+    },
+    "31.4.1": {
+      "title": "Direct Design Method Limitations",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "three spans",
+        "panel regularity",
+        "column offset",
+        "live dead ratio"
       ]
     },
     "31.6": {
