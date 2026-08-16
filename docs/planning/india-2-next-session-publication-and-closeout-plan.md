@@ -1,8 +1,8 @@
 ---
 task: NEXT-SESSION-GIT-ISSUES-AND-INDIA-2
 title: Next Session Git Reconciliation, Issue Repairs, and INDIA-2 Finish Plan
-status: active
-owner: Next Main Agent
+status: archived
+owner: Main Agent
 created: 2026-08-16
 last_updated: 2026-08-16
 doc_type: spec
@@ -15,9 +15,10 @@ doc_type: spec
 Combined-footing and strap-footing G0/A-D plus focused family acceptance are
 integrated within their recorded bounded cases. GIT-001 Phase 8, the
 frontmatter contract/data repair, and Clause 38.2 truth hygiene are integrated.
-Pile-cap G0 is integrated as `HOLD`, and raft G0 closes as `HOLD` on merge of
-its unchanged decision candidate. The next session starts with cumulative
-`INDIA-2-CLOSEOUT`.
+Pile-cap and raft G0 are integrated as `HOLD`. The cumulative
+`INDIA-2-CLOSEOUT` closes on merge of its unchanged reviewed candidate, with
+the durable result in
+[`india-2-final-closeout-evidence.md`](../verification/india-2-final-closeout-evidence.md).
 
 This document remains the sequence plan. Phase 8 execution is recorded in
 [`GIT-001-phase-8-adoption-closeout.md`](../research/git-governance/GIT-001-phase-8-adoption-closeout.md).
@@ -45,10 +46,11 @@ time:
    source or accepted structural benchmark was retained.
 7. Raft A/B/C/D/acceptance remains dormant until a new G0 reactivation packet
    satisfies the recorded source and benchmark contract.
-8. `INDIA-2-CLOSEOUT` — cumulative truth reconciliation, broad Python, the
-   full 30-check gate, independent final-tree audit, hosted checks, and merge.
-9. Only after INDIA-2 closes, resume the separately bounded dependency-major
-   compatibility packets.
+8. `INDIA-2-CLOSEOUT` — complete on merge of the unchanged reviewed candidate;
+   cumulative truth reconciliation, broad Python, the full 30-check gate,
+   independent final-tree audit, and hosted checks pass without new behavior.
+9. INDIA-3 and dependency-major compatibility packets remain separately
+   authorized; closeout does not activate either program.
 
 ## 2. Verified planning baseline
 
@@ -394,13 +396,14 @@ benchmark. The exact source inventory, retained candidate, model exclusions,
 decision matrix, and reactivation conditions are recorded in
 [`india-2-foundation-raft-g0-hold-evidence.md`](../verification/india-2-foundation-raft-g0-hold-evidence.md).
 No raft calculation or publication file was created. `INDIA-2-CLOSEOUT` is
-next after the unchanged raft decision candidate merges.
+complete on merge of its unchanged reviewed candidate.
 
-## 7. Next-agent execution card
+## 7. Completed closeout execution card
 
-The next agent starts and finishes only `INDIA-2-CLOSEOUT`.
+The closeout agent started from exact merged raft-HOLD `main` and finished only
+`INDIA-2-CLOSEOUT`.
 
-### First 15 minutes
+### Orientation performed
 
 1. Fetch `origin/main`; record the exact commit and tree.
 2. Create `codex/india-2-closeout` from that ref; never write on primary or
@@ -412,7 +415,7 @@ The next agent starts and finishes only `INDIA-2-CLOSEOUT`.
    broad-gate entry points discovered with `rg --files`.
 5. Freeze the final evidence index and no-new-behavior boundary before editing.
 
-### Work loop
+### Work completed
 
 1. Reconcile task/plan/public truth to six accepted bounded INDIA-2 families
    plus explicit pile-cap/raft holds; do not add or promote a workflow.
@@ -421,17 +424,20 @@ The next agent starts and finishes only `INDIA-2-CLOSEOUT`.
    evidence, plus both HOLD/reactivation records.
 3. Verify manifest/API/public-doc agreement at 13 supported / 8 held and 81/81
    directly tested endpoints.
-4. Run broad Python once with `./run.sh test`, then the full 30-check gate once
-   with `./run.sh check`; fix only outcome-changing closeout defects and record
-   their root causes.
+4. Run broad Python with `./run.sh test`, then pass the full 30-check gate with
+   `./run.sh check`; the first broad run exposed outcome-changing stale
+   stress-block contracts and therefore required one corrective rerun after the
+   root-cause repair. The first full gate then exposed a stale generated public
+   API manifest and required one corrective rerun after regeneration.
 5. Run one candidate review, one push, and one hosted-check cycle.
 6. Merge only the unchanged reviewed head, verify squash-tree equality and
    refreshed clean primary `main`, retain the lane, and stop.
 
-### Stop and handoff
+### Stop boundary
 
-Stop after `INDIA-2-CLOSEOUT` merges. Do not begin INDIA-3, dependency-major,
-cleanup, release, or professional-approval work with leftover time.
+Stop after `INDIA-2-CLOSEOUT` merges. INDIA-3, dependency-major, cleanup,
+release, and professional-approval work remain unstarted and require separate
+authorization.
 
 ## 8. Efficiency and speed controls
 
@@ -476,14 +482,17 @@ repository-wide mutation, or a second repair cycle breaks that boundary.
 | Pile-cap source and benchmark gap | Confirmed and held by G0 | No controlled IS 2911 companion source or accepted structural two-pile-cap benchmark is retained; pile-cap stays `HELD / NOT_IMPLEMENTED` until the exact reactivation contract is met |
 | Raft source and benchmark gap | Confirmed and held by G0 | No controlled IS 2950 source/amendment binding or accepted structural raft benchmark is retained; raft stays `HELD / NOT_IMPLEMENTED` until the exact reactivation contract is met |
 
-## 10. INDIA-2 final boundary
+## 10. INDIA-2 final boundary — complete on closeout merge
 
-Only after all accepted/held family decisions and issue packets are integrated:
+All accepted/held family decisions and issue packets are integrated. Closeout:
 
 1. reconcile plans, task board, public docs, capability/semantic declarations,
    generated manifest, and an evidence index for every accepted family;
-2. run the broad Python suite once with `./run.sh test`;
-3. run the canonical full repository gate once with `./run.sh check`;
+2. pass the broad Python suite with `./run.sh test`; the first diagnostic run
+   required one corrective rerun after its outcome-changing finding;
+3. pass the canonical full repository gate with `./run.sh check`;
+   the first run exposed the missing strap exports in the generated API
+   manifest and therefore required one corrective rerun;
 4. run complete FastAPI/public-contract and maintained packaging/OpenAPI checks
    selected by the gate;
 5. independently audit the exact final head/tree, require all hosted checks

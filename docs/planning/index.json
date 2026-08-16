@@ -66,26 +66,26 @@
     {
       "name": "india-2-next-session-publication-and-closeout-plan.md",
       "type": "documentation",
-      "size_lines": 520,
+      "size_lines": 529,
       "last_updated": "2026-08-16",
       "description": "Combined-footing and strap-footing G0/A-D plus focused family acceptance are integrated within their recorded bounded cases. GIT-001 Phase 8, the",
-      "content_hash": "f31dec4493ef"
+      "content_hash": "654fe82a8d12"
     },
     {
       "name": "india-2-remaining-is456-elements-plan.md",
       "type": "documentation",
-      "size_lines": 390,
+      "size_lines": 396,
       "last_updated": "2026-08-16",
       "description": "INDIA-2 finishes a practical, explicitly limited set of IS 456 reinforced concrete elements that are still missing from the library.",
-      "content_hash": "8e8a4875b970"
+      "content_hash": "ddd15751140c"
     },
     {
       "name": "indian-code-completion-plan.md",
       "type": "documentation",
-      "size_lines": 137,
+      "size_lines": 140,
       "last_updated": "2026-08-16",
       "description": "This is the canonical finish plan for the repository's Indian-code program. It defines the meaning and order of INDIA-0 through INDIA-4 without claiming",
-      "content_hash": "fa3a65a71161"
+      "content_hash": "9f7bd8b461a2"
     },
     {
       "name": "is456-library-first-master-plan.md",
@@ -131,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 100,
+      "size_lines": 104,
       "last_updated": "2026-08-16",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-16",
-      "content_hash": "5c2afcbb3254"
+      "content_hash": "e8fd0069a7d8"
     },
     {
       "name": "pre-release-checklist.md",
@@ -173,5 +173,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "365dd88e7ca63272"
+  "content_hash": "44c1ea8469005bed"
 }

@@ -2,7 +2,7 @@
   "generated": "2026-08-16",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 160,
+  "count": 165,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -238,6 +238,26 @@
       "name": "ProjectInfo",
       "kind": "class",
       "signature": "(project_name: 'str' = 'Untitled Project', project_number: 'str' = '', client_name: 'str' = '', engineer_name: 'str' = '', checker_name: 'str' = '', revision: 'str' = 'A', date: 'str' = '') -> None"
+    },
+    {
+      "name": "PropertyLineStrapFootingDesignInput",
+      "kind": "class",
+      "signature": "(case_id: 'str', footing: 'StrapFootingDesignInput', qualified_review_required: 'bool') -> None"
+    },
+    {
+      "name": "PropertyLineStrapFootingDesignProvenance",
+      "kind": "class",
+      "signature": "(schema_version: 'str', code_edition: 'str', workflow: 'str', case_id: 'str', benchmark_id: 'str', action_generation_status: 'str', soil_verification_status: 'str', geometry_basis_reference: 'str', rigidity_basis_reference: 'str', strap_isolation_basis_reference: 'str', load_basis_reference: 'str', bearing_settlement_basis_reference: 'str', footing_carrier_basis_reference: 'str', strap_line_load_basis_reference: 'str', load_pattern_basis_reference: 'str', exterior_footing_verification_reference: 'str', interior_footing_verification_reference: 'str', transfer_verification_reference: 'str', construction_verification_reference: 'str', material_basis_reference: 'str', detailing_basis_reference: 'str', durability_basis_reference: 'str', clause_refs: 'tuple[str, ...]', source_refs: 'tuple[str, ...]') -> None"
+    },
+    {
+      "name": "PropertyLineStrapFootingDesignResult",
+      "kind": "class",
+      "signature": "(case_id: 'str', status: 'PropertyLineStrapFootingDesignStatus', strength: 'StrapFootingStrengthResult', supported_case: 'str', held_cases: 'tuple[str, ...]', provenance: 'PropertyLineStrapFootingDesignProvenance', qualified_review_required: 'bool' = True, complete_engineering_design_approved: 'bool' = False) -> None"
+    },
+    {
+      "name": "PropertyLineStrapFootingDesignStatus",
+      "kind": "class",
+      "signature": "(*args, **kwds)"
     },
     {
       "name": "RebarPath",
@@ -613,6 +633,11 @@
       "name": "design_one_way_slab_is456",
       "kind": "function",
       "signature": "(*, short_effective_span_mm: 'float', long_effective_span_mm: 'float', thickness_mm: 'float', d_mm: 'float', factored_area_load_kn_per_m2: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', main_bar_diameter_mm: 'float', main_bar_spacing_mm: 'float', distribution_bar_diameter_mm: 'float', distribution_bar_spacing_mm: 'float', strip_width_mm: 'float' = 1000.0) -> 'OneWaySlabDesignResult'"
+    },
+    {
+      "name": "design_property_line_strap_footing_is456",
+      "kind": "function",
+      "signature": "(request: 'PropertyLineStrapFootingDesignInput') -> 'PropertyLineStrapFootingDesignResult'"
     },
     {
       "name": "design_regular_interior_flat_slab_is456",

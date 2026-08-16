@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — both foundation G0 gates close as HOLD on merge; INDIA-2 cumulative closeout is next
+**Updated:** 2026-08-16 — INDIA-2 closes with six bounded accepted families and two explicit foundation holds
 
 ---
 
@@ -125,14 +125,14 @@
 
 ## Active
 
-No implementation packet is active after the raft G0 candidate closes. Start
-only the cumulative INDIA-2 closeout below from refreshed `origin/main`.
+No INDIA-2 implementation packet is active. INDIA-2 is administratively
+complete within its recorded accepted/held boundary. INDIA-3, dependency,
+release, cleanup, and professional-approval work require separate activation.
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2-CLOSEOUT | Reconcile the accepted/held INDIA-2 evidence set and run the broad Python plus full repository gates once | Main Agent + reviewer | cumulative gate | P0 | ⏭️ NEXT — fresh exact-main lane; no new behavior |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
@@ -144,8 +144,8 @@ INDIA-0 through INDIA-4, and the dedicated
 defines the remaining family packets. INDIA-0 and INDIA-1 are complete. The
 historical INDIA-2A-D packets form the completed `INDIA-2-STAIR` family. Bounded
 wall, deep-beam, flat-slab/punching, combined-footing, and strap-footing
-families are accepted, but umbrella INDIA-2 remains in progress until final
-cumulative closeout. Pile-cap G0 is complete as HOLD:
+families are accepted, and umbrella INDIA-2 is complete within that bounded
+scope after final cumulative closeout. Pile-cap G0 is complete as HOLD:
 the repository lacks both a controlled IS 2911 companion source and an accepted
 structural two-pile-cap benchmark, so no calculation implementation was
 authorized. Raft G0 is also complete as HOLD: the repository lacks a controlled
@@ -166,9 +166,10 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
-| INDIA-2-FOUNDATION-RAFT-G0 | Audited one regular rectangular rigid-raft candidate, the conventional-method boundary, controlled-source inventory, and structural benchmark readiness | Main Agent + structural engineer | ⏸ HOLD ON MERGE — no controlled IS 2950 source or accepted replayable structural benchmark; no calculation files created; exact reactivation contract recorded |
-| INDIA-2-FOUNDATION-PILE-CAP-G0 | Audited the frozen centred axial two-pile candidate, source inventory, structural-model boundary, and benchmark readiness | Main Agent + structural engineer | ⏸ HOLD ON MERGE — no controlled IS 2911 companion source or accepted replayable structural benchmark; no calculation files created; exact reactivation contract recorded |
-| INDIA-2-TRUTH-HYGIENE-38-2 | Rebound live beam-flexure provenance to controlled Clause 38.1/Annex G identities and replaced the false-safe rounded inverse with shared exact equilibrium | Main Agent + structural engineer | ✅ COMPLETE ON MERGE — 190 focused tests pass; supported discriminator changes false PASS to `E_FLEXURE_003`; public signatures and units are stable |
+| INDIA-2-CLOSEOUT | Reconciled the complete accepted/held evidence index, final truth, and cumulative validation without adding behavior | Main Agent + reviewer | ✅ COMPLETE ON MERGE — six bounded families accepted; pile-cap and raft remain `HELD / NOT_IMPLEMENTED`; broad Python and full 30/30 gate pass |
+| INDIA-2-FOUNDATION-RAFT-G0 | Audited one regular rectangular rigid-raft candidate, the conventional-method boundary, controlled-source inventory, and structural benchmark readiness | Main Agent + structural engineer | ⏸ HOLD — PR #805 merged as `d2885215`; no controlled IS 2950 source or accepted replayable structural benchmark; no calculation files created |
+| INDIA-2-FOUNDATION-PILE-CAP-G0 | Audited the frozen centred axial two-pile candidate, source inventory, structural-model boundary, and benchmark readiness | Main Agent + structural engineer | ⏸ HOLD — PR #804 merged as `def0b493`; no controlled IS 2911 companion source or accepted replayable structural benchmark; no calculation files created |
+| INDIA-2-TRUTH-HYGIENE-38-2 | Rebound live beam-flexure provenance to controlled Clause 38.1/Annex G identities and replaced the false-safe rounded inverse with shared exact equilibrium | Main Agent + structural engineer | ✅ COMPLETE — PR #803 merged as `1139e9ea`; 190 focused tests pass and the supported discriminator changes false PASS to `E_FLEXURE_003` |
 | DOC-FRONTMATTER-CONTRACT | Made JSON frontmatter validation fail on invalid records, added direct valid/invalid report regressions, and repaired exactly eight invalid lifecycle/type records | Main Agent + doc-master | ✅ COMPLETE ON MERGE — live JSON/text modes pass with zero invalid and 60 permitted legacy records unchanged |
 | GIT-001-P8-RECONCILIATION | Verified GIT-7E adoption, corrected transition-versus-closeout receipt semantics, reconciled current ledgers, and refreshed preservation holds | Main Agent + ops | ✅ COMPLETE ON MERGE — primary/e54a retained; Excel and all other pre-existing lanes remain `UNKNOWN/HOLD`; no cleanup performed |
 | GIT-001 | Researched and implemented the evidence-backed Git operating model through adoption closeout | Main Agent + repository owner | ✅ COMPLETE ON MERGE — Phases 0-8 close with fail-closed maintenance/reactivation rules and preserved unknown lanes |

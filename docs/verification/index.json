@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 138,
+  "file_count": 139,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -455,6 +455,14 @@
       "last_updated": "2026-08-16",
       "description": "supported, solid rectangular, top-loaded deep beam without openings, under one caller-supplied governing positive factored moment. The route checks the",
       "content_hash": "300737e95db2"
+    },
+    {
+      "name": "india-2-final-closeout-evidence.md",
+      "type": "documentation",
+      "size_lines": 91,
+      "last_updated": "2026-08-16",
+      "description": "families are accepted only for the cases recorded below: wall, staircase, deep beam, flat slab with column punching, combined footing, and strap footing.",
+      "content_hash": "d0a2995909c6"
     },
     {
       "name": "india-2-flat-a-geometry-evidence.md",
@@ -1677,5 +1685,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "84088c760305b492"
+  "content_hash": "a9c319bc9ddda1ff"
 }

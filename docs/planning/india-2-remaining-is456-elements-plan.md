@@ -1,7 +1,7 @@
 ---
 task: INDIA-2-PLAN
 title: INDIA-2 Remaining Practical IS 456 Elements Plan
-status: active
+status: archived
 owner: Main Agent and repository owner
 created: 2026-08-16
 last_updated: 2026-08-16
@@ -22,9 +22,9 @@ It does **not** mean “implement all of IS 456.” It means:
 3. publish only the workflows that actually pass their evidence gates; and
 4. keep every alternate or unresolved case visibly unsupported.
 
-The bounded straight-flight staircase is already complete. The remaining work
-is walls, deep beams, flat slabs with column punching, and separately approved
-combined, strap, raft, and pile-cap foundation programs.
+The bounded straight-flight staircase and five other bounded families are
+complete. Pile-cap and raft were separately decided as `HOLD`; INDIA-2 is now
+administratively closed without implementing those held systems.
 
 ## 2. Authority and truth sources
 
@@ -49,8 +49,8 @@ Historical staircase task IDs, PRs, and evidence remain unchanged. The former
 | Flat slabs and column punching | Focused family acceptance complete after G0 and A-E integration | One regular interior direct-design and concrete-only punching workflow supported; alternate systems held |
 | Combined footing | Focused family acceptance complete | One symmetric equal-load two-column rigid rectangular workflow supported; alternate systems held |
 | Strap footing | Focused family acceptance complete after G0 and A-D integration | One property-line two-footing/equal-pressure/no-soil-contact strap model supported; footing slabs remain externally verified prerequisites |
-| Pile cap | Not implemented | Separate foundation program |
-| Raft foundation | Not implemented | Separate foundation program |
+| Pile cap | `HELD / NOT_IMPLEMENTED` after G0 | Missing controlled IS 2911 companion source and accepted structural benchmark; exact reactivation contract retained |
+| Raft foundation | `HELD / NOT_IMPLEMENTED` after G0 | Missing controlled IS 2950 source/amendment binding and accepted structural benchmark; exact reactivation contract retained |
 
 There is no progress percentage. A family is either supported within a written
 boundary, held with a written reason, or not implemented.
@@ -69,7 +69,7 @@ cross-cutting execution truth and must not be mixed into a foundation G0.
 | 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | Complete within the written bounded case |
 | 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Complete within the written bounded case |
 | 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Combined and strap footing accepted; pile-cap and raft G0 completed as HOLD |
-| 5 | `INDIA-2-CLOSEOUT` | Reconcile truth, run final cumulative gates, and freeze the INDIA-2 evidence set | Pending |
+| 5 | `INDIA-2-CLOSEOUT` | Reconcile truth, run final cumulative gates, and freeze the INDIA-2 evidence set | Complete on merge of the unchanged closeout candidate |
 
 The provisional foundation order is combined footing, strap footing, pile cap,
 then raft. This is a planning recommendation, not activation. The owner may
@@ -373,17 +373,23 @@ scope, but it cannot be reported as implemented. The plan must then record the
 blocker, retained boundary, and reactivation condition before INDIA-2 is
 administratively closed.
 
+These criteria are satisfied by the
+[final closeout evidence](../verification/india-2-final-closeout-evidence.md):
+six bounded families are accepted, both unresolved foundation systems remain
+machine-visible holds with reactivation contracts, and the cumulative broad
+Python and full repository gates pass without adding behavior.
+
 Qualified structural-engineering review, professional approval, stable release,
 package publication, IS 13920, IS 875, IS 1893, response-spectrum analysis, and
 FEM remain outside INDIA-2. They belong to INDIA-3, INDIA-4, or separately
 authorized programs.
 
-## 9. Exact next action
+## 9. Closed boundary
 
 Pile-cap and raft G0 completed as `HOLD`. The exact blockers and reactivation
 contracts are in the [pile-cap decision evidence](../verification/india-2-foundation-pile-cap-g0-hold-evidence.md)
 and [raft decision evidence](../verification/india-2-foundation-raft-g0-hold-evidence.md).
-After the unchanged raft decision packet merges, begin only
-`INDIA-2-CLOSEOUT` from verified current `main`. Keep calculation changes,
-React, cleanup, release, and professional approval outside closeout; reconcile
-truth/evidence and run broad Python plus the full 30-check gate exactly once.
+The final closeout packet began from the exact merged raft-HOLD tree and closes
+INDIA-2 without calculation changes. Do not use leftover time to begin INDIA-3,
+dependency, React, cleanup, release, or professional-approval work; each
+requires separate authorization.
