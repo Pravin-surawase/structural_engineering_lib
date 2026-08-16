@@ -50,6 +50,8 @@ repairs, structural implementation, cleanup, broad gates, or release work.
 - A targeted stale-claim search placed a Markdown backtick token inside a
   double-quoted shell command, so zsh attempted to execute `medium` before the
   search continued.
+- Creating the new Git handoff evidence made the verification-folder index
+  hash stale before the receipt follow-up was committed.
 
 ### Root causes and resolutions
 
@@ -84,16 +86,23 @@ repairs, structural implementation, cleanup, broad gates, or release work.
   out of interpolated command text. Evidence: the corrected search completes
   without a shell error. ⚠️ TERMINAL ISSUE: unsafe backtick quoting triggered
   `zsh: command not found: medium` -> single-quoted search text worked.
+- Confirmed root cause: verification indexes hash the folder inventory, so the
+  new source-evidence and receipt paths necessarily changed their generated
+  inputs. Resolution: remove the first uncommitted receipt, regenerate the
+  verification indexes once, recreate the receipt with both index paths named
+  as shared paths, and rerun index check mode plus receipt validation.
 
 ### Validation
 
 - Focused Git-governance replay: 127 tests passed across `test_git_state.py`,
   `test_git_handoff_receipt.py`, and `test_branch_disposition.py`; the maintained
   `check_codex_git_workflow.py` checker also passed.
-- Documentation replay: brief length passed; planning indexes regenerated and
-  hash-current; docs index and index-link checks passed; 387 Markdown files and
-  1,259 internal links produced zero broken links; token-efficiency policy
-  passed; `git diff --check` passed; quick gate passed `10/10`.
+- Documentation replay: brief length passed; planning and verification indexes
+  regenerated and hash-current; docs index and index-link checks passed; 387
+  Markdown files and 1,260 internal links produced zero broken links;
+  token-efficiency policy passed; `git diff --check` passed; quick gate passed
+  `10/10`; the task-to-Git handoff receipt validates as the expected pre-PR
+  `HOLD` bound to content head `18b86799`.
 - Current truth replay: parity remains 13 supported / 8 held, 50/91 public
   functions directly router-wired, 81/81 endpoints directly tested, and 13/13
   React hooks connected.
