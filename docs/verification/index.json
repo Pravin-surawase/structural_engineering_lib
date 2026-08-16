@@ -2,13 +2,13 @@
   "folder": "docs/verification",
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
-  "last_updated": "2026-08-16",
-  "file_count": 149,
+  "last_updated": "2026-08-17",
+  "file_count": 157,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -27,7 +27,7 @@
       "name": "README.md",
       "type": "documentation",
       "size_lines": 64,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "title": "Verification",
       "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards. | Document | Description |",
       "content_hash": "4763d5ab8b48"
@@ -36,7 +36,7 @@
       "name": "alpha-0231-local-prepublication-rehearsal.md",
       "type": "documentation",
       "size_lines": 72,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "title": "v0.23.1a1 Local Prepublication Rehearsal",
       "description": "not a CI artifact identity, tag, or publication approval | Artifact | Bytes | Members | SHA-256 |",
       "content_hash": "d6a173859f50"
@@ -45,7 +45,7 @@
       "name": "bundled-sample-boq-evidence.md",
       "type": "documentation",
       "size_lines": 58,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This is the reproducible software record for the bundled ETABS sample. It is not a bill approved for procurement or construction and is not professional",
       "content_hash": "78b84b5474bc"
     },
@@ -53,7 +53,7 @@
       "name": "column-pmm-benchmark.md",
       "type": "documentation",
       "size_lines": 107,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This record independently checks the experimental rectangular-column fiber kernel at an oblique neutral-axis orientation. It is a calculation benchmark,",
       "content_hash": "fcc6aaad58e3"
     },
@@ -61,7 +61,7 @@
       "name": "examples.md",
       "type": "documentation",
       "size_lines": 1550,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This document provides benchmark examples that engineers can use to verify the library's calculations against: - Hand calculations",
       "content_hash": "79cb3add7cbe"
     },
@@ -69,14 +69,14 @@
       "name": "external-cli-test.md",
       "type": "documentation",
       "size_lines": 98,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Purpose: capture a repeatable, human-run CLI test from a fresh user. Preferred: use the automated smoke script so the output is consistent and easy to share.",
       "content_hash": "a81223e8c701"
     },
     {
       "name": "footing-release-inclusion.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "schema_version",
         "record_id",
@@ -93,7 +93,7 @@
     {
       "name": "git-001-phase-8-reconciliation-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -111,7 +111,7 @@
     {
       "name": "git-001-phase-8-reconciliation-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -123,7 +123,7 @@
     {
       "name": "git-primary-session-log-reconcile-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -141,7 +141,7 @@
     {
       "name": "git-primary-session-log-reconcile-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -154,7 +154,7 @@
       "name": "india-1-cumulative-gate-evidence.md",
       "type": "documentation",
       "size_lines": 56,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "INDIA-1A through INDIA-1D are integrated on main as four independently gated packets:",
       "content_hash": "06bfd83e531d"
     },
@@ -162,7 +162,7 @@
       "name": "india-1a-beam-route-evidence.md",
       "type": "documentation",
       "size_lines": 85,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "design_flanged_beam_is456() composes one monolithic sagging T-beam case from already-factored supplied actions. It calculates the effective flange width,",
       "content_hash": "97194ff486b7"
     },
@@ -170,7 +170,7 @@
       "name": "india-1b-column-decision-evidence.md",
       "type": "documentation",
       "size_lines": 73,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "The stable IS 456 column decision remains bounded to solid rectangular tied sections. design_column_is456() and design_long_column_is456() accept one",
       "content_hash": "5ed855d6483f"
     },
@@ -178,7 +178,7 @@
       "name": "india-1c-isolated-footing-workflow-evidence.md",
       "type": "documentation",
       "size_lines": 53,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "INDIA-1C publishes the existing bounded concentric isolated-footing composition through structural_lib.services.api and the package root. No footing structural",
       "content_hash": "e6ec5ffc6d7b"
     },
@@ -186,14 +186,14 @@
       "name": "india-1d-slab-boundary-evidence.md",
       "type": "documentation",
       "size_lines": 71,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "INDIA-1D closes the decision boundary around already supported solid-slab serviceability, shear, and loading behavior. It does not add or promote new",
       "content_hash": "76b8e456fffe"
     },
     {
       "name": "india-2-closeout-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -211,7 +211,7 @@
     {
       "name": "india-2-closeout-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -224,14 +224,14 @@
       "name": "india-2-cumulative-gate-evidence.md",
       "type": "documentation",
       "size_lines": 71,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "INDIA-2A-D are integrated through exact origin/main 18da6c112e67af49d8adf32bf0babf65285e2cd4. The cumulative gate packet ran",
       "content_hash": "e72e21fb5707"
     },
     {
       "name": "india-2-cumulative-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -249,7 +249,7 @@
     {
       "name": "india-2-cumulative-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -262,14 +262,14 @@
       "name": "india-2-deep-a-geometry-evidence.md",
       "type": "documentation",
       "size_lines": 73,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "DEEP-A implements the typed pure-math foundation for the G0-approved case: one simply supported, top-loaded, solid rectangular deep beam without openings,",
       "content_hash": "6e1bf2ca5125"
     },
     {
       "name": "india-2-deep-a-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -287,7 +287,7 @@
     {
       "name": "india-2-deep-a-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -299,7 +299,7 @@
     {
       "name": "india-2-deep-acceptance-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -317,7 +317,7 @@
     {
       "name": "india-2-deep-acceptance-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -329,7 +329,7 @@
     {
       "name": "india-2-deep-b-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -347,7 +347,7 @@
     {
       "name": "india-2-deep-b-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -360,14 +360,14 @@
       "name": "india-2-deep-b-reinforcement-evidence.md",
       "type": "documentation",
       "size_lines": 75,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "DEEP-B implements the remaining pure-math checks for the G0-approved simply supported solid rectangular top-loaded deep beam. It accepts one caller-",
       "content_hash": "82c98695be8a"
     },
     {
       "name": "india-2-deep-c-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -385,7 +385,7 @@
     {
       "name": "india-2-deep-c-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -398,14 +398,14 @@
       "name": "india-2-deep-c-public-workflow-evidence.md",
       "type": "documentation",
       "size_lines": 61,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "design_simply_supported_deep_beam_is456 is the single typed Python workflow for the G0-approved case. It is exported identically from",
       "content_hash": "076377ad8318"
     },
     {
       "name": "india-2-deep-d-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -423,7 +423,7 @@
     {
       "name": "india-2-deep-d-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -436,7 +436,7 @@
       "name": "india-2-deep-d-publication-evidence.md",
       "type": "documentation",
       "size_lines": 73,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "POST /api/v1/design/deep-beam/simply-supported is a thin typed transport over the canonical design_simply_supported_deep_beam_is456 service. Its request",
       "content_hash": "e9f0ce8f804f"
     },
@@ -444,14 +444,14 @@
       "name": "india-2-deep-family-acceptance-evidence.md",
       "type": "documentation",
       "size_lines": 93,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "exact integrated G0/A-D starting head was ce45e22032ea234f588ce88c601db5f6a42af166. The supported public route remains",
       "content_hash": "6f058b49b1ea"
     },
     {
       "name": "india-2-deep-g0-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -469,7 +469,7 @@
     {
       "name": "india-2-deep-g0-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -482,7 +482,7 @@
       "name": "india-2-deep-g0-scope-evidence.md",
       "type": "documentation",
       "size_lines": 166,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "supported, solid rectangular, top-loaded deep beam without openings, under one caller-supplied governing positive factored moment. The route checks the",
       "content_hash": "300737e95db2"
     },
@@ -490,7 +490,7 @@
       "name": "india-2-final-closeout-evidence.md",
       "type": "documentation",
       "size_lines": 91,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "families are accepted only for the cases recorded below: wall, staircase, deep beam, flat slab with column punching, combined footing, and strap footing.",
       "content_hash": "d0a2995909c6"
     },
@@ -498,14 +498,14 @@
       "name": "india-2-flat-a-geometry-evidence.md",
       "type": "documentation",
       "size_lines": 92,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "FLAT-A implements the typed pure-math foundation for the G0-approved case: one solid square interior panel in an equal-span orthogonal column grid, using the",
       "content_hash": "900cb6f84a05"
     },
     {
       "name": "india-2-flat-a-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -523,7 +523,7 @@
     {
       "name": "india-2-flat-a-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -535,7 +535,7 @@
     {
       "name": "india-2-flat-acceptance-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -553,7 +553,7 @@
     {
       "name": "india-2-flat-acceptance-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -565,7 +565,7 @@
     {
       "name": "india-2-flat-b-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -583,7 +583,7 @@
     {
       "name": "india-2-flat-b-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -596,14 +596,14 @@
       "name": "india-2-flat-b-moment-evidence.md",
       "type": "documentation",
       "size_lines": 80,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "FLAT-B adds only the gravity moment calculation approved by FLAT-G0. The input must first satisfy the FLAT-A equal-span square interior-panel, direct-design,",
       "content_hash": "2ef4c61ac9d3"
     },
     {
       "name": "india-2-flat-c-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -621,7 +621,7 @@
     {
       "name": "india-2-flat-c-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -634,14 +634,14 @@
       "name": "india-2-flat-c-reinforcement-evidence.md",
       "type": "documentation",
       "size_lines": 85,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "FLAT-C consumes the FLAT-A/B panel and moment contracts and adds only bounded singly reinforced flexure, caller-provided straight-bar checks, the frozen",
       "content_hash": "b3348eb6b4bc"
     },
     {
       "name": "india-2-flat-d-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -659,7 +659,7 @@
     {
       "name": "india-2-flat-d-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -672,14 +672,14 @@
       "name": "india-2-flat-d-punching-evidence.md",
       "type": "documentation",
       "size_lines": 82,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "FLAT-D adds the centred concentric punching check for the G0-frozen square interior column. It consumes the fail-closed FLAT-A panel contract and requires",
       "content_hash": "102df860ad9f"
     },
     {
       "name": "india-2-flat-e-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -697,7 +697,7 @@
     {
       "name": "india-2-flat-e-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -710,7 +710,7 @@
       "name": "india-2-flat-e-publication-evidence.md",
       "type": "documentation",
       "size_lines": 93,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "FLAT-E composes the integrated FLAT-A-D calculations into the sole public design_regular_interior_flat_slab_is456 service and exposes the same workflow",
       "content_hash": "ef60f1ec9135"
     },
@@ -718,14 +718,14 @@
       "name": "india-2-flat-family-acceptance-evidence.md",
       "type": "documentation",
       "size_lines": 100,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "exact integrated G0/A-E starting head was b04d80653484a8dc43e8ff73936d8171e4b65d40. The supported public route remains",
       "content_hash": "ac0c238727b4"
     },
     {
       "name": "india-2-flat-g0-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -743,7 +743,7 @@
     {
       "name": "india-2-flat-g0-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -756,7 +756,7 @@
       "name": "india-2-flat-g0-scope-evidence.md",
       "type": "documentation",
       "size_lines": 215,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "interior panel in an equal-span orthogonal grid, designed by the direct design method for uniform gravity loading, with one centred square interior-column",
       "content_hash": "6b3a77310a78"
     },
@@ -764,14 +764,14 @@
       "name": "india-2-foundation-combined-a-analysis-evidence.md",
       "type": "documentation",
       "size_lines": 114,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "COMBINED-A implements only the G0-frozen pure IS 456 analysis layer for two identical square columns carrying equal concentric axial compression on one",
       "content_hash": "6e5b36a832d2"
     },
     {
       "name": "india-2-foundation-combined-a-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -789,7 +789,7 @@
     {
       "name": "india-2-foundation-combined-a-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -801,7 +801,7 @@
     {
       "name": "india-2-foundation-combined-acceptance-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -819,7 +819,7 @@
     {
       "name": "india-2-foundation-combined-acceptance-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -831,7 +831,7 @@
     {
       "name": "india-2-foundation-combined-acceptance-nonfrozen-replay.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "case_id",
         "footing",
@@ -842,7 +842,7 @@
     {
       "name": "india-2-foundation-combined-b-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -860,7 +860,7 @@
     {
       "name": "india-2-foundation-combined-b-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -873,14 +873,14 @@
       "name": "india-2-foundation-combined-b-strength-evidence.md",
       "type": "documentation",
       "size_lines": 152,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "COMBINED-B implements only the G0-frozen pure IS 456 strength composition for two identical square columns carrying equal concentric axial compression on one",
       "content_hash": "8aec93e9e535"
     },
     {
       "name": "india-2-foundation-combined-c-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -898,7 +898,7 @@
     {
       "name": "india-2-foundation-combined-c-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -911,14 +911,14 @@
       "name": "india-2-foundation-combined-c-public-workflow-evidence.md",
       "type": "documentation",
       "size_lines": 146,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "COMBINED-C publishes one typed Python workflow, design_symmetric_combined_footing_is456, over the already accepted",
       "content_hash": "8d7b847e8992"
     },
     {
       "name": "india-2-foundation-combined-d-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -936,7 +936,7 @@
     {
       "name": "india-2-foundation-combined-d-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -949,7 +949,7 @@
       "name": "india-2-foundation-combined-d-publication-evidence.md",
       "type": "documentation",
       "size_lines": 92,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "POST /api/v1/design/combined-footing/symmetric is a thin typed transport over the canonical design_symmetric_combined_footing_is456 service accepted in",
       "content_hash": "d4c9e869bffd"
     },
@@ -957,14 +957,14 @@
       "name": "india-2-foundation-combined-family-acceptance-evidence.md",
       "type": "documentation",
       "size_lines": 176,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "The exact integrated G0/A-D starting head is 079ca22b00744ca9b01f859be0b64333b5830fcb, tree",
       "content_hash": "c89171222f11"
     },
     {
       "name": "india-2-foundation-combined-g0-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -982,7 +982,7 @@
     {
       "name": "india-2-foundation-combined-g0-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -995,14 +995,14 @@
       "name": "india-2-foundation-combined-g0-scope-evidence.md",
       "type": "documentation",
       "size_lines": 226,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "square reinforced-concrete columns carrying equal concentric axial compression, located symmetrically on the longitudinal centreline of one rigid rectangular,",
       "content_hash": "1f4ee33aff2e"
     },
     {
       "name": "india-2-foundation-pile-cap-g0-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1020,7 +1020,7 @@
     {
       "name": "india-2-foundation-pile-cap-g0-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1033,14 +1033,14 @@
       "name": "india-2-foundation-pile-cap-g0-hold-evidence.md",
       "type": "documentation",
       "size_lines": 176,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "implementation files. The frozen candidate remains one constant-depth rectangular reinforced-",
       "content_hash": "1f0c1c3d968b"
     },
     {
       "name": "india-2-foundation-raft-g0-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1058,7 +1058,7 @@
     {
       "name": "india-2-foundation-raft-g0-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1071,7 +1071,7 @@
       "name": "india-2-foundation-raft-g0-hold-evidence.md",
       "type": "documentation",
       "size_lines": 187,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "implementation files. The frozen candidate remains one regular rectangular constant-depth rigid raft",
       "content_hash": "2051564fc5cb"
     },
@@ -1079,14 +1079,14 @@
       "name": "india-2-foundation-strap-a-analysis-evidence.md",
       "type": "documentation",
       "size_lines": 56,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This packet implements only the G0-frozen two-footing property-line analysis: strict typed topology/action/approval inputs, reaction statics, equal uniform",
       "content_hash": "d8aa9a13773d"
     },
     {
       "name": "india-2-foundation-strap-a-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1104,7 +1104,7 @@
     {
       "name": "india-2-foundation-strap-a-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1116,7 +1116,7 @@
     {
       "name": "india-2-foundation-strap-acceptance-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1134,7 +1134,7 @@
     {
       "name": "india-2-foundation-strap-acceptance-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1146,7 +1146,7 @@
     {
       "name": "india-2-foundation-strap-acceptance-nonfrozen-replay.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "case_id",
         "footing",
@@ -1157,7 +1157,7 @@
     {
       "name": "india-2-foundation-strap-b-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1175,7 +1175,7 @@
     {
       "name": "india-2-foundation-strap-b-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1188,14 +1188,14 @@
       "name": "india-2-foundation-strap-b-strength-evidence.md",
       "type": "documentation",
       "size_lines": 61,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This packet composes A actions with caller-supplied M20-M40 concrete, Fe415/ Fe500 uncoated deformed bars, longitudinal/side-face reinforcement, vertical",
       "content_hash": "1c995a8306f6"
     },
     {
       "name": "india-2-foundation-strap-c-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1213,7 +1213,7 @@
     {
       "name": "india-2-foundation-strap-c-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1226,14 +1226,14 @@
       "name": "india-2-foundation-strap-c-public-workflow-evidence.md",
       "type": "documentation",
       "size_lines": 52,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "design_property_line_strap_footing_is456 is the sole canonical public Python composition over STRAP-A/B. It accepts one immutable case wrapper around the",
       "content_hash": "0f31237bfd01"
     },
     {
       "name": "india-2-foundation-strap-d-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1251,7 +1251,7 @@
     {
       "name": "india-2-foundation-strap-d-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1264,7 +1264,7 @@
       "name": "india-2-foundation-strap-d-publication-evidence.md",
       "type": "documentation",
       "size_lines": 95,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "POST /api/v1/design/strap-footing/property-line is a thin typed transport over the canonical design_property_line_strap_footing_is456 service accepted",
       "content_hash": "ad70699f818c"
     },
@@ -1272,14 +1272,14 @@
       "name": "india-2-foundation-strap-family-acceptance-evidence.md",
       "type": "documentation",
       "size_lines": 192,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "The exact integrated G0/A-D starting head is b75daa970b2976cbd5d51e9a951926a7946d5fa6, tree",
       "content_hash": "abe4929e3c8c"
     },
     {
       "name": "india-2-foundation-strap-g0-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1297,7 +1297,7 @@
     {
       "name": "india-2-foundation-strap-g0-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1310,14 +1310,14 @@
       "name": "india-2-foundation-strap-g0-scope-evidence.md",
       "type": "documentation",
       "size_lines": 267,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "rectangular constant-depth footings on soil, one exterior square column eccentric to its footing centroid and one interior square column centred on its",
       "content_hash": "8704b0e57f8a"
     },
     {
       "name": "india-2-next-agent-plan-refresh-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1335,7 +1335,7 @@
     {
       "name": "india-2-next-agent-plan-refresh-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1347,7 +1347,7 @@
     {
       "name": "india-2-plan-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1365,7 +1365,7 @@
     {
       "name": "india-2-plan-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1378,14 +1378,14 @@
       "name": "india-2-truth-hygiene-38-2-evidence.md",
       "type": "documentation",
       "size_lines": 122,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "The controlled IS 456 source has Clause 38.1 and Annex G beam/section cases, but no Clause 38.2, 38.3, or 38.4. Independently replayed equilibrium also",
       "content_hash": "50b5fff40345"
     },
     {
       "name": "india-2-truth-hygiene-38-2-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1403,7 +1403,7 @@
     {
       "name": "india-2-truth-hygiene-38-2-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1416,14 +1416,14 @@
       "name": "india-2-wall-a-axial-kernel-evidence.md",
       "type": "documentation",
       "size_lines": 83,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "WALL-A implements the pure IS 456 layer for the accepted Clause 32.2 braced wall case. It resolves effective height, enforces the maximum effective-height",
       "content_hash": "f64b2ddf2842"
     },
     {
       "name": "india-2-wall-acceptance-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1441,7 +1441,7 @@
     {
       "name": "india-2-wall-acceptance-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1454,7 +1454,7 @@
       "name": "india-2-wall-b-reinforcement-evidence.md",
       "type": "documentation",
       "size_lines": 82,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "WALL-B adds one pure IS 456 provided-reinforcement check to the accepted Clause 32.2 braced-wall case. It does not select bars. The caller supplies one",
       "content_hash": "dccc2142b26b"
     },
@@ -1462,7 +1462,7 @@
       "name": "india-2-wall-c-public-workflow-evidence.md",
       "type": "documentation",
       "size_lines": 80,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "WALL-C publishes one canonical typed Python function, design_braced_wall_is456, through structural_lib.services.api, the",
       "content_hash": "6a75d034217a"
     },
@@ -1470,7 +1470,7 @@
       "name": "india-2-wall-d-publication-evidence.md",
       "type": "documentation",
       "size_lines": 80,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "WALL-D publishes the integrated design_braced_wall_is456 workflow through POST /api/v1/design/wall/braced-axial and promotes exactly one bounded wall",
       "content_hash": "3e70433c516b"
     },
@@ -1478,7 +1478,7 @@
       "name": "india-2-wall-family-acceptance-evidence.md",
       "type": "documentation",
       "size_lines": 82,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "integrated A-D starting head was 46094a8c35c75fcfb0644f23a851087cc3297c60. The supported public route remains one regular 100-200 mm thick, one-grid,",
       "content_hash": "fafe9e88fdce"
     },
@@ -1486,7 +1486,7 @@
       "name": "india-2-wall-g0-scope-evidence.md",
       "type": "documentation",
       "size_lines": 125,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "activated the remaining INDIA-2 work on 2026-08-16 by asking that INDIA-2 be implemented and finished. Each later family still has to pass its own G0 source,",
       "content_hash": "a5addb19fbc4"
     },
@@ -1494,7 +1494,7 @@
       "name": "india-2a-staircase-scope-evidence.md",
       "type": "documentation",
       "size_lines": 111,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "activated INDIA-2A through INDIA-2D on 2026-08-15 by requesting that INDIA-2 be started and finished. This decision selects only the case below; it does not",
       "content_hash": "6d6defbea3ed"
     },
@@ -1502,7 +1502,7 @@
       "name": "india-2b-staircase-actions-evidence.md",
       "type": "documentation",
       "size_lines": 70,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "INDIA-2B implements only the typed geometry, concrete self-weight, and three-segment simply supported action contract selected by INDIA-2A. It adds no",
       "content_hash": "1f9680c591ed"
     },
@@ -1510,14 +1510,14 @@
       "name": "india-2c-staircase-design-evidence.md",
       "type": "documentation",
       "size_lines": 66,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "INDIA-2C composes the accepted INDIA-2B per-metre actions into one bounded waist-slab design check. It does not add public consumers or promote staircase",
       "content_hash": "ccbd767ff6fb"
     },
     {
       "name": "india-2d-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1535,7 +1535,7 @@
     {
       "name": "india-2d-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1548,14 +1548,14 @@
       "name": "india-2d-staircase-publication-evidence.md",
       "type": "documentation",
       "size_lines": 85,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "INDIA-2D publishes one typed Python service and one thin FastAPI transport for the bounded straight-flight staircase developed in INDIA-2A-C. It does not add",
       "content_hash": "be7ac2e157a6"
     },
     {
       "name": "india-completion-plan-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1573,7 +1573,7 @@
     {
       "name": "india-completion-plan-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1585,7 +1585,7 @@
     {
       "name": "indian-code-capability-coverage.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "schema_version",
         "manifest_id",
@@ -1602,7 +1602,7 @@
       "name": "indian-code-truth-baseline.md",
       "type": "documentation",
       "size_lines": 93,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "title": "INDIA-0 Indian-Code Truth Baseline",
       "description": "was squash-merged as 0373de68; INDIA-1 packets now update the generated manifest from fresh integrated-main lanes",
       "content_hash": "e8d850af25d8"
@@ -1611,7 +1611,7 @@
       "name": "insights-verification-pack.md",
       "type": "documentation",
       "size_lines": 101,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This pack provides benchmark test cases for the insights module to ensure accuracy and prevent regressions. Tests are automatically run in CI on every PR. Run all insights benchmark tests:",
       "content_hash": "62116e5ed5fe"
     },
@@ -1619,7 +1619,7 @@
       "name": "is456-library-first-evidence.md",
       "type": "documentation",
       "size_lines": 169,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "title": "IS 456 Library-First Evidence and Claim Crosswalk",
       "description": "| Source | SHA-256 | Pages | Use | |---|---|---:|---|",
       "content_hash": "3a47d498ba82"
@@ -1627,7 +1627,7 @@
     {
       "name": "is456-public-distribution-permission.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "schema_version",
         "record_id",
@@ -1645,15 +1645,45 @@
       "name": "is456-slab-evidence.md",
       "type": "documentation",
       "size_lines": 125,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "title": "IS 456 Solid Slab Source and Benchmark Ledger",
       "description": "| ID | Identity | Permitted implementation use | State | |---|---|---|---|",
       "content_hash": "087b5c252695"
     },
     {
+      "name": "lib-pro-002-g0-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "dc0ff998fccf"
+    },
+    {
+      "name": "lib-pro-002-g0-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "ff996d87bfcb"
+    },
+    {
       "name": "next-session-git-issues-plan-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1671,7 +1701,7 @@
     {
       "name": "next-session-git-issues-plan-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1684,7 +1714,7 @@
       "name": "pack.md",
       "type": "documentation",
       "size_lines": 56,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This repo’s unit tests validate correctness and edge cases, but they don’t always answer the question: **“did the numerical design outputs change?”** The **Verification Pack** is a small set of **pinn",
       "content_hash": "fa4fe75b3d05"
     },
@@ -1692,14 +1722,14 @@
       "name": "post-india2-cleanup-authorization-proposal.md",
       "type": "documentation",
       "size_lines": 162,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Exact candidate set POST-INDIA2-2499DF4ADE0DF704 contains **71 branches** and **193 separately bound actions**. Its worktree actions are expected to recover approximately **7.8 GiB**. The repository o",
       "content_hash": "2ff7f7bd38c7"
     },
     {
       "name": "post-india2-cleanup-disposition-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "audit_branch",
         "audit_head_sha",
@@ -1717,7 +1747,7 @@
     {
       "name": "post-india2-cleanup-execution-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1735,7 +1765,7 @@
     {
       "name": "post-india2-cleanup-execution-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1747,7 +1777,7 @@
     {
       "name": "post-india2-cleanup-execution-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "schema_version",
         "packet",
@@ -1763,9 +1793,105 @@
       "content_hash": "6b7499c557c1"
     },
     {
+      "name": "post-india2-index-determinism-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "schema_version",
+        "packet",
+        "observed_at_utc",
+        "base",
+        "confirmed_failure",
+        "root_cause",
+        "implemented_resolution",
+        "regression",
+        "session_compaction",
+        "local_validation_before_final_index_write"
+      ],
+      "content_hash": "ae598fac65c9"
+    },
+    {
+      "name": "post-india2-index-determinism-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "ac9f0f42b166"
+    },
+    {
+      "name": "post-india2-index-determinism-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "5f02f7662188"
+    },
+    {
+      "name": "post-india2-index-local-artifact-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "schema_version",
+        "packet",
+        "observed_at_utc",
+        "base",
+        "confirmed_failure",
+        "root_cause",
+        "implemented_resolution",
+        "session_compaction",
+        "local_validation_before_final_index_write",
+        "immutable_closeout"
+      ],
+      "content_hash": "5a6309314267"
+    },
+    {
+      "name": "post-india2-index-local-artifact-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "dabf145d3e1f"
+    },
+    {
+      "name": "post-india2-index-local-artifact-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "e3f6210d7391"
+    },
+    {
       "name": "post-india2-maintenance-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "schema_version",
         "packet",
@@ -1783,7 +1909,7 @@
     {
       "name": "post-india2-maintenance-git-handoff-receipt.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "holds",
@@ -1801,7 +1927,7 @@
     {
       "name": "post-india2-maintenance-git-handoff-source-evidence.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "authorization",
         "integration",
@@ -1814,7 +1940,7 @@
       "name": "release-artifact-evidence-template.md",
       "type": "documentation",
       "size_lines": 38,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "title": "Release Artifact Evidence Template",
       "description": "Complete this record from the CI run that built the exact candidate. | Field | Value |",
       "content_hash": "dd7652006f11"
@@ -1823,7 +1949,7 @@
       "name": "ui-experience-session-2-acceptance.md",
       "type": "documentation",
       "size_lines": 70,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This is the software acceptance record for UIX-001 P9-P15. It does not certify the formulas, approve a structural design, or authorize professional use.",
       "content_hash": "82dbbd6cae09"
     },
@@ -1831,11 +1957,11 @@
       "name": "validation-pack.md",
       "type": "documentation",
       "size_lines": 396,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This pack provides 5 benchmark beams and 3 benchmark columns with IS 456 references that you can use to validate the library's calculations against hand calculations, SP 16 design aids, or other trust",
       "content_hash": "63fd4822c78c"
     }
   ],
   "subfolders": [],
-  "content_hash": "f2a4f14a24d38554"
+  "content_hash": "a344e1a833c1ba25"
 }

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — post-INDIA-2 cleanup and maintenance complete; retained holds remain explicit
+**Updated:** 2026-08-17 — LIB-PRO-002 contract-first input-safety planning activated; next publication held
 
 ---
 
@@ -125,15 +125,19 @@
 
 ## Active
 
-No INDIA-2 implementation packet is active. INDIA-2 is administratively
-complete within its recorded accepted/held boundary. INDIA-3, dependency,
-release, further cleanup, and professional-approval work require separate
-activation.
+| ID | Task | Agent | Est | Priority | Status |
+|----|------|-------|-----|----------|--------|
+| LIB-PRO-002-G0 | Freeze the canonical project-input, import-ledger, result/review, claim, and publication contracts from the one-storey usability pilot | Main Agent + independent reviewers | S | P0 | 🚧 CANDIDATE — plan written; repository gates and exact-head review remain |
+
+INDIA-2 remains administratively complete within its recorded accepted/held
+boundary. INDIA-3, dependency, release execution, further cleanup, and
+professional approval remain separately held.
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| LIB-PRO-002-A | Implement strict service intake with no structural defaults, one effective-depth contract, stable blocking issues, and a non-empty/accounted batch summary | backend + tester | M | P0 | 📋 NEXT AFTER G0 MERGE |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog

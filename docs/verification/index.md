@@ -3,8 +3,8 @@
 Benchmark examples and verification packs for validating library calculations against IS 456 standards.
 
 **Type:** Documentation
-**Last Updated:** 2026-08-16
-**Files:** 149
+**Last Updated:** 2026-08-17
+**Files:** 157
 
 ## Config Files
 
@@ -88,12 +88,20 @@ Benchmark examples and verification packs for validating library calculations ag
 - [india-completion-plan-git-handoff-source-evidence.json](india-completion-plan-git-handoff-source-evidence.json)
 - [indian-code-capability-coverage.json](indian-code-capability-coverage.json)
 - [is456-public-distribution-permission.json](is456-public-distribution-permission.json)
+- [lib-pro-002-g0-git-handoff-receipt.json](lib-pro-002-g0-git-handoff-receipt.json)
+- [lib-pro-002-g0-git-handoff-source-evidence.json](lib-pro-002-g0-git-handoff-source-evidence.json)
 - [next-session-git-issues-plan-git-handoff-receipt.json](next-session-git-issues-plan-git-handoff-receipt.json)
 - [next-session-git-issues-plan-git-handoff-source-evidence.json](next-session-git-issues-plan-git-handoff-source-evidence.json)
 - [post-india2-cleanup-disposition-evidence.json](post-india2-cleanup-disposition-evidence.json)
 - [post-india2-cleanup-execution-git-handoff-receipt.json](post-india2-cleanup-execution-git-handoff-receipt.json)
 - [post-india2-cleanup-execution-git-handoff-source-evidence.json](post-india2-cleanup-execution-git-handoff-source-evidence.json)
 - [post-india2-cleanup-execution-receipt.json](post-india2-cleanup-execution-receipt.json)
+- [post-india2-index-determinism-evidence.json](post-india2-index-determinism-evidence.json)
+- [post-india2-index-determinism-git-handoff-receipt.json](post-india2-index-determinism-git-handoff-receipt.json)
+- [post-india2-index-determinism-git-handoff-source-evidence.json](post-india2-index-determinism-git-handoff-source-evidence.json)
+- [post-india2-index-local-artifact-evidence.json](post-india2-index-local-artifact-evidence.json)
+- [post-india2-index-local-artifact-git-handoff-receipt.json](post-india2-index-local-artifact-git-handoff-receipt.json)
+- [post-india2-index-local-artifact-git-handoff-source-evidence.json](post-india2-index-local-artifact-git-handoff-source-evidence.json)
 - [post-india2-maintenance-evidence.json](post-india2-maintenance-evidence.json)
 - [post-india2-maintenance-git-handoff-receipt.json](post-india2-maintenance-git-handoff-receipt.json)
 - [post-india2-maintenance-git-handoff-source-evidence.json](post-india2-maintenance-git-handoff-source-evidence.json)
