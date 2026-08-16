@@ -36,6 +36,9 @@ direct-design eligibility, clear-span, and strip-definition foundation.
   vocabulary, and the committed generated manifest was stale.
 - The first closeout command chain stopped after `session end` reported the
   expected task-owned uncommitted packet and three index-bearing folders.
+- The first connected-GitHub PR creation call was rejected before mutation
+  because it supplied separate owner/repository fields instead of the
+  connector's required `repository_full_name` field.
 
 ### Root causes and resolutions
 
@@ -54,6 +57,10 @@ direct-design eligibility, clear-span, and strip-definition foundation.
   treat its successful handoff, session-log, receipt, link, and governance
   checks as the closeout result; regenerate the handoff-mutated indexes and run
   the remaining final checks separately before commit.
+- Root cause: the connector schema was inferred from an older call shape.
+  Resolution: inspect the live callable metadata in `ALL_TOOLS`, bind the
+  repository as `Pravin-surawase/structural_engineering_lib`, and retry without
+  changing the already-pushed source commit.
 
 ### Evidence
 
@@ -85,6 +92,9 @@ direct-design eligibility, clear-span, and strip-definition foundation.
   dirty task packet and stopped the chained final checks → retained its passing
   handoff/governance result and ran the remaining index, link, quick, and diff
   checks separately.
+- ⚠️ TERMINAL ISSUE: the first connected PR-creation call failed schema
+  validation for missing `repository_full_name` → inspected the live tool
+  declaration and retried with the required full repository identity.
 
 ---
 
