@@ -13,10 +13,10 @@ doc_type: spec
 ## 1. Outcome and stop boundary
 
 Combined-footing and strap-footing G0/A-D plus focused family acceptance are
-integrated within their recorded bounded cases. GIT-001 Phase 8 is integrated,
-and the frontmatter contract/data repair closes on merge of its unchanged
-candidate. The next session starts with Clause 38.2 truth hygiene before any
-new foundation decision.
+integrated within their recorded bounded cases. GIT-001 Phase 8 and the
+frontmatter contract/data repair are integrated, and Clause 38.2 truth hygiene
+closes on merge of its unchanged candidate. The next session starts with the
+decision-only pile-cap G0.
 
 This document remains the sequence plan. Phase 8 execution is recorded in
 [`GIT-001-phase-8-adoption-closeout.md`](../research/git-governance/GIT-001-phase-8-adoption-closeout.md).
@@ -32,9 +32,10 @@ time:
    `UNKNOWN/HOLD` without cleanup.
 2. `DOC-FRONTMATTER-CONTRACT` — complete on merge; JSON/text modes agree, the
    eight invalid records are repaired, and 60 permitted legacy records remain.
-3. `INDIA-2-TRUTH-HYGIENE-38-2` — next; source-audit every live `38.2` consumer,
-   correct provenance, and change arithmetic only if an independently checked
-   benchmark proves an outcome defect.
+3. `INDIA-2-TRUTH-HYGIENE-38-2` — complete on merge; controlled-source audit
+   removed unsupported Clause 38.2/38.3/38.4 identities and an independent
+   benchmark required exact shared stress-block arithmetic to prevent a false
+   safe maximum-steel result.
 4. `INDIA-2-FOUNDATION-PILE-CAP-G0` — decision and benchmark only.
 5. Implement pile-cap A/B/C/D/acceptance only if G0 returns an owner-accepted
    `GO`; otherwise record `HOLD` and its reactivation condition.
@@ -276,6 +277,22 @@ that a metadata-only correction proves the flexural arithmetic.
   imports, quick `10/10`, normal hooks, immutable-head review, and hosted checks
   pass.
 
+### Implemented decision and evidence
+
+The controlled source binds the live beam calculations to Clause 38.1 and
+Annex G-1.1/G-1.2/G-2.2; it contains no Clause 38.2, 38.3, or 38.4 identity.
+All live decorators, result provenance, registry records, active clause maps,
+tests, and the generated manifest now use those controlled identities.
+
+Arithmetic repair was required. For the supported discriminator
+`b=300 mm`, `d=500 mm`, `D=550 mm`, `Mu=572.05 kN m`, `fck=55 N/mm2`, and
+`fy=250 N/mm2`, the rounded inverse returns `6571.474429705084 mm2` and a false
+safe result below `Ast,max=6600 mm2`; exact equilibrium returns
+`6600.050311675635 mm2` and correctly fails with `E_FLEXURE_003`. Beam and slab
+now share one exact common solver without changing public signatures or units.
+The focused selection passes 190 tests. The full evidence is
+[recorded here](../verification/india-2-truth-hygiene-38-2-evidence.md).
+
 ## 6. Packets 4 onward — remaining foundation decisions
 
 Run `PILE-CAP-G0` and then `RAFT-G0` as separate decision-only packets. Each
@@ -362,42 +379,44 @@ benchmark means `HOLD`, not an improvised model.
 
 ## 7. Next-agent execution card
 
-The next agent starts and finishes only `INDIA-2-TRUTH-HYGIENE-38-2`.
+The next agent starts and finishes only `INDIA-2-FOUNDATION-PILE-CAP-G0`.
 
 ### First 15 minutes
 
 1. Fetch `origin/main`; record the exact commit and tree.
-2. Create `codex/india-2-truth-hygiene-38-2` from that ref; never write on
-   primary or reuse the frontmatter or another retained lane.
+2. Create `codex/india-2-foundation-pile-cap-g0` from that ref; never write on
+   primary or reuse the Clause 38.2 or another retained lane.
 3. Run the compact brief's four start commands and require
    `source_bound=true` plus `READY_LOCAL`.
-4. Read only this plan, the compact brief, the controlled-source registry and
-   clause database, the beam flexure/decorator/provenance paths discovered with
-   `rg --files`, and their nearest focused tests.
-5. Freeze every live `38.2` consumer and independently replay the supported
-   rectangular stress-block equilibrium before editing.
+4. Read only this plan, the compact brief, the controlled-source registry, the
+   existing footing/deep-region boundaries discovered with `rg --files`, and
+   the nearest G0 evidence patterns.
+5. Freeze the centred axial two-pile candidate, source/benchmark prerequisites,
+   decision matrix, and reactivation conditions before editing.
 
 ### Work loop
 
-1. Freeze source identities, live consumers, supported beam cases, public
-   signatures, and focused tests before edits.
-2. Bind each formula/provenance identity to Clause 38.1 or Annex G evidence;
-   never mass-replace labels or copy protected prose.
-3. Compare legacy approximation and exact equilibrium on independently checked
-   benchmarks. Change arithmetic only if a supported outcome can change.
-4. Add semantic regressions against unsupported `38.2` identities and generate
-   the maintained manifest once after executable truth freezes.
-5. Run focused flexure/traceability/manifest/public-contract gates, links and
-   indexes, one quick gate, one candidate review, one push, and one hosted-check
-   cycle.
+1. Search existing code and evidence before deciding whether the candidate can
+   be source-bound without calculation implementation.
+2. Bind exact IS 456 and companion-source identities, plus one accepted
+   independently replayable structural benchmark; catalogue discovery alone is
+   insufficient.
+3. Decide action model, caller-owned geotechnical inputs, topology, bearing or
+   nodal checks, anchorage, deep-region treatment, supported/fail/unsupported
+   matrices, and proposed A-D signatures.
+4. Return `GO`, `REVISE`, or `HOLD`. Missing controlled companion source or
+   accepted structural benchmark requires `HOLD` with exact reactivation
+   conditions and no calculation files.
+5. Run focused decision-contract/documentation gates, links and indexes, one
+   quick gate, one candidate review, one push, and one hosted-check cycle.
 6. Merge only the unchanged reviewed head, verify squash-tree equality and
    refreshed `origin/main`, retain the lane, and stop.
 
 ### Stop and handoff
 
-Stop after `INDIA-2-TRUTH-HYGIENE-38-2` merges. Name decision-only
-`INDIA-2-FOUNDATION-PILE-CAP-G0` as the sole next packet. Do not use remaining
-time to start pile-cap work in the Clause 38.2 lane.
+Stop after `INDIA-2-FOUNDATION-PILE-CAP-G0` merges. If it returns `GO`, name
+pile-cap A as the sole next packet; if it returns `HOLD`, name decision-only
+`INDIA-2-FOUNDATION-RAFT-G0`. Do not start calculation code in the G0 lane.
 
 ## 8. Efficiency and speed controls
 
@@ -435,7 +454,7 @@ repository-wide mutation, or a second repair cycle breaks that boundary.
 | Primary output-detail drift | Confirmed and resolved | Codex persisted a project output-detail selection into tracked `.codex/config.toml`; keep repository `low`, verify primary clean, and do not publish personal preference drift |
 | Stale primary/config wording in this plan and brief | Confirmed and resolved here | PR #799 described the pre-cleanup snapshot; refresh current mutable facts at packet start and do not treat a planning receipt as live state |
 | JSON frontmatter exits zero with eight invalid records | Confirmed and resolved on merge | JSON now returns the invalid-count result; direct valid/invalid payload tests pass; exactly eight records were repaired while 60 permitted legacy records stayed unchanged |
-| Live `38.2` identities | Origin and arithmetic impact unconfirmed | Source-audit every consumer and benchmark exact equilibrium before deciding metadata-only versus arithmetic repair |
+| Live `38.2` identities | Confirmed and resolved on merge | Controlled source has Clause 38.1 and Annex G identities but no 38.2/38.3/38.4; shared exact equilibrium replaces the rounded inverse because the supported discriminator changed false PASS to FAIL |
 | Pydantic-version OpenAPI drift | Confirmed and already guarded | Preserve explicit schema mode and the cross-version regression in every future D packet |
 | Public-call wrapper mismatch | Confirmed and already guarded | Discover the maintained signature; construct the typed request wrapper before calling the service in acceptance replays |
 | Stale audit candidate identities | Confirmed and already guarded | Propagate final reviewed head/tree/merge to evidence, brief, and receipt together; tree equality, not PR prose, closes the packet |

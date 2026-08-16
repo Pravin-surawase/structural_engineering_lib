@@ -815,7 +815,8 @@ End If
 '   Returns -1 if Mu > Mu_lim (doubly reinforced required)
 '
 ' Formula:
-'   Ast = (0.5 * fck / fy) * [1 - sqrt(1 - 4.6*Mu/(fck*b*d²))] * b * d
+'   xu/d = [1 - sqrt(1 - 4*0.42*Mu/(0.36*fck*b*d²))] / (2*0.42)
+'   Ast = 0.36*fck*b*xu/(0.87*fy)
 '
 ' Reference:
 '   IS 456:2000, Clause 38.1 (Limit State of Collapse: Flexure)

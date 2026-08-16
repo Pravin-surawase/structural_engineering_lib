@@ -27,9 +27,9 @@ def test_verification_flexure_singly_rectangular_case_01():
     assert res.error_message == ""
 
     assert r9(res.Mu_lim) == 128.51301888
-    assert r9(res.Ast_required) == 719.616175169
-    assert r9(res.pt_provided) == 0.695281329
-    assert r9(res.xu) == 156.894577322
+    assert r9(res.Ast_required) == 721.384147519
+    assert r9(res.pt_provided) == 0.696989515
+    assert r9(res.xu) == 157.280040134
     assert r9(res.xu_max) == 216.0
 
 
@@ -47,7 +47,7 @@ def test_verification_flexure_doubly_rectangular_case_02():
     assert res.section_type == types.DesignSectionType.OVER_REINFORCED
 
     assert r9(res.Mu_lim) == 202.914234
-    assert r9(res.Ast_required) == 1550.355138609
+    assert r9(res.Ast_required) == 1555.435436782
     assert r9(res.Asc_required) == 296.55513585
     assert r9(res.xu) == 207.0
     assert r9(res.xu_max) == 207.0
@@ -67,9 +67,9 @@ def test_verification_flexure_flanged_case_03():
     assert res.section_type == types.DesignSectionType.UNDER_REINFORCED
 
     assert r9(res.Mu_lim) == 835.038
-    assert r9(res.Ast_required) == 956.603619385
-    assert r9(res.pt_provided) == 0.191320724
-    assert r9(res.xu) == 46.235841604
+    assert r9(res.Ast_required) == 956.700423303
+    assert r9(res.pt_provided) == 0.191340085
+    assert r9(res.xu) == 46.24052046
     assert r9(res.xu_max) == 230.0
 
 

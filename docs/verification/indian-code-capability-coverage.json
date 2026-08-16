@@ -324,11 +324,11 @@
         }
       ],
       "registration_summary": {
-        "known_references": 175,
+        "known_references": 173,
         "registered_known_references": 98,
-        "metadata_only_references": 77,
+        "metadata_only_references": 75,
         "registration_only_references": 0,
-        "registration_pct": 56.0
+        "registration_pct": 56.6
       },
       "references": [
         {
@@ -1559,6 +1559,7 @@
           "category": "flexure",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.beam.flexure.calculate_ast_required",
             "structural_lib.codes.is456.beam.flexure.calculate_mu_lim",
             "structural_lib.codes.is456.beam.flexure.calculate_mu_lim_flanged",
             "structural_lib.codes.is456.beam.flexure.design_doubly_reinforced",
@@ -1567,6 +1568,7 @@
             "structural_lib.codes.is456.column.pmm.experimental_pmm_interaction_surface",
             "structural_lib.codes.is456.column.pmm.pm_interaction_slice_for_layout",
             "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
+            "structural_lib.codes.is456.common.stress_blocks.calculate_ast_from_rectangular_stress_block",
             "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement",
             "structural_lib.codes.is456.slab.one_way.design_simply_supported_one_way_slab_flexure",
             "structural_lib.codes.is456.slab.one_way_continuous.design_continuous_one_way_slab_flexure",
@@ -1591,37 +1593,6 @@
           "reference": "38.1.2",
           "reference_type": "clause",
           "title": "Stress Block Parameters",
-          "category": "flexure",
-          "registration_status": "METADATA_ONLY",
-          "functions": []
-        },
-        {
-          "reference_id": "IS456:2000:38.2",
-          "reference": "38.2",
-          "reference_type": "clause",
-          "title": "Singly Reinforced Sections",
-          "category": "flexure",
-          "registration_status": "REGISTERED",
-          "functions": [
-            "structural_lib.codes.is456.beam.flexure.calculate_ast_required",
-            "structural_lib.codes.is456.beam.flexure.design_doubly_reinforced",
-            "structural_lib.codes.is456.beam.flexure.design_singly_reinforced"
-          ]
-        },
-        {
-          "reference_id": "IS456:2000:38.3",
-          "reference": "38.3",
-          "reference_type": "clause",
-          "title": "Doubly Reinforced Sections",
-          "category": "flexure",
-          "registration_status": "METADATA_ONLY",
-          "functions": []
-        },
-        {
-          "reference_id": "IS456:2000:38.4",
-          "reference": "38.4",
-          "reference_type": "clause",
-          "title": "Flanged Beams",
           "category": "flexure",
           "registration_status": "METADATA_ONLY",
           "functions": []
@@ -2152,9 +2123,23 @@
           "category": "flexure",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.beam.flexure.calculate_ast_required",
             "structural_lib.codes.is456.beam.flexure.design_doubly_reinforced",
+            "structural_lib.codes.is456.beam.flexure.design_singly_reinforced",
             "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
+            "structural_lib.codes.is456.common.stress_blocks.calculate_ast_from_rectangular_stress_block",
             "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:G-1.2",
+          "reference": "G-1.2",
+          "reference_type": "annexure",
+          "title": "Rectangular Sections With Compression Reinforcement",
+          "category": "flexure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.beam.flexure.design_doubly_reinforced"
           ]
         },
         {

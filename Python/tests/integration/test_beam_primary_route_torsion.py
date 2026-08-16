@@ -29,7 +29,7 @@ def test_zero_torsion_preserves_primary_service_result(
     explicit_zero = design_beam_is456(**ordinary_beam, tu_knm=0.0)
 
     assert asdict(explicit_zero) == asdict(implicit_zero)
-    assert explicit_zero.flexure.Ast_required == pytest.approx(863.7612750126042)
+    assert explicit_zero.flexure.Ast_required == pytest.approx(865.448587943452)
     assert explicit_zero.shear.tau_v == pytest.approx(0.5470459518599562)
     assert explicit_zero.torsion is None
     assert explicit_zero.Me_knm is None

@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
   "last_updated": "2026-08-16",
-  "file_count": 69,
+  "file_count": 70,
   "files": [
     {
       "name": "README.md",
@@ -891,7 +891,7 @@
           "description": "Create a sample decorated function for testing."
         }
       ],
-      "content_hash": "e535f8e80f27"
+      "content_hash": "433ff8774a98"
     },
     {
       "name": "test_column_axial.py",
@@ -2544,6 +2544,35 @@
         "VALIDATION_NOW"
       ],
       "content_hash": "40ceabc73929"
+    },
+    {
+      "name": "test_india_2_truth_hygiene_38_2.py",
+      "type": "python",
+      "size_lines": 111,
+      "last_updated": "2026-08-16",
+      "description": "INDIA-2 Clause 38.2 truth-hygiene acceptance tests.",
+      "functions": [
+        {
+          "name": "test_exact_rectangular_stress_block_closes_equilibrium"
+        },
+        {
+          "name": "test_exact_arithmetic_prevents_false_safe_maximum_steel_result"
+        },
+        {
+          "name": "test_live_beam_traceability_uses_controlled_source_identifiers"
+        },
+        {
+          "name": "test_registry_and_generated_manifest_reject_nonexistent_38_subclauses"
+        },
+        {
+          "name": "test_active_clause_maps_do_not_publish_nonexistent_38_subclauses"
+        }
+      ],
+      "constants": [
+        "REPO_ROOT",
+        "SCRIPTS_ROOT"
+      ],
+      "content_hash": "0d4dec2e1d37"
     },
     {
       "name": "test_indian_code_manifest.py",
@@ -4733,5 +4762,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "70fc10191d4fd4a3"
+  "content_hash": "cdd5609f5e3b2334"
 }

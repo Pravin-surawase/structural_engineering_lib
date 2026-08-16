@@ -79,8 +79,8 @@ def test_concentric_footing_completed_benchmark_is_typed_pass():
     assert data["one_way_shear_basis"] == "actual_provided_pt_final"
     assert data["one_way_shear"]["is_safe"] is True
     assert data["screening_pt_passed_to_one_way_shear_percent"] == {
-        "L": 0.171126235529736,
-        "B": 0.171126235529736,
+        "L": 0.17111543963683395,
+        "B": 0.17111543963683395,
     }
     assert data["pt_passed_to_one_way_shear_percent"] == {
         "L": 0.1837831702350029,

@@ -56,7 +56,8 @@ def design_beam(csv_path):
     width = float(rows[1].split(",")[0])
 
     # IS 456 math
-    Ast = 0.5 * (fck / fy) * width * d * (1 - sqrt(1 - 4.6 * Mu / (fck * width * d**2)))
+    xu_d = (1 - sqrt(1 - 4 * 0.42 * Mu / (0.36 * fck * width * d**2))) / (2 * 0.42)
+    Ast = 0.36 * fck * width * (xu_d * d) / (0.87 * fy)
 
     # Generate HTML report (UI)
     html = f"<h1>Beam Design</h1><p>Steel: {Ast} mm²</p>"

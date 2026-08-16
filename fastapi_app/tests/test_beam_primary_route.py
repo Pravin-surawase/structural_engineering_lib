@@ -267,7 +267,7 @@ def test_primary_shear_quantity_is_asv_per_spacing(client, ordinary_payload) -> 
     )
 
     assert shear["asv_required"] == pytest.approx(expected)
-    assert shear["asv_required"] == pytest.approx(0.010647346259194997)
+    assert shear["asv_required"] == pytest.approx(0.010375739761108373)
     assert shear["asv_required_unit"] == "mm²/mm"
 
 

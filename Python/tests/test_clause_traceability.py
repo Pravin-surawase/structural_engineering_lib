@@ -119,11 +119,11 @@ class TestClauseDecorator:
     def test_multiple_clause_references(self):
         """Test decorator with multiple clause references."""
 
-        @clause("38.1", "38.2", "40.1")
+        @clause("38.1", "G-1.1", "40.1")
         def my_func():
             return 100
 
-        assert my_func._is456_clauses == ["38.1", "38.2", "40.1"]
+        assert my_func._is456_clauses == ["38.1", "G-1.1", "40.1"]
 
     def test_decorator_preserves_function_name(self):
         """Verify decorator preserves function metadata."""
@@ -388,7 +388,7 @@ class TestRealWorldIntegration:
     def test_beam_design_traceability(self):
         """Simulate traceability for beam design function."""
 
-        @clause("38.1", "38.2", "40.1", "40.4", "26.5.1.1")
+        @clause("38.1", "G-1.1", "40.1", "40.4", "26.5.1.1")
         def design_beam(
             b: float,
             d: float,

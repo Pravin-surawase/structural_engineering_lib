@@ -5,6 +5,133 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2 Clause 38.2 Truth Hygiene
+
+**Agent:** Codex (`structural-engineer`, sole writer)
+
+**Branch:** `codex/india-2-truth-hygiene-38-2` from freshly fetched
+`origin/main = df3635e8811a4d7e69f8786349ce3507f8a28001`, tree
+`4de5ae83cdc115fe1984e2b97b616676e094e578`
+
+**Git handoff receipt:**
+`docs/verification/india-2-truth-hygiene-38-2-git-handoff-receipt.json`
+
+**Focus:** Audit every live Clause 38.2 beam-flexure identity, independently
+benchmark the rounded inverse against exact equilibrium, and repair arithmetic
+only if a supported outcome changes. Do not start pile-cap, raft, cleanup,
+release, React, dependency, or broad final-gate work.
+
+### Summary
+
+- Controlled-source inspection proved that live beam flexure must bind Clause
+  38.1 and Annex G-1.1/G-1.2/G-2.2; the source contains no Clause 38.2, 38.3,
+  or 38.4 identity.
+- Replayed the legacy rounded inverse and exact equilibrium independently. A
+  supported maximum-steel discriminator changed from a false safe result to
+  `E_FLEXURE_003`, so metadata-only repair was rejected.
+- Promoted one exact rectangular stress-block solver to the common IS 456
+  layer, delegated the slab wrapper to it without changing the slab error
+  contract, and routed beam required-steel design through it.
+- Reconciled decorators, serialized result provenance, registry metadata,
+  traceability examples, parity/regression data, active formulas/maps, and the
+  generated Indian-code manifest without changing public signatures or units.
+- Named decision-only `INDIA-2-FOUNDATION-PILE-CAP-G0` as the sole next packet
+  after merge; no foundation implementation was started.
+
+### Issues encountered
+
+- Live metadata and result provenance named nonexistent Clause 38.2/38.3/38.4
+  identities and misapplied flanged Annex G-2.2 to rectangular steel design.
+- The rounded `4.6` inverse returned steel just below the maximum for a valid
+  supported beam while exact equilibrium returned steel just above it, changing
+  the main-process safety outcome.
+- The first focused test command guessed a nonexistent
+  `Python/tests/codes/is456/beam` directory and stopped before collection.
+- After executable truth changed, the deterministic committed Indian-code
+  manifest was stale until its single planned generator pass.
+- The first formatting gate found the new common helper and acceptance module
+  did not match the repository Black layout, so the quick gate did not start.
+- The first public-contract selection guessed two nonexistent Python API test
+  files; the corrected maintained selection then exposed one stale hardcoded
+  downstream shear value after the exact flexural steel percentage changed.
+- Hosted FastAPI validation passed 441 tests but failed two additional
+  benchmark-derived literals: the 153-beam BOQ total and isolated-footing
+  screening steel percentage still reflected rounded beam flexure.
+
+### Root causes and resolutions
+
+- Confirmed root cause: historical registry and decorator entries treated
+  derived beam design cases as Clause 38 subclauses without checking the
+  controlled source hierarchy. Resolution: remove unsupported 38.2/38.3/38.4
+  registry entries, register G-1.2, and bind each live consumer to Clause 38.1
+  and the applicable Annex G case. Evidence: semantic tests and the generated
+  manifest show G-1.2 registered to doubly reinforced design and zero
+  registration-only references.
+- Confirmed root cause: beam required-steel design used rounded algebraic
+  coefficients (`0.5` and `4.6`) instead of solving the canonical `0.36/0.42`
+  stress-block equilibrium already used exactly in later foundation/slab work.
+  Resolution: one common exact solver now serves beam and slab paths. Evidence:
+  the independent `100 kN m` back-substitution closes equilibrium, and the
+  `572.05 kN m` discriminator now returns `6600.050311675635 mm2`, exceeds the
+  `6600 mm2` maximum, and fails with `E_FLEXURE_003`.
+- Confirmed root cause: the focused command assumed a test-folder topology
+  instead of discovering maintained paths. Resolution: use `rg --files` to
+  select the actual integration/property/regression/unit/slab files, then rerun
+  the complete focused selection. Evidence: 190 focused tests pass.
+  ⚠️ TERMINAL ISSUE: guessed nonexistent beam test directory -> discovered and
+  ran maintained focused files with `rg --files`.
+- Confirmed root cause: clause/decorator truth is an input to the deterministic
+  Indian-code manifest. Resolution: run the maintained generator exactly once
+  after code and tests froze. Evidence: the deterministic-current manifest test
+  passes with 173 known references, 98 registered, and zero registration-only.
+- Confirmed root cause: hand-applied multiline expressions differed from
+  Black's deterministic line wrapping. Resolution: format only the two reported
+  files, rerun all 190 focused tests, then run the quick gate. Evidence: Black
+  and Ruff pass and the quick gate passes 10/10.
+- Confirmed root cause: the public beam test correctly derives shear steel per
+  spacing from returned `tau_v` and `tau_c`, but also pinned the old rounded-
+  flexure-derived scalar; exact Ast changes the tension percentage and Table 19
+  interpolation. Resolution: preserve the formula assertion and update only the
+  exact derived scalar. Evidence: the actual maintained beam/capability/public-
+  documentation selection passes 17 tests. ⚠️ TERMINAL ISSUE: guessed two
+  nonexistent Python public API tests -> discovered the maintained FastAPI
+  public-contract paths with `rg --files` and reran them.
+- Confirmed root cause: the bundled BOQ test derives selected-bar weight from
+  all 153 exact beam results, while the footing screening value uses the shared
+  rectangular stress-block inverse; both assertions pinned outputs from the
+  replaced rounded solver. Resolution: update only the observed derived
+  scalars, retaining dataset hash, calculation identity, PASS, provided-steel,
+  and shear-basis assertions. Evidence: the two failed tests and the complete
+  FastAPI suite are rerun before the replacement PR head is accepted.
+
+### Validation through content freeze
+
+- Startup: `source_bound=true`, `READY_LOCAL`, no operation marker, exact base
+  equality with freshly fetched `origin/main`, and a clean fresh lane.
+- Focused flexure, slab compatibility, traceability, manifest, parity,
+  regression, service, property, and unit selection: 190 passed.
+- Focused FastAPI beam, capability, and public-documentation contracts: 17
+  passed.
+- Hosted failure reproduction: both exact failing tests reproduced locally,
+  then passed after the derived-value repair; the complete FastAPI suite passed
+  all 449 tests with 52 warnings.
+- Exact equilibrium and false-safe outcome have direct semantic regressions;
+  public signatures and unit conventions remain stable.
+- Links, maintained indexes, quick `10/10`, normal hooks, hosted checks,
+  immutable-head review, merge-tree equality, and final elapsed time complete
+  during candidate/publication closeout.
+
+### Timing through content freeze
+
+- Orientation and source audit: `14:51:40Z` to `14:56:30Z` — 4 minutes 50
+  seconds.
+- Implementation, benchmark repair, and focused validation: `14:56:30Z` to
+  `15:02:20Z` — 5 minutes 50 seconds.
+- Evidence, plan, task, and handoff freeze: `15:02:20Z` to `15:05:00Z` — 2
+  minutes 40 seconds.
+- Generator/gates, hosted CI wait, merge closeout, and total wall time are
+  reported by the final closeout observation.
+
 ## 2026-08-16 — Session: Documentation Frontmatter Contract Repair
 
 **Agent:** Codex (`doc-master`, sole writer)

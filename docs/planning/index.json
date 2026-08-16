@@ -66,10 +66,10 @@
     {
       "name": "india-2-next-session-publication-and-closeout-plan.md",
       "type": "documentation",
-      "size_lines": 485,
+      "size_lines": 504,
       "last_updated": "2026-08-16",
-      "description": "Combined-footing and strap-footing G0/A-D plus focused family acceptance are integrated within their recorded bounded cases. GIT-001 Phase 8 is integrated,",
-      "content_hash": "72ea3444a492"
+      "description": "Combined-footing and strap-footing G0/A-D plus focused family acceptance are integrated within their recorded bounded cases. GIT-001 Phase 8 and the",
+      "content_hash": "829794ee3f5f"
     },
     {
       "name": "india-2-remaining-is456-elements-plan.md",
@@ -131,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 112,
+      "size_lines": 104,
       "last_updated": "2026-08-16",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-16",
-      "content_hash": "9bfc93ac9fd4"
+      "content_hash": "68e58f07e0f5"
     },
     {
       "name": "pre-release-checklist.md",
@@ -173,5 +173,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "06431246243bc566"
+  "content_hash": "9afebc25a4dd5115"
 }

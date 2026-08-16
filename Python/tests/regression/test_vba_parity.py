@@ -66,7 +66,7 @@ GOLDEN_VECTORS = [
         description="Ast required - under-reinforced",
         function="flexure.calculate_ast_required",
         inputs={"b": 300, "d": 450, "mu_knm": 150, "fck": 25, "fy": 500},
-        expected={"ast_mm2": 881.88},
+        expected={"ast_mm2": 883.72},
         tolerances={"ast_mm2": 1.0},
     ),
     GoldenVector(
@@ -90,7 +90,7 @@ GOLDEN_VECTORS = [
             "fy": 500,
         },
         expected={
-            "ast_required": 557.09,
+            "ast_required": 557.61,
             "is_safe": True,
             "mu_lim": 202.91,
         },

@@ -12,6 +12,9 @@ from __future__ import annotations
 import math
 
 from structural_lib.codes.is456 import materials
+from structural_lib.codes.is456.common.stress_blocks import (
+    calculate_ast_from_rectangular_stress_block,
+)
 from structural_lib.codes.is456.traceability import clause
 from structural_lib.core.data_types import BeamType, DesignSectionType, FlexureResult
 from structural_lib.core.error_messages import (
@@ -255,7 +258,7 @@ def calculate_effective_flange_width(
     return min(bf_geom, bf_limit)
 
 
-@clause("38.2")
+@clause("38.1", "G-1.1")
 def calculate_ast_required(
     b: float, d: float, mu_knm: float, fck: float, fy: float
 ) -> float:
@@ -316,25 +319,22 @@ def calculate_ast_required(
             clause_ref="Cl. 6.2",
         )
 
-    mu_nmm = abs(mu_knm) * 1000000.0
-
     mu_lim_knm = calculate_mu_lim(b, d, fck, fy)
 
     if abs(mu_knm) > mu_lim_knm:
         return -1.0
 
-    # Ast = (0.5 * fck / fy) * (1 - Sqr(1 - (4.6 * Mu / (fck * b * d^2)))) * b * d
-    term1 = 0.5 * fck / fy
-    term2 = (4.6 * mu_nmm) / (fck * b * d * d)
+    ast_required, _ = calculate_ast_from_rectangular_stress_block(
+        b_mm=b,
+        d_mm=d,
+        factored_moment_knm=mu_knm,
+        fck_n_per_mm2=fck,
+        fy_n_per_mm2=fy,
+    )
+    return ast_required
 
-    # Safety clamp
-    if term2 > 1.0:
-        term2 = 1.0
 
-    return term1 * (1.0 - math.sqrt(1.0 - term2)) * b * d
-
-
-@clause("38.1", "38.2")
+@clause("38.1", "G-1.1")
 def design_singly_reinforced(
     b: float, d: float, d_total: float, mu_knm: float, fck: float, fy: float
 ) -> FlexureResult:
@@ -457,7 +457,7 @@ def design_singly_reinforced(
         Ast_max=ast_max,
         clause_refs={
             "Mu_lim": "IS 456 Cl 38.1, Annex G-1.1",
-            "Ast": "IS 456 Cl 38.2, Annex G-2.2",
+            "Ast": "IS 456 Cl 38.1, Annex G-1.1",
             "xu_max_d": "IS 456 Table J",
             "Ast_min": "IS 456 Cl 26.5.1.1",
             "Ast_max": "IS 456 Cl 26.5.1.2",
@@ -465,7 +465,7 @@ def design_singly_reinforced(
     )
 
 
-@clause("38.1", "38.2", "G-1.1")
+@clause("38.1", "G-1.1", "G-1.2")
 def design_doubly_reinforced(
     b: float,
     d: float,
@@ -652,8 +652,8 @@ def design_doubly_reinforced(
         Ast_max=ast_max,
         clause_refs={
             "Mu_lim": "IS 456 Cl 38.1, Annex G-1.1",
-            "Ast": "IS 456 Cl 38.2, Annex G-2.2",
-            "Asc": "IS 456 Cl 38.2, Annex G-1.2",
+            "Ast": "IS 456 Cl 38.1, Annex G-1.1 and G-1.2",
+            "Asc": "IS 456 Annex G-1.2",
             "xu_max_d": "IS 456 Table J",
             "Ast_min": "IS 456 Cl 26.5.1.1",
             "Ast_max": "IS 456 Cl 26.5.1.2",
@@ -926,8 +926,8 @@ def design_flanged_beam(
             Ast_max=ast_max,
             clause_refs={
                 "Mu_lim": "IS 456 Cl 38.1, Annex G-1.1",
-                "Ast": "IS 456 Cl 38.2, Annex G-2.2",
-                "Asc": "IS 456 Cl 38.2, Annex G-1.2",
+                "Ast": "IS 456 Cl 38.1, Annex G-1.1, G-1.2 and G-2.2",
+                "Asc": "IS 456 Annex G-1.2 and G-2.2",
                 "xu_max_d": "IS 456 Table J",
                 "Ast_min": "IS 456 Cl 26.5.1.1",
                 "Ast_max": "IS 456 Cl 26.5.1.2",
@@ -1029,7 +1029,7 @@ def design_flanged_beam(
         Ast_max=ast_max,
         clause_refs={
             "Mu_lim": "IS 456 Cl 38.1, Annex G-1.1",
-            "Ast": "IS 456 Cl 38.2, Annex G-2.2",
+            "Ast": "IS 456 Cl 38.1, Annex G-1.1 and G-2.2",
             "xu_max_d": "IS 456 Table J",
             "Ast_min": "IS 456 Cl 26.5.1.1",
             "Ast_max": "IS 456 Cl 26.5.1.2",

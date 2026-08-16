@@ -122,16 +122,16 @@
         "mappings",
         "not_implemented"
       ],
-      "content_hash": "6f979ab7b54e"
+      "content_hash": "36aec2da8ca8"
     },
     {
       "name": "clause-map.md",
       "type": "documentation",
-      "size_lines": 189,
+      "size_lines": 188,
       "last_updated": "2026-08-16",
       "title": "IS 456 Clause-to-Function Mapping",
       "description": "Maps IS 456:2000 (and IS 13920:2016) clauses to their implementing functions in structural_lib. - **Decorator:** @clause = function uses traceability decorator; clause_ref = clause referenced in error",
-      "content_hash": "b9ee1d1a7431"
+      "content_hash": "8bc38b1868c2"
     },
     {
       "name": "deferred-integrations.md",
@@ -192,10 +192,10 @@
     {
       "name": "is456-formulas.md",
       "type": "documentation",
-      "size_lines": 243,
+      "size_lines": 245,
       "last_updated": "2026-08-16",
       "description": "$$d = D - c_{clear} - \\phi_{stirrup} - \\frac{\\phi_{main}}{2}$$ | Symbol | Description | Unit |",
-      "content_hash": "686dfe2ab39d"
+      "content_hash": "2112069b6bea"
     },
     {
       "name": "known-pitfalls.md",
@@ -261,5 +261,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "e6b8d019e6e9f586"
+  "content_hash": "6997771a4a620ed4"
 }

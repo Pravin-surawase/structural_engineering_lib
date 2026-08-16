@@ -24,7 +24,7 @@
 | [automation-catalog.md](automation-catalog.md) |  | The exhaustive machine-generated script inventory is scripts | 61 |
 | [bbs-dxf-contract.md](bbs-dxf-contract.md) |  | This document defines the stable contracts for Bar Bending S | 116 |
 | [beam-tool-manifest.md](beam-tool-manifest.md) |  | The generated beam tool manifest describes the one approved  | 32 |
-| [clause-map.md](clause-map.md) | IS 456 Clause-to-Function Mapping | Maps IS 456:2000 (and IS 13920:2016) clauses to their implem | 189 |
+| [clause-map.md](clause-map.md) | IS 456 Clause-to-Function Mapping | Maps IS 456:2000 (and IS 13920:2016) clauses to their implem | 188 |
 | [deferred-integrations.md](deferred-integrations.md) |  | - Uses conservative default (0.7) in comparison scoring - Fu | 150 |
 | [deprecation-policy.md](deprecation-policy.md) |  | This document defines the deprecation policy for the structu | 368 |
 | [dxf-layer-standards.md](dxf-layer-standards.md) |  | This document defines CAD layer standards used in DXF drawin | 469 |
@@ -32,7 +32,7 @@
 | [error-schema.md](error-schema.md) |  | *Structured error format for machine-readable and human-frie | 269 |
 | [fastapi-rest-api.md](fastapi-rest-api.md) |  | The FastAPI application exposes the maintained Python calcul | 262 |
 | [insights-api.md](insights-api.md) |  | > **Status:** Preview (v0.13.0+) > **Stability:** Experiment | 994 |
-| [is456-formulas.md](is456-formulas.md) |  | $$d = D - c_{clear} - \phi_{stirrup} - \frac{\phi_{main}}{2} | 243 |
+| [is456-formulas.md](is456-formulas.md) |  | $$d = D - c_{clear} - \phi_{stirrup} - \frac{\phi_{main}}{2} | 245 |
 | [known-pitfalls.md](known-pitfalls.md) |  | Use this as a checklist to avoid common mistakes when implem | 135 |
 | [library-contract.md](library-contract.md) |  | This document defines the stability promises for the beam de | 102 |
 | [repo-health-baseline-2026-01-07.md](repo-health-baseline-2026-01-07.md) |  | - This baseline is a point-in-time snapshot for trend tracki | 63 |

@@ -22,6 +22,46 @@ from structural_lib.codes.is456.common.constants import (
 from structural_lib.codes.is456.traceability import clause
 
 
+@clause("38.1", "G-1.1")
+def calculate_ast_from_rectangular_stress_block(
+    *,
+    b_mm: float,
+    d_mm: float,
+    factored_moment_knm: float,
+    fck_n_per_mm2: float,
+    fy_n_per_mm2: float,
+) -> tuple[float, float]:
+    """Solve the exact rectangular stress-block equilibrium equation.
+
+    The smaller physical root is returned as ``(Ast_mm2, xu_mm)``.  Each
+    caller remains responsible for checking the applicable limiting neutral
+    axis depth before using this helper.
+
+    Raises:
+        ValueError: If the factored moment lies outside the rectangular
+            stress-block domain.
+
+    References:
+        IS 456:2000 Cl. 38.1 and Annex G-1.1
+    """
+    moment_nmm = abs(factored_moment_knm) * 1_000_000.0
+    normalized_moment = moment_nmm / (fck_n_per_mm2 * b_mm * d_mm * d_mm)
+    discriminant = (
+        1.0 - (4.0 * STRESS_BLOCK_DEPTH / STRESS_BLOCK_FACTOR) * normalized_moment
+    )
+    if discriminant < 0.0:
+        raise ValueError(
+            "factored moment is outside the rectangular stress-block domain"
+        )
+
+    xu_over_d = (1.0 - math.sqrt(discriminant)) / (2.0 * STRESS_BLOCK_DEPTH)
+    neutral_axis_depth_mm = xu_over_d * d_mm
+    ast_required_mm2 = (
+        STRESS_BLOCK_FACTOR * fck_n_per_mm2 * b_mm * neutral_axis_depth_mm
+    ) / (STRESS_RATIO * fy_n_per_mm2)
+    return ast_required_mm2, neutral_axis_depth_mm
+
+
 def concrete_compressive_force(fck: float, b: float, xu: float) -> float:
     """Resultant compressive force in the concrete stress block.
 
