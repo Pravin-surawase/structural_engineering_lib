@@ -78,7 +78,7 @@ focused combined/public-contract selection pass. Black, Ruff, focused mypy,
 and Bandit pass. Architecture reports 0 violations across 193 files; import
 validation reports 0 broken internal imports across 222 Python files; all 1,250
 internal documentation links are valid. The three API contract checks pass,
-and independently reviewed OpenAPI drift is limited to one new path, 19 new
+and independently reviewed OpenAPI drift is limited to one new path, 20 new
 combined-footing schemas, one tag, and the matching feature description; no
 existing path or schema changed. The deterministic snapshot contains 80
 endpoints and 340 schemas. Touched indexes, source binding, token efficiency,

@@ -54,6 +54,8 @@ foundations, broad Python, and the full gate remain outside D.
 - The mandatory pre-commit session-end check returned nonzero after accepting
   the session record and Git receipt because all 44 intended D paths were still
   uncommitted.
+- The first immutable audit confirmed the implementation but found that the
+  evidence manually counted 19 new OpenAPI schemas instead of the actual 20.
 
 ### Root causes and resolutions
 
@@ -105,6 +107,13 @@ foundations, broad Python, and the full gate remain outside D.
   same versioned receipt and report no uncommitted changes before publication.
   ⚠️ TERMINAL ISSUE: pre-commit session end held the dirty candidate → commit
   the reviewed intended set and rerun on the clean immutable head.
+- Root cause: the manual schema count included the 19 named combined-footing
+  request/result component types but omitted the generated generic
+  `APIResponse_SymmetricCombinedFootingResponse_` wrapper. Resolution: correct
+  both D evidence claims to 20 while retaining the already verified 340 total;
+  no code or OpenAPI artifact changes. Evidence: a base/head key comparison and
+  the independent audit both enumerate 20 additive schemas with no existing
+  path or schema changed; the repair head receives a new exact-head audit.
 
 ### Validation
 
@@ -112,7 +121,7 @@ foundations, broad Python, and the full gate remain outside D.
   public-workflow, and transport tests pass. The 339-test focused combined,
   API entrypoint/contract, capability, semantic, deterministic-manifest,
   clause, endpoint, and typed-response selection also passes.
-- The OpenAPI baseline contains exactly one new path and 19 new combined-
+- The OpenAPI baseline contains exactly one new path and 20 new combined-
   footing schemas; no existing path or schema changes. The deterministic
   snapshot reports 80 endpoints and 340 schemas.
 - Black, Ruff, focused mypy, and Bandit pass. Architecture reports 0/193,

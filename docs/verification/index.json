@@ -842,7 +842,7 @@
       "size_lines": 92,
       "last_updated": "2026-08-16",
       "description": "POST /api/v1/design/combined-footing/symmetric is a thin typed transport over the canonical design_symmetric_combined_footing_is456 service accepted in",
-      "content_hash": "40efba339c3f"
+      "content_hash": "d4c9e869bffd"
     },
     {
       "name": "india-2-foundation-combined-g0-git-handoff-receipt.json",
@@ -1185,5 +1185,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "ef09a073e1a5f17d"
+  "content_hash": "dafe3e93b5e3024b"
 }
