@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Accept the bounded integrated flat-slab family without adding scope
-- Git receipt: docs/verification/india-2-flat-acceptance-git-handoff-receipt.json | sha256:4c6bbda61b25d00788bd429de724be4d4f2ed11440f8045d9bd749dfdf2ad581 | HOLD
-- Git identity: codex/india-2-flat-acceptance@b04d80653484a8dc43e8ff73936d8171e4b65d40 | upstream=NONE | base=origin/main@b04d80653484a8dc43e8ff73936d8171e4b65d40 | tree=dirty | operation=none
-- Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
-- Next action: WAIT_FOR_EXACT_HEAD_AUDIT
+- Focus: Merge COMBINED-B unchanged, then publish only the typed Python C workflow
+- Git receipt: docs/verification/india-2-foundation-combined-b-git-handoff-receipt.json | HOLD
+- Source candidate: codex/india-2-foundation-combined-b@b9cb06f7afe632339c10ab84e17a4d09d0299ade | tree=f5e405ad445f88d019a1c2b064292e6be9b495b6 | independent audit=PASS
+- Live integration identity: VERIFY_WITH_GIT_STATE_AND_GITHUB_BEFORE_C
+- Next action: START_FRESH_COMBINED_C_ONLY_AFTER_B_MERGE
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-16
@@ -17,15 +17,15 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Begin `INDIA-2-FOUNDATION-COMBINED-B` after the reviewed A head merges |
+| **Next** | Begin `INDIA-2-FOUNDATION-COMBINED-C` from verified main after B merges |
 
 ## Required Reading
 
-1. [INDIA-2 remaining-elements execution plan](india-2-remaining-is456-elements-plan.md)
-2. [Canonical Indian-code completion waves](indian-code-completion-plan.md)
-3. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
-4. [Current task board](../TASKS.md)
-5. [INDIA-2 staircase cumulative evidence](../verification/india-2-cumulative-gate-evidence.md)
+1. [Next-session publication and closeout plan](india-2-next-session-publication-and-closeout-plan.md)
+2. [INDIA-2 remaining-elements execution plan](india-2-remaining-is456-elements-plan.md)
+3. [Combined B strength evidence](../verification/india-2-foundation-combined-b-strength-evidence.md)
+4. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
+5. [Current task board](../TASKS.md)
 6. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
 
 ## Start Boundary
@@ -34,11 +34,9 @@ The historical INDIA-2A-D packets and their cumulative software gate are the
 completed `INDIA-2-STAIR` family. Do not reopen them, add another stair topology,
 add React, or begin release work without a new owner-approved scope.
 
-`INDIA-2-WALL` is accepted through one regular 100-200 mm thick, one-grid,
-braced empirical vertical-compression workflow. WALL-A-D are integrated and the
-focused family receipt is
-[`india-2-wall-family-acceptance-evidence.md`](../verification/india-2-wall-family-acceptance-evidence.md).
-Do not expand the accepted wall topology while implementing flat-slab packets.
+`INDIA-2-WALL`, `INDIA-2-STAIR`, `INDIA-2-DEEP`, and `INDIA-2-FLAT` are
+accepted only within their recorded bounded cases. Do not reopen or expand
+those families while publishing the combined-footing workflow.
 
 ```bash
 ./run.sh session brief --agent orchestrator
@@ -87,7 +85,7 @@ and focused gates. PR #785 integrated publication and PR #786 accepted the
 family. Unequal/exterior/drop/head/opening, patterned-load, moment-transfer,
 punching-reinforcement, equivalent-frame, and FEM cases remain held.
 
-## INDIA-2-FOUNDATION-COMBINED G0/A result
+## INDIA-2-FOUNDATION-COMBINED G0/A/B result
 
 [`india-2-foundation-combined-g0-scope-evidence.md`](../verification/india-2-foundation-combined-g0-scope-evidence.md)
 records GO for exactly two identical square columns with equal concentric loads
@@ -99,8 +97,13 @@ interaction, capacity/settlement calculation, and public capability remain
 held. [`india-2-foundation-combined-a-analysis-evidence.md`](../verification/india-2-foundation-combined-a-analysis-evidence.md)
 records the typed eligibility, service gross and factored gross/net pressure,
 resultant alignment, whole-width critical-section actions, transverse actions,
-equilibrium closure, and fail-closed contracts. Strength and public workflow
-remain held; after the exact A head merges, begin only COMBINED-B.
+equilibrium closure, and fail-closed contracts.
+[`india-2-foundation-combined-b-strength-evidence.md`](../verification/india-2-foundation-combined-b-strength-evidence.md)
+records flexure/minimum/provided steel, spacing/cover/anchorage, one-way shear,
+concrete-only punching, bearing/dowels, exact compression development, valid
+`FAIL`, unsupported fail-closed behavior, provenance correction, and review
+boundary. Public workflow and capability remain held; after B merges, begin
+only COMBINED-C.
 
 ## Review and gate boundary
 
@@ -110,12 +113,23 @@ once after the whole accepted INDIA-2 wave is integrated unless an
 outcome-changing repository-wide issue appears earlier.
 
 Flat-slab acceptance is complete without expanding topology or adding React.
-Combined-footing A is complete within the G0 case; COMBINED-B may begin only
-after its unchanged reviewed head merges. Strap, pile-cap, and raft remain separate later G0
-decisions.
+Combined-footing A/B are complete within the G0 case; COMBINED-C may begin only
+after B's unchanged reviewed head merges. Strap, pile-cap, and raft remain
+separate later G0 decisions. The two deferred clause-registry truth defects are
+recorded in the next-session plan and must not be mixed into C/D.
 
 Cumulative qualified structural-engineering review belongs to INDIA-4 after the
 accepted INDIA-2 and INDIA-3 scope is frozen. Packet-level source and engineering
 checks still occur before each implementation GO. Software completion does not
 grant professional approval, stable-release authorization, engineering-use
 authorization, or cleanup authority.
+
+## Exact next action
+
+After verifying B is merged into clean synchronized `main`, create a fresh
+`codex/india-2-foundation-combined-c` worktree and implement only the typed
+public Python workflow `design_symmetric_combined_footing_is456`, stable
+input/provenance/result/status types, executable benchmark, root/services
+exports, public API docs, and C evidence. Capability truth must remain 11/10
+with combined footing held. FastAPI, semantic/capability promotion, alternate
+foundations, React, broad Python, and the 30-check gate remain outside C.

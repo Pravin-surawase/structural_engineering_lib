@@ -35,6 +35,7 @@
     }
   },
   "holds": [
+    "AUTHORIZATION_TARGET_MISMATCH",
     "LOCAL_HOLD_DIRTY",
     "PULL_REQUEST_NOT_CHECKED",
     "REMOTE_NOT_CHECKED",
@@ -47,27 +48,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "9684f9fac5c5de32e74d080e3554fbd86ab40101623d8df39ddc68756b1194c7",
+    "receipt_sha256": "1e44ee983936a59f5473eeca3894d94cf1435bc41707b8016dc48e5c322841b1",
     "state": {
       "branch": "codex/india-2-foundation-combined-b",
       "default_base": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "6d230500b34dc9c79913d2cae87b8382ca732a27",
-        "status": "equal"
+        "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 94.552,
+      "duration_ms": 80.091,
       "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
       "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-foundation-combined-b",
-      "head_sha": "6d230500b34dc9c79913d2cae87b8382ca732a27",
+      "head_sha": "b9cb06f7afe632339c10ab84e17a4d09d0299ade",
       "hold_reasons": [
-        "changed paths: 23"
+        "changed paths: 13"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-08-16T07:24:26.155851+00:00",
+      "observed_at_utc": "2026-08-16T07:34:46.941982+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -78,34 +79,24 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 23,
+        "dirty_count": 13,
         "modified_paths": [
-          "Python/structural_lib/codes/is456/clauses.json",
-          "Python/structural_lib/codes/is456/combined_footing/__init__.py",
-          "Python/structural_lib/codes/is456/combined_footing/index.json",
-          "Python/structural_lib/codes/is456/combined_footing/index.md",
-          "Python/structural_lib/codes/is456/combined_footing/models.py",
-          "Python/structural_lib/codes/is456/index.json",
-          "Python/structural_lib/codes/is456/index.md",
-          "Python/tests/codes/is456/combined_footing/index.json",
-          "Python/tests/codes/is456/combined_footing/index.md",
-          "Python/tests/codes/is456/index.json",
-          "Python/tests/codes/is456/index.md",
-          "Python/tests/index.json",
-          "Python/tests/index.md",
           "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
           "docs/index.json",
           "docs/index.md",
+          "docs/planning/index.json",
+          "docs/planning/index.md",
+          "docs/planning/india-2-remaining-is456-elements-plan.md",
+          "docs/planning/indian-code-completion-plan.md",
+          "docs/planning/next-session-brief.md",
           "docs/verification/index.json",
           "docs/verification/index.md",
-          "docs/verification/indian-code-capability-coverage.json"
+          "docs/verification/india-2-foundation-combined-b-strength-evidence.md"
         ],
         "staged_paths": [],
         "untracked_paths": [
-          "Python/structural_lib/codes/is456/combined_footing/strength.py",
-          "Python/tests/codes/is456/combined_footing/test_strength.py",
-          "docs/verification/india-2-foundation-combined-b-git-handoff-source-evidence.json",
-          "docs/verification/india-2-foundation-combined-b-strength-evidence.md"
+          "docs/planning/india-2-next-session-publication-and-closeout-plan.md"
         ]
       },
       "upstream": {
@@ -118,9 +109,9 @@
       "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-foundation-combined-b"
     }
   },
-  "local_state_receipt_hash": "sha256:9684f9fac5c5de32e74d080e3554fbd86ab40101623d8df39ddc68756b1194c7",
+  "local_state_receipt_hash": "sha256:1e44ee983936a59f5473eeca3894d94cf1435bc41707b8016dc48e5c322841b1",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-08-16T07:24:26.156054+00:00",
+  "observed_at_utc": "2026-08-16T07:34:46.942120+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
@@ -159,7 +150,8 @@
       "Python/structural_lib/codes/is456/combined_footing",
       "Python/tests/codes/is456/combined_footing",
       "docs/verification/india-2-foundation-combined-b-strength-evidence.md",
-      "docs/verification/india-2-foundation-combined-b-git-handoff-source-evidence.json"
+      "docs/verification/india-2-foundation-combined-b-git-handoff-source-evidence.json",
+      "docs/planning/india-2-next-session-publication-and-closeout-plan.md"
     ],
     "shared_paths": [
       "Python/structural_lib/codes/is456/clauses.json",
@@ -171,6 +163,12 @@
       "Python/tests/index.md",
       "docs/verification/indian-code-capability-coverage.json",
       "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/india-2-remaining-is456-elements-plan.md",
+      "docs/planning/indian-code-completion-plan.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
       "docs/verification/index.json",
       "docs/verification/index.md",
       "docs/index.json",

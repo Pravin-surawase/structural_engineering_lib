@@ -46,6 +46,16 @@ punching, bearing/dowels, anchorage, and composed internal disposition.
 - The first manifest check correctly stopped because the newly decorated
   strength function and four identifier entries made generated truth stale.
 - A guessed legacy folder-index script name did not exist in this checkout.
+- Controlled-source review also exposed two existing cross-cutting truth
+  defects outside B's outcome: `26.5.1.1` is mislabeled as shear instead of
+  beam tension reinforcement, and legacy registry/decorator consumers retain
+  a `38.2` identity not present in the controlled edition. B did not broadly
+  rewrite those unrelated consumers.
+- The first post-plan stale-text search stopped before validation because its
+  double-quoted shell pattern contained a Markdown backtick.
+- The first final index check omitted the required folder argument; the
+  corrected scoped checks then found the three documentation indexes stale
+  after the last handoff-count correction.
 
 ### Root causes and resolutions
 
@@ -86,6 +96,29 @@ punching, bearing/dowels, anchorage, and composed internal disposition.
   touched folder indexes are current. ⚠️ TERMINAL ISSUE: guessed index script
   path did not exist → discovered and used the maintained enhanced-index
   command.
+- Root cause: normalized historical metadata/decorators diverged from the
+  controlled IS 456 edition; the commits or rationale that introduced the
+  `26.5.1.1` misclassification and fabricated `38.2` identity were not traced,
+  so their historical origin remains `unconfirmed`. Resolution in B: bind the
+  new function only to the verified identifiers, leave unrelated consumers
+  unchanged, and record a bounded `INDIA-2-TRUTH-HYGIENE` packet with exact
+  migration tests before final closeout. Evidence: the controlled source,
+  targeted `rg`, and Section 8 of
+  `docs/planning/india-2-next-session-publication-and-closeout-plan.md` preserve
+  the defect, non-fix reason, and reactivation condition.
+- Root cause: zsh evaluated the backtick inside a double-quoted `rg` pattern
+  and reached an unmatched quote boundary. Resolution: use one single-quoted
+  regex and separate newline commands without executable interpolation.
+  Evidence: the corrected stale-text search, diff check, documentation check,
+  and 1,236-link validation pass. ⚠️ TERMINAL ISSUE: unsafe double-quoted
+  backtick pattern stopped the command → reran with a single-quoted regex.
+- Root cause: `generate_enhanced_index.py --check` requires one folder unless
+  `--all` is selected, and index hashes legitimately changed after the final
+  documentation edit. Resolution: pass each touched folder explicitly,
+  regenerate only `docs`, `docs/planning`, and `docs/verification`, then rerun
+  the same scoped checks. Evidence: all three final hash checks pass.
+  ⚠️ TERMINAL ISSUE: index check was invoked without its required folder →
+  reran the maintained command with explicit bounded folders.
 
 ### Validation
 
@@ -93,10 +126,13 @@ punching, bearing/dowels, anchorage, and composed internal disposition.
   combined clause-registry, traceability, manifest, and quality-checker
   selection pass; the one new composed function passes strict function
   quality, Ruff, and focused mypy.
-- Architecture reports 0/190 violations, imports 0/630 broken, all 1,224
+- Architecture reports 0/190 violations, imports 0/630 broken, all 1,236
   internal links are valid, touched indexes are current, source binding is
   true, token efficiency passes, and the quick gate is 10/10.
-- Independent exact-head audit and hosted-check results are added at candidate
+- Independent read-only audit passed source candidate
+  `b9cb06f7afe632339c10ab84e17a4d09d0299ade`, tree
+  `f5e405ad445f88d019a1c2b064292e6be9b495b6`, including a non-frozen
+  `7200 x 3000 mm` symmetric case. Hosted-check results are added at PR
   closeout. Broad Python/full 30-check remain deferred to final INDIA-2
   closeout under the accepted cadence.
 

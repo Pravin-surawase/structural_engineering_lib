@@ -136,11 +136,15 @@ construction approval, React, release, and professional approval remain held.
   held families, with combined footing still held.
 - The strict function-quality check reports the one new composed calculation
   function passing; Ruff and focused mypy pass.
-- Architecture reports 0/190 violations, imports 0/630 broken, all 1,224
+- Architecture reports 0/190 violations, imports 0/630 broken, all 1,236
   internal links are valid, touched indexes are current, source binding is
   true, token efficiency passes, and the quick gate is 10/10.
-- Independent exact-head audit and hosted-check receipts are recorded at
-  packet closeout.
+- Independent read-only audit passed source candidate `b9cb06f7`, tree
+  `f5e405ad`, and independently replayed a valid `7200 x 3000 mm` symmetric
+  footing with `125 kN/m2` net pressure, `3240 / 3769.91 mm2` governing/
+  provided top steel, `0.24665 / 1.36931 N/mm2` punching stress/capacity, and
+  `1800 / 1884.96 mm2` required/provided dowels. Hosted-check receipts are
+  recorded at PR closeout.
 
 The broad Python suite and full 30-check repository gate remain deferred to
 `INDIA-2-CLOSEOUT` under the accepted cadence.

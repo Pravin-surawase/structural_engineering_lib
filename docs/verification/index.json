@@ -746,7 +746,7 @@
         "receipt_grants_authority",
         "receipt_kind"
       ],
-      "content_hash": "12ef244f9d67"
+      "content_hash": "b8e9e8c5f0ea"
     },
     {
       "name": "india-2-foundation-combined-b-git-handoff-source-evidence.json",
@@ -763,10 +763,10 @@
     {
       "name": "india-2-foundation-combined-b-strength-evidence.md",
       "type": "documentation",
-      "size_lines": 147,
+      "size_lines": 151,
       "last_updated": "2026-08-16",
       "description": "COMBINED-B implements only the G0-frozen pure IS 456 strength composition for two identical square columns carrying equal concentric axial compression on one",
-      "content_hash": "197a3dd7d183"
+      "content_hash": "87d33512e398"
     },
     {
       "name": "india-2-foundation-combined-g0-git-handoff-receipt.json",
@@ -1109,5 +1109,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "cd9d96b6eaed7ab3"
+  "content_hash": "3c5031f56f02f0a4"
 }
