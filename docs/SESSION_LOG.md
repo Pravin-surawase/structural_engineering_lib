@@ -5,6 +5,140 @@
 
 ---
 
+## 2026-08-17 — Session: Pre-Release Input-Safety Contract Freeze
+
+**Agent:** Codex (`orchestrator` and `doc-master`, sole writer; two bounded
+read-only reviewers)
+
+**Branch:** `codex/pre-release-input-safety-plan` from freshly fetched
+`origin/main = 904a2f8cf0ea5d4595f57c46dac06e2e837bba45`
+
+**Git handoff receipt:** `docs/verification/lib-pro-002-g0-git-handoff-receipt.json`
+
+**Focus:** Independently check the one-storey usability report, reconcile its
+confirmed outcome-changing defects with the completed professional remediation
+history and current release surface, and freeze a dependency-ordered plan
+before implementation. Do not change calculation, API, React, adapter, or
+release behavior and do not publish a package.
+
+### Summary
+
+- Bounded the reported numerical match to the exact synthetic cases and
+  retained the correct footing dowel-development failure.
+- Traced the unsafe PASS path to silent project defaults and then found the
+  wider shared cause: normalization and structural derivation are duplicated
+  across service batch, imports, streaming, React, and column entry paths.
+- Reconciled two independent read-only audits into six root causes, a single
+  outcome-changing issue register, strict target contracts, a negative
+  acceptance matrix, and eight dependency-ordered packets.
+- Held every next publication until the Alpha safety gate and separate owner
+  authorization; stable, engineering-use, professional-approval, and
+  whole-building claims have additional explicit gates.
+
+### Key Deliverables
+
+- `docs/planning/pre-release-input-safety-and-professional-readiness-plan.md`
+- active `LIB-PRO-002-G0` task and exact Packet A boundary
+- current next-session handoff and planning index entry
+
+### Issues encountered
+
+- `./run.sh session start` was first run from the clean primary `main` checkout
+  during orientation and wrote a new session skeleton there, contrary to the
+  intended fresh-lane-only mutation boundary.
+- The earlier `LIB-PRO-001` plan is correctly marked software-complete, while
+  the new user pilot proves a different end-user data-ingress defect. Treating
+  the pilot as unfinished old work would corrupt the historical evidence
+  ledger and hide the new root cause.
+- Existing green audit/quick/health evidence and the exact arithmetic pilot do
+  not exercise silent field replacement, ambiguous import selection, row loss,
+  executable README examples, or exact-wheel negative paths.
+- A guessed standalone `scripts/check_frontmatter.py` path did not exist because
+  frontmatter validation is part of the maintained unified documentation
+  checker.
+- Independent candidate review found that the Alpha gate called for an
+  unspecified “independent review” and classified exact replay provenance as
+  stable-only even though the same gate required immutable release evidence.
+- The first session-end check did not discover the valid receipt because its
+  parser requires the receipt path on the same line as the bold label.
+- The first staged diff check exposed trailing Markdown hard-break spaces in
+  the new plan; earlier unstaged `git diff --check` did not inspect that
+  untracked file.
+
+### Root causes and resolutions
+
+- Confirmed root cause: `session start` is intentionally a writing command,
+  but it was invoked before the fresh worktree had been created. Resolution:
+  inspect the exact primary diff, remove only the generated skeleton, verify
+  primary returned clean, then create and bind the fresh lane before invoking
+  it again. Recurrence guard: run `session brief` during read-only orientation
+  and defer `session start` until the intended lane reports `READY_LOCAL`.
+  ⚠️ TERMINAL ISSUE: session start wrote a skeleton on primary `main` -> exact
+  generated block removed after diff inspection; the command succeeded in the
+  source-bound task worktree.
+- Confirmed root cause: the pilot covers live workflows added or exercised
+  after the historical remediation packet and reveals no single canonical
+  project-input boundary. Resolution: retain `LIB-PRO-001` unchanged and create
+  `LIB-PRO-002` with new IDs, explicit compatibility policy, and route-level
+  ownership.
+- Confirmed root cause: present gates emphasize valid/happy paths and component
+  calculations, so they can remain green while callers substitute or discard
+  data before calculation. Resolution: freeze a cross-surface negative matrix,
+  row/field conservation rules, executable exact-wheel examples, and
+  publication holds before code changes. Evidence: the plan maps each live
+  confirmed path to one packet and makes Packet G the cumulative release gate.
+- Confirmed root cause: the old standalone frontmatter checker is archived and
+  the maintained command is `scripts/check_docs.py --frontmatter --json`.
+  Resolution: locate the current implementation with `rg --files`, use the
+  unified checker, and retain `./run.sh find` plus `rg --files` as the discovery
+  sequence. Evidence: the maintained documentation check passes with zero
+  invalid frontmatter. ⚠️ TERMINAL ISSUE: guessed a retired standalone
+  frontmatter path -> discovered and used the unified checker.
+- Confirmed root cause: the issue register, Alpha gate, and stable gate used
+  individually reasonable wording but had not been cross-checked as one claim
+  matrix. Resolution: name the Alpha review as independent exact-head
+  software/release-evidence review, state that it is not qualified engineering
+  review, and promote replay/source identity `PROV-01` to the Alpha gate.
+  Evidence: both bounded reviewers accepted the remaining plan and identified
+  only these minimal corrections for exact-candidate reconciliation.
+- Confirmed root cause: the session log followed several older two-line receipt
+  examples, but `_parse_git_receipt_path()` recognizes only a same-line path.
+  Resolution: place the validated receipt path on the label line and rerun
+  session end. Evidence: the repaired checker must report the receipt and its
+  expected pre-commit HOLD. ⚠️ TERMINAL ISSUE: session end reported a missing
+  receipt -> matched the maintained same-line parser contract.
+- Confirmed root cause: authoring used two-space Markdown line breaks, and Git's
+  unstaged diff does not include untracked files. Resolution: remove trailing
+  whitespace mechanically and require intended-path staging before the final
+  `git diff --cached --check`. Evidence: the cached diff check must be clean
+  before commit. ⚠️ TERMINAL ISSUE: staged diff check rejected trailing spaces
+  -> normalized the new plan and refreshed only affected indexes.
+
+### Validation through content freeze
+
+- Startup evidence: fetched base equality at
+  `904a2f8cf0ea5d4595f57c46dac06e2e837bba45`, fresh linked lane, no operation
+  marker, and `source_bound=true` before intended edits.
+- Live inspection confirmed service defaults and `D-cover-8`, import-model
+  defaults and `D-cover-25`, React 25/500/40 defaults, first-match adapter
+  selection, invalid-row/force fallback behavior, and the maintained unsafe
+  slab review phrase/test.
+- Both bounded reviewers returned `ACCEPT` after the Alpha review type was made
+  explicit and `PROV-01` was promoted into the Alpha gate.
+- The pre-commit Git handoff receipt validates as an expected `HOLD` with local
+  dirty, remote/PR, and exact-head review evidence still pending; it grants no
+  authority and records the user-selected planning-only boundary.
+- Planning metadata, links, affected indexes, quick gate, session-end contract,
+  exact-head independent review, and normal commit hooks complete during
+  candidate closeout.
+
+### Timing through content freeze
+
+- Orientation, prior-state reconciliation, and two bounded audits began on
+  2026-08-17; final wall time including validation and closeout is reported in
+  the external handoff.
+
+
 ## 2026-08-16 — Session: Index Local-Artifact Determinism Repair
 
 **Agent:** Codex (`governance`, sole writer)

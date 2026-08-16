@@ -5,7 +5,7 @@
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-08-10
+**Last Updated:** 2026-08-17
 
 ---
 
@@ -19,6 +19,7 @@ Internal planning documents and research notes.
 |----------|---------|
 | [Next Session Brief](next-session-brief.md) | What to work on next |
 | [TASKS.md](../TASKS.md) | Canonical task backlog |
+| [Pre-Release Input Safety and Professional Readiness Plan](pre-release-input-safety-and-professional-readiness-plan.md) | Active contract-first remediation and release holds from the one-storey usability pilot |
 | [IS 456 Solid Slabs Master Plan](is456-solid-slabs-master-plan.md) | Source-gated, implementation-ready program for simply supported/continuous one-way and common two-way solid slabs; flat slabs held separately |
 | [MAINT-008 Compact Modernization Plan](compact-modernization-plan.md) | Dependency-ordered implementation packets for CI and maintenance modernization |
 | [IS 456 Library-First Master Plan](is456-library-first-master-plan.md) | Worker-ready plan for completing the supported Python library, evidence, packaging, and PyPI flow before broad API/UI work |
@@ -32,7 +33,8 @@ Internal planning documents and research notes.
 ### Active (current priorities)
 | Document | Last Updated | Status |
 |----------|-------------|--------|
-| `next-session-brief.md` | 2026-08-10 | 📋 IS456-SLAB-001 selected; S0 source/benchmark gate is next |
+| `next-session-brief.md` | 2026-08-17 | 📋 LIB-PRO-002-G0 is the planning candidate; Packet A is the exact next implementation boundary |
+| `pre-release-input-safety-and-professional-readiness-plan.md` | 2026-08-17 | 🚧 G0 contract freeze complete; next publication held through Packet G |
 | `is456-solid-slabs-master-plan.md` | 2026-08-10 | 📋 Master plan ready; implementation has not started |
 | `ui-experience-foundation-master-plan.md` | 2026-08-10 | ✅ Two-session P0-P15 workbench/capability program accepted |
 | `compact-modernization-plan.md` | 2026-08-09 | 📋 Ready after PR #676 |

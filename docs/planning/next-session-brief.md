@@ -3,81 +3,76 @@
 ## Latest Handoff (auto)
 
 <!-- HANDOFF:START -->
-- Date: 2026-08-16
-- Focus: post-INDIA-2 cleanup, maintenance, and deterministic-index closeout; no implementation packet is active
-- Base: maintenance merged at `7541a7c7`, with merged tree exactly equal to reviewed PR #809 tree `0f025913`
-- Cleanup: candidate set `POST-INDIA2-2499DF4ADE0DF704` completed 193/193 exact actions and recovered 8,388,911,104 bytes
-- Retained: dirty detached `e54a`, Excel, `gh-pages`, Dependabot/open-PR heads, and every non-candidate or evidence-incomplete lane remain retained or held
-- Maintenance: five stale count occurrences refreshed; session and task history compacted without loss; `_active` has no multi-session plans
-- Indexes: freshness ignores filesystem timestamps and hidden local artifacts recursively; writes are affected-folder only; the existing Monday workflow audits all 32 indexes without writing
-- Truth: 13 supported / 8 held; 81/81 endpoints directly tested; pile-cap and raft remain `HELD / NOT_IMPLEMENTED`
-- Next action: owner-selected work only; INDIA-3, dependency, release, further cleanup, and professional approval require separate activation
+- Date: 2026-08-17
+- Focus: LIB-PRO-002-G0 contract-first remediation plan for confirmed input/defaulting, import-accounting, route-convergence, result/review, and release-truth defects
+- Base: freshly fetched `origin/main = 904a2f8cf0ea5d4595f57c46dac06e2e837bba45`
+- Lane: `codex/pre-release-input-safety-plan`; current source binding reports `source_bound=true`
+- Pilot truth: the exact synthetic values matched independent arithmetic, and the footing dowel failure is correct; neither fact certifies the library or a whole-building workflow
+- Decision: every next public package remains held until the Alpha gate in the active plan is accepted and the owner separately authorizes the exact release
+- Current packet: G0 planning candidate; no calculation, API, UI, adapter, or release behavior changed
+- Exact next packet after G0 merge: LIB-PRO-002-A strict service intake
 <!-- HANDOFF:END -->
 
-**Date:** 2026-08-16
+**Date:** 2026-08-17
 
 | State | Boundary |
 |---|---|
-| **Current** | `v0.23.1a1` Alpha; INDIA-2 and its bounded cleanup/maintenance closeout are complete on merge |
-| **Next** | Owner-selected work only; no implementation packet is active |
-| **Later** | Separately authorized INDIA-3, dependency, or product work |
-| **Held** | Pile-cap, raft, release, React expansion, professional approval, and all non-candidate Git lanes |
+| **Current** | `v0.23.1a1` Alpha remains the current public release; `LIB-PRO-001` remains a completed historical evidence ledger |
+| **Active** | `LIB-PRO-002-G0` freezes the new input-safety and publication contract |
+| **Next** | `LIB-PRO-002-A`: strict beam project/service intake and negative contract matrix |
+| **Held** | Publication, stable/engineering-use claims, professional approval, whole-building workflow, INDIA-3, dependency work, retained Git lanes, and unrelated cleanup |
 
 ## Required Reading
 
-1. [Cleanup execution receipt](../verification/post-india2-cleanup-execution-receipt.json)
-2. [Cleanup disposition evidence](../verification/post-india2-cleanup-disposition-evidence.json)
-3. [Final INDIA-2 closeout evidence](../verification/india-2-final-closeout-evidence.md)
-4. [Current task board](../TASKS.md)
+1. [Active pre-release input-safety plan](pre-release-input-safety-and-professional-readiness-plan.md)
+2. [Current task board](../TASKS.md)
+3. [Completed LIB-PRO-001 evidence ledger](professional-library-remediation-plan.md)
+4. [Git workflow single source](../git-automation/git-workflow-single-source.md)
 
 ## Exact next start
 
-Wait for an owner-selected packet. Fetch and verify `origin/main`, then create
-one fresh `codex/<task-slug>` worktree. Do not write on primary, reuse cleanup
-lanes, or touch retained worktrees.
+Complete G0 repository validation and immutable review in the current lane. If
+G0 merges, fetch and verify the new `origin/main`, then create one fresh
+`codex/lib-pro-002-a-strict-input` worktree for Packet A.
 
 ```bash
-./run.sh session brief --agent <role>
+./run.sh session brief --agent backend
 ./run.sh session start
 ./scripts/python_runtime.sh --diagnose
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
 
-Require `source_bound=true`, `READY_LOCAL`, no operation marker, and exact base
-equality with fetched `origin/main` before editing.
+Require `source_bound=true`, `READY_LOCAL`, no operation marker, exact equality
+with freshly fetched `origin/main`, and a clean tree before Packet A edits.
 
-## Closed post-INDIA-2 sequence
+## Packet A boundary
 
-1. PR #807 froze the union inventory, exact candidate set, and every hold.
-2. PR #808 recorded exact cleanup execution and retained-lane postconditions.
-3. MAINT-010 refreshed generated truth, compacted history, archived superseded
-   plans, and ran the overdue monthly evolution review without applying changes.
-4. The bounded index follow-up removed cross-worktree `mtime` and hidden local
-   artifact drift, migrated the maintained hashes, froze repository mutations
-   before PR creation, and added a weekly read-only freshness audit.
-5. No structural arithmetic, API/React behavior, dependency, release, INDIA-3,
-   or professional-approval claim changed.
+Own only the new versioned project input/result types,
+`Python/structural_lib/services/batch.py`, and focused service tests. Start with
+the plan's negative acceptance matrix and a spy proving that blocked input never
+calls structural calculations. Then implement:
 
-## Retained boundaries
+- required finite canonical values and stable field/path issue codes;
+- mutually exclusive explicit `d_mm` or complete effective-depth basis;
+- rejection of unknown/conflicting fields and duplicate member identities;
+- no production structural defaults;
+- empty/all-blocked summaries that cannot be PASS;
+- unchanged numerical outcome for the accepted synthetic beam input.
 
-- `e54a` remains dirty and detached exactly as found.
-- Excel remains a retained worktree/branch; `gh-pages` remains remote.
-- Dependabot heads remain tied to their open PRs and outside manual cleanup.
-- Every branch without complete owner, PR, exact-tree, or retention evidence
-  remains retained or held.
-- Pile-cap and raft remain held until their recorded source and benchmark
-  reactivation conditions are satisfied.
+Do not edit adapters, FastAPI/React routes, column/slab/footing behavior,
+release automation, API classification, or whole-building calculations in
+Packet A.
 
-## Acceptance record
+## Validation cadence
 
-The maintenance packet requires zero stale generated counts; deterministic
-32/32 indexes from the same commit in independent worktrees;
-health 100/100 or explicit holds; audit 19/19; parity 13 supported / 8 held and
-81/81 endpoints; focused governance tests; links; strict metadata; quick 10/10;
-full 30/30; exact-head hosted checks; and squash-tree equality.
+Run focused service tests and the architecture/import boundary check during
+Packet A. Run quick once after content freeze. Reserve broad Python,
+FastAPI/React, full canonical, packaging, and exact-wheel gates for cumulative
+Packet G unless an outcome-changing failure proves repository-wide risk.
 
 ## Stop rule
 
-Stop after MAINT-010 merge and primary synchronization. Do not infer INDIA-3,
-calculation, dependency, release, professional-approval, React, or further Git
-cleanup authority from this maintenance closeout.
+G0 ends after its exact candidate is independently accepted and merged. Packet
+A requires its own fresh lane. Do not infer tag/package publication,
+professional approval, whole-building implementation, issue closure, branch
+deletion, or retained-lane cleanup authority.
