@@ -248,6 +248,25 @@ _CAPABILITIES = (
         ),
         qualified_review_required=True,
     ),
+    IS456Capability(
+        element="flat_slab",
+        public_workflows=("design_regular_interior_flat_slab_is456",),
+        supported_case=(
+            "One equal-span square interior solid flat-slab panel in a grid of at "
+            "least three continuous spans each way, designed by the direct design "
+            "method under identical full uniform gravity loading, with a square "
+            "centred column, no drop or head, caller-provided straight bars, "
+            "reviewed span/depth acceptance, and one full-perimeter concrete-only "
+            "punching check."
+        ),
+        held_cases=(
+            "Unequal or rectangular panels, fewer than three continuous spans, exterior panels, edge/corner or offset columns, drops, column heads, marginal beams or walls, and openings are excluded.",
+            "Patterned or nonuniform loading, point or line loads, load-combination or envelope generation, lateral action, and unbalanced moment transfer are excluded.",
+            "Equivalent-frame analysis, FEM, nonlinear analysis, transfer slabs, post-tensioning, prestress, seismic diaphragm/action design, and progressive-collapse design are excluded.",
+            "Punching reinforcement, automatic depth/bar selection, bends, splices, anchorage layout, congestion, direct deflection, crack width, fire, and professional approval are excluded.",
+        ),
+        qualified_review_required=True,
+    ),
 )
 
 
@@ -908,6 +927,132 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                 "Only the declared simply supported solid rectangular top-loaded Clause 29 case is supported.",
                 "The positive factored moment and bearing/compression-nodal verification are caller supplied; loads, reactions, and those capacities are not generated.",
                 "Continuous beams, openings, hanging action, automatic sizing, transverse enclosure, generalized strut-and-tie, seismic design, nonlinear analysis, and FEM remain held.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_regular_interior_flat_slab_is456",
+            element="flat_slab",
+            fields=(
+                _field(
+                    "request",
+                    "typed regular interior flat-slab request",
+                    "RegularInteriorFlatSlabDesignInput",
+                    True,
+                    "validated explicit input contract",
+                ),
+                _field(
+                    "status",
+                    "aggregate flexure, detailing, reviewed span/depth, and punching disposition",
+                    "enumeration",
+                    True,
+                    "PASS or FAIL",
+                ),
+                _field(
+                    "request.panel.geometry",
+                    "equal-span square interior-panel geometry",
+                    "FlatSlabGridGeometry",
+                    True,
+                    "explicit dimensions in mm and literal topology assertions",
+                ),
+                _field(
+                    "request.panel.gravity_load.factored_uniform_load_kn_per_m2",
+                    "approved-basis factored uniform gravity action",
+                    "kN/m2",
+                    True,
+                    "finite positive and consistent with 1.5 times service dead plus live load",
+                ),
+                _field(
+                    "request.x",
+                    "caller-provided x-direction bars and support extension",
+                    "FlatSlabDirectionDetailingInput",
+                    True,
+                    "positive bar diameters, spacings, and extension in mm",
+                ),
+                _field(
+                    "request.y",
+                    "caller-provided y-direction bars and support extension",
+                    "FlatSlabDirectionDetailingInput",
+                    True,
+                    "positive bar diameters, spacings, and extension in mm",
+                ),
+                _field(
+                    "request.factored_support_reaction_kn",
+                    "caller-supplied factored interior-column reaction",
+                    "kN",
+                    True,
+                    "finite positive and equal to the frozen uniform tributary reaction",
+                ),
+                _field(
+                    "reinforcement.moments",
+                    "both-direction direct-design moments and strip distribution",
+                    "FlatSlabMomentResult",
+                    True,
+                    "typed finite kN, kN m, and span results",
+                ),
+                _field(
+                    "reinforcement.x",
+                    "x-direction flexure and provided-bar disposition",
+                    "FlatSlabDirectionReinforcementResult",
+                    True,
+                    "typed required/provided mm2 and mm2/m plus spacing and extension limits",
+                ),
+                _field(
+                    "reinforcement.y",
+                    "y-direction flexure and provided-bar disposition",
+                    "FlatSlabDirectionReinforcementResult",
+                    True,
+                    "typed required/provided mm2 and mm2/m plus spacing and extension limits",
+                ),
+                _field(
+                    "reinforcement.x_serviceability",
+                    "reviewed x-direction span/depth comparison",
+                    "SlabServiceabilityResult",
+                    True,
+                    "reviewed limit only; direct deflection and crack width remain held",
+                ),
+                _field(
+                    "reinforcement.y_serviceability",
+                    "reviewed y-direction span/depth comparison",
+                    "SlabServiceabilityResult",
+                    True,
+                    "reviewed limit only; direct deflection and crack width remain held",
+                ),
+                _field(
+                    "punching.status",
+                    "centred full-perimeter concrete-only punching disposition",
+                    "enumeration",
+                    True,
+                    "safe without reinforcement, reinforcement or redesign required, or redesign required",
+                ),
+                _field(
+                    "qualified_review_required",
+                    "qualified review boundary",
+                    "boolean",
+                    True,
+                    "always true",
+                ),
+                _field(
+                    "complete_engineering_design_approved",
+                    "complete engineering approval",
+                    "boolean",
+                    True,
+                    "always false",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "status",
+                    "PASS only when both-direction reinforcement/detailing, the reviewed span/depth comparison, and the concrete-only centred punching check pass.",
+                    (
+                        "PASS is bounded software evidence, not professional design approval.",
+                        "Direct deflection, crack width, punching reinforcement, moment transfer, alternate topologies, and load-envelope generation are not represented.",
+                    ),
+                ),
+            ),
+            limitations=(
+                "Only the equal-span square interior direct-design topology declared by the capability is supported.",
+                "The caller supplies approved gravity actions, provided bars, review references, and the factored support reaction.",
+                "Punching reinforcement is never designed; any concrete-only exceedance fails this route.",
             ),
         ),
         IS456WorkflowContract(

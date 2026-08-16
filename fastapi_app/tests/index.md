@@ -4,7 +4,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 
 **Type:** Python Package
 **Last Updated:** 2026-08-16
-**Files:** 40
+**Files:** 41
 
 ## Documentation Files
 
@@ -21,7 +21,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_auth.py](test_auth.py) | Tests for Authentication and Rate Limiting. | 3 | 2 | 243 |
 | [test_beam_primary_route.py](test_beam_primary_route.py) | Focused FastAPI contract tests for the primary IS 456 beam r | 0 | 12 | 311 |
 | [test_bundled_sample_evidence.py](test_bundled_sample_evidence.py) | Reproducible software evidence for the bundled 153-beam acce | 0 | 1 | 84 |
-| [test_capabilities.py](test_capabilities.py) | Cross-surface tests for canonical capability discovery. | 0 | 2 | 42 |
+| [test_capabilities.py](test_capabilities.py) | Cross-surface tests for canonical capability discovery. | 0 | 2 | 47 |
 | [test_catalog.py](test_catalog.py) | Cross-layer tests for the thin workflow catalogue transport. | 0 | 3 | 41 |
 | [test_column_additional_moment.py](test_column_additional_moment.py) | Tests for POST /api/v1/design/column/additional-moment endpo | 1 | 0 | 203 |
 | [test_column_biaxial.py](test_column_biaxial.py) | Tests for POST /api/v1/design/column/biaxial-check endpoint. | 4 | 0 | 179 |
@@ -37,6 +37,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_endpoints.py](test_endpoints.py) | Integration Tests for FastAPI Endpoints. | 11 | 0 | 1057 |
 | [test_error_sanitization.py](test_error_sanitization.py) | Tests for error sanitization utilities (TASK-796). | 2 | 0 | 118 |
 | [test_export_bbs_dxf.py](test_export_bbs_dxf.py) | Tests for export router endpoints. | 3 | 2 | 202 |
+| [test_flat_slab.py](test_flat_slab.py) | Contract tests for the bounded regular interior flat-slab Fa | 0 | 6 | 199 |
 | [test_footing.py](test_footing.py) | Contract tests for the isolated concentric-footing FastAPI s | 0 | 7 | 236 |
 | [test_geometry_full.py](test_geometry_full.py) | Tests for geometry router advanced endpoints. | 3 | 1 | 244 |
 | [test_imports_formats.py](test_imports_formats.py) | Tests for import router extended endpoints. | 2 | 1 | 82 |

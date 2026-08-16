@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Implement `INDIA-2-FLAT-D` centred square interior-column punching from FLAT-A-C without expanding scope |
+| **Next** | Finish `INDIA-2-FLAT-E`, integrate it unchanged after green checks, then run flat-slab focused family acceptance |
 
 ## Required Reading
 
@@ -51,14 +51,6 @@ Do not expand the accepted wall topology while implementing flat-slab packets.
 Require a clean fresh branch from verified current `origin/main` and
 `source_bound=true`. Preserve every unrelated worktree. Branch, remote-ref, or
 worktree cleanup remains a separate exact-target authorization.
-
-## INDIA-2-WALL-G0 decision result
-
-The GO record is
-[`india-2-wall-g0-scope-evidence.md`](../verification/india-2-wall-g0-scope-evidence.md).
-It freezes the supported wall case, IS 456 clauses, public normalized-content
-boundary, hand benchmark and tolerance, units, fail-closed exclusions, and
-WALL-A-D packet split. No wall calculation or capability claim is part of G0.
 
 ## INDIA-2-WALL acceptance result
 
@@ -120,6 +112,24 @@ the 1650 mm no-drop support-top extension, and the reviewed 23.0769/23.4
 span/depth comparison. Direct deflection, crack width, punching, and public
 workflow remain held.
 
+## INDIA-2-FLAT-D implementation result
+
+[`india-2-flat-d-punching-evidence.md`](../verification/india-2-flat-d-punching-evidence.md)
+records the centred square interior-column full-perimeter demand, concrete-only
+capacity, punching-reinforcement-or-redesign disposition, mandatory-redesign
+boundary, and fail-closed support-reaction/applicability contracts. PR #784
+merged as `d1884946`. Alternate columns/perimeters, openings, moment transfer,
+and punching-reinforcement design remain held.
+
+## INDIA-2-FLAT-E publication candidate
+
+[`india-2-flat-e-publication-evidence.md`](../verification/india-2-flat-e-publication-evidence.md)
+records the typed Python composition, thin REST route, canonical capability and
+semantic truth, manifest promotion, full nested OpenAPI result, benchmark, and
+retained holds. It must pass exact-head local audit and hosted checks before
+integration; family acceptance remains a separate packet from the integrated
+head.
+
 ## Review and gate boundary
 
 Each calculation packet requires focused tests, benchmarks, architecture and PR
@@ -127,10 +137,9 @@ checks, plus the quick gate. The expensive full Python and 30-check gate runs
 once after the whole accepted INDIA-2 wave is integrated unless an
 outcome-changing repository-wide issue appears earlier.
 
-Deep-beam acceptance and flat-slab G0/A-C are complete. Begin `INDIA-2-FLAT-D`
-with only centred square interior-column punching demand, no-shear-reinforcement
-capacity, and redesign boundary. Foundation programs remain later, separate G0
-decisions.
+Deep-beam acceptance and flat-slab G0/A-D are complete. Finish FLAT-E without
+expanding topology or adding React, then run the focused flat-slab family
+acceptance packet. Foundation programs follow as separate G0 decisions.
 
 Cumulative qualified structural-engineering review belongs to INDIA-4 after the
 accepted INDIA-2 and INDIA-3 scope is frozen. Packet-level source and engineering

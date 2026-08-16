@@ -2742,6 +2742,58 @@
         "title": "APIResponse[RebarValidateResponse]",
         "type": "object"
       },
+      "APIResponse_RegularInteriorFlatSlabResponse_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RegularInteriorFlatSlabResponse"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[RegularInteriorFlatSlabResponse]",
+        "type": "object"
+      },
       "APIResponse_SampleDataResponse_": {
         "example": {
           "data": {
@@ -12301,6 +12353,841 @@
         "title": "ExportReportRequest",
         "type": "object"
       },
+      "FlatSlabDirectionDetailingRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "column_strip_negative_bars": {
+            "$ref": "#/components/schemas/FlatSlabProvidedBarsRequest"
+          },
+          "column_strip_positive_bars": {
+            "$ref": "#/components/schemas/FlatSlabProvidedBarsRequest"
+          },
+          "middle_strip_negative_bars": {
+            "$ref": "#/components/schemas/FlatSlabProvidedBarsRequest"
+          },
+          "middle_strip_positive_bars": {
+            "$ref": "#/components/schemas/FlatSlabProvidedBarsRequest"
+          },
+          "support_top_extension_from_face_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Support Top Extension From Face Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "column_strip_negative_bars",
+          "column_strip_positive_bars",
+          "middle_strip_negative_bars",
+          "middle_strip_positive_bars",
+          "support_top_extension_from_face_mm"
+        ],
+        "title": "FlatSlabDirectionDetailingRequest",
+        "type": "object"
+      },
+      "FlatSlabDirectionGeometryResponse": {
+        "properties": {
+          "centre_to_centre_span_mm": {
+            "title": "Centre To Centre Span Mm",
+            "type": "number"
+          },
+          "column_strip_half_width_mm": {
+            "title": "Column Strip Half Width Mm",
+            "type": "number"
+          },
+          "column_strip_total_width_mm": {
+            "title": "Column Strip Total Width Mm",
+            "type": "number"
+          },
+          "direction": {
+            "enum": [
+              "x",
+              "y"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "face_to_face_clear_span_mm": {
+            "title": "Face To Face Clear Span Mm",
+            "type": "number"
+          },
+          "governing_clear_span_mm": {
+            "title": "Governing Clear Span Mm",
+            "type": "number"
+          },
+          "middle_strip_width_mm": {
+            "title": "Middle Strip Width Mm",
+            "type": "number"
+          },
+          "minimum_clear_span_component_mm": {
+            "title": "Minimum Clear Span Component Mm",
+            "type": "number"
+          },
+          "support_width_mm": {
+            "title": "Support Width Mm",
+            "type": "number"
+          },
+          "transverse_span_mm": {
+            "title": "Transverse Span Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "direction",
+          "centre_to_centre_span_mm",
+          "transverse_span_mm",
+          "support_width_mm",
+          "face_to_face_clear_span_mm",
+          "minimum_clear_span_component_mm",
+          "governing_clear_span_mm",
+          "column_strip_half_width_mm",
+          "column_strip_total_width_mm",
+          "middle_strip_width_mm"
+        ],
+        "title": "FlatSlabDirectionGeometryResponse",
+        "type": "object"
+      },
+      "FlatSlabDirectionMomentsResponse": {
+        "properties": {
+          "column_strip_negative_moment_knm": {
+            "title": "Column Strip Negative Moment Knm",
+            "type": "number"
+          },
+          "column_strip_positive_moment_knm": {
+            "title": "Column Strip Positive Moment Knm",
+            "type": "number"
+          },
+          "design_load_on_panel_strip_kn": {
+            "title": "Design Load On Panel Strip Kn",
+            "type": "number"
+          },
+          "direction": {
+            "enum": [
+              "x",
+              "y"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "factored_uniform_load_kn_per_m2": {
+            "title": "Factored Uniform Load Kn Per M2",
+            "type": "number"
+          },
+          "governing_clear_span_m": {
+            "title": "Governing Clear Span M",
+            "type": "number"
+          },
+          "middle_strip_negative_moment_knm": {
+            "title": "Middle Strip Negative Moment Knm",
+            "type": "number"
+          },
+          "middle_strip_positive_moment_knm": {
+            "title": "Middle Strip Positive Moment Knm",
+            "type": "number"
+          },
+          "total_negative_moment_knm": {
+            "title": "Total Negative Moment Knm",
+            "type": "number"
+          },
+          "total_positive_moment_knm": {
+            "title": "Total Positive Moment Knm",
+            "type": "number"
+          },
+          "total_static_moment_knm": {
+            "title": "Total Static Moment Knm",
+            "type": "number"
+          },
+          "transverse_span_m": {
+            "title": "Transverse Span M",
+            "type": "number"
+          }
+        },
+        "required": [
+          "direction",
+          "factored_uniform_load_kn_per_m2",
+          "transverse_span_m",
+          "governing_clear_span_m",
+          "design_load_on_panel_strip_kn",
+          "total_static_moment_knm",
+          "total_negative_moment_knm",
+          "total_positive_moment_knm",
+          "column_strip_negative_moment_knm",
+          "column_strip_positive_moment_knm",
+          "middle_strip_negative_moment_knm",
+          "middle_strip_positive_moment_knm"
+        ],
+        "title": "FlatSlabDirectionMomentsResponse",
+        "type": "object"
+      },
+      "FlatSlabDirectionReinforcementResponse": {
+        "properties": {
+          "column_strip_negative": {
+            "$ref": "#/components/schemas/FlatSlabRegionReinforcementResponse"
+          },
+          "column_strip_positive": {
+            "$ref": "#/components/schemas/FlatSlabRegionReinforcementResponse"
+          },
+          "direction": {
+            "enum": [
+              "x",
+              "y"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "is_adequate": {
+            "title": "Is Adequate",
+            "type": "boolean"
+          },
+          "middle_strip_negative": {
+            "$ref": "#/components/schemas/FlatSlabRegionReinforcementResponse"
+          },
+          "middle_strip_positive": {
+            "$ref": "#/components/schemas/FlatSlabRegionReinforcementResponse"
+          },
+          "provided_support_top_extension_from_face_mm": {
+            "title": "Provided Support Top Extension From Face Mm",
+            "type": "number"
+          },
+          "required_support_top_extension_from_face_mm": {
+            "title": "Required Support Top Extension From Face Mm",
+            "type": "number"
+          },
+          "support_top_extension_passed": {
+            "title": "Support Top Extension Passed",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "direction",
+          "column_strip_negative",
+          "column_strip_positive",
+          "middle_strip_negative",
+          "middle_strip_positive",
+          "required_support_top_extension_from_face_mm",
+          "provided_support_top_extension_from_face_mm",
+          "support_top_extension_passed",
+          "is_adequate"
+        ],
+        "title": "FlatSlabDirectionReinforcementResponse",
+        "type": "object"
+      },
+      "FlatSlabGravityLoadRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "factored_uniform_load_kn_per_m2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Factored Uniform Load Kn Per M2",
+            "type": "number"
+          },
+          "identical_full_loading_on_represented_panels": {
+            "title": "Identical Full Loading On Represented Panels",
+            "type": "boolean"
+          },
+          "load_basis_reference": {
+            "minLength": 1,
+            "title": "Load Basis Reference",
+            "type": "string"
+          },
+          "load_combination_approved": {
+            "title": "Load Combination Approved",
+            "type": "boolean"
+          },
+          "patterned_loading_required": {
+            "title": "Patterned Loading Required",
+            "type": "boolean"
+          },
+          "self_weight_included": {
+            "title": "Self Weight Included",
+            "type": "boolean"
+          },
+          "service_dead_load_kn_per_m2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Service Dead Load Kn Per M2",
+            "type": "number"
+          },
+          "service_live_load_kn_per_m2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Service Live Load Kn Per M2",
+            "type": "number"
+          },
+          "unbalanced_or_lateral_moment_transfer_present": {
+            "title": "Unbalanced Or Lateral Moment Transfer Present",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "service_dead_load_kn_per_m2",
+          "service_live_load_kn_per_m2",
+          "factored_uniform_load_kn_per_m2",
+          "self_weight_included",
+          "identical_full_loading_on_represented_panels",
+          "patterned_loading_required",
+          "unbalanced_or_lateral_moment_transfer_present",
+          "load_combination_approved",
+          "load_basis_reference"
+        ],
+        "title": "FlatSlabGravityLoadRequest",
+        "type": "object"
+      },
+      "FlatSlabGridGeometryRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "all_spans_equal_x": {
+            "title": "All Spans Equal X",
+            "type": "boolean"
+          },
+          "all_spans_equal_y": {
+            "title": "All Spans Equal Y",
+            "type": "boolean"
+          },
+          "analysis_method": {
+            "const": "direct_design",
+            "title": "Analysis Method",
+            "type": "string"
+          },
+          "centre_to_centre_span_x_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Centre To Centre Span X Mm",
+            "type": "number"
+          },
+          "centre_to_centre_span_y_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Centre To Centre Span Y Mm",
+            "type": "number"
+          },
+          "column_head_present": {
+            "title": "Column Head Present",
+            "type": "boolean"
+          },
+          "column_width_x_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Column Width X Mm",
+            "type": "number"
+          },
+          "column_width_y_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Column Width Y Mm",
+            "type": "number"
+          },
+          "columns_offset_from_grid": {
+            "title": "Columns Offset From Grid",
+            "type": "boolean"
+          },
+          "conservative_effective_depth_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Conservative Effective Depth Mm",
+            "type": "number"
+          },
+          "continuous_span_count_x": {
+            "minimum": 3.0,
+            "title": "Continuous Span Count X",
+            "type": "integer"
+          },
+          "continuous_span_count_y": {
+            "minimum": 3.0,
+            "title": "Continuous Span Count Y",
+            "type": "integer"
+          },
+          "drop_present": {
+            "title": "Drop Present",
+            "type": "boolean"
+          },
+          "geometry_basis_reference": {
+            "minLength": 1,
+            "title": "Geometry Basis Reference",
+            "type": "string"
+          },
+          "marginal_beam_or_wall_present": {
+            "title": "Marginal Beam Or Wall Present",
+            "type": "boolean"
+          },
+          "openings_present": {
+            "title": "Openings Present",
+            "type": "boolean"
+          },
+          "overall_depth_mm": {
+            "minimum": 125.0,
+            "title": "Overall Depth Mm",
+            "type": "number"
+          },
+          "panel_location": {
+            "const": "interior",
+            "title": "Panel Location",
+            "type": "string"
+          },
+          "solid_slab": {
+            "title": "Solid Slab",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "centre_to_centre_span_x_mm",
+          "centre_to_centre_span_y_mm",
+          "continuous_span_count_x",
+          "continuous_span_count_y",
+          "column_width_x_mm",
+          "column_width_y_mm",
+          "overall_depth_mm",
+          "conservative_effective_depth_mm",
+          "analysis_method",
+          "panel_location",
+          "all_spans_equal_x",
+          "all_spans_equal_y",
+          "columns_offset_from_grid",
+          "solid_slab",
+          "drop_present",
+          "column_head_present",
+          "marginal_beam_or_wall_present",
+          "openings_present",
+          "geometry_basis_reference"
+        ],
+        "title": "FlatSlabGridGeometryRequest",
+        "type": "object"
+      },
+      "FlatSlabMaterialRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "concrete_grade_nmm2": {
+            "enum": [
+              20,
+              25,
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60
+            ],
+            "title": "Concrete Grade Nmm2",
+            "type": "integer"
+          },
+          "material_basis_reference": {
+            "minLength": 1,
+            "title": "Material Basis Reference",
+            "type": "string"
+          },
+          "steel_grade_nmm2": {
+            "enum": [
+              415,
+              500
+            ],
+            "title": "Steel Grade Nmm2",
+            "type": "integer"
+          },
+          "uncoated_deformed_bars": {
+            "title": "Uncoated Deformed Bars",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "concrete_grade_nmm2",
+          "steel_grade_nmm2",
+          "uncoated_deformed_bars",
+          "material_basis_reference"
+        ],
+        "title": "FlatSlabMaterialRequest",
+        "type": "object"
+      },
+      "FlatSlabProvidedBarsRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Diameter Mm",
+            "type": "number"
+          },
+          "spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Spacing Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "diameter_mm",
+          "spacing_mm"
+        ],
+        "title": "FlatSlabProvidedBarsRequest",
+        "type": "object"
+      },
+      "FlatSlabProvidedCheckResponse": {
+        "properties": {
+          "area_passed": {
+            "title": "Area Passed",
+            "type": "boolean"
+          },
+          "diameter_passed": {
+            "title": "Diameter Passed",
+            "type": "boolean"
+          },
+          "governing_required_mm2_per_m": {
+            "title": "Governing Required Mm2 Per M",
+            "type": "number"
+          },
+          "is_adequate": {
+            "title": "Is Adequate",
+            "type": "boolean"
+          },
+          "maximum_diameter_mm": {
+            "title": "Maximum Diameter Mm",
+            "type": "number"
+          },
+          "maximum_spacing_mm": {
+            "title": "Maximum Spacing Mm",
+            "type": "number"
+          },
+          "minimum_required_mm2_per_m": {
+            "title": "Minimum Required Mm2 Per M",
+            "type": "number"
+          },
+          "provided_mm2_per_m": {
+            "title": "Provided Mm2 Per M",
+            "type": "number"
+          },
+          "region_id": {
+            "title": "Region Id",
+            "type": "string"
+          },
+          "required_for_moment_mm2_per_m": {
+            "title": "Required For Moment Mm2 Per M",
+            "type": "number"
+          },
+          "spacing_passed": {
+            "title": "Spacing Passed",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "region_id",
+          "required_for_moment_mm2_per_m",
+          "minimum_required_mm2_per_m",
+          "governing_required_mm2_per_m",
+          "provided_mm2_per_m",
+          "maximum_diameter_mm",
+          "maximum_spacing_mm",
+          "area_passed",
+          "diameter_passed",
+          "spacing_passed",
+          "is_adequate"
+        ],
+        "title": "FlatSlabProvidedCheckResponse",
+        "type": "object"
+      },
+      "FlatSlabPunchingResponse": {
+        "properties": {
+          "basic_concrete_shear_strength_n_per_mm2": {
+            "title": "Basic Concrete Shear Strength N Per Mm2",
+            "type": "number"
+          },
+          "column_aspect_ratio_beta_c": {
+            "title": "Column Aspect Ratio Beta C",
+            "type": "number"
+          },
+          "critical_enclosed_area_mm2": {
+            "title": "Critical Enclosed Area Mm2",
+            "type": "number"
+          },
+          "critical_perimeter_mm": {
+            "title": "Critical Perimeter Mm",
+            "type": "number"
+          },
+          "critical_section_side_x_mm": {
+            "title": "Critical Section Side X Mm",
+            "type": "number"
+          },
+          "critical_section_side_y_mm": {
+            "title": "Critical Section Side Y Mm",
+            "type": "number"
+          },
+          "expected_uniform_tributary_reaction_kn": {
+            "title": "Expected Uniform Tributary Reaction Kn",
+            "type": "number"
+          },
+          "factored_load_inside_critical_section_kn": {
+            "title": "Factored Load Inside Critical Section Kn",
+            "type": "number"
+          },
+          "is_adequate_without_punching_reinforcement": {
+            "title": "Is Adequate Without Punching Reinforcement",
+            "type": "boolean"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "mandatory_redesign_boundary_n_per_mm2": {
+            "title": "Mandatory Redesign Boundary N Per Mm2",
+            "type": "number"
+          },
+          "no_reinforcement_capacity_n_per_mm2": {
+            "title": "No Reinforcement Capacity N Per Mm2",
+            "type": "number"
+          },
+          "no_reinforcement_utilization": {
+            "title": "No Reinforcement Utilization",
+            "type": "number"
+          },
+          "nominal_punching_stress_n_per_mm2": {
+            "title": "Nominal Punching Stress N Per Mm2",
+            "type": "number"
+          },
+          "punching_shear_force_kn": {
+            "title": "Punching Shear Force Kn",
+            "type": "number"
+          },
+          "size_factor_ks": {
+            "title": "Size Factor Ks",
+            "type": "number"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "status": {
+            "enum": [
+              "safe_without_punching_reinforcement",
+              "punching_reinforcement_or_redesign_required",
+              "redesign_required"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "expected_uniform_tributary_reaction_kn",
+          "critical_section_side_x_mm",
+          "critical_section_side_y_mm",
+          "critical_perimeter_mm",
+          "critical_enclosed_area_mm2",
+          "factored_load_inside_critical_section_kn",
+          "punching_shear_force_kn",
+          "nominal_punching_stress_n_per_mm2",
+          "column_aspect_ratio_beta_c",
+          "size_factor_ks",
+          "basic_concrete_shear_strength_n_per_mm2",
+          "no_reinforcement_capacity_n_per_mm2",
+          "mandatory_redesign_boundary_n_per_mm2",
+          "no_reinforcement_utilization",
+          "status",
+          "source_refs",
+          "limitations",
+          "is_adequate_without_punching_reinforcement"
+        ],
+        "title": "FlatSlabPunchingResponse",
+        "type": "object"
+      },
+      "FlatSlabRegionReinforcementResponse": {
+        "properties": {
+          "ast_required_mm2_per_m": {
+            "title": "Ast Required Mm2 Per M",
+            "type": "number"
+          },
+          "ast_required_total_mm2": {
+            "title": "Ast Required Total Mm2",
+            "type": "number"
+          },
+          "factored_moment_knm": {
+            "title": "Factored Moment Knm",
+            "type": "number"
+          },
+          "flat_slab_maximum_spacing_mm": {
+            "title": "Flat Slab Maximum Spacing Mm",
+            "type": "number"
+          },
+          "flat_slab_spacing_passed": {
+            "title": "Flat Slab Spacing Passed",
+            "type": "boolean"
+          },
+          "is_adequate": {
+            "title": "Is Adequate",
+            "type": "boolean"
+          },
+          "limiting_moment_knm": {
+            "title": "Limiting Moment Knm",
+            "type": "number"
+          },
+          "limiting_neutral_axis_depth_mm": {
+            "title": "Limiting Neutral Axis Depth Mm",
+            "type": "number"
+          },
+          "neutral_axis_depth_mm": {
+            "title": "Neutral Axis Depth Mm",
+            "type": "number"
+          },
+          "provided_check": {
+            "$ref": "#/components/schemas/FlatSlabProvidedCheckResponse"
+          },
+          "region_id": {
+            "title": "Region Id",
+            "type": "string"
+          },
+          "strip_width_mm": {
+            "title": "Strip Width Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "region_id",
+          "factored_moment_knm",
+          "strip_width_mm",
+          "ast_required_total_mm2",
+          "ast_required_mm2_per_m",
+          "neutral_axis_depth_mm",
+          "limiting_neutral_axis_depth_mm",
+          "limiting_moment_knm",
+          "provided_check",
+          "flat_slab_maximum_spacing_mm",
+          "flat_slab_spacing_passed",
+          "is_adequate"
+        ],
+        "title": "FlatSlabRegionReinforcementResponse",
+        "type": "object"
+      },
+      "FlatSlabReinforcementResponse": {
+        "properties": {
+          "crack_width_status": {
+            "title": "Crack Width Status",
+            "type": "string"
+          },
+          "direct_deflection_status": {
+            "title": "Direct Deflection Status",
+            "type": "string"
+          },
+          "geometry_x": {
+            "$ref": "#/components/schemas/FlatSlabDirectionGeometryResponse"
+          },
+          "geometry_y": {
+            "$ref": "#/components/schemas/FlatSlabDirectionGeometryResponse"
+          },
+          "is_reinforcement_and_detailing_adequate": {
+            "title": "Is Reinforcement And Detailing Adequate",
+            "type": "boolean"
+          },
+          "is_span_depth_satisfied": {
+            "title": "Is Span Depth Satisfied",
+            "type": "boolean"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "moments_x": {
+            "$ref": "#/components/schemas/FlatSlabDirectionMomentsResponse"
+          },
+          "moments_y": {
+            "$ref": "#/components/schemas/FlatSlabDirectionMomentsResponse"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "x": {
+            "$ref": "#/components/schemas/FlatSlabDirectionReinforcementResponse"
+          },
+          "x_serviceability": {
+            "$ref": "#/components/schemas/FlatSlabServiceabilityResponse"
+          },
+          "y": {
+            "$ref": "#/components/schemas/FlatSlabDirectionReinforcementResponse"
+          },
+          "y_serviceability": {
+            "$ref": "#/components/schemas/FlatSlabServiceabilityResponse"
+          }
+        },
+        "required": [
+          "geometry_x",
+          "geometry_y",
+          "moments_x",
+          "moments_y",
+          "x",
+          "y",
+          "x_serviceability",
+          "y_serviceability",
+          "direct_deflection_status",
+          "crack_width_status",
+          "source_refs",
+          "limitations",
+          "is_reinforcement_and_detailing_adequate",
+          "is_span_depth_satisfied"
+        ],
+        "title": "FlatSlabReinforcementResponse",
+        "type": "object"
+      },
+      "FlatSlabServiceabilityResponse": {
+        "properties": {
+          "actual_span_depth_ratio": {
+            "title": "Actual Span Depth Ratio",
+            "type": "number"
+          },
+          "crack_width_status": {
+            "title": "Crack Width Status",
+            "type": "string"
+          },
+          "direct_deflection_status": {
+            "title": "Direct Deflection Status",
+            "type": "string"
+          },
+          "is_satisfied": {
+            "title": "Is Satisfied",
+            "type": "boolean"
+          },
+          "qualified_acceptance_reference": {
+            "title": "Qualified Acceptance Reference",
+            "type": "string"
+          },
+          "reviewed_modified_span_depth_limit": {
+            "title": "Reviewed Modified Span Depth Limit",
+            "type": "number"
+          },
+          "source_reference": {
+            "title": "Source Reference",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "satisfied_with_reviewed_limit",
+              "limit_exceeded"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "utilization": {
+            "title": "Utilization",
+            "type": "number"
+          },
+          "verified_by_library": {
+            "const": false,
+            "title": "Verified By Library",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "actual_span_depth_ratio",
+          "reviewed_modified_span_depth_limit",
+          "utilization",
+          "status",
+          "direct_deflection_status",
+          "crack_width_status",
+          "source_reference",
+          "qualified_acceptance_reference",
+          "verified_by_library",
+          "is_satisfied"
+        ],
+        "title": "FlatSlabServiceabilityResponse",
+        "type": "object"
+      },
       "FlexureResult": {
         "description": "Flexure design result.",
         "properties": {
@@ -16696,6 +17583,270 @@
         "title": "RebarValidateResponse",
         "type": "object"
       },
+      "RegularInteriorFlatSlabProvenanceResponse": {
+        "properties": {
+          "action_generation_status": {
+            "title": "Action Generation Status",
+            "type": "string"
+          },
+          "benchmark_id": {
+            "title": "Benchmark Id",
+            "type": "string"
+          },
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "clause_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "code_edition": {
+            "title": "Code Edition",
+            "type": "string"
+          },
+          "detailing_basis_reference": {
+            "title": "Detailing Basis Reference",
+            "type": "string"
+          },
+          "geometry_basis_reference": {
+            "title": "Geometry Basis Reference",
+            "type": "string"
+          },
+          "load_basis_reference": {
+            "title": "Load Basis Reference",
+            "type": "string"
+          },
+          "material_basis_reference": {
+            "title": "Material Basis Reference",
+            "type": "string"
+          },
+          "punching_basis_reference": {
+            "title": "Punching Basis Reference",
+            "type": "string"
+          },
+          "schema_version": {
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "serviceability_acceptance_reference": {
+            "title": "Serviceability Acceptance Reference",
+            "type": "string"
+          },
+          "serviceability_verification_status": {
+            "title": "Serviceability Verification Status",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "support_reaction_basis_reference": {
+            "title": "Support Reaction Basis Reference",
+            "type": "string"
+          },
+          "support_reaction_status": {
+            "title": "Support Reaction Status",
+            "type": "string"
+          },
+          "workflow": {
+            "title": "Workflow",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "code_edition",
+          "workflow",
+          "case_id",
+          "benchmark_id",
+          "action_generation_status",
+          "support_reaction_status",
+          "serviceability_verification_status",
+          "geometry_basis_reference",
+          "material_basis_reference",
+          "load_basis_reference",
+          "detailing_basis_reference",
+          "serviceability_acceptance_reference",
+          "support_reaction_basis_reference",
+          "punching_basis_reference",
+          "clause_refs",
+          "source_refs"
+        ],
+        "title": "RegularInteriorFlatSlabProvenanceResponse",
+        "type": "object"
+      },
+      "RegularInteriorFlatSlabRequest": {
+        "additionalProperties": false,
+        "description": "All approved-basis inputs for the sole supported flat-slab case.",
+        "properties": {
+          "all_bottom_bars_continuous": {
+            "title": "All Bottom Bars Continuous",
+            "type": "boolean"
+          },
+          "case_id": {
+            "minLength": 1,
+            "title": "Case Id",
+            "type": "string"
+          },
+          "centred_concentric_reaction": {
+            "title": "Centred Concentric Reaction",
+            "type": "boolean"
+          },
+          "detailing_basis_reference": {
+            "minLength": 1,
+            "title": "Detailing Basis Reference",
+            "type": "string"
+          },
+          "factored_support_reaction_kn": {
+            "exclusiveMinimum": 0.0,
+            "title": "Factored Support Reaction Kn",
+            "type": "number"
+          },
+          "full_critical_perimeter_available": {
+            "title": "Full Critical Perimeter Available",
+            "type": "boolean"
+          },
+          "geometry": {
+            "$ref": "#/components/schemas/FlatSlabGridGeometryRequest"
+          },
+          "gravity_load": {
+            "$ref": "#/components/schemas/FlatSlabGravityLoadRequest"
+          },
+          "material": {
+            "$ref": "#/components/schemas/FlatSlabMaterialRequest"
+          },
+          "no_punching_reinforcement_provided": {
+            "title": "No Punching Reinforcement Provided",
+            "type": "boolean"
+          },
+          "punching_basis_reference": {
+            "minLength": 1,
+            "title": "Punching Basis Reference",
+            "type": "string"
+          },
+          "qualified_review_required": {
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "serviceability_acceptance_acknowledged": {
+            "title": "Serviceability Acceptance Acknowledged",
+            "type": "boolean"
+          },
+          "serviceability_acceptance_reference": {
+            "minLength": 1,
+            "title": "Serviceability Acceptance Reference",
+            "type": "string"
+          },
+          "splices_present": {
+            "title": "Splices Present",
+            "type": "boolean"
+          },
+          "straight_bars_only": {
+            "title": "Straight Bars Only",
+            "type": "boolean"
+          },
+          "support_reaction_basis_reference": {
+            "minLength": 1,
+            "title": "Support Reaction Basis Reference",
+            "type": "string"
+          },
+          "x": {
+            "$ref": "#/components/schemas/FlatSlabDirectionDetailingRequest"
+          },
+          "y": {
+            "$ref": "#/components/schemas/FlatSlabDirectionDetailingRequest"
+          }
+        },
+        "required": [
+          "case_id",
+          "geometry",
+          "material",
+          "gravity_load",
+          "x",
+          "y",
+          "factored_support_reaction_kn",
+          "straight_bars_only",
+          "all_bottom_bars_continuous",
+          "splices_present",
+          "serviceability_acceptance_acknowledged",
+          "centred_concentric_reaction",
+          "full_critical_perimeter_available",
+          "no_punching_reinforcement_provided",
+          "qualified_review_required",
+          "detailing_basis_reference",
+          "serviceability_acceptance_reference",
+          "support_reaction_basis_reference",
+          "punching_basis_reference"
+        ],
+        "title": "RegularInteriorFlatSlabRequest",
+        "type": "object"
+      },
+      "RegularInteriorFlatSlabResponse": {
+        "properties": {
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "complete_engineering_design_approved": {
+            "const": false,
+            "title": "Complete Engineering Design Approved",
+            "type": "boolean"
+          },
+          "held_cases": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Held Cases",
+            "type": "array"
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/RegularInteriorFlatSlabProvenanceResponse"
+          },
+          "punching": {
+            "$ref": "#/components/schemas/FlatSlabPunchingResponse"
+          },
+          "qualified_review_required": {
+            "const": true,
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "reinforcement": {
+            "$ref": "#/components/schemas/FlatSlabReinforcementResponse"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "supported_case": {
+            "title": "Supported Case",
+            "type": "string"
+          }
+        },
+        "required": [
+          "case_id",
+          "status",
+          "reinforcement",
+          "punching",
+          "supported_case",
+          "held_cases",
+          "provenance",
+          "qualified_review_required",
+          "complete_engineering_design_approved"
+        ],
+        "title": "RegularInteriorFlatSlabResponse",
+        "type": "object"
+      },
       "RequestValidationErrorPayload": {
         "description": "Field-preserving Pydantic request validation error.",
         "properties": {
@@ -19967,7 +21118,7 @@
       "name": "Structural Engineering Library",
       "url": "https://github.com/yourusername/structural_engineering_lib"
     },
-    "description": "\n## IS 456:2000 Compliant Structural Engineering Library\n\nThis API exposes the library's route-specific supported IS 456:2000 reinforced\nconcrete calculations. Each result remains subject to the documented case\nboundary and qualified engineering review.\n\n### Features\n\n- **Beam Design**: Flexure, shear, and combined design calculations\n- **Column Design**: Bounded rectangular short/long-column workflows\n- **Footing Design**: Isolated-footing checks and concentric load transfer\n- **Slab Design**: Bounded simply supported one-way slab strip\n- **Staircase Design**: Bounded longitudinal straight waist-slab flight\n- **Wall Design**: Bounded Clause 32 braced-wall axial and reinforcement checks\n- **Deep-Beam Design**: Bounded Clause 29 simply supported positive-reinforcement checks\n- **Detailing**: Reinforcement layout, spacing, and development lengths\n- **Optimization**: Cost-optimized beam cross-section selection\n- **Smart Analysis**: AI-assisted design suggestions and insights\n- **3D Geometry**: Visualization-ready mesh generation\n\n### Design Codes\n\n- IS 456:2000 - Plain and Reinforced Concrete\n- IS 13920 - Ductile Detailing for Seismic Resistance\n\n### Units\n\nAll inputs and outputs use consistent units:\n- **Length**: millimeters (mm)\n- **Force**: kilonewtons (kN)\n- **Moment**: kilonewton-meters (kN\u00b7m)\n- **Stress**: N/mm\u00b2 (MPa)\n- **Area**: mm\u00b2\n",
+    "description": "\n## IS 456:2000 Compliant Structural Engineering Library\n\nThis API exposes the library's route-specific supported IS 456:2000 reinforced\nconcrete calculations. Each result remains subject to the documented case\nboundary and qualified engineering review.\n\n### Features\n\n- **Beam Design**: Flexure, shear, and combined design calculations\n- **Column Design**: Bounded rectangular short/long-column workflows\n- **Footing Design**: Isolated-footing checks and concentric load transfer\n- **Slab Design**: Bounded simply supported one-way slab strip\n- **Staircase Design**: Bounded longitudinal straight waist-slab flight\n- **Wall Design**: Bounded Clause 32 braced-wall axial and reinforcement checks\n- **Deep-Beam Design**: Bounded Clause 29 simply supported positive-reinforcement checks\n- **Flat-Slab Design**: Bounded regular interior direct-design and punching checks\n- **Detailing**: Reinforcement layout, spacing, and development lengths\n- **Optimization**: Cost-optimized beam cross-section selection\n- **Smart Analysis**: AI-assisted design suggestions and insights\n- **3D Geometry**: Visualization-ready mesh generation\n\n### Design Codes\n\n- IS 456:2000 - Plain and Reinforced Concrete\n- IS 13920 - Ductile Detailing for Seismic Resistance\n\n### Units\n\nAll inputs and outputs use consistent units:\n- **Length**: millimeters (mm)\n- **Force**: kilonewtons (kN)\n- **Moment**: kilonewton-meters (kN\u00b7m)\n- **Stress**: N/mm\u00b2 (MPa)\n- **Area**: mm\u00b2\n",
     "license": {
       "name": "MIT License",
       "url": "https://opensource.org/licenses/MIT"
@@ -21138,6 +22289,48 @@
         "summary": "Check a bounded Clause 29 simply supported deep beam",
         "tags": [
           "deep-beam"
+        ]
+      }
+    },
+    "/api/v1/design/flat-slab/regular-interior": {
+      "post": {
+        "description": "Validate transport input and delegate every calculation to the service.",
+        "operationId": "design_regular_interior_flat_slab_api_v1_design_flat_slab_regular_interior_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegularInteriorFlatSlabRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_RegularInteriorFlatSlabResponse_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Design a bounded regular interior flat-slab panel",
+        "tags": [
+          "flat-slab"
         ]
       }
     },
@@ -23237,6 +24430,10 @@
     {
       "description": "Bounded Clause 29 deep-beam checks and maintained evidence.",
       "name": "deep-beam"
+    },
+    {
+      "description": "Bounded regular interior flat-slab checks and maintained evidence.",
+      "name": "flat-slab"
     },
     {
       "description": "Reinforcement detailing including bar layout, spacing, and anchorage.",

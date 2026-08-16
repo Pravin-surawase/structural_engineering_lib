@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 79,
+  "file_count": 82,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -579,6 +579,44 @@
       "content_hash": "102df860ad9f"
     },
     {
+      "name": "india-2-flat-e-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "9056881b5693"
+    },
+    {
+      "name": "india-2-flat-e-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "ee2a5bd1358c"
+    },
+    {
+      "name": "india-2-flat-e-publication-evidence.md",
+      "type": "documentation",
+      "size_lines": 93,
+      "last_updated": "2026-08-16",
+      "description": "FLAT-E composes the integrated FLAT-A-D calculations into the sole public design_regular_interior_flat_slab_is456 service and exposes the same workflow",
+      "content_hash": "ef60f1ec9135"
+    },
+    {
       "name": "india-2-flat-g0-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -830,7 +868,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "6dd73b85ee70"
+      "content_hash": "68087695cecb"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -919,5 +957,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "fc34ea2c3c05cc02"
+  "content_hash": "7b5f63869d294505"
 }

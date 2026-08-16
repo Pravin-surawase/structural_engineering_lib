@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 19,
+  "file_count": 20,
   "files": [
     {
       "name": "__init__.py",
@@ -479,6 +479,62 @@
       "content_hash": "8fa4a0b406eb"
     },
     {
+      "name": "flat_slab.py",
+      "type": "python",
+      "size_lines": 250,
+      "last_updated": "2026-08-16",
+      "description": "Transport models for the bounded regular interior flat-slab workflow.",
+      "classes": [
+        {
+          "name": "FlatSlabGridGeometryRequest"
+        },
+        {
+          "name": "FlatSlabMaterialRequest"
+        },
+        {
+          "name": "FlatSlabGravityLoadRequest"
+        },
+        {
+          "name": "FlatSlabProvidedBarsRequest"
+        },
+        {
+          "name": "FlatSlabDirectionDetailingRequest"
+        },
+        {
+          "name": "RegularInteriorFlatSlabRequest",
+          "description": "All approved-basis inputs for the sole supported flat-slab case."
+        },
+        {
+          "name": "FlatSlabDirectionGeometryResponse"
+        },
+        {
+          "name": "FlatSlabDirectionMomentsResponse"
+        },
+        {
+          "name": "FlatSlabProvidedCheckResponse"
+        },
+        {
+          "name": "FlatSlabRegionReinforcementResponse"
+        },
+        {
+          "name": "FlatSlabDirectionReinforcementResponse"
+        },
+        {
+          "name": "FlatSlabServiceabilityResponse"
+        },
+        {
+          "name": "FlatSlabReinforcementResponse"
+        },
+        {
+          "name": "FlatSlabPunchingResponse"
+        },
+        {
+          "name": "RegularInteriorFlatSlabProvenanceResponse"
+        }
+      ],
+      "content_hash": "084b5b05db75"
+    },
+    {
       "name": "footing.py",
       "type": "python",
       "size_lines": 266,
@@ -947,5 +1003,5 @@
     "DuctilityCheckRequest",
     "DuctilityCheckResponse"
   ],
-  "content_hash": "9d52534fdd4b67ab"
+  "content_hash": "856eb7164b721010"
 }

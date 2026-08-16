@@ -46,7 +46,7 @@ Historical staircase task IDs, PRs, and evidence remain unchanged. The former
 | Clause 32 walls | Focused family acceptance complete after A-D integration | One braced empirical vertical-compression wall check supported; alternate wall systems held |
 | Clause 33 stairs | One bounded longitudinal straight waist-slab flight supported | Complete; alternate stair systems remain held |
 | Clause 29 deep beams | Focused family acceptance complete after G0 and A-D integration | One simply supported positive-moment reinforcement check supported; alternate deep-beam systems held |
-| Flat slabs and column punching | Not implemented | Planned after deep beams |
+| Flat slabs and column punching | G0 and A-D implemented; E publication candidate under validation | One regular interior direct-design and concrete-only punching workflow; alternate systems held |
 | Combined footing | Not implemented | Separate foundation program |
 | Strap footing | Not implemented | Separate foundation program |
 | Pile cap | Not implemented | Separate foundation program |
@@ -62,7 +62,7 @@ boundary, held with a written reason, or not implemented.
 | 1 | `INDIA-2-WALL` | First clause-bounded remaining element; established the new-family workflow | Complete within the written bounded case |
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
 | 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | Complete within the written bounded case |
-| 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | G0 complete; A-E activated |
+| 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | G0 and A-D complete; E active |
 | 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Planned, order provisional |
 | 5 | `INDIA-2-CLOSEOUT` | Reconcile truth, run final cumulative gates, and freeze the INDIA-2 evidence set | Pending |
 
@@ -243,11 +243,11 @@ collapse, seismic diaphragm design, and cases outside the selected topology.
 Activated packets:
 
 1. G0 scope/source/benchmark decision — complete GO.
-2. A panel geometry, eligibility, and strip definitions — implemented.
-3. B bounded gravity analysis and moment distribution.
-4. C flexure, serviceability, and detailing checks.
-5. D column-punching checks and fail-closed boundaries.
-6. E typed public workflow, capability truth, and evidence.
+2. A panel geometry, eligibility, and strip definitions — integrated.
+3. B bounded gravity analysis and moment distribution — integrated.
+4. C flexure, serviceability, and detailing checks — integrated.
+5. D column-punching checks and fail-closed boundaries — integrated.
+6. E typed public workflow, capability truth, and evidence — active candidate.
 7. One focused family acceptance bundle after integration.
 
 The immutable decision record is
@@ -317,9 +317,8 @@ authorized programs.
 
 ## 9. Exact next action
 
-Implement `INDIA-2-FLAT-D` next from the integrated FLAT-A-C contracts. Do not
-expand the topology while adding the centred square interior-column punching
-demand, no-shear-reinforcement capacity, and redesign boundary. The owner's
-2026-08-16 request activates the remaining INDIA-2 families subject to each
-family's own G0 returning GO. No G0 may be bypassed, and a HOLD remains a
-truthful non-implementation outcome.
+Finish `INDIA-2-FLAT-E` publication and then run one focused family acceptance
+from its unchanged integrated head. Do not expand the G0 topology or add React.
+The owner's 2026-08-16 request activates the remaining INDIA-2 families subject
+to each family's own G0 returning GO. No G0 may be bypassed, and a HOLD remains
+a truthful non-implementation outcome.

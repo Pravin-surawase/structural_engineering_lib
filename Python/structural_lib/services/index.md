@@ -2,7 +2,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-16
-**Files:** 42
+**Files:** 43
 
 ## Python Files
 
@@ -10,7 +10,7 @@
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) | structural_lib.services — Auto-generated package. | 0 | 0 | 2 |
 | [adapters.py](adapters.py) | Adapters for converting various input formats to canonical m | 6 | 0 | 2006 |
-| [api.py](api.py) | Module:       api | 0 | 0 | 406 |
+| [api.py](api.py) | Module:       api | 0 | 0 | 419 |
 | [api_hub.py](api_hub.py) | Module:       api | 0 | 0 | 238 |
 | [api_results.py](api_results.py) | Module:       api_results | 8 | 0 | 507 |
 | [audit.py](audit.py) | Module:       audit | 3 | 3 | 595 |
@@ -20,7 +20,7 @@
 | [beam_pipeline.py](beam_pipeline.py) | beam_pipeline — Unified application-layer pipeline for beam  | 10 | 3 | 636 |
 | [boq.py](boq.py) | Project Bill of Quantities (BOQ) — Aggregation Module | 4 | 1 | 209 |
 | [calculation_report.py](calculation_report.py) | Module:       calculation_report | 4 | 1 | 722 |
-| [capabilities.py](capabilities.py) | Discoverable supported-case registry for the IS 456 public l | 7 | 3 | 1522 |
+| [capabilities.py](capabilities.py) | Discoverable supported-case registry for the IS 456 public l | 7 | 3 | 1667 |
 | [column_api.py](column_api.py) | Module:       column_api | 0 | 13 | 1534 |
 | [common_api.py](common_api.py) | Module:       common_api | 0 | 5 | 721 |
 | [costing.py](costing.py) | Cost calculation utilities for structural elements. | 2 | 8 | 376 |
@@ -31,6 +31,7 @@
 | [evidence.py](evidence.py) | Canonical evidence identity for the supported IS 456 beam de | 0 | 2 | 234 |
 | [excel_bridge.py](excel_bridge.py) | Excel UDF Bridge - Exposes structural_lib functions to Excel | 0 | 7 | 305 |
 | [excel_integration.py](excel_integration.py) | Excel Integration Module — Bridge between Excel data and Det | 2 | 9 | 489 |
+| [flat_slab_api.py](flat_slab_api.py) | Stable orchestration for the bounded regular interior flat-s | 4 | 2 | 339 |
 | [footing_api.py](footing_api.py) | Bounded orchestration for concentric isolated footings (IS 4 | 5 | 1 | 800 |
 | [imports.py](imports.py) | Import helpers for multi-format CSV ingestion. | 1 | 3 | 175 |
 | [intelligence.py](intelligence.py) | Compatibility shim for legacy imports. | 0 | 0 | 36 |

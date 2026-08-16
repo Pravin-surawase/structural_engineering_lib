@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
   "last_updated": "2026-08-16",
-  "file_count": 40,
+  "file_count": 41,
   "files": [
     {
       "name": "README.md",
@@ -225,7 +225,7 @@
     {
       "name": "test_capabilities.py",
       "type": "python",
-      "size_lines": 42,
+      "size_lines": 47,
       "last_updated": "2026-08-16",
       "description": "Cross-surface tests for canonical capability discovery.",
       "functions": [
@@ -242,7 +242,7 @@
           ]
         }
       ],
-      "content_hash": "b936d17ed2ca"
+      "content_hash": "33b91daebfdf"
     },
     {
       "name": "test_catalog.py",
@@ -944,6 +944,37 @@
         }
       ],
       "content_hash": "2a7cab3f3e43"
+    },
+    {
+      "name": "test_flat_slab.py",
+      "type": "python",
+      "size_lines": 199,
+      "last_updated": "2026-08-16",
+      "description": "Contract tests for the bounded regular interior flat-slab FastAPI slice.",
+      "functions": [
+        {
+          "name": "test_flat_slab_benchmark_returns_typed_pass_with_provenance"
+        },
+        {
+          "name": "test_flat_slab_rejects_unknown_nonfinite_and_unsupported_scope"
+        },
+        {
+          "name": "test_flat_slab_service_validation_uses_safe_error_envelope"
+        },
+        {
+          "name": "test_flat_slab_valid_inadequacy_remains_json_safe_fail"
+        },
+        {
+          "name": "test_flat_slab_openapi_exposes_typed_success_schema"
+        },
+        {
+          "name": "test_flat_slab_is_mounted_in_main_app",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "content_hash": "1388decb1601"
     },
     {
       "name": "test_footing.py",
@@ -1897,5 +1928,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "63c671eca156483b"
+  "content_hash": "f42a5cff2a94b2b6"
 }

@@ -143,6 +143,13 @@ from structural_lib.services.deep_beam_api import (  # noqa: F401
     SimplySupportedDeepBeamDesignResult,
     design_simply_supported_deep_beam_is456,
 )
+from structural_lib.services.flat_slab_api import (  # noqa: F401
+    RegularInteriorFlatSlabDesignInput,
+    RegularInteriorFlatSlabDesignProvenance,
+    RegularInteriorFlatSlabDesignResult,
+    RegularInteriorFlatSlabDesignStatus,
+    design_regular_interior_flat_slab_is456,
+)
 from structural_lib.services.footing_api import (  # noqa: F401
     ConcentricIsolatedFootingInput,
     ConcentricIsolatedFootingResult,
@@ -393,6 +400,12 @@ __all__ = [
     "SimplySupportedDeepBeamDesignInput",
     "SimplySupportedDeepBeamDesignProvenance",
     "SimplySupportedDeepBeamDesignResult",
+    # Regular interior flat slab (bounded supported case)
+    "design_regular_interior_flat_slab_is456",
+    "RegularInteriorFlatSlabDesignInput",
+    "RegularInteriorFlatSlabDesignProvenance",
+    "RegularInteriorFlatSlabDesignResult",
+    "RegularInteriorFlatSlabDesignStatus",
     # Capability discovery
     "get_supported_is456_capability_document",
     "get_supported_is456_capabilities",

@@ -2,7 +2,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-16
-**Files:** 22
+**Files:** 23
 
 ## Public API
 
@@ -13,6 +13,7 @@
 - `design`
 - `detailing`
 - `export`
+- `flat_slab`
 - `footing`
 - `geometry`
 - `health`
@@ -25,13 +26,12 @@
 - `streaming`
 - `wall`
 - `websocket`
-- `workflows`
 
 ## Python Files
 
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
-| [__init__.py](__init__.py) | FastAPI Routers Package. | 0 | 0 | 52 |
+| [__init__.py](__init__.py) | FastAPI Routers Package. | 0 | 0 | 54 |
 | [analysis.py](analysis.py) | Smart Analysis Router. | 0 | 3 | 338 |
 | [capabilities.py](capabilities.py) | Public discovery route for the canonical supported IS 456 co | 0 | 1 | 23 |
 | [catalog.py](catalog.py) | Thin read-only transport for the canonical application workf | 0 | 1 | 51 |
@@ -40,6 +40,7 @@
 | [design.py](design.py) | Beam Design Router. | 0 | 10 | 1027 |
 | [detailing.py](detailing.py) | Beam Detailing Router. | 0 | 4 | 412 |
 | [export.py](export.py) | Export Router — BBS, DXF, and Report exports. | 4 | 5 | 805 |
+| [flat_slab.py](flat_slab.py) | FastAPI transport for the bounded regular interior flat-slab | 0 | 1 | 154 |
 | [footing.py](footing.py) | FastAPI transport for the bounded concentric isolated-footin | 0 | 1 | 69 |
 | [geometry.py](geometry.py) | 3D Geometry Router. | 0 | 5 | 653 |
 | [health.py](health.py) | Health Check Router. | 3 | 3 | 208 |

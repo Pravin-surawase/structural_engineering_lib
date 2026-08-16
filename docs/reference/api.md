@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-15
+last_updated: 2026-08-16
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -15,7 +15,7 @@ tags: []
 **Importance:** Critical
 **Document Version:** 0.23.1a1
 **Created:** 2025-01-01
-**Last Updated:** 2026-08-15<br>
+**Last Updated:** 2026-08-16<br>
 
 ---
 
@@ -60,6 +60,12 @@ The bounded simply supported deep-beam route returns
 `api.SimplySupportedDeepBeamDesignInput` through
 `api.design_simply_supported_deep_beam_is456` and retains
 `api.SimplySupportedDeepBeamDesignProvenance`.
+The bounded regular interior flat-slab route returns
+`api.RegularInteriorFlatSlabDesignResult` from
+`api.RegularInteriorFlatSlabDesignInput` through
+`api.design_regular_interior_flat_slab_is456` and retains
+`api.RegularInteriorFlatSlabDesignProvenance`; aggregate dispositions use
+`api.RegularInteriorFlatSlabDesignStatus`.
 
 ```python
 from structural_lib import api
@@ -93,8 +99,9 @@ Every slab call consumes one caller-selected factored UDL or one declared
 coefficient-method action basis. Built-in coefficient lookup does not generate
 project load combinations, load patterns, concentrated/opening effects, or an
 envelope. Complete workflow results serialize this boundary in
-`load_envelope_status`. Flat slabs, column-supported punching, openings,
-concentrated loads, irregular panels, and FEM remain held.
+`load_envelope_status`. The separate regular-interior flat-slab route described
+below is the only supported flat-slab/punching case. Alternate flat slabs,
+openings, concentrated loads, irregular panels, and FEM remain held.
 
 Supported-case discovery is available through
 `api.get_supported_is456_capabilities`. CLI and REST consumers use
@@ -4223,6 +4230,34 @@ generalized strut-and-tie, seismic design, nonlinear analysis, FEM, and
 professional approval remain held.
 
 **FastAPI Endpoint:** `POST /api/v1/design/deep-beam/simply-supported`
+
+---
+
+## 21. Regular Interior Flat-Slab Workflow — Development Preview
+
+```python
+def design_regular_interior_flat_slab_is456(
+    request: RegularInteriorFlatSlabDesignInput,
+) -> RegularInteriorFlatSlabDesignResult
+```
+
+The service composes the Clause 31 direct-design geometry and both-direction
+moment distribution, rectangular-section flexural steel, caller-provided
+straight-bar checks, reviewed span/depth comparison, and one full-perimeter
+concrete-only punching check. Its typed provenance retains the geometry,
+material, load, detailing, serviceability-acceptance, support-reaction,
+punching, clause, amendment, source, and benchmark identities.
+
+The only accepted case is one equal-span square interior solid panel in at
+least three continuous spans each way under identical full uniform gravity
+loading, with a centred square column, no drop or head, and externally reviewed
+load, reaction, detailing, and span/depth bases. Unequal or rectangular panels,
+exterior panels, openings, patterned or concentrated loads, unbalanced moment
+transfer, punching reinforcement, equivalent-frame or FEM analysis, automatic
+depth/bar selection, direct deflection, crack width, and professional approval
+remain held.
+
+**FastAPI Endpoint:** `POST /api/v1/design/flat-slab/regular-interior`
 
 ---
 

@@ -29,10 +29,10 @@
     "Python/structural_lib/codes/is13920/**/*.py"
   ],
   "capability_summary": {
-    "supported_families": 10,
-    "held_families": 11,
+    "supported_families": 11,
+    "held_families": 10,
     "total_declared_families": 21,
-    "supported_pct": 47.6
+    "supported_pct": 52.4
   },
   "standards": [
     {
@@ -43,10 +43,10 @@
       "source_root": "Python/structural_lib/codes/is456",
       "status": "SUPPORTED_SUBSET",
       "capability_summary": {
-        "supported_families": 7,
-        "held_families": 5,
+        "supported_families": 8,
+        "held_families": 4,
         "total_declared_families": 12,
-        "supported_pct": 58.3
+        "supported_pct": 66.7
       },
       "capability_families": [
         {
@@ -223,15 +223,26 @@
         {
           "capability_id": "IS456:2000:flat_slab",
           "family": "flat_slab",
-          "scope_status": "HELD",
-          "implementation_status": "NOT_IMPLEMENTED",
-          "claim": "Flat-slab and column-supported punching design remain held while the G0-frozen bounded case is implemented.",
-          "workflows": [],
-          "limitations": [
-            "Only one equal-span square interior direct-design panel and centred square-column punching case is activated; no public calculation workflow exists yet.",
-            "Unequal or exterior panels, drops, heads, openings, patterned loads, moment transfer, punching reinforcement, equivalent-frame analysis, and FEM remain held."
+          "scope_status": "SUPPORTED",
+          "implementation_status": "IMPLEMENTED_BOUNDED",
+          "claim": "One equal-span square interior solid flat-slab panel in a grid of at least three continuous spans each way, designed by the direct design method under identical full uniform gravity loading, with a square centred column, no drop or head, caller-provided straight bars, reviewed span/depth acceptance, and one full-perimeter concrete-only punching check.",
+          "workflows": [
+            "design_regular_interior_flat_slab_is456"
           ],
-          "evidence": [],
+          "limitations": [
+            "Unequal or rectangular panels, fewer than three continuous spans, exterior panels, edge/corner or offset columns, drops, column heads, marginal beams or walls, and openings are excluded.",
+            "Patterned or nonuniform loading, point or line loads, load-combination or envelope generation, lateral action, and unbalanced moment transfer are excluded.",
+            "Equivalent-frame analysis, FEM, nonlinear analysis, transfer slabs, post-tensioning, prestress, seismic diaphragm/action design, and progressive-collapse design are excluded.",
+            "Punching reinforcement, automatic depth/bar selection, bends, splices, anchorage layout, congestion, direct deflection, crack width, fire, and professional approval are excluded."
+          ],
+          "evidence": [
+            "docs/verification/india-2-flat-g0-scope-evidence.md",
+            "docs/verification/india-2-flat-a-geometry-evidence.md",
+            "docs/verification/india-2-flat-b-moment-evidence.md",
+            "docs/verification/india-2-flat-c-reinforcement-evidence.md",
+            "docs/verification/india-2-flat-d-punching-evidence.md",
+            "docs/verification/india-2-flat-e-publication-evidence.md"
+          ],
           "qualified_review_required": true
         },
         {

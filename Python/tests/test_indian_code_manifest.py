@@ -91,10 +91,9 @@ def test_is456_supported_families_are_generated_from_runtime_registry() -> None:
     assert generated_supported["deep_beam"]["workflows"] == [
         "design_simply_supported_deep_beam_is456"
     ]
-    flat_slab = next(
-        item for item in is456["capability_families"] if item["family"] == "flat_slab"
-    )
-    assert flat_slab["scope_status"] == "HELD"
+    assert generated_supported["flat_slab"]["workflows"] == [
+        "design_regular_interior_flat_slab_is456"
+    ]
 
 
 def test_is456_and_is13920_registration_cannot_cross_match() -> None:
@@ -130,9 +129,9 @@ def test_parity_dashboard_consumes_declared_capability_families() -> None:
     report = _run_json("parity_dashboard.py", "--section", "capabilities", "--json")
     section = report["sections"][0]
     assert section["metric_kind"] == "DECLARED_CAPABILITY_FAMILY_COVERAGE"
-    assert section["supported"] == 10
-    assert section["held"] == 11
-    assert section["pct"] == 48
+    assert section["supported"] == 11
+    assert section["held"] == 10
+    assert section["pct"] == 52
     assert section["informational"] is True
     assert report["overall_pct"] is None
     assert "capability scope" in report["overall_scope"]
