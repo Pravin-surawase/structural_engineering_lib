@@ -17,6 +17,7 @@ def sample(
     *,
     fck_nmm2: float,
     reinforcement: object,
+    footing_input: object,
     theta_deg: float,
     n_depths: int,
 ) -> object:

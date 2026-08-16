@@ -48,7 +48,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_footing_api.py](test_footing_api.py) | Focused contract tests for Phase B1 isolated-footing orchest | 0 | 13 | 357 |
 | [test_footing_detailing.py](test_footing_detailing.py) | Outcome-focused tests for the bounded footing detailing slic | 0 | 11 | 238 |
 | [test_footing_load_transfer.py](test_footing_load_transfer.py) | Focused independent arithmetic checks for IS 456 Cl. 34.4 lo | 0 | 7 | 165 |
-| [test_function_quality_checker.py](test_function_quality_checker.py) | Focused regressions for the IS 456 function-quality checker. | 0 | 2 | 55 |
+| [test_function_quality_checker.py](test_function_quality_checker.py) | Focused regressions for the IS 456 function-quality checker. | 0 | 2 | 56 |
 | [test_generated_clients.py](test_generated_clients.py) | Contract checks for the checked-in basic generated clients. | 0 | 2 | 71 |
 | [test_git_guidance_semantics.py](test_git_guidance_semantics.py) | Semantic live-guidance discovery and coherence regressions. | 0 | 10 | 362 |
 | [test_git_handoff_receipt.py](test_git_handoff_receipt.py) | Regressions for the durable, fail-closed task-to-Git handoff | 0 | 20 | 429 |
@@ -88,7 +88,7 @@ This document describes the test taxonomy and structure for the structural_engin
 
 | Folder | Files | Description |
 |--------|-------|-------------|
-| [codes/](codes/) 📦 | 43 |  |
+| [codes/](codes/) 📦 | 47 |  |
 | [data/](data/) | 5 |  |
 | [fixtures/](fixtures/) | 11 |  |
 | [helpers/](helpers/) 📦 | 2 |  |

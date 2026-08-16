@@ -48,7 +48,7 @@
 | [check_docker_config.py](check_docker_config.py) | Docker Configuration Validator. | 0 | 6 | 295 |
 | [check_docs.py](check_docs.py) | Unified documentation checker — consolidates 4 doc validatio | 0 | 6 | 675 |
 | [check_fastapi_issues.py](check_fastapi_issues.py) | FastAPI Issues AST Scanner. | 3 | 4 | 468 |
-| [check_function_quality.py](check_function_quality.py) | 12-point quality checklist for IS 456 functions. | 3 | 6 | 677 |
+| [check_function_quality.py](check_function_quality.py) | 12-point quality checklist for IS 456 functions. | 3 | 6 | 678 |
 | [check_governance.py](check_governance.py) | Unified governance checker — folder structure + compliance v | 2 | 19 | 1042 |
 | [check_instruction_drift.py](check_instruction_drift.py) | Check for content drift between .github/instructions/ and .c | 0 | 2 | 219 |
 | [check_links.py](check_links.py) | Check and fix broken internal links in markdown files. | 0 | 2 | 351 |

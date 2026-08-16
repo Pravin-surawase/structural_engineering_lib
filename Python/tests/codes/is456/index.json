@@ -21,9 +21,21 @@
       "is_package": true
     },
     {
+      "name": "combined_footing",
+      "path": "combined_footing/",
+      "file_count": 4,
+      "is_package": true
+    },
+    {
       "name": "deep_beam",
       "path": "deep_beam/",
       "file_count": 5,
+      "is_package": true
+    },
+    {
+      "name": "flat_slab",
+      "path": "flat_slab/",
+      "file_count": 7,
       "is_package": true
     },
     {
@@ -45,5 +57,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "9d3edfeca1f44aad"
+  "content_hash": "5dba650c0e4e3c6b"
 }

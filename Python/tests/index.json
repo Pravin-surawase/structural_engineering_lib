@@ -2187,7 +2187,7 @@
     {
       "name": "test_function_quality_checker.py",
       "type": "python",
-      "size_lines": 55,
+      "size_lines": 56,
       "last_updated": "2026-08-16",
       "description": "Focused regressions for the IS 456 function-quality checker.",
       "functions": [
@@ -2202,7 +2202,7 @@
           ]
         }
       ],
-      "content_hash": "f8843abdbfe1"
+      "content_hash": "9b1d503f456c"
     },
     {
       "name": "test_generated_clients.py",
@@ -4676,7 +4676,7 @@
     {
       "name": "codes",
       "path": "codes/",
-      "file_count": 43,
+      "file_count": 47,
       "is_package": true
     },
     {
@@ -4727,5 +4727,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "4f88ac39ddbccdf3"
+  "content_hash": "c8dc0e41427eb24c"
 }

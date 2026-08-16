@@ -66,10 +66,10 @@
     {
       "name": "india-2-remaining-is456-elements-plan.md",
       "type": "documentation",
-      "size_lines": 343,
+      "size_lines": 352,
       "last_updated": "2026-08-16",
       "description": "INDIA-2 finishes a practical, explicitly limited set of IS 456 reinforced concrete elements that are still missing from the library.",
-      "content_hash": "36ace92ff96b"
+      "content_hash": "3e94a09a74a9"
     },
     {
       "name": "indian-code-completion-plan.md",
@@ -77,7 +77,7 @@
       "size_lines": 129,
       "last_updated": "2026-08-16",
       "description": "This is the canonical finish plan for the repository's Indian-code program. It defines the meaning and order of INDIA-0 through INDIA-4 without claiming",
-      "content_hash": "3df0b82572e3"
+      "content_hash": "8bc33a6dba9e"
     },
     {
       "name": "is456-library-first-master-plan.md",
@@ -123,11 +123,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 118,
+      "size_lines": 122,
       "last_updated": "2026-08-16",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-16",
-      "content_hash": "bd34dbf4afb8"
+      "content_hash": "7aa29f4660c7"
     },
     {
       "name": "pre-release-checklist.md",
@@ -165,5 +165,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "44b0e179631329f4"
+  "content_hash": "18df60b554d141a1"
 }

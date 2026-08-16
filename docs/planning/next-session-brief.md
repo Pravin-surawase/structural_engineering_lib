@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Begin `INDIA-2-FOUNDATION-COMBINED-A` after the reviewed G0 head merges |
+| **Next** | Begin `INDIA-2-FOUNDATION-COMBINED-B` after the reviewed A head merges |
 
 ## Required Reading
 
@@ -87,7 +87,7 @@ and focused gates. PR #785 integrated publication and PR #786 accepted the
 family. Unequal/exterior/drop/head/opening, patterned-load, moment-transfer,
 punching-reinforcement, equivalent-frame, and FEM cases remain held.
 
-## INDIA-2-FOUNDATION-COMBINED-G0 decision result
+## INDIA-2-FOUNDATION-COMBINED G0/A result
 
 [`india-2-foundation-combined-g0-scope-evidence.md`](../verification/india-2-foundation-combined-g0-scope-evidence.md)
 records GO for exactly two identical square columns with equal concentric loads
@@ -96,7 +96,11 @@ approved uniform pressure. Its independent benchmark covers equilibrium,
 bearing, longitudinal/transverse actions, flexure/detailing, one-way and
 two-way shear, bearing/dowels, and anchorage. General/asymmetric soil
 interaction, capacity/settlement calculation, and public capability remain
-held. After the exact G0 head merges, begin only COMBINED-A.
+held. [`india-2-foundation-combined-a-analysis-evidence.md`](../verification/india-2-foundation-combined-a-analysis-evidence.md)
+records the typed eligibility, service gross and factored gross/net pressure,
+resultant alignment, whole-width critical-section actions, transverse actions,
+equilibrium closure, and fail-closed contracts. Strength and public workflow
+remain held; after the exact A head merges, begin only COMBINED-B.
 
 ## Review and gate boundary
 
@@ -106,8 +110,8 @@ once after the whole accepted INDIA-2 wave is integrated unless an
 outcome-changing repository-wide issue appears earlier.
 
 Flat-slab acceptance is complete without expanding topology or adding React.
-Combined-footing G0 is GO; COMBINED-A may begin only after its unchanged
-reviewed head merges. Strap, pile-cap, and raft remain separate later G0
+Combined-footing A is complete within the G0 case; COMBINED-B may begin only
+after its unchanged reviewed head merges. Strap, pile-cap, and raft remain separate later G0
 decisions.
 
 Cumulative qualified structural-engineering review belongs to INDIA-4 after the

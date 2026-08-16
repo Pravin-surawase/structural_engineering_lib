@@ -64,6 +64,7 @@ BARE_PARAMS = {
     "reinforcement",
     "loads",
     "geometry",
+    "footing_input",
     "config",
     "options",
     "end_condition",

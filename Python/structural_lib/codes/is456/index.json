@@ -392,6 +392,12 @@
       "is_package": true
     },
     {
+      "name": "combined_footing",
+      "path": "combined_footing/",
+      "file_count": 5,
+      "is_package": true
+    },
+    {
       "name": "common",
       "path": "common/",
       "file_count": 5,
@@ -456,5 +462,5 @@
     "list_clauses_by_category",
     "search_clauses"
   ],
-  "content_hash": "77c653a00ad8d4e8"
+  "content_hash": "a0fbd22190f0f466"
 }
