@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "task_id": "GIT-001-P8-RECONCILIATION",
+  "evidence_kind": "phase_8_adoption_and_preservation_snapshot",
+  "status": "CANDIDATE_READY_FOR_HOSTED_CLOSEOUT",
+  "observed_at_utc": "2026-08-16T14:02:22.170580+00:00",
+  "authorization_boundary": {
+    "authorized": [
+      "CREATE_FRESH_PACKET_BRANCH_AND_WORKTREE",
+      "READ_LOCAL_AND_GITHUB_STATE",
+      "UPDATE_PHASE_8_EVIDENCE_AND_CURRENT_STATUS",
+      "NORMAL_PACKET_PUBLICATION_AND_UNCHANGED_GREEN_MERGE"
+    ],
+    "prohibited": [
+      "MUTATE_PREEXISTING_BRANCH_OR_WORKTREE",
+      "RESET_OR_STASH",
+      "DELETE_BRANCH_REF_OR_WORKTREE",
+      "CLOSE_ISSUE_OR_PULL_REQUEST",
+      "CHANGE_GITHUB_SETTINGS",
+      "PUBLISH_RELEASE",
+      "START_NEXT_PACKET"
+    ],
+    "receipt_grants_authority": false
+  },
+  "baseline": {
+    "fetch_observation_window_utc": {
+      "after": "2026-08-16T13:40:14.557969Z",
+      "before": "2026-08-16T13:41:14.962417Z"
+    },
+    "origin_main_sha": "86f92ed16164a97b7cbb1edacd64a50a5a71e13d",
+    "origin_main_tree_sha": "1bb7e448fd26208ba2227b1d9e2f3f0f976ed46e",
+    "primary": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib",
+      "branch": "main",
+      "head_sha": "86f92ed16164a97b7cbb1edacd64a50a5a71e13d",
+      "tree_clean": true,
+      "equal_to_origin_main": true,
+      "decision": "RETAIN"
+    },
+    "packet_lane": {
+      "path": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-git-001-p8",
+      "branch": "codex/git-001-phase8-reconciliation",
+      "base_sha": "86f92ed16164a97b7cbb1edacd64a50a5a71e13d",
+      "derived_action": "READY_LOCAL",
+      "source_bound": true,
+      "operation": "none"
+    }
+  },
+  "phase_7_integration": [
+    {
+      "pull_request": 751,
+      "base_sha": "b91838f594a04aff1d21c43bf6f87a64710b0748",
+      "reviewed_head_sha": "dd1b0ab97d6900ee97e07d3ad66d716c576a787b",
+      "reviewed_tree_sha": "f1b38e17e932e8e84c06cca23061aec97351c699",
+      "merge_commit_sha": "6bcbd9d3e082ea41bcba1d3858fcfa7deb77fa75",
+      "merged_tree_sha": "f1b38e17e932e8e84c06cca23061aec97351c699",
+      "reviewed_tree_matches_merged_tree": true,
+      "reachable_from_origin_main": true,
+      "hosted_checks": {
+        "passed": 6,
+        "skipped": 2,
+        "failed": 0,
+        "required_gate": "SUCCESS"
+      }
+    },
+    {
+      "pull_request": 752,
+      "base_sha": "6bcbd9d3e082ea41bcba1d3858fcfa7deb77fa75",
+      "reviewed_head_sha": "0690f74504b780f7920828a7ea0cd0e0dda4149c",
+      "reviewed_tree_sha": "8f38c8d40033010a011e9eb38c9519f3347d381c",
+      "merge_commit_sha": "96f193bd45a21f05698cf64de47808a2e5f82640",
+      "merged_tree_sha": "8f38c8d40033010a011e9eb38c9519f3347d381c",
+      "reviewed_tree_matches_merged_tree": true,
+      "reachable_from_origin_main": true,
+      "hosted_checks": {
+        "passed": 5,
+        "skipped": 3,
+        "failed": 0,
+        "required_gate": "SUCCESS"
+      }
+    }
+  ],
+  "adoption_sample": [
+    {
+      "task_id": "INDIA-2-FOUNDATION-COMBINED-ACCEPTANCE",
+      "receipt_path": "docs/verification/india-2-foundation-combined-acceptance-git-handoff-receipt.json",
+      "receipt_observed_at_utc": "2026-08-16T09:29:28.309144+00:00",
+      "receipt_role": "PREPUBLICATION_TRANSITION_SNAPSHOT",
+      "receipt_current_validation": "EXPECTED_STALE_HOLD_SET_FAILURE",
+      "source_bound_session_evidence": true,
+      "immutable_audit_session_claim": "COMPLETED_WITHOUT_DURABLE_HEAD_TREE_BINDING",
+      "pull_request": 792,
+      "base_sha": "079ca22b00744ca9b01f859be0b64333b5830fcb",
+      "reviewed_head_sha": "490b10a8e567fb6af6fa0398c90f62388da555b4",
+      "reviewed_tree_sha": "873aea4cdca8aa9633b30a7c9b74138e5a73a6ce",
+      "merge_commit_sha": "8e039b112e38436fcae36326b46afa9c436fb970",
+      "merged_tree_sha": "873aea4cdca8aa9633b30a7c9b74138e5a73a6ce",
+      "reviewed_tree_matches_merged_tree": true,
+      "reachable_from_origin_main": true,
+      "hosted_checks": {
+        "passed": 6,
+        "skipped": 2,
+        "failed": 0,
+        "required_gate": "SUCCESS"
+      }
+    },
+    {
+      "task_id": "INDIA-2-FOUNDATION-STRAP-D",
+      "receipt_path": "docs/verification/india-2-foundation-strap-d-git-handoff-receipt.json",
+      "receipt_observed_at_utc": "2026-08-16T11:40:19.741865+00:00",
+      "receipt_role": "PREPUBLICATION_TRANSITION_SNAPSHOT",
+      "receipt_current_validation": "EXPECTED_STALE_HOLD_SET_FAILURE",
+      "source_bound_session_evidence": true,
+      "immutable_audit_session_claim": "COMPLETED_WITHOUT_DURABLE_HEAD_TREE_BINDING",
+      "pull_request": 797,
+      "base_sha": "e3e4b2ae5d6559472c2e6595ce05d36887b32a1c",
+      "reviewed_head_sha": "c107993b2a68cd7e92903424c89ebe3063f7f791",
+      "reviewed_tree_sha": "af2695a815bb0a71898d58e98a70109b7dd5c2b4",
+      "merge_commit_sha": "b75daa970b2976cbd5d51e9a951926a7946d5fa6",
+      "merged_tree_sha": "af2695a815bb0a71898d58e98a70109b7dd5c2b4",
+      "reviewed_tree_matches_merged_tree": true,
+      "reachable_from_origin_main": true,
+      "hosted_checks": {
+        "passed": 7,
+        "skipped": 1,
+        "failed": 0,
+        "required_gate": "SUCCESS"
+      }
+    },
+    {
+      "task_id": "INDIA-2-FOUNDATION-STRAP-ACCEPTANCE",
+      "receipt_path": "docs/verification/india-2-foundation-strap-acceptance-git-handoff-receipt.json",
+      "receipt_observed_at_utc": "2026-08-16T11:55:32.244117+00:00",
+      "receipt_role": "PREPUBLICATION_TRANSITION_SNAPSHOT",
+      "receipt_current_validation": "EXPECTED_STALE_HOLD_SET_FAILURE",
+      "source_bound_session_evidence": true,
+      "immutable_audit_session_claim": "COMPLETED_WITHOUT_DURABLE_HEAD_TREE_BINDING",
+      "pull_request": 798,
+      "base_sha": "b75daa970b2976cbd5d51e9a951926a7946d5fa6",
+      "reviewed_head_sha": "7f480cb54d898797dab3856c2cb3972ce57a110f",
+      "reviewed_tree_sha": "28698a28d96f3e5cbad26fd6964cf835cda6e1b4",
+      "merge_commit_sha": "f56e1ec312902caf98e872c77ce8b71bdbc8440e",
+      "merged_tree_sha": "28698a28d96f3e5cbad26fd6964cf835cda6e1b4",
+      "reviewed_tree_matches_merged_tree": true,
+      "reachable_from_origin_main": true,
+      "hosted_checks": {
+        "passed": 6,
+        "skipped": 2,
+        "failed": 0,
+        "required_gate": "SUCCESS"
+      }
+    },
+    {
+      "task_id": "NEXT-SESSION-GIT-ISSUES-AND-INDIA-2",
+      "receipt_path": "docs/verification/next-session-git-issues-plan-git-handoff-receipt.json",
+      "receipt_observed_at_utc": "2026-08-16T12:18:25.088076+00:00",
+      "receipt_role": "PREPUBLICATION_TRANSITION_SNAPSHOT",
+      "receipt_current_validation": "EXPECTED_STALE_HOLD_SET_FAILURE",
+      "source_bound_session_evidence": true,
+      "immutable_audit_session_claim": "COMPLETED_WITHOUT_DURABLE_HEAD_TREE_BINDING",
+      "pull_request": 799,
+      "base_sha": "f56e1ec312902caf98e872c77ce8b71bdbc8440e",
+      "reviewed_head_sha": "81368eaeed3540ad8c2d356e89e5eef8bb4efbff",
+      "reviewed_tree_sha": "ecd7fe389409e4077afb37f17aee20fe5734cf0e",
+      "merge_commit_sha": "339bad2128bc00b34a18827a8ac185ebcdb069fd",
+      "merged_tree_sha": "ecd7fe389409e4077afb37f17aee20fe5734cf0e",
+      "reviewed_tree_matches_merged_tree": true,
+      "reachable_from_origin_main": true,
+      "hosted_checks": {
+        "passed": 5,
+        "skipped": 3,
+        "failed": 0,
+        "required_gate": "SUCCESS"
+      }
+    }
+  ],
+  "historical_receipt_validation": {
+    "command": "scripts/git_handoff_receipt.py validate <receipt>",
+    "sample_count": 4,
+    "currently_valid_count": 0,
+    "shared_errors": [
+      "HOLD_SET_MISMATCH",
+      "MISSING_REQUIRED_HOLD:AUTHORIZATION_SOURCE_STALE_EVIDENCE",
+      "MISSING_REQUIRED_HOLD:AUTHORIZATION_STALE_EVIDENCE",
+      "MISSING_REQUIRED_HOLD:RETENTION_STALE_EVIDENCE"
+    ],
+    "interpretation": "Expected fail-closed behavior for time-bound transition observations; these historical files are not current remote or final integration receipts"
+  },
+  "worktree_census": {
+    "observed_at_utc": "2026-08-16T13:41:21.294477+00:00",
+    "authority": "scripts/git_state.py --json --worktrees",
+    "total_worktrees_including_packet_lane": 62,
+    "preexisting_worktrees": 61,
+    "query_failures": [],
+    "decisions": {
+      "primary": "RETAIN",
+      "e54a": "RETAIN",
+      "other_preexisting_lanes": "UNKNOWN/HOLD",
+      "packet_lane": "RETAIN_AFTER_CLOSEOUT_UNLESS_SEPARATELY_AUTHORIZED"
+    }
+  },
+  "e54a_preservation": {
+    "path": "/Users/pravinsurawase/.codex/worktrees/e54a/structural_engineering_lib",
+    "head_sha": "0fdb48edbb73114288feb8a246d6f30b80ac4d95",
+    "branch": "DETACHED",
+    "operation": "none",
+    "dirty_paths": [
+      "docs/SESSION_LOG.md"
+    ],
+    "diff_insertions": 119,
+    "diff_deletions": 7,
+    "head_blob_sha": "bcdd9edaba84e920bb01f140d9a7301ae6f40a8d",
+    "worktree_blob_sha": "2c3d7ac8277953256c7c46d12b923180a99f9c14",
+    "worktree_file_sha256": "35903e436ce2bf90752c62ef8e4ae3e162e23f7a4b6ebc97e1ddfbc0a6af3cb9",
+    "origin_main_blob_sha": "11e82c4979c0c148f8ec25c98ff9f98f4ae88494",
+    "origin_main_file_sha256": "9cf3f9c3ec0c321bd8ba25b53153f406e7dcf88be2e4c9915325b566f67c099b",
+    "material_topic": "GIT-7C1 integration and GIT-7C2 settings proposal",
+    "material_outcome_present_on_main": true,
+    "exact_dirty_blob_matches_main": false,
+    "decision": "RETAIN",
+    "reason": "The owner directed that the lane remain untouched; it is detached and dirty, and no exact owner-backed retirement evidence or target authorization exists"
+  },
+  "excel_disposition": {
+    "evidence_path": "docs/research/git-governance/GIT-001-phase-8-excel-disposition-evidence.json",
+    "classifier_observed_at_utc": "2026-08-16T14:02:22.170580+00:00",
+    "branch": "codex/excel-product-planning",
+    "head_sha": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+    "ahead_commit_count": 0,
+    "behind_commit_count": 119,
+    "remote_feature_ref": "ABSENT",
+    "pull_requests": "NONE_OPEN",
+    "attached_worktree_clean": true,
+    "disposition": "HOLD_UNKNOWN_OWNER",
+    "reason_codes": [
+      "OWNER_UNKNOWN",
+      "RETENTION_EVIDENCE_UNKNOWN"
+    ],
+    "next_action": "Hold until the repository owner names whether the external Excel planning task remains active and supplies an exact retention decision"
+  },
+  "adoption_decision": {
+    "git_state_used": true,
+    "source_binding_used": true,
+    "hosted_exact_head_checks_used": true,
+    "post_merge_tree_equivalence_used": true,
+    "immutable_review_claimed": true,
+    "immutable_review_durably_identity_bound": false,
+    "transition_receipts_mistaken_for_permanent_closeout_proof": true,
+    "outcome": "ADOPTED_WITH_CLOSEOUT_EVIDENCE_GUARD",
+    "maintenance_rule": "Use transition receipts only for their observed decision boundary; record final hosted and merge identity in a fresh successor closeout observation and never rewrite a historical receipt to appear current"
+  },
+  "mutation_summary": {
+    "created_packet_branch_and_worktree": true,
+    "fetched_origin_main_without_prune": true,
+    "preexisting_branches_mutated": 0,
+    "preexisting_worktrees_mutated": 0,
+    "preexisting_dirty_paths_mutated": 0,
+    "stashes_mutated": 0,
+    "github_settings_mutated": 0,
+    "issues_or_existing_pull_requests_mutated": 0,
+    "cleanup_or_deletion_actions": 0
+  },
+  "next_packet": "DOC-FRONTMATTER-CONTRACT"
+}

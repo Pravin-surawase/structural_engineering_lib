@@ -13,23 +13,24 @@ doc_type: spec
 ## 1. Outcome and stop boundary
 
 Combined-footing and strap-footing G0/A-D plus focused family acceptance are
-integrated within their recorded bounded cases. The next session starts with
-Git and confirmed issue reconciliation before any new foundation decision.
+integrated within their recorded bounded cases. GIT-001 Phase 8 closes through
+its adoption packet; the next session starts with the confirmed frontmatter
+contract/data repair before any new foundation decision.
 
-This document is a plan only. Primary `main` was separately cleaned and
-fast-forwarded before this refresh. Publication does not authorize any further
-primary mutation, branch/worktree retirement, dependency-PR closure, pile-cap
-or raft implementation, release work, or professional approval. Stop after
-this planning packet merges.
+This document remains the sequence plan. Phase 8 execution is recorded in
+[`GIT-001-phase-8-adoption-closeout.md`](../research/git-governance/GIT-001-phase-8-adoption-closeout.md).
+Its publication does not authorize primary mutation, branch/worktree
+retirement, dependency-PR closure, pile-cap or raft implementation, release
+work, or professional approval.
 
 Execute later work in this order, one fresh lane and one active writer at a
 time:
 
-1. `GIT-001-P8-RECONCILIATION` — reconcile the completed GIT-7E work, prove
-   current adoption, classify retained lanes, and obtain any required owner
-   decisions without cleanup.
-2. `DOC-FRONTMATTER-CONTRACT` — repair the JSON-mode exit-code defect and the
-   eight currently invalid frontmatter records.
+1. `GIT-001-P8-RECONCILIATION` — complete on merge of its unchanged adoption
+   packet; primary/e54a are retained and all other pre-existing lanes remain
+   `UNKNOWN/HOLD` without cleanup.
+2. `DOC-FRONTMATTER-CONTRACT` — next; repair the JSON-mode exit-code defect and
+   the eight currently invalid frontmatter records.
 3. `INDIA-2-TRUTH-HYGIENE-38-2` — source-audit every live `38.2` consumer,
    correct provenance, and change arithmetic only if an independently checked
    benchmark proves an outcome defect.
@@ -95,6 +96,10 @@ Every fact above must be refreshed in the executing packet. A dated plan is not
 remote-freshness or mutation authority.
 
 ## 3. Packet 1 — GIT-001 Phase 8 reconciliation
+
+**Status:** complete on merge of the unchanged
+[Phase 8 adoption packet](../research/git-governance/GIT-001-phase-8-adoption-closeout.md).
+The contract below is retained as execution evidence, not as the next action.
 
 ### Objective
 
@@ -351,44 +356,46 @@ benchmark means `HOLD`, not an improvised model.
 
 ## 7. Next-agent execution card
 
-The next agent starts and finishes only `GIT-001-P8-RECONCILIATION`.
+The next agent starts and finishes only `DOC-FRONTMATTER-CONTRACT`.
 
 ### First 15 minutes
 
 1. Fetch `origin/main`; record the exact commit and tree.
-2. Create `codex/git-001-phase8-reconciliation` from that ref; never write on
-   primary or reuse a retained lane.
-3. Run the four required start commands in Section 3 and require
+2. Create `codex/doc-frontmatter-contract` from that ref; never write on
+   primary or reuse Phase 8 or another retained lane.
+3. Run the compact brief's four start commands and require
    `source_bound=true` plus `READY_LOCAL`.
-4. Read only this plan, the compact next-session brief, the GIT-001 index and
-   disposition plan, and the four adoption-sample receipts. Do not read the
-   full 9,000-line session log unless one exact fact is missing.
-5. Capture one census and one remote/PR evidence timestamp. Build a short
-   anomaly list before opening individual lane histories.
+4. Read only this plan, the compact brief, `scripts/check_docs.py`, the nearest
+   script-level test layout discovered with `rg --files`, and the eight named
+   invalid records.
+5. Reproduce JSON exit `0` with eight invalid records and freeze the exact
+   payload plus the text-mode result before editing.
 
 ### Work loop
 
-1. Freeze the outcome-changing questions and exact paths before edits.
-2. Batch independent read-only commands, but keep all shared documents,
-   receipts, indexes, and Git operations under one writer.
-3. Update the Phase 8 evidence/status/session/brief once after facts stabilize.
-4. Generate maintained indexes once, after `--dry-run` or targeted discovery.
-5. Run focused tests while editing, one quick gate on the frozen candidate, one
-   content commit, only the required versioned-receipt follow-up, one push, and
-   one hosted-check cycle.
-6. Merge only the unchanged reviewed head; verify the squash tree and refreshed
-   `origin/main`; retain the lane unless deletion is separately authorized.
+1. Freeze the checker, focused tests, and exactly eight record paths before
+   edits; the 60 permitted legacy records are non-goals.
+2. Make JSON mode return the same pass/fail result as text mode without changing
+   its JSON payload.
+3. Add direct valid/invalid exit-code regressions and give only the eight named
+   records schema-valid lifecycle/doc types without rewriting evidence.
+4. Generate maintained indexes once after human-owned content freezes.
+5. Run focused tests, live JSON/text replay, links/indexes, one quick gate, one
+   candidate review, one push, and one hosted-check cycle.
+6. Merge only the unchanged reviewed head, verify squash-tree equality and
+   refreshed `origin/main`, retain the lane, and stop.
 
 ### Stop and handoff
 
-Stop after Phase 8 merges. Name `DOC-FRONTMATTER-CONTRACT` as the sole next
-packet. Do not use remaining time to start its fix in the Phase 8 lane.
+Stop after `DOC-FRONTMATTER-CONTRACT` merges. Name
+`INDIA-2-TRUTH-HYGIENE-38-2` as the sole next packet. Do not use remaining time
+to start Clause 38.2 work in the frontmatter lane.
 
 ## 8. Efficiency and speed controls
 
 - **One packet, one context:** use the compact brief and exact packet files;
-  avoid broad historical searches after the anomaly list is frozen.
-- **No subagent by default:** the next packet is mostly evidence reconciliation.
+  avoid broad historical searches after the eight-path list is frozen.
+- **No subagent by default:** the next packet is a bounded contract/data repair.
   Do not spawn one unless the owner explicitly requests delegation; the parent
   performs the review and never duplicates orientation or shared-file work.
 - **One candidate ceiling:** review the complete diff before commit. If audit

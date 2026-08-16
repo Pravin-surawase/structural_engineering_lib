@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "remote_freshness": {
+    "status": "OBSERVED_AT",
+    "observed_at_utc": "2026-08-16T14:01:46Z",
+    "default_ref": "origin/main",
+    "default_sha": "86f92ed16164a97b7cbb1edacd64a50a5a71e13d"
+  },
+  "authority_provenance": {
+    "source_task": "GIT-001-P8-RECONCILIATION",
+    "scope": "Read-only Phase 8 classification of the only retained lane whose current no-unique-commit evidence could otherwise change disposition",
+    "authorization_boundary": "No deletion, branch closure, ref removal, worktree removal, prune, cleanup, synchronization, or proposal-side authorization"
+  },
+  "branches": {
+    "codex/excel-product-planning": {
+      "owner": null,
+      "remote_ref": {
+        "status": "ABSENT",
+        "ref": "refs/heads/codex/excel-product-planning",
+        "sha": null
+      },
+      "pull_requests": {
+        "status": "NONE_OPEN",
+        "observed_at_utc": "2026-08-16T14:01:46Z",
+        "head_sha": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+        "items": []
+      },
+      "retention": {
+        "status": "UNKNOWN",
+        "observed_at_utc": "2026-08-16T14:01:46Z",
+        "head_sha": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
+        "reason": "Git and GitHub prove no unique commit, remote feature ref, or pull request, but do not prove whether the external Excel planning task still needs the attached worktree"
+      }
+    }
+  }
+}

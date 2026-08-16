@@ -149,6 +149,15 @@ identity summary into `next-session-brief.md`, and fails closed if the receipt
 is missing or invalid. The full JSON remains the audit contract; prose and PR
 numbers alone are not a durable Git receipt.
 
+A task-to-Git handoff receipt is a time-bound transition observation, not a
+permanent final-merge receipt. Its external authorization, retention, remote,
+review, and check evidence is expected to become stale and fail closed later;
+never rewrite the historical file merely to make it validate as current. A
+fresh successor closeout observation must bind the final reviewed head, hosted
+checks, merge commit, and merged tree. This separation is unavoidable for a
+squash merge because the unchanged pre-merge candidate cannot know its future
+merge identity.
+
 ## Verification before publication
 
 - Follow the compact audited-integration gates above when independent acceptance
