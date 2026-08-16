@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-16
-**Files:** 73
+**Files:** 76
 
 ## Config Files
 
@@ -30,6 +30,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [india-2-flat-a-git-handoff-source-evidence.json](india-2-flat-a-git-handoff-source-evidence.json)
 - [india-2-flat-b-git-handoff-receipt.json](india-2-flat-b-git-handoff-receipt.json)
 - [india-2-flat-b-git-handoff-source-evidence.json](india-2-flat-b-git-handoff-source-evidence.json)
+- [india-2-flat-c-git-handoff-receipt.json](india-2-flat-c-git-handoff-receipt.json)
+- [india-2-flat-c-git-handoff-source-evidence.json](india-2-flat-c-git-handoff-source-evidence.json)
 - [india-2-flat-g0-git-handoff-receipt.json](india-2-flat-g0-git-handoff-receipt.json)
 - [india-2-flat-g0-git-handoff-source-evidence.json](india-2-flat-g0-git-handoff-source-evidence.json)
 - [india-2-plan-git-handoff-receipt.json](india-2-plan-git-handoff-receipt.json)
@@ -67,6 +69,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [india-2-deep-g0-scope-evidence.md](india-2-deep-g0-scope-evidence.md) |  | supported, solid rectangular, top-loaded deep beam without o | 166 |
 | [india-2-flat-a-geometry-evidence.md](india-2-flat-a-geometry-evidence.md) |  | FLAT-A implements the typed pure-math foundation for the G0- | 92 |
 | [india-2-flat-b-moment-evidence.md](india-2-flat-b-moment-evidence.md) |  | FLAT-B adds only the gravity moment calculation approved by  | 80 |
+| [india-2-flat-c-reinforcement-evidence.md](india-2-flat-c-reinforcement-evidence.md) |  | FLAT-C consumes the FLAT-A/B panel and moment contracts and  | 85 |
 | [india-2-flat-g0-scope-evidence.md](india-2-flat-g0-scope-evidence.md) |  | interior panel in an equal-span orthogonal grid, designed by | 215 |
 | [india-2-wall-a-axial-kernel-evidence.md](india-2-wall-a-axial-kernel-evidence.md) |  | WALL-A implements the pure IS 456 layer for the accepted Cla | 83 |
 | [india-2-wall-b-reinforcement-evidence.md](india-2-wall-b-reinforcement-evidence.md) |  | WALL-B adds one pure IS 456 provided-reinforcement check to  | 82 |

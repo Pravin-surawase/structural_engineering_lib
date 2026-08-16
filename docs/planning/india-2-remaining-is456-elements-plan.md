@@ -317,9 +317,9 @@ authorized programs.
 
 ## 9. Exact next action
 
-Implement `INDIA-2-FLAT-C` next from the integrated FLAT-A/B contracts. Do not
-expand the topology while adding bounded flexure, minimum/provided straight-bar
-reinforcement, detailing, and the reviewed no-drop span/depth comparison. The owner's
+Implement `INDIA-2-FLAT-D` next from the integrated FLAT-A-C contracts. Do not
+expand the topology while adding the centred square interior-column punching
+demand, no-shear-reinforcement capacity, and redesign boundary. The owner's
 2026-08-16 request activates the remaining INDIA-2 families subject to each
 family's own G0 returning GO. No G0 may be bypassed, and a HOLD remains a
 truthful non-implementation outcome.

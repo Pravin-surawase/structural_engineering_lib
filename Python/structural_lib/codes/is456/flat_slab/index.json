@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 4,
+  "file_count": 5,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 42,
+      "size_lines": 56,
       "last_updated": "2026-08-16",
       "description": "Bounded IS 456 Clause 31 interior flat-slab contracts.",
-      "content_hash": "d16b471ca910"
+      "content_hash": "8d0fb9b40f8e"
     },
     {
       "name": "geometry.py",
@@ -114,6 +114,61 @@
         "_SOURCE_REFS"
       ],
       "content_hash": "70e05d19ff46"
+    },
+    {
+      "name": "reinforcement.py",
+      "type": "python",
+      "size_lines": 463,
+      "last_updated": "2026-08-16",
+      "description": "Bounded flexure, provided bars, and serviceability for flat slabs.",
+      "classes": [
+        {
+          "name": "FlatSlabDirectionDetailingInput",
+          "description": "Caller-provided straight bars and support-top extension in one direction."
+        },
+        {
+          "name": "FlatSlabDetailingInput",
+          "description": "Bounded FLAT-C input with explicit bars and retained review evidence."
+        },
+        {
+          "name": "FlatSlabRegionReinforcementResult",
+          "description": "Flexure and provided-bar result for one design region.",
+          "public_methods": [
+            "is_adequate"
+          ]
+        },
+        {
+          "name": "FlatSlabDirectionReinforcementResult",
+          "description": "Four design regions and support-top extension in one direction.",
+          "public_methods": [
+            "is_adequate"
+          ]
+        },
+        {
+          "name": "FlatSlabReinforcementResult",
+          "description": "Both-direction FLAT-C flexure/detailing and reviewed L/d comparison.",
+          "public_methods": [
+            "is_reinforcement_and_detailing_adequate",
+            "is_span_depth_satisfied"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "design_regular_interior_flat_slab_reinforcement",
+          "description": "Design/check FLAT-C regions and reviewed L/d for the frozen panel.",
+          "params": [
+            "design_input"
+          ]
+        }
+      ],
+      "constants": [
+        "_SOURCE_REFS",
+        "_BASE_CONTINUOUS_SPAN_DEPTH_LIMIT",
+        "_FLAT_SLAB_SPAN_DEPTH_FACTOR",
+        "_SUPPORT_TOP_EXTENSION_FACTOR"
+      ],
+      "content_hash": "c30100fd2117"
     }
   ],
   "subfolders": [],
@@ -121,9 +176,12 @@
   "public_api": [
     "FlatSlabAnalysisMethod",
     "FlatSlabContractError",
+    "FlatSlabDetailingInput",
     "FlatSlabDirection",
+    "FlatSlabDirectionDetailingInput",
     "FlatSlabDirectionGeometry",
     "FlatSlabDirectionMoments",
+    "FlatSlabDirectionReinforcementResult",
     "FlatSlabGeometryResult",
     "FlatSlabGravityLoad",
     "FlatSlabGridGeometry",
@@ -131,8 +189,11 @@
     "FlatSlabMomentResult",
     "FlatSlabPanelInput",
     "FlatSlabPanelLocation",
+    "FlatSlabRegionReinforcementResult",
+    "FlatSlabReinforcementResult",
     "calculate_regular_interior_flat_slab_moments",
+    "design_regular_interior_flat_slab_reinforcement",
     "resolve_regular_interior_flat_slab_geometry"
   ],
-  "content_hash": "fbf7a90ddc05c479"
+  "content_hash": "c9dec716c1bbda32"
 }

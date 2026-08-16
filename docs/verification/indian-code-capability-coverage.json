@@ -288,11 +288,11 @@
         }
       ],
       "registration_summary": {
-        "known_references": 161,
-        "registered_known_references": 84,
-        "metadata_only_references": 77,
+        "known_references": 166,
+        "registered_known_references": 88,
+        "metadata_only_references": 78,
         "registration_only_references": 0,
-        "registration_pct": 52.2
+        "registration_pct": 53.0
       },
       "references": [
         {
@@ -356,6 +356,7 @@
           "functions": [
             "structural_lib.codes.is456.beam.serviceability.check_deflection_span_depth",
             "structural_lib.codes.is456.beam.serviceability.get_long_term_deflection_factor",
+            "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement",
             "structural_lib.codes.is456.slab.serviceability.check_slab_span_depth_serviceability",
             "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
           ]
@@ -597,6 +598,7 @@
           "category": "detailing",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
             "structural_lib.codes.is456.slab.one_way_detailing.check_simply_supported_one_way_slab_detailing",
             "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
@@ -661,6 +663,7 @@
           "category": "slabs",
           "registration_status": "REGISTERED",
           "functions": [
+            "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
             "structural_lib.codes.is456.slab.one_way_detailing.check_simply_supported_one_way_slab_detailing",
             "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
@@ -824,7 +827,8 @@
           "category": "slabs",
           "registration_status": "REGISTERED",
           "functions": [
-            "structural_lib.codes.is456.flat_slab.geometry.resolve_regular_interior_flat_slab_geometry"
+            "structural_lib.codes.is456.flat_slab.geometry.resolve_regular_interior_flat_slab_geometry",
+            "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement"
           ]
         },
         {
@@ -1006,6 +1010,48 @@
           "category": "footings",
           "registration_status": "METADATA_ONLY",
           "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.7",
+          "reference": "31.7",
+          "reference_type": "clause",
+          "title": "Flat Slab Reinforcement",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.7.1",
+          "reference": "31.7.1",
+          "reference_type": "clause",
+          "title": "Flat Slab Bar Spacing",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31.7.2",
+          "reference": "31.7.2",
+          "reference_type": "clause",
+          "title": "Flat Slab Reinforcement Area",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31.7.3",
+          "reference": "31.7.3",
+          "reference_type": "clause",
+          "title": "Minimum Length of Flat Slab Reinforcement",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement"
+          ]
         },
         {
           "reference_id": "IS456:2000:32.1",
@@ -1351,6 +1397,7 @@
             "structural_lib.codes.is456.beam.flexure.design_singly_reinforced",
             "structural_lib.codes.is456.column.pmm.experimental_pmm_interaction_surface",
             "structural_lib.codes.is456.column.pmm.pm_interaction_slice_for_layout",
+            "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement",
             "structural_lib.codes.is456.slab.one_way.design_simply_supported_one_way_slab_flexure",
             "structural_lib.codes.is456.slab.one_way_continuous.design_continuous_one_way_slab_flexure",
             "structural_lib.codes.is456.slab.two_way.design_supported_interior_two_way_slab_flexure",
@@ -1881,6 +1928,17 @@
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.common.stress_blocks.steel_stress_from_strain_5point"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:Figure 16",
+          "reference": "Figure 16",
+          "reference_type": "figure",
+          "title": "Minimum Reinforcement Extensions in Flat Slabs",
+          "category": "figure",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.reinforcement.design_regular_interior_flat_slab_reinforcement"
           ]
         },
         {

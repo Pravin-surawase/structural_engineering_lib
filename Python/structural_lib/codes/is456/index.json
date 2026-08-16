@@ -40,7 +40,7 @@
         "figures",
         "annexures"
       ],
-      "content_hash": "74e5832b0d36"
+      "content_hash": "8dd3d7285be0"
     },
     {
       "name": "compliance.py",
@@ -406,7 +406,7 @@
     {
       "name": "flat_slab",
       "path": "flat_slab/",
-      "file_count": 6,
+      "file_count": 7,
       "is_package": true
     },
     {
@@ -456,5 +456,5 @@
     "list_clauses_by_category",
     "search_clauses"
   ],
-  "content_hash": "e396b972aa5809fd"
+  "content_hash": "997648946257aa60"
 }

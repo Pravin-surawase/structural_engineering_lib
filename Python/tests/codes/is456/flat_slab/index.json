@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 3,
+  "file_count": 4,
   "files": [
     {
       "name": "__init__.py",
@@ -112,9 +112,44 @@
         }
       ],
       "content_hash": "aaa495c2609a"
+    },
+    {
+      "name": "test_reinforcement.py",
+      "type": "python",
+      "size_lines": 229,
+      "last_updated": "2026-08-16",
+      "description": "INDIA-2-FLAT-C flexure, provided-bar, and serviceability tests.",
+      "functions": [
+        {
+          "name": "test_frozen_flexural_steel_and_provided_bars_in_both_directions"
+        },
+        {
+          "name": "test_reviewed_no_drop_span_depth_benchmark_and_held_checks"
+        },
+        {
+          "name": "test_inadequate_provided_area_spacing_and_extension_return_false"
+        },
+        {
+          "name": "test_span_depth_exceedance_is_reported_without_claiming_direct_deflection"
+        },
+        {
+          "name": "test_held_detailing_or_review_boundaries_fail_closed",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_clause_and_source_provenance_is_exact"
+        },
+        {
+          "name": "test_non_detailing_input_fails_closed"
+        }
+      ],
+      "content_hash": "a38eb3d80386"
     }
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "c597c202c80e43a9"
+  "content_hash": "a4308bc8a0534f46"
 }
