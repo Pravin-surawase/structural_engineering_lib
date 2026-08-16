@@ -12,25 +12,29 @@ doc_type: spec
 
 ## 1. Immediate objective and stop boundary
 
-COMBINED-C/D are integrated and focused family acceptance binds the unchanged
-G0/A-D source, benchmark, public workflow, transport, and truthful capability
-surface without adding feature behavior. The next session starts only after
-the acceptance candidate merges unchanged with required checks green. Its only
-packet is decision-only `INDIA-2-FOUNDATION-STRAP-G0`.
+COMBINED-C/D and focused family acceptance are integrated. STRAP-G0 returned
+GO for one source-bound property-line two-footing model with equal uniform net
+pressure, a straight no-soil-contact strap, explicit service/factored actions,
+and externally verified footing slabs. The next packet is
+`INDIA-2-FOUNDATION-STRAP-A` after G0 merges unchanged with required checks
+green.
 
-Do not implement strap footing or begin pile-cap, raft, broad Python, full
-30-check, React, release, cleanup, or professional-approval work in STRAP-G0.
+Finish the bounded strap sequence A -> B -> C -> D -> focused acceptance, one
+fresh lane and focused gate at a time. Stop before pile-cap G0. Do not add
+automatic footing strength/sizing, raft, broad Python, full 30-check, React,
+release, cleanup, or professional-approval work inside the strap sequence.
 
 The complete remaining order is:
 
 1. `COMBINED-C` — typed public Python workflow.
 2. `COMBINED-D` — thin FastAPI transport and truthful capability publication.
 3. `COMBINED-ACCEPTANCE` — focused cumulative family acceptance, complete.
-4. Separate `STRAP-G0`, `PILE-CAP-G0`, and `RAFT-G0` decisions, in that order.
-5. Implement only owner-accepted `GO` cases; preserve each `HOLD` with a
-   blocker and reactivation condition.
-6. `INDIA-2-TRUTH-HYGIENE` — resolve the two recorded clause-registry defects.
-7. `INDIA-2-CLOSEOUT` — broad Python, full 30-check, evidence index, and exact
+4. `STRAP-G0` -> A -> B -> C -> D -> focused family acceptance.
+5. Separate `PILE-CAP-G0` and `RAFT-G0` decisions, preserving any accepted
+   `HOLD` with a blocker and reactivation condition.
+6. Implement only owner-accepted later `GO` cases.
+7. `INDIA-2-TRUTH-HYGIENE` — resolve the two recorded clause-registry defects.
+8. `INDIA-2-CLOSEOUT` — broad Python, full 30-check, evidence index, and exact
    integrated-tree reconciliation.
 
 ## 2. Verified inherited state
@@ -223,11 +227,12 @@ gate. Do not add another topology or implementation during acceptance.
 
 ## 7. Remaining foundation decisions
 
-After combined acceptance, start separate decision-only packets in this order:
+After combined acceptance, STRAP-G0 returned GO and activated its A/B/C/D/
+acceptance sequence. Finish that bounded sequence before starting the remaining
+decision-only packets in this order:
 
-1. `INDIA-2-FOUNDATION-STRAP-G0`;
-2. `INDIA-2-FOUNDATION-PILE-CAP-G0`;
-3. `INDIA-2-FOUNDATION-RAFT-G0`.
+1. `INDIA-2-FOUNDATION-PILE-CAP-G0`;
+2. `INDIA-2-FOUNDATION-RAFT-G0`.
 
 Each G0 must search existing code, bind controlled/authoritative sources,
 freeze one useful supported case and independent benchmark, list exclusions,
@@ -240,9 +245,10 @@ If `HOLD`, record the missing source/model/benchmark, retained public hold, and
 exact reactivation condition. An owner-approved hold closes the INDIA-2
 administrative obligation truthfully; it is not implementation.
 
-Likely high-risk distinctions to resolve at G0 are strap-beam soil-contact and
-compatibility assumptions, pile reaction/nodal/bearing and companion-code
-boundaries, and raft soil-structure/FEM requirements. Do not guess them.
+STRAP-G0 resolved strap-beam soil contact and compatibility only for its frozen
+property-line model. High-risk distinctions still requiring later decisions
+are pile reaction/nodal/bearing and companion-code boundaries, plus raft soil-
+structure/FEM requirements. Do not guess them.
 
 ## 8. Recorded truth defects — required later packet
 

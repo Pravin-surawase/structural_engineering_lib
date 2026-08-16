@@ -109,7 +109,9 @@ _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
         {
             "family": "strap_footing",
             "claim": "Strap-footing design is not implemented.",
-            "limitations": ["A distinct analysis model is required."],
+            "limitations": [
+                "G0 accepted one bounded property-line strap model; implementation and publication remain pending."
+            ],
         },
         {
             "family": "raft_foundation",

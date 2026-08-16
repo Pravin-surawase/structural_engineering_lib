@@ -5,6 +5,157 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FOUNDATION-STRAP-G0
+
+**Agent:** Codex (`structural-engineer`, sole writer; one bounded independent
+exact-head audit after the candidate is committed)
+
+**Branch:** `codex/india-2-foundation-strap-g0` from merged combined-family
+acceptance `8e039b112e38436fcae36326b46afa9c436fb970`, tree
+`873aea4cdca8aa9633b30a7c9b74138e5a73a6ce`
+
+**Git handoff receipt:** `docs/verification/india-2-foundation-strap-g0-git-handoff-receipt.json`
+
+**Focus:** Decide and independently benchmark exactly one property-line strap-
+footing analysis/strength boundary without adding calculation code. Preserve
+the dirty primary and retained `e54a` worktrees. Pile-cap, raft, React, broad
+Python, and the full 30-check gate remain outside G0.
+
+### Summary
+
+- Returned GO for two separate rectangular footings with equal uniform net
+  pressure, one exterior eccentric and one interior centred column, and one
+  straight prismatic no-soil-contact strap with explicit self-weight action.
+- Froze `INDIA-2-STRAP-HAND-01`, covering exact vertical/moment equilibrium,
+  gross service bearing, service/factored clear-strap actions, rectangular-
+  beam flexure, shear/stirrups, minimum/side-face steel, spacing, cover, and
+  anchorage.
+- Kept both footing slabs, column/strap transfer regions, soil capacity,
+  settlement, and connection design as explicit external prerequisites. Public
+  capability remains held until STRAP-A-D and focused acceptance pass.
+- Activated the A -> B -> C -> D -> acceptance sequence with focused packet
+  gates. Broad Python and the 30-check repository gate remain deferred to the
+  final INDIA-2 integration boundary unless a repository-wide failure forces
+  either earlier.
+
+### Issues encountered
+
+- The controlled IS 456 source files were absent from the fresh linked
+  worktree, and the first extraction command could not find `pdftotext` on the
+  system path. A later rendering command also guessed the bundled Poppler
+  executable under `bin/fallback`, where it did not exist.
+- A source-orientation command guessed old flat module paths
+  `codes/is456/combined_footing.py` and `codes/is456/footing.py` even though the
+  current implementations are package directories.
+- The first benchmark helper command imported a nonexistent
+  `calculate_moment_capacity` symbol from the beam flexure module.
+- The held manifest limitation said a distinct strap model was still required
+  after the G0 source/model/benchmark decision had resolved that question.
+- The first manifest refresh omitted the required `--write` mode and only
+  printed generated JSON; its following check correctly reported stale bytes.
+  The same command block guessed a nonexistent `scripts/tests/` test path.
+- A focused pytest command then guessed a nonexistent
+  `Python/tests/test_india2_task_state.py` path, so pytest stopped before
+  collecting the valid manifest file in that invocation.
+- The optional broad documentation checker reports five invalid frontmatter
+  status values already present on `origin/main`, including historical family
+  evidence. None is in the G0-owned new document.
+- The first session-end check reported the existing Git handoff receipt as
+  missing even though its JSON file was present and valid.
+- The first immutable audit proved the documented `2784.506410 mm2` required
+  top steel had only `915.459463 kN m` exact resistance against the stated
+  `916.6875 kN m` demand.
+- The audit's first replacement value, `2273.474873 mm2`, was also inconsistent:
+  back-substitution gives only `764.547169 kN m`. The auditor retracted it after
+  the parent supplied the exact maintained-helper result.
+
+### Root causes and resolutions
+
+- Root cause: `private_sources` is intentionally gitignored and retained only
+  in the primary checkout, while the system shell does not expose Poppler.
+  The bundled runtime stores `pdftoppm` under `dependencies/bin/override`, not
+  the guessed fallback directory. Resolution: use the absolute retained-source
+  paths, the bundled `pdfplumber` runtime for text extraction, and the exact
+  discovered `bin/override/pdftoppm` path for visual review. Evidence: the base
+  source pages containing Clauses 34.1-34.5 and all three Amendment 6 pages
+  were extracted and visually checked; the amendment contains no Clause 34
+  change.
+  ⚠️ TERMINAL ISSUE: source-relative extraction and guessed Poppler paths
+  failed -> absolute retained-source paths plus the discovered bundled runtime
+  completed extraction and rendering.
+- Root cause: the orientation command retained the old single-file mental
+  model after `rg --files` had already shown package directories. Resolution:
+  inspect `combined_footing/{models,analysis,strength}.py` and the individual
+  `footing/` modules directly. Evidence: the maintained typed boundaries and
+  reusable formula interfaces were read from their actual paths.
+  ⚠️ TERMINAL ISSUE: guessed flat module paths did not exist -> targeted package
+  paths completed source inspection.
+- Root cause: a capacity helper name was assumed before checking the module's
+  `__all__` and public functions. The fallback then used the legacy beam
+  `calculate_ast_required` helper, whose hard-coded `4.6` approximation and
+  stale `38.2` identity do not exactly solve the stress-block equilibrium that
+  G0 promised. Resolution: use the maintained exact rectangular stress-block
+  helper already shared by slab and combined-footing strength, and independently
+  substitute both required and provided areas back into
+  `Mu = 0.87 fy Ast[d - 0.42 xu]`. Evidence: the physical root is
+  `2788.774500 mm2` at `xu = 224.651279 mm`, giving exactly
+  `916.6875 kN m`; six 25 mm bars provide `2945.243113 mm2` and
+  `961.337320 kN m` resistance.
+  ⚠️ TERMINAL ISSUE: nonexistent `calculate_moment_capacity` import stopped the
+  first helper command -> inspected exports, then replaced the approximate
+  fallback with the maintained exact stress-block helper after immutable audit.
+- Root cause: deterministic manifest validation previously proved the generated
+  bytes, not that a human-held limitation remained semantically current after a
+  decision packet. Resolution: change only the held limitation to say G0
+  accepted one bounded model while implementation/publication remain pending,
+  then regenerate and semantically assert the held entry. Evidence: focused
+  manifest generation/tests and parity remain deterministic without promoting
+  strap support.
+- Root cause: the generator's default mode is preview-only, and the test path
+  was inferred instead of discovered. Resolution: inspect `--help`, run the
+  explicit `--write` mode, and locate the maintained test with `rg --files`.
+  Evidence: `--check`, all seven manifest tests, and a direct semantic assertion
+  of the held strap entry pass at `12 supported / 9 held`.
+  ⚠️ TERMINAL ISSUE: preview-only generation left the manifest stale and the
+  guessed test path did not exist -> explicit `--write` plus
+  `Python/tests/test_indian_code_manifest.py` passed.
+- Root cause: no maintained INDIA-2 task-state pytest file exists; the filename
+  was guessed instead of discovered. Resolution: enumerate maintained tests
+  first and run the seven manifest tests plus direct plan/task semantic
+  assertions. Evidence: manifest tests pass and the quick gate verifies the
+  current brief, links, scripts, Git state, imports, and CLI smoke.
+  ⚠️ TERMINAL ISSUE: guessed `test_india2_task_state.py` stopped collection ->
+  discovered maintained tests and reran the valid focused selection.
+- Confirmed root cause: five historical documents use narrative completion
+  words where the maintained frontmatter schema permits lifecycle values only;
+  exact `origin/main` inspection proves the mismatch predates G0. No G0 fix is
+  made because changing historical wall/deep/flat/combined receipts would not
+  change the strap decision outcome and violates the surgical packet boundary.
+  Reactivate at the final INDIA-2 documentation/30-check closeout, where all
+  five exact targets can be reconciled together. Evidence: every G0-touched
+  frontmatter validates independently, all 1,258 internal links and touched
+  indexes pass, and the required quick documentation subset is green.
+- Root cause: session receipt discovery uses a single-line Markdown pattern,
+  while the G0 log placed the receipt path on the following line. Resolution:
+  keep the label and repository-relative path on one line. Evidence: the rerun
+  finds and validates the exact receipt; no handoff check remains missing.
+- Root cause: G0's prose correctly warned STRAP-B not to rely on the stale
+  `38.2` helper, but the benchmark-generation command itself still used that
+  approximate helper and asserted its output without substituting the required
+  area back into the exact capacity equation. Resolution: correct the frozen
+  value to the exact physical quadratic root and add the back-substitution to
+  the immutable audit replay. Evidence: exact required capacity equals demand
+  to floating tolerance and provided capacity remains greater than demand; the
+  repaired head receives a new independent exact-head audit.
+- Root cause: the audit's first quadratic was formed incorrectly and had not
+  been back-substituted before reporting its root. Resolution: require both the
+  independently derived physical root and direct moment-capacity substitution,
+  then obtain the auditor's explicit corrected confirmation. Evidence: parent
+  and auditor now agree on `2788.774499810215 mm2`, `xu = 224.651279151378 mm`,
+  and `916.687500 kN m` exact resistance.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-FOUNDATION-COMBINED Focused Family Acceptance
 
 **Agent:** Codex (`reviewer`, sole writer; one bounded independent exact-head
