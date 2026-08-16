@@ -18,6 +18,7 @@ USAGE:
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import hashlib
 import json
 import os
@@ -51,6 +52,7 @@ FOOTING_RELEASE_INCLUSION = (
 RELEASE_PUBLICATION_AUTHORIZATION = (
     REPO_ROOT / "docs" / "verification" / "release-publication-authorization.json"
 )
+RELEASE_VERIFICATION_ROOT = REPO_ROOT / "docs" / "verification"
 PYPROJECT = REPO_ROOT / "Python" / "pyproject.toml"
 FASTAPI_INIT = REPO_ROOT / "fastapi_app" / "__init__.py"
 REACT_PACKAGE = REPO_ROOT / "react_app" / "package.json"
@@ -76,6 +78,15 @@ _REQUIRED_NORMALIZED_CONTENT = {
     "figure-derived values",
     "lookup",
     "interpolation",
+}
+
+_GIT_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+_POST_REVIEW_EVIDENCE_PATHS = {
+    "docs/index.json",
+    "docs/index.md",
+    "docs/verification/index.json",
+    "docs/verification/index.md",
 }
 
 
@@ -174,16 +185,21 @@ def _release_publication_authorization_errors(
     version: str,
     target: str,
     path: Path | None = None,
+    *,
+    repo_root: Path | None = None,
 ) -> list[str]:
     """Fail closed until the owner authorizes the exact Alpha publication."""
 
     path = path or RELEASE_PUBLICATION_AUTHORIZATION
+    repo_root = (repo_root or REPO_ROOT).resolve()
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except OSError as exc:
         return [f"release publication authorization unavailable: {exc}"]
     except json.JSONDecodeError as exc:
         return [f"release publication authorization is invalid JSON: {exc}"]
+    if not isinstance(data, dict):
+        return ["release publication authorization must be a JSON object"]
 
     errors: list[str] = []
     if data.get("schema_version") != "release-publication-authorization/v1":
@@ -201,18 +217,247 @@ def _release_publication_authorization_errors(
     targets = data.get("authorized_targets")
     if not isinstance(targets, list) or target not in targets:
         errors.append(f"release authorization does not include target {target!r}")
-    if not data.get("authorized_by"):
+    authorized_by = data.get("authorized_by")
+    if not isinstance(authorized_by, str) or not authorized_by.strip():
         errors.append("release authorization must name the authorizing owner")
-    if not data.get("authorized_at_utc"):
+    authorized_at = data.get("authorized_at_utc")
+    if not isinstance(authorized_at, str) or not _is_utc_timestamp(authorized_at):
         errors.append("release authorization must record authorized_at_utc")
-    if not data.get("exact_candidate_review_receipt"):
-        errors.append(
-            "release authorization must bind an exact candidate review receipt"
+    errors.extend(
+        _exact_candidate_review_receipt_errors(
+            data,
+            version=version,
+            target=target,
+            authorization_path=path,
+            repo_root=repo_root,
         )
+    )
     if data.get("professional_approval") is not False:
         errors.append(
             "Alpha publication authorization must not imply professional approval"
         )
+    return errors
+
+
+def _parse_utc_timestamp(value: str) -> datetime | None:
+    """Return a timezone-aware UTC timestamp, or ``None`` when invalid."""
+
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if (
+        parsed.tzinfo is not None
+        and parsed.utcoffset() is not None
+        and parsed.utcoffset().total_seconds() == 0
+    ):
+        return parsed
+    return None
+
+
+def _is_utc_timestamp(value: str) -> bool:
+    """Return whether *value* is a timezone-aware ISO-8601 UTC timestamp."""
+
+    return _parse_utc_timestamp(value) is not None
+
+
+def _git_text(repo_root: Path, *args: str) -> tuple[str | None, str | None]:
+    """Run one read-only Git query and return its stripped output or error."""
+
+    result = subprocess.run(
+        ["git", "-C", str(repo_root), *args],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or "unknown Git error"
+        return None, detail
+    return result.stdout.strip(), None
+
+
+def _exact_candidate_review_receipt_errors(
+    authorization: dict[str, object],
+    *,
+    version: str,
+    target: str,
+    authorization_path: Path,
+    repo_root: Path,
+) -> list[str]:
+    """Validate the referenced immutable review receipt and its Git binding."""
+
+    errors: list[str] = []
+    receipt_ref = authorization.get("exact_candidate_review_receipt")
+    if not isinstance(receipt_ref, str) or not receipt_ref.strip():
+        return ["release authorization must bind an exact candidate review receipt"]
+
+    receipt_rel = Path(receipt_ref)
+    verification_root = (repo_root / "docs" / "verification").resolve()
+    receipt_path = (repo_root / receipt_rel).resolve()
+    if (
+        receipt_rel.is_absolute()
+        or ".." in receipt_rel.parts
+        or not receipt_path.is_relative_to(verification_root)
+        or receipt_path.suffix != ".json"
+    ):
+        return [
+            "exact candidate review receipt must be a repository-relative JSON "
+            "file under docs/verification"
+        ]
+
+    try:
+        receipt_bytes = receipt_path.read_bytes()
+        receipt = json.loads(receipt_bytes)
+    except OSError as exc:
+        return [f"exact candidate review receipt unavailable: {exc}"]
+    except json.JSONDecodeError as exc:
+        return [f"exact candidate review receipt is invalid JSON: {exc}"]
+    if not isinstance(receipt, dict):
+        return ["exact candidate review receipt must be a JSON object"]
+
+    expected_receipt_sha = authorization.get("exact_candidate_review_receipt_sha256")
+    actual_receipt_sha = hashlib.sha256(receipt_bytes).hexdigest()
+    if not isinstance(expected_receipt_sha, str) or not _SHA256_RE.fullmatch(
+        expected_receipt_sha
+    ):
+        errors.append(
+            "release authorization must record exact_candidate_review_receipt_sha256"
+        )
+    elif expected_receipt_sha != actual_receipt_sha:
+        errors.append("exact candidate review receipt SHA-256 does not match")
+
+    if receipt.get("schema_version") != "exact-candidate-review-receipt/v1":
+        errors.append("exact candidate review receipt schema_version is invalid")
+    if receipt.get("decision") != "ACCEPT":
+        errors.append("exact candidate review receipt decision is not ACCEPT")
+
+    reviewed = receipt.get("reviewed_candidate")
+    if not isinstance(reviewed, dict):
+        errors.append("exact candidate review receipt reviewed_candidate is invalid")
+        return errors
+
+    reviewed_head = reviewed.get("head_sha")
+    reviewed_tree = reviewed.get("tree_sha")
+    reviewed_python_tree = reviewed.get("python_tree_sha")
+    if not isinstance(reviewed_head, str) or not _GIT_SHA_RE.fullmatch(reviewed_head):
+        errors.append("exact candidate review receipt head_sha is invalid")
+    if not isinstance(reviewed_tree, str) or not _GIT_SHA_RE.fullmatch(reviewed_tree):
+        errors.append("exact candidate review receipt tree_sha is invalid")
+    if not isinstance(reviewed_python_tree, str) or not _GIT_SHA_RE.fullmatch(
+        reviewed_python_tree
+    ):
+        errors.append("exact candidate review receipt python_tree_sha is invalid")
+    if reviewed.get("version") != version:
+        errors.append("exact candidate review receipt version does not match")
+    if reviewed.get("tag") != f"v{version}":
+        errors.append("exact candidate review receipt tag does not match")
+    reviewed_targets = reviewed.get("reviewed_targets")
+    if not isinstance(reviewed_targets, list) or target not in reviewed_targets:
+        errors.append(
+            f"exact candidate review receipt does not include target {target!r}"
+        )
+
+    reviewer = receipt.get("reviewer")
+    if not isinstance(reviewer, dict):
+        errors.append("exact candidate review receipt reviewer is invalid")
+    else:
+        reviewer_identity = reviewer.get("identity")
+        if not isinstance(reviewer_identity, str) or not reviewer_identity.strip():
+            errors.append("exact candidate review receipt reviewer identity is missing")
+        elif reviewer_identity == authorization.get("authorized_by"):
+            errors.append("exact candidate reviewer must be independent of authorizer")
+        if reviewer.get("independent") is not True:
+            errors.append("exact candidate review receipt must assert independence")
+        reviewed_at = reviewer.get("reviewed_at_utc")
+        if not isinstance(reviewed_at, str) or not _is_utc_timestamp(reviewed_at):
+            errors.append("exact candidate review receipt reviewed_at_utc is invalid")
+        else:
+            authorized_at = authorization.get("authorized_at_utc")
+            if isinstance(authorized_at, str):
+                parsed_authorized_at = _parse_utc_timestamp(authorized_at)
+                parsed_reviewed_at = _parse_utc_timestamp(reviewed_at)
+                if (
+                    parsed_authorized_at is not None
+                    and parsed_reviewed_at is not None
+                    and parsed_authorized_at < parsed_reviewed_at
+                ):
+                    errors.append(
+                        "release authorization must occur after exact candidate review"
+                    )
+
+    if errors or not all(
+        isinstance(value, str)
+        for value in (reviewed_head, reviewed_tree, reviewed_python_tree)
+    ):
+        return errors
+
+    resolved_tree, git_error = _git_text(
+        repo_root, "rev-parse", f"{reviewed_head}^{{tree}}"
+    )
+    if git_error:
+        errors.append(f"reviewed candidate commit is unavailable: {git_error}")
+        return errors
+    if resolved_tree != reviewed_tree:
+        errors.append("reviewed candidate tree does not match reviewed head")
+
+    reviewed_package_tree, git_error = _git_text(
+        repo_root, "rev-parse", f"{reviewed_head}:Python"
+    )
+    if git_error:
+        errors.append(f"reviewed Python package tree is unavailable: {git_error}")
+        return errors
+    if reviewed_package_tree != reviewed_python_tree:
+        errors.append("reviewed Python package tree does not match receipt")
+
+    current_head, git_error = _git_text(repo_root, "rev-parse", "HEAD")
+    if git_error:
+        errors.append(f"current publication head is unavailable: {git_error}")
+        return errors
+    worktree_state, git_error = _git_text(
+        repo_root, "status", "--porcelain", "--untracked-files=all"
+    )
+    if git_error:
+        errors.append(f"publication checkout state is unavailable: {git_error}")
+    elif worktree_state:
+        errors.append("publication checkout must be clean")
+    _, ancestry_error = _git_text(
+        repo_root, "merge-base", "--is-ancestor", reviewed_head, current_head
+    )
+    if ancestry_error:
+        errors.append("reviewed candidate is not an ancestor of publication head")
+
+    current_package_tree, git_error = _git_text(repo_root, "rev-parse", "HEAD:Python")
+    if git_error:
+        errors.append(f"current Python package tree is unavailable: {git_error}")
+    elif current_package_tree != reviewed_python_tree:
+        errors.append("Python package content changed after exact candidate review")
+
+    changed_text, git_error = _git_text(
+        repo_root, "diff", "--name-only", f"{reviewed_head}..{current_head}"
+    )
+    if git_error:
+        errors.append(f"post-review path comparison failed: {git_error}")
+        return errors
+
+    try:
+        authorization_rel = (
+            authorization_path.resolve().relative_to(repo_root).as_posix()
+        )
+    except ValueError:
+        errors.append("release authorization must be stored inside the repository")
+        return errors
+    allowed_paths = _POST_REVIEW_EVIDENCE_PATHS | {
+        authorization_rel,
+        receipt_rel.as_posix(),
+    }
+    changed_paths = {line for line in changed_text.splitlines() if line}
+    unexpected_paths = sorted(changed_paths - allowed_paths)
+    if unexpected_paths:
+        errors.append(
+            "publication head changed non-evidence paths after exact review: "
+            + ", ".join(unexpected_paths)
+        )
+
     return errors
 
 
@@ -225,6 +470,7 @@ def cmd_authorization_check(args: argparse.Namespace) -> int:
         _print_version_errors(errors)
         return 1
     print(f"  ✓ Owner authorized v{version} publication target {args.target}")
+    print("  ✓ Exact candidate review receipt and unchanged Python tree verified")
     print("  ✓ Authorization does not imply professional approval")
     return 0
 

@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-002-B-G | Integrate lossless imports, route/client convergence, result/review truth, evidence identity, API/doc truth, and exact-wheel negative UAT | backend + tester + API + frontend + release | cumulative | P0 | 🚧 CUMULATIVE CANDIDATE — implementation integrated from Packet A merge `3986935e`; broad/exact-wheel gates, immutable exact-head review, hosted checks, and merge remain |
+| LIB-PRO-002-B-G | Integrate lossless imports, route/client convergence, result/review truth, evidence identity, API/doc truth, and exact-wheel negative UAT | backend + tester + API + frontend + release | cumulative | P0 | 🚧 REPAIR CANDIDATE — first exact-head review rejected presence-only publication receipt validation at `c66160c7`; bind the actual receipt to reviewed Git/package identity, then restart exact review and hosted checks |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. INDIA-3, dependency, release execution, further cleanup, and

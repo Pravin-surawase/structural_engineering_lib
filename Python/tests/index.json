@@ -3424,7 +3424,7 @@
     {
       "name": "test_release_scripts.py",
       "type": "python",
-      "size_lines": 742,
+      "size_lines": 911,
       "last_updated": "2026-08-17",
       "description": "Tests for release scripts (bump_version.py, release.py).",
       "classes": [
@@ -3576,6 +3576,36 @@
           "params": [
             "tmp_path"
           ]
+        },
+        {
+          "name": "test_release_publication_authorization_rejects_fabricated_receipt_text",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_release_publication_authorization_rejects_tampered_receipt",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_release_publication_authorization_rejects_false_reviewed_tree",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_release_publication_authorization_rejects_post_review_package_drift",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_release_publication_authorization_rejects_pre_review_authorization",
+          "params": [
+            "tmp_path"
+          ]
         }
       ],
       "constants": [
@@ -3585,7 +3615,7 @@
         "RELEASE_SCRIPT",
         "VERSION_TRACKED_FILES"
       ],
-      "content_hash": "5dd68c0f98b7"
+      "content_hash": "4a5ffbd933f4"
     },
     {
       "name": "test_release_uat.py",
@@ -4838,5 +4868,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "e3006d715370025c"
+  "content_hash": "7ade9fd88a06e3d5"
 }

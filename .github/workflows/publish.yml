@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v7
@@ -294,6 +296,19 @@ jobs:
           authorization = json.loads(authorization_path.read_text(encoding="utf-8"))
           assert authorization["decision"] == "AUTHORIZED"
           assert authorization["version"] == manifest["package_version"]
+          review_receipt_path = Path("..") / authorization[
+              "exact_candidate_review_receipt"
+          ]
+          review_receipt = json.loads(
+              review_receipt_path.read_text(encoding="utf-8")
+          )
+          review_receipt_sha256 = hashlib.sha256(
+              review_receipt_path.read_bytes()
+          ).hexdigest()
+          assert review_receipt_sha256 == authorization[
+              "exact_candidate_review_receipt_sha256"
+          ]
+          assert review_receipt["decision"] == "ACCEPT"
 
           manifest.update(
               {
@@ -326,6 +341,15 @@ jobs:
                       "version": authorization["version"],
                       "tag": authorization["tag"],
                       "authorized_targets": authorization["authorized_targets"],
+                      "exact_candidate_review_receipt": authorization[
+                          "exact_candidate_review_receipt"
+                      ],
+                      "exact_candidate_review_receipt_sha256": (
+                          review_receipt_sha256
+                      ),
+                      "reviewed_candidate": review_receipt[
+                          "reviewed_candidate"
+                      ],
                       "record_sha256": hashlib.sha256(
                           authorization_path.read_bytes()
                       ).hexdigest(),

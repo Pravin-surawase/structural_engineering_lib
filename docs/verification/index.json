@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-17",
-  "file_count": 166,
+  "file_count": 167,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -56,6 +56,19 @@
       "last_updated": "2026-08-17",
       "description": "This record independently checks the experimental rectangular-column fiber kernel at an oblique neutral-axis orientation. It is a calculation benchmark,",
       "content_hash": "fcc6aaad58e3"
+    },
+    {
+      "name": "exact-candidate-review-receipt-template.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "schema_version",
+        "decision",
+        "reviewed_candidate",
+        "reviewer",
+        "note"
+      ],
+      "content_hash": "4a0e3750ee96"
     },
     {
       "name": "examples.md",
@@ -1715,7 +1728,7 @@
         "receipt_grants_authority",
         "receipt_kind"
       ],
-      "content_hash": "bf77e4e09fc3"
+      "content_hash": "351ead40860b"
     },
     {
       "name": "lib-pro-002-a-g-git-handoff-source-evidence.json",
@@ -1727,7 +1740,7 @@
         "retention",
         "task_archive"
       ],
-      "content_hash": "232ad31494e7"
+      "content_hash": "6e013fdbcac2"
     },
     {
       "name": "lib-pro-002-a-git-handoff-receipt.json",
@@ -2057,11 +2070,11 @@
     {
       "name": "release-artifact-evidence-template.md",
       "type": "documentation",
-      "size_lines": 44,
+      "size_lines": 45,
       "last_updated": "2026-08-17",
       "title": "Release Artifact Evidence Template",
       "description": "Complete this record from the CI run that built the exact candidate. | Field | Value |",
-      "content_hash": "d38e8c457f6e"
+      "content_hash": "4dfbd1ceab8f"
     },
     {
       "name": "release-publication-authorization.json",
@@ -2076,10 +2089,10 @@
         "authorized_by",
         "authorized_at_utc",
         "exact_candidate_review_receipt",
-        "qualified_structural_engineering_review",
-        "professional_approval"
+        "exact_candidate_review_receipt_sha256",
+        "qualified_structural_engineering_review"
       ],
-      "content_hash": "194eba9068bf"
+      "content_hash": "2f0f3892c9d9"
     },
     {
       "name": "ui-experience-session-2-acceptance.md",
@@ -2099,5 +2112,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "e32844f7f7b163d5"
+  "content_hash": "a4f47ff966ac598e"
 }

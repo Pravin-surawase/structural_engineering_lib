@@ -100,6 +100,13 @@ and unrelated worktree cleanup remain out of scope.
   the earlier unstaged diff check did not inspect untracked content.
 - Normal commit hooks found four package-wide Mypy errors and rejected the
   noncanonical heading/row labels in the cumulative handoff brief.
+- Independent exact-head review rejected `c66160c7` because publication
+  authorization accepted arbitrary non-empty review-receipt text without
+  resolving evidence or binding reviewed head/tree/version/target identity.
+- A post-commit exact-wheel command was rejected before execution because its
+  temporary cleanup trap used a raw recursive delete operation.
+- A repair verification attempt guessed the nonexistent
+  `scripts/check_annotations.py` path after the focused release suite passed.
 
 ### Root causes and resolutions
 
@@ -236,6 +243,25 @@ and unrelated worktree cleanup remain out of scope.
   `| **Next** |` literals. Resolution: restore those exact contract labels and
   retain the normal commit hook as the decisive contract. Evidence: the
   session-doc commit hook must pass before the candidate exists.
+- Confirmed publication-gate root cause: the first authorization schema treated
+  `exact_candidate_review_receipt` as a presence-only string and therefore
+  could not distinguish immutable reviewed evidence from fabricated text.
+  Resolution: require a repository-relative JSON receipt and exact SHA-256;
+  validate ACCEPT, independent reviewer/time, reviewed head/tree/Python tree,
+  version/tag/targets, review-before-authorization chronology, Git ancestry,
+  clean checkout, unchanged package content, and an allowlisted evidence-only
+  descendant delta. Evidence: valid reviewed candidate plus authorization must
+  pass, while fabricated text, receipt tampering, identity drift, package
+  drift, target drift, pre-review authorization, and extra changed paths must
+  fail closed before publication.
+- ⚠️ TERMINAL ISSUE: the first post-commit wheel command included a raw
+  recursive temp-directory cleanup trap and was rejected before execution ->
+  reran without any delete operation and retained the isolated UAT directory;
+  exact-wheel UAT then passed 19/19 without repository mutation.
+- ⚠️ TERMINAL ISSUE: `scripts/check_annotations.py` does not exist ->
+  `./run.sh find "type annotation check"` resolved the maintained
+  `scripts/check_type_annotations.py` command, which is used for the repair
+  candidate instead.
 
 ### Validation before cumulative freeze
 
@@ -264,6 +290,13 @@ and unrelated worktree cleanup remain out of scope.
   and production build pass. The Git handoff source evidence and pre-index
   receipt validate with the expected HOLD for dirty/local-only/unchecked
   remote-review state.
+- Immutable head `c66160c7bc25eba22011d051643fe93c1b406bac`
+  passed normal hooks, the exact committed wheel (SHA-256
+  `edefc7235944892a059345383f55547e71d49d1c3eb64cb0777d397433e811bc`)
+  passed 19/19 UAT, all 6,382 Python/452 FastAPI/267 React tests passed, and all
+  eight hosted PR #815 checks passed. Independent review correctly returned
+  REJECT for the publication-receipt bypass above; none of those green gates
+  overrides that outcome-changing finding.
 - The first full canonical run passed 28/31 and exposed the three omissions
   above; their narrow API, automation, governance, and facade regressions now
   pass. The second run passed 30/31 and exposed the annotation omission above;

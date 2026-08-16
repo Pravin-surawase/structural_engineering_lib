@@ -3,7 +3,7 @@
 **Task:** LIB-PRO-002
 **Type:** Decision
 **Audience:** Maintainers
-**Status:** Cumulative A-G Candidate; Acceptance Pending Gates
+**Status:** Review
 **Created:** 2026-08-17
 **Last Updated:** 2026-08-17
 **Importance:** Critical
@@ -405,15 +405,19 @@ documentation portions close.
 
 ### G — Exact-wheel negative UAT and publication policy (`LIB-PRO-002-G`, L)
 
-**Candidate state:** integrated in the cumulative A-G candidate; exact-wheel,
-cumulative, hosted, and immutable-review acceptance remain.
+**Candidate state:** repair candidate after exact-head review rejected the
+presence-only review-receipt check; immutable re-review and hosted checks must
+restart on the repaired head.
 
 **Depends on:** A through F.
 **Owns:** release preflight, publish workflow, source-free example runner,
 release evidence schema, policy tests.
 **Deliver:** exact-wheel execution of advertised examples and Section 7; split
 Alpha versus stable gates; immutable artifact/source/test receipts; explicit
-owner authorization stop.
+owner authorization stop. The authorization record must resolve a JSON review
+receipt under `docs/verification`, verify its SHA-256, reviewed head/tree and
+Python package tree, version/tag/targets, reviewer independence, ancestry, and
+an evidence-only post-review delta before any publication target can run.
 **Focused proof:** intentionally unsafe fixture fails preflight; exact candidate
 wheel passes public examples and supported end-to-end workflows without source
 checkout imports.
@@ -464,6 +468,12 @@ The fastest safe path is contract-first and evidence-last:
    affected indexes last, then validate without rewriting them.
 9. Independently review exact commit/tree and bind hosted checks before merge.
 10. Report total wall time including CI and closeout so later estimates improve.
+
+For a future publication, review the complete package candidate first. The
+owner may then add the authorization and exact-review receipt in one descendant
+evidence commit, but only the authorization/receipt and their maintained
+`docs`/`docs/verification` indexes may differ. The release gate proves the
+reviewed Python tree is unchanged; any other post-review path change blocks.
 
 ### Packet handoff template
 

@@ -4,11 +4,12 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-17
-**Files:** 166
+**Files:** 167
 
 ## Config Files
 
 - [INDIA-0-git-handoff.json](INDIA-0-git-handoff.json)
+- [exact-candidate-review-receipt-template.json](exact-candidate-review-receipt-template.json)
 - [footing-release-inclusion.json](footing-release-inclusion.json)
 - [git-001-phase-8-reconciliation-git-handoff-receipt.json](git-001-phase-8-reconciliation-git-handoff-receipt.json)
 - [git-001-phase-8-reconciliation-git-handoff-source-evidence.json](git-001-phase-8-reconciliation-git-handoff-source-evidence.json)
@@ -176,6 +177,6 @@ Benchmark examples and verification packs for validating library calculations ag
 | [lib-pro-002-e-evidence-identity.md](lib-pro-002-e-evidence-identity.md) | LIB-PRO-002-E evidence and source identi | The bounded design_beam_is456 strength route is bound to the | 28 |
 | [pack.md](pack.md) |  | This repo’s unit tests validate correctness and edge cases,  | 56 |
 | [post-india2-cleanup-authorization-proposal.md](post-india2-cleanup-authorization-proposal.md) |  | Exact candidate set POST-INDIA2-2499DF4ADE0DF704 contains ** | 162 |
-| [release-artifact-evidence-template.md](release-artifact-evidence-template.md) | Release Artifact Evidence Template | Complete this record from the CI run that built the exact ca | 44 |
+| [release-artifact-evidence-template.md](release-artifact-evidence-template.md) | Release Artifact Evidence Template | Complete this record from the CI run that built the exact ca | 45 |
 | [ui-experience-session-2-acceptance.md](ui-experience-session-2-acceptance.md) |  | This is the software acceptance record for UIX-001 P9-P15. I | 70 |
 | [validation-pack.md](validation-pack.md) |  | This pack provides 5 benchmark beams and 3 benchmark columns | 396 |

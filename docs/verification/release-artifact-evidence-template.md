@@ -34,6 +34,7 @@ Complete this record from the CI run that built the exact candidate.
 | CLI UAT | `PASS/HOLD` |
 | SBOM | `<artifact path and SHA-256>` |
 | Owner publication authorization | `<record SHA-256, exact version/tag/target, decision>` |
+| Independent exact-candidate review | `<receipt path/SHA-256, reviewed head/tree/Python tree, version/tag/targets>` |
 | Qualified review boundary | `REQUIRED` |
 | Professional approval | `false` |
 | TestPyPI decision | `<owner decision>` |

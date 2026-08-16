@@ -214,11 +214,60 @@ def test_release_publication_authorization_holds_by_default() -> None:
     assert "release publication decision is HOLD, not AUTHORIZED" in errors
 
 
-def test_release_publication_authorization_binds_version_tag_and_target(
-    tmp_path: Path,
-) -> None:
-    record = tmp_path / "authorization.json"
-    record.write_text(
+def _git(repo: Path, *args: str) -> str:
+    result = subprocess.run(
+        ["git", "-C", str(repo), *args],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
+    return result.stdout.strip()
+
+
+def _authorized_release_fixture(tmp_path: Path) -> tuple[Path, Path]:
+    """Create a reviewed package commit plus an evidence-only authorization commit."""
+
+    repo = tmp_path / "repo"
+    python_root = repo / "Python"
+    verification_root = repo / "docs" / "verification"
+    python_root.mkdir(parents=True)
+    verification_root.mkdir(parents=True)
+    (python_root / "package.txt").write_text("reviewed package\n", encoding="utf-8")
+
+    _git(repo, "init", "-q")
+    _git(repo, "config", "user.name", "Release Test")
+    _git(repo, "config", "user.email", "release-test@example.invalid")
+    _git(repo, "add", "Python/package.txt")
+    _git(repo, "commit", "-q", "-m", "reviewed candidate")
+
+    reviewed_head = _git(repo, "rev-parse", "HEAD")
+    reviewed_tree = _git(repo, "rev-parse", "HEAD^{tree}")
+    reviewed_python_tree = _git(repo, "rev-parse", "HEAD:Python")
+    receipt_path = verification_root / "v0.24.0a1-exact-review.json"
+    receipt = {
+        "schema_version": "exact-candidate-review-receipt/v1",
+        "decision": "ACCEPT",
+        "reviewed_candidate": {
+            "head_sha": reviewed_head,
+            "tree_sha": reviewed_tree,
+            "python_tree_sha": reviewed_python_tree,
+            "version": "0.24.0a1",
+            "tag": "v0.24.0a1",
+            "reviewed_targets": ["pypi", "github-release"],
+        },
+        "reviewer": {
+            "identity": "independent-reviewer",
+            "independent": True,
+            "reviewed_at_utc": "2026-08-17T00:05:00Z",
+        },
+    }
+    receipt_path.write_text(
+        json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    receipt_sha = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
+
+    authorization_path = verification_root / "release-publication-authorization.json"
+    authorization_path.write_text(
         json.dumps(
             {
                 "schema_version": "release-publication-authorization/v1",
@@ -227,22 +276,138 @@ def test_release_publication_authorization_binds_version_tag_and_target(
                 "tag": "v0.24.0a1",
                 "authorized_targets": ["pypi", "github-release"],
                 "authorized_by": "repository-owner",
-                "authorized_at_utc": "2026-08-17T00:00:00Z",
-                "exact_candidate_review_receipt": "review-receipt-sha256",
+                "authorized_at_utc": "2026-08-17T00:10:00Z",
+                "exact_candidate_review_receipt": (
+                    "docs/verification/v0.24.0a1-exact-review.json"
+                ),
+                "exact_candidate_review_receipt_sha256": receipt_sha,
                 "qualified_structural_engineering_review": False,
                 "professional_approval": False,
-            }
-        ),
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
         encoding="utf-8",
     )
+    _git(repo, "add", "docs/verification")
+    _git(repo, "commit", "-q", "-m", "authorize reviewed candidate")
+    return authorization_path, receipt_path
+
+
+def test_release_publication_authorization_binds_version_tag_and_target(
+    tmp_path: Path,
+) -> None:
+    record, _ = _authorized_release_fixture(tmp_path)
+    repo = record.parents[2]
 
     assert (
-        release._release_publication_authorization_errors("0.24.0a1", "pypi", record)
+        release._release_publication_authorization_errors(
+            "0.24.0a1", "pypi", record, repo_root=repo
+        )
         == []
     )
     assert release._release_publication_authorization_errors(
-        "0.24.0a1", "testpypi", record
-    ) == ["release authorization does not include target 'testpypi'"]
+        "0.24.0a1", "testpypi", record, repo_root=repo
+    ) == [
+        "release authorization does not include target 'testpypi'",
+        "exact candidate review receipt does not include target 'testpypi'",
+    ]
+
+
+def test_release_publication_authorization_rejects_fabricated_receipt_text(
+    tmp_path: Path,
+) -> None:
+    record, _ = _authorized_release_fixture(tmp_path)
+    repo = record.parents[2]
+    authorization = json.loads(record.read_text(encoding="utf-8"))
+    authorization["exact_candidate_review_receipt"] = "review-receipt-sha256"
+    record.write_text(json.dumps(authorization), encoding="utf-8")
+
+    errors = release._release_publication_authorization_errors(
+        "0.24.0a1", "pypi", record, repo_root=repo
+    )
+
+    assert errors == [
+        "exact candidate review receipt must be a repository-relative JSON file "
+        "under docs/verification"
+    ]
+
+
+def test_release_publication_authorization_rejects_tampered_receipt(
+    tmp_path: Path,
+) -> None:
+    record, receipt_path = _authorized_release_fixture(tmp_path)
+    repo = record.parents[2]
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    receipt["reviewed_candidate"]["tree_sha"] = "0" * 40
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+
+    errors = release._release_publication_authorization_errors(
+        "0.24.0a1", "pypi", record, repo_root=repo
+    )
+
+    assert errors == ["exact candidate review receipt SHA-256 does not match"]
+
+
+def test_release_publication_authorization_rejects_false_reviewed_tree(
+    tmp_path: Path,
+) -> None:
+    record, receipt_path = _authorized_release_fixture(tmp_path)
+    repo = record.parents[2]
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    receipt["reviewed_candidate"]["tree_sha"] = "0" * 40
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    authorization = json.loads(record.read_text(encoding="utf-8"))
+    authorization["exact_candidate_review_receipt_sha256"] = hashlib.sha256(
+        receipt_path.read_bytes()
+    ).hexdigest()
+    record.write_text(json.dumps(authorization), encoding="utf-8")
+    _git(repo, "add", "docs/verification")
+    _git(repo, "commit", "-q", "-m", "tamper with reviewed tree")
+
+    errors = release._release_publication_authorization_errors(
+        "0.24.0a1", "pypi", record, repo_root=repo
+    )
+
+    assert "reviewed candidate tree does not match reviewed head" in errors
+
+
+def test_release_publication_authorization_rejects_post_review_package_drift(
+    tmp_path: Path,
+) -> None:
+    record, _ = _authorized_release_fixture(tmp_path)
+    repo = record.parents[2]
+    (repo / "Python" / "package.txt").write_text(
+        "changed after review\n", encoding="utf-8"
+    )
+    _git(repo, "add", "Python/package.txt")
+    _git(repo, "commit", "-q", "-m", "change package after review")
+
+    errors = release._release_publication_authorization_errors(
+        "0.24.0a1", "pypi", record, repo_root=repo
+    )
+
+    assert "Python package content changed after exact candidate review" in errors
+    assert any("Python/package.txt" in error for error in errors)
+
+
+def test_release_publication_authorization_rejects_pre_review_authorization(
+    tmp_path: Path,
+) -> None:
+    record, _ = _authorized_release_fixture(tmp_path)
+    repo = record.parents[2]
+    authorization = json.loads(record.read_text(encoding="utf-8"))
+    authorization["authorized_at_utc"] = "2026-08-17T00:00:00Z"
+    record.write_text(json.dumps(authorization), encoding="utf-8")
+    _git(repo, "add", "docs/verification/release-publication-authorization.json")
+    _git(repo, "commit", "-q", "-m", "pre-authorize candidate")
+
+    errors = release._release_publication_authorization_errors(
+        "0.24.0a1", "pypi", record, repo_root=repo
+    )
+
+    assert "release authorization must occur after exact candidate review" in errors
 
 
 class TestReleaseHelp:
@@ -486,6 +651,10 @@ class TestPublishWorkflow:
         assert "-m structural_lib.release_uat" in workflow
         assert "authorization-check" in workflow
         assert "release-publication-authorization.json" in workflow
+        assert "fetch-depth: 0" in workflow
+        assert "exact_candidate_review_receipt_sha256" in workflow
+        assert "review_receipt" in workflow
+        assert '"reviewed_candidate"' in workflow
         assert '"professional_approval": False' in workflow
 
     def test_alpha_ordering_preserves_legacy_release_history(self):

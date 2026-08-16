@@ -95,7 +95,7 @@
 | [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 203 |
 | [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 908 |
 | [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 5 | 700 |
-| [release.py](release.py) | Unified release management CLI. | 0 | 11 | 1879 |
+| [release.py](release.py) | Unified release management CLI. | 0 | 11 | 2125 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 355 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
 | [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2521 |

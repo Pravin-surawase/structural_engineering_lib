@@ -7,10 +7,10 @@
 - Focus: LIB-PRO-002 cumulative A-G input safety and professional-readiness integration
 - Base: Packet A merge `3986935ecb473c1f9d56dec44aeb4218d9192f84` (PR #814)
 - Lane: `codex/lib-pro-002-b-lossless-import`; one isolated writer; unrelated worktrees preserved
-- Candidate: Packets B-G integrated; cumulative local gates, exact-wheel receipt, immutable review, hosted checks, and merge are the remaining acceptance sequence
+- Candidate: Packets B-G integrated; first exact-head review rejected a bypassable presence-only publication receipt check after all local/hosted gates passed
 - Release: HOLD; `docs/verification/release-publication-authorization.json` contains no exact version/tag/target authorization
 - Whole-building workflow: Packet H is not activated and component-only claims remain
-- Exact next action: resume only this lane, confirm unchanged Git state, complete cumulative acceptance, and repair only outcome-changing failures in the same candidate
+- Exact next action: finish the receipt head/tree/package/version/tag/target binding repair, then create one repaired immutable head and restart exact review plus hosted checks
 <!-- HANDOFF:END -->
 
 | State | Boundary |
@@ -25,6 +25,7 @@
 2. [Current task board](../TASKS.md)
 3. [Git workflow single source](../git-automation/git-workflow-single-source.md)
 4. [Publication authorization record](../verification/release-publication-authorization.json)
+5. [Exact-candidate review receipt template](../verification/exact-candidate-review-receipt-template.json)
 
 ## Resume safely
 
@@ -61,7 +62,9 @@ Git workflow now covers that whole candidate lifetime.
 - complete Alpha API classification, corrected version/claim/example surfaces,
   and installed-package preflight;
 - source-free exact-wheel negative UAT plus an explicit per-version/tag/target
-  owner authorization stop before publication.
+  owner authorization stop before publication; the repair resolves and hashes
+  an actual independent-review JSON receipt, verifies reviewed Git/Python
+  identity and permits only an evidence-only descendant delta.
 
 ## Acceptance and stop rules
 
