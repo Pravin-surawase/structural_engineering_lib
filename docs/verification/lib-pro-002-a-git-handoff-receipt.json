@@ -1,0 +1,183 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T19:21:44Z",
+      "query_status": "OK",
+      "reference": "task:LIB-PRO-002-A:user-request-check-plan-and-start-work",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T19:21:44Z",
+    "prohibited_actions": [
+      "EDIT_IMPORT_ADAPTERS",
+      "EDIT_FASTAPI_OR_REACT_TRANSPORTS",
+      "PUBLISH_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/lib-pro-002-a-strict-input",
+      "head_sha": "55104e11257937b0a42fb06f931a70b8484cef39",
+      "task_id": "LIB-PRO-002-A"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "ad63fdcfb900287a4a2d133f4815eb0c1bf01c182244543926c9b458352b2b2c",
+    "state": {
+      "branch": "codex/lib-pro-002-a-strict-input",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "55104e11257937b0a42fb06f931a70b8484cef39",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 87.949,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-lib-pro-002-a-strict-input",
+      "head_sha": "55104e11257937b0a42fb06f931a70b8484cef39",
+      "hold_reasons": [
+        "changed paths: 18"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T19:27:24.895149+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-a-strict-input",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 18,
+        "modified_paths": [
+          "Python/structural_lib/services/batch.py",
+          "docs/SESSION_LOG.md"
+        ],
+        "staged_paths": [
+          "Python/structural_lib/services/batch.py",
+          "Python/structural_lib/services/index.json",
+          "Python/structural_lib/services/index.md",
+          "Python/structural_lib/services/project_beam.py",
+          "Python/tests/index.json",
+          "Python/tests/index.md",
+          "Python/tests/unit/test_batch.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/index.json",
+          "docs/index.md",
+          "docs/planning/index.json",
+          "docs/planning/index.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/index.json",
+          "docs/verification/index.md",
+          "docs/verification/lib-pro-002-a-git-handoff-receipt.json",
+          "docs/verification/lib-pro-002-a-git-handoff-source-evidence.json"
+        ],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "55104e11257937b0a42fb06f931a70b8484cef39",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-a-strict-input"
+    }
+  },
+  "local_state_receipt_hash": "sha256:ad63fdcfb900287a4a2d133f4815eb0c1bf01c182244543926c9b458352b2b2c",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T19:27:24.895324+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T19:21:44Z",
+    "owner": "Main Agent under repository retention policy; destructive cleanup remains separately owner-authorized",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/services/adapters.py",
+      "Python/structural_lib/services/imports.py",
+      "fastapi_app/**",
+      "react_app/**",
+      ".github/workflows/**"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "Python/structural_lib/services/project_beam.py",
+      "Python/structural_lib/services/batch.py",
+      "Python/tests/unit/test_batch.py",
+      "docs/TASKS.md",
+      "docs/SESSION_LOG.md",
+      "docs/planning/next-session-brief.md",
+      "docs/verification/lib-pro-002-a-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "Python/structural_lib/services/index.json",
+      "Python/structural_lib/services/index.md",
+      "Python/tests/index.json",
+      "Python/tests/index.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md"
+    ],
+    "task_id": "LIB-PRO-002-A"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

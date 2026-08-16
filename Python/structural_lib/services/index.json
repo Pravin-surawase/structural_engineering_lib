@@ -2,14 +2,14 @@
   "folder": "Python/structural_lib/services",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-16",
-  "file_count": 45,
+  "last_updated": "2026-08-17",
+  "file_count": 46,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
       "size_lines": 30,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Application-layer public workflow exports.",
       "content_hash": "bad70205f642"
     },
@@ -17,7 +17,7 @@
       "name": "adapters.py",
       "type": "python",
       "size_lines": 2006,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Adapters for converting various input formats to canonical models.",
       "classes": [
         {
@@ -84,7 +84,7 @@
       "name": "api.py",
       "type": "python",
       "size_lines": 445,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       api",
       "content_hash": "8881b13784a4"
     },
@@ -92,7 +92,7 @@
       "name": "api_hub.py",
       "type": "python",
       "size_lines": 238,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       api",
       "content_hash": "0a5035a01f54"
     },
@@ -100,7 +100,7 @@
       "name": "api_results.py",
       "type": "python",
       "size_lines": 507,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       api_results",
       "classes": [
         {
@@ -164,7 +164,7 @@
       "name": "audit.py",
       "type": "python",
       "size_lines": 595,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       audit",
       "classes": [
         {
@@ -234,32 +234,50 @@
     {
       "name": "batch.py",
       "type": "python",
-      "size_lines": 215,
-      "last_updated": "2026-08-16",
-      "description": "Batch design helpers for streaming and bulk execution.",
+      "size_lines": 612,
+      "last_updated": "2026-08-17",
+      "description": "Strict project beam design plus a delegating legacy batch surface.",
       "functions": [
         {
+          "name": "design_project_beams_v1",
+          "description": "Validate the complete batch, then calculate only accepted unique members.",
+          "params": [
+            "beams"
+          ]
+        },
+        {
+          "name": "design_project_beams_iter_v1",
+          "description": "Yield strict member results after whole-batch identity validation.",
+          "params": [
+            "beams"
+          ]
+        },
+        {
           "name": "design_beams_iter",
-          "description": "Yield design results for each beam input.",
+          "description": "Compatibility surface that delegates to the strict project contract.",
           "params": [
             "beams"
           ]
         },
         {
           "name": "design_beams",
-          "description": "Design a batch of beams and return results + summary.",
+          "description": "Return the legacy shape without restoring unsafe defaults or precedence.",
           "params": [
             "beams"
           ]
         }
       ],
-      "content_hash": "8c601daae56b"
+      "constants": [
+        "_LEGACY_DIRECT_FIELDS",
+        "_LEGACY_KNOWN_FIELDS"
+      ],
+      "content_hash": "84776ef4e9ce"
     },
     {
       "name": "bbs.py",
       "type": "python",
       "size_lines": 1134,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Bar Bending Schedule (BBS) Module — IS 2502:1999 / SP 34:1987",
       "classes": [
         {
@@ -448,7 +466,7 @@
       "name": "beam_api.py",
       "type": "python",
       "size_lines": 2297,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       beam_api",
       "functions": [
         {
@@ -624,7 +642,7 @@
       "name": "beam_pipeline.py",
       "type": "python",
       "size_lines": 636,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "beam_pipeline — Unified application-layer pipeline for beam design.",
       "classes": [
         {
@@ -702,7 +720,7 @@
       "name": "boq.py",
       "type": "python",
       "size_lines": 209,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Project Bill of Quantities (BOQ) — Aggregation Module",
       "classes": [
         {
@@ -741,7 +759,7 @@
       "name": "calculation_report.py",
       "type": "python",
       "size_lines": 722,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       calculation_report",
       "classes": [
         {
@@ -789,7 +807,7 @@
       "name": "capabilities.py",
       "type": "python",
       "size_lines": 1934,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Discoverable supported-case registry for the IS 456 public library.",
       "classes": [
         {
@@ -853,7 +871,7 @@
       "name": "column_api.py",
       "type": "python",
       "size_lines": 1534,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       column_api",
       "functions": [
         {
@@ -1005,7 +1023,7 @@
       "name": "combined_footing_api.py",
       "type": "python",
       "size_lines": 252,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Stable orchestration for the bounded symmetric combined-footing workflow.",
       "classes": [
         {
@@ -1054,7 +1072,7 @@
       "name": "common_api.py",
       "type": "python",
       "size_lines": 721,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       common_api",
       "functions": [
         {
@@ -1097,7 +1115,7 @@
       "name": "costing.py",
       "type": "python",
       "size_lines": 376,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Cost calculation utilities for structural elements.",
       "classes": [
         {
@@ -1197,7 +1215,7 @@
       "name": "dashboard.py",
       "type": "python",
       "size_lines": 512,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Insights module for dashboard aggregation and live code checks.",
       "classes": [
         {
@@ -1264,7 +1282,7 @@
       "name": "deep_beam_api.py",
       "type": "python",
       "size_lines": 247,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Stable orchestration for the bounded IS 456 simply supported deep beam.",
       "classes": [
         {
@@ -1302,7 +1320,7 @@
       "name": "dxf_export.py",
       "type": "python",
       "size_lines": 1833,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "DXF Export Module — Beam Detail Drawing Generation",
       "functions": [
         {
@@ -1501,7 +1519,7 @@
       "name": "etabs_import.py",
       "type": "python",
       "size_lines": 1018,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "ETABS CSV Import Module.",
       "classes": [
         {
@@ -1618,7 +1636,7 @@
       "name": "evidence.py",
       "type": "python",
       "size_lines": 234,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Canonical evidence identity for the supported IS 456 beam design route.",
       "functions": [
         {
@@ -1648,7 +1666,7 @@
       "name": "excel_bridge.py",
       "type": "python",
       "size_lines": 305,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Excel UDF Bridge - Exposes structural_lib functions to Excel via xlwings",
       "functions": [
         {
@@ -1722,7 +1740,7 @@
       "name": "excel_integration.py",
       "type": "python",
       "size_lines": 489,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Excel Integration Module — Bridge between Excel data and Detailing/DXF",
       "classes": [
         {
@@ -1812,7 +1830,7 @@
       "name": "flat_slab_api.py",
       "type": "python",
       "size_lines": 339,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Stable orchestration for the bounded regular interior flat-slab workflow.",
       "classes": [
         {
@@ -1859,7 +1877,7 @@
       "name": "footing_api.py",
       "type": "python",
       "size_lines": 800,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Bounded orchestration for concentric isolated footings (IS 456:2000).",
       "classes": [
         {
@@ -1910,7 +1928,7 @@
       "name": "imports.py",
       "type": "python",
       "size_lines": 175,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Import helpers for multi-format CSV ingestion.",
       "classes": [
         {
@@ -1949,7 +1967,7 @@
       "name": "intelligence.py",
       "type": "python",
       "size_lines": 36,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Compatibility shim for legacy imports.",
       "content_hash": "dbe6a54d2800"
     },
@@ -1957,7 +1975,7 @@
       "name": "job_cli.py",
       "type": "python",
       "size_lines": 203,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "job_cli",
       "functions": [
         {
@@ -1973,7 +1991,7 @@
       "name": "job_runner.py",
       "type": "python",
       "size_lines": 317,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "job_runner",
       "functions": [
         {
@@ -2005,7 +2023,7 @@
       "name": "multi_objective_optimizer.py",
       "type": "python",
       "size_lines": 642,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Multi-Objective Optimization Module",
       "classes": [
         {
@@ -2058,7 +2076,7 @@
       "name": "optimization.py",
       "type": "python",
       "size_lines": 311,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Optimization algorithms for structural design.",
       "classes": [
         {
@@ -2089,10 +2107,104 @@
       "content_hash": "7ea4e3f836d1"
     },
     {
+      "name": "project_beam.py",
+      "type": "python",
+      "size_lines": 592,
+      "last_updated": "2026-08-17",
+      "description": "Versioned, fail-closed project beam input and result contracts.",
+      "classes": [
+        {
+          "name": "ProjectBeamIntakeStatus",
+          "description": "Whether the complete project member input is accepted."
+        },
+        {
+          "name": "ProjectBeamCalculationStatus",
+          "description": "Whether calculation was attempted and completed."
+        },
+        {
+          "name": "ProjectBeamEngineeringStatus",
+          "description": "Engineering disposition of completed supported checks."
+        },
+        {
+          "name": "ProjectBeamOverallStatus",
+          "description": "Deterministic aggregate without professional-approval meaning."
+        },
+        {
+          "name": "EffectiveDepthBasisV1",
+          "description": "Complete, auditable basis for deriving beam effective depth.",
+          "public_methods": [
+            "derive_d_mm",
+            "to_dict"
+          ]
+        },
+        {
+          "name": "ProjectBeamDesignInputV1",
+          "description": "Canonical calculation-bearing project input with explicit units.",
+          "public_methods": [
+            "resolved_d_mm",
+            "to_dict"
+          ]
+        },
+        {
+          "name": "ProjectBeamInputIssueV1",
+          "description": "Stable machine issue plus a human-readable explanation.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "ProjectBeamInputValidationV1",
+          "description": "Fail-closed parse result; ``value`` exists only without issues.",
+          "public_methods": [
+            "is_valid"
+          ]
+        },
+        {
+          "name": "ProjectBeamMemberResultV1",
+          "description": "One member's orthogonal intake, calculation, and engineering state.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "ProjectBeamBatchSummaryV1",
+          "description": "Accounted service summary; zero evaluated members can never PASS.",
+          "public_methods": [
+            "to_dict"
+          ]
+        },
+        {
+          "name": "ProjectBeamBatchResultV1",
+          "description": "Versioned strict project batch result.",
+          "public_methods": [
+            "to_dict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "validate_project_beam_design_input_v1",
+          "description": "Validate one canonical project member without coercion or defaults.",
+          "params": [
+            "payload"
+          ]
+        }
+      ],
+      "constants": [
+        "PROJECT_BEAM_SCHEMA_VERSION",
+        "PROJECT_BEAM_RESULT_SCHEMA_VERSION",
+        "QUALIFIED_REVIEW_REQUIRED",
+        "_TOP_LEVEL_FIELDS",
+        "_REQUIRED_FIELDS",
+        "_DEPTH_BASIS_FIELDS"
+      ],
+      "content_hash": "fac483571cf8"
+    },
+    {
       "name": "rebar.py",
       "type": "python",
       "size_lines": 251,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Rebar configuration validation and application helpers.",
       "functions": [
         {
@@ -2118,7 +2230,7 @@
       "name": "rebar_optimizer.py",
       "type": "python",
       "size_lines": 322,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Rebar arrangement optimizer (deterministic).",
       "classes": [
         {
@@ -2137,7 +2249,7 @@
       "name": "report.py",
       "type": "python",
       "size_lines": 1772,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Report generation module for beam design results.",
       "classes": [
         {
@@ -2271,7 +2383,7 @@
       "name": "report_svg.py",
       "type": "python",
       "size_lines": 279,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "SVG helpers for report visuals (stdlib only).",
       "functions": [
         {
@@ -2292,7 +2404,7 @@
       "name": "serialization.py",
       "type": "python",
       "size_lines": 449,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "JSON serialization utilities for canonical data models.",
       "functions": [
         {
@@ -2393,7 +2505,7 @@
       "name": "slab_api.py",
       "type": "python",
       "size_lines": 851,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Stable orchestration entry points for the bounded IS 456 slab workflows.",
       "classes": [
         {
@@ -2457,7 +2569,7 @@
       "name": "staircase_api.py",
       "type": "python",
       "size_lines": 209,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Stable orchestration for the bounded IS 456 straight-flight staircase.",
       "classes": [
         {
@@ -2492,7 +2604,7 @@
       "name": "strap_footing_api.py",
       "type": "python",
       "size_lines": 280,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Stable orchestration for the bounded property-line strap-footing workflow.",
       "classes": [
         {
@@ -2541,7 +2653,7 @@
       "name": "testing_strategies.py",
       "type": "python",
       "size_lines": 655,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       testing_strategies",
       "classes": [
         {
@@ -2641,7 +2753,7 @@
       "name": "tool_manifest.py",
       "type": "python",
       "size_lines": 162,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Deterministic AI-tool descriptors projected from the workflow catalogue.",
       "classes": [
         {
@@ -2684,7 +2796,7 @@
       "name": "wall_api.py",
       "type": "python",
       "size_lines": 227,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Stable orchestration for the bounded IS 456 braced-wall workflow.",
       "classes": [
         {
@@ -2719,7 +2831,7 @@
       "name": "workflow_catalog.py",
       "type": "python",
       "size_lines": 377,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Versioned, transport-neutral catalogue for approved application workflows.",
       "classes": [
         {
@@ -2805,7 +2917,7 @@
       "name": "workflow_runner.py",
       "type": "python",
       "size_lines": 486,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Bounded in-memory runner for one approved beam review workflow.",
       "classes": [
         {
@@ -2879,5 +2991,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "591dd575dbc0a9dd"
+  "content_hash": "7f35ac74a5da45e3"
 }

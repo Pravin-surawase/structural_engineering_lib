@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-17 — LIB-PRO-002 contract-first input-safety planning activated; next publication held
+**Updated:** 2026-08-17 — LIB-PRO-002-A strict service-intake candidate implemented; next publication held
 
 ---
 
@@ -127,17 +127,20 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-002-G0 | Freeze the canonical project-input, import-ledger, result/review, claim, and publication contracts from the one-storey usability pilot | Main Agent + independent reviewers | S | P0 | 🚧 CANDIDATE — plan written; repository gates and exact-head review remain |
+| LIB-PRO-002-A | Implement strict service intake with no structural defaults, one effective-depth contract, stable blocking issues, and a non-empty/accounted batch summary | backend + tester | M | P0 | 🚧 LOCAL CANDIDATE — focused service, type, architecture, and import checks pass; quick gate and immutable exact-head review remain |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. INDIA-3, dependency, release execution, further cleanup, and
 professional approval remain separately held.
 
+`LIB-PRO-002-G0` was independently accepted and merged through PR #812 at
+`55104e11257937b0a42fb06f931a70b8484cef39`. No runtime behavior changed in G0.
+
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-002-A | Implement strict service intake with no structural defaults, one effective-depth contract, stable blocking issues, and a non-empty/accounted batch summary | backend + tester | M | P0 | 📋 NEXT AFTER G0 MERGE |
+| LIB-PRO-002-B | Implement explicit/unique adapter selection, lossless field and row accounting, and blocking invalid or unmatched import records | backend + tester | L | P0 | ⏸ AFTER PACKET A MERGE |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog

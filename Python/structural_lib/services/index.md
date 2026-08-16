@@ -1,8 +1,8 @@
 # Services
 
 **Type:** Python Package
-**Last Updated:** 2026-08-16
-**Files:** 45
+**Last Updated:** 2026-08-17
+**Files:** 46
 
 ## Public API
 
@@ -27,7 +27,7 @@
 | [api_hub.py](api_hub.py) | Module:       api | 0 | 0 | 238 |
 | [api_results.py](api_results.py) | Module:       api_results | 8 | 0 | 507 |
 | [audit.py](audit.py) | Module:       audit | 3 | 3 | 595 |
-| [batch.py](batch.py) | Batch design helpers for streaming and bulk execution. | 0 | 2 | 215 |
+| [batch.py](batch.py) | Strict project beam design plus a delegating legacy batch su | 0 | 4 | 612 |
 | [bbs.py](bbs.py) | Bar Bending Schedule (BBS) Module — IS 2502:1999 / SP 34:198 | 3 | 19 | 1134 |
 | [beam_api.py](beam_api.py) | Module:       beam_api | 0 | 20 | 2297 |
 | [beam_pipeline.py](beam_pipeline.py) | beam_pipeline — Unified application-layer pipeline for beam  | 10 | 3 | 636 |
@@ -53,6 +53,7 @@
 | [job_runner.py](job_runner.py) | job_runner | 0 | 4 | 317 |
 | [multi_objective_optimizer.py](multi_objective_optimizer.py) | Multi-Objective Optimization Module | 2 | 2 | 642 |
 | [optimization.py](optimization.py) | Optimization algorithms for structural design. | 2 | 1 | 311 |
+| [project_beam.py](project_beam.py) | Versioned, fail-closed project beam input and result contrac | 11 | 1 | 592 |
 | [rebar.py](rebar.py) | Rebar configuration validation and application helpers. | 0 | 2 | 251 |
 | [rebar_optimizer.py](rebar_optimizer.py) | Rebar arrangement optimizer (deterministic). | 1 | 1 | 322 |
 | [report.py](report.py) | Report generation module for beam design results. | 5 | 14 | 1772 |
