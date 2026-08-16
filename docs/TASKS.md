@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — Combined-footing A/B implement the frozen analysis-strength case; COMBINED-C is next
+**Updated:** 2026-08-16 — COMBINED-C typed Python publication is complete; COMBINED-D is next
 
 ---
 
@@ -127,13 +127,13 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| INDIA-2-FOUNDATION-COMBINED-C | Publish one typed Python workflow, stable provenance/result types, executable benchmark, canonical exports, and public API docs over A/B | Next Main Agent + backend | 🚧 NEXT — activate only after B exact-head review and merge; FastAPI and capability remain held |
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
+| INDIA-2-FOUNDATION-COMBINED-D | Publish thin FastAPI transport plus exact capability/semantic/manifest truth over the C workflow | Next Main Agent + API developer | one bounded packet | P0 | 🚧 NEXT — begin only after C merges unchanged; no structural math, React, alternate topology, or broad gate |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
@@ -159,6 +159,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-FOUNDATION-COMBINED-C | Published one typed Python composition with immutable provenance/result/status types, canonical exports, executable benchmark, public API docs, and retained held truth | Main Agent + backend | ✅ COMPLETE — 7 direct C and 78 combined A/B/C tests pass; capability remains held until D |
 | INDIA-2-FOUNDATION-COMBINED-B | Implemented flexure/minimum/provided steel, spacing/cover/anchorage, concrete one-way/punching shear, bearing/dowels, and composed disposition | Main Agent + structural math | ✅ COMPLETE — 28 direct tests and immutable independent source-candidate audit pass; capability remains held until C/D |
 | INDIA-2-FOUNDATION-COMBINED-A | Implemented typed eligibility, gross/net pressure, resultant equilibrium, longitudinal critical sections, and transverse actions | Main Agent + structural math | ✅ COMPLETE — frozen benchmark and additional symmetric equilibrium cases pass; strength and public capability remain held |
 | INDIA-2-FOUNDATION-COMBINED-G0 | Froze one symmetric equal-load two-column rigid rectangular footing under caller-approved uniform pressure with a pre-implementation benchmark | Main Agent + structural engineer | ✅ GO — COMBINED-A-D activated; general/asymmetric soil interaction and public capability remain held |

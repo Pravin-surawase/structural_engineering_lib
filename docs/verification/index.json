@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 94,
+  "file_count": 97,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -763,10 +763,48 @@
     {
       "name": "india-2-foundation-combined-b-strength-evidence.md",
       "type": "documentation",
-      "size_lines": 151,
+      "size_lines": 152,
       "last_updated": "2026-08-16",
       "description": "COMBINED-B implements only the G0-frozen pure IS 456 strength composition for two identical square columns carrying equal concentric axial compression on one",
-      "content_hash": "7526e8836cdd"
+      "content_hash": "8aec93e9e535"
+    },
+    {
+      "name": "india-2-foundation-combined-c-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "7a1da1a3367b"
+    },
+    {
+      "name": "india-2-foundation-combined-c-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "17b8e97687ab"
+    },
+    {
+      "name": "india-2-foundation-combined-c-public-workflow-evidence.md",
+      "type": "documentation",
+      "size_lines": 146,
+      "last_updated": "2026-08-16",
+      "description": "COMBINED-C publishes one typed Python workflow, design_symmetric_combined_footing_is456, over the already accepted",
+      "content_hash": "b1b71be9bb1e"
     },
     {
       "name": "india-2-foundation-combined-g0-git-handoff-receipt.json",
@@ -1020,7 +1058,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "8ee10f6b680f"
+      "content_hash": "d400575b9262"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -1109,5 +1147,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "483c7f104b354e9b"
+  "content_hash": "e9b97aed0fba5848"
 }

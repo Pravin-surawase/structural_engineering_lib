@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 43,
+  "file_count": 44,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 2,
+      "size_lines": 18,
       "last_updated": "2026-08-16",
-      "description": "structural_lib.services — Auto-generated package.",
-      "content_hash": "7eccc38783bb"
+      "description": "Application-layer public workflow exports.",
+      "content_hash": "8bf3a93f7fea"
     },
     {
       "name": "adapters.py",
@@ -83,10 +83,10 @@
     {
       "name": "api.py",
       "type": "python",
-      "size_lines": 419,
+      "size_lines": 432,
       "last_updated": "2026-08-16",
       "description": "Module:       api",
-      "content_hash": "9d10ca281322"
+      "content_hash": "9fb5502599b9"
     },
     {
       "name": "api_hub.py",
@@ -1000,6 +1000,48 @@
         "_T"
       ],
       "content_hash": "48f80437fe64"
+    },
+    {
+      "name": "combined_footing_api.py",
+      "type": "python",
+      "size_lines": 177,
+      "last_updated": "2026-08-16",
+      "description": "Stable orchestration for the bounded symmetric combined-footing workflow.",
+      "classes": [
+        {
+          "name": "SymmetricCombinedFootingDesignStatus",
+          "description": "Aggregate disposition for the bounded public workflow."
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignInput",
+          "description": "Case identity, A/B typed design input, and review acknowledgement."
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignProvenance",
+          "description": "Stable workflow, benchmark, source, and caller-basis identity."
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignResult",
+          "description": "Composed A/B result with the supported case and retained holds.",
+          "public_methods": [
+            "is_safe_within_supported_scope"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "design_symmetric_combined_footing_is456",
+          "description": "Compose the sole G0-approved symmetric combined-footing workflow.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "constants": [
+        "_SUPPORTED_CASE",
+        "_HELD_CASES"
+      ],
+      "content_hash": "54f2eef7166d"
     },
     {
       "name": "common_api.py",
@@ -2769,5 +2811,12 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "ea826cb23763c7c7"
+  "public_api": [
+    "SymmetricCombinedFootingDesignInput",
+    "SymmetricCombinedFootingDesignProvenance",
+    "SymmetricCombinedFootingDesignResult",
+    "SymmetricCombinedFootingDesignStatus",
+    "design_symmetric_combined_footing_is456"
+  ],
+  "content_hash": "aef85adbb09cff7f"
 }

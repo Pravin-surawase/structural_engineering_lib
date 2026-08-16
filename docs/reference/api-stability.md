@@ -559,6 +559,14 @@ flat_slab_provenance: api.RegularInteriorFlatSlabDesignProvenance = (
     flat_slab.provenance
 )
 flat_slab_status: api.RegularInteriorFlatSlabDesignStatus = flat_slab.status
+combined_request = api.SymmetricCombinedFootingDesignInput(...)
+combined: api.SymmetricCombinedFootingDesignResult = (
+    api.design_symmetric_combined_footing_is456(combined_request)
+)
+combined_provenance: api.SymmetricCombinedFootingDesignProvenance = (
+    combined.provenance
+)
+combined_status: api.SymmetricCombinedFootingDesignStatus = combined.status
 capabilities: tuple[api.IS456Capability, ...] = (
     api.get_supported_is456_capabilities()
 )
@@ -577,6 +585,15 @@ load transfer, and optional provided-bar detailing. Eccentric/partial-contact
 loading, other foundation systems, settlement/soil-structure interaction,
 lateral/uplift/global-overturning checks, and arbitrary geometry are outside the
 contract.
+
+The symmetric combined-footing route is limited to two identical square
+columns with equal concentric axial loads on one rigid rectangular constant-
+depth footing under externally approved uniform pressure. It composes the
+typed action and strength kernels and retains every caller basis in immutable
+provenance. Capability publication and FastAPI transport remain held until the
+separate COMBINED-D packet; alternate footing layouts, soil models, strap
+footings, pile caps, rafts, automatic sizing, and professional approval remain
+outside this preview contract.
 
 The staircase route is limited to one cast-in-situ solid longitudinal straight
 waist-slab flight with collinear landing segments between outer supports. It

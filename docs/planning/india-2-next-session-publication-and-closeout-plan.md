@@ -1,7 +1,7 @@
 ---
 task: INDIA-2-NEXT-SESSION-PUBLICATION-AND-CLOSEOUT
 title: INDIA-2 Next Session and Finish Plan
-status: ready_after_combined_b_merge
+status: combined_c_complete_d_next
 owner: Next Main Agent
 created: 2026-08-16
 last_updated: 2026-08-16
@@ -35,7 +35,7 @@ The complete remaining order is:
 
 ## 2. Verified inherited state
 
-At the COMBINED-B source candidate:
+At the merged COMBINED-B baseline:
 
 - wall, staircase, deep-beam, and flat-slab/punching bounded families are
   accepted;
@@ -49,10 +49,13 @@ At the COMBINED-B source candidate:
   clause/traceability/manifest/function-quality selection;
 - architecture is `0/190`, imports are `0/630`, 1,236 internal links are
   valid, source binding is true, and the quick gate is `10/10`;
-- the exact B source candidate was independently audited at
-  `b9cb06f7afe632339c10ab84e17a4d09d0299ade`, tree
-  `f5e405ad445f88d019a1c2b064292e6be9b495b6`, including a non-frozen
+- the corrected final B head was independently audited at
+  `948787bb56d28b8fbcca83aa94f1c68a26ec2eab`, tree
+  `66243e06608f9323c605f16b8ca96eaf93d04fa5`, including a non-frozen
   `7200 x 3000 mm` symmetric case that returned `PASS`; and
+- PR #789 squash-merged that exact tree as
+  `f87c8a32aca7edc015f96f6e053f30c904ae683b`, with six applicable checks
+  passing and two correctly skipped; and
 - public distribution permission is already recorded and must not be requested
   again. No release, tag, package publication, branch deletion, or worktree
   cleanup is authorized.

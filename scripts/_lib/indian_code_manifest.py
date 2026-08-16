@@ -98,6 +98,7 @@ _IS456_EVIDENCE = {
         "docs/verification/india-2-foundation-combined-g0-scope-evidence.md",
         "docs/verification/india-2-foundation-combined-a-analysis-evidence.md",
         "docs/verification/india-2-foundation-combined-b-strength-evidence.md",
+        "docs/verification/india-2-foundation-combined-c-public-workflow-evidence.md",
     ),
 }
 
@@ -105,11 +106,14 @@ _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
     "IS456:2000": (
         {
             "family": "combined_footing",
-            "claim": "Combined-footing public design remains held after implementing the G0-frozen symmetric two-column rigid action and internal strength kernels.",
+            "implementation_status": "IMPLEMENTED_BOUNDED",
+            "claim": "Combined-footing capability publication remains held while a bounded public Python preview composes the G0-frozen symmetric two-column rigid action and strength kernels.",
+            "workflows": ["design_symmetric_combined_footing_is456"],
             "limitations": [
-                "Pressure, equilibrium, action, flexure, detailing, concrete shear/punching, bearing, transfer, and anchorage checks exist only as internal kernels for the equal-load symmetric two-column rectangular case; a public workflow is not implemented yet.",
+                "The bounded Python preview is implemented for the equal-load symmetric two-column rectangular case; FastAPI transport, runtime capability registration, semantic-contract publication, and family acceptance remain held until COMBINED-D.",
                 "Unequal/eccentric loads, trapezoidal plans, variable pressure, settlement, elastic-line, Winkler, plate, and FEM analysis remain held.",
             ],
+            "evidence": list(_IS456_EVIDENCE["combined_footing"]),
         },
         {
             "family": "strap_footing",
@@ -246,11 +250,13 @@ def _held_family(namespace: str, definition: dict[str, Any]) -> dict[str, Any]:
         "capability_id": f"{namespace}:{family}",
         "family": family,
         "scope_status": "HELD",
-        "implementation_status": "NOT_IMPLEMENTED",
+        "implementation_status": definition.get(
+            "implementation_status", "NOT_IMPLEMENTED"
+        ),
         "claim": definition["claim"],
-        "workflows": [],
+        "workflows": definition.get("workflows", []),
         "limitations": definition["limitations"],
-        "evidence": [],
+        "evidence": definition.get("evidence", []),
         "qualified_review_required": True,
     }
 

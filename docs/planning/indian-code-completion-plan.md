@@ -61,12 +61,12 @@ That document controls INDIA-2 execution within this parent wave.
 | `INDIA-2-STAIR` | IS 456 Clause 33 longitudinal straight waist-slab flight with collinear landings | **Complete.** Historical `INDIA-2A`–`INDIA-2D` plus the cumulative gate are its evidence. Alternate stairs remain held. |
 | `INDIA-2-DEEP` | IS 456 Clause 29 deep-beam program | **Complete within its bounded case.** One simply supported positive-moment workflow is accepted; alternate deep-beam systems remain held. |
 | `INDIA-2-FLAT` | Flat-slab and column-punching program | **Complete within its bounded case.** One regular interior direct-design and concrete-only punching workflow is accepted; alternate systems remain held. |
-| `INDIA-2-FOUNDATION-COMBINED` | Combined-footing program | **A/B analysis and strength implemented; capability held.** One symmetric equal-load two-column rigid rectangular case only; C public Python workflow is next. |
+| `INDIA-2-FOUNDATION-COMBINED` | Combined-footing program | **A/B/C analysis, strength, and public Python workflow implemented; capability held.** One symmetric equal-load two-column rigid rectangular case only; D transport/truth publication is next. |
 | `INDIA-2-FOUNDATION-STRAP` | Strap-footing program | **Held; distinct analysis model required.** |
 | `INDIA-2-FOUNDATION-RAFT` | Raft-foundation program | **Held; distinct analysis model required.** |
 | `INDIA-2-FOUNDATION-PILE-CAP` | Pile-cap program | **Held; distinct analysis model required.** |
 
-The next packet is `INDIA-2-FOUNDATION-COMBINED-C`. It publishes only one typed
+The next packet is `INDIA-2-FOUNDATION-COMBINED-D`. C publishes only one typed
 Python workflow over the completed G0/A/B case. FastAPI and capability
 publication remain for D; alternate combined-footing systems and the other
 foundation families remain in later decision packets. The dedicated

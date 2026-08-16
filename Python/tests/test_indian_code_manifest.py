@@ -96,7 +96,7 @@ def test_is456_supported_families_are_generated_from_runtime_registry() -> None:
     ]
 
 
-def test_combined_footing_held_truth_tracks_internal_strength_kernel() -> None:
+def test_combined_footing_held_truth_tracks_public_python_preview() -> None:
     manifest = build_manifest()
     is456 = _standard(manifest, "IS456:2000")
     combined = next(
@@ -106,13 +106,14 @@ def test_combined_footing_held_truth_tracks_internal_strength_kernel() -> None:
     )
 
     assert combined["scope_status"] == "HELD"
-    assert combined["implementation_status"] == "NOT_IMPLEMENTED"
-    assert combined["workflows"] == []
-    assert "internal strength kernels" in combined["claim"]
-    assert "a public workflow is not implemented yet" in combined["limitations"][0]
-    assert (
-        "strength and a public workflow are not implemented"
-        not in combined["limitations"][0]
+    assert combined["implementation_status"] == "IMPLEMENTED_BOUNDED"
+    assert combined["workflows"] == ["design_symmetric_combined_footing_is456"]
+    assert "bounded public Python preview" in combined["claim"]
+    assert "FastAPI transport" in combined["limitations"][0]
+    assert "runtime capability registration" in combined["limitations"][0]
+    assert "semantic-contract publication" in combined["limitations"][0]
+    assert "india-2-foundation-combined-c-public-workflow-evidence.md" in " ".join(
+        combined["evidence"]
     )
 
 

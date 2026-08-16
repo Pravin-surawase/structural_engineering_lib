@@ -53,7 +53,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [test_git_guidance_semantics.py](test_git_guidance_semantics.py) | Semantic live-guidance discovery and coherence regressions. | 0 | 10 | 362 |
 | [test_git_handoff_receipt.py](test_git_handoff_receipt.py) | Regressions for the durable, fail-closed task-to-Git handoff | 0 | 20 | 429 |
 | [test_git_state.py](test_git_state.py) | Outcome tests for the read-only, worktree-aware Git state au | 0 | 20 | 682 |
-| [test_indian_code_manifest.py](test_indian_code_manifest.py) | INDIA-0 truth-manifest and reporting contract tests. | 0 | 6 | 142 |
+| [test_indian_code_manifest.py](test_indian_code_manifest.py) | INDIA-0 truth-manifest and reporting contract tests. | 0 | 7 | 163 |
 | [test_inputs.py](test_inputs.py) | Tests for the inputs module (TASK-276: Input Flexibility). | 7 | 0 | 464 |
 | [test_is456_common.py](test_is456_common.py) | Tests for IS 456:2000 common modules - stress_blocks, reinfo | 15 | 0 | 854 |
 | [test_is456_constants.py](test_is456_constants.py) | Tests for IS 456:2000 named design constants. | 1 | 0 | 163 |
@@ -92,7 +92,7 @@ This document describes the test taxonomy and structure for the structural_engin
 | [data/](data/) | 5 |  |
 | [fixtures/](fixtures/) | 11 |  |
 | [helpers/](helpers/) 📦 | 2 |  |
-| [integration/](integration/) 📦 | 52 |  |
+| [integration/](integration/) 📦 | 53 |  |
 | [performance/](performance/) 📦 | 3 |  |
 | [property/](property/) 📦 | 9 |  |
 | [regression/](regression/) 📦 | 11 |  |

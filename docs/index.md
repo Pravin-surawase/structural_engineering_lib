@@ -16,8 +16,8 @@ Guides, references, evidence, and contributor material for the
 | File | Title | Description | Lines |
 |------|-------|-------------|-------|
 | [README.md](README.md) | Docs Index (Start Here) | Guides, references, evidence, and contributor material for t | 253 |
-| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 8114 |
-| [TASKS.md](TASKS.md) | Task Board | > **Single source of truth for active work.** Keep it short  | 721 |
+| [SESSION_LOG.md](SESSION_LOG.md) | Session Log | > Append-only decision log for AI agent sessions. > Earlier  | 8259 |
+| [TASKS.md](TASKS.md) | Task Board | > **Single source of truth for active work.** Keep it short  | 722 |
 | [WORKLOG.md](WORKLOG.md) |  | > **One line per item. Compact. Append-only.** > Format: DAT | 354 |
 
 ## Subfolders
@@ -48,4 +48,4 @@ Guides, references, evidence, and contributor material for the
 | [reference/](reference/) | 1792 |  |
 | [research/](research/) | 33 |  |
 | [specs/](specs/) | 6 | Technical specifications for data formats and schemas. |
-| [verification/](verification/) | 96 | Benchmark examples and verification packs for validating library calculations ag |
+| [verification/](verification/) | 99 | Benchmark examples and verification packs for validating library calculations ag |

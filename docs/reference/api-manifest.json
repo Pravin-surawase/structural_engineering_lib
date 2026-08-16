@@ -2,7 +2,7 @@
   "generated": "2026-08-16",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 155,
+  "count": 160,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -310,6 +310,26 @@
       "signature": "(case_id: 'str', status: 'StaircaseDesignStatus', geometry: 'StraightFlightGeometryResult', actions: 'StraightFlightActionResult', design: 'StraightFlightDesignResult', supported_case: 'str', held_cases: 'tuple[str, ...]', provenance: 'StraightFlightStaircaseProvenance', qualified_review_required: 'bool' = True, complete_engineering_design_approved: 'bool' = False) -> None"
     },
     {
+      "name": "SymmetricCombinedFootingDesignInput",
+      "kind": "class",
+      "signature": "(case_id: 'str', footing: 'CombinedFootingDesignInput', qualified_review_required: 'bool') -> None"
+    },
+    {
+      "name": "SymmetricCombinedFootingDesignProvenance",
+      "kind": "class",
+      "signature": "(schema_version: 'str', code_edition: 'str', workflow: 'str', case_id: 'str', benchmark_id: 'str', action_generation_status: 'str', soil_verification_status: 'str', geometry_basis_reference: 'str', rigidity_basis_reference: 'str', load_basis_reference: 'str', bearing_settlement_basis_reference: 'str', cancellation_basis_reference: 'str', material_basis_reference: 'str', detailing_basis_reference: 'str', transfer_basis_reference: 'str', clause_refs: 'tuple[str, ...]', source_refs: 'tuple[str, ...]') -> None"
+    },
+    {
+      "name": "SymmetricCombinedFootingDesignResult",
+      "kind": "class",
+      "signature": "(case_id: 'str', status: 'SymmetricCombinedFootingDesignStatus', strength: 'CombinedFootingStrengthResult', supported_case: 'str', held_cases: 'tuple[str, ...]', provenance: 'SymmetricCombinedFootingDesignProvenance', qualified_review_required: 'bool' = True, complete_engineering_design_approved: 'bool' = False) -> None"
+    },
+    {
+      "name": "SymmetricCombinedFootingDesignStatus",
+      "kind": "class",
+      "signature": "(*args, **kwds)"
+    },
+    {
       "name": "TorsionResult",
       "kind": "class",
       "signature": "(Tu_knm: 'float', Vu_kn: 'float', Mu_knm: 'float', Ve_kn: 'float', Me_knm: 'float', tau_ve: 'float', tau_c: 'float', tau_c_max: 'float', Asv_torsion: 'float', Asv_shear: 'float', Asv_total: 'float', stirrup_spacing: 'float', Al_torsion: 'float', is_safe: 'bool', requires_closed_stirrups: 'bool' = True, errors: 'list[DesignError]' = <factory>, clause_refs: 'dict[str, str]' = <factory>) -> None"
@@ -613,6 +633,11 @@
       "name": "design_straight_flight_staircase_is456",
       "kind": "function",
       "signature": "(request: 'StraightFlightStaircaseInput') -> 'StraightFlightStaircaseResult'"
+    },
+    {
+      "name": "design_symmetric_combined_footing_is456",
+      "kind": "function",
+      "signature": "(request: 'SymmetricCombinedFootingDesignInput') -> 'SymmetricCombinedFootingDesignResult'"
     },
     {
       "name": "design_torsion",
