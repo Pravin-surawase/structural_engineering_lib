@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "packet": "MAINT-010-INDEX-DETERMINISM",
+  "observed_at_utc": "2026-08-16T17:55:19Z",
+  "base": {
+    "commit_sha": "7541a7c768aee408e38bf8e7b4a1997469b0b9b1",
+    "tree_sha": "0f02591331c8059100e7ccd67b627f03ac3bd229",
+    "maintenance_pr": 809
+  },
+  "confirmed_failure": {
+    "maintenance_worktree_indexes_current": "32/32",
+    "primary_worktree_indexes_stale": "32/32",
+    "git_tree_equal": true,
+    "main_process_impact": "byte-identical Git trees could require repository-wide index regeneration after checkout, worktree creation, or fast-forward"
+  },
+  "root_cause": {
+    "source": "scripts/generate_enhanced_index.py",
+    "filesystem_observation": "nested file last_updated fields are derived from stat().st_mtime",
+    "defect": "the folder content_hash excluded only top-level last_updated and therefore hashed nested filesystem timestamps",
+    "workflow_amplifier": "stale-result and agent guidance prescribed all-folder regeneration, while the closeout workflow did not make the final repository mutation cutoff explicit"
+  },
+  "implemented_resolution": {
+    "hash_contract": "recursively exclude every last_updated field while retaining per-file content_hash values and deterministic structural projections",
+    "write_contract": "refresh only folders reported stale",
+    "scheduled_contract": "run all-folder freshness as a read-only Monday audit; never schedule index writes or commits",
+    "closeout_contract": [
+      "freeze owned logs, task and handoff state, local evidence, and the pre-commit receipt",
+      "refresh affected indexes once as the final repository write",
+      "commit and audit an immutable candidate",
+      "keep PR, hosted-check, and merge facts in GitHub and the external handoff",
+      "create an explicit repair candidate only for a material post-push defect"
+    ],
+    "existing_structural_guards_retained": [
+      "check-docs-index",
+      "check-scripts-index",
+      "check-docs-index-links"
+    ],
+    "reason_structural_guards_retained": "they validate registry membership and link structure, not the 32-folder freshness watermark"
+  },
+  "regression": {
+    "test": "test_generated_index_hash_ignores_filesystem_mtime",
+    "observation": "moving one unchanged Python file mtime from 2020 to 2021 changes its display date but not the folder content_hash",
+    "subfolder_sensitivity_preserved": true
+  },
+  "session_compaction": {
+    "total_entries": 109,
+    "live_entries": 10,
+    "archived_entries": 99,
+    "unique_session_bodies": 109,
+    "sorted_body_multiset_sha256": "8688537a63ed909a9f9c9f932aaaff3233dad7cdc49a526493b75bfabee66ea1",
+    "maximum_archive_bytes": 480000,
+    "largest_archive_bytes": 475805
+  },
+  "local_validation_before_final_index_write": {
+    "focused_governance_tests_passed": 164,
+    "black": "PASS",
+    "ruff": "PASS",
+    "weekly_workflow_yaml": "PASS",
+    "instruction_drift": "PASS",
+    "health": "100/100",
+    "audit": "19/19",
+    "capability_supported": 13,
+    "capability_held": 8,
+    "endpoints_directly_tested": "81/81",
+    "internal_links": 1322,
+    "broken_links": 0,
+    "strict_metadata": "PASS",
+    "quick_gate": "10/10",
+    "full_gate": "30/30"
+  },
+  "immutable_closeout": {
+    "final_repository_write": "one-time regeneration of the 32 maintained indexes after this evidence and the handoff receipt are frozen",
+    "post_commit_acceptance": [
+      "32/32 indexes current in the candidate worktree",
+      "32/32 indexes current in a fresh detached worktree at the exact candidate commit",
+      "required hosted checks pass on the unchanged head",
+      "squash merge tree equals the reviewed candidate tree",
+      "primary main reports 32/32 indexes current after fast-forward"
+    ],
+    "post_commit_results_location": "GitHub checks, merge metadata, and the external final handoff; no same-candidate backwrite"
+  },
+  "behavior_boundaries": {
+    "structural_arithmetic_changed": false,
+    "api_runtime_changed": false,
+    "react_runtime_changed": false,
+    "dependencies_changed": false,
+    "release_state_changed": false,
+    "india_3_activated": false,
+    "professional_approval_claim_changed": false,
+    "additional_git_cleanup_performed": false
+  },
+  "issue_record": "docs/SESSION_LOG.md#2026-08-16--session-post-india-2-index-determinism-repair"
+}

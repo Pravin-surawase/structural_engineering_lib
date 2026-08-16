@@ -199,6 +199,11 @@ Every coding session uses the bounded workflow below.
 4. Run `./run.sh session end --agent <role>` to validate the clean handoff.
 5. Log feedback only when a concrete stale or missing control was found.
 
+Freeze all versioned logs, task/handoff state, evidence, and the pre-commit Git
+receipt before refreshing affected indexes once. Index refresh is the final
+repository write. Do not write PR, hosted-check, or merge status back into the
+same candidate after push; report it through GitHub and the external handoff.
+
 ### Why This Matters
 - **next-session-brief.md** carries task-specific continuation state.
 - **TASKS.md** tracks real project-state changes.

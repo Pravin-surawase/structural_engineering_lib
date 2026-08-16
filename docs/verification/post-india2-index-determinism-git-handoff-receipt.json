@@ -1,0 +1,186 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T17:55:19Z",
+      "query_status": "OK",
+      "reference": "task:MAINT-010-INDEX-DETERMINISM:user-request-finish-carefully-decide-without-approval-prompts-and-stop-log-index-rework",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T17:55:19Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_RETAINED_BRANCH",
+      "DELETE_RETAINED_WORKTREE",
+      "DELETE_RETAINED_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE",
+      "CHANGE_ENGINEERING_BEHAVIOR"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/index-mtime-determinism",
+      "head_sha": "7541a7c768aee408e38bf8e7b4a1997469b0b9b1",
+      "task_id": "MAINT-010-INDEX-DETERMINISM"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "373a9b3027daac21310def768255155b89cf88aee3a0f6bfffb7cb6782864283",
+    "state": {
+      "branch": "codex/index-mtime-determinism",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "7541a7c768aee408e38bf8e7b4a1997469b0b9b1",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 91.08,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-index-mtime-determinism",
+      "head_sha": "7541a7c768aee408e38bf8e7b4a1997469b0b9b1",
+      "hold_reasons": [
+        "changed paths: 17"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T17:56:14.575113+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-mtime-determinism",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 17,
+        "modified_paths": [
+          ".github/agents/governance.agent.md",
+          ".github/copilot-instructions.md",
+          ".github/prompts/session-end.prompt.md",
+          ".github/skills/session-management/SKILL.md",
+          ".github/workflows/nightly.yml",
+          "AGENTS.md",
+          "CLAUDE.md",
+          "Python/tests/test_session_automation.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/_archive/session-logs/2026-08-part-2.md",
+          "docs/git-automation/git-workflow-single-source.md",
+          "docs/planning/next-session-brief.md",
+          "scripts/agent_context.py",
+          "scripts/generate_enhanced_index.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/post-india2-index-determinism-evidence.json",
+          "docs/verification/post-india2-index-determinism-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "7541a7c768aee408e38bf8e7b4a1997469b0b9b1",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-index-mtime-determinism"
+    }
+  },
+  "local_state_receipt_hash": "sha256:373a9b3027daac21310def768255155b89cf88aee3a0f6bfffb7cb6782864283",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T17:56:14.575307+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T17:55:19Z",
+    "owner": "Main Agent under owner instruction to preserve every retained lane",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "pyproject.toml",
+      "CHANGELOG.md",
+      "fastapi_app/main.py",
+      "fastapi_app/routers",
+      "Python/structural_lib"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "scripts/generate_enhanced_index.py",
+      "scripts/agent_context.py",
+      "Python/tests/test_session_automation.py",
+      ".github/workflows/nightly.yml",
+      ".github/agents/governance.agent.md",
+      ".github/skills/session-management/SKILL.md",
+      ".github/prompts/session-end.prompt.md",
+      "docs/git-automation/git-workflow-single-source.md",
+      "docs/verification/post-india2-index-determinism-evidence.json",
+      "docs/verification/post-india2-index-determinism-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      ".github/copilot-instructions.md",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "docs/_archive/session-logs",
+      "Python",
+      "fastapi_app",
+      "react_app",
+      "agents",
+      "docs"
+    ],
+    "task_id": "MAINT-010-INDEX-DETERMINISM"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

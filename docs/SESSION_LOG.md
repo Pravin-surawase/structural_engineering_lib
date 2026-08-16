@@ -5,6 +5,95 @@
 
 ---
 
+## 2026-08-16 — Session: Post-INDIA-2 Index Determinism Repair
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/index-mtime-determinism` from maintenance merge
+`7541a7c768aee408e38bf8e7b4a1997469b0b9b1`
+
+**Git handoff receipt:**
+`docs/verification/post-india2-index-determinism-git-handoff-receipt.json`
+
+**Focus:** Remove filesystem-time churn from maintained index freshness,
+replace all-folder regeneration guidance with affected-folder refresh, and add
+one read-only weekly drift audit without changing product, engineering,
+dependency, release, or retained Git-lane state.
+
+### Summary
+
+- Made the index freshness watermark depend on repository content and structure
+  while retaining `last_updated` only as observational display metadata.
+- Added a regression that changes only a source file's filesystem timestamp and
+  requires an unchanged folder freshness hash.
+- Kept the existing docs/scripts structural guards because they validate real
+  registry and link contracts; no all-folder freshness check existed in PR CI
+  or pre-commit.
+- Added one non-writing all-folder freshness audit to the existing Monday
+  workflow and changed operator guidance to refresh only folders reported
+  stale.
+- Performed the one-time deterministic-hash migration for all 32 maintained
+  indexes and bound the candidate to independent fresh-worktree validation.
+
+### Issues encountered
+
+- After PR #809 merged with a tree exactly equal to its reviewed candidate,
+  the maintenance worktree reported 32/32 indexes current while primary
+  `main` reported all 32 stale for the same Git tree.
+- The existing closeout wording allowed agents to update versioned session,
+  PR, hosted-check, or merge status after index generation or PR creation,
+  creating a documentation-to-index-to-CI mutation loop.
+- The first patch application could not match the decorative folder-scanner
+  separator; no file changed in that failed attempt.
+- The first focused Black check required one mechanical line-wrap change in
+  the timestamp regression.
+
+### Root causes and resolutions
+
+- Confirmed root cause: file analyzers derive nested `last_updated` values from
+  filesystem `mtime`, but the generator excluded only the top-level
+  `last_updated` field from `content_hash`. A fresh linked worktree therefore
+  produced a different freshness hash for byte-identical files. Resolution:
+  recursively omit observational timestamps from the hash projection while
+  retaining per-file content hashes and every deterministic structural field.
+  Proof: the regression moves one unchanged Python file from 2020 to 2021,
+  observes a changed display date, and observes an identical freshness hash.
+- Confirmed root cause: the generator's stale-result message prescribed
+  `--all`, encouraging repository-wide regeneration even when only one folder
+  changed. Resolution: report all stale folders and explicitly require only
+  those folders to be refreshed; agent guidance now separates the global
+  read-only audit from focused writes.
+- Confirmed root cause: the workflow required an immutable candidate but did
+  not state the final mutation cutoff explicitly across all agent/session entry
+  points. Resolution: freeze logs, task/handoff state, local evidence, and the
+  pre-commit receipt first; refresh affected indexes once as the last repository
+  write; keep later PR/CI/merge facts in GitHub and the external handoff. Proof:
+  the canonical Git workflow, cross-agent instructions, session skill, and
+  session-end prompt now carry the same ordered rule.
+- Confirmed root cause: the failed patch used an inexact Unicode separator as
+  context. Resolution: anchor the patch to function definitions and assertions.
+  Proof: the intended implementation diff applies cleanly and the
+  focused regression passes.
+- Confirmed root cause: the handwritten multi-line assertion did not match the
+  repository formatter's compact layout. Resolution: run Black on the one test
+  file. Proof: Black, Ruff, and all 164 focused governance tests pass.
+
+### Validation
+
+- The focused content-hash tests pass, including timestamp independence and
+  subfolder-projection sensitivity.
+- Final evidence, exact counts, same-commit fresh-worktree proof, repository
+  gates, and immutable handoff binding are recorded in
+  `docs/verification/post-india2-index-determinism-evidence.json`.
+
+### Timing
+
+- Root-cause investigation began during maintenance closeout at approximately
+  `2026-08-16T17:44:00Z`; bounded repair work began at approximately
+  `2026-08-16T17:47:00Z`.
+
+---
+
 ## 2026-08-16 — Session: Post-INDIA-2 Maintenance
 
 **Agent:** Codex (`governance`, sole writer)
@@ -1062,113 +1151,3 @@ not start the frontmatter repair.
 - Hosted CI wait, merge closeout, and total wall time are reported by the
   successor closeout observation because they occur after the unchanged
   candidate is frozen.
-
-## 2026-08-16 — Session: INDIA-2 Next-Agent Execution Plan Refresh
-
-**Agent:** Codex (`orchestrator` and `doc-master`, sole writer)
-
-**Branch:** `codex/india-2-next-agent-plan-refresh` from fetched `origin/main`
-at `339bad2128bc00b34a18827a8ac185ebcdb069fd`, tree
-`ecd7fe389409e4077afb37f17aee20fe5734cf0e`
-
-**Git handoff receipt:** `docs/verification/india-2-next-agent-plan-refresh-git-handoff-receipt.json`
-
-**Focus:** Refresh the durable next-session plan after primary-main hygiene,
-define an efficient exact start for GIT-001 Phase 8, and bound the later
-pile-cap/raft G0 source and benchmark decisions. Do not execute Phase 8, issue
-repairs, structural implementation, cleanup, broad gates, or release work.
-
-### Summary
-
-- Rebound the plan and compact brief to clean synchronized primary/main and
-  planning merge `339bad21` without changing the established packet order.
-- Added a bounded Phase 8 startup/evidence sample, narrow commands, stop rule,
-  timing categories, and one-writer/candidate/generator/hosted-check controls.
-- Defined a two-pile centred-axial pile-cap candidate for G0 investigation while
-  requiring the packet to choose one source-bound action model and return
-  `REVISE` or `HOLD` if source or benchmark evidence remains ambiguous.
-- Kept raft behind the pile-cap decision and preserved the final cumulative
-  cadence: focused gates per packet, broad Python and the 30-check gate once at
-  final INDIA-2 closeout unless repository-wide failure forces them earlier.
-
-### Issues encountered
-
-- The merged plan and compact handoff still described primary at `f87c8a32`,
-  behind and dirty, after the owner-authorized minimal hygiene had restored the
-  repository verbosity default and fast-forwarded primary to `339bad21`.
-- The foundation section named pile-cap/raft decisions but did not give the next
-  agent a concrete candidate, source-readiness state, action-model fork,
-  benchmark contract, or fail-closed decision matrix.
-- The repository's controlled private source set contains IS 456 only; no
-  retained IS 2911/IS 2950 companion source or accepted structural pile-cap/
-  raft benchmark was found.
-- Live frontmatter replay still reports eight invalid records and exits `0`;
-  the planned repair remains necessary and must not be hidden by this docs-only
-  refresh.
-- A targeted stale-claim search placed a Markdown backtick token inside a
-  double-quoted shell command, so zsh attempted to execute `medium` before the
-  search continued.
-- Creating the new Git handoff evidence made the verification-folder index
-  hash stale before the receipt follow-up was committed.
-
-### Root causes and resolutions
-
-- Confirmed root cause: planning PR #799 correctly froze a pre-cleanup snapshot,
-  but a plan/receipt is not a live-state authority and was not refreshed after
-  the separate primary-hygiene action. Resolution: bind current baseline
-  `339bad21`, clean/equal primary, repository `model_verbosity = "low"`, and the
-  unchanged retained `e54a` hold. Evidence: freshly fetched primary and the new
-  linked planning lane report exact base equality; the lane reports
-  `READY_LOCAL` and `source_bound=true`.
-- Confirmed root cause: the earlier plan protected the G0 decision boundary but
-  intentionally stopped before choosing a plausible first topology; a new
-  session would have had to rediscover the whole decision space. Resolution:
-  document one candidate two-pile centred-axial cap, force an explicit choice
-  between footing-critical-section and separately sourced deep-region models,
-  enumerate exclusions, and preserve `GO/REVISE/HOLD` authority in G0.
-- Confirmed root cause: prior INDIA-2 foundation packets required only the
-  retained IS 456 base/amendment sources, so the source cache was never expanded
-  for pile/raft companion standards. Resolution: distinguish authoritative
-  discovery from controlled implementation evidence and make source acquisition
-  plus an independent structural benchmark a G0 precondition. Official BIS
-  listings and NPTEL pile-group material are discovery leads only, not an
-  accepted cap benchmark.
-- Confirmed root cause retained for the later packet: JSON-mode frontmatter
-  validation returns before applying the invalid-count failure status used by
-  text mode. Resolution here is planning only: keep exactly eight invalid
-  records and the exit-code regression in `DOC-FRONTMATTER-CONTRACT`; do not
-  bulk-edit 60 permitted legacy records.
-- Confirmed root cause: command text with backticks was passed through a shell
-  double-quoted string, enabling command substitution. Resolution: rerun the
-  search with the regular expression single-quoted and keep shell metacharacters
-  out of interpolated command text. Evidence: the corrected search completes
-  without a shell error. ⚠️ TERMINAL ISSUE: unsafe backtick quoting triggered
-  `zsh: command not found: medium` -> single-quoted search text worked.
-- Confirmed root cause: verification indexes hash the folder inventory, so the
-  new source-evidence and receipt paths necessarily changed their generated
-  inputs. Resolution: remove the first uncommitted receipt, regenerate the
-  verification indexes once, recreate the receipt with both index paths named
-  as shared paths, and rerun index check mode plus receipt validation.
-
-### Validation
-
-- Focused Git-governance replay: 127 tests passed across `test_git_state.py`,
-  `test_git_handoff_receipt.py`, and `test_branch_disposition.py`; the maintained
-  `check_codex_git_workflow.py` checker also passed.
-- Documentation replay: brief length passed; planning and verification indexes
-  regenerated and hash-current; docs index and index-link checks passed; 387
-  Markdown files and 1,260 internal links produced zero broken links;
-  token-efficiency policy passed; `git diff --check` passed; quick gate passed
-  `10/10`; the task-to-Git handoff receipt validates as the expected pre-PR
-  `HOLD` bound to content head `18b86799`.
-- Current truth replay: parity remains 13 supported / 8 held, 50/91 public
-  functions directly router-wired, 81/81 endpoints directly tested, and 13/13
-  React hooks connected.
-- Known failing contract captured rather than accepted: frontmatter JSON reports
-  341 records, 281 with frontmatter, 60 permitted legacy records without it,
-  and eight invalid records, yet exits `0`. This is the frozen next repair and
-  is not counted as passing validation.
-- Exact changed paths, commit/head/tree, receipt validation, hosted checks, and
-  post-merge identity are recorded during publication closeout.
-- Broad Python and the full 30-check gate remain deferred to final INDIA-2
-  closeout under the owner-approved cadence.

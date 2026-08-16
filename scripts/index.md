@@ -21,7 +21,7 @@
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
 | [agent_compliance_checker.py](agent_compliance_checker.py) | Agent compliance checker — verify agents followed their .age | 0 | 12 | 541 |
-| [agent_context.py](agent_context.py) | Agent Context Loader — gives each agent its tailored startup | 0 | 20 | 644 |
+| [agent_context.py](agent_context.py) | Agent Context Loader — gives each agent its tailored startup | 0 | 20 | 642 |
 | [agent_drift_detector.py](agent_drift_detector.py) | Agent drift detector — detect when agents deviate from presc | 0 | 9 | 649 |
 | [agent_evolve_instructions.py](agent_evolve_instructions.py) | Agent instruction evolver — self-improving agent customizati | 0 | 12 | 550 |
 | [agent_feedback.py](agent_feedback.py) | Agent feedback collection and analysis. | 0 | 6 | 423 |
@@ -79,7 +79,7 @@
 | [generate_beam_tool_manifest.py](generate_beam_tool_manifest.py) | Generate and byte-check the catalogue-derived beam tool mani | 0 | 4 | 64 |
 | [generate_client_sdks.py](generate_client_sdks.py) | Generate client SDKs from FastAPI OpenAPI specification. | 0 | 6 | 560 |
 | [generate_docs_index.py](generate_docs_index.py) | Generate machine-readable JSON index of documentation. | 0 | 7 | 246 |
-| [generate_enhanced_index.py](generate_enhanced_index.py) | Generate enhanced index.json + index.md for ANY folder type. | 0 | 11 | 866 |
+| [generate_enhanced_index.py](generate_enhanced_index.py) | Generate enhanced index.json + index.md for ANY folder type. | 0 | 11 | 877 |
 | [generate_error_docs.py](generate_error_docs.py) | Generate docs/reference/error-codes.md from core/errors.py. | 0 | 4 | 139 |
 | [generate_indian_code_manifest.py](generate_indian_code_manifest.py) | Generate or verify the INDIA-0 Indian-code truth manifest. | 0 | 1 | 43 |
 | [git_handoff_receipt.py](git_handoff_receipt.py) | Build and validate fail-closed task-to-Git handoff receipts. | 0 | 4 | 573 |
