@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — bounded strap-footing family accepted; stop before pile-cap G0
+**Updated:** 2026-08-16 — next session starts with Git Phase 8 and confirmed issue repairs before new foundation work
 
 ---
 
@@ -127,13 +127,17 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
+| GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 PHASE 8 NEXT — Phases 1-7E are integrated through PRs #751/#752; verify adoption, reconcile stale status, and refresh preservation holds without cleanup |
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2-FOUNDATION-PILE-CAP-G0 | Decide one source-bound pile-cap case or retain an explicit hold before any implementation | Main Agent + structural engineer | decision only | P0 | ⏭️ NEXT FOUNDATION DECISION — not started by strap acceptance |
+| GIT-001-P8-RECONCILIATION | Verify GIT-7E adoption, reconcile current ledgers, and classify retained lanes without mutation | Main Agent + ops | one packet | P0 | ⏭️ NEXT — planning and inspection only; cleanup remains unauthorized |
+| DOC-FRONTMATTER-CONTRACT | Fix JSON-mode false success and the eight currently invalid frontmatter records | Main Agent + doc-master | one packet | P0 | ⏸ AFTER GIT P8 |
+| INDIA-2-TRUTH-HYGIENE-38-2 | Source-audit and correct live Clause 38.2 flexure metadata, decorators, provenance, and any benchmark-proven arithmetic defect | Main Agent + structural engineer | one bounded packet | P0 | ⏸ AFTER DOC CONTRACT |
+| INDIA-2-FOUNDATION-PILE-CAP-G0 | Decide one source-bound pile-cap case or retain an explicit hold before any implementation | Main Agent + structural engineer | decision only | P0 | ⏸ AFTER ISSUE REPAIRS — not started |
+| INDIA-2-FOUNDATION-RAFT-G0 | Decide one source-bound non-FEM raft case or retain an explicit hold before any implementation | Main Agent + structural engineer | decision only | P0 | ⏸ AFTER PILE-CAP DECISION — not started |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
@@ -146,7 +150,8 @@ defines the remaining family packets. INDIA-0 and INDIA-1 are complete. The
 historical INDIA-2A-D packets form the completed `INDIA-2-STAIR` family. Bounded
 wall, deep-beam, flat-slab/punching, combined-footing, and strap-footing
 families are accepted, but umbrella INDIA-2 remains in progress while the
-pile-cap/raft G0 decisions remain pending.
+Git/status reconciliation, frontmatter contract repair, Clause 38.2 truth
+hygiene, and pile-cap/raft G0 decisions remain pending.
 The v0.23.1a1 Alpha is published.
 UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded

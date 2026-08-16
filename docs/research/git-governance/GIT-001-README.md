@@ -23,7 +23,9 @@ complete: GIT-7D1 integrated through PR #746, while GIT-7D2 integrated through
 PRs #747-#748 and has a non-destructive preservation/disposition reconciliation.
 The follow-on eight-branch retirement proposal was integrated by PR #750 as
 `b91838f` and still holds all exact targets on unknown retention. GIT-7E
-semantic guidance and durable handoff are active as a separate packet.
+semantic guidance and durable handoff integrated through PR #751 as
+`6bcbd9d3`; the compact audited orchestrator workflow followed through PR #752
+as `96f193bd`. Phase 8 adoption and closeout are next. No cleanup is authorized.
 
 ## Objective
 
@@ -52,8 +54,8 @@ work, make recovery deterministic, and remain efficient during normal work.
 | 4 | Operating-model design | Complete as proposal | Four control planes, one typed state model, lane lifecycle, permissions, CI/server policy, recovery, and four packets defined |
 | 5 | Scenario validation | Complete for proposal | Disposable Git and live read-only checks reproduce current defects, validate primitives, and define falsifiable GIT-7B–7E gates |
 | 6 | Canonical policy proposal | Accepted 2026-08-13 | Owner accepted the operating model and authorized GIT-7B only |
-| 7 | Controlled implementation | 7A-7D complete; retirement proposal integrated with holds; GIT-7E active | GIT-7D2 merged through PRs #747-#748; PR #750 integrated the held proposal; GIT-7E exact-head audit is pending and no deletion is authorized |
-| 8 | Adoption and closeout | Not started | Integrated workflow verified; supersession and maintenance established |
+| 7 | Controlled implementation | Complete through GIT-7E | GIT-7D2 merged through PRs #747-#748; PR #750 integrated the held proposal; PR #751 integrated semantic guidance and durable handoff; PR #752 integrated compact audited orchestration; no deletion is authorized |
+| 8 | Adoption and closeout | Next, not started | Verify current use through recent exact-head receipts, reconcile superseded task text, refresh preservation holds, and establish maintenance without cleanup |
 
 ## Artifact map
 

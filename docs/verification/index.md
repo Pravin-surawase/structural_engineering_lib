@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-16
-**Files:** 123
+**Files:** 125
 
 ## Config Files
 
@@ -76,6 +76,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [india-completion-plan-git-handoff-source-evidence.json](india-completion-plan-git-handoff-source-evidence.json)
 - [indian-code-capability-coverage.json](indian-code-capability-coverage.json)
 - [is456-public-distribution-permission.json](is456-public-distribution-permission.json)
+- [next-session-git-issues-plan-git-handoff-receipt.json](next-session-git-issues-plan-git-handoff-receipt.json)
+- [next-session-git-issues-plan-git-handoff-source-evidence.json](next-session-git-issues-plan-git-handoff-source-evidence.json)
 
 ## Documentation Files
 

@@ -5,6 +5,129 @@
 
 ---
 
+## 2026-08-16 — Session: Next-Session Git, Issue, and INDIA-2 Plan
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/india-2-next-session-git-issues-plan` from merged strap
+acceptance `f56e1ec312902caf98e872c77ce8b71bdbc8440e`, tree
+`28698a28d96f3e5cbad26fd6964cf835cda6e1b4`
+
+**Git handoff receipt:** `docs/verification/next-session-git-issues-plan-git-handoff-receipt.json`
+
+**Focus:** Publish a planning-only sequence for Git Phase 8 reconciliation,
+confirmed issue repairs, remaining foundation decisions, INDIA-2 cumulative
+closeout, and later dependency compatibility. Do not execute cleanup, issue
+repairs, pile-cap/raft work, broad gates, dependency updates, or release work.
+
+### Summary
+
+- Reordered the next session to begin with non-destructive GIT-001 Phase 8,
+  then frontmatter contract/data repair, Clause 38.2 truth hygiene, decision-
+  only pile-cap and raft G0 packets, accepted GO chains, and final INDIA-2
+  closeout.
+- Bound current primary/e54a preservation facts and explicit owner-decision
+  routes without changing either retained lane.
+- Reconciled current planning truth: GIT-7E is integrated through PR #751,
+  compact orchestration through PR #752, and Clause `26.5.1.1` was already
+  corrected in STRAP-B.
+- Preserved the owner cadence: focused gates per packet; broad Python and the
+  full 30-check gate only at the final INDIA-2 boundary unless a repository-
+  wide failure forces them earlier.
+
+### Issues encountered
+
+- The primary checkout's session brief described the old combined-C boundary
+  because primary `main` remains nine commits behind with a user-owned config
+  modification.
+- The current finish plan still listed Clause `26.5.1.1` as unresolved even
+  though STRAP-B corrected and regression-tested it.
+- GIT-001 current status still called GIT-7E active after PRs #751/#752 merged.
+- `scripts/check_docs.py --frontmatter --json` reported eight invalid records
+  but exited zero and printed that the check passed.
+- The GIT next-agent plan described seven Dependabot PRs as four coordinated
+  tasks while its live table defines five compatibility groups.
+- The historical reason for the live beam `38.2` metadata/decorator/provenance
+  identity remains unconfirmed; its arithmetic and source impact are not yet
+  bounded by one executable comparison.
+- The first focused validation command inferred a nonexistent
+  `scripts/check_git_workflow_semantics.py` entrypoint and stopped before later
+  checks ran.
+- The first normal commit was blocked because the rewritten next-session brief
+  used sentence-case `Required reading` instead of the session checker's exact
+  `Required Reading` contract.
+- The corrected commit then exposed a second exact handoff contract: the brief
+  had relabelled the required `Current` row as `Completed`.
+
+### Root causes and resolutions
+
+- Root cause: the preserved primary is intentionally not the integration
+  anchor after nine squash merges, and its `.codex/config.toml` change prevents
+  non-destructive fast-forwarding. Resolution: create this planning lane from
+  fetched `origin/main`, require `source_bound=true`, and keep the primary
+  change untouched. Evidence: the new lane starts clean at `f56e1ec3`; primary
+  remains dirty only at the same one-line verbosity change.
+- Confirmed root cause: the finish plan's deferred-defect list was not
+  reconciled after STRAP-B fixed Clause `26.5.1.1`, added Clause `26.4`, updated
+  the clause count, and added semantic tests. Resolution: remove the completed
+  defect from future work and retain only its integrated evidence. Evidence:
+  live `clauses.json`, manifest records, STRAP-B tests/log, and targeted search
+  all show the corrected beam-minimum identity.
+- Confirmed root cause: GIT-001 parent ledgers were not advanced after the
+  separate GIT-7E and compact-orchestration merges. Resolution: record PR
+  #751/#752 identities, mark Phase 7 complete, and make Phase 8 adoption/
+  closeout the next Git packet. Evidence: live GitHub reports both PRs merged.
+- Confirmed root cause: `check_frontmatter()` returns `0` unconditionally from
+  its JSON-output branch before applying the invalid-count result used by text
+  mode. No executable fix is made in this planning-only packet. Resolution:
+  define `DOC-FRONTMATTER-CONTRACT` as the second next-session packet with a
+  regression for nonzero invalid JSON output and exact repair of all eight
+  records. Evidence: live JSON output reports eight invalid records while the
+  command exits zero; source inspection identifies the early return.
+- Root cause: the dependency narrative retained the earlier grouping count
+  after the table separated Node policy and motion into independent groups.
+  Resolution: state five groups consistently and keep all seven stale PRs out
+  of INDIA-2. Evidence: the reconciled plan maps #715/#717, #683/#713, #684,
+  #714, and #716 without overlap.
+- The origin and outcome impact of `38.2` are `unconfirmed`. Resolution: defer
+  mutation to one source-bound truth-hygiene packet that traces every consumer
+  and back-substitutes the legacy approximation against exact stress-block
+  equilibrium before deciding metadata-only versus arithmetic repair.
+- Root cause: the checker filename was guessed from its semantic purpose
+  instead of resolved from the maintained automation map. Resolution: use
+  `./run.sh find "semantic Git workflow"`, then run the returned
+  `scripts/check_codex_git_workflow.py` entrypoint. Evidence: the corrected
+  focused validation sequence is recorded below.
+  ⚠️ TERMINAL ISSUE: guessed semantic-checker filename did not exist -> the
+  automation finder returned the maintained Codex Git workflow checker.
+- Root cause: the brief rewrite preserved the semantic section but changed the
+  maintained heading's capitalization, while session handoff discovery uses an
+  exact marker. Resolution: restore the canonical `Required Reading` heading,
+  regenerate the planning index, and rerun normal hooks. Evidence: the
+  corrected commit/session checks are recorded below.
+- Root cause: the state-table rewrite used a clearer narrative label without
+  preserving the session checker's literal `| **Current** |` marker.
+  Resolution: restore `Current` while retaining the exact Alpha/family state.
+  Evidence: normal commit and session-doc hooks pass after the correction.
+
+### Validation
+
+- Codex-native Git workflow semantics and the complete focused Git-guidance
+  regression suite pass; no current non-archived source retains the stale
+  GIT-7E/Clause `26.5.1.1` next-work claims targeted by this packet.
+- Planning indexes are current; document index/README structure passes; all
+  1,259 internal links are valid with zero broken links.
+- The Indian-code manifest is current at `13 supported / 8 held`; parity reports
+  81/81 directly tested endpoints and 100% actionable cross-layer coverage.
+- Token-efficiency controls and the focused quick gate pass `10/10`.
+- JSON frontmatter validation still reports the intentionally deferred eight
+  invalid records and still exits zero, reproducing the next packet's defect.
+  Broad Python and the full 30-check gate remain deferred under the owner
+  cadence.
+- Normal commit hooks pass after restoring the two exact next-brief handoff
+  markers. The task-to-Git receipt validates with the expected pre-PR hold;
+  hosted checks and merge-tree verification follow on the frozen candidate.
+
 ## 2026-08-16 — Session: INDIA-2-FOUNDATION-STRAP Focused Family Acceptance
 
 **Agent:** Codex (`reviewer`, sole writer; one bounded independent exact-head

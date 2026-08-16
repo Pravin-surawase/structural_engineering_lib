@@ -17,6 +17,14 @@ It changes instruction coherence and task handoff only. GIT-7D1/GIT-7D2,
 retirement classification, preserved lanes, remote refresh, deletion, release,
 and product/IS-code behavior remain unchanged.
 
+GIT-7E completed through PR #751: reviewed head
+`dd1b0ab97d6900ee97e07d3ad66d716c576a787b` squash-merged as
+`6bcbd9d3e082ea41bcba1d3858fcfa7deb77fa75`. The compact audited orchestrator
+workflow then integrated through PR #752: reviewed head
+`0690f74504b780f7920828a7ea0cd0e0dda4149c` squash-merged as
+`96f193bd45a21f05698cf64de47808a2e5f82640`. These receipts complete Phase 7
+implementation; they do not authorize cleanup or prove Phase 8 adoption.
+
 ## Semantic rules
 
 `docs/git-automation/live-git-guidance-index.json` deterministically discovers
@@ -93,7 +101,8 @@ separation, and maintained aliases. The packet must also pass the semantic Git
 workflow check, strict documentation/index checks, quick 10/10, full 30/30,
 efficiency, and session-end validation.
 
-Opening a draft PR is authorized after local green. Ready/merge is held until
-the supervising orchestrator independently audits the exact PR base, head, and
-tree. Feature branch/worktree retention remains required; no cleanup or
-deletion is part of this packet.
+The packet passed its local, immutable-head, hosted, and merge closeout through
+PR #751. Feature branch/worktree retention remains required; no cleanup or
+deletion was part of GIT-7E. Phase 8 must verify present-day adoption from
+current task receipts rather than treating this implementation record as proof
+that every later packet followed it.
