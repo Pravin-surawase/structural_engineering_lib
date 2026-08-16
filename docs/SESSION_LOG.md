@@ -54,6 +54,9 @@ release, React, dependency, or broad final-gate work.
 - The first public-contract selection guessed two nonexistent Python API test
   files; the corrected maintained selection then exposed one stale hardcoded
   downstream shear value after the exact flexural steel percentage changed.
+- Hosted FastAPI validation passed 441 tests but failed two additional
+  benchmark-derived literals: the 153-beam BOQ total and isolated-footing
+  screening steel percentage still reflected rounded beam flexure.
 
 ### Root causes and resolutions
 
@@ -93,6 +96,13 @@ release, React, dependency, or broad final-gate work.
   documentation selection passes 17 tests. ⚠️ TERMINAL ISSUE: guessed two
   nonexistent Python public API tests -> discovered the maintained FastAPI
   public-contract paths with `rg --files` and reran them.
+- Confirmed root cause: the bundled BOQ test derives selected-bar weight from
+  all 153 exact beam results, while the footing screening value uses the shared
+  rectangular stress-block inverse; both assertions pinned outputs from the
+  replaced rounded solver. Resolution: update only the observed derived
+  scalars, retaining dataset hash, calculation identity, PASS, provided-steel,
+  and shear-basis assertions. Evidence: the two failed tests and the complete
+  FastAPI suite are rerun before the replacement PR head is accepted.
 
 ### Validation through content freeze
 
@@ -102,6 +112,9 @@ release, React, dependency, or broad final-gate work.
   regression, service, property, and unit selection: 190 passed.
 - Focused FastAPI beam, capability, and public-documentation contracts: 17
   passed.
+- Hosted failure reproduction: both exact failing tests reproduced locally,
+  then passed after the derived-value repair; the complete FastAPI suite passed
+  all 449 tests with 52 warnings.
 - Exact equilibrium and false-safe outcome have direct semantic regressions;
   public signatures and unit conventions remain stable.
 - Links, maintained indexes, quick `10/10`, normal hooks, hosted checks,

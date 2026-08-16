@@ -74,7 +74,7 @@ def test_bundled_sample_boq_is_bound_to_dataset_and_calculation(client) -> None:
         )
     )
 
-    assert boq["grand_total_steel_kg"] == pytest.approx(1928.49)
+    assert boq["grand_total_steel_kg"] == pytest.approx(1932.27)
     assert boq["grand_total_concrete_m3"] == pytest.approx(48.7319)
     assert boq["evidence"]["dataset_sha256"] == (
         "b95a056c411eeaf4c714713dcf7edfa402ceadb2efdcfd4382f454cc82c5f43e"

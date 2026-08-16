@@ -1263,10 +1263,10 @@
     {
       "name": "india-2-truth-hygiene-38-2-evidence.md",
       "type": "documentation",
-      "size_lines": 115,
+      "size_lines": 122,
       "last_updated": "2026-08-16",
       "description": "The controlled IS 456 source has Clause 38.1 and Annex G beam/section cases, but no Clause 38.2, 38.3, or 38.4. Independently replayed equilibrium also",
-      "content_hash": "9660576bcd09"
+      "content_hash": "50b5fff40345"
     },
     {
       "name": "india-2-truth-hygiene-38-2-git-handoff-receipt.json",
@@ -1601,5 +1601,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "a385bf2c9d920885"
+  "content_hash": "6be58b4ee6359683"
 }

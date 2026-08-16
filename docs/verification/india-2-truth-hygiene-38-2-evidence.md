@@ -99,6 +99,13 @@ contract.
   regression, service, property, and unit selection: `190 passed`.
 - Focused FastAPI beam, capability, and public-documentation contracts: `17
   passed`.
+- Hosted FastAPI exposed two remaining rounded-solver-derived scalars in the
+  153-beam BOQ and isolated-footing screening regressions. Their formula,
+  dataset, calculation-identity, PASS, and shear-basis contracts remain; only
+  the exact derived values change to `1932.27 kg` and
+  `0.17111543963683395 percent`.
+- Both hosted failures reproduce and pass locally after repair; the complete
+  FastAPI suite passes `449` tests.
 - The manifest was generated once after executable truth froze, and its
   deterministic-current test passes.
 - The new semantic acceptance module rejects reintroduction of nonexistent
