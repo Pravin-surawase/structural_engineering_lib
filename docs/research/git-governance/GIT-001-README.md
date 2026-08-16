@@ -25,7 +25,10 @@ The follow-on eight-branch retirement proposal was integrated by PR #750 as
 `b91838f` and still holds all exact targets on unknown retention. GIT-7E
 semantic guidance and durable handoff integrated through PR #751 as
 `6bcbd9d3`; the compact audited orchestrator workflow followed through PR #752
-as `96f193bd`. Phase 8 adoption and closeout are next. No cleanup is authorized.
+as `96f193bd`. Phase 8 verifies current adoption, separates time-bound
+transition receipts from successor closeout evidence, and closes on merge of
+its unchanged packet. All retained lanes remain preserved; no cleanup is
+authorized.
 
 ## Objective
 
@@ -55,7 +58,7 @@ work, make recovery deterministic, and remain efficient during normal work.
 | 5 | Scenario validation | Complete for proposal | Disposable Git and live read-only checks reproduce current defects, validate primitives, and define falsifiable GIT-7B–7E gates |
 | 6 | Canonical policy proposal | Accepted 2026-08-13 | Owner accepted the operating model and authorized GIT-7B only |
 | 7 | Controlled implementation | Complete through GIT-7E | GIT-7D2 merged through PRs #747-#748; PR #750 integrated the held proposal; PR #751 integrated semantic guidance and durable handoff; PR #752 integrated compact audited orchestration; no deletion is authorized |
-| 8 | Adoption and closeout | Next, not started | Verify current use through recent exact-head receipts, reconcile superseded task text, refresh preservation holds, and establish maintenance without cleanup |
+| 8 | Adoption and closeout | Complete on merge of the unchanged Phase 8 packet | Recent packets use state/source/check/tree controls; successor closeout evidence corrects the transition-receipt boundary; primary/e54a are retained and all other lanes remain held without cleanup |
 
 ## Artifact map
 
@@ -80,7 +83,9 @@ work, make recovery deterministic, and remain efficient during normal work.
 - [Eight-branch machine-readable proposal receipt](GIT-001-eight-branch-retirement-authorization-proposal.json)
 - [Eight-branch classifier caller evidence](GIT-001-eight-branch-retirement-classifier-evidence.json)
 - [Phase 7E semantic coherence and durable handoff](GIT-001-phase-7E-semantic-handoff.md)
-- Phase 8 adoption/closeout report — planned
+- [Phase 8 adoption and preservation closeout](GIT-001-phase-8-adoption-closeout.md)
+- [Phase 8 machine-readable adoption evidence](GIT-001-phase-8-adoption-evidence.json)
+- [Phase 8 Excel classifier caller evidence](GIT-001-phase-8-excel-disposition-evidence.json)
 
 ## Ownership and non-goals
 

@@ -1,0 +1,188 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T13:54:52Z",
+      "query_status": "OK",
+      "reference": "task:GIT-001-P8-RECONCILIATION:user-request-start-the-published-next-work",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T13:54:52Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "MUTATE_PREEXISTING_BRANCH_OR_WORKTREE",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "CHANGE_GITHUB_SETTINGS",
+      "PUBLISH_RELEASE",
+      "START_NEXT_PACKET"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/git-001-phase8-reconciliation",
+      "head_sha": "86f92ed16164a97b7cbb1edacd64a50a5a71e13d",
+      "task_id": "GIT-001-P8-RECONCILIATION"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "9e029c7a421ccbdf78551340494dcd6b76f648195443af11f934e9c06c182247",
+    "state": {
+      "branch": "codex/git-001-phase8-reconciliation",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "86f92ed16164a97b7cbb1edacd64a50a5a71e13d",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 90.797,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-git-001-p8",
+      "head_sha": "86f92ed16164a97b7cbb1edacd64a50a5a71e13d",
+      "hold_reasons": [
+        "changed paths: 20"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T13:56:05.966320+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-git-001-p8",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 20,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/git-automation/git-workflow-single-source.md",
+          "docs/index.json",
+          "docs/index.md",
+          "docs/planning/index.json",
+          "docs/planning/index.md",
+          "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/research/git-governance/GIT-001-README.md",
+          "docs/research/git-governance/GIT-001-next-agent-disposition-plan.md",
+          "docs/research/git-governance/index.json",
+          "docs/research/git-governance/index.md",
+          "docs/verification/index.json",
+          "docs/verification/index.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/research/git-governance/GIT-001-phase-8-adoption-closeout.md",
+          "docs/research/git-governance/GIT-001-phase-8-adoption-evidence.json",
+          "docs/research/git-governance/GIT-001-phase-8-excel-disposition-evidence.json",
+          "docs/verification/git-001-phase-8-reconciliation-git-handoff-receipt.json",
+          "docs/verification/git-001-phase-8-reconciliation-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "86f92ed16164a97b7cbb1edacd64a50a5a71e13d",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-git-001-p8"
+    }
+  },
+  "local_state_receipt_hash": "sha256:9e029c7a421ccbdf78551340494dcd6b76f648195443af11f934e9c06c182247",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T13:56:05.966498+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T13:54:52Z",
+    "owner": "Main Agent under the repository owner's request to start only the published Phase 8 packet and preserve retained lanes",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib",
+      "fastapi_app",
+      "react_app",
+      "private_sources",
+      ".codex/config.toml",
+      "refs"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "docs/research/git-governance/GIT-001-phase-8-adoption-closeout.md",
+      "docs/research/git-governance/GIT-001-phase-8-adoption-evidence.json",
+      "docs/research/git-governance/GIT-001-phase-8-excel-disposition-evidence.json",
+      "docs/verification/git-001-phase-8-reconciliation-git-handoff-source-evidence.json",
+      "docs/verification/git-001-phase-8-reconciliation-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "docs/research/git-governance/GIT-001-README.md",
+      "docs/research/git-governance/GIT-001-next-agent-disposition-plan.md",
+      "docs/git-automation/git-workflow-single-source.md",
+      "docs/TASKS.md",
+      "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+      "docs/planning/next-session-brief.md",
+      "docs/SESSION_LOG.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/research/git-governance/index.json",
+      "docs/research/git-governance/index.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md"
+    ],
+    "task_id": "GIT-001-P8-RECONCILIATION"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

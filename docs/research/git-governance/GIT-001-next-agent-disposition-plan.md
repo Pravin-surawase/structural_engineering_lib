@@ -37,14 +37,20 @@ workflow remains
   nine commits behind with only `.codex/config.toml` dirty; GIT-7E PR #751 and
   compact orchestration PR #752 are merged. The dated topology tables below
   remain historical evidence until Phase 8 refreshes them read-only.
+- Phase 8 refresh on 2026-08-16: fetched `origin/main = 86f92ed1`, tree
+  `1bb7e448`; primary is clean/equal, retained detached `e54a` still has only
+  its 119-insertion/7-deletion session-log patch, and the one fresh Excel
+  classifier result is `HOLD_UNKNOWN_OWNER`. The complete current snapshot is
+  [the Phase 8 closeout](GIT-001-phase-8-adoption-closeout.md); every older
+  topology table remains historical rather than mutation authority.
 
 ## Outcome first: the revised order
 
 The old list mixed completed recovery with future work. The current order is:
 
-1. **Complete GIT-001 Phase 8 from a fresh lane.** Phases 1-7E are integrated;
-   reconcile stale status text, verify adoption from recent exact-head task
-   receipts, and refresh preservation holds without mutating retained lanes.
+1. **GIT-001 Phase 8 closes on merge of its unchanged packet.** Phases 1-7E
+   remain integrated; adoption, stale status, transition-receipt semantics,
+   and preservation holds are reconciled without mutating retained lanes.
 2. **Decide Excel planning ownership.** It has no unique commits and no PR, so
    one owner decision determines whether it remains active or may enter a
    separately evidenced retirement assessment.
@@ -371,17 +377,17 @@ disposition. No single script answers the ownership and recoverability question.
 - **Editing shared surfaces from parallel lanes.** Generated indexes, task and
   session records, registries, routes, manifests, and lockfiles need one owner.
 
-## Completion definition for this plan
+## Phase 8 closeout and reactivation
 
-This plan is fulfilled when:
+Phase 8 is fulfilled when its unchanged adoption packet merges with focused,
+hosted, and exact-tree closeout evidence. Unknown retained topology is a safe
+closeout state, not an instruction to keep GIT-001 active indefinitely.
 
-- Phases 1-7E remain integrated and their preserved evidence is not reopened or
-  reconciled without new authorization;
-- Excel has a named active owner/next action or an approved retirement receipt;
-- the three Alpha worktrees are either explicitly retained or safely retired
-  under exact approval;
-- the eight-branch table has an owner decision and any approved actions have
-  post-action receipts;
-- each dependency group is completed, held with a named reason, or deliberately
-  superseded on a current base;
-- completed PMM and PR #723 recovery is not reopened without new evidence.
+Future disposition work reactivates only after new authority or evidence:
+
+- Excel needs a named owner/next action and exact retention decision;
+- Alpha and the historical branch table need fresh classifier inputs plus
+  separate exact-target approval before any action;
+- dependency groups remain separate compatibility packets after INDIA-2;
+- completed PMM and PR #723 recovery stays closed absent new evidence; and
+- no hold, candidate, or merged PR authorizes cleanup by itself.
