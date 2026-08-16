@@ -6,7 +6,7 @@
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
     "last_updated": "2026-08-16",
-    "total_clauses": 175,
+    "total_clauses": 172,
     "includes_references": [
       "IS 13920:2016"
     ],
@@ -1315,38 +1315,6 @@
         "rectangular block"
       ]
     },
-    "38.2": {
-      "title": "Singly Reinforced Sections",
-      "section": "38 - Limit State of Collapse: Flexure",
-      "category": "flexure",
-      "keywords": [
-        "singly reinforced",
-        "Ast",
-        "tension steel"
-      ]
-    },
-    "38.3": {
-      "title": "Doubly Reinforced Sections",
-      "section": "38 - Limit State of Collapse: Flexure",
-      "category": "flexure",
-      "keywords": [
-        "doubly reinforced",
-        "compression steel",
-        "Asc",
-        "Ast2"
-      ]
-    },
-    "38.4": {
-      "title": "Flanged Beams",
-      "section": "38 - Limit State of Collapse: Flexure",
-      "category": "flexure",
-      "keywords": [
-        "T-beam",
-        "L-beam",
-        "flanged section",
-        "neutral axis"
-      ]
-    },
     "39.1": {
       "title": "Minimum Eccentricity for Column Design",
       "section": "39 - Compression Members",
@@ -1949,6 +1917,17 @@
         "singly reinforced",
         "rectangular section",
         "tension steel",
+        "moment resistance"
+      ]
+    },
+    "G-1.2": {
+      "title": "Rectangular Sections With Compression Reinforcement",
+      "section": "Annex G - Moment of Resistance",
+      "category": "flexure",
+      "keywords": [
+        "doubly reinforced",
+        "rectangular section",
+        "compression steel",
         "moment resistance"
       ]
     },

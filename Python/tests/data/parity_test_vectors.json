@@ -25,8 +25,8 @@
       },
       "expected": {
         "mu_lim_knm": 128.513,
-        "ast_required_mm2": 719.62,
-        "xu_mm": 156.89,
+        "ast_required_mm2": 721.38,
+        "xu_mm": 157.28,
         "xu_max_mm": 216.0,
         "section_type": "UNDER_REINFORCED",
         "is_safe": true
@@ -45,8 +45,8 @@
       },
       "expected": {
         "mu_lim_knm": 202.914,
-        "ast_required_mm2": 881.88,
-        "xu_mm": 143.20,
+        "ast_required_mm2": 883.72,
+        "xu_mm": 142.38,
         "xu_max_mm": 207.0,
         "section_type": "UNDER_REINFORCED",
         "is_safe": true
@@ -65,7 +65,7 @@
       },
       "expected": {
         "mu_lim_knm": 67.60,
-        "ast_required_mm2": 353.80,
+        "ast_required_mm2": 354.31,
         "section_type": "UNDER_REINFORCED",
         "is_safe": true
       }
@@ -86,7 +86,7 @@
       },
       "expected": {
         "mu_lim_knm": 202.914,
-        "ast_required_mm2": 1550.36,
+        "ast_required_mm2": 1555.44,
         "asc_required_mm2": 296.56,
         "section_type": "OVER_REINFORCED",
         "is_safe": true
@@ -105,7 +105,7 @@
         "fy_nmm2": 500
       },
       "expected": {
-        "ast_required_mm2": 2043.66,
+        "ast_required_mm2": 2051.11,
         "asc_required_mm2": 181.19,
         "section_type": "OVER_REINFORCED",
         "is_safe": true
@@ -128,7 +128,7 @@
       },
       "expected": {
         "mu_lim_knm": 835.04,
-        "ast_required_mm2": 956.60,
+        "ast_required_mm2": 956.70,
         "xu_mm": 46.24,
         "section_type": "UNDER_REINFORCED",
         "is_safe": true

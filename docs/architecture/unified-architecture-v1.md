@@ -125,7 +125,8 @@ def design_singly_reinforced(
     """IS 456 Cl 38.1 — Singly reinforced rectangular beam flexure.
 
     Mu = 0.36·fck·b·xu·(d - 0.42·xu)
-    Ast = 0.5·(fck/fy)·b·d·[1 - √(1 - 4.6·Mu/(fck·b·d²))]
+    xu/d = [1 - √(1 - 4·0.42·Mu/(0.36·fck·b·d²))] / (2·0.42)
+    Ast = 0.36·fck·b·xu/(0.87·fy)
     """
 ```
 
@@ -754,7 +755,8 @@ def design_singly_reinforced(
     """IS 456 Cl 38.1 — Singly reinforced rectangular beam flexure.
 
     Mu = 0.36·fck·b·xu·(d - 0.42·xu)
-    Ast = 0.5·(fck/fy)·b·d·[1 - √(1 - 4.6·Mu/(fck·b·d²))]
+    xu/d = [1 - √(1 - 4·0.42·Mu/(0.36·fck·b·d²))] / (2·0.42)
+    Ast = 0.36·fck·b·xu/(0.87·fy)
 
     Limitations:
         - Rectangular sections only (for T-beam use design_flanged_beam)

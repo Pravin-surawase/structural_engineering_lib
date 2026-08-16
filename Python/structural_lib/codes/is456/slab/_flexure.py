@@ -4,8 +4,9 @@
 
 from __future__ import annotations
 
-import math
-
+from structural_lib.codes.is456.common.stress_blocks import (
+    calculate_ast_from_rectangular_stress_block as _calculate_ast_from_rectangular_stress_block,
+)
 from structural_lib.codes.is456.slab.models import SlabContractError
 
 
@@ -24,17 +25,15 @@ def calculate_ast_from_rectangular_stress_block(
     Capacity against the applicable limiting neutral-axis ratio remains the
     responsibility of each caller because it is directional for two-way slabs.
     """
-    moment_nmm = factored_moment_knm * 1_000_000.0
-    normalized_moment = moment_nmm / (fck_n_per_mm2 * b_mm * d_mm * d_mm)
-    discriminant = 1.0 - (4.0 * 0.42 / 0.36) * normalized_moment
-    if discriminant < 0.0:
+    try:
+        return _calculate_ast_from_rectangular_stress_block(
+            b_mm=b_mm,
+            d_mm=d_mm,
+            factored_moment_knm=factored_moment_knm,
+            fck_n_per_mm2=fck_n_per_mm2,
+            fy_n_per_mm2=fy_n_per_mm2,
+        )
+    except ValueError as exc:
         raise SlabContractError(
             "factored moment is outside the P7 rectangular stress-block domain"
-        )
-
-    xu_over_d = (1.0 - math.sqrt(discriminant)) / (2.0 * 0.42)
-    neutral_axis_depth_mm = xu_over_d * d_mm
-    ast_required_mm2 = (0.36 * fck_n_per_mm2 * b_mm * neutral_axis_depth_mm) / (
-        0.87 * fy_n_per_mm2
-    )
-    return ast_required_mm2, neutral_axis_depth_mm
+        ) from exc

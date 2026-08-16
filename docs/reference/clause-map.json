@@ -2,7 +2,7 @@
   "metadata": {
     "standard": "IS 456:2000",
     "additional_standards": ["IS 13920:2016"],
-    "generated": "2026-04-04",
+    "generated": "2026-08-16",
     "total_clauses_in_registry": 119,
     "total_mapped": 63,
     "not_implemented": 65
@@ -25,15 +25,15 @@
       "notes": "With 38.1"
     },
     {
-      "clause": "38.2",
-      "title": "Singly Reinforced Sections",
+      "clause": "38.1+G-1.1",
+      "title": "Rectangular Tension Steel",
       "function": "calculate_ast_required",
       "module": "codes/is456/beam/flexure.py",
       "decorator": "@clause",
       "notes": ""
     },
     {
-      "clause": "38.1+38.2",
+      "clause": "38.1+G-1.1",
       "title": "Singly Reinforced Beam Design",
       "function": "design_singly_reinforced",
       "module": "codes/is456/beam/flexure.py",
@@ -41,28 +41,20 @@
       "notes": "Combined flexure design"
     },
     {
-      "clause": "38.1+38.2+G-1.1",
+      "clause": "38.1+G-1.1+G-1.2",
       "title": "Doubly Reinforced Beam Design",
       "function": "design_doubly_reinforced",
       "module": "codes/is456/beam/flexure.py",
       "decorator": "@clause",
-      "notes": "SP:16 charts"
+      "notes": "Rectangular section with compression reinforcement"
     },
     {
-      "clause": "38.3",
-      "title": "Doubly Reinforced Sections",
-      "function": "design_doubly_reinforced",
-      "module": "codes/is456/beam/flexure.py",
-      "decorator": "@clause",
-      "notes": "Via G-1.1"
-    },
-    {
-      "clause": "38.4",
-      "title": "Flanged Beams",
+      "clause": "23.1.2+38.1+G-1.1+G-1.2+G-2.2",
+      "title": "Flanged Beam Design",
       "function": "design_flanged_beam",
       "module": "codes/is456/beam/flexure.py",
       "decorator": "@clause",
-      "notes": "With G-2.2"
+      "notes": "Rectangular web and flanged-section stress blocks"
     },
     {
       "clause": "38.1+G-2.2",

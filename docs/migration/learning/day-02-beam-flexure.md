@@ -7,7 +7,7 @@
 **Created:** 2026-04-08
 **Last Updated:** 2026-04-08
 
-**Prerequisites:** [Day 1 — Concrete Basics](day-01-concrete-basics.md) (fck, fy, safety factors, stress-strain)\n**Library file:** `Python/structural_lib/codes/is456/beam/flexure.py`\n**IS 456 clauses:** Cl 38.1 (Limiting moment), Cl 38.2 (Steel area), Cl 23.1.2 (Flanged beams), Annex G
+**Prerequisites:** [Day 1 — Concrete Basics](day-01-concrete-basics.md) (fck, fy, safety factors, stress-strain)\n**Library file:** `Python/structural_lib/codes/is456/beam/flexure.py`\n**IS 456 references:** Cl 38.1 (stress-block assumptions), Cl 23.1.2 (flanged beams), Annex G-1.1/G-1.2/G-2.2
 
 ---
 
@@ -43,4 +43,3 @@ Now think of a seesaw. Somewhere between the compressed top and the stretched bo
 ```
 
 **Key insight:** Concrete is strong in compression but weak in tension (it cracks easily). Steel is strong in tension. So we put steel bars at the bottom where the tension lives. This combination — concrete on top, steel on the bottom — is what makes reinforced concrete work.
-

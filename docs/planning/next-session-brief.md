@@ -4,13 +4,13 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Clause 38.2 beam-flexure truth hygiene
-- Baseline: DOC-FRONTMATTER-CONTRACT started from fetched origin/main c8fcd2f0f9b933eb8e8787dc901ee440e05ae984, tree 41d878c0681e5e51d159615d14290d5c3964c822
+- Focus: decision-only pile-cap G0
+- Baseline: INDIA-2-TRUTH-HYGIENE-38-2 started from fetched origin/main df3635e8811a4d7e69f8786349ce3507f8a28001, tree 4de5ae83cdc115fe1984e2b97b616676e094e578
 - Truth: 13 supported / 8 held; 81/81 endpoints directly tested
-- Frontmatter outcome: JSON and text modes agree; zero invalid records; 60 permitted legacy/no-frontmatter records unchanged; two direct payload/exit regressions pass
-- Scope guard: source-audit every live 38.2 consumer and independently benchmark equilibrium before deciding metadata-only versus arithmetic repair
+- Clause outcome: controlled Clause 38.1/Annex G provenance, one shared exact beam/slab stress-block solver, and a supported false-safe discriminator repaired; 190 focused tests pass
+- Scope guard: G0 is decision/benchmark only; missing controlled companion source or accepted structural benchmark requires HOLD
 - Retained lanes: primary, detached dirty e54a, Excel HOLD_UNKNOWN_OWNER, and every other pre-existing lane remain untouched; no cleanup authority exists
-- Next action: begin only INDIA-2-TRUTH-HYGIENE-38-2 in a fresh fetched-current-main lane after the frontmatter candidate merges
+- Next action: begin only INDIA-2-FOUNDATION-PILE-CAP-G0 in a fresh fetched-current-main lane after the Clause 38.2 candidate merges
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-16
@@ -18,8 +18,8 @@
 | State | Boundary |
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; frontmatter contract repair complete on merge |
-| **Next** | `INDIA-2-TRUTH-HYGIENE-38-2` only |
-| **Later** | Pile-cap G0, raft G0, accepted GO packets, INDIA-2 broad closeout |
+| **Next** | Decision-only `INDIA-2-FOUNDATION-PILE-CAP-G0` |
+| **Later** | Pile-cap chain only after GO; raft G0; INDIA-2 broad closeout |
 | **Held** | Cleanup/deletion, release, React expansion, professional approval, dependency majors |
 
 ## Required Reading
@@ -33,8 +33,8 @@
 ## Exact start
 
 Fetch and verify `origin/main`, then create one fresh
-`codex/india-2-truth-hygiene-38-2` worktree. Do not write on primary, reuse the
-frontmatter lane, or touch retained worktrees.
+`codex/india-2-foundation-pile-cap-g0` worktree. Do not write on primary, reuse
+the Clause 38.2 lane, or touch retained worktrees.
 
 ```bash
 ./run.sh session brief --agent structural-engineer
@@ -48,48 +48,39 @@ equality with fetched `origin/main` before editing.
 
 ## Packet order
 
-1. `INDIA-2-TRUTH-HYGIENE-38-2`
-   - enumerate every live `38.2` metadata, decorator, result-provenance, test,
-     documentation, and generated-manifest consumer;
-   - bind each supported identity to the controlled Clause 38.1 or Annex G
-     evidence actually used;
-   - independently replay rectangular stress-block equilibrium and compare the
-     legacy `4.6` approximation with the shared exact helper;
-   - change arithmetic only if benchmark evidence proves a supported outcome
-     can change.
-2. Decision-only `PILE-CAP-G0`, then A-D/acceptance only after accepted `GO`.
+1. Decision-only `PILE-CAP-G0`; publish `GO`, `REVISE`, or `HOLD`.
+2. Execute pile-cap A-D/acceptance only after an accepted `GO`.
 3. Decision-only `RAFT-G0`, then any owner-accepted chain.
 4. `INDIA-2-CLOSEOUT` with broad Python and the full 30-check gate once.
 5. Post-INDIA-2 dependency-major compatibility packets only afterward.
 
-## Frozen Clause 38.2 scope
+## Frozen pile-cap G0 scope
 
-The open defect is a source/provenance contradiction, not permission to delete
-a label mechanically. The clause database, beam decorators,
-`calculate_ast_required`, singly/doubly reinforced design, serialized
-`sources_used`, tests, docs, and generated manifest must be traced together.
+Investigate exactly one centred axial two-pile structural cap with caller-owned
+pile reactions/capacity/geotechnical approval. Decide the pile-reaction model,
+layout and topology discriminator, bearing/nodal checks, anchorage, deep-region
+treatment, and companion-code dependencies. Freeze one independently replayed
+benchmark and the supported/fail/unsupported matrices without creating
+calculation modules.
 
-Back-substitute required steel into the exact equilibrium independently. If
-the legacy approximation cannot change a supported PASS/FAIL or public result,
-leave arithmetic stable and repair only unsupported identities. If it can,
-fix the shared root cause with compatibility and benchmark evidence.
-
-Do not copy protected clause prose, mass-replace `38.2`, change unrelated beam
-behavior, infer approval from metadata, or expand supported cases.
+The repository currently retains controlled IS 456 sources but no controlled
+IS 2911 companion source or accepted structural pile-cap benchmark. Official
+catalogue discovery and previews are scope evidence only. If both prerequisites
+cannot be bound, publish `HOLD` with exact reactivation conditions; do not
+improvise calculation authority.
 
 ## Owner-decision boundaries
 
 - Primary, `e54a`, Excel, the frontmatter lane, and every other retained lane
   stay untouched.
 - Public-source distribution permission is already recorded; do not reopen it.
-- Pile-cap/raft implementation, cleanup/deletion, release/tag/package
+- Pile-cap/raft implementation without accepted GO, cleanup/deletion, release/tag/package
   publication, and professional approval remain separately gated.
 
 ## Gate cadence
 
-Run focused flexure, traceability, manifest, public-contract, architecture, and
-import gates; generate the maintained manifest/indexes once; then run links,
-quick `10/10`, normal hooks, exact-head review, hosted checks, and merge-tree
+Run focused source/decision-contract and documentation gates, links, quick
+`10/10`, normal hooks, exact-head review, hosted checks, and merge-tree
 verification. Broad Python and the full 30-check gate remain deferred to final
 INDIA-2 closeout unless a repository-wide failure forces them earlier.
 
@@ -98,8 +89,8 @@ resolutions`, with executable evidence for the corrected outcome.
 
 ## Efficiency card
 
-- Freeze consumers, source identities, benchmark cases, tests, and public
-  signatures before editing.
+- Freeze source identities, benchmark case, decision matrix, and reactivation
+  conditions before editing.
 - Use one writer, one candidate, one generator pass, one quick gate, one push,
   and one hosted-check cycle.
 - Record orientation, implementation, repair, CI wait, closeout, and total
@@ -107,5 +98,6 @@ resolutions`, with executable evidence for the corrected outcome.
 
 ## Stop rule
 
-Start and finish only `INDIA-2-TRUTH-HYGIENE-38-2`. Do not begin pile-cap,
-raft, dependency, broad-gate, cleanup, release, or React work in that lane.
+Start and finish only decision-only `INDIA-2-FOUNDATION-PILE-CAP-G0`. Do not
+begin calculation code, raft, dependency, broad-gate, cleanup, release, or
+React work in that lane.

@@ -5,7 +5,7 @@
 **Status:** Active
 **Importance:** High
 **Created:** 2026-04-04
-**Last Updated:** 2026-04-04
+**Last Updated:** 2026-08-16
 
 ---
 
@@ -24,11 +24,10 @@ Maps IS 456:2000 (and IS 13920:2016) clauses to their implementing functions in 
 | 38.1 | Assumptions in Design | `calculate_mu_lim()` | `@clause` | Also 38.1.1 |
 | 38.1.1 | Neutral Axis Depth | `calculate_mu_lim()` | `@clause` | With 38.1 |
 | 38.1.2 | Stress Block Parameters | — | — | Used implicitly in flexure calculations |
-| 38.2 | Singly Reinforced Sections | `calculate_ast_required()` | `@clause` | |
-| 38.1, 38.2 | Flexure Design (Singly) | `design_singly_reinforced()` | `@clause` | Combined check |
-| 38.1, 38.2, G-1.1 | Flexure Design (Doubly) | `design_doubly_reinforced()` | `@clause` | SP:16 charts |
-| 38.3 | Doubly Reinforced Sections | `design_doubly_reinforced()` | `@clause` | Via G-1.1 |
-| 38.4 | Flanged Beams | `design_flanged_beam()` | `@clause` | With G-2.2 |
+| 38.1, G-1.1 | Rectangular Tension Steel | `calculate_ast_required()` | `@clause` | Exact stress-block equilibrium |
+| 38.1, G-1.1 | Flexure Design (Singly) | `design_singly_reinforced()` | `@clause` | Combined check |
+| 38.1, G-1.1, G-1.2 | Flexure Design (Doubly) | `design_doubly_reinforced()` | `@clause` | Compression reinforcement |
+| 23.1.2, 38.1, G-1.1, G-1.2, G-2.2 | Flanged Beam Design | `design_flanged_beam()` | `@clause` | Rectangular web and flanged-section stress blocks |
 | 38.1, G-2.2 | Flanged Beam Mu_lim | `calculate_mu_lim_flanged()` | `@clause` | |
 | 23.1.2 | Effective Span — Continuous | `calculate_effective_flange_width()` | `@clause` | With 36.4.2 |
 | 36.1 | Limit State of Collapse — Flexure | `design_singly_reinforced()` | implicit | General principle |

@@ -24,11 +24,10 @@ def test_calculate_ast_required_uses_knm_conversion():
     mu_knm = 100.0
 
     mu_nmm = mu_knm * 1_000_000.0
-    term1 = 0.5 * fck / fy
-    term2 = (4.6 * mu_nmm) / (fck * b * d * d)
-    if term2 > 1.0:
-        term2 = 1.0
-    expected = term1 * (1.0 - math.sqrt(1.0 - term2)) * b * d
+    normalized_moment = mu_nmm / (fck * b * d * d)
+    discriminant = 1.0 - (4.0 * 0.42 / 0.36) * normalized_moment
+    xu = d * (1.0 - math.sqrt(discriminant)) / (2.0 * 0.42)
+    expected = 0.36 * fck * b * xu / (0.87 * fy)
 
     ast = flexure.calculate_ast_required(b, d, mu_knm, fck, fy)
     assert ast == pytest.approx(expected, rel=1e-9)

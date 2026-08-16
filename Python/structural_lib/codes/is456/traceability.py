@@ -79,7 +79,7 @@ def clause(*clause_refs: str, standard: str = "IS 456") -> Callable[[F], F]:
         A decorator function that adds clause metadata.
 
     Example:
-        >>> @clause("38.1", "38.2")
+        >>> @clause("38.1", "G-1.1")
         ... def calculate_flexure(b, d, fck, fy, Mu):
         ...     '''Calculate flexural reinforcement per IS 456 Cl. 38.'''
         ...     pass

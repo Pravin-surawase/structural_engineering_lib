@@ -66,7 +66,9 @@ $$M_{u,lim} = R_u \times f_{ck} \times b \times d^2$$
 
 ## 4. Area of Steel — Singly Reinforced (Clause 38.1)
 
-$$A_{st} = \frac{0.5 \times f_{ck}}{f_y} \times \left[1 - \sqrt{1 - \frac{4.6 \times M_u}{f_{ck} \times b \times d^2}}\right] \times b \times d$$
+$$\frac{x_u}{d} = \frac{1 - \sqrt{1 - \frac{4(0.42)M_u}{0.36 f_{ck}bd^2}}}{2(0.42)}$$
+
+$$A_{st} = \frac{0.36 f_{ck} b x_u}{0.87 f_y}$$
 
 | Variable | Unit |
 |----------|------|
@@ -75,7 +77,7 @@ $$A_{st} = \frac{0.5 \times f_{ck}}{f_y} \times \left[1 - \sqrt{1 - \frac{4.6 \t
 | $b$, $d$ | mm |
 | $A_{st}$ | mm² |
 
-**Check:** If discriminant $(1 - 4.6M_u/(f_{ck} \cdot b \cdot d^2)) < 0$, then $M_u > M_{u,lim}$ → doubly reinforced required.
+**Check:** If discriminant $(1 - 4(0.42)M_u/(0.36 f_{ck}bd^2)) < 0$, then the moment lies outside the rectangular stress-block domain. The caller must also enforce the applicable $x_{u,max}/d$ limit.
 
 ---
 
