@@ -37,6 +37,11 @@ reinforcement to Annex G-1.2, and the relevant flanged case to Annex G-2.2.
 The extraction contains no Clause 38.2, 38.3, or 38.4 identifier. No source PDF,
 scan, page image, watermark, or protected clause prose is added here.
 
+The pre-publication Git boundary is recorded in the
+[task-to-Git handoff receipt](india-2-truth-hygiene-38-2-git-handoff-receipt.json).
+It is deliberately `HOLD` before remote, review, PR, and integration evidence
+exists and grants no cleanup or release authority.
+
 ## Consumer and provenance repair
 
 The bounded consumer inventory covered the clause registry, decorators, exact

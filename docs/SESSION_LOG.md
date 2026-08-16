@@ -13,6 +13,9 @@
 `origin/main = df3635e8811a4d7e69f8786349ce3507f8a28001`, tree
 `4de5ae83cdc115fe1984e2b97b616676e094e578`
 
+**Git handoff receipt:**
+`docs/verification/india-2-truth-hygiene-38-2-git-handoff-receipt.json`
+
 **Focus:** Audit every live Clause 38.2 beam-flexure identity, independently
 benchmark the rounded inverse against exact equilibrium, and repair arithmetic
 only if a supported outcome changes. Do not start pile-cap, raft, cleanup,
