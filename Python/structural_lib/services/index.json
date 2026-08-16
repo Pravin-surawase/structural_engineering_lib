@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 42,
+  "file_count": 43,
   "files": [
     {
       "name": "__init__.py",
@@ -83,10 +83,10 @@
     {
       "name": "api.py",
       "type": "python",
-      "size_lines": 406,
+      "size_lines": 419,
       "last_updated": "2026-08-16",
       "description": "Module:       api",
-      "content_hash": "8e4487ec690f"
+      "content_hash": "9d10ca281322"
     },
     {
       "name": "api_hub.py",
@@ -788,7 +788,7 @@
     {
       "name": "capabilities.py",
       "type": "python",
-      "size_lines": 1522,
+      "size_lines": 1667,
       "last_updated": "2026-08-16",
       "description": "Discoverable supported-case registry for the IS 456 public library.",
       "classes": [
@@ -847,7 +847,7 @@
         "_REPORT_IS_SAFE_ALIAS",
         "_SLAB_REVIEW_ALIAS"
       ],
-      "content_hash": "c5792593405e"
+      "content_hash": "e566009eaeae"
     },
     {
       "name": "column_api.py",
@@ -1758,6 +1758,53 @@
         }
       ],
       "content_hash": "846290659ccd"
+    },
+    {
+      "name": "flat_slab_api.py",
+      "type": "python",
+      "size_lines": 339,
+      "last_updated": "2026-08-16",
+      "description": "Stable orchestration for the bounded regular interior flat-slab workflow.",
+      "classes": [
+        {
+          "name": "RegularInteriorFlatSlabDesignStatus",
+          "description": "Aggregate bounded workflow disposition."
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignInput",
+          "description": "Shared panel, provided bars, reaction, and retained review evidence."
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignProvenance",
+          "description": "Stable workflow, benchmark, source, and caller evidence identity."
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignResult",
+          "description": "Composed FLAT-A-D evidence with supported and held boundaries."
+        }
+      ],
+      "functions": [
+        {
+          "name": "build_regular_interior_flat_slab_design_input",
+          "description": "Build the service contract from an already transport-validated mapping.",
+          "params": [
+            "payload"
+          ]
+        },
+        {
+          "name": "design_regular_interior_flat_slab_is456",
+          "description": "Compose the sole G0-approved direct-design and punching workflow.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "constants": [
+        "_SUPPORTED_CASE",
+        "_HELD_CASES",
+        "_CLAUSE_REFS"
+      ],
+      "content_hash": "5ef5a175b483"
     },
     {
       "name": "footing_api.py",
@@ -2722,5 +2769,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "9c77873c162a2700"
+  "content_hash": "ea826cb23763c7c7"
 }

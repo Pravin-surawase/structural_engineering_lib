@@ -5,6 +5,140 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FLAT-E Public Workflow and Transport
+
+**Agent:** Codex (`api-developer`, sole writer; one bounded independent audit
+after the exact candidate is committed)
+
+**Branch:** `codex/india-2-flat-e` from integrated FLAT-D main at
+`d188494673944728f14e551b00f6c50962c96ac2`
+
+**Git handoff receipt:** `docs/verification/india-2-flat-e-git-handoff-receipt.json`
+
+**Focus:** Publish only the G0-frozen regular interior flat-slab composition,
+thin typed REST route, canonical capability truth, and evidence.
+
+### Summary
+
+- Added one immutable typed public service composing the integrated FLAT-A-D
+  geometry, direct-design moments, provided straight bars, reviewed span/depth,
+  and concrete-only punching result.
+- Added one strict nested FastAPI request and fully typed response at
+  `POST /api/v1/design/flat-slab/regular-interior`, with no transport-layer
+  engineering arithmetic.
+- Promoted exactly the supported regular-interior case in capability discovery
+  and deterministic manifest truth while retaining every alternate topology,
+  analysis, detailing, serviceability, review, and release hold.
+
+### Issues encountered
+
+- The first combined FastAPI patch was rejected atomically because its
+  `fastapi_app/main.py` hunk used a stale router-import context.
+- The first focused transport run failed one assertion about the safe error
+  message for a support-reaction mismatch, while the route correctly returned
+  HTTP 422 in the maintained envelope.
+- A direct index-generation request for `Python/tests/integration` was refused
+  because that folder intentionally has no maintained local index.
+- The first cumulative pytest selection named a nonexistent
+  `Python/tests/unit/test_clause_database.py`, so pytest stopped before
+  collection; the first Bandit run also treated the engineering `PASS` enum as
+  a possible password, and the API-doc checker found the new status type absent
+  from the public reference inventory.
+- The first architecture gate found two UI-layer violations because the router
+  imported flat-slab and provided-bar domain constructors directly.
+- The first quick gate passed 9/10 but rejected the next-session brief at 156
+  lines, six above its maintained 150-line maximum.
+- The pre-commit read-only session-end check returned nonzero because it
+  correctly reported the 48 intended packet paths as uncommitted; this stopped
+  the following `&&`-chained quick gate before it ran.
+- The independent auditor first guessed a nonexistent
+  `scripts/validate_architecture.py` command before locating the maintained
+  architecture checker.
+
+### Root causes and resolutions
+
+- Root cause: the patch packet assumed a router ordering that did not match the
+  integrated FLAT-D `main.py`. Resolution: inspect the exact live import, tag,
+  and mount blocks and apply the model, router, tests, and registration as
+  bounded patches. Evidence: all six route tests and the mounted-main test pass.
+- Root cause: the test assumed every domain validation message is replaced by
+  a reference token, but the maintained sanitizer deliberately preserves safe
+  `ValueError` input messages and replaces only path/traceback-bearing text.
+  Resolution: assert the exact safe fail-closed reaction message inside the
+  standard response envelope. Evidence: the corrected focused selection passes
+  20 tests and the error-sanitization behavior remains unchanged.
+- Root cause: the generator prevents accidental creation of new index topology
+  unless `--allow-new-index` is explicit. Resolution: preserve the established
+  topology and regenerate the maintained `Python/tests` parent index instead.
+  Evidence: the parent index records the new integration test and the bounded
+  index check passes without creating unapproved files.
+- Root cause: the cumulative command guessed a historical clause-test filename
+  instead of discovering the maintained test paths; Bandit B105 is lexical and
+  cannot distinguish an engineering disposition from a credential; and the
+  initial docs paragraph named the new input/result/provenance types but omitted
+  the exported status enum. Resolution: discover and use
+  `test_clause_traceability.py` plus `unit/test_clauses_json.py`, add the same
+  narrow B105 engineering-disposition annotation used by wall/deep/stair enums,
+  and list `RegularInteriorFlatSlabDesignStatus` in the API reference. Evidence:
+  the corrected focused suite, Bandit, and all three API documentation checks
+  pass.
+- Root cause: calculation delegation alone did not satisfy the repository's
+  strict import direction; transport-to-domain construction is also service-
+  layer ownership. Resolution: add a service-owned validated mapping adapter
+  and make the router depend only on the service module. Evidence: route/public
+  tests still pass and architecture returns 0 violations across 186 files.
+- Root cause: adding FLAT-D/E state to an already full briefing retained a
+  redundant wall-G0 recap. Resolution: remove that superseded recap while
+  retaining the wall acceptance receipt and all current flat-slab boundaries.
+  Evidence: the brief is below 150 lines and the corrected quick gate passes
+  10/10.
+- Root cause: session-end is a closeout diagnostic and treats a dirty tree as a
+  handoff issue even when the dirt is the reviewed packet awaiting commit.
+  Resolution: retain its successful session-log, receipt, link, task, and
+  governance evidence, run the quick gate as a separate command, and rerun
+  session-end after the intentional commit. Evidence: the separate quick gate
+  passes 10/10 and the post-commit session-end check is fully green.
+- Root cause: the auditor inferred a checker filename instead of using the
+  maintained command registry. Resolution: `./run.sh find "architecture
+  validation"` located `scripts/check_architecture_boundaries.py`, which then
+  passed with 0 violations across 186 files.
+
+### Evidence
+
+- The six direct public-workflow tests and six FastAPI route tests reproduce
+  the frozen benchmark, provenance, held cases, JSON-safe valid inadequacy,
+  strict input rejection, safe domain error, typed OpenAPI schema, and main-app
+  mounting.
+- Capability, semantic-contract, and manifest tests agree on one public
+  `flat_slab` workflow; generated truth reports 11 supported and 10 held
+  families, all 79 endpoints directly tested, and 100 percent actionable
+  cross-layer parity.
+- The 207-test cumulative FLAT-A-E/publication selection passes. Black, Ruff,
+  mypy, and Bandit pass; architecture is 0/186 violations, imports are 0/623
+  broken, all 1,211 links are valid, all 11 touched folder indexes are current,
+  and API/OpenAPI/schema/parity/token-efficiency checks pass. The quick-gate,
+  exact-head audit, and hosted receipts are completed before merge.
+- Broad Python and the 30-check repository gate remain deferred to final
+  INDIA-2 closeout.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `./run.sh generate indexes Python/tests/integration`
+  refused to create an unmaintained local index → preserved the canonical index
+  topology and regenerated the maintained `Python/tests` parent index.
+- ⚠️ TERMINAL ISSUE: the first focused pytest command named a nonexistent
+  clause-database test and stopped before collection → used `rg --files` to
+  select the maintained clause and traceability tests.
+- ⚠️ TERMINAL ISSUE: the first quick gate failed only the 156-line briefing
+  limit → removed the redundant historical wall-G0 recap and reran the gate.
+- ⚠️ TERMINAL ISSUE: the pre-commit session-end diagnostic returned nonzero on
+  the intentional dirty packet and stopped its `&&` chain → ran the remaining
+  quick gate separately and reserved final session-end for the committed tree.
+- ⚠️ TERMINAL ISSUE: the independent audit guessed a nonexistent architecture
+  checker → used `./run.sh find` and ran the maintained checker successfully.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-FLAT-D Centred Punching
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

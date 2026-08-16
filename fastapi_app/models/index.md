@@ -2,7 +2,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-16
-**Files:** 19
+**Files:** 20
 
 ## Public API
 
@@ -41,6 +41,7 @@
 | [common.py](common.py) | Common Pydantic Models. | 5 | 0 | 137 |
 | [compliance.py](compliance.py) | IS 456 Compliance Check Pydantic Models. | 15 | 0 | 325 |
 | [deep_beam.py](deep_beam.py) | Transport models for the bounded simply supported deep-beam  | 9 | 0 | 143 |
+| [flat_slab.py](flat_slab.py) | Transport models for the bounded regular interior flat-slab  | 15 | 0 | 250 |
 | [footing.py](footing.py) | Transport models for the bounded concentric isolated-footing | 14 | 0 | 266 |
 | [geometry.py](geometry.py) | 3D Geometry Pydantic Models. | 15 | 0 | 412 |
 | [library_core.py](library_core.py) | Requests for the bounded footing and slab public-library wor | 15 | 0 | 367 |

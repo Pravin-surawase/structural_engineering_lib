@@ -1,8 +1,8 @@
 {
-  "generated": "2026-08-15",
+  "generated": "2026-08-16",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 150,
+  "count": 155,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -248,6 +248,26 @@
       "name": "RebarSegment",
       "kind": "class",
       "signature": "(start: 'Point3D', end: 'Point3D', diameter: 'float', segment_type: 'str' = 'straight') -> None"
+    },
+    {
+      "name": "RegularInteriorFlatSlabDesignInput",
+      "kind": "class",
+      "signature": "(case_id: 'str', panel: 'FlatSlabPanelInput', x: 'FlatSlabDirectionDetailingInput', y: 'FlatSlabDirectionDetailingInput', factored_support_reaction_kn: 'float', straight_bars_only: 'bool', all_bottom_bars_continuous: 'bool', splices_present: 'bool', serviceability_acceptance_acknowledged: 'bool', centred_concentric_reaction: 'bool', full_critical_perimeter_available: 'bool', no_punching_reinforcement_provided: 'bool', qualified_review_required: 'bool', detailing_basis_reference: 'str', serviceability_acceptance_reference: 'str', support_reaction_basis_reference: 'str', punching_basis_reference: 'str') -> None"
+    },
+    {
+      "name": "RegularInteriorFlatSlabDesignProvenance",
+      "kind": "class",
+      "signature": "(schema_version: 'str', code_edition: 'str', workflow: 'str', case_id: 'str', benchmark_id: 'str', action_generation_status: 'str', support_reaction_status: 'str', serviceability_verification_status: 'str', geometry_basis_reference: 'str', material_basis_reference: 'str', load_basis_reference: 'str', detailing_basis_reference: 'str', serviceability_acceptance_reference: 'str', support_reaction_basis_reference: 'str', punching_basis_reference: 'str', clause_refs: 'tuple[str, ...]', source_refs: 'tuple[str, ...]') -> None"
+    },
+    {
+      "name": "RegularInteriorFlatSlabDesignResult",
+      "kind": "class",
+      "signature": "(case_id: 'str', status: 'RegularInteriorFlatSlabDesignStatus', reinforcement: 'FlatSlabReinforcementResult', punching: 'FlatSlabPunchingResult', supported_case: 'str', held_cases: 'tuple[str, ...]', provenance: 'RegularInteriorFlatSlabDesignProvenance', qualified_review_required: 'bool' = True, complete_engineering_design_approved: 'bool' = False) -> None"
+    },
+    {
+      "name": "RegularInteriorFlatSlabDesignStatus",
+      "kind": "class",
+      "signature": "(*args, **kwds)"
     },
     {
       "name": "ResultSection",
@@ -573,6 +593,11 @@
       "name": "design_one_way_slab_is456",
       "kind": "function",
       "signature": "(*, short_effective_span_mm: 'float', long_effective_span_mm: 'float', thickness_mm: 'float', d_mm: 'float', factored_area_load_kn_per_m2: 'float', fck_n_per_mm2: 'float', fy_n_per_mm2: 'float', main_bar_diameter_mm: 'float', main_bar_spacing_mm: 'float', distribution_bar_diameter_mm: 'float', distribution_bar_spacing_mm: 'float', strip_width_mm: 'float' = 1000.0) -> 'OneWaySlabDesignResult'"
+    },
+    {
+      "name": "design_regular_interior_flat_slab_is456",
+      "kind": "function",
+      "signature": "(request: 'RegularInteriorFlatSlabDesignInput') -> 'RegularInteriorFlatSlabDesignResult'"
     },
     {
       "name": "design_short_column_uniaxial_is456",

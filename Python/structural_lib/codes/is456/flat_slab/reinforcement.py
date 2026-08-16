@@ -457,6 +457,6 @@ def design_regular_interior_flat_slab_reinforcement(
             "Direct deflection and crack-width calculations remain held.",
             "Bar selection, bends, splices, anchorage, and congestion design remain held.",
             "Only the no-drop equal-span square interior-panel Figure 16 boundary is admitted.",
-            "Punching and moment transfer remain held for FLAT-D and excluded cases.",
+            "Punching is a separate composed-workflow check; moment transfer remains held.",
         ),
     )

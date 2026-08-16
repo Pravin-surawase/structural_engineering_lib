@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-15
+last_updated: 2026-08-16
 doc_type: reference
 complexity: intermediate
 tags: []
@@ -14,7 +14,7 @@ tags: []
 **Status:** Production Ready
 **Importance:** High
 **Created:** 2025-01-01
-**Last Updated:** 2026-08-15
+**Last Updated:** 2026-08-16
 
 ---
 
@@ -551,6 +551,14 @@ deep_beam: api.SimplySupportedDeepBeamDesignResult = (
 deep_beam_provenance: api.SimplySupportedDeepBeamDesignProvenance = (
     deep_beam.provenance
 )
+flat_slab_request = api.RegularInteriorFlatSlabDesignInput(...)
+flat_slab: api.RegularInteriorFlatSlabDesignResult = (
+    api.design_regular_interior_flat_slab_is456(flat_slab_request)
+)
+flat_slab_provenance: api.RegularInteriorFlatSlabDesignProvenance = (
+    flat_slab.provenance
+)
+flat_slab_status: api.RegularInteriorFlatSlabDesignStatus = flat_slab.status
 capabilities: tuple[api.IS456Capability, ...] = (
     api.get_supported_is456_capabilities()
 )

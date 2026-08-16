@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 22,
+  "file_count": 23,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 52,
+      "size_lines": 54,
       "last_updated": "2026-08-16",
       "description": "FastAPI Routers Package.",
-      "content_hash": "8eb77c6f58f7"
+      "content_hash": "9219a622fcb9"
     },
     {
       "name": "analysis.py",
@@ -374,6 +374,23 @@
         }
       ],
       "content_hash": "f4fe102fc87c"
+    },
+    {
+      "name": "flat_slab.py",
+      "type": "python",
+      "size_lines": 154,
+      "last_updated": "2026-08-16",
+      "description": "FastAPI transport for the bounded regular interior flat-slab service.",
+      "functions": [
+        {
+          "name": "design_regular_interior_flat_slab",
+          "description": "Validate transport input and delegate every calculation to the service.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "942206c10447"
     },
     {
       "name": "footing.py",
@@ -980,6 +997,7 @@
     "design",
     "detailing",
     "export",
+    "flat_slab",
     "footing",
     "geometry",
     "health",
@@ -991,8 +1009,7 @@
     "staircase",
     "streaming",
     "wall",
-    "websocket",
-    "workflows"
+    "websocket"
   ],
-  "content_hash": "a239cba06dc4e4c1"
+  "content_hash": "c067f8c679057791"
 }

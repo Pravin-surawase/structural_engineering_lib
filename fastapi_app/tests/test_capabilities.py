@@ -28,6 +28,11 @@ def test_capability_route_matches_python_contract(client: TestClient):
     )
     assert deep_beam["public_workflows"] == ["design_simply_supported_deep_beam_is456"]
     assert "simply supported" in deep_beam["supported_case"]
+    flat_slab = next(
+        item for item in body["data"]["capabilities"] if item["element"] == "flat_slab"
+    )
+    assert flat_slab["public_workflows"] == ["design_regular_interior_flat_slab_is456"]
+    assert "square interior" in flat_slab["supported_case"]
 
 
 def test_capability_route_has_a_typed_openapi_success_schema(client: TestClient):
