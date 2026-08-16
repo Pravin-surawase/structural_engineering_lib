@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-17
-**Files:** 162
+**Files:** 166
 
 ## Config Files
 
@@ -91,6 +91,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [is456-public-distribution-permission.json](is456-public-distribution-permission.json)
 - [lib-pro-002-a-forward-integration-git-handoff-receipt.json](lib-pro-002-a-forward-integration-git-handoff-receipt.json)
 - [lib-pro-002-a-forward-integration-git-handoff-source-evidence.json](lib-pro-002-a-forward-integration-git-handoff-source-evidence.json)
+- [lib-pro-002-a-g-git-handoff-receipt.json](lib-pro-002-a-g-git-handoff-receipt.json)
+- [lib-pro-002-a-g-git-handoff-source-evidence.json](lib-pro-002-a-g-git-handoff-source-evidence.json)
 - [lib-pro-002-a-git-handoff-receipt.json](lib-pro-002-a-git-handoff-receipt.json)
 - [lib-pro-002-a-git-handoff-source-evidence.json](lib-pro-002-a-git-handoff-source-evidence.json)
 - [lib-pro-002-g0-git-handoff-receipt.json](lib-pro-002-g0-git-handoff-receipt.json)
@@ -110,6 +112,7 @@ Benchmark examples and verification packs for validating library calculations ag
 - [post-india2-maintenance-evidence.json](post-india2-maintenance-evidence.json)
 - [post-india2-maintenance-git-handoff-receipt.json](post-india2-maintenance-git-handoff-receipt.json)
 - [post-india2-maintenance-git-handoff-source-evidence.json](post-india2-maintenance-git-handoff-source-evidence.json)
+- [release-publication-authorization.json](release-publication-authorization.json)
 
 ## Documentation Files
 
@@ -170,8 +173,9 @@ Benchmark examples and verification packs for validating library calculations ag
 | [insights-verification-pack.md](insights-verification-pack.md) |  | This pack provides benchmark test cases for the insights mod | 101 |
 | [is456-library-first-evidence.md](is456-library-first-evidence.md) | IS 456 Library-First Evidence and Claim  | | Source | SHA-256 | Pages | Use | |---|---|---:|---| | 169 |
 | [is456-slab-evidence.md](is456-slab-evidence.md) | IS 456 Solid Slab Source and Benchmark L | | ID | Identity | Permitted implementation use | State | |-- | 125 |
+| [lib-pro-002-e-evidence-identity.md](lib-pro-002-e-evidence-identity.md) | LIB-PRO-002-E evidence and source identi | The bounded design_beam_is456 strength route is bound to the | 28 |
 | [pack.md](pack.md) |  | This repo’s unit tests validate correctness and edge cases,  | 56 |
 | [post-india2-cleanup-authorization-proposal.md](post-india2-cleanup-authorization-proposal.md) |  | Exact candidate set POST-INDIA2-2499DF4ADE0DF704 contains ** | 162 |
-| [release-artifact-evidence-template.md](release-artifact-evidence-template.md) | Release Artifact Evidence Template | Complete this record from the CI run that built the exact ca | 38 |
+| [release-artifact-evidence-template.md](release-artifact-evidence-template.md) | Release Artifact Evidence Template | Complete this record from the CI run that built the exact ca | 44 |
 | [ui-experience-session-2-acceptance.md](ui-experience-session-2-acceptance.md) |  | This is the software acceptance record for UIX-001 P9-P15. I | 70 |
 | [validation-pack.md](validation-pack.md) |  | This pack provides 5 benchmark beams and 3 benchmark columns | 396 |

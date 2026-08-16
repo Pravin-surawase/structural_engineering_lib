@@ -23,6 +23,8 @@ interface FileDropZoneProps {
   className?: string;
   /** Material overrides applied after import */
   materialOverrides?: MaterialOverrides;
+  /** Explicit adapter selection, or auto when the artifact is unambiguous. */
+  formatHint?: "auto" | "etabs" | "safe" | "staad" | "generic";
 }
 
 export function FileDropZone({
@@ -32,6 +34,7 @@ export function FileDropZone({
   onError,
   className = "",
   materialOverrides,
+  formatHint = "auto",
 }: FileDropZoneProps) {
   const [isDragging, setIsDragging] = useState(false);
   const { importFile, isImporting, data, error: importError } = useCSVFileImport();
@@ -82,9 +85,9 @@ export function FileDropZone({
         return;
       }
 
-      importFile(file, undefined, materialOverrides);
+      importFile(file, formatHint, materialOverrides);
     },
-    [importFile, validateFile, onError, materialOverrides]
+    [importFile, validateFile, onError, materialOverrides, formatHint]
   );
 
   const handleDrop = useCallback(

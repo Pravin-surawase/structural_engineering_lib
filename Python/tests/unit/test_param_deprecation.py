@@ -132,7 +132,7 @@ class TestDesignColumnAxialDeprecation:
 
 
 # ============================================================================
-# 2. design_column_is456 (has defaults: fck=25, fy=415)
+# 2. design_column_is456 (explicit project materials; deprecated aliases retained)
 # ============================================================================
 
 
@@ -146,17 +146,15 @@ class TestDesignColumnIs456Deprecation:
             result = design_column_is456(**_COLUMN_IS456_KWARGS)
             assert result is not None
 
-    def test_no_fck_fy_uses_defaults(self):
-        """Calling without fck_nmm2/fck uses default (25); same for fy (415)."""
+    def test_no_fck_fy_blocks(self):
+        """Calling without project materials blocks instead of using defaults."""
         kwargs = {
             k: v
             for k, v in _COLUMN_IS456_KWARGS.items()
             if k not in ("fck_nmm2", "fy_nmm2")
         }
-        with warnings.catch_warnings():
-            warnings.simplefilter("error")  # No warning expected
-            result = design_column_is456(**kwargs)
-            assert result is not None
+        with pytest.raises(TypeError, match="requires 'fck_nmm2'"):
+            design_column_is456(**kwargs)
 
     def test_old_fck_emits_warning(self):
         """Old 'fck' emits DeprecationWarning."""

@@ -1,7 +1,7 @@
 # Hooks
 
 **Type:** React Source
-**Last Updated:** 2026-08-16
+**Last Updated:** 2026-08-17
 **Files:** 16
 
 ## React Hook Files
@@ -9,9 +9,9 @@
 | File | Exports | Lines |
 |------|---------|-------|
 | [useAutoDesign.ts](useAutoDesign.ts) | useAutoDesign | 73 |
-| [useBatchDesign.ts](useBatchDesign.ts) | BatchProgress, BatchResult, BatchStatus, BatchDesignState, useBatchDesign | 557 |
+| [useBatchDesign.ts](useBatchDesign.ts) | BatchProgress, BatchResult, BatchStatus, BatchDesignState, useBatchDesign | 554 |
 | [useBeamGeometry.ts](useBeamGeometry.ts) | Point3D, RebarSegment, RebarPath, StirrupLoop, Beam3DGeometry (+4) | 180 |
-| [useCSVImport.ts](useCSVImport.ts) | ImportedBeam, BeamDesignPayload, DesignedBeam, useCSVFileImport, useCSVTextImport (+2) | 456 |
+| [useCSVImport.ts](useCSVImport.ts) | ImportedBeam, BeamDesignPayload, DesignedBeam, useCSVFileImport, useCSVTextImport (+2) | 509 |
 | [useDesignWebSocket.ts](useDesignWebSocket.ts) | ConnectionStatus, WebSocketState, requiresCanonicalHttp, normalizeWebSocketDesignResult, useDesignWebSocket | 259 |
 | [useExport.ts](useExport.ts) | ExportBeamParams, ExportReportParams, useExportBBS, useExportDXF, useExportReport (+3) | 202 |
 | [useGeometryAdvanced.ts](useGeometryAdvanced.ts) | Point3D, BuildingBeamInput, BuildingBeamResult, BuildingGeometryResponse, CrossSectionRequest (+4) | 172 |

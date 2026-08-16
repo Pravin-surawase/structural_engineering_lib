@@ -1,0 +1,59 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T21:40:06Z",
+      "query_status": "OK",
+      "reference": "task:LIB-PRO-002-A-G:user-requested-complete-work-after-safe-forward-integration",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_CUMULATIVE_CANDIDATE",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_PULL_REQUEST"
+    ],
+    "next_action": "COMMIT_PUSH_OPEN_PR_THEN_HOLD_FOR_INDEPENDENT_EXACT_HEAD_REVIEW",
+    "observed_at_utc": "2026-08-16T21:40:06Z",
+    "prohibited_actions": [
+      "PUBLISH_PACKAGE",
+      "CREATE_RELEASE_TAG",
+      "CREATE_GITHUB_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL",
+      "CLAIM_WHOLE_BUILDING_SUPPORT",
+      "ACTIVATE_PACKET_H",
+      "MERGE_WITHOUT_REQUIRED_REVIEW_OR_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "REBASE_OR_REWRITE_HISTORY"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_CUMULATIVE_CANDIDATE",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_PULL_REQUEST"
+      ],
+      "branch": "codex/lib-pro-002-b-lossless-import",
+      "head_sha": "3986935ecb473c1f9d56dec44aeb4218d9192f84",
+      "task_id": "LIB-PRO-002-A-G"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_IMMUTABLE_REVIEW_AND_HOSTED_CHECKS",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_WORKTREE_AND_ALL_UNRELATED_LANES",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T21:40:06Z",
+    "owner": "Repository owner authorized cumulative implementation; destructive cleanup remains separately owner-authorized",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

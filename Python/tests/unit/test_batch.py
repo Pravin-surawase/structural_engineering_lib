@@ -183,6 +183,16 @@ def test_strict_service_negative_matrix_blocks_before_calculation(
         "engineering_status": "NOT_EVALUATED",
         "overall_status": "BLOCKED",
         "qualified_review_required": True,
+        "result_envelope": {
+            "schema_version": "structural-result-envelope/v1",
+            "intake_status": "BLOCKED",
+            "calculation_status": "NOT_EVALUATED",
+            "engineering_status": "NOT_EVALUATED",
+            "review_status": "QUALIFIED_REVIEW_REQUIRED",
+            "qualified_review_required": True,
+            "serviceability_escalation": None,
+            "overall_status": "BLOCKED",
+        },
     }
     member = result["members"][0]
     assert member["intake_status"] == "BLOCKED"
@@ -381,6 +391,16 @@ def test_mixed_batch_accounts_for_valid_and_blocked_members_without_pass() -> No
         "engineering_status": "PASS",
         "overall_status": "BLOCKED",
         "qualified_review_required": True,
+        "result_envelope": {
+            "schema_version": "structural-result-envelope/v1",
+            "intake_status": "BLOCKED",
+            "calculation_status": "COMPLETED",
+            "engineering_status": "PASS",
+            "review_status": "QUALIFIED_REVIEW_REQUIRED",
+            "qualified_review_required": True,
+            "serviceability_escalation": None,
+            "overall_status": "BLOCKED",
+        },
     }
 
 

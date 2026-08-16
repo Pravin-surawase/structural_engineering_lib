@@ -38,9 +38,17 @@ export function ImportView() {
   const [fck, setFck] = useState(25);
   const [fy, setFy] = useState(500);
   const [cover, setCover] = useState(40);
+  const [stirrupDiameter, setStirrupDiameter] = useState(8);
+  const [tensionBarDiameter, setTensionBarDiameter] = useState(16);
   const { beams, isImporting, error, setBeams, setError, setImporting } =
     useImportedBeamsStore();
-  const materialOverrides = { fck, fy, cover };
+  const materialOverrides = {
+    fck,
+    fy,
+    cover,
+    stirrupDiameter,
+    tensionBarDiameter,
+  };
   const initialMaterialOverridesRef = useRef(materialOverrides);
   const autoLoadSampleRef = useRef(searchParams.get("sample") === "true");
   const sampleLoadedRef = useRef(false);
@@ -153,6 +161,10 @@ export function ImportView() {
           fck={fck} setFck={setFck}
           fy={fy} setFy={setFy}
           cover={cover} setCover={setCover}
+          stirrupDiameter={stirrupDiameter}
+          setStirrupDiameter={setStirrupDiameter}
+          tensionBarDiameter={tensionBarDiameter}
+          setTensionBarDiameter={setTensionBarDiameter}
           onLoadSample={handleLoadSample}
           onFileImported={handleFileImported}
           isImporting={isImporting}
@@ -196,15 +208,24 @@ interface UploadStepProps {
   fck: number; setFck: (v: number) => void;
   fy: number; setFy: (v: number) => void;
   cover: number; setCover: (v: number) => void;
+  stirrupDiameter: number; setStirrupDiameter: (v: number) => void;
+  tensionBarDiameter: number; setTensionBarDiameter: (v: number) => void;
   onLoadSample: () => void;
   onFileImported: (count: number) => void;
   isImporting: boolean;
   error: string | null;
-  materialOverrides: { fck: number; fy: number; cover: number };
+  materialOverrides: {
+    fck: number;
+    fy: number;
+    cover: number;
+    stirrupDiameter: number;
+    tensionBarDiameter: number;
+  };
 }
 
-function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onFileImported, isImporting, error, materialOverrides }: UploadStepProps) {
+function UploadStep({ fck, setFck, fy, setFy, cover, setCover, stirrupDiameter, setStirrupDiameter, tensionBarDiameter, setTensionBarDiameter, onLoadSample, onFileImported, isImporting, error, materialOverrides }: UploadStepProps) {
   const [importMode, setImportMode] = useState<"single" | "dual">("single");
+  const [singleFormat, setSingleFormat] = useState<"auto" | "etabs" | "safe" | "staad" | "generic">("auto");
   const [geometryFile, setGeometryFile] = useState<File | null>(null);
   const [forcesFile, setForcesFile] = useState<File | null>(null);
   const { importFiles, isImporting: isDualImporting, error: dualError, data: dualData } = useDualCSVImport();
@@ -273,10 +294,26 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <p className="text-xs text-white/50 mb-2">Geometry + Forces (Single CSV)</p>
+              <label className="mb-2 block text-xs text-white/50" htmlFor="single-import-format">
+                Format
+              </label>
+              <select
+                id="single-import-format"
+                value={singleFormat}
+                onChange={(event) => setSingleFormat(event.target.value as typeof singleFormat)}
+                className="mb-3 w-full rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 text-xs text-white"
+              >
+                <option value="auto">Auto (requires one unique match)</option>
+                <option value="generic">Generic combined CSV</option>
+                <option value="etabs">ETABS</option>
+                <option value="safe">SAFE</option>
+                <option value="staad">STAAD</option>
+              </select>
               <FileDropZone
                 onSuccess={onFileImported}
                 onError={(err) => console.error(err)}
                 materialOverrides={materialOverrides}
+                formatHint={singleFormat}
               />
             </div>
             <div>
@@ -376,6 +413,8 @@ function UploadStep({ fck, setFck, fy, setFy, cover, setCover, onLoadSample, onF
             <DropdownField label="Concrete Grade" value={fck} onChange={setFck} options={[20, 25, 30, 35, 40, 45, 50]} format={(v) => `M${v}`} />
             <DropdownField label="Steel Grade" value={fy} onChange={setFy} options={[415, 500, 550]} format={(v) => `Fe ${v}`} />
             <DropdownField label="Clear Cover" value={cover} onChange={setCover} options={[25, 30, 35, 40, 45, 50]} format={(v) => `${v} mm`} />
+            <DropdownField label="Stirrup Diameter" value={stirrupDiameter} onChange={setStirrupDiameter} options={[6, 8, 10, 12]} format={(v) => `${v} mm`} />
+            <DropdownField label="Tension Bar Diameter" value={tensionBarDiameter} onChange={setTensionBarDiameter} options={[12, 16, 20, 25, 32]} format={(v) => `${v} mm`} />
           </div>
 
           <div className="mt-4 pt-4 border-t border-white/8">

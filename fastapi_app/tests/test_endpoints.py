@@ -10,6 +10,31 @@ import pytest
 from fastapi_app.tests.conftest import unwrap
 
 
+def _project_beam(
+    member_id: str,
+    *,
+    b_mm: float = 300,
+    D_mm: float = 500,
+    d_mm: float = 435,
+    mu_knm: float = 150,
+    vu_kn: float = 80,
+    fck_nmm2: float = 25,
+) -> dict:
+    """Return one complete canonical project-beam request."""
+
+    return {
+        "schema_version": "project-beam-design/v1",
+        "member_id": member_id,
+        "b_mm": b_mm,
+        "D_mm": D_mm,
+        "d_mm": d_mm,
+        "mu_knm": mu_knm,
+        "vu_kn": vu_kn,
+        "fck_nmm2": fck_nmm2,
+        "fy_nmm2": 500,
+    }
+
+
 class TestHealthEndpoints:
     """Tests for health check endpoints."""
 
@@ -386,12 +411,28 @@ class TestImportEndpoints:
         response = client.post(
             "/api/v1/import/dual-csv?format_hint=generic",
             files=files,
+            data={
+                "fck_mpa": "25",
+                "fy_mpa": "500",
+                "cover_mm": "40",
+                "stirrup_diameter_mm": "8",
+                "tension_bar_diameter_mm": "16",
+            },
         )
         assert response.status_code == status.HTTP_200_OK
 
         data = unwrap(response)
         assert data["beam_count"] == 1
         assert data["beams"][0]["point1"] is not None
+        source_metadata = data["beams"][0]["source_metadata"]
+        assert len(source_metadata["geometry_artifact_sha256"]) == 64
+        assert len(source_metadata["forces_artifact_sha256"]) == 64
+        assert len(source_metadata["normalization_ledger_hash"]) == 64
+        assert source_metadata["effective_depth_basis"] == {
+            "clear_cover_mm": 40.0,
+            "stirrup_diameter_mm": 8,
+            "tension_bar_diameter_mm": 16.0,
+        }
 
     def test_dual_csv_response_shape(self, client):
         """Dual CSV response must have exact keys matching TS DualCSVImportResponse."""
@@ -402,7 +443,15 @@ class TestImportEndpoints:
             "forces_file": ("f.csv", forces_csv.encode(), "text/csv"),
         }
         response = client.post(
-            "/api/v1/import/dual-csv?format_hint=generic", files=files
+            "/api/v1/import/dual-csv?format_hint=generic",
+            files=files,
+            data={
+                "fck_mpa": "25",
+                "fy_mpa": "500",
+                "cover_mm": "40",
+                "stirrup_diameter_mm": "8",
+                "tension_bar_diameter_mm": "16",
+            },
         )
         body = response.json()
         assert body["success"] is True
@@ -416,8 +465,12 @@ class TestImportEndpoints:
             "warnings",
             "unmatched_beams",
             "unmatched_forces",
+            "normalization_ledger",
+            "issues",
         }
         assert set(data.keys()) == expected_keys
+        assert data["normalization_ledger"]["totals"]["source_rows"] == 2
+        assert data["issues"] == []
 
     def test_single_csv_import(self, client):
         """Test single CSV import endpoint."""
@@ -427,7 +480,17 @@ class TestImportEndpoints:
             "B2,1F,250,450,4000,100,60,25,500,40\n"
         )
         files = {"file": ("beams.csv", csv_content.encode("utf-8"), "text/csv")}
-        response = client.post("/api/v1/import/csv", files=files)
+        response = client.post(
+            "/api/v1/import/csv?format_hint=generic",
+            files=files,
+            data={
+                "fck_mpa": "25",
+                "fy_mpa": "500",
+                "cover_mm": "40",
+                "stirrup_diameter_mm": "8",
+                "tension_bar_diameter_mm": "16",
+            },
+        )
         assert response.status_code == status.HTTP_200_OK
 
         data = unwrap(response)
@@ -438,7 +501,17 @@ class TestImportEndpoints:
         """Single CSV response must NOT have column_mapping, must have format_detected."""
         csv_content = "BeamID,Story,b (mm),D (mm),Span (mm),Mu (kN-m),Vu (kN),fck,fy,Cover (mm)\nB1,GF,300,500,5000,150,80,25,500,40\n"
         files = {"file": ("beams.csv", csv_content.encode(), "text/csv")}
-        response = client.post("/api/v1/import/csv", files=files)
+        response = client.post(
+            "/api/v1/import/csv?format_hint=generic",
+            files=files,
+            data={
+                "fck_mpa": "25",
+                "fy_mpa": "500",
+                "cover_mm": "40",
+                "stirrup_diameter_mm": "8",
+                "tension_bar_diameter_mm": "16",
+            },
+        )
         body = response.json()
         assert body["success"] is True
         data = body["data"]
@@ -449,6 +522,8 @@ class TestImportEndpoints:
             "beams",
             "format_detected",
             "warnings",
+            "normalization_ledger",
+            "issues",
         }
         assert set(data.keys()) == expected_keys
         assert "column_mapping" not in data
@@ -457,7 +532,17 @@ class TestImportEndpoints:
         """Each beam in CSV response must have all fields for store mapping."""
         csv_content = "BeamID,Story,b (mm),D (mm),Span (mm),Mu (kN-m),Vu (kN),fck,fy,Cover (mm)\nB1,GF,300,500,5000,150,80,25,500,40\n"
         files = {"file": ("beams.csv", csv_content.encode(), "text/csv")}
-        response = client.post("/api/v1/import/csv", files=files)
+        response = client.post(
+            "/api/v1/import/csv?format_hint=generic",
+            files=files,
+            data={
+                "fck_mpa": "25",
+                "fy_mpa": "500",
+                "cover_mm": "40",
+                "stirrup_diameter_mm": "8",
+                "tension_bar_diameter_mm": "16",
+            },
+        )
         beam = unwrap(response)["beams"][0]
         required = [
             "id",
@@ -541,141 +626,128 @@ class TestImportEndpoints:
             assert beam["source_id"]
 
     def test_batch_design(self, client):
-        """Test batch design endpoint returns correct results."""
+        """Canonical project endpoint returns accounted results."""
         beams = [
-            {
-                "id": "B1",
-                "width_mm": 300,
-                "depth_mm": 500,
-                "span_mm": 5000,
-                "mu_knm": 150,
-                "vu_kn": 80,
-                "fck_mpa": 25,
-                "fy_mpa": 500,
-                "cover_mm": 40,
-            },
-            {
-                "id": "B2",
-                "width_mm": 250,
-                "depth_mm": 450,
-                "span_mm": 4000,
-                "mu_knm": 100,
-                "vu_kn": 60,
-                "fck_mpa": 30,
-                "fy_mpa": 500,
-                "cover_mm": 40,
-            },
+            _project_beam("B1"),
+            _project_beam(
+                "B2",
+                b_mm=250,
+                D_mm=450,
+                d_mm=385,
+                mu_knm=100,
+                vu_kn=60,
+                fck_nmm2=30,
+            ),
         ]
-        response = client.post("/api/v1/import/batch-design", json=beams)
+        response = client.post("/api/v1/import/project-beams", json=beams)
         assert response.status_code == status.HTTP_200_OK
         data = unwrap(response)
-        assert data["total"] == 2
-        assert len(data["results"]) == 2
+        assert data["summary"]["total"] == 2
+        assert data["summary"]["evaluated"] == 2
+        assert len(data["members"]) == 2
 
     def test_batch_design_response_shape(self, client):
-        """Batch design response must use 'passed' not 'successful'."""
-        beams = [
-            {
-                "id": "B1",
-                "width_mm": 300,
-                "depth_mm": 500,
-                "span_mm": 5000,
-                "mu_knm": 150,
-                "vu_kn": 80,
-                "fck_mpa": 25,
-                "fy_mpa": 500,
-                "cover_mm": 40,
-            }
-        ]
-        response = client.post("/api/v1/import/batch-design", json=beams)
+        """Canonical response separates members from the batch summary."""
+        response = client.post(
+            "/api/v1/import/project-beams", json=[_project_beam("B1")]
+        )
         body = response.json()
         assert body["success"] is True
         data = body["data"]
-        expected_keys = {"success", "message", "total", "passed", "failed", "results"}
+        expected_keys = {"schema_version", "members", "summary"}
         assert set(data.keys()) == expected_keys
-        assert "successful" not in data, "'successful' should be 'passed'"
+        assert data["schema_version"] == "project-beam-result/v1"
+        assert data["summary"]["qualified_review_required"] is True
 
     def test_batch_design_result_shape(self, client):
-        """Each batch result must be flat BatchDesignResult, not nested DesignedBeam."""
-        beams = [
-            {
-                "id": "B1",
-                "width_mm": 300,
-                "depth_mm": 500,
-                "span_mm": 5000,
-                "mu_knm": 150,
-                "vu_kn": 80,
-                "fck_mpa": 25,
-                "fy_mpa": 500,
-                "cover_mm": 40,
-            }
-        ]
-        response = client.post("/api/v1/import/batch-design", json=beams)
-        result = unwrap(response)["results"][0]
+        """Each canonical member exposes orthogonal status axes."""
+        response = client.post(
+            "/api/v1/import/project-beams", json=[_project_beam("B1")]
+        )
+        result = unwrap(response)["members"][0]
         expected_keys = {
-            "beam_id",
-            "success",
-            "ast_required",
-            "asc_required",
-            "stirrup_spacing",
-            "is_safe",
-            "utilization_ratio",
-            "error",
-            "evidence",
+            "schema_version",
+            "index",
+            "member_id",
+            "intake_status",
+            "calculation_status",
+            "engineering_status",
+            "review_status",
+            "overall_status",
+            "qualified_review_required",
+            "result_envelope",
+            "issues",
+            "input",
+            "calculation",
         }
         assert set(result.keys()) == expected_keys
-        assert result["evidence"]["status"] == "PASS"
-        assert result["evidence"]["support_status"] == "SUPPORTED"
-        assert result["evidence"]["calculation_identity"]
-        assert result["ast_required"] > 0
-        assert 0 < result["utilization_ratio"] < 5
+        assert result["intake_status"] == "VALID"
+        assert result["calculation_status"] == "COMPLETED"
+        assert result["qualified_review_required"] is True
+        calculation = result["calculation"]
+        assert calculation["evidence"]["status"] == "PASS"
+        assert calculation["evidence"]["support_status"] == "SUPPORTED"
+        assert calculation["evidence"]["calculation_identity"]
+        assert calculation["flexure"]["ast_required"] > 0
+        assert 0 < calculation["utilization_ratio"] < 5
 
     def test_batch_design_values(self, client):
         """Batch design must return meaningful design values."""
-        beams = [
-            {
-                "id": "B1",
-                "width_mm": 300,
-                "depth_mm": 500,
-                "span_mm": 5000,
-                "mu_knm": 150,
-                "vu_kn": 80,
-                "fck_mpa": 25,
-                "fy_mpa": 500,
-                "cover_mm": 40,
-            }
-        ]
-        response = client.post("/api/v1/import/batch-design", json=beams)
-        r = unwrap(response)["results"][0]
-        assert r["success"] is True
-        assert r["is_safe"] is True
-        assert r["stirrup_spacing"] > 0
+        response = client.post(
+            "/api/v1/import/project-beams", json=[_project_beam("B1")]
+        )
+        result = unwrap(response)["members"][0]
+        assert result["engineering_status"] == "PASS"
+        assert result["calculation"]["is_safe"] is True
+        assert result["calculation"]["shear"]["stirrup_spacing"] > 0
 
     def test_batch_doubly_reinforced_result_is_safety_consistent(self, client):
         """Batch status and utilization must agree for doubly reinforced beams."""
         response = client.post(
-            "/api/v1/import/batch-design",
+            "/api/v1/import/project-beams",
             json=[
-                {
-                    "id": "B15_1",
-                    "story": "1",
-                    "width_mm": 230,
-                    "depth_mm": 450,
-                    "span_mm": 2300,
-                    "mu_knm": 178.912,
-                    "vu_kn": 186.183,
-                    "fck_mpa": 25,
-                    "fy_mpa": 500,
-                    "cover_mm": 40,
-                }
+                _project_beam(
+                    "B15_1",
+                    b_mm=230,
+                    D_mm=450,
+                    d_mm=385,
+                    mu_knm=178.912,
+                    vu_kn=186.183,
+                )
             ],
         )
         assert response.status_code == status.HTTP_200_OK
-        result = unwrap(response)["results"][0]
-        assert result["success"] is True
-        assert result["is_safe"] is True
-        assert result["asc_required"] > 0
-        assert 0 < result["utilization_ratio"] <= 1.0
+        result = unwrap(response)["members"][0]
+        calculation = result["calculation"]
+        assert result["calculation_status"] == "COMPLETED"
+        assert calculation["is_safe"] is True
+        assert calculation["flexure"]["asc_required"] > 0
+        assert 0 < calculation["utilization_ratio"] <= 1.0
+
+    def test_compatibility_batch_blocks_missing_effective_depth(self, client):
+        """Deprecated aliases delegate but never restore the old depth default."""
+        response = client.post(
+            "/api/v1/import/batch-design",
+            json=[
+                {
+                    "id": "B-NO-DEPTH",
+                    "width_mm": 300,
+                    "depth_mm": 500,
+                    "mu_knm": 150,
+                    "vu_kn": 80,
+                    "fck_mpa": 25,
+                    "fy_mpa": 500,
+                }
+            ],
+        )
+        data = unwrap(response)
+        assert response.headers["deprecation"] == "true"
+        assert data["results"] == []
+        assert data["summary"]["overall_status"] == "BLOCKED"
+        assert any(
+            issue["code"] == "PROJECT_BEAM_REQUIRED_FIELD" and issue["path"] == "d_mm"
+            for issue in data["errors"][0]["issues"]
+        )
 
 
 class TestOptimizationEndpoints:

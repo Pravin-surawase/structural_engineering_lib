@@ -36,6 +36,12 @@ from structural_lib.core.data_types import (
     LongColumnResult,
     PMInteractionResult,
 )
+from structural_lib.core.result_contract import (
+    CalculationStatus,
+    EngineeringStatus,
+    IntakeStatus,
+    StructuralResultEnvelopeV1,
+)
 
 # ============================================================================
 # Deprecated-parameter resolution helper
@@ -1080,9 +1086,11 @@ def design_column_is456(
         end_condition: End restraint condition. Default: 'FIXED_FIXED'.
             Options: 'FIXED_FIXED', 'FIXED_HINGED', 'FIXED_FIXED_SWAY',
             'FIXED_FREE', 'HINGED_HINGED', 'FIXED_PARTIAL', 'HINGED_PARTIAL'.
-        fck_nmm2: Concrete characteristic strength (N/mm²). Default: 25.0.
+        fck_nmm2: Concrete characteristic strength (N/mm²). Required unless
+            the deprecated ``fck`` alias is supplied.
             IS 456 range: 15-80.
-        fy_nmm2: Steel yield strength (N/mm²). Default: 415.0.
+        fy_nmm2: Steel yield strength (N/mm²). Required unless the deprecated
+            ``fy`` alias is supplied.
             IS 456 range: 250-550.
         Asc_mm2: Total longitudinal steel area (mm²). Default: 0.0.
             For initial sizing, use 0.8-6% of gross area.
@@ -1177,19 +1185,13 @@ def design_column_is456(
     if Pu_kN < 0:
         raise ValueError(f"Axial load Pu_kN must be >= 0 (got {Pu_kN})")
 
-    # Resolve deprecated parameter aliases (with defaults)
-    if fck_nmm2 is None and fck is None:
-        fck_nmm2 = 25.0
-    else:
-        fck_nmm2 = _resolve_deprecated_param(
-            fck_nmm2, fck, "fck_nmm2", "fck", "design_column_is456"
-        )
-    if fy_nmm2 is None and fy is None:
-        fy_nmm2 = 415.0
-    else:
-        fy_nmm2 = _resolve_deprecated_param(
-            fy_nmm2, fy, "fy_nmm2", "fy", "design_column_is456"
-        )
+    # Compatibility aliases remain, but project materials are never invented.
+    fck_nmm2 = _resolve_deprecated_param(
+        fck_nmm2, fck, "fck_nmm2", "fck", "design_column_is456"
+    )
+    fy_nmm2 = _resolve_deprecated_param(
+        fy_nmm2, fy, "fy_nmm2", "fy", "design_column_is456"
+    )
 
     # Step 1: Calculate effective lengths in both directions
     le_result = calculate_effective_length_is456(l_mm, end_condition)
@@ -1349,6 +1351,16 @@ def design_column_is456(
         if long_result.get("warnings"):
             result["warnings"].extend(long_result["warnings"])
 
+    result_envelope = StructuralResultEnvelopeV1(
+        intake_status=IntakeStatus.VALID,
+        calculation_status=CalculationStatus.COMPLETED,
+        engineering_status=(
+            EngineeringStatus.PASS if result["is_safe"] else EngineeringStatus.FAIL
+        ),
+    )
+    result["result_envelope"] = result_envelope.to_dict()
+    result["review_status"] = result_envelope.review_status.value
+    result["qualified_review_required"] = True
     return result
 
 

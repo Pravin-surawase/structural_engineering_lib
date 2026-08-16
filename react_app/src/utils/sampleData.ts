@@ -23,5 +23,6 @@ export function mapSampleBeamsToRows(
     dataset_id: dataset?.dataset_id,
     dataset_version: dataset?.dataset_version,
     dataset_sha256: dataset?.dataset_sha256,
+    source_metadata: beam.source_metadata,
   }));
 }

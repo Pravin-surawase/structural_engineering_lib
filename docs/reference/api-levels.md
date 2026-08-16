@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-10
+last_updated: 2026-08-17
 doc_type: reference
 complexity: intermediate
 tags: [api, reference]
@@ -14,7 +14,8 @@ tags: [api, reference]
 
 ---
 
-structural_lib exposes three API levels. Pick the one that matches your use case.
+structural_lib exposes three API levels. All are Alpha-preview surfaces; the
+machine-readable classification is in [api-classification.json](api-classification.json).
 
 ## Level 1: High-Level Service API (recommended)
 
@@ -41,7 +42,11 @@ assert col["is_safe"]
 # Design + detailing + BBS in one call
 full = sl.design_and_detail_beam_is456(
     units="IS456", beam_id="B1", story="GF", span_mm=6000,
-    b_mm=300, D_mm=500, mu_knm=150, vu_kn=100,
+    b_mm=300, D_mm=500, d_mm=442, mu_knm=150, vu_kn=100,
+    cover_mm=40, fck_nmm2=25, fy_nmm2=500,
+    d_dash_mm=58, asv_mm2=100, stirrup_dia_mm=8,
+    stirrup_spacing_support_mm=150, stirrup_spacing_mid_mm=200,
+    is_seismic=False,
 )
 ```
 
@@ -81,7 +86,10 @@ shear = design_shear(b_mm=300, d_mm=450, vu_kn=100, fck=25, fy=500)
 curl -X POST http://localhost:8000/api/v1/design/beam \
   -H "Content-Type: application/json" \
   -d '{"width": 300, "depth": 500, "moment": 150,
-       "shear": 100, "fck": 25, "fy": 500}'
+       "shear": 100, "torsion": 0, "fck": 25, "fy": 500,
+       "effective_depth": 442, "clear_cover": 40,
+       "stirrup_dia_mm": 8, "main_bar_dia_mm": 20,
+       "include_serviceability": false, "support_condition": "SIMPLY_SUPPORTED"}'
 ```
 
 JSON calculation endpoints use the maintained response envelope:

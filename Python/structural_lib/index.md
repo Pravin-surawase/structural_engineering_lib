@@ -3,8 +3,8 @@
 > **Purpose:** IS 456:2000 RC beam design calculations
 
 **Type:** Python Package
-**Last Updated:** 2026-08-16
-**Files:** 51
+**Last Updated:** 2026-08-17
+**Files:** 52
 
 ## Public API
 
@@ -40,9 +40,9 @@
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
 | [__init__.py](__init__.py) | Package:      structural_lib | 0 | 0 | 469 |
-| [__main__.py](__main__.py) | Unified CLI entrypoint for structural_lib. | 0 | 12 | 1573 |
+| [__main__.py](__main__.py) | Unified CLI entrypoint for structural_lib. | 0 | 13 | 1632 |
 | [adapters.py](adapters.py) | Backward compatibility stub. | 0 | 0 | 17 |
-| [api.py](api.py) | Backward compatibility stub. | 0 | 0 | 14 |
+| [api.py](api.py) | Backward compatibility stub. | 0 | 0 | 11 |
 | [api_results.py](api_results.py) | Backward compatibility stub. | 0 | 0 | 18 |
 | [audit.py](audit.py) | Backward compatibility stub. | 0 | 0 | 17 |
 | [batch.py](batch.py) | Backward compatibility stub. | 0 | 0 | 13 |
@@ -63,7 +63,7 @@
 | [excel_bridge.py](excel_bridge.py) | Backward compatibility stub. *(stub)* | 0 | 0 | 28 |
 | [excel_integration.py](excel_integration.py) | Backward compatibility stub. *(stub)* | 0 | 0 | 32 |
 | [flexure.py](flexure.py) | Backward compatibility stub. | 0 | 0 | 25 |
-| [imports.py](imports.py) | Backward compatibility stub. | 0 | 0 | 15 |
+| [imports.py](imports.py) | Backward compatibility stub. | 0 | 0 | 31 |
 | [inputs.py](inputs.py) | Backward compatibility stub. | 0 | 0 | 20 |
 | [intelligence.py](intelligence.py) | Backward compatibility stub. | 0 | 0 | 21 |
 | [job_cli.py](job_cli.py) | Backward compatibility stub. *(stub)* | 0 | 0 | 27 |
@@ -74,6 +74,7 @@
 | [optimization.py](optimization.py) | Backward compatibility stub. | 0 | 0 | 14 |
 | [rebar.py](rebar.py) | Backward compatibility stub. | 0 | 0 | 13 |
 | [rebar_optimizer.py](rebar_optimizer.py) | Backward compatibility stub. | 0 | 0 | 14 |
+| [release_uat.py](release_uat.py) | CLI compatibility facade for the source-free exact-wheel UAT | 0 | 0 | 10 |
 | [report.py](report.py) | Backward compatibility stub. *(stub)* | 0 | 0 | 39 |
 | [report_svg.py](report_svg.py) | Backward compatibility stub. *(stub)* | 0 | 0 | 23 |
 | [result_base.py](result_base.py) | Backward compatibility stub. | 0 | 0 | 14 |
@@ -95,9 +96,10 @@
 |--------|-------|-------------|
 | [cli/](cli/) 📦 | 2 |  |
 | [codes/](codes/) 📦 | 114 |  |
-| [core/](core/) 📦 | 20 |  |
+| [core/](core/) 📦 | 22 |  |
+| [data/](data/) | 1 |  |
 | [insights/](insights/) 📦 | 12 |  |
 | [reports/](reports/) 📦 | 7 |  |
 | [research/](research/) 📦 | 4 |  |
-| [services/](services/) 📦 | 47 |  |
+| [services/](services/) 📦 | 51 |  |
 | [visualization/](visualization/) 📦 | 4 |  |

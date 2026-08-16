@@ -2,14 +2,14 @@
   "folder": "docs/getting-started",
   "type": "mixed",
   "description": "Quick onboarding guides for new users of the structural engineering library.",
-  "last_updated": "2026-08-16",
+  "last_updated": "2026-08-17",
   "file_count": 19,
   "files": [
     {
       "name": "NEW-DEVELOPER-ONBOARDING.md",
       "type": "documentation",
       "size_lines": 377,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This guide is for you if: - ✅ You're new to this project",
       "content_hash": "927f6c5db650"
     },
@@ -17,7 +17,7 @@
       "name": "README.md",
       "type": "documentation",
       "size_lines": 76,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "title": "Getting Started",
       "description": "Quick onboarding guides for new users of the structural engineering library. ",
       "content_hash": "5202c5c8d113"
@@ -26,7 +26,7 @@
       "name": "agent-bootstrap.md",
       "type": "documentation",
       "size_lines": 738,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "> **This is THE canonical bootstrap for all AI agents.** Entry points (CLAUDE.md, .github/copilot-instructions.md) link here. | # | Critical Warning | Why it matters |",
       "content_hash": "c412341efee9"
     },
@@ -34,7 +34,7 @@
       "name": "agent-essentials.md",
       "type": "documentation",
       "size_lines": 14,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "> **Merged.** This document's content has been consolidated into agent-bootstrap.md. > Please read that document instead — it is the single canonical bootstrap for all AI agents.",
       "content_hash": "6023cf61d65c"
     },
@@ -42,7 +42,7 @@
       "name": "ai-context-pack.md",
       "type": "documentation",
       "size_lines": 14,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "> **Merged.** This document's content has been consolidated into agent-bootstrap.md. > Please read that document instead — it is the single canonical bootstrap for all AI agents.",
       "content_hash": "f6ed4c54316e"
     },
@@ -50,7 +50,7 @@
       "name": "beginners-guide.md",
       "type": "documentation",
       "size_lines": 159,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This guide is written for engineers and students who are new to coding. Follow the steps exactly and you will get a working result. You have two ways to use this library:",
       "content_hash": "38147b244386"
     },
@@ -58,7 +58,7 @@
       "name": "colab-workflow.md",
       "type": "documentation",
       "size_lines": 524,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This guide runs the full pipeline in Google Colab: install → generate inputs → design → BBS → DXF → reports → critical set.",
       "content_hash": "043eec37d3e0"
     },
@@ -66,7 +66,7 @@
       "name": "copilot-quick-start.md",
       "type": "documentation",
       "size_lines": 46,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Run from the repository root: bash",
       "content_hash": "46d6e9fbd688"
     },
@@ -74,7 +74,7 @@
       "name": "cost-optimization-guide.md",
       "type": "documentation",
       "size_lines": 58,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This guide explains how to use the cost optimization features to explore cheaper beam designs while meeting IS 456 requirements. - Searches common beam sizes and material grades to find a lower-cost d",
       "content_hash": "ca3495c84c47"
     },
@@ -82,7 +82,7 @@
       "name": "design-suggestions-guide.md",
       "type": "documentation",
       "size_lines": 462,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "The design suggestions engine provides expert recommendations to improve your beam designs beyond basic code compliance. Think of it as having an experienced structural engineer review your work and s",
       "content_hash": "de125aca92a0"
     },
@@ -90,7 +90,7 @@
       "name": "fix-copilot-terminal.md",
       "type": "documentation",
       "size_lines": 157,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Copilot Agent's terminal is stuck in git pager mode. Commands open \"alternate buffer\" and nothing works. ",
       "content_hash": "a4d47082ba79"
     },
@@ -98,7 +98,7 @@
       "name": "insights-guide.md",
       "type": "documentation",
       "size_lines": 546,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "> **Stability:** Experimental - API may change before v1.0 Advisory insights provide quick heuristic assessments of beam designs to help engineers make informed decisions early in the design process.",
       "content_hash": "39e41306f195"
     },
@@ -106,7 +106,7 @@
       "name": "installation-notes.md",
       "type": "documentation",
       "size_lines": 89,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "All required packages have been installed successfully: - **Core**: plotly 6.5.2, pandas 2.3.3, numpy 2.4.1, scipy 1.17.0",
       "content_hash": "6deb68f55e9e"
     },
@@ -114,7 +114,7 @@
       "name": "mac-mini-setup.md",
       "type": "documentation",
       "size_lines": 396,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Complete instructions to clone and run the full stack on a fresh Mac Mini (Apple Silicon). This guide is designed so an AI agent or developer can follow it end-to-end without ambiguity.",
       "content_hash": "8c4943b0ed59"
     },
@@ -122,23 +122,23 @@
       "name": "product-tour.md",
       "type": "documentation",
       "size_lines": 99,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "See the supported workflow before installing anything. These screenshots are authentic captures from StructLib v0.23.0 running locally with the bundled",
       "content_hash": "9ea3752a4fd5"
     },
     {
       "name": "python-quickstart.md",
       "type": "documentation",
-      "size_lines": 201,
-      "last_updated": "2026-08-16",
+      "size_lines": 202,
+      "last_updated": "2026-08-17",
       "description": "This guide shows how to install, run, and verify the Python library with simple, copy/paste steps. No prior packaging experience required. > **📚 New to this?** See beginners-guide.md for comprehensive",
-      "content_hash": "725fbcae959d"
+      "content_hash": "e23161f7e1aa"
     },
     {
       "name": "releases.md",
       "type": "documentation",
       "size_lines": 1250,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This document serves as the **immutable source of truth** for project releases. Entries here represent \"locked\" versions that have been verified and approved.",
       "content_hash": "2c02a622a5bd"
     },
@@ -146,11 +146,11 @@
       "name": "user-guide.md",
       "type": "documentation",
       "size_lines": 223,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "This guide walks you through a complete beam design workflow from start to finish. For detailed installation help, see Beginner's Guide. bash",
       "content_hash": "3c0ded3ae268"
     }
   ],
   "subfolders": [],
-  "content_hash": "446b27483e228e1b"
+  "content_hash": "8b906dc740377b3b"
 }

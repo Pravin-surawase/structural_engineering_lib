@@ -172,6 +172,13 @@ repos:
         pass_filenames: false
         files: ^Python/structural_lib/api\.py$
         verbose: true
+      - id: check-api-classification
+        name: Check API classification registry
+        entry: ./scripts/python_runtime.sh scripts/generate_api_classification.py --check
+        language: system
+        pass_filenames: false
+        files: ^(Python/structural_lib/(__init__|api)\.py|Python/structural_lib/services/api\.py|scripts/generate_api_classification\.py|docs/reference/api-classification\.json)$
+        verbose: true
       - id: check-beam-tool-manifest
         name: Check catalogue-derived beam tool manifest
         entry: ./scripts/python_runtime.sh scripts/generate_beam_tool_manifest.py --check

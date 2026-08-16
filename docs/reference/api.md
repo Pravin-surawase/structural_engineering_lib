@@ -9,6 +9,11 @@ tags: []
 
 # IS 456 RC Beam Design Library — API Reference
 
+The public result dataclasses `api.ComplianceCaseResult`,
+`api.ComplianceReport`, and `api.DesignAndDetailResult` are Alpha-preview
+exports. They describe software calculation evidence; none is professional
+approval.
+
 **Type:** Reference
 **Audience:** Developers
 **Status:** Development Preview — Supported Cases Only

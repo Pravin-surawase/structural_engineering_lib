@@ -2,14 +2,14 @@
   "folder": "fastapi_app",
   "type": "python-package",
   "description": "REST API + WebSocket bridge between the React frontend and the Python `structural_lib`.",
-  "last_updated": "2026-08-16",
+  "last_updated": "2026-08-17",
   "file_count": 9,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 50,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "title": "FastAPI Backend",
       "description": "REST API + WebSocket bridge between the React frontend and the Python structural_lib. bash",
       "content_hash": "174e3838edd5"
@@ -18,7 +18,7 @@
       "name": "__init__.py",
       "type": "python",
       "size_lines": 11,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "FastAPI backend for structural_engineering_lib.",
       "content_hash": "a054fbd5a6f9"
     },
@@ -26,7 +26,7 @@
       "name": "auth.py",
       "type": "python",
       "size_lines": 378,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Authentication and Authorization Module.",
       "classes": [
         {
@@ -114,7 +114,7 @@
       "name": "config.py",
       "type": "python",
       "size_lines": 124,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Application Configuration.",
       "classes": [
         {
@@ -149,7 +149,7 @@
       "name": "error_utils.py",
       "type": "python",
       "size_lines": 74,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Error sanitization utilities for API responses.",
       "functions": [
         {
@@ -182,7 +182,7 @@
       "name": "main.py",
       "type": "python",
       "size_lines": 635,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "FastAPI Application Entry Point.",
       "classes": [
         {
@@ -248,7 +248,7 @@
     {
       "name": "openapi_baseline.json",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "components",
         "info",
@@ -256,12 +256,12 @@
         "paths",
         "tags"
       ],
-      "content_hash": "f6e54af239f1"
+      "content_hash": "d05b02792923"
     },
     {
       "name": "ruff.toml",
       "type": "config",
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": ".TOML configuration file",
       "content_hash": "a86a2bd7f0e7"
     }
@@ -293,5 +293,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "f5c5f1de106cbe82"
+  "content_hash": "538b1e3dc58ab686"
 }

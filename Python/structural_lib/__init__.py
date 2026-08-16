@@ -12,14 +12,14 @@ Use api.get_library_version() to get the current version.
 from __future__ import annotations
 
 import importlib
-from importlib.metadata import PackageNotFoundError
+from importlib.metadata import PackageNotFoundError as _PackageNotFoundError
 from importlib.metadata import version as _get_version
 from types import ModuleType as _ModuleType
 
 # Dynamic version from installed package metadata
 try:
     __version__ = _get_version("structural-lib-is456")
-except PackageNotFoundError:
+except _PackageNotFoundError:
     __version__ = "0.0.0-dev"  # Not installed, development mode
 
 # Expose key modules

@@ -24,6 +24,12 @@ from structural_lib.codes.is456.slab.one_way import (
     OneWaySlabFlexureStatus,
 )
 from structural_lib.codes.is456.traceability import clause
+from structural_lib.core.result_contract import (
+    CalculationStatus,
+    EngineeringStatus,
+    IntakeStatus,
+    StructuralResultEnvelopeV1,
+)
 
 __all__ = [
     "DetailingAdequacyStatus",
@@ -49,7 +55,7 @@ _P8_LIMITATIONS: tuple[str, ...] = (
     "P8 HOLD: deflection modification factors are not implemented.",
     "P8 HOLD: direct deflection calculation is not implemented.",
     "P8 HOLD: cracking, shear, load combinations, continuity, cantilevers, and load patterns are not checked.",
-    "REVIEW LIMITATION: qualified structural-engineering review remains required where the basic Lx/d boundary is exceeded.",
+    "REVIEW LIMITATION: qualified structural-engineering review remains required for every result.",
 )
 
 
@@ -68,9 +74,8 @@ class OneWaySlabServiceabilityStatus(StrEnum):
 
 
 class OneWaySlabReviewRequirement(StrEnum):
-    """Whether the bounded result requires qualified engineering review."""
+    """Professional review boundary for the bounded structural result."""
 
-    NO_QUALIFIED_REVIEW_REQUIRED = "no_qualified_review_required"
     QUALIFIED_REVIEW_REQUIRED = "qualified_review_required"
 
 
@@ -246,6 +251,9 @@ class OneWaySlabDetailingResult:
     detailing_adequacy: DetailingAdequacyStatus
     serviceability_status: OneWaySlabServiceabilityStatus
     review_requirement: OneWaySlabReviewRequirement
+    qualified_review_required: bool
+    serviceability_escalation: str | None
+    result_envelope: StructuralResultEnvelopeV1
     limitations: tuple[str, ...]
     source_refs: tuple[str, ...]
 
@@ -354,11 +362,27 @@ def check_simply_supported_one_way_slab_detailing(
         if basic_span_to_depth_ratio <= basic_span_to_depth_limit
         else OneWaySlabServiceabilityStatus.QUALIFIED_REVIEW_REQUIRED
     )
-    review_requirement = (
-        OneWaySlabReviewRequirement.QUALIFIED_REVIEW_REQUIRED
+    review_requirement = OneWaySlabReviewRequirement.QUALIFIED_REVIEW_REQUIRED
+    serviceability_escalation = (
+        "QUALIFIED_SERVICEABILITY_REVIEW_REQUIRED"
         if serviceability_status
         is OneWaySlabServiceabilityStatus.QUALIFIED_REVIEW_REQUIRED
-        else OneWaySlabReviewRequirement.NO_QUALIFIED_REVIEW_REQUIRED
+        else None
+    )
+    engineering_status = (
+        EngineeringStatus.FAIL
+        if detailing_adequacy is DetailingAdequacyStatus.INADEQUATE
+        else (
+            EngineeringStatus.HOLD
+            if serviceability_escalation is not None
+            else EngineeringStatus.PASS
+        )
+    )
+    result_envelope = StructuralResultEnvelopeV1(
+        intake_status=IntakeStatus.VALID,
+        calculation_status=CalculationStatus.COMPLETED,
+        engineering_status=engineering_status,
+        serviceability_escalation=serviceability_escalation,
     )
     return OneWaySlabDetailingResult(
         input=detailing_input,
@@ -377,6 +401,9 @@ def check_simply_supported_one_way_slab_detailing(
         detailing_adequacy=detailing_adequacy,
         serviceability_status=serviceability_status,
         review_requirement=review_requirement,
+        qualified_review_required=True,
+        serviceability_escalation=serviceability_escalation,
+        result_envelope=result_envelope,
         limitations=_P8_LIMITATIONS,
         source_refs=flexure.source_refs + _P8_SOURCE_REFS,
     )

@@ -59,6 +59,7 @@ const mockBeam = (id: string): BeamCSVRow =>
     fck: 25,
     fy: 500,
     cover: 40,
+    d_mm: 450,
     Mu_mid: 100,
     Vu_start: 50,
   }) as BeamCSVRow;
@@ -67,14 +68,23 @@ const evidence = {
   artifact_schema: 'structural_lib.beam-evidence',
   artifact_schema_version: '1.0',
   library_version: '0.23.0',
+  library_content_identity: 'library-content-id',
   code_edition: 'IS 456:2000',
   code_amendment_identity: 'not-declared-in-artifact',
+  amendment_applicability: 'REVIEWED_NO_CALCULATION_CHANGE',
+  amendment_applicability_review_id: 'review-id',
+  controlled_source_ids: ['source-id'],
+  controlled_source_basis_hash: 'source-basis-hash',
   capability_id: 'design_beam_is456',
   support_status: 'SUPPORTED' as const,
   unit_system: 'IS456',
   explicit_units: { length: 'mm' },
   normalized_input_hash: 'server-sha256',
+  provenance_hash: 'provenance-sha256',
+  source_metadata: {},
   calculation_identity: 'calculation-identity',
+  replay_receipt: {},
+  replay_receipt_hash: 'replay-receipt-sha256',
   governing_check: 'flexure',
   exact_utilization: 0.78,
   margin: 0.22,
@@ -118,6 +128,34 @@ describe('useBatchDesign', () => {
     expect(MockEventSource.instances[0].url).toContain('/stream/batch-design');
     expect(result.current.status).toBe('running');
     expect(result.current.progress.total).toBe(2);
+  });
+
+  it('sends canonical source-derived values without structural defaults', () => {
+    const { result } = renderHook(() => useBatchDesign());
+    const beam = {
+      ...mockBeam('B-MISSING'),
+      fck: undefined,
+      d_mm: undefined,
+      cover: undefined,
+    };
+
+    act(() => result.current.startBatchDesign([beam]));
+
+    const url = new URL(MockEventSource.instances[0].url, 'http://localhost');
+    const payload = JSON.parse(url.searchParams.get('beams') ?? '[]');
+    expect(payload).toHaveLength(1);
+    expect(payload[0]).toMatchObject({
+      schema_version: 'project-beam-design/v1',
+      member_id: 'B-MISSING',
+      b_mm: 300,
+      D_mm: 500,
+      mu_knm: 100,
+      vu_kn: 50,
+      fy_nmm2: 500,
+    });
+    expect(payload[0]).not.toHaveProperty('fck_nmm2');
+    expect(payload[0]).not.toHaveProperty('d_mm');
+    expect(payload[0]).not.toHaveProperty('effective_depth_basis');
   });
 
   it('posts a maintained-size batch instead of placing it in the request URL', () => {

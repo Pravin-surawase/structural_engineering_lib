@@ -1,8 +1,8 @@
 # Core
 
 **Type:** Python Package
-**Last Updated:** 2026-08-16
-**Files:** 18
+**Last Updated:** 2026-08-17
+**Files:** 20
 
 ## Public API
 
@@ -38,6 +38,8 @@
 | [numerics.py](numerics.py) | Numeric safety utilities for structural calculations. | 0 | 3 | 78 |
 | [registry.py](registry.py) | Design code registry for multi-code support. | 1 | 1 | 98 |
 | [result_base.py](result_base.py) | Module:       result_base | 3 | 0 | 191 |
+| [result_contract.py](result_contract.py) | Shared, fail-closed structural result status contract. | 6 | 2 | 158 |
+| [source_identity.py](source_identity.py) | Layer-neutral identities for the exact controlled IS 456 sou | 0 | 0 | 13 |
 | [types.py](types.py) | Compatibility shim for the renamed data_types module. | 0 | 0 | 51 |
 | [utilities.py](utilities.py) | Module:       utilities | 0 | 4 | 70 |
 | [validation.py](validation.py) | Module:       validation | 0 | 13 | 643 |

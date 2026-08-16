@@ -3,8 +3,8 @@
 > Development, validation, discovery, release-preparation, and maintenance tools.
 
 **Type:** Python Package
-**Last Updated:** 2026-08-16
-**Files:** 111
+**Last Updated:** 2026-08-17
+**Files:** 112
 
 ## Config Files
 
@@ -34,9 +34,9 @@
 | [audit_readiness_report.py](audit_readiness_report.py) | Audit Readiness Report Generator | 2 | 11 | 783 |
 | [batch_migrate_runner.py](batch_migrate_runner.py) | Batch migration runner with per-operation rollback logs. | 1 | 2 | 467 |
 | [benchmark_api.py](benchmark_api.py) | API Performance Benchmark Script. | 4 | 9 | 837 |
-| [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 4 | 458 |
-| [check_all.py](check_all.py) | Unified check orchestrator — runs all validation scripts in  | 3 | 1 | 712 |
-| [check_api.py](check_api.py) | Validate the live React/FastAPI contract and Python API docu | 1 | 4 | 390 |
+| [bump_version.py](bump_version.py) | Version Bump Script — Single Source of Truth | 0 | 4 | 484 |
+| [check_all.py](check_all.py) | Unified check orchestrator — runs all validation scripts in  | 3 | 1 | 717 |
+| [check_api.py](check_api.py) | Validate the live React/FastAPI contract and Python API docu | 1 | 4 | 400 |
 | [check_api_compat.py](check_api_compat.py) | Compatibility wrapper for the canonical public API manifest  | 0 | 1 | 49 |
 | [check_architecture_boundaries.py](check_architecture_boundaries.py) | Architecture Boundary Linter. | 3 | 9 | 495 |
 | [check_bootstrap_freshness.py](check_bootstrap_freshness.py) | Check if bootstrap docs are stale compared to actual codebas | 0 | 4 | 290 |
@@ -75,6 +75,7 @@
 | [external_cli_test.py](external_cli_test.py) | External CLI smoke test (S-007). | 1 | 1 | 401 |
 | [find_automation.py](find_automation.py) | Find the right automation script for a task. | 0 | 8 | 192 |
 | [fix_broken_links.py](fix_broken_links.py) | Fix broken internal links in markdown files. | 0 | 6 | 268 |
+| [generate_api_classification.py](generate_api_classification.py) | Generate or validate the Alpha public API classification reg | 0 | 2 | 152 |
 | [generate_api_manifest.py](generate_api_manifest.py) | Generate or validate the public API manifest for structural_ | 0 | 1 | 159 |
 | [generate_beam_tool_manifest.py](generate_beam_tool_manifest.py) | Generate and byte-check the catalogue-derived beam tool mani | 0 | 4 | 64 |
 | [generate_client_sdks.py](generate_client_sdks.py) | Generate client SDKs from FastAPI OpenAPI specification. | 0 | 6 | 560 |
@@ -94,7 +95,7 @@
 | [preflight.py](preflight.py) | Pre-flight check — catch common mistakes BEFORE they happen. | 0 | 9 | 203 |
 | [project_health.py](project_health.py) | Unified project health scanner with auto-fix capability. | 3 | 9 | 908 |
 | [prompt_router.py](prompt_router.py) | Prompt router — routes natural language queries to the best  | 1 | 5 | 700 |
-| [release.py](release.py) | Unified release management CLI. | 0 | 10 | 1776 |
+| [release.py](release.py) | Unified release management CLI. | 0 | 11 | 1879 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 355 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
 | [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2521 |

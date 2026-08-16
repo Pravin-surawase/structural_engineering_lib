@@ -1,7 +1,7 @@
 # Routers
 
 **Type:** Python Package
-**Last Updated:** 2026-08-16
+**Last Updated:** 2026-08-17
 **Files:** 25
 
 ## Public API
@@ -45,14 +45,14 @@
 | [footing.py](footing.py) | FastAPI transport for the bounded concentric isolated-footin | 0 | 1 | 69 |
 | [geometry.py](geometry.py) | 3D Geometry Router. | 0 | 5 | 653 |
 | [health.py](health.py) | Health Check Router. | 3 | 3 | 208 |
-| [imports.py](imports.py) | CSV Import Router. | 9 | 6 | 992 |
+| [imports.py](imports.py) | CSV Import Router. | 9 | 7 | 1047 |
 | [insights.py](insights.py) | Insights Router. | 12 | 4 | 579 |
 | [library_core.py](library_core.py) | Thin FastAPI consumers for the supported footing and slab li | 0 | 7 | 229 |
 | [optimization.py](optimization.py) | Cost Optimization Router. | 0 | 3 | 331 |
 | [rebar.py](rebar.py) | Rebar Validation and Application Router. | 7 | 2 | 269 |
 | [staircase.py](staircase.py) | FastAPI transport for the bounded straight-flight staircase  | 0 | 1 | 66 |
 | [strap_footing.py](strap_footing.py) | FastAPI transport for the bounded property-line strap-footin | 0 | 1 | 72 |
-| [streaming.py](streaming.py) | Server-Sent Events (SSE) Router for Batch Processing. | 3 | 3 | 351 |
+| [streaming.py](streaming.py) | Server-Sent Events (SSE) Router for Batch Processing. | 3 | 3 | 387 |
 | [wall.py](wall.py) | FastAPI transport for the bounded braced-wall service. | 0 | 1 | 117 |
 | [websocket.py](websocket.py) | WebSocket Router for Live Design Updates. | 3 | 3 | 428 |
 | [workflows.py](workflows.py) | Default-disabled transport for the one allowlisted beam work | 0 | 4 | 172 |

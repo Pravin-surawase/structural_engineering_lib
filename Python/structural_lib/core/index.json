@@ -2,14 +2,14 @@
   "folder": "Python/structural_lib/core",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-16",
-  "file_count": 18,
+  "last_updated": "2026-08-17",
+  "file_count": 20,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
       "size_lines": 42,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Core module - Code-agnostic base classes and utilities.",
       "content_hash": "8fde979e76f9"
     },
@@ -17,7 +17,7 @@
       "name": "base.py",
       "type": "python",
       "size_lines": 139,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Abstract base classes for design code implementations.",
       "classes": [
         {
@@ -66,7 +66,7 @@
       "name": "constants.py",
       "type": "python",
       "size_lines": 20,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       constants",
       "constants": [
         "PI",
@@ -81,7 +81,7 @@
       "name": "data_types.py",
       "type": "python",
       "size_lines": 2141,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       types",
       "classes": [
         {
@@ -156,7 +156,7 @@
       "name": "deprecation.py",
       "type": "python",
       "size_lines": 156,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       deprecation",
       "functions": [
         {
@@ -190,7 +190,7 @@
       "name": "error_messages.py",
       "type": "python",
       "size_lines": 496,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       error_messages",
       "functions": [
         {
@@ -356,7 +356,7 @@
       "name": "errors.py",
       "type": "python",
       "size_lines": 884,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       errors",
       "classes": [
         {
@@ -440,7 +440,7 @@
       "name": "geometry.py",
       "type": "python",
       "size_lines": 254,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Code-agnostic geometry definitions.",
       "classes": [
         {
@@ -514,7 +514,7 @@
       "name": "inputs.py",
       "type": "python",
       "size_lines": 635,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       inputs",
       "classes": [
         {
@@ -613,7 +613,7 @@
       "name": "logging_config.py",
       "type": "python",
       "size_lines": 66,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       logging_config",
       "functions": [
         {
@@ -634,7 +634,7 @@
       "name": "materials.py",
       "type": "python",
       "size_lines": 159,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Code-agnostic material models.",
       "classes": [
         {
@@ -668,7 +668,7 @@
       "name": "models.py",
       "type": "python",
       "size_lines": 531,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Canonical Data Models for Structural Engineering Library.",
       "classes": [
         {
@@ -749,7 +749,7 @@
       "name": "numerics.py",
       "type": "python",
       "size_lines": 78,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Numeric safety utilities for structural calculations.",
       "functions": [
         {
@@ -787,7 +787,7 @@
       "name": "registry.py",
       "type": "python",
       "size_lines": 98,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Design code registry for multi-code support.",
       "classes": [
         {
@@ -817,7 +817,7 @@
       "name": "result_base.py",
       "type": "python",
       "size_lines": 191,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       result_base",
       "classes": [
         {
@@ -846,10 +846,81 @@
       "content_hash": "50f611ae8929"
     },
     {
+      "name": "result_contract.py",
+      "type": "python",
+      "size_lines": 158,
+      "last_updated": "2026-08-17",
+      "description": "Shared, fail-closed structural result status contract.",
+      "classes": [
+        {
+          "name": "IntakeStatus",
+          "description": "Whether the complete calculation-bearing input was accepted."
+        },
+        {
+          "name": "CalculationStatus",
+          "description": "Whether a calculation was evaluated successfully."
+        },
+        {
+          "name": "EngineeringStatus",
+          "description": "Bounded engineering disposition; never a professional approval."
+        },
+        {
+          "name": "ReviewStatus",
+          "description": "Professional review boundary shared by every structural result."
+        },
+        {
+          "name": "OverallStatus",
+          "description": "Deterministic aggregate of the orthogonal status axes."
+        },
+        {
+          "name": "StructuralResultEnvelopeV1",
+          "description": "Versioned status envelope reusable across structural element results.",
+          "public_methods": [
+            "overall_status",
+            "to_dict"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "derive_overall_status",
+          "description": "Derive a fail-closed overall status from explicit orthogonal state.",
+          "params": [
+            "intake_status",
+            "calculation_status",
+            "engineering_status"
+          ]
+        },
+        {
+          "name": "adapt_legacy_result_status",
+          "description": "Translate explicit legacy axes while mapping every missing axis to HOLD.",
+          "params": [
+            "payload"
+          ]
+        }
+      ],
+      "constants": [
+        "RESULT_ENVELOPE_SCHEMA_VERSION"
+      ],
+      "content_hash": "7a2e108adabb"
+    },
+    {
+      "name": "source_identity.py",
+      "type": "python",
+      "size_lines": 13,
+      "last_updated": "2026-08-17",
+      "description": "Layer-neutral identities for the exact controlled IS 456 source artifacts.",
+      "constants": [
+        "IS456_CONSOLIDATED_SOURCE_ID",
+        "AMENDMENT_6_SOURCE_ID"
+      ],
+      "content_hash": "48b2cdc87146"
+    },
+    {
       "name": "types.py",
       "type": "python",
       "size_lines": 51,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Compatibility shim for the renamed data_types module.",
       "content_hash": "f6fe87009d8e"
     },
@@ -857,7 +928,7 @@
       "name": "utilities.py",
       "type": "python",
       "size_lines": 70,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       utilities",
       "functions": [
         {
@@ -900,7 +971,7 @@
       "name": "validation.py",
       "type": "python",
       "size_lines": 643,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Module:       validation",
       "functions": [
         {
@@ -1038,5 +1109,5 @@
     "LSection",
     "CodeRegistry"
   ],
-  "content_hash": "f115d83e178ea341"
+  "content_hash": "f6cd370ee6e566ac"
 }

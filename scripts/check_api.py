@@ -15,6 +15,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 import warnings
@@ -293,45 +294,54 @@ API_SYMBOL_RE = re.compile(r"\bapi\.[A-Za-z_][A-Za-z0-9_]*")
 
 def _extract_symbols(path: Path) -> set[str]:
     symbols = set(API_SYMBOL_RE.findall(path.read_text(encoding="utf-8")))
-    return {symbol for symbol in symbols if symbol != "api.py"}
+    return {symbol for symbol in symbols if symbol not in {"api.py", "api.md"}}
 
 
 def check_sync() -> int:
-    """Validate api.md and api-stability.md symbol parity."""
+    """Validate documented compatibility symbols against the registry."""
     api_doc = REPO_ROOT / "docs/reference/api.md"
     stability_doc = REPO_ROOT / "docs/reference/api-stability.md"
-    if not api_doc.exists() or not stability_doc.exists():
-        print("ERROR: api.md or api-stability.md not found")
+    registry_path = REPO_ROOT / "docs/reference/api-classification.json"
+    if not api_doc.exists() or not stability_doc.exists() or not registry_path.exists():
+        print("ERROR: API docs or classification registry not found")
         return 1
 
-    api_text = api_doc.read_text(encoding="utf-8")
+    stability_text = stability_doc.read_text(encoding="utf-8")
+    if "api-classification.json" not in stability_text:
+        print("ERROR: api-stability.md does not bind the classification registry")
+        return 1
+
     api_symbols = _extract_symbols(api_doc)
-    stability_symbols = _extract_symbols(stability_doc)
-    if not stability_symbols:
-        print("ERROR: No api.* symbols found in api-stability.md")
+    try:
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"ERROR: Cannot load API classification registry: {exc}")
+        return 1
+    surfaces = registry.get("surfaces")
+    compatibility = next(
+        (
+            surface
+            for surface in surfaces or []
+            if surface.get("module") == "structural_lib.api"
+        ),
+        None,
+    )
+    if not isinstance(compatibility, dict):
+        print("ERROR: structural_lib.api classification surface is missing")
+        return 1
+    classified = {
+        f"api.{symbol['name']}"
+        for symbol in compatibility.get("symbols", [])
+        if isinstance(symbol, dict) and isinstance(symbol.get("name"), str)
+    }
+    unclassified = sorted(api_symbols - classified)
+    if unclassified:
+        print("ERROR: api.md symbols missing from API classification registry:")
+        for symbol in unclassified:
+            print(f"  - {symbol}")
         return 1
 
-    missing_in_api = []
-    for symbol in sorted(stability_symbols):
-        name = symbol.split(".", 1)[1]
-        if symbol not in api_text and not re.search(
-            rf"\b{re.escape(name)}\b", api_text
-        ):
-            missing_in_api.append(symbol)
-    missing_in_stability = sorted(api_symbols - stability_symbols)
-
-    if missing_in_api or missing_in_stability:
-        if missing_in_api:
-            print("ERROR: Symbols in api-stability.md missing from api.md:")
-            for symbol in missing_in_api:
-                print(f"  - {symbol}")
-        if missing_in_stability:
-            print("ERROR: Symbols in api.md missing from api-stability.md:")
-            for symbol in missing_in_stability:
-                print(f"  - {symbol}")
-        return 1
-
-    print("✅ api.md ↔ api-stability.md symbols in sync")
+    print("✅ api.md symbols are bound to api-classification.json")
     return 0
 
 

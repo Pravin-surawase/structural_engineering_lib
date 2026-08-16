@@ -374,14 +374,23 @@ class EvidenceEnvelopeResponse(BaseModel):
     artifact_schema: str
     artifact_schema_version: str
     library_version: str
+    library_content_identity: str
     code_edition: str
     code_amendment_identity: str
+    amendment_applicability: str
+    amendment_applicability_review_id: str | None
+    controlled_source_ids: list[str]
+    controlled_source_basis_hash: str
     capability_id: str
     support_status: Literal["SUPPORTED", "HELD"]
     unit_system: str
     explicit_units: dict[str, str]
     normalized_input_hash: str
+    provenance_hash: str
+    source_metadata: dict[str, Any]
     calculation_identity: str
+    replay_receipt: dict[str, Any]
+    replay_receipt_hash: str
     governing_check: str
     exact_utilization: float | None
     margin: float | None

@@ -3,12 +3,15 @@
 **Task:** LIB-PRO-002
 **Type:** Decision
 **Audience:** Maintainers
-**Status:** In Progress
+**Status:** Cumulative A-G Candidate; Acceptance Pending Gates
 **Created:** 2026-08-17
 **Last Updated:** 2026-08-17
 **Importance:** Critical
 **Prepared:** 2026-08-17
-**Source base:** `origin/main` at `904a2f8cf0ea5d4595f57c46dac06e2e837bba45`
+**Planning source base:** `origin/main` at `904a2f8cf0ea5d4595f57c46dac06e2e837bba45`
+**Cumulative implementation base:** `origin/main` at
+`3986935ecb473c1f9d56dec44aeb4218d9192f84` after Packet A merged through
+PR #814
 **Scope:** Public/project input, import accounting, orchestration, result truth,
 API classification, evidence identity, documentation, and release gates
 **Source bound:** `true`
@@ -302,6 +305,9 @@ remains held.
 
 ### A — Strict service intake (`LIB-PRO-002-A`, M)
 
+**Candidate state:** merged through PR #814; included in the cumulative A-G
+acceptance boundary.
+
 **Depends on:** G0.
 **Owns:** new project input/result types, `services/batch.py`, focused service
 tests.
@@ -314,6 +320,9 @@ blocked inputs never call the core; valid pilot beam remains numerically equal.
 **Rollback:** revert one packet; no transport migration occurs in A.
 
 ### B — Lossless import boundary (`LIB-PRO-002-B`, L)
+
+**Candidate state:** integrated in the cumulative A-G candidate; cumulative
+gates and exact-head review remain.
 
 **Depends on:** A.
 **Owns:** import models, adapter selection, adapter parsers, matching/accounting,
@@ -329,6 +338,9 @@ packet rather than restoring implicit first-match behavior.
 
 ### C — Transport and client convergence (`LIB-PRO-002-C`, L)
 
+**Candidate state:** integrated in the cumulative A-G candidate; cumulative
+gates and exact-head review remain.
+
 **Depends on:** A and B.
 **Owns:** streaming/import batch endpoints, OpenAPI, React batch hook, focused
 FastAPI/React tests.
@@ -342,6 +354,9 @@ issue codes, and engineering outcome through service, HTTP, SSE, and React.
 normalization to keep an endpoint alive.
 
 ### D — Cross-element result and review truth (`LIB-PRO-002-D`, M)
+
+**Candidate state:** integrated in the cumulative A-G candidate; cumulative
+gates and exact-head review remain.
 
 **Depends on:** A. May be developed after A while B is under independent
 review, provided owned files do not overlap.
@@ -358,6 +373,9 @@ field names, but missing status always maps to HOLD—not PASS.
 
 ### E — Evidence and assumption identity (`LIB-PRO-002-E`, M)
 
+**Candidate state:** integrated in the cumulative A-G candidate; cumulative
+gates and exact-head review remain.
+
 **Depends on:** A, B, and D.
 **Owns:** evidence envelopes, project provenance models, controlled-source
 identity links, focused replay tests.
@@ -371,6 +389,9 @@ amendment state remains UNKNOWN/HOLD.
 
 ### F — Public API and documentation truth (`LIB-PRO-002-F`, M)
 
+**Candidate state:** integrated in the cumulative A-G candidate; cumulative
+gates and exact-head review remain.
+
 **Depends on:** A and D; can inventory in read-only mode earlier.
 **Owns:** API classification registry/generator, API reference docs, README
 version/examples, discovery tests.
@@ -383,6 +404,9 @@ leakage; docs version matches candidate; examples share the canonical schema.
 documentation portions close.
 
 ### G — Exact-wheel negative UAT and publication policy (`LIB-PRO-002-G`, L)
+
+**Candidate state:** integrated in the cumulative A-G candidate; exact-wheel,
+cumulative, hosted, and immutable-review acceptance remain.
 
 **Depends on:** A through F.
 **Owns:** release preflight, publish workflow, source-free example runner,
@@ -401,6 +425,9 @@ boundary.
 candidate pass.
 
 ### H — Whole-building workflow decision (`LIB-PRO-002-H`, planning only, L)
+
+**State:** not activated. Completing A-G does not activate this packet or
+authorize whole-building implementation.
 
 **Depends on:** G and separate owner activation.
 **Owns:** a new source-backed plan—not calculation code.
@@ -470,7 +497,7 @@ Potential enhancements such as interactive mapping previews, richer import
 diagnostics, or additional adapters enter the backlog only after the canonical
 ledger and blocking rules are accepted.
 
-## 11. G0 acceptance record and exact next step
+## 11. Cumulative candidate record and exact next step
 
 G0 has now frozen:
 
@@ -480,13 +507,20 @@ G0 has now frozen:
 - Alpha/stable/whole-building release boundaries;
 - an eight-packet dependency order and cumulative test cadence.
 
-The exact next implementation packet is `LIB-PRO-002-A`: strict service intake.
-It starts only in a fresh source-bound lane from the then-fetched `origin/main`.
-Its first change is the table-driven Section 7 service contract plus a
-calculation-call spy; behavior then changes until those tests pass. It must not
-edit import adapters, FastAPI/React transports, release automation, or generated
-indexes except in its own final closeout.
+Packet A merged through PR #814. Packets B-G are now integrated as one
+cumulative candidate in a single isolated writer lane based on that merge.
+The next action is to freeze its task/session/handoff evidence, run the Section
+7 exact-wheel matrix and the cumulative local gates, then obtain immutable
+exact-head review and required hosted checks. Any outcome-changing failure
+repairs the same cumulative candidate; it does not weaken the contract or split
+acceptance into undocumented partial states.
 
-Until Packet G is accepted, the release state is:
+Packet H remains inactive because the owner has not separately activated a
+whole-building planning program. Even after A-G acceptance, publication remains
+blocked until the owner separately authorizes the exact future version, tag,
+and publication targets recorded by
+`docs/verification/release-publication-authorization.json`.
 
-`NEXT_PUBLICATION = HOLD_INPUT_AND_RELEASE_TRUTH`
+While the cumulative candidate is under acceptance, the release state is:
+
+`NEXT_PUBLICATION = HOLD_CUMULATIVE_ACCEPTANCE_AND_OWNER_AUTHORIZATION`

@@ -205,6 +205,46 @@ class TestBumpVersionPatternMatch:
 # ─── release.py ──────────────────────────────────────────────────────────────
 
 
+def test_release_publication_authorization_holds_by_default() -> None:
+    errors = release._release_publication_authorization_errors(
+        "0.23.1a1",
+        "pypi",
+    )
+
+    assert "release publication decision is HOLD, not AUTHORIZED" in errors
+
+
+def test_release_publication_authorization_binds_version_tag_and_target(
+    tmp_path: Path,
+) -> None:
+    record = tmp_path / "authorization.json"
+    record.write_text(
+        json.dumps(
+            {
+                "schema_version": "release-publication-authorization/v1",
+                "decision": "AUTHORIZED",
+                "version": "0.24.0a1",
+                "tag": "v0.24.0a1",
+                "authorized_targets": ["pypi", "github-release"],
+                "authorized_by": "repository-owner",
+                "authorized_at_utc": "2026-08-17T00:00:00Z",
+                "exact_candidate_review_receipt": "review-receipt-sha256",
+                "qualified_structural_engineering_review": False,
+                "professional_approval": False,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    assert (
+        release._release_publication_authorization_errors("0.24.0a1", "pypi", record)
+        == []
+    )
+    assert release._release_publication_authorization_errors(
+        "0.24.0a1", "testpypi", record
+    ) == ["release authorization does not include target 'testpypi'"]
+
+
 class TestReleaseHelp:
     """Tests for help output."""
 
@@ -443,7 +483,10 @@ class TestPublishWorkflow:
         assert "python ../scripts/release.py footing-inclusion-check" in workflow
         assert '"footing_release_inclusion_gate_passed": True' in workflow
         assert "FOOT-ISO-RC-V1-RELEASE-INCLUSION" in workflow
-        assert "footing_api.design_concentric_isolated_footing_is456" in workflow
+        assert "-m structural_lib.release_uat" in workflow
+        assert "authorization-check" in workflow
+        assert "release-publication-authorization.json" in workflow
+        assert '"professional_approval": False' in workflow
 
     def test_alpha_ordering_preserves_legacy_release_history(self):
         assert release._release_version_key("0.24.0a1") > release._release_version_key(

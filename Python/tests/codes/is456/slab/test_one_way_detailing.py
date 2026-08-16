@@ -75,6 +75,11 @@ def test_independent_benchmark_checks_provided_reinforcement_and_review_boundary
         result.review_requirement
         is OneWaySlabReviewRequirement.QUALIFIED_REVIEW_REQUIRED
     )
+    assert result.qualified_review_required is True
+    assert (
+        result.serviceability_escalation == "QUALIFIED_SERVICEABILITY_REVIEW_REQUIRED"
+    )
+    assert result.result_envelope.overall_status.value == "HOLD"
     assert all(check.passed for check in result.governing_checks)
 
 
@@ -96,8 +101,11 @@ def test_basic_span_to_depth_boundary_at_twenty_is_satisfied() -> None:
     )
     assert (
         result.review_requirement
-        is OneWaySlabReviewRequirement.NO_QUALIFIED_REVIEW_REQUIRED
+        is OneWaySlabReviewRequirement.QUALIFIED_REVIEW_REQUIRED
     )
+    assert result.qualified_review_required is True
+    assert result.serviceability_escalation is None
+    assert result.result_envelope.overall_status.value == "PASS"
 
 
 @pytest.mark.parametrize(

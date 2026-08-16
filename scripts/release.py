@@ -48,10 +48,17 @@ PUBLIC_DISTRIBUTION_PERMISSION = (
 FOOTING_RELEASE_INCLUSION = (
     REPO_ROOT / "docs" / "verification" / "footing-release-inclusion.json"
 )
+RELEASE_PUBLICATION_AUTHORIZATION = (
+    REPO_ROOT / "docs" / "verification" / "release-publication-authorization.json"
+)
 PYPROJECT = REPO_ROOT / "Python" / "pyproject.toml"
 FASTAPI_INIT = REPO_ROOT / "fastapi_app" / "__init__.py"
 REACT_PACKAGE = REPO_ROOT / "react_app" / "package.json"
 CITATION = REPO_ROOT / "CITATION.cff"
+ROOT_README = REPO_ROOT / "README.md"
+PYTHON_README = REPO_ROOT / "Python" / "README.md"
+API_STABILITY = REPO_ROOT / "docs" / "reference" / "api-stability.md"
+PYTHON_QUICKSTART = REPO_ROOT / "docs" / "getting-started" / "python-quickstart.md"
 ALPHA_VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)a(\d+)$")
 LEGACY_STABLE_VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 VERSION_RE = re.compile(r"^##\s*\[?v?(\d+\.\d+\.\d+(?:a\d+)?)\b")
@@ -160,6 +167,65 @@ def cmd_permission_check(args: argparse.Namespace) -> int:
     )
     print("  ✓ Protected source content remains excluded")
     print("  ✓ Per-release tag/publication authorization remains required")
+    return 0
+
+
+def _release_publication_authorization_errors(
+    version: str,
+    target: str,
+    path: Path | None = None,
+) -> list[str]:
+    """Fail closed until the owner authorizes the exact Alpha publication."""
+
+    path = path or RELEASE_PUBLICATION_AUTHORIZATION
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except OSError as exc:
+        return [f"release publication authorization unavailable: {exc}"]
+    except json.JSONDecodeError as exc:
+        return [f"release publication authorization is invalid JSON: {exc}"]
+
+    errors: list[str] = []
+    if data.get("schema_version") != "release-publication-authorization/v1":
+        errors.append("release authorization schema_version is invalid")
+    if data.get("decision") != "AUTHORIZED":
+        errors.append("release publication decision is HOLD, not AUTHORIZED")
+    if data.get("version") != version:
+        errors.append(
+            f"release authorization version={data.get('version')!r}, expected {version!r}"
+        )
+    if data.get("tag") != f"v{version}":
+        errors.append(
+            f"release authorization tag={data.get('tag')!r}, expected 'v{version}'"
+        )
+    targets = data.get("authorized_targets")
+    if not isinstance(targets, list) or target not in targets:
+        errors.append(f"release authorization does not include target {target!r}")
+    if not data.get("authorized_by"):
+        errors.append("release authorization must name the authorizing owner")
+    if not data.get("authorized_at_utc"):
+        errors.append("release authorization must record authorized_at_utc")
+    if not data.get("exact_candidate_review_receipt"):
+        errors.append(
+            "release authorization must bind an exact candidate review receipt"
+        )
+    if data.get("professional_approval") is not False:
+        errors.append(
+            "Alpha publication authorization must not imply professional approval"
+        )
+    return errors
+
+
+def cmd_authorization_check(args: argparse.Namespace) -> int:
+    """Enforce the separate owner authorization stop for publication."""
+
+    version = args.version or _version_from_pyproject()
+    errors = _release_publication_authorization_errors(version, args.target)
+    if errors:
+        _print_version_errors(errors)
+        return 1
+    print(f"  ✓ Owner authorized v{version} publication target {args.target}")
+    print("  ✓ Authorization does not imply professional approval")
     return 0
 
 
@@ -287,6 +353,15 @@ def _version_from_cff(path: Path | None = None) -> str:
     return match.group(1)
 
 
+def _version_from_doc(path: Path, pattern: str) -> str:
+    match = re.search(pattern, path.read_text(encoding="utf-8"), re.MULTILINE)
+    if not match:
+        raise ValueError(
+            f"current version is missing from {path.relative_to(REPO_ROOT)}"
+        )
+    return match.group(1)
+
+
 def _latest_documented_version(path: Path) -> str:
     versions = _parse_versions(path)
     if not versions:
@@ -320,6 +395,22 @@ def _source_surface_version_errors(
                 json.loads(REACT_PACKAGE.read_text(encoding="utf-8"))["version"]
             ),
             "CITATION.cff": _version_from_cff(),
+            "README.md": _version_from_doc(
+                ROOT_README,
+                r"^> \*\*v(\d+\.\d+\.\d+(?:a\d+)?) is an Alpha development preview\.",
+            ),
+            "Python/README.md": _version_from_doc(
+                PYTHON_README,
+                r"^\*\*Version:\*\* (\d+\.\d+\.\d+(?:a\d+)?)",
+            ),
+            "docs/reference/api-stability.md": _version_from_doc(
+                API_STABILITY,
+                r"^\*\*Version:\*\* (\d+\.\d+\.\d+(?:a\d+)?)",
+            ),
+            "docs/getting-started/python-quickstart.md": _version_from_doc(
+                PYTHON_QUICKSTART,
+                r"structural-lib-is456===(\d+\.\d+\.\d+(?:a\d+)?)",
+            ),
             "CHANGELOG.md": _latest_documented_version(CHANGELOG),
             "docs/getting-started/releases.md": _latest_documented_version(RELEASES),
         }
@@ -1721,6 +1812,17 @@ def build_parser() -> argparse.ArgumentParser:
         help="Validate complete FOOT-ISO-RC-V1 release inclusion",
     )
 
+    p_authorization = sub.add_parser(
+        "authorization-check",
+        help="Require separate owner authorization for an exact publication",
+    )
+    p_authorization.add_argument("--version", help="Exact package version")
+    p_authorization.add_argument(
+        "--target",
+        required=True,
+        choices=["testpypi", "pypi", "github-release"],
+    )
+
     # preflight
     p_preflight = sub.add_parser("preflight", help="Run pre-release validation checks")
     p_preflight.add_argument("version", nargs="?", help="Target version to validate")
@@ -1764,6 +1866,7 @@ def main() -> int:
         "checklist": cmd_checklist,
         "permission-check": cmd_permission_check,
         "footing-inclusion-check": cmd_footing_inclusion_check,
+        "authorization-check": cmd_authorization_check,
         "preflight": cmd_preflight,
         "candidate-check": cmd_candidate_check,
     }

@@ -6,15 +6,16 @@ from structural_lib.core.types import (
     ShearResult,
     SupportCondition,
 )
+from structural_lib.services import common_api
 
 
 def test_api_get_library_version_package_not_found(monkeypatch):
     """Test fallback version when package metadata is unavailable."""
 
     def _raise(_name: str):
-        raise api.PackageNotFoundError
+        raise common_api.PackageNotFoundError
 
-    monkeypatch.setattr(api, "version", _raise)
+    monkeypatch.setattr(common_api, "version", _raise)
     # Should return a valid semver string (don't hardcode specific version)
     result = api.get_library_version()
     assert isinstance(result, str)

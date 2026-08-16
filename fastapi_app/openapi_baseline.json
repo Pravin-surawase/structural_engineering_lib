@@ -194,58 +194,6 @@
         "title": "APIResponse[BarAreasResponse]",
         "type": "object"
       },
-      "APIResponse_BatchDesignResponse_": {
-        "example": {
-          "data": {
-            "Ast_mm2": 603.2
-          },
-          "success": true
-        },
-        "properties": {
-          "clause_refs": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "string"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Clause Refs"
-          },
-          "data": {
-            "$ref": "#/components/schemas/BatchDesignResponse"
-          },
-          "error": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "additionalProperties": true,
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Error"
-          },
-          "success": {
-            "default": true,
-            "title": "Success",
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "data"
-        ],
-        "title": "APIResponse[BatchDesignResponse]",
-        "type": "object"
-      },
       "APIResponse_BeamCheckResponse_": {
         "example": {
           "data": {
@@ -3522,6 +3470,60 @@
         "title": "APIResponse[WorkflowValidationResponse]",
         "type": "object"
       },
+      "APIResponse_dict_str__Any__": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "additionalProperties": true,
+            "title": "Data",
+            "type": "object"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[dict[str, Any]]",
+        "type": "object"
+      },
       "AdditionalMomentRequest": {
         "description": "Request for additional moment calculation per IS 456 Cl 39.7.1.",
         "properties": {
@@ -4212,113 +4214,6 @@
         "title": "BatchBeamRow",
         "type": "object"
       },
-      "BatchDesignResponse": {
-        "description": "Response from batch design endpoint.",
-        "properties": {
-          "failed": {
-            "title": "Failed",
-            "type": "integer"
-          },
-          "message": {
-            "title": "Message",
-            "type": "string"
-          },
-          "passed": {
-            "title": "Passed",
-            "type": "integer"
-          },
-          "results": {
-            "items": {
-              "$ref": "#/components/schemas/BatchDesignResult"
-            },
-            "title": "Results",
-            "type": "array"
-          },
-          "success": {
-            "title": "Success",
-            "type": "boolean"
-          },
-          "total": {
-            "title": "Total",
-            "type": "integer"
-          }
-        },
-        "required": [
-          "success",
-          "message",
-          "total",
-          "passed",
-          "failed",
-          "results"
-        ],
-        "title": "BatchDesignResponse",
-        "type": "object"
-      },
-      "BatchDesignResult": {
-        "description": "Result for a single beam in batch design.",
-        "properties": {
-          "asc_required": {
-            "default": 0.0,
-            "title": "Asc Required",
-            "type": "number"
-          },
-          "ast_required": {
-            "default": 0.0,
-            "title": "Ast Required",
-            "type": "number"
-          },
-          "beam_id": {
-            "title": "Beam Id",
-            "type": "string"
-          },
-          "error": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Error"
-          },
-          "evidence": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/EvidenceEnvelopeResponse"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "is_safe": {
-            "default": false,
-            "title": "Is Safe",
-            "type": "boolean"
-          },
-          "stirrup_spacing": {
-            "default": 0.0,
-            "title": "Stirrup Spacing",
-            "type": "number"
-          },
-          "success": {
-            "title": "Success",
-            "type": "boolean"
-          },
-          "utilization_ratio": {
-            "default": 0.0,
-            "title": "Utilization Ratio",
-            "type": "number"
-          }
-        },
-        "required": [
-          "beam_id",
-          "success"
-        ],
-        "title": "BatchDesignResult",
-        "type": "object"
-      },
       "BatchExportRequest": {
         "description": "Request for building-level export.",
         "properties": {
@@ -4351,12 +4246,20 @@
       "BatchJobProgress": {
         "description": "Completed and total item counts for one batch job.",
         "properties": {
+          "blocked": {
+            "title": "Blocked",
+            "type": "integer"
+          },
           "completed": {
             "title": "Completed",
             "type": "integer"
           },
           "failed": {
             "title": "Failed",
+            "type": "integer"
+          },
+          "held": {
+            "title": "Held",
             "type": "integer"
           },
           "passed": {
@@ -4377,6 +4280,8 @@
           "total",
           "passed",
           "failed",
+          "held",
+          "blocked",
           "percent"
         ],
         "title": "BatchJobProgress",
@@ -5661,7 +5566,6 @@
         "description": "Individual beam data from CSV import.",
         "properties": {
           "cover_mm": {
-            "default": 40.0,
             "description": "Clear cover in mm",
             "title": "Cover Mm",
             "type": "number"
@@ -5672,13 +5576,11 @@
             "type": "number"
           },
           "fck_mpa": {
-            "default": 25.0,
             "description": "Concrete strength in N/mm\u00b2",
             "title": "Fck Mpa",
             "type": "number"
           },
           "fy_mpa": {
-            "default": 500.0,
             "description": "Steel strength in N/mm\u00b2",
             "title": "Fy Mpa",
             "type": "number"
@@ -5690,7 +5592,6 @@
             "type": "string"
           },
           "mu_knm": {
-            "default": 0.0,
             "description": "Design moment in kN\u00b7m",
             "title": "Mu Knm",
             "type": "number"
@@ -5708,8 +5609,19 @@
             "description": "Stable source-system identity, such as ETABS UniqueName; import responses always populate it",
             "title": "Source Id"
           },
+          "source_metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Metadata"
+          },
           "span_mm": {
-            "default": 5000.0,
             "description": "Span length in mm",
             "title": "Span Mm",
             "type": "number"
@@ -5728,7 +5640,6 @@
             "title": "Story"
           },
           "vu_kn": {
-            "default": 0.0,
             "description": "Design shear in kN",
             "title": "Vu Kn",
             "type": "number"
@@ -5742,7 +5653,13 @@
         "required": [
           "id",
           "width_mm",
-          "depth_mm"
+          "depth_mm",
+          "span_mm",
+          "mu_knm",
+          "vu_kn",
+          "fck_mpa",
+          "fy_mpa",
+          "cover_mm"
         ],
         "title": "BeamRow",
         "type": "object"
@@ -5751,7 +5668,6 @@
         "description": "Beam data with 3D positioning for visualization.",
         "properties": {
           "cover_mm": {
-            "default": 40.0,
             "description": "Clear cover in mm",
             "title": "Cover Mm",
             "type": "number"
@@ -5762,13 +5678,11 @@
             "type": "number"
           },
           "fck_mpa": {
-            "default": 25.0,
             "description": "Concrete strength in N/mm\u00b2",
             "title": "Fck Mpa",
             "type": "number"
           },
           "fy_mpa": {
-            "default": 500.0,
             "description": "Steel strength in N/mm\u00b2",
             "title": "Fy Mpa",
             "type": "number"
@@ -5780,7 +5694,6 @@
             "type": "string"
           },
           "mu_knm": {
-            "default": 0.0,
             "description": "Design moment in kN\u00b7m",
             "title": "Mu Knm",
             "type": "number"
@@ -5806,8 +5719,19 @@
             "description": "Stable source-system identity, such as ETABS UniqueName; import responses always populate it",
             "title": "Source Id"
           },
+          "source_metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Metadata"
+          },
           "span_mm": {
-            "default": 5000.0,
             "description": "Span length in mm",
             "title": "Span Mm",
             "type": "number"
@@ -5826,7 +5750,6 @@
             "title": "Story"
           },
           "vu_kn": {
-            "default": 0.0,
             "description": "Design shear in kN",
             "title": "Vu Kn",
             "type": "number"
@@ -5840,7 +5763,13 @@
         "required": [
           "id",
           "width_mm",
-          "depth_mm"
+          "depth_mm",
+          "span_mm",
+          "mu_knm",
+          "vu_kn",
+          "fck_mpa",
+          "fy_mpa",
+          "cover_mm"
         ],
         "title": "BeamWith3D",
         "type": "object"
@@ -6083,37 +6012,97 @@
       },
       "Body_import_csv_api_v1_import_csv_post": {
         "properties": {
+          "cover_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Cover Mm",
+            "type": "number"
+          },
+          "fck_mpa": {
+            "exclusiveMinimum": 0.0,
+            "title": "Fck Mpa",
+            "type": "number"
+          },
           "file": {
             "contentMediaType": "application/octet-stream",
             "description": "CSV file to import",
             "title": "File",
             "type": "string"
+          },
+          "fy_mpa": {
+            "exclusiveMinimum": 0.0,
+            "title": "Fy Mpa",
+            "type": "number"
+          },
+          "stirrup_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Stirrup Diameter Mm",
+            "type": "integer"
+          },
+          "tension_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Tension Bar Diameter Mm",
+            "type": "number"
           }
         },
         "required": [
-          "file"
+          "file",
+          "fck_mpa",
+          "fy_mpa",
+          "cover_mm",
+          "stirrup_diameter_mm",
+          "tension_bar_diameter_mm"
         ],
         "title": "Body_import_csv_api_v1_import_csv_post",
         "type": "object"
       },
       "Body_import_dual_csv_api_v1_import_dual_csv_post": {
         "properties": {
+          "cover_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Cover Mm",
+            "type": "number"
+          },
+          "fck_mpa": {
+            "exclusiveMinimum": 0.0,
+            "title": "Fck Mpa",
+            "type": "number"
+          },
           "forces_file": {
             "contentMediaType": "application/octet-stream",
             "description": "Forces CSV file",
             "title": "Forces File",
             "type": "string"
           },
+          "fy_mpa": {
+            "exclusiveMinimum": 0.0,
+            "title": "Fy Mpa",
+            "type": "number"
+          },
           "geometry_file": {
             "contentMediaType": "application/octet-stream",
             "description": "Geometry CSV file",
             "title": "Geometry File",
             "type": "string"
+          },
+          "stirrup_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Stirrup Diameter Mm",
+            "type": "integer"
+          },
+          "tension_bar_diameter_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Tension Bar Diameter Mm",
+            "type": "number"
           }
         },
         "required": [
           "geometry_file",
-          "forces_file"
+          "forces_file",
+          "fck_mpa",
+          "fy_mpa",
+          "cover_mm",
+          "stirrup_diameter_mm",
+          "tension_bar_diameter_mm"
         ],
         "title": "Body_import_dual_csv_api_v1_import_dual_csv_post",
         "type": "object"
@@ -7109,9 +7098,22 @@
             "title": "Format Detected",
             "type": "string"
           },
+          "issues": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
           "message": {
             "title": "Message",
             "type": "string"
+          },
+          "normalization_ledger": {
+            "additionalProperties": true,
+            "title": "Normalization Ledger",
+            "type": "object"
           },
           "success": {
             "title": "Success",
@@ -7130,7 +7132,8 @@
           "message",
           "beam_count",
           "beams",
-          "format_detected"
+          "format_detected",
+          "normalization_ledger"
         ],
         "title": "CSVImportResponse",
         "type": "object"
@@ -7901,7 +7904,6 @@
             "type": "string"
           },
           "fck": {
-            "default": 25.0,
             "description": "Concrete strength (N/mm\u00b2)",
             "examples": [
               25.0
@@ -7912,7 +7914,6 @@
             "type": "number"
           },
           "fy": {
-            "default": 415.0,
             "description": "Steel yield strength (N/mm\u00b2)",
             "examples": [
               415.0
@@ -7953,6 +7954,8 @@
           "b_mm",
           "D_mm",
           "l_mm",
+          "fck",
+          "fy",
           "Asc_mm2"
         ],
         "title": "ColumnDesignRequest",
@@ -8071,6 +8074,21 @@
             "title": "Le Y Mm",
             "type": "number"
           },
+          "qualified_review_required": {
+            "const": true,
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "result_envelope": {
+            "additionalProperties": true,
+            "title": "Result Envelope",
+            "type": "object"
+          },
+          "review_status": {
+            "const": "QUALIFIED_REVIEW_REQUIRED",
+            "title": "Review Status",
+            "type": "string"
+          },
           "slenderness_x": {
             "title": "Slenderness X",
             "type": "number"
@@ -8107,7 +8125,10 @@
           "Muy_min_kNm",
           "governing_check",
           "checks",
-          "clause_refs"
+          "clause_refs",
+          "result_envelope",
+          "review_status",
+          "qualified_review_required"
         ],
         "title": "ColumnDesignResponse",
         "type": "object"
@@ -10709,6 +10730,15 @@
             "title": "Allowable Soil Pressure Kpa",
             "type": "number"
           },
+          "allowable_soil_pressure_origin": {
+            "enum": [
+              "provided",
+              "assumed",
+              "verified"
+            ],
+            "title": "Allowable Soil Pressure Origin",
+            "type": "string"
+          },
           "allowable_soil_pressure_source_reference": {
             "minLength": 1,
             "title": "Allowable Soil Pressure Source Reference",
@@ -10809,6 +10839,15 @@
             "const": true,
             "title": "Effective Supporting Area Is Approved",
             "type": "boolean"
+          },
+          "effective_supporting_area_origin": {
+            "enum": [
+              "provided",
+              "assumed",
+              "verified"
+            ],
+            "title": "Effective Supporting Area Origin",
+            "type": "string"
           },
           "factored_axial_load_kN": {
             "exclusiveMinimum": 0.0,
@@ -10915,6 +10954,15 @@
             "title": "Service Load Combination Id",
             "type": "string"
           },
+          "service_load_origin": {
+            "enum": [
+              "provided",
+              "assumed",
+              "verified"
+            ],
+            "title": "Service Load Origin",
+            "type": "string"
+          },
           "steel_fy_nmm2": {
             "exclusiveMinimum": 0.0,
             "title": "Steel Fy Nmm2",
@@ -10946,10 +10994,12 @@
           "service_axial_load_kN",
           "service_load_combination_id",
           "service_load_basis",
+          "service_load_origin",
           "factored_axial_load_kN",
           "factored_load_combination_id",
           "allowable_soil_pressure_kPa",
           "allowable_soil_pressure_source_reference",
+          "allowable_soil_pressure_origin",
           "allowable_soil_pressure_is_externally_approved",
           "footing_type",
           "column_L_mm",
@@ -10964,6 +11014,7 @@
           "steel_fy_nmm2",
           "effective_supporting_area_A1_mm2",
           "effective_supporting_area_basis",
+          "effective_supporting_area_origin",
           "effective_supporting_area_is_approved",
           "dowel_count",
           "dowel_diameter_mm",
@@ -13037,9 +13088,22 @@
             "title": "Format Detected",
             "type": "string"
           },
+          "issues": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Issues",
+            "type": "array"
+          },
           "message": {
             "title": "Message",
             "type": "string"
+          },
+          "normalization_ledger": {
+            "additionalProperties": true,
+            "title": "Normalization Ledger",
+            "type": "object"
           },
           "success": {
             "title": "Success",
@@ -13072,7 +13136,8 @@
           "message",
           "beam_count",
           "beams",
-          "format_detected"
+          "format_detected",
+          "normalization_ledger"
         ],
         "title": "DualCSVImportResponse",
         "type": "object"
@@ -13445,6 +13510,21 @@
       "EvidenceEnvelopeResponse": {
         "description": "Traceable identity metadata, not a professional approval certificate.",
         "properties": {
+          "amendment_applicability": {
+            "title": "Amendment Applicability",
+            "type": "string"
+          },
+          "amendment_applicability_review_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amendment Applicability Review Id"
+          },
           "artifact_schema": {
             "title": "Artifact Schema",
             "type": "string"
@@ -13468,6 +13548,17 @@
           "code_edition": {
             "title": "Code Edition",
             "type": "string"
+          },
+          "controlled_source_basis_hash": {
+            "title": "Controlled Source Basis Hash",
+            "type": "string"
+          },
+          "controlled_source_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Controlled Source Ids",
+            "type": "array"
           },
           "exact_utilization": {
             "anyOf": [
@@ -13495,6 +13586,10 @@
             "title": "Governing Check",
             "type": "string"
           },
+          "library_content_identity": {
+            "title": "Library Content Identity",
+            "type": "string"
+          },
           "library_version": {
             "title": "Library Version",
             "type": "string"
@@ -13514,6 +13609,10 @@
             "title": "Normalized Input Hash",
             "type": "string"
           },
+          "provenance_hash": {
+            "title": "Provenance Hash",
+            "type": "string"
+          },
           "qualified_review_required": {
             "title": "Qualified Review Required",
             "type": "boolean"
@@ -13521,6 +13620,20 @@
           "qualified_review_requirement": {
             "title": "Qualified Review Requirement",
             "type": "string"
+          },
+          "replay_receipt": {
+            "additionalProperties": true,
+            "title": "Replay Receipt",
+            "type": "object"
+          },
+          "replay_receipt_hash": {
+            "title": "Replay Receipt Hash",
+            "type": "string"
+          },
+          "source_metadata": {
+            "additionalProperties": true,
+            "title": "Source Metadata",
+            "type": "object"
           },
           "status": {
             "enum": [
@@ -13548,14 +13661,23 @@
           "artifact_schema",
           "artifact_schema_version",
           "library_version",
+          "library_content_identity",
           "code_edition",
           "code_amendment_identity",
+          "amendment_applicability",
+          "amendment_applicability_review_id",
+          "controlled_source_ids",
+          "controlled_source_basis_hash",
           "capability_id",
           "support_status",
           "unit_system",
           "explicit_units",
           "normalized_input_hash",
+          "provenance_hash",
+          "source_metadata",
           "calculation_identity",
+          "replay_receipt",
+          "replay_receipt_hash",
           "governing_check",
           "exact_utilization",
           "margin",
@@ -15733,12 +15855,28 @@
       },
       "FootingProvenanceResponse": {
         "properties": {
+          "allowable_soil_pressure_is_externally_approved": {
+            "title": "Allowable Soil Pressure Is Externally Approved",
+            "type": "boolean"
+          },
+          "allowable_soil_pressure_origin": {
+            "title": "Allowable Soil Pressure Origin",
+            "type": "string"
+          },
           "allowable_soil_pressure_role": {
             "title": "Allowable Soil Pressure Role",
             "type": "string"
           },
           "allowable_soil_pressure_source_reference": {
             "title": "Allowable Soil Pressure Source Reference",
+            "type": "string"
+          },
+          "arithmetic_input_hash": {
+            "title": "Arithmetic Input Hash",
+            "type": "string"
+          },
+          "assumption_identity_hash": {
+            "title": "Assumption Identity Hash",
             "type": "string"
           },
           "clause_bases": {
@@ -15763,8 +15901,20 @@
             "title": "Effective Supporting Area Basis",
             "type": "string"
           },
+          "effective_supporting_area_is_approved": {
+            "title": "Effective Supporting Area Is Approved",
+            "type": "boolean"
+          },
+          "effective_supporting_area_origin": {
+            "title": "Effective Supporting Area Origin",
+            "type": "string"
+          },
           "factored_load_combination_id": {
             "title": "Factored Load Combination Id",
+            "type": "string"
+          },
+          "library_content_identity": {
+            "title": "Library Content Identity",
             "type": "string"
           },
           "loaded_area_A2_basis": {
@@ -15773,6 +15923,10 @@
           },
           "qualified_review_requirement": {
             "title": "Qualified Review Requirement",
+            "type": "string"
+          },
+          "replay_receipt_hash": {
+            "title": "Replay Receipt Hash",
             "type": "string"
           },
           "schema_version": {
@@ -15785,6 +15939,10 @@
           },
           "service_load_combination_id": {
             "title": "Service Load Combination Id",
+            "type": "string"
+          },
+          "service_load_origin": {
+            "title": "Service Load Origin",
             "type": "string"
           },
           "source_ids": {
@@ -15808,14 +15966,23 @@
           "units",
           "service_load_combination_id",
           "service_load_basis",
+          "service_load_origin",
           "factored_load_combination_id",
           "allowable_soil_pressure_source_reference",
+          "allowable_soil_pressure_origin",
+          "allowable_soil_pressure_is_externally_approved",
           "allowable_soil_pressure_role",
           "loaded_area_A2_basis",
           "effective_supporting_area_basis",
+          "effective_supporting_area_origin",
+          "effective_supporting_area_is_approved",
           "core_function_ids",
           "clause_bases",
           "source_ids",
+          "arithmetic_input_hash",
+          "assumption_identity_hash",
+          "library_content_identity",
+          "replay_receipt_hash",
           "qualified_review_requirement"
         ],
         "title": "FootingProvenanceResponse",
@@ -17727,9 +17894,30 @@
             "title": "Minimum Reinforcement Ratio",
             "type": "number"
           },
+          "qualified_review_required": {
+            "const": true,
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "result_envelope": {
+            "additionalProperties": true,
+            "title": "Result Envelope",
+            "type": "object"
+          },
           "review_requirement": {
             "title": "Review Requirement",
             "type": "string"
+          },
+          "serviceability_escalation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serviceability Escalation"
           },
           "serviceability_status": {
             "title": "Serviceability Status",
@@ -17760,6 +17948,9 @@
           "detailing_adequacy",
           "serviceability_status",
           "review_requirement",
+          "qualified_review_required",
+          "serviceability_escalation",
+          "result_envelope",
           "limitations",
           "source_refs"
         ],
@@ -26857,14 +27048,16 @@
     },
     "/api/v1/import/batch-design": {
       "post": {
-        "description": "Design multiple beams from imported data.",
+        "deprecated": true,
+        "description": "Deprecated compatibility transport delegating to the strict service.",
         "operationId": "batch_design_api_v1_import_batch_design_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "items": {
-                  "$ref": "#/components/schemas/BeamRow"
+                  "additionalProperties": true,
+                  "type": "object"
                 },
                 "title": "Beams",
                 "type": "array"
@@ -26878,7 +27071,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/APIResponse_BatchDesignResponse_"
+                  "$ref": "#/components/schemas/APIResponse_dict_str__Any__"
                 }
               }
             },
@@ -26895,7 +27088,7 @@
             "description": "Request validation failed"
           }
         },
-        "summary": "Batch Design Beams",
+        "summary": "Compatibility Batch Design",
         "tags": [
           "import"
         ]
@@ -26966,6 +27159,7 @@
     },
     "/api/v1/import/csv/text": {
       "post": {
+        "deprecated": true,
         "description": "Import beam data from CSV text content.",
         "operationId": "import_csv_text_api_v1_import_csv_text_post",
         "parameters": [
@@ -26976,6 +27170,56 @@
             "schema": {
               "title": "Csv Text",
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fck_mpa",
+            "required": true,
+            "schema": {
+              "exclusiveMinimum": 0,
+              "title": "Fck Mpa",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fy_mpa",
+            "required": true,
+            "schema": {
+              "exclusiveMinimum": 0,
+              "title": "Fy Mpa",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cover_mm",
+            "required": true,
+            "schema": {
+              "exclusiveMinimum": 0,
+              "title": "Cover Mm",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "stirrup_diameter_mm",
+            "required": true,
+            "schema": {
+              "exclusiveMinimum": 0,
+              "title": "Stirrup Diameter Mm",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "tension_bar_diameter_mm",
+            "required": true,
+            "schema": {
+              "exclusiveMinimum": 0,
+              "title": "Tension Bar Diameter Mm",
+              "type": "number"
             }
           },
           {
@@ -27116,6 +27360,53 @@
           }
         },
         "summary": "Get Supported Formats",
+        "tags": [
+          "import"
+        ]
+      }
+    },
+    "/api/v1/import/project-beams": {
+      "post": {
+        "description": "Validate and design canonical project-beam/v1 payloads.",
+        "operationId": "design_project_beams_api_v1_import_project_beams_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "title": "Beams",
+                "type": "array"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_dict_str__Any__"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Design Canonical Project Beams",
         "tags": [
           "import"
         ]
@@ -27806,7 +28097,8 @@
     },
     "/stream/batch-design": {
       "get": {
-        "description": "Stream a small legacy batch supplied through the query string.",
+        "deprecated": true,
+        "description": "Compatibility transport; use POST /stream/batch-design.",
         "operationId": "stream_batch_design_stream_batch_design_get",
         "parameters": [
           {
@@ -27836,13 +28128,13 @@
             "description": "Request validation failed"
           }
         },
-        "summary": "Stream Batch Design",
+        "summary": "Deprecated query-string batch stream",
         "tags": [
           "streaming"
         ]
       },
       "post": {
-        "description": "Stream a batch from a request body without request-target size limits.",
+        "description": "Canonical project-beam stream using a POST request body.",
         "operationId": "stream_batch_design_post_stream_batch_design_post",
         "requestBody": {
           "content": {

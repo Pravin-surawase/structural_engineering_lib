@@ -29,7 +29,7 @@ from fastapi import APIRouter, Depends, HTTPException, Path, Query, Request
 from pydantic import BaseModel
 from sse_starlette.sse import EventSourceResponse
 
-from structural_lib import batch
+from structural_lib.services import batch
 from fastapi_app.auth import check_rate_limit
 from fastapi_app.config import get_settings
 
@@ -45,6 +45,8 @@ class BatchJobProgress(BaseModel):
     total: int
     passed: int
     failed: int
+    held: int
+    blocked: int
     percent: float
 
 
@@ -66,6 +68,10 @@ def _job_engineering_status(job: Mapping[str, Any]) -> dict[str, bool | None | s
     if job["completed"] < job["total"]:
         return {"is_safe": None, "overall_status": "IN_PROGRESS"}
 
+    if job["blocked"]:
+        return {"is_safe": False, "overall_status": "BLOCKED"}
+    if job["held"]:
+        return {"is_safe": False, "overall_status": "HOLD"}
     is_safe = job["failed"] == 0
     return {
         "is_safe": is_safe,
@@ -98,6 +104,8 @@ class BatchJobManager:
             "completed": 0,
             "passed": 0,
             "failed": 0,
+            "held": 0,
+            "blocked": 0,
             "results": [],
             "errors": [],
             "started_at": datetime.now(timezone.utc).isoformat(),
@@ -119,12 +127,17 @@ class BatchJobManager:
         job = self.jobs[job_id]
         job["completed"] += 1
 
-        if design_succeeded and result:
+        if result:
             job["results"].append(result)
-            if result.get("is_safe", False):
+            overall_status = result.get("overall_status")
+            if overall_status == "PASS":
                 job["passed"] += 1
-            else:
+            elif overall_status == "FAIL":
                 job["failed"] += 1
+            else:
+                job["held"] += 1
+                if overall_status == "BLOCKED":
+                    job["blocked"] += 1
         elif error:
             job["failed"] += 1
             job["errors"].append(error)
@@ -207,26 +220,27 @@ def _stream_batch_response(
             ),
         }
 
-        for outcome in batch.design_beams_iter(beam_list, units="IS456"):
+        for member in batch.design_project_beams_iter_v1(beam_list, units="IS456"):
             # Check if client disconnected
             if await request.is_disconnected():
                 logger.info(f"Client disconnected during batch job {job_id}")
                 break
 
-            if outcome.get("success"):
-                result_data = outcome["data"]
-                job_manager.update_progress(
-                    job_id, design_succeeded=True, result=result_data
-                )
-                yield {"event": "design_result", "data": json.dumps(result_data)}
-            else:
-                error_data = outcome["error"]
-                job_manager.update_progress(
-                    job_id,
-                    design_succeeded=False,
-                    error=error_data.get("message"),
-                )
-                yield {"event": "error", "data": json.dumps(error_data)}
+            result_data = member.to_dict()
+            result_data["beam_id"] = member.member_id
+            result_data["design_succeeded"] = (
+                member.calculation_status.value == "COMPLETED"
+            )
+            result_data["is_safe"] = member.overall_status.value == "PASS"
+            result_data["status"] = member.overall_status.value
+            if member.calculation is not None:
+                result_data.update(member.calculation)
+            job_manager.update_progress(
+                job_id,
+                design_succeeded=result_data["design_succeeded"],
+                result=result_data,
+            )
+            yield {"event": "design_result", "data": json.dumps(result_data)}
 
             # Send progress update
             job = job_manager.get_job(job_id)
@@ -240,6 +254,8 @@ def _stream_batch_response(
                             "total": job["total"],
                             "passed": job["passed"],
                             "failed": job["failed"],
+                            "held": job["held"],
+                            "blocked": job["blocked"],
                             **engineering_status,
                             "percent": round(job["completed"] / job["total"] * 100, 1),
                         }
@@ -261,6 +277,8 @@ def _stream_batch_response(
                         "completed": job["completed"],
                         "passed": job["passed"],
                         "failed": job["failed"],
+                        "held": job["held"],
+                        "blocked": job["blocked"],
                         **engineering_status,
                         "duration_seconds": (
                             (
@@ -281,13 +299,19 @@ def _stream_batch_response(
     return EventSourceResponse(event_generator())
 
 
-@router.get("/batch-design", response_class=EventSourceResponse)
+@router.get(
+    "/batch-design",
+    response_class=EventSourceResponse,
+    deprecated=True,
+    summary="Deprecated query-string batch stream",
+    description="Compatibility transport; use POST /stream/batch-design.",
+)
 async def stream_batch_design(
     request: Request,
     beams: str = Query(..., description="JSON array of beam parameters"),
     _: None = Depends(check_rate_limit),
 ) -> EventSourceResponse:
-    """Stream a small legacy batch supplied through the query string."""
+    """Deprecated query transport delegating to the canonical project command."""
     try:
         beam_list = json.loads(beams)
     except json.JSONDecodeError:
@@ -298,9 +322,19 @@ async def stream_batch_design(
                 "data": json.dumps({"message": "Invalid JSON in beams parameter"}),
             }
 
-        return EventSourceResponse(error_generator())
+        response = EventSourceResponse(error_generator())
+        response.headers["Deprecation"] = "true"
+        response.headers["Warning"] = (
+            '299 - "Deprecated GET transport; use POST /stream/batch-design"'
+        )
+        return response
 
-    return _stream_batch_response(request, beam_list)
+    response = _stream_batch_response(request, beam_list)
+    response.headers["Deprecation"] = "true"
+    response.headers["Warning"] = (
+        '299 - "Deprecated GET transport; use POST /stream/batch-design"'
+    )
+    return response
 
 
 @router.post("/batch-design", response_class=EventSourceResponse)
@@ -309,7 +343,7 @@ async def stream_batch_design_post(
     beams: list[dict[str, Any]],
     _: None = Depends(check_rate_limit),
 ) -> EventSourceResponse:
-    """Stream a batch from a request body without request-target size limits."""
+    """Canonical project-beam stream using a POST request body."""
     return _stream_batch_response(request, beams)
 
 
@@ -337,6 +371,8 @@ async def get_job_status(
             "total": job["total"],
             "passed": job["passed"],
             "failed": job["failed"],
+            "held": job["held"],
+            "blocked": job["blocked"],
             "percent": (
                 round(job["completed"] / job["total"] * 100, 1)
                 if job["total"] > 0

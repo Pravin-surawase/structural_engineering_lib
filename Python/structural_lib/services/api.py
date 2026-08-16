@@ -264,6 +264,9 @@ __all__ = [
     "check_beam_is456",
     "detail_beam_is456",
     "design_and_detail_beam_is456",
+    "ComplianceCaseResult",
+    "ComplianceReport",
+    "DesignAndDetailResult",
     # Input dataclasses (TASK-276)
     "BeamInput",
     "BeamGeometryInput",

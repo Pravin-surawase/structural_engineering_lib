@@ -1,0 +1,24 @@
+{
+  "schema_version": "release-negative-uat/v1",
+  "cases": [
+    {"id": "complete_canonical_row", "expected": "VALID_COMPLETED"},
+    {"id": "named_adapter_alias", "expected": "ACCEPTED_WITH_LEDGER"},
+    {"id": "unknown_calculation_header", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "missing_required_value", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "empty_required_value", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "malformed_numeric_value", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "non_finite_value", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "conflicting_depth_basis", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "duplicate_member_identity", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "explicit_valid_zero", "expected": "VALID_COMPLETED"},
+    {"id": "empty_batch", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "ambiguous_adapter", "expected": "BLOCKED_WITH_CANDIDATES"},
+    {"id": "invalid_import_row", "expected": "BLOCKED_AND_ACCOUNTED"},
+    {"id": "adapter_row_loss_guard", "expected": "BLOCKED_AND_ACCOUNTED"},
+    {"id": "unmatched_geometry_force", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "column_missing_materials", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "assumed_footing_basis", "expected": "HOLD"},
+    {"id": "insufficient_footing_dowels", "expected": "FAIL"},
+    {"id": "safe_result_review_boundary", "expected": "PASS_REVIEW_REQUIRED"}
+  ]
+}

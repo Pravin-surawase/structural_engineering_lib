@@ -12,6 +12,8 @@ import hashlib
 import json
 from collections.abc import Mapping
 from datetime import UTC, datetime
+from functools import lru_cache
+from pathlib import Path
 from typing import Any
 
 from structural_lib.services.capabilities import (
@@ -19,11 +21,14 @@ from structural_lib.services.capabilities import (
     get_supported_is456_capabilities,
 )
 from structural_lib.services.common_api import get_library_version
+from structural_lib.services.source_identity import (
+    BEAM_STRENGTH_SOURCE_BASIS,
+    ControlledSourceBasisV1,
+)
 
 BEAM_EVIDENCE_ARTIFACT_SCHEMA = "structural_lib.beam-evidence"
-BEAM_EVIDENCE_SCHEMA_VERSION = "2.0"
+BEAM_EVIDENCE_SCHEMA_VERSION = "3.0"
 BEAM_CAPABILITY_ID = "design_beam_is456"
-CODE_AMENDMENT_IDENTITY = "not-declared-in-artifact"
 QUALIFIED_REVIEW_REQUIREMENT = (
     "Independent review by a qualified structural engineer is required before "
     "engineering or construction use."
@@ -146,6 +151,45 @@ def _sha256_json(value: Mapping[str, Any]) -> str:
     return hashlib.sha256(serialized.encode("utf-8")).hexdigest()
 
 
+@lru_cache(maxsize=1)
+def get_library_content_identity() -> str:
+    """Hash installed package code/data so evidence binds the executing library."""
+
+    package_root = Path(__file__).resolve().parents[1]
+    digest = hashlib.sha256()
+    paths = sorted(
+        path
+        for path in package_root.rglob("*")
+        if path.is_file()
+        and "__pycache__" not in path.parts
+        and path.suffix in {".py", ".json"}
+    )
+    for path in paths:
+        relative = path.relative_to(package_root).as_posix().encode("utf-8")
+        digest.update(len(relative).to_bytes(4, "big"))
+        digest.update(relative)
+        content = path.read_bytes()
+        digest.update(len(content).to_bytes(8, "big"))
+        digest.update(content)
+    return digest.hexdigest()
+
+
+def _normalize_provenance(value: Any) -> Any:
+    """Canonicalize replay metadata without changing its string identity."""
+
+    if isinstance(value, Mapping):
+        return {
+            str(key): _normalize_provenance(item) for key, item in sorted(value.items())
+        }
+    if isinstance(value, (list, tuple)):
+        return [_normalize_provenance(item) for item in value]
+    if isinstance(value, bool) or value is None:
+        return value
+    if isinstance(value, (int, float)):
+        return float(value)
+    return str(value)
+
+
 def _governing_check(utilizations: Mapping[str, Any]) -> str:
     numeric = []
     for name, value in utilizations.items():
@@ -175,6 +219,8 @@ def build_beam_evidence_envelope(
     utilizations: Mapping[str, Any] | None = None,
     supported: bool = True,
     generated_at: str | None = None,
+    source_metadata: Mapping[str, Any] | None = None,
+    source_basis: ControlledSourceBasisV1 = BEAM_STRENGTH_SOURCE_BASIS,
 ) -> dict[str, Any]:
     """Build the serializable evidence envelope for one beam design result.
 
@@ -184,6 +230,13 @@ def build_beam_evidence_envelope(
     """
     normalized_inputs = normalize_beam_design_inputs(inputs)
     input_hash = _sha256_json(normalized_inputs)
+    normalized_provenance = _normalize_provenance(source_metadata or {})
+    provenance_hash = _sha256_json(normalized_provenance)
+    library_content_identity = get_library_content_identity()
+    source_basis_payload = source_basis.to_dict()
+    source_basis_hash = _sha256_json(source_basis_payload)
+    source_resolved = source_basis.is_resolved
+    supported = supported and source_resolved
     exact_utilization = (
         None
         if not supported or governing_utilization is None
@@ -196,7 +249,9 @@ def build_beam_evidence_envelope(
             "artifact_schema": BEAM_EVIDENCE_ARTIFACT_SCHEMA,
             "artifact_schema_version": BEAM_EVIDENCE_SCHEMA_VERSION,
             "library_version": get_library_version(),
+            "library_content_identity": library_content_identity,
             "code_edition": IS456_CODE_EDITION,
+            "controlled_source_basis_hash": source_basis_hash,
             "capability_id": BEAM_CAPABILITY_ID,
             "input_hash": input_hash,
             "support_status": "SUPPORTED" if supported else "HELD",
@@ -205,13 +260,28 @@ def build_beam_evidence_envelope(
             "status": status,
         }
     )
+    replay_receipt = {
+        "schema_version": "beam-replay-receipt/v1",
+        "normalized_input_hash": input_hash,
+        "provenance_hash": provenance_hash,
+        "calculation_identity": calculation_identity,
+        "library_version": get_library_version(),
+        "library_content_identity": library_content_identity,
+        "controlled_source_basis_hash": source_basis_hash,
+    }
+    replay_receipt_hash = _sha256_json(replay_receipt)
 
     return {
         "artifact_schema": BEAM_EVIDENCE_ARTIFACT_SCHEMA,
         "artifact_schema_version": BEAM_EVIDENCE_SCHEMA_VERSION,
         "library_version": get_library_version(),
+        "library_content_identity": library_content_identity,
         "code_edition": IS456_CODE_EDITION,
-        "code_amendment_identity": CODE_AMENDMENT_IDENTITY,
+        "code_amendment_identity": source_basis.amendment_identity,
+        "amendment_applicability": source_basis.amendment_applicability.value,
+        "amendment_applicability_review_id": source_basis.applicability_review_id,
+        "controlled_source_ids": list(source_basis.source_ids),
+        "controlled_source_basis_hash": source_basis_hash,
         "capability_id": BEAM_CAPABILITY_ID,
         "support_status": "SUPPORTED" if supported else "HELD",
         "unit_system": normalized_inputs["units"],
@@ -222,7 +292,11 @@ def build_beam_evidence_envelope(
             "stress": "N/mm²",
         },
         "normalized_input_hash": input_hash,
+        "provenance_hash": provenance_hash,
+        "source_metadata": normalized_provenance,
         "calculation_identity": calculation_identity,
+        "replay_receipt": replay_receipt,
+        "replay_receipt_hash": replay_receipt_hash,
         "governing_check": governing_check,
         "exact_utilization": exact_utilization,
         "margin": None if exact_utilization is None else 1.0 - exact_utilization,

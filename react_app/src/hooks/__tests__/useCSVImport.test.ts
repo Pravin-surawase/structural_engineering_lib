@@ -8,6 +8,13 @@ import { useCSVFileImport } from '../../hooks/useCSVImport';
 const mockSetBeams = vi.fn();
 const mockSetImporting = vi.fn();
 const mockSetError = vi.fn();
+const explicitBasis = {
+  fck: 25,
+  fy: 500,
+  cover: 40,
+  stirrupDiameter: 8,
+  tensionBarDiameter: 16,
+};
 
 vi.mock('../../store/importedBeamsStore', () => ({
   useImportedBeamsStore: vi.fn(() => ({
@@ -85,7 +92,7 @@ describe('useCSVFileImport', () => {
     });
 
     const file = new File(['beam_id,width\nB1,300'], 'beams.csv', { type: 'text/csv' });
-    result.current.importFile(file);
+    result.current.importFile(file, 'generic', explicitBasis);
 
     await waitFor(() => {
       expect(mockSetBeams).toHaveBeenCalled();
@@ -105,7 +112,7 @@ describe('useCSVFileImport', () => {
     });
 
     const file = new File(['bad data'], 'bad.csv', { type: 'text/csv' });
-    result.current.importFile(file);
+    result.current.importFile(file, 'generic', explicitBasis);
 
     await waitFor(() => {
       expect(mockSetError).toHaveBeenCalled();
@@ -139,7 +146,7 @@ describe('useCSVFileImport', () => {
 
     const { result } = renderHook(() => useCSVFileImport(), { wrapper: createWrapper() });
     const file = new File(['id,width\nB1,300'], 'beams.csv', { type: 'text/csv' });
-    result.current.importFile(file);
+    result.current.importFile(file, 'generic', explicitBasis);
 
     await waitFor(() => {
       expect(mockSetBeams).toHaveBeenCalled();

@@ -8,9 +8,17 @@ import math
 from collections.abc import Mapping
 from copy import deepcopy
 from dataclasses import dataclass
-from enum import StrEnum
 from numbers import Real
 from typing import Any
+
+from structural_lib.core.result_contract import (
+    CalculationStatus,
+    EngineeringStatus,
+    IntakeStatus,
+    OverallStatus,
+    ReviewStatus,
+    StructuralResultEnvelopeV1,
+)
 
 __all__ = [
     "PROJECT_BEAM_RESULT_SCHEMA_VERSION",
@@ -32,40 +40,13 @@ __all__ = [
 
 PROJECT_BEAM_SCHEMA_VERSION = "project-beam-design/v1"
 PROJECT_BEAM_RESULT_SCHEMA_VERSION = "project-beam-result/v1"
-QUALIFIED_REVIEW_REQUIRED = "QUALIFIED_REVIEW_REQUIRED"
+QUALIFIED_REVIEW_REQUIRED = ReviewStatus.QUALIFIED_REVIEW_REQUIRED.value
 
-
-class ProjectBeamIntakeStatus(StrEnum):
-    """Whether the complete project member input is accepted."""
-
-    VALID = "VALID"
-    BLOCKED = "BLOCKED"
-
-
-class ProjectBeamCalculationStatus(StrEnum):
-    """Whether calculation was attempted and completed."""
-
-    NOT_EVALUATED = "NOT_EVALUATED"
-    COMPLETED = "COMPLETED"
-    ERROR = "ERROR"
-
-
-class ProjectBeamEngineeringStatus(StrEnum):
-    """Engineering disposition of completed supported checks."""
-
-    NOT_EVALUATED = "NOT_EVALUATED"
-    PASS = "PASS"  # nosec B105 - engineering disposition, not a credential
-    FAIL = "FAIL"
-    HOLD = "HOLD"
-
-
-class ProjectBeamOverallStatus(StrEnum):
-    """Deterministic aggregate without professional-approval meaning."""
-
-    BLOCKED = "BLOCKED"
-    PASS = "PASS"  # nosec B105 - engineering disposition, not a credential
-    FAIL = "FAIL"
-    HOLD = "HOLD"
+# Public compatibility names now reference the shared cross-element contract.
+ProjectBeamIntakeStatus = IntakeStatus
+ProjectBeamCalculationStatus = CalculationStatus
+ProjectBeamEngineeringStatus = EngineeringStatus
+ProjectBeamOverallStatus = OverallStatus
 
 
 @dataclass(frozen=True)
@@ -180,7 +161,23 @@ class ProjectBeamMemberResultV1:
     calculation: Mapping[str, Any] | None = None
     review_status: str = QUALIFIED_REVIEW_REQUIRED
 
+    def __post_init__(self) -> None:
+        envelope = StructuralResultEnvelopeV1(
+            intake_status=self.intake_status,
+            calculation_status=self.calculation_status,
+            engineering_status=self.engineering_status,
+        )
+        if self.overall_status is not envelope.overall_status:
+            raise ValueError("overall_status must be derived from the status axes")
+        if self.review_status != QUALIFIED_REVIEW_REQUIRED:
+            raise ValueError("qualified structural review is always required")
+
     def to_dict(self) -> dict[str, Any]:
+        result_envelope = StructuralResultEnvelopeV1(
+            intake_status=self.intake_status,
+            calculation_status=self.calculation_status,
+            engineering_status=self.engineering_status,
+        )
         return {
             "schema_version": PROJECT_BEAM_RESULT_SCHEMA_VERSION,
             "index": self.index,
@@ -191,6 +188,7 @@ class ProjectBeamMemberResultV1:
             "review_status": self.review_status,
             "overall_status": self.overall_status.value,
             "qualified_review_required": True,
+            "result_envelope": result_envelope.to_dict(),
             "issues": [issue.to_dict() for issue in self.issues],
             "input": self.input.to_dict() if self.input is not None else None,
             "calculation": (
@@ -217,7 +215,21 @@ class ProjectBeamBatchSummaryV1:
     engineering_status: ProjectBeamEngineeringStatus
     overall_status: ProjectBeamOverallStatus
 
+    def __post_init__(self) -> None:
+        envelope = StructuralResultEnvelopeV1(
+            intake_status=self.intake_status,
+            calculation_status=self.calculation_status,
+            engineering_status=self.engineering_status,
+        )
+        if self.overall_status is not envelope.overall_status:
+            raise ValueError("overall_status must be derived from the status axes")
+
     def to_dict(self) -> dict[str, Any]:
+        result_envelope = StructuralResultEnvelopeV1(
+            intake_status=self.intake_status,
+            calculation_status=self.calculation_status,
+            engineering_status=self.engineering_status,
+        )
         return {
             "total": self.total,
             "valid": self.valid,
@@ -231,6 +243,7 @@ class ProjectBeamBatchSummaryV1:
             "engineering_status": self.engineering_status.value,
             "overall_status": self.overall_status.value,
             "qualified_review_required": True,
+            "result_envelope": result_envelope.to_dict(),
         }
 
 

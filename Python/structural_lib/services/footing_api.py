@@ -4,9 +4,13 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import math
-from dataclasses import dataclass
-from typing import Literal
+from collections.abc import Mapping
+from dataclasses import asdict, dataclass
+from enum import Enum
+from typing import Any, Literal
 
 from structural_lib.codes.is456.footing.bearing import size_footing
 from structural_lib.codes.is456.footing.detailing import (
@@ -28,6 +32,7 @@ from structural_lib.core.data_types import (
     FootingType,
 )
 from structural_lib.core.errors import StructuralLibError, ValidationError
+from structural_lib.services.evidence import get_library_content_identity
 
 __all__ = [
     "ConcentricIsolatedFootingInput",
@@ -74,10 +79,12 @@ class ConcentricIsolatedFootingInput:
     service_axial_load_kN: float
     service_load_combination_id: str
     service_load_basis: Literal["includes_footing_self_weight_and_overburden"]
+    service_load_origin: Literal["provided", "assumed", "verified"]
     factored_axial_load_kN: float
     factored_load_combination_id: str
     allowable_soil_pressure_kPa: float
     allowable_soil_pressure_source_reference: str
+    allowable_soil_pressure_origin: Literal["provided", "assumed", "verified"]
     allowable_soil_pressure_is_externally_approved: bool
     footing_type: FootingType
     column_L_mm: float
@@ -92,6 +99,7 @@ class ConcentricIsolatedFootingInput:
     steel_fy_nmm2: float
     effective_supporting_area_A1_mm2: float
     effective_supporting_area_basis: Literal["largest_frustum_1v_2h"]
+    effective_supporting_area_origin: Literal["provided", "assumed", "verified"]
     effective_supporting_area_is_approved: bool
     dowel_count: int
     dowel_diameter_mm: float
@@ -147,14 +155,23 @@ class FootingProvenance:
     units: dict[str, str]
     service_load_combination_id: str
     service_load_basis: str
+    service_load_origin: str
     factored_load_combination_id: str
     allowable_soil_pressure_source_reference: str
+    allowable_soil_pressure_origin: str
+    allowable_soil_pressure_is_externally_approved: bool
     allowable_soil_pressure_role: str
     loaded_area_A2_basis: str
     effective_supporting_area_basis: str
+    effective_supporting_area_origin: str
+    effective_supporting_area_is_approved: bool
     core_function_ids: tuple[str, ...]
     clause_bases: dict[str, str]
     source_ids: tuple[str, ...]
+    arithmetic_input_hash: str
+    assumption_identity_hash: str
+    library_content_identity: str
+    replay_receipt_hash: str
     qualified_review_requirement: str
 
 
@@ -220,6 +237,27 @@ def _require_positive_finite(name: str, value: object) -> None:
 def _require_non_empty(name: str, value: object) -> None:
     if not isinstance(value, str) or not value.strip():
         raise ValidationError(f"{name} must be a non-empty string")
+
+
+def _identity_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {str(key): _identity_value(item) for key, item in sorted(value.items())}
+    if isinstance(value, (tuple, list)):
+        return [_identity_value(item) for item in value]
+    if isinstance(value, Enum):
+        return value.value
+    if isinstance(value, bool) or value is None:
+        return value
+    if isinstance(value, (int, float)):
+        return float(value)
+    return str(value)
+
+
+def _identity_hash(value: Mapping[str, Any]) -> str:
+    payload = json.dumps(
+        _identity_value(value), allow_nan=False, separators=(",", ":"), sort_keys=True
+    )
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
 def _validate_request(request: ConcentricIsolatedFootingInput) -> None:
@@ -315,10 +353,68 @@ def _depth_values(
     )
 
 
+def _assumption_hold_reasons(
+    request: ConcentricIsolatedFootingInput,
+) -> tuple[str, ...]:
+    fields = (
+        ("service_load_origin", request.service_load_origin),
+        ("allowable_soil_pressure_origin", request.allowable_soil_pressure_origin),
+        (
+            "effective_supporting_area_origin",
+            request.effective_supporting_area_origin,
+        ),
+    )
+    return tuple(
+        f"ASSUMED_BASIS_REQUIRES_VERIFICATION:{name}"
+        for name, origin in fields
+        if origin == "assumed"
+    )
+
+
 def _provenance(
     request: ConcentricIsolatedFootingInput,
     load_transfer: LoadTransferResult,
 ) -> FootingProvenance:
+    request_payload = asdict(request)
+    provenance_fields = {
+        "case_id",
+        "service_load_combination_id",
+        "service_load_basis",
+        "service_load_origin",
+        "factored_load_combination_id",
+        "allowable_soil_pressure_source_reference",
+        "allowable_soil_pressure_origin",
+        "allowable_soil_pressure_is_externally_approved",
+        "effective_supporting_area_basis",
+        "effective_supporting_area_origin",
+        "effective_supporting_area_is_approved",
+        "cover_exposure_basis",
+        "cover_exposure_basis_is_approved",
+    }
+    arithmetic_input_hash = _identity_hash(
+        {
+            key: value
+            for key, value in request_payload.items()
+            if key not in provenance_fields
+        }
+    )
+    assumption_identity_hash = _identity_hash(
+        {
+            key: request_payload[key]
+            for key in sorted(provenance_fields)
+            if key in request_payload
+        }
+    )
+    library_content_identity = get_library_content_identity()
+    replay_receipt_hash = _identity_hash(
+        {
+            "schema_version": "footing-replay-receipt/v1",
+            "arithmetic_input_hash": arithmetic_input_hash,
+            "assumption_identity_hash": assumption_identity_hash,
+            "library_content_identity": library_content_identity,
+            "source_ids": load_transfer.source_ids,
+        }
+    )
     return FootingProvenance(
         schema_version="footing.isolated.concentric/v1",
         code_edition="IS 456:2000",
@@ -331,9 +427,14 @@ def _provenance(
         },
         service_load_combination_id=request.service_load_combination_id,
         service_load_basis=request.service_load_basis,
+        service_load_origin=request.service_load_origin,
         factored_load_combination_id=request.factored_load_combination_id,
         allowable_soil_pressure_source_reference=(
             request.allowable_soil_pressure_source_reference
+        ),
+        allowable_soil_pressure_origin=request.allowable_soil_pressure_origin,
+        allowable_soil_pressure_is_externally_approved=(
+            request.allowable_soil_pressure_is_externally_approved
         ),
         allowable_soil_pressure_role=(
             "Externally supplied allowable pressure; no SBC derivation or settlement "
@@ -343,6 +444,10 @@ def _provenance(
             "Centred rectangular column footprint: column_L_mm * column_B_mm."
         ),
         effective_supporting_area_basis=request.effective_supporting_area_basis,
+        effective_supporting_area_origin=request.effective_supporting_area_origin,
+        effective_supporting_area_is_approved=(
+            request.effective_supporting_area_is_approved
+        ),
         core_function_ids=(
             "structural_lib.codes.is456.footing.bearing.size_footing",
             "structural_lib.codes.is456.footing.flexure.footing_flexure",
@@ -374,6 +479,10 @@ def _provenance(
             ),
         },
         source_ids=load_transfer.source_ids,
+        arithmetic_input_hash=arithmetic_input_hash,
+        assumption_identity_hash=assumption_identity_hash,
+        library_content_identity=library_content_identity,
+        replay_receipt_hash=replay_receipt_hash,
         qualified_review_requirement=(
             "Bounded software calculation evidence only; qualified structural-"
             "engineering review is required."
@@ -545,6 +654,7 @@ def design_concentric_isolated_footing_is456(
         dowel_bar_type=request.dowel_bar_type,
     )
     provenance = _provenance(request, load_transfer)
+    assumption_hold_reasons = _assumption_hold_reasons(request)
     depth_values = _depth_values(request)
 
     if not math.isclose(
@@ -595,7 +705,8 @@ def design_concentric_isolated_footing_is456(
             hold_reasons=(
                 "DIRECTIONAL_EFFECTIVE_DEPTH_NOT_SUPPORTED_BY_CURRENT_CORE",
                 _DETAILING_NOT_EVALUATED_REASON,
-            ),
+            )
+            + assumption_hold_reasons,
             provenance=provenance,
         )
 
@@ -767,6 +878,10 @@ def design_concentric_isolated_footing_is456(
         detailing_status,
         detailing,
     )
+    if assumption_hold_reasons:
+        hold_reasons = tuple(dict.fromkeys((*hold_reasons, *assumption_hold_reasons)))
+        if status == "PASS":
+            status = "HOLD"
     return ConcentricIsolatedFootingResult(
         case_id=request.case_id,
         status=status,

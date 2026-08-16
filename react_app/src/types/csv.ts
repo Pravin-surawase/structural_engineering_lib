@@ -36,6 +36,10 @@ export interface BeamCSVRow {
   Vu_start?: number;  // shear at start kN
   Vu_end?: number;    // shear at end kN
   cover?: number;     // cover in mm
+  d_mm?: number;      // explicit effective depth in mm
+  stirrup_diameter_mm?: number;
+  tension_bar_diameter_mm?: number;
+  source_metadata?: Record<string, unknown>;
 
   // Envelope values for design (computed from start/mid/end)
   mu_envelope?: number;  // max(|Mu_start|, |Mu_mid|, |Mu_end|) kN·m

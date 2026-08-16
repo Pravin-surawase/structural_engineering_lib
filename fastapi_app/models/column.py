@@ -914,7 +914,7 @@ class ColumnDesignRequest(BaseModel):
         examples=["FIXED_FIXED", "FIXED_HINGED"],
     )
     fck_nmm2: float = Field(
-        25.0,
+        ...,
         ge=15,
         le=80,
         alias="fck",
@@ -922,7 +922,7 @@ class ColumnDesignRequest(BaseModel):
         examples=[25.0],
     )
     fy_nmm2: float = Field(
-        415.0,
+        ...,
         ge=250,
         le=600,
         alias="fy",
@@ -991,6 +991,9 @@ class ColumnDesignResponse(BaseModel):
     checks: dict[str, Any]
     clause_refs: list[str]
     warnings: list[str] = Field(default_factory=list)
+    result_envelope: dict[str, Any]
+    review_status: Literal["QUALIFIED_REVIEW_REQUIRED"]
+    qualified_review_required: Literal[True]
 
 
 # =============================================================================

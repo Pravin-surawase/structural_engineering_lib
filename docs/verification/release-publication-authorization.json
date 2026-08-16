@@ -1,0 +1,13 @@
+{
+  "schema_version": "release-publication-authorization/v1",
+  "decision": "HOLD",
+  "version": null,
+  "tag": null,
+  "authorized_targets": [],
+  "authorized_by": null,
+  "authorized_at_utc": null,
+  "exact_candidate_review_receipt": null,
+  "qualified_structural_engineering_review": false,
+  "professional_approval": false,
+  "note": "Packet G installs the mandatory stop. The owner must separately authorize the exact future Alpha version and publication targets after immutable candidate review."
+}

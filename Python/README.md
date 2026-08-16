@@ -24,6 +24,7 @@ IS 456 RC Beam Design Library (Python package).
 ```bash
 pip install structural-lib-is456===0.23.1a1       # current Alpha preview
 pip install "structural-lib-is456[dxf]===0.23.1a1" # Alpha with DXF export
+python -m structural_lib install-preflight          # interpreter/origin/extras
 ```
 
 > **Requires Python 3.11+.** On Python 3.9–3.10, pip installs the older v0.16.x (beam-only, no column/footing).
@@ -93,22 +94,28 @@ with open("report.html", "w") as f:
     f.write(html)
 ```
 
-### Batch Design from CSV
+### Batch Design with the Canonical Project Schema
 
 ```python
-from structural_lib.services.adapters import GenericCSVAdapter
-from structural_lib import design_beam_is456
+from structural_lib.services.batch import design_project_beams_v1
 
-adapter = GenericCSVAdapter()
-geometry_list, forces_list = adapter.load_combined("beams.csv")
-# Pair geometry with forces and design each beam
-for geom, forces in zip(geometry_list, forces_list):
-    result = design_beam_is456(
-        units="IS456", b_mm=geom.b_mm, D_mm=geom.D_mm, d_mm=geom.d_mm,
-        fck_nmm2=geom.fck_nmm2, fy_nmm2=geom.fy_nmm2,
-        mu_knm=forces.mu_knm, vu_kn=forces.vu_kn,
-    )
-    print(f"Ast = {result.flexure.Ast_required:.0f} mm²")
+batch = design_project_beams_v1(
+    [
+        {
+            "schema_version": "project-beam-design/v1",
+            "member_id": "B1",
+            "b_mm": 300,
+            "D_mm": 500,
+            "d_mm": 442,
+            "mu_knm": 150,
+            "vu_kn": 100,
+            "fck_nmm2": 25,
+            "fy_nmm2": 500,
+        }
+    ]
+)
+print(batch.summary.to_dict())
+print(batch.members[0].calculation["flexure"]["ast_required"])
 ```
 
 ### Run the Full Pipeline (design → detail → BBS → report)

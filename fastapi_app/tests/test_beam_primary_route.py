@@ -65,7 +65,7 @@ def test_safe_torsion_is_integrated_into_primary_demands(
     assert data["torsion"]["al_torsion"] > 0
     assert data["torsion"]["clause_refs"]["Me"] == "IS 456 Cl 41.4.2"
     assert data["evidence"]["support_status"] == "SUPPORTED"
-    assert data["evidence"]["artifact_schema_version"] == "2.0"
+    assert data["evidence"]["artifact_schema_version"] == "3.0"
     assert (
         data["evidence"]["normalized_input_hash"]
         != zero["evidence"]["normalized_input_hash"]

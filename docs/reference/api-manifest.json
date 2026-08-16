@@ -2,7 +2,7 @@
   "generated": "2026-08-16",
   "module": "structural_lib.api",
   "python": "3.11.15",
-  "count": 165,
+  "count": 168,
   "symbols": [
     {
       "name": "AuditLogEntry",
@@ -80,9 +80,19 @@
       "signature": "(reinforcement: 'OneWaySlabDesignResult', shear: 'SlabShearResult', serviceability: 'SlabServiceabilityResult', punching_shear_disposition: 'str', complete_engineering_design_approved: 'bool' = False, load_envelope_status: 'str' = 'not_generated_single_caller_supplied_factored_udl_or_coefficient_basis') -> None"
     },
     {
+      "name": "ComplianceCaseResult",
+      "kind": "class",
+      "signature": "(case_id: 'str', Mu_knm: 'float', Vu_kn: 'float', flexure: 'FlexureResult', shear: 'ShearResult', deflection: 'DeflectionResult | None' = None, crack_width: 'CrackWidthResult | None' = None, is_ok: 'bool' = False, governing_utilization: 'float' = 0.0, utilizations: 'dict[str, float]' = <factory>, failed_checks: 'list[str]' = <factory>, remarks: 'str' = '', clause_refs: 'dict[str, str]' = <factory>, Tu_knm: 'float' = 0.0, Me_knm: 'float | None' = None, Ve_kn: 'float | None' = None, torsion: 'TorsionResult | None' = None) -> None"
+    },
+    {
+      "name": "ComplianceReport",
+      "kind": "class",
+      "signature": "(is_ok: 'bool', governing_case_id: 'str', governing_utilization: 'float', cases: 'list[ComplianceCaseResult]', summary: 'dict[str, Any]' = <factory>) -> None"
+    },
+    {
       "name": "ConcentricIsolatedFootingInput",
       "kind": "class",
-      "signature": "(case_id: 'str', service_axial_load_kN: 'float', service_load_combination_id: 'str', service_load_basis: \"Literal['includes_footing_self_weight_and_overburden']\", factored_axial_load_kN: 'float', factored_load_combination_id: 'str', allowable_soil_pressure_kPa: 'float', allowable_soil_pressure_source_reference: 'str', allowable_soil_pressure_is_externally_approved: 'bool', footing_type: 'FootingType', column_L_mm: 'float', column_B_mm: 'float', minimum_overall_thickness_mm: 'float', maximum_overall_thickness_mm: 'float', thickness_increment_mm: 'float', effective_depth_offset_L_mm: 'float', effective_depth_offset_B_mm: 'float', footing_concrete_fck_nmm2: 'float', column_concrete_fck_nmm2: 'float', steel_fy_nmm2: 'float', effective_supporting_area_A1_mm2: 'float', effective_supporting_area_basis: \"Literal['largest_frustum_1v_2h']\", effective_supporting_area_is_approved: 'bool', dowel_count: 'int', dowel_diameter_mm: 'float', column_longitudinal_bar_diameter_mm: 'float', available_dowel_development_length_into_footing_mm: 'float', available_dowel_development_length_into_column_mm: 'float', dowel_bar_type: \"Literal['deformed', 'plain']\" = 'deformed', nominal_cover_mm: 'float | None' = None, cover_exposure_basis: 'str | None' = None, cover_exposure_basis_is_approved: 'bool' = False, nominal_max_aggregate_size_mm: 'float | None' = None, lower_bottom_bar_direction: \"Literal['L', 'B'] | None\" = None, upper_bottom_bar_direction: \"Literal['L', 'B'] | None\" = None, permitted_bottom_bar_diameters_mm: 'tuple[int, ...]' = (), footing_bottom_bar_type: \"Literal['deformed', 'plain'] | None\" = None) -> None"
+      "signature": "(case_id: 'str', service_axial_load_kN: 'float', service_load_combination_id: 'str', service_load_basis: \"Literal['includes_footing_self_weight_and_overburden']\", service_load_origin: \"Literal['provided', 'assumed', 'verified']\", factored_axial_load_kN: 'float', factored_load_combination_id: 'str', allowable_soil_pressure_kPa: 'float', allowable_soil_pressure_source_reference: 'str', allowable_soil_pressure_origin: \"Literal['provided', 'assumed', 'verified']\", allowable_soil_pressure_is_externally_approved: 'bool', footing_type: 'FootingType', column_L_mm: 'float', column_B_mm: 'float', minimum_overall_thickness_mm: 'float', maximum_overall_thickness_mm: 'float', thickness_increment_mm: 'float', effective_depth_offset_L_mm: 'float', effective_depth_offset_B_mm: 'float', footing_concrete_fck_nmm2: 'float', column_concrete_fck_nmm2: 'float', steel_fy_nmm2: 'float', effective_supporting_area_A1_mm2: 'float', effective_supporting_area_basis: \"Literal['largest_frustum_1v_2h']\", effective_supporting_area_origin: \"Literal['provided', 'assumed', 'verified']\", effective_supporting_area_is_approved: 'bool', dowel_count: 'int', dowel_diameter_mm: 'float', column_longitudinal_bar_diameter_mm: 'float', available_dowel_development_length_into_footing_mm: 'float', available_dowel_development_length_into_column_mm: 'float', dowel_bar_type: \"Literal['deformed', 'plain']\" = 'deformed', nominal_cover_mm: 'float | None' = None, cover_exposure_basis: 'str | None' = None, cover_exposure_basis_is_approved: 'bool' = False, nominal_max_aggregate_size_mm: 'float | None' = None, lower_bottom_bar_direction: \"Literal['L', 'B'] | None\" = None, upper_bottom_bar_direction: \"Literal['L', 'B'] | None\" = None, permitted_bottom_bar_diameters_mm: 'tuple[int, ...]' = (), footing_bottom_bar_type: \"Literal['deformed', 'plain'] | None\" = None) -> None"
     },
     {
       "name": "ConcentricIsolatedFootingResult",
@@ -103,6 +113,11 @@
       "name": "CriticalPoint",
       "kind": "class",
       "signature": "(position_mm: 'float', point_type: 'str', bm_knm: 'float', sf_kn: 'float') -> None"
+    },
+    {
+      "name": "DesignAndDetailResult",
+      "kind": "class",
+      "signature": "(beam_id: 'str', story: 'str', design: 'Any', detailing: 'Any', geometry: 'dict[str, float]', materials: 'dict[str, float]', is_ok: 'bool', remarks: 'str' = '') -> None"
     },
     {
       "name": "DesignDefaults",
@@ -157,7 +172,7 @@
     {
       "name": "FootingProvenance",
       "kind": "class",
-      "signature": "(schema_version: 'str', code_edition: 'str', units: 'dict[str, str]', service_load_combination_id: 'str', service_load_basis: 'str', factored_load_combination_id: 'str', allowable_soil_pressure_source_reference: 'str', allowable_soil_pressure_role: 'str', loaded_area_A2_basis: 'str', effective_supporting_area_basis: 'str', core_function_ids: 'tuple[str, ...]', clause_bases: 'dict[str, str]', source_ids: 'tuple[str, ...]', qualified_review_requirement: 'str') -> None"
+      "signature": "(schema_version: 'str', code_edition: 'str', units: 'dict[str, str]', service_load_combination_id: 'str', service_load_basis: 'str', service_load_origin: 'str', factored_load_combination_id: 'str', allowable_soil_pressure_source_reference: 'str', allowable_soil_pressure_origin: 'str', allowable_soil_pressure_is_externally_approved: 'bool', allowable_soil_pressure_role: 'str', loaded_area_A2_basis: 'str', effective_supporting_area_basis: 'str', effective_supporting_area_origin: 'str', effective_supporting_area_is_approved: 'bool', core_function_ids: 'tuple[str, ...]', clause_bases: 'dict[str, str]', source_ids: 'tuple[str, ...]', arithmetic_input_hash: 'str', assumption_identity_hash: 'str', library_content_identity: 'str', replay_receipt_hash: 'str', qualified_review_requirement: 'str') -> None"
     },
     {
       "name": "FootingPunchingResult",

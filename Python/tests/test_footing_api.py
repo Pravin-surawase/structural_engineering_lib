@@ -21,10 +21,12 @@ def _input(**overrides: object) -> ConcentricIsolatedFootingInput:
         "service_axial_load_kN": 1_000.0,
         "service_load_combination_id": "SLS-GRAVITY-01",
         "service_load_basis": "includes_footing_self_weight_and_overburden",
+        "service_load_origin": "provided",
         "factored_axial_load_kN": 1_500.0,
         "factored_load_combination_id": "ULS-GRAVITY-01",
         "allowable_soil_pressure_kPa": 200.0,
         "allowable_soil_pressure_source_reference": "GEO-REPORT-001",
+        "allowable_soil_pressure_origin": "verified",
         "allowable_soil_pressure_is_externally_approved": True,
         "footing_type": FootingType.ISOLATED_RECTANGULAR,
         "column_L_mm": 400.0,
@@ -39,6 +41,7 @@ def _input(**overrides: object) -> ConcentricIsolatedFootingInput:
         "steel_fy_nmm2": 415.0,
         "effective_supporting_area_A1_mm2": 480_000.0,
         "effective_supporting_area_basis": "largest_frustum_1v_2h",
+        "effective_supporting_area_origin": "provided",
         "effective_supporting_area_is_approved": True,
         "dowel_count": 8,
         "dowel_diameter_mm": 25.0,
@@ -232,6 +235,15 @@ def test_rectangular_sizing_and_provenance_keep_load_and_soil_roles_explicit():
     assert result.provenance.allowable_soil_pressure_source_reference == (
         "GEO-REPORT-001"
     )
+    assert result.provenance.service_load_origin == "provided"
+    assert result.provenance.allowable_soil_pressure_origin == "verified"
+    assert result.provenance.allowable_soil_pressure_is_externally_approved is True
+    assert result.provenance.effective_supporting_area_origin == "provided"
+    assert result.provenance.effective_supporting_area_is_approved is True
+    assert len(result.provenance.arithmetic_input_hash) == 64
+    assert len(result.provenance.assumption_identity_hash) == 64
+    assert len(result.provenance.library_content_identity) == 64
+    assert len(result.provenance.replay_receipt_hash) == 64
     assert "no SBC derivation" in result.provenance.allowable_soil_pressure_role
     assert result.provenance.clause_bases["flexure"] == (
         "Cl. 34.2.3.1 and Cl. 34.3.1; factored axial action and "
@@ -244,6 +256,23 @@ def test_rectangular_sizing_and_provenance_keep_load_and_soil_roles_explicit():
         "evidence while detailing is pending"
     )
     assert result.provenance.qualified_review_requirement
+
+
+def test_approved_assumed_basis_stays_assumed_and_holds_result():
+    request = _detailed_benchmark_input(
+        allowable_soil_pressure_origin="assumed",
+        allowable_soil_pressure_is_externally_approved=True,
+    )
+
+    result = design_concentric_isolated_footing_is456(request)
+
+    assert result.provenance.allowable_soil_pressure_origin == "assumed"
+    assert result.provenance.allowable_soil_pressure_is_externally_approved is True
+    assert result.status == "HOLD"
+    assert (
+        "ASSUMED_BASIS_REQUIRES_VERIFICATION:allowable_soil_pressure_origin"
+        in result.hold_reasons
+    )
 
 
 def test_depth_loop_selects_first_passing_uniform_depth_and_retains_history():

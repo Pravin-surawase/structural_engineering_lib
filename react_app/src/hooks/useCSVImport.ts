@@ -17,7 +17,6 @@ import { applyMaterialOverrides, type MaterialOverrides } from "../utils/materia
 import { toast } from "../components/ui/Toast";
 import type { BeamCSVRow } from '../types/csv';
 import { unwrapResponse } from '../api/client';
-import type { EvidenceEnvelope } from '../api/client';
 
 import { API_BASE_URL } from '../config';
 
@@ -33,23 +32,27 @@ export interface ImportedBeam {
   mu_knm: number;
   vu_kn: number;
   cover_mm: number;
+  source_metadata?: Record<string, unknown>;
   unit_source?: string;
 }
 
-/**
- * Payload for batch design API - matches backend's BeamRow model.
- */
+/** Complete canonical payload for the strict project-beam command. */
 export interface BeamDesignPayload {
-  id: string;
-  story?: string | null;
-  width_mm: number;
-  depth_mm: number;
-  span_mm: number;
+  schema_version: 'project-beam-design/v1';
+  member_id: string;
+  b_mm: number;
+  D_mm: number;
+  d_mm?: number;
+  effective_depth_basis?: {
+    clear_cover_mm: number;
+    stirrup_diameter_mm: number;
+    tension_bar_diameter_mm: number;
+  };
   mu_knm: number;
   vu_kn: number;
-  fck_mpa: number;
-  fy_mpa: number;
-  cover_mm: number;
+  fck_nmm2: number;
+  fy_nmm2: number;
+  source_metadata?: Record<string, unknown>;
 }
 
 export interface DesignedBeam extends ImportedBeam {
@@ -73,6 +76,8 @@ interface CSVImportResponse {
   beams: ImportedBeam[];
   format_detected: string;
   warnings: string[];
+  normalization_ledger: Record<string, unknown>;
+  issues: Array<Record<string, unknown>>;
 }
 
 interface DualCSVImportResponse {
@@ -86,25 +91,10 @@ interface DualCSVImportResponse {
   unmatched_forces: string[];
 }
 
-interface BatchDesignResult {
-  beam_id: string;
-  success: boolean;
-  ast_required: number;
-  asc_required: number;
-  stirrup_spacing: number;
-  is_safe: boolean;
-  utilization_ratio: number;
-  error: string | null;
-  evidence: EvidenceEnvelope | null;
-}
-
 interface BatchDesignResponse {
-  success: boolean;
-  message: string;
-  total: number;
-  passed: number;
-  failed: number;
-  results: BatchDesignResult[];
+  schema_version: 'project-beam-result/v1';
+  members: Array<Record<string, unknown>>;
+  summary: Record<string, unknown>;
 }
 
 /**
@@ -112,10 +102,27 @@ interface BatchDesignResponse {
  */
 async function importCSVFile(
   file: File,
-  format: string = "auto"
+  format: string = "auto",
+  overrides?: MaterialOverrides,
 ): Promise<CSVImportResponse> {
   const formData = new FormData();
   formData.append("file", file);
+  if (
+    overrides?.fck === undefined
+    || overrides.fy === undefined
+    || overrides.cover === undefined
+    || overrides.stirrupDiameter === undefined
+    || overrides.tensionBarDiameter === undefined
+  ) {
+    throw new Error(
+      "CSV import requires explicit concrete, steel, cover, stirrup, and tension-bar values."
+    );
+  }
+  formData.append("fck_mpa", String(overrides.fck));
+  formData.append("fy_mpa", String(overrides.fy));
+  formData.append("cover_mm", String(overrides.cover));
+  formData.append("stirrup_diameter_mm", String(overrides.stirrupDiameter));
+  formData.append("tension_bar_diameter_mm", String(overrides.tensionBarDiameter));
 
   const params = new URLSearchParams();
   params.set("format_hint", format);
@@ -144,14 +151,33 @@ async function importCSVFile(
  */
 async function importCSVText(
   text: string,
-  format: string = "auto"
+  format: string = "auto",
+  overrides?: MaterialOverrides,
 ): Promise<CSVImportResponse> {
+  if (
+    overrides?.fck === undefined
+    || overrides.fy === undefined
+    || overrides.cover === undefined
+    || overrides.stirrupDiameter === undefined
+    || overrides.tensionBarDiameter === undefined
+  ) {
+    throw new Error(
+      "CSV text import requires explicit concrete, steel, cover, stirrup, and tension-bar values."
+    );
+  }
+  const params = new URLSearchParams({
+    csv_text: text,
+    format_hint: format,
+    fck_mpa: String(overrides.fck),
+    fy_mpa: String(overrides.fy),
+    cover_mm: String(overrides.cover),
+    stirrup_diameter_mm: String(overrides.stirrupDiameter),
+    tension_bar_diameter_mm: String(overrides.tensionBarDiameter),
+  });
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}/api/v1/import/csv/text`, {
+    response = await fetch(`${API_BASE_URL}/api/v1/import/csv/text?${params.toString()}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text, format }),
     });
   } catch {
     throw new Error("Cannot connect to backend server. Start it with: ./run.sh dev");
@@ -171,11 +197,28 @@ async function importCSVText(
 async function importDualCSVFiles(
   geometryFile: File,
   forcesFile: File,
-  format: string = "auto"
+  format: string = "auto",
+  overrides?: MaterialOverrides,
 ): Promise<DualCSVImportResponse> {
   const formData = new FormData();
   formData.append("geometry_file", geometryFile);
   formData.append("forces_file", forcesFile);
+  if (
+    overrides?.fck === undefined
+    || overrides.fy === undefined
+    || overrides.cover === undefined
+    || overrides.stirrupDiameter === undefined
+    || overrides.tensionBarDiameter === undefined
+  ) {
+    throw new Error(
+      "Dual CSV import requires explicit concrete, steel, cover, stirrup, and tension-bar values."
+    );
+  }
+  formData.append("fck_mpa", String(overrides.fck));
+  formData.append("fy_mpa", String(overrides.fy));
+  formData.append("cover_mm", String(overrides.cover));
+  formData.append("stirrup_diameter_mm", String(overrides.stirrupDiameter));
+  formData.append("tension_bar_diameter_mm", String(overrides.tensionBarDiameter));
   const params = new URLSearchParams();
   if (format) {
     params.set("format_hint", format);
@@ -210,10 +253,10 @@ async function batchDesign(
 ): Promise<BatchDesignResponse> {
   let response: Response;
   try {
-    response = await fetch(`${API_BASE_URL}/api/v1/import/batch-design`, {
+    response = await fetch(`${API_BASE_URL}/api/v1/import/project-beams`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(beams),  // API expects array directly, not wrapped
+      body: JSON.stringify(beams),
     });
   } catch {
     throw new Error("Cannot connect to backend server. Start it with: ./run.sh dev");
@@ -249,8 +292,8 @@ export function useCSVFileImport() {
   const { setBeams, setImporting, setError } = useImportedBeamsStore();
 
   const mutation = useMutation({
-    mutationFn: ({ file, format }: { file: File; format?: string; overrides?: MaterialOverrides }) =>
-      importCSVFile(file, format),
+    mutationFn: ({ file, format, overrides }: { file: File; format?: string; overrides?: MaterialOverrides }) =>
+      importCSVFile(file, format, overrides),
     onMutate: () => {
       setImporting(true);
       setError(null);
@@ -272,6 +315,9 @@ export function useCSVFileImport() {
           Vu_start: b.vu_kn,
           Vu_end: b.vu_kn,
           cover: b.cover_mm,
+          stirrup_diameter_mm: variables.overrides?.stirrupDiameter,
+          tension_bar_diameter_mm: variables.overrides?.tensionBarDiameter,
+          source_metadata: b.source_metadata,
         }));
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
         setBeams(overrideBeams);
@@ -313,8 +359,8 @@ export function useCSVTextImport() {
   const { setBeams, setImporting, setError } = useImportedBeamsStore();
 
   const mutation = useMutation({
-    mutationFn: ({ text, format }: { text: string; format?: string; overrides?: MaterialOverrides }) =>
-      importCSVText(text, format),
+    mutationFn: ({ text, format, overrides }: { text: string; format?: string; overrides?: MaterialOverrides }) =>
+      importCSVText(text, format, overrides),
     onMutate: () => {
       setImporting(true);
       setError(null);
@@ -335,6 +381,9 @@ export function useCSVTextImport() {
           Vu_start: b.vu_kn,
           Vu_end: b.vu_kn,
           cover: b.cover_mm,
+          stirrup_diameter_mm: variables.overrides?.stirrupDiameter,
+          tension_bar_diameter_mm: variables.overrides?.tensionBarDiameter,
+          source_metadata: b.source_metadata,
         }));
         const overrideBeams = applyMaterialOverrides(beams, variables?.overrides);
         setBeams(overrideBeams);
@@ -369,12 +418,13 @@ export function useDualCSVImport() {
       geometryFile,
       forcesFile,
       format,
+      overrides,
     }: {
       geometryFile: File;
       forcesFile: File;
       format?: string;
       overrides?: MaterialOverrides;
-    }) => importDualCSVFiles(geometryFile, forcesFile, format),
+    }) => importDualCSVFiles(geometryFile, forcesFile, format, overrides),
     onMutate: () => {
       setImporting(true);
       setError(null);
@@ -395,6 +445,9 @@ export function useDualCSVImport() {
           Vu_start: b.vu_kn,
           Vu_end: b.vu_kn,
           cover: b.cover_mm,
+          stirrup_diameter_mm: variables.overrides?.stirrupDiameter,
+          tension_bar_diameter_mm: variables.overrides?.tensionBarDiameter,
+          source_metadata: b.source_metadata,
           point1: b.point1,
           point2: b.point2,
         }));
