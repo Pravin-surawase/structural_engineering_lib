@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 135,
+  "file_count": 136,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -1000,6 +1000,14 @@
       "content_hash": "1f0c1c3d968b"
     },
     {
+      "name": "india-2-foundation-raft-g0-hold-evidence.md",
+      "type": "documentation",
+      "size_lines": 187,
+      "last_updated": "2026-08-16",
+      "description": "implementation files. The frozen candidate remains one regular rectangular constant-depth rigid raft",
+      "content_hash": "2051564fc5cb"
+    },
+    {
       "name": "india-2-foundation-strap-a-analysis-evidence.md",
       "type": "documentation",
       "size_lines": 56,
@@ -1520,7 +1528,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "45619fb11b40"
+      "content_hash": "c309c424039a"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -1639,5 +1647,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "63a5bb46d5978d6a"
+  "content_hash": "45ca91a78a675526"
 }

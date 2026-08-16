@@ -2577,7 +2577,7 @@
     {
       "name": "test_indian_code_manifest.py",
       "type": "python",
-      "size_lines": 210,
+      "size_lines": 228,
       "last_updated": "2026-08-16",
       "description": "INDIA-0 truth-manifest and reporting contract tests.",
       "functions": [
@@ -2589,6 +2589,9 @@
         },
         {
           "name": "test_pile_cap_g0_hold_is_machine_visible"
+        },
+        {
+          "name": "test_raft_g0_hold_is_machine_visible"
         },
         {
           "name": "test_is456_supported_families_are_generated_from_runtime_registry"
@@ -2613,7 +2616,7 @@
         "REPO_ROOT",
         "SCRIPTS_ROOT"
       ],
-      "content_hash": "312a855ffd52"
+      "content_hash": "99d06ffeb572"
     },
     {
       "name": "test_inputs.py",
@@ -4765,5 +4768,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "133df2dea77d8596"
+  "content_hash": "a6c765695dc16a1f"
 }

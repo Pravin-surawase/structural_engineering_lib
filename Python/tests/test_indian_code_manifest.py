@@ -82,6 +82,24 @@ def test_pile_cap_g0_hold_is_machine_visible() -> None:
     ]
 
 
+def test_raft_g0_hold_is_machine_visible() -> None:
+    manifest = build_manifest()
+    is456 = _standard(manifest, "IS456:2000")
+    raft = next(
+        item
+        for item in is456["capability_families"]
+        if item["family"] == "raft_foundation"
+    )
+
+    assert raft["scope_status"] == "HELD"
+    assert raft["implementation_status"] == "NOT_IMPLEMENTED"
+    assert raft["workflows"] == []
+    assert any("controlled IS 2950 source" in item for item in raft["limitations"])
+    assert raft["evidence"] == [
+        "docs/verification/india-2-foundation-raft-g0-hold-evidence.md"
+    ]
+
+
 def test_is456_supported_families_are_generated_from_runtime_registry() -> None:
     manifest = build_manifest()
     is456 = _standard(manifest, "IS456:2000")

@@ -5,6 +5,91 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2 Foundation Raft G0
+
+**Agent:** Codex (`structural-engineer`, sole writer)
+
+**Branch:** `codex/india-2-foundation-raft-g0` from freshly fetched
+`origin/main = def0b493e33fa566fd3f23bf166287fcda6169d6`, tree
+`7da91c66143e83933a88bb9a4d5396bede89cf6d`
+
+**Git handoff receipt:**
+`docs/verification/india-2-foundation-raft-g0-git-handoff-receipt.json`
+
+**Focus:** Decide whether exactly one regular rectangular rigid raft can be
+source-bound and independently benchmarked. Publish `HOLD` with exact
+reactivation conditions if either prerequisite is absent. Do not create
+calculation, service, API, React, release, cleanup, or retirement work.
+
+### Summary
+
+- Verified the exact fresh base, `source_bound=true`, `READY_LOCAL`, no Git
+  operation marker, and a clean one-writer linked worktree before editing.
+- Reconfirmed the controlled IS 456 source hashes and found no retained IS
+  2950 or other raft companion source.
+- Verified official BIS discovery: IS 2950 (Part 1):1981 is active, reaffirmed
+  2023 with one amendment, and its preview covers conventional rigid and
+  simplified flexible methods for mainly vertical/evenly distributed loads.
+- Verified that IISc/NPTEL describes a relevant conventional rigid-mat model,
+  but neither that chapter nor the located question set supplies a complete,
+  independently replayable structural raft benchmark.
+- Returned `HOLD`, retained the regular rigid-raft candidate, and created no
+  numeric design result or raft calculation/publication file.
+- Made the hold machine-visible in the generated manifest with a direct
+  regression and reconciled the task board/plans/brief to name cumulative
+  `INDIA-2-CLOSEOUT` next.
+
+### Issues encountered
+
+- The required controlled IS 2950 source/amendment binding and structural raft
+  benchmark were absent, so the conventional rigid candidate could not be
+  activated or verified through strength/detailing.
+- The public material initially appeared promising because it included both a
+  conventional analysis procedure and a raft-design question, but it did not
+  include the complete worked structural result set required by G0.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the repository-controlled source registry contains
+  only IS 456:2000 through Amendment 5 and Amendment 6. The BIS catalogue and
+  preview prove IS 2950 discovery/scope but are not a committed authenticated
+  source/amendment identity. Resolution: publish `HOLD`, preserve
+  `HELD / NOT_IMPLEMENTED`, and require the exact standard/amendment hashes
+  before reactivation. Evidence: the decision record binds current official
+  discovery separately from the controlled-source inventory.
+- Confirmed root cause: the NPTEL chapter defines a rigid planar-pressure/
+  whole-mat method, while the question set asks for a raft design without an
+  accepted solution; neither closes the requested pressure, equilibrium,
+  orthogonal actions, flexure, shear, reinforcement, or anchorage values.
+  Resolution: retain the candidate but treat conceptual procedure and unsolved
+  prompts as non-benchmarks. Evidence: the G0 record lists the missing
+  intermediates and a five-part reactivation contract.
+
+### Validation
+
+- `./scripts/python_runtime.sh -m pytest Python/tests/test_indian_code_manifest.py -q`:
+  `10 passed`.
+- `./scripts/python_runtime.sh scripts/generate_indian_code_manifest.py --check`:
+  current; raft is `HELD / NOT_IMPLEMENTED`, has no workflow, and cites the G0
+  hold evidence.
+- `./scripts/python_runtime.sh scripts/check_docs.py --frontmatter --json`:
+  345 scanned, 285 with frontmatter, 60 permitted legacy records, zero invalid.
+- `./scripts/python_runtime.sh scripts/check_links.py`: 1,277 internal links,
+  zero broken.
+- `./run.sh efficiency check`: pass.
+- Black and Ruff on the two owned Python files: pass.
+- `./run.sh parity`: 13 supported / 8 held, 81/81 endpoints directly tested,
+  and 13/13 React hooks connected.
+- `./run.sh check --quick`: `10/10` pass.
+
+### Timing
+
+- Orientation/source/Git inspection and public evidence verification:
+  approximately 3 minutes.
+- Decision record, truth reconciliation, and focused validation before
+  candidate closeout: approximately 2 minutes.
+- Hosted CI wait, closeout, and total elapsed: record after merge.
+
 ## 2026-08-16 — Session: INDIA-2 Foundation Pile-Cap G0
 
 **Agent:** Codex (`structural-engineer`, sole writer)

@@ -304,9 +304,12 @@
           "claim": "Raft-foundation design is not implemented.",
           "workflows": [],
           "limitations": [
-            "Soil-structure interaction remains outside the supported subset."
+            "Soil-structure interaction remains outside the supported subset.",
+            "INDIA-2 raft G0 is held until a controlled IS 2950 source and an independently replayable structural benchmark are bound."
           ],
-          "evidence": [],
+          "evidence": [
+            "docs/verification/india-2-foundation-raft-g0-hold-evidence.md"
+          ],
           "qualified_review_required": true
         },
         {

@@ -118,7 +118,11 @@ _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
             "family": "raft_foundation",
             "claim": "Raft-foundation design is not implemented.",
             "limitations": [
-                "Soil-structure interaction remains outside the supported subset."
+                "Soil-structure interaction remains outside the supported subset.",
+                "INDIA-2 raft G0 is held until a controlled IS 2950 source and an independently replayable structural benchmark are bound.",
+            ],
+            "evidence": [
+                "docs/verification/india-2-foundation-raft-g0-hold-evidence.md"
             ],
         },
         {
