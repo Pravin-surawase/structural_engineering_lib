@@ -1,0 +1,167 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T15:42:52Z",
+      "query_status": "OK",
+      "reference": "task:INDIA-2:user-request-continue-and-finish-india-2",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T15:42:52Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/india-2-foundation-raft-g0",
+      "head_sha": "f44e72a5c964574e3fc40e8097faa11ecbbd76be",
+      "task_id": "INDIA-2-FOUNDATION-RAFT-G0"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "de26607708a9352f16208e44b3e1ecf40ca4c8b9cd046af50a19899654f8c3d5",
+    "state": {
+      "branch": "codex/india-2-foundation-raft-g0",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "def0b493e33fa566fd3f23bf166287fcda6169d6",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 84.427,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-raft-g0",
+      "head_sha": "f44e72a5c964574e3fc40e8097faa11ecbbd76be",
+      "hold_reasons": [
+        "changed paths: 1"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T15:43:17.330150+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-raft-g0",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 1,
+        "modified_paths": [],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/india-2-foundation-raft-g0-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "def0b493e33fa566fd3f23bf166287fcda6169d6",
+        "status": "ahead"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-raft-g0"
+    }
+  },
+  "local_state_receipt_hash": "sha256:de26607708a9352f16208e44b3e1ecf40ca4c8b9cd046af50a19899654f8c3d5",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T15:43:17.330355+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T15:42:52Z",
+    "owner": "Main Agent under user instruction to preserve retained Git lanes",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/codes/is456/raft_foundation",
+      "Python/structural_lib/services/raft_foundation_api.py",
+      "fastapi_app",
+      "react_app",
+      "private_sources",
+      "pyproject.toml",
+      "CHANGELOG.md"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "docs/verification/india-2-foundation-raft-g0-hold-evidence.md",
+      "docs/verification/india-2-foundation-raft-g0-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "Python/tests/test_indian_code_manifest.py",
+      "Python/tests/index.json",
+      "Python/tests/index.md",
+      "scripts/_lib/indian_code_manifest.py",
+      "docs/verification/indian-code-capability-coverage.json",
+      "docs/verification/index.json",
+      "docs/verification/index.md",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+      "docs/planning/india-2-remaining-is456-elements-plan.md",
+      "docs/planning/indian-code-completion-plan.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md"
+    ],
+    "task_id": "INDIA-2-FOUNDATION-RAFT-G0"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

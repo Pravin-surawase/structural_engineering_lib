@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 136,
+  "file_count": 138,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -1000,6 +1000,36 @@
       "content_hash": "1f0c1c3d968b"
     },
     {
+      "name": "india-2-foundation-raft-g0-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "d4e7bfe19e40"
+    },
+    {
+      "name": "india-2-foundation-raft-g0-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "42690f0c7670"
+    },
+    {
       "name": "india-2-foundation-raft-g0-hold-evidence.md",
       "type": "documentation",
       "size_lines": 187,
@@ -1647,5 +1677,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "45ca91a78a675526"
+  "content_hash": "84088c760305b492"
 }

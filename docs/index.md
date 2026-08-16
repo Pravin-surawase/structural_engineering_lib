@@ -48,4 +48,4 @@ Guides, references, evidence, and contributor material for the
 | [reference/](reference/) | 1792 |  |
 | [research/](research/) | 36 |  |
 | [specs/](specs/) | 6 | Technical specifications for data formats and schemas. |
-| [verification/](verification/) | 138 | Benchmark examples and verification packs for validating library calculations ag |
+| [verification/](verification/) | 140 | Benchmark examples and verification packs for validating library calculations ag |
