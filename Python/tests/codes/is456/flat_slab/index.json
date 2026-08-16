@@ -1,0 +1,92 @@
+{
+  "folder": "Python/tests/codes/is456/flat_slab",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-08-16",
+  "file_count": 2,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 2,
+      "last_updated": "2026-08-16",
+      "description": "Focused tests for the bounded IS 456 flat-slab package.",
+      "content_hash": "9dd87ba2e4c2"
+    },
+    {
+      "name": "test_geometry.py",
+      "type": "python",
+      "size_lines": 290,
+      "last_updated": "2026-08-16",
+      "description": "INDIA-2-FLAT-A benchmark and fail-closed geometry tests.",
+      "functions": [
+        {
+          "name": "test_hand_benchmark_geometry_and_strip_widths_in_both_directions"
+        },
+        {
+          "name": "test_minimum_clear_span_component_can_govern"
+        },
+        {
+          "name": "test_invalid_geometry_dimensions_fail_closed",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_direct_design_requires_at_least_three_spans",
+          "params": [
+            "field"
+          ]
+        },
+        {
+          "name": "test_square_panel_and_square_column_boundaries_fail_closed"
+        },
+        {
+          "name": "test_depth_and_method_boundaries_fail_closed"
+        },
+        {
+          "name": "test_each_topology_boundary_is_explicit",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_geometry_reference_is_required"
+        },
+        {
+          "name": "test_material_contract_accepts_only_frozen_grades_and_bar_type"
+        },
+        {
+          "name": "test_gravity_load_contract_matches_benchmark_and_half_ratio_boundary"
+        },
+        {
+          "name": "test_each_load_boundary_is_explicit",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_load_dimensions_and_reference_fail_closed"
+        },
+        {
+          "name": "test_composed_input_types_fail_closed",
+          "params": [
+            "field",
+            "value",
+            "message"
+          ]
+        },
+        {
+          "name": "test_resolver_type_clause_and_source_provenance"
+        }
+      ],
+      "content_hash": "5d229ea12de2"
+    }
+  ],
+  "subfolders": [],
+  "has_init": true,
+  "content_hash": "8c8c1e965bf6d643"
+}

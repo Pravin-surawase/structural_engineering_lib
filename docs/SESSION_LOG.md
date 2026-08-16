@@ -5,6 +5,99 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FLAT-A Geometry and Eligibility
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-flat-a` from integrated FLAT-G0 main at
+`d5cad72a1a4ce36c44520a0e9f5dd6a151b93eb6`
+
+**Git handoff receipt:** `docs/verification/india-2-flat-a-git-handoff-receipt.json`
+
+**Focus:** Implement only the G0-frozen typed grid/panel/material/load,
+direct-design eligibility, clear-span, and strip-definition foundation.
+
+### Summary
+
+- Added a separate pure `flat_slab` package so the new column-supported panel
+  case cannot reuse or inflate the existing beam/wall-supported slab claim.
+- Added fail-closed geometry, material, and approved-basis gravity-load
+  contracts plus both directional clear-span and column/middle-strip results.
+- Registered only the required Clause 31 identifiers and kept flat slab
+  `HELD`/`NOT_IMPLEMENTED` until the later publication packet.
+
+### Issues encountered
+
+- The first combined test command guessed a nonexistent
+  `Python/tests/test_traceability.py` path and stopped before collection.
+- After correcting the test path, the first combined run reported three
+  deterministic-contract failures: the clause count remained 143 after nine
+  new identifiers, the new records used a category outside the closed registry
+  vocabulary, and the committed generated manifest was stale.
+- The first closeout command chain stopped after `session end` reported the
+  expected task-owned uncommitted packet and three index-bearing folders.
+- The first connected-GitHub PR creation call was rejected before mutation
+  because it supplied separate owner/repository fields instead of the
+  connector's required `repository_full_name` field.
+
+### Root causes and resolutions
+
+- Root cause: the traceability test filename was inferred instead of
+  discovered. Resolution: use `rg --files Python/tests` to select the
+  maintained `Python/tests/test_clause_traceability.py`; the corrected focused
+  selection runs normally.
+- Root cause: `clauses.json` deliberately binds identifier count and categories
+  as explicit metadata, and manifest registration totals are generated from
+  that exact registry. Resolution: update the count from 143 to 152, use the
+  existing `slabs` category, add direct flat-slab coverage assertions, and
+  regenerate the deterministic manifest. Evidence: all 131 combined geometry,
+  clause, traceability, and manifest tests pass.
+- Root cause: `session end` is intentionally non-zero while a pre-commit packet
+  remains dirty, so later commands joined with `&&` did not run. Resolution:
+  treat its successful handoff, session-log, receipt, link, and governance
+  checks as the closeout result; regenerate the handoff-mutated indexes and run
+  the remaining final checks separately before commit.
+- Root cause: the connector schema was inferred from an older call shape.
+  Resolution: inspect the live callable metadata in `ALL_TOOLS`, bind the
+  repository as `Pravin-surawase/structural_engineering_lib`, and retry without
+  changing the already-pushed source commit.
+
+### Evidence
+
+- The direct 33-test package reproduces 5500 mm governing clear span and
+  3000/3000 mm column/middle strips in both directions for the frozen benchmark.
+- Large-column, exact three-span, exact live/dead `0.5`, every topology/load
+  flag, nested type, non-finite input, and provenance boundaries are directly
+  tested.
+- The combined 131-test selection passes with 152 identifier-only clause
+  records and current 10-supported/11-held manifest truth.
+- Black, Ruff, mypy, and Bandit pass on the changed executable paths.
+- Architecture validation reports zero violations across 180 files; import
+  validation reports zero broken imports across 612 Python files.
+- All 1,196 internal links are valid, all seven touched folder indexes are
+  current, token efficiency passes, and the quick repository gate passes 10/10.
+- Broad Python and 30-check gates remain deferred to whole-INDIA-2 closeout;
+  no public workflow, professional approval, release, or cleanup is included.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: the first combined pytest command named nonexistent
+  `Python/tests/test_traceability.py` → `rg --files` identified the maintained
+  `Python/tests/test_clause_traceability.py`, and the corrected selection ran.
+- ⚠️ TERMINAL ISSUE: the corrected first combined test run failed the clause
+  count, category vocabulary, and generated-manifest contracts → updated the
+  exact registry metadata, used category `slabs`, regenerated the manifest,
+  and passed all 131 tests.
+- ⚠️ TERMINAL ISSUE: pre-commit `session end` returned non-zero for the expected
+  dirty task packet and stopped the chained final checks → retained its passing
+  handoff/governance result and ran the remaining index, link, quick, and diff
+  checks separately.
+- ⚠️ TERMINAL ISSUE: the first connected PR-creation call failed schema
+  validation for missing `repository_full_name` → inspected the live tool
+  declaration and retried with the required full repository identity.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-FLAT-G0 Scope and Benchmark Decision
 
 **Agent:** Codex (`structural-engineer`, sole writer; one bounded read-only

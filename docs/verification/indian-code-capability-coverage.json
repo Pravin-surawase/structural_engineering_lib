@@ -288,11 +288,11 @@
         }
       ],
       "registration_summary": {
-        "known_references": 142,
-        "registered_known_references": 74,
-        "metadata_only_references": 68,
+        "known_references": 151,
+        "registered_known_references": 78,
+        "metadata_only_references": 73,
         "registration_only_references": 0,
-        "registration_pct": 52.1
+        "registration_pct": 51.7
       },
       "references": [
         {
@@ -776,6 +776,95 @@
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31",
+          "reference": "31",
+          "reference_type": "clause",
+          "title": "Flat Slabs",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.1",
+          "reference": "31.1",
+          "reference_type": "clause",
+          "title": "Flat Slabs - General",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.1.1",
+          "reference": "31.1.1",
+          "reference_type": "clause",
+          "title": "Column Strip, Middle Strip and Panel Definitions",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.geometry.resolve_regular_interior_flat_slab_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31.2",
+          "reference": "31.2",
+          "reference_type": "clause",
+          "title": "Flat Slab Proportioning",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.2.1",
+          "reference": "31.2.1",
+          "reference_type": "clause",
+          "title": "Thickness of Flat Slab",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.geometry.resolve_regular_interior_flat_slab_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31.3",
+          "reference": "31.3",
+          "reference_type": "clause",
+          "title": "Determination of Flat Slab Bending Moment",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.3.1",
+          "reference": "31.3.1",
+          "reference_type": "clause",
+          "title": "Methods of Flat Slab Analysis and Design",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.geometry.resolve_regular_interior_flat_slab_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31.4",
+          "reference": "31.4",
+          "reference_type": "clause",
+          "title": "Direct Design Method",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.4.1",
+          "reference": "31.4.1",
+          "reference_type": "clause",
+          "title": "Direct Design Method Limitations",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.geometry.resolve_regular_interior_flat_slab_geometry"
           ]
         },
         {

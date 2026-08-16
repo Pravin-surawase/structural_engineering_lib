@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 67,
+  "file_count": 70,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -427,6 +427,44 @@
       "content_hash": "300737e95db2"
     },
     {
+      "name": "india-2-flat-a-geometry-evidence.md",
+      "type": "documentation",
+      "size_lines": 92,
+      "last_updated": "2026-08-16",
+      "description": "FLAT-A implements the typed pure-math foundation for the G0-approved case: one solid square interior panel in an equal-span orthogonal column grid, using the",
+      "content_hash": "900cb6f84a05"
+    },
+    {
+      "name": "india-2-flat-a-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "cc730ae93c28"
+    },
+    {
+      "name": "india-2-flat-a-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "2bea10221b15"
+    },
+    {
       "name": "india-2-flat-g0-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -678,7 +716,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "a293d786c69f"
+      "content_hash": "6a6e2a314b1f"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -767,5 +805,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "c9ccca646b16fde1"
+  "content_hash": "68035ac4fceacce2"
 }

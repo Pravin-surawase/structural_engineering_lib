@@ -243,7 +243,7 @@ collapse, seismic diaphragm design, and cases outside the selected topology.
 Activated packets:
 
 1. G0 scope/source/benchmark decision — complete GO.
-2. A panel geometry, eligibility, and strip definitions.
+2. A panel geometry, eligibility, and strip definitions — implemented.
 3. B bounded gravity analysis and moment distribution.
 4. C flexure, serviceability, and detailing checks.
 5. D column-punching checks and fail-closed boundaries.
@@ -317,9 +317,9 @@ authorized programs.
 
 ## 9. Exact next action
 
-Implement `INDIA-2-FLAT-A` next from the G0-frozen equal-span square interior
-case. Do not expand the topology while adding typed grid/panel/material/load,
-direct-design eligibility, clear-span, and strip contracts. The owner's
+Implement `INDIA-2-FLAT-B` next from the integrated FLAT-A contracts. Do not
+expand the topology while adding the total static moment and bounded interior
+negative/positive and column/middle-strip distribution in both directions. The owner's
 2026-08-16 request activates the remaining INDIA-2 families subject to each
 family's own G0 returning GO. No G0 may be bypassed, and a HOLD remains a
 truthful non-implementation outcome.
