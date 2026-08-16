@@ -67,6 +67,54 @@ dowels, and 900 mm anchorage/development. It returns `PASS` with `125 kN/m2`
 net pressure, `3239.9999999999995 / 3769.9111843077517 mm2` governing-required/
 provided top steel, `0.24665178571428573 / 1.3693063937629153 N/mm2` punching
 stress/capacity, and `1800 / 1884.9555921538758 mm2` required/provided dowels.
+The complete load, carrier, bearing, topology, approval, material, detailing,
+supporting-area, and transfer contract is committed as the
+[`INDIA-2-COMBINED-ACCEPTANCE-NONFROZEN-01` replay fixture](india-2-foundation-combined-acceptance-nonfrozen-replay.json).
+
+Run the fixture independently from the repository root:
+
+```bash
+./scripts/python_runtime.sh - <<'PY'
+import json
+from pathlib import Path
+
+from structural_lib.services.combined_footing_api import (
+    build_symmetric_combined_footing_design_input,
+    design_symmetric_combined_footing_is456,
+)
+
+fixture = Path(
+    "docs/verification/india-2-foundation-combined-acceptance-nonfrozen-replay.json"
+)
+request = build_symmetric_combined_footing_design_input(
+    json.loads(fixture.read_text(encoding="utf-8"))
+)
+result = design_symmetric_combined_footing_is456(request)
+strength = result.strength
+observed = (
+    result.status.value,
+    strength.actions.net_factored_structural_pressure_kn_per_m2,
+    strength.top_longitudinal_flexure.governing_steel_required_mm2,
+    strength.top_longitudinal_flexure.provided_steel_area_mm2,
+    strength.punching[0].nominal_punching_stress_nmm2,
+    strength.punching[0].concrete_capacity_nmm2,
+    strength.load_transfer[0].required_transfer_steel_area_mm2,
+    strength.load_transfer[0].provided_transfer_steel_area_mm2,
+)
+expected = (
+    "PASS",
+    125.0,
+    3239.9999999999995,
+    3769.9111843077517,
+    0.24665178571428573,
+    1.3693063937629153,
+    1800.0,
+    1884.9555921538758,
+)
+assert observed == expected, (observed, expected)
+print(observed)
+PY
+```
 
 Focused tests prove that inadequate bearing, reinforcement/detailing,
 one-way shear, concrete-only punching, and column-to-footing transfer remain
@@ -88,6 +136,12 @@ exact field is `required_transfer_steel_area_mm2`. The corrected input returns
 the independently recorded `PASS` quantities above; no kernel change was
 needed.
 
+The first immutable acceptance audit then found that the corrected output was
+still not independently reproducible from the committed packet because its
+receipt summarized only geometry, reinforcement, dowels, and anchorage. The
+complete typed JSON fixture and executable replay above now bind every input
+field and exact expected output; the repair changes evidence only.
+
 The maintained plans still projected D as a candidate or acceptance as the next
 packet after D had merged. Their status was intentionally not reconciled inside
 D before its exact integration receipt existed. This acceptance packet binds
@@ -107,7 +161,7 @@ moves the next action to the separate decision-only
   families; all 80 endpoints have direct tests and actionable cross-layer
   parity remains 100 percent.
 - Architecture reports 0 violations across 193 files. Import validation reports
-  0 broken imports across 635 Python files and 2,018 internal imports. All 1,256
+  0 broken imports across 635 Python files and 2,018 internal imports. All 1,258
   internal links and touched indexes pass.
 - Black, Ruff, and focused mypy pass for the two touched Python files. Source
   binding, token efficiency, and the 10/10 quick repository gate pass.

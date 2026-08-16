@@ -53,6 +53,12 @@ behavior. Strap, pile-cap, raft, React, release, broad Python, and the full
   evidence and updated finish plan.
 - A read-only stale-wording search stopped with `zsh: unmatched \"` because a
   Markdown backtick was embedded in a double-quoted shell pattern.
+- The first immutable audit blocked acceptance because the non-frozen replay
+  receipt did not preserve its full load, carrier, bearing, material,
+  approval, detailing, supporting-area, and transfer input contract or an
+  executable committed replay.
+- The first repair index check found `docs/verification/index.json` stale even
+  though it had just been regenerated.
 
 ### Root causes and resolutions
 
@@ -96,6 +102,21 @@ behavior. Strap, pile-cap, raft, React, release, broad Python, and the full
   description plus the intended STRAP-G0 next-action projections.
   ⚠️ TERMINAL ISSUE: a double-quoted search pattern containing a Markdown
   backtick stopped in zsh → separate single-quoted `rg -e` patterns completed.
+- Root cause: the acceptance evidence repeated the prior B audit's concise
+  output summary and the corrected reinforcement schedule, but treated the
+  remaining benchmark-like defaults as implicit. That made the arithmetic
+  true but not independently auditable from the acceptance tree. Resolution:
+  commit the complete typed JSON input as
+  `india-2-foundation-combined-acceptance-nonfrozen-replay.json` and add a
+  worktree-bound executable replay that asserts the exact eight-field result
+  tuple. Evidence: the command returns the documented `PASS`, pressure, steel,
+  punching, and transfer values; the repaired head receives a new exact-head
+  independent audit.
+- Root cause: the Git handoff receipt lives inside the indexed verification
+  folder and was regenerated after that folder's index, changing the indexed
+  file hash. Resolution: finalize the receipt first, then regenerate the
+  verification and parent docs indexes without rewriting the receipt again.
+  Evidence: both maintained index checks and the quick gate pass in that order.
 
 ### Validation
 
@@ -110,7 +131,7 @@ behavior. Strap, pile-cap, raft, React, release, broad Python, and the full
 - Black, Ruff, and focused mypy pass for the two touched Python files. Source
   binding is true, parity is 12 supported / 9 held and 80/80 endpoints, and the
   deterministic manifest is current.
-- All 1,256 internal links, touched indexes, token efficiency, and the 10/10
+- All 1,258 internal links, touched indexes, token efficiency, and the 10/10
   quick gate pass. Immutable exact-head audit and all applicable hosted checks
   must pass before merge; their exact results are added to this entry at
   closeout.

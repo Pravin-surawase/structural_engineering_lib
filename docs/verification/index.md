@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-16
-**Files:** 103
+**Files:** 104
 
 ## Config Files
 
@@ -44,6 +44,7 @@ Benchmark examples and verification packs for validating library calculations ag
 - [india-2-foundation-combined-a-git-handoff-source-evidence.json](india-2-foundation-combined-a-git-handoff-source-evidence.json)
 - [india-2-foundation-combined-acceptance-git-handoff-receipt.json](india-2-foundation-combined-acceptance-git-handoff-receipt.json)
 - [india-2-foundation-combined-acceptance-git-handoff-source-evidence.json](india-2-foundation-combined-acceptance-git-handoff-source-evidence.json)
+- [india-2-foundation-combined-acceptance-nonfrozen-replay.json](india-2-foundation-combined-acceptance-nonfrozen-replay.json)
 - [india-2-foundation-combined-b-git-handoff-receipt.json](india-2-foundation-combined-b-git-handoff-receipt.json)
 - [india-2-foundation-combined-b-git-handoff-source-evidence.json](india-2-foundation-combined-b-git-handoff-source-evidence.json)
 - [india-2-foundation-combined-c-git-handoff-receipt.json](india-2-foundation-combined-c-git-handoff-receipt.json)
@@ -96,7 +97,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [india-2-foundation-combined-b-strength-evidence.md](india-2-foundation-combined-b-strength-evidence.md) |  | COMBINED-B implements only the G0-frozen pure IS 456 strengt | 152 |
 | [india-2-foundation-combined-c-public-workflow-evidence.md](india-2-foundation-combined-c-public-workflow-evidence.md) |  | COMBINED-C publishes one typed Python workflow, design_symme | 146 |
 | [india-2-foundation-combined-d-publication-evidence.md](india-2-foundation-combined-d-publication-evidence.md) |  | POST /api/v1/design/combined-footing/symmetric is a thin typ | 92 |
-| [india-2-foundation-combined-family-acceptance-evidence.md](india-2-foundation-combined-family-acceptance-evidence.md) |  | The exact integrated G0/A-D starting head is 079ca22b00744ca | 122 |
+| [india-2-foundation-combined-family-acceptance-evidence.md](india-2-foundation-combined-family-acceptance-evidence.md) |  | The exact integrated G0/A-D starting head is 079ca22b00744ca | 176 |
 | [india-2-foundation-combined-g0-scope-evidence.md](india-2-foundation-combined-g0-scope-evidence.md) |  | square reinforced-concrete columns carrying equal concentric | 226 |
 | [india-2-wall-a-axial-kernel-evidence.md](india-2-wall-a-axial-kernel-evidence.md) |  | WALL-A implements the pure IS 456 layer for the accepted Cla | 83 |
 | [india-2-wall-b-reinforcement-evidence.md](india-2-wall-b-reinforcement-evidence.md) |  | WALL-B adds one pure IS 456 provided-reinforcement check to  | 82 |

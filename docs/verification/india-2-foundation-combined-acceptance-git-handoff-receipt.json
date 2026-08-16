@@ -35,6 +35,7 @@
     }
   },
   "holds": [
+    "AUTHORIZATION_TARGET_MISMATCH",
     "LOCAL_HOLD_DIRTY",
     "PULL_REQUEST_NOT_CHECKED",
     "REMOTE_NOT_CHECKED",
@@ -47,27 +48,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "4b84ad0ccd00983e482fa5a51cca92697f7aada4b873d599d7a7fe161ab485e5",
+    "receipt_sha256": "d3161563ef3d2b33d849266230b654f64b1eb5372e3a496238d6522c74ce6293",
     "state": {
       "branch": "codex/india-2-foundation-combined-acceptance",
       "default_base": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "079ca22b00744ca9b01f859be0b64333b5830fcb",
-        "status": "equal"
+        "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 75.745,
+      "duration_ms": 75.585,
       "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
       "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-foundation-combined-acceptance",
-      "head_sha": "079ca22b00744ca9b01f859be0b64333b5830fcb",
+      "head_sha": "8df49622d4489780347983206ee234e6efdcd1e3",
       "hold_reasons": [
-        "changed paths: 20"
+        "changed paths: 7"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-08-16T09:25:17.797835+00:00",
+      "observed_at_utc": "2026-08-16T09:29:28.309001+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -78,31 +79,18 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 20,
+        "dirty_count": 7,
         "modified_paths": [
-          "Python/tests/index.json",
-          "Python/tests/index.md",
-          "Python/tests/test_indian_code_manifest.py",
           "docs/SESSION_LOG.md",
-          "docs/TASKS.md",
           "docs/index.json",
           "docs/index.md",
-          "docs/planning/index.json",
-          "docs/planning/index.md",
-          "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
-          "docs/planning/india-2-remaining-is456-elements-plan.md",
-          "docs/planning/indian-code-completion-plan.md",
-          "docs/planning/next-session-brief.md",
           "docs/verification/index.json",
           "docs/verification/index.md",
-          "docs/verification/indian-code-capability-coverage.json",
-          "scripts/_lib/indian_code_manifest.py"
+          "docs/verification/india-2-foundation-combined-family-acceptance-evidence.md"
         ],
         "staged_paths": [],
         "untracked_paths": [
-          "docs/verification/india-2-foundation-combined-acceptance-git-handoff-receipt.json",
-          "docs/verification/india-2-foundation-combined-acceptance-git-handoff-source-evidence.json",
-          "docs/verification/india-2-foundation-combined-family-acceptance-evidence.md"
+          "docs/verification/india-2-foundation-combined-acceptance-nonfrozen-replay.json"
         ]
       },
       "upstream": {
@@ -115,9 +103,9 @@
       "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-foundation-combined-acceptance"
     }
   },
-  "local_state_receipt_hash": "sha256:4b84ad0ccd00983e482fa5a51cca92697f7aada4b873d599d7a7fe161ab485e5",
+  "local_state_receipt_hash": "sha256:d3161563ef3d2b33d849266230b654f64b1eb5372e3a496238d6522c74ce6293",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-08-16T09:25:17.797982+00:00",
+  "observed_at_utc": "2026-08-16T09:29:28.309144+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
@@ -155,6 +143,7 @@
     "integration_owner": "Main Agent",
     "owned_paths": [
       "docs/verification/india-2-foundation-combined-family-acceptance-evidence.md",
+      "docs/verification/india-2-foundation-combined-acceptance-nonfrozen-replay.json",
       "docs/verification/india-2-foundation-combined-acceptance-git-handoff-source-evidence.json"
     ],
     "shared_paths": [

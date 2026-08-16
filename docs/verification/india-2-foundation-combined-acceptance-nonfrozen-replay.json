@@ -1,0 +1,83 @@
+{
+  "case_id": "INDIA-2-COMBINED-ACCEPTANCE-NONFROZEN-01",
+  "footing": {
+    "analysis": {
+      "geometry": {
+        "footing_length_mm": 7200.0,
+        "footing_width_mm": 3000.0,
+        "overall_depth_mm": 900.0,
+        "effective_depth_mm": 800.0,
+        "column_side_mm": 600.0,
+        "left_column_center_x_mm": 1300.0,
+        "right_column_center_x_mm": 5900.0,
+        "column_count": 2,
+        "columns_identical": true,
+        "columns_square": true,
+        "columns_centered_across_width": true,
+        "foundation_on_soil": true,
+        "constant_depth": true,
+        "openings_present": false,
+        "pedestals_present": false,
+        "analysis_method": "conventional_rigid",
+        "pressure_model": "uniform",
+        "rigid_footing_verified": true,
+        "rigidity_basis_reference": "INDIA-2-COMBINED-ACCEPTANCE-NONFROZEN-01-RIGIDITY",
+        "geometry_basis_reference": "INDIA-2-COMBINED-ACCEPTANCE-NONFROZEN-01-GEOMETRY"
+      },
+      "actions": {
+        "service_axial_load_each_kn": 900.0,
+        "factored_axial_load_each_kn": 1350.0,
+        "service_uniform_carrier_kn_per_m2": 25.0,
+        "factored_uniform_carrier_kn_per_m2": 37.5,
+        "allowable_gross_bearing_pressure_kn_per_m2": 150.0,
+        "load_combination_approved": true,
+        "bearing_and_settlement_approved": true,
+        "pressure_uniformity_approved": true,
+        "distributed_carrier_cancellation_approved": true,
+        "column_moments_present": false,
+        "horizontal_actions_present": false,
+        "uplift_or_load_reversal_present": false,
+        "load_basis_reference": "INDIA-2-COMBINED-ACCEPTANCE-NONFROZEN-01-LOAD",
+        "bearing_settlement_basis_reference": "INDIA-2-COMBINED-ACCEPTANCE-NONFROZEN-01-BEARING",
+        "cancellation_basis_reference": "INDIA-2-COMBINED-ACCEPTANCE-NONFROZEN-01-CANCELLATION"
+      }
+    },
+    "material": {
+      "footing_concrete_grade_nmm2": 30.0,
+      "column_concrete_grade_nmm2": 30.0,
+      "steel_grade_nmm2": 500.0,
+      "uncoated_deformed_bars": true,
+      "material_basis_reference": "INDIA-2-COMBINED-ACCEPTANCE-NONFROZEN-01-MATERIAL"
+    },
+    "reinforcement": {
+      "top_longitudinal_diameter_mm": 16.0,
+      "top_longitudinal_spacing_mm": 160.0,
+      "bottom_longitudinal_diameter_mm": 16.0,
+      "bottom_longitudinal_spacing_mm": 160.0,
+      "transverse_diameter_mm": 12.0,
+      "transverse_spacing_mm": 100.0,
+      "nominal_cover_mm": 50.0,
+      "aggregate_size_mm": 20.0,
+      "available_top_longitudinal_anchorage_each_end_mm": 900.0,
+      "available_bottom_longitudinal_anchorage_each_end_mm": 900.0,
+      "available_transverse_anchorage_each_edge_mm": 900.0,
+      "straight_uncoated_deformed_bars": true,
+      "effective_depth_basis_approved": true,
+      "reinforcement_schedule_approved": true,
+      "detailing_basis_reference": "INDIA-2-COMBINED-ACCEPTANCE-NONFROZEN-01-DETAILING"
+    },
+    "transfer": {
+      "effective_supporting_area_each_mm2": 360000.0,
+      "effective_supporting_area_basis": "largest_frustum_1v_2h",
+      "effective_supporting_area_approved": true,
+      "dowel_count_each": 6,
+      "dowel_diameter_mm": 20.0,
+      "column_longitudinal_bar_diameter_mm": 20.0,
+      "available_dowel_development_into_footing_mm": 900.0,
+      "available_dowel_development_into_column_mm": 900.0,
+      "uncoated_deformed_dowels": true,
+      "transfer_basis_reference": "INDIA-2-COMBINED-ACCEPTANCE-NONFROZEN-01-TRANSFER"
+    }
+  },
+  "qualified_review_required": true
+}

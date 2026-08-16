@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 103,
+  "file_count": 104,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -746,7 +746,7 @@
         "receipt_grants_authority",
         "receipt_kind"
       ],
-      "content_hash": "d3dd4465bfd2"
+      "content_hash": "ec69c3889ea6"
     },
     {
       "name": "india-2-foundation-combined-acceptance-git-handoff-source-evidence.json",
@@ -759,6 +759,17 @@
         "task_archive"
       ],
       "content_hash": "fc11ebd20163"
+    },
+    {
+      "name": "india-2-foundation-combined-acceptance-nonfrozen-replay.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "case_id",
+        "footing",
+        "qualified_review_required"
+      ],
+      "content_hash": "6e5fbf2af78b"
     },
     {
       "name": "india-2-foundation-combined-b-git-handoff-receipt.json",
@@ -877,10 +888,10 @@
     {
       "name": "india-2-foundation-combined-family-acceptance-evidence.md",
       "type": "documentation",
-      "size_lines": 122,
+      "size_lines": 176,
       "last_updated": "2026-08-16",
       "description": "The exact integrated G0/A-D starting head is 079ca22b00744ca9b01f859be0b64333b5830fcb, tree",
-      "content_hash": "a2e084f06108"
+      "content_hash": "c89171222f11"
     },
     {
       "name": "india-2-foundation-combined-g0-git-handoff-receipt.json",
@@ -1223,5 +1234,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "07524fd086f7153d"
+  "content_hash": "3b5624fdb1b574c6"
 }
