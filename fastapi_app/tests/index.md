@@ -52,7 +52,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_public_documentation_contract.py](test_public_documentation_contract.py) | Executable contracts for the public REST documentation. | 0 | 3 | 70 |
 | [test_security.py](test_security.py) | Security Tests for FastAPI Application. | 7 | 3 | 407 |
 | [test_staircase.py](test_staircase.py) | Contract tests for the straight-flight staircase FastAPI sli | 0 | 6 | 146 |
-| [test_strap_footing.py](test_strap_footing.py) | Contract tests for the bounded property-line strap-footing F | 0 | 6 | 154 |
+| [test_strap_footing.py](test_strap_footing.py) | Contract tests for the bounded property-line strap-footing F | 0 | 6 | 272 |
 | [test_streaming.py](test_streaming.py) | Tests for SSE Streaming Endpoint. | 2 | 0 | 276 |
 | [test_typed_response_contracts.py](test_typed_response_contracts.py) | OpenAPI and envelope contracts for the typed column and libr | 0 | 3 | 72 |
 | [test_wall.py](test_wall.py) | Contract tests for the bounded braced-wall FastAPI slice. | 0 | 6 | 163 |

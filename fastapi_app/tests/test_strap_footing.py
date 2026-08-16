@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import dataclasses
 from copy import deepcopy
 
 import pytest
@@ -10,7 +9,6 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from fastapi_app.routers.strap_footing import router
-from tests.codes.is456.strap_footing.test_strength import _design_input
 
 
 def _app() -> FastAPI:
@@ -22,7 +20,127 @@ def _app() -> FastAPI:
 def _payload() -> dict[str, object]:
     return {
         "case_id": "INDIA-2-STRAP-HAND-01",
-        "footing": dataclasses.asdict(_design_input()),
+        "footing": {
+            "analysis": {
+                "geometry": {
+                    "exterior_footing_length_mm": 2400.0,
+                    "exterior_footing_width_mm": 2500.0,
+                    "exterior_footing_depth_mm": 700.0,
+                    "interior_footing_length_mm": 2500.0,
+                    "interior_footing_width_mm": 3200.0,
+                    "interior_footing_depth_mm": 700.0,
+                    "exterior_column_side_mm": 500.0,
+                    "interior_column_side_mm": 500.0,
+                    "exterior_column_center_x_mm": 400.0,
+                    "interior_column_center_x_mm": 6400.0,
+                    "strap_width_mm": 500.0,
+                    "strap_overall_depth_mm": 950.0,
+                    "strap_effective_depth_mm": 850.0,
+                    "footing_count": 2,
+                    "column_count": 2,
+                    "footings_rectangular": True,
+                    "footings_parallel": True,
+                    "footings_constant_depth": True,
+                    "columns_square": True,
+                    "columns_and_strap_share_centerline": True,
+                    "interior_column_centered_on_footing": True,
+                    "strap_straight_and_prismatic": True,
+                    "strap_centered_across_footings": True,
+                    "foundation_on_soil": True,
+                    "strap_soil_contact": False,
+                    "openings_present": False,
+                    "pedestals_present": False,
+                    "analysis_method": "rigid_equal_pressure",
+                    "pressure_model": "equal_uniform_net",
+                    "geometry_basis_reference": "INDIA-2-STRAP-HAND-01-GEOMETRY",
+                    "rigidity_basis_reference": "INDIA-2-STRAP-HAND-01-RIGIDITY",
+                    "strap_isolation_basis_reference": (
+                        "INDIA-2-STRAP-HAND-01-ISOLATION"
+                    ),
+                },
+                "actions": {
+                    "service_exterior_column_load_kn": 1025.5625,
+                    "service_interior_column_load_kn": 1741.4375,
+                    "factored_exterior_column_load_kn": 1538.34375,
+                    "factored_interior_column_load_kn": 2612.15625,
+                    "service_clear_strap_line_load_kn_per_m": 12.0,
+                    "factored_clear_strap_line_load_kn_per_m": 18.0,
+                    "service_exterior_footing_carrier_kn_per_m2": 20.0,
+                    "service_interior_footing_carrier_kn_per_m2": 20.0,
+                    "factored_exterior_footing_carrier_kn_per_m2": 30.0,
+                    "factored_interior_footing_carrier_kn_per_m2": 30.0,
+                    "allowable_gross_bearing_pressure_kn_per_m2": 250.0,
+                    "load_combination_approved": True,
+                    "bearing_and_settlement_approved": True,
+                    "equal_uniform_pressure_approved": True,
+                    "footing_carrier_basis_approved": True,
+                    "strap_line_load_basis_approved": True,
+                    "load_pattern_compatible": True,
+                    "column_moments_present": False,
+                    "horizontal_actions_present": False,
+                    "uplift_or_load_reversal_present": False,
+                    "independently_factored_or_patterned_actions_present": False,
+                    "load_basis_reference": "INDIA-2-STRAP-HAND-01-LOAD",
+                    "bearing_settlement_basis_reference": (
+                        "INDIA-2-STRAP-HAND-01-GEOTECH"
+                    ),
+                    "footing_carrier_basis_reference": (
+                        "INDIA-2-STRAP-HAND-01-CARRIER"
+                    ),
+                    "strap_line_load_basis_reference": (
+                        "INDIA-2-STRAP-HAND-01-LINE-LOAD"
+                    ),
+                    "load_pattern_basis_reference": ("INDIA-2-STRAP-HAND-01-PATTERN"),
+                },
+                "approvals": {
+                    "exterior_footing_design_verified": True,
+                    "interior_footing_design_verified": True,
+                    "column_and_strap_transfer_verified": True,
+                    "footing_reinforcement_and_anchorage_verified": True,
+                    "supporting_areas_verified": True,
+                    "construction_clearances_verified": True,
+                    "exterior_footing_verification_reference": "EXT-FOOTING-01",
+                    "interior_footing_verification_reference": "INT-FOOTING-01",
+                    "transfer_verification_reference": "TRANSFER-01",
+                    "construction_verification_reference": "CONSTRUCTION-01",
+                },
+            },
+            "material": {
+                "strap_concrete_grade_nmm2": 30.0,
+                "steel_grade_nmm2": 500.0,
+                "uncoated_deformed_bars": True,
+                "material_basis_reference": "INDIA-2-STRAP-HAND-01-MATERIAL",
+            },
+            "reinforcement": {
+                "top_bar_count": 6,
+                "top_bar_diameter_mm": 25.0,
+                "bottom_bar_count": 4,
+                "bottom_bar_diameter_mm": 16.0,
+                "side_face_bar_count_each_face": 4,
+                "side_face_bar_diameter_mm": 12.0,
+                "side_face_vertical_spacing_mm": 250.0,
+                "stirrup_leg_count": 2,
+                "stirrup_diameter_mm": 10.0,
+                "stirrup_spacing_mm": 250.0,
+                "nominal_cover_mm": 50.0,
+                "required_nominal_cover_mm": 50.0,
+                "maximum_aggregate_size_mm": 20.0,
+                "available_top_anchorage_exterior_mm": 1200.0,
+                "available_top_anchorage_interior_mm": 1200.0,
+                "available_bottom_anchorage_exterior_mm": 1200.0,
+                "available_bottom_anchorage_interior_mm": 1200.0,
+                "vertical_closed_stirrups": True,
+                "straight_anchorage": True,
+                "bars_bundled": False,
+                "bars_spliced": False,
+                "bars_curtailed": False,
+                "reinforcement_schedule_approved": True,
+                "effective_depth_basis_approved": True,
+                "durability_cover_basis_approved": True,
+                "detailing_basis_reference": "INDIA-2-STRAP-HAND-01-DETAILING",
+                "durability_basis_reference": "INDIA-2-STRAP-HAND-01-DURABILITY",
+            },
+        },
         "qualified_review_required": True,
     }
 

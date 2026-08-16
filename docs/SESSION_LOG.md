@@ -52,6 +52,12 @@ foundations, broad Python, and the full gate remain outside D.
   test index stale from the earlier Black formatting change.
 - A final current-truth sweep found the task-board header still naming STRAP-D
   as next after the detailed rows had advanced to focused acceptance.
+- Hosted FastAPI validation stopped during collection because the new transport
+  test imported its request fixture from the separately rooted Python test
+  package.
+- After that collection defect was corrected, the hosted-equivalent local suite
+  exposed `0.23.0` package metadata against the checkout's `0.23.1a1` source
+  version in the shared editable environment.
 
 ### Root causes and resolutions
 
@@ -103,12 +109,33 @@ foundations, broad Python, and the full gate remain outside D.
   that summary to focused strap acceptance and retain a targeted stale-text
   search over every current planning source. Evidence: no current source says
   STRAP-D is next or that its FastAPI publication remains held.
+- Root cause: `fastapi_app/tests/test_strap_footing.py` reused `_design_input`
+  from `Python/tests`, so it only collected when the repository root happened
+  to make that unrelated test package importable; the hosted FastAPI job uses
+  `fastapi_app` as its pytest root by design. Resolution: make the transport
+  test own a plain JSON benchmark payload, matching the existing FastAPI
+  contract-test pattern and removing the cross-suite test import. Evidence: all
+  6 direct transport tests and the exact hosted selection of 443 FastAPI tests
+  pass after the correction.
+- Root cause: the worktree-bound launcher correctly selected D source through
+  `PYTHONPATH`, but the shared primary virtual environment still carried the
+  pre-candidate `0.23.0` editable distribution metadata used by
+  `get_library_version()`. Resolution: reinstall the current primary
+  `Python/` project into that shared environment at `0.23.1a1`; no repository
+  file changed. Evidence: source diagnosis remains bound to D and the formerly
+  failing project-BOQ test passes within the 443-test FastAPI selection.
+  ⚠️ TERMINAL ISSUE: stale editable package metadata produced a local version
+  mismatch -> refreshed the shared editable install from the current primary
+  Python project and reran the complete hosted selection.
 
 ### Validation
 
 - All 6 direct D transport tests, all 85 strap A-D analysis, strength, public-
   workflow, and transport tests, and the 143-test focused strap/public-contract
   selection pass.
+- The full hosted FastAPI selection was run after the hosted collection failure
+  forced that boundary earlier and passes 443 tests with 6 slow/performance
+  tests deselected; broad Python and the full 30-check gate remain deferred.
 - OpenAPI drift is exactly one additive route and 20 additive schemas, with no
   existing endpoint or schema changed; the snapshot is current at 81 endpoints
   and 360 schemas. All three API contract/snapshot commands pass.
