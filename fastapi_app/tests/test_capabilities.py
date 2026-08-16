@@ -33,6 +33,15 @@ def test_capability_route_matches_python_contract(client: TestClient):
     )
     assert flat_slab["public_workflows"] == ["design_regular_interior_flat_slab_is456"]
     assert "square interior" in flat_slab["supported_case"]
+    combined_footing = next(
+        item
+        for item in body["data"]["capabilities"]
+        if item["element"] == "combined_footing"
+    )
+    assert combined_footing["public_workflows"] == [
+        "design_symmetric_combined_footing_is456"
+    ]
+    assert "two identical square columns" in combined_footing["supported_case"]
 
 
 def test_capability_route_has_a_typed_openapi_success_schema(client: TestClient):

@@ -4,13 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Merge COMBINED-C unchanged, then publish only the thin D transport/truth layer
-- Pre-publication Git receipt: docs/verification/india-2-foundation-combined-b-git-handoff-receipt.json | HOLD (historical intermediate state, not post-merge proof)
-- Final audited B head: codex/india-2-foundation-combined-b@948787bb56d28b8fbcca83aa94f1c68a26ec2eab | tree=66243e06608f9323c605f16b8ca96eaf93d04fa5 | independent audit=PASS
-- Live integration identity: PR #789 squash-merged as f87c8a32aca7edc015f96f6e053f30c904ae683b | merged tree=66243e06608f9323c605f16b8ca96eaf93d04fa5 | hosted checks=6 passed, 2 skipped
-- C implementation: typed workflow and four immutable public types; 7 direct C, 78 combined A/B/C, and 291 focused local tests pass; capability remains held
-- C candidate identity: VERIFY_EXACT_HEAD_TREE_PR_AND_HOSTED_CHECKS_AT_CLOSEOUT
-- Next action: START_FRESH_COMBINED_D_ONLY_AFTER_C_MERGE
+- Focus: Merge COMBINED-D unchanged, then run only focused combined-family acceptance
+- Live C integration identity: PR #790 squash-merged as 7b7b310a9310c04a65b1dcdfd4ef812c792bb8cb | merged tree=dd9ed4adf0b20de5d307689ecdf502801fad2d6e | final audited C head=8928309110615ca59831fc707ad627e59d78b292
+- D implementation: strict nested transport, one thin route, exact OpenAPI drift, capability/semantic truth, and deterministic promotion to 12 supported / 9 held and 80/80 tested endpoints
+- D candidate identity: VERIFY_EXACT_HEAD_TREE_PR_AND_HOSTED_CHECKS_AT_CLOSEOUT
+- Next action: START_FRESH_COMBINED_ACCEPTANCE_ONLY_AFTER_D_MERGE
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-16
@@ -19,17 +17,18 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Begin `INDIA-2-FOUNDATION-COMBINED-D` only after C merges unchanged |
+| **Next** | Begin `INDIA-2-FOUNDATION-COMBINED-ACCEPTANCE` only after D merges unchanged |
 
 ## Required Reading
 
 1. [Next-session publication and closeout plan](india-2-next-session-publication-and-closeout-plan.md)
 2. [INDIA-2 remaining-elements execution plan](india-2-remaining-is456-elements-plan.md)
-3. [Combined C public-workflow evidence](../verification/india-2-foundation-combined-c-public-workflow-evidence.md)
-4. [Combined B strength evidence](../verification/india-2-foundation-combined-b-strength-evidence.md)
-5. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
-6. [Current task board](../TASKS.md)
-7. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+3. [Combined D publication evidence](../verification/india-2-foundation-combined-d-publication-evidence.md)
+4. [Combined C public-workflow evidence](../verification/india-2-foundation-combined-c-public-workflow-evidence.md)
+5. [Combined B strength evidence](../verification/india-2-foundation-combined-b-strength-evidence.md)
+6. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
+7. [Current task board](../TASKS.md)
+8. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
 
 ## Start Boundary
 
@@ -91,7 +90,7 @@ and focused gates. PR #785 integrated publication and PR #786 accepted the
 family. Unequal/exterior/drop/head/opening, patterned-load, moment-transfer,
 punching-reinforcement, equivalent-frame, and FEM cases remain held.
 
-## INDIA-2-FOUNDATION-COMBINED G0/A/B/C result
+## INDIA-2-FOUNDATION-COMBINED G0/A-D result
 
 [`india-2-foundation-combined-g0-scope-evidence.md`](../verification/india-2-foundation-combined-g0-scope-evidence.md)
 records GO for exactly two identical square columns with equal concentric loads
@@ -111,7 +110,9 @@ concrete-only punching, bearing/dowels, exact compression development, valid
 boundary. [`india-2-foundation-combined-c-public-workflow-evidence.md`](../verification/india-2-foundation-combined-c-public-workflow-evidence.md)
 records the canonical typed composition, immutable public types, executable
 benchmark, complete caller-basis provenance, retained holds, and public API
-docs. Capability and FastAPI publication remain held for COMBINED-D.
+docs. [`india-2-foundation-combined-d-publication-evidence.md`](../verification/india-2-foundation-combined-d-publication-evidence.md)
+records the strict nested transport, thin public route, exact OpenAPI drift,
+and capability/semantic/manifest promotion to one supported bounded workflow.
 
 ## Review and gate boundary
 
@@ -126,10 +127,11 @@ integration boundary unless a confirmed repository-wide failure forces them
 earlier.
 
 Flat-slab acceptance is complete without expanding topology or adding React.
-Combined-footing A/B/C are complete within the G0 case; COMBINED-D may begin
-only after C's unchanged reviewed head merges. Strap, pile-cap, and raft remain
-separate later G0 decisions. The two deferred clause-registry truth defects are
-recorded in the next-session plan and must not be mixed into C/D.
+Combined-footing G0/A-D are complete within the bounded case; focused family
+acceptance may begin only after D's unchanged reviewed head merges. Strap,
+pile-cap, and raft remain separate later G0 decisions. The two deferred clause-
+registry truth defects are recorded in the next-session plan and must not be
+mixed into D or acceptance.
 
 Cumulative qualified structural-engineering review belongs to INDIA-4 after the
 accepted INDIA-2 and INDIA-3 scope is frozen. Packet-level source and engineering
@@ -139,10 +141,10 @@ authorization, or cleanup authority.
 
 ## Exact next action
 
-After verifying C is merged unchanged into current `origin/main`, create a
-fresh `codex/india-2-foundation-combined-d` worktree and publish only strict
-Pydantic transport, `POST /api/v1/design/combined-footing/symmetric`, exact
-OpenAPI drift, and truthful capability/semantic/manifest promotion over the
-existing C workflow. Expected live truth is 12 supported / 9 held and 80/80
-tested endpoints, subject to verification. Structural math, alternate
-foundations, React, broad Python, and the 30-check gate remain outside D.
+After verifying D is merged unchanged into current `origin/main`, create a
+fresh `codex/india-2-foundation-combined-acceptance` worktree. Re-run the
+cumulative G0/A-D benchmark, non-frozen symmetric, valid-failure, fail-closed,
+public export, transport, OpenAPI, capability, semantic, manifest, architecture,
+import, link, index, source-binding, efficiency, and quick gates. Add no feature
+behavior. Structural math, alternate foundations, React, broad Python, and the
+30-check gate remain outside family acceptance.

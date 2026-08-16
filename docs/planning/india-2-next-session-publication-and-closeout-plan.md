@@ -1,7 +1,7 @@
 ---
 task: INDIA-2-NEXT-SESSION-PUBLICATION-AND-CLOSEOUT
 title: INDIA-2 Next Session and Finish Plan
-status: combined_c_complete_d_next
+status: combined_d_complete_acceptance_next
 owner: Next Main Agent
 created: 2026-08-16
 last_updated: 2026-08-16
@@ -12,14 +12,13 @@ doc_type: spec
 
 ## 1. Immediate objective and stop boundary
 
-The next session starts only after `INDIA-2-FOUNDATION-COMBINED-B` is merged
-unchanged with required checks green. Its first and only implementation packet
-should be `INDIA-2-FOUNDATION-COMBINED-C`: publish one typed Python workflow
-over the already accepted A/B kernels.
+COMBINED-C is integrated and COMBINED-D publishes the thin transport and truth
+layer over it. The next session starts only after COMBINED-D is merged unchanged
+with required checks green. Its only packet is focused combined-family
+acceptance; it adds no feature behavior.
 
-Do not combine C with FastAPI/capability publication. Do not begin strap,
-pile-cap, raft, broad Python, full 30-check, React, release, cleanup, or
-professional-approval work in the C packet.
+Do not begin strap, pile-cap, raft, broad Python, full 30-check, React, release,
+cleanup, or professional-approval work in the acceptance packet.
 
 The complete remaining order is:
 
@@ -68,17 +67,19 @@ Required evidence:
 - [combined G0 scope](../verification/india-2-foundation-combined-g0-scope-evidence.md)
 - [combined A analysis](../verification/india-2-foundation-combined-a-analysis-evidence.md)
 - [combined B strength](../verification/india-2-foundation-combined-b-strength-evidence.md)
+- [combined C public workflow](../verification/india-2-foundation-combined-c-public-workflow-evidence.md)
+- [combined D publication](../verification/india-2-foundation-combined-d-publication-evidence.md)
 - [generated capability truth](../verification/indian-code-capability-coverage.json)
 - [INDIA-2 execution plan](india-2-remaining-is456-elements-plan.md)
 - [canonical Git workflow](../git-automation/git-workflow-single-source.md)
 
 ## 3. Start commands and Git boundary
 
-Run from a fresh `codex/india-2-foundation-combined-c` worktree created from
-verified current `main`:
+Run from a fresh `codex/india-2-foundation-combined-acceptance` worktree created
+from verified merged-D `main`:
 
 ```bash
-./run.sh session brief --agent backend
+./run.sh session brief --agent reviewer
 ./run.sh session start
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ./scripts/python_runtime.sh --diagnose

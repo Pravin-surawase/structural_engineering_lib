@@ -131,6 +131,10 @@ def test_capability_registry_names_every_supported_core_element():
         "isolated_footing",
         "solid_slab",
         "stair",
+        "wall",
+        "deep_beam",
+        "flat_slab",
+        "combined_footing",
     )
     assert all(item.qualified_review_required for item in capabilities)
     assert all(item.public_workflows for item in capabilities)
@@ -184,6 +188,10 @@ def test_capability_document_is_json_native_and_preserves_review_boundaries():
         "isolated_footing",
         "solid_slab",
         "stair",
+        "wall",
+        "deep_beam",
+        "flat_slab",
+        "combined_footing",
     ]
     assert all(
         item["capability_id"] == item["element"]

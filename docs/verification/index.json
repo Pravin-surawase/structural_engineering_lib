@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 97,
+  "file_count": 100,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -807,6 +807,44 @@
       "content_hash": "b1b71be9bb1e"
     },
     {
+      "name": "india-2-foundation-combined-d-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "b2e438ba73de"
+    },
+    {
+      "name": "india-2-foundation-combined-d-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "b1d33336e66a"
+    },
+    {
+      "name": "india-2-foundation-combined-d-publication-evidence.md",
+      "type": "documentation",
+      "size_lines": 92,
+      "last_updated": "2026-08-16",
+      "description": "POST /api/v1/design/combined-footing/symmetric is a thin typed transport over the canonical design_symmetric_combined_footing_is456 service accepted in",
+      "content_hash": "d4c9e869bffd"
+    },
+    {
       "name": "india-2-foundation-combined-g0-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -1058,7 +1096,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "d400575b9262"
+      "content_hash": "35d03f0393c2"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -1147,5 +1185,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "e9b97aed0fba5848"
+  "content_hash": "dafe3e93b5e3024b"
 }

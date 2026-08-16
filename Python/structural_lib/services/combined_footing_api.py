@@ -4,14 +4,25 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from enum import StrEnum
+from typing import Any
 
 from structural_lib.codes.is456.combined_footing import (
+    CombinedFootingActionInput,
+    CombinedFootingAnalysisMethod,
     CombinedFootingContractError,
     CombinedFootingDesignDisposition,
     CombinedFootingDesignInput,
+    CombinedFootingGeometryInput,
+    CombinedFootingInput,
+    CombinedFootingMaterialInput,
+    CombinedFootingPressureModel,
+    CombinedFootingReinforcementInput,
     CombinedFootingStrengthResult,
+    CombinedFootingSupportingAreaBasis,
+    CombinedFootingTransferInput,
     check_symmetric_combined_footing_strength,
 )
 
@@ -20,6 +31,7 @@ __all__ = [
     "SymmetricCombinedFootingDesignProvenance",
     "SymmetricCombinedFootingDesignResult",
     "SymmetricCombinedFootingDesignStatus",
+    "build_symmetric_combined_footing_design_input",
     "design_symmetric_combined_footing_is456",
 ]
 
@@ -105,6 +117,69 @@ def _require_non_blank(value: object, field_name: str) -> str:
 
 def _source_refs(*groups: tuple[str, ...]) -> tuple[str, ...]:
     return tuple(dict.fromkeys(item for group in groups for item in group))
+
+
+def _mapping(value: object, field_name: str) -> dict[str, Any]:
+    if not isinstance(value, Mapping):
+        raise CombinedFootingContractError(f"{field_name} must be an object")
+    return dict(value)
+
+
+def build_symmetric_combined_footing_design_input(
+    payload: Mapping[str, Any],
+) -> SymmetricCombinedFootingDesignInput:
+    """Build the service contract from an already transport-validated mapping."""
+    values = dict(payload)
+    try:
+        footing_values = _mapping(values.pop("footing"), "footing")
+        analysis_values = _mapping(footing_values.pop("analysis"), "footing.analysis")
+        geometry_values = _mapping(
+            analysis_values.pop("geometry"), "footing.analysis.geometry"
+        )
+        geometry_values["analysis_method"] = CombinedFootingAnalysisMethod(
+            geometry_values["analysis_method"]
+        )
+        geometry_values["pressure_model"] = CombinedFootingPressureModel(
+            geometry_values["pressure_model"]
+        )
+        transfer_values = _mapping(footing_values.pop("transfer"), "footing.transfer")
+        transfer_values["effective_supporting_area_basis"] = (
+            CombinedFootingSupportingAreaBasis(
+                transfer_values["effective_supporting_area_basis"]
+            )
+        )
+        return SymmetricCombinedFootingDesignInput(
+            **values,
+            footing=CombinedFootingDesignInput(
+                analysis=CombinedFootingInput(
+                    geometry=CombinedFootingGeometryInput(**geometry_values),
+                    actions=CombinedFootingActionInput(
+                        **_mapping(
+                            analysis_values.pop("actions"),
+                            "footing.analysis.actions",
+                        )
+                    ),
+                    **analysis_values,
+                ),
+                material=CombinedFootingMaterialInput(
+                    **_mapping(footing_values.pop("material"), "footing.material")
+                ),
+                reinforcement=CombinedFootingReinforcementInput(
+                    **_mapping(
+                        footing_values.pop("reinforcement"),
+                        "footing.reinforcement",
+                    )
+                ),
+                transfer=CombinedFootingTransferInput(**transfer_values),
+                **footing_values,
+            ),
+        )
+    except CombinedFootingContractError:
+        raise
+    except (KeyError, TypeError, ValueError) as exc:
+        raise CombinedFootingContractError(
+            "transport payload does not match the symmetric combined-footing input"
+        ) from exc
 
 
 def design_symmetric_combined_footing_is456(

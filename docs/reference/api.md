@@ -4309,8 +4309,11 @@ Public support types are `api.SymmetricCombinedFootingDesignInput`,
 `api.SymmetricCombinedFootingDesignStatus`. The result always requires
 qualified review and never grants complete engineering approval.
 
-There is no FastAPI endpoint in this packet. Capability and semantic-contract
-promotion remain held for COMBINED-D.
+**FastAPI Endpoint:** `POST /api/v1/design/combined-footing/symmetric`
+
+The transport uses strict nested request models, delegates all engineering
+calculations to the Python service, and returns the same bounded action,
+strength, provenance, held-case, review, and false-approval result.
 
 ---
 

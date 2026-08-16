@@ -2,13 +2,14 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-16
-**Files:** 23
+**Files:** 24
 
 ## Public API
 
 - `analysis`
 - `catalog`
 - `column`
+- `combined_footing`
 - `deep_beam`
 - `design`
 - `detailing`
@@ -25,17 +26,17 @@
 - `staircase`
 - `streaming`
 - `wall`
-- `websocket`
 
 ## Python Files
 
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
-| [__init__.py](__init__.py) | FastAPI Routers Package. | 0 | 0 | 54 |
+| [__init__.py](__init__.py) | FastAPI Routers Package. | 0 | 0 | 56 |
 | [analysis.py](analysis.py) | Smart Analysis Router. | 0 | 3 | 338 |
 | [capabilities.py](capabilities.py) | Public discovery route for the canonical supported IS 456 co | 0 | 1 | 23 |
 | [catalog.py](catalog.py) | Thin read-only transport for the canonical application workf | 0 | 1 | 51 |
 | [column.py](column.py) | Column Design Router. | 0 | 13 | 764 |
+| [combined_footing.py](combined_footing.py) | FastAPI transport for the bounded symmetric combined-footing | 0 | 1 | 72 |
 | [deep_beam.py](deep_beam.py) | FastAPI transport for the bounded simply supported deep-beam | 0 | 1 | 133 |
 | [design.py](design.py) | Beam Design Router. | 0 | 10 | 1027 |
 | [detailing.py](detailing.py) | Beam Detailing Router. | 0 | 4 | 412 |

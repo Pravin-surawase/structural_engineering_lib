@@ -4,7 +4,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 
 **Type:** Python Package
 **Last Updated:** 2026-08-16
-**Files:** 41
+**Files:** 42
 
 ## Documentation Files
 
@@ -21,7 +21,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_auth.py](test_auth.py) | Tests for Authentication and Rate Limiting. | 3 | 2 | 243 |
 | [test_beam_primary_route.py](test_beam_primary_route.py) | Focused FastAPI contract tests for the primary IS 456 beam r | 0 | 12 | 311 |
 | [test_bundled_sample_evidence.py](test_bundled_sample_evidence.py) | Reproducible software evidence for the bundled 153-beam acce | 0 | 1 | 84 |
-| [test_capabilities.py](test_capabilities.py) | Cross-surface tests for canonical capability discovery. | 0 | 2 | 47 |
+| [test_capabilities.py](test_capabilities.py) | Cross-surface tests for canonical capability discovery. | 0 | 2 | 56 |
 | [test_catalog.py](test_catalog.py) | Cross-layer tests for the thin workflow catalogue transport. | 0 | 3 | 41 |
 | [test_column_additional_moment.py](test_column_additional_moment.py) | Tests for POST /api/v1/design/column/additional-moment endpo | 1 | 0 | 203 |
 | [test_column_biaxial.py](test_column_biaxial.py) | Tests for POST /api/v1/design/column/biaxial-check endpoint. | 4 | 0 | 179 |
@@ -30,6 +30,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_column_pm_interaction.py](test_column_pm_interaction.py) | Tests for POST /api/v1/design/column/interaction-curve endpo | 2 | 0 | 106 |
 | [test_column_review_response.py](test_column_review_response.py) | Focused contracts for the rectangular-column check-and-revie | 0 | 5 | 140 |
 | [test_column_uniaxial.py](test_column_uniaxial.py) | Tests for POST /api/v1/design/column/uniaxial endpoint. | 3 | 0 | 142 |
+| [test_combined_footing.py](test_combined_footing.py) | Contract tests for the bounded symmetric combined-footing Fa | 0 | 6 | 226 |
 | [test_config.py](test_config.py) | Tests for safe, environment-configurable FastAPI settings. | 0 | 8 | 126 |
 | [test_deep_beam.py](test_deep_beam.py) | Contract tests for the bounded simply supported deep-beam Fa | 0 | 6 | 162 |
 | [test_design_compliance.py](test_design_compliance.py) | Tests for design router compliance endpoints. | 5 | 1 | 381 |

@@ -1,0 +1,209 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T09:00:31Z",
+      "query_status": "OK",
+      "reference": "task:INDIA-2-FOUNDATION-COMBINED-D:user-request-finish-combined-footing-work",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T09:00:31Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/india-2-foundation-combined-d",
+      "head_sha": "7b7b310a9310c04a65b1dcdfd4ef812c792bb8cb",
+      "task_id": "INDIA-2-FOUNDATION-COMBINED-D"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "0eb45a61b2d0f6833f5556719fc6c16338c304f45339de4a9c93c28289d3224b",
+    "state": {
+      "branch": "codex/india-2-foundation-combined-d",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "7b7b310a9310c04a65b1dcdfd4ef812c792bb8cb",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 86.198,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-foundation-combined-d",
+      "head_sha": "7b7b310a9310c04a65b1dcdfd4ef812c792bb8cb",
+      "hold_reasons": [
+        "changed paths: 20"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T09:01:03.315660+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-foundation-combined-d",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 20,
+        "modified_paths": [
+          "Python/structural_lib/services/capabilities.py",
+          "Python/tests/integration/test_combined_footing_publication.py",
+          "Python/tests/test_indian_code_manifest.py",
+          "docs/TASKS.md",
+          "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+          "docs/planning/india-2-remaining-is456-elements-plan.md",
+          "docs/planning/indian-code-completion-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/reference/api.md",
+          "docs/verification/indian-code-capability-coverage.json",
+          "fastapi_app/main.py",
+          "fastapi_app/openapi_baseline.json",
+          "fastapi_app/routers/__init__.py",
+          "fastapi_app/tests/test_capabilities.py",
+          "scripts/_lib/indian_code_manifest.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/india-2-foundation-combined-d-git-handoff-source-evidence.json",
+          "docs/verification/india-2-foundation-combined-d-publication-evidence.md",
+          "fastapi_app/models/combined_footing.py",
+          "fastapi_app/routers/combined_footing.py",
+          "fastapi_app/tests/test_combined_footing.py"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "7b7b310a9310c04a65b1dcdfd4ef812c792bb8cb",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-foundation-combined-d"
+    }
+  },
+  "local_state_receipt_hash": "sha256:0eb45a61b2d0f6833f5556719fc6c16338c304f45339de4a9c93c28289d3224b",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T09:01:03.315853+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T09:00:31Z",
+    "owner": "Main Agent under user instruction to preserve Git state",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/codes/is456/combined_footing",
+      "react_app",
+      "private_sources",
+      "pyproject.toml",
+      "CHANGELOG.md"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "fastapi_app/models/combined_footing.py",
+      "fastapi_app/routers/combined_footing.py",
+      "fastapi_app/tests/test_combined_footing.py",
+      "docs/verification/india-2-foundation-combined-d-publication-evidence.md",
+      "docs/verification/india-2-foundation-combined-d-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "fastapi_app/main.py",
+      "fastapi_app/routers/__init__.py",
+    "fastapi_app/tests/test_capabilities.py",
+    "fastapi_app/openapi_baseline.json",
+    "Python/structural_lib/services/combined_footing_api.py",
+    "Python/structural_lib/services/capabilities.py",
+    "Python/tests/integration/test_api_entrypoints_is456.py",
+    "Python/tests/integration/test_combined_footing_publication.py",
+      "Python/tests/test_indian_code_manifest.py",
+      "scripts/_lib/indian_code_manifest.py",
+      "docs/verification/indian-code-capability-coverage.json",
+      "docs/reference/api.md",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+      "docs/planning/india-2-remaining-is456-elements-plan.md",
+      "docs/planning/indian-code-completion-plan.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/reference/index.json",
+      "docs/reference/index.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md",
+      "fastapi_app/index.json",
+      "fastapi_app/index.md",
+      "fastapi_app/models/index.json",
+      "fastapi_app/models/index.md",
+      "fastapi_app/routers/index.json",
+      "fastapi_app/routers/index.md",
+      "fastapi_app/tests/index.json",
+      "fastapi_app/tests/index.md",
+      "Python/structural_lib/services/index.json",
+      "Python/structural_lib/services/index.md",
+      "Python/tests/index.json",
+      "Python/tests/index.md",
+      "scripts/index.json",
+      "scripts/index.md"
+    ],
+    "task_id": "INDIA-2-FOUNDATION-COMBINED-D"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

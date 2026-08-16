@@ -788,7 +788,7 @@
     {
       "name": "capabilities.py",
       "type": "python",
-      "size_lines": 1667,
+      "size_lines": 1803,
       "last_updated": "2026-08-16",
       "description": "Discoverable supported-case registry for the IS 456 public library.",
       "classes": [
@@ -847,7 +847,7 @@
         "_REPORT_IS_SAFE_ALIAS",
         "_SLAB_REVIEW_ALIAS"
       ],
-      "content_hash": "e566009eaeae"
+      "content_hash": "28dc0a1e926b"
     },
     {
       "name": "column_api.py",
@@ -1004,7 +1004,7 @@
     {
       "name": "combined_footing_api.py",
       "type": "python",
-      "size_lines": 177,
+      "size_lines": 252,
       "last_updated": "2026-08-16",
       "description": "Stable orchestration for the bounded symmetric combined-footing workflow.",
       "classes": [
@@ -1030,6 +1030,13 @@
       ],
       "functions": [
         {
+          "name": "build_symmetric_combined_footing_design_input",
+          "description": "Build the service contract from an already transport-validated mapping.",
+          "params": [
+            "payload"
+          ]
+        },
+        {
           "name": "design_symmetric_combined_footing_is456",
           "description": "Compose the sole G0-approved symmetric combined-footing workflow.",
           "params": [
@@ -1041,7 +1048,7 @@
         "_SUPPORTED_CASE",
         "_HELD_CASES"
       ],
-      "content_hash": "54f2eef7166d"
+      "content_hash": "fe4f00e563f1"
     },
     {
       "name": "common_api.py",
@@ -2818,5 +2825,5 @@
     "SymmetricCombinedFootingDesignStatus",
     "design_symmetric_combined_footing_is456"
   ],
-  "content_hash": "aef85adbb09cff7f"
+  "content_hash": "cdd22758a600a614"
 }

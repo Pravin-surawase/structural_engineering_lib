@@ -96,7 +96,7 @@ def test_is456_supported_families_are_generated_from_runtime_registry() -> None:
     ]
 
 
-def test_combined_footing_held_truth_tracks_public_python_preview() -> None:
+def test_combined_footing_supported_truth_tracks_publication_chain() -> None:
     manifest = build_manifest()
     is456 = _standard(manifest, "IS456:2000")
     combined = next(
@@ -105,14 +105,15 @@ def test_combined_footing_held_truth_tracks_public_python_preview() -> None:
         if item["family"] == "combined_footing"
     )
 
-    assert combined["scope_status"] == "HELD"
+    assert combined["scope_status"] == "SUPPORTED"
     assert combined["implementation_status"] == "IMPLEMENTED_BOUNDED"
     assert combined["workflows"] == ["design_symmetric_combined_footing_is456"]
-    assert "bounded public Python preview" in combined["claim"]
-    assert "FastAPI transport" in combined["limitations"][0]
-    assert "runtime capability registration" in combined["limitations"][0]
-    assert "semantic-contract publication" in combined["limitations"][0]
+    assert "two identical square columns" in combined["claim"]
+    assert "soil-structure-interaction" in " ".join(combined["limitations"])
     assert "india-2-foundation-combined-c-public-workflow-evidence.md" in " ".join(
+        combined["evidence"]
+    )
+    assert "india-2-foundation-combined-d-publication-evidence.md" in " ".join(
         combined["evidence"]
     )
 
@@ -150,9 +151,9 @@ def test_parity_dashboard_consumes_declared_capability_families() -> None:
     report = _run_json("parity_dashboard.py", "--section", "capabilities", "--json")
     section = report["sections"][0]
     assert section["metric_kind"] == "DECLARED_CAPABILITY_FAMILY_COVERAGE"
-    assert section["supported"] == 11
-    assert section["held"] == 10
-    assert section["pct"] == 52
+    assert section["supported"] == 12
+    assert section["held"] == 9
+    assert section["pct"] == 57
     assert section["informational"] is True
     assert report["overall_pct"] is None
     assert "capability scope" in report["overall_scope"]

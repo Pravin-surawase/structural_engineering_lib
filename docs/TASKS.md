@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — COMBINED-C typed Python publication is complete; COMBINED-D is next
+**Updated:** 2026-08-16 — COMBINED-D publication is complete; focused family acceptance is next
 
 ---
 
@@ -133,7 +133,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2-FOUNDATION-COMBINED-D | Publish thin FastAPI transport plus exact capability/semantic/manifest truth over the C workflow | Next Main Agent + API developer | one bounded packet | P0 | 🚧 NEXT — begin only after C merges unchanged; no structural math, React, alternate topology, or broad gate |
+| INDIA-2-FOUNDATION-COMBINED-ACCEPTANCE | Bind and recheck the integrated G0/A-D family without adding feature behavior | Next Main Agent + reviewer | one bounded packet | P0 | 🚧 NEXT — begin only after D merges unchanged; no structural math, React, alternate topology, or broad gate |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
@@ -159,6 +159,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-FOUNDATION-COMBINED-D | Published strict nested FastAPI transport, exact OpenAPI drift, capability/semantic truth, and deterministic manifest promotion | Main Agent + API developer | ✅ COMPLETE — one bounded workflow is supported at 12/21 truth and all 80 routes have direct tests; integration receipt remains live-closeout evidence |
 | INDIA-2-FOUNDATION-COMBINED-C | Published one typed Python composition with immutable provenance/result/status types, canonical exports, executable benchmark, public API docs, and retained held truth | Main Agent + backend | ✅ COMPLETE — 7 direct C and 78 combined A/B/C tests pass; capability remains held until D |
 | INDIA-2-FOUNDATION-COMBINED-B | Implemented flexure/minimum/provided steel, spacing/cover/anchorage, concrete one-way/punching shear, bearing/dowels, and composed disposition | Main Agent + structural math | ✅ COMPLETE — 28 direct tests and immutable independent source-candidate audit pass; capability remains held until C/D |
 | INDIA-2-FOUNDATION-COMBINED-A | Implemented typed eligibility, gross/net pressure, resultant equilibrium, longitudinal critical sections, and transverse actions | Main Agent + structural math | ✅ COMPLETE — frozen benchmark and additional symmetric equilibrium cases pass; strength and public capability remain held |

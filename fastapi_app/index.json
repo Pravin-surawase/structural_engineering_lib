@@ -181,7 +181,7 @@
     {
       "name": "main.py",
       "type": "python",
-      "size_lines": 615,
+      "size_lines": 625,
       "last_updated": "2026-08-16",
       "description": "FastAPI Application Entry Point.",
       "classes": [
@@ -243,7 +243,7 @@
         "API_TAGS_METADATA",
         "API_V1_PREFIX"
       ],
-      "content_hash": "f648cc40407e"
+      "content_hash": "a14a79720cab"
     },
     {
       "name": "openapi_baseline.json",
@@ -256,7 +256,7 @@
         "paths",
         "tags"
       ],
-      "content_hash": "12cfc1e30540"
+      "content_hash": "cbbd00cabd6f"
     },
     {
       "name": "ruff.toml",
@@ -275,23 +275,23 @@
     {
       "name": "models",
       "path": "models/",
-      "file_count": 22,
+      "file_count": 23,
       "is_package": true
     },
     {
       "name": "routers",
       "path": "routers/",
-      "file_count": 25,
+      "file_count": 26,
       "is_package": true
     },
     {
       "name": "tests",
       "path": "tests/",
-      "file_count": 43,
+      "file_count": 44,
       "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
       "is_package": true
     }
   ],
   "has_init": true,
-  "content_hash": "faa30b2633b6bdfe"
+  "content_hash": "82397e4c142efad7"
 }

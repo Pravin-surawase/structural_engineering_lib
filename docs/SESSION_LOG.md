@@ -5,6 +5,135 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FOUNDATION-COMBINED-D FastAPI and Truth Publication
+
+**Agent:** Codex (`api-developer`, sole writer; one bounded independent exact-
+head audit after the candidate is committed)
+
+**Branch:** `codex/india-2-foundation-combined-d` from merged COMBINED-C main
+at `7b7b310a9310c04a65b1dcdfd4ef812c792bb8cb`
+
+**Git handoff receipt:** `docs/verification/india-2-foundation-combined-d-git-handoff-receipt.json`
+
+**Focus:** Publish only strict nested transport, one thin symmetric combined-
+footing route, exact OpenAPI drift, and matching capability/semantic/manifest
+truth over the accepted C workflow. Structural math, React, alternate
+foundations, broad Python, and the full gate remain outside D.
+
+### Summary
+
+- Added `POST /api/v1/design/combined-footing/symmetric` with strict request
+  models, a typed nested result, safe domain-error mapping, and no duplicated
+  engineering arithmetic.
+- Promoted the exact bounded workflow to canonical capability and semantic
+  truth, deterministic manifest support at 12 supported / 9 held, and 80/80
+  directly tested endpoints.
+- Preserved every caller-approved basis, held case, qualified-review boundary,
+  and false complete-engineering-approval result. The fresh acceptance-only
+  packet remains next after D merges unchanged.
+
+### Issues encountered
+
+- Several orientation and focused-check commands used guessed paths that do not
+  exist: a `services/semantic_contracts.py` module, a shortened C evidence
+  filename, a non-integration semantic test path, and two obsolete combined-
+  footing unit-test paths.
+- The first direct transport gate accepted integer `1` for
+  `qualified_review_required` even though the strict contract admits only the
+  JSON boolean `true`.
+- The first capability/manifest selection failed because the parity-dashboard
+  regression still asserted the pre-D 11-supported / 10-held baseline after D
+  had truthfully promoted combined footing.
+- The first architecture gate found one new upward import: the FastAPI router
+  constructed IS 456 domain dataclasses by importing the calculation layer
+  directly.
+- The cumulative public-entrypoint selection exposed two canonical tests that
+  still expected only the original five capability families, omitting the
+  already published wall, deep-beam, and flat-slab families as well as D's new
+  combined-footing family.
+- The mandatory pre-commit session-end check returned nonzero after accepting
+  the session record and Git receipt because all 44 intended D paths were still
+  uncommitted.
+- The first immutable audit confirmed the implementation but found that the
+  evidence manually counted 19 new OpenAPI schemas instead of the actual 20.
+
+### Root causes and resolutions
+
+- Root cause: generic filename and test-location assumptions were used before
+  exact repository discovery. Resolution: use `rg --files` and targeted `rg`
+  before every maintained source/test selection; the semantic truth lives in
+  `Python/structural_lib/services/capabilities.py`, the C evidence ends in
+  `public-workflow-evidence.md`, the semantic test is under `integration/`, and
+  combined A/B tests are under `codes/is456/combined_footing/`. Evidence: the
+  discovered exact files load and the corrected focused commands pass.
+  ⚠️ TERMINAL ISSUE: guessed maintained paths stopped four commands → exact
+  paths were discovered with `rg --files` and the commands were rerun.
+- Root cause: Pydantic's normal `Literal[True]` validation coerces integer `1`
+  to boolean `true`, so `extra="forbid"` and `allow_inf_nan=False` did not make
+  literal approval flags type-strict. Resolution: define reusable
+  `StrictTrue`/`StrictFalse` annotated literal types with a before-validator
+  that requires the input's exact runtime type to be `bool`, then apply them to
+  every request topology and approval flag. Evidence: model-level tracing
+  isolated only the integer review case as accepted before the fix; all six
+  direct transport tests now pass, including non-boolean rejection, while the
+  generated OpenAPI still exposes the intended literal constants.
+- Root cause: the exact capability-count invariant is intentionally duplicated
+  in the parity regression, but the D promotion edit updated the family
+  manifest assertion and not the dashboard assertion. Resolution: update the
+  same test's supported, held, and displayed percentage values to 12, 9, and
+  57. Evidence: the capability/semantic/manifest selection passes and live
+  parity reports 12/21 supported, 9/21 held, and 80/80 tested endpoints.
+- Root cause: the first transport adapter was placed in the router for
+  convenience, crossing the required UI/IO to service boundary even though it
+  contained no arithmetic. Resolution: add the explicitly reserved nested-
+  mapping builder to `services/combined_footing_api.py`; the router now imports
+  only the service module, validates transport, delegates construction, and
+  calls the public workflow. Evidence: direct transport and public-workflow
+  tests pass and architecture returns 0 violations across 193 files.
+- Root cause: earlier family packets added their own focused capability tests
+  but did not reconcile the older exact all-family ordering assertions in
+  `test_api_entrypoints_is456.py`; those assertions therefore remained stale
+  without affecting the maintained runtime truth. Resolution: update both the
+  registry and JSON-document expectations to the canonical nine-family order.
+  Evidence: live registry and serialized-document identities match exactly and
+  the full D public-contract selection passes. No broad gate is pulled forward
+  because the failing path and complete central invariant were isolated and
+  corrected by the focused selection.
+- Root cause: the read-only session-end audit correctly treats an uncommitted
+  implementation packet as unfinished; this invocation intentionally preceded
+  creation of the immutable audit candidate. Resolution: inspect and stage only
+  the 44 declared D paths, commit them normally, then rerun session end on the
+  clean candidate. Evidence: the successor session-end audit must accept the
+  same versioned receipt and report no uncommitted changes before publication.
+  ⚠️ TERMINAL ISSUE: pre-commit session end held the dirty candidate → commit
+  the reviewed intended set and rerun on the clean immutable head.
+- Root cause: the manual schema count included the 19 named combined-footing
+  request/result component types but omitted the generated generic
+  `APIResponse_SymmetricCombinedFootingResponse_` wrapper. Resolution: correct
+  both D evidence claims to 20 while retaining the already verified 340 total;
+  no code or OpenAPI artifact changes. Evidence: a base/head key comparison and
+  the independent audit both enumerate 20 additive schemas with no existing
+  path or schema changed; the repair head receives a new exact-head audit.
+
+### Validation
+
+- All 6 direct D transport tests and all 84 combined A-D analysis, strength,
+  public-workflow, and transport tests pass. The 339-test focused combined,
+  API entrypoint/contract, capability, semantic, deterministic-manifest,
+  clause, endpoint, and typed-response selection also passes.
+- The OpenAPI baseline contains exactly one new path and 20 new combined-
+  footing schemas; no existing path or schema changes. The deterministic
+  snapshot reports 80 endpoints and 340 schemas.
+- Black, Ruff, focused mypy, and Bandit pass. Architecture reports 0/193,
+  imports 0 broken across 222 Python files, all 1,250 internal links are valid,
+  all three API contract checks pass, and source binding plus token efficiency
+  pass. All touched indexes are current and the quick gate is 10/10. Exact-head
+  audit and hosted-check results follow the immutable candidate and are
+  completed at packet closeout.
+- Using the cadence quoted by the owner: focused gates run per packet, with the
+  broad Python and 30-check gates only at the final INDIA-2 integration boundary
+  unless a repository-wide failure forces them earlier.
+
 ## 2026-08-16 — Session: INDIA-2-FOUNDATION-COMBINED-C Public Python Workflow
 
 **Agent:** Codex (`backend`, sole writer; one bounded independent exact-head

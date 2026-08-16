@@ -47,7 +47,7 @@ Historical staircase task IDs, PRs, and evidence remain unchanged. The former
 | Clause 33 stairs | One bounded longitudinal straight waist-slab flight supported | Complete; alternate stair systems remain held |
 | Clause 29 deep beams | Focused family acceptance complete after G0 and A-D integration | One simply supported positive-moment reinforcement check supported; alternate deep-beam systems held |
 | Flat slabs and column punching | Focused family acceptance complete after G0 and A-E integration | One regular interior direct-design and concrete-only punching workflow supported; alternate systems held |
-| Combined footing | G0 plus A/B analysis-strength packets complete; capability remains held | One symmetric equal-load two-column rigid rectangular case frozen; C public Python workflow is next |
+| Combined footing | G0/A-D implementation and publication complete; focused acceptance next | One symmetric equal-load two-column rigid rectangular workflow supported; alternate systems held |
 | Strap footing | Not implemented | Separate foundation program |
 | Pile cap | Not implemented | Separate foundation program |
 | Raft foundation | Not implemented | Separate foundation program |
@@ -304,7 +304,12 @@ typed `design_symmetric_combined_footing_is456` Python workflow with immutable
 input/provenance/result/status types, an executable benchmark, exact caller-
 basis and source traceability, and canonical exports. Evidence is in
 [`india-2-foundation-combined-c-public-workflow-evidence.md`](../verification/india-2-foundation-combined-c-public-workflow-evidence.md).
-FastAPI and capability/semantic promotion remain held for D.
+`INDIA-2-FOUNDATION-COMBINED-D` adds strict nested transport at
+`POST /api/v1/design/combined-footing/symmetric`, exact OpenAPI drift, and the
+matching capability/semantic/manifest promotion without changing structural
+math. Evidence is in
+[`india-2-foundation-combined-d-publication-evidence.md`](../verification/india-2-foundation-combined-d-publication-evidence.md).
+Focused family acceptance is next and must add no feature behavior.
 
 ## 7. Validation and Git cadence
 

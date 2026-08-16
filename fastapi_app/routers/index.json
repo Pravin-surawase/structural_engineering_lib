@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 23,
+  "file_count": 24,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 54,
+      "size_lines": 56,
       "last_updated": "2026-08-16",
       "description": "FastAPI Routers Package.",
-      "content_hash": "9219a622fcb9"
+      "content_hash": "be1e80ba46df"
     },
     {
       "name": "analysis.py",
@@ -173,6 +173,23 @@
         }
       ],
       "content_hash": "a2bd89bb85de"
+    },
+    {
+      "name": "combined_footing.py",
+      "type": "python",
+      "size_lines": 72,
+      "last_updated": "2026-08-16",
+      "description": "FastAPI transport for the bounded symmetric combined-footing service.",
+      "functions": [
+        {
+          "name": "design_symmetric_combined_footing",
+          "description": "Validate transport input and delegate every calculation to the service.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "fa2a5038a44c"
     },
     {
       "name": "deep_beam.py",
@@ -993,6 +1010,7 @@
     "analysis",
     "catalog",
     "column",
+    "combined_footing",
     "deep_beam",
     "design",
     "detailing",
@@ -1008,8 +1026,7 @@
     "rebar",
     "staircase",
     "streaming",
-    "wall",
-    "websocket"
+    "wall"
   ],
-  "content_hash": "c067f8c679057791"
+  "content_hash": "417dd0e3270820df"
 }

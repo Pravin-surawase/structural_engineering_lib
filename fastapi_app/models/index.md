@@ -2,7 +2,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-16
-**Files:** 20
+**Files:** 21
 
 ## Public API
 
@@ -38,6 +38,7 @@
 | [capabilities.py](capabilities.py) | Typed transport models for canonical IS 456 capability disco | 8 | 0 | 79 |
 | [catalog.py](catalog.py) | Typed transport models for the application workflow catalogu | 4 | 0 | 56 |
 | [column.py](column.py) | Column Design Pydantic Models. | 15 | 0 | 1192 |
+| [combined_footing.py](combined_footing.py) | Transport models for the bounded symmetric combined-footing  | 15 | 0 | 337 |
 | [common.py](common.py) | Common Pydantic Models. | 5 | 0 | 137 |
 | [compliance.py](compliance.py) | IS 456 Compliance Check Pydantic Models. | 15 | 0 | 325 |
 | [deep_beam.py](deep_beam.py) | Transport models for the bounded simply supported deep-beam  | 9 | 0 | 143 |

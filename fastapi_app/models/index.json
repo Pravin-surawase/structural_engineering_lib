@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 20,
+  "file_count": 21,
   "files": [
     {
       "name": "__init__.py",
@@ -335,6 +335,62 @@
         }
       ],
       "content_hash": "950c5f1059f8"
+    },
+    {
+      "name": "combined_footing.py",
+      "type": "python",
+      "size_lines": 337,
+      "last_updated": "2026-08-16",
+      "description": "Transport models for the bounded symmetric combined-footing workflow.",
+      "classes": [
+        {
+          "name": "CombinedFootingGeometryRequest"
+        },
+        {
+          "name": "CombinedFootingActionRequest"
+        },
+        {
+          "name": "CombinedFootingAnalysisRequest"
+        },
+        {
+          "name": "CombinedFootingMaterialRequest"
+        },
+        {
+          "name": "CombinedFootingReinforcementRequest"
+        },
+        {
+          "name": "CombinedFootingTransferRequest"
+        },
+        {
+          "name": "CombinedFootingDesignRequest"
+        },
+        {
+          "name": "SymmetricCombinedFootingRequest",
+          "description": "Explicit approved-basis inputs for the sole combined-footing case."
+        },
+        {
+          "name": "CombinedFootingGeometryResponse"
+        },
+        {
+          "name": "CombinedFootingSectionActionResponse"
+        },
+        {
+          "name": "CombinedFootingTransverseActionResponse"
+        },
+        {
+          "name": "CombinedFootingActionResponse"
+        },
+        {
+          "name": "CombinedFootingFlexureResponse"
+        },
+        {
+          "name": "CombinedFootingOneWayShearResponse"
+        },
+        {
+          "name": "CombinedFootingPunchingResponse"
+        }
+      ],
+      "content_hash": "f178ea99161e"
     },
     {
       "name": "common.py",
@@ -1003,5 +1059,5 @@
     "DuctilityCheckRequest",
     "DuctilityCheckResponse"
   ],
-  "content_hash": "856eb7164b721010"
+  "content_hash": "f3121c0e1442948a"
 }
