@@ -116,15 +116,17 @@ repairs, pile-cap/raft work, broad gates, dependency updates, or release work.
   regression suite pass; no current non-archived source retains the stale
   GIT-7E/Clause `26.5.1.1` next-work claims targeted by this packet.
 - Planning indexes are current; document index/README structure passes; all
-  1,257 internal links are valid with zero broken links.
+  1,259 internal links are valid with zero broken links.
 - The Indian-code manifest is current at `13 supported / 8 held`; parity reports
   81/81 directly tested endpoints and 100% actionable cross-layer coverage.
 - Token-efficiency controls and the focused quick gate pass `10/10`.
 - JSON frontmatter validation still reports the intentionally deferred eight
   invalid records and still exits zero, reproducing the next packet's defect.
   Broad Python and the full 30-check gate remain deferred under the owner
-  cadence. Normal hooks, hosted checks, and merge-tree verification follow on
-  the frozen planning candidate.
+  cadence.
+- Normal commit hooks pass after restoring the two exact next-brief handoff
+  markers. The task-to-Git receipt validates with the expected pre-PR hold;
+  hosted checks and merge-tree verification follow on the frozen candidate.
 
 ## 2026-08-16 — Session: INDIA-2-FOUNDATION-STRAP Focused Family Acceptance
 

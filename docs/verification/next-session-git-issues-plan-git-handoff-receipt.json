@@ -1,0 +1,157 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T12:17:57Z",
+      "query_status": "OK",
+      "reference": "task:NEXT-SESSION-GIT-ISSUES-AND-INDIA-2:user-request-plan-next-session-for-git-issue-fixes-and-more",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T12:17:57Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/india-2-next-session-git-issues-plan",
+      "head_sha": "eefb75d24b5a2f15d5d4b79752d48b6cb22a72ef",
+      "task_id": "NEXT-SESSION-GIT-ISSUES-AND-INDIA-2"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "6473a80d61c274a63cc428191fbad62391b3b99efd4e4f3d29cbab5cc23ddd9b",
+    "state": {
+      "branch": "codex/india-2-next-session-git-issues-plan",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "f56e1ec312902caf98e872c77ce8b71bdbc8440e",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 93.464,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-next-session-plan",
+      "head_sha": "eefb75d24b5a2f15d5d4b79752d48b6cb22a72ef",
+      "hold_reasons": [
+        "changed paths: 1"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T12:18:25.087911+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-next-session-plan",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 1,
+        "modified_paths": [],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/next-session-git-issues-plan-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "f56e1ec312902caf98e872c77ce8b71bdbc8440e",
+        "status": "ahead"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-next-session-plan"
+    }
+  },
+  "local_state_receipt_hash": "sha256:6473a80d61c274a63cc428191fbad62391b3b99efd4e4f3d29cbab5cc23ddd9b",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T12:18:25.088076+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T12:17:57Z",
+    "owner": "Main Agent under user request for a durable next-session plan",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib",
+      "fastapi_app",
+      "react_app",
+      "private_sources",
+      "CHANGELOG.md"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+      "docs/verification/next-session-git-issues-plan-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/india-2-remaining-is456-elements-plan.md",
+      "docs/research/git-governance/GIT-001-README.md",
+      "docs/research/git-governance/GIT-001-next-agent-disposition-plan.md",
+      "docs/research/git-governance/GIT-001-phase-7E-semantic-handoff.md"
+    ],
+    "task_id": "NEXT-SESSION-GIT-ISSUES-AND-INDIA-2"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
