@@ -91,9 +91,11 @@ approval is false.
 ## Retained truth and held cases
 
 Generated capability truth remains exactly `11 supported / 10 held` and
-combined footing remains `HELD`/`NOT_IMPLEMENTED` until COMBINED-D publishes
-the thin FastAPI route and exact capability/semantic projection. All existing
-79 endpoints remain the only transport routes and remain directly tested.
+combined footing remains `HELD` while its implementation status truthfully
+records the bounded public Python preview. COMBINED-D still owns the thin
+FastAPI route, runtime capability registration, semantic-contract projection,
+and family acceptance. All existing 79 endpoints remain the only transport
+routes and remain directly tested.
 
 Unequal/eccentric loads, property-line or trapezoidal layouts, flexible or
 variable soil pressure, bearing-capacity and settlement calculation, alternate

@@ -49,6 +49,12 @@ accepted A/B kernels. FastAPI and capability publication remain held.
   to-Git handoff receipt.
 - The successor session-end audit still reported the newly linked receipt as
   missing even though direct receipt validation passed.
+- The first immutable exact-head audit found that the generated Indian-code
+  manifest still said no combined-footing public workflow existed after C
+  exported and documented the bounded Python workflow.
+- The first repair regeneration invoked the Indian-code manifest generator
+  without its required `--write` flag, so its following `--check` still found
+  the committed manifest stale.
 
 ### Root causes and resolutions
 
@@ -107,6 +113,24 @@ accepted A/B kernels. FastAPI and capability publication remain held.
   `./run.sh session end --agent backend` discovers the same versioned receipt.
   ⚠️ TERMINAL ISSUE: session end reported a valid linked receipt as missing →
   aligned the session entry with the maintained same-line discovery contract.
+- Root cause: `_held_family` hardcoded every held family to
+  `NOT_IMPLEMENTED`, empty workflows, and empty evidence, conflating held
+  capability publication with absence of any bounded implementation. C kept
+  the 11/10 scope count correct but inherited stale B-era implementation prose.
+  Resolution: allow a held definition to declare an orthogonal bounded
+  implementation, workflow, and evidence; record C as `HELD` plus
+  `IMPLEMENTED_BOUNDED`, name its Python preview, and retain FastAPI, runtime
+  capability, semantic-contract, and family acceptance holds until D. Evidence:
+  the semantic regression test asserts the distinction, the deterministic
+  generated manifest is current, parity remains 11 supported / 10 held with
+  79/79 endpoints, and the repair candidate receives a new exact-head audit.
+- Root cause: `generate_indian_code_manifest.py` defaults to rendering JSON on
+  stdout, unlike the API-manifest generator's write invocation used earlier in
+  this packet. Resolution: rerun with explicit `--write`, then immediately use
+  `--check`. Evidence: the committed manifest and deterministic renderer match,
+  and the focused manifest/publication tests pass. ⚠️ TERMINAL ISSUE: the first
+  repair regeneration only rendered output → used the generator's explicit
+  `--write` contract and rechecked the artifact.
 
 ### Validation
 
@@ -115,8 +139,9 @@ accepted A/B kernels. FastAPI and capability publication remain held.
   selection pass, for 291 focused tests.
 - Public API documentation/symbol parity, the 160-symbol generated API
   manifest, deterministic Indian-code manifest, focused Ruff, and focused mypy
-  pass. Capability remains 11 supported / 10 held with no C endpoint or
-  semantic workflow.
+  pass. Capability scope remains 11 supported / 10 held; the manifest records
+  C's bounded Python preview while runtime capability/semantic publication and
+  any C endpoint remain held for D.
 - Architecture reports 0/191 violations, imports 0/632 broken, all 1,242
   internal links are valid, touched indexes are current, source binding and
   token efficiency pass, and the quick gate is 10/10. Exact-head audit and

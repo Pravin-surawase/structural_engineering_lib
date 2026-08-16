@@ -12,7 +12,7 @@
       "PUSH_FEATURE_BRANCH",
       "CREATE_OR_UPDATE_DRAFT_PR"
     ],
-    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "next_action": "WAIT_FOR_REPAIR_EXACT_HEAD_AUDIT",
     "observed_at_utc": "2026-08-16T08:16:24Z",
     "prohibited_actions": [
       "MERGE_BEFORE_REQUIRED_CHECKS",
@@ -30,7 +30,7 @@
         "CREATE_OR_UPDATE_DRAFT_PR"
       ],
       "branch": "codex/india-2-foundation-combined-c",
-      "head_sha": "f87c8a32aca7edc015f96f6e053f30c904ae683b",
+      "head_sha": "8b088e102d24df07b9c85069b08d313a08244b3d",
       "task_id": "INDIA-2-FOUNDATION-COMBINED-C"
     }
   },

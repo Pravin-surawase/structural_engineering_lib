@@ -12,7 +12,7 @@
       "PUSH_FEATURE_BRANCH",
       "CREATE_OR_UPDATE_DRAFT_PR"
     ],
-    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "next_action": "WAIT_FOR_REPAIR_EXACT_HEAD_AUDIT",
     "observed_at_utc": "2026-08-16T08:16:24Z",
     "prohibited_actions": [
       "MERGE_BEFORE_REQUIRED_CHECKS",
@@ -30,12 +30,13 @@
         "CREATE_OR_UPDATE_DRAFT_PR"
       ],
       "branch": "codex/india-2-foundation-combined-c",
-      "head_sha": "f87c8a32aca7edc015f96f6e053f30c904ae683b",
+      "head_sha": "8b088e102d24df07b9c85069b08d313a08244b3d",
       "task_id": "INDIA-2-FOUNDATION-COMBINED-C"
     }
   },
   "holds": [
     "LOCAL_HOLD_DIRTY",
+    "NEXT_ACTION_NOT_AUTHORIZED",
     "PULL_REQUEST_NOT_CHECKED",
     "REMOTE_NOT_CHECKED",
     "REVIEW_NOT_CHECKED"
@@ -47,27 +48,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "de6f5543cad5348fa5ed524c02873fa6ffe0b9fcad1b06916271c127f1ff3f6c",
+    "receipt_sha256": "1959950a356c49589fd132cff95778faab490d85aa981dfe31749ea183e5dfe3",
     "state": {
       "branch": "codex/india-2-foundation-combined-c",
       "default_base": {
-        "ahead": 0,
+        "ahead": 1,
         "behind": 0,
         "ref": "origin/main",
         "sha": "f87c8a32aca7edc015f96f6e053f30c904ae683b",
-        "status": "equal"
+        "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 82.352,
+      "duration_ms": 79.337,
       "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
       "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-foundation-combined-c",
-      "head_sha": "f87c8a32aca7edc015f96f6e053f30c904ae683b",
+      "head_sha": "8b088e102d24df07b9c85069b08d313a08244b3d",
       "hold_reasons": [
-        "changed paths: 31"
+        "changed paths: 12"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-08-16T08:17:00.507048+00:00",
+      "observed_at_utc": "2026-08-16T08:26:22.022858+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -78,43 +79,23 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 31,
+        "dirty_count": 12,
         "modified_paths": [
-          "Python/structural_lib/__init__.py",
-          "Python/structural_lib/index.json",
-          "Python/structural_lib/index.md",
-          "Python/structural_lib/services/__init__.py",
-          "Python/structural_lib/services/api.py",
-          "Python/structural_lib/services/index.json",
-          "Python/structural_lib/services/index.md",
           "Python/tests/index.json",
           "Python/tests/index.md",
+          "Python/tests/test_indian_code_manifest.py",
           "docs/SESSION_LOG.md",
-          "docs/TASKS.md",
           "docs/index.json",
           "docs/index.md",
-          "docs/planning/index.json",
-          "docs/planning/index.md",
-          "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
-          "docs/planning/india-2-remaining-is456-elements-plan.md",
-          "docs/planning/indian-code-completion-plan.md",
-          "docs/planning/next-session-brief.md",
-          "docs/reference/api-manifest.json",
-          "docs/reference/api-stability.md",
-          "docs/reference/api.md",
-          "docs/reference/index.json",
-          "docs/reference/index.md",
           "docs/verification/index.json",
           "docs/verification/index.md",
-          "docs/verification/india-2-foundation-combined-b-strength-evidence.md"
+          "docs/verification/india-2-foundation-combined-c-git-handoff-source-evidence.json",
+          "docs/verification/india-2-foundation-combined-c-public-workflow-evidence.md",
+          "docs/verification/indian-code-capability-coverage.json",
+          "scripts/_lib/indian_code_manifest.py"
         ],
         "staged_paths": [],
-        "untracked_paths": [
-          "Python/structural_lib/services/combined_footing_api.py",
-          "Python/tests/integration/test_combined_footing_publication.py",
-          "docs/verification/india-2-foundation-combined-c-git-handoff-source-evidence.json",
-          "docs/verification/india-2-foundation-combined-c-public-workflow-evidence.md"
-        ]
+        "untracked_paths": []
       },
       "upstream": {
         "ahead": null,
@@ -126,9 +107,9 @@
       "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-foundation-combined-c"
     }
   },
-  "local_state_receipt_hash": "sha256:de6f5543cad5348fa5ed524c02873fa6ffe0b9fcad1b06916271c127f1ff3f6c",
+  "local_state_receipt_hash": "sha256:1959950a356c49589fd132cff95778faab490d85aa981dfe31749ea183e5dfe3",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-08-16T08:17:00.507202+00:00",
+  "observed_at_utc": "2026-08-16T08:26:22.022997+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
@@ -173,6 +154,9 @@
       "Python/structural_lib/services/api.py",
       "Python/structural_lib/services/__init__.py",
       "Python/structural_lib/__init__.py",
+      "scripts/_lib/indian_code_manifest.py",
+      "Python/tests/test_indian_code_manifest.py",
+      "docs/verification/indian-code-capability-coverage.json",
       "docs/reference/api.md",
       "docs/reference/api-stability.md",
       "docs/reference/api-manifest.json",

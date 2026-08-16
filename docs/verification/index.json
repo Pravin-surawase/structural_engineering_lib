@@ -784,7 +784,7 @@
         "receipt_grants_authority",
         "receipt_kind"
       ],
-      "content_hash": "6bef1bbe4fe8"
+      "content_hash": "7a1da1a3367b"
     },
     {
       "name": "india-2-foundation-combined-c-git-handoff-source-evidence.json",
@@ -796,15 +796,15 @@
         "retention",
         "task_archive"
       ],
-      "content_hash": "01506cba9548"
+      "content_hash": "17b8e97687ab"
     },
     {
       "name": "india-2-foundation-combined-c-public-workflow-evidence.md",
       "type": "documentation",
-      "size_lines": 144,
+      "size_lines": 146,
       "last_updated": "2026-08-16",
       "description": "COMBINED-C publishes one typed Python workflow, design_symmetric_combined_footing_is456, over the already accepted",
-      "content_hash": "7fabdc3a42a3"
+      "content_hash": "b1b71be9bb1e"
     },
     {
       "name": "india-2-foundation-combined-g0-git-handoff-receipt.json",
@@ -1058,7 +1058,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "8ee10f6b680f"
+      "content_hash": "d400575b9262"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -1147,5 +1147,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "ef6829f70afc23b1"
+  "content_hash": "e9b97aed0fba5848"
 }

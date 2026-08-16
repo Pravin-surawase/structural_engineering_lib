@@ -90,7 +90,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [india-2-flat-g0-scope-evidence.md](india-2-flat-g0-scope-evidence.md) |  | interior panel in an equal-span orthogonal grid, designed by | 215 |
 | [india-2-foundation-combined-a-analysis-evidence.md](india-2-foundation-combined-a-analysis-evidence.md) |  | COMBINED-A implements only the G0-frozen pure IS 456 analysi | 114 |
 | [india-2-foundation-combined-b-strength-evidence.md](india-2-foundation-combined-b-strength-evidence.md) |  | COMBINED-B implements only the G0-frozen pure IS 456 strengt | 152 |
-| [india-2-foundation-combined-c-public-workflow-evidence.md](india-2-foundation-combined-c-public-workflow-evidence.md) |  | COMBINED-C publishes one typed Python workflow, design_symme | 144 |
+| [india-2-foundation-combined-c-public-workflow-evidence.md](india-2-foundation-combined-c-public-workflow-evidence.md) |  | COMBINED-C publishes one typed Python workflow, design_symme | 146 |
 | [india-2-foundation-combined-g0-scope-evidence.md](india-2-foundation-combined-g0-scope-evidence.md) |  | square reinforced-concrete columns carrying equal concentric | 226 |
 | [india-2-wall-a-axial-kernel-evidence.md](india-2-wall-a-axial-kernel-evidence.md) |  | WALL-A implements the pure IS 456 layer for the accepted Cla | 83 |
 | [india-2-wall-b-reinforcement-evidence.md](india-2-wall-b-reinforcement-evidence.md) |  | WALL-B adds one pure IS 456 provided-reinforcement check to  | 82 |
