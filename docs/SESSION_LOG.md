@@ -5,6 +5,116 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2 Next-Agent Execution Plan Refresh
+
+**Agent:** Codex (`orchestrator` and `doc-master`, sole writer)
+
+**Branch:** `codex/india-2-next-agent-plan-refresh` from fetched `origin/main`
+at `339bad2128bc00b34a18827a8ac185ebcdb069fd`, tree
+`ecd7fe389409e4077afb37f17aee20fe5734cf0e`
+
+**Git handoff receipt:** `docs/verification/india-2-next-agent-plan-refresh-git-handoff-receipt.json`
+
+**Focus:** Refresh the durable next-session plan after primary-main hygiene,
+define an efficient exact start for GIT-001 Phase 8, and bound the later
+pile-cap/raft G0 source and benchmark decisions. Do not execute Phase 8, issue
+repairs, structural implementation, cleanup, broad gates, or release work.
+
+### Summary
+
+- Rebound the plan and compact brief to clean synchronized primary/main and
+  planning merge `339bad21` without changing the established packet order.
+- Added a bounded Phase 8 startup/evidence sample, narrow commands, stop rule,
+  timing categories, and one-writer/candidate/generator/hosted-check controls.
+- Defined a two-pile centred-axial pile-cap candidate for G0 investigation while
+  requiring the packet to choose one source-bound action model and return
+  `REVISE` or `HOLD` if source or benchmark evidence remains ambiguous.
+- Kept raft behind the pile-cap decision and preserved the final cumulative
+  cadence: focused gates per packet, broad Python and the 30-check gate once at
+  final INDIA-2 closeout unless repository-wide failure forces them earlier.
+
+### Issues encountered
+
+- The merged plan and compact handoff still described primary at `f87c8a32`,
+  behind and dirty, after the owner-authorized minimal hygiene had restored the
+  repository verbosity default and fast-forwarded primary to `339bad21`.
+- The foundation section named pile-cap/raft decisions but did not give the next
+  agent a concrete candidate, source-readiness state, action-model fork,
+  benchmark contract, or fail-closed decision matrix.
+- The repository's controlled private source set contains IS 456 only; no
+  retained IS 2911/IS 2950 companion source or accepted structural pile-cap/
+  raft benchmark was found.
+- Live frontmatter replay still reports eight invalid records and exits `0`;
+  the planned repair remains necessary and must not be hidden by this docs-only
+  refresh.
+- A targeted stale-claim search placed a Markdown backtick token inside a
+  double-quoted shell command, so zsh attempted to execute `medium` before the
+  search continued.
+- Creating the new Git handoff evidence made the verification-folder index
+  hash stale before the receipt follow-up was committed.
+
+### Root causes and resolutions
+
+- Confirmed root cause: planning PR #799 correctly froze a pre-cleanup snapshot,
+  but a plan/receipt is not a live-state authority and was not refreshed after
+  the separate primary-hygiene action. Resolution: bind current baseline
+  `339bad21`, clean/equal primary, repository `model_verbosity = "low"`, and the
+  unchanged retained `e54a` hold. Evidence: freshly fetched primary and the new
+  linked planning lane report exact base equality; the lane reports
+  `READY_LOCAL` and `source_bound=true`.
+- Confirmed root cause: the earlier plan protected the G0 decision boundary but
+  intentionally stopped before choosing a plausible first topology; a new
+  session would have had to rediscover the whole decision space. Resolution:
+  document one candidate two-pile centred-axial cap, force an explicit choice
+  between footing-critical-section and separately sourced deep-region models,
+  enumerate exclusions, and preserve `GO/REVISE/HOLD` authority in G0.
+- Confirmed root cause: prior INDIA-2 foundation packets required only the
+  retained IS 456 base/amendment sources, so the source cache was never expanded
+  for pile/raft companion standards. Resolution: distinguish authoritative
+  discovery from controlled implementation evidence and make source acquisition
+  plus an independent structural benchmark a G0 precondition. Official BIS
+  listings and NPTEL pile-group material are discovery leads only, not an
+  accepted cap benchmark.
+- Confirmed root cause retained for the later packet: JSON-mode frontmatter
+  validation returns before applying the invalid-count failure status used by
+  text mode. Resolution here is planning only: keep exactly eight invalid
+  records and the exit-code regression in `DOC-FRONTMATTER-CONTRACT`; do not
+  bulk-edit 60 permitted legacy records.
+- Confirmed root cause: command text with backticks was passed through a shell
+  double-quoted string, enabling command substitution. Resolution: rerun the
+  search with the regular expression single-quoted and keep shell metacharacters
+  out of interpolated command text. Evidence: the corrected search completes
+  without a shell error. ⚠️ TERMINAL ISSUE: unsafe backtick quoting triggered
+  `zsh: command not found: medium` -> single-quoted search text worked.
+- Confirmed root cause: verification indexes hash the folder inventory, so the
+  new source-evidence and receipt paths necessarily changed their generated
+  inputs. Resolution: remove the first uncommitted receipt, regenerate the
+  verification indexes once, recreate the receipt with both index paths named
+  as shared paths, and rerun index check mode plus receipt validation.
+
+### Validation
+
+- Focused Git-governance replay: 127 tests passed across `test_git_state.py`,
+  `test_git_handoff_receipt.py`, and `test_branch_disposition.py`; the maintained
+  `check_codex_git_workflow.py` checker also passed.
+- Documentation replay: brief length passed; planning and verification indexes
+  regenerated and hash-current; docs index and index-link checks passed; 387
+  Markdown files and 1,260 internal links produced zero broken links;
+  token-efficiency policy passed; `git diff --check` passed; quick gate passed
+  `10/10`; the task-to-Git handoff receipt validates as the expected pre-PR
+  `HOLD` bound to content head `18b86799`.
+- Current truth replay: parity remains 13 supported / 8 held, 50/91 public
+  functions directly router-wired, 81/81 endpoints directly tested, and 13/13
+  React hooks connected.
+- Known failing contract captured rather than accepted: frontmatter JSON reports
+  341 records, 281 with frontmatter, 60 permitted legacy records without it,
+  and eight invalid records, yet exits `0`. This is the frozen next repair and
+  is not counted as passing validation.
+- Exact changed paths, commit/head/tree, receipt validation, hosted checks, and
+  post-merge identity are recorded during publication closeout.
+- Broad Python and the full 30-check gate remain deferred to final INDIA-2
+  closeout under the owner-approved cadence.
+
 ## 2026-08-16 — Session: Next-Session Git, Issue, and INDIA-2 Plan
 
 **Agent:** Codex (`orchestrator`, sole writer)

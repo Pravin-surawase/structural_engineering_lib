@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 125,
+  "file_count": 126,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -1171,6 +1171,18 @@
       "content_hash": "8704b0e57f8a"
     },
     {
+      "name": "india-2-next-agent-plan-refresh-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "f01377f4cc73"
+    },
+    {
       "name": "india-2-plan-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -1503,5 +1515,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "4fd5f122c27cae60"
+  "content_hash": "3720d9c0488be4c6"
 }
