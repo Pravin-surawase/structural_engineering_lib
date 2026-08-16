@@ -5,6 +5,79 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FOUNDATION-STRAP-B
+
+**Agent:** Codex (`structural-math`, sole writer; one bounded independent
+exact-head audit after the candidate is committed)
+
+**Branch:** `codex/india-2-foundation-strap-b` from merged STRAP-A
+`c410b28024e44e3e2670c8b359b69ae29165f2ae`
+
+**Git handoff receipt:** `docs/verification/india-2-foundation-strap-b-git-handoff-receipt.json`
+
+**Focus:** Implement only exact strap flexure, shear/stirrups, minimum and
+side-face steel, spacing, cover, anchorage, and composed disposition. Public
+Python/FastAPI, React, broad Python, and the full 30-check gate remain outside B.
+
+### Summary
+
+- Added strict material/reinforcement/design contracts and immutable strength
+  result types over STRAP-A.
+- Used the shared exact rectangular stress-block root with direct capacity,
+  beam minimum/side-face steel, Table 19/20 shear, supplied vertical stirrups,
+  caller-approved cover, clear spacing, and both-footing anchorage checks.
+- Preserved valid inadequate provision as `FAIL`, unsupported inputs as typed
+  contract errors, and public strap capability as held until C/D/acceptance.
+
+### Issues encountered
+
+- The initial worktree-creation command continued its onboarding commands in
+  the primary checkout, so its first status/brief described dirty primary main
+  instead of the new B lane.
+- Black could not parse `models.py` after the first contract patch because a
+  new helper block split the exterior-column validation statement.
+- The first focused Ruff run stopped on an unused `overall_depth` local in the
+  flexure helper.
+- The first cumulative manifest test classified Clause `26.4` as
+  registration-only. Inspection also reactivated the previously recorded
+  Clause `26.5.1.1` metadata defect because B now uses that clause directly.
+
+### Root causes and resolutions
+
+- Root cause: creating a linked worktree does not change the shell or tool
+  working directory. Resolution: invoke all subsequent commands with B's exact
+  worktree as `workdir` and re-run Git state, source diagnosis, session brief,
+  and session start there. Evidence: B reports clean `READY_LOCAL`, exact A
+  base, and `source_bound=true`; primary remains untouched.
+  ⚠️ TERMINAL ISSUE: onboarding ran in the creation checkout -> explicit B
+  workdir produced the correct trusted session.
+- Root cause: the patch anchor matched repeated geometry text and inserted
+  `_supported_discrete_value` inside a multi-line method rather than beside the
+  other scalar helpers. Resolution: move the complete helper above the first
+  dataclass and restore the uninterrupted column-face calculation. Evidence:
+  Black parses/formats the package and all direct/cumulative B tests pass.
+- Root cause: the flexure draft retained a dimension local after the final
+  beam-minimum formula used effective depth directly. Resolution: remove the
+  dead assignment without changing arithmetic. Evidence: Ruff, mypy, direct
+  tests, and all focused gates pass.
+- Confirmed root cause: parent Clause `26.4` had no normalized metadata, while
+  Clause `26.5.1.1` was incorrectly labelled as minimum shear reinforcement
+  instead of beam minimum tension reinforcement. The latter had been deferred
+  until a packet used it; STRAP-B is that reactivation boundary. Resolution:
+  add the bounded `26.4` identity and correct `26.5.1.1` title/category/keywords
+  without changing formulas or capability. Evidence: deterministic manifest
+  generation, zero IS 456 registration-only references, semantic metadata
+  assertions, and all focused gates pass.
+- Root cause: adding the A/B clause identities increased the registry by two,
+  but the manual `metadata.total_clauses` counter remained at 173; the first
+  semantic correction also used the natural label `beams`, while the registry
+  schema permits the broader `detailing` category. Resolution: update the
+  counter to 175 and use the permitted detailing category while retaining the
+  exact beam-minimum title/keywords. Evidence: the complete clause-registry
+  schema suite and direct semantic regression pass.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-FOUNDATION-STRAP-A
 
 **Agent:** Codex (`structural-math`, sole writer; one bounded independent

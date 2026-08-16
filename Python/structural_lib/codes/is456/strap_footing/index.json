@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 3,
+  "file_count": 4,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 42,
+      "size_lines": 62,
       "last_updated": "2026-08-16",
       "description": "Bounded property-line strap-footing analysis for INDIA-2.",
-      "content_hash": "d8a17edab325"
+      "content_hash": "f2bf6a09e753"
     },
     {
       "name": "analysis.py",
@@ -71,7 +71,7 @@
     {
       "name": "models.py",
       "type": "python",
-      "size_lines": 450,
+      "size_lines": 633,
       "last_updated": "2026-08-16",
       "description": "Typed contracts for the bounded INDIA-2 property-line strap footing.",
       "classes": [
@@ -105,9 +105,76 @@
         {
           "name": "StrapFootingAnalysisInput",
           "description": "Complete input to the bounded property-line strap action kernel."
+        },
+        {
+          "name": "StrapFootingMaterialInput",
+          "description": "Material grades admitted by the bounded strap strength check."
+        },
+        {
+          "name": "StrapFootingReinforcementInput",
+          "description": "Caller-supplied strap bars and approved detailing carriers."
+        },
+        {
+          "name": "StrapFootingDesignInput",
+          "description": "Complete input to the bounded strap strength composition."
         }
       ],
-      "content_hash": "18d80933a286"
+      "constants": [
+        "_SUPPORTED_CONCRETE_GRADES_NMM2",
+        "_SUPPORTED_STEEL_GRADES_NMM2",
+        "_SUPPORTED_BAR_DIAMETERS_MM"
+      ],
+      "content_hash": "2e2284c07a98"
+    },
+    {
+      "name": "strength.py",
+      "type": "python",
+      "size_lines": 575,
+      "last_updated": "2026-08-16",
+      "description": "Strength and detailing checks for the bounded property-line strap.",
+      "classes": [
+        {
+          "name": "StrapFootingDesignDisposition",
+          "description": "Aggregate outcomes admitted by the bounded strength workflow."
+        },
+        {
+          "name": "StrapFootingFlexureResult",
+          "description": "Exact stress-block, minimum steel, spacing, cover and anchorage checks."
+        },
+        {
+          "name": "StrapFootingSideFaceResult",
+          "description": "Side-face steel and vertical spacing check for the deep strap web."
+        },
+        {
+          "name": "StrapFootingShearResult",
+          "description": "Table 19/20 shear and supplied vertical-stirrup check."
+        },
+        {
+          "name": "StrapFootingStrengthResult",
+          "description": "Composed service, strength and detailing disposition.",
+          "public_methods": [
+            "is_safe_within_supported_scope"
+          ]
+        }
+      ],
+      "functions": [
+        {
+          "name": "check_property_line_strap_footing_strength",
+          "description": "Check the G0-frozen strap reinforcement and detailing schedule.",
+          "params": [
+            "footing_input"
+          ]
+        }
+      ],
+      "constants": [
+        "_SOURCE_REFS",
+        "_CLAUSE_REFS",
+        "_LIMITATIONS",
+        "_SIDE_FACE_RATIO_TOTAL",
+        "_SIDE_FACE_DEPTH_THRESHOLD_MM",
+        "_MAX_SIDE_FACE_SPACING_MM"
+      ],
+      "content_hash": "78076bc84746"
     }
   ],
   "subfolders": [],
@@ -120,14 +187,19 @@
     "StrapFootingApprovalInput",
     "StrapFootingClearSpanActionResult",
     "StrapFootingContractError",
+    "StrapFootingDesignDisposition",
+    "StrapFootingDesignInput",
+    "StrapFootingFlexureResult",
     "StrapFootingGeometryInput",
     "StrapFootingGeometryResult",
     "StrapFootingLoadCase",
     "StrapFootingLoadCaseResult",
+    "StrapFootingMaterialInput",
     "StrapFootingPressureModel",
-    "StrapFootingTensionFace",
-    "analyze_property_line_strap_footing",
-    "resolve_property_line_strap_geometry"
+    "StrapFootingReinforcementInput",
+    "StrapFootingShearResult",
+    "StrapFootingSideFaceResult",
+    "StrapFootingStrengthResult"
   ],
-  "content_hash": "719ff497d8fd5b7a"
+  "content_hash": "bc24fbba69050743"
 }

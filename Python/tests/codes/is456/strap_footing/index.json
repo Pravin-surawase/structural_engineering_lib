@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 2,
+  "file_count": 3,
   "files": [
     {
       "name": "__init__.py",
@@ -86,9 +86,80 @@
         }
       ],
       "content_hash": "20a93ab4eb7a"
+    },
+    {
+      "name": "test_strength.py",
+      "type": "python",
+      "size_lines": 337,
+      "last_updated": "2026-08-16",
+      "description": "INDIA-2-FOUNDATION-STRAP-B strength and detailing tests.",
+      "functions": [
+        {
+          "name": "test_frozen_benchmark_passes_with_review_boundary"
+        },
+        {
+          "name": "test_exact_stress_block_and_longitudinal_steel_benchmark"
+        },
+        {
+          "name": "test_clear_spacing_cover_and_anchorage_benchmark"
+        },
+        {
+          "name": "test_side_face_reinforcement_benchmark"
+        },
+        {
+          "name": "test_table_shear_and_vertical_stirrup_benchmark"
+        },
+        {
+          "name": "test_valid_inadequate_flexure_or_detailing_returns_fail",
+          "params": [
+            "reinforcement",
+            "field"
+          ]
+        },
+        {
+          "name": "test_valid_inadequate_side_face_provision_returns_fail",
+          "params": [
+            "reinforcement",
+            "field"
+          ]
+        },
+        {
+          "name": "test_valid_inadequate_shear_provision_returns_fail",
+          "params": [
+            "reinforcement",
+            "field"
+          ]
+        },
+        {
+          "name": "test_valid_service_bearing_failure_composes_to_fail"
+        },
+        {
+          "name": "test_valid_singly_reinforced_capacity_exceedance_returns_fail"
+        },
+        {
+          "name": "test_out_of_domain_material_and_layout_fail_closed",
+          "params": [
+            "factory",
+            "message"
+          ]
+        },
+        {
+          "name": "test_wrong_top_level_types_fail_closed"
+        },
+        {
+          "name": "test_result_is_frozen_deterministic_and_finite"
+        },
+        {
+          "name": "test_clause_and_source_traceability_are_exact"
+        },
+        {
+          "name": "test_cover_and_beam_minimum_metadata_are_semantically_correct"
+        }
+      ],
+      "content_hash": "bf57c7030520"
     }
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "4ead26f666195df4"
+  "content_hash": "42213422ac05a140"
 }
