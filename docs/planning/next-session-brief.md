@@ -4,39 +4,39 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: post-INDIA-2 owner decision; no implementation packet is active
-- Baseline: closeout started from merged raft-HOLD origin/main d28852156752ea6e44b0c9fbb67988088851bf3e, tree 38958c8a484d5f63a1092b2e852af64bef7afc2a
-- Truth: 13 supported / 8 held; 81/81 endpoints directly tested
-- Foundation outcome: pile-cap and raft G0 both HOLD; required controlled companion sources and accepted replayable structural benchmarks were not retained, and no calculation file was created
-- Closeout: six bounded families accepted; pile-cap and raft remain HELD / NOT_IMPLEMENTED; final evidence index and cumulative gates pass without new behavior
-- Retained lanes: primary, detached dirty e54a, Excel HOLD_UNKNOWN_OWNER, and every other pre-existing lane remain untouched; no cleanup authority exists
-- Next action: none inferred; INDIA-3, dependency, release, cleanup, and professional-approval work require separate authorization
+- Focus: post-INDIA-2 cleanup and maintenance closeout; no implementation packet is active
+- Base: cleanup execution merged at `3b08a9c1`, with merged tree exactly equal to reviewed PR #808 tree `0b4bdd67`
+- Cleanup: candidate set `POST-INDIA2-2499DF4ADE0DF704` completed 193/193 exact actions and recovered 8,388,911,104 bytes
+- Retained: dirty detached `e54a`, Excel, `gh-pages`, Dependabot/open-PR heads, and every non-candidate or evidence-incomplete lane remain retained or held
+- Maintenance: five stale count occurrences refreshed; 32/32 indexes current; session and task history compacted without loss; `_active` has no multi-session plans
+- Truth: 13 supported / 8 held; 81/81 endpoints directly tested; pile-cap and raft remain `HELD / NOT_IMPLEMENTED`
+- Next action: owner-selected work only; INDIA-3, dependency, release, further cleanup, and professional approval require separate activation
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-16
 
 | State | Boundary |
 |---|---|
-| **Current** | `v0.23.1a1` Alpha; INDIA-2 complete within six accepted and two held family decisions |
-| **Next** | Owner-selected work only; no packet is activated by closeout |
-| **Later** | Separately authorized INDIA-3 or dependency work |
-| **Held** | Cleanup/deletion, release, React expansion, professional approval, dependency majors |
+| **Current** | `v0.23.1a1` Alpha; INDIA-2 and its bounded cleanup/maintenance closeout are complete on merge |
+| **Next** | Owner-selected work only; no implementation packet is active |
+| **Later** | Separately authorized INDIA-3, dependency, or product work |
+| **Held** | Pile-cap, raft, release, React expansion, professional approval, and all non-candidate Git lanes |
 
 ## Required Reading
 
-1. [Final INDIA-2 closeout evidence](../verification/india-2-final-closeout-evidence.md)
-2. [Current task board](../TASKS.md)
-3. [Indian-code completion waves](indian-code-completion-plan.md)
-4. [Completed INDIA-2 execution plan](india-2-remaining-is456-elements-plan.md)
+1. [Cleanup execution receipt](../verification/post-india2-cleanup-execution-receipt.json)
+2. [Cleanup disposition evidence](../verification/post-india2-cleanup-disposition-evidence.json)
+3. [Final INDIA-2 closeout evidence](../verification/india-2-final-closeout-evidence.md)
+4. [Current task board](../TASKS.md)
 
 ## Exact next start
 
-Wait for an explicit owner-selected packet. Then fetch and verify `origin/main`
-and create one fresh `codex/<task-slug>` worktree. Do not write on primary,
-reuse an INDIA-2 lane, or touch retained worktrees.
+Wait for an owner-selected packet. Fetch and verify `origin/main`, then create
+one fresh `codex/<task-slug>` worktree. Do not write on primary, reuse cleanup
+lanes, or touch retained worktrees.
 
 ```bash
-./run.sh session brief --agent structural-engineer
+./run.sh session brief --agent <role>
 ./run.sh session start
 ./scripts/python_runtime.sh --diagnose
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
@@ -45,59 +45,34 @@ reuse an INDIA-2 lane, or touch retained worktrees.
 Require `source_bound=true`, `READY_LOCAL`, no operation marker, and exact base
 equality with fetched `origin/main` before editing.
 
-## Closed INDIA-2 order
+## Closed post-INDIA-2 sequence
 
-1. Complete INDIA-2 evidence index and final task/plan truth.
-2. Broad Python and the full 30-check repository gate pass after their recorded
-   failure-required corrective reruns.
-3. Exact-head/hosted-check/final-tree closeout evidence merges unchanged.
-4. Post-INDIA-2 work remains separately authorized.
+1. PR #807 froze the union inventory, exact candidate set, and every hold.
+2. PR #808 recorded exact cleanup execution and retained-lane postconditions.
+3. MAINT-010 refreshed generated truth, compacted history, archived superseded
+   plans, and ran the overdue monthly evolution review without applying changes.
+4. No structural arithmetic, API/React behavior, dependency, release, INDIA-3,
+   or professional-approval claim changed.
 
-## Frozen closed scope
+## Retained boundaries
 
-Close INDIA-2 administratively around six accepted bounded families: wall,
-staircase, deep beam, flat slab/punching, combined footing, and strap footing.
-Preserve pile-cap and raft as `HELD / NOT_IMPLEMENTED` with their exact G0
-reactivation contracts. Build one evidence index that links source, benchmark,
-publication, focused acceptance, PR/merge, and integrated-tree evidence for
-each accepted family and the two HOLD records.
+- `e54a` remains dirty and detached exactly as found.
+- Excel remains a retained worktree/branch; `gh-pages` remains remote.
+- Dependabot heads remain tied to their open PRs and outside manual cleanup.
+- Every branch without complete owner, PR, exact-tree, or retention evidence
+  remains retained or held.
+- Pile-cap and raft remain held until their recorded source and benchmark
+  reactivation conditions are satisfied.
 
-No calculation, service, API, React, manifest promotion, feature expansion,
-dependency change, release, cleanup, or professional-approval behavior belongs
-in closeout. The final truth target remains 13 supported / 8 held and 81/81
-directly tested endpoints.
+## Acceptance record
 
-## Owner-decision boundaries
-
-- Primary, `e54a`, Excel, the frontmatter lane, and every other retained lane
-  stay untouched.
-- Public-source distribution permission is already recorded; do not reopen it.
-- Pile-cap and raft remain held. Cleanup/deletion, release/tag/package
-  publication, and professional approval remain separately gated.
-
-## Closeout gate record
-
-Focused evidence/documentation checks, links, quick `10/10`, broad Python, the
-full 30-check gate, normal hooks, exact-head review, hosted checks, and merge-
-tree verification form the closeout record. The planned single local runs and
-their failure-required corrective reruns are recorded in the closeout evidence.
-
-The session entry must contain `Issues encountered` and `Root causes and
-resolutions`, with executable evidence for the corrected outcome.
-
-## Retained efficiency record
-
-- Freeze the evidence index and no-new-behavior boundary before editing.
-- Use one writer, one candidate, one planned broad Python run, one full gate,
-  one push, and one hosted-check cycle. The actual closeout needed one
-  corrective broad rerun because the first run exposed stale exact-equilibrium
-  contracts, and one corrective full-gate rerun because the first run exposed
-  a stale generated public API manifest.
-- Record orientation, implementation, repair, CI wait, closeout, and total
-  elapsed workflow time separately.
+The maintenance packet requires zero stale generated counts; 32/32 indexes;
+health 100/100 or explicit holds; audit 19/19; parity 13 supported / 8 held and
+81/81 endpoints; focused governance tests; links; strict metadata; quick 10/10;
+full 30/30; exact-head hosted checks; and squash-tree equality.
 
 ## Stop rule
 
-INDIA-2 stops at closeout. Do not begin INDIA-3, calculation code, dependency,
-cleanup, release, professional approval, or React work without a separately
-authorized packet.
+Stop after MAINT-010 merge and primary synchronization. Do not infer INDIA-3,
+calculation, dependency, release, professional-approval, React, or further Git
+cleanup authority from this maintenance closeout.

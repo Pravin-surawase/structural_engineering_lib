@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — INDIA-2 closes with six bounded accepted families and two explicit foundation holds
+**Updated:** 2026-08-16 — post-INDIA-2 cleanup and maintenance complete; retained holds remain explicit
 
 ---
 
@@ -127,7 +127,8 @@
 
 No INDIA-2 implementation packet is active. INDIA-2 is administratively
 complete within its recorded accepted/held boundary. INDIA-3, dependency,
-release, cleanup, and professional-approval work require separate activation.
+release, further cleanup, and professional-approval work require separate
+activation.
 
 ## Up Next
 
@@ -152,8 +153,9 @@ authorized. Raft G0 is also complete as HOLD: the repository lacks a controlled
 IS 2950 source and an accepted structural raft benchmark, so no calculation
 implementation was authorized. Clause 38.2 truth hygiene closed
 with exact beam stress-block arithmetic and controlled Clause 38.1/Annex G
-provenance. Git/status reconciliation is complete with retained lanes explicitly
-held and no cleanup authority.
+provenance. Exact post-INDIA-2 cleanup is complete for frozen candidate set
+`POST-INDIA2-2499DF4ADE0DF704`: 58 worktrees, 64 local branches, and 71 remote
+branches were removed; every non-candidate lane remains retained or held.
 The v0.23.1a1 Alpha is published.
 UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded
@@ -166,6 +168,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| MAINT-010-POST-INDIA2 | Refreshed generated truth, compacted session/task history without loss, archived superseded plans, and completed review-only evolution | Main Agent + governance | ✅ COMPLETE ON MERGE — health, indexes, audit, parity, focused governance, quick/full, hosted, and exact-tree gates recorded |
 | INDIA-2-CLOSEOUT | Reconciled the complete accepted/held evidence index, final truth, and cumulative validation without adding behavior | Main Agent + reviewer | ✅ COMPLETE ON MERGE — six bounded families accepted; pile-cap and raft remain `HELD / NOT_IMPLEMENTED`; broad Python and full 30/30 gate pass |
 | INDIA-2-FOUNDATION-RAFT-G0 | Audited one regular rectangular rigid-raft candidate, the conventional-method boundary, controlled-source inventory, and structural benchmark readiness | Main Agent + structural engineer | ⏸ HOLD — PR #805 merged as `d2885215`; no controlled IS 2950 source or accepted replayable structural benchmark; no calculation files created |
 | INDIA-2-FOUNDATION-PILE-CAP-G0 | Audited the frozen centred axial two-pile candidate, source inventory, structural-model boundary, and benchmark readiness | Main Agent + structural engineer | ⏸ HOLD — PR #804 merged as `def0b493`; no controlled IS 2911 companion source or accepted replayable structural benchmark; no calculation files created |
@@ -185,55 +188,6 @@ approval.
 | INDIA-2-FOUNDATION-COMBINED-B | Implemented flexure/minimum/provided steel, spacing/cover/anchorage, concrete one-way/punching shear, bearing/dowels, and composed disposition | Main Agent + structural math | ✅ COMPLETE — 28 direct tests and immutable independent source-candidate audit pass; capability remains held until C/D |
 | INDIA-2-FOUNDATION-COMBINED-A | Implemented typed eligibility, gross/net pressure, resultant equilibrium, longitudinal critical sections, and transverse actions | Main Agent + structural math | ✅ COMPLETE — frozen benchmark and additional symmetric equilibrium cases pass; strength and public capability remain held |
 | INDIA-2-FOUNDATION-COMBINED-G0 | Froze one symmetric equal-load two-column rigid rectangular footing under caller-approved uniform pressure with a pre-implementation benchmark | Main Agent + structural engineer | ✅ GO — COMBINED-A-D activated; general/asymmetric soil interaction and public capability remain held |
-| INDIA-2-FLAT | Implemented and accepted one bounded regular-interior direct-design flat-slab and concrete-only punching workflow with public provenance | Main Agent + structural engineer | ✅ DONE — G0 and A-E integrated; 214-test focused family selection and independent hand benchmark pass; qualified review and excluded flat-slab systems remain held |
-| INDIA-2-FLAT-E | Published the typed Python composition, thin REST route, capability/semantic truth, deterministic manifest promotion, and publication evidence | Main Agent + API developer | ✅ INTEGRATED — PR #785 merged as `b04d8065`; supported case is 11/21 manifest truth and all 79 routes have direct tests |
-| INDIA-2-FLAT-D | Added centred square interior-column punching demand, concrete-only capacity, and both redesign boundaries | Main Agent + structural math | ✅ INTEGRATED — PR #784 merged as `d1884946`; frozen reaction/perimeter/stress/utilization and fail-closed cases pass |
-| INDIA-2-FLAT-C | Added bounded flexure, provided straight-bar checks, no-drop support-top extension, and reviewed span/depth comparison in both directions | Main Agent + structural math | ✅ COMPLETE — all frozen steel/detailing/serviceability values pass; direct deflection, crack width, punching, and public workflow remain held |
-| INDIA-2-FLAT-B | Added total static moment and bounded interior negative/positive and column/middle-strip distribution in both directions | Main Agent + structural math | ✅ COMPLETE — frozen moment values and conservation identities pass; capability remains held until FLAT-E |
-| INDIA-2-FLAT-A | Added typed grid/panel/material/load contracts, direct-design eligibility, both clear-span directions, strip definitions, exact Clause 31 registration, and fail-closed tests | Main Agent + structural math | ✅ COMPLETE — 131 focused geometry/clause/traceability/manifest tests pass; capability remains held until FLAT-E |
-| INDIA-2-FLAT-G0 | Froze one equal-span square interior flat-slab direct-design and centred square-column punching case with a pre-implementation hand benchmark | Main Agent + structural engineer | ✅ GO — FLAT-A-E owner-activated; unequal/exterior/drop/head/opening/patterned-load/moment-transfer and punching-reinforcement cases remain held |
-| INDIA-2-DEEP | Implemented and accepted one bounded simply supported Clause 29 positive-reinforcement workflow with public provenance | Main Agent + structural engineer | ✅ DONE — G0 and A-D integrated; 157-test focused family selection and independent hand benchmark pass; qualified review and excluded deep-beam systems remain held |
-| INDIA-2-DEEP-D | Added thin typed FastAPI transport, canonical deep-beam capability/semantic truth, deterministic manifest promotion, and publication evidence | Main Agent + API developer | ✅ COMPLETE — public bounded workflow is supported; React, release, and all held systems remain excluded |
-| INDIA-2-DEEP-C | Published one typed Python workflow composing geometry, action, positive tie, anchorage, side-face, provenance, and retained holds | Main Agent + backend | ✅ COMPLETE — canonical root/services API, executable hand benchmark, JSON-safe result, and public docs pass; capability remains held until DEEP-D |
-| INDIA-2-DEEP-B | Added required/provided positive tie, placement, continuity, exact 0.8Ld anchorage, side-face area/spacing/grid, transverse-enclosure boundary, and composed dispositions | Main Agent + structural math | ✅ COMPLETE — 42 direct deep-beam tests pass; capability remains held until DEEP-D |
-| INDIA-2-DEEP-A | Added typed geometry/material/action contracts, effective-span classification, both Clause 29.2 lever-arm branches, tension-zone depth, exact clause registration, and fail-closed tests | Main Agent + structural math | ✅ COMPLETE — 109 focused geometry/clause-database/traceability/manifest tests pass; no capability claim before DEEP-D |
-| INDIA-2-DEEP-G0 | Froze one simply supported solid rectangular deep-beam positive-reinforcement check with public clause provenance and a pre-implementation hand benchmark | Main Agent + structural engineer | ✅ GO — caller-supplied positive factored moment; bearing/nodal verification is an external prerequisite; openings, hanging action, continuous beams, generalized strut-and-tie, and alternate systems remain held |
-| INDIA-2-WALL | Implemented and accepted one bounded braced empirical vertical-compression wall workflow with public Clause 32 provenance | Main Agent + structural engineer | ✅ DONE — A-D integrated; 135-test focused family selection and independent hand benchmark pass; qualified review and excluded wall systems remain held |
-| INDIA-2-WALL-D | Added thin typed FastAPI transport, canonical wall capability/semantic truth, manifest promotion, and publication evidence | Main Agent + API developer | ✅ INTEGRATED — PR #772 merged as `46094a8c`; family acceptance passed from that exact integrated head |
-| INDIA-2-WALL-C | Published one typed Python workflow composing the axial and provided-reinforcement checks with retained provenance and holds | Main Agent + backend | ✅ INTEGRATED — PR #771 merged as `ea282b6d` |
-| INDIA-2-WALL-B | Implemented provided vertical/horizontal reinforcement area, material-ratio, spacing, and transverse-enclosure boundary checks | Main Agent + structural math | ✅ INTEGRATED — PR #770 merged as `e9e589d2`; capability remains held until WALL-D |
-| INDIA-2-WALL-A | Implemented typed bracing/geometry/action contracts, effective height, slenderness, eccentricity, empirical axial capacity, exact Clause 32 registration, and fail-closed tests | Main Agent + structural math | ✅ INTEGRATED — PR #769 merged as `7eb55746`; capability remains held until WALL-D |
-| INDIA-2-WALL-G0 | Froze one Clause 32.2 braced wall vertical-compression check with public clause provenance, pre-implementation benchmark, units, fail-closed boundaries, and focused-gate cadence | Main Agent + structural engineer | ✅ GO — owner activated WALL-A-D; applied moment, horizontal action, two-grid and alternate wall systems remain held |
-| INDIA-2-PLAN | Consolidated INDIA-2 scope, family order, packet gates, exclusions, validation cadence, and completion criteria into one execution document | Main Agent + repository owner | ✅ DONE — INDIA-2-WALL-G0 remains the next decision; no engineering implementation activated |
-| INDIA-COMPLETION-PLAN | Reconciled the canonical INDIA-0 through INDIA-4 finish waves and mapped historical staircase receipts to INDIA-2-STAIR without renaming them | Main Agent + repository owner | ✅ DONE — next discussion is INDIA-2-WALL-G0; no calculation implementation activated |
-| INDIA-2-STAIR | Completed one bounded longitudinal straight-flight staircase family | Main Agent + structural engineer | ✅ DONE — historical INDIA-2A-D and INDIA-2-CUMULATIVE remain the immutable evidence names |
-| INDIA-2-CUMULATIVE | Ran the broad Python suite, full repository gate, manifest reconciliation, and cumulative essential review after A-D integration | Main Agent + reviewer | ✅ DONE — 5,950 Python tests and full 30/30 gate green; staircase remains one bounded L2 API workflow and qualified review remains separate |
-| INDIA-2D | Published one typed Python/FastAPI straight-flight workflow and reconciled capability truth | Main Agent + API developer | ✅ DONE — public benchmark returns REVIEW_REQUIRED truthfully; unsafe and passing cases preserve FAIL/PASS boundaries; React remains excluded |
-| INDIA-2C | Composed accepted actions into singly reinforced flexure, supplied-bar detailing, ordinary shear, action-integrity, and basic span/depth dispositions | Main Agent + structural math | ✅ DONE — NPTEL Example 9.1 strength/detailing targets pass and truthfully return REVIEW_REQUIRED for unmodified L/d; unsafe cases return FAIL |
-| INDIA-2B | Implemented typed Clause 33 geometry, explicit concrete self-weight, and equilibrated three-segment actions for the accepted straight-flight case | Main Agent + structural math | ✅ DONE — NPTEL Example 9.1 geometry/load/action targets and fail-closed boundaries pass; capability remains HELD until INDIA-2D |
-| INDIA-2A | Selected and froze one longitudinal straight waist-slab flight with collinear landings against controlled Clause 33 sources and the IIT Kharagpur NPTEL Example 9.1 benchmark | Main Agent + structural engineer | ✅ GO — B-D owner-activated; alternate stairs, other families, IS 875/IS 1893, qualified review, and release remain held |
-| INDIA-1-CUMULATIVE | Ran broad Python, full repository, manifest reconciliation, and cumulative essential review after A-D integration | Main Agent + reviewer | ✅ DONE — PR #758 exact-head gate passed; 5,926 Python tests and full 30/30 gate green; reviewed tree squash-merged as `4e92f3d7` |
-| INDIA-1D | Closed solid-slab direct-deflection, crack-width, automatic-shear-reinforcement, and single-action load-envelope decisions with machine-visible holds | Main Agent | ✅ DONE — PR #757 exact-head gate passed; reviewed tree squash-merged as `ca55f22d` |
-| INDIA-1C | Published the bounded concentric isolated-footing composition with typed provenance, accepted benchmark, and explicit eccentric/other-foundation holds | Main Agent | ✅ DONE — PR #756 exact-head gate passed; reviewed tree squash-merged as `236ce646` |
-| INDIA-1B | Reconfirmed stable solid rectangular tied-column routes as a symmetric two-face reinforcement idealization and retained circular, arbitrary-layout, and experimental PMM cases | Main Agent | ✅ DONE — PR #755 exact-head gate passed; reviewed tree squash-merged as `f44452dd` |
-| INDIA-1A | Added a benchmarked monolithic sagging T-beam flexure/web-shear/explicit-serviceability composition with fail-closed retained boundaries | Main Agent | ✅ DONE — PR #754 exact-head gate passed; reviewed tree squash-merged as `3a7e162e` |
-| INDIA-0 | Reconciled supported and held Indian RC scope into one generated, standard-namespaced capability/registration manifest; repaired both coverage consumers | Main Agent | ✅ DONE — PR #753 exact-head gate passed; reviewed tree squash-merged as `0373de68` |
-| COLUMN-PMM-001 | Recovered and independently benchmarked the experimental rectangular-column P-Mx-My fiber surface | Main Agent | ✅ SOFTWARE COMPLETE — PR #738 merged; module remains experimental and outside the stable API |
-| ALPHA-0231-CANDIDATE | Published the exact 0.23.1a1 Alpha through exact-head CI, TestPyPI, production PyPI, and GitHub prerelease gates | Main Agent + ops | ✅ DONE — production run `31468341946`; exact public package UAT green |
-| IS456-SLAB-PRELAUNCH | Record and enforce source/licensing permission for public distribution of approved-scope normalized IS 456 data | Owner + Main Agent | ✅ DONE — owner confirmed 2026-08-11; canonical record, preflight, candidate, and publish-CI gates added |
-| IS456-SLAB-001 | Implemented simply supported/continuous one-way and common two-way solid slabs with built-in/external coefficients, topology, strips, corner torsion, detailing, serviceability, shear, FastAPI and a revision-safe React workbench | Main Agent | ✅ SOFTWARE COMPLETE — 5,532 Python, 388 FastAPI, 241 React, 30/30 integrated checks and live browser pass; flat slabs held |
-| UIX-001 | Built one compact 3D-first structural workbench and schema-driven bounded workflow foundation | Main Agent | ✅ DONE — PR #721 merged; Pages/release/public runner remain held |
-| DEPS-MAINT-001 | Replaced incompatible Python and React dependency PRs with coherent Python 3.11/Node 24 packets and added recurrence guards | Main Agent | ✅ DONE — PRs #708, #709, and #712 merged |
-| ADOPT-001 | Completed executable public truth, capability discovery, typed API contracts, production auth fail-close, evidence identity, React/BOQ trust presentation, and truthful Alpha/docs policy | Main Agent | ✅ DONE — PR #707 merged; release holds retained |
-| LIB-IS456-V1 | Completed C0-C4, bounded evidence, exact artifacts, public Alpha UAT, and v0.23.1a1 publication | Main Agent + owner | ✅ DONE |
-| MAINT-009 | Integrated automation and Actions updates, repaired Weekly Verification compatibility, and cleared obsolete GitHub/session state | Main Agent | ✅ DONE |
-| MAINT-001 | Preserve the inherited worktree, recover the Mac baseline, and close PR #676 required checks | Main Agent | ✅ DONE |
-| MAINT-006 | Add enforceable low-token defaults, context rules, analytics-calibrated model routing, and automation | Main Agent | ✅ DONE |
-| MAINT-007 | Re-audit and modernize onboarding, agent/tool discovery, usage telemetry, and PR browser behavior | Main Agent | ✅ DONE |
-| MAINT-005 | Verify the full live browser/export workflow and establish the evidence-based v0.21.7 finish line | Main Agent | ✅ DONE |
-| MAINT-004 | Reconcile canonical checks, manifests, indexes, health, parity, active docs, and feedback | Main Agent | ✅ DONE |
-| MAINT-002 | Repair nightly QA, maintained import E2E contracts, and documentation links | Main Agent | ✅ DONE |
-| MAINT-003 | Rebuild clean Python/npm dependency locks and enforce security audits | Main Agent | ✅ DONE |
 
 ## Archive
 

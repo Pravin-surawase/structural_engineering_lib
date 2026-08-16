@@ -1,7 +1,7 @@
 # Utils
 
 **Type:** React Source
-**Last Updated:** 2026-08-11
+**Last Updated:** 2026-08-16
 **Files:** 5
 
 ## Typescript Files
@@ -12,4 +12,4 @@
 | [materialOverrides.ts](materialOverrides.ts) | MaterialOverrides, applyMaterialOverrides | 23 |
 | [quantities.ts](quantities.ts) | calculateSteelWeightKg | 8 |
 | [sampleData.ts](sampleData.ts) | mapSampleBeamsToRows | 28 |
-| [trustPresentation.ts](trustPresentation.ts) | TrustStatus, TrustPresentation, getTrustPresentation, formatRatio, formatPercent (+1) | 51 |
+| [trustPresentation.ts](trustPresentation.ts) | TrustStatus, TrustPresentation, isBeamResultExportable, getTrustPresentation, formatRatio (+2) | 71 |

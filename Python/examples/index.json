@@ -2,14 +2,14 @@
   "folder": "Python/examples",
   "type": "python-package",
   "description": "> **Purpose:** Example scripts demonstrating structural_lib usage",
-  "last_updated": "2026-08-11",
+  "last_updated": "2026-08-16",
   "file_count": 18,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 32,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-16",
       "title": "Examples — Python Usage Examples",
       "description": "> **Purpose:** Example scripts demonstrating structural_lib usage > **Last Updated:** 2026-04-05",
       "content_hash": "f515fb393bec"
@@ -18,7 +18,7 @@
       "name": "bmd_sfd_example.py",
       "type": "python",
       "size_lines": 303,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-16",
       "description": "BMD/SFD Computation Example",
       "functions": [
         {
@@ -48,7 +48,7 @@
       "name": "canonical_data_workflow.py",
       "type": "python",
       "size_lines": 315,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-16",
       "description": "Example: Complete workflow with canonical data format.",
       "functions": [
         {
@@ -88,7 +88,7 @@
       "name": "colab_workflow.py",
       "type": "python",
       "size_lines": 207,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-16",
       "description": "Colab-friendly full workflow example.",
       "functions": [
         {
@@ -101,7 +101,7 @@
       "name": "complete_beam_design.py",
       "type": "python",
       "size_lines": 433,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-16",
       "description": "Sample: Complete Beam Design Workflow",
       "classes": [
         {
@@ -151,7 +151,7 @@
       "name": "demo_intelligence.py",
       "type": "python",
       "size_lines": 218,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-16",
       "description": "Demo: Smart library features (Precheck + Sensitivity)",
       "functions": [
         {
@@ -188,7 +188,7 @@
       "name": "end_to_end_workflow.py",
       "type": "python",
       "size_lines": 83,
-      "last_updated": "2026-04-05",
+      "last_updated": "2026-08-16",
       "description": "End-to-end beam design workflow.",
       "functions": [
         {
@@ -201,7 +201,7 @@
       "name": "full_pipeline_synthetic.py",
       "type": "python",
       "size_lines": 216,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-16",
       "description": "Generate synthetic beam inputs and run the full CLI pipeline.",
       "functions": [
         {
@@ -217,7 +217,7 @@
       "name": "professional_workflow.py",
       "type": "python",
       "size_lines": 241,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-16",
       "description": "Professional Engineering Workflow Example.",
       "functions": [
         {
@@ -230,7 +230,7 @@
     {
       "name": "sample_job_is456.json",
       "type": "config",
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "schema_version",
         "job_id",
@@ -244,7 +244,7 @@
     {
       "name": "sample_job_report.json",
       "type": "config",
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-16",
       "top_level_keys": [
         "schema_version",
         "code",
@@ -259,7 +259,7 @@
       "name": "simple_examples.py",
       "type": "python",
       "size_lines": 328,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-16",
       "description": "Simple Examples for Beginners",
       "functions": [
         {
@@ -301,7 +301,7 @@
       "name": "validate_intelligence.py",
       "type": "python",
       "size_lines": 149,
-      "last_updated": "2026-04-03",
+      "last_updated": "2026-08-16",
       "description": "Validate insights features against sample vectors.",
       "functions": [
         {
@@ -320,5 +320,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "5aa6f3bbb744153d"
+  "content_hash": "70e457db0dfd7a0b"
 }

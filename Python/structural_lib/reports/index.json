@@ -2,14 +2,14 @@
   "folder": "Python/structural_lib/reports",
   "type": "python-package",
   "description": "",
-  "last_updated": "2026-08-11",
+  "last_updated": "2026-08-16",
   "file_count": 2,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
       "size_lines": 47,
-      "last_updated": "2026-03-26",
+      "last_updated": "2026-08-16",
       "description": "Reports Package — Professional Report Generation with Jinja2",
       "content_hash": "b9a5933d97e1"
     },
@@ -17,7 +17,7 @@
       "name": "generator.py",
       "type": "python",
       "size_lines": 452,
-      "last_updated": "2026-08-10",
+      "last_updated": "2026-08-16",
       "description": "Report Generator — Jinja2-based HTML report generation.",
       "classes": [
         {
@@ -74,5 +74,5 @@
     "ReportContext",
     "JINJA2_AVAILABLE"
   ],
-  "content_hash": "5888faa39a8059c3"
+  "content_hash": "240e272956c3d723"
 }
