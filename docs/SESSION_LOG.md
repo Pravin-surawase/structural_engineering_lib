@@ -13,6 +13,8 @@ head audit after the candidate is committed)
 **Branch:** `codex/india-2-foundation-strap-d` from merged STRAP-C main at
 `e3e4b2ae5d6559472c2e6595ce05d36887b32a1c`
 
+**Git handoff receipt:** `docs/verification/india-2-foundation-strap-d-git-handoff-receipt.json`
+
 **Focus:** Publish only strict nested transport, one thin property-line strap-
 footing route, exact OpenAPI drift, and matching capability/semantic/manifest
 truth over the accepted C workflow. Structural math, React, alternate
