@@ -68,7 +68,7 @@ cross-cutting execution truth and must not be mixed into a foundation G0.
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
 | 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | Complete within the written bounded case |
 | 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Complete within the written bounded case |
-| 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Combined and strap footing accepted; pile-cap G0 completed as HOLD; raft G0 pending |
+| 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Combined and strap footing accepted; pile-cap and raft G0 completed as HOLD |
 | 5 | `INDIA-2-CLOSEOUT` | Reconcile truth, run final cumulative gates, and freeze the INDIA-2 evidence set | Pending |
 
 The provisional foundation order is combined footing, strap footing, pile cap,
@@ -380,11 +380,10 @@ authorized programs.
 
 ## 9. Exact next action
 
-Pile-cap G0 completed as `HOLD` because neither a controlled IS 2911 companion
-source nor an accepted replayable structural two-pile-cap benchmark is retained.
-The exact blocker and reactivation contract are in the
-[G0 decision evidence](../verification/india-2-foundation-pile-cap-g0-hold-evidence.md).
-After that unchanged decision packet merges, begin only decision-only
-`INDIA-2-FOUNDATION-RAFT-G0` from verified current `main`. Keep pile-cap and
-raft calculation code, React, broad Python, and the 30-check gate outside that
-G0 lane; the broad gates run once at final INDIA-2 closeout.
+Pile-cap and raft G0 completed as `HOLD`. The exact blockers and reactivation
+contracts are in the [pile-cap decision evidence](../verification/india-2-foundation-pile-cap-g0-hold-evidence.md)
+and [raft decision evidence](../verification/india-2-foundation-raft-g0-hold-evidence.md).
+After the unchanged raft decision packet merges, begin only
+`INDIA-2-CLOSEOUT` from verified current `main`. Keep calculation changes,
+React, cleanup, release, and professional approval outside closeout; reconcile
+truth/evidence and run broad Python plus the full 30-check gate exactly once.
