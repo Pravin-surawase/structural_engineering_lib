@@ -45,7 +45,7 @@ At the COMBINED-B source candidate:
   `HELD`/`NOT_IMPLEMENTED` because there is no public workflow yet;
 - all 79 existing endpoints have direct tests; no combined-footing endpoint
   exists yet;
-- COMBINED-B has 28 direct tests, 71 A/B tests, and a 192-test focused
+- COMBINED-B has 28 direct tests, 71 A/B tests, and a 193-test focused
   clause/traceability/manifest/function-quality selection;
 - architecture is `0/190`, imports are `0/630`, 1,236 internal links are
   valid, source binding is true, and the quick gate is `10/10`;

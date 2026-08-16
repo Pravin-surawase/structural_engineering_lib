@@ -6,7 +6,7 @@
 - Date: 2026-08-16
 - Focus: Merge COMBINED-B unchanged, then publish only the typed Python C workflow
 - Git receipt: docs/verification/india-2-foundation-combined-b-git-handoff-receipt.json | HOLD
-- Source candidate: codex/india-2-foundation-combined-b@b9cb06f7afe632339c10ab84e17a4d09d0299ade | tree=f5e405ad445f88d019a1c2b064292e6be9b495b6 | independent audit=PASS
+- Math candidate: codex/india-2-foundation-combined-b@b9cb06f7afe632339c10ab84e17a4d09d0299ade | tree=f5e405ad445f88d019a1c2b064292e6be9b495b6 | independent audit=PASS
 - Live integration identity: VERIFY_WITH_GIT_STATE_AND_GITHUB_BEFORE_C
 - Next action: START_FRESH_COMBINED_C_ONLY_AFTER_B_MERGE
 <!-- HANDOFF:END -->

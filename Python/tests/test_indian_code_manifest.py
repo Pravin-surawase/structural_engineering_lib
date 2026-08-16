@@ -96,6 +96,26 @@ def test_is456_supported_families_are_generated_from_runtime_registry() -> None:
     ]
 
 
+def test_combined_footing_held_truth_tracks_internal_strength_kernel() -> None:
+    manifest = build_manifest()
+    is456 = _standard(manifest, "IS456:2000")
+    combined = next(
+        item
+        for item in is456["capability_families"]
+        if item["family"] == "combined_footing"
+    )
+
+    assert combined["scope_status"] == "HELD"
+    assert combined["implementation_status"] == "NOT_IMPLEMENTED"
+    assert combined["workflows"] == []
+    assert "internal strength kernels" in combined["claim"]
+    assert "a public workflow is not implemented yet" in combined["limitations"][0]
+    assert (
+        "strength and a public workflow are not implemented"
+        not in combined["limitations"][0]
+    )
+
+
 def test_is456_and_is13920_registration_cannot_cross_match() -> None:
     manifest = build_manifest()
     is456 = _standard(manifest, "IS456:2000")

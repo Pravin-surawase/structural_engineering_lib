@@ -130,7 +130,7 @@ construction approval, React, release, and professional approval remain held.
 
 ## Focused verification
 
-- 28 direct COMBINED-B tests, all 71 COMBINED-A/B tests, and the 192-test
+- 28 direct COMBINED-B tests, all 71 COMBINED-A/B tests, and the 193-test
   combined clause, traceability, manifest, and function-quality selection pass.
   Generated capability truth remains deterministic at 11 supported and 10
   held families, with combined footing still held.

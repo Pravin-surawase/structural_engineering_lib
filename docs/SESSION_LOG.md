@@ -56,6 +56,11 @@ punching, bearing/dowels, anchorage, and composed internal disposition.
 - The first final index check omitted the required folder argument; the
   corrected scoped checks then found the three documentation indexes stale
   after the last handoff-count correction.
+- The first final exact-head audit correctly held publication because the
+  generated combined-footing limitation still said strength was unimplemented
+  after B had implemented the internal strength kernel.
+- The first truth-reconciliation commit attempt stopped when the normal Black
+  hook reformatted the new manifest regression assertion.
 
 ### Root causes and resolutions
 
@@ -119,10 +124,24 @@ punching, bearing/dowels, anchorage, and composed internal disposition.
   the same scoped checks. Evidence: all three final hash checks pass.
   ⚠️ TERMINAL ISSUE: index check was invoked without its required folder →
   reran the maintained command with explicit bounded folders.
+- Root cause: COMBINED-A had updated the generator's held narrative only
+  through the action kernel; B regenerated and checked deterministic bytes but
+  did not reconcile that human claim with its new partial implementation.
+  Resolution: keep the capability `HELD`/`NOT_IMPLEMENTED` with no workflow,
+  update only its claim/limitation and future evidence mapping to acknowledge
+  internal A/B kernels, and add one semantic regression assertion. Evidence:
+  the focused manifest test and regenerated-manifest check pass at unchanged
+  11-supported / 10-held truth; the final exact-head audit is rerun.
+- Root cause: the targeted pre-commit check used Ruff and mypy but had not run
+  the repository's Black formatter over the new test layout. Resolution:
+  retain only Black's mechanical reformat, rerun the focused manifest test,
+  restage the exact packet, and rerun normal commit hooks. Evidence: the
+  successor commit hooks pass. ⚠️ TERMINAL ISSUE: commit stopped on Black's
+  formatter-only edit → accepted the formatting and reran the commit normally.
 
 ### Validation
 
-- 28 direct COMBINED-B tests, all 71 COMBINED-A/B tests, and the 192-test
+- 28 direct COMBINED-B tests, all 71 COMBINED-A/B tests, and the 193-test
   combined clause-registry, traceability, manifest, and quality-checker
   selection pass; the one new composed function passes strict function
   quality, Ruff, and focused mypy.

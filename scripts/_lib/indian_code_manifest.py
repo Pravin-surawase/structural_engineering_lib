@@ -97,6 +97,7 @@ _IS456_EVIDENCE = {
     "combined_footing": (
         "docs/verification/india-2-foundation-combined-g0-scope-evidence.md",
         "docs/verification/india-2-foundation-combined-a-analysis-evidence.md",
+        "docs/verification/india-2-foundation-combined-b-strength-evidence.md",
     ),
 }
 
@@ -104,9 +105,9 @@ _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
     "IS456:2000": (
         {
             "family": "combined_footing",
-            "claim": "Combined-footing public design remains held after implementing the G0-frozen symmetric two-column rigid action kernel.",
+            "claim": "Combined-footing public design remains held after implementing the G0-frozen symmetric two-column rigid action and internal strength kernels.",
             "limitations": [
-                "Pure pressure, equilibrium, shear, and moment actions exist only for the equal-load symmetric two-column rectangular case; strength and a public workflow are not implemented yet.",
+                "Pressure, equilibrium, action, flexure, detailing, concrete shear/punching, bearing, transfer, and anchorage checks exist only as internal kernels for the equal-load symmetric two-column rectangular case; a public workflow is not implemented yet.",
                 "Unequal/eccentric loads, trapezoidal plans, variable pressure, settlement, elastic-line, Winkler, plate, and FEM analysis remain held.",
             ],
         },

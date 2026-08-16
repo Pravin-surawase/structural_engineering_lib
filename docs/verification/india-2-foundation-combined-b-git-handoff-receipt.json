@@ -35,10 +35,13 @@
     }
   },
   "holds": [
+    "AUTHORIZATION_SOURCE_STALE_EVIDENCE",
+    "AUTHORIZATION_STALE_EVIDENCE",
     "AUTHORIZATION_TARGET_MISMATCH",
     "LOCAL_HOLD_DIRTY",
     "PULL_REQUEST_NOT_CHECKED",
     "REMOTE_NOT_CHECKED",
+    "RETENTION_STALE_EVIDENCE",
     "REVIEW_NOT_CHECKED"
   ],
   "integration": {
@@ -48,27 +51,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "1e44ee983936a59f5473eeca3894d94cf1435bc41707b8016dc48e5c322841b1",
+    "receipt_sha256": "070e4d973e7a4586ffa135b13ae4c992344c17154334efd4a202bc959a8f3438",
     "state": {
       "branch": "codex/india-2-foundation-combined-b",
       "default_base": {
-        "ahead": 1,
+        "ahead": 2,
         "behind": 0,
         "ref": "origin/main",
         "sha": "6d230500b34dc9c79913d2cae87b8382ca732a27",
         "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 80.091,
+      "duration_ms": 77.849,
       "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
       "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-foundation-combined-b",
-      "head_sha": "b9cb06f7afe632339c10ab84e17a4d09d0299ade",
+      "head_sha": "d196afded20c05f73cf996d94976fb079b2e0fe4",
       "hold_reasons": [
-        "changed paths: 13"
+        "changed paths: 7"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-08-16T07:34:46.941982+00:00",
+      "observed_at_utc": "2026-08-16T07:41:04.111247+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -79,25 +82,18 @@
       "tree": {
         "clean": false,
         "conflicted_paths": [],
-        "dirty_count": 13,
+        "dirty_count": 7,
         "modified_paths": [
+          "Python/tests/test_indian_code_manifest.py",
           "docs/SESSION_LOG.md",
-          "docs/TASKS.md",
-          "docs/index.json",
-          "docs/index.md",
-          "docs/planning/index.json",
-          "docs/planning/index.md",
-          "docs/planning/india-2-remaining-is456-elements-plan.md",
-          "docs/planning/indian-code-completion-plan.md",
+          "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
           "docs/planning/next-session-brief.md",
-          "docs/verification/index.json",
-          "docs/verification/index.md",
-          "docs/verification/india-2-foundation-combined-b-strength-evidence.md"
+          "docs/verification/india-2-foundation-combined-b-strength-evidence.md",
+          "docs/verification/indian-code-capability-coverage.json",
+          "scripts/_lib/indian_code_manifest.py"
         ],
         "staged_paths": [],
-        "untracked_paths": [
-          "docs/planning/india-2-next-session-publication-and-closeout-plan.md"
-        ]
+        "untracked_paths": []
       },
       "upstream": {
         "ahead": null,
@@ -109,9 +105,9 @@
       "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-foundation-combined-b"
     }
   },
-  "local_state_receipt_hash": "sha256:1e44ee983936a59f5473eeca3894d94cf1435bc41707b8016dc48e5c322841b1",
+  "local_state_receipt_hash": "sha256:070e4d973e7a4586ffa135b13ae4c992344c17154334efd4a202bc959a8f3438",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-08-16T07:34:46.942120+00:00",
+  "observed_at_utc": "2026-08-16T07:41:04.111401+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"
@@ -125,11 +121,12 @@
   },
   "retention": {
     "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "evidence_error": "STALE_EVIDENCE",
     "holds": [],
     "observed_at_utc": "2026-08-16T07:24:01Z",
     "owner": "Main Agent under user instruction to preserve Git state",
-    "query_status": "OK",
-    "status": "OBSERVED"
+    "query_status": "UNKNOWN",
+    "status": "UNKNOWN"
   },
   "review": {
     "query_status": "UNKNOWN",
@@ -161,6 +158,8 @@
       "Python/tests/codes/is456/index.md",
       "Python/tests/index.json",
       "Python/tests/index.md",
+      "scripts/_lib/indian_code_manifest.py",
+      "Python/tests/test_indian_code_manifest.py",
       "docs/verification/indian-code-capability-coverage.json",
       "docs/SESSION_LOG.md",
       "docs/TASKS.md",
