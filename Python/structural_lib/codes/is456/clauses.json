@@ -1074,6 +1074,17 @@
         "minimum thickness"
       ]
     },
+    "34.1.2": {
+      "title": "Minimum Edge Thickness for Footings",
+      "section": "34 - Footings",
+      "category": "footings",
+      "keywords": [
+        "footing",
+        "edge thickness",
+        "soil foundation",
+        "minimum depth"
+      ]
+    },
     "34.2": {
       "title": "Moments and Forces",
       "section": "34 - Footings",

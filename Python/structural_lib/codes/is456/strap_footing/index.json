@@ -1,0 +1,133 @@
+{
+  "folder": "Python/structural_lib/codes/is456/strap_footing",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-08-16",
+  "file_count": 3,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 42,
+      "last_updated": "2026-08-16",
+      "description": "Bounded property-line strap-footing analysis for INDIA-2.",
+      "content_hash": "d8a17edab325"
+    },
+    {
+      "name": "analysis.py",
+      "type": "python",
+      "size_lines": 464,
+      "last_updated": "2026-08-16",
+      "description": "Rigid equal-pressure statics for the bounded property-line strap footing.",
+      "classes": [
+        {
+          "name": "StrapFootingLoadCase",
+          "description": "Action levels represented by the frozen model."
+        },
+        {
+          "name": "StrapFootingTensionFace",
+          "description": "Tension face implied by the clear-strap moment sign convention."
+        },
+        {
+          "name": "StrapFootingGeometryResult",
+          "description": "Resolved coordinates and dimensions for the G0-frozen topology."
+        },
+        {
+          "name": "StrapFootingLoadCaseResult",
+          "description": "Reactions, pressure, bearing and equilibrium for one action level."
+        },
+        {
+          "name": "StrapFootingClearSpanActionResult",
+          "description": "Signed shear and moment envelope across the clear strap."
+        },
+        {
+          "name": "StrapFootingAnalysisResult",
+          "description": "Complete action result for the bounded property-line strap system."
+        }
+      ],
+      "functions": [
+        {
+          "name": "resolve_property_line_strap_geometry",
+          "description": "Resolve coordinates only for the G0-approved property-line topology.",
+          "params": [
+            "geometry"
+          ]
+        },
+        {
+          "name": "analyze_property_line_strap_footing",
+          "description": "Calculate reactions, bearing and clear-strap actions for the frozen case.",
+          "params": [
+            "footing_input"
+          ]
+        }
+      ],
+      "constants": [
+        "_SOURCE_REFS",
+        "_PRESSURE_RELATIVE_TOLERANCE",
+        "_ZERO_ABSOLUTE_TOLERANCE"
+      ],
+      "content_hash": "777f8b2634a7"
+    },
+    {
+      "name": "models.py",
+      "type": "python",
+      "size_lines": 450,
+      "last_updated": "2026-08-16",
+      "description": "Typed contracts for the bounded INDIA-2 property-line strap footing.",
+      "classes": [
+        {
+          "name": "StrapFootingContractError",
+          "description": "Raised when input is outside the G0-frozen strap-footing scope."
+        },
+        {
+          "name": "StrapFootingAnalysisMethod",
+          "description": "Analysis method admitted by the first strap-footing workflow."
+        },
+        {
+          "name": "StrapFootingPressureModel",
+          "description": "Soil-pressure model admitted by the first strap-footing workflow."
+        },
+        {
+          "name": "StrapFootingGeometryInput",
+          "description": "Caller-confirmed geometry for the G0-frozen property-line system."
+        },
+        {
+          "name": "StrapFootingActionInput",
+          "description": "Caller-approved service and factored actions for the frozen system.",
+          "public_methods": [
+            "common_factored_multiplier"
+          ]
+        },
+        {
+          "name": "StrapFootingApprovalInput",
+          "description": "External footing, transfer, and construction prerequisites."
+        },
+        {
+          "name": "StrapFootingAnalysisInput",
+          "description": "Complete input to the bounded property-line strap action kernel."
+        }
+      ],
+      "content_hash": "18d80933a286"
+    }
+  ],
+  "subfolders": [],
+  "has_init": true,
+  "public_api": [
+    "StrapFootingActionInput",
+    "StrapFootingAnalysisInput",
+    "StrapFootingAnalysisMethod",
+    "StrapFootingAnalysisResult",
+    "StrapFootingApprovalInput",
+    "StrapFootingClearSpanActionResult",
+    "StrapFootingContractError",
+    "StrapFootingGeometryInput",
+    "StrapFootingGeometryResult",
+    "StrapFootingLoadCase",
+    "StrapFootingLoadCaseResult",
+    "StrapFootingPressureModel",
+    "StrapFootingTensionFace",
+    "analyze_property_line_strap_footing",
+    "resolve_property_line_strap_geometry"
+  ],
+  "content_hash": "719ff497d8fd5b7a"
+}

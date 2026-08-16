@@ -279,7 +279,7 @@
           "claim": "Strap-footing design is not implemented.",
           "workflows": [],
           "limitations": [
-            "G0 accepted one bounded property-line strap model; implementation and publication remain pending."
+            "G0 and the bounded analysis kernel are implemented; strap strength and publication remain pending."
           ],
           "evidence": [],
           "qualified_review_required": true
@@ -312,11 +312,11 @@
         }
       ],
       "registration_summary": {
-        "known_references": 173,
-        "registered_known_references": 95,
+        "known_references": 174,
+        "registered_known_references": 96,
         "metadata_only_references": 78,
         "registration_only_references": 0,
-        "registration_pct": 54.9
+        "registration_pct": 55.2
       },
       "references": [
         {
@@ -1314,7 +1314,20 @@
             "structural_lib.codes.is456.combined_footing.analysis.analyze_symmetric_combined_footing",
             "structural_lib.codes.is456.combined_footing.analysis.resolve_symmetric_combined_footing_geometry",
             "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
-            "structural_lib.codes.is456.footing.bearing.size_footing"
+            "structural_lib.codes.is456.footing.bearing.size_footing",
+            "structural_lib.codes.is456.strap_footing.analysis.analyze_property_line_strap_footing",
+            "structural_lib.codes.is456.strap_footing.analysis.resolve_property_line_strap_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:34.1.2",
+          "reference": "34.1.2",
+          "reference_type": "clause",
+          "title": "Minimum Edge Thickness for Footings",
+          "category": "footings",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.strap_footing.analysis.resolve_property_line_strap_geometry"
           ]
         },
         {
@@ -1365,7 +1378,8 @@
             "structural_lib.codes.is456.combined_footing.analysis.resolve_symmetric_combined_footing_geometry",
             "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
-            "structural_lib.codes.is456.footing.flexure.footing_flexure"
+            "structural_lib.codes.is456.footing.flexure.footing_flexure",
+            "structural_lib.codes.is456.strap_footing.analysis.analyze_property_line_strap_footing"
           ]
         },
         {

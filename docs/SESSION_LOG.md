@@ -5,6 +5,65 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FOUNDATION-STRAP-A
+
+**Agent:** Codex (`structural-math`, sole writer; one bounded independent
+exact-head audit after the candidate is committed)
+
+**Branch:** `codex/india-2-foundation-strap-a` from merged STRAP-G0
+`70cd2894485d88b72d22544ee18533733789d0f1`
+
+**Git handoff receipt:** `docs/verification/india-2-foundation-strap-a-git-handoff-receipt.json`
+
+**Focus:** Implement only the frozen property-line strap statics, equal-pressure
+eligibility, bearing, clear-span actions, and equilibrium. Strength,
+publication, React, broad Python, and the full 30-check gate remain outside A.
+
+### Summary
+
+- Added immutable, finite, unit-explicit geometry/action/approval contracts
+  with strict topology, common-factor, no-soil-contact, and external-verification
+  boundaries.
+- Added reaction, equal-pressure, gross-bearing, clear-strap action, and exact
+  equilibrium results, including the zero-line-load source reduction.
+- Kept strap capability held at 12 supported / 9 held until B-D and focused
+  family acceptance finish.
+
+### Issues encountered
+
+- The first manifest help command guessed `scripts/indian_code_manifest.py`,
+  but the maintained executable is `scripts/generate_indian_code_manifest.py`.
+- The first focused manifest test reported one IS 456 registration-only
+  reference after STRAP-A registered Clause `34.1.2`.
+- The first architecture/import command guessed `check_architecture.py` and
+  `check_imports.py`; the maintained executables have different names.
+
+### Root causes and resolutions
+
+- Root cause: the executable path was inferred from the helper module name
+  instead of discovered with `rg --files`. Resolution: locate and use the
+  maintained generator entry point. Evidence: explicit `--write`/`--check`,
+  manifest tests, semantic truth checks, and the focused quick gate pass.
+  ⚠️ TERMINAL ISSUE: guessed manifest script path did not exist -> discovered
+  and used `scripts/generate_indian_code_manifest.py`.
+- Confirmed root cause: Clause `34.1.2` was absent from the normalized clause
+  metadata even though G0/A use it and the new resolver registered it. The
+  registration scanner therefore truthfully classified the reference as
+  registration-only. Resolution: add the bounded Clause `34.1.2` metadata
+  identity and regenerate the manifest without changing capability status.
+  Evidence: the cross-standard registration invariant, all manifest tests,
+  deterministic generation, and the focused gate pass with zero IS 456
+  registration-only references.
+- Root cause: validation filenames were inferred from check labels instead of
+  discovered through the maintained automation registry. Resolution: run
+  `./run.sh find` and use `check_architecture_boundaries.py` plus
+  `validate_imports.py`. Evidence: both maintained checks and the quick gate
+  pass.
+  ⚠️ TERMINAL ISSUE: guessed validation script names did not exist ->
+  repository automation discovery identified the maintained commands.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-FOUNDATION-STRAP-G0
 
 **Agent:** Codex (`structural-engineer`, sole writer; one bounded independent

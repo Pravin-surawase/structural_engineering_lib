@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Merge STRAP-G0 unchanged, then begin only STRAP-A analysis
+- Focus: Merge STRAP-A unchanged, then begin only STRAP-B strength
 - Combined acceptance: PR #792 squash-merged as 8e039b112e38436fcae36326b46afa9c436fb970; tree=873aea4cdca8aa9633b30a7c9b74138e5a73a6ce
-- STRAP-G0: GO for one property-line two-footing/equal-pressure/no-soil-contact strap model; footing slabs and transfer remain external prerequisites
-- G0 candidate identity: VERIFY_EXACT_HEAD_TREE_PR_AND_HOSTED_CHECKS_AT_CLOSEOUT
-- Next action: START_STRAP_A_ONLY_AFTER_G0_MERGE
+- STRAP-G0: PR #793 squash-merged as 70cd2894485d88b72d22544ee18533733789d0f1; audited tree=60d5636265e157e723236909b1de7f582791b297
+- STRAP-A: bounded statics, bearing, actions, and equilibrium implemented; strength/publication remain held
+- Next action: START_STRAP_B_ONLY_AFTER_A_MERGE
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-16
@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Begin `INDIA-2-FOUNDATION-STRAP-A` only after STRAP-G0 merges unchanged |
+| **Next** | Begin `INDIA-2-FOUNDATION-STRAP-B` only after STRAP-A merges unchanged |
 
 ## Required Reading
 
@@ -120,9 +120,8 @@ authorization, or cleanup authority.
 
 ## Exact next action
 
-After verifying STRAP-G0 merged unchanged into current `origin/main`, create a
-fresh STRAP-A lane. Implement only typed geometry/action/approval contracts,
-common-factor and equal-pressure eligibility, reactions, gross service bearing,
-clear-strap shear/moment actions, source identities, and exact vertical/moment
-closure. Strength, public Python, FastAPI, capability promotion, React, broad
-Python, and the 30-check gate remain outside STRAP-A.
+After verifying STRAP-A merged unchanged into current `origin/main`, create a
+fresh STRAP-B lane. Implement only exact strap flexure, minimum/provided and
+side-face steel, shear/stirrups, cover/spacing, anchorage, and the composed
+strength disposition. Public Python, FastAPI, capability promotion, React,
+broad Python, and the 30-check gate remain outside STRAP-B.
