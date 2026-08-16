@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — INDIA-2-DEEP A-D are implemented and published; focused family acceptance is next session
+**Updated:** 2026-08-16 — INDIA-2-DEEP is accepted within its bounded Clause 29 case; INDIA-2-FLAT-G0 is next
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| INDIA-2-DEEP | Implement one bounded simply supported Clause 29 positive-reinforcement check through A-D and focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 and DEEP-A-D complete; focused family acceptance is intentionally deferred to the next work session |
+| INDIA-2-FLAT | Decide and, only after GO, implement one bounded flat-slab and column-punching workflow through focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 source, analysis-model, supported case, punching boundary, benchmark, units, and exclusions are next; no calculation code before GO |
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
 
 ## Up Next
@@ -143,9 +143,10 @@ The version roadmap and historical backlog remain below. The canonical
 INDIA-0 through INDIA-4, and the dedicated
 [INDIA-2 execution plan](planning/india-2-remaining-is456-elements-plan.md)
 defines the remaining family packets. INDIA-0 and INDIA-1 are complete. The
-historical INDIA-2A-D packets form the completed `INDIA-2-STAIR` family, but umbrella
-INDIA-2 remains in progress while wall, deep-beam, flat-slab/punching, and
-distinct foundation-system packets remain held.
+historical INDIA-2A-D packets form the completed `INDIA-2-STAIR` family. Bounded
+wall and deep-beam families are also accepted, but umbrella INDIA-2 remains in
+progress while flat-slab/punching and distinct foundation-system packets remain
+held pending their own G0 decisions.
 The v0.23.1a1 Alpha is published.
 UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded
@@ -158,6 +159,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-DEEP | Implemented and accepted one bounded simply supported Clause 29 positive-reinforcement workflow with public provenance | Main Agent + structural engineer | ✅ DONE — G0 and A-D integrated; 157-test focused family selection and independent hand benchmark pass; qualified review and excluded deep-beam systems remain held |
 | INDIA-2-DEEP-D | Added thin typed FastAPI transport, canonical deep-beam capability/semantic truth, deterministic manifest promotion, and publication evidence | Main Agent + API developer | ✅ COMPLETE — public bounded workflow is supported; React, release, and all held systems remain excluded |
 | INDIA-2-DEEP-C | Published one typed Python workflow composing geometry, action, positive tie, anchorage, side-face, provenance, and retained holds | Main Agent + backend | ✅ COMPLETE — canonical root/services API, executable hand benchmark, JSON-safe result, and public docs pass; capability remains held until DEEP-D |
 | INDIA-2-DEEP-B | Added required/provided positive tie, placement, continuity, exact 0.8Ld anchorage, side-face area/spacing/grid, transverse-enclosure boundary, and composed dispositions | Main Agent + structural math | ✅ COMPLETE — 42 direct deep-beam tests pass; capability remains held until DEEP-D |

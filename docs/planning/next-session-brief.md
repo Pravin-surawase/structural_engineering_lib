@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Add only thin FastAPI transport, capability/semantic truth,
-- Git receipt: docs/verification/india-2-deep-d-git-handoff-receipt.json | sha256:6186a32333a0bc01d1032939d514eadb4193bde857c42246d8cce8a85d8178cf | HOLD
-- Git identity: codex/india-2-deep-d@758000913687fdc9ab2afe07a7115ddf86027ad8 | upstream=origin/codex/india-2-deep-d@758000913687fdc9ab2afe07a7115ddf86027ad8 | base=origin/main@33522c6c0ceb4658a34442d6b48a698d88bc2022 | tree=dirty | operation=none
+- Focus: Accept the already published bounded deep-beam family using
+- Git receipt: docs/verification/india-2-deep-acceptance-git-handoff-receipt.json | sha256:eddbe6b86c0db11aa06cdbede629851a4ac5374ce16a48fd29af02f30aa8350b | HOLD
+- Git identity: codex/india-2-deep-acceptance@ce45e22032ea234f588ce88c601db5f6a42af166 | upstream=origin/main@ce45e22032ea234f588ce88c601db5f6a42af166 | base=origin/main@ce45e22032ea234f588ce88c601db5f6a42af166 | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Run `INDIA-2-DEEP-ACCEPTANCE` from integrated D; do not begin flat slabs or foundations first |
+| **Next** | Run decision-only `INDIA-2-FLAT-G0`; do not write calculation code before GO |
 
 ## Required Reading
 
@@ -38,7 +38,7 @@ add React, or begin release work without a new owner-approved scope.
 braced empirical vertical-compression workflow. WALL-A-D are integrated and the
 focused family receipt is
 [`india-2-wall-family-acceptance-evidence.md`](../verification/india-2-wall-family-acceptance-evidence.md).
-Do not expand the accepted wall topology while implementing deep-beam A.
+Do not expand the accepted wall topology while beginning flat-slab G0.
 
 ```bash
 ./run.sh session brief --agent orchestrator
@@ -79,8 +79,9 @@ side-face, and composed checks. [`india-2-deep-c-public-workflow-evidence.md`](.
 records the typed public Python composition, executable benchmark, public API
 docs, and retained holds. [`india-2-deep-d-publication-evidence.md`](../verification/india-2-deep-d-publication-evidence.md)
 records the thin transport and truthful capability/semantic/manifest
-publication over that exact workflow. Next session begins with cumulative
-focused family acceptance. Bearing and compression-nodal regions require a caller-supplied external verification;
+publication over that exact workflow. The focused family acceptance receipt is
+[`india-2-deep-family-acceptance-evidence.md`](../verification/india-2-deep-family-acceptance-evidence.md).
+Bearing and compression-nodal regions require a caller-supplied external verification;
 continuous beams, openings, hanging action, negative moment, load generation,
 generalized strut-and-tie, nonlinear analysis, and FEM remain held.
 
@@ -91,9 +92,10 @@ checks, plus the quick gate. The expensive full Python and 30-check gate runs
 once after the whole accepted INDIA-2 wave is integrated unless an
 outcome-changing repository-wide issue appears earlier.
 
-Per the owner stop point, do not start flat slabs, foundation programs, deep-
-beam acceptance, or broad closeout gates again on 2026-08-16 after DEEP-D is
-integrated. Resume with DEEP acceptance in the next work session.
+Deep-beam acceptance is complete. Begin `INDIA-2-FLAT-G0` next and keep it
+decision-only until its source, analysis model, bounded panel/punching case,
+benchmark, units, and exclusions return GO. Foundation programs remain later,
+separate G0 decisions.
 
 Cumulative qualified structural-engineering review belongs to INDIA-4 after the
 accepted INDIA-2 and INDIA-3 scope is frozen. Packet-level source and engineering
