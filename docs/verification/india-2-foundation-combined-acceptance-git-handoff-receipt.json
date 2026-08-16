@@ -1,0 +1,185 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T09:20:50Z",
+      "query_status": "OK",
+      "reference": "task:INDIA-2-FOUNDATION-COMBINED-ACCEPTANCE:user-request-finish-combined-footing-work",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T09:20:50Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/india-2-foundation-combined-acceptance",
+      "head_sha": "079ca22b00744ca9b01f859be0b64333b5830fcb",
+      "task_id": "INDIA-2-FOUNDATION-COMBINED-ACCEPTANCE"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "4b84ad0ccd00983e482fa5a51cca92697f7aada4b873d599d7a7fe161ab485e5",
+    "state": {
+      "branch": "codex/india-2-foundation-combined-acceptance",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "079ca22b00744ca9b01f859be0b64333b5830fcb",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 75.745,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-foundation-combined-acceptance",
+      "head_sha": "079ca22b00744ca9b01f859be0b64333b5830fcb",
+      "hold_reasons": [
+        "changed paths: 20"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T09:25:17.797835+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-foundation-combined-acceptance",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 20,
+        "modified_paths": [
+          "Python/tests/index.json",
+          "Python/tests/index.md",
+          "Python/tests/test_indian_code_manifest.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/index.json",
+          "docs/index.md",
+          "docs/planning/index.json",
+          "docs/planning/index.md",
+          "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+          "docs/planning/india-2-remaining-is456-elements-plan.md",
+          "docs/planning/indian-code-completion-plan.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/index.json",
+          "docs/verification/index.md",
+          "docs/verification/indian-code-capability-coverage.json",
+          "scripts/_lib/indian_code_manifest.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/india-2-foundation-combined-acceptance-git-handoff-receipt.json",
+          "docs/verification/india-2-foundation-combined-acceptance-git-handoff-source-evidence.json",
+          "docs/verification/india-2-foundation-combined-family-acceptance-evidence.md"
+        ]
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-foundation-combined-acceptance"
+    }
+  },
+  "local_state_receipt_hash": "sha256:4b84ad0ccd00983e482fa5a51cca92697f7aada4b873d599d7a7fe161ab485e5",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T09:25:17.797982+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T09:20:50Z",
+    "owner": "Main Agent under user instruction to preserve Git state",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/codes/is456/combined_footing",
+      "Python/structural_lib/services/combined_footing_api.py",
+      "fastapi_app",
+      "react_app",
+      "private_sources",
+      "pyproject.toml",
+      "CHANGELOG.md"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "docs/verification/india-2-foundation-combined-family-acceptance-evidence.md",
+      "docs/verification/india-2-foundation-combined-acceptance-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "scripts/_lib/indian_code_manifest.py",
+      "Python/tests/test_indian_code_manifest.py",
+      "docs/verification/indian-code-capability-coverage.json",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/indian-code-completion-plan.md",
+      "docs/planning/india-2-remaining-is456-elements-plan.md",
+      "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+      "docs/planning/next-session-brief.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md",
+      "Python/tests/index.json",
+      "Python/tests/index.md"
+    ],
+    "task_id": "INDIA-2-FOUNDATION-COMBINED-ACCEPTANCE"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

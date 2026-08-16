@@ -5,6 +5,119 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FOUNDATION-COMBINED Focused Family Acceptance
+
+**Agent:** Codex (`reviewer`, sole writer; one bounded independent exact-head
+audit after the candidate is committed)
+
+**Branch:** `codex/india-2-foundation-combined-acceptance` from merged
+COMBINED-D main at `079ca22b00744ca9b01f859be0b64333b5830fcb`, tree
+`efba5971017b03e14e3b2f30fd40750f8fc68987`
+
+**Git handoff receipt:** `docs/verification/india-2-foundation-combined-acceptance-git-handoff-receipt.json`
+
+**Focus:** Bind and recheck the integrated G0/A-D family without adding feature
+behavior. Strap, pile-cap, raft, React, release, broad Python, and the full
+30-check gate remain outside acceptance.
+
+### Summary
+
+- Accepted the one symmetric equal-load two-column rigid rectangular combined-
+  footing workflow at 12 supported / 9 held capability truth and 80/80 directly
+  tested endpoints, while retaining qualified review and false complete-
+  engineering approval.
+- Bound G0 through D source, PR, merge, tree, benchmark, public Python, REST,
+  OpenAPI, capability, semantic, manifest, valid-failure, and fail-closed
+  evidence in one focused family acceptance receipt.
+- Reconciled the current planning projections to decision-only
+  `INDIA-2-FOUNDATION-STRAP-G0`; no strap implementation was started.
+
+### Issues encountered
+
+- The first independent non-frozen replay used 12 mm transverse bars at
+  120 mm because the earlier B evidence retained its audited output values but
+  not the complete supplied reinforcement schedule. The kernel truthfully
+  returned `FAIL` because `942.4778 mm2/m` provided was less than
+  `1080 mm2/m` required. The diagnostic command then stopped after referencing
+  a guessed nonexistent `governing_transfer_steel_required_mm2` field.
+- The maintained task board, parent/dedicated plans, and next-session brief
+  still described D as a candidate or combined acceptance as next after PR #791
+  had already merged D unchanged.
+- An index-orientation command guessed a nonexistent
+  `scripts/generate_folder_index.py` entrypoint and stopped before the
+  repository automation finder returned the maintained
+  `scripts/generate_enhanced_index.py <folder>` command.
+- The first quick gate failed because the refreshed next-session brief was
+  154 lines against its 150-line limit. The full documentation check also
+  rejected the packet-specific frontmatter status strings on the new acceptance
+  evidence and updated finish plan.
+- A read-only stale-wording search stopped with `zsh: unmatched \"` because a
+  Markdown backtick was embedded in a double-quoted shell pattern.
+
+### Root causes and resolutions
+
+- Root cause: the non-frozen audit receipt summarized outputs without binding
+  every supplied bar-schedule input, and the replay diagnostic guessed an
+  internal field name before inspecting the result dataclass. Resolution:
+  inspect the maintained typed result, use the exact
+  `required_transfer_steel_area_mm2` field, and restore the independently
+  audited 12 mm at 100 mm transverse schedule. Evidence: the corrected
+  `7200 x 3000 x 900 mm` case returns `PASS` with `125 kN/m2` net pressure,
+  `3239.9999999999995 / 3769.9111843077517 mm2` required/provided top steel,
+  `0.24665178571428573 / 1.3693063937629153 N/mm2` punching stress/capacity,
+  and `1800 / 1884.9555921538758 mm2` required/provided dowels. No kernel
+  change was required.
+- Root cause: acceptance-dependent status projections were intentionally not
+  finalized in D before its exact merge identity and hosted-check result
+  existed. Resolution: bind the exact G0/A-D merged chain in the family receipt,
+  add that receipt to the deterministic manifest, and update every current
+  next-action projection to STRAP-G0. Evidence: manifest generation/check and
+  parity pass at 12/9 and 80/80; focused planning/link/index gates verify the
+  reconciled files.
+- Root cause: the index script name was assumed instead of discovered through
+  the repository automation registry. Resolution: use `./run.sh find "folder
+  index"`, which identifies `scripts/generate_enhanced_index.py <folder>`, then
+  generate and verify only the touched indexes. Evidence: all touched index
+  checks pass after regeneration.
+  ⚠️ TERMINAL ISSUE: guessed `scripts/generate_folder_index.py` did not exist →
+  `./run.sh find "folder index"` returned the maintained enhanced-index command.
+- Root cause: the handoff retained a now-redundant historical wall-acceptance
+  paragraph, and the frontmatter `status` field was treated as a packet-state
+  narrative even though its schema is a lifecycle enum. Resolution: remove the
+  redundant six-line wall recap, retain its link through the maintained
+  indexes/evidence chain, and use schema-valid `status: active` while keeping
+  the precise packet state in prose and task metadata. Evidence: the brief is
+  147 lines, the touched frontmatter validates, and the quick gate returns
+  10/10.
+- Root cause: shell double quotes do not neutralize backtick command
+  substitution. Resolution: remove the literal backtick from the search and
+  pass each regular expression as its own single-quoted `rg -e` pattern.
+  Evidence: the corrected search completes and finds only the historical D
+  description plus the intended STRAP-G0 next-action projections.
+  ⚠️ TERMINAL ISSUE: a double-quoted search pattern containing a Markdown
+  backtick stopped in zsh → separate single-quoted `rg -e` patterns completed.
+
+### Validation
+
+- All 84 combined A-D tests and the 339-test combined/public-contract selection
+  pass. They cover frozen and non-frozen `PASS`, valid bearing,
+  reinforcement/detailing, shear, punching, and transfer `FAIL`, all maintained
+  fail-closed boundaries, public exports/JSON, transport, OpenAPI, capability,
+  semantic truth, clauses, traceability, and deterministic manifests.
+- All three API contract/snapshot checks pass at 80 endpoints and 340 schemas.
+  Architecture reports 0 violations across 193 files, and import validation
+  reports 0 broken imports across 635 Python files and 2,018 internal imports.
+- Black, Ruff, and focused mypy pass for the two touched Python files. Source
+  binding is true, parity is 12 supported / 9 held and 80/80 endpoints, and the
+  deterministic manifest is current.
+- All 1,256 internal links, touched indexes, token efficiency, and the 10/10
+  quick gate pass. Immutable exact-head audit and all applicable hosted checks
+  must pass before merge; their exact results are added to this entry at
+  closeout.
+- Using the cadence you quoted: focused gates per packet, with the broad Python
+  and 30-check gates only at the final INDIA-2 integration boundary unless a
+  repository-wide failure forces them earlier.
+
 ## 2026-08-16 — Session: INDIA-2-FOUNDATION-COMBINED-D FastAPI and Truth Publication
 
 **Agent:** Codex (`api-developer`, sole writer; one bounded independent exact-

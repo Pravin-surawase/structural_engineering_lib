@@ -66,18 +66,18 @@
     {
       "name": "india-2-next-session-publication-and-closeout-plan.md",
       "type": "documentation",
-      "size_lines": 298,
+      "size_lines": 307,
       "last_updated": "2026-08-16",
-      "description": "COMBINED-C is integrated and COMBINED-D publishes the thin transport and truth layer over it. The next session starts only after COMBINED-D is merged unchanged",
-      "content_hash": "4738985b8ebe"
+      "description": "COMBINED-C/D are integrated and focused family acceptance binds the unchanged G0/A-D source, benchmark, public workflow, transport, and truthful capability",
+      "content_hash": "71121cf6119b"
     },
     {
       "name": "india-2-remaining-is456-elements-plan.md",
       "type": "documentation",
-      "size_lines": 369,
+      "size_lines": 373,
       "last_updated": "2026-08-16",
       "description": "INDIA-2 finishes a practical, explicitly limited set of IS 456 reinforced concrete elements that are still missing from the library.",
-      "content_hash": "208c4094162f"
+      "content_hash": "fbfcb328733f"
     },
     {
       "name": "indian-code-completion-plan.md",
@@ -85,7 +85,7 @@
       "size_lines": 132,
       "last_updated": "2026-08-16",
       "description": "This is the canonical finish plan for the repository's Indian-code program. It defines the meaning and order of INDIA-0 through INDIA-4 without claiming",
-      "content_hash": "194a3e6b74bc"
+      "content_hash": "e6ab603eedb0"
     },
     {
       "name": "is456-library-first-master-plan.md",
@@ -131,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 151,
+      "size_lines": 148,
       "last_updated": "2026-08-16",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-16",
-      "content_hash": "eb63a5361607"
+      "content_hash": "c4b0ea7d5c08"
     },
     {
       "name": "pre-release-checklist.md",
@@ -173,5 +173,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "0c26938dc236b05d"
+  "content_hash": "88073ea92c3fd359"
 }

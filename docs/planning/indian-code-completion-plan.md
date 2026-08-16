@@ -37,7 +37,7 @@ completed family inside the larger INDIA-2 wave.
 |---|---|---|
 | INDIA-0 — Truth baseline | One generated, standard-namespaced capability/coverage manifest; repaired coverage consumers; reconciled status ledgers | **Complete** |
 | INDIA-1 — Existing-family closure | Close or explicitly hold limitations for beam, rectangular column, isolated footing, and solid slab | **Complete** |
-| INDIA-2 — Remaining practical IS 456 elements | Separately verify wall, stair, deep-beam, flat-slab/punching, and distinct foundation-system packets | **In progress** — bounded wall, stair, deep-beam, and flat-slab/punching families accepted; distinct foundation programs remain pending their own G0 packets |
+| INDIA-2 — Remaining practical IS 456 elements | Separately verify wall, stair, deep-beam, flat-slab/punching, and distinct foundation-system packets | **In progress** — bounded wall, stair, deep-beam, flat-slab/punching, and combined-footing families accepted; strap, pile-cap, and raft decisions remain pending |
 | INDIA-3 — Companion Indian codes | Complete the bounded IS 13920 surface, then add IS 875 inputs before IS 1893 equivalent-static actions and Indian combinations | **Planned** |
 | INDIA-4 — Final acceptance | Run cumulative engineering, cross-layer, repository, and artifact acceptance for the explicitly supported subset | **Planned** |
 
@@ -61,16 +61,16 @@ That document controls INDIA-2 execution within this parent wave.
 | `INDIA-2-STAIR` | IS 456 Clause 33 longitudinal straight waist-slab flight with collinear landings | **Complete.** Historical `INDIA-2A`–`INDIA-2D` plus the cumulative gate are its evidence. Alternate stairs remain held. |
 | `INDIA-2-DEEP` | IS 456 Clause 29 deep-beam program | **Complete within its bounded case.** One simply supported positive-moment workflow is accepted; alternate deep-beam systems remain held. |
 | `INDIA-2-FLAT` | Flat-slab and column-punching program | **Complete within its bounded case.** One regular interior direct-design and concrete-only punching workflow is accepted; alternate systems remain held. |
-| `INDIA-2-FOUNDATION-COMBINED` | Combined-footing program | **G0/A-D implementation and publication complete; focused acceptance next.** One symmetric equal-load two-column rigid rectangular case only; alternate systems remain held. |
+| `INDIA-2-FOUNDATION-COMBINED` | Combined-footing program | **Complete within its bounded case.** One symmetric equal-load two-column rigid rectangular workflow is accepted; alternate systems remain held. |
 | `INDIA-2-FOUNDATION-STRAP` | Strap-footing program | **Held; distinct analysis model required.** |
 | `INDIA-2-FOUNDATION-RAFT` | Raft-foundation program | **Held; distinct analysis model required.** |
 | `INDIA-2-FOUNDATION-PILE-CAP` | Pile-cap program | **Held; distinct analysis model required.** |
 
-The next packet is `INDIA-2-FOUNDATION-COMBINED-ACCEPTANCE`. D publishes only
-one strict FastAPI route and the matching capability/semantic/manifest truth
-over the completed G0/A/B/C case. Acceptance adds no feature behavior;
-alternate combined-footing systems and the other foundation families remain in
-later decision packets. The dedicated
+The next packet is decision-only `INDIA-2-FOUNDATION-STRAP-G0`. Combined
+footing is accepted without adding another topology; alternate combined-
+footing systems remain held. Strap footing requires its own source, analysis
+model, benchmark, supported boundary, exclusions, and GO before calculation
+code. The dedicated
 [next-session and finish plan](india-2-next-session-publication-and-closeout-plan.md)
 controls the remaining order through INDIA-2 closeout.
 

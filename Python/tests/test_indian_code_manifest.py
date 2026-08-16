@@ -116,6 +116,9 @@ def test_combined_footing_supported_truth_tracks_publication_chain() -> None:
     assert "india-2-foundation-combined-d-publication-evidence.md" in " ".join(
         combined["evidence"]
     )
+    assert "india-2-foundation-combined-family-acceptance-evidence.md" in " ".join(
+        combined["evidence"]
+    )
 
 
 def test_is456_and_is13920_registration_cannot_cross_match() -> None:
