@@ -1,7 +1,7 @@
 ---
 owner: Main Agent
 status: active
-last_updated: 2026-08-15
+last_updated: 2026-08-17
 doc_type: guide
 ---
 
@@ -144,18 +144,32 @@ Then:
 
 ## Verification Ladder
 
+The default cadence is implementation first, then one batched verification
+sequence for the agreed bounded packet. A diagnostic check during implementation
+is an exception used to guide or debug the change, not a ritual after each edit.
+
 1. Inspect only affected files and existing patterns.
-2. Implement one bounded issue.
-3. Run the narrowest relevant test or lint command while iterating.
-4. Add one or two independent reviews only when risk justifies them.
-5. Run `./run.sh check --quick` before committing.
-6. For a multi-packet milestone, keep each packet to focused tests, independent
-   benchmarks, architecture/import checks, the quick gate, normal commit hooks,
-   and all required hosted PR checks.
-7. After all intended packets are integrated, run the broad Python suite and
+2. Complete the bounded implementation, its tests, documentation, evidence,
+   and other intended versioned writes.
+3. While implementing, run only the narrowest reproducer, test, lint, or
+   diagnostic needed to answer a current question or repair a failure. Do not
+   rerun quick, full, or unchanged suites after each edit.
+4. Freeze the packet content, including its single maintained-index refresh
+   when indexes are affected.
+5. Run the affected focused tests, benchmarks, and architecture/import checks
+   together as one consolidated selection.
+6. Add one or two independent reviews only when risk justifies them, then run
+   `./run.sh check --quick` once before committing and allow normal hooks to run.
+7. If verification exposes an outcome-changing defect, repair its root cause,
+   rerun the failed or affected narrow evidence, and repeat the consolidated
+   gate once for the new frozen candidate.
+8. For a multi-packet milestone, keep each completed packet to focused tests,
+   independent benchmarks, architecture/import checks, the quick gate, normal
+   commit hooks, and all required hosted PR checks.
+9. After all intended packets are integrated, run the broad Python suite and
    `./run.sh check` (currently 30 checks) once at the cumulative closeout.
    Repeat only a failed portion unless the fix can affect other categories.
-8. Run either broad gate before cumulative closeout only when an
+10. Run either broad gate before cumulative closeout only when an
    outcome-changing failure or repository-wide surface makes it necessary.
    Required hosted checks are never deferred or bypassed.
 
@@ -233,8 +247,11 @@ authority. Default to no
 subagents; use no more than two only for independent,
 bounded work. Give each a concise packet with objective, exact files, non-goals,
 pitfalls, acceptance criteria, tests, and return format—never full conversation
-history. Verify every result before accepting it. Run targeted tests during
-development and the full gate once at closeout. Close subagents and stop when done.
+history. Verify every result before accepting it. Complete the bounded
+implementation first; use a narrow diagnostic during editing only when needed,
+then run one consolidated focused selection and one quick gate after content
+freezes. Run the full gate once at cumulative closeout. Close subagents and stop
+when done.
 ```
 
 ## Official References

@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-17
-**Files:** 159
+**Files:** 162
 
 ## Config Files
 
@@ -14,6 +14,7 @@ Benchmark examples and verification packs for validating library calculations ag
 - [git-001-phase-8-reconciliation-git-handoff-source-evidence.json](git-001-phase-8-reconciliation-git-handoff-source-evidence.json)
 - [git-primary-session-log-reconcile-handoff-receipt.json](git-primary-session-log-reconcile-handoff-receipt.json)
 - [git-primary-session-log-reconcile-handoff-source-evidence.json](git-primary-session-log-reconcile-handoff-source-evidence.json)
+- [implementation-first-verification-policy-git-handoff-receipt.json](implementation-first-verification-policy-git-handoff-receipt.json)
 - [india-2-closeout-git-handoff-receipt.json](india-2-closeout-git-handoff-receipt.json)
 - [india-2-closeout-git-handoff-source-evidence.json](india-2-closeout-git-handoff-source-evidence.json)
 - [india-2-cumulative-git-handoff-receipt.json](india-2-cumulative-git-handoff-receipt.json)
@@ -88,6 +89,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [india-completion-plan-git-handoff-source-evidence.json](india-completion-plan-git-handoff-source-evidence.json)
 - [indian-code-capability-coverage.json](indian-code-capability-coverage.json)
 - [is456-public-distribution-permission.json](is456-public-distribution-permission.json)
+- [lib-pro-002-a-forward-integration-git-handoff-receipt.json](lib-pro-002-a-forward-integration-git-handoff-receipt.json)
+- [lib-pro-002-a-forward-integration-git-handoff-source-evidence.json](lib-pro-002-a-forward-integration-git-handoff-source-evidence.json)
 - [lib-pro-002-a-git-handoff-receipt.json](lib-pro-002-a-git-handoff-receipt.json)
 - [lib-pro-002-a-git-handoff-source-evidence.json](lib-pro-002-a-git-handoff-source-evidence.json)
 - [lib-pro-002-g0-git-handoff-receipt.json](lib-pro-002-g0-git-handoff-receipt.json)

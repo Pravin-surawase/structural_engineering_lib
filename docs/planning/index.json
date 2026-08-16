@@ -131,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 84,
+      "size_lines": 89,
       "last_updated": "2026-08-17",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-17",
-      "content_hash": "bdf03ddf76dd"
+      "content_hash": "0ce797a720a4"
     },
     {
       "name": "pre-release-checklist.md",
@@ -182,5 +182,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "e21a6df903c00271"
+  "content_hash": "5598b6bae910d3ec"
 }

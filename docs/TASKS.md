@@ -127,7 +127,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-002-A | Implement strict service intake with no structural defaults, one effective-depth contract, stable blocking issues, and a non-empty/accounted batch summary | backend + tester | M | P0 | 🚧 LOCAL CANDIDATE — focused service, type, architecture, and import checks pass; quick gate and immutable exact-head review remain |
+| LIB-PRO-002-A | Implement strict service intake with no structural defaults, one effective-depth contract, stable blocking issues, and a non-empty/accounted batch summary | backend + tester | M | P0 | 🚧 FORWARD-INTEGRATION CANDIDATE — original `22066d0d` preserved; current-main policy integration, consolidated verification, and immutable exact-head review remain |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. INDIA-3, dependency, release execution, further cleanup, and
