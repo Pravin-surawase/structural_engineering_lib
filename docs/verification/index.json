@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 139,
+  "file_count": 141,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -189,6 +189,36 @@
       "last_updated": "2026-08-16",
       "description": "INDIA-1D closes the decision boundary around already supported solid-slab serviceability, shear, and loading behavior. It does not add or promote new",
       "content_hash": "76b8e456fffe"
+    },
+    {
+      "name": "india-2-closeout-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "b19468bf0109"
+    },
+    {
+      "name": "india-2-closeout-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "cacd022a9791"
     },
     {
       "name": "india-2-cumulative-gate-evidence.md",
@@ -1685,5 +1715,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "a9c319bc9ddda1ff"
+  "content_hash": "e4b122e7d6ba1cbb"
 }

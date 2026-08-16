@@ -13,8 +13,7 @@
 `origin/main = d28852156752ea6e44b0c9fbb67988088851bf3e`, tree
 `38958c8a484d5f63a1092b2e852af64bef7afc2a`
 
-**Git handoff receipt:**
-`docs/verification/india-2-closeout-git-handoff-receipt.json`
+**Git handoff receipt:** `docs/verification/india-2-closeout-git-handoff-receipt.json`
 
 **Focus:** Administratively close INDIA-2 around six accepted bounded families
 and explicit pile-cap/raft holds. Freeze one cumulative evidence index, pass
@@ -65,6 +64,9 @@ approval behavior.
 - ⚠️ TERMINAL ISSUE: the first read-only diagnostic serializer did not provide
   an enum fallback to `json.dumps`; it stopped on `DesignSectionType` before
   printing the requested values and made no changes.
+- ⚠️ TERMINAL ISSUE: the first `./run.sh session end --agent reviewer` could
+  not discover the valid closeout receipt because its path was wrapped onto the
+  line after the `Git handoff receipt` label.
 
 ### Root causes and resolutions
 
@@ -114,6 +116,10 @@ approval behavior.
   `json.dumps` cannot encode. Resolution: add `default=str` to the read-only
   diagnostic serializer. Evidence: the corrected command printed all beam,
   footing, service, and detailing values without repository mutation.
+- Confirmed root cause: the session checker intentionally parses a receipt path
+  only when it appears on the same line as its label. Resolution: use the
+  established one-line declaration. Evidence: direct receipt validation and
+  the repeated session-end check both accept the same committed receipt.
 
 ### Validation
 
