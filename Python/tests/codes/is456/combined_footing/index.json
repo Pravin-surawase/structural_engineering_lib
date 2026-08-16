@@ -1,0 +1,110 @@
+{
+  "folder": "Python/tests/codes/is456/combined_footing",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-08-16",
+  "file_count": 2,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 2,
+      "last_updated": "2026-08-16",
+      "description": "Tests for the bounded combined-footing family.",
+      "content_hash": "eb46d123b1bc"
+    },
+    {
+      "name": "test_analysis.py",
+      "type": "python",
+      "size_lines": 390,
+      "last_updated": "2026-08-16",
+      "description": "INDIA-2-COMBINED-A benchmark, boundary, and traceability tests.",
+      "functions": [
+        {
+          "name": "test_frozen_geometry_and_punching_perimeters"
+        },
+        {
+          "name": "test_frozen_service_pressure_resultants_and_net_action_carrier"
+        },
+        {
+          "name": "test_frozen_longitudinal_sections_and_sign_convention"
+        },
+        {
+          "name": "test_transverse_action_includes_flexure_and_one_way_shear_demand"
+        },
+        {
+          "name": "test_valid_bearing_failure_is_reported_without_leaving_domain"
+        },
+        {
+          "name": "test_invalid_geometry_scalars_fail_closed",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_rectangular_depth_and_column_location_boundaries_fail_closed"
+        },
+        {
+          "name": "test_critical_section_and_punching_boundaries_fail_closed"
+        },
+        {
+          "name": "test_each_geometry_scope_carrier_fails_closed",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_invalid_action_scalars_fail_closed",
+          "params": [
+            "field",
+            "value"
+          ]
+        },
+        {
+          "name": "test_action_factors_and_unsupported_actions_fail_closed"
+        },
+        {
+          "name": "test_geometry_references_are_required",
+          "params": [
+            "field"
+          ]
+        },
+        {
+          "name": "test_action_references_are_required",
+          "params": [
+            "field"
+          ]
+        },
+        {
+          "name": "test_wrong_typed_inputs_fail_closed"
+        },
+        {
+          "name": "test_results_are_frozen_and_deterministic"
+        },
+        {
+          "name": "test_symmetric_cases_close_vertical_and_moment_equilibrium",
+          "params": [
+            "length",
+            "width",
+            "depth",
+            "column",
+            "left_x",
+            "right_x"
+          ]
+        },
+        {
+          "name": "test_section_kinds_and_source_provenance_are_exact"
+        },
+        {
+          "name": "test_clause_registration_is_exact"
+        }
+      ],
+      "content_hash": "93d53b7b6319"
+    }
+  ],
+  "subfolders": [],
+  "has_init": true,
+  "content_hash": "975a608f39169de8"
+}

@@ -61,15 +61,15 @@ That document controls INDIA-2 execution within this parent wave.
 | `INDIA-2-STAIR` | IS 456 Clause 33 longitudinal straight waist-slab flight with collinear landings | **Complete.** Historical `INDIA-2A`–`INDIA-2D` plus the cumulative gate are its evidence. Alternate stairs remain held. |
 | `INDIA-2-DEEP` | IS 456 Clause 29 deep-beam program | **Complete within its bounded case.** One simply supported positive-moment workflow is accepted; alternate deep-beam systems remain held. |
 | `INDIA-2-FLAT` | Flat-slab and column-punching program | **Complete within its bounded case.** One regular interior direct-design and concrete-only punching workflow is accepted; alternate systems remain held. |
-| `INDIA-2-FOUNDATION-COMBINED` | Combined-footing program | **G0 GO; A-D activated; capability held.** One symmetric equal-load two-column rigid rectangular case is frozen. |
+| `INDIA-2-FOUNDATION-COMBINED` | Combined-footing program | **A action kernel implemented; capability held.** One symmetric equal-load two-column rigid rectangular case only. |
 | `INDIA-2-FOUNDATION-STRAP` | Strap-footing program | **Held; distinct analysis model required.** |
 | `INDIA-2-FOUNDATION-RAFT` | Raft-foundation program | **Held; distinct analysis model required.** |
 | `INDIA-2-FOUNDATION-PILE-CAP` | Pile-cap program | **Held; distinct analysis model required.** |
 
-The next packet is `INDIA-2-FOUNDATION-COMBINED-A`. It implements only the G0-
-frozen typed geometry/action contract and rigid uniform-pressure action model.
-Strength, workflow/publication, alternate combined-footing systems, and the
-other foundation families remain in their later packets.
+The next packet is `INDIA-2-FOUNDATION-COMBINED-B`. It composes only the G0-
+frozen actions into reinforcement, shear, punching, transfer, anchorage, and
+internal disposition checks. Public workflow/publication, alternate combined-
+footing systems, and the other foundation families remain in later packets.
 
 ## 4. INDIA-3 companion-code order
 

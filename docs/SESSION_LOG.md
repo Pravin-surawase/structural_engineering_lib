@@ -5,6 +5,80 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FOUNDATION-COMBINED-A Action Kernel
+
+**Agent:** Codex (`structural-math`, sole writer; one bounded independent
+exact-head audit after the candidate is committed)
+
+**Branch:** `codex/india-2-foundation-combined-a` from merged G0 main at
+`ee80091ee14366dacb650797dd4de82f3da67516`
+
+**Git handoff receipt:** `docs/verification/india-2-foundation-combined-a-git-handoff-receipt.json`
+
+**Focus:** Implement only the G0-frozen typed eligibility, rigid uniform-
+pressure equilibrium, and longitudinal/transverse action kernel.
+
+### Summary
+
+- Added immutable geometry/action inputs and results for exactly two equal-
+  load symmetric square columns on one rigid rectangular footing.
+- Reproduced gross service bearing, gross/net factored pressure, resultant
+  alignment, all frozen longitudinal critical sections, transverse actions,
+  and exact free-edge equilibrium closure.
+- Added no strength design, service workflow, FastAPI, React, capability
+  support claim, alternate soil model, or release scope.
+
+### Issues encountered
+
+- The first expanded focused-test command named a nonexistent integration test
+  path and stopped before running the selection.
+- The first manifest-focused run exposed Clause 34.1.2 as a registration-only
+  reference, then the corrected decorated functions made the committed
+  generated manifest stale until it was intentionally regenerated.
+- The strict function-quality gate rejected the legitimate typed
+  `footing_input` parameter as if it were a unitless numeric scalar.
+- The first folder-index command refused to create indexes in the two new
+  maintained combined-footing package directories.
+
+### Root causes and resolutions
+
+- Root cause: the traceability test is maintained at
+  `Python/tests/test_clause_traceability.py`, not under `integration/`.
+  Resolution: discover the maintained path with `rg --files` and rerun the
+  focused selection with that exact file. Evidence: the corrected 169-test
+  selection passes. ⚠️ TERMINAL ISSUE: guessed traceability integration path
+  did not exist → discovered and used the maintained root test path.
+- Root cause: Clause 34.1.2 is an external settlement/bearing boundary for this
+  packet, not a formula implemented by the action kernel; meanwhile the
+  manifest correctly records new decorated implementations for the three
+  calculation clauses. Resolution: retain 34.1.2 in runtime source provenance
+  but remove its exact calculation decorator, regenerate the deterministic
+  manifest for 34.1/34.2.3.1/34.2.4.1, and rerun both truth tests. Evidence:
+  registration-only references return to zero and manifest truth remains 11
+  supported / 10 held with combined footing held.
+- Root cause: the AST checker allows known structured-object parameter names,
+  but its maintained allowlist omitted `footing_input`. Resolution: add that
+  exact structured carrier and extend the checker regression. Evidence: both
+  new calculation functions pass the strict gate 6/6 and the checker tests
+  pass without weakening numeric unit-suffix enforcement.
+- Root cause: index creation in a new maintained folder requires an explicit
+  intent flag. Resolution: rerun only the two new-folder generations with
+  `--allow-new-index`, then generate their existing parent indexes normally.
+  Evidence: both package indexes and all touched parent indexes pass current-
+  hash checks. ⚠️ TERMINAL ISSUE: new-folder index generation was refused →
+  reran the exact new targets with `--allow-new-index`.
+
+### Validation
+
+- 43 direct benchmark/boundary/equilibrium tests and 169 focused combined,
+  clause, traceability, manifest, and quality-checker tests pass.
+- Black, Ruff, mypy, strict function quality, deterministic manifest, and
+  architecture/import checks pass.
+- Architecture reports 0/189 violations, imports 0/628 broken, all 1,223
+  links valid, touched indexes current, token efficiency PASS, and quick gate
+  10/10. Broad Python/full 30-check remain deferred to final INDIA-2 closeout
+  under the accepted cadence.
+
 ## 2026-08-16 — Session: INDIA-2-FOUNDATION-COMBINED-G0 Scope Decision
 
 **Agent:** Codex (`structural-engineer`, sole writer; one bounded independent

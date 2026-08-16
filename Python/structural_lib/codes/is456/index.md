@@ -54,6 +54,7 @@
 |--------|-------|-------------|
 | [beam/](beam/) 📦 | 6 |  |
 | [column/](column/) 📦 | 12 |  |
+| [combined_footing/](combined_footing/) 📦 | 5 |  |
 | [common/](common/) 📦 | 5 |  |
 | [deep_beam/](deep_beam/) 📦 | 6 |  |
 | [flat_slab/](flat_slab/) 📦 | 8 |  |

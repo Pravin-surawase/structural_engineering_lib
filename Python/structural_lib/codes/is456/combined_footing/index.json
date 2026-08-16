@@ -1,0 +1,128 @@
+{
+  "folder": "Python/structural_lib/codes/is456/combined_footing",
+  "type": "python-package",
+  "description": "",
+  "last_updated": "2026-08-16",
+  "file_count": 3,
+  "files": [
+    {
+      "name": "__init__.py",
+      "type": "python",
+      "size_lines": 40,
+      "last_updated": "2026-08-16",
+      "description": "Bounded symmetric rigid combined-footing analysis for INDIA-2.",
+      "content_hash": "20ea07ecfb2c"
+    },
+    {
+      "name": "analysis.py",
+      "type": "python",
+      "size_lines": 415,
+      "last_updated": "2026-08-16",
+      "description": "Rigid uniform-pressure actions for the bounded combined footing.",
+      "classes": [
+        {
+          "name": "CombinedFootingTensionFace",
+          "description": "Tension face implied by the longitudinal moment sign convention."
+        },
+        {
+          "name": "CombinedFootingSectionKind",
+          "description": "Named whole-width longitudinal equilibrium sections."
+        },
+        {
+          "name": "CombinedFootingGeometryResult",
+          "description": "Resolved geometry for the G0-frozen symmetric rectangular footing."
+        },
+        {
+          "name": "CombinedFootingSectionAction",
+          "description": "Signed whole-width shear and moment at one longitudinal section.",
+          "public_methods": [
+            "shear_demand_kn",
+            "moment_demand_kn_m"
+          ]
+        },
+        {
+          "name": "CombinedFootingTransverseAction",
+          "description": "Spread-footing transverse cantilever action per metre length."
+        },
+        {
+          "name": "CombinedFootingActionResult",
+          "description": "Equilibrium, pressure, and critical actions for the bounded case."
+        }
+      ],
+      "functions": [
+        {
+          "name": "resolve_symmetric_combined_footing_geometry",
+          "description": "Resolve geometry only for the G0-approved symmetric rigid case.",
+          "params": [
+            "geometry"
+          ]
+        },
+        {
+          "name": "analyze_symmetric_combined_footing",
+          "description": "Generate service pressure and factored actions for the frozen case.",
+          "params": [
+            "footing_input"
+          ]
+        }
+      ],
+      "constants": [
+        "_SOURCE_REFS",
+        "_ZERO_TOLERANCE"
+      ],
+      "content_hash": "9c3caca55522"
+    },
+    {
+      "name": "models.py",
+      "type": "python",
+      "size_lines": 326,
+      "last_updated": "2026-08-16",
+      "description": "Typed contracts for the bounded INDIA-2 combined-footing case.",
+      "classes": [
+        {
+          "name": "CombinedFootingContractError",
+          "description": "Raised when an input is outside the G0-frozen combined-footing scope."
+        },
+        {
+          "name": "CombinedFootingAnalysisMethod",
+          "description": "Analysis methods admitted by the first combined-footing workflow."
+        },
+        {
+          "name": "CombinedFootingPressureModel",
+          "description": "Soil-pressure models admitted by the first combined-footing workflow."
+        },
+        {
+          "name": "CombinedFootingGeometryInput",
+          "description": "Caller-confirmed geometry and rigid-analysis eligibility."
+        },
+        {
+          "name": "CombinedFootingActionInput",
+          "description": "Approved-basis service and factored actions for the symmetric case."
+        },
+        {
+          "name": "CombinedFootingInput",
+          "description": "Complete input to the bounded combined-footing action kernel."
+        }
+      ],
+      "content_hash": "7c6b630c0ccd"
+    }
+  ],
+  "subfolders": [],
+  "has_init": true,
+  "public_api": [
+    "CombinedFootingActionInput",
+    "CombinedFootingActionResult",
+    "CombinedFootingAnalysisMethod",
+    "CombinedFootingContractError",
+    "CombinedFootingGeometryInput",
+    "CombinedFootingGeometryResult",
+    "CombinedFootingInput",
+    "CombinedFootingPressureModel",
+    "CombinedFootingSectionAction",
+    "CombinedFootingSectionKind",
+    "CombinedFootingTensionFace",
+    "CombinedFootingTransverseAction",
+    "analyze_symmetric_combined_footing",
+    "resolve_symmetric_combined_footing_geometry"
+  ],
+  "content_hash": "a2dcc233591663d5"
+}

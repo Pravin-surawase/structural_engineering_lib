@@ -286,6 +286,15 @@ record is
 It activates COMBINED-A through D followed by focused family acceptance; the
 public capability remains held until publication passes.
 
+`INDIA-2-FOUNDATION-COMBINED-A` implements the typed symmetric geometry and
+approved-action contract, service gross pressure, factored gross/net pressure,
+resultant alignment, full-width longitudinal equilibrium sections, and
+transverse flexure/shear actions. The frozen benchmark and additional symmetric
+geometries close vertical and moment equilibrium. Evidence is in
+[`india-2-foundation-combined-a-analysis-evidence.md`](../verification/india-2-foundation-combined-a-analysis-evidence.md).
+Strength, detailing, composed disposition, public workflow, and capability
+promotion remain held for B-D.
+
 ## 7. Validation and Git cadence
 
 For each implementation packet:
@@ -335,8 +344,8 @@ authorized programs.
 
 ## 9. Exact next action
 
-Begin `INDIA-2-FOUNDATION-COMBINED-A` from the merged G0 decision. Implement
-only the frozen typed geometry/action contracts, rigid-model eligibility,
-gross/net pressure, resultant equilibrium, longitudinal shear and moment, and
-transverse action generation. Do not add strength design, public workflow,
-FastAPI, alternate foundation geometry, or general soil interaction in A.
+Begin `INDIA-2-FOUNDATION-COMBINED-B` from the merged A action kernel. Implement
+only flexure/minimum/provided steel, longitudinal and transverse one-way shear,
+concrete-only punching, bearing/dowels/anchorage, and one composed internal
+result. Do not add the public workflow, FastAPI, alternate foundation geometry,
+general soil interaction, or punching/shear reinforcement design in B.
