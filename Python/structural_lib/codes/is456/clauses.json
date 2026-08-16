@@ -6,7 +6,7 @@
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
     "last_updated": "2026-08-16",
-    "total_clauses": 173,
+    "total_clauses": 175,
     "includes_references": [
       "IS 13920:2016"
     ],
@@ -408,6 +408,17 @@
         "bars"
       ]
     },
+    "26.4": {
+      "title": "Nominal Cover to Reinforcement",
+      "section": "26 - Detailing",
+      "category": "detailing",
+      "keywords": [
+        "nominal cover",
+        "durability",
+        "reinforcement cover",
+        "fire resistance"
+      ]
+    },
     "26.4.2.2": {
       "title": "Minimum Nominal Cover for Footings",
       "section": "26 - Detailing",
@@ -419,13 +430,14 @@
       ]
     },
     "26.5.1.1": {
-      "title": "Minimum Shear Reinforcement",
+      "title": "Minimum Tension Reinforcement in Beams",
       "section": "26 - Detailing",
-      "category": "shear",
+      "category": "detailing",
       "keywords": [
-        "minimum stirrups",
-        "shear reinforcement",
-        "Asv"
+        "beam",
+        "minimum tension reinforcement",
+        "longitudinal steel",
+        "Ast"
       ]
     },
     "26.5.1.2": {

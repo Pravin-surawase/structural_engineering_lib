@@ -16,8 +16,9 @@ COMBINED-C/D and focused family acceptance are integrated. STRAP-G0 returned
 GO for one source-bound property-line two-footing model with equal uniform net
 pressure, a straight no-soil-contact strap, explicit service/factored actions,
 and externally verified footing slabs. STRAP-A implements its bounded statics,
-bearing, clear-strap actions, and exact equilibrium. The next packet is
-`INDIA-2-FOUNDATION-STRAP-B` after A merges unchanged with required checks
+bearing, clear-strap actions, and exact equilibrium; STRAP-B implements exact
+strap strength and detailing. The next packet is
+`INDIA-2-FOUNDATION-STRAP-C` after B merges unchanged with required checks
 green.
 
 Finish the bounded strap sequence A -> B -> C -> D -> focused acceptance, one

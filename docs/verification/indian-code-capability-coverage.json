@@ -279,7 +279,7 @@
           "claim": "Strap-footing design is not implemented.",
           "workflows": [],
           "limitations": [
-            "G0 and the bounded analysis kernel are implemented; strap strength and publication remain pending."
+            "G0 plus bounded analysis and strap-strength kernels are implemented; public composition and publication remain pending."
           ],
           "evidence": [],
           "qualified_review_required": true
@@ -312,11 +312,11 @@
         }
       ],
       "registration_summary": {
-        "known_references": 174,
-        "registered_known_references": 96,
-        "metadata_only_references": 78,
+        "known_references": 175,
+        "registered_known_references": 98,
+        "metadata_only_references": 77,
         "registration_only_references": 0,
-        "registration_pct": 55.2
+        "registration_pct": 56.0
       },
       "references": [
         {
@@ -523,7 +523,8 @@
             "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement",
             "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
-            "structural_lib.codes.is456.footing.load_transfer.check_isolated_footing_load_transfer"
+            "structural_lib.codes.is456.footing.load_transfer.check_isolated_footing_load_transfer",
+            "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
           ]
         },
         {
@@ -536,7 +537,8 @@
           "functions": [
             "structural_lib.codes.is456.beam.detailing.get_bond_stress",
             "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
-            "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement"
+            "structural_lib.codes.is456.deep_beam.reinforcement.check_simply_supported_deep_beam_reinforcement",
+            "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
           ]
         },
         {
@@ -614,7 +616,8 @@
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
-            "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel"
+            "structural_lib.codes.is456.footing.detailing.detail_isolated_footing_bottom_steel",
+            "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
           ]
         },
         {
@@ -633,6 +636,17 @@
           ]
         },
         {
+          "reference_id": "IS456:2000:26.4",
+          "reference": "26.4",
+          "reference_type": "clause",
+          "title": "Nominal Cover to Reinforcement",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
+          ]
+        },
+        {
           "reference_id": "IS456:2000:26.4.2.2",
           "reference": "26.4.2.2",
           "reference_type": "clause",
@@ -647,10 +661,12 @@
           "reference_id": "IS456:2000:26.5.1.1",
           "reference": "26.5.1.1",
           "reference_type": "clause",
-          "title": "Minimum Shear Reinforcement",
-          "category": "shear",
-          "registration_status": "METADATA_ONLY",
-          "functions": []
+          "title": "Minimum Tension Reinforcement in Beams",
+          "category": "detailing",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
+          ]
         },
         {
           "reference_id": "IS456:2000:26.5.1.2",
@@ -669,7 +685,8 @@
           "category": "detailing",
           "registration_status": "REGISTERED",
           "functions": [
-            "structural_lib.codes.is456.beam.detailing.check_side_face_reinforcement"
+            "structural_lib.codes.is456.beam.detailing.check_side_face_reinforcement",
+            "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
           ]
         },
         {
@@ -680,7 +697,8 @@
           "category": "shear",
           "registration_status": "REGISTERED",
           "functions": [
-            "structural_lib.codes.is456.beam.shear.design_shear"
+            "structural_lib.codes.is456.beam.shear.design_shear",
+            "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
           ]
         },
         {
@@ -691,7 +709,8 @@
           "category": "shear",
           "registration_status": "REGISTERED",
           "functions": [
-            "structural_lib.codes.is456.beam.shear.design_shear"
+            "structural_lib.codes.is456.beam.shear.design_shear",
+            "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
           ]
         },
         {
@@ -1540,7 +1559,8 @@
             "structural_lib.codes.is456.slab.one_way.design_simply_supported_one_way_slab_flexure",
             "structural_lib.codes.is456.slab.one_way_continuous.design_continuous_one_way_slab_flexure",
             "structural_lib.codes.is456.slab.two_way.design_supported_interior_two_way_slab_flexure",
-            "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
+            "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase",
+            "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
           ]
         },
         {
@@ -1686,7 +1706,8 @@
             "structural_lib.codes.is456.beam.shear.design_shear",
             "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.slab.shear.check_solid_slab_one_way_shear",
-            "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
+            "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase",
+            "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
           ]
         },
         {
@@ -1701,7 +1722,8 @@
             "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
             "structural_lib.codes.is456.slab.shear.check_solid_slab_one_way_shear",
             "structural_lib.codes.is456.slab.two_way_complete.design_two_way_slab_panel",
-            "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase"
+            "structural_lib.codes.is456.staircase.design.design_straight_flight_staircase",
+            "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
           ]
         },
         {
@@ -1723,7 +1745,8 @@
           "category": "shear",
           "registration_status": "REGISTERED",
           "functions": [
-            "structural_lib.codes.is456.beam.shear.design_shear"
+            "structural_lib.codes.is456.beam.shear.design_shear",
+            "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
           ]
         },
         {
@@ -2118,7 +2141,8 @@
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.beam.flexure.design_doubly_reinforced",
-            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength"
+            "structural_lib.codes.is456.combined_footing.strength.check_symmetric_combined_footing_strength",
+            "structural_lib.codes.is456.strap_footing.strength.check_property_line_strap_footing_strength"
           ]
         },
         {

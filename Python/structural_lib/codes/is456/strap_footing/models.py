@@ -16,8 +16,16 @@ __all__ = [
     "StrapFootingApprovalInput",
     "StrapFootingContractError",
     "StrapFootingGeometryInput",
+    "StrapFootingDesignInput",
+    "StrapFootingMaterialInput",
     "StrapFootingPressureModel",
+    "StrapFootingReinforcementInput",
 ]
+
+
+_SUPPORTED_CONCRETE_GRADES_NMM2 = (20.0, 25.0, 30.0, 35.0, 40.0)
+_SUPPORTED_STEEL_GRADES_NMM2 = (415.0, 500.0)
+_SUPPORTED_BAR_DIAMETERS_MM = (8.0, 10.0, 12.0, 16.0, 20.0, 25.0, 32.0, 36.0)
 
 
 class StrapFootingContractError(ValueError):
@@ -68,6 +76,19 @@ def _non_blank(value: object, field_name: str) -> str:
 def _require_bool(value: object, field_name: str, expected: bool) -> None:
     if value is not expected:
         raise StrapFootingContractError(f"{field_name} must be explicitly {expected}")
+
+
+def _supported_discrete_value(
+    value: object,
+    field_name: str,
+    unit: str,
+    supported: tuple[float, ...],
+) -> float:
+    normalized = _positive_finite(value, field_name, unit)
+    if normalized not in supported:
+        choices = ", ".join(f"{candidate:g}" for candidate in supported)
+        raise StrapFootingContractError(f"{field_name} must be one of {choices} {unit}")
+    return normalized
 
 
 @dataclass(frozen=True)
@@ -447,3 +468,165 @@ class StrapFootingAnalysisInput:
             raise StrapFootingContractError(
                 "approvals must be a StrapFootingApprovalInput"
             )
+
+
+@dataclass(frozen=True)
+class StrapFootingMaterialInput:
+    """Material grades admitted by the bounded strap strength check."""
+
+    strap_concrete_grade_nmm2: float
+    steel_grade_nmm2: float
+    uncoated_deformed_bars: bool
+    material_basis_reference: str
+
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "strap_concrete_grade_nmm2",
+            _supported_discrete_value(
+                self.strap_concrete_grade_nmm2,
+                "strap_concrete_grade_nmm2",
+                "N/mm2",
+                _SUPPORTED_CONCRETE_GRADES_NMM2,
+            ),
+        )
+        object.__setattr__(
+            self,
+            "steel_grade_nmm2",
+            _supported_discrete_value(
+                self.steel_grade_nmm2,
+                "steel_grade_nmm2",
+                "N/mm2",
+                _SUPPORTED_STEEL_GRADES_NMM2,
+            ),
+        )
+        _require_bool(
+            self.uncoated_deformed_bars,
+            "uncoated_deformed_bars",
+            True,
+        )
+        object.__setattr__(
+            self,
+            "material_basis_reference",
+            _non_blank(self.material_basis_reference, "material_basis_reference"),
+        )
+
+
+@dataclass(frozen=True)
+class StrapFootingReinforcementInput:
+    """Caller-supplied strap bars and approved detailing carriers.
+
+    Valid but inadequate provision produces ``FAIL``. Unsupported layouts,
+    material forms, or missing approvals fail closed before calculation.
+    """
+
+    top_bar_count: int
+    top_bar_diameter_mm: float
+    bottom_bar_count: int
+    bottom_bar_diameter_mm: float
+    side_face_bar_count_each_face: int
+    side_face_bar_diameter_mm: float
+    side_face_vertical_spacing_mm: float
+    stirrup_leg_count: int
+    stirrup_diameter_mm: float
+    stirrup_spacing_mm: float
+    nominal_cover_mm: float
+    required_nominal_cover_mm: float
+    maximum_aggregate_size_mm: float
+    available_top_anchorage_exterior_mm: float
+    available_top_anchorage_interior_mm: float
+    available_bottom_anchorage_exterior_mm: float
+    available_bottom_anchorage_interior_mm: float
+    vertical_closed_stirrups: bool
+    straight_anchorage: bool
+    bars_bundled: bool
+    bars_spliced: bool
+    bars_curtailed: bool
+    reinforcement_schedule_approved: bool
+    effective_depth_basis_approved: bool
+    durability_cover_basis_approved: bool
+    detailing_basis_reference: str
+    durability_basis_reference: str
+
+    def __post_init__(self) -> None:
+        for name in (
+            "top_bar_count",
+            "bottom_bar_count",
+            "side_face_bar_count_each_face",
+            "stirrup_leg_count",
+        ):
+            value = getattr(self, name)
+            if isinstance(value, bool) or not isinstance(value, int):
+                raise StrapFootingContractError(f"{name} must be an integer")
+            if value < 2:
+                raise StrapFootingContractError(
+                    f"{name} must be at least 2 for the represented layout"
+                )
+        for name in (
+            "top_bar_diameter_mm",
+            "bottom_bar_diameter_mm",
+            "side_face_bar_diameter_mm",
+            "stirrup_diameter_mm",
+        ):
+            object.__setattr__(
+                self,
+                name,
+                _supported_discrete_value(
+                    getattr(self, name),
+                    name,
+                    "mm",
+                    _SUPPORTED_BAR_DIAMETERS_MM,
+                ),
+            )
+        for name in (
+            "side_face_vertical_spacing_mm",
+            "stirrup_spacing_mm",
+            "nominal_cover_mm",
+            "required_nominal_cover_mm",
+            "maximum_aggregate_size_mm",
+            "available_top_anchorage_exterior_mm",
+            "available_top_anchorage_interior_mm",
+            "available_bottom_anchorage_exterior_mm",
+            "available_bottom_anchorage_interior_mm",
+        ):
+            object.__setattr__(
+                self,
+                name,
+                _positive_finite(getattr(self, name), name, "mm"),
+            )
+        for name in (
+            "vertical_closed_stirrups",
+            "straight_anchorage",
+            "reinforcement_schedule_approved",
+            "effective_depth_basis_approved",
+            "durability_cover_basis_approved",
+        ):
+            _require_bool(getattr(self, name), name, True)
+        for name in ("bars_bundled", "bars_spliced", "bars_curtailed"):
+            _require_bool(getattr(self, name), name, False)
+        for name in ("detailing_basis_reference", "durability_basis_reference"):
+            object.__setattr__(
+                self,
+                name,
+                _non_blank(getattr(self, name), name),
+            )
+
+
+@dataclass(frozen=True)
+class StrapFootingDesignInput:
+    """Complete input to the bounded strap strength composition."""
+
+    analysis: StrapFootingAnalysisInput
+    material: StrapFootingMaterialInput
+    reinforcement: StrapFootingReinforcementInput
+
+    def __post_init__(self) -> None:
+        for name, expected_type in (
+            ("analysis", StrapFootingAnalysisInput),
+            ("material", StrapFootingMaterialInput),
+            ("reinforcement", StrapFootingReinforcementInput),
+        ):
+            if not isinstance(getattr(self, name), expected_type):
+                raise StrapFootingContractError(
+                    f"{name} must be a {expected_type.__name__}"
+                )

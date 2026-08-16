@@ -4,11 +4,12 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Merge STRAP-A unchanged, then begin only STRAP-B strength
+- Focus: Merge STRAP-B unchanged, then begin only STRAP-C public Python workflow
 - Combined acceptance: PR #792 squash-merged as 8e039b112e38436fcae36326b46afa9c436fb970; tree=873aea4cdca8aa9633b30a7c9b74138e5a73a6ce
 - STRAP-G0: PR #793 squash-merged as 70cd2894485d88b72d22544ee18533733789d0f1; audited tree=60d5636265e157e723236909b1de7f582791b297
-- STRAP-A: bounded statics, bearing, actions, and equilibrium implemented; strength/publication remain held
-- Next action: START_STRAP_B_ONLY_AFTER_A_MERGE
+- STRAP-A: PR #794 squash-merged as c410b28024e44e3e2670c8b359b69ae29165f2ae; audited tree=08899dbedd35e3d0b0e2c9ba2e78813d87be1f70
+- STRAP-B: exact strap strength/detailing composition implemented; public Python/FastAPI remain held
+- Next action: START_STRAP_C_ONLY_AFTER_B_MERGE
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-16
@@ -17,7 +18,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Begin `INDIA-2-FOUNDATION-STRAP-B` only after STRAP-A merges unchanged |
+| **Next** | Begin `INDIA-2-FOUNDATION-STRAP-C` only after STRAP-B merges unchanged |
 
 ## Required Reading
 
@@ -120,8 +121,8 @@ authorization, or cleanup authority.
 
 ## Exact next action
 
-After verifying STRAP-A merged unchanged into current `origin/main`, create a
-fresh STRAP-B lane. Implement only exact strap flexure, minimum/provided and
-side-face steel, shear/stirrups, cover/spacing, anchorage, and the composed
-strength disposition. Public Python, FastAPI, capability promotion, React,
-broad Python, and the 30-check gate remain outside STRAP-B.
+After verifying STRAP-B merged unchanged into current `origin/main`, create a
+fresh STRAP-C lane. Publish only the typed Python composition, immutable
+provenance/result/status types, canonical exports, executable frozen benchmark,
+and public API documentation over A/B. FastAPI, capability promotion, React,
+broad Python, and the 30-check gate remain outside STRAP-C.
