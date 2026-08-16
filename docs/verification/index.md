@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-16
-**Files:** 121
+**Files:** 123
 
 ## Config Files
 
@@ -55,6 +55,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [india-2-foundation-combined-g0-git-handoff-source-evidence.json](india-2-foundation-combined-g0-git-handoff-source-evidence.json)
 - [india-2-foundation-strap-a-git-handoff-receipt.json](india-2-foundation-strap-a-git-handoff-receipt.json)
 - [india-2-foundation-strap-a-git-handoff-source-evidence.json](india-2-foundation-strap-a-git-handoff-source-evidence.json)
+- [india-2-foundation-strap-acceptance-git-handoff-receipt.json](india-2-foundation-strap-acceptance-git-handoff-receipt.json)
+- [india-2-foundation-strap-acceptance-git-handoff-source-evidence.json](india-2-foundation-strap-acceptance-git-handoff-source-evidence.json)
 - [india-2-foundation-strap-acceptance-nonfrozen-replay.json](india-2-foundation-strap-acceptance-nonfrozen-replay.json)
 - [india-2-foundation-strap-b-git-handoff-receipt.json](india-2-foundation-strap-b-git-handoff-receipt.json)
 - [india-2-foundation-strap-b-git-handoff-source-evidence.json](india-2-foundation-strap-b-git-handoff-source-evidence.json)
