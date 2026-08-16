@@ -121,6 +121,25 @@ def test_combined_footing_supported_truth_tracks_publication_chain() -> None:
     )
 
 
+def test_strap_footing_implemented_python_workflow_remains_held_until_d() -> None:
+    manifest = build_manifest()
+    is456 = _standard(manifest, "IS456:2000")
+    strap = next(
+        item
+        for item in is456["capability_families"]
+        if item["family"] == "strap_footing"
+    )
+
+    assert strap["scope_status"] == "HELD"
+    assert strap["implementation_status"] == "IMPLEMENTED_BOUNDED"
+    assert strap["workflows"] == ["design_property_line_strap_footing_is456"]
+    assert "not yet published" in strap["claim"]
+    assert "FastAPI transport" in " ".join(strap["limitations"])
+    assert "india-2-foundation-strap-c-public-workflow-evidence.md" in " ".join(
+        strap["evidence"]
+    )
+
+
 def test_is456_and_is13920_registration_cannot_cross_match() -> None:
     manifest = build_manifest()
     is456 = _standard(manifest, "IS456:2000")

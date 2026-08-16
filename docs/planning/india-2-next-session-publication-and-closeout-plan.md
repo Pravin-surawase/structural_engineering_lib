@@ -17,9 +17,9 @@ GO for one source-bound property-line two-footing model with equal uniform net
 pressure, a straight no-soil-contact strap, explicit service/factored actions,
 and externally verified footing slabs. STRAP-A implements its bounded statics,
 bearing, clear-strap actions, and exact equilibrium; STRAP-B implements exact
-strap strength and detailing. The next packet is
-`INDIA-2-FOUNDATION-STRAP-C` after B merges unchanged with required checks
-green.
+strap strength and detailing; STRAP-C publishes the typed Python composition.
+The next packet is `INDIA-2-FOUNDATION-STRAP-D` after C merges unchanged with
+required checks green.
 
 Finish the bounded strap sequence A -> B -> C -> D -> focused acceptance, one
 fresh lane and focused gate at a time. Stop before pile-cap G0. Do not add

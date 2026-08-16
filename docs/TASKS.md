@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — STRAP-B strength complete; STRAP-C is next after merge
+**Updated:** 2026-08-16 — STRAP-C public Python complete; STRAP-D is next after merge
 
 ---
 
@@ -133,7 +133,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2-FOUNDATION-STRAP-C | Publish the typed property-line strap Python composition, stable provenance/result types, executable benchmark, canonical exports, and public docs | Main Agent + backend | focused Python-publication packet | P0 | 🚧 NEXT after STRAP-B merges unchanged; FastAPI/capability remain held |
+| INDIA-2-FOUNDATION-STRAP-D | Publish the strict FastAPI transport, OpenAPI contract, capability/semantic truth, and deterministic manifest promotion | Main Agent + API developer | focused REST-publication packet | P0 | 🚧 NEXT after STRAP-C merges unchanged; React remains excluded |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
@@ -159,6 +159,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-FOUNDATION-STRAP-C | Published the typed property-line strap Python composition, immutable provenance/result/status types, mapping builder, canonical exports, executable benchmark, and public docs | Main Agent + backend | ✅ COMPLETE — public Python PASS/FAIL/fail-closed/provenance tests pass; capability remains held until D |
 | INDIA-2-FOUNDATION-STRAP-B | Implemented exact stress-block flexure, minimum/provided and side-face steel, Table 19/20 shear and vertical stirrups, spacing, cover, anchorage, and composed disposition | Main Agent + structural math | ✅ COMPLETE — frozen PASS, valid FAIL, exact-helper regression, and fail-closed boundaries pass; public composition/publication remain held |
 | INDIA-2-FOUNDATION-STRAP-A | Implemented typed strap geometry/action/approval contracts, equal-pressure/common-factor eligibility, reactions, bearing, clear-strap actions, and equilibrium | Main Agent + structural math | ✅ COMPLETE — frozen benchmark, source-equation reduction, valid bearing failure, and fail-closed boundaries pass; strength/publication remain held |
 | INDIA-2-FOUNDATION-STRAP-G0 | Froze one property-line two-footing system with equal uniform pressure, an explicit no-soil-contact strap model, independent benchmark, and externally verified footing-slab prerequisites | Main Agent + structural engineer | ✅ GO — STRAP-A-D and focused acceptance activated; public capability remains held |

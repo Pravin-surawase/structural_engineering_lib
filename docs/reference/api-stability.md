@@ -567,6 +567,12 @@ combined_provenance: api.SymmetricCombinedFootingDesignProvenance = (
     combined.provenance
 )
 combined_status: api.SymmetricCombinedFootingDesignStatus = combined.status
+strap_request = api.PropertyLineStrapFootingDesignInput(...)
+strap: api.PropertyLineStrapFootingDesignResult = (
+    api.design_property_line_strap_footing_is456(strap_request)
+)
+strap_provenance: api.PropertyLineStrapFootingDesignProvenance = strap.provenance
+strap_status: api.PropertyLineStrapFootingDesignStatus = strap.status
 capabilities: tuple[api.IS456Capability, ...] = (
     api.get_supported_is456_capabilities()
 )
