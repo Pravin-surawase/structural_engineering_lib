@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-16
-**Files:** 61
+**Files:** 64
 
 ## Config Files
 
@@ -16,6 +16,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [india-2-cumulative-git-handoff-source-evidence.json](india-2-cumulative-git-handoff-source-evidence.json)
 - [india-2-deep-a-git-handoff-receipt.json](india-2-deep-a-git-handoff-receipt.json)
 - [india-2-deep-a-git-handoff-source-evidence.json](india-2-deep-a-git-handoff-source-evidence.json)
+- [india-2-deep-acceptance-git-handoff-receipt.json](india-2-deep-acceptance-git-handoff-receipt.json)
+- [india-2-deep-acceptance-git-handoff-source-evidence.json](india-2-deep-acceptance-git-handoff-source-evidence.json)
 - [india-2-deep-b-git-handoff-receipt.json](india-2-deep-b-git-handoff-receipt.json)
 - [india-2-deep-b-git-handoff-source-evidence.json](india-2-deep-b-git-handoff-source-evidence.json)
 - [india-2-deep-c-git-handoff-receipt.json](india-2-deep-c-git-handoff-receipt.json)
@@ -55,6 +57,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [india-2-deep-b-reinforcement-evidence.md](india-2-deep-b-reinforcement-evidence.md) |  | DEEP-B implements the remaining pure-math checks for the G0- | 75 |
 | [india-2-deep-c-public-workflow-evidence.md](india-2-deep-c-public-workflow-evidence.md) |  | design_simply_supported_deep_beam_is456 is the single typed  | 61 |
 | [india-2-deep-d-publication-evidence.md](india-2-deep-d-publication-evidence.md) |  | POST /api/v1/design/deep-beam/simply-supported is a thin typ | 73 |
+| [india-2-deep-family-acceptance-evidence.md](india-2-deep-family-acceptance-evidence.md) |  | exact integrated G0/A-D starting head was ce45e22032ea234f58 | 93 |
 | [india-2-deep-g0-scope-evidence.md](india-2-deep-g0-scope-evidence.md) |  | supported, solid rectangular, top-loaded deep beam without o | 166 |
 | [india-2-wall-a-axial-kernel-evidence.md](india-2-wall-a-axial-kernel-evidence.md) |  | WALL-A implements the pure IS 456 layer for the accepted Cla | 83 |
 | [india-2-wall-b-reinforcement-evidence.md](india-2-wall-b-reinforcement-evidence.md) |  | WALL-B adds one pure IS 456 provided-reinforcement check to  | 82 |

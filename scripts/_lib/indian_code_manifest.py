@@ -83,6 +83,7 @@ _IS456_EVIDENCE = {
         "docs/verification/india-2-deep-b-reinforcement-evidence.md",
         "docs/verification/india-2-deep-c-public-workflow-evidence.md",
         "docs/verification/india-2-deep-d-publication-evidence.md",
+        "docs/verification/india-2-deep-family-acceptance-evidence.md",
     ),
 }
 

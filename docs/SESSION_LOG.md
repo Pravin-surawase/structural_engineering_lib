@@ -5,6 +5,74 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-DEEP Focused Family Acceptance
+
+**Agent:** Codex (`orchestrator`, sole writer; one bounded read-only scope auditor)
+
+**Branch:** `codex/india-2-deep-acceptance` from integrated DEEP-D main at
+`ce45e22032ea234f588ce88c601db5f6a42af166`
+
+**Focus:** Accept the already published bounded deep-beam family using
+independent arithmetic and cumulative focused software gates, without adding
+calculation or product scope.
+
+### Summary
+
+- Accepted the one simply supported, solid rectangular, top-loaded Clause 29
+  positive-reinforcement workflow from the exact integrated DEEP-D tree.
+- Replayed the frozen benchmark independently and retained all external
+  bearing/nodal, topology, analysis, qualified-review, and approval boundaries.
+- Added the acceptance receipt to deterministic capability evidence and
+  reconciled the plan, parent wave, task board, and next-session truth before
+  advancing to decision-only `INDIA-2-FLAT-G0`.
+
+### Issues encountered
+
+- The dedicated INDIA-2 plan still said DEEP-B-D were pending, while the parent
+  wave table still named WALL-G0 as next and treated DEEP as pre-G0.
+- The task summary said accepted wall and implemented deep-beam capability were
+  held, and the generated auto-handoff still described the pre-merge DEEP-D
+  branch candidate rather than the integrated main tree.
+- The first handoff-receipt command stopped before execution when zsh expanded
+  an unquoted `**` forbidden-path pattern.
+
+### Root causes and resolutions
+
+- Root cause: the implementation packets updated immediate task and publication
+  evidence but did not reconcile every higher-level status projection after the
+  later squash merges and family-acceptance boundary. Resolution: bind this
+  acceptance to integrated main `ce45e220`, correct only the outcome-changing
+  status surfaces, and name `INDIA-2-FLAT-G0` as the next decision-only packet.
+  Proof: the independent benchmark, focused family selection, deterministic
+  manifest, architecture/import, API, index/link, and quick-gate evidence in
+  `india-2-deep-family-acceptance-evidence.md` all pass on the corrected tree.
+- Root cause: shell glob expansion interpreted receipt policy patterns before
+  the Python command received them. Resolution: quote every wildcard-bearing
+  forbidden path; the receipt was then created and validated as a fail-closed
+  `HOLD` record for the dirty pre-commit candidate.
+
+### Evidence
+
+- The independent hand replay matches the public workflow for effective span,
+  lever arm, required/provided tie steel, permitted zone, required embedment,
+  and required/provided vertical and horizontal side-face steel within the
+  frozen absolute tolerance; aggregate status is `PASS`.
+- The cumulative focused deep-beam, workflow, capability, clause, traceability,
+  manifest, and FastAPI selection passes 157 tests.
+- Architecture, imports, API/schema snapshots, deterministic manifest/parity,
+  links, indexes, scoped static checks, and the quick repository gate pass.
+- The broad Python suite and 30-check gate remain deferred to whole-INDIA-2
+  closeout; no professional approval, release, or cleanup authority is implied.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: unquoted `**` receipt-policy patterns produced
+  `zsh: no matches found` before the command ran → quoting each wildcard path
+  allowed `git_handoff_receipt.py create` to complete, and `validate` reported
+  the `INDIA-2-DEEP-ACCEPTANCE` receipt valid.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-DEEP-D Transport and Truth Publication
 
 **Agent:** Codex (`api-developer`, sole writer; no subagents)
