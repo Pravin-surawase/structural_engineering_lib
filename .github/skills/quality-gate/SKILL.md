@@ -1,6 +1,6 @@
 ---
 name: quality-gate
-description: "Apply the project verification ladder without duplicating gates: narrow checks while editing, one quick pre-commit gate, the required PR Gate, one full closeout gate, and release preflight only for releases."
+description: "Apply the project verification ladder without duplicating gates: implementation first, necessary narrow diagnostics, one consolidated focused selection, one quick pre-commit gate, the required PR Gate, one cumulative full gate, and release preflight only for releases."
 ---
 
 # Quality Gate
@@ -16,9 +16,17 @@ Use the repository's canonical gates from the workspace root. Do not recreate th
 
 ## Verification Ladder
 
-### 1. While editing: narrow evidence
+### 1. Implement the bounded scope first
 
-Run only the smallest existing check that exercises the changed main process. Examples:
+Complete the scoped code, tests, documentation, evidence, and other intended
+writes before the routine verification sequence. Do not treat every saved edit
+as a gate boundary.
+
+### 2. While editing: diagnose only when needed
+
+When a current question or failure requires evidence, run only the smallest
+existing check that exercises the changed main process. Do not rerun a check
+merely because another edit was made. Examples:
 
 ```bash
 ./scripts/python_runtime.sh -m pytest Python/tests/path/to/test_file.py -q
@@ -29,7 +37,14 @@ npm --prefix react_app run lint
 
 Choose commands from the affected component's skill or existing project automation. Do not add tests during a review-only task.
 
-### 2. Before commit: quick gate once
+### 3. After content freeze: focused evidence together
+
+After all intended versioned writes are complete, run the affected focused
+tests, benchmarks, and architecture/import checks as one consolidated
+selection. Refresh maintained indexes once before this selection when they are
+affected.
+
+### 4. Before commit: quick gate once
 
 ```bash
 ./run.sh check --quick
@@ -37,19 +52,23 @@ Choose commands from the affected component's skill or existing project automati
 
 If it fails, diagnose the first relevant failure, fix its root cause, rerun that narrow check, then rerun the quick gate once.
 
-### 3. PR acceptance: required CI
+### 5. PR acceptance: required CI
 
 The GitHub check named `PR Gate` is the authoritative merge gate. Inspect the check for the current commit. Do not rerun an equivalent local suite merely because CI already passed it. A failing or stale check blocks acceptance; bypass flags and admin merges are forbidden.
 
-### 4. Implementation closeout: full gate once
+### 6. Cumulative implementation closeout: full gate once
 
 ```bash
 ./run.sh check
 ```
 
-Run the full gate once after the scoped implementation is stable. After a failure, rerun only the failed check while repairing it; repeat the full gate only when the fix can affect other categories or to establish the final green result.
+Run the full gate once after all intended packets in the milestone are integrated.
+Run it earlier only when repository-wide risk makes that necessary. After a
+failure, rerun only the failed check while repairing it; repeat the full gate
+only when the fix can affect other categories or to establish the final green
+result.
 
-### 5. Release only
+### 7. Release only
 
 For an actual release candidate, use the release skill and its canonical preflight:
 

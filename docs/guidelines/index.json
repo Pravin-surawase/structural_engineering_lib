@@ -2,14 +2,14 @@
   "folder": "docs/guidelines",
   "type": "documentation",
   "description": "",
-  "last_updated": "2026-08-15",
+  "last_updated": "2026-08-17",
   "file_count": 16,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 74,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "title": "Guidelines Index",
       "description": "Development standards and best practices for the structural engineering library. | Need To... | Read This |",
       "content_hash": "33a845020aca"
@@ -17,16 +17,16 @@
     {
       "name": "ai-token-efficiency.md",
       "type": "documentation",
-      "size_lines": 241,
-      "last_updated": "2026-08-15",
+      "size_lines": 265,
+      "last_updated": "2026-08-17",
       "description": "This is the canonical low-token operating policy for AI-assisted work in this repository. It controls avoidable context and agent fan-out without weakening",
-      "content_hash": "3f488ba304f9"
+      "content_hash": "c65df56ad83d"
     },
     {
       "name": "api-design-guidelines.md",
       "type": "documentation",
       "size_lines": 2626,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "description": "This document consolidates all Phase 1 and Phase 2 API research into a **single, actionable reference** for developing structural_engineering_lib APIs. Use this as the \"north star\" for all API design ",
       "content_hash": "69b32bfec1a0"
     },
@@ -34,7 +34,7 @@
       "name": "api-evolution-standard.md",
       "type": "documentation",
       "size_lines": 1691,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "description": "> **Standard for API versioning, deprecation, and backward compatibility** > Part of: API Improvement Research (TASK-207)",
       "content_hash": "5816feab7380"
     },
@@ -42,7 +42,7 @@
       "name": "blog-writing-guide.md",
       "type": "documentation",
       "size_lines": 860,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "description": "| Audience | Tone | Example | |----------|------|---------|",
       "content_hash": "b7c4234e5431"
     },
@@ -50,7 +50,7 @@
       "name": "doc-naming-conventions.md",
       "type": "documentation",
       "size_lines": 92,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "description": "Reduce duplication, improve findability, and ensure every topic has a clear canonical home. 1. **One topic = one canonical file.** Check docs/docs-canonical.json first.",
       "content_hash": "e9614c2283ad"
     },
@@ -58,7 +58,7 @@
       "name": "documentation-standard.md",
       "type": "documentation",
       "size_lines": 1614,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "description": "> **Standard for documentation, docstrings, and API discoverability** > Part of: API Improvement Research (TASK-206)",
       "content_hash": "6931309770e9"
     },
@@ -66,7 +66,7 @@
       "name": "error-handling-standard.md",
       "type": "documentation",
       "size_lines": 1935,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "description": "> **Standard for exception design, error messages, and validation patterns** > Part of: API Improvement Research (TASK-204)",
       "content_hash": "5e23a429bea3"
     },
@@ -74,7 +74,7 @@
       "name": "file-operations-safety-guide.md",
       "type": "documentation",
       "size_lines": 308,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "description": "File operations (delete, move, rename) can break: - Internal markdown links",
       "content_hash": "3bdf4e50bb20"
     },
@@ -82,7 +82,7 @@
       "name": "folder-cleanup-workflow.md",
       "type": "documentation",
       "size_lines": 294,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "description": "This workflow provides a systematic approach to cleaning up folders: 1. **Audit** - Identify cleanup candidates",
       "content_hash": "e5e2eca12a9f"
     },
@@ -90,7 +90,7 @@
       "name": "folder-structure-governance.md",
       "type": "documentation",
       "size_lines": 530,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "description": "1. **Progressive Disclosure** - Short entry docs, detailed content one level down 2. **Clear Ownership** - Every folder has a clear purpose and maintainer",
       "content_hash": "6aed96cb759b"
     },
@@ -98,14 +98,14 @@
       "name": "function-signature-standard.md",
       "type": "documentation",
       "size_lines": 1352,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "description": "This document defines the standard for function signatures in the structural_engineering_lib to ensure: - **Discoverability**: IDE autocomplete and type checkers work effectively",
       "content_hash": "4feea637cd31"
     },
     {
       "name": "governance-limits.json",
       "type": "config",
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "top_level_keys": [
         "root",
         "docs_root",
@@ -118,7 +118,7 @@
       "name": "migration-preflight-checklist.md",
       "type": "documentation",
       "size_lines": 284,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "description": "bash .venv/bin/python scripts/pre_migration_check.py",
       "content_hash": "be5802ce0399"
     },
@@ -126,7 +126,7 @@
       "name": "migration-workflow-guide.md",
       "type": "documentation",
       "size_lines": 460,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "description": "bash ./scripts/python_runtime.sh scripts/pre_migration_check.py",
       "content_hash": "cc62b460fc3e"
     },
@@ -134,11 +134,11 @@
       "name": "result-object-standard.md",
       "type": "documentation",
       "size_lines": 1437,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-17",
       "description": "This document defines standards for result objects returned by functions in structural_engineering_lib. Result objects replace primitive returns (tuples, dicts) with structured, self-documenting, type",
       "content_hash": "c613ac1f4ae5"
     }
   ],
   "subfolders": [],
-  "content_hash": "fed1ed5c5ef2e933"
+  "content_hash": "61d0b04873ccc845"
 }

@@ -44,6 +44,15 @@ The canonical policy is [docs/guidelines/ai-token-efficiency.md](docs/guidelines
 - The orchestrator must add non-goals, likely pitfalls, measurable acceptance criteria, narrow tests, and a return format to each packet, then independently inspect and verify the result before acceptance.
 - Named handoff chains below are quality roles, not mandatory agent processes. The parent normally performs implementation, testing, documentation, and operations passes itself.
 - Start with `./run.sh session brief --agent <role>`, folder indexes, and targeted `rg`; do not load full agent files or large logs unless required.
+- Use implementation-first, batched verification for each agreed bounded packet.
+  Complete the scoped code, tests, documentation, and other intended writes
+  before the routine verification sequence. While implementing, run only a
+  narrow reproducer, test, or diagnostic that is needed to guide or debug the
+  current change; do not rerun quick, full, or unchanged suites after each
+  edit. After content freezes, run the affected focused checks together, the
+  quick gate once, normal commit hooks, and the required hosted checks. If an
+  outcome-changing repair alters the frozen candidate, rerun the affected
+  focused evidence and then the consolidated gate once.
 - For a multi-packet milestone, run focused tests, independent benchmarks,
   architecture/import checks, `./run.sh check --quick`, normal commit hooks,
   and every required hosted PR check for each packet. Run the broad Python
