@@ -2,7 +2,7 @@
   "authorization": {
     "authority_source": {
       "kind": "USER_DELEGATION",
-      "observed_at_utc": "2026-08-16T13:54:52Z",
+      "observed_at_utc": "2026-08-16T14:01:46Z",
       "query_status": "OK",
       "reference": "task:GIT-001-P8-RECONCILIATION:user-request-start-the-published-next-work",
       "status": "OBSERVED"
@@ -13,7 +13,7 @@
       "CREATE_OR_UPDATE_DRAFT_PR"
     ],
     "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
-    "observed_at_utc": "2026-08-16T13:54:52Z",
+    "observed_at_utc": "2026-08-16T14:01:46Z",
     "prohibited_actions": [
       "MERGE_BEFORE_REQUIRED_CHECKS",
       "MUTATE_PREEXISTING_BRANCH_OR_WORKTREE",
@@ -35,7 +35,7 @@
         "CREATE_OR_UPDATE_DRAFT_PR"
       ],
       "branch": "codex/git-001-phase8-reconciliation",
-      "head_sha": "86f92ed16164a97b7cbb1edacd64a50a5a71e13d",
+      "head_sha": "25777a22807b2bb60ddd4e20eaa0d2469a26624b",
       "task_id": "GIT-001-P8-RECONCILIATION"
     }
   },
@@ -47,7 +47,7 @@
   "retention": {
     "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
     "holds": [],
-    "observed_at_utc": "2026-08-16T13:54:52Z",
+    "observed_at_utc": "2026-08-16T14:01:46Z",
     "owner": "Main Agent under the repository owner's request to start only the published Phase 8 packet and preserve retained lanes",
     "query_status": "OK",
     "status": "OBSERVED"

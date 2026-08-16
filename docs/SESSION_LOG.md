@@ -58,6 +58,9 @@ not start the frontmatter repair.
 - The first exact JSON assertion captured the frontmatter checker's trailing
   success banner after the root JSON object, so `jq` parsed the correct payload
   and then stopped on the non-JSON trailer before the quick gate ran.
+- The immutable audit passed all six PR identity rows, then the Excel assertion
+  stopped because its 15-minute caller-evidence window expired during candidate
+  preparation and added stale-observation reason codes.
 
 ### Root causes and resolutions
 
@@ -101,6 +104,14 @@ not start the frontmatter repair.
   assertion proves exactly eight invalid and 60 permitted no-frontmatter
   records before the quick gate. ⚠️ TERMINAL ISSUE: broad JSON extraction fed a
   trailing banner to `jq` -> exact root-object delimiters produced valid JSON.
+- Confirmed root cause: the classifier intentionally rejects remote, PR, and
+  retention observations older than 15 minutes; the first candidate crossed
+  that boundary before immutable audit reached Excel. Resolution: perform one
+  fresh read-only `ls-remote`/GitHub observation, refresh only the timestamp-
+  bound caller/adoption evidence and current task handoff, then create the
+  single allowed repair candidate. Evidence: the refreshed classifier returns
+  only `OWNER_UNKNOWN` and `RETENTION_EVIDENCE_UNKNOWN`, preserving
+  `HOLD_UNKNOWN_OWNER`; no lane or remote state changed.
 
 ### Validation
 
@@ -130,6 +141,8 @@ not start the frontmatter repair.
 - Consolidated repair and content freeze: `13:53:59Z` to `13:58:57Z` —
   4 minutes 58 seconds.
 - Final local candidate gate: `13:58:57Z` to `13:59:56Z` — 59 seconds.
+- Initial immutable audit and freshness-triggered repair start: `13:59:56Z` to
+  `14:01:46Z` — 1 minute 50 seconds.
 - Hosted CI wait, merge closeout, and total wall time are reported by the
   successor closeout observation because they occur after the unchanged
   candidate is frozen.

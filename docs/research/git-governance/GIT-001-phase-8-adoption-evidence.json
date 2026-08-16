@@ -3,7 +3,7 @@
   "task_id": "GIT-001-P8-RECONCILIATION",
   "evidence_kind": "phase_8_adoption_and_preservation_snapshot",
   "status": "CANDIDATE_READY_FOR_HOSTED_CLOSEOUT",
-  "observed_at_utc": "2026-08-16T13:46:29.152902+00:00",
+  "observed_at_utc": "2026-08-16T14:02:22.170580+00:00",
   "authorization_boundary": {
     "authorized": [
       "CREATE_FRESH_PACKET_BRANCH_AND_WORKTREE",
@@ -222,7 +222,7 @@
   },
   "excel_disposition": {
     "evidence_path": "docs/research/git-governance/GIT-001-phase-8-excel-disposition-evidence.json",
-    "classifier_observed_at_utc": "2026-08-16T13:46:29.152902+00:00",
+    "classifier_observed_at_utc": "2026-08-16T14:02:22.170580+00:00",
     "branch": "codex/excel-product-planning",
     "head_sha": "a0e115e17009cc14b3d883e3c291d47c32f7ca4e",
     "ahead_commit_count": 0,
