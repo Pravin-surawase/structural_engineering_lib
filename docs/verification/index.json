@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 100,
+  "file_count": 104,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -731,6 +731,47 @@
       "content_hash": "9497c7d4491b"
     },
     {
+      "name": "india-2-foundation-combined-acceptance-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "ec69c3889ea6"
+    },
+    {
+      "name": "india-2-foundation-combined-acceptance-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "fc11ebd20163"
+    },
+    {
+      "name": "india-2-foundation-combined-acceptance-nonfrozen-replay.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "case_id",
+        "footing",
+        "qualified_review_required"
+      ],
+      "content_hash": "6e5fbf2af78b"
+    },
+    {
       "name": "india-2-foundation-combined-b-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -843,6 +884,14 @@
       "last_updated": "2026-08-16",
       "description": "POST /api/v1/design/combined-footing/symmetric is a thin typed transport over the canonical design_symmetric_combined_footing_is456 service accepted in",
       "content_hash": "d4c9e869bffd"
+    },
+    {
+      "name": "india-2-foundation-combined-family-acceptance-evidence.md",
+      "type": "documentation",
+      "size_lines": 176,
+      "last_updated": "2026-08-16",
+      "description": "The exact integrated G0/A-D starting head is 079ca22b00744ca9b01f859be0b64333b5830fcb, tree",
+      "content_hash": "c89171222f11"
     },
     {
       "name": "india-2-foundation-combined-g0-git-handoff-receipt.json",
@@ -1096,7 +1145,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "35d03f0393c2"
+      "content_hash": "8a3680609411"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -1185,5 +1234,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "dafe3e93b5e3024b"
+  "content_hash": "3b5624fdb1b574c6"
 }

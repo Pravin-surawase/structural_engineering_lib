@@ -47,7 +47,7 @@ Historical staircase task IDs, PRs, and evidence remain unchanged. The former
 | Clause 33 stairs | One bounded longitudinal straight waist-slab flight supported | Complete; alternate stair systems remain held |
 | Clause 29 deep beams | Focused family acceptance complete after G0 and A-D integration | One simply supported positive-moment reinforcement check supported; alternate deep-beam systems held |
 | Flat slabs and column punching | Focused family acceptance complete after G0 and A-E integration | One regular interior direct-design and concrete-only punching workflow supported; alternate systems held |
-| Combined footing | G0/A-D implementation and publication complete; focused acceptance next | One symmetric equal-load two-column rigid rectangular workflow supported; alternate systems held |
+| Combined footing | Focused family acceptance complete | One symmetric equal-load two-column rigid rectangular workflow supported; alternate systems held |
 | Strap footing | Not implemented | Separate foundation program |
 | Pile cap | Not implemented | Separate foundation program |
 | Raft foundation | Not implemented | Separate foundation program |
@@ -63,7 +63,7 @@ boundary, held with a written reason, or not implemented.
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
 | 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | Complete within the written bounded case |
 | 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Complete within the written bounded case |
-| 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Combined-footing A/B complete; C/D/acceptance and remaining G0 decisions pending |
+| 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Combined footing accepted; strap, pile-cap, and raft G0 decisions pending |
 | 5 | `INDIA-2-CLOSEOUT` | Reconcile truth, run final cumulative gates, and freeze the INDIA-2 evidence set | Pending |
 
 The provisional foundation order is combined footing, strap footing, pile cap,
@@ -309,7 +309,10 @@ basis and source traceability, and canonical exports. Evidence is in
 matching capability/semantic/manifest promotion without changing structural
 math. Evidence is in
 [`india-2-foundation-combined-d-publication-evidence.md`](../verification/india-2-foundation-combined-d-publication-evidence.md).
-Focused family acceptance is next and must add no feature behavior.
+Focused family acceptance adds no feature behavior and binds the integrated
+G0/A-D source, benchmark, public truth, valid failures, fail-closed boundaries,
+and deferred broad-gate decision. Evidence is in
+[`india-2-foundation-combined-family-acceptance-evidence.md`](../verification/india-2-foundation-combined-family-acceptance-evidence.md).
 
 ## 7. Validation and Git cadence
 
@@ -360,9 +363,10 @@ authorized programs.
 
 ## 9. Exact next action
 
-Begin `INDIA-2-FOUNDATION-COMBINED-D` from verified current `main` only after
-C merges unchanged. Publish only the thin FastAPI transport and exact
-capability/semantic truth for the existing typed workflow. Keep alternate
-foundations, React, broad Python, and the 30-check gate for later packets.
-Follow the dedicated
+Begin decision-only `INDIA-2-FOUNDATION-STRAP-G0` from verified current `main`
+only after combined-family acceptance merges unchanged. Freeze one source-
+bound strap analysis model, useful topology, independent benchmark, units,
+caller prerequisites, and exclusions; return GO, REVISE, or owner-approved
+HOLD before any calculation code. Keep React, broad Python, and the 30-check
+gate for later packets. Follow the dedicated
 [next-session and finish plan](india-2-next-session-publication-and-closeout-plan.md).

@@ -4,11 +4,11 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Merge COMBINED-D unchanged, then run only focused combined-family acceptance
-- Live C integration identity: PR #790 squash-merged as 7b7b310a9310c04a65b1dcdfd4ef812c792bb8cb | merged tree=dd9ed4adf0b20de5d307689ecdf502801fad2d6e | final audited C head=8928309110615ca59831fc707ad627e59d78b292
-- D implementation: strict nested transport, one thin route, exact OpenAPI drift, capability/semantic truth, and deterministic promotion to 12 supported / 9 held and 80/80 tested endpoints
-- D candidate identity: VERIFY_EXACT_HEAD_TREE_PR_AND_HOSTED_CHECKS_AT_CLOSEOUT
-- Next action: START_FRESH_COMBINED_ACCEPTANCE_ONLY_AFTER_D_MERGE
+- Focus: Merge focused combined-family acceptance unchanged, then begin only decision-only STRAP-G0
+- Live D integration identity: PR #791 squash-merged as 079ca22b00744ca9b01f859be0b64333b5830fcb | merged tree=efba5971017b03e14e3b2f30fd40750f8fc68987 | final audited D head=7e25cfd082a2aa4f5fde857727af7c80f9bbabed
+- Combined acceptance: no feature behavior; frozen and non-frozen benchmarks, valid failures, fail-closed boundaries, public truth, and focused gates are bound in one family receipt
+- Acceptance candidate identity: VERIFY_EXACT_HEAD_TREE_PR_AND_HOSTED_CHECKS_AT_CLOSEOUT
+- Next action: START_STRAP_G0_ONLY_AFTER_ACCEPTANCE_MERGE
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-16
@@ -17,18 +17,19 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Begin `INDIA-2-FOUNDATION-COMBINED-ACCEPTANCE` only after D merges unchanged |
+| **Next** | Begin decision-only `INDIA-2-FOUNDATION-STRAP-G0` only after combined acceptance merges unchanged |
 
 ## Required Reading
 
 1. [Next-session publication and closeout plan](india-2-next-session-publication-and-closeout-plan.md)
 2. [INDIA-2 remaining-elements execution plan](india-2-remaining-is456-elements-plan.md)
-3. [Combined D publication evidence](../verification/india-2-foundation-combined-d-publication-evidence.md)
-4. [Combined C public-workflow evidence](../verification/india-2-foundation-combined-c-public-workflow-evidence.md)
-5. [Combined B strength evidence](../verification/india-2-foundation-combined-b-strength-evidence.md)
-6. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
-7. [Current task board](../TASKS.md)
-8. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+3. [Combined focused family acceptance](../verification/india-2-foundation-combined-family-acceptance-evidence.md)
+4. [Combined D publication evidence](../verification/india-2-foundation-combined-d-publication-evidence.md)
+5. [Combined C public-workflow evidence](../verification/india-2-foundation-combined-c-public-workflow-evidence.md)
+6. [Combined B strength evidence](../verification/india-2-foundation-combined-b-strength-evidence.md)
+7. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
+8. [Current task board](../TASKS.md)
+9. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
 
 ## Start Boundary
 
@@ -38,7 +39,7 @@ add React, or begin release work without a new owner-approved scope.
 
 `INDIA-2-WALL`, `INDIA-2-STAIR`, `INDIA-2-DEEP`, and `INDIA-2-FLAT` are
 accepted only within their recorded bounded cases. Do not reopen or expand
-those families while publishing the combined-footing workflow.
+those families while deciding the strap-footing boundary.
 
 ```bash
 ./run.sh session brief --agent orchestrator
@@ -54,13 +55,6 @@ worktree cleanup remains a separate exact-target authorization.
 The foreign retained `e54a` worktree was last observed detached with one dirty
 path; its ownership/root cause are unconfirmed, and the next INDIA-2 packet
 must not use or mutate it.
-
-## INDIA-2-WALL acceptance result
-
-[`india-2-wall-family-acceptance-evidence.md`](../verification/india-2-wall-family-acceptance-evidence.md)
-records the integrated A-D head, public clause/source visibility, independent
-benchmark, unsafe and fail-closed behavior, semantic-contract correction,
-focused validation, retained holds, and deferred broad-gate boundary.
 
 ## INDIA-2-DEEP-G0 decision result
 
@@ -113,6 +107,10 @@ benchmark, complete caller-basis provenance, retained holds, and public API
 docs. [`india-2-foundation-combined-d-publication-evidence.md`](../verification/india-2-foundation-combined-d-publication-evidence.md)
 records the strict nested transport, thin public route, exact OpenAPI drift,
 and capability/semantic/manifest promotion to one supported bounded workflow.
+[`india-2-foundation-combined-family-acceptance-evidence.md`](../verification/india-2-foundation-combined-family-acceptance-evidence.md)
+records the integrated G0/A-D chain, frozen and independent non-frozen
+benchmarks, valid failures, every maintained fail-closed boundary, truthful
+public surface, focused gates, and retained review/approval holds.
 
 ## Review and gate boundary
 
@@ -127,11 +125,10 @@ integration boundary unless a confirmed repository-wide failure forces them
 earlier.
 
 Flat-slab acceptance is complete without expanding topology or adding React.
-Combined-footing G0/A-D are complete within the bounded case; focused family
-acceptance may begin only after D's unchanged reviewed head merges. Strap,
-pile-cap, and raft remain separate later G0 decisions. The two deferred clause-
+Combined footing is accepted within the bounded case. Strap, pile-cap, and raft
+remain separate later G0 decisions. The two deferred clause-
 registry truth defects are recorded in the next-session plan and must not be
-mixed into D or acceptance.
+mixed into STRAP-G0.
 
 Cumulative qualified structural-engineering review belongs to INDIA-4 after the
 accepted INDIA-2 and INDIA-3 scope is frozen. Packet-level source and engineering
@@ -141,10 +138,10 @@ authorization, or cleanup authority.
 
 ## Exact next action
 
-After verifying D is merged unchanged into current `origin/main`, create a
-fresh `codex/india-2-foundation-combined-acceptance` worktree. Re-run the
-cumulative G0/A-D benchmark, non-frozen symmetric, valid-failure, fail-closed,
-public export, transport, OpenAPI, capability, semantic, manifest, architecture,
-import, link, index, source-binding, efficiency, and quick gates. Add no feature
-behavior. Structural math, alternate foundations, React, broad Python, and the
-30-check gate remain outside family acceptance.
+After verifying combined acceptance is merged unchanged into current
+`origin/main`, create a fresh decision-only STRAP-G0 lane. Search existing code,
+bind the controlled and independent sources, freeze one useful two-footing/
+strap idealization and load path, its soil-contact assumptions, benchmark,
+units, caller prerequisites, and exclusions, then return GO, REVISE, or owner-
+approved HOLD. Do not implement strap calculations before GO. React, broad
+Python, and the 30-check gate remain outside STRAP-G0.

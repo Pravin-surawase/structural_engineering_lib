@@ -1,7 +1,7 @@
 ---
 task: INDIA-2-NEXT-SESSION-PUBLICATION-AND-CLOSEOUT
 title: INDIA-2 Next Session and Finish Plan
-status: combined_d_complete_acceptance_next
+status: active
 owner: Next Main Agent
 created: 2026-08-16
 last_updated: 2026-08-16
@@ -12,19 +12,20 @@ doc_type: spec
 
 ## 1. Immediate objective and stop boundary
 
-COMBINED-C is integrated and COMBINED-D publishes the thin transport and truth
-layer over it. The next session starts only after COMBINED-D is merged unchanged
-with required checks green. Its only packet is focused combined-family
-acceptance; it adds no feature behavior.
+COMBINED-C/D are integrated and focused family acceptance binds the unchanged
+G0/A-D source, benchmark, public workflow, transport, and truthful capability
+surface without adding feature behavior. The next session starts only after
+the acceptance candidate merges unchanged with required checks green. Its only
+packet is decision-only `INDIA-2-FOUNDATION-STRAP-G0`.
 
-Do not begin strap, pile-cap, raft, broad Python, full 30-check, React, release,
-cleanup, or professional-approval work in the acceptance packet.
+Do not implement strap footing or begin pile-cap, raft, broad Python, full
+30-check, React, release, cleanup, or professional-approval work in STRAP-G0.
 
 The complete remaining order is:
 
 1. `COMBINED-C` — typed public Python workflow.
 2. `COMBINED-D` — thin FastAPI transport and truthful capability publication.
-3. `COMBINED-ACCEPTANCE` — focused cumulative family acceptance.
+3. `COMBINED-ACCEPTANCE` — focused cumulative family acceptance, complete.
 4. Separate `STRAP-G0`, `PILE-CAP-G0`, and `RAFT-G0` decisions, in that order.
 5. Implement only owner-accepted `GO` cases; preserve each `HOLD` with a
    blocker and reactivation condition.
@@ -34,20 +35,19 @@ The complete remaining order is:
 
 ## 2. Verified inherited state
 
-At the merged COMBINED-B baseline:
+At the merged COMBINED-D baseline:
 
 - wall, staircase, deep-beam, and flat-slab/punching bounded families are
   accepted;
-- combined-footing G0, A action analysis, and B strength/detailing composition
-  are complete within one symmetric two-column case;
-- generated truth remains `11 supported / 10 held`; combined footing is still
-  `HELD`/`NOT_IMPLEMENTED` because there is no public workflow yet;
-- all 79 existing endpoints have direct tests; no combined-footing endpoint
-  exists yet;
-- COMBINED-B has 28 direct tests, 71 A/B tests, and a 193-test focused
-  clause/traceability/manifest/function-quality selection;
-- architecture is `0/190`, imports are `0/630`, 1,236 internal links are
-  valid, source binding is true, and the quick gate is `10/10`;
+- combined-footing G0/A-D are integrated within one symmetric two-column case;
+- generated truth is `12 supported / 9 held`, and the bounded combined-footing
+  workflow is supported while all alternate systems remain held;
+- all 80 endpoints have direct tests;
+- COMBINED-D has 6 direct transport tests, 84 cumulative A-D tests, and a
+  339-test focused combined/public-contract selection;
+- architecture is `0/193`, imports are `0` broken across 222 Python files,
+  1,250 internal links are valid, source binding is true, and the quick gate is
+  `10/10`;
 - the corrected final B head was independently audited at
   `948787bb56d28b8fbcca83aa94f1c68a26ec2eab`, tree
   `66243e06608f9323c605f16b8ca96eaf93d04fa5`, including a non-frozen
@@ -55,6 +55,13 @@ At the merged COMBINED-B baseline:
 - PR #789 squash-merged that exact tree as
   `f87c8a32aca7edc015f96f6e053f30c904ae683b`, with six applicable checks
   passing and two correctly skipped; and
+- PR #790 squash-merged C as
+  `7b7b310a9310c04a65b1dcdfd4ef812c792bb8cb`, tree
+  `dd9ed4adf0b20de5d307689ecdf502801fad2d6e`; and
+- PR #791 squash-merged the independently audited D tree
+  `efba5971017b03e14e3b2f30fd40750f8fc68987` as
+  `079ca22b00744ca9b01f859be0b64333b5830fcb`, with seven hosted checks passing,
+  one correctly skipped, and none failing; and
 - public distribution permission is already recorded and must not be requested
   again. No release, tag, package publication, branch deletion, or worktree
   cleanup is authorized.
@@ -69,6 +76,7 @@ Required evidence:
 - [combined B strength](../verification/india-2-foundation-combined-b-strength-evidence.md)
 - [combined C public workflow](../verification/india-2-foundation-combined-c-public-workflow-evidence.md)
 - [combined D publication](../verification/india-2-foundation-combined-d-publication-evidence.md)
+- [combined focused family acceptance](../verification/india-2-foundation-combined-family-acceptance-evidence.md)
 - [generated capability truth](../verification/indian-code-capability-coverage.json)
 - [INDIA-2 execution plan](india-2-remaining-is456-elements-plan.md)
 - [canonical Git workflow](../git-automation/git-workflow-single-source.md)
@@ -193,9 +201,10 @@ Run the D-focused service/router/OpenAPI/capability/semantic/manifest selection,
 architecture/import/link/index, quick gate, commit hooks, immutable audit, and
 hosted checks. Defer broad Python and full 30-check.
 
-## 6. COMBINED family acceptance
+## 6. COMBINED family acceptance — complete
 
-Use a fresh acceptance-only lane from merged D. Add no feature behavior.
+The fresh acceptance-only lane starts from merged D and adds no feature
+behavior.
 
 Re-run:
 

@@ -100,6 +100,7 @@ _IS456_EVIDENCE = {
         "docs/verification/india-2-foundation-combined-b-strength-evidence.md",
         "docs/verification/india-2-foundation-combined-c-public-workflow-evidence.md",
         "docs/verification/india-2-foundation-combined-d-publication-evidence.md",
+        "docs/verification/india-2-foundation-combined-family-acceptance-evidence.md",
     ),
 }
 
