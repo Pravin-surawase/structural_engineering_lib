@@ -5,6 +5,69 @@
 
 ---
 
+## 2026-08-17 — Session: Implementation-First Verification Policy
+
+**Agent:** Codex (`governance`, sole writer)
+
+**Branch:** `codex/implementation-first-verification-policy` from freshly
+fetched `origin/main = 55104e11257937b0a42fb06f931a70b8484cef39`
+
+**Git handoff receipt:** `docs/verification/implementation-first-verification-policy-git-handoff-receipt.json`
+
+**Focus:** Make the owner's implementation-first, batched-verification cadence
+durable for future repository chats. Preserve the clean Packet A candidate and
+all unrelated worktrees; do not change structural calculations, APIs, React,
+adapters, release behavior, or the active LIB-PRO-002 handoff.
+
+### Summary
+
+- Made one bounded packet, rather than each edit, the routine verification
+  boundary.
+- Limited during-implementation checks to narrow evidence needed to guide or
+  debug a live question.
+- Consolidated focused checks, the single quick gate, commit hooks, hosted
+  checks, and the cumulative full gate into an explicit non-duplicative
+  cadence shared by top-level instructions, canonical efficiency policy, and
+  the quality-gate skill.
+- Kept required safety, independent-review, hosted-CI, and release gates intact.
+
+### Issues encountered
+
+- Existing guidance said to use targeted checks while editing and to avoid
+  duplicated gates, but did not explicitly say that routine verification
+  starts only after the whole bounded packet is implemented and frozen. That
+  ambiguity could make future chats rerun unchanged checks after small edits.
+- The first session-end check did not discover the committed handoff receipt
+  because its path was wrapped onto the line after the bold label.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the intended cadence was split across `AGENTS.md`, the
+  canonical token-efficiency guide, and the quality-gate skill, while the phrase
+  “while editing” lacked a necessity condition. Resolution: align all three
+  surfaces on implementation first, necessary diagnostics only, one
+  consolidated post-freeze focused selection, one quick gate, required hosted
+  checks, and one cumulative full gate. Evidence: the efficiency policy check,
+  documentation checks, affected indexes, quick gate, session-end contract,
+  and normal commit hooks complete after content freeze.
+- Confirmed root cause: the session-end parser requires the receipt path on the
+  same line as the bold `Git handoff receipt` label. Resolution: place the
+  committed path on that label line and retain this exact format for future
+  entries. Evidence: the repaired session-end check discovers and validates
+  the receipt. ⚠️ TERMINAL ISSUE: session end reported a missing receipt ->
+  matched the maintained same-line parser contract.
+
+### Validation through content freeze
+
+- Startup evidence: fresh fetch equality at
+  `55104e11257937b0a42fb06f931a70b8484cef39`, a clean isolated policy lane,
+  and current-worktree Python source binding.
+- Packet A remains a separate clean `READY_LOCAL` worktree at
+  `22066d0d83f84995b898a58b43993f621ec2d8d0`; the unrelated dirty detached
+  worktree remains untouched.
+- No task-board or next-session-brief update is required because this policy
+  change does not alter the active LIB-PRO-002 packet sequence or handoff.
+
 ## 2026-08-17 — Session: Pre-Release Input-Safety Contract Freeze
 
 **Agent:** Codex (`orchestrator` and `doc-master`, sole writer; two bounded
