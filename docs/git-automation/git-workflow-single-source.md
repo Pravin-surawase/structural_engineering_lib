@@ -76,6 +76,14 @@ The stage gates are:
    integrated checks, and task/handoff/receipt truth. Retain branches and
    worktrees unless deletion is separately authorized.
 
+The mutation cutoff is strict: finish versioned session/task/handoff records,
+local evidence, and the pre-commit receipt first; refresh only affected
+maintained indexes once as the final repository write; then commit the immutable
+candidate. PR numbers, hosted-check results, and merge identities are external
+facts and must not be appended to that same candidate after push. A material
+post-push defect creates an explicit repair candidate and invalidates the prior
+audit; routine status reporting never creates a second documentation commit.
+
 Do not claim a candidate is complete, final, ready, or merge-eligible before the
 independent PASS bound to its unchanged head and tree. Do not start hosted CI
 before that PASS.

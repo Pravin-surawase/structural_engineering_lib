@@ -1044,6 +1044,25 @@ def test_generated_index_hash_tracks_subfolder_projection(
     assert initial["content_hash"] != updated["content_hash"]
 
 
+def test_generated_index_hash_ignores_filesystem_mtime(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    generator = importlib.import_module("scripts.generate_enhanced_index")
+    folder = tmp_path / "package"
+    folder.mkdir()
+    source = folder / "sample.py"
+    source.write_text("VALUE = 1\n", encoding="utf-8")
+    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
+
+    os.utime(source, (1_577_836_800, 1_577_836_800))
+    initial = generator.scan_folder_enhanced(folder)
+    os.utime(source, (1_609_459_200, 1_609_459_200))
+    updated = generator.scan_folder_enhanced(folder)
+
+    assert initial["files"][0]["last_updated"] != updated["files"][0]["last_updated"]
+    assert initial["content_hash"] == updated["content_hash"]
+
+
 def test_index_generator_requires_opt_in_for_new_index_folder(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

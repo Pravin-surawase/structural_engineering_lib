@@ -12,19 +12,24 @@ Use this once after the scoped work and its narrow checks are complete.
    their project state changed or a durable handoff is required. Update global
    logs, indexes, counts, feedback, and evolution records only when the task
    explicitly owns them.
-2. Run the quick gate once:
+2. Freeze all owned versioned logs, task/handoff state, evidence, and the
+   pre-commit receipt. Refresh only affected maintained indexes once as the
+   final repository write.
+3. Run the quick gate once:
    ```bash
    ./run.sh check --quick
    ```
-3. Confirm the required Git path and make one normal task commit:
+4. Confirm the required Git path and make one normal task commit:
    ```bash
    # Codex reviews, stages intended paths, commits, pushes, and updates the PR.
    ```
-4. Validate the clean handoff without hidden mutations:
+5. Validate the clean handoff without hidden mutations:
    ```bash
    ./run.sh session end --agent <role>
    ```
 
 Do not run session summary/sync, evolution, release checks, index generation,
-or a second documentation commit by default. If validation finds an essential
-handoff defect, fix only that defect and commit it through the same safe path.
+or a second documentation commit by default. Keep PR, hosted-check, and merge
+facts in GitHub and the external handoff instead of writing them into the same
+candidate. If validation finds an essential handoff defect, fix only that
+defect as an explicit repair candidate through the same safe path.

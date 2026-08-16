@@ -258,6 +258,14 @@ This feeds the improvement loop — recurring issues get fixed in agent instruct
 ./run.sh session end --agent <role>              # Read-only unless --fix is explicit
 ```
 
+**Closeout freeze:** Finish every owned session/task/handoff/evidence update and
+the pre-commit Git handoff receipt before refreshing affected indexes. That
+focused index refresh is the final repository write before the immutable
+candidate commit. After push or PR creation, keep hosted-check and merge facts
+in GitHub and the external handoff; never append them to the same candidate and
+restart CI. A material post-push defect requires an explicit repair candidate,
+not a routine status/documentation commit.
+
 Log feedback only when a concrete stale instruction or missing control was found. `session summary`, `session sync`, and `session end` are read-only by default; `--write` or `--fix` must be intentional. Agent evolution is scheduled governance work, not a mandatory session-end mutation.
 
 ## Key Patterns — Do NOT Reinvent

@@ -414,6 +414,19 @@ def analyze_shell_file(file_path: Path) -> dict[str, Any]:
 # ─── Folder Scanner ─────────────────────────────────────────────
 
 
+def _without_observation_timestamps(value: Any) -> Any:
+    """Remove filesystem-derived timestamps from a hash projection."""
+    if isinstance(value, dict):
+        return {
+            key: _without_observation_timestamps(item)
+            for key, item in value.items()
+            if key != "last_updated"
+        }
+    if isinstance(value, list):
+        return [_without_observation_timestamps(item) for item in value]
+    return value
+
+
 def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
     """Scan folder and generate enhanced index data."""
     folder_rel = str(folder_path.relative_to(PROJECT_ROOT))
@@ -554,13 +567,10 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
             except (OSError, UnicodeDecodeError):
                 pass
 
-    # Hash every deterministic projection written to the index. Exclude the
-    # generation date so an unchanged folder remains current across days.
-    hash_payload = {
-        key: value
-        for key, value in index.items()
-        if key not in {"content_hash", "last_updated"}
-    }
+    # Hash every deterministic projection written to the index. Observation
+    # timestamps come from filesystem mtimes, which can change across otherwise
+    # identical worktrees, so exclude them at every nesting level.
+    hash_payload = _without_observation_timestamps(index)
     serialized_payload = json.dumps(
         hash_payload,
         ensure_ascii=False,
@@ -810,7 +820,8 @@ def main():
                 pass
         if stale_count:
             print(
-                f"\n{stale_count}/{checked} index(es) are stale — regenerate with --all"
+                f"\n{stale_count}/{checked} index(es) are stale — regenerate only "
+                "the stale folders listed above"
             )
             sys.exit(1)
         else:

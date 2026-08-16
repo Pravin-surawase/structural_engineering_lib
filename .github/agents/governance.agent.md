@@ -76,8 +76,9 @@ git --no-pager log --oneline --since="7 days ago" | wc -l
 # Verify active docs count
 ls docs/planning/*.md | wc -l               # Target: <10
 
-# Regenerate indexes
-./run.sh generate indexes
+# Audit all maintained indexes, then refresh only folders reported stale
+./run.sh generate indexes --all --check
+./run.sh generate indexes <affected-folder>
 
 # Check links
 .venv/bin/python scripts/check_links.py

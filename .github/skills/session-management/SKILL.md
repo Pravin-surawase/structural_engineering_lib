@@ -50,23 +50,31 @@ archive path. Resolve the maintained command with `./run.sh find "task"`.
    exact-target authorization evidence, including fresh/query-successful
    provenance and a next action bound to that authority or the closed safe-hold
    set.
-3. Run the pre-commit gate once:
+3. Freeze all owned versioned logs, task/handoff state, evidence, and the
+   pre-commit receipt. Refresh only affected maintained indexes once; that
+   refresh is the final repository write for the candidate.
+4. Run the pre-commit gate once:
 
    ```bash
    ./run.sh check --quick
    ```
 
-4. Have Codex inspect the final diff, stage only intended paths, create one
+5. Have Codex inspect the final diff, stage only intended paths, create one
    conventional commit, push without rewriting history, and create or update the
    PR through the connected GitHub integration.
 
-5. Validate the clean handoff:
+6. Validate the clean handoff:
 
    ```bash
    ./run.sh session end --agent <role>
    ```
 
-Do not run global doc syncing, index regeneration, evolution fixes, release checks, or a second documentation commit by default. If session end identifies an essential handoff defect, correct only that defect and return it through the same Codex-native workflow.
+Do not run global doc syncing, index regeneration, evolution fixes, release
+checks, or a second documentation commit by default. After push or PR creation,
+keep hosted-check and merge facts in GitHub and the external handoff; do not
+write them back into the same candidate. If session end identifies an essential
+handoff defect, correct only that defect as an explicit repair candidate through
+the same Codex-native workflow.
 
 ## Session Check (mid-session)
 
