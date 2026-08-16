@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Run decision-only `INDIA-2-FOUNDATION-COMBINED-G0`; do not write calculation code before GO |
+| **Next** | Begin `INDIA-2-FOUNDATION-COMBINED-A` after the reviewed G0 head merges |
 
 ## Required Reading
 
@@ -77,57 +77,26 @@ Bearing and compression-nodal regions require a caller-supplied external verific
 continuous beams, openings, hanging action, negative moment, load generation,
 generalized strut-and-tie, nonlinear analysis, and FEM remain held.
 
-## INDIA-2-FLAT-G0 decision result
-
-[`india-2-flat-g0-scope-evidence.md`](../verification/india-2-flat-g0-scope-evidence.md)
-records GO for one equal-span square interior panel under identical uniform
-gravity loading, using the direct design method and one centred square-column
-punching check. The frozen hand benchmark covers eligibility, both directional
-moment distributions, flexure, straight-bar detailing, reviewed no-drop
-span/depth, and no-reinforcement punching. Unequal/exterior/drop/head/opening,
-patterned-load, moment-transfer, punching-reinforcement, equivalent-frame, and
-FEM cases remain held.
-
-## INDIA-2-FLAT-A implementation result
-
-[`india-2-flat-a-geometry-evidence.md`](../verification/india-2-flat-a-geometry-evidence.md)
-records typed grid/panel/material/load contracts, both clear-span and strip
-directions, direct-design eligibility, exact Clause 31 identifier registration,
-and fail-closed behavior for every topology outside G0. Flat slab remains held
-until FLAT-E publication.
-
-## INDIA-2-FLAT-B implementation result
-
-[`india-2-flat-b-moment-evidence.md`](../verification/india-2-flat-b-moment-evidence.md)
-records the both-direction total static, interior negative/positive, and
-column/middle-strip moment distribution. It reproduces every frozen hand value,
-preserves distribution totals, and retains the FLAT-A topology and load gates.
-Flat slab remains held until FLAT-E publication.
-
-## INDIA-2-FLAT-C implementation result
-
-[`india-2-flat-c-reinforcement-evidence.md`](../verification/india-2-flat-c-reinforcement-evidence.md)
-records both-direction strip flexure, minimum and caller-provided straight bars,
-the 1650 mm no-drop support-top extension, and the reviewed 23.0769/23.4
-span/depth comparison. Direct deflection, crack width, punching, and public
-workflow remain held.
-
-## INDIA-2-FLAT-D implementation result
-
-[`india-2-flat-d-punching-evidence.md`](../verification/india-2-flat-d-punching-evidence.md)
-records the centred square interior-column full-perimeter demand, concrete-only
-capacity, punching-reinforcement-or-redesign disposition, mandatory-redesign
-boundary, and fail-closed support-reaction/applicability contracts. PR #784
-merged as `d1884946`. Alternate columns/perimeters, openings, moment transfer,
-and punching-reinforcement design remain held.
-
-## INDIA-2-FLAT-E and family acceptance result
+## INDIA-2-FLAT acceptance result
 
 [`india-2-flat-e-publication-evidence.md`](../verification/india-2-flat-e-publication-evidence.md)
-records the typed Python composition, thin REST route, canonical capability and
-semantic truth, manifest promotion, full nested OpenAPI result, benchmark, and
-retained holds. PR #785 merged as `b04d8065`. The focused acceptance receipt is
-[`india-2-flat-family-acceptance-evidence.md`](../verification/india-2-flat-family-acceptance-evidence.md).
+and [`india-2-flat-family-acceptance-evidence.md`](../verification/india-2-flat-family-acceptance-evidence.md)
+record the accepted regular interior direct-design and concrete-only punching
+workflow, exact public truth, independent benchmark, nested semantic contract,
+and focused gates. PR #785 integrated publication and PR #786 accepted the
+family. Unequal/exterior/drop/head/opening, patterned-load, moment-transfer,
+punching-reinforcement, equivalent-frame, and FEM cases remain held.
+
+## INDIA-2-FOUNDATION-COMBINED-G0 decision result
+
+[`india-2-foundation-combined-g0-scope-evidence.md`](../verification/india-2-foundation-combined-g0-scope-evidence.md)
+records GO for exactly two identical square columns with equal concentric loads
+on one symmetric rigid rectangular constant-depth footing under externally
+approved uniform pressure. Its independent benchmark covers equilibrium,
+bearing, longitudinal/transverse actions, flexure/detailing, one-way and
+two-way shear, bearing/dowels, and anchorage. General/asymmetric soil
+interaction, capacity/settlement calculation, and public capability remain
+held. After the exact G0 head merges, begin only COMBINED-A.
 
 ## Review and gate boundary
 
@@ -137,9 +106,9 @@ once after the whole accepted INDIA-2 wave is integrated unless an
 outcome-changing repository-wide issue appears earlier.
 
 Flat-slab acceptance is complete without expanding topology or adding React.
-Begin `INDIA-2-FOUNDATION-COMBINED-G0` as a decision-only packet. It must freeze
-the source, analysis model, bounded case, benchmark, units, and exclusions
-before code. Strap, pile-cap, and raft remain separate later G0 decisions.
+Combined-footing G0 is GO; COMBINED-A may begin only after its unchanged
+reviewed head merges. Strap, pile-cap, and raft remain separate later G0
+decisions.
 
 Cumulative qualified structural-engineering review belongs to INDIA-4 after the
 accepted INDIA-2 and INDIA-3 scope is frozen. Packet-level source and engineering

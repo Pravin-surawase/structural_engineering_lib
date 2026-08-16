@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 85,
+  "file_count": 88,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -693,6 +693,44 @@
       "content_hash": "6b3a77310a78"
     },
     {
+      "name": "india-2-foundation-combined-g0-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "190468519fdc"
+    },
+    {
+      "name": "india-2-foundation-combined-g0-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "137b477ffa37"
+    },
+    {
+      "name": "india-2-foundation-combined-g0-scope-evidence.md",
+      "type": "documentation",
+      "size_lines": 226,
+      "last_updated": "2026-08-16",
+      "description": "square reinforced-concrete columns carrying equal concentric axial compression, located symmetrically on the longitudinal centreline of one rigid rectangular,",
+      "content_hash": "1f4ee33aff2e"
+    },
+    {
       "name": "india-2-plan-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -906,7 +944,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "539c5c79e9c9"
+      "content_hash": "376b1668ec69"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -995,5 +1033,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "79802170c062f338"
+  "content_hash": "110050c6598a9ee7"
 }

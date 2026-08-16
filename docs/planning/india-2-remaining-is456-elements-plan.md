@@ -47,7 +47,7 @@ Historical staircase task IDs, PRs, and evidence remain unchanged. The former
 | Clause 33 stairs | One bounded longitudinal straight waist-slab flight supported | Complete; alternate stair systems remain held |
 | Clause 29 deep beams | Focused family acceptance complete after G0 and A-D integration | One simply supported positive-moment reinforcement check supported; alternate deep-beam systems held |
 | Flat slabs and column punching | Focused family acceptance complete after G0 and A-E integration | One regular interior direct-design and concrete-only punching workflow supported; alternate systems held |
-| Combined footing | Not implemented | Separate foundation program |
+| Combined footing | G0 GO; implementation packets activated; capability remains held | One symmetric equal-load two-column rigid rectangular case frozen; alternate systems held |
 | Strap footing | Not implemented | Separate foundation program |
 | Pile cap | Not implemented | Separate foundation program |
 | Raft foundation | Not implemented | Separate foundation program |
@@ -63,7 +63,7 @@ boundary, held with a written reason, or not implemented.
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
 | 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | Complete within the written bounded case |
 | 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Complete within the written bounded case |
-| 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Planned, order provisional |
+| 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Combined-footing G0 complete; remaining programs pending |
 | 5 | `INDIA-2-CLOSEOUT` | Reconcile truth, run final cumulative gates, and freeze the INDIA-2 evidence set | Pending |
 
 The provisional foundation order is combined footing, strap footing, pile cap,
@@ -260,7 +260,7 @@ The following are four separate programs, not one generic “foundation” route
 
 | Program | G0 analysis decision that must be frozen | Initial exclusions |
 |---|---|---|
-| `INDIA-2-FOUNDATION-COMBINED` | Column/load arrangement, footing shape, soil-pressure model, rigidity, and action generation | More than the accepted column arrangement, biaxial/general soil interaction, settlement/FEM |
+| `INDIA-2-FOUNDATION-COMBINED` | **G0 GO.** Equal symmetric square columns on one rigid rectangular constant-depth footing under caller-approved uniform pressure | Unequal/eccentric loads, trapezoidal plans, variable/tensile pressure, settlement, elastic-line, Winkler, plate, and FEM |
 | `INDIA-2-FOUNDATION-STRAP` | Two-footing/strap idealization, strap-soil interaction assumption, load path, and member actions | General combined mats, flexible-soil interaction, more than the accepted topology |
 | `INDIA-2-FOUNDATION-PILE-CAP` | One pile layout, pile-reaction input/model, cap action model, anchorage, and deep-region treatment | General pile groups, lateral piles, soil-pile interaction, dynamic or seismic analysis |
 | `INDIA-2-FOUNDATION-RAFT` | One bounded raft idealization, soil-pressure input/model, strip/panel action extraction, and settlement boundary | General plate/FEM soil-structure interaction, irregular rafts, basements, staged construction |
@@ -268,6 +268,23 @@ The following are four separate programs, not one generic “foundation” route
 Each program receives its own G0, pure-math packets, benchmark, public workflow,
 capability record, and focused family acceptance. Shared material or detailing
 helpers do not justify sharing or guessing the analysis model.
+
+`INDIA-2-FOUNDATION-COMBINED-G0` returned GO for exactly two identical square
+columns with equal concentric axial loads, symmetric end projections, and one
+centred-width rectangular footing. The caller must approve allowable gross
+bearing pressure, settlement, rigidity, load combinations, and the uniform
+self-weight/overburden carrier. Structural actions use the explicitly approved
+net-pressure cancellation model; the library does not calculate soil capacity
+or settlement.
+
+The frozen `6000 x 2500 x 850 mm` M30/Fe500 benchmark proves gross service
+pressure, resultant equilibrium, full-width longitudinal shear and moment,
+transverse cantilever action, flexure/minimum/provided steel, wide-beam shear,
+concrete-only punching, bearing, dowels, and anchorage. The immutable decision
+record is
+[`india-2-foundation-combined-g0-scope-evidence.md`](../verification/india-2-foundation-combined-g0-scope-evidence.md).
+It activates COMBINED-A through D followed by focused family acceptance; the
+public capability remains held until publication passes.
 
 ## 7. Validation and Git cadence
 
@@ -318,9 +335,8 @@ authorized programs.
 
 ## 9. Exact next action
 
-Begin decision-only `INDIA-2-FOUNDATION-COMBINED-G0` from verified current
-`main`. Freeze one bounded geometry, column/load arrangement, soil-pressure and
-rigidity model, caller-supplied inputs, independent benchmark, units, and
-exclusions before calculation code. The owner's 2026-08-16 request activates
-the remaining INDIA-2 families subject to each family's own G0 returning GO.
-No G0 may be bypassed, and a HOLD remains a truthful non-implementation outcome.
+Begin `INDIA-2-FOUNDATION-COMBINED-A` from the merged G0 decision. Implement
+only the frozen typed geometry/action contracts, rigid-model eligibility,
+gross/net pressure, resultant equilibrium, longitudinal shear and moment, and
+transverse action generation. Do not add strength design, public workflow,
+FastAPI, alternate foundation geometry, or general soil interaction in A.
