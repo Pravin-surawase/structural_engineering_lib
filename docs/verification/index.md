@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-16
-**Files:** 82
+**Files:** 85
 
 ## Config Files
 
@@ -28,6 +28,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [india-2-deep-g0-git-handoff-source-evidence.json](india-2-deep-g0-git-handoff-source-evidence.json)
 - [india-2-flat-a-git-handoff-receipt.json](india-2-flat-a-git-handoff-receipt.json)
 - [india-2-flat-a-git-handoff-source-evidence.json](india-2-flat-a-git-handoff-source-evidence.json)
+- [india-2-flat-acceptance-git-handoff-receipt.json](india-2-flat-acceptance-git-handoff-receipt.json)
+- [india-2-flat-acceptance-git-handoff-source-evidence.json](india-2-flat-acceptance-git-handoff-source-evidence.json)
 - [india-2-flat-b-git-handoff-receipt.json](india-2-flat-b-git-handoff-receipt.json)
 - [india-2-flat-b-git-handoff-source-evidence.json](india-2-flat-b-git-handoff-source-evidence.json)
 - [india-2-flat-c-git-handoff-receipt.json](india-2-flat-c-git-handoff-receipt.json)
@@ -76,6 +78,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [india-2-flat-c-reinforcement-evidence.md](india-2-flat-c-reinforcement-evidence.md) |  | FLAT-C consumes the FLAT-A/B panel and moment contracts and  | 85 |
 | [india-2-flat-d-punching-evidence.md](india-2-flat-d-punching-evidence.md) |  | FLAT-D adds the centred concentric punching check for the G0 | 82 |
 | [india-2-flat-e-publication-evidence.md](india-2-flat-e-publication-evidence.md) |  | FLAT-E composes the integrated FLAT-A-D calculations into th | 93 |
+| [india-2-flat-family-acceptance-evidence.md](india-2-flat-family-acceptance-evidence.md) |  | exact integrated G0/A-E starting head was b04d80653484a8dc43 | 100 |
 | [india-2-flat-g0-scope-evidence.md](india-2-flat-g0-scope-evidence.md) |  | interior panel in an equal-span orthogonal grid, designed by | 215 |
 | [india-2-wall-a-axial-kernel-evidence.md](india-2-wall-a-axial-kernel-evidence.md) |  | WALL-A implements the pure IS 456 layer for the accepted Cla | 83 |
 | [india-2-wall-b-reinforcement-evidence.md](india-2-wall-b-reinforcement-evidence.md) |  | WALL-B adds one pure IS 456 provided-reinforcement check to  | 82 |

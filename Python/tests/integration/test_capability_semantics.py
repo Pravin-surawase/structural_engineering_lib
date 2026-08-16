@@ -35,40 +35,56 @@ def _adapter(name: str):
     return next(adapter for adapter in contract.adapters if adapter.adapter == name)
 
 
+def _nested_dataclass_field_names(
+    prefix: str,
+    dataclass_type: type[Any],
+    ancestors: frozenset[type[Any]] = frozenset(),
+) -> set[str]:
+    """Return recursively published fields while stopping dataclass cycles."""
+    if dataclass_type in ancestors:
+        return set()
+    next_ancestors = ancestors | {dataclass_type}
+    try:
+        type_hints = get_type_hints(dataclass_type)
+    except (NameError, TypeError):
+        type_hints = {
+            field.name: field.type for field in dataclasses.fields(dataclass_type)
+        }
+    names: set[str] = set()
+    for field in dataclasses.fields(dataclass_type):
+        field_name = f"{prefix}.{field.name}" if prefix else field.name
+        names.add(field_name)
+        nested_type = type_hints.get(field.name)
+        if nested_type and dataclasses.is_dataclass(nested_type):
+            names.update(
+                _nested_dataclass_field_names(
+                    field_name,
+                    nested_type,
+                    next_ancestors,
+                )
+            )
+    names.update(
+        f"{prefix}.{name}" if prefix else name
+        for name, value in vars(dataclass_type).items()
+        if isinstance(value, property) and not name.startswith("_")
+    )
+    return names
+
+
 def _published_field_names(workflow: Callable[..., Any]) -> set[str]:
-    """Return public input/result names, including one typed nested level."""
+    """Return public input/result names across typed dataclass nesting."""
     names = set(inspect.signature(workflow).parameters)
     type_hints = get_type_hints(workflow)
     for parameter_name in inspect.signature(workflow).parameters:
         parameter_type = type_hints.get(parameter_name)
         if parameter_type and dataclasses.is_dataclass(parameter_type):
-            names.update(
-                f"{parameter_name}.{field.name}"
-                for field in dataclasses.fields(parameter_type)
-            )
-            names.update(
-                f"{parameter_name}.{name}"
-                for name, value in vars(parameter_type).items()
-                if isinstance(value, property) and not name.startswith("_")
-            )
+            names.update(_nested_dataclass_field_names(parameter_name, parameter_type))
 
     result_type = type_hints.get("return")
     if not result_type or not dataclasses.is_dataclass(result_type):
         return names
 
-    for result_field in dataclasses.fields(result_type):
-        names.add(result_field.name)
-        nested_type = get_type_hints(result_type).get(result_field.name)
-        if nested_type and dataclasses.is_dataclass(nested_type):
-            names.update(
-                f"{result_field.name}.{field.name}"
-                for field in dataclasses.fields(nested_type)
-            )
-            names.update(
-                f"{result_field.name}.{name}"
-                for name, value in vars(nested_type).items()
-                if isinstance(value, property) and not name.startswith("_")
-            )
+    names.update(_nested_dataclass_field_names("", result_type))
     return names
 
 

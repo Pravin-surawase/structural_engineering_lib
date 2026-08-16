@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 82,
+  "file_count": 85,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -465,6 +465,36 @@
       "content_hash": "2bea10221b15"
     },
     {
+      "name": "india-2-flat-acceptance-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "4c6bbda61b25"
+    },
+    {
+      "name": "india-2-flat-acceptance-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "69e1db1847a9"
+    },
+    {
       "name": "india-2-flat-b-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -615,6 +645,14 @@
       "last_updated": "2026-08-16",
       "description": "FLAT-E composes the integrated FLAT-A-D calculations into the sole public design_regular_interior_flat_slab_is456 service and exposes the same workflow",
       "content_hash": "ef60f1ec9135"
+    },
+    {
+      "name": "india-2-flat-family-acceptance-evidence.md",
+      "type": "documentation",
+      "size_lines": 100,
+      "last_updated": "2026-08-16",
+      "description": "exact integrated G0/A-E starting head was b04d80653484a8dc43e8ff73936d8171e4b65d40. The supported public route remains",
+      "content_hash": "4a42ec953539"
     },
     {
       "name": "india-2-flat-g0-git-handoff-receipt.json",
@@ -868,7 +906,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "68087695cecb"
+      "content_hash": "539c5c79e9c9"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -957,5 +995,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "7b5f63869d294505"
+  "content_hash": "79802170c062f338"
 }

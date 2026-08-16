@@ -5,6 +5,110 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FLAT Focused Family Acceptance
+
+**Agent:** Codex (`reviewer`, sole writer; one bounded independent exact-head
+audit after the candidate is committed)
+
+**Branch:** `codex/india-2-flat-acceptance` from integrated FLAT-E main at
+`b04d80653484a8dc43e8ff73936d8171e4b65d40`
+
+**Git handoff receipt:** `docs/verification/india-2-flat-acceptance-git-handoff-receipt.json`
+
+**Focus:** Accept only the integrated G0/A-E regular-interior flat-slab and
+centred-column concrete-only punching workflow, reconcile planning truth, and
+retain every excluded topology and approval boundary.
+
+### Summary
+
+- Bound focused family acceptance to the exact integrated FLAT-E main base,
+  repaired the semantic validator exposed by independent audit, and replayed
+  the frozen hand benchmark independently of the implementation.
+- Added no calculation, API, React, capability, or release scope; the manifest
+  remains 11 supported and 10 held families with all 79 routes directly tested.
+- Corrected the plan, task, and briefing projections and moved the next action
+  to decision-only `INDIA-2-FOUNDATION-COMBINED-G0`.
+
+### Issues encountered
+
+- The higher-level INDIA-2 plan, parent completion plan, task board, and
+  next-session briefing still described FLAT-E as active or FLAT-G0 as next
+  after PR #785 had merged the publication packet.
+- The first 207-test focused run failed only the deterministic-manifest test
+  because the new acceptance evidence appeared in the generator but not the
+  committed manifest JSON.
+- The first touched-index check found the parent `docs/index.json` stale after
+  the later verification-receipt index regeneration.
+- The first session-end check did not discover the otherwise valid Git receipt.
+- The first commit hook found 1,216 valid internal links after the final session
+  receipt link, while the draft evidence still recorded the earlier 1,215.
+- The first independent exact-head audit returned HOLD because the flat-slab
+  semantic contract publishes two-level canonical request paths while its
+  maintained validator inspected only one nested dataclass level.
+- The first recursive validator run reached an unrelated legacy result
+  dataclass whose unresolved `DesignError` forward reference made
+  `get_type_hints` raise `NameError` before the contract assertions completed.
+
+### Root causes and resolutions
+
+- Root cause: FLAT-E integration updated executable and packet evidence truth
+  but did not perform the separate family-acceptance reconciliation of the
+  higher-level status projections. Resolution: bind this receipt to exact
+  integrated head `b04d8065`, add the receipt to the deterministic evidence
+  chain, reconcile all current-work projections, and retain the alternate-case
+  holds. Evidence: the independent benchmark replay, 207-test focused family
+  selection, manifest check, architecture/import checks, quick gate, exact-head
+  audit, and required hosted PR checks pass before integration.
+- Root cause: `generate_indian_code_manifest.py` without an option is preview-
+  only and prints the rendered manifest; the initial command omitted the
+  explicit `--write` mutation flag. Resolution: confirm the maintained CLI
+  contract with `--help`, regenerate with `--write`, and rerun the unchanged
+  focused selection. Evidence: the deterministic manifest check and all 207
+  focused tests pass.
+- Root cause: the verification index changed after the earlier parent-docs
+  index generation, so the parent hash correctly no longer matched. Resolution:
+  regenerate only the maintained `docs` parent index after the final child
+  index change and rerun all three bounded checks. Evidence: verification,
+  planning, and parent-docs index checks pass without touching unrelated index
+  topology.
+- Root cause: the session parser requires the receipt path on the same line as
+  the `**Git handoff receipt:**` label, while the initial entry wrapped it onto
+  the following line. Resolution: keep the label and path on one line and rerun
+  session end. Evidence: the dedicated validator and session-end receipt check
+  both recognize the same versioned receipt.
+- Root cause: the link total was captured before the final session-log receipt
+  path became a parsed internal link. Resolution: correct the acceptance
+  evidence to the final 1,216-link count and rerun link, index, and quick checks
+  before amending the candidate. Evidence: all 1,216 links remain valid and the
+  amended exact head is the only head sent to independent audit.
+- Root cause: FLAT-E introduced truthful paths such as
+  `request.panel.geometry`, but the older validator flattened only the direct
+  fields of `RegularInteriorFlatSlabDesignInput`; the earlier focused selection
+  also omitted this semantic integration file. Resolution: make the validator
+  recursively traverse typed dataclass inputs and results with cycle
+  protection, add the semantic file to the focused family selection, and
+  require a second independent exact-head audit. Evidence: all seven semantic
+  tests and the corrected 214-test selection pass, including verification of
+  the actual nested public request/result types.
+- Root cause: recursive traversal newly evaluated annotations below every
+  result type, including a legacy string annotation whose defining module does
+  not expose `DesignError` to runtime hint resolution. Resolution: when a
+  dataclass's runtime hints cannot be resolved, retain its direct field names
+  from `dataclasses.fields` and stop recursion at unresolved string leaves;
+  concrete nested flat-slab types still resolve and recurse normally. Evidence:
+  all semantic-contract tests pass without weakening any declared canonical-
+  path assertion.
+
+### Validation
+
+- Focused 214-test flat-slab family, public workflow, API, capability, semantic,
+  manifest, clause, traceability, and API-manifest tests.
+- Independent benchmark arithmetic and public result comparison.
+- Architecture, import, API/OpenAPI/schema, manifest, parity, links, touched
+  indexes, token-efficiency, and quick checks.
+- Broad Python and the full 30-check gate remain deferred to final INDIA-2
+  closeout; no repository-wide issue required them early.
+
 ## 2026-08-16 — Session: INDIA-2-FLAT-E Public Workflow and Transport
 
 **Agent:** Codex (`api-developer`, sole writer; one bounded independent audit

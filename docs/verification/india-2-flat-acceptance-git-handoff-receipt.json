@@ -1,0 +1,164 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T06:06:49Z",
+      "query_status": "OK",
+      "reference": "task:INDIA-2:user-request-complete-package",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T06:06:49Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/india-2-flat-acceptance",
+      "head_sha": "b04d80653484a8dc43e8ff73936d8171e4b65d40",
+      "task_id": "INDIA-2-FLAT-ACCEPTANCE"
+    }
+  },
+  "holds": [
+    "AUTHORIZATION_TARGET_MISMATCH",
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "f70d0b65725db9b531c63b862c2525110a5bf0d75d343c5bb0bda7e855772b62",
+    "state": {
+      "branch": "codex/india-2-flat-acceptance",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "b04d80653484a8dc43e8ff73936d8171e4b65d40",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 77.97,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-flat-acceptance",
+      "head_sha": "8a84ffb3540ba37e46014277367985a0b9c77f21",
+      "hold_reasons": [
+        "changed paths: 4"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T06:17:17.057795+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-flat-acceptance",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 4,
+        "modified_paths": [
+          "Python/tests/integration/test_capability_semantics.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/verification/india-2-flat-family-acceptance-evidence.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": null,
+        "behind": null,
+        "ref": "NONE",
+        "sha": null,
+        "status": "none"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-flat-acceptance"
+    }
+  },
+  "local_state_receipt_hash": "sha256:f70d0b65725db9b531c63b862c2525110a5bf0d75d343c5bb0bda7e855772b62",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T06:17:17.057934+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T06:06:49Z",
+    "owner": "Main Agent under user instruction to preserve Git state",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib/codes/is456/flat_slab/**",
+      "Python/structural_lib/services/flat_slab_api.py",
+      "fastapi_app/**",
+      "react_app/**",
+      "private_sources/**"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "Python/tests/integration/test_capability_semantics.py",
+      "docs/verification/india-2-flat-family-acceptance-evidence.md",
+      "docs/verification/india-2-flat-acceptance-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/planning/india-2-remaining-is456-elements-plan.md",
+      "docs/planning/indian-code-completion-plan.md",
+      "docs/planning/next-session-brief.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md",
+      "docs/verification/indian-code-capability-coverage.json",
+      "scripts/_lib/indian_code_manifest.py"
+    ],
+    "task_id": "INDIA-2-FLAT-ACCEPTANCE"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
