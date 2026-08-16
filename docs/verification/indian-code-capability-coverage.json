@@ -288,11 +288,11 @@
         }
       ],
       "registration_summary": {
-        "known_references": 151,
-        "registered_known_references": 78,
-        "metadata_only_references": 73,
+        "known_references": 161,
+        "registered_known_references": 84,
+        "metadata_only_references": 77,
         "registration_only_references": 0,
-        "registration_pct": 51.7
+        "registration_pct": 52.2
       },
       "references": [
         {
@@ -865,6 +865,108 @@
           "registration_status": "REGISTERED",
           "functions": [
             "structural_lib.codes.is456.flat_slab.geometry.resolve_regular_interior_flat_slab_geometry"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31.4.2",
+          "reference": "31.4.2",
+          "reference_type": "clause",
+          "title": "Total Design Moment for a Span",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.4.2.2",
+          "reference": "31.4.2.2",
+          "reference_type": "clause",
+          "title": "Total Static Moment Expression",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.moments.calculate_regular_interior_flat_slab_moments"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31.4.3",
+          "reference": "31.4.3",
+          "reference_type": "clause",
+          "title": "Negative and Positive Design Moments",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.4.3.2",
+          "reference": "31.4.3.2",
+          "reference_type": "clause",
+          "title": "Interior Span Moment Distribution",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.moments.calculate_regular_interior_flat_slab_moments"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31.4.4",
+          "reference": "31.4.4",
+          "reference_type": "clause",
+          "title": "Bending Moment Distribution Across Panel Width",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.moments.calculate_regular_interior_flat_slab_moments"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31.5",
+          "reference": "31.5",
+          "reference_type": "clause",
+          "title": "Equivalent Frame Method",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.5.5",
+          "reference": "31.5.5",
+          "reference_type": "clause",
+          "title": "Bending Moment Distribution Across Panel Width",
+          "category": "slabs",
+          "registration_status": "METADATA_ONLY",
+          "functions": []
+        },
+        {
+          "reference_id": "IS456:2000:31.5.5.1",
+          "reference": "31.5.5.1",
+          "reference_type": "clause",
+          "title": "Interior-Support Column-Strip Negative Moment",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.moments.calculate_regular_interior_flat_slab_moments"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31.5.5.3",
+          "reference": "31.5.5.3",
+          "reference_type": "clause",
+          "title": "Column-Strip Positive Moment",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.moments.calculate_regular_interior_flat_slab_moments"
+          ]
+        },
+        {
+          "reference_id": "IS456:2000:31.5.5.4",
+          "reference": "31.5.5.4",
+          "reference_type": "clause",
+          "title": "Middle-Strip Moments",
+          "category": "slabs",
+          "registration_status": "REGISTERED",
+          "functions": [
+            "structural_lib.codes.is456.flat_slab.moments.calculate_regular_interior_flat_slab_moments"
           ]
         },
         {

@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 3,
+  "file_count": 4,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 34,
+      "size_lines": 42,
       "last_updated": "2026-08-16",
       "description": "Bounded IS 456 Clause 31 interior flat-slab contracts.",
-      "content_hash": "26aa401c7cf9"
+      "content_hash": "d16b471ca910"
     },
     {
       "name": "geometry.py",
@@ -84,6 +84,36 @@
         }
       ],
       "content_hash": "3979b274be71"
+    },
+    {
+      "name": "moments.py",
+      "type": "python",
+      "size_lines": 134,
+      "last_updated": "2026-08-16",
+      "description": "Clause 31 direct-design moments for the bounded interior flat-slab panel.",
+      "classes": [
+        {
+          "name": "FlatSlabDirectionMoments",
+          "description": "Direct-design moment distribution in one panel direction."
+        },
+        {
+          "name": "FlatSlabMomentResult",
+          "description": "Both-direction moments for the G0-approved square interior panel."
+        }
+      ],
+      "functions": [
+        {
+          "name": "calculate_regular_interior_flat_slab_moments",
+          "description": "Calculate bounded direct-design moments in both panel directions.",
+          "params": [
+            "panel"
+          ]
+        }
+      ],
+      "constants": [
+        "_SOURCE_REFS"
+      ],
+      "content_hash": "70e05d19ff46"
     }
   ],
   "subfolders": [],
@@ -93,13 +123,16 @@
     "FlatSlabContractError",
     "FlatSlabDirection",
     "FlatSlabDirectionGeometry",
+    "FlatSlabDirectionMoments",
     "FlatSlabGeometryResult",
     "FlatSlabGravityLoad",
     "FlatSlabGridGeometry",
     "FlatSlabMaterial",
+    "FlatSlabMomentResult",
     "FlatSlabPanelInput",
     "FlatSlabPanelLocation",
+    "calculate_regular_interior_flat_slab_moments",
     "resolve_regular_interior_flat_slab_geometry"
   ],
-  "content_hash": "203a77af7f7bbc6f"
+  "content_hash": "fbf7a90ddc05c479"
 }

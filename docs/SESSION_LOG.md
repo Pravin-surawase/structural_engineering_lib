@@ -5,6 +5,81 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FLAT-B Direct-Design Moments
+
+**Agent:** Codex (`structural-math`, sole writer; no subagents)
+
+**Branch:** `codex/india-2-flat-b` from integrated FLAT-A main at
+`3070e424705f0a1f7633c3fe2534be9666751a76`
+
+**Git handoff receipt:** `docs/verification/india-2-flat-b-git-handoff-receipt.json`
+
+**Focus:** Implement only the G0-frozen total static moment and bounded
+interior negative/positive and column/middle-strip distribution.
+
+### Summary
+
+- Added a pure both-direction moment calculation that re-runs the FLAT-A
+  eligibility and geometry resolver before using any action or span.
+- Preserved explicit kN/m2, m, kN, and kN m carriers and exact Clause 31
+  identifier/caller provenance.
+- Added the moment clause hierarchy without activating equivalent-frame
+  analysis or changing the held flat-slab capability claim.
+
+### Issues encountered
+
+- The system shell did not provide `pdftotext`, blocking the first attempted
+  read-only Clause 31 extraction command.
+- The first direct test run had one provenance assertion failure because the
+  test expected a tuple while the existing traceability utility returns a list.
+- The first combined manifest selection failed because the generator was run
+  without its explicit write mode, so it printed the new manifest but left the
+  committed file at the earlier 152-clause snapshot.
+
+### Root causes and resolutions
+
+- Root cause: this worktree's default shell path does not include a Poppler
+  text-extraction binary. Resolution: load the Codex bundled document runtime
+  and use its read-only `pypdf` package against the controlled source PDF; the
+  required Clause 31 identifiers and normalized moment rules were recovered.
+- Root cause: the new test inferred the traceability return container instead
+  of following the existing utility contract. Resolution: assert the exact
+  ordered list returned by `get_clause_refs`; all 6 direct and 141 combined
+  moment/geometry/clause/traceability tests pass, and the complete focused
+  selection including manifest truth passes 147 tests.
+- Root cause: the manifest command defaults to stdout and requires `--write`
+  for mutation. Resolution: inspect its live help, rerun with `--write`, then
+  require both the focused manifest test and `--check` to pass.
+
+### Evidence
+
+- Both directions reproduce `Mo = 442.40625 kN m`, negative/positive moments
+  `287.5640625 / 154.8421875 kN m`, and the four frozen strip moments.
+- Distribution conservation, FLAT-A geometry reuse, immutable result types,
+  exact provenance, and non-panel rejection are directly tested.
+- The complete focused moment/geometry/clause/traceability/manifest selection
+  passes all 147 tests and leaves deterministic truth at 10 supported/11 held.
+- Black, Ruff, mypy, and Bandit pass on the changed executable paths.
+- Architecture validation reports zero violations across 181 files; import
+  validation reports zero broken imports across 614 Python files.
+- All 1,200 internal links are valid, all seven touched indexes are current,
+  token efficiency passes, and the quick repository gate passes 10/10.
+- Capability remains held until FLAT-E; broad Python and 30-check gates remain
+  deferred to whole-INDIA-2 closeout.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: `pdftotext` was not found in the default shell → loaded
+  the bundled document runtime and used its read-only `pypdf` extractor.
+- ⚠️ TERMINAL ISSUE: the first direct run failed one list-versus-tuple
+  provenance assertion → matched the maintained traceability return contract,
+  then passed all direct and combined focused tests.
+- ⚠️ TERMINAL ISSUE: manifest generation without `--write` left the committed
+  file stale and failed the first combined manifest test → used the documented
+  `--write` mode and verified the committed output with `--check`.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-FLAT-A Geometry and Eligibility
 
 **Agent:** Codex (`structural-math`, sole writer; no subagents)

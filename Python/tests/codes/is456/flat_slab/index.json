@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 2,
+  "file_count": 3,
   "files": [
     {
       "name": "__init__.py",
@@ -84,9 +84,37 @@
         }
       ],
       "content_hash": "5d229ea12de2"
+    },
+    {
+      "name": "test_moments.py",
+      "type": "python",
+      "size_lines": 150,
+      "last_updated": "2026-08-16",
+      "description": "INDIA-2-FLAT-B frozen direct-design moment tests.",
+      "functions": [
+        {
+          "name": "test_frozen_moment_benchmark_in_both_directions"
+        },
+        {
+          "name": "test_distribution_preserves_each_total_moment"
+        },
+        {
+          "name": "test_calculation_reuses_resolved_geometry_and_input"
+        },
+        {
+          "name": "test_clause_and_source_provenance_is_retained"
+        },
+        {
+          "name": "test_result_contracts_are_immutable"
+        },
+        {
+          "name": "test_non_panel_input_fails_closed"
+        }
+      ],
+      "content_hash": "aaa495c2609a"
     }
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "8c8c1e965bf6d643"
+  "content_hash": "c597c202c80e43a9"
 }
