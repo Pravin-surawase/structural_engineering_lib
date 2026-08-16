@@ -88,6 +88,7 @@ _IS456_EVIDENCE = {
     "flat_slab": (
         "docs/verification/india-2-flat-g0-scope-evidence.md",
         "docs/verification/india-2-flat-a-geometry-evidence.md",
+        "docs/verification/india-2-flat-b-moment-evidence.md",
     ),
 }
 

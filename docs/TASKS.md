@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| INDIA-2-FLAT | Implement the G0-frozen equal-span square interior flat-slab and centred-column punching workflow through focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 and FLAT-A geometry/eligibility are complete; FLAT-B bounded gravity moment distribution is next; unequal/exterior/drop/opening/moment-transfer cases remain held |
+| INDIA-2-FLAT | Implement the G0-frozen equal-span square interior flat-slab and centred-column punching workflow through focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 and FLAT-A/B geometry and moment distribution are complete; FLAT-C flexure/detailing/serviceability is next; unequal/exterior/drop/opening/moment-transfer cases remain held |
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
 
 ## Up Next
@@ -159,6 +159,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-FLAT-B | Added total static moment and bounded interior negative/positive and column/middle-strip distribution in both directions | Main Agent + structural math | ✅ COMPLETE — frozen moment values and conservation identities pass; capability remains held until FLAT-E |
 | INDIA-2-FLAT-A | Added typed grid/panel/material/load contracts, direct-design eligibility, both clear-span directions, strip definitions, exact Clause 31 registration, and fail-closed tests | Main Agent + structural math | ✅ COMPLETE — 131 focused geometry/clause/traceability/manifest tests pass; capability remains held until FLAT-E |
 | INDIA-2-FLAT-G0 | Froze one equal-span square interior flat-slab direct-design and centred square-column punching case with a pre-implementation hand benchmark | Main Agent + structural engineer | ✅ GO — FLAT-A-E owner-activated; unequal/exterior/drop/head/opening/patterned-load/moment-transfer and punching-reinforcement cases remain held |
 | INDIA-2-DEEP | Implemented and accepted one bounded simply supported Clause 29 positive-reinforcement workflow with public provenance | Main Agent + structural engineer | ✅ DONE — G0 and A-D integrated; 157-test focused family selection and independent hand benchmark pass; qualified review and excluded deep-beam systems remain held |

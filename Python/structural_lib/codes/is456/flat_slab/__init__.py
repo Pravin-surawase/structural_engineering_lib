@@ -17,17 +17,25 @@ from structural_lib.codes.is456.flat_slab.models import (
     FlatSlabPanelInput,
     FlatSlabPanelLocation,
 )
+from structural_lib.codes.is456.flat_slab.moments import (
+    FlatSlabDirectionMoments,
+    FlatSlabMomentResult,
+    calculate_regular_interior_flat_slab_moments,
+)
 
 __all__ = [
     "FlatSlabAnalysisMethod",
     "FlatSlabContractError",
     "FlatSlabDirection",
     "FlatSlabDirectionGeometry",
+    "FlatSlabDirectionMoments",
     "FlatSlabGeometryResult",
     "FlatSlabGravityLoad",
     "FlatSlabGridGeometry",
     "FlatSlabMaterial",
+    "FlatSlabMomentResult",
     "FlatSlabPanelInput",
     "FlatSlabPanelLocation",
+    "calculate_regular_interior_flat_slab_moments",
     "resolve_regular_interior_flat_slab_geometry",
 ]

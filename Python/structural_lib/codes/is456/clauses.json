@@ -6,7 +6,7 @@
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
     "last_updated": "2026-08-16",
-    "total_clauses": 152,
+    "total_clauses": 162,
     "includes_references": [
       "IS 13920:2016"
     ],
@@ -670,6 +670,106 @@
         "panel regularity",
         "column offset",
         "live dead ratio"
+      ]
+    },
+    "31.4.2": {
+      "title": "Total Design Moment for a Span",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "total design moment",
+        "panel strip",
+        "direct design"
+      ]
+    },
+    "31.4.2.2": {
+      "title": "Total Static Moment Expression",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "static moment",
+        "clear span",
+        "factored load"
+      ]
+    },
+    "31.4.3": {
+      "title": "Negative and Positive Design Moments",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "negative moment",
+        "positive moment",
+        "span distribution"
+      ]
+    },
+    "31.4.3.2": {
+      "title": "Interior Span Moment Distribution",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "interior span",
+        "negative moment",
+        "positive moment"
+      ]
+    },
+    "31.4.4": {
+      "title": "Bending Moment Distribution Across Panel Width",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "panel width",
+        "column strip",
+        "middle strip"
+      ]
+    },
+    "31.5": {
+      "title": "Equivalent Frame Method",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "equivalent frame",
+        "flat slab analysis",
+        "moment distribution"
+      ]
+    },
+    "31.5.5": {
+      "title": "Bending Moment Distribution Across Panel Width",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "column strip",
+        "middle strip",
+        "panel width"
+      ]
+    },
+    "31.5.5.1": {
+      "title": "Interior-Support Column-Strip Negative Moment",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "interior support",
+        "column strip",
+        "negative moment"
+      ]
+    },
+    "31.5.5.3": {
+      "title": "Column-Strip Positive Moment",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "column strip",
+        "positive moment",
+        "span"
+      ]
+    },
+    "31.5.5.4": {
+      "title": "Middle-Strip Moments",
+      "section": "31 - Flat Slabs",
+      "category": "slabs",
+      "keywords": [
+        "middle strip",
+        "remaining moment",
+        "panel distribution"
       ]
     },
     "31.6": {
