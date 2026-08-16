@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
   "last_updated": "2026-08-16",
-  "file_count": 41,
+  "file_count": 42,
   "files": [
     {
       "name": "README.md",
@@ -225,7 +225,7 @@
     {
       "name": "test_capabilities.py",
       "type": "python",
-      "size_lines": 47,
+      "size_lines": 56,
       "last_updated": "2026-08-16",
       "description": "Cross-surface tests for canonical capability discovery.",
       "functions": [
@@ -242,7 +242,7 @@
           ]
         }
       ],
-      "content_hash": "33b91daebfdf"
+      "content_hash": "3c6071713670"
     },
     {
       "name": "test_catalog.py",
@@ -548,6 +548,37 @@
         "SAFE_REQUEST"
       ],
       "content_hash": "a125fc65ff16"
+    },
+    {
+      "name": "test_combined_footing.py",
+      "type": "python",
+      "size_lines": 226,
+      "last_updated": "2026-08-16",
+      "description": "Contract tests for the bounded symmetric combined-footing FastAPI slice.",
+      "functions": [
+        {
+          "name": "test_combined_footing_benchmark_returns_typed_pass_with_provenance"
+        },
+        {
+          "name": "test_combined_footing_rejects_unknown_nonfinite_and_held_scope"
+        },
+        {
+          "name": "test_combined_footing_service_validation_uses_safe_error_envelope"
+        },
+        {
+          "name": "test_combined_footing_valid_inadequacy_remains_json_safe_fail"
+        },
+        {
+          "name": "test_combined_footing_openapi_exposes_typed_success_schema"
+        },
+        {
+          "name": "test_combined_footing_is_mounted_in_main_app",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "content_hash": "6e62e9d0fb9b"
     },
     {
       "name": "test_config.py",
@@ -1928,5 +1959,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "f42a5cff2a94b2b6"
+  "content_hash": "5e80329ac0b19fc8"
 }

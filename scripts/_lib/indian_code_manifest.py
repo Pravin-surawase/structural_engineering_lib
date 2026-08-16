@@ -99,22 +99,12 @@ _IS456_EVIDENCE = {
         "docs/verification/india-2-foundation-combined-a-analysis-evidence.md",
         "docs/verification/india-2-foundation-combined-b-strength-evidence.md",
         "docs/verification/india-2-foundation-combined-c-public-workflow-evidence.md",
+        "docs/verification/india-2-foundation-combined-d-publication-evidence.md",
     ),
 }
 
 _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
     "IS456:2000": (
-        {
-            "family": "combined_footing",
-            "implementation_status": "IMPLEMENTED_BOUNDED",
-            "claim": "Combined-footing capability publication remains held while a bounded public Python preview composes the G0-frozen symmetric two-column rigid action and strength kernels.",
-            "workflows": ["design_symmetric_combined_footing_is456"],
-            "limitations": [
-                "The bounded Python preview is implemented for the equal-load symmetric two-column rectangular case; FastAPI transport, runtime capability registration, semantic-contract publication, and family acceptance remain held until COMBINED-D.",
-                "Unequal/eccentric loads, trapezoidal plans, variable pressure, settlement, elastic-line, Winkler, plate, and FEM analysis remain held.",
-            ],
-            "evidence": list(_IS456_EVIDENCE["combined_footing"]),
-        },
         {
             "family": "strap_footing",
             "claim": "Strap-footing design is not implemented.",

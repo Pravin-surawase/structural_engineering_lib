@@ -29,10 +29,10 @@
     "Python/structural_lib/codes/is13920/**/*.py"
   ],
   "capability_summary": {
-    "supported_families": 11,
-    "held_families": 10,
+    "supported_families": 12,
+    "held_families": 9,
     "total_declared_families": 21,
-    "supported_pct": 52.4
+    "supported_pct": 57.1
   },
   "standards": [
     {
@@ -43,10 +43,10 @@
       "source_root": "Python/structural_lib/codes/is456",
       "status": "SUPPORTED_SUBSET",
       "capability_summary": {
-        "supported_families": 8,
-        "held_families": 4,
+        "supported_families": 9,
+        "held_families": 3,
         "total_declared_families": 12,
-        "supported_pct": 66.7
+        "supported_pct": 75.0
       },
       "capability_families": [
         {
@@ -249,21 +249,24 @@
         {
           "capability_id": "IS456:2000:combined_footing",
           "family": "combined_footing",
-          "scope_status": "HELD",
+          "scope_status": "SUPPORTED",
           "implementation_status": "IMPLEMENTED_BOUNDED",
-          "claim": "Combined-footing capability publication remains held while a bounded public Python preview composes the G0-frozen symmetric two-column rigid action and strength kernels.",
+          "claim": "Exactly two identical square columns with equal concentric axial loads on one symmetric rigid rectangular constant-depth footing on soil, using an externally approved uniform pressure model and caller-provided reinforcement, supporting-area, and dowel evidence.",
           "workflows": [
             "design_symmetric_combined_footing_is456"
           ],
           "limitations": [
-            "The bounded Python preview is implemented for the equal-load symmetric two-column rectangular case; FastAPI transport, runtime capability registration, semantic-contract publication, and family acceptance remain held until COMBINED-D.",
-            "Unequal/eccentric loads, trapezoidal plans, variable pressure, settlement, elastic-line, Winkler, plate, and FEM analysis remain held."
+            "Unequal or eccentric loads, column moments, horizontal actions, uplift or load reversal, property-line layouts, trapezoidal or irregular plans, alternate columns, pedestals, openings, and variable-depth footings are excluded.",
+            "Flexible, variable, nonlinear, or tensile soil pressure; bearing-capacity or settlement calculation; elastic-line, Winkler, plate, finite-element, and soil-structure-interaction analysis are excluded.",
+            "Shear or punching reinforcement, coated, bundled, spliced or curtailed bars, automatic sizing or bar selection, durability selection, and construction approval are excluded.",
+            "Strap footings, pile caps, raft foundations, React publication, release, professional approval, and complete engineering approval are excluded."
           ],
           "evidence": [
             "docs/verification/india-2-foundation-combined-g0-scope-evidence.md",
             "docs/verification/india-2-foundation-combined-a-analysis-evidence.md",
             "docs/verification/india-2-foundation-combined-b-strength-evidence.md",
-            "docs/verification/india-2-foundation-combined-c-public-workflow-evidence.md"
+            "docs/verification/india-2-foundation-combined-c-public-workflow-evidence.md",
+            "docs/verification/india-2-foundation-combined-d-publication-evidence.md"
           ],
           "qualified_review_required": true
         },

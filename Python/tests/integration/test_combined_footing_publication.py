@@ -261,12 +261,21 @@ def test_public_result_is_frozen_and_deterministic() -> None:
         first.status = services_api.SymmetricCombinedFootingDesignStatus.FAIL  # type: ignore[misc]
 
 
-def test_capability_and_semantic_truth_remain_held_until_combined_d() -> None:
-    assert all(
-        item.element != "combined_footing"
+def test_capability_and_semantic_truth_publish_the_exact_combined_workflow() -> None:
+    capability = next(
+        item
         for item in services_api.get_supported_is456_capabilities()
+        if item.element == "combined_footing"
     )
-    assert all(
-        item.workflow != "design_symmetric_combined_footing_is456"
+    semantic = next(
+        item
         for item in services_api.get_supported_is456_semantic_contract().workflows
+        if item.workflow == "design_symmetric_combined_footing_is456"
     )
+
+    assert capability.public_workflows == ("design_symmetric_combined_footing_is456",)
+    assert "two identical square columns" in capability.supported_case
+    assert capability.qualified_review_required is True
+    assert semantic.element == "combined_footing"
+    assert semantic.statuses[0].canonical_name == "status"
+    assert "professional design approval" in semantic.statuses[0].limitations[0]

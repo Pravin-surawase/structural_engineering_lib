@@ -267,6 +267,23 @@ _CAPABILITIES = (
         ),
         qualified_review_required=True,
     ),
+    IS456Capability(
+        element="combined_footing",
+        public_workflows=("design_symmetric_combined_footing_is456",),
+        supported_case=(
+            "Exactly two identical square columns with equal concentric axial "
+            "loads on one symmetric rigid rectangular constant-depth footing on "
+            "soil, using an externally approved uniform pressure model and "
+            "caller-provided reinforcement, supporting-area, and dowel evidence."
+        ),
+        held_cases=(
+            "Unequal or eccentric loads, column moments, horizontal actions, uplift or load reversal, property-line layouts, trapezoidal or irregular plans, alternate columns, pedestals, openings, and variable-depth footings are excluded.",
+            "Flexible, variable, nonlinear, or tensile soil pressure; bearing-capacity or settlement calculation; elastic-line, Winkler, plate, finite-element, and soil-structure-interaction analysis are excluded.",
+            "Shear or punching reinforcement, coated, bundled, spliced or curtailed bars, automatic sizing or bar selection, durability selection, and construction approval are excluded.",
+            "Strap footings, pile caps, raft foundations, React publication, release, professional approval, and complete engineering approval are excluded.",
+        ),
+        qualified_review_required=True,
+    ),
 )
 
 
@@ -1053,6 +1070,125 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                 "Only the equal-span square interior direct-design topology declared by the capability is supported.",
                 "The caller supplies approved gravity actions, provided bars, review references, and the factored support reaction.",
                 "Punching reinforcement is never designed; any concrete-only exceedance fails this route.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_symmetric_combined_footing_is456",
+            element="combined_footing",
+            fields=(
+                _field(
+                    "request",
+                    "typed symmetric combined-footing request",
+                    "SymmetricCombinedFootingDesignInput",
+                    True,
+                    "validated explicit input contract",
+                ),
+                _field(
+                    "status",
+                    "aggregate bearing, strength, detailing, and transfer disposition",
+                    "enumeration",
+                    True,
+                    "PASS or FAIL",
+                ),
+                _field(
+                    "request.footing.analysis.geometry",
+                    "symmetric two-column rigid-footing geometry and eligibility",
+                    "CombinedFootingGeometryInput",
+                    True,
+                    "explicit dimensions in mm and literal topology assertions",
+                ),
+                _field(
+                    "request.footing.analysis.actions",
+                    "approved service, factored, carrier, bearing, and cancellation bases",
+                    "CombinedFootingActionInput",
+                    True,
+                    "finite positive kN and kN/m2 quantities with literal approval assertions",
+                ),
+                _field(
+                    "request.footing.material",
+                    "footing, column, and reinforcement material basis",
+                    "CombinedFootingMaterialInput",
+                    True,
+                    "supported N/mm2 grades and uncoated deformed bars",
+                ),
+                _field(
+                    "request.footing.reinforcement",
+                    "caller-provided longitudinal and transverse bars and anchorage",
+                    "CombinedFootingReinforcementInput",
+                    True,
+                    "supported diameters and finite positive mm quantities",
+                ),
+                _field(
+                    "request.footing.transfer",
+                    "approved supporting-area and dowel-transfer evidence",
+                    "CombinedFootingTransferInput",
+                    True,
+                    "approved frustum basis, supported bars, counts, areas, and mm lengths",
+                ),
+                _field(
+                    "strength.actions",
+                    "service bearing, factored pressure, equilibrium, and section actions",
+                    "CombinedFootingActionResult",
+                    True,
+                    "typed kN, kN m, kN/m2, mm, and residual results",
+                ),
+                _field(
+                    "strength.top_longitudinal_flexure",
+                    "governing inter-column top-steel disposition",
+                    "CombinedFootingFlexureResult",
+                    True,
+                    "typed required/provided mm2, spacing, cover, and anchorage checks",
+                ),
+                _field(
+                    "strength.longitudinal_one_way_shear",
+                    "four concrete-only longitudinal one-way shear dispositions",
+                    "CombinedFootingOneWayShearResult tuple",
+                    True,
+                    "typed demand, capacity, and utilization results",
+                ),
+                _field(
+                    "strength.punching",
+                    "two full-perimeter concrete-only punching dispositions",
+                    "CombinedFootingPunchingResult tuple",
+                    True,
+                    "typed demand, capacity, and utilization results",
+                ),
+                _field(
+                    "strength.load_transfer",
+                    "two identical-column bearing and dowel-transfer dispositions",
+                    "CombinedFootingLoadTransferResult tuple",
+                    True,
+                    "typed concrete bearing, required/provided steel, and development checks",
+                ),
+                _field(
+                    "qualified_review_required",
+                    "qualified review boundary",
+                    "boolean",
+                    True,
+                    "always true",
+                ),
+                _field(
+                    "complete_engineering_design_approved",
+                    "complete engineering approval",
+                    "boolean",
+                    True,
+                    "always false",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "status",
+                    "PASS only when service bearing and every represented flexure, detailing, concrete-only shear and punching, bearing, dowel, and anchorage comparison pass.",
+                    (
+                        "PASS is bounded software evidence, not professional design approval.",
+                        "Soil capacity, settlement, pressure generation beyond the approved uniform model, shear or punching reinforcement design, and alternate foundation systems are not represented.",
+                    ),
+                ),
+            ),
+            limitations=(
+                "Only the declared equal-load symmetric two-column rigid rectangular constant-depth footing is supported.",
+                "The caller supplies approved soil, pressure, load, material, reinforcement, supporting-area, transfer, and review bases.",
+                "Unequal or eccentric loading, alternate topology, nonlinear soil response, automatic sizing, strap, pile-cap, raft, and professional approval remain held.",
             ),
         ),
         IS456WorkflowContract(

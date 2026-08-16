@@ -3054,6 +3054,58 @@
         "title": "APIResponse[StraightFlightStaircaseResponse]",
         "type": "object"
       },
+      "APIResponse_SymmetricCombinedFootingResponse_": {
+        "example": {
+          "data": {
+            "Ast_mm2": 603.2
+          },
+          "success": true
+        },
+        "properties": {
+          "clause_refs": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clause Refs"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SymmetricCombinedFootingResponse"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "success": {
+            "default": true,
+            "title": "Success",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "APIResponse[SymmetricCombinedFootingResponse]",
+        "type": "object"
+      },
       "APIResponse_TorsionDesignResponse_": {
         "example": {
           "data": {
@@ -8795,6 +8847,1401 @@
           "ve_kn"
         ],
         "title": "CombinedBeamActions",
+        "type": "object"
+      },
+      "CombinedFootingActionRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "allowable_gross_bearing_pressure_kn_per_m2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Allowable Gross Bearing Pressure Kn Per M2",
+            "type": "number"
+          },
+          "bearing_and_settlement_approved": {
+            "const": true,
+            "title": "Bearing And Settlement Approved",
+            "type": "boolean"
+          },
+          "bearing_settlement_basis_reference": {
+            "minLength": 1,
+            "title": "Bearing Settlement Basis Reference",
+            "type": "string"
+          },
+          "cancellation_basis_reference": {
+            "minLength": 1,
+            "title": "Cancellation Basis Reference",
+            "type": "string"
+          },
+          "column_moments_present": {
+            "const": false,
+            "title": "Column Moments Present",
+            "type": "boolean"
+          },
+          "distributed_carrier_cancellation_approved": {
+            "const": true,
+            "title": "Distributed Carrier Cancellation Approved",
+            "type": "boolean"
+          },
+          "factored_axial_load_each_kn": {
+            "exclusiveMinimum": 0.0,
+            "title": "Factored Axial Load Each Kn",
+            "type": "number"
+          },
+          "factored_uniform_carrier_kn_per_m2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Factored Uniform Carrier Kn Per M2",
+            "type": "number"
+          },
+          "horizontal_actions_present": {
+            "const": false,
+            "title": "Horizontal Actions Present",
+            "type": "boolean"
+          },
+          "load_basis_reference": {
+            "minLength": 1,
+            "title": "Load Basis Reference",
+            "type": "string"
+          },
+          "load_combination_approved": {
+            "const": true,
+            "title": "Load Combination Approved",
+            "type": "boolean"
+          },
+          "pressure_uniformity_approved": {
+            "const": true,
+            "title": "Pressure Uniformity Approved",
+            "type": "boolean"
+          },
+          "service_axial_load_each_kn": {
+            "exclusiveMinimum": 0.0,
+            "title": "Service Axial Load Each Kn",
+            "type": "number"
+          },
+          "service_uniform_carrier_kn_per_m2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Service Uniform Carrier Kn Per M2",
+            "type": "number"
+          },
+          "uplift_or_load_reversal_present": {
+            "const": false,
+            "title": "Uplift Or Load Reversal Present",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "service_axial_load_each_kn",
+          "factored_axial_load_each_kn",
+          "service_uniform_carrier_kn_per_m2",
+          "factored_uniform_carrier_kn_per_m2",
+          "allowable_gross_bearing_pressure_kn_per_m2",
+          "load_combination_approved",
+          "bearing_and_settlement_approved",
+          "pressure_uniformity_approved",
+          "distributed_carrier_cancellation_approved",
+          "column_moments_present",
+          "horizontal_actions_present",
+          "uplift_or_load_reversal_present",
+          "load_basis_reference",
+          "bearing_settlement_basis_reference",
+          "cancellation_basis_reference"
+        ],
+        "title": "CombinedFootingActionRequest",
+        "type": "object"
+      },
+      "CombinedFootingActionResponse": {
+        "properties": {
+          "factored_column_resultant_kn": {
+            "title": "Factored Column Resultant Kn",
+            "type": "number"
+          },
+          "factored_column_resultant_x_mm": {
+            "title": "Factored Column Resultant X Mm",
+            "type": "number"
+          },
+          "factored_resultant_alignment_residual_mm": {
+            "title": "Factored Resultant Alignment Residual Mm",
+            "type": "number"
+          },
+          "factored_total_vertical_load_kn": {
+            "title": "Factored Total Vertical Load Kn",
+            "type": "number"
+          },
+          "geometry": {
+            "$ref": "#/components/schemas/CombinedFootingGeometryResponse"
+          },
+          "gross_factored_pressure_kn_per_m2": {
+            "title": "Gross Factored Pressure Kn Per M2",
+            "type": "number"
+          },
+          "gross_service_bearing_utilization": {
+            "title": "Gross Service Bearing Utilization",
+            "type": "number"
+          },
+          "gross_service_bearing_within_allowable": {
+            "title": "Gross Service Bearing Within Allowable",
+            "type": "boolean"
+          },
+          "gross_service_pressure_kn_per_m2": {
+            "title": "Gross Service Pressure Kn Per M2",
+            "type": "number"
+          },
+          "inter_column_midpoint": {
+            "$ref": "#/components/schemas/CombinedFootingSectionActionResponse"
+          },
+          "left_inner_column_face": {
+            "$ref": "#/components/schemas/CombinedFootingSectionActionResponse"
+          },
+          "left_inner_one_way_shear": {
+            "$ref": "#/components/schemas/CombinedFootingSectionActionResponse"
+          },
+          "left_outer_column_face": {
+            "$ref": "#/components/schemas/CombinedFootingSectionActionResponse"
+          },
+          "left_outer_one_way_shear": {
+            "$ref": "#/components/schemas/CombinedFootingSectionActionResponse"
+          },
+          "moment_equilibrium_residual_kn_m": {
+            "title": "Moment Equilibrium Residual Kn M",
+            "type": "number"
+          },
+          "net_factored_structural_pressure_kn_per_m2": {
+            "title": "Net Factored Structural Pressure Kn Per M2",
+            "type": "number"
+          },
+          "right_inner_column_face": {
+            "$ref": "#/components/schemas/CombinedFootingSectionActionResponse"
+          },
+          "right_inner_one_way_shear": {
+            "$ref": "#/components/schemas/CombinedFootingSectionActionResponse"
+          },
+          "right_outer_column_face": {
+            "$ref": "#/components/schemas/CombinedFootingSectionActionResponse"
+          },
+          "right_outer_one_way_shear": {
+            "$ref": "#/components/schemas/CombinedFootingSectionActionResponse"
+          },
+          "service_column_resultant_kn": {
+            "title": "Service Column Resultant Kn",
+            "type": "number"
+          },
+          "service_column_resultant_x_mm": {
+            "title": "Service Column Resultant X Mm",
+            "type": "number"
+          },
+          "service_resultant_alignment_residual_mm": {
+            "title": "Service Resultant Alignment Residual Mm",
+            "type": "number"
+          },
+          "service_total_resultant_x_mm": {
+            "title": "Service Total Resultant X Mm",
+            "type": "number"
+          },
+          "service_total_vertical_load_kn": {
+            "title": "Service Total Vertical Load Kn",
+            "type": "number"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "transverse": {
+            "$ref": "#/components/schemas/CombinedFootingTransverseActionResponse"
+          },
+          "upward_line_load_kn_per_m": {
+            "title": "Upward Line Load Kn Per M",
+            "type": "number"
+          },
+          "vertical_equilibrium_residual_kn": {
+            "title": "Vertical Equilibrium Residual Kn",
+            "type": "number"
+          }
+        },
+        "required": [
+          "geometry",
+          "service_column_resultant_kn",
+          "service_column_resultant_x_mm",
+          "service_total_vertical_load_kn",
+          "service_total_resultant_x_mm",
+          "gross_service_pressure_kn_per_m2",
+          "gross_service_bearing_utilization",
+          "gross_service_bearing_within_allowable",
+          "factored_column_resultant_kn",
+          "factored_column_resultant_x_mm",
+          "factored_total_vertical_load_kn",
+          "gross_factored_pressure_kn_per_m2",
+          "net_factored_structural_pressure_kn_per_m2",
+          "upward_line_load_kn_per_m",
+          "service_resultant_alignment_residual_mm",
+          "factored_resultant_alignment_residual_mm",
+          "left_outer_one_way_shear",
+          "left_outer_column_face",
+          "left_inner_column_face",
+          "left_inner_one_way_shear",
+          "inter_column_midpoint",
+          "right_inner_one_way_shear",
+          "right_inner_column_face",
+          "right_outer_column_face",
+          "right_outer_one_way_shear",
+          "transverse",
+          "vertical_equilibrium_residual_kn",
+          "moment_equilibrium_residual_kn_m",
+          "source_refs"
+        ],
+        "title": "CombinedFootingActionResponse",
+        "type": "object"
+      },
+      "CombinedFootingAnalysisRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "actions": {
+            "$ref": "#/components/schemas/CombinedFootingActionRequest"
+          },
+          "geometry": {
+            "$ref": "#/components/schemas/CombinedFootingGeometryRequest"
+          }
+        },
+        "required": [
+          "geometry",
+          "actions"
+        ],
+        "title": "CombinedFootingAnalysisRequest",
+        "type": "object"
+      },
+      "CombinedFootingDesignRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "analysis": {
+            "$ref": "#/components/schemas/CombinedFootingAnalysisRequest"
+          },
+          "material": {
+            "$ref": "#/components/schemas/CombinedFootingMaterialRequest"
+          },
+          "reinforcement": {
+            "$ref": "#/components/schemas/CombinedFootingReinforcementRequest"
+          },
+          "transfer": {
+            "$ref": "#/components/schemas/CombinedFootingTransferRequest"
+          }
+        },
+        "required": [
+          "analysis",
+          "material",
+          "reinforcement",
+          "transfer"
+        ],
+        "title": "CombinedFootingDesignRequest",
+        "type": "object"
+      },
+      "CombinedFootingFlexureResponse": {
+        "properties": {
+          "anchorage_is_safe": {
+            "title": "Anchorage Is Safe",
+            "type": "boolean"
+          },
+          "available_straight_anchorage_each_end_mm": {
+            "title": "Available Straight Anchorage Each End Mm",
+            "type": "number"
+          },
+          "bar_diameter_is_safe": {
+            "title": "Bar Diameter Is Safe",
+            "type": "boolean"
+          },
+          "bar_spacing_is_safe": {
+            "title": "Bar Spacing Is Safe",
+            "type": "boolean"
+          },
+          "clear_spacing_is_safe": {
+            "title": "Clear Spacing Is Safe",
+            "type": "boolean"
+          },
+          "design_width_mm": {
+            "title": "Design Width Mm",
+            "type": "number"
+          },
+          "effective_depth_mm": {
+            "title": "Effective Depth Mm",
+            "type": "number"
+          },
+          "factored_moment_kn_m": {
+            "title": "Factored Moment Kn M",
+            "type": "number"
+          },
+          "flexural_steel_required_mm2": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Flexural Steel Required Mm2"
+          },
+          "governing_steel_required_mm2": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Governing Steel Required Mm2"
+          },
+          "is_safe": {
+            "title": "Is Safe",
+            "type": "boolean"
+          },
+          "maximum_bar_diameter_mm": {
+            "title": "Maximum Bar Diameter Mm",
+            "type": "number"
+          },
+          "maximum_bar_spacing_mm": {
+            "title": "Maximum Bar Spacing Mm",
+            "type": "number"
+          },
+          "minimum_clear_spacing_mm": {
+            "title": "Minimum Clear Spacing Mm",
+            "type": "number"
+          },
+          "minimum_nominal_cover_mm": {
+            "title": "Minimum Nominal Cover Mm",
+            "type": "number"
+          },
+          "minimum_steel_ratio": {
+            "title": "Minimum Steel Ratio",
+            "type": "number"
+          },
+          "minimum_steel_required_mm2": {
+            "title": "Minimum Steel Required Mm2",
+            "type": "number"
+          },
+          "nominal_cover_is_safe": {
+            "title": "Nominal Cover Is Safe",
+            "type": "boolean"
+          },
+          "overall_depth_mm": {
+            "title": "Overall Depth Mm",
+            "type": "number"
+          },
+          "provided_bar_diameter_mm": {
+            "title": "Provided Bar Diameter Mm",
+            "type": "number"
+          },
+          "provided_bar_spacing_mm": {
+            "title": "Provided Bar Spacing Mm",
+            "type": "number"
+          },
+          "provided_clear_spacing_mm": {
+            "title": "Provided Clear Spacing Mm",
+            "type": "number"
+          },
+          "provided_nominal_cover_mm": {
+            "title": "Provided Nominal Cover Mm",
+            "type": "number"
+          },
+          "provided_steel_area_mm2": {
+            "title": "Provided Steel Area Mm2",
+            "type": "number"
+          },
+          "provided_steel_ratio_percent": {
+            "title": "Provided Steel Ratio Percent",
+            "type": "number"
+          },
+          "region": {
+            "title": "Region",
+            "type": "string"
+          },
+          "reinforcement_area_is_safe": {
+            "title": "Reinforcement Area Is Safe",
+            "type": "boolean"
+          },
+          "required_tension_development_length_mm": {
+            "title": "Required Tension Development Length Mm",
+            "type": "number"
+          },
+          "singly_reinforced_capacity_is_sufficient": {
+            "title": "Singly Reinforced Capacity Is Sufficient",
+            "type": "boolean"
+          },
+          "tension_design_bond_stress_nmm2": {
+            "title": "Tension Design Bond Stress Nmm2",
+            "type": "number"
+          }
+        },
+        "required": [
+          "region",
+          "design_width_mm",
+          "effective_depth_mm",
+          "overall_depth_mm",
+          "factored_moment_kn_m",
+          "flexural_steel_required_mm2",
+          "minimum_steel_ratio",
+          "minimum_steel_required_mm2",
+          "governing_steel_required_mm2",
+          "provided_bar_diameter_mm",
+          "provided_bar_spacing_mm",
+          "provided_steel_area_mm2",
+          "provided_steel_ratio_percent",
+          "maximum_bar_diameter_mm",
+          "maximum_bar_spacing_mm",
+          "provided_clear_spacing_mm",
+          "minimum_clear_spacing_mm",
+          "provided_nominal_cover_mm",
+          "minimum_nominal_cover_mm",
+          "tension_design_bond_stress_nmm2",
+          "required_tension_development_length_mm",
+          "available_straight_anchorage_each_end_mm",
+          "singly_reinforced_capacity_is_sufficient",
+          "reinforcement_area_is_safe",
+          "bar_diameter_is_safe",
+          "bar_spacing_is_safe",
+          "clear_spacing_is_safe",
+          "nominal_cover_is_safe",
+          "anchorage_is_safe",
+          "is_safe"
+        ],
+        "title": "CombinedFootingFlexureResponse",
+        "type": "object"
+      },
+      "CombinedFootingGeometryRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "analysis_method": {
+            "const": "conventional_rigid",
+            "title": "Analysis Method",
+            "type": "string"
+          },
+          "column_count": {
+            "const": 2,
+            "title": "Column Count",
+            "type": "integer"
+          },
+          "column_side_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Column Side Mm",
+            "type": "number"
+          },
+          "columns_centered_across_width": {
+            "const": true,
+            "title": "Columns Centered Across Width",
+            "type": "boolean"
+          },
+          "columns_identical": {
+            "const": true,
+            "title": "Columns Identical",
+            "type": "boolean"
+          },
+          "columns_square": {
+            "const": true,
+            "title": "Columns Square",
+            "type": "boolean"
+          },
+          "constant_depth": {
+            "const": true,
+            "title": "Constant Depth",
+            "type": "boolean"
+          },
+          "effective_depth_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Effective Depth Mm",
+            "type": "number"
+          },
+          "footing_length_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Footing Length Mm",
+            "type": "number"
+          },
+          "footing_width_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Footing Width Mm",
+            "type": "number"
+          },
+          "foundation_on_soil": {
+            "const": true,
+            "title": "Foundation On Soil",
+            "type": "boolean"
+          },
+          "geometry_basis_reference": {
+            "minLength": 1,
+            "title": "Geometry Basis Reference",
+            "type": "string"
+          },
+          "left_column_center_x_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Left Column Center X Mm",
+            "type": "number"
+          },
+          "openings_present": {
+            "const": false,
+            "title": "Openings Present",
+            "type": "boolean"
+          },
+          "overall_depth_mm": {
+            "minimum": 150.0,
+            "title": "Overall Depth Mm",
+            "type": "number"
+          },
+          "pedestals_present": {
+            "const": false,
+            "title": "Pedestals Present",
+            "type": "boolean"
+          },
+          "pressure_model": {
+            "const": "uniform",
+            "title": "Pressure Model",
+            "type": "string"
+          },
+          "right_column_center_x_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Right Column Center X Mm",
+            "type": "number"
+          },
+          "rigid_footing_verified": {
+            "const": true,
+            "title": "Rigid Footing Verified",
+            "type": "boolean"
+          },
+          "rigidity_basis_reference": {
+            "minLength": 1,
+            "title": "Rigidity Basis Reference",
+            "type": "string"
+          }
+        },
+        "required": [
+          "footing_length_mm",
+          "footing_width_mm",
+          "overall_depth_mm",
+          "effective_depth_mm",
+          "column_side_mm",
+          "left_column_center_x_mm",
+          "right_column_center_x_mm",
+          "column_count",
+          "columns_identical",
+          "columns_square",
+          "columns_centered_across_width",
+          "foundation_on_soil",
+          "constant_depth",
+          "openings_present",
+          "pedestals_present",
+          "analysis_method",
+          "pressure_model",
+          "rigid_footing_verified",
+          "rigidity_basis_reference",
+          "geometry_basis_reference"
+        ],
+        "title": "CombinedFootingGeometryRequest",
+        "type": "object"
+      },
+      "CombinedFootingGeometryResponse": {
+        "properties": {
+          "column_spacing_mm": {
+            "title": "Column Spacing Mm",
+            "type": "number"
+          },
+          "equal_end_projection_mm": {
+            "title": "Equal End Projection Mm",
+            "type": "number"
+          },
+          "footing_centroid_x_mm": {
+            "title": "Footing Centroid X Mm",
+            "type": "number"
+          },
+          "inter_column_clear_gap_mm": {
+            "title": "Inter Column Clear Gap Mm",
+            "type": "number"
+          },
+          "plan_area_m2": {
+            "title": "Plan Area M2",
+            "type": "number"
+          },
+          "punching_area_each_m2": {
+            "title": "Punching Area Each M2",
+            "type": "number"
+          },
+          "punching_critical_side_mm": {
+            "title": "Punching Critical Side Mm",
+            "type": "number"
+          },
+          "punching_perimeter_each_mm": {
+            "title": "Punching Perimeter Each Mm",
+            "type": "number"
+          },
+          "rigid_uniform_pressure_eligible": {
+            "title": "Rigid Uniform Pressure Eligible",
+            "type": "boolean"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "transverse_column_face_cantilever_mm": {
+            "title": "Transverse Column Face Cantilever Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "plan_area_m2",
+          "footing_centroid_x_mm",
+          "column_spacing_mm",
+          "inter_column_clear_gap_mm",
+          "equal_end_projection_mm",
+          "transverse_column_face_cantilever_mm",
+          "punching_critical_side_mm",
+          "punching_area_each_m2",
+          "punching_perimeter_each_mm",
+          "rigid_uniform_pressure_eligible",
+          "source_refs"
+        ],
+        "title": "CombinedFootingGeometryResponse",
+        "type": "object"
+      },
+      "CombinedFootingLoadTransferResponse": {
+        "properties": {
+          "actual_bearing_stress_nmm2": {
+            "title": "Actual Bearing Stress Nmm2",
+            "type": "number"
+          },
+          "available_development_into_column_mm": {
+            "title": "Available Development Into Column Mm",
+            "type": "number"
+          },
+          "available_development_into_footing_mm": {
+            "title": "Available Development Into Footing Mm",
+            "type": "number"
+          },
+          "bar_count_is_safe": {
+            "title": "Bar Count Is Safe",
+            "type": "boolean"
+          },
+          "bearing_enhancement_factor": {
+            "title": "Bearing Enhancement Factor",
+            "type": "number"
+          },
+          "column": {
+            "title": "Column",
+            "type": "string"
+          },
+          "column_compression_design_bond_stress_nmm2": {
+            "title": "Column Compression Design Bond Stress Nmm2",
+            "type": "number"
+          },
+          "column_development_is_safe": {
+            "title": "Column Development Is Safe",
+            "type": "boolean"
+          },
+          "concrete_bearing_without_transfer_is_safe": {
+            "title": "Concrete Bearing Without Transfer Is Safe",
+            "type": "boolean"
+          },
+          "dowel_diameter_is_safe": {
+            "title": "Dowel Diameter Is Safe",
+            "type": "boolean"
+          },
+          "effective_supporting_area_mm2": {
+            "title": "Effective Supporting Area Mm2",
+            "type": "number"
+          },
+          "excess_force_kn": {
+            "title": "Excess Force Kn",
+            "type": "number"
+          },
+          "excess_transfer_steel_area_mm2": {
+            "title": "Excess Transfer Steel Area Mm2",
+            "type": "number"
+          },
+          "factored_column_load_kn": {
+            "title": "Factored Column Load Kn",
+            "type": "number"
+          },
+          "footing_compression_design_bond_stress_nmm2": {
+            "title": "Footing Compression Design Bond Stress Nmm2",
+            "type": "number"
+          },
+          "footing_development_is_safe": {
+            "title": "Footing Development Is Safe",
+            "type": "boolean"
+          },
+          "governing_concrete_bearing_capacity_kn": {
+            "title": "Governing Concrete Bearing Capacity Kn",
+            "type": "number"
+          },
+          "governing_concrete_member": {
+            "title": "Governing Concrete Member",
+            "type": "string"
+          },
+          "is_safe": {
+            "title": "Is Safe",
+            "type": "boolean"
+          },
+          "loaded_area_mm2": {
+            "title": "Loaded Area Mm2",
+            "type": "number"
+          },
+          "maximum_dowel_diameter_mm": {
+            "title": "Maximum Dowel Diameter Mm",
+            "type": "number"
+          },
+          "minimum_dowel_count": {
+            "title": "Minimum Dowel Count",
+            "type": "integer"
+          },
+          "minimum_transfer_steel_area_mm2": {
+            "title": "Minimum Transfer Steel Area Mm2",
+            "type": "number"
+          },
+          "provided_dowel_count": {
+            "title": "Provided Dowel Count",
+            "type": "integer"
+          },
+          "provided_dowel_diameter_mm": {
+            "title": "Provided Dowel Diameter Mm",
+            "type": "number"
+          },
+          "provided_transfer_steel_area_mm2": {
+            "title": "Provided Transfer Steel Area Mm2",
+            "type": "number"
+          },
+          "reinforcement_area_is_safe": {
+            "title": "Reinforcement Area Is Safe",
+            "type": "boolean"
+          },
+          "required_development_into_column_mm": {
+            "title": "Required Development Into Column Mm",
+            "type": "number"
+          },
+          "required_development_into_footing_mm": {
+            "title": "Required Development Into Footing Mm",
+            "type": "number"
+          },
+          "required_transfer_steel_area_mm2": {
+            "title": "Required Transfer Steel Area Mm2",
+            "type": "number"
+          },
+          "supported_column_bearing_capacity_kn": {
+            "title": "Supported Column Bearing Capacity Kn",
+            "type": "number"
+          },
+          "supporting_footing_bearing_capacity_kn": {
+            "title": "Supporting Footing Bearing Capacity Kn",
+            "type": "number"
+          }
+        },
+        "required": [
+          "column",
+          "factored_column_load_kn",
+          "loaded_area_mm2",
+          "effective_supporting_area_mm2",
+          "bearing_enhancement_factor",
+          "actual_bearing_stress_nmm2",
+          "supported_column_bearing_capacity_kn",
+          "supporting_footing_bearing_capacity_kn",
+          "governing_concrete_member",
+          "governing_concrete_bearing_capacity_kn",
+          "concrete_bearing_without_transfer_is_safe",
+          "excess_force_kn",
+          "excess_transfer_steel_area_mm2",
+          "minimum_transfer_steel_area_mm2",
+          "required_transfer_steel_area_mm2",
+          "provided_transfer_steel_area_mm2",
+          "minimum_dowel_count",
+          "provided_dowel_count",
+          "maximum_dowel_diameter_mm",
+          "provided_dowel_diameter_mm",
+          "footing_compression_design_bond_stress_nmm2",
+          "column_compression_design_bond_stress_nmm2",
+          "required_development_into_footing_mm",
+          "required_development_into_column_mm",
+          "available_development_into_footing_mm",
+          "available_development_into_column_mm",
+          "reinforcement_area_is_safe",
+          "bar_count_is_safe",
+          "dowel_diameter_is_safe",
+          "footing_development_is_safe",
+          "column_development_is_safe",
+          "is_safe"
+        ],
+        "title": "CombinedFootingLoadTransferResponse",
+        "type": "object"
+      },
+      "CombinedFootingMaterialRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "column_concrete_grade_nmm2": {
+            "enum": [
+              20,
+              25,
+              30,
+              35,
+              40
+            ],
+            "title": "Column Concrete Grade Nmm2",
+            "type": "integer"
+          },
+          "footing_concrete_grade_nmm2": {
+            "enum": [
+              20,
+              25,
+              30,
+              35,
+              40
+            ],
+            "title": "Footing Concrete Grade Nmm2",
+            "type": "integer"
+          },
+          "material_basis_reference": {
+            "minLength": 1,
+            "title": "Material Basis Reference",
+            "type": "string"
+          },
+          "steel_grade_nmm2": {
+            "enum": [
+              415,
+              500
+            ],
+            "title": "Steel Grade Nmm2",
+            "type": "integer"
+          },
+          "uncoated_deformed_bars": {
+            "const": true,
+            "title": "Uncoated Deformed Bars",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "footing_concrete_grade_nmm2",
+          "column_concrete_grade_nmm2",
+          "steel_grade_nmm2",
+          "uncoated_deformed_bars",
+          "material_basis_reference"
+        ],
+        "title": "CombinedFootingMaterialRequest",
+        "type": "object"
+      },
+      "CombinedFootingOneWayShearResponse": {
+        "properties": {
+          "concrete_design_shear_strength_nmm2": {
+            "title": "Concrete Design Shear Strength Nmm2",
+            "type": "number"
+          },
+          "design_width_mm": {
+            "title": "Design Width Mm",
+            "type": "number"
+          },
+          "effective_depth_mm": {
+            "title": "Effective Depth Mm",
+            "type": "number"
+          },
+          "factored_shear_demand_kn": {
+            "title": "Factored Shear Demand Kn",
+            "type": "number"
+          },
+          "is_safe_without_shear_reinforcement": {
+            "title": "Is Safe Without Shear Reinforcement",
+            "type": "boolean"
+          },
+          "nominal_shear_stress_nmm2": {
+            "title": "Nominal Shear Stress Nmm2",
+            "type": "number"
+          },
+          "section": {
+            "title": "Section",
+            "type": "string"
+          },
+          "table_19_lookup_reinforcement_percent": {
+            "title": "Table 19 Lookup Reinforcement Percent",
+            "type": "number"
+          },
+          "tension_reinforcement_area_mm2": {
+            "title": "Tension Reinforcement Area Mm2",
+            "type": "number"
+          },
+          "tension_reinforcement_percent": {
+            "title": "Tension Reinforcement Percent",
+            "type": "number"
+          },
+          "utilization": {
+            "title": "Utilization",
+            "type": "number"
+          }
+        },
+        "required": [
+          "section",
+          "factored_shear_demand_kn",
+          "design_width_mm",
+          "effective_depth_mm",
+          "tension_reinforcement_area_mm2",
+          "tension_reinforcement_percent",
+          "table_19_lookup_reinforcement_percent",
+          "nominal_shear_stress_nmm2",
+          "concrete_design_shear_strength_nmm2",
+          "utilization",
+          "is_safe_without_shear_reinforcement"
+        ],
+        "title": "CombinedFootingOneWayShearResponse",
+        "type": "object"
+      },
+      "CombinedFootingPunchingResponse": {
+        "properties": {
+          "column": {
+            "title": "Column",
+            "type": "string"
+          },
+          "column_aspect_ratio_beta_c": {
+            "title": "Column Aspect Ratio Beta C",
+            "type": "number"
+          },
+          "concrete_capacity_nmm2": {
+            "title": "Concrete Capacity Nmm2",
+            "type": "number"
+          },
+          "critical_enclosed_area_m2": {
+            "title": "Critical Enclosed Area M2",
+            "type": "number"
+          },
+          "critical_perimeter_mm": {
+            "title": "Critical Perimeter Mm",
+            "type": "number"
+          },
+          "effective_depth_mm": {
+            "title": "Effective Depth Mm",
+            "type": "number"
+          },
+          "factored_column_load_kn": {
+            "title": "Factored Column Load Kn",
+            "type": "number"
+          },
+          "factored_punching_shear_kn": {
+            "title": "Factored Punching Shear Kn",
+            "type": "number"
+          },
+          "is_safe_without_punching_reinforcement": {
+            "title": "Is Safe Without Punching Reinforcement",
+            "type": "boolean"
+          },
+          "net_factored_pressure_kn_per_m2": {
+            "title": "Net Factored Pressure Kn Per M2",
+            "type": "number"
+          },
+          "nominal_punching_stress_nmm2": {
+            "title": "Nominal Punching Stress Nmm2",
+            "type": "number"
+          },
+          "size_factor_ks": {
+            "title": "Size Factor Ks",
+            "type": "number"
+          },
+          "utilization": {
+            "title": "Utilization",
+            "type": "number"
+          }
+        },
+        "required": [
+          "column",
+          "factored_column_load_kn",
+          "net_factored_pressure_kn_per_m2",
+          "critical_enclosed_area_m2",
+          "critical_perimeter_mm",
+          "effective_depth_mm",
+          "factored_punching_shear_kn",
+          "nominal_punching_stress_nmm2",
+          "column_aspect_ratio_beta_c",
+          "size_factor_ks",
+          "concrete_capacity_nmm2",
+          "utilization",
+          "is_safe_without_punching_reinforcement"
+        ],
+        "title": "CombinedFootingPunchingResponse",
+        "type": "object"
+      },
+      "CombinedFootingReinforcementRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "aggregate_size_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Aggregate Size Mm",
+            "type": "number"
+          },
+          "available_bottom_longitudinal_anchorage_each_end_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Available Bottom Longitudinal Anchorage Each End Mm",
+            "type": "number"
+          },
+          "available_top_longitudinal_anchorage_each_end_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Available Top Longitudinal Anchorage Each End Mm",
+            "type": "number"
+          },
+          "available_transverse_anchorage_each_edge_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Available Transverse Anchorage Each Edge Mm",
+            "type": "number"
+          },
+          "bottom_longitudinal_diameter_mm": {
+            "enum": [
+              8,
+              10,
+              12,
+              16,
+              20,
+              25,
+              32,
+              36
+            ],
+            "title": "Bottom Longitudinal Diameter Mm",
+            "type": "integer"
+          },
+          "bottom_longitudinal_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Bottom Longitudinal Spacing Mm",
+            "type": "number"
+          },
+          "detailing_basis_reference": {
+            "minLength": 1,
+            "title": "Detailing Basis Reference",
+            "type": "string"
+          },
+          "effective_depth_basis_approved": {
+            "const": true,
+            "title": "Effective Depth Basis Approved",
+            "type": "boolean"
+          },
+          "nominal_cover_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Nominal Cover Mm",
+            "type": "number"
+          },
+          "reinforcement_schedule_approved": {
+            "const": true,
+            "title": "Reinforcement Schedule Approved",
+            "type": "boolean"
+          },
+          "straight_uncoated_deformed_bars": {
+            "const": true,
+            "title": "Straight Uncoated Deformed Bars",
+            "type": "boolean"
+          },
+          "top_longitudinal_diameter_mm": {
+            "enum": [
+              8,
+              10,
+              12,
+              16,
+              20,
+              25,
+              32,
+              36
+            ],
+            "title": "Top Longitudinal Diameter Mm",
+            "type": "integer"
+          },
+          "top_longitudinal_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Top Longitudinal Spacing Mm",
+            "type": "number"
+          },
+          "transverse_diameter_mm": {
+            "enum": [
+              8,
+              10,
+              12,
+              16,
+              20,
+              25,
+              32,
+              36
+            ],
+            "title": "Transverse Diameter Mm",
+            "type": "integer"
+          },
+          "transverse_spacing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Transverse Spacing Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "top_longitudinal_diameter_mm",
+          "top_longitudinal_spacing_mm",
+          "bottom_longitudinal_diameter_mm",
+          "bottom_longitudinal_spacing_mm",
+          "transverse_diameter_mm",
+          "transverse_spacing_mm",
+          "nominal_cover_mm",
+          "aggregate_size_mm",
+          "available_top_longitudinal_anchorage_each_end_mm",
+          "available_bottom_longitudinal_anchorage_each_end_mm",
+          "available_transverse_anchorage_each_edge_mm",
+          "straight_uncoated_deformed_bars",
+          "effective_depth_basis_approved",
+          "reinforcement_schedule_approved",
+          "detailing_basis_reference"
+        ],
+        "title": "CombinedFootingReinforcementRequest",
+        "type": "object"
+      },
+      "CombinedFootingSectionActionResponse": {
+        "properties": {
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "moment_kn_m": {
+            "title": "Moment Kn M",
+            "type": "number"
+          },
+          "shear_kn": {
+            "title": "Shear Kn",
+            "type": "number"
+          },
+          "tension_face": {
+            "enum": [
+              "bottom",
+              "top",
+              "none"
+            ],
+            "title": "Tension Face",
+            "type": "string"
+          },
+          "x_mm": {
+            "title": "X Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "kind",
+          "x_mm",
+          "shear_kn",
+          "moment_kn_m",
+          "tension_face"
+        ],
+        "title": "CombinedFootingSectionActionResponse",
+        "type": "object"
+      },
+      "CombinedFootingStrengthResponse": {
+        "properties": {
+          "actions": {
+            "$ref": "#/components/schemas/CombinedFootingActionResponse"
+          },
+          "bottom_longitudinal_flexure": {
+            "$ref": "#/components/schemas/CombinedFootingFlexureResponse"
+          },
+          "clause_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "complete_engineering_approval": {
+            "const": false,
+            "title": "Complete Engineering Approval",
+            "type": "boolean"
+          },
+          "disposition": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Disposition",
+            "type": "string"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "load_transfer": {
+            "items": {
+              "$ref": "#/components/schemas/CombinedFootingLoadTransferResponse"
+            },
+            "title": "Load Transfer",
+            "type": "array"
+          },
+          "longitudinal_one_way_shear": {
+            "items": {
+              "$ref": "#/components/schemas/CombinedFootingOneWayShearResponse"
+            },
+            "title": "Longitudinal One Way Shear",
+            "type": "array"
+          },
+          "punching": {
+            "items": {
+              "$ref": "#/components/schemas/CombinedFootingPunchingResponse"
+            },
+            "title": "Punching",
+            "type": "array"
+          },
+          "qualified_review_required": {
+            "const": true,
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reasons",
+            "type": "array"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "top_longitudinal_flexure": {
+            "$ref": "#/components/schemas/CombinedFootingFlexureResponse"
+          },
+          "transverse_flexure": {
+            "$ref": "#/components/schemas/CombinedFootingFlexureResponse"
+          },
+          "transverse_one_way_shear": {
+            "$ref": "#/components/schemas/CombinedFootingOneWayShearResponse"
+          }
+        },
+        "required": [
+          "actions",
+          "top_longitudinal_flexure",
+          "bottom_longitudinal_flexure",
+          "transverse_flexure",
+          "longitudinal_one_way_shear",
+          "transverse_one_way_shear",
+          "punching",
+          "load_transfer",
+          "disposition",
+          "reasons",
+          "clause_refs",
+          "source_refs",
+          "limitations",
+          "qualified_review_required",
+          "complete_engineering_approval"
+        ],
+        "title": "CombinedFootingStrengthResponse",
+        "type": "object"
+      },
+      "CombinedFootingTransferRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "available_dowel_development_into_column_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Available Dowel Development Into Column Mm",
+            "type": "number"
+          },
+          "available_dowel_development_into_footing_mm": {
+            "exclusiveMinimum": 0.0,
+            "title": "Available Dowel Development Into Footing Mm",
+            "type": "number"
+          },
+          "column_longitudinal_bar_diameter_mm": {
+            "enum": [
+              8,
+              10,
+              12,
+              16,
+              20,
+              25,
+              32,
+              36
+            ],
+            "title": "Column Longitudinal Bar Diameter Mm",
+            "type": "integer"
+          },
+          "dowel_count_each": {
+            "exclusiveMinimum": 0.0,
+            "title": "Dowel Count Each",
+            "type": "integer"
+          },
+          "dowel_diameter_mm": {
+            "enum": [
+              8,
+              10,
+              12,
+              16,
+              20,
+              25,
+              32,
+              36
+            ],
+            "title": "Dowel Diameter Mm",
+            "type": "integer"
+          },
+          "effective_supporting_area_approved": {
+            "const": true,
+            "title": "Effective Supporting Area Approved",
+            "type": "boolean"
+          },
+          "effective_supporting_area_basis": {
+            "const": "largest_frustum_1v_2h",
+            "title": "Effective Supporting Area Basis",
+            "type": "string"
+          },
+          "effective_supporting_area_each_mm2": {
+            "exclusiveMinimum": 0.0,
+            "title": "Effective Supporting Area Each Mm2",
+            "type": "number"
+          },
+          "transfer_basis_reference": {
+            "minLength": 1,
+            "title": "Transfer Basis Reference",
+            "type": "string"
+          },
+          "uncoated_deformed_dowels": {
+            "const": true,
+            "title": "Uncoated Deformed Dowels",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "effective_supporting_area_each_mm2",
+          "effective_supporting_area_basis",
+          "effective_supporting_area_approved",
+          "dowel_count_each",
+          "dowel_diameter_mm",
+          "column_longitudinal_bar_diameter_mm",
+          "available_dowel_development_into_footing_mm",
+          "available_dowel_development_into_column_mm",
+          "uncoated_deformed_dowels",
+          "transfer_basis_reference"
+        ],
+        "title": "CombinedFootingTransferRequest",
+        "type": "object"
+      },
+      "CombinedFootingTransverseActionResponse": {
+        "properties": {
+          "column_face_cantilever_mm": {
+            "title": "Column Face Cantilever Mm",
+            "type": "number"
+          },
+          "moment_kn_m_per_m": {
+            "title": "Moment Kn M Per M",
+            "type": "number"
+          },
+          "one_way_shear_demand_kn_per_m": {
+            "title": "One Way Shear Demand Kn Per M",
+            "type": "number"
+          },
+          "one_way_shear_section_from_column_face_mm": {
+            "title": "One Way Shear Section From Column Face Mm",
+            "type": "number"
+          }
+        },
+        "required": [
+          "column_face_cantilever_mm",
+          "moment_kn_m_per_m",
+          "one_way_shear_section_from_column_face_mm",
+          "one_way_shear_demand_kn_per_m"
+        ],
+        "title": "CombinedFootingTransverseActionResponse",
         "type": "object"
       },
       "CompleteOneWaySlabDesignRequest": {
@@ -19716,6 +21163,187 @@
         "title": "SuggestionItem",
         "type": "object"
       },
+      "SymmetricCombinedFootingProvenanceResponse": {
+        "properties": {
+          "action_generation_status": {
+            "title": "Action Generation Status",
+            "type": "string"
+          },
+          "bearing_settlement_basis_reference": {
+            "title": "Bearing Settlement Basis Reference",
+            "type": "string"
+          },
+          "benchmark_id": {
+            "title": "Benchmark Id",
+            "type": "string"
+          },
+          "cancellation_basis_reference": {
+            "title": "Cancellation Basis Reference",
+            "type": "string"
+          },
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "clause_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Clause Refs",
+            "type": "array"
+          },
+          "code_edition": {
+            "title": "Code Edition",
+            "type": "string"
+          },
+          "detailing_basis_reference": {
+            "title": "Detailing Basis Reference",
+            "type": "string"
+          },
+          "geometry_basis_reference": {
+            "title": "Geometry Basis Reference",
+            "type": "string"
+          },
+          "load_basis_reference": {
+            "title": "Load Basis Reference",
+            "type": "string"
+          },
+          "material_basis_reference": {
+            "title": "Material Basis Reference",
+            "type": "string"
+          },
+          "rigidity_basis_reference": {
+            "title": "Rigidity Basis Reference",
+            "type": "string"
+          },
+          "schema_version": {
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "soil_verification_status": {
+            "title": "Soil Verification Status",
+            "type": "string"
+          },
+          "source_refs": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Source Refs",
+            "type": "array"
+          },
+          "transfer_basis_reference": {
+            "title": "Transfer Basis Reference",
+            "type": "string"
+          },
+          "workflow": {
+            "title": "Workflow",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "code_edition",
+          "workflow",
+          "case_id",
+          "benchmark_id",
+          "action_generation_status",
+          "soil_verification_status",
+          "geometry_basis_reference",
+          "rigidity_basis_reference",
+          "load_basis_reference",
+          "bearing_settlement_basis_reference",
+          "cancellation_basis_reference",
+          "material_basis_reference",
+          "detailing_basis_reference",
+          "transfer_basis_reference",
+          "clause_refs",
+          "source_refs"
+        ],
+        "title": "SymmetricCombinedFootingProvenanceResponse",
+        "type": "object"
+      },
+      "SymmetricCombinedFootingRequest": {
+        "additionalProperties": false,
+        "description": "Explicit approved-basis inputs for the sole combined-footing case.",
+        "properties": {
+          "case_id": {
+            "minLength": 1,
+            "title": "Case Id",
+            "type": "string"
+          },
+          "footing": {
+            "$ref": "#/components/schemas/CombinedFootingDesignRequest"
+          },
+          "qualified_review_required": {
+            "const": true,
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "case_id",
+          "footing",
+          "qualified_review_required"
+        ],
+        "title": "SymmetricCombinedFootingRequest",
+        "type": "object"
+      },
+      "SymmetricCombinedFootingResponse": {
+        "description": "Typed transport projection of the composed combined-footing result.",
+        "properties": {
+          "case_id": {
+            "title": "Case Id",
+            "type": "string"
+          },
+          "complete_engineering_design_approved": {
+            "const": false,
+            "title": "Complete Engineering Design Approved",
+            "type": "boolean"
+          },
+          "held_cases": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Held Cases",
+            "type": "array"
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/SymmetricCombinedFootingProvenanceResponse"
+          },
+          "qualified_review_required": {
+            "const": true,
+            "title": "Qualified Review Required",
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "FAIL"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "strength": {
+            "$ref": "#/components/schemas/CombinedFootingStrengthResponse"
+          },
+          "supported_case": {
+            "title": "Supported Case",
+            "type": "string"
+          }
+        },
+        "required": [
+          "case_id",
+          "status",
+          "strength",
+          "supported_case",
+          "held_cases",
+          "provenance",
+          "qualified_review_required",
+          "complete_engineering_design_approved"
+        ],
+        "title": "SymmetricCombinedFootingResponse",
+        "type": "object"
+      },
       "SystemInfo": {
         "description": "System information response model.",
         "properties": {
@@ -21118,7 +22746,7 @@
       "name": "Structural Engineering Library",
       "url": "https://github.com/yourusername/structural_engineering_lib"
     },
-    "description": "\n## IS 456:2000 Compliant Structural Engineering Library\n\nThis API exposes the library's route-specific supported IS 456:2000 reinforced\nconcrete calculations. Each result remains subject to the documented case\nboundary and qualified engineering review.\n\n### Features\n\n- **Beam Design**: Flexure, shear, and combined design calculations\n- **Column Design**: Bounded rectangular short/long-column workflows\n- **Footing Design**: Isolated-footing checks and concentric load transfer\n- **Slab Design**: Bounded simply supported one-way slab strip\n- **Staircase Design**: Bounded longitudinal straight waist-slab flight\n- **Wall Design**: Bounded Clause 32 braced-wall axial and reinforcement checks\n- **Deep-Beam Design**: Bounded Clause 29 simply supported positive-reinforcement checks\n- **Flat-Slab Design**: Bounded regular interior direct-design and punching checks\n- **Detailing**: Reinforcement layout, spacing, and development lengths\n- **Optimization**: Cost-optimized beam cross-section selection\n- **Smart Analysis**: AI-assisted design suggestions and insights\n- **3D Geometry**: Visualization-ready mesh generation\n\n### Design Codes\n\n- IS 456:2000 - Plain and Reinforced Concrete\n- IS 13920 - Ductile Detailing for Seismic Resistance\n\n### Units\n\nAll inputs and outputs use consistent units:\n- **Length**: millimeters (mm)\n- **Force**: kilonewtons (kN)\n- **Moment**: kilonewton-meters (kN\u00b7m)\n- **Stress**: N/mm\u00b2 (MPa)\n- **Area**: mm\u00b2\n",
+    "description": "\n## IS 456:2000 Compliant Structural Engineering Library\n\nThis API exposes the library's route-specific supported IS 456:2000 reinforced\nconcrete calculations. Each result remains subject to the documented case\nboundary and qualified engineering review.\n\n### Features\n\n- **Beam Design**: Flexure, shear, and combined design calculations\n- **Column Design**: Bounded rectangular short/long-column workflows\n- **Footing Design**: Isolated-footing checks and concentric load transfer\n- **Slab Design**: Bounded simply supported one-way slab strip\n- **Staircase Design**: Bounded longitudinal straight waist-slab flight\n- **Wall Design**: Bounded Clause 32 braced-wall axial and reinforcement checks\n- **Deep-Beam Design**: Bounded Clause 29 simply supported positive-reinforcement checks\n- **Flat-Slab Design**: Bounded regular interior direct-design and punching checks\n- **Combined-Footing Design**: Bounded symmetric two-column rigid-footing checks\n- **Detailing**: Reinforcement layout, spacing, and development lengths\n- **Optimization**: Cost-optimized beam cross-section selection\n- **Smart Analysis**: AI-assisted design suggestions and insights\n- **3D Geometry**: Visualization-ready mesh generation\n\n### Design Codes\n\n- IS 456:2000 - Plain and Reinforced Concrete\n- IS 13920 - Ductile Detailing for Seismic Resistance\n\n### Units\n\nAll inputs and outputs use consistent units:\n- **Length**: millimeters (mm)\n- **Force**: kilonewtons (kN)\n- **Moment**: kilonewton-meters (kN\u00b7m)\n- **Stress**: N/mm\u00b2 (MPa)\n- **Area**: mm\u00b2\n",
     "license": {
       "name": "MIT License",
       "url": "https://opensource.org/licenses/MIT"
@@ -22247,6 +23875,48 @@
         "summary": "Short Column Uniaxial Bending Design",
         "tags": [
           "column"
+        ]
+      }
+    },
+    "/api/v1/design/combined-footing/symmetric": {
+      "post": {
+        "description": "Validate transport input and delegate every calculation to the service.",
+        "operationId": "design_symmetric_combined_footing_api_v1_design_combined_footing_symmetric_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SymmetricCombinedFootingRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/APIResponse_SymmetricCombinedFootingResponse_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationErrorResponse"
+                }
+              }
+            },
+            "description": "Request validation failed"
+          }
+        },
+        "summary": "Design a bounded symmetric two-column combined footing",
+        "tags": [
+          "combined-footing"
         ]
       }
     },
@@ -24434,6 +26104,10 @@
     {
       "description": "Bounded regular interior flat-slab checks and maintained evidence.",
       "name": "flat-slab"
+    },
+    {
+      "description": "Bounded symmetric two-column combined-footing checks and maintained evidence.",
+      "name": "combined-footing"
     },
     {
       "description": "Reinforcement detailing including bar layout, spacing, and anchorage.",

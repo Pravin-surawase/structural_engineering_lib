@@ -39,6 +39,7 @@ from fastapi_app.routers import (
     catalog,
     capabilities,
     column,
+    combined_footing,
     deep_beam,
     design,
     detailing,
@@ -83,6 +84,7 @@ boundary and qualified engineering review.
 - **Wall Design**: Bounded Clause 32 braced-wall axial and reinforcement checks
 - **Deep-Beam Design**: Bounded Clause 29 simply supported positive-reinforcement checks
 - **Flat-Slab Design**: Bounded regular interior direct-design and punching checks
+- **Combined-Footing Design**: Bounded symmetric two-column rigid-footing checks
 - **Detailing**: Reinforcement layout, spacing, and development lengths
 - **Optimization**: Cost-optimized beam cross-section selection
 - **Smart Analysis**: AI-assisted design suggestions and insights
@@ -143,6 +145,10 @@ API_TAGS_METADATA = [
     {
         "name": "flat-slab",
         "description": "Bounded regular interior flat-slab checks and maintained evidence.",
+    },
+    {
+        "name": "combined-footing",
+        "description": "Bounded symmetric two-column combined-footing checks and maintained evidence.",
     },
     {
         "name": "detailing",
@@ -541,6 +547,10 @@ app.include_router(
 )
 app.include_router(
     flat_slab.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    combined_footing.router,
     prefix=API_V1_PREFIX,
 )
 app.include_router(

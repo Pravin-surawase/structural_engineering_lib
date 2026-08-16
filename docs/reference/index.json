@@ -70,10 +70,10 @@
     {
       "name": "api.md",
       "type": "documentation",
-      "size_lines": 4399,
+      "size_lines": 4402,
       "last_updated": "2026-08-16",
       "description": "geometry, loading, reinforcement, and evidence boundaries. The primary combined beam route covers rectangular flexure and shear (plus optional serviceability),",
-      "content_hash": "d9658c49c892"
+      "content_hash": "6f598cb3da10"
     },
     {
       "name": "automation-catalog.md",
@@ -261,5 +261,5 @@
       "file_count": 1760
     }
   ],
-  "content_hash": "c40bc5abe02268b2"
+  "content_hash": "e7828d1cfeeddeaa"
 }

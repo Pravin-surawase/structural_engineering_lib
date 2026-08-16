@@ -66,26 +66,26 @@
     {
       "name": "india-2-next-session-publication-and-closeout-plan.md",
       "type": "documentation",
-      "size_lines": 297,
+      "size_lines": 298,
       "last_updated": "2026-08-16",
-      "description": "The next session starts only after INDIA-2-FOUNDATION-COMBINED-B is merged unchanged with required checks green. Its first and only implementation packet",
-      "content_hash": "379d07f25103"
+      "description": "COMBINED-C is integrated and COMBINED-D publishes the thin transport and truth layer over it. The next session starts only after COMBINED-D is merged unchanged",
+      "content_hash": "4738985b8ebe"
     },
     {
       "name": "india-2-remaining-is456-elements-plan.md",
       "type": "documentation",
-      "size_lines": 364,
+      "size_lines": 369,
       "last_updated": "2026-08-16",
       "description": "INDIA-2 finishes a practical, explicitly limited set of IS 456 reinforced concrete elements that are still missing from the library.",
-      "content_hash": "4b49f44510f5"
+      "content_hash": "208c4094162f"
     },
     {
       "name": "indian-code-completion-plan.md",
       "type": "documentation",
-      "size_lines": 131,
+      "size_lines": 132,
       "last_updated": "2026-08-16",
       "description": "This is the canonical finish plan for the repository's Indian-code program. It defines the meaning and order of INDIA-0 through INDIA-4 without claiming",
-      "content_hash": "b8a74fa156b9"
+      "content_hash": "194a3e6b74bc"
     },
     {
       "name": "is456-library-first-master-plan.md",
@@ -131,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 149,
+      "size_lines": 151,
       "last_updated": "2026-08-16",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-16",
-      "content_hash": "f81a7740fc2b"
+      "content_hash": "eb63a5361607"
     },
     {
       "name": "pre-release-checklist.md",
@@ -173,5 +173,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "0525d7ef7aa89d80"
+  "content_hash": "0c26938dc236b05d"
 }
