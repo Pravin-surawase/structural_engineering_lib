@@ -49,6 +49,9 @@ those families while publishing the combined-footing workflow.
 Require a clean fresh branch from verified current `origin/main` and
 `source_bound=true`. Preserve every unrelated worktree. Branch, remote-ref, or
 worktree cleanup remains a separate exact-target authorization.
+The foreign retained `e54a` worktree was last observed detached with one dirty
+path; its ownership/root cause are unconfirmed, and the next INDIA-2 packet
+must not use or mutate it.
 
 ## INDIA-2-WALL acceptance result
 

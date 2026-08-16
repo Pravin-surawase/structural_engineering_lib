@@ -88,6 +88,12 @@ base equal to verified current `origin/main`. Preserve every retained sibling
 worktree. Never reset, clean, stash, delete, rebase, force-push, or repurpose a
 prior packet lane.
 
+At B closeout, read-only state reported the foreign retained worktree
+`/Users/pravinsurawase/.codex/worktrees/e54a/structural_engineering_lib` as
+detached with one dirty path. Its root cause and ownership are unconfirmed.
+Do not use, mutate, clean, or retire it during INDIA-2; classify it only in a
+separately authorized Git-governance task.
+
 Use one active writer. The parent normally implements and validates. Use at
 most one read-only independent auditor after an immutable candidate commit;
 do not delegate broad context or duplicate implementation.

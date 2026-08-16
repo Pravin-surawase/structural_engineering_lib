@@ -61,6 +61,10 @@ punching, bearing/dowels, anchorage, and composed internal disposition.
   after B had implemented the internal strength kernel.
 - The first truth-reconciliation commit attempt stopped when the normal Black
   hook reformatted the new manifest regression assertion.
+- Final read-only sibling inspection found the retained
+  `/Users/pravinsurawase/.codex/worktrees/e54a/structural_engineering_lib`
+  worktree detached with one dirty path. It is unrelated to COMBINED-B and was
+  not mutated or adopted.
 
 ### Root causes and resolutions
 
@@ -138,6 +142,13 @@ punching, bearing/dowels, anchorage, and composed internal disposition.
   restage the exact packet, and rerun normal commit hooks. Evidence: the
   successor commit hooks pass. ⚠️ TERMINAL ISSUE: commit stopped on Black's
   formatter-only edit → accepted the formatting and reran the commit normally.
+- Root cause/ownership: `unconfirmed`; the bounded Git-state authority reports
+  only `DETACHED`, `dirty_count=1`, and no unfinished operation for that
+  foreign lane. Resolution: preserve it exactly, exclude it from B lifecycle
+  operations, and require a separately authorized inspection/classification
+  before any future cleanup or retirement decision. Evidence:
+  `git_state.py --json --worktrees` identifies the exact retained path while
+  the B lane and primary `main` remain clean.
 
 ### Validation
 
