@@ -5,6 +5,167 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FOUNDATION-COMBINED-B Strength Composition
+
+**Agent:** Codex (`structural-math`, sole writer; one bounded independent
+exact-head audit after the candidate is committed)
+
+**Branch:** `codex/india-2-foundation-combined-b` from merged COMBINED-A main
+at `6d230500b34dc9c79913d2cae87b8382ca732a27`
+
+**Git handoff receipt:**
+`docs/verification/india-2-foundation-combined-b-git-handoff-receipt.json`
+
+**Focus:** Implement only the G0-frozen flexure/detailing, concrete shear,
+punching, bearing/dowels, anchorage, and composed internal disposition.
+
+### Summary
+
+- Added immutable material, supplied-reinforcement, supporting-area/transfer,
+  and composed design inputs for the accepted symmetric combined footing.
+- Reproduced the frozen flexure, minimum/provided steel, one-way shear,
+  punching, bearing, dowel, tension anchorage, and compression-development
+  benchmark with explicit units, provenance, limitations, and review boundary.
+- Added no public service, FastAPI, React, capability support claim, automatic
+  sizing, shear/punching reinforcement, alternate soil model, or release scope.
+
+### Issues encountered
+
+- The preferred `pdftotext` executable was unavailable, and the first bundled
+  Python fallback looked for the controlled PDF relative to the linked
+  worktree where private sources are intentionally absent.
+- The initial strength replay used the generic beam tension-steel helper and
+  missed all three frozen flexural steel values by small but unacceptable
+  amounts.
+- Controlled-source review found four required exact identifiers absent from
+  the distributable registry and found Annex G-1.1 mislabeled as a doubly
+  reinforced section. The same review confirmed that the packet must not use
+  the repository's stale `38.2` identity for the stress-block solution.
+- Focused mypy stopped on reused loop-variable inference across four different
+  result dataclasses.
+- The first manifest check correctly stopped because the newly decorated
+  strength function and four identifier entries made generated truth stale.
+- A guessed legacy folder-index script name did not exist in this checkout.
+- Controlled-source review also exposed two existing cross-cutting truth
+  defects outside B's outcome: `26.5.1.1` is mislabeled as shear instead of
+  beam tension reinforcement, and legacy registry/decorator consumers retain
+  a `38.2` identity not present in the controlled edition. B did not broadly
+  rewrite those unrelated consumers.
+- The first post-plan stale-text search stopped before validation because its
+  double-quoted shell pattern contained a Markdown backtick.
+- The first final index check omitted the required folder argument; the
+  corrected scoped checks then found the three documentation indexes stale
+  after the last handoff-count correction.
+- The first final exact-head audit correctly held publication because the
+  generated combined-footing limitation still said strength was unimplemented
+  after B had implemented the internal strength kernel.
+- The first truth-reconciliation commit attempt stopped when the normal Black
+  hook reformatted the new manifest regression assertion.
+- Final read-only sibling inspection found the retained
+  `/Users/pravinsurawase/.codex/worktrees/e54a/structural_engineering_lib`
+  worktree detached with one dirty path. It is unrelated to COMBINED-B and was
+  not mutated or adopted.
+
+### Root causes and resolutions
+
+- Root cause: Poppler text extraction is not installed in the shell path, and
+  untracked controlled sources exist only in the retained primary checkout.
+  Resolution: use the bundled `pypdf` runtime read-only against the explicit
+  primary-checkout source path. Evidence: exact Clause 26/31/34/38 and Annex G
+  content was reviewed without writing a source artifact. ⚠️ TERMINAL ISSUE:
+  `pdftotext` was unavailable and a worktree-relative private-source lookup
+  failed → used bundled `pypdf` with the explicit retained primary path.
+- Root cause: the beam helper uses a rounded stress-block coefficient, while
+  the frozen benchmark was derived from the canonical rectangular stress-block
+  equations. Resolution: use the maintained exact slab stress-block solver
+  with an explicit limiting-neutral-axis capacity check. Evidence: top,
+  bottom, and transverse required steel now reproduce
+  `2109.099058 / 389.298381 / 277.600243 mm2` to the frozen tolerance.
+- Root cause: the registry did not yet carry 26.4.2.2, 26.5.2.2, 34.2.4.3,
+  or 34.5.1, and its G-1.1 title described the adjacent doubly reinforced
+  subject rather than the actual no-compression-reinforcement section.
+  Resolution: add only the four implemented identifiers, correct G-1.1, and
+  bind the calculation to Clause 38.1 plus Annex G-1.1 instead of `38.2`.
+  Evidence: clause schema/count, exact traceability, and manifest tests pass
+  with zero registration-only references.
+- Root cause: mypy retains a loop variable's first inferred dataclass type
+  across later loops in the same scope. Resolution: use distinct typed loop
+  names for flexure, shear, punching, and transfer results. Evidence: focused
+  mypy passes all five combined-footing source/test files.
+- Root cause: deterministic generated truth correctly changed when exact
+  decorators/registry identities changed. Resolution: regenerate once with
+  the maintained generator and immediately verify `--check`. Evidence: the
+  manifest is current and remains 11 supported / 10 held, with combined
+  footing not promoted.
+- Root cause: the maintained index generator is
+  `scripts/generate_enhanced_index.py`; the guessed
+  `generate_folder_indexes.py` path is not present. Resolution: discover the
+  maintained command through `./run.sh find "folder index"`, regenerate only
+  the touched existing folders, and run their hash checks. Evidence: all seven
+  touched folder indexes are current. ⚠️ TERMINAL ISSUE: guessed index script
+  path did not exist → discovered and used the maintained enhanced-index
+  command.
+- Root cause: normalized historical metadata/decorators diverged from the
+  controlled IS 456 edition; the commits or rationale that introduced the
+  `26.5.1.1` misclassification and fabricated `38.2` identity were not traced,
+  so their historical origin remains `unconfirmed`. Resolution in B: bind the
+  new function only to the verified identifiers, leave unrelated consumers
+  unchanged, and record a bounded `INDIA-2-TRUTH-HYGIENE` packet with exact
+  migration tests before final closeout. Evidence: the controlled source,
+  targeted `rg`, and Section 8 of
+  `docs/planning/india-2-next-session-publication-and-closeout-plan.md` preserve
+  the defect, non-fix reason, and reactivation condition.
+- Root cause: zsh evaluated the backtick inside a double-quoted `rg` pattern
+  and reached an unmatched quote boundary. Resolution: use one single-quoted
+  regex and separate newline commands without executable interpolation.
+  Evidence: the corrected stale-text search, diff check, documentation check,
+  and 1,236-link validation pass. ⚠️ TERMINAL ISSUE: unsafe double-quoted
+  backtick pattern stopped the command → reran with a single-quoted regex.
+- Root cause: `generate_enhanced_index.py --check` requires one folder unless
+  `--all` is selected, and index hashes legitimately changed after the final
+  documentation edit. Resolution: pass each touched folder explicitly,
+  regenerate only `docs`, `docs/planning`, and `docs/verification`, then rerun
+  the same scoped checks. Evidence: all three final hash checks pass.
+  ⚠️ TERMINAL ISSUE: index check was invoked without its required folder →
+  reran the maintained command with explicit bounded folders.
+- Root cause: COMBINED-A had updated the generator's held narrative only
+  through the action kernel; B regenerated and checked deterministic bytes but
+  did not reconcile that human claim with its new partial implementation.
+  Resolution: keep the capability `HELD`/`NOT_IMPLEMENTED` with no workflow,
+  update only its claim/limitation and future evidence mapping to acknowledge
+  internal A/B kernels, and add one semantic regression assertion. Evidence:
+  the focused manifest test and regenerated-manifest check pass at unchanged
+  11-supported / 10-held truth; the final exact-head audit is rerun.
+- Root cause: the targeted pre-commit check used Ruff and mypy but had not run
+  the repository's Black formatter over the new test layout. Resolution:
+  retain only Black's mechanical reformat, rerun the focused manifest test,
+  restage the exact packet, and rerun normal commit hooks. Evidence: the
+  successor commit hooks pass. ⚠️ TERMINAL ISSUE: commit stopped on Black's
+  formatter-only edit → accepted the formatting and reran the commit normally.
+- Root cause/ownership: `unconfirmed`; the bounded Git-state authority reports
+  only `DETACHED`, `dirty_count=1`, and no unfinished operation for that
+  foreign lane. Resolution: preserve it exactly, exclude it from B lifecycle
+  operations, and require a separately authorized inspection/classification
+  before any future cleanup or retirement decision. Evidence:
+  `git_state.py --json --worktrees` identifies the exact retained path while
+  the B lane and primary `main` remain clean.
+
+### Validation
+
+- 28 direct COMBINED-B tests, all 71 COMBINED-A/B tests, and the 193-test
+  combined clause-registry, traceability, manifest, and quality-checker
+  selection pass; the one new composed function passes strict function
+  quality, Ruff, and focused mypy.
+- Architecture reports 0/190 violations, imports 0/630 broken, all 1,236
+  internal links are valid, touched indexes are current, source binding is
+  true, token efficiency passes, and the quick gate is 10/10.
+- Independent read-only audit passed source candidate
+  `b9cb06f7afe632339c10ab84e17a4d09d0299ade`, tree
+  `f5e405ad445f88d019a1c2b064292e6be9b495b6`, including a non-frozen
+  `7200 x 3000 mm` symmetric case. Hosted-check results are added at PR
+  closeout. Broad Python/full 30-check remain deferred to final INDIA-2
+  closeout under the accepted cadence.
+
 ## 2026-08-16 — Session: INDIA-2-FOUNDATION-COMBINED-A Action Kernel
 
 **Agent:** Codex (`structural-math`, sole writer; one bounded independent

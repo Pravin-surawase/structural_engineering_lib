@@ -13,10 +13,20 @@ __all__ = [
     "CombinedFootingActionInput",
     "CombinedFootingAnalysisMethod",
     "CombinedFootingContractError",
+    "CombinedFootingDesignInput",
     "CombinedFootingGeometryInput",
     "CombinedFootingInput",
+    "CombinedFootingMaterialInput",
     "CombinedFootingPressureModel",
+    "CombinedFootingReinforcementInput",
+    "CombinedFootingSupportingAreaBasis",
+    "CombinedFootingTransferInput",
 ]
+
+
+_SUPPORTED_CONCRETE_GRADES_NMM2 = (20.0, 25.0, 30.0, 35.0, 40.0)
+_SUPPORTED_STEEL_GRADES_NMM2 = (415.0, 500.0)
+_SUPPORTED_BAR_DIAMETERS_MM = (8.0, 10.0, 12.0, 16.0, 20.0, 25.0, 32.0, 36.0)
 
 
 class CombinedFootingContractError(ValueError):
@@ -33,6 +43,12 @@ class CombinedFootingPressureModel(StrEnum):
     """Soil-pressure models admitted by the first combined-footing workflow."""
 
     UNIFORM = "uniform"
+
+
+class CombinedFootingSupportingAreaBasis(StrEnum):
+    """Approved geometry basis for the supporting concrete bearing area."""
+
+    LARGEST_FRUSTUM_1V_2H = "largest_frustum_1v_2h"
 
 
 def _positive_finite(value: object, field_name: str, unit: str) -> float:
@@ -59,6 +75,21 @@ def _require_bool(value: object, field_name: str, expected: bool) -> None:
         raise CombinedFootingContractError(
             f"{field_name} must be explicitly {expected}"
         )
+
+
+def _supported_discrete_value(
+    value: object,
+    field_name: str,
+    unit: str,
+    supported: tuple[float, ...],
+) -> float:
+    normalized = _positive_finite(value, field_name, unit)
+    if normalized not in supported:
+        choices = ", ".join(f"{candidate:g}" for candidate in supported)
+        raise CombinedFootingContractError(
+            f"{field_name} must be one of {choices} {unit}"
+        )
+    return normalized
 
 
 @dataclass(frozen=True)
@@ -323,3 +354,247 @@ class CombinedFootingInput:
             raise CombinedFootingContractError(
                 "actions must be a CombinedFootingActionInput"
             )
+
+
+@dataclass(frozen=True)
+class CombinedFootingMaterialInput:
+    """Material grades admitted by the bounded strength check.
+
+    Stresses are in N/mm2. Coated reinforcement remains outside this packet
+    because its revised Amendment 6 bond basis is a separately held case.
+    """
+
+    footing_concrete_grade_nmm2: float
+    column_concrete_grade_nmm2: float
+    steel_grade_nmm2: float
+    uncoated_deformed_bars: bool
+    material_basis_reference: str
+
+    def __post_init__(self) -> None:
+        for name in (
+            "footing_concrete_grade_nmm2",
+            "column_concrete_grade_nmm2",
+        ):
+            object.__setattr__(
+                self,
+                name,
+                _supported_discrete_value(
+                    getattr(self, name),
+                    name,
+                    "N/mm2",
+                    _SUPPORTED_CONCRETE_GRADES_NMM2,
+                ),
+            )
+        object.__setattr__(
+            self,
+            "steel_grade_nmm2",
+            _supported_discrete_value(
+                self.steel_grade_nmm2,
+                "steel_grade_nmm2",
+                "N/mm2",
+                _SUPPORTED_STEEL_GRADES_NMM2,
+            ),
+        )
+        _require_bool(
+            self.uncoated_deformed_bars,
+            "uncoated_deformed_bars",
+            True,
+        )
+        object.__setattr__(
+            self,
+            "material_basis_reference",
+            _non_blank(self.material_basis_reference, "material_basis_reference"),
+        )
+
+
+@dataclass(frozen=True)
+class CombinedFootingReinforcementInput:
+    """Caller-supplied bars and detailing evidence for the frozen case.
+
+    Diameters, spacings, cover, aggregate size and available straight
+    anchorage are in mm. Inadequate but otherwise valid provision produces a
+    design ``FAIL``; values outside the represented material/layout domain
+    fail closed at this contract.
+    """
+
+    top_longitudinal_diameter_mm: float
+    top_longitudinal_spacing_mm: float
+    bottom_longitudinal_diameter_mm: float
+    bottom_longitudinal_spacing_mm: float
+    transverse_diameter_mm: float
+    transverse_spacing_mm: float
+    nominal_cover_mm: float
+    aggregate_size_mm: float
+    available_top_longitudinal_anchorage_each_end_mm: float
+    available_bottom_longitudinal_anchorage_each_end_mm: float
+    available_transverse_anchorage_each_edge_mm: float
+    straight_uncoated_deformed_bars: bool
+    effective_depth_basis_approved: bool
+    reinforcement_schedule_approved: bool
+    detailing_basis_reference: str
+
+    def __post_init__(self) -> None:
+        for name in (
+            "top_longitudinal_diameter_mm",
+            "bottom_longitudinal_diameter_mm",
+            "transverse_diameter_mm",
+        ):
+            object.__setattr__(
+                self,
+                name,
+                _supported_discrete_value(
+                    getattr(self, name),
+                    name,
+                    "mm",
+                    _SUPPORTED_BAR_DIAMETERS_MM,
+                ),
+            )
+        for name in (
+            "top_longitudinal_spacing_mm",
+            "bottom_longitudinal_spacing_mm",
+            "transverse_spacing_mm",
+            "nominal_cover_mm",
+            "aggregate_size_mm",
+            "available_top_longitudinal_anchorage_each_end_mm",
+            "available_bottom_longitudinal_anchorage_each_end_mm",
+            "available_transverse_anchorage_each_edge_mm",
+        ):
+            object.__setattr__(
+                self,
+                name,
+                _positive_finite(getattr(self, name), name, "mm"),
+            )
+        for name in (
+            "straight_uncoated_deformed_bars",
+            "effective_depth_basis_approved",
+            "reinforcement_schedule_approved",
+        ):
+            _require_bool(getattr(self, name), name, True)
+        object.__setattr__(
+            self,
+            "detailing_basis_reference",
+            _non_blank(self.detailing_basis_reference, "detailing_basis_reference"),
+        )
+
+
+@dataclass(frozen=True)
+class CombinedFootingTransferInput:
+    """Approved bearing-frustum and dowel provision at both equal columns.
+
+    The represented columns are identical, so one explicit provision applies
+    at each column. Areas are in mm2 and lengths are in mm.
+    """
+
+    effective_supporting_area_each_mm2: float
+    effective_supporting_area_basis: CombinedFootingSupportingAreaBasis
+    effective_supporting_area_approved: bool
+    dowel_count_each: int
+    dowel_diameter_mm: float
+    column_longitudinal_bar_diameter_mm: float
+    available_dowel_development_into_footing_mm: float
+    available_dowel_development_into_column_mm: float
+    uncoated_deformed_dowels: bool
+    transfer_basis_reference: str
+
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "effective_supporting_area_each_mm2",
+            _positive_finite(
+                self.effective_supporting_area_each_mm2,
+                "effective_supporting_area_each_mm2",
+                "mm2",
+            ),
+        )
+        if self.effective_supporting_area_basis is not (
+            CombinedFootingSupportingAreaBasis.LARGEST_FRUSTUM_1V_2H
+        ):
+            raise CombinedFootingContractError(
+                "effective_supporting_area_basis must be "
+                "CombinedFootingSupportingAreaBasis.LARGEST_FRUSTUM_1V_2H"
+            )
+        _require_bool(
+            self.effective_supporting_area_approved,
+            "effective_supporting_area_approved",
+            True,
+        )
+        if isinstance(self.dowel_count_each, bool) or not isinstance(
+            self.dowel_count_each, int
+        ):
+            raise CombinedFootingContractError("dowel_count_each must be an integer")
+        if self.dowel_count_each <= 0:
+            raise CombinedFootingContractError(
+                "dowel_count_each must be a positive integer"
+            )
+        object.__setattr__(
+            self,
+            "dowel_diameter_mm",
+            _supported_discrete_value(
+                self.dowel_diameter_mm,
+                "dowel_diameter_mm",
+                "mm",
+                _SUPPORTED_BAR_DIAMETERS_MM,
+            ),
+        )
+        column_bar_diameter = _positive_finite(
+            self.column_longitudinal_bar_diameter_mm,
+            "column_longitudinal_bar_diameter_mm",
+            "mm",
+        )
+        if column_bar_diameter > 36.0:
+            raise CombinedFootingContractError(
+                "column_longitudinal_bar_diameter_mm above 36 mm requires the held "
+                "Clause 34.4.4 arrangement"
+            )
+        object.__setattr__(
+            self,
+            "column_longitudinal_bar_diameter_mm",
+            _supported_discrete_value(
+                column_bar_diameter,
+                "column_longitudinal_bar_diameter_mm",
+                "mm",
+                _SUPPORTED_BAR_DIAMETERS_MM,
+            ),
+        )
+        for name in (
+            "available_dowel_development_into_footing_mm",
+            "available_dowel_development_into_column_mm",
+        ):
+            object.__setattr__(
+                self,
+                name,
+                _positive_finite(getattr(self, name), name, "mm"),
+            )
+        _require_bool(
+            self.uncoated_deformed_dowels,
+            "uncoated_deformed_dowels",
+            True,
+        )
+        object.__setattr__(
+            self,
+            "transfer_basis_reference",
+            _non_blank(self.transfer_basis_reference, "transfer_basis_reference"),
+        )
+
+
+@dataclass(frozen=True)
+class CombinedFootingDesignInput:
+    """Complete input to the bounded combined-footing strength composition."""
+
+    analysis: CombinedFootingInput
+    material: CombinedFootingMaterialInput
+    reinforcement: CombinedFootingReinforcementInput
+    transfer: CombinedFootingTransferInput
+
+    def __post_init__(self) -> None:
+        expected_types = (
+            ("analysis", CombinedFootingInput),
+            ("material", CombinedFootingMaterialInput),
+            ("reinforcement", CombinedFootingReinforcementInput),
+            ("transfer", CombinedFootingTransferInput),
+        )
+        for name, expected_type in expected_types:
+            if not isinstance(getattr(self, name), expected_type):
+                raise CombinedFootingContractError(
+                    f"{name} must be a {expected_type.__name__}"
+                )

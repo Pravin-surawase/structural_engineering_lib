@@ -23,7 +23,7 @@
     {
       "name": "combined_footing",
       "path": "combined_footing/",
-      "file_count": 4,
+      "file_count": 5,
       "is_package": true
     },
     {
@@ -57,5 +57,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "5dba650c0e4e3c6b"
+  "content_hash": "6d00940ee8221505"
 }

@@ -6,7 +6,7 @@
     "version": "2000 (Reaffirmed 2021)",
     "source": "Bureau of Indian Standards",
     "last_updated": "2026-08-16",
-    "total_clauses": 169,
+    "total_clauses": 173,
     "includes_references": [
       "IS 13920:2016"
     ],
@@ -408,6 +408,16 @@
         "bars"
       ]
     },
+    "26.4.2.2": {
+      "title": "Minimum Nominal Cover for Footings",
+      "section": "26 - Detailing",
+      "category": "footings",
+      "keywords": [
+        "footing",
+        "nominal cover",
+        "reinforcement cover"
+      ]
+    },
     "26.5.1.1": {
       "title": "Minimum Shear Reinforcement",
       "section": "26 - Detailing",
@@ -467,6 +477,16 @@
         "minimum reinforcement",
         "bar diameter",
         "spacing"
+      ]
+    },
+    "26.5.2.2": {
+      "title": "Maximum Bar Diameter in Slabs",
+      "section": "26 - Detailing",
+      "category": "slabs",
+      "keywords": [
+        "slab",
+        "bar diameter",
+        "overall thickness"
       ]
     },
     "26.5.3": {
@@ -1134,6 +1154,17 @@
         "unsupported length"
       ]
     },
+    "34.2.4.3": {
+      "title": "Development-Length Critical Sections in Footings",
+      "section": "34 - Footings",
+      "category": "footings",
+      "keywords": [
+        "footing",
+        "development length",
+        "critical section",
+        "anchorage"
+      ]
+    },
     "34.3": {
       "title": "Tensile Reinforcement in Footings",
       "section": "34 - Footings",
@@ -1194,6 +1225,17 @@
         "large bars",
         "dowels",
         "special case"
+      ]
+    },
+    "34.5.1": {
+      "title": "Minimum Reinforcement and Spacing in Footings",
+      "section": "34 - Footings",
+      "category": "footings",
+      "keywords": [
+        "footing",
+        "minimum reinforcement",
+        "solid slab",
+        "spacing"
       ]
     },
     "36.1": {
@@ -1877,14 +1919,14 @@
       "title": "Moments of Resistance of Beams and Slabs"
     },
     "G-1.1": {
-      "title": "Doubly Reinforced Rectangular Sections",
+      "title": "Rectangular Sections Without Compression Reinforcement",
       "section": "Annex G - Moment of Resistance",
       "category": "flexure",
       "keywords": [
-        "doubly reinforced",
-        "compression steel",
-        "Mu2",
-        "Asc"
+        "singly reinforced",
+        "rectangular section",
+        "tension steel",
+        "moment resistance"
       ]
     },
     "G-2.2": {

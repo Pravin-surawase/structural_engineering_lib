@@ -47,7 +47,7 @@ Historical staircase task IDs, PRs, and evidence remain unchanged. The former
 | Clause 33 stairs | One bounded longitudinal straight waist-slab flight supported | Complete; alternate stair systems remain held |
 | Clause 29 deep beams | Focused family acceptance complete after G0 and A-D integration | One simply supported positive-moment reinforcement check supported; alternate deep-beam systems held |
 | Flat slabs and column punching | Focused family acceptance complete after G0 and A-E integration | One regular interior direct-design and concrete-only punching workflow supported; alternate systems held |
-| Combined footing | G0 GO; implementation packets activated; capability remains held | One symmetric equal-load two-column rigid rectangular case frozen; alternate systems held |
+| Combined footing | G0 plus A/B analysis-strength packets complete; capability remains held | One symmetric equal-load two-column rigid rectangular case frozen; C public Python workflow is next |
 | Strap footing | Not implemented | Separate foundation program |
 | Pile cap | Not implemented | Separate foundation program |
 | Raft foundation | Not implemented | Separate foundation program |
@@ -63,7 +63,7 @@ boundary, held with a written reason, or not implemented.
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
 | 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | Complete within the written bounded case |
 | 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Complete within the written bounded case |
-| 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Combined-footing G0 complete; remaining programs pending |
+| 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Combined-footing A/B complete; C/D/acceptance and remaining G0 decisions pending |
 | 5 | `INDIA-2-CLOSEOUT` | Reconcile truth, run final cumulative gates, and freeze the INDIA-2 evidence set | Pending |
 
 The provisional foundation order is combined footing, strap footing, pile cap,
@@ -292,8 +292,14 @@ resultant alignment, full-width longitudinal equilibrium sections, and
 transverse flexure/shear actions. The frozen benchmark and additional symmetric
 geometries close vertical and moment equilibrium. Evidence is in
 [`india-2-foundation-combined-a-analysis-evidence.md`](../verification/india-2-foundation-combined-a-analysis-evidence.md).
-Strength, detailing, composed disposition, public workflow, and capability
-promotion remain held for B-D.
+`INDIA-2-FOUNDATION-COMBINED-B` implements the exact rectangular stress-block
+flexure checks, solid-slab minimum/provided reinforcement, spacing, cover,
+tension anchorage, longitudinal/transverse Table 19 one-way shear,
+concrete-only punching, and bearing/compression-dowel transfer over A. Valid
+inadequacy returns `FAIL`; unsupported input fails closed; review remains
+required. Evidence is in
+[`india-2-foundation-combined-b-strength-evidence.md`](../verification/india-2-foundation-combined-b-strength-evidence.md).
+Public Python workflow and capability promotion remain held for C/D.
 
 ## 7. Validation and Git cadence
 
@@ -344,8 +350,11 @@ authorized programs.
 
 ## 9. Exact next action
 
-Begin `INDIA-2-FOUNDATION-COMBINED-B` from the merged A action kernel. Implement
-only flexure/minimum/provided steel, longitudinal and transverse one-way shear,
-concrete-only punching, bearing/dowels/anchorage, and one composed internal
-result. Do not add the public workflow, FastAPI, alternate foundation geometry,
-general soil interaction, or punching/shear reinforcement design in B.
+Begin `INDIA-2-FOUNDATION-COMBINED-C` from verified current `main` only after
+B merges unchanged. Implement only the typed public Python workflow
+`design_symmetric_combined_footing_is456`, stable input/provenance/result/status
+types, executable benchmark, canonical root/services exports, API docs, and C
+evidence. Keep capability truth held; FastAPI, semantic/capability promotion,
+alternate foundations, React, broad Python, and the 30-check gate remain for
+later packets. Follow the dedicated
+[next-session and finish plan](india-2-next-session-publication-and-closeout-plan.md).
