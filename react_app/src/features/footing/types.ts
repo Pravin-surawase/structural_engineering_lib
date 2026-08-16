@@ -8,10 +8,12 @@ export interface ConcentricIsolatedFootingRequest {
   service_axial_load_kN: number;
   service_load_combination_id: string;
   service_load_basis: 'includes_footing_self_weight_and_overburden';
+  service_load_origin: 'provided' | 'assumed' | 'verified';
   factored_axial_load_kN: number;
   factored_load_combination_id: string;
   allowable_soil_pressure_kPa: number;
   allowable_soil_pressure_source_reference: string;
+  allowable_soil_pressure_origin: 'provided' | 'assumed' | 'verified';
   allowable_soil_pressure_is_externally_approved: true;
   footing_type: FootingPlanType;
   column_L_mm: number;
@@ -26,6 +28,7 @@ export interface ConcentricIsolatedFootingRequest {
   steel_fy_nmm2: number;
   effective_supporting_area_A1_mm2: number;
   effective_supporting_area_basis: 'largest_frustum_1v_2h';
+  effective_supporting_area_origin: 'provided' | 'assumed' | 'verified';
   effective_supporting_area_is_approved: true;
   dowel_count: number;
   dowel_diameter_mm: number;
@@ -242,14 +245,23 @@ export interface FootingProvenance {
   units: Record<string, string>;
   service_load_combination_id: string;
   service_load_basis: string;
+  service_load_origin: string;
   factored_load_combination_id: string;
   allowable_soil_pressure_source_reference: string;
+  allowable_soil_pressure_origin: string;
+  allowable_soil_pressure_is_externally_approved: boolean;
   allowable_soil_pressure_role: string;
   loaded_area_A2_basis: string;
   effective_supporting_area_basis: string;
+  effective_supporting_area_origin: string;
+  effective_supporting_area_is_approved: boolean;
   core_function_ids: string[];
   clause_bases: Record<string, string>;
   source_ids: string[];
+  arithmetic_input_hash: string;
+  assumption_identity_hash: string;
+  library_content_identity: string;
+  replay_receipt_hash: string;
   qualified_review_requirement: string;
 }
 

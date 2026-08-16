@@ -2,14 +2,14 @@
   "folder": "react_app/src/hooks",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-08-16",
+  "last_updated": "2026-08-17",
   "file_count": 16,
   "files": [
     {
       "name": "index.ts",
       "type": "typescript",
       "size_lines": 87,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "useAutoDesign",
         "useDesignWebSocket",
@@ -34,7 +34,7 @@
       "name": "useAutoDesign.ts",
       "type": "react-hook",
       "size_lines": 73,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "useAutoDesign"
       ],
@@ -44,8 +44,8 @@
     {
       "name": "useBatchDesign.ts",
       "type": "react-hook",
-      "size_lines": 557,
-      "last_updated": "2026-08-16",
+      "size_lines": 554,
+      "last_updated": "2026-08-17",
       "exports": [
         "BatchProgress",
         "BatchResult",
@@ -53,13 +53,13 @@
         "BatchDesignState",
         "useBatchDesign"
       ],
-      "content_hash": "3fc776a20e93"
+      "content_hash": "7c9d29d9d971"
     },
     {
       "name": "useBeamGeometry.ts",
       "type": "react-hook",
       "size_lines": 180,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "Point3D",
         "RebarSegment",
@@ -77,8 +77,8 @@
     {
       "name": "useCSVImport.ts",
       "type": "react-hook",
-      "size_lines": 456,
-      "last_updated": "2026-08-16",
+      "size_lines": 509,
+      "last_updated": "2026-08-17",
       "exports": [
         "ImportedBeam",
         "BeamDesignPayload",
@@ -89,13 +89,13 @@
         "useSimpleBatchDesign"
       ],
       "description": "useCSVImport Hook",
-      "content_hash": "39d8d4d4dfab"
+      "content_hash": "62ecaccf7329"
     },
     {
       "name": "useDesignWebSocket.ts",
       "type": "react-hook",
       "size_lines": 259,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "ConnectionStatus",
         "WebSocketState",
@@ -110,7 +110,7 @@
       "name": "useExport.ts",
       "type": "react-hook",
       "size_lines": 202,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "ExportBeamParams",
         "ExportReportParams",
@@ -128,7 +128,7 @@
       "name": "useGeometryAdvanced.ts",
       "type": "react-hook",
       "size_lines": 172,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "Point3D",
         "BuildingBeamInput",
@@ -147,7 +147,7 @@
       "name": "useInsights.ts",
       "type": "react-hook",
       "size_lines": 346,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "BeamResult",
         "StoryStats",
@@ -172,7 +172,7 @@
       "name": "useLiveDesign.ts",
       "type": "react-hook",
       "size_lines": 365,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "createQuickDesignIdentity",
         "useLiveDesign"
@@ -184,7 +184,7 @@
       "name": "useLoadAnalysis.ts",
       "type": "react-hook",
       "size_lines": 17,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "useLoadAnalysis"
       ],
@@ -195,7 +195,7 @@
       "name": "useParetoDesign.ts",
       "type": "react-hook",
       "size_lines": 18,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "useParetoDesign"
       ],
@@ -206,7 +206,7 @@
       "name": "useRebarEditor.ts",
       "type": "react-hook",
       "size_lines": 159,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "BeamParams",
         "RebarConfig",
@@ -223,7 +223,7 @@
       "name": "useReducedMotion.ts",
       "type": "react-hook",
       "size_lines": 19,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "useReducedMotion"
       ],
@@ -233,7 +233,7 @@
       "name": "useTorsionDesign.ts",
       "type": "react-hook",
       "size_lines": 17,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "useTorsionDesign"
       ],
@@ -244,7 +244,7 @@
       "name": "useWebGLContextLoss.ts",
       "type": "react-hook",
       "size_lines": 33,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "useWebGLContextLoss"
       ],
@@ -252,5 +252,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "0db2634fee251293"
+  "content_hash": "96bd948e6b4f812c"
 }

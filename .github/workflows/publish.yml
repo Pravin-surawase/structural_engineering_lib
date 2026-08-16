@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v7
@@ -82,6 +84,18 @@ jobs:
 
       - name: Verify complete footing release inclusion
         run: python ../scripts/release.py footing-inclusion-check
+
+      - name: Enforce separate owner publication authorization
+        env:
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            python ../scripts/release.py authorization-check --version "$RELEASE_VERSION" --target testpypi
+          else
+            python ../scripts/release.py authorization-check --version "$RELEASE_VERSION" --target pypi
+            python ../scripts/release.py authorization-check --version "$RELEASE_VERSION" --target github-release
+          fi
 
       - name: Run release tests
         run: python -m pytest tests -q --tb=short
@@ -169,6 +183,11 @@ jobs:
               "\n".join(sdist_files) + "\n", encoding="utf-8"
           )
           manifest = {
+              "schema_version": "release-artifact-evidence/v2",
+              "package_version": next(
+                  path.name.split("-")[1]
+                  for path in wheels
+              ),
               "source_sha": os.environ["SOURCE_SHA"],
               "source_ref": os.environ["SOURCE_REF"],
               "artifacts": [
@@ -223,58 +242,12 @@ jobs:
           "$uat_root/venv/bin/python" -m pip install "${wheels[0]}"
           (
             cd "$uat_root"
-            "$uat_root/venv/bin/python" - <<'PY'
-          from pathlib import Path
-          import structural_lib
-          from structural_lib.services import api
-          from structural_lib.services import footing_api
-
-          installed_path = Path(structural_lib.__file__).resolve()
-          assert "site-packages" in str(installed_path), installed_path
-          assert api.get_library_version()
-
-          beam = api.design_beam_is456(
-              units="IS456", b_mm=300, D_mm=500, d_mm=450,
-              fck_nmm2=25, fy_nmm2=415, mu_knm=100, vu_kn=80,
-          )
-          column = api.design_column_axial_is456(
-              fck_nmm2=25, fy_nmm2=415, Ag_mm2=160000, Asc_mm2=3200,
-          )
-          footing = api.check_bearing_pressure(
-              Pu_kN=500, fck=25, column_b_mm=300, column_D_mm=300,
-              footing_B_mm=1500, footing_L_mm=1500,
-          )
-          transfer = api.check_isolated_footing_load_transfer(
-              Pu_kN=3000, loaded_area_A2_mm2=160000,
-              effective_supporting_area_A1_mm2=640000,
-              effective_supporting_area_basis="largest_frustum_1v_2h",
-              effective_supporting_area_is_approved=True,
-              supporting_concrete_fck_nmm2=20,
-              supported_concrete_fck_nmm2=25,
-              steel_fy_nmm2=415, dowel_count=8, dowel_diameter_mm=25,
-              column_longitudinal_bar_diameter_mm=32,
-              available_dowel_development_length_into_footing_mm=1176,
-              available_dowel_development_length_into_supported_member_mm=1010,
-          )
-          slab = api.design_one_way_slab_is456(
-              short_effective_span_mm=3000, long_effective_span_mm=7500,
-              thickness_mm=150, d_mm=125,
-              factored_area_load_kn_per_m2=10,
-              fck_n_per_mm2=20, fy_n_per_mm2=415,
-              main_bar_diameter_mm=10, main_bar_spacing_mm=250,
-              distribution_bar_diameter_mm=8,
-              distribution_bar_spacing_mm=250,
-          )
-          capabilities = api.get_supported_is456_capabilities()
-          assert beam is not None and column["Pu_kN"] > 0 and footing.is_safe
-          assert transfer.is_safe and slab.is_detailing_adequate
-          assert callable(footing_api.design_concentric_isolated_footing_is456)
-          assert {item.element for item in capabilities} == {
-              "beam", "column", "isolated_footing", "solid_slab"
-          }
-          print(f"installed wheel UAT passed from {installed_path}")
-          PY
+            "$uat_root/venv/bin/python" -m structural_lib.release_uat \
+              --require-installed-wheel \
+              --output "$GITHUB_WORKSPACE/Python/release-assets/exact-wheel-uat.json"
             "$uat_root/venv/bin/python" -m structural_lib --help >/dev/null
+            "$uat_root/venv/bin/python" -m structural_lib install-preflight --json \
+              > "$GITHUB_WORKSPACE/Python/release-assets/install-preflight.json"
           )
 
       - name: Generate and validate CycloneDX SBOM
@@ -294,6 +267,102 @@ jobs:
           assert data.get('specVersion') == '1.6'
           assert isinstance(data.get('components'), list) and data['components']
           print(f"Validated SBOM with {len(data['components'])} components")
+          PY
+
+      - name: Finalize immutable release evidence
+        env:
+          SOURCE_SHA: ${{ github.sha }}
+          SOURCE_REF: ${{ github.ref }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          assets = Path("release-assets")
+          manifest_path = assets / "artifact-manifest.json"
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          uat_path = assets / "exact-wheel-uat.json"
+          uat = json.loads(uat_path.read_text(encoding="utf-8"))
+          assert uat["status"] == "PASS"
+          assert uat["professional_approval"] is False
+          authorization_path = Path(
+              "../docs/verification/release-publication-authorization.json"
+          )
+          authorization = json.loads(authorization_path.read_text(encoding="utf-8"))
+          assert authorization["decision"] == "AUTHORIZED"
+          assert authorization["version"] == manifest["package_version"]
+          review_receipt_path = Path("..") / authorization[
+              "exact_candidate_review_receipt"
+          ]
+          review_receipt = json.loads(
+              review_receipt_path.read_text(encoding="utf-8")
+          )
+          review_receipt_sha256 = hashlib.sha256(
+              review_receipt_path.read_bytes()
+          ).hexdigest()
+          assert review_receipt_sha256 == authorization[
+              "exact_candidate_review_receipt_sha256"
+          ]
+          assert review_receipt["decision"] == "ACCEPT"
+
+          manifest.update(
+              {
+                  "source_tree_sha": subprocess.check_output(
+                      ["git", "rev-parse", "HEAD^{tree}"], text=True
+                  ).strip(),
+                  "workflow": {
+                      "run_id": os.environ["RUN_ID"],
+                      "run_attempt": os.environ["RUN_ATTEMPT"],
+                      "source_sha": os.environ["SOURCE_SHA"],
+                      "source_ref": os.environ["SOURCE_REF"],
+                  },
+                  "exact_wheel_uat": {
+                      "status": uat["status"],
+                      "receipt_sha256": hashlib.sha256(uat_path.read_bytes()).hexdigest(),
+                      "matrix_schema_version": uat["matrix_schema_version"],
+                      "matrix_sha256": uat["matrix_sha256"],
+                      "case_count": uat["case_count"],
+                      "library_content_identity": uat["library_content_identity"],
+                      "public_examples": uat["public_examples"],
+                  },
+                  "install_preflight_sha256": hashlib.sha256(
+                      (assets / "install-preflight.json").read_bytes()
+                  ).hexdigest(),
+                  "sbom_sha256": hashlib.sha256(
+                      (assets / "sbom.json").read_bytes()
+                  ).hexdigest(),
+                  "publication_authorization": {
+                      "decision": authorization["decision"],
+                      "version": authorization["version"],
+                      "tag": authorization["tag"],
+                      "authorized_targets": authorization["authorized_targets"],
+                      "exact_candidate_review_receipt": authorization[
+                          "exact_candidate_review_receipt"
+                      ],
+                      "exact_candidate_review_receipt_sha256": (
+                          review_receipt_sha256
+                      ),
+                      "reviewed_candidate": review_receipt[
+                          "reviewed_candidate"
+                      ],
+                      "record_sha256": hashlib.sha256(
+                          authorization_path.read_bytes()
+                      ).hexdigest(),
+                  },
+                  "qualified_review_required": True,
+                  "professional_approval": False,
+              }
+          )
+          manifest_path.write_text(
+              json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print(json.dumps(manifest, indent=2, sort_keys=True))
           PY
 
       - name: Upload distributions

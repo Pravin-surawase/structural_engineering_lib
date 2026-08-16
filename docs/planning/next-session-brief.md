@@ -1,88 +1,78 @@
 # Next Session Briefing
 
-## Latest Handoff (auto)
+## Latest handoff
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-17
-- Focus: LIB-PRO-002-A strict beam project/service intake, blocking issue contract, effective-depth basis, and accounted batch result
-- Integration base: current `origin/main = 87205d64990c96db75dbae9056c9a0066605e1f8`; original Packet A candidate `22066d0d83f84995b898a58b43993f621ec2d8d0` remains preserved in branch history
-- Lane: `codex/lib-pro-002-a-strict-input`; current source binding reports `source_bound=true`
-- G0 closeout: PR #812 merged at the exact base above; the reviewed G0 tree changed no calculation, API, UI, adapter, or release behavior
-- Pilot truth: the exact synthetic values matched independent arithmetic, and the footing dowel failure is correct; neither fact certifies the library or a whole-building workflow
-- Decision: every next public package remains held until the Alpha gate in the active plan is accepted and the owner separately authorizes the exact release
-- Current packet: Packet A forward-integration candidate; runtime changes are unchanged and the only integration conflicts were the predicted shared session/generated-index paths
-- Git handoff: `docs/verification/lib-pro-002-a-forward-integration-git-handoff-receipt.json`; the original pre-integration receipt remains historical evidence
-- Exact next action: finish the authorized forward integration and recurrence guard, freeze Packet A evidence/indexes, run one consolidated focused/quick sequence, create the immutable candidate, and obtain exact-head independent review before push
+- Focus: LIB-PRO-002 cumulative A-G input safety and professional-readiness integration
+- Base: Packet A merge `3986935ecb473c1f9d56dec44aeb4218d9192f84` (PR #814)
+- Lane: `codex/lib-pro-002-b-lossless-import`; one isolated writer; unrelated worktrees preserved
+- Candidate: Packets B-G integrated; first exact-head review rejected a bypassable presence-only publication receipt check after all local/hosted gates passed
+- Release: HOLD; `docs/verification/release-publication-authorization.json` contains no exact version/tag/target authorization
+- Whole-building workflow: Packet H is not activated and component-only claims remain
+- Exact next action: finish the receipt head/tree/package/version/tag/target binding repair, then create one repaired immutable head and restart exact review plus hosted checks
 <!-- HANDOFF:END -->
-
-**Date:** 2026-08-17
 
 | State | Boundary |
 |---|---|
-| **Current** | `v0.23.1a1` Alpha remains the current public release; `LIB-PRO-001` remains a completed historical evidence ledger |
-| **Active** | `LIB-PRO-002-A`: strict beam project/service intake forward-integration candidate; consolidated verification, immutable review, and hosted closeout remain |
-| **Next** | `LIB-PRO-002-B`: lossless import boundary, only after Packet A merges |
-| **Held** | Publication, stable/engineering-use claims, professional approval, whole-building workflow, INDIA-3, dependency work, retained Git lanes, and unrelated cleanup |
+| **Current** | `v0.23.1a1` Alpha; no stable, professional-approval, or whole-building claim |
+| **Next** | LIB-PRO-002 A-G cumulative input/import/result/evidence/API/release-safety acceptance |
+| **Held** | Publication, professional approval, Packet H, INDIA-3, dependency work, branch/worktree cleanup, and unrelated retained lanes |
 
 ## Required Reading
 
-1. [Active pre-release input-safety plan](pre-release-input-safety-and-professional-readiness-plan.md)
+1. [Active A-G plan](pre-release-input-safety-and-professional-readiness-plan.md)
 2. [Current task board](../TASKS.md)
-3. [Completed LIB-PRO-001 evidence ledger](professional-library-remediation-plan.md)
-4. [Git workflow single source](../git-automation/git-workflow-single-source.md)
+3. [Git workflow single source](../git-automation/git-workflow-single-source.md)
+4. [Publication authorization record](../verification/release-publication-authorization.json)
+5. [Exact-candidate review receipt template](../verification/exact-candidate-review-receipt-template.json)
 
-## Exact next start
+## Resume safely
 
-Resume only the existing Packet A worktree. The owner authorized merging current
-`main` forward without rebase/reset/force after the policy side packet made the
-clean candidate diverge. Preserve the original `22066d0d` commit and do not
-recreate the branch or migrate its changes into a retained lane.
+Use only the existing cumulative worktree. Do not recreate the branch, move its
+changes to a retained lane, or mutate primary `main` while the candidate is
+open.
 
 ```bash
-./run.sh session brief --agent backend
+./run.sh session brief --agent orchestrator
 ./run.sh session start
 ./scripts/python_runtime.sh --diagnose
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
 ```
 
-Before any later repair candidate, require `source_bound=true`, no operation
-marker, and the expected branch/head/diff. This one changed-base rebind is
-explicitly authorized and root-caused; any further changed base, overlapping
-dirty path, or second rejected candidate returns Packet A to contract/design
-planning.
+Require the expected branch/head/diff, `source_bound=true`, no operation marker,
+and no new overlapping writer before mutation. The earlier Packet A Git issue
+was not an unclean-start failure: a later side packet advanced shared refs and
+overlapped closeout/index files after the original start check. The durable
+active-candidate dependency/path-overlap gate in `AGENTS.md` and the canonical
+Git workflow now covers that whole candidate lifetime.
 
-## Packet A boundary
+## Integrated A-G boundary
 
-Packet A owns only the new versioned project input/result types,
-`Python/structural_lib/services/batch.py`, focused service tests, and compact
-task/session handoff evidence. The local candidate implements:
+- strict canonical beam input, explicit effective depth, stable blocking issues,
+  no calculation call for blocked inputs, and accounted empty/mixed batches;
+- explicit/unique adapter selection, every-row/every-field normalization ledger,
+  and blocking malformed, dropped, duplicate, or unmatched records;
+- one canonical service orchestration shared by HTTP/SSE/React, with old routes
+  delegating or deprecated and no client structural fallback;
+- orthogonal intake/calculation/engineering/review truth across beam, slab,
+  column, and footing, retaining the correct insufficient-dowel FAIL;
+- calculation, library, controlled-source, amendment, artifact, ledger,
+  assumption, provenance, and replay identity;
+- complete Alpha API classification, corrected version/claim/example surfaces,
+  and installed-package preflight;
+- source-free exact-wheel negative UAT plus an explicit per-version/tag/target
+  owner authorization stop before publication; the repair resolves and hashes
+  an actual independent-review JSON receipt, verifies reviewed Git/Python
+  identity and permits only an evidence-only descendant delta.
 
-- required finite canonical values and stable field/path issue codes;
-- mutually exclusive explicit `d_mm` or complete effective-depth basis;
-- rejection of unknown/conflicting fields and duplicate member identities;
-- no project structural defaults and no alias precedence;
-- empty/all-blocked summaries that cannot be PASS;
-- unchanged numerical outcome for the accepted synthetic beam input.
+## Acceptance and stop rules
 
-The legacy batch functions now delegate to the strict contract. Aliases may map
-only when their values agree; missing structural values still block. Blocked or
-duplicate members never call `design_beam_is456`.
+Run the broad Python, complete FastAPI/React, full canonical, packaging,
+protected-source, and exact-wheel gates once at this cumulative boundary. Bind
+the immutable commit/tree to an independent software/release-evidence review
+and all required hosted checks before merge.
 
-Do not edit adapters, FastAPI/React routes, column/slab/footing behavior,
-release automation, API classification, or whole-building calculations in
-Packet A.
-
-## Validation cadence
-
-After the forward integration and all versioned evidence freeze, run the 43
-focused service cases, Ruff, focused Mypy, architecture/import validation, and
-quick once as one consolidated sequence. Reserve broad Python, FastAPI/React,
-full canonical, packaging, and exact-wheel gates for cumulative Packet G unless
-an outcome-changing failure proves repository-wide risk.
-
-## Stop rule
-
-Packet B does not start until Packet A's unchanged exact head is independently
-accepted, required hosted checks pass, and Packet A merges. Do not infer
-tag/package publication, professional approval, whole-building implementation,
-issue closure, branch deletion, or retained-lane cleanup authority.
+Do not publish a package, create a tag or GitHub Release, claim professional
+approval, activate Packet H, close issues/PRs, delete branches, or clean retained
+worktrees without the separately required authorization.

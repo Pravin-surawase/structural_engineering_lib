@@ -1,0 +1,4224 @@
+{
+  "schema_version": "1.0",
+  "generated": "2026-08-16",
+  "package_version": "0.23.1a1",
+  "release_channel": "alpha",
+  "classifications": {
+    "stable": "Reserved for a separately approved post-Alpha compatibility promise.",
+    "preview": "Declared Alpha export; callable but subject to documented pre-1.0 change.",
+    "compatibility": "Retained delegating facade; use the recommended root or service facade.",
+    "internal": "Not declared in __all__; no public compatibility promise."
+  },
+  "stable_exports": [],
+  "internal_policy": "Every public-looking callable outside __all__ is tracked as internal.",
+  "surfaces": [
+    {
+      "module": "structural_lib",
+      "export_classification": "preview",
+      "declared_export_count": 187,
+      "classified_symbol_count": 187,
+      "symbols": [
+        {
+          "name": "AuditLogEntry",
+          "qualified_name": "structural_lib.AuditLogEntry",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "AuditTrail",
+          "qualified_name": "structural_lib.AuditTrail",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "Beam3DGeometry",
+          "qualified_name": "structural_lib.Beam3DGeometry",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "BeamGeometry",
+          "qualified_name": "structural_lib.BeamGeometry",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.models"
+        },
+        {
+          "name": "BeamGeometryInput",
+          "qualified_name": "structural_lib.BeamGeometryInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "BeamInput",
+          "qualified_name": "structural_lib.BeamInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "BearingPressureCheckResult",
+          "qualified_name": "structural_lib.BearingPressureCheckResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "BearingStressEnhancementResult",
+          "qualified_name": "structural_lib.BearingStressEnhancementResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "BracedWallDesignInput",
+          "qualified_name": "structural_lib.BracedWallDesignInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.wall_api"
+        },
+        {
+          "name": "BracedWallDesignProvenance",
+          "qualified_name": "structural_lib.BracedWallDesignProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.wall_api"
+        },
+        {
+          "name": "BracedWallDesignResult",
+          "qualified_name": "structural_lib.BracedWallDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.wall_api"
+        },
+        {
+          "name": "CalculationHash",
+          "qualified_name": "structural_lib.CalculationHash",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "CalculationReport",
+          "qualified_name": "structural_lib.CalculationReport",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "CheckCodeReport",
+          "qualified_name": "structural_lib.CheckCodeReport",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "CompleteOneWaySlabDesignResult",
+          "qualified_name": "structural_lib.CompleteOneWaySlabDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "ComplianceCaseResult",
+          "qualified_name": "structural_lib.ComplianceCaseResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "ComplianceReport",
+          "qualified_name": "structural_lib.ComplianceReport",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "ConcentricIsolatedFootingInput",
+          "qualified_name": "structural_lib.ConcentricIsolatedFootingInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "ConcentricIsolatedFootingResult",
+          "qualified_name": "structural_lib.ConcentricIsolatedFootingResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "ContinuousOneWaySlabDesignResult",
+          "qualified_name": "structural_lib.ContinuousOneWaySlabDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "CostProfile",
+          "qualified_name": "structural_lib.CostProfile",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.costing"
+        },
+        {
+          "name": "CriticalPoint",
+          "qualified_name": "structural_lib.CriticalPoint",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "DesignAndDetailResult",
+          "qualified_name": "structural_lib.DesignAndDetailResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.api_results"
+        },
+        {
+          "name": "DesignDefaults",
+          "qualified_name": "structural_lib.DesignDefaults",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.models"
+        },
+        {
+          "name": "DetailingConfigInput",
+          "qualified_name": "structural_lib.DetailingConfigInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "ETABSEnvelopeResult",
+          "qualified_name": "structural_lib.ETABSEnvelopeResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "ETABSForceRow",
+          "qualified_name": "structural_lib.ETABSForceRow",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "EndCondition",
+          "qualified_name": "structural_lib.EndCondition",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "FlangedBeamDesignResult",
+          "qualified_name": "structural_lib.FlangedBeamDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.api_results"
+        },
+        {
+          "name": "FootingBearingResult",
+          "qualified_name": "structural_lib.FootingBearingResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "FootingDepthCandidate",
+          "qualified_name": "structural_lib.FootingDepthCandidate",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "FootingDirectionalReinforcementDemand",
+          "qualified_name": "structural_lib.FootingDirectionalReinforcementDemand",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "FootingFlexureResult",
+          "qualified_name": "structural_lib.FootingFlexureResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "FootingOneWayShearResult",
+          "qualified_name": "structural_lib.FootingOneWayShearResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "FootingProvenance",
+          "qualified_name": "structural_lib.FootingProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "FootingPunchingResult",
+          "qualified_name": "structural_lib.FootingPunchingResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "FrameType",
+          "qualified_name": "structural_lib.FrameType",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.models"
+        },
+        {
+          "name": "IS456Capability",
+          "qualified_name": "structural_lib.IS456Capability",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.capabilities"
+        },
+        {
+          "name": "InputSection",
+          "qualified_name": "structural_lib.InputSection",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "LoadCaseInput",
+          "qualified_name": "structural_lib.LoadCaseInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "LoadDefinition",
+          "qualified_name": "structural_lib.LoadDefinition",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "LoadDiagramResult",
+          "qualified_name": "structural_lib.LoadDiagramResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "LoadTransferResult",
+          "qualified_name": "structural_lib.LoadTransferResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.load_transfer"
+        },
+        {
+          "name": "LoadType",
+          "qualified_name": "structural_lib.LoadType",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "LoadsInput",
+          "qualified_name": "structural_lib.LoadsInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "MaterialsInput",
+          "qualified_name": "structural_lib.MaterialsInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "OneWaySlabDesignResult",
+          "qualified_name": "structural_lib.OneWaySlabDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "ParetoCandidate",
+          "qualified_name": "structural_lib.ParetoCandidate",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.multi_objective_optimizer"
+        },
+        {
+          "name": "ParetoOptimizationResult",
+          "qualified_name": "structural_lib.ParetoOptimizationResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.multi_objective_optimizer"
+        },
+        {
+          "name": "Point3D",
+          "qualified_name": "structural_lib.Point3D",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "ProjectInfo",
+          "qualified_name": "structural_lib.ProjectInfo",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignInput",
+          "qualified_name": "structural_lib.PropertyLineStrapFootingDesignInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignProvenance",
+          "qualified_name": "structural_lib.PropertyLineStrapFootingDesignProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignResult",
+          "qualified_name": "structural_lib.PropertyLineStrapFootingDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignStatus",
+          "qualified_name": "structural_lib.PropertyLineStrapFootingDesignStatus",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "RebarPath",
+          "qualified_name": "structural_lib.RebarPath",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "RebarSegment",
+          "qualified_name": "structural_lib.RebarSegment",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignInput",
+          "qualified_name": "structural_lib.RegularInteriorFlatSlabDesignInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignProvenance",
+          "qualified_name": "structural_lib.RegularInteriorFlatSlabDesignProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignResult",
+          "qualified_name": "structural_lib.RegularInteriorFlatSlabDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignStatus",
+          "qualified_name": "structural_lib.RegularInteriorFlatSlabDesignStatus",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "ResultSection",
+          "qualified_name": "structural_lib.ResultSection",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "SimplySupportedDeepBeamDesignInput",
+          "qualified_name": "structural_lib.SimplySupportedDeepBeamDesignInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.deep_beam_api"
+        },
+        {
+          "name": "SimplySupportedDeepBeamDesignProvenance",
+          "qualified_name": "structural_lib.SimplySupportedDeepBeamDesignProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.deep_beam_api"
+        },
+        {
+          "name": "SimplySupportedDeepBeamDesignResult",
+          "qualified_name": "structural_lib.SimplySupportedDeepBeamDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.deep_beam_api"
+        },
+        {
+          "name": "StirrupLoop",
+          "qualified_name": "structural_lib.StirrupLoop",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "StraightFlightStaircaseInput",
+          "qualified_name": "structural_lib.StraightFlightStaircaseInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.staircase_api"
+        },
+        {
+          "name": "StraightFlightStaircaseProvenance",
+          "qualified_name": "structural_lib.StraightFlightStaircaseProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.staircase_api"
+        },
+        {
+          "name": "StraightFlightStaircaseResult",
+          "qualified_name": "structural_lib.StraightFlightStaircaseResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.staircase_api"
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignInput",
+          "qualified_name": "structural_lib.SymmetricCombinedFootingDesignInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignProvenance",
+          "qualified_name": "structural_lib.SymmetricCombinedFootingDesignProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignResult",
+          "qualified_name": "structural_lib.SymmetricCombinedFootingDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignStatus",
+          "qualified_name": "structural_lib.SymmetricCombinedFootingDesignStatus",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "TorsionResult",
+          "qualified_name": "structural_lib.TorsionResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "TwoWaySlabPanelWorkflowResult",
+          "qualified_name": "structural_lib.TwoWaySlabPanelWorkflowResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "ValidationReport",
+          "qualified_name": "structural_lib.ValidationReport",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "VersionInfo",
+          "qualified_name": "structural_lib.VersionInfo",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "__version__",
+          "qualified_name": "structural_lib.__version__",
+          "kind": "value",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "adapters",
+          "qualified_name": "structural_lib.adapters",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "api",
+          "qualified_name": "structural_lib.api",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "audit",
+          "qualified_name": "structural_lib.audit",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "batch",
+          "qualified_name": "structural_lib.batch",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "beam_to_3d_geometry",
+          "qualified_name": "structural_lib.beam_to_3d_geometry",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "bearing_stress_enhancement",
+          "qualified_name": "structural_lib.bearing_stress_enhancement",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.bearing"
+        },
+        {
+          "name": "biaxial_bending_check_is456",
+          "qualified_name": "structural_lib.biaxial_bending_check_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "build_detailing_input",
+          "qualified_name": "structural_lib.build_detailing_input",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "calculate_additional_moment_is456",
+          "qualified_name": "structural_lib.calculate_additional_moment_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "calculate_development_length",
+          "qualified_name": "structural_lib.calculate_development_length",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "calculate_effective_length_is456",
+          "qualified_name": "structural_lib.calculate_effective_length_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "calculate_equivalent_moment",
+          "qualified_name": "structural_lib.calculate_equivalent_moment",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "calculate_equivalent_shear",
+          "qualified_name": "structural_lib.calculate_equivalent_shear",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "calculate_longitudinal_torsion_steel",
+          "qualified_name": "structural_lib.calculate_longitudinal_torsion_steel",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "calculate_torsion_shear_stress",
+          "qualified_name": "structural_lib.calculate_torsion_shear_stress",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "calculate_torsion_stirrup_area",
+          "qualified_name": "structural_lib.calculate_torsion_stirrup_area",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "check_anchorage_at_simple_support",
+          "qualified_name": "structural_lib.check_anchorage_at_simple_support",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_beam_ductility",
+          "qualified_name": "structural_lib.check_beam_ductility",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_beam_is456",
+          "qualified_name": "structural_lib.check_beam_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_beam_slenderness",
+          "qualified_name": "structural_lib.check_beam_slenderness",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_bearing_pressure",
+          "qualified_name": "structural_lib.check_bearing_pressure",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.bearing"
+        },
+        {
+          "name": "check_code",
+          "qualified_name": "structural_lib.check_code",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "check_column_ductility_is13920",
+          "qualified_name": "structural_lib.check_column_ductility_is13920",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "check_compliance_report",
+          "qualified_name": "structural_lib.check_compliance_report",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_crack_width",
+          "qualified_name": "structural_lib.check_crack_width",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_deflection_span_depth",
+          "qualified_name": "structural_lib.check_deflection_span_depth",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_helical_reinforcement_is456",
+          "qualified_name": "structural_lib.check_helical_reinforcement_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "check_isolated_footing_load_transfer",
+          "qualified_name": "structural_lib.check_isolated_footing_load_transfer",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.load_transfer"
+        },
+        {
+          "name": "classify_column_is456",
+          "qualified_name": "structural_lib.classify_column_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "compliance",
+          "qualified_name": "structural_lib.compliance",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "compute_bbs",
+          "qualified_name": "structural_lib.compute_bbs",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_beam_outline",
+          "qualified_name": "structural_lib.compute_beam_outline",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "compute_bmd_sfd",
+          "qualified_name": "structural_lib.compute_bmd_sfd",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.load_analysis"
+        },
+        {
+          "name": "compute_critical",
+          "qualified_name": "structural_lib.compute_critical",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_detailing",
+          "qualified_name": "structural_lib.compute_detailing",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_dxf",
+          "qualified_name": "structural_lib.compute_dxf",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_hash",
+          "qualified_name": "structural_lib.compute_hash",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "compute_rebar_positions",
+          "qualified_name": "structural_lib.compute_rebar_positions",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "compute_report",
+          "qualified_name": "structural_lib.compute_report",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_stirrup_path",
+          "qualified_name": "structural_lib.compute_stirrup_path",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "compute_stirrup_positions",
+          "qualified_name": "structural_lib.compute_stirrup_positions",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "costing",
+          "qualified_name": "structural_lib.costing",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "create_calculation_certificate",
+          "qualified_name": "structural_lib.create_calculation_certificate",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "create_job_from_etabs",
+          "qualified_name": "structural_lib.create_job_from_etabs",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "create_jobs_from_etabs_csv",
+          "qualified_name": "structural_lib.create_jobs_from_etabs_csv",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "design_and_detail_beam_is456",
+          "qualified_name": "structural_lib.design_and_detail_beam_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "design_beam_is456",
+          "qualified_name": "structural_lib.design_beam_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "design_braced_wall_is456",
+          "qualified_name": "structural_lib.design_braced_wall_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.wall_api"
+        },
+        {
+          "name": "design_column_axial_is456",
+          "qualified_name": "structural_lib.design_column_axial_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "design_column_is456",
+          "qualified_name": "structural_lib.design_column_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "design_complete_one_way_slab_is456",
+          "qualified_name": "structural_lib.design_complete_one_way_slab_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_concentric_isolated_footing_is456",
+          "qualified_name": "structural_lib.design_concentric_isolated_footing_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "design_continuous_one_way_slab_builtin_is456",
+          "qualified_name": "structural_lib.design_continuous_one_way_slab_builtin_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_continuous_one_way_slab_is456",
+          "qualified_name": "structural_lib.design_continuous_one_way_slab_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_flanged_beam_is456",
+          "qualified_name": "structural_lib.design_flanged_beam_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "design_from_input",
+          "qualified_name": "structural_lib.design_from_input",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "design_long_column_is456",
+          "qualified_name": "structural_lib.design_long_column_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "design_one_way_slab_is456",
+          "qualified_name": "structural_lib.design_one_way_slab_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_property_line_strap_footing_is456",
+          "qualified_name": "structural_lib.design_property_line_strap_footing_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "design_regular_interior_flat_slab_is456",
+          "qualified_name": "structural_lib.design_regular_interior_flat_slab_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "design_short_column_uniaxial_is456",
+          "qualified_name": "structural_lib.design_short_column_uniaxial_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "design_simply_supported_deep_beam_is456",
+          "qualified_name": "structural_lib.design_simply_supported_deep_beam_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.deep_beam_api"
+        },
+        {
+          "name": "design_straight_flight_staircase_is456",
+          "qualified_name": "structural_lib.design_straight_flight_staircase_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.staircase_api"
+        },
+        {
+          "name": "design_symmetric_combined_footing_is456",
+          "qualified_name": "structural_lib.design_symmetric_combined_footing_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "design_torsion",
+          "qualified_name": "structural_lib.design_torsion",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "design_two_way_slab_is456",
+          "qualified_name": "structural_lib.design_two_way_slab_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_two_way_slab_panel_builtin_is456",
+          "qualified_name": "structural_lib.design_two_way_slab_panel_builtin_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_two_way_slab_panel_is456",
+          "qualified_name": "structural_lib.design_two_way_slab_panel_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "detail_beam_is456",
+          "qualified_name": "structural_lib.detail_beam_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "detail_column_is456",
+          "qualified_name": "structural_lib.detail_column_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "detailing",
+          "qualified_name": "structural_lib.detailing",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "dxf_export",
+          "qualified_name": "structural_lib.dxf_export",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "enhanced_shear_strength_is456",
+          "qualified_name": "structural_lib.enhanced_shear_strength_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "etabs_import",
+          "qualified_name": "structural_lib.etabs_import",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "export_bbs",
+          "qualified_name": "structural_lib.export_bbs",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "flexure",
+          "qualified_name": "structural_lib.flexure",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "footing_flexure",
+          "qualified_name": "structural_lib.footing_flexure",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.flexure"
+        },
+        {
+          "name": "footing_one_way_shear",
+          "qualified_name": "structural_lib.footing_one_way_shear",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.one_way_shear"
+        },
+        {
+          "name": "footing_punching_shear",
+          "qualified_name": "structural_lib.footing_punching_shear",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.punching_shear"
+        },
+        {
+          "name": "generate_calculation_report",
+          "qualified_name": "structural_lib.generate_calculation_report",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "get_library_version",
+          "qualified_name": "structural_lib.get_library_version",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "get_supported_is456_capabilities",
+          "qualified_name": "structural_lib.get_supported_is456_capabilities",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.capabilities"
+        },
+        {
+          "name": "get_supported_is456_capability_document",
+          "qualified_name": "structural_lib.get_supported_is456_capability_document",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.capabilities"
+        },
+        {
+          "name": "get_supported_is456_semantic_contract",
+          "qualified_name": "structural_lib.get_supported_is456_semantic_contract",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.capabilities"
+        },
+        {
+          "name": "imports",
+          "qualified_name": "structural_lib.imports",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "inputs",
+          "qualified_name": "structural_lib.inputs",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "load_etabs_csv",
+          "qualified_name": "structural_lib.load_etabs_csv",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "min_eccentricity_is456",
+          "qualified_name": "structural_lib.min_eccentricity_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "models",
+          "qualified_name": "structural_lib.models",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "normalize_etabs_forces",
+          "qualified_name": "structural_lib.normalize_etabs_forces",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "optimize_beam_cost",
+          "qualified_name": "structural_lib.optimize_beam_cost",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "optimize_pareto_front",
+          "qualified_name": "structural_lib.optimize_pareto_front",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.multi_objective_optimizer"
+        },
+        {
+          "name": "pm_interaction_curve_is456",
+          "qualified_name": "structural_lib.pm_interaction_curve_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "rebar",
+          "qualified_name": "structural_lib.rebar",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "reports",
+          "qualified_name": "structural_lib.reports",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "result_base",
+          "qualified_name": "structural_lib.result_base",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "serialization",
+          "qualified_name": "structural_lib.serialization",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "serviceability",
+          "qualified_name": "structural_lib.serviceability",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "shear",
+          "qualified_name": "structural_lib.shear",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "show_versions",
+          "qualified_name": "structural_lib.show_versions",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "size_footing",
+          "qualified_name": "structural_lib.size_footing",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.bearing"
+        },
+        {
+          "name": "smart_analyze_design",
+          "qualified_name": "structural_lib.smart_analyze_design",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "suggest_beam_design_improvements",
+          "qualified_name": "structural_lib.suggest_beam_design_improvements",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "testing_strategies",
+          "qualified_name": "structural_lib.testing_strategies",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "types",
+          "qualified_name": "structural_lib.types",
+          "kind": "module",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib"
+        },
+        {
+          "name": "validate_design_results",
+          "qualified_name": "structural_lib.validate_design_results",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "validate_etabs_csv",
+          "qualified_name": "structural_lib.validate_etabs_csv",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "validate_job_spec",
+          "qualified_name": "structural_lib.validate_job_spec",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "verify_calculation",
+          "qualified_name": "structural_lib.verify_calculation",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        }
+      ]
+    },
+    {
+      "module": "structural_lib.services.api",
+      "export_classification": "preview",
+      "declared_export_count": 168,
+      "classified_symbol_count": 168,
+      "symbols": [
+        {
+          "name": "AuditLogEntry",
+          "qualified_name": "structural_lib.services.api.AuditLogEntry",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "AuditTrail",
+          "qualified_name": "structural_lib.services.api.AuditTrail",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "Beam3DGeometry",
+          "qualified_name": "structural_lib.services.api.Beam3DGeometry",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "BeamGeometry",
+          "qualified_name": "structural_lib.services.api.BeamGeometry",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.models"
+        },
+        {
+          "name": "BeamGeometryInput",
+          "qualified_name": "structural_lib.services.api.BeamGeometryInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "BeamInput",
+          "qualified_name": "structural_lib.services.api.BeamInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "BearingPressureCheckResult",
+          "qualified_name": "structural_lib.services.api.BearingPressureCheckResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "BearingStressEnhancementResult",
+          "qualified_name": "structural_lib.services.api.BearingStressEnhancementResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "BracedWallDesignInput",
+          "qualified_name": "structural_lib.services.api.BracedWallDesignInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.wall_api"
+        },
+        {
+          "name": "BracedWallDesignProvenance",
+          "qualified_name": "structural_lib.services.api.BracedWallDesignProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.wall_api"
+        },
+        {
+          "name": "BracedWallDesignResult",
+          "qualified_name": "structural_lib.services.api.BracedWallDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.wall_api"
+        },
+        {
+          "name": "CalculationHash",
+          "qualified_name": "structural_lib.services.api.CalculationHash",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "CalculationReport",
+          "qualified_name": "structural_lib.services.api.CalculationReport",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "CheckCodeReport",
+          "qualified_name": "structural_lib.services.api.CheckCodeReport",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "CompleteOneWaySlabDesignResult",
+          "qualified_name": "structural_lib.services.api.CompleteOneWaySlabDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "ComplianceCaseResult",
+          "qualified_name": "structural_lib.services.api.ComplianceCaseResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "ComplianceReport",
+          "qualified_name": "structural_lib.services.api.ComplianceReport",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "ConcentricIsolatedFootingInput",
+          "qualified_name": "structural_lib.services.api.ConcentricIsolatedFootingInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "ConcentricIsolatedFootingResult",
+          "qualified_name": "structural_lib.services.api.ConcentricIsolatedFootingResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "ContinuousOneWaySlabDesignResult",
+          "qualified_name": "structural_lib.services.api.ContinuousOneWaySlabDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "CostProfile",
+          "qualified_name": "structural_lib.services.api.CostProfile",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.costing"
+        },
+        {
+          "name": "CriticalPoint",
+          "qualified_name": "structural_lib.services.api.CriticalPoint",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "DesignAndDetailResult",
+          "qualified_name": "structural_lib.services.api.DesignAndDetailResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.api_results"
+        },
+        {
+          "name": "DesignDefaults",
+          "qualified_name": "structural_lib.services.api.DesignDefaults",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.models"
+        },
+        {
+          "name": "DetailingConfigInput",
+          "qualified_name": "structural_lib.services.api.DetailingConfigInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "ETABSEnvelopeResult",
+          "qualified_name": "structural_lib.services.api.ETABSEnvelopeResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "ETABSForceRow",
+          "qualified_name": "structural_lib.services.api.ETABSForceRow",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "FlangedBeamDesignResult",
+          "qualified_name": "structural_lib.services.api.FlangedBeamDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.api_results"
+        },
+        {
+          "name": "FootingBearingResult",
+          "qualified_name": "structural_lib.services.api.FootingBearingResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "FootingDepthCandidate",
+          "qualified_name": "structural_lib.services.api.FootingDepthCandidate",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "FootingDirectionalReinforcementDemand",
+          "qualified_name": "structural_lib.services.api.FootingDirectionalReinforcementDemand",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "FootingFlexureResult",
+          "qualified_name": "structural_lib.services.api.FootingFlexureResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "FootingOneWayShearResult",
+          "qualified_name": "structural_lib.services.api.FootingOneWayShearResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "FootingProvenance",
+          "qualified_name": "structural_lib.services.api.FootingProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "FootingPunchingResult",
+          "qualified_name": "structural_lib.services.api.FootingPunchingResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "FrameType",
+          "qualified_name": "structural_lib.services.api.FrameType",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.models"
+        },
+        {
+          "name": "IS456Capability",
+          "qualified_name": "structural_lib.services.api.IS456Capability",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.capabilities"
+        },
+        {
+          "name": "InputSection",
+          "qualified_name": "structural_lib.services.api.InputSection",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "LoadCaseInput",
+          "qualified_name": "structural_lib.services.api.LoadCaseInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "LoadDefinition",
+          "qualified_name": "structural_lib.services.api.LoadDefinition",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "LoadDiagramResult",
+          "qualified_name": "structural_lib.services.api.LoadDiagramResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "LoadTransferResult",
+          "qualified_name": "structural_lib.services.api.LoadTransferResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.load_transfer"
+        },
+        {
+          "name": "LoadType",
+          "qualified_name": "structural_lib.services.api.LoadType",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "LoadsInput",
+          "qualified_name": "structural_lib.services.api.LoadsInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "MaterialsInput",
+          "qualified_name": "structural_lib.services.api.MaterialsInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "OneWaySlabDesignResult",
+          "qualified_name": "structural_lib.services.api.OneWaySlabDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "ParetoCandidate",
+          "qualified_name": "structural_lib.services.api.ParetoCandidate",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.multi_objective_optimizer"
+        },
+        {
+          "name": "ParetoOptimizationResult",
+          "qualified_name": "structural_lib.services.api.ParetoOptimizationResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.multi_objective_optimizer"
+        },
+        {
+          "name": "Point3D",
+          "qualified_name": "structural_lib.services.api.Point3D",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "ProjectInfo",
+          "qualified_name": "structural_lib.services.api.ProjectInfo",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignInput",
+          "qualified_name": "structural_lib.services.api.PropertyLineStrapFootingDesignInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignProvenance",
+          "qualified_name": "structural_lib.services.api.PropertyLineStrapFootingDesignProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignResult",
+          "qualified_name": "structural_lib.services.api.PropertyLineStrapFootingDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignStatus",
+          "qualified_name": "structural_lib.services.api.PropertyLineStrapFootingDesignStatus",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "RebarPath",
+          "qualified_name": "structural_lib.services.api.RebarPath",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "RebarSegment",
+          "qualified_name": "structural_lib.services.api.RebarSegment",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignInput",
+          "qualified_name": "structural_lib.services.api.RegularInteriorFlatSlabDesignInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignProvenance",
+          "qualified_name": "structural_lib.services.api.RegularInteriorFlatSlabDesignProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignResult",
+          "qualified_name": "structural_lib.services.api.RegularInteriorFlatSlabDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignStatus",
+          "qualified_name": "structural_lib.services.api.RegularInteriorFlatSlabDesignStatus",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "ResultSection",
+          "qualified_name": "structural_lib.services.api.ResultSection",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "SimplySupportedDeepBeamDesignInput",
+          "qualified_name": "structural_lib.services.api.SimplySupportedDeepBeamDesignInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.deep_beam_api"
+        },
+        {
+          "name": "SimplySupportedDeepBeamDesignProvenance",
+          "qualified_name": "structural_lib.services.api.SimplySupportedDeepBeamDesignProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.deep_beam_api"
+        },
+        {
+          "name": "SimplySupportedDeepBeamDesignResult",
+          "qualified_name": "structural_lib.services.api.SimplySupportedDeepBeamDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.deep_beam_api"
+        },
+        {
+          "name": "StirrupLoop",
+          "qualified_name": "structural_lib.services.api.StirrupLoop",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "StraightFlightStaircaseInput",
+          "qualified_name": "structural_lib.services.api.StraightFlightStaircaseInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.staircase_api"
+        },
+        {
+          "name": "StraightFlightStaircaseProvenance",
+          "qualified_name": "structural_lib.services.api.StraightFlightStaircaseProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.staircase_api"
+        },
+        {
+          "name": "StraightFlightStaircaseResult",
+          "qualified_name": "structural_lib.services.api.StraightFlightStaircaseResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.staircase_api"
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignInput",
+          "qualified_name": "structural_lib.services.api.SymmetricCombinedFootingDesignInput",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignProvenance",
+          "qualified_name": "structural_lib.services.api.SymmetricCombinedFootingDesignProvenance",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignResult",
+          "qualified_name": "structural_lib.services.api.SymmetricCombinedFootingDesignResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignStatus",
+          "qualified_name": "structural_lib.services.api.SymmetricCombinedFootingDesignStatus",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "TorsionResult",
+          "qualified_name": "structural_lib.services.api.TorsionResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "TwoWaySlabPanelWorkflowResult",
+          "qualified_name": "structural_lib.services.api.TwoWaySlabPanelWorkflowResult",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "ValidationReport",
+          "qualified_name": "structural_lib.services.api.ValidationReport",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "VersionInfo",
+          "qualified_name": "structural_lib.services.api.VersionInfo",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "WorkflowCatalog",
+          "qualified_name": "structural_lib.services.api.WorkflowCatalog",
+          "kind": "class",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.workflow_catalog"
+        },
+        {
+          "name": "beam_to_3d_geometry",
+          "qualified_name": "structural_lib.services.api.beam_to_3d_geometry",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "bearing_stress_enhancement",
+          "qualified_name": "structural_lib.services.api.bearing_stress_enhancement",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.bearing"
+        },
+        {
+          "name": "biaxial_bending_check_is456",
+          "qualified_name": "structural_lib.services.api.biaxial_bending_check_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "build_detailing_input",
+          "qualified_name": "structural_lib.services.api.build_detailing_input",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "calculate_additional_moment_is456",
+          "qualified_name": "structural_lib.services.api.calculate_additional_moment_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "calculate_development_length",
+          "qualified_name": "structural_lib.services.api.calculate_development_length",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "calculate_effective_length_is456",
+          "qualified_name": "structural_lib.services.api.calculate_effective_length_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "calculate_equivalent_moment",
+          "qualified_name": "structural_lib.services.api.calculate_equivalent_moment",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "calculate_equivalent_shear",
+          "qualified_name": "structural_lib.services.api.calculate_equivalent_shear",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "calculate_longitudinal_torsion_steel",
+          "qualified_name": "structural_lib.services.api.calculate_longitudinal_torsion_steel",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "calculate_torsion_shear_stress",
+          "qualified_name": "structural_lib.services.api.calculate_torsion_shear_stress",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "calculate_torsion_stirrup_area",
+          "qualified_name": "structural_lib.services.api.calculate_torsion_stirrup_area",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "check_anchorage_at_simple_support",
+          "qualified_name": "structural_lib.services.api.check_anchorage_at_simple_support",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_beam_ductility",
+          "qualified_name": "structural_lib.services.api.check_beam_ductility",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_beam_is456",
+          "qualified_name": "structural_lib.services.api.check_beam_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_beam_slenderness",
+          "qualified_name": "structural_lib.services.api.check_beam_slenderness",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_bearing_pressure",
+          "qualified_name": "structural_lib.services.api.check_bearing_pressure",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.bearing"
+        },
+        {
+          "name": "check_code",
+          "qualified_name": "structural_lib.services.api.check_code",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "check_column_ductility_is13920",
+          "qualified_name": "structural_lib.services.api.check_column_ductility_is13920",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "check_compliance_report",
+          "qualified_name": "structural_lib.services.api.check_compliance_report",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_crack_width",
+          "qualified_name": "structural_lib.services.api.check_crack_width",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_deflection_span_depth",
+          "qualified_name": "structural_lib.services.api.check_deflection_span_depth",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_helical_reinforcement_is456",
+          "qualified_name": "structural_lib.services.api.check_helical_reinforcement_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "check_isolated_footing_load_transfer",
+          "qualified_name": "structural_lib.services.api.check_isolated_footing_load_transfer",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.load_transfer"
+        },
+        {
+          "name": "classify_column_is456",
+          "qualified_name": "structural_lib.services.api.classify_column_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "compute_bbs",
+          "qualified_name": "structural_lib.services.api.compute_bbs",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_beam_outline",
+          "qualified_name": "structural_lib.services.api.compute_beam_outline",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "compute_bmd_sfd",
+          "qualified_name": "structural_lib.services.api.compute_bmd_sfd",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.load_analysis"
+        },
+        {
+          "name": "compute_critical",
+          "qualified_name": "structural_lib.services.api.compute_critical",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_detailing",
+          "qualified_name": "structural_lib.services.api.compute_detailing",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_dxf",
+          "qualified_name": "structural_lib.services.api.compute_dxf",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_hash",
+          "qualified_name": "structural_lib.services.api.compute_hash",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "compute_rebar_positions",
+          "qualified_name": "structural_lib.services.api.compute_rebar_positions",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "compute_report",
+          "qualified_name": "structural_lib.services.api.compute_report",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_stirrup_path",
+          "qualified_name": "structural_lib.services.api.compute_stirrup_path",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "compute_stirrup_positions",
+          "qualified_name": "structural_lib.services.api.compute_stirrup_positions",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "create_calculation_certificate",
+          "qualified_name": "structural_lib.services.api.create_calculation_certificate",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "create_job_from_etabs",
+          "qualified_name": "structural_lib.services.api.create_job_from_etabs",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "create_jobs_from_etabs_csv",
+          "qualified_name": "structural_lib.services.api.create_jobs_from_etabs_csv",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "design_and_detail_beam_is456",
+          "qualified_name": "structural_lib.services.api.design_and_detail_beam_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "design_beam_is456",
+          "qualified_name": "structural_lib.services.api.design_beam_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "design_braced_wall_is456",
+          "qualified_name": "structural_lib.services.api.design_braced_wall_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.wall_api"
+        },
+        {
+          "name": "design_column_axial_is456",
+          "qualified_name": "structural_lib.services.api.design_column_axial_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "design_column_is456",
+          "qualified_name": "structural_lib.services.api.design_column_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "design_complete_one_way_slab_is456",
+          "qualified_name": "structural_lib.services.api.design_complete_one_way_slab_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_concentric_isolated_footing_is456",
+          "qualified_name": "structural_lib.services.api.design_concentric_isolated_footing_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "design_continuous_one_way_slab_builtin_is456",
+          "qualified_name": "structural_lib.services.api.design_continuous_one_way_slab_builtin_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_continuous_one_way_slab_is456",
+          "qualified_name": "structural_lib.services.api.design_continuous_one_way_slab_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_flanged_beam_is456",
+          "qualified_name": "structural_lib.services.api.design_flanged_beam_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "design_from_input",
+          "qualified_name": "structural_lib.services.api.design_from_input",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "design_long_column_is456",
+          "qualified_name": "structural_lib.services.api.design_long_column_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "design_one_way_slab_is456",
+          "qualified_name": "structural_lib.services.api.design_one_way_slab_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_property_line_strap_footing_is456",
+          "qualified_name": "structural_lib.services.api.design_property_line_strap_footing_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "design_regular_interior_flat_slab_is456",
+          "qualified_name": "structural_lib.services.api.design_regular_interior_flat_slab_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "design_short_column_uniaxial_is456",
+          "qualified_name": "structural_lib.services.api.design_short_column_uniaxial_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "design_simply_supported_deep_beam_is456",
+          "qualified_name": "structural_lib.services.api.design_simply_supported_deep_beam_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.deep_beam_api"
+        },
+        {
+          "name": "design_straight_flight_staircase_is456",
+          "qualified_name": "structural_lib.services.api.design_straight_flight_staircase_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.staircase_api"
+        },
+        {
+          "name": "design_symmetric_combined_footing_is456",
+          "qualified_name": "structural_lib.services.api.design_symmetric_combined_footing_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "design_torsion",
+          "qualified_name": "structural_lib.services.api.design_torsion",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "design_two_way_slab_is456",
+          "qualified_name": "structural_lib.services.api.design_two_way_slab_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_two_way_slab_panel_builtin_is456",
+          "qualified_name": "structural_lib.services.api.design_two_way_slab_panel_builtin_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_two_way_slab_panel_is456",
+          "qualified_name": "structural_lib.services.api.design_two_way_slab_panel_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "detail_beam_is456",
+          "qualified_name": "structural_lib.services.api.detail_beam_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "detail_column_is456",
+          "qualified_name": "structural_lib.services.api.detail_column_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "enhanced_shear_strength_is456",
+          "qualified_name": "structural_lib.services.api.enhanced_shear_strength_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "export_bbs",
+          "qualified_name": "structural_lib.services.api.export_bbs",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "footing_flexure",
+          "qualified_name": "structural_lib.services.api.footing_flexure",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.flexure"
+        },
+        {
+          "name": "footing_one_way_shear",
+          "qualified_name": "structural_lib.services.api.footing_one_way_shear",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.one_way_shear"
+        },
+        {
+          "name": "footing_punching_shear",
+          "qualified_name": "structural_lib.services.api.footing_punching_shear",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.punching_shear"
+        },
+        {
+          "name": "generate_calculation_report",
+          "qualified_name": "structural_lib.services.api.generate_calculation_report",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "get_library_version",
+          "qualified_name": "structural_lib.services.api.get_library_version",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "get_supported_is456_capabilities",
+          "qualified_name": "structural_lib.services.api.get_supported_is456_capabilities",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.capabilities"
+        },
+        {
+          "name": "get_supported_is456_capability_document",
+          "qualified_name": "structural_lib.services.api.get_supported_is456_capability_document",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.capabilities"
+        },
+        {
+          "name": "get_supported_is456_semantic_contract",
+          "qualified_name": "structural_lib.services.api.get_supported_is456_semantic_contract",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.capabilities"
+        },
+        {
+          "name": "get_workflow_catalog",
+          "qualified_name": "structural_lib.services.api.get_workflow_catalog",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.workflow_catalog"
+        },
+        {
+          "name": "get_workflow_catalog_document",
+          "qualified_name": "structural_lib.services.api.get_workflow_catalog_document",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.workflow_catalog"
+        },
+        {
+          "name": "load_etabs_csv",
+          "qualified_name": "structural_lib.services.api.load_etabs_csv",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "min_eccentricity_is456",
+          "qualified_name": "structural_lib.services.api.min_eccentricity_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "normalize_etabs_forces",
+          "qualified_name": "structural_lib.services.api.normalize_etabs_forces",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "optimize_beam_cost",
+          "qualified_name": "structural_lib.services.api.optimize_beam_cost",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "optimize_pareto_front",
+          "qualified_name": "structural_lib.services.api.optimize_pareto_front",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.multi_objective_optimizer"
+        },
+        {
+          "name": "pm_interaction_curve_is456",
+          "qualified_name": "structural_lib.services.api.pm_interaction_curve_is456",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "serialize_workflow_catalog",
+          "qualified_name": "structural_lib.services.api.serialize_workflow_catalog",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.workflow_catalog"
+        },
+        {
+          "name": "show_versions",
+          "qualified_name": "structural_lib.services.api.show_versions",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "size_footing",
+          "qualified_name": "structural_lib.services.api.size_footing",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.bearing"
+        },
+        {
+          "name": "smart_analyze_design",
+          "qualified_name": "structural_lib.services.api.smart_analyze_design",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "suggest_beam_design_improvements",
+          "qualified_name": "structural_lib.services.api.suggest_beam_design_improvements",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "validate_design_results",
+          "qualified_name": "structural_lib.services.api.validate_design_results",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "validate_etabs_csv",
+          "qualified_name": "structural_lib.services.api.validate_etabs_csv",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "validate_job_spec",
+          "qualified_name": "structural_lib.services.api.validate_job_spec",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "verify_calculation",
+          "qualified_name": "structural_lib.services.api.verify_calculation",
+          "kind": "function",
+          "classification": "preview",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        }
+      ]
+    },
+    {
+      "module": "structural_lib.api",
+      "export_classification": "compatibility",
+      "declared_export_count": 168,
+      "classified_symbol_count": 168,
+      "symbols": [
+        {
+          "name": "AuditLogEntry",
+          "qualified_name": "structural_lib.api.AuditLogEntry",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "AuditTrail",
+          "qualified_name": "structural_lib.api.AuditTrail",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "Beam3DGeometry",
+          "qualified_name": "structural_lib.api.Beam3DGeometry",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "BeamGeometry",
+          "qualified_name": "structural_lib.api.BeamGeometry",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.models"
+        },
+        {
+          "name": "BeamGeometryInput",
+          "qualified_name": "structural_lib.api.BeamGeometryInput",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "BeamInput",
+          "qualified_name": "structural_lib.api.BeamInput",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "BearingPressureCheckResult",
+          "qualified_name": "structural_lib.api.BearingPressureCheckResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "BearingStressEnhancementResult",
+          "qualified_name": "structural_lib.api.BearingStressEnhancementResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "BracedWallDesignInput",
+          "qualified_name": "structural_lib.api.BracedWallDesignInput",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.wall_api"
+        },
+        {
+          "name": "BracedWallDesignProvenance",
+          "qualified_name": "structural_lib.api.BracedWallDesignProvenance",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.wall_api"
+        },
+        {
+          "name": "BracedWallDesignResult",
+          "qualified_name": "structural_lib.api.BracedWallDesignResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.wall_api"
+        },
+        {
+          "name": "CalculationHash",
+          "qualified_name": "structural_lib.api.CalculationHash",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "CalculationReport",
+          "qualified_name": "structural_lib.api.CalculationReport",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "CheckCodeReport",
+          "qualified_name": "structural_lib.api.CheckCodeReport",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "CompleteOneWaySlabDesignResult",
+          "qualified_name": "structural_lib.api.CompleteOneWaySlabDesignResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "ComplianceCaseResult",
+          "qualified_name": "structural_lib.api.ComplianceCaseResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "ComplianceReport",
+          "qualified_name": "structural_lib.api.ComplianceReport",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "ConcentricIsolatedFootingInput",
+          "qualified_name": "structural_lib.api.ConcentricIsolatedFootingInput",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "ConcentricIsolatedFootingResult",
+          "qualified_name": "structural_lib.api.ConcentricIsolatedFootingResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "ContinuousOneWaySlabDesignResult",
+          "qualified_name": "structural_lib.api.ContinuousOneWaySlabDesignResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "CostProfile",
+          "qualified_name": "structural_lib.api.CostProfile",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.costing"
+        },
+        {
+          "name": "CriticalPoint",
+          "qualified_name": "structural_lib.api.CriticalPoint",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "DesignAndDetailResult",
+          "qualified_name": "structural_lib.api.DesignAndDetailResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.api_results"
+        },
+        {
+          "name": "DesignDefaults",
+          "qualified_name": "structural_lib.api.DesignDefaults",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.models"
+        },
+        {
+          "name": "DetailingConfigInput",
+          "qualified_name": "structural_lib.api.DetailingConfigInput",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "ETABSEnvelopeResult",
+          "qualified_name": "structural_lib.api.ETABSEnvelopeResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "ETABSForceRow",
+          "qualified_name": "structural_lib.api.ETABSForceRow",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "FlangedBeamDesignResult",
+          "qualified_name": "structural_lib.api.FlangedBeamDesignResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.api_results"
+        },
+        {
+          "name": "FootingBearingResult",
+          "qualified_name": "structural_lib.api.FootingBearingResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "FootingDepthCandidate",
+          "qualified_name": "structural_lib.api.FootingDepthCandidate",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "FootingDirectionalReinforcementDemand",
+          "qualified_name": "structural_lib.api.FootingDirectionalReinforcementDemand",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "FootingFlexureResult",
+          "qualified_name": "structural_lib.api.FootingFlexureResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "FootingOneWayShearResult",
+          "qualified_name": "structural_lib.api.FootingOneWayShearResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "FootingProvenance",
+          "qualified_name": "structural_lib.api.FootingProvenance",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "FootingPunchingResult",
+          "qualified_name": "structural_lib.api.FootingPunchingResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "FrameType",
+          "qualified_name": "structural_lib.api.FrameType",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.models"
+        },
+        {
+          "name": "IS456Capability",
+          "qualified_name": "structural_lib.api.IS456Capability",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.capabilities"
+        },
+        {
+          "name": "InputSection",
+          "qualified_name": "structural_lib.api.InputSection",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "LoadCaseInput",
+          "qualified_name": "structural_lib.api.LoadCaseInput",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "LoadDefinition",
+          "qualified_name": "structural_lib.api.LoadDefinition",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "LoadDiagramResult",
+          "qualified_name": "structural_lib.api.LoadDiagramResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "LoadTransferResult",
+          "qualified_name": "structural_lib.api.LoadTransferResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.load_transfer"
+        },
+        {
+          "name": "LoadType",
+          "qualified_name": "structural_lib.api.LoadType",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "LoadsInput",
+          "qualified_name": "structural_lib.api.LoadsInput",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "MaterialsInput",
+          "qualified_name": "structural_lib.api.MaterialsInput",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.inputs"
+        },
+        {
+          "name": "OneWaySlabDesignResult",
+          "qualified_name": "structural_lib.api.OneWaySlabDesignResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "ParetoCandidate",
+          "qualified_name": "structural_lib.api.ParetoCandidate",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.multi_objective_optimizer"
+        },
+        {
+          "name": "ParetoOptimizationResult",
+          "qualified_name": "structural_lib.api.ParetoOptimizationResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.multi_objective_optimizer"
+        },
+        {
+          "name": "Point3D",
+          "qualified_name": "structural_lib.api.Point3D",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "ProjectInfo",
+          "qualified_name": "structural_lib.api.ProjectInfo",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignInput",
+          "qualified_name": "structural_lib.api.PropertyLineStrapFootingDesignInput",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignProvenance",
+          "qualified_name": "structural_lib.api.PropertyLineStrapFootingDesignProvenance",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignResult",
+          "qualified_name": "structural_lib.api.PropertyLineStrapFootingDesignResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "PropertyLineStrapFootingDesignStatus",
+          "qualified_name": "structural_lib.api.PropertyLineStrapFootingDesignStatus",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "RebarPath",
+          "qualified_name": "structural_lib.api.RebarPath",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "RebarSegment",
+          "qualified_name": "structural_lib.api.RebarSegment",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignInput",
+          "qualified_name": "structural_lib.api.RegularInteriorFlatSlabDesignInput",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignProvenance",
+          "qualified_name": "structural_lib.api.RegularInteriorFlatSlabDesignProvenance",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignResult",
+          "qualified_name": "structural_lib.api.RegularInteriorFlatSlabDesignResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "RegularInteriorFlatSlabDesignStatus",
+          "qualified_name": "structural_lib.api.RegularInteriorFlatSlabDesignStatus",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "ResultSection",
+          "qualified_name": "structural_lib.api.ResultSection",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "SimplySupportedDeepBeamDesignInput",
+          "qualified_name": "structural_lib.api.SimplySupportedDeepBeamDesignInput",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.deep_beam_api"
+        },
+        {
+          "name": "SimplySupportedDeepBeamDesignProvenance",
+          "qualified_name": "structural_lib.api.SimplySupportedDeepBeamDesignProvenance",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.deep_beam_api"
+        },
+        {
+          "name": "SimplySupportedDeepBeamDesignResult",
+          "qualified_name": "structural_lib.api.SimplySupportedDeepBeamDesignResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.deep_beam_api"
+        },
+        {
+          "name": "StirrupLoop",
+          "qualified_name": "structural_lib.api.StirrupLoop",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "StraightFlightStaircaseInput",
+          "qualified_name": "structural_lib.api.StraightFlightStaircaseInput",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.staircase_api"
+        },
+        {
+          "name": "StraightFlightStaircaseProvenance",
+          "qualified_name": "structural_lib.api.StraightFlightStaircaseProvenance",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.staircase_api"
+        },
+        {
+          "name": "StraightFlightStaircaseResult",
+          "qualified_name": "structural_lib.api.StraightFlightStaircaseResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.staircase_api"
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignInput",
+          "qualified_name": "structural_lib.api.SymmetricCombinedFootingDesignInput",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignProvenance",
+          "qualified_name": "structural_lib.api.SymmetricCombinedFootingDesignProvenance",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignResult",
+          "qualified_name": "structural_lib.api.SymmetricCombinedFootingDesignResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "SymmetricCombinedFootingDesignStatus",
+          "qualified_name": "structural_lib.api.SymmetricCombinedFootingDesignStatus",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "TorsionResult",
+          "qualified_name": "structural_lib.api.TorsionResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "TwoWaySlabPanelWorkflowResult",
+          "qualified_name": "structural_lib.api.TwoWaySlabPanelWorkflowResult",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "ValidationReport",
+          "qualified_name": "structural_lib.api.ValidationReport",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "VersionInfo",
+          "qualified_name": "structural_lib.api.VersionInfo",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.core.data_types"
+        },
+        {
+          "name": "WorkflowCatalog",
+          "qualified_name": "structural_lib.api.WorkflowCatalog",
+          "kind": "class",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.workflow_catalog"
+        },
+        {
+          "name": "beam_to_3d_geometry",
+          "qualified_name": "structural_lib.api.beam_to_3d_geometry",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "bearing_stress_enhancement",
+          "qualified_name": "structural_lib.api.bearing_stress_enhancement",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.bearing"
+        },
+        {
+          "name": "biaxial_bending_check_is456",
+          "qualified_name": "structural_lib.api.biaxial_bending_check_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "build_detailing_input",
+          "qualified_name": "structural_lib.api.build_detailing_input",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "calculate_additional_moment_is456",
+          "qualified_name": "structural_lib.api.calculate_additional_moment_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "calculate_development_length",
+          "qualified_name": "structural_lib.api.calculate_development_length",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "calculate_effective_length_is456",
+          "qualified_name": "structural_lib.api.calculate_effective_length_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "calculate_equivalent_moment",
+          "qualified_name": "structural_lib.api.calculate_equivalent_moment",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "calculate_equivalent_shear",
+          "qualified_name": "structural_lib.api.calculate_equivalent_shear",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "calculate_longitudinal_torsion_steel",
+          "qualified_name": "structural_lib.api.calculate_longitudinal_torsion_steel",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "calculate_torsion_shear_stress",
+          "qualified_name": "structural_lib.api.calculate_torsion_shear_stress",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "calculate_torsion_stirrup_area",
+          "qualified_name": "structural_lib.api.calculate_torsion_stirrup_area",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "check_anchorage_at_simple_support",
+          "qualified_name": "structural_lib.api.check_anchorage_at_simple_support",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_beam_ductility",
+          "qualified_name": "structural_lib.api.check_beam_ductility",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_beam_is456",
+          "qualified_name": "structural_lib.api.check_beam_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_beam_slenderness",
+          "qualified_name": "structural_lib.api.check_beam_slenderness",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_bearing_pressure",
+          "qualified_name": "structural_lib.api.check_bearing_pressure",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.bearing"
+        },
+        {
+          "name": "check_code",
+          "qualified_name": "structural_lib.api.check_code",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "check_column_ductility_is13920",
+          "qualified_name": "structural_lib.api.check_column_ductility_is13920",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "check_compliance_report",
+          "qualified_name": "structural_lib.api.check_compliance_report",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_crack_width",
+          "qualified_name": "structural_lib.api.check_crack_width",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_deflection_span_depth",
+          "qualified_name": "structural_lib.api.check_deflection_span_depth",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "check_helical_reinforcement_is456",
+          "qualified_name": "structural_lib.api.check_helical_reinforcement_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "check_isolated_footing_load_transfer",
+          "qualified_name": "structural_lib.api.check_isolated_footing_load_transfer",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.load_transfer"
+        },
+        {
+          "name": "classify_column_is456",
+          "qualified_name": "structural_lib.api.classify_column_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "compute_bbs",
+          "qualified_name": "structural_lib.api.compute_bbs",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_beam_outline",
+          "qualified_name": "structural_lib.api.compute_beam_outline",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "compute_bmd_sfd",
+          "qualified_name": "structural_lib.api.compute_bmd_sfd",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.load_analysis"
+        },
+        {
+          "name": "compute_critical",
+          "qualified_name": "structural_lib.api.compute_critical",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_detailing",
+          "qualified_name": "structural_lib.api.compute_detailing",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_dxf",
+          "qualified_name": "structural_lib.api.compute_dxf",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_hash",
+          "qualified_name": "structural_lib.api.compute_hash",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "compute_rebar_positions",
+          "qualified_name": "structural_lib.api.compute_rebar_positions",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "compute_report",
+          "qualified_name": "structural_lib.api.compute_report",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "compute_stirrup_path",
+          "qualified_name": "structural_lib.api.compute_stirrup_path",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "compute_stirrup_positions",
+          "qualified_name": "structural_lib.api.compute_stirrup_positions",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.visualization.geometry_3d"
+        },
+        {
+          "name": "create_calculation_certificate",
+          "qualified_name": "structural_lib.api.create_calculation_certificate",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        },
+        {
+          "name": "create_job_from_etabs",
+          "qualified_name": "structural_lib.api.create_job_from_etabs",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "create_jobs_from_etabs_csv",
+          "qualified_name": "structural_lib.api.create_jobs_from_etabs_csv",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "design_and_detail_beam_is456",
+          "qualified_name": "structural_lib.api.design_and_detail_beam_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "design_beam_is456",
+          "qualified_name": "structural_lib.api.design_beam_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "design_braced_wall_is456",
+          "qualified_name": "structural_lib.api.design_braced_wall_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.wall_api"
+        },
+        {
+          "name": "design_column_axial_is456",
+          "qualified_name": "structural_lib.api.design_column_axial_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "design_column_is456",
+          "qualified_name": "structural_lib.api.design_column_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "design_complete_one_way_slab_is456",
+          "qualified_name": "structural_lib.api.design_complete_one_way_slab_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_concentric_isolated_footing_is456",
+          "qualified_name": "structural_lib.api.design_concentric_isolated_footing_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.footing_api"
+        },
+        {
+          "name": "design_continuous_one_way_slab_builtin_is456",
+          "qualified_name": "structural_lib.api.design_continuous_one_way_slab_builtin_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_continuous_one_way_slab_is456",
+          "qualified_name": "structural_lib.api.design_continuous_one_way_slab_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_flanged_beam_is456",
+          "qualified_name": "structural_lib.api.design_flanged_beam_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "design_from_input",
+          "qualified_name": "structural_lib.api.design_from_input",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "design_long_column_is456",
+          "qualified_name": "structural_lib.api.design_long_column_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "design_one_way_slab_is456",
+          "qualified_name": "structural_lib.api.design_one_way_slab_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_property_line_strap_footing_is456",
+          "qualified_name": "structural_lib.api.design_property_line_strap_footing_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.strap_footing_api"
+        },
+        {
+          "name": "design_regular_interior_flat_slab_is456",
+          "qualified_name": "structural_lib.api.design_regular_interior_flat_slab_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.flat_slab_api"
+        },
+        {
+          "name": "design_short_column_uniaxial_is456",
+          "qualified_name": "structural_lib.api.design_short_column_uniaxial_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "design_simply_supported_deep_beam_is456",
+          "qualified_name": "structural_lib.api.design_simply_supported_deep_beam_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.deep_beam_api"
+        },
+        {
+          "name": "design_straight_flight_staircase_is456",
+          "qualified_name": "structural_lib.api.design_straight_flight_staircase_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.staircase_api"
+        },
+        {
+          "name": "design_symmetric_combined_footing_is456",
+          "qualified_name": "structural_lib.api.design_symmetric_combined_footing_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.combined_footing_api"
+        },
+        {
+          "name": "design_torsion",
+          "qualified_name": "structural_lib.api.design_torsion",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.beam.torsion"
+        },
+        {
+          "name": "design_two_way_slab_is456",
+          "qualified_name": "structural_lib.api.design_two_way_slab_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_two_way_slab_panel_builtin_is456",
+          "qualified_name": "structural_lib.api.design_two_way_slab_panel_builtin_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "design_two_way_slab_panel_is456",
+          "qualified_name": "structural_lib.api.design_two_way_slab_panel_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.slab_api"
+        },
+        {
+          "name": "detail_beam_is456",
+          "qualified_name": "structural_lib.api.detail_beam_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "detail_column_is456",
+          "qualified_name": "structural_lib.api.detail_column_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "enhanced_shear_strength_is456",
+          "qualified_name": "structural_lib.api.enhanced_shear_strength_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "export_bbs",
+          "qualified_name": "structural_lib.api.export_bbs",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "footing_flexure",
+          "qualified_name": "structural_lib.api.footing_flexure",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.flexure"
+        },
+        {
+          "name": "footing_one_way_shear",
+          "qualified_name": "structural_lib.api.footing_one_way_shear",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.one_way_shear"
+        },
+        {
+          "name": "footing_punching_shear",
+          "qualified_name": "structural_lib.api.footing_punching_shear",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.punching_shear"
+        },
+        {
+          "name": "generate_calculation_report",
+          "qualified_name": "structural_lib.api.generate_calculation_report",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.calculation_report"
+        },
+        {
+          "name": "get_library_version",
+          "qualified_name": "structural_lib.api.get_library_version",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "get_supported_is456_capabilities",
+          "qualified_name": "structural_lib.api.get_supported_is456_capabilities",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.capabilities"
+        },
+        {
+          "name": "get_supported_is456_capability_document",
+          "qualified_name": "structural_lib.api.get_supported_is456_capability_document",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.capabilities"
+        },
+        {
+          "name": "get_supported_is456_semantic_contract",
+          "qualified_name": "structural_lib.api.get_supported_is456_semantic_contract",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.capabilities"
+        },
+        {
+          "name": "get_workflow_catalog",
+          "qualified_name": "structural_lib.api.get_workflow_catalog",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.workflow_catalog"
+        },
+        {
+          "name": "get_workflow_catalog_document",
+          "qualified_name": "structural_lib.api.get_workflow_catalog_document",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.workflow_catalog"
+        },
+        {
+          "name": "load_etabs_csv",
+          "qualified_name": "structural_lib.api.load_etabs_csv",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "min_eccentricity_is456",
+          "qualified_name": "structural_lib.api.min_eccentricity_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "normalize_etabs_forces",
+          "qualified_name": "structural_lib.api.normalize_etabs_forces",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "optimize_beam_cost",
+          "qualified_name": "structural_lib.api.optimize_beam_cost",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "optimize_pareto_front",
+          "qualified_name": "structural_lib.api.optimize_pareto_front",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.multi_objective_optimizer"
+        },
+        {
+          "name": "pm_interaction_curve_is456",
+          "qualified_name": "structural_lib.api.pm_interaction_curve_is456",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.column_api"
+        },
+        {
+          "name": "serialize_workflow_catalog",
+          "qualified_name": "structural_lib.api.serialize_workflow_catalog",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.workflow_catalog"
+        },
+        {
+          "name": "show_versions",
+          "qualified_name": "structural_lib.api.show_versions",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "size_footing",
+          "qualified_name": "structural_lib.api.size_footing",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.codes.is456.footing.bearing"
+        },
+        {
+          "name": "smart_analyze_design",
+          "qualified_name": "structural_lib.api.smart_analyze_design",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "suggest_beam_design_improvements",
+          "qualified_name": "structural_lib.api.suggest_beam_design_improvements",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.beam_api"
+        },
+        {
+          "name": "validate_design_results",
+          "qualified_name": "structural_lib.api.validate_design_results",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "validate_etabs_csv",
+          "qualified_name": "structural_lib.api.validate_etabs_csv",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.etabs_import"
+        },
+        {
+          "name": "validate_job_spec",
+          "qualified_name": "structural_lib.api.validate_job_spec",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.common_api"
+        },
+        {
+          "name": "verify_calculation",
+          "qualified_name": "structural_lib.api.verify_calculation",
+          "kind": "function",
+          "classification": "compatibility",
+          "declared_export": true,
+          "defined_in": "structural_lib.services.audit"
+        }
+      ]
+    }
+  ]
+}

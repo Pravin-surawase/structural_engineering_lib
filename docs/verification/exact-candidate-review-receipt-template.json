@@ -1,0 +1,18 @@
+{
+  "schema_version": "exact-candidate-review-receipt/v1",
+  "decision": "HOLD",
+  "reviewed_candidate": {
+    "head_sha": null,
+    "tree_sha": null,
+    "python_tree_sha": null,
+    "version": null,
+    "tag": null,
+    "reviewed_targets": []
+  },
+  "reviewer": {
+    "identity": null,
+    "independent": false,
+    "reviewed_at_utc": null
+  },
+  "note": "Create a version-specific copy only after independent exact-candidate review. Add that receipt and the owner authorization in an evidence-only descendant commit; any Python or non-evidence path change blocks publication."
+}

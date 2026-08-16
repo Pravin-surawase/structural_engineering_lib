@@ -148,6 +148,20 @@ def _write_release_surfaces(tmp_path: Path, version: str = "0.23.0") -> dict[str
     releases.write_text(
         f"## v{version}\n\nStatus: not tagged or published\n", encoding="utf-8"
     )
+    root_readme = tmp_path / "README.md"
+    root_readme.write_text(
+        f"> **v{version} is an Alpha development preview.**\n",
+        encoding="utf-8",
+    )
+    python_readme = tmp_path / "Python" / "README.md"
+    python_readme.write_text(f"**Version:** {version}\n", encoding="utf-8")
+    api_stability = tmp_path / "api-stability.md"
+    api_stability.write_text(f"**Version:** {version}\n", encoding="utf-8")
+    quickstart = tmp_path / "python-quickstart.md"
+    quickstart.write_text(
+        f'python -m pip install "structural-lib-is456==={version}"\n',
+        encoding="utf-8",
+    )
     return {
         "PYPROJECT": pyproject,
         "FASTAPI_INIT": fastapi_init,
@@ -155,6 +169,10 @@ def _write_release_surfaces(tmp_path: Path, version: str = "0.23.0") -> dict[str
         "CITATION": citation,
         "CHANGELOG": changelog,
         "RELEASES": releases,
+        "ROOT_README": root_readme,
+        "PYTHON_README": python_readme,
+        "API_STABILITY": api_stability,
+        "PYTHON_QUICKSTART": quickstart,
     }
 
 

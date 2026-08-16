@@ -23,29 +23,56 @@ def _provided_area(ast_required: float) -> float:
 def test_bundled_sample_boq_is_bound_to_dataset_and_calculation(client) -> None:
     sample = unwrap(client.get("/api/v1/import/sample"))
     assert sample["beam_count"] == 153
+    assert all(
+        beam["source_metadata"]
+        == {
+            "dataset_id": "bundled-etabs-beam-sample",
+            "dataset_version": "etabs-csv-v1",
+            "dataset_sha256": sample["dataset"]["dataset_sha256"],
+            "source_record_identity": beam["source_id"],
+            "sample_only": True,
+            "calculation_basis_origins": {
+                "fck_mpa": "assumed_sample",
+                "fy_mpa": "assumed_sample",
+                "cover_mm": "assumed_sample",
+            },
+            "qualified_review_required": True,
+        }
+        for beam in sample["beams"]
+    )
 
     batch_payload = [
         {
-            "id": beam["id"],
-            "story": beam["story"],
-            "width_mm": beam["width_mm"],
-            "depth_mm": beam["depth_mm"],
-            "span_mm": beam["span_mm"],
+            "schema_version": "project-beam-design/v1",
+            "member_id": beam["id"],
+            "b_mm": beam["width_mm"],
+            "D_mm": beam["depth_mm"],
+            "d_mm": beam["depth_mm"] - beam["cover_mm"] - 25,
             "mu_knm": beam["mu_knm"],
             "vu_kn": beam["vu_kn"],
-            "fck_mpa": beam["fck_mpa"],
-            "fy_mpa": beam["fy_mpa"],
-            "cover_mm": beam["cover_mm"],
+            "fck_nmm2": beam["fck_mpa"],
+            "fy_nmm2": beam["fy_mpa"],
+            "source_metadata": {
+                **beam["source_metadata"],
+                "source_member_id": beam["id"],
+                "effective_depth_basis": "explicit sample fixture",
+            },
         }
         for beam in sample["beams"]
     ]
-    design = unwrap(client.post("/api/v1/import/batch-design", json=batch_payload))
-    assert (design["total"], design["passed"], design["failed"]) == (153, 153, 0)
-    results = {result["beam_id"]: result for result in design["results"]}
+    design = unwrap(client.post("/api/v1/import/project-beams", json=batch_payload))
+    assert (
+        design["summary"]["total"],
+        design["summary"]["passed"],
+        design["summary"]["failed"],
+    ) == (153, 153, 0)
+    results = {
+        member["member_id"]: member["calculation"] for member in design["members"]
+    }
 
     boq_beams = []
     for beam in sample["beams"]:
-        provided_area = _provided_area(results[beam["id"]]["ast_required"])
+        provided_area = _provided_area(results[beam["id"]]["flexure"]["ast_required"])
         steel_weight = provided_area * beam["span_mm"] * 7850 / 1e9
         boq_beams.append(
             {

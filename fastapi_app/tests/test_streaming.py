@@ -9,6 +9,29 @@ import json
 from fastapi.testclient import TestClient
 from fastapi_app.main import app
 from fastapi_app.routers.streaming import job_manager
+from structural_lib.services.batch import design_project_beams_v1
+
+
+def _canonical_beam(
+    member_id: str,
+    *,
+    b_mm: float = 300,
+    D_mm: float = 500,
+    mu_knm: float = 100,
+    vu_kn: float = 50,
+    fck_nmm2: float = 25,
+) -> dict:
+    return {
+        "schema_version": "project-beam-design/v1",
+        "member_id": member_id,
+        "b_mm": b_mm,
+        "D_mm": D_mm,
+        "d_mm": D_mm - 50,
+        "mu_knm": mu_knm,
+        "vu_kn": vu_kn,
+        "fck_nmm2": fck_nmm2,
+        "fy_nmm2": 500,
+    }
 
 
 class TestSSEBatchDesign:
@@ -29,13 +52,12 @@ class TestSSEBatchDesign:
     def test_batch_design_single_beam(self):
         """Test batch design with single beam."""
         client = TestClient(app)
-        beams = json.dumps(
-            [{"width": 300, "depth": 500, "moment": 100, "fck": 25, "fy": 500}]
-        )
+        beams = json.dumps([_canonical_beam("B1")])
 
         with client.stream(
             "GET", "/stream/batch-design", params={"beams": beams}
         ) as response:
+            assert response.headers["deprecation"] == "true"
             events = list(response.iter_lines())
 
         # Should have start, design_result, progress, complete events
@@ -54,20 +76,7 @@ class TestSSEBatchDesign:
     def test_batch_design_stream_preserves_unsafe_shear_failure(self):
         """A completed calculation with unsafe shear must stream as FAIL."""
         client = TestClient(app)
-        beams = json.dumps(
-            [
-                {
-                    "id": "B-UNSAFE-SHEAR",
-                    "width": 300,
-                    "depth": 500,
-                    "moment": 100,
-                    "shear": 600,
-                    "fck": 25,
-                    "fy": 500,
-                    "cover": 40,
-                }
-            ]
-        )
+        beams = json.dumps([_canonical_beam("B-UNSAFE-SHEAR", vu_kn=600)])
 
         with client.stream(
             "GET", "/stream/batch-design", params={"beams": beams}
@@ -95,30 +104,9 @@ class TestSSEBatchDesign:
         client = TestClient(app)
         beams = json.dumps(
             [
-                {
-                    "id": "B1",
-                    "width": 300,
-                    "depth": 500,
-                    "moment": 100,
-                    "fck": 25,
-                    "fy": 500,
-                },
-                {
-                    "id": "B2",
-                    "width": 350,
-                    "depth": 600,
-                    "moment": 200,
-                    "fck": 30,
-                    "fy": 500,
-                },
-                {
-                    "id": "B3",
-                    "width": 400,
-                    "depth": 700,
-                    "moment": 300,
-                    "fck": 25,
-                    "fy": 500,
-                },
+                _canonical_beam("B1"),
+                _canonical_beam("B2", b_mm=350, D_mm=600, mu_knm=200, fck_nmm2=30),
+                _canonical_beam("B3", b_mm=400, D_mm=700, mu_knm=300),
             ]
         )
 
@@ -136,26 +124,51 @@ class TestSSEBatchDesign:
     def test_batch_design_post_accepts_maintained_sample_size(self):
         """Large browser batches use a body so the request target stays bounded."""
         client = TestClient(app)
-        beams = [
-            {
-                "beam_id": f"B{index}",
-                "width": 300,
-                "depth": 500,
-                "moment": 100,
-                "shear": 50,
-                "fck": 25,
-                "fy": 500,
-            }
-            for index in range(153)
-        ]
+        beams = [_canonical_beam(f"B{index}") for index in range(153)]
 
         with client.stream("POST", "/stream/batch-design", json=beams) as response:
+            assert "deprecation" not in response.headers
             events = list(response.iter_lines())
 
         assert response.status_code == 200
         assert len(self._event_data(events, "design_result")) == 153
         complete = self._event_data(events, "complete")[0]
         assert complete["completed"] == 153
+
+    def test_get_and_post_delegate_to_same_strict_service_outcome(self):
+        """Transport choice cannot change normalization or issue semantics."""
+        client = TestClient(app)
+        payload = _canonical_beam("B-MISSING")
+        del payload["vu_kn"]
+
+        with client.stream(
+            "GET",
+            "/stream/batch-design",
+            params={"beams": json.dumps([payload])},
+        ) as response:
+            get_events = list(response.iter_lines())
+        with client.stream("POST", "/stream/batch-design", json=[payload]) as response:
+            post_events = list(response.iter_lines())
+
+        get_result = self._event_data(get_events, "design_result")[0]
+        post_result = self._event_data(post_events, "design_result")[0]
+        service_result = design_project_beams_v1([payload]).members[0].to_dict()
+        assert get_result == post_result
+        for field in (
+            "input",
+            "intake_status",
+            "calculation_status",
+            "engineering_status",
+            "overall_status",
+            "issues",
+        ):
+            assert get_result[field] == service_result[field]
+        assert service_result["intake_status"] == "BLOCKED"
+        assert service_result["calculation_status"] == "NOT_EVALUATED"
+        assert service_result["overall_status"] == "BLOCKED"
+        assert [issue["code"] for issue in get_result["issues"]] == [
+            "PROJECT_BEAM_REQUIRED_FIELD"
+        ]
 
     def test_batch_design_invalid_json(self):
         """Test batch design with invalid JSON."""
@@ -185,12 +198,7 @@ class TestSSEBatchDesign:
     def test_batch_design_progress_tracking(self):
         """Test that progress events are sent."""
         client = TestClient(app)
-        beams = json.dumps(
-            [
-                {"width": 300, "depth": 500, "moment": 100, "fck": 25, "fy": 500},
-                {"width": 300, "depth": 500, "moment": 150, "fck": 25, "fy": 500},
-            ]
-        )
+        beams = json.dumps([_canonical_beam("B1"), _canonical_beam("B2", mu_knm=150)])
 
         with client.stream(
             "GET", "/stream/batch-design", params={"beams": beams}
@@ -242,9 +250,7 @@ class TestJobStatus:
     def test_get_job_status_after_batch(self):
         """Test getting job status after running a batch."""
         client = TestClient(app)
-        beams = json.dumps(
-            [{"width": 300, "depth": 500, "moment": 100, "fck": 25, "fy": 500}]
-        )
+        beams = json.dumps([_canonical_beam("B1")])
 
         # First run batch to get job_id from start event
         job_id = None

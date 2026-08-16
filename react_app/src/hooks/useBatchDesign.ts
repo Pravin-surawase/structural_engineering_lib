@@ -50,11 +50,15 @@ export interface BatchResult {
 
 type ServerBatchResult = BatchResult & {
   input?: {
+    member_id?: string;
     beam_id?: string;
-    request_id?: string;
-    project_revision?: number;
-    input_revision?: number;
+    source_metadata?: {
+      request_id?: string;
+      project_revision?: number;
+      input_revision?: number;
+    };
   };
+  issues?: Array<{ code: string; message: string }>;
   message?: string;
 };
 
@@ -207,19 +211,25 @@ function settleUnreceived(
 }
 
 function normalizedResult(data: ServerBatchResult): BatchResult | null {
-  const beamId = data.beam_id ?? data.input?.beam_id;
+  const beamId = data.beam_id ?? data.input?.member_id;
   if (!beamId) return null;
+  const status = data.status === 'PASS'
+    ? 'PASS'
+    : data.status === 'FAIL'
+      ? 'FAIL'
+      : 'HOLD';
   return {
     beam_id: beamId,
     design_succeeded: data.design_succeeded === true,
     is_safe: data.is_safe === true,
-    status: data.status === 'PASS' ? 'PASS' : 'FAIL',
+    status,
     flexure: data.flexure,
     shear: data.shear,
     utilization_ratio: data.utilization_ratio,
     utilizations: data.utilizations,
     failed_checks: data.failed_checks,
     remarks: data.remarks,
+    error: data.error ?? data.issues?.[0]?.message,
     evidence: data.evidence,
   };
 }
@@ -274,7 +284,7 @@ export function useBatchDesign() {
     const receivedMemberIds = new Set<string>();
     const heldResults: BatchResult[] = [];
 
-    const beamParams = beams.flatMap((beam) => {
+    const beamParams = beams.map((beam) => {
       const responseId = beam.source_id ?? beam.id;
       const member = snapshot?.members.find((candidate) => candidate.memberId === responseId);
       const requestId = uniqueId('batch-request');
@@ -290,52 +300,38 @@ export function useBatchDesign() {
           is_valid: false,
         }));
       }
-      const moment = beam.mu_envelope ?? beam.Mu_mid ?? 0;
-      const shear = beam.vu_envelope ?? beam.Vu_start ?? 0;
-      if (moment === 0 && shear === 0) {
-        const message = 'No non-zero design forces were available for this member.';
-        if (member && pending) {
-          const record = failedBatchRecord(
-            pending,
-            localRunId,
-            'DESIGN_FORCES_MISSING',
-            message,
-            'not_evaluated',
-          );
-          if (workspace.applyMemberRecord(member.memberId, 'result', record)) {
-            receivedMemberIds.add(member.memberId);
-            updateCompatibilityBeam(member.memberId, (current) => ({
-              ...current,
-              status: 'pending',
-              is_valid: false,
-              remarks: [message],
-            }));
-          }
-        }
-        heldResults.push({
-          beam_id: responseId,
-          design_succeeded: false,
-          is_safe: false,
-          status: 'HOLD',
-          error: message,
-        });
-        return [];
-      }
-      return [{
-        beam_id: responseId,
-        request_id: requestId,
-        project_id: snapshot?.projectId,
-        project_revision: snapshot?.projectRevision,
-        input_revision: member?.inputRevision,
-        width: beam.b,
-        depth: beam.D,
-        moment,
-        shear,
-        fck: beam.fck ?? 25,
-        fy: beam.fy ?? 500,
-        cover: beam.cover ?? 40,
-        span: beam.span,
-      }];
+      const depth = beam.d_mm !== undefined
+        ? { d_mm: beam.d_mm }
+        : beam.cover !== undefined
+          && beam.stirrup_diameter_mm !== undefined
+          && beam.tension_bar_diameter_mm !== undefined
+          ? {
+              effective_depth_basis: {
+                clear_cover_mm: beam.cover,
+                stirrup_diameter_mm: beam.stirrup_diameter_mm,
+                tension_bar_diameter_mm: beam.tension_bar_diameter_mm,
+              },
+            }
+          : {};
+      return {
+        schema_version: 'project-beam-design/v1',
+        member_id: responseId,
+        b_mm: beam.b,
+        D_mm: beam.D,
+        mu_knm: beam.mu_envelope ?? beam.Mu_mid,
+        vu_kn: beam.vu_envelope ?? beam.Vu_start,
+        fck_nmm2: beam.fck,
+        fy_nmm2: beam.fy,
+        ...depth,
+        source_metadata: {
+          ...beam.source_metadata,
+          request_id: requestId,
+          project_id: snapshot?.projectId,
+          project_revision: snapshot?.projectRevision,
+          input_revision: member?.inputRevision,
+          span_mm: beam.span,
+        },
+      };
     });
 
     const run: ActiveBatchRun = {
@@ -399,16 +395,17 @@ export function useBatchDesign() {
       }
       const memberId = run.memberByResponseId.get(result.beam_id);
       const pending = memberId ? run.pendingByMember.get(memberId) : undefined;
-      if (pending && data.input?.request_id && data.input.request_id !== pending.requestId) return;
+      const responseMetadata = data.input?.source_metadata;
+      if (pending && responseMetadata?.request_id && responseMetadata.request_id !== pending.requestId) return;
       if (
         pending
-        && data.input?.project_revision != null
-        && data.input.project_revision !== pending.projectRevision
+        && responseMetadata?.project_revision != null
+        && responseMetadata.project_revision !== pending.projectRevision
       ) return;
       if (
         pending
-        && data.input?.input_revision != null
-        && data.input.input_revision !== pending.inputRevision
+        && responseMetadata?.input_revision != null
+        && responseMetadata.input_revision !== pending.inputRevision
       ) return;
 
       let accepted = true;

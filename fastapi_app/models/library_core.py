@@ -330,6 +330,9 @@ class OneWaySlabDetailingResponse(BaseModel):
     detailing_adequacy: str
     serviceability_status: str
     review_requirement: str
+    qualified_review_required: Literal[True]
+    serviceability_escalation: str | None
+    result_envelope: dict[str, Any]
     limitations: list[str]
     source_refs: list[str]
 

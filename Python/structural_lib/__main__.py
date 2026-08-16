@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import importlib.util
 import json
 import sys
 from pathlib import Path
@@ -1156,6 +1157,52 @@ def cmd_capabilities(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_install_preflight(args: argparse.Namespace) -> int:
+    """Report the exact interpreter, package origin/version, and optional extras."""
+    import structural_lib
+
+    optional_modules = {
+        "dxf": "ezdxf",
+        "report": "jinja2",
+        "pdf": "weasyprint",
+        "render": "matplotlib",
+        "validation": "jsonschema",
+    }
+    origin = str(Path(structural_lib.__file__).resolve())
+    version = structural_lib.__version__
+    optional_extras: dict[str, bool] = {
+        name: importlib.util.find_spec(module_name) is not None
+        for name, module_name in optional_modules.items()
+    }
+    report = {
+        "interpreter": sys.executable,
+        "interpreter_resolved": str(Path(sys.executable).resolve()),
+        "python_version": sys.version.split()[0],
+        "package_version": version,
+        "package_origin": origin,
+        "optional_extras": optional_extras,
+        "qualified_review_required": True,
+        "repair_command": (
+            f"{sys.executable} -m pip install --upgrade "
+            f'"structural-lib-is456==={version}"'
+        ),
+    }
+    if args.as_json:
+        json.dump(report, sys.stdout, indent=2, sort_keys=True)
+        sys.stdout.write("\n")
+        return 0
+
+    print(f"Interpreter: {report['interpreter']}")
+    print(f"Python: {report['python_version']}")
+    print(f"structural_lib: {report['package_version']}")
+    print(f"Package origin: {report['package_origin']}")
+    print("Optional extras:")
+    for name, available in optional_extras.items():
+        print(f"  {name}: {'installed' if available else 'not installed'}")
+    print(f"Repair/install: {report['repair_command']}")
+    return 0
+
+
 def _build_parser() -> argparse.ArgumentParser:
     """Build the main argument parser with subcommands."""
 
@@ -1168,6 +1215,18 @@ def _build_parser() -> argparse.ArgumentParser:
     subparsers = parser.add_subparsers(
         dest="command", required=True, help="Available commands"
     )
+
+    preflight_parser = subparsers.add_parser(
+        "install-preflight",
+        help="Show interpreter, package origin/version, extras, and repair command",
+    )
+    preflight_parser.add_argument(
+        "--json",
+        dest="as_json",
+        action="store_true",
+        help="Emit the preflight report as JSON",
+    )
+    preflight_parser.set_defaults(func=cmd_install_preflight)
 
     capabilities_parser = subparsers.add_parser(
         "capabilities",

@@ -28,8 +28,15 @@ Complete this record from the CI run that built the exact candidate.
 | Footing release-inclusion record | `record ID, source head and SHA-256` |
 | Footing release-inclusion gate | `PASS/HOLD` |
 | Exact-wheel installed UAT | `PASS/HOLD` |
+| Negative acceptance matrix schema/hash/case count | `<schema, SHA-256, count>` |
+| Installed library content identity | `<sha256>` |
+| Public examples from exact wheel | `PASS/HOLD` |
 | CLI UAT | `PASS/HOLD` |
 | SBOM | `<artifact path and SHA-256>` |
+| Owner publication authorization | `<record SHA-256, exact version/tag/target, decision>` |
+| Independent exact-candidate review | `<receipt path/SHA-256, reviewed head/tree/Python tree, version/tag/targets>` |
+| Qualified review boundary | `REQUIRED` |
+| Professional approval | `false` |
 | TestPyPI decision | `<owner decision>` |
 | Production decision | `<owner decision>` |
 

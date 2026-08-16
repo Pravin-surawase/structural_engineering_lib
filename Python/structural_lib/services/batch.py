@@ -264,6 +264,7 @@ def _calculation_payload(
         is_ok=result.is_ok,
         governing_utilization=result.governing_utilization,
         utilizations=result.utilizations,
+        source_metadata=beam.source_metadata,
     )
     is_safe = result.is_ok
     return {

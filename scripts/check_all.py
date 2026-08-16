@@ -82,6 +82,11 @@ CATEGORIES: list[Category] = [
             Check(
                 "API manifest", _py("generate_api_manifest.py", "--check"), timeout=30
             ),
+            Check(
+                "API classification",
+                _py("generate_api_classification.py", "--check"),
+                timeout=30,
+            ),
         ],
     ),
     Category(

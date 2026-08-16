@@ -10,12 +10,22 @@ from __future__ import annotations
 
 import csv
 import hashlib
+import json
 import logging
 import math
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
-from fastapi import APIRouter, File, HTTPException, Query, UploadFile, status
+from fastapi import (
+    APIRouter,
+    File,
+    Form,
+    HTTPException,
+    Query,
+    Response,
+    UploadFile,
+    status,
+)
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
@@ -30,6 +40,43 @@ router = APIRouter(
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _required_sample_text(
+    row: dict[str, str | None],
+    field: str,
+    *,
+    artifact: str,
+    row_number: int,
+) -> str:
+    """Return one required bundled-sample value without silent fallback."""
+
+    value = row.get(field)
+    if value is None or not value.strip():
+        raise ValueError(f"{artifact} row {row_number}: missing {field}")
+    return value.strip()
+
+
+def _required_sample_float(
+    row: dict[str, str | None],
+    field: str,
+    *,
+    artifact: str,
+    row_number: int,
+) -> float:
+    """Parse one required finite bundled-sample number."""
+
+    value = float(
+        _required_sample_text(
+            row,
+            field,
+            artifact=artifact,
+            row_number=row_number,
+        )
+    )
+    if not math.isfinite(value):
+        raise ValueError(f"{artifact} row {row_number}: non-finite {field}")
+    return value
 
 
 # =============================================================================
@@ -57,12 +104,13 @@ class BeamRow(BaseModel):
     story: str | None = Field(None, max_length=200, description="Story/floor level")
     width_mm: float = Field(..., description="Beam width in mm")
     depth_mm: float = Field(..., description="Beam overall depth in mm")
-    span_mm: float = Field(5000.0, description="Span length in mm")
-    mu_knm: float = Field(0.0, description="Design moment in kN·m")
-    vu_kn: float = Field(0.0, description="Design shear in kN")
-    fck_mpa: float = Field(25.0, description="Concrete strength in N/mm²")
-    fy_mpa: float = Field(500.0, description="Steel strength in N/mm²")
-    cover_mm: float = Field(40.0, description="Clear cover in mm")
+    span_mm: float = Field(..., description="Span length in mm")
+    mu_knm: float = Field(..., description="Design moment in kN·m")
+    vu_kn: float = Field(..., description="Design shear in kN")
+    fck_mpa: float = Field(..., description="Concrete strength in N/mm²")
+    fy_mpa: float = Field(..., description="Steel strength in N/mm²")
+    cover_mm: float = Field(..., description="Clear cover in mm")
+    source_metadata: dict[str, Any] | None = None
 
 
 class BeamWith3D(BeamRow):
@@ -106,6 +154,82 @@ class CSVImportResponse(BaseModel):
         ..., max_length=50, description="Detected format: ETABS, SAFE, STAAD, Generic"
     )
     warnings: list[str] = Field(default_factory=list)
+    normalization_ledger: dict[str, Any]
+    issues: list[dict[str, Any]] = Field(default_factory=list)
+
+
+def _lossless_import_response(
+    *,
+    import_result: Any,
+    stirrup_diameter_mm: float,
+    tension_bar_diameter_mm: float,
+) -> APIResponse[CSVImportResponse]:
+    """Map one accepted lossless import into the public preview model."""
+
+    if import_result.batch is None:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail={
+                "schema_version": import_result.schema_version,
+                "status": import_result.status.value,
+                "issues": [
+                    issue.model_dump(mode="json") for issue in import_result.issues
+                ],
+                "normalization_ledger": import_result.ledger.model_dump(mode="json"),
+            },
+        )
+    ledger_payload = import_result.ledger.model_dump(mode="json")
+    ledger_hash = hashlib.sha256(
+        json.dumps(
+            ledger_payload,
+            allow_nan=False,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode("utf-8")
+    ).hexdigest()
+    detected = (
+        import_result.ledger.adapter_selection.selected_format or "BLOCKED"
+    ).upper()
+    forces_by_id = {force.id: force for force in import_result.batch.forces}
+    beams = [
+        BeamRow(
+            id=beam.id,
+            source_id=beam.source_id or beam.id,
+            story=beam.story,
+            width_mm=beam.section.width_mm,
+            depth_mm=beam.section.depth_mm,
+            span_mm=beam.length_m * 1000.0,
+            mu_knm=forces_by_id[beam.id].mu_knm,
+            vu_kn=forces_by_id[beam.id].vu_kn,
+            fck_mpa=beam.section.fck_mpa,
+            fy_mpa=beam.section.fy_mpa,
+            cover_mm=beam.section.cover_mm,
+            source_metadata={
+                "source_record_identity": beam.source_id or beam.id,
+                "artifact_sha256": import_result.ledger.geometry_artifact.sha256,
+                "normalization_ledger_hash": ledger_hash,
+                "adapter": detected,
+                "effective_depth_basis": {
+                    "clear_cover_mm": beam.section.cover_mm,
+                    "stirrup_diameter_mm": stirrup_diameter_mm,
+                    "tension_bar_diameter_mm": tension_bar_diameter_mm,
+                },
+            },
+        )
+        for beam in import_result.batch.beams
+    ]
+    return success_response(
+        CSVImportResponse(
+            success=True,
+            message=f"Imported {len(beams)} beams using {detected} adapter",
+            beam_count=len(beams),
+            beams=beams,
+            format_detected=detected,
+            warnings=[],
+            normalization_ledger=ledger_payload,
+            issues=[],
+        )
+    )
 
 
 class DualCSVImportResponse(BaseModel):
@@ -123,6 +247,8 @@ class DualCSVImportResponse(BaseModel):
     warnings: list[str] = Field(default_factory=list)
     unmatched_beams: list[str] = Field(default_factory=list)
     unmatched_forces: list[str] = Field(default_factory=list)
+    normalization_ledger: dict[str, Any]
+    issues: list[dict[str, Any]] = Field(default_factory=list)
 
 
 class BatchDesignResult(BaseModel):
@@ -166,6 +292,11 @@ class BatchDesignResponse(BaseModel):
 )
 async def import_csv(
     file: UploadFile = File(..., description="CSV file to import"),
+    fck_mpa: float = Form(..., gt=0),
+    fy_mpa: float = Form(..., gt=0),
+    cover_mm: float = Form(..., gt=0),
+    stirrup_diameter_mm: int = Form(..., gt=0),
+    tension_bar_diameter_mm: float = Form(..., gt=0),
     format_hint: Literal["auto", "etabs", "safe", "staad", "generic"] = Query(
         "auto", description="Optional format override for CSV import"
     ),
@@ -215,170 +346,38 @@ async def import_csv(
 
         text = content.decode("utf-8-sig")
 
-        # Import adapters from library
         import os
-
-        # Create temp file for adapter (adapters expect file paths)
         import tempfile
 
-        from structural_lib.services.api import DesignDefaults
-        from structural_lib.services.adapters import (
-            ETABSAdapter,
-            GenericCSVAdapter,
-            SAFEAdapter,
-            STAADAdapter,
+        from structural_lib.services.imports import (
+            build_import_design_defaults,
+            parse_single_csv_lossless,
         )
 
         with tempfile.NamedTemporaryFile(
             mode="w", suffix=".csv", delete=False, encoding="utf-8"
-        ) as tmp:
-            tmp.write(text)
-            tmp_path = tmp.name
-
+        ) as strict_tmp:
+            strict_tmp.write(text)
+            strict_path = strict_tmp.name
         try:
-            # Auto-detect format or use hint
-            adapters = {
-                "etabs": ETABSAdapter(),
-                "safe": SAFEAdapter(),
-                "staad": STAADAdapter(),
-                "generic": GenericCSVAdapter(),
-            }
-
-            detected_format = "Generic"
-
-            adapter_order = [
-                ("ETABS", adapters["etabs"]),
-                ("SAFE", adapters["safe"]),
-                ("STAAD", adapters["staad"]),
-                ("Generic", adapters["generic"]),
-            ]
-
-            if format_hint == "auto":
-                # Filter to adapters that claim to handle this file
-                candidates = [
-                    (name, adapter)
-                    for name, adapter in adapter_order
-                    if adapter.can_handle(tmp_path)
-                ]
-                if not candidates:
-                    candidates = [("Generic", adapters["generic"])]
-            else:
-                adapter_obj = adapters.get(format_hint.lower())
-                if adapter_obj:
-                    candidates = [(format_hint.upper(), adapter_obj)]
-                else:
-                    candidates = [("Generic", adapters["generic"])]
-
-            # Load data using adapter — try each candidate until one succeeds
-            defaults = DesignDefaults()
-            warnings: list[str] = []
-            beams_out: list[BeamRow] = []
-            last_error: str | None = None
-
-            for adapter_name, adapter in candidates:
-                detected_format = adapter_name
-                beams_out = []
-                adapter_warnings: list[str] = []
-
-                try:
-                    geometry_list = adapter.load_geometry(tmp_path, defaults)
-
-                    # Try loading forces
-                    try:
-                        forces_list = adapter.load_forces(tmp_path)
-                        forces_map = {f.id: f for f in forces_list}
-                    except (ValueError, NotImplementedError):
-                        forces_map = {}
-                        adapter_warnings.append(
-                            "Force data not found in CSV - using geometry only"
-                        )
-
-                    # Combine geometry and forces
-                    for geom in geometry_list:
-                        forces = forces_map.get(geom.id)
-                        beams_out.append(
-                            BeamRow(
-                                id=geom.id,
-                                source_id=geom.source_id or geom.id,
-                                story=geom.story,
-                                width_mm=geom.section.width_mm,
-                                depth_mm=geom.section.depth_mm,
-                                span_mm=geom.length_m * 1000,
-                                mu_knm=forces.mu_knm if forces else 0.0,
-                                vu_kn=forces.vu_kn if forces else 0.0,
-                                fck_mpa=geom.section.fck_mpa,
-                                fy_mpa=geom.section.fy_mpa,
-                                cover_mm=geom.section.cover_mm,
-                            )
-                        )
-
-                    if beams_out:
-                        warnings = adapter_warnings
-                        break  # Success — stop trying adapters
-
-                except (ValueError, NotImplementedError, AttributeError) as e:
-                    # Geometry loading failed — try forces only
-                    last_error = str(e)
-                    try:
-                        forces_list = adapter.load_forces(tmp_path)
-                        for forces in forces_list:
-                            beams_out.append(
-                                BeamRow(
-                                    id=forces.id,
-                                    source_id=forces.id,
-                                    story=None,
-                                    width_mm=300.0,  # Default
-                                    depth_mm=500.0,  # Default
-                                    span_mm=5000.0,
-                                    mu_knm=forces.mu_knm,
-                                    vu_kn=forces.vu_kn,
-                                    fck_mpa=defaults.fck_mpa,
-                                    fy_mpa=defaults.fy_mpa,
-                                    cover_mm=defaults.cover_mm,
-                                )
-                            )
-                        if beams_out:
-                            adapter_warnings.append(
-                                "Geometry loading encountered a non-critical issue"
-                            )
-                            logger.warning("Geometry loading note: %s", e)
-                            warnings = adapter_warnings
-                            break  # Success with forces only
-                    except (ValueError, TypeError, KeyError, IOError) as force_err:
-                        last_error = f"{last_error}; forces: {force_err}"
-
-                    # This adapter failed completely — try next one
-                    continue
-
-            if not beams_out:
-                logger.warning(
-                    "CSV import failed with all adapters. Last error: %s", last_error
-                )
-                raise HTTPException(
-                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                    detail="Could not parse CSV with any adapter. Please check file format.",
-                )
-
-            if not beams_out:
-                raise HTTPException(
-                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                    detail="No beam data found in CSV",
-                )
-
-            return success_response(
-                CSVImportResponse(
-                    success=True,
-                    message=f"Imported {len(beams_out)} beams using {detected_format} adapter",
-                    beam_count=len(beams_out),
-                    beams=beams_out,
-                    format_detected=detected_format,
-                    warnings=warnings,
-                )
+            import_result = parse_single_csv_lossless(
+                strict_path,
+                format_hint=format_hint,
+                defaults=build_import_design_defaults(
+                    fck_mpa=fck_mpa,
+                    fy_mpa=fy_mpa,
+                    cover_mm=cover_mm,
+                    stirrup_dia_mm=stirrup_diameter_mm,
+                ),
+                artifact_name=file.filename,
             )
-
+            return _lossless_import_response(
+                import_result=import_result,
+                stirrup_diameter_mm=stirrup_diameter_mm,
+                tension_bar_diameter_mm=tension_bar_diameter_mm,
+            )
         finally:
-            # Clean up temp file
-            os.unlink(tmp_path)
+            os.unlink(strict_path)
 
     except HTTPException:
         raise
@@ -399,6 +398,11 @@ async def import_csv(
 async def import_dual_csv(
     geometry_file: UploadFile = File(..., description="Geometry CSV file"),
     forces_file: UploadFile = File(..., description="Forces CSV file"),
+    fck_mpa: float = Form(..., gt=0),
+    fy_mpa: float = Form(..., gt=0),
+    cover_mm: float = Form(..., gt=0),
+    stirrup_diameter_mm: int = Form(..., gt=0),
+    tension_bar_diameter_mm: float = Form(..., gt=0),
     format_hint: Literal["auto", "etabs", "safe", "staad", "generic"] = Query(
         "auto", description="Optional format override for dual CSV import"
     ),
@@ -425,7 +429,10 @@ async def import_dual_csv(
     try:
         import tempfile
 
-        from structural_lib.services.imports import parse_dual_csv, validate_import
+        from structural_lib.services.imports import (
+            build_import_design_defaults,
+            parse_dual_csv_lossless,
+        )
 
         settings = get_settings()
         max_size = settings.max_upload_size_bytes
@@ -495,34 +502,53 @@ async def import_dual_csv(
             forces_path = force_tmp.name
 
         try:
-            try:
-                batch, import_warnings = parse_dual_csv(
-                    geometry_path,
-                    forces_path,
-                    format_hint=format_hint,
-                )
-            except (ValueError, TypeError, KeyError, IOError) as exc:
-                if format_hint != "generic":
-                    batch, import_warnings = parse_dual_csv(
-                        geometry_path,
-                        forces_path,
-                        format_hint="generic",
-                    )
-                else:
-                    raise exc
-            report = validate_import(batch)
-
-            if not report.ok:
+            import_result = parse_dual_csv_lossless(
+                geometry_path,
+                forces_path,
+                format_hint=format_hint,
+                defaults=build_import_design_defaults(
+                    fck_mpa=fck_mpa,
+                    fy_mpa=fy_mpa,
+                    cover_mm=cover_mm,
+                    stirrup_dia_mm=stirrup_diameter_mm,
+                ),
+                geometry_artifact_name=geometry_file.filename,
+                forces_artifact_name=forces_file.filename,
+            )
+            if import_result.batch is None:
                 raise HTTPException(
                     status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                    detail="; ".join(report.errors),
+                    detail={
+                        "schema_version": import_result.schema_version,
+                        "status": import_result.status.value,
+                        "issues": [
+                            issue.model_dump(mode="json")
+                            for issue in import_result.issues
+                        ],
+                        "normalization_ledger": import_result.ledger.model_dump(
+                            mode="json"
+                        ),
+                    },
                 )
+            batch = import_result.batch
+            ledger_payload = import_result.ledger.model_dump(mode="json")
+            normalization_ledger_hash = hashlib.sha256(
+                json.dumps(
+                    ledger_payload,
+                    allow_nan=False,
+                    separators=(",", ":"),
+                    sort_keys=True,
+                ).encode("utf-8")
+            ).hexdigest()
+            detected = (
+                import_result.ledger.adapter_selection.selected_format or "BLOCKED"
+            ).upper()
 
             forces_by_id = {f.id: f for f in batch.forces}
             beams_out: list[BeamWith3D] = []
 
             for beam in batch.beams:
-                forces = forces_by_id.get(beam.id)
+                forces = forces_by_id[beam.id]
                 beams_out.append(
                     BeamWith3D(
                         id=beam.id,
@@ -531,11 +557,27 @@ async def import_dual_csv(
                         width_mm=beam.section.width_mm,
                         depth_mm=beam.section.depth_mm,
                         span_mm=beam.length_m * 1000.0,
-                        mu_knm=forces.mu_knm if forces else 0.0,
-                        vu_kn=forces.vu_kn if forces else 0.0,
+                        mu_knm=forces.mu_knm,
+                        vu_kn=forces.vu_kn,
                         fck_mpa=beam.section.fck_mpa,
                         fy_mpa=beam.section.fy_mpa,
                         cover_mm=beam.section.cover_mm,
+                        source_metadata={
+                            "source_record_identity": beam.source_id or beam.id,
+                            "geometry_artifact_sha256": (
+                                import_result.ledger.geometry_artifact.sha256
+                            ),
+                            "forces_artifact_sha256": (
+                                import_result.ledger.forces_artifact.sha256
+                            ),
+                            "normalization_ledger_hash": normalization_ledger_hash,
+                            "adapter": detected,
+                            "effective_depth_basis": {
+                                "clear_cover_mm": beam.section.cover_mm,
+                                "stirrup_diameter_mm": stirrup_diameter_mm,
+                                "tension_bar_diameter_mm": (tension_bar_diameter_mm),
+                            },
+                        },
                         point1=Point3D(
                             x=beam.point1.x,
                             y=beam.point1.y,
@@ -549,14 +591,6 @@ async def import_dual_csv(
                     )
                 )
 
-            merged_warnings = list(
-                dict.fromkeys(report.warnings + import_warnings.warnings)
-            )
-
-            detected = (
-                format_hint.upper() if format_hint and format_hint != "auto" else "AUTO"
-            )
-
             return success_response(
                 DualCSVImportResponse(
                     success=True,
@@ -564,9 +598,11 @@ async def import_dual_csv(
                     beam_count=len(beams_out),
                     beams=beams_out,
                     format_detected=detected,
-                    warnings=merged_warnings,
-                    unmatched_beams=import_warnings.unmatched_beams,
-                    unmatched_forces=import_warnings.unmatched_forces,
+                    warnings=[],
+                    unmatched_beams=[],
+                    unmatched_forces=[],
+                    normalization_ledger=ledger_payload,
+                    issues=[],
                 )
             )
         finally:
@@ -592,9 +628,15 @@ async def import_dual_csv(
     response_model=APIResponse[CSVImportResponse],
     summary="Import CSV Text",
     description="Import beam data from CSV text content.",
+    deprecated=True,
 )
 async def import_csv_text(
     csv_text: str,
+    fck_mpa: float = Query(..., gt=0),
+    fy_mpa: float = Query(..., gt=0),
+    cover_mm: float = Query(..., gt=0),
+    stirrup_diameter_mm: int = Query(..., gt=0),
+    tension_bar_diameter_mm: float = Query(..., gt=0),
     format_hint: Literal["auto", "etabs", "safe", "staad", "generic"] = Query(
         "auto", description="Optional format override for CSV text import"
     ),
@@ -605,9 +647,6 @@ async def import_csv_text(
     Same as /import/csv but accepts raw text instead of file upload.
     Useful for frontend paste operations.
     """
-    import os
-    import tempfile
-
     settings = get_settings()
     max_size = settings.max_upload_size_bytes
     if len(csv_text.encode("utf-8")) > max_size:
@@ -621,159 +660,78 @@ async def import_csv_text(
             detail=f"CSV text too large. Maximum size: {max_size // (1024 * 1024)}MB",
         )
 
-    # Create temp file from text
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".csv", delete=False, encoding="utf-8"
-    ) as tmp:
-        tmp.write(csv_text)
-        tmp_path = tmp.name
+    class MockUploadFile:
+        filename = "data.csv"
+        size = None
 
-    try:
-        # Create a mock file for the main import function
-        class MockUploadFile:
-            filename = "data.csv"
-            size = None  # Unknown size; import_csv checks `if file.size`
+        async def read(self, size: int = -1):
+            return csv_text.encode("utf-8")
 
-            async def read(self, size: int = -1):
-                return csv_text.encode("utf-8")
-
-        return await import_csv(MockUploadFile(), format_hint)  # type: ignore
-    finally:
-        os.unlink(tmp_path)
+    return await import_csv(  # type: ignore[arg-type]
+        MockUploadFile(),
+        fck_mpa,
+        fy_mpa,
+        cover_mm,
+        stirrup_diameter_mm,
+        tension_bar_diameter_mm,
+        format_hint,
+    )
 
 
 @router.post(
-    "/batch-design",
-    response_model=APIResponse[BatchDesignResponse],
-    summary="Batch Design Beams",
-    description="Design multiple beams from imported data.",
+    "/project-beams",
+    response_model=APIResponse[dict[str, Any]],
+    summary="Design Canonical Project Beams",
+    description="Validate and design canonical project-beam/v1 payloads.",
 )
-async def batch_design(
-    beams: list[BeamRow],
-):
-    """
-    Design multiple beams in batch.
-
-    Uses structural_lib.api.design_beam_is456 for each beam.
-    Returns aggregated results.
-    """
-    from fastapi_app.config import get_settings
+async def design_project_beams(
+    beams: list[dict[str, Any]],
+) -> APIResponse[dict[str, Any]]:
+    """Delegate canonical transport input to the strict service command."""
 
     settings = get_settings()
     if len(beams) > settings.max_batch_size:
         raise HTTPException(
-            status_code=422,
-            detail=f"Batch size {len(beams)} exceeds maximum of {settings.max_batch_size}. Send at most {settings.max_batch_size} beams per request.",
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                f"Batch size {len(beams)} exceeds maximum of "
+                f"{settings.max_batch_size}"
+            ),
         )
+    from structural_lib.services.batch import design_project_beams_v1
 
-    try:
-        from structural_lib.services.api import design_beam_is456
-        from structural_lib.services.evidence import build_beam_evidence_envelope
+    return success_response(design_project_beams_v1(beams).to_dict())
 
-        results: list[BatchDesignResult] = []
-        passed = 0
-        failed = 0
 
-        for beam in beams:
-            try:
-                # Calculate effective depth
-                d_mm = beam.depth_mm - beam.cover_mm - 25  # Approximate
+@router.post(
+    "/batch-design",
+    response_model=APIResponse[dict[str, Any]],
+    summary="Compatibility Batch Design",
+    description="Deprecated compatibility transport delegating to the strict service.",
+    deprecated=True,
+)
+async def batch_design(
+    beams: list[dict[str, Any]],
+    response: Response,
+) -> APIResponse[dict[str, Any]]:
+    """Preserve known aliases without route-level defaults or derivation."""
 
-                result = design_beam_is456(
-                    units="IS456",
-                    case_id=beam.id,
-                    mu_knm=beam.mu_knm,
-                    vu_kn=beam.vu_kn,
-                    b_mm=beam.width_mm,
-                    D_mm=beam.depth_mm,
-                    d_mm=d_mm,
-                    fck_nmm2=beam.fck_mpa,
-                    fy_nmm2=beam.fy_mpa,
-                )
-
-                is_safe = result.is_ok
-                utilization_ratio = min(result.governing_utilization, 2.0)
-                evidence = build_beam_evidence_envelope(
-                    inputs={
-                        "units": "IS456",
-                        "case_id": beam.id,
-                        "mu_knm": beam.mu_knm,
-                        "vu_kn": beam.vu_kn,
-                        "b_mm": beam.width_mm,
-                        "D_mm": beam.depth_mm,
-                        "d_mm": d_mm,
-                        "fck_nmm2": beam.fck_mpa,
-                        "fy_nmm2": beam.fy_mpa,
-                        "d_dash_mm": 50.0,
-                        "asv_mm2": 100.0,
-                    },
-                    is_ok=result.is_ok,
-                    governing_utilization=result.governing_utilization,
-                    utilizations=result.utilizations,
-                )
-
-                results.append(
-                    BatchDesignResult(
-                        beam_id=beam.id,
-                        success=True,
-                        ast_required=result.flexure.Ast_required,
-                        asc_required=result.flexure.Asc_required,
-                        stirrup_spacing=result.shear.spacing if result.shear else 0.0,
-                        is_safe=is_safe,
-                        utilization_ratio=utilization_ratio,
-                        evidence=EvidenceEnvelopeResponse.model_validate(evidence),
-                    )
-                )
-
-                if is_safe:
-                    passed += 1
-                else:
-                    failed += 1
-
-            except (ValueError, TypeError):
-                logger.exception("Invalid input for beam %s", beam.id)
-                results.append(
-                    BatchDesignResult(
-                        beam_id=beam.id,
-                        success=False,
-                        error="Invalid input parameters",
-                    )
-                )
-                failed += 1
-            except (RuntimeError, KeyError, AttributeError):
-                logger.exception("Batch design failed for beam %s", beam.id)
-                results.append(
-                    BatchDesignResult(
-                        beam_id=beam.id,
-                        success=False,
-                        error="Internal calculation error",
-                    )
-                )
-                failed += 1
-
-        return success_response(
-            BatchDesignResponse(
-                success=True,
-                message=f"Designed {len(beams)} beams: {passed} passed, {failed} failed",
-                total=len(beams),
-                passed=passed,
-                failed=failed,
-                results=results,
-            )
+    response.headers["Deprecation"] = "true"
+    response.headers["Warning"] = (
+        '299 - "Deprecated compatibility route; use POST /import/project-beams"'
+    )
+    settings = get_settings()
+    if len(beams) > settings.max_batch_size:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                f"Batch size {len(beams)} exceeds maximum of "
+                f"{settings.max_batch_size}"
+            ),
         )
+    from structural_lib.services.batch import design_beams
 
-    except ImportError:
-        logger.exception("structural_lib not available for batch design")
-        return JSONResponse(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            content=error_response("structural_lib not available"),
-        )
-    except (RuntimeError, KeyError, AttributeError):
-        logger.exception("Batch design failed")
-        return JSONResponse(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            content=error_response("Internal calculation error"),
-        )
+    return success_response(design_beams(beams))
 
 
 @router.get(
@@ -886,62 +844,146 @@ async def get_sample_data():
         dataset_hash.update(source_path.read_bytes())
         dataset_hash.update(b"\0")
 
-    # Read forces CSV
+    dataset_sha256 = dataset_hash.hexdigest()
+
+    # Read forces CSV. Bundled acceptance data is a controlled fixture: a
+    # malformed or incomplete row invalidates the complete sample rather than
+    # receiving a structural fallback.
     forces_data: dict[str, dict[str, str | float]] = {}
     try:
         with open(forces_path, encoding="utf-8") as f:
             reader = csv.DictReader(f)
-            for row in reader:
-                unique_name = row.get("UniqueName", "")
-                if unique_name:
-                    forces_data[unique_name] = {
-                        "label": row.get("Label", ""),
-                        "story": row.get("Story", ""),
-                        "width_mm": float(row.get("Width_mm", 300)),
-                        "depth_mm": float(row.get("Depth_mm", 500)),
-                        "span_m": float(row.get("Span_m", 5.0)),
-                        "mu_max": abs(float(row.get("Mu_max_kNm", 0))),
-                        "mu_min": abs(float(row.get("Mu_min_kNm", 0))),
-                        "vu_max": abs(float(row.get("Vu_max_kN", 0))),
-                    }
+            for row_number, row in enumerate(reader, start=2):
+                unique_name = _required_sample_text(
+                    row,
+                    "UniqueName",
+                    artifact=forces_path.name,
+                    row_number=row_number,
+                )
+                if unique_name in forces_data:
+                    raise ValueError(
+                        f"{forces_path.name} row {row_number}: duplicate UniqueName {unique_name}"
+                    )
+                forces_data[unique_name] = {
+                    "label": _required_sample_text(
+                        row,
+                        "Label",
+                        artifact=forces_path.name,
+                        row_number=row_number,
+                    ),
+                    "story": _required_sample_text(
+                        row,
+                        "Story",
+                        artifact=forces_path.name,
+                        row_number=row_number,
+                    ),
+                    "width_mm": _required_sample_float(
+                        row,
+                        "Width_mm",
+                        artifact=forces_path.name,
+                        row_number=row_number,
+                    ),
+                    "depth_mm": _required_sample_float(
+                        row,
+                        "Depth_mm",
+                        artifact=forces_path.name,
+                        row_number=row_number,
+                    ),
+                    "span_m": _required_sample_float(
+                        row,
+                        "Span_m",
+                        artifact=forces_path.name,
+                        row_number=row_number,
+                    ),
+                    "mu_max": abs(
+                        _required_sample_float(
+                            row,
+                            "Mu_max_kNm",
+                            artifact=forces_path.name,
+                            row_number=row_number,
+                        )
+                    ),
+                    "mu_min": abs(
+                        _required_sample_float(
+                            row,
+                            "Mu_min_kNm",
+                            artifact=forces_path.name,
+                            row_number=row_number,
+                        )
+                    ),
+                    "vu_max": abs(
+                        _required_sample_float(
+                            row,
+                            "Vu_max_kN",
+                            artifact=forces_path.name,
+                            row_number=row_number,
+                        )
+                    ),
+                }
     except (IOError, ValueError, KeyError, csv.Error) as e:
-        logger.warning("Error reading forces CSV: %s", e)
-        warnings_list.append("Error reading forces data")
+        logger.error("Bundled sample forces are invalid: %s", e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Bundled sample forces failed integrity validation",
+        ) from e
 
     # Read geometry CSV (filter beams only)
     geometry_data: dict[str, dict[str, float]] = {}
     try:
         with open(geometry_path, encoding="utf-8") as f:
             reader = csv.DictReader(f)
-            for row in reader:
+            for row_number, row in enumerate(reader, start=2):
                 if row.get("FrameType") == "Beam":
-                    unique_name = row.get("UniqueName", "")
-                    if unique_name:
-                        geometry_data[unique_name] = {
-                            "point1_x": float(row.get("Point1X", 0)),
-                            "point1_y": float(row.get("Point1Y", 0)),
-                            "point1_z": float(row.get("Point1Z", 0)),
-                            "point2_x": float(row.get("Point2X", 0)),
-                            "point2_y": float(row.get("Point2Y", 0)),
-                            "point2_z": float(row.get("Point2Z", 0)),
-                        }
+                    unique_name = _required_sample_text(
+                        row,
+                        "UniqueName",
+                        artifact=geometry_path.name,
+                        row_number=row_number,
+                    )
+                    if unique_name in geometry_data:
+                        raise ValueError(
+                            f"{geometry_path.name} row {row_number}: duplicate UniqueName {unique_name}"
+                        )
+                    geometry_data[unique_name] = {
+                        field.lower(): _required_sample_float(
+                            row,
+                            csv_field,
+                            artifact=geometry_path.name,
+                            row_number=row_number,
+                        )
+                        for field, csv_field in (
+                            ("point1_x", "Point1X"),
+                            ("point1_y", "Point1Y"),
+                            ("point1_z", "Point1Z"),
+                            ("point2_x", "Point2X"),
+                            ("point2_y", "Point2Y"),
+                            ("point2_z", "Point2Z"),
+                        )
+                    }
     except (IOError, ValueError, KeyError, csv.Error) as e:
-        logger.warning("Error reading geometry CSV: %s", e)
-        warnings_list.append("Error reading geometry data")
+        logger.error("Bundled sample geometry is invalid: %s", e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Bundled sample geometry failed integrity validation",
+        ) from e
+
+    if set(forces_data) != set(geometry_data):
+        logger.error("Bundled sample force/geometry identities do not match")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Bundled sample force/geometry identities do not match",
+        )
 
     # Merge forces with geometry
     sample_beams: list[BeamWith3D] = []
     for unique_name, force in forces_data.items():
-        geom = geometry_data.get(unique_name, {})
+        geom = geometry_data[unique_name]
 
-        # Calculate span from geometry if available
-        if geom:
-            p1_x, p1_y = geom.get("point1_x", 0), geom.get("point1_y", 0)
-            p2_x, p2_y = geom.get("point2_x", 0), geom.get("point2_y", 0)
-            span_from_geom = math.sqrt((p2_x - p1_x) ** 2 + (p2_y - p1_y) ** 2)
-            span_mm = round(span_from_geom * 1000, 3)  # m to mm
-        else:
-            span_mm = force["span_m"] * 1000
+        # Calculate span from the required matched geometry.
+        p1_x, p1_y = geom["point1_x"], geom["point1_y"]
+        p2_x, p2_y = geom["point2_x"], geom["point2_y"]
+        span_from_geom = math.sqrt((p2_x - p1_x) ** 2 + (p2_y - p1_y) ** 2)
+        span_mm = round(span_from_geom * 1000, 3)  # m to mm
 
         # Use max of Mu_max and abs(Mu_min) for design moment
         mu_design = max(force["mu_max"], force["mu_min"])
@@ -958,15 +1000,28 @@ async def get_sample_data():
             fck_mpa=25.0,
             fy_mpa=500.0,
             cover_mm=40.0,
+            source_metadata={
+                "dataset_id": "bundled-etabs-beam-sample",
+                "dataset_version": "etabs-csv-v1",
+                "dataset_sha256": dataset_sha256,
+                "source_record_identity": unique_name,
+                "sample_only": True,
+                "calculation_basis_origins": {
+                    "fck_mpa": "assumed_sample",
+                    "fy_mpa": "assumed_sample",
+                    "cover_mm": "assumed_sample",
+                },
+                "qualified_review_required": True,
+            },
             point1=Point3D(
-                x=geom.get("point1_x", 0),
-                y=geom.get("point1_y", 0),
-                z=geom.get("point1_z", 0),
+                x=geom["point1_x"],
+                y=geom["point1_y"],
+                z=geom["point1_z"],
             ),
             point2=Point3D(
-                x=geom.get("point2_x", 0),
-                y=geom.get("point2_y", 0),
-                z=geom.get("point2_z", 0),
+                x=geom["point2_x"],
+                y=geom["point2_y"],
+                z=geom["point2_z"],
             ),
         )
         sample_beams.append(beam)
@@ -982,7 +1037,7 @@ async def get_sample_data():
             dataset=SampleDatasetEvidence(
                 dataset_id="bundled-etabs-beam-sample",
                 dataset_version="etabs-csv-v1",
-                dataset_sha256=dataset_hash.hexdigest(),
+                dataset_sha256=dataset_sha256,
                 hash_algorithm="sha256-framed-files-v1",
                 source_files=[forces_path.name, geometry_path.name],
                 beam_count=len(sample_beams),

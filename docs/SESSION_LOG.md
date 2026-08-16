@@ -5,6 +5,306 @@
 
 ---
 
+## 2026-08-17 — Session: LIB-PRO-002 B-G Cumulative Safety Integration
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/lib-pro-002-b-lossless-import` from Packet A merge
+`3986935ecb473c1f9d56dec44aeb4218d9192f84` (PR #814)
+
+**Git handoff receipt:** `docs/verification/lib-pro-002-a-g-git-handoff-receipt.json`
+
+**Focus:** Complete Packets B-G as one cumulative candidate: lossless imports,
+transport/client convergence, cross-element result truth, evidence identity,
+API/documentation truth, exact-wheel negative UAT, and publication policy.
+Packet H, publication, professional approval, issue/PR closure, branch deletion,
+and unrelated worktree cleanup remain out of scope.
+
+### Summary
+
+- Replaced first-match/row-dropping import behavior with explicit or uniquely
+  detected adapters, a versioned every-field/every-row normalization ledger,
+  stable blocking issues, exact source/accepted/blocked accounting, and strict
+  single- and dual-CSV boundaries.
+- Converged HTTP, SSE, compatibility, and React batch paths on the canonical
+  strict beam service. Deprecated routes delegate; clients send explicit
+  materials, actions, and depth basis without filling absent structural data.
+- Added one fail-closed result contract separating intake, calculation,
+  engineering, review, and overall state; required qualified review remains
+  independent of serviceability escalation, and the footing dowel regression
+  remains an engineering FAIL.
+- Bound calculation, package content, controlled source/amendment, imported
+  artifacts, normalization ledger, assumption origin, provenance, and replay
+  identities without treating approval flags as verified source data.
+- Added a machine-checked Alpha API classification, removed callable leakage,
+  corrected version/claim/example documentation, and provided an installed-
+  package interpreter/origin/extras preflight.
+- Added the packaged source-free 19-case negative matrix and public-example
+  runner, exact-wheel workflow receipts, and an explicit per-version/tag/target
+  owner-authorization check before TestPyPI, PyPI, or GitHub Release actions.
+
+### Issues encountered
+
+- The owner had requested Git/worktree safety at the start of Packet A, yet a
+  later policy side packet advanced `main` and overlapped Packet A's mutable
+  session/index closeout surfaces, making the otherwise clean candidate
+  diverge and forcing forward integration.
+- The public single-CSV FastAPI route still bypassed the new lossless boundary,
+  while the first lossless model counted one physical combined CSV as separate
+  geometry and force rows.
+- The streaming route initially imported the compatibility facade rather than
+  the canonical service, preserving duplicate orchestration under a different
+  import name.
+- The first source-identity consolidation left footing code and the service
+  evidence path with separate constants; an intermediate footing helper edit
+  also misplaced a return and produced a `TypeError` in focused tests.
+- The bundled sample route still substituted missing dimensions/actions and
+  zero coordinates. React preserved the dataset hash separately but dropped
+  each beam's sample/assumption provenance before batch calculation.
+- Public API discovery exposed imported callables not covered by a complete
+  stability class, while maintained READMEs and release checks disagreed about
+  Alpha version and executable examples.
+- The first architecture run found two FastAPI imports of a core model after
+  strict import migration. This would violate the required Core to IS 456 to
+  Services to UI dependency direction.
+- The local React command initially assumed `$HOME/.nvm/nvm.sh`, which is not
+  installed on this machine. An earlier `npm run type-check` attempt also found
+  that the project declares no such script.
+- PDF text extraction was unavailable during source-identity inspection, and
+  an attempted release helper name (`source-surface-check`) did not exist.
+- The first cumulative run exposed four stale dependent contracts: evidence
+  schema `2.0` assertions after the intentional `3.0` upgrade, a React legacy
+  response field used but omitted from its type, a compatibility-facade test
+  monkeypatching internals removed for API classification, and a column test
+  still requiring the deleted 25/415 defaults.
+- The first exact-wheel candidate check stopped because the footing release-
+  inclusion receipt still carried pre-INDIA-2 exact-arithmetic hashes and did
+  not cover Packet E's reviewed footing assumption/provenance changes.
+- The guessed direct index generator `scripts/generate_folder_indexes.py` does
+  not exist in this repository, so that command stopped before any index write.
+- The first full 31-check gate found three Packet F/governance omissions: the
+  old API-doc sync check still required the deleted symbol-by-symbol stability
+  duplicate, the new API-classification generator was absent from the script
+  map/index, and placing its packaged UAT implementation at package root
+  exceeded the root non-stub module limit.
+- The second full gate passed 30/31 and found that the injected row-loss UAT
+  adapter had suppressed Mypy's untyped-definition warning but still lacked
+  the explicit return type required by the repository annotation checker.
+- The first session-end check reported the handoff receipt missing even though
+  the new receipt file existed and independently validated.
+- A final verification attempt used the nonexistent `run.sh check-indexes`
+  command, so the chained session-end step did not execute.
+- The first maintained all-index check found three stale parent indexes after
+  all directly edited child-folder indexes had been refreshed.
+- The first staged diff check found trailing spaces in a new evidence file;
+  the earlier unstaged diff check did not inspect untracked content.
+- Normal commit hooks found four package-wide Mypy errors and rejected the
+  noncanonical heading/row labels in the cumulative handoff brief.
+- Independent exact-head review rejected `c66160c7` because publication
+  authorization accepted arbitrary non-empty review-receipt text without
+  resolving evidence or binding reviewed head/tree/version/target identity.
+- A post-commit exact-wheel command was rejected before execution because its
+  temporary cleanup trap used a raw recursive delete operation.
+- A repair verification attempt guessed the nonexistent
+  `scripts/check_annotations.py` path after the focused release suite passed.
+
+### Root causes and resolutions
+
+- Confirmed Git root cause: startup cleanliness was checked correctly, but lane
+  safety was treated as a start-time property. Linked worktrees isolate files,
+  not refs, and no active-candidate dependency/path-overlap gate ran before the
+  later side packet merged. Resolution: Packet A added the durable whole-
+  candidate overlap gate to `AGENTS.md` and the canonical Git workflow; this
+  session then used one isolated cumulative writer from exact `origin/main`,
+  made no primary-tree mutation, and preserved every unrelated lane. Evidence:
+  `git_state.py --json --worktrees` reports the candidate at base equality,
+  primary `main` clean, no operation marker, and the unrelated dirty detached
+  `e54a` lane unchanged.
+- Confirmed import root cause: parsing, adapter selection, row conversion, and
+  compatibility return shapes were coupled, so downstream code could not prove
+  conservation. Resolution: one ledger owns adapter candidates, artifacts,
+  fields, physical rows, matches, exclusions, issues, and totals; combined CSV
+  is an explicit single artifact role and every blocker returns no batch.
+  Evidence: malformed, non-finite, ambiguous, duplicate, dropped, and unmatched
+  regressions pass, including valid explicit zero.
+- Confirmed orchestration root cause: transports independently normalized
+  values because there was no canonical iterator/result boundary. Resolution:
+  service validation prepares the complete batch contract and executes lazily;
+  POST/SSE/React consume it, while legacy entry points delegate or deprecate.
+  Evidence: service/HTTP/SSE request equivalence and calculation-call spies
+  pass; blocked inputs make zero core calls.
+- Confirmed identity root cause: source/amendment constants lived in an
+  application service and were recopied into IS 456 code. Resolution: the
+  layer-neutral identities now live in `core/source_identity.py`; evidence and
+  footing import that one record, and the misplaced return was restored to its
+  owning helper. Evidence: focused evidence/replay and footing tests pass, and
+  the architecture checker reports zero violations.
+- Confirmed sample root cause: the endpoint was historically a demo convenience
+  path and therefore used `dict.get(..., plausible_value)` rather than treating
+  bundled data as a controlled fixture. Resolution: all required strings and
+  finite numbers are parsed without fallback, duplicate/unmatched identities
+  fail closed, exact dataset/record identity and sample assumptions accompany
+  every beam, and React preserves them. Evidence: the 153-beam BOQ/evidence
+  regression plus the React provenance mapping test pass.
+- Confirmed API/release root cause: public exposure, documentation, installed
+  examples, artifact identity, and publication authority were independent
+  lists. Resolution: generated classification and version checks fail on drift;
+  exact-wheel UAT packages the negative matrix and advertised examples; the
+  publish workflow checks a separate exact authorization record before any
+  target. Evidence: classification, install-preflight, release-script, UAT,
+  workflow-YAML, and current HOLD-policy tests pass.
+- Confirmed architecture root cause: FastAPI constructed the historical core
+  `DesignDefaults` compatibility model directly after migration. Resolution:
+  explicit values enter a service factory and the UI layer imports services
+  only. Evidence: 206 files pass the four-layer check and 661 files/4,498
+  imports validate with zero broken imports.
+- ⚠️ TERMINAL ISSUE: `$HOME/.nvm/nvm.sh` was absent -> used the repository-
+  reported pinned Node 24 binary directory from `./run.sh frontend runtime`.
+  The focused React test then passed. The missing `type-check` script is not a
+  product failure; canonical React lint/tests/build are used instead.
+- ⚠️ TERMINAL ISSUE: `pdftotext` was absent -> used maintained controlled-
+  source manifests and hashes, without changing source claims. The nonexistent
+  release helper name was replaced by the maintained `candidate-check` and
+  direct version-surface helper tests discovered from `release.py`.
+- Confirmed dependent-contract root cause: evidence/API/input contracts changed
+  at their canonical owners, but four broad regressions still encoded the old
+  surface. Resolution: update only those expectations/types to schema `3.0`,
+  retain the explicit legacy `beam_id` fallback in its response type, patch the
+  canonical common-version module rather than facade internals, and assert
+  missing column materials block. Evidence: the four failed paths pass, and
+  pinned React lint, all 267 tests, TypeScript production build, and Vite build
+  pass.
+- Confirmed receipt root cause: the D1 inclusion record was hash-frozen before
+  the accepted exact stress-block correction in `d8202fef`, and Packet E then
+  intentionally changed eight owned footing files. Resolution: inspect the
+  exact diffs, record both reviewed refresh bases, update only the controlled
+  owned-file hashes, and rerun the maintained inclusion check. Evidence: the
+  inclusion gate and 40 Python/FastAPI footing regressions pass; no scope marker
+  or original D1 source-head identity was weakened.
+- ⚠️ TERMINAL ISSUE: the guessed `scripts/generate_folder_indexes.py` path was
+  absent -> `./run.sh find "folder index"` identified the maintained
+  `./run.sh generate indexes <owned-folder>` interface; only affected existing
+  index folders are refreshed after every task-owned evidence write.
+- Confirmed Packet F check-drift root cause: the generated classification
+  registry replaced the old hand-maintained stability list, but
+  `check_api.py --sync` still validated the removed duplicate rather than the
+  new single source. Resolution: the checker now requires the stability page
+  to bind `api-classification.json`, proves every documented compatibility
+  symbol is classified, and excludes the literal `api.md` filename from symbol
+  extraction. The three exported result dataclasses are explicitly identified
+  as Alpha-preview calculation evidence in `api.md`. Evidence: all three API
+  validation lanes pass.
+- Confirmed control-plane root cause: the new generator was added to CI before
+  the maintained automation registry/index, and the executable UAT lived at
+  package root instead of behind a root facade. Resolution: register the
+  generator with read/write permission modes, move the implementation with the
+  maintained safe-file tool to `services/release_uat.py`, and retain the public
+  `python -m structural_lib.release_uat` facade as a nine-line stub. Evidence:
+  automation coverage is 110/110, the UAT test passes through the facade, and
+  governance reports every root module stub-only with zero errors.
+- Confirmed annotation root cause: the UAT test double used a local Mypy ignore
+  instead of matching `InputAdapter.load_forces() -> list[BeamForces]`.
+  Resolution: add the exact override type and remove the ignore. Evidence: all
+  27 functions in the service UAT module are fully annotated and its 19-case
+  regression passes.
+- ⚠️ TERMINAL ISSUE: the first direct annotation-check command passed the file
+  as a positional argument, but the maintained CLI requires `--file` -> reran
+  with `--file Python/structural_lib/services/release_uat.py`; 27/27 functions
+  report fully annotated.
+- Confirmed session-end root cause: receipt discovery intentionally reads an
+  explicit `**Git handoff receipt:**` path from the newest session entry and
+  does not guess among many verification files. Resolution: bind this entry to
+  the exact cumulative receipt path. Evidence: direct receipt validation
+  already passes; session-end is rerun after the final index refresh.
+- ⚠️ TERMINAL ISSUE: `run.sh` exposes maintained index validation as
+  `./run.sh generate indexes --all --check`, not `check-indexes` -> discovered
+  the exact interface with `./run.sh find "folder index validation"` and the
+  built-in help, then used the maintained check before rerunning session-end.
+- Confirmed index root cause: parent folder content hashes include changed
+  descendants, so refreshing only folders containing directly edited files
+  left `Python/structural_lib`, `fastapi_app`, and `react_app/src` stale.
+  Resolution: regenerate those three maintained parents, then run the all-index
+  check. Evidence: all 32 maintained index pairs must report current before the
+  immutable commit.
+- Confirmed staged-diff root cause: `git diff --check` covers tracked changes
+  but not a new untracked file until it is staged. Resolution: remove the
+  trailing spaces and require `git diff --cached --check` after intentional
+  staging. Evidence: the staged candidate check passes before commit.
+- Confirmed Mypy root causes: the strict import factory relied on two unused
+  Pydantic compatibility defaults and typed the integer FastAPI stirrup value
+  as `float`; the heterogeneous install-preflight report also widened its
+  nested extras map to `object`. Resolution: pass the inert compatibility
+  fields explicitly, match the boundary's integer type, and keep a separately
+  typed `dict[str, bool]` for extras. Evidence: the package-wide Mypy commit
+  hook must pass on all 234 source files.
+- Confirmed handoff root cause: the general Markdown/index/brief-length checks
+  accept heading case and descriptive table labels, while `scripts/session.py
+  check` requires the canonical `## Required Reading`, `| **Current** |`, and
+  `| **Next** |` literals. Resolution: restore those exact contract labels and
+  retain the normal commit hook as the decisive contract. Evidence: the
+  session-doc commit hook must pass before the candidate exists.
+- Confirmed publication-gate root cause: the first authorization schema treated
+  `exact_candidate_review_receipt` as a presence-only string and therefore
+  could not distinguish immutable reviewed evidence from fabricated text.
+  Resolution: require a repository-relative JSON receipt and exact SHA-256;
+  validate ACCEPT, independent reviewer/time, reviewed head/tree/Python tree,
+  version/tag/targets, review-before-authorization chronology, Git ancestry,
+  clean checkout, unchanged package content, and an allowlisted evidence-only
+  descendant delta. Evidence: valid reviewed candidate plus authorization must
+  pass, while fabricated text, receipt tampering, identity drift, package
+  drift, target drift, pre-review authorization, and extra changed paths must
+  fail closed before publication.
+- ⚠️ TERMINAL ISSUE: the first post-commit wheel command included a raw
+  recursive temp-directory cleanup trap and was rejected before execution ->
+  reran without any delete operation and retained the isolated UAT directory;
+  exact-wheel UAT then passed 19/19 without repository mutation.
+- ⚠️ TERMINAL ISSUE: `scripts/check_annotations.py` does not exist ->
+  `./run.sh find "type annotation check"` resolved the maintained
+  `scripts/check_type_annotations.py` command, which is used for the repair
+  candidate instead.
+
+### Validation before cumulative freeze
+
+- Focused import/service/API/React, result/review, evidence/replay, API
+  classification, install-preflight, release-policy, sample, and packaged-UAT
+  regressions pass.
+- Focused Mypy passes ten new/changed contract modules; Ruff and Black are
+  clean on the complete Python/FastAPI/script surface.
+- Architecture: 206 files, zero violations. Import validation: 661 files,
+  4,498 imports, zero broken imports. OpenAPI baseline: 82 endpoints and 357
+  schemas, current with no unrecorded drift. Publish workflow YAML parses with
+  five jobs.
+- Source-free candidate wheel
+  `structural_lib_is456-0.23.1a1-py3-none-any.whl` passes clean-install version
+  evidence, installed-package preflight, both advertised examples, and all 19
+  declared negative UAT cases. Rehearsal SHA-256 is
+  `cf16b49963374e31eee80a31b73f94d0997969fdf5515e805f270eafb16f4830`;
+  matrix SHA-256 is
+  `21da496a9dc9d90b3ce3537d100293db2a23d14461ed2f602b185fd13288f8ea`.
+  The receipt says qualified review required and professional approval false.
+- Publication authorization deliberately returns HOLD for `v0.23.1a1`/PyPI;
+  the owner, exact future version/tag/targets, and candidate-review receipt are
+  absent as required.
+- Final cumulative suites pass on the repaired tree: Python 6,382 passed, 3
+  skipped, 6 deselected; FastAPI 452 passed; React lint, 267 tests, TypeScript,
+  and production build pass. The Git handoff source evidence and pre-index
+  receipt validate with the expected HOLD for dirty/local-only/unchecked
+  remote-review state.
+- Immutable head `c66160c7bc25eba22011d051643fe93c1b406bac`
+  passed normal hooks, the exact committed wheel (SHA-256
+  `edefc7235944892a059345383f55547e71d49d1c3eb64cb0777d397433e811bc`)
+  passed 19/19 UAT, all 6,382 Python/452 FastAPI/267 React tests passed, and all
+  eight hosted PR #815 checks passed. Independent review correctly returned
+  REJECT for the publication-receipt bypass above; none of those green gates
+  overrides that outcome-changing finding.
+- The first full canonical run passed 28/31 and exposed the three omissions
+  above; their narrow API, automation, governance, and facade regressions now
+  pass. The second run passed 30/31 and exposed the annotation omission above;
+  its direct regression now passes. Refreshed affected indexes are the final
+  repository writes. The final full 31-check retry, quick, session-end,
+  immutable commit/review, and hosted results follow without changing this
+  candidate evidence.
+
 ## 2026-08-17 — Session: LIB-PRO-002-A Strict Service Intake
 
 **Agent:** Codex (`backend` and `tester`, sole writer)

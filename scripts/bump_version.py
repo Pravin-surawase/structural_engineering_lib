@@ -68,6 +68,24 @@ VERSION_FILES = {
 # surfaces (TASKS.md and next-session-brief.md) are intentionally excluded: their
 # version/status rows describe published evidence, not the prepared candidate.
 DOC_VERSION_FILES = {
+    "README.md": [
+        (
+            r"(releases/tag/v)[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            r"\g<1>{version}",
+        ),
+        (
+            r"^(> \*\*v)[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?( is an Alpha development preview\.)",
+            r"\g<1>{version}\g<2>",
+        ),
+        (
+            r"structural-lib-is456={2,3}[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            "structural-lib-is456==={version}",
+        ),
+        (
+            r"^`[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?` is the current published Alpha preview\.",
+            "`{version}` is the current published Alpha preview.",
+        ),
+    ],
     "Python/README.md": [
         (
             r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
@@ -83,6 +101,10 @@ DOC_VERSION_FILES = {
     ],
     "docs/getting-started/python-quickstart.md": [
         (r"@v[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?", "@v{version}"),
+        (
+            r"structural-lib-is456={2,3}[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            "structural-lib-is456==={version}",
+        ),
     ],
     "docs/reference/api.md": [
         (
@@ -104,8 +126,12 @@ DOC_VERSION_FILES = {
     ],
     "docs/reference/api-stability.md": [
         (
-            r"structural-lib-is456==[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
-            "structural-lib-is456=={version}",
+            r"^\*\*Version:\*\* [0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            "**Version:** {version}",
+        ),
+        (
+            r"structural-lib-is456={2,3}[0-9]+\.[0-9]+\.[0-9]+(?:a[0-9]+)?",
+            "structural-lib-is456==={version}",
         ),
     ],
     "docs/verification/validation-pack.md": [

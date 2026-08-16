@@ -2,14 +2,14 @@
   "folder": "Python/structural_lib",
   "type": "python-package",
   "description": "> **Purpose:** IS 456:2000 RC beam design calculations",
-  "last_updated": "2026-08-16",
-  "file_count": 51,
+  "last_updated": "2026-08-17",
+  "file_count": 52,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 100,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "title": "structural_lib - Core Python Library",
       "description": "> **Purpose:** IS 456:2000 RC beam design calculations > **Package:** structural_lib_is456",
       "content_hash": "8d7972f87143"
@@ -18,18 +18,18 @@
       "name": "__init__.py",
       "type": "python",
       "size_lines": 469,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Package:      structural_lib",
       "constants": [
         "_LAZY_MODULES"
       ],
-      "content_hash": "79e61cd5fb7b"
+      "content_hash": "b58d1c67fc4b"
     },
     {
       "name": "__main__.py",
       "type": "python",
-      "size_lines": 1573,
-      "last_updated": "2026-08-16",
+      "size_lines": 1632,
+      "last_updated": "2026-08-17",
       "description": "Unified CLI entrypoint for structural_lib.",
       "functions": [
         {
@@ -110,6 +110,13 @@
           ]
         },
         {
+          "name": "cmd_install_preflight",
+          "description": "Report the exact interpreter, package origin/version, and optional extras.",
+          "params": [
+            "args"
+          ]
+        },
+        {
           "name": "main",
           "description": "Main entry point for the CLI.",
           "params": [
@@ -117,29 +124,29 @@
           ]
         }
       ],
-      "content_hash": "36508a2dbd0a"
+      "content_hash": "cf9b6f526349"
     },
     {
       "name": "adapters.py",
       "type": "python",
       "size_lines": 17,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "de0ec169cc31"
     },
     {
       "name": "api.py",
       "type": "python",
-      "size_lines": 14,
-      "last_updated": "2026-08-16",
+      "size_lines": 11,
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
-      "content_hash": "efd5875af239"
+      "content_hash": "f8d7a2ae4e7b"
     },
     {
       "name": "api_results.py",
       "type": "python",
       "size_lines": 18,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "5481266594da"
     },
@@ -147,7 +154,7 @@
       "name": "audit.py",
       "type": "python",
       "size_lines": 17,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "5a8eaea7a729"
     },
@@ -155,7 +162,7 @@
       "name": "batch.py",
       "type": "python",
       "size_lines": 13,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "54a995b4e5b5"
     },
@@ -163,7 +170,7 @@
       "name": "bbs.py",
       "type": "python",
       "size_lines": 51,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "e4c3386f08cc"
     },
@@ -171,7 +178,7 @@
       "name": "beam_pipeline.py",
       "type": "python",
       "size_lines": 26,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "2c31e3f48af2"
     },
@@ -179,7 +186,7 @@
       "name": "calculation_report.py",
       "type": "python",
       "size_lines": 26,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "is_compat_stub": true,
       "content_hash": "dd800449d542"
@@ -188,7 +195,7 @@
       "name": "compliance.py",
       "type": "python",
       "size_lines": 31,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "57fe5a4c1fbd"
     },
@@ -196,7 +203,7 @@
       "name": "constants.py",
       "type": "python",
       "size_lines": 16,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "99523e19fc82"
     },
@@ -204,7 +211,7 @@
       "name": "costing.py",
       "type": "python",
       "size_lines": 23,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "d3a8eac85239"
     },
@@ -212,7 +219,7 @@
       "name": "dashboard.py",
       "type": "python",
       "size_lines": 18,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "686d4d8d6e5f"
     },
@@ -220,7 +227,7 @@
       "name": "data_types.py",
       "type": "python",
       "size_lines": 41,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "994464bd8199"
     },
@@ -228,7 +235,7 @@
       "name": "detailing.py",
       "type": "python",
       "size_lines": 21,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "a3912e28ce01"
     },
@@ -236,7 +243,7 @@
       "name": "ductile.py",
       "type": "python",
       "size_lines": 35,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "aac6e6ee9c07"
     },
@@ -244,7 +251,7 @@
       "name": "dxf_export.py",
       "type": "python",
       "size_lines": 54,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "bf4e7be7ee53"
     },
@@ -252,7 +259,7 @@
       "name": "error_messages.py",
       "type": "python",
       "size_lines": 26,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "b0cda5e9a855"
     },
@@ -260,7 +267,7 @@
       "name": "errors.py",
       "type": "python",
       "size_lines": 52,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "a95b899f74d9"
     },
@@ -268,7 +275,7 @@
       "name": "etabs_import.py",
       "type": "python",
       "size_lines": 26,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "620979dc3434"
     },
@@ -276,7 +283,7 @@
       "name": "excel_bridge.py",
       "type": "python",
       "size_lines": 28,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "is_compat_stub": true,
       "content_hash": "6cd8044451cc"
@@ -285,7 +292,7 @@
       "name": "excel_integration.py",
       "type": "python",
       "size_lines": 32,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "is_compat_stub": true,
       "content_hash": "b263bb4368dc"
@@ -294,23 +301,23 @@
       "name": "flexure.py",
       "type": "python",
       "size_lines": 25,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "b902b8f967f2"
     },
     {
       "name": "imports.py",
       "type": "python",
-      "size_lines": 15,
-      "last_updated": "2026-08-16",
+      "size_lines": 31,
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
-      "content_hash": "385e599361d3"
+      "content_hash": "59e65d7a2f69"
     },
     {
       "name": "inputs.py",
       "type": "python",
       "size_lines": 20,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "d5c01bef1b55"
     },
@@ -318,7 +325,7 @@
       "name": "intelligence.py",
       "type": "python",
       "size_lines": 21,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "19b555ac1926"
     },
@@ -326,7 +333,7 @@
       "name": "job_cli.py",
       "type": "python",
       "size_lines": 27,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "is_compat_stub": true,
       "content_hash": "c965ccc4c407"
@@ -335,7 +342,7 @@
       "name": "job_runner.py",
       "type": "python",
       "size_lines": 25,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "is_compat_stub": true,
       "content_hash": "7d179a075c70"
@@ -344,7 +351,7 @@
       "name": "materials.py",
       "type": "python",
       "size_lines": 11,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward-compatibility stub — canonical location: codes/is456/materials.py.",
       "content_hash": "9c921b71253b"
     },
@@ -352,7 +359,7 @@
       "name": "models.py",
       "type": "python",
       "size_lines": 22,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "7c8879893c50"
     },
@@ -360,7 +367,7 @@
       "name": "multi_objective_optimizer.py",
       "type": "python",
       "size_lines": 16,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "60eabe8bf28d"
     },
@@ -368,7 +375,7 @@
       "name": "optimization.py",
       "type": "python",
       "size_lines": 14,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "77841c51e2c9"
     },
@@ -376,7 +383,7 @@
       "name": "rebar.py",
       "type": "python",
       "size_lines": 13,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "6626090c4840"
     },
@@ -384,15 +391,23 @@
       "name": "rebar_optimizer.py",
       "type": "python",
       "size_lines": 14,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "b14363176c96"
+    },
+    {
+      "name": "release_uat.py",
+      "type": "python",
+      "size_lines": 10,
+      "last_updated": "2026-08-17",
+      "description": "CLI compatibility facade for the source-free exact-wheel UAT.",
+      "content_hash": "cb2eedeacca7"
     },
     {
       "name": "report.py",
       "type": "python",
       "size_lines": 39,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "is_compat_stub": true,
       "content_hash": "584895e62ad7"
@@ -401,7 +416,7 @@
       "name": "report_svg.py",
       "type": "python",
       "size_lines": 23,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "is_compat_stub": true,
       "content_hash": "d72737168e83"
@@ -410,7 +425,7 @@
       "name": "result_base.py",
       "type": "python",
       "size_lines": 14,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "08e88200c8a9"
     },
@@ -418,7 +433,7 @@
       "name": "serialization.py",
       "type": "python",
       "size_lines": 21,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "9cbad54354c9"
     },
@@ -426,7 +441,7 @@
       "name": "serviceability.py",
       "type": "python",
       "size_lines": 37,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "295e2f8f09a7"
     },
@@ -434,7 +449,7 @@
       "name": "shear.py",
       "type": "python",
       "size_lines": 21,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "b87fbc011d63"
     },
@@ -442,7 +457,7 @@
       "name": "slenderness.py",
       "type": "python",
       "size_lines": 21,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "777b0d10bbd5"
     },
@@ -450,7 +465,7 @@
       "name": "tables.py",
       "type": "python",
       "size_lines": 31,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "433ffd780b13"
     },
@@ -458,7 +473,7 @@
       "name": "testing_strategies.py",
       "type": "python",
       "size_lines": 28,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "5ed6d19a0a49"
     },
@@ -466,7 +481,7 @@
       "name": "torsion.py",
       "type": "python",
       "size_lines": 23,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "58d9dc301adb"
     },
@@ -474,7 +489,7 @@
       "name": "traceability.py",
       "type": "python",
       "size_lines": 15,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "6766aa7f68bd"
     },
@@ -482,7 +497,7 @@
       "name": "types.py",
       "type": "python",
       "size_lines": 28,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "c86206428d31"
     },
@@ -490,7 +505,7 @@
       "name": "utilities.py",
       "type": "python",
       "size_lines": 17,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "b8586ba1f87c"
     },
@@ -498,7 +513,7 @@
       "name": "validation.py",
       "type": "python",
       "size_lines": 24,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Backward compatibility stub.",
       "content_hash": "f86adfaa535d"
     }
@@ -519,8 +534,13 @@
     {
       "name": "core",
       "path": "core/",
-      "file_count": 20,
+      "file_count": 22,
       "is_package": true
+    },
+    {
+      "name": "data",
+      "path": "data/",
+      "file_count": 1
     },
     {
       "name": "insights",
@@ -543,7 +563,7 @@
     {
       "name": "services",
       "path": "services/",
-      "file_count": 47,
+      "file_count": 51,
       "is_package": true
     },
     {
@@ -576,5 +596,5 @@
     "serviceability",
     "shear"
   ],
-  "content_hash": "e135cf5590573b24"
+  "content_hash": "304a7b4260163ee9"
 }

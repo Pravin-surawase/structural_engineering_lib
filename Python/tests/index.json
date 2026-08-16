@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
   "last_updated": "2026-08-17",
-  "file_count": 70,
+  "file_count": 73,
   "files": [
     {
       "name": "README.md",
@@ -161,6 +161,29 @@
         "SCRIPTS_DIR"
       ],
       "content_hash": "138c02929959"
+    },
+    {
+      "name": "test_api_classification.py",
+      "type": "python",
+      "size_lines": 55,
+      "last_updated": "2026-08-17",
+      "description": "Executable truth checks for the Alpha API classification registry.",
+      "functions": [
+        {
+          "name": "test_every_facade_symbol_has_exactly_one_classification"
+        },
+        {
+          "name": "test_alpha_registry_makes_no_stable_export_promise"
+        },
+        {
+          "name": "test_public_looking_callable_leakage_is_explicitly_internal"
+        }
+      ],
+      "constants": [
+        "_SCRIPT",
+        "_SPEC"
+      ],
+      "content_hash": "1ce7bd206da6"
     },
     {
       "name": "test_api_manifest_tools.py",
@@ -1791,7 +1814,7 @@
     {
       "name": "test_evidence.py",
       "type": "python",
-      "size_lines": 169,
+      "size_lines": 219,
       "last_updated": "2026-08-17",
       "description": "Focused tests for the supported IS 456 beam evidence envelope.",
       "functions": [
@@ -1808,13 +1831,19 @@
           "name": "test_disabled_serviceability_drafts_do_not_change_identity"
         },
         {
+          "name": "test_metadata_only_change_is_recorded_without_changing_arithmetic_identity"
+        },
+        {
+          "name": "test_unknown_amendment_applicability_forces_hold"
+        },
+        {
           "name": "test_held_beam_evidence_does_not_present_a_pass_or_fail"
         },
         {
           "name": "test_beam_report_exports_evidence_without_approval_claim"
         }
       ],
-      "content_hash": "0e7805cff4f9"
+      "content_hash": "5c6a30385e98"
     },
     {
       "name": "test_exception_hierarchy.py",
@@ -2049,7 +2078,7 @@
     {
       "name": "test_footing_api.py",
       "type": "python",
-      "size_lines": 359,
+      "size_lines": 388,
       "last_updated": "2026-08-17",
       "description": "Focused contract tests for Phase B1 isolated-footing orchestration.",
       "functions": [
@@ -2070,6 +2099,9 @@
         },
         {
           "name": "test_rectangular_sizing_and_provenance_keep_load_and_soil_roles_explicit"
+        },
+        {
+          "name": "test_approved_assumed_basis_stays_assumed_and_holds_result"
         },
         {
           "name": "test_depth_loop_selects_first_passing_uniform_depth_and_retains_history"
@@ -2097,7 +2129,7 @@
           ]
         }
       ],
-      "content_hash": "049f98ebfabf"
+      "content_hash": "b54f14c74ac5"
     },
     {
       "name": "test_footing_detailing.py",
@@ -2710,6 +2742,22 @@
       "content_hash": "7dd6bbb87680"
     },
     {
+      "name": "test_install_preflight.py",
+      "type": "python",
+      "size_lines": 27,
+      "last_updated": "2026-08-17",
+      "description": "Installed-package preflight is source-independent and decisive.",
+      "functions": [
+        {
+          "name": "test_install_preflight_reports_origin_version_extras_and_repair",
+          "params": [
+            "capsys"
+          ]
+        }
+      ],
+      "content_hash": "db057eb1e665"
+    },
+    {
       "name": "test_is456_common.py",
       "type": "python",
       "size_lines": 854,
@@ -3284,7 +3332,7 @@
     {
       "name": "test_release_environment.py",
       "type": "python",
-      "size_lines": 263,
+      "size_lines": 281,
       "last_updated": "2026-08-17",
       "description": "Regression tests for local release preflight environment selection.",
       "functions": [
@@ -3371,12 +3419,12 @@
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "3df5715a4d03"
+      "content_hash": "b28286be61ea"
     },
     {
       "name": "test_release_scripts.py",
       "type": "python",
-      "size_lines": 699,
+      "size_lines": 911,
       "last_updated": "2026-08-17",
       "description": "Tests for release scripts (bump_version.py, release.py).",
       "classes": [
@@ -3519,6 +3567,45 @@
           "params": [
             "script"
           ]
+        },
+        {
+          "name": "test_release_publication_authorization_holds_by_default"
+        },
+        {
+          "name": "test_release_publication_authorization_binds_version_tag_and_target",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_release_publication_authorization_rejects_fabricated_receipt_text",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_release_publication_authorization_rejects_tampered_receipt",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_release_publication_authorization_rejects_false_reviewed_tree",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_release_publication_authorization_rejects_post_review_package_drift",
+          "params": [
+            "tmp_path"
+          ]
+        },
+        {
+          "name": "test_release_publication_authorization_rejects_pre_review_authorization",
+          "params": [
+            "tmp_path"
+          ]
         }
       ],
       "constants": [
@@ -3528,7 +3615,20 @@
         "RELEASE_SCRIPT",
         "VERSION_TRACKED_FILES"
       ],
-      "content_hash": "2454c9b109e8"
+      "content_hash": "4a5ffbd933f4"
+    },
+    {
+      "name": "test_release_uat.py",
+      "type": "python",
+      "size_lines": 18,
+      "last_updated": "2026-08-17",
+      "description": "The exact-wheel acceptance matrix remains data-driven and executable.",
+      "functions": [
+        {
+          "name": "test_release_negative_matrix_and_public_examples_pass"
+        }
+      ],
+      "content_hash": "3baebbd07b36"
     },
     {
       "name": "test_report_edge_cases.py",
@@ -4763,10 +4863,10 @@
     {
       "name": "unit",
       "path": "unit/",
-      "file_count": 34,
+      "file_count": 36,
       "is_package": true
     }
   ],
   "has_init": true,
-  "content_hash": "0ec999d414857508"
+  "content_hash": "7ade9fd88a06e3d5"
 }

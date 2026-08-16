@@ -10,24 +10,36 @@
     "b4b64d56",
     "886871ae"
   ],
-  "scope": "FOOT-ISO-RC-V1 phases A-D1: calculation corrections, concentric isolated-footing service, detailing, FastAPI route, and React workbench.",
+  "scope": "FOOT-ISO-RC-V1 phases A-D1 plus reviewed exact-arithmetic and LIB-PRO-002-E assumption/provenance contract changes: concentric isolated-footing service, detailing, FastAPI route, and React workbench.",
   "scope_boundary": "Report/export and catalogue closeout were not implemented in D1 and are not claimed by this receipt.",
+  "reviewed_refreshes": [
+    {
+      "task": "INDIA-2-CLOSEOUT",
+      "commit": "d8202fef2566cd4955b2ba041914ff318d15d043",
+      "basis": "Exact stress-block arithmetic changed expected detailing values without changing the supported footing boundary."
+    },
+    {
+      "task": "LIB-PRO-002-E",
+      "candidate": "cumulative-a-g",
+      "basis": "Separate assumption origin from approval and bind arithmetic, assumption, library, and replay identities; assumed basis now holds an otherwise passing result."
+    }
+  ],
   "required_owned_file_sha256": {
     "Python/structural_lib/codes/is456/footing/detailing.py": "b85742a74f64d004a1f96c0a77f4213504045f3448f8b24c2d7aca0ee7580cc4",
-    "Python/structural_lib/services/footing_api.py": "35cd6f767ce99262949648bd88e5ce48164dca4e6bcc8c487c565dd0e898967a",
-    "Python/tests/test_footing_api.py": "3b8e731059825ded1c42e5bedb28a66c64df3552d52e7da39f477d5554d30d13",
-    "Python/tests/test_footing_detailing.py": "579e20e1c4d6cd03f5f1d01187c86d224f5b600a49e6f84c9a296ad99b965446",
-    "fastapi_app/models/footing.py": "fb855613f669386622ad296ad1efd66867fa177f32f1c2c9fdc729565c1e7ea1",
+    "Python/structural_lib/services/footing_api.py": "89b3bce33bdc0352c2fe05fb9073d0e69489a38daf7c8f49f24a70623e51d178",
+    "Python/tests/test_footing_api.py": "b54f14c74ac5b285276a42fd1057cce8ca7a18af16953f351b007a529ce9e2aa",
+    "Python/tests/test_footing_detailing.py": "29837bfd8f894cf9c548ba94331ec49b164f04da9f0e1a3200a2e7f7e1a1ebce",
+    "fastapi_app/models/footing.py": "a6d99798b4fec7cf767aa11f66986d96d85df71701a010be0d75a1122d7e2c45",
     "fastapi_app/routers/footing.py": "b141176f189ceccc9591a37b2743042e2a4be65c25ccff6dd88e3b58f1d4320f",
-    "fastapi_app/tests/test_footing.py": "7a6e0ad239a8ac0929654314290d363b8384f9cbea73a13092d5be6e8ba8f611",
+    "fastapi_app/tests/test_footing.py": "714d0846257729fe60000d12611987be336c6732f5e1d8d43aca66d48c70c287",
     "react_app/src/features/footing/ConcentricIsolatedFootingPage.tsx": "7065be7cb39be4dd0008cadbcb05ba708d31ba13a65b530608f0f527f042d1a6",
     "react_app/src/features/footing/FootingInputForm.tsx": "d6144c17ad02c1d2d7c23bb6c5fc7299f529dd0fd4c1f1cd6ebf92497ce6270a",
     "react_app/src/features/footing/FootingResults.tsx": "0bf9314eed7d2533e109c25dae63961d45ea433e35486348b770730fa89699f8",
     "react_app/src/features/footing/__tests__/ConcentricIsolatedFootingPage.test.tsx": "3afd297d48a74397132847da5e7d764c747d51a8226408120ae2a23a92ad04b9",
-    "react_app/src/features/footing/__tests__/client.test.ts": "3ab53a0efe50044aa4fe32b37664d83a986ebfcbe0c5e23e49ca99b1744f4ec6",
+    "react_app/src/features/footing/__tests__/client.test.ts": "d9c81d74211b693ac63285b481adefc1f9e065e3a480ccc13015bcbecb1bdb64",
     "react_app/src/features/footing/client.ts": "6c763ab2bb187a36a8b4eb7baf7deecc9e58a43acd2e104952fa1179c95af5d9",
-    "react_app/src/features/footing/draft.ts": "1e18cc0f4db253e9e4a49588a80fe73ee54a165254c4a4c27bd34ac05188b90f",
-    "react_app/src/features/footing/types.ts": "6f6dc4f55f95edd18d25105b86d6bf4b30a8f7dd691475626dee7fded0f4b5d4"
+    "react_app/src/features/footing/draft.ts": "793ea00adf3ff03b5248d2df187bd06071635d92008bcd2261e39b7d5492b11a",
+    "react_app/src/features/footing/types.ts": "19c8e8bb04c1026a7aa4fc96e46ce54843fdff1a4151e810e158ad6b586d9aea"
   },
   "required_shared_markers": {
     "Python/structural_lib/codes/is456/footing/_common.py": [

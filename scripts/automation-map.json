@@ -1,8 +1,8 @@
 {
   "_comment": "Task-to-script mapping - helps agents find the right automation for their task",
-  "_updated": "2026-08-15",
+  "_updated": "2026-08-17",
   "_usage": "Run: ./scripts/python_runtime.sh scripts/find_automation.py \"task description\" — or --list for all",
-  "_coverage": "108/108 scripts mapped",
+  "_coverage": "110/110 scripts mapped",
   "tasks": {
     "resolve python runtime": {
       "group": "Infrastructure",
@@ -283,6 +283,15 @@
       "group": "Discovery",
       "script": "./scripts/python_runtime.sh scripts/generate_api_manifest.py",
       "description": "Regenerate API manifest (public function inventory)"
+    },
+    "generate api classification": {
+      "group": "Discovery",
+      "script": "./scripts/python_runtime.sh scripts/generate_api_classification.py --check",
+      "description": "Generate or validate the Alpha preview/compatibility/internal API classification registry",
+      "permission": "ReadOnly",
+      "permission_modes": {
+        "without --check": "WorkspaceWrite"
+      }
     },
     "generate beam tool manifest": {
       "group": "Discovery",

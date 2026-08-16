@@ -11,6 +11,10 @@ from structural_lib.services.evidence import (
     build_beam_evidence_envelope,
 )
 from structural_lib.services.report import ReportData, export_html, export_json
+from structural_lib.services.source_identity import (
+    AmendmentApplicability,
+    ControlledSourceBasisV1,
+)
 
 
 def _beam_inputs(moment: float = 120.0) -> dict[str, float | str]:
@@ -105,7 +109,7 @@ def test_beam_evidence_v2_binds_torsion_and_enabled_serviceability() -> None:
     service_evidence = _evidence(service)
 
     assert base_evidence["artifact_schema_version"] == BEAM_EVIDENCE_SCHEMA_VERSION
-    assert BEAM_EVIDENCE_SCHEMA_VERSION == "2.0"
+    assert BEAM_EVIDENCE_SCHEMA_VERSION == "3.0"
     assert (
         torsion_evidence["normalized_input_hash"]
         != base_evidence["normalized_input_hash"]
@@ -129,6 +133,52 @@ def test_disabled_serviceability_drafts_do_not_change_identity() -> None:
         _evidence(baseline)["normalized_input_hash"]
         == _evidence(with_unused_drafts)["normalized_input_hash"]
     )
+
+
+def test_metadata_only_change_is_recorded_without_changing_arithmetic_identity() -> (
+    None
+):
+    first = build_beam_evidence_envelope(
+        inputs=_beam_inputs(),
+        is_ok=True,
+        governing_utilization=0.8,
+        source_metadata={"artifact_sha256": "a" * 64, "note": "first"},
+        generated_at="2026-08-10T00:00:00+00:00",
+    )
+    second = build_beam_evidence_envelope(
+        inputs=_beam_inputs(),
+        is_ok=True,
+        governing_utilization=0.8,
+        source_metadata={"artifact_sha256": "a" * 64, "note": "second"},
+        generated_at="2026-08-10T00:00:00+00:00",
+    )
+
+    assert first["normalized_input_hash"] == second["normalized_input_hash"]
+    assert first["calculation_identity"] == second["calculation_identity"]
+    assert first["provenance_hash"] != second["provenance_hash"]
+    assert first["replay_receipt_hash"] != second["replay_receipt_hash"]
+
+
+def test_unknown_amendment_applicability_forces_hold() -> None:
+    unknown = ControlledSourceBasisV1(
+        route_id="design_beam_is456",
+        source_ids=("unresolved",),
+        amendment_identity="unresolved",
+        amendment_applicability=AmendmentApplicability.UNKNOWN,
+        applicability_review_id=None,
+    )
+    evidence = build_beam_evidence_envelope(
+        inputs=_beam_inputs(),
+        is_ok=True,
+        governing_utilization=0.8,
+        source_basis=unknown,
+        generated_at="2026-08-10T00:00:00+00:00",
+    )
+
+    assert evidence["amendment_applicability"] == "UNKNOWN"
+    assert evidence["support_status"] == "HELD"
+    assert evidence["status"] == "HOLD"
+    assert evidence["exact_utilization"] is None
 
 
 def test_held_beam_evidence_does_not_present_a_pass_or_fail() -> None:

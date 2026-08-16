@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-17",
-  "file_count": 46,
+  "file_count": 49,
   "files": [
     {
       "name": "__init__.py",
@@ -83,10 +83,10 @@
     {
       "name": "api.py",
       "type": "python",
-      "size_lines": 445,
+      "size_lines": 448,
       "last_updated": "2026-08-17",
       "description": "Module:       api",
-      "content_hash": "8881b13784a4"
+      "content_hash": "5dedcb016cbb"
     },
     {
       "name": "api_hub.py",
@@ -234,7 +234,7 @@
     {
       "name": "batch.py",
       "type": "python",
-      "size_lines": 612,
+      "size_lines": 613,
       "last_updated": "2026-08-17",
       "description": "Strict project beam design plus a delegating legacy batch surface.",
       "functions": [
@@ -271,7 +271,7 @@
         "_LEGACY_DIRECT_FIELDS",
         "_LEGACY_KNOWN_FIELDS"
       ],
-      "content_hash": "84776ef4e9ce"
+      "content_hash": "9805352746f7"
     },
     {
       "name": "bbs.py",
@@ -870,7 +870,7 @@
     {
       "name": "column_api.py",
       "type": "python",
-      "size_lines": 1534,
+      "size_lines": 1546,
       "last_updated": "2026-08-17",
       "description": "Module:       column_api",
       "functions": [
@@ -1017,7 +1017,7 @@
       "constants": [
         "_T"
       ],
-      "content_hash": "48f80437fe64"
+      "content_hash": "23dc5143b8a0"
     },
     {
       "name": "combined_footing_api.py",
@@ -1635,7 +1635,7 @@
     {
       "name": "evidence.py",
       "type": "python",
-      "size_lines": 234,
+      "size_lines": 308,
       "last_updated": "2026-08-17",
       "description": "Canonical evidence identity for the supported IS 456 beam design route.",
       "functions": [
@@ -1647,6 +1647,10 @@
           ]
         },
         {
+          "name": "get_library_content_identity",
+          "description": "Hash installed package code/data so evidence binds the executing library."
+        },
+        {
           "name": "build_beam_evidence_envelope",
           "description": "Build the serializable evidence envelope for one beam design result."
         }
@@ -1655,12 +1659,11 @@
         "BEAM_EVIDENCE_ARTIFACT_SCHEMA",
         "BEAM_EVIDENCE_SCHEMA_VERSION",
         "BEAM_CAPABILITY_ID",
-        "CODE_AMENDMENT_IDENTITY",
         "QUALIFIED_REVIEW_REQUIREMENT",
         "_REQUIRED_CONSUMED_INPUTS",
         "_SUPPORT_ALIASES"
       ],
-      "content_hash": "d46270f4f286"
+      "content_hash": "f160209ecb68"
     },
     {
       "name": "excel_bridge.py",
@@ -1876,7 +1879,7 @@
     {
       "name": "footing_api.py",
       "type": "python",
-      "size_lines": 800,
+      "size_lines": 915,
       "last_updated": "2026-08-17",
       "description": "Bounded orchestration for concentric isolated footings (IS 456:2000).",
       "classes": [
@@ -1922,24 +1925,101 @@
         "_DETAILING_NOT_EVALUATED_REASON",
         "_EXCLUSIONS"
       ],
-      "content_hash": "35cd6f767ce9"
+      "content_hash": "89b3bce33bdc"
+    },
+    {
+      "name": "import_ledger.py",
+      "type": "python",
+      "size_lines": 187,
+      "last_updated": "2026-08-17",
+      "description": "Versioned, lossless import evidence models.",
+      "classes": [
+        {
+          "name": "ImportStatus",
+          "description": "Fail-closed status shared by import rows and the complete result."
+        },
+        {
+          "name": "ImportFieldAction",
+          "description": "Disposition of one physical source field."
+        },
+        {
+          "name": "ImportIssueCode",
+          "description": "Stable issue codes for the strict import boundary."
+        },
+        {
+          "name": "ImportIssueV1",
+          "description": "One deterministic import problem."
+        },
+        {
+          "name": "ImportArtifactV1",
+          "description": "Identity and physical shape of one imported artifact."
+        },
+        {
+          "name": "AdapterSelectionV1",
+          "description": "Explicit evidence for adapter selection."
+        },
+        {
+          "name": "ImportFieldLedgerV1",
+          "description": "Disposition of one field in one physical source row."
+        },
+        {
+          "name": "ImportRowLedgerV1",
+          "description": "Accounting record for one physical CSV row."
+        },
+        {
+          "name": "ImportTotalsV1",
+          "description": "Conservation totals for both artifacts and their match."
+        },
+        {
+          "name": "ImportNormalizationLedgerV1",
+          "description": "Replayable field, row, adapter, and matching evidence."
+        },
+        {
+          "name": "LosslessImportResultV1",
+          "description": "Strict import outcome; a blocked result never exposes a batch."
+        }
+      ],
+      "content_hash": "c2d796abe07f"
     },
     {
       "name": "imports.py",
       "type": "python",
-      "size_lines": 175,
+      "size_lines": 1062,
       "last_updated": "2026-08-17",
-      "description": "Import helpers for multi-format CSV ingestion.",
+      "description": "Fail-closed multi-format CSV import boundary.",
       "classes": [
         {
           "name": "ImportWarnings",
-          "description": "Warnings produced during import parsing/merge."
+          "description": "Compatibility view for an accepted import."
+        },
+        {
+          "name": "LosslessImportBlockedError",
+          "description": "Raised when the compatibility API cannot expose a safe batch."
         }
       ],
       "functions": [
         {
+          "name": "build_import_design_defaults",
+          "description": "Build the explicit import basis at the service boundary."
+        },
+        {
+          "name": "parse_single_csv_lossless",
+          "description": "Parse one combined geometry/actions artifact with physical-row accounting.",
+          "params": [
+            "combined_csv"
+          ]
+        },
+        {
+          "name": "parse_dual_csv_lossless",
+          "description": "Parse two CSV artifacts only when every design-bearing record is safe.",
+          "params": [
+            "geometry_csv",
+            "forces_csv"
+          ]
+        },
+        {
           "name": "parse_dual_csv",
-          "description": "Parse dual CSV inputs (geometry + forces) into canonical models.",
+          "description": "Compatibility facade delegating to the strict lossless boundary.",
           "params": [
             "geometry_csv",
             "forces_csv"
@@ -1947,7 +2027,7 @@
         },
         {
           "name": "merge_geometry_forces",
-          "description": "Merge geometry and forces by beam ID.",
+          "description": "Merge geometry and forces by beam ID, returning matched pairs only.",
           "params": [
             "geometry_list",
             "forces_list"
@@ -1955,13 +2035,19 @@
         },
         {
           "name": "validate_import",
-          "description": "Validate import results and surface warnings/errors.",
+          "description": "Validate canonical matching; unaccounted design records block.",
           "params": [
             "batch"
           ]
         }
       ],
-      "content_hash": "2538d6ffcdc1"
+      "constants": [
+        "_NUMERIC_FIELDS",
+        "_UNITS",
+        "_CALCULATION_HEADER",
+        "_EXPLICIT_METADATA_HEADERS"
+      ],
+      "content_hash": "da3e3207e1aa"
     },
     {
       "name": "intelligence.py",
@@ -2109,26 +2195,10 @@
     {
       "name": "project_beam.py",
       "type": "python",
-      "size_lines": 592,
+      "size_lines": 605,
       "last_updated": "2026-08-17",
       "description": "Versioned, fail-closed project beam input and result contracts.",
       "classes": [
-        {
-          "name": "ProjectBeamIntakeStatus",
-          "description": "Whether the complete project member input is accepted."
-        },
-        {
-          "name": "ProjectBeamCalculationStatus",
-          "description": "Whether calculation was attempted and completed."
-        },
-        {
-          "name": "ProjectBeamEngineeringStatus",
-          "description": "Engineering disposition of completed supported checks."
-        },
-        {
-          "name": "ProjectBeamOverallStatus",
-          "description": "Deterministic aggregate without professional-approval meaning."
-        },
         {
           "name": "EffectiveDepthBasisV1",
           "description": "Complete, auditable basis for deriving beam effective depth.",
@@ -2198,7 +2268,7 @@
         "_REQUIRED_FIELDS",
         "_DEPTH_BASIS_FIELDS"
       ],
-      "content_hash": "fac483571cf8"
+      "content_hash": "37b81b9919c0"
     },
     {
       "name": "rebar.py",
@@ -2244,6 +2314,28 @@
         }
       ],
       "content_hash": "ab4bac77d73c"
+    },
+    {
+      "name": "release_uat.py",
+      "type": "python",
+      "size_lines": 421,
+      "last_updated": "2026-08-17",
+      "description": "Source-free exact-wheel UAT for the pre-release input-safety contract.",
+      "functions": [
+        {
+          "name": "run"
+        },
+        {
+          "name": "main",
+          "params": [
+            "argv"
+          ]
+        }
+      ],
+      "constants": [
+        "_MATRIX_RESOURCE"
+      ],
+      "content_hash": "d3cabb6a9220"
     },
     {
       "name": "report.py",
@@ -2564,6 +2656,31 @@
         "_SINGLE_ACTION_LOAD_BOUNDARY"
       ],
       "content_hash": "245ec7df5734"
+    },
+    {
+      "name": "source_identity.py",
+      "type": "python",
+      "size_lines": 67,
+      "last_updated": "2026-08-17",
+      "description": "Controlled IS 456 source and route-specific amendment identities.",
+      "classes": [
+        {
+          "name": "AmendmentApplicability",
+          "description": "Whether the controlled amendment has been resolved for one route."
+        },
+        {
+          "name": "ControlledSourceBasisV1",
+          "description": "Exact source identities plus a route-specific applicability decision.",
+          "public_methods": [
+            "is_resolved",
+            "to_dict"
+          ]
+        }
+      ],
+      "constants": [
+        "BEAM_STRENGTH_SOURCE_BASIS"
+      ],
+      "content_hash": "d0e41bb28ddd"
     },
     {
       "name": "staircase_api.py",
@@ -2991,5 +3108,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "7f35ac74a5da45e3"
+  "content_hash": "35c4044743075de1"
 }

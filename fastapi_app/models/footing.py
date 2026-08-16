@@ -30,10 +30,12 @@ class ConcentricIsolatedFootingRequest(BaseModel):
     service_axial_load_kN: float = Field(gt=0)
     service_load_combination_id: str = Field(min_length=1)
     service_load_basis: Literal["includes_footing_self_weight_and_overburden"]
+    service_load_origin: Literal["provided", "assumed", "verified"]
     factored_axial_load_kN: float = Field(gt=0)
     factored_load_combination_id: str = Field(min_length=1)
     allowable_soil_pressure_kPa: float = Field(gt=0)
     allowable_soil_pressure_source_reference: str = Field(min_length=1)
+    allowable_soil_pressure_origin: Literal["provided", "assumed", "verified"]
     allowable_soil_pressure_is_externally_approved: Literal[True]
     footing_type: FootingPlanType
     column_L_mm: float = Field(gt=0)
@@ -48,6 +50,7 @@ class ConcentricIsolatedFootingRequest(BaseModel):
     steel_fy_nmm2: float = Field(gt=0)
     effective_supporting_area_A1_mm2: float = Field(gt=0)
     effective_supporting_area_basis: Literal["largest_frustum_1v_2h"]
+    effective_supporting_area_origin: Literal["provided", "assumed", "verified"]
     effective_supporting_area_is_approved: Literal[True]
     dowel_count: StrictInt = Field(gt=0)
     dowel_diameter_mm: float = Field(gt=0)
@@ -219,14 +222,23 @@ class FootingProvenanceResponse(BaseModel):
     units: dict[str, str]
     service_load_combination_id: str
     service_load_basis: str
+    service_load_origin: str
     factored_load_combination_id: str
     allowable_soil_pressure_source_reference: str
+    allowable_soil_pressure_origin: str
+    allowable_soil_pressure_is_externally_approved: bool
     allowable_soil_pressure_role: str
     loaded_area_A2_basis: str
     effective_supporting_area_basis: str
+    effective_supporting_area_origin: str
+    effective_supporting_area_is_approved: bool
     core_function_ids: tuple[str, ...]
     clause_bases: dict[str, str]
     source_ids: tuple[str, ...]
+    arithmetic_input_hash: str
+    assumption_identity_hash: str
+    library_content_identity: str
+    replay_receipt_hash: str
     qualified_review_requirement: str
 
 

@@ -1,0 +1,208 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T22:05:44Z",
+      "query_status": "OK",
+      "reference": "task:LIB-PRO-002-A-G:user-requested-complete-work-including-outcome-changing-review-repair",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_REPAIR_CANDIDATE",
+      "PUSH_FEATURE_BRANCH",
+      "UPDATE_PULL_REQUEST"
+    ],
+    "next_action": "COMMIT_PUSH_UPDATE_PR_THEN_HOLD_FOR_INDEPENDENT_EXACT_HEAD_REVIEW",
+    "observed_at_utc": "2026-08-16T22:05:44Z",
+    "prohibited_actions": [
+      "PUBLISH_PACKAGE",
+      "CREATE_RELEASE_TAG",
+      "CREATE_GITHUB_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL",
+      "CLAIM_WHOLE_BUILDING_SUPPORT",
+      "ACTIVATE_PACKET_H",
+      "MERGE_WITHOUT_REQUIRED_REVIEW_OR_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "REBASE_OR_REWRITE_HISTORY"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_REPAIR_CANDIDATE",
+        "PUSH_FEATURE_BRANCH",
+        "UPDATE_PULL_REQUEST"
+      ],
+      "branch": "codex/lib-pro-002-b-lossless-import",
+      "head_sha": "c66160c7bc25eba22011d051643fe93c1b406bac",
+      "task_id": "LIB-PRO-002-A-G"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "NEXT_ACTION_NOT_AUTHORIZED",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_IMMUTABLE_REVIEW_AND_HOSTED_CHECKS",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "ee99a02c2e5bcf9efdaff51f728666c3d204e46adc8a3934541c896fa010c4a3",
+    "state": {
+      "branch": "codex/lib-pro-002-b-lossless-import",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "3986935ecb473c1f9d56dec44aeb4218d9192f84",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 80.103,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-lib-pro-002-b-lossless-import",
+      "head_sha": "c66160c7bc25eba22011d051643fe93c1b406bac",
+      "hold_reasons": [
+        "changed paths: 21"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T22:06:23.783030+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 21,
+        "modified_paths": [
+          ".github/workflows/publish.yml",
+          "Python/tests/index.json",
+          "Python/tests/index.md",
+          "Python/tests/test_release_scripts.py",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/index.json",
+          "docs/index.md",
+          "docs/planning/index.json",
+          "docs/planning/index.md",
+          "docs/planning/next-session-brief.md",
+          "docs/planning/pre-release-input-safety-and-professional-readiness-plan.md",
+          "docs/verification/index.json",
+          "docs/verification/index.md",
+          "docs/verification/lib-pro-002-a-g-git-handoff-source-evidence.json",
+          "docs/verification/release-artifact-evidence-template.md",
+          "docs/verification/release-publication-authorization.json",
+          "scripts/index.json",
+          "scripts/index.md",
+          "scripts/release.py"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/exact-candidate-review-receipt-template.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/codex/lib-pro-002-b-lossless-import",
+        "sha": "c66160c7bc25eba22011d051643fe93c1b406bac",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-lib-pro-002-b-lossless-import"
+    }
+  },
+  "local_state_receipt_hash": "sha256:ee99a02c2e5bcf9efdaff51f728666c3d204e46adc8a3934541c896fa010c4a3",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T22:06:23.783187+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_WORKTREE_AND_ALL_UNRELATED_LANES",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T22:05:44Z",
+    "owner": "Repository owner authorized cumulative implementation; destructive cleanup remains separately owner-authorized",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "AGENTS.md",
+      ".codex/**",
+      ".github/workflows/ci.yml",
+      "docs/verification/release-publication-authorization.json:AUTHORIZED"
+    ],
+    "integration_owner": "Codex main agent",
+    "owned_paths": [
+      ".github/workflows/publish.yml",
+      ".pre-commit-config.yaml",
+      "Python/**",
+      "fastapi_app/**",
+      "react_app/**",
+      "scripts/automation-map.json",
+      "scripts/bump_version.py",
+      "scripts/check_all.py",
+      "scripts/check_api.py",
+      "scripts/generate_api_classification.py",
+      "scripts/release.py",
+      "README.md",
+      "docs/TASKS.md",
+      "docs/SESSION_LOG.md",
+      "docs/getting-started/python-quickstart.md",
+      "docs/planning/next-session-brief.md",
+      "docs/planning/pre-release-input-safety-and-professional-readiness-plan.md",
+      "docs/reference/**",
+      "docs/verification/footing-release-inclusion.json",
+      "docs/verification/lib-pro-002-e-evidence-identity.md",
+      "docs/verification/release-artifact-evidence-template.md",
+      "docs/verification/release-publication-authorization.json",
+      "docs/verification/exact-candidate-review-receipt-template.json",
+      "docs/verification/lib-pro-002-a-g-git-handoff-source-evidence.json",
+      "docs/verification/lib-pro-002-a-g-git-handoff-receipt.json"
+    ],
+    "shared_paths": [
+      "Python/**/index.json",
+      "Python/**/index.md",
+      "fastapi_app/**/index.json",
+      "fastapi_app/**/index.md",
+      "react_app/**/index.json",
+      "react_app/**/index.md",
+      "scripts/index.json",
+      "scripts/index.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/**/index.json",
+      "docs/**/index.md"
+    ],
+    "task_id": "LIB-PRO-002-A-G"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

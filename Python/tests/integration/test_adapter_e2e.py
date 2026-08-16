@@ -23,7 +23,7 @@ from pathlib import Path
 
 import pytest
 
-from structural_lib.core.models import FrameType
+from structural_lib.core.models import DesignDefaults, FrameType
 from structural_lib.services.adapters import ETABSAdapter, GenericCSVAdapter
 from structural_lib.services.api import design_beam_is456
 from structural_lib.services.imports import parse_dual_csv
@@ -164,6 +164,7 @@ def test_dual_csv_import_with_geometry():
         geometry_csv=FRAMES_GEOMETRY_CSV,
         forces_csv=BEAM_FORCES_CSV,
         format_hint="auto",
+        defaults=DesignDefaults(fck_mpa=25, fy_mpa=500, cover_mm=40),
     )
 
     assert len(batch.beams) > 0, "Should load beams from geometry file"

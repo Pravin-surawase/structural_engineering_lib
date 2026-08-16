@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-17 — LIB-PRO-002-A strict service-intake candidate implemented; next publication held
+**Updated:** 2026-08-17 — LIB-PRO-002 A-G cumulative candidate integrated; acceptance and publication authorization held
 
 ---
 
@@ -127,20 +127,23 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-002-A | Implement strict service intake with no structural defaults, one effective-depth contract, stable blocking issues, and a non-empty/accounted batch summary | backend + tester | M | P0 | 🚧 FORWARD-INTEGRATION CANDIDATE — original `22066d0d` preserved; current-main policy integration, consolidated verification, and immutable exact-head review remain |
+| LIB-PRO-002-B-G | Integrate lossless imports, route/client convergence, result/review truth, evidence identity, API/doc truth, and exact-wheel negative UAT | backend + tester + API + frontend + release | cumulative | P0 | 🚧 REPAIR CANDIDATE — first exact-head review rejected presence-only publication receipt validation at `c66160c7`; bind the actual receipt to reviewed Git/package identity, then restart exact review and hosted checks |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. INDIA-3, dependency, release execution, further cleanup, and
 professional approval remain separately held.
 
 `LIB-PRO-002-G0` was independently accepted and merged through PR #812 at
-`55104e11257937b0a42fb06f931a70b8484cef39`. No runtime behavior changed in G0.
+`55104e11257937b0a42fb06f931a70b8484cef39`. Packet A was independently
+accepted and merged through PR #814 at
+`3986935ecb473c1f9d56dec44aeb4218d9192f84`. The next publication remains held
+through cumulative A-G acceptance and a separate exact owner authorization.
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-002-B | Implement explicit/unique adapter selection, lossless field and row accounting, and blocking invalid or unmatched import records | backend + tester | L | P0 | ⏸ AFTER PACKET A MERGE |
+| LIB-PRO-002-H | Decide whether to activate a separately source-backed whole-building workflow planning program | repository owner | decision gate | P2 | ⏸ NOT ACTIVATED — component-only claims remain; no whole-building implementation is authorized |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog

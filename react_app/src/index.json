@@ -2,14 +2,14 @@
   "folder": "react_app/src",
   "type": "react-source",
   "description": "",
-  "last_updated": "2026-08-16",
+  "last_updated": "2026-08-17",
   "file_count": 5,
   "files": [
     {
       "name": "App.tsx",
       "type": "react-component",
       "size_lines": 134,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "description": "Structural Engineering App",
       "content_hash": "1966f8d25c22"
     },
@@ -17,7 +17,7 @@
       "name": "config.ts",
       "type": "typescript",
       "size_lines": 17,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "exports": [
         "API_BASE_URL",
         "WS_BASE_URL"
@@ -29,21 +29,21 @@
       "name": "index.css",
       "type": "stylesheet",
       "size_lines": 72,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "content_hash": "2d225fb757a1"
     },
     {
       "name": "main.tsx",
       "type": "react-component",
       "size_lines": 11,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "content_hash": "6e9e5807fcbd"
     },
     {
       "name": "vite-env.d.ts",
       "type": "typescript",
       "size_lines": 13,
-      "last_updated": "2026-08-16",
+      "last_updated": "2026-08-17",
       "content_hash": "d7a28b553c40"
     }
   ],
@@ -101,7 +101,7 @@
     {
       "name": "utils",
       "path": "utils/",
-      "file_count": 10
+      "file_count": 11
     },
     {
       "name": "workspace",
@@ -109,5 +109,5 @@
       "file_count": 20
     }
   ],
-  "content_hash": "c4ba496471f6662e"
+  "content_hash": "395b08192c956f40"
 }

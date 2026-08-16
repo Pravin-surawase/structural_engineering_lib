@@ -59,13 +59,21 @@ class TestCSVTextImport:
     def test_csv_text_generic(self, client):
         """Import generic CSV from text content."""
         csv_content = (
-            "beam_id,b_mm,D_mm,mu_knm,vu_kn,fck,fy\n"
-            "B1,300,500,150,80,25,500\n"
-            "B2,250,450,120,60,25,500\n"
+            "beam_id,b_mm,D_mm,span_mm,mu_knm,vu_kn,fck,fy,cover_mm\n"
+            "B1,300,500,5000,150,80,25,500,40\n"
+            "B2,250,450,4500,120,60,25,500,40\n"
         )
         resp = client.post(
             "/api/v1/import/csv/text",
-            params={"csv_text": csv_content, "format_hint": "generic"},
+            params={
+                "csv_text": csv_content,
+                "format_hint": "generic",
+                "fck_mpa": 25,
+                "fy_mpa": 500,
+                "cover_mm": 40,
+                "stirrup_diameter_mm": 8,
+                "tension_bar_diameter_mm": 16,
+            },
         )
         assert resp.status_code == 200
         data = unwrap(resp)
@@ -75,7 +83,15 @@ class TestCSVTextImport:
         """Empty CSV text."""
         resp = client.post(
             "/api/v1/import/csv/text",
-            params={"csv_text": "", "format_hint": "auto"},
+            params={
+                "csv_text": "",
+                "format_hint": "auto",
+                "fck_mpa": 25,
+                "fy_mpa": 500,
+                "cover_mm": 40,
+                "stirrup_diameter_mm": 8,
+                "tension_bar_diameter_mm": 16,
+            },
         )
         # Empty CSV should fail gracefully
         assert resp.status_code in (200, 422)

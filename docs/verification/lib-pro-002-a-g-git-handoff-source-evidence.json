@@ -1,0 +1,59 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T22:05:44Z",
+      "query_status": "OK",
+      "reference": "task:LIB-PRO-002-A-G:user-requested-complete-work-including-outcome-changing-review-repair",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_REPAIR_CANDIDATE",
+      "PUSH_FEATURE_BRANCH",
+      "UPDATE_PULL_REQUEST"
+    ],
+    "next_action": "COMMIT_PUSH_UPDATE_PR_THEN_HOLD_FOR_INDEPENDENT_EXACT_HEAD_REVIEW",
+    "observed_at_utc": "2026-08-16T22:05:44Z",
+    "prohibited_actions": [
+      "PUBLISH_PACKAGE",
+      "CREATE_RELEASE_TAG",
+      "CREATE_GITHUB_RELEASE",
+      "CLAIM_PROFESSIONAL_APPROVAL",
+      "CLAIM_WHOLE_BUILDING_SUPPORT",
+      "ACTIVATE_PACKET_H",
+      "MERGE_WITHOUT_REQUIRED_REVIEW_OR_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "REBASE_OR_REWRITE_HISTORY"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_REPAIR_CANDIDATE",
+        "PUSH_FEATURE_BRANCH",
+        "UPDATE_PULL_REQUEST"
+      ],
+      "branch": "codex/lib-pro-002-b-lossless-import",
+      "head_sha": "c66160c7bc25eba22011d051643fe93c1b406bac",
+      "task_id": "LIB-PRO-002-A-G"
+    }
+  },
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_IMMUTABLE_REVIEW_AND_HOSTED_CHECKS",
+    "status": "NOT_APPLICABLE"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_WORKTREE_AND_ALL_UNRELATED_LANES",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T22:05:44Z",
+    "owner": "Repository owner authorized cumulative implementation; destructive cleanup remains separately owner-authorized",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "task_archive": {
+    "status": "NOT_CHECKED"
+  }
+}

@@ -76,6 +76,11 @@ def test_short_biaxial_unified_route_retains_review_fields():
     assert data["checks"]["biaxial"]["classification"] == "SHORT"
     assert data["checks"]["biaxial"]["clause_ref"] == "Cl. 39.6"
     assert data["clause_refs"] == ["Cl. 25.2", "Cl. 25.1.2", "Cl. 25.4", "Cl. 39.6"]
+    assert data["qualified_review_required"] is True
+    assert data["review_status"] == "QUALIFIED_REVIEW_REQUIRED"
+    assert data["result_envelope"]["engineering_status"] == (
+        "PASS" if data["is_safe"] else "FAIL"
+    )
 
     review_fields = {
         "Pu_kN",
@@ -100,6 +105,18 @@ def test_short_biaxial_unified_route_retains_review_fields():
         "clause_refs",
     }
     assert review_fields.issubset(data)
+
+
+def test_unified_project_route_rejects_missing_materials():
+    request = dict(BASE_REQUEST)
+    del request["fck"]
+    del request["fy"]
+
+    response = client.post(UNIFIED_ENDPOINT, json=request)
+
+    assert response.status_code == 422
+    missing_paths = {item["loc"][-1] for item in response.json()["error"]["details"]}
+    assert missing_paths == {"fck", "fy"}
 
 
 def test_slender_route_retains_additional_moments_and_axis_disposition():

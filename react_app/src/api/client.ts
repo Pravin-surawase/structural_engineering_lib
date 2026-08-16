@@ -117,14 +117,23 @@ export interface EvidenceEnvelope {
   artifact_schema: string;
   artifact_schema_version: string;
   library_version: string;
+  library_content_identity: string;
   code_edition: string;
   code_amendment_identity: string;
+  amendment_applicability: string;
+  amendment_applicability_review_id: string | null;
+  controlled_source_ids: string[];
+  controlled_source_basis_hash: string;
   capability_id: string;
   support_status: 'SUPPORTED' | 'HELD';
   unit_system: string;
   explicit_units: Record<string, string>;
   normalized_input_hash: string;
+  provenance_hash: string;
+  source_metadata: Record<string, unknown>;
   calculation_identity: string;
+  replay_receipt: Record<string, unknown>;
+  replay_receipt_hash: string;
   governing_check: string;
   exact_utilization: number | null;
   margin: number | null;
@@ -312,6 +321,7 @@ export interface SampleBeam {
   fck_mpa: number;
   fy_mpa: number;
   cover_mm: number;
+  source_metadata: Record<string, unknown>;
   point1: Point3D;  // 3D start position
   point2: Point3D;  // 3D end position
 }

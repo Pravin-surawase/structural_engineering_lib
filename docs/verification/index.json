@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-17",
-  "file_count": 162,
+  "file_count": 167,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -58,6 +58,19 @@
       "content_hash": "fcc6aaad58e3"
     },
     {
+      "name": "exact-candidate-review-receipt-template.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "schema_version",
+        "decision",
+        "reviewed_candidate",
+        "reviewer",
+        "note"
+      ],
+      "content_hash": "4a0e3750ee96"
+    },
+    {
       "name": "examples.md",
       "type": "documentation",
       "size_lines": 1550,
@@ -85,10 +98,11 @@
         "source_commits",
         "scope",
         "scope_boundary",
+        "reviewed_refreshes",
         "required_owned_file_sha256",
         "required_shared_markers"
       ],
-      "content_hash": "e15f6ebeb790"
+      "content_hash": "875437cf59a0"
     },
     {
       "name": "git-001-phase-8-reconciliation-git-handoff-receipt.json",
@@ -1699,6 +1713,36 @@
       "content_hash": "645142e11194"
     },
     {
+      "name": "lib-pro-002-a-g-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "351ead40860b"
+    },
+    {
+      "name": "lib-pro-002-a-g-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "6e013fdbcac2"
+    },
+    {
       "name": "lib-pro-002-a-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-17",
@@ -1727,6 +1771,15 @@
         "task_archive"
       ],
       "content_hash": "62afcadf8691"
+    },
+    {
+      "name": "lib-pro-002-e-evidence-identity.md",
+      "type": "documentation",
+      "size_lines": 28,
+      "last_updated": "2026-08-17",
+      "title": "LIB-PRO-002-E evidence and source identity",
+      "description": "The bounded design_beam_is456 strength route is bound to the controlled IS 456:2000 consolidated-through-Amendment-5 source and the controlled June",
+      "content_hash": "02d895bf54c5"
     },
     {
       "name": "lib-pro-002-g0-git-handoff-receipt.json",
@@ -2017,11 +2070,29 @@
     {
       "name": "release-artifact-evidence-template.md",
       "type": "documentation",
-      "size_lines": 38,
+      "size_lines": 45,
       "last_updated": "2026-08-17",
       "title": "Release Artifact Evidence Template",
       "description": "Complete this record from the CI run that built the exact candidate. | Field | Value |",
-      "content_hash": "dd7652006f11"
+      "content_hash": "4dfbd1ceab8f"
+    },
+    {
+      "name": "release-publication-authorization.json",
+      "type": "config",
+      "last_updated": "2026-08-17",
+      "top_level_keys": [
+        "schema_version",
+        "decision",
+        "version",
+        "tag",
+        "authorized_targets",
+        "authorized_by",
+        "authorized_at_utc",
+        "exact_candidate_review_receipt",
+        "exact_candidate_review_receipt_sha256",
+        "qualified_structural_engineering_review"
+      ],
+      "content_hash": "2f0f3892c9d9"
     },
     {
       "name": "ui-experience-session-2-acceptance.md",
@@ -2041,5 +2112,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "7eb51920cb0b4082"
+  "content_hash": "a4f47ff966ac598e"
 }
