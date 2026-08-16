@@ -4392,7 +4392,7 @@
     {
       "name": "session.py",
       "type": "python",
-      "size_lines": 2461,
+      "size_lines": 2521,
       "last_updated": "2026-08-16",
       "description": "Unified session management CLI.",
       "functions": [
@@ -4508,7 +4508,7 @@
         "HANDOFF_DATE_RE",
         "COMMIT_HASH_RE"
       ],
-      "content_hash": "8a951de8d836"
+      "content_hash": "0f36765ec817"
     },
     {
       "name": "session_store.py",
@@ -5522,5 +5522,5 @@
       "is_package": true
     }
   ],
-  "content_hash": "60e35116fb6ee56d"
+  "content_hash": "40a8c4dc1ed36663"
 }

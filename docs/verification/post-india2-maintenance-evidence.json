@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "packet": "MAINT-010-POST-INDIA2",
+  "observed_at_utc": "2026-08-16T17:40:25Z",
+  "base": {
+    "commit_sha": "3b08a9c1a0471dea86ac36e7a0ca1e03b045b82e",
+    "cleanup_pr": 808,
+    "cleanup_candidate_set_id": "POST-INDIA2-2499DF4ADE0DF704"
+  },
+  "generated_truth": {
+    "stale_occurrences_before": 5,
+    "stale_occurrences_after": 0,
+    "current_metrics": {
+      "tests": 6321,
+      "scripts": 109,
+      "hooks": 26,
+      "hook_files": 16,
+      "endpoints": 81,
+      "routers": 24,
+      "public_api_functions": 91,
+      "private_api_functions": 16,
+      "components": 55
+    },
+    "maintained_indexes_current": {
+      "current": 32,
+      "total": 32
+    }
+  },
+  "session_compaction": {
+    "initial_live_entries": 107,
+    "final_total_entries": 108,
+    "final_live_entries": 10,
+    "final_archived_entries": 98,
+    "unique_session_bodies": 108,
+    "sorted_body_multiset_sha256": "edb3260f4614f7197edb54382b234214963c526c26ed0ec9e8d87574fc8ced85",
+    "archive_files_bytes": {
+      "docs/_archive/session-logs/2026-03.md": 5053,
+      "docs/_archive/session-logs/2026-04.md": 8107,
+      "docs/_archive/session-logs/2026-08.md": 475805,
+      "docs/_archive/session-logs/2026-08-part-2.md": 45322
+    },
+    "maximum_archive_bytes": 480000,
+    "missing_bodies": 0,
+    "duplicate_bodies": 0,
+    "session_index_matches_files": true
+  },
+  "task_compaction": {
+    "recent_rows": 20,
+    "unique_recent_ids": 20,
+    "rows_in_new_archive_section": 49,
+    "current_release_preserved": true,
+    "no_active_task_preserved": true,
+    "india_2_closeout_live": true,
+    "pile_cap_hold_live": true,
+    "raft_hold_live": true
+  },
+  "active_plan_disposition": {
+    "active_multi_session_plans_after": 0,
+    "safe_moves": [
+      {
+        "source": "docs/_active/agent-evolver-plan.md",
+        "destination": "docs/_archive/planning/agent-evolver-plan.md",
+        "content_sha256": "5096f11cf4c7a1815cfdf958754e6408cbd73f1b10219587e742bf4d84e99414",
+        "dry_run_first": true,
+        "broken_links_after": 0
+      },
+      {
+        "source": "docs/_active/maintenance-plan-v0-21-sprint.md",
+        "destination": "docs/_archive/planning/maintenance-plan-v0-21-sprint.md",
+        "content_sha256": "8e094876d2714162b70672aefa99259fbbf16d01153bce68b8fc16b8d3adaacf",
+        "dry_run_first": true,
+        "broken_links_after": 0
+      }
+    ],
+    "git_hardening_plan_already_archived_in_phase_a": true
+  },
+  "feedback_and_evolution": {
+    "pending_feedback_items": 0,
+    "index_generator_regressions_pass": true,
+    "tester_instruction_change": false,
+    "monthly_evolution_mode": "REVIEW_ONLY_PREVIEW",
+    "evolution_report_written": false,
+    "evolution_fix_applied": false,
+    "health_fix_applied": false
+  },
+  "validation": {
+    "focused_governance_tests_passed": 163,
+    "black": "PASS",
+    "ruff": "PASS",
+    "health": "100/100",
+    "audit": "19/19",
+    "capability_supported": 13,
+    "capability_held": 8,
+    "endpoints_directly_tested": "81/81",
+    "internal_links": 1319,
+    "broken_links": 0,
+    "strict_metadata": "PASS",
+    "quick_gate": "10/10",
+    "full_gate": "30/30"
+  },
+  "behavior_boundaries": {
+    "structural_arithmetic_changed": false,
+    "api_runtime_changed": false,
+    "react_runtime_changed": false,
+    "dependencies_changed": false,
+    "release_state_changed": false,
+    "india_3_activated": false,
+    "professional_approval_claim_changed": false,
+    "additional_git_cleanup_performed": false
+  },
+  "issue_record": "docs/SESSION_LOG.md#2026-08-16--session-post-india-2-maintenance"
+}

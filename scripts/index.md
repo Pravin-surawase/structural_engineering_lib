@@ -97,7 +97,7 @@
 | [release.py](release.py) | Unified release management CLI. | 0 | 10 | 1776 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 355 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
-| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2461 |
+| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2521 |
 | [session_store.py](session_store.py) | JSON-based session state persistence for AI agent sessions. | 1 | 14 | 374 |
 | [skill_tiers.py](skill_tiers.py) | Skill tier classification and management for AI agents. | 1 | 11 | 485 |
 | [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 502 |

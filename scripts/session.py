@@ -2036,6 +2036,7 @@ def cmd_context(args: argparse.Namespace) -> int:
 
 SESSION_ARCHIVE_DIR = REPO_ROOT / "docs" / "_archive" / "session-logs"
 SESSION_INDEX = REPO_ROOT / "logs" / "session_index.json"
+SESSION_ARCHIVE_MAX_BYTES = 480_000
 
 
 def _parse_session_entries(text: str) -> tuple[str, list[dict]]:
@@ -2102,21 +2103,81 @@ def _close_entry(lines: list[str], start: int, end: int, entries: list[dict]) ->
     )
 
 
+def _month_archive_paths(month_key: str) -> list[Path]:
+    """Return a month's base archive followed by any numbered parts."""
+    base = SESSION_ARCHIVE_DIR / f"{month_key}.md"
+    parts = sorted(
+        SESSION_ARCHIVE_DIR.glob(f"{month_key}-part-*.md"),
+        key=lambda path: int(path.stem.rsplit("-", 1)[-1]),
+    )
+    return ([base] if base.exists() else []) + parts
+
+
+def _archive_content(month_key: str, part: int, bodies: list[str]) -> str:
+    suffix = "" if part == 1 else f" (Part {part})"
+    return (
+        f"# SESSION_LOG Archive — {month_key}{suffix}\n\n" + "\n\n".join(bodies) + "\n"
+    )
+
+
 def _write_archive(month_key: str, entry_bodies: list[str]) -> Path:
-    """Append entries to the monthly archive file, creating it if needed."""
+    """Append entries and shard one month below the repository file limit."""
     SESSION_ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
-    archive_path = SESSION_ARCHIVE_DIR / f"{month_key}.md"
+    existing_paths = _month_archive_paths(month_key)
+    all_bodies: list[str] = []
+    for archive_path in existing_paths:
+        _, archived = _parse_session_entries(archive_path.read_text(encoding="utf-8"))
+        all_bodies.extend(entry["body"] for entry in archived)
+    all_bodies.extend(entry_bodies)
 
-    if archive_path.exists():
-        existing = archive_path.read_text(encoding="utf-8")
-        # Append new entries
-        new_content = existing.rstrip() + "\n\n" + "\n\n".join(entry_bodies) + "\n"
-    else:
-        new_content = f"# SESSION_LOG Archive — {month_key}\n\n"
-        new_content += "\n\n".join(entry_bodies) + "\n"
+    chunks: list[list[str]] = []
+    current: list[str] = []
+    for body in all_bodies:
+        part = len(chunks) + 1
+        candidate = _archive_content(month_key, part, [*current, body])
+        if current and len(candidate.encode("utf-8")) > SESSION_ARCHIVE_MAX_BYTES:
+            chunks.append(current)
+            current = [body]
+            part = len(chunks) + 1
+            candidate = _archive_content(month_key, part, current)
+        else:
+            current.append(body)
+        if len(candidate.encode("utf-8")) > SESSION_ARCHIVE_MAX_BYTES:
+            raise ValueError(f"session entry exceeds archive limit for {month_key}")
+    if current:
+        chunks.append(current)
+    if not chunks:
+        raise ValueError(f"no session entries available for {month_key}")
 
-    archive_path.write_text(new_content, encoding="utf-8")
-    return archive_path
+    desired_paths: list[Path] = []
+    for part, bodies in enumerate(chunks, start=1):
+        archive_path = SESSION_ARCHIVE_DIR / (
+            f"{month_key}.md" if part == 1 else f"{month_key}-part-{part}.md"
+        )
+        archive_path.write_text(
+            _archive_content(month_key, part, bodies), encoding="utf-8"
+        )
+        desired_paths.append(archive_path)
+    for stale_path in set(existing_paths) - set(desired_paths):
+        stale_path.unlink()
+    return desired_paths[-1]
+
+
+def _read_archived_session_entries() -> list[dict]:
+    """Read every parsed entry already stored in monthly session archives."""
+    entries: list[dict] = []
+    if not SESSION_ARCHIVE_DIR.exists():
+        return entries
+    for archive_path in sorted(SESSION_ARCHIVE_DIR.glob("*.md")):
+        _, archived = _parse_session_entries(archive_path.read_text(encoding="utf-8"))
+        try:
+            archive_file = archive_path.relative_to(REPO_ROOT).as_posix()
+        except ValueError:
+            archive_file = archive_path.as_posix()
+        for entry in archived:
+            entry["archive_file"] = archive_file
+        entries.extend(archived)
+    return entries
 
 
 def _build_session_index(
@@ -2137,13 +2198,12 @@ def _build_session_index(
         )
 
     for entry in archived_entries:
-        month_key = entry["date"][:7]  # YYYY-MM
         sessions.append(
             {
                 "date": entry["date"],
                 "session_number": entry["session_label"],
                 "summary": entry["summary"],
-                "archive_file": f"docs/_archive/session-logs/{month_key}.md",
+                "archive_file": entry["archive_file"],
                 "in_main_log": False,
             }
         )
@@ -2187,7 +2247,7 @@ def cmd_compact(args: argparse.Namespace) -> int:
         )
         # Still generate the index
         if not dry_run:
-            index_data = _build_session_index(entries, [])
+            index_data = _build_session_index(entries, _read_archived_session_entries())
             SESSION_INDEX.parent.mkdir(parents=True, exist_ok=True)
             SESSION_INDEX.write_text(
                 json.dumps(index_data, indent=2) + "\n", encoding="utf-8"
@@ -2237,7 +2297,7 @@ def cmd_compact(args: argparse.Namespace) -> int:
     SESSION_LOG.write_text(new_log, encoding="utf-8")
 
     # Generate session index
-    index_data = _build_session_index(entries_to_keep, entries_to_archive)
+    index_data = _build_session_index(entries_to_keep, _read_archived_session_entries())
     SESSION_INDEX.parent.mkdir(parents=True, exist_ok=True)
     SESSION_INDEX.write_text(json.dumps(index_data, indent=2) + "\n", encoding="utf-8")
 

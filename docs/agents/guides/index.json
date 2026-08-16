@@ -2,14 +2,14 @@
   "folder": "docs/agents/guides",
   "type": "documentation",
   "description": "owner: Main Agent",
-  "last_updated": "2026-08-15",
+  "last_updated": "2026-08-16",
   "file_count": 14,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 72,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> Historical navigation only. Current agent roles and Git/GitHub instructions > are in .github/agents/, AGENTS.md, and the Codex-native Git workflow.",
       "content_hash": "c14d4cfe2971"
     },
@@ -17,7 +17,7 @@
       "name": "agent-6-comprehensive-onboarding.md",
       "type": "documentation",
       "size_lines": 531,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> Historical only. The maintained frontend is React; wrapper-based Git > instructions below are not current authority.",
       "content_hash": "4609420d268c"
     },
@@ -25,7 +25,7 @@
       "name": "agent-6-quick-start.md",
       "type": "documentation",
       "size_lines": 99,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> Historical only. The maintained frontend is React; current agent and Git > guidance lives in .github/agents/, AGENTS.md, and the canonical workflow.",
       "content_hash": "284585fa8688"
     },
@@ -33,7 +33,7 @@
       "name": "agent-8-automation.md",
       "type": "documentation",
       "size_lines": 341,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> Historical only. The wrapper scripts below were retired on 2026-08-09; use > docs/git-automation/git-workflow-single-source.md for current work.",
       "content_hash": "c4a1a80614ee"
     },
@@ -41,7 +41,7 @@
       "name": "agent-8-git-ops.md",
       "type": "documentation",
       "size_lines": 1319,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> Historical only. Codex now owns Git/GitHub closeout; repository lifecycle > wrappers and enforcement hooks were retired on 2026-08-09.",
       "content_hash": "93fa3a405e34"
     },
@@ -49,7 +49,7 @@
       "name": "agent-8-mistakes-prevention-guide.md",
       "type": "documentation",
       "size_lines": 1124,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> Historical only. Wrapper commands below are not current instructions. <!-- lint-ignore-git -->",
       "content_hash": "6c20d15c404e"
     },
@@ -57,7 +57,7 @@
       "name": "agent-8-multi-agent-coordination.md",
       "type": "documentation",
       "size_lines": 338,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> Historical only. Codex now owns scoped Git/GitHub closeout. Agent 8 workflow (ai_commit.sh + safe_push.sh) now supports **concurrent multi-agent operations** with automatic worktree detection and br",
       "content_hash": "9230dc1f6dc2"
     },
@@ -65,14 +65,14 @@
       "name": "agent-8-operations-log-spec.md",
       "type": "documentation",
       "size_lines": 48,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "content_hash": "b9ec697be5f2"
     },
     {
       "name": "agent-9-governance-hub.md",
       "type": "documentation",
       "size_lines": 146,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Agent 9 manages **governance, documentation structure, and migration safety** for the project. It ensures sustainable information architecture through clear rules and validation. This is the canonical",
       "content_hash": "ae9236fe4a82"
     },
@@ -80,7 +80,7 @@
       "name": "agent-9-quick-start.md",
       "type": "documentation",
       "size_lines": 274,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "Agent 9 is the **governance and documentation structure agent**, ensuring sustainable information architecture, migration safety, and folder organization rules. bash",
       "content_hash": "09396ecf72e6"
     },
@@ -88,7 +88,7 @@
       "name": "agent-automation-system.md",
       "type": "documentation",
       "size_lines": 366,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> Historical architecture. Git lifecycle wrappers described below were retired > in favor of the Codex-native workflow.",
       "content_hash": "f415026b8f4e"
     },
@@ -96,7 +96,7 @@
       "name": "agent-bootstrap-complete-review.md",
       "type": "documentation",
       "size_lines": 125,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "docs/getting-started/agent-bootstrap.md is the 60-second onboarding entrypoint for any agent. This review enumerates every link in that file, explains why it exists, and notes the current startup flow",
       "content_hash": "616528f6eb9c"
     },
@@ -104,7 +104,7 @@
       "name": "agent-quick-reference.md",
       "type": "documentation",
       "size_lines": 348,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> Historical only. Use AGENTS.md, .github/agents/, and the canonical > Codex-native Git workflow for current instructions.",
       "content_hash": "404930d44c7f"
     },
@@ -112,11 +112,11 @@
       "name": "agent-workflow-master-guide.md",
       "type": "documentation",
       "size_lines": 713,
-      "last_updated": "2026-08-15",
+      "last_updated": "2026-08-16",
       "description": "> Historical workflow. Use the current AGENTS.md and Codex-native Git workflow. > **Deep reference guide.** Start with agent-bootstrap.md first.",
       "content_hash": "95a1d1c7649c"
     }
   ],
   "subfolders": [],
-  "content_hash": "26f973af50df6a9d"
+  "content_hash": "d1fdddbddcd1e79b"
 }

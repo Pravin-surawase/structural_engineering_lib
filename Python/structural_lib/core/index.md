@@ -1,7 +1,7 @@
 # Core
 
 **Type:** Python Package
-**Last Updated:** 2026-08-12
+**Last Updated:** 2026-08-16
 **Files:** 18
 
 ## Public API

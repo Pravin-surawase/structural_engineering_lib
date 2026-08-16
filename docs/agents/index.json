@@ -2,14 +2,14 @@
   "folder": "docs/agents",
   "type": "documentation",
   "description": "> **For AI Agents:** Use the semantic registry below to find the right docs quickly.",
-  "last_updated": "2026-08-11",
+  "last_updated": "2026-08-16",
   "file_count": 1,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
       "size_lines": 69,
-      "last_updated": "2026-08-09",
+      "last_updated": "2026-08-16",
       "title": "Agent Documentation Hub",
       "description": "> **For AI Agents:** Use the semantic registry below to find the right docs quickly. > **Start here** → Find your agent → Read Quick Start → Use Hub for details.",
       "content_hash": "12e1efa548e6"
@@ -19,7 +19,8 @@
     {
       "name": "guides",
       "path": "guides/",
-      "file_count": 16
+      "file_count": 16,
+      "description": "owner: Main Agent"
     },
     {
       "name": "sessions",
@@ -27,5 +28,5 @@
       "file_count": 3
     }
   ],
-  "content_hash": "aa1ce4629ae46950"
+  "content_hash": "18f833be74345ce3"
 }

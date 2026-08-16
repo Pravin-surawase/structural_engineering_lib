@@ -1,0 +1,245 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T17:33:06Z",
+      "query_status": "OK",
+      "reference": "task:MAINT-010-POST-INDIA2:user-request-finish-carefully-and-decide-without-approval-prompts",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T17:33:06Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_RETAINED_BRANCH",
+      "DELETE_RETAINED_WORKTREE",
+      "DELETE_RETAINED_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE",
+      "CHANGE_ENGINEERING_BEHAVIOR"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/post-india2-maintenance",
+      "head_sha": "3b08a9c1a0471dea86ac36e7a0ca1e03b045b82e",
+      "task_id": "MAINT-010-POST-INDIA2"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "aa2fa858ed0b68a5d4667c8014d6e78ff4aefab00c365036553b4a88852b8742",
+    "state": {
+      "branch": "codex/post-india2-maintenance",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "3b08a9c1a0471dea86ac36e7a0ca1e03b045b82e",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 93.417,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-post-india2-maintenance",
+      "head_sha": "3b08a9c1a0471dea86ac36e7a0ca1e03b045b82e",
+      "hold_reasons": [
+        "changed paths: 68"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T17:41:06.521526+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-maintenance",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 68,
+        "modified_paths": [
+          "Python/tests/index.json",
+          "Python/tests/index.md",
+          "Python/tests/test_session_automation.py",
+          "docs/SESSION_LOG.md",
+          "docs/_archive/session-logs/2026-08.md",
+          "docs/index.json",
+          "docs/index.md",
+          "scripts/index.json",
+          "scripts/index.md",
+          "scripts/session.py"
+        ],
+        "staged_paths": [
+          ".github/copilot-instructions.md",
+          "CLAUDE.md",
+          "Python/examples/index.json",
+          "Python/examples/index.md",
+          "Python/structural_lib/codes/index.json",
+          "Python/structural_lib/codes/index.md",
+          "Python/structural_lib/core/index.json",
+          "Python/structural_lib/core/index.md",
+          "Python/structural_lib/insights/index.json",
+          "Python/structural_lib/insights/index.md",
+          "Python/structural_lib/reports/index.json",
+          "Python/structural_lib/reports/index.md",
+          "Python/structural_lib/visualization/index.json",
+          "Python/structural_lib/visualization/index.md",
+          "Python/tests/index.json",
+          "Python/tests/index.md",
+          "Python/tests/test_session_automation.py",
+          "agents/index.json",
+          "agents/index.md",
+          "agents/roles/index.json",
+          "agents/roles/index.md",
+          "docs/SESSION_LOG.md",
+          "docs/TASKS.md",
+          "docs/_active/README.md",
+          "docs/_archive/planning/agent-evolver-plan.md",
+          "docs/_archive/planning/maintenance-plan-v0-21-sprint.md",
+          "docs/_archive/session-logs/2026-03.md",
+          "docs/_archive/session-logs/2026-04.md",
+          "docs/_archive/session-logs/2026-08.md",
+          "docs/_archive/tasks-history.md",
+          "docs/agents/guides/index.json",
+          "docs/agents/guides/index.md",
+          "docs/agents/index.json",
+          "docs/agents/index.md",
+          "docs/docs-index.json",
+          "docs/getting-started/agent-bootstrap.md",
+          "docs/getting-started/index.json",
+          "docs/getting-started/index.md",
+          "docs/guides/index.json",
+          "docs/guides/index.md",
+          "docs/index.json",
+          "docs/index.md",
+          "docs/planning/index.json",
+          "docs/planning/index.md",
+          "docs/planning/next-session-brief.md",
+          "docs/verification/post-india2-maintenance-git-handoff-receipt.json",
+          "docs/verification/post-india2-maintenance-git-handoff-source-evidence.json",
+          "fastapi_app/examples/index.json",
+          "fastapi_app/examples/index.md",
+          "fastapi_app/tests/index.json",
+          "llms.txt",
+          "react_app/src/components/index.json",
+          "react_app/src/components/index.md",
+          "react_app/src/hooks/index.json",
+          "react_app/src/hooks/index.md",
+          "react_app/src/index.json",
+          "react_app/src/index.md",
+          "react_app/src/store/index.json",
+          "react_app/src/store/index.md",
+          "react_app/src/types/index.json",
+          "react_app/src/types/index.md",
+          "react_app/src/utils/index.json",
+          "react_app/src/utils/index.md",
+          "scripts/index.json",
+          "scripts/index.md",
+          "scripts/session.py"
+        ],
+        "untracked_paths": [
+          "docs/_archive/session-logs/2026-08-part-2.md",
+          "docs/verification/post-india2-maintenance-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "3b08a9c1a0471dea86ac36e7a0ca1e03b045b82e",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-maintenance"
+    }
+  },
+  "local_state_receipt_hash": "sha256:aa2fa858ed0b68a5d4667c8014d6e78ff4aefab00c365036553b4a88852b8742",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T17:41:06.521702+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T17:33:06Z",
+    "owner": "Main Agent under owner instruction to preserve every retained lane",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "pyproject.toml",
+      "CHANGELOG.md",
+      "fastapi_app/main.py",
+      "fastapi_app/routers",
+      "Python/structural_lib/services"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "scripts/session.py",
+      "Python/tests/test_session_automation.py",
+      "docs/_archive/session-logs",
+      "docs/_archive/planning",
+      "docs/_archive/tasks-history.md",
+      "docs/verification/post-india2-maintenance-evidence.json",
+      "docs/verification/post-india2-maintenance-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/_active/README.md",
+      "docs/planning/next-session-brief.md",
+      "CLAUDE.md",
+      ".github/copilot-instructions.md",
+      "llms.txt",
+      "Python",
+      "fastapi_app",
+      "react_app",
+      "agents",
+      "docs"
+    ],
+    "task_id": "MAINT-010-POST-INDIA2"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

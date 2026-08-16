@@ -1333,6 +1333,73 @@ def test_session_log_completeness_accepts_explicit_issue_record(
     assert issues == []
 
 
+def test_repeated_session_compaction_indexes_existing_archives(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    session_log = tmp_path / "SESSION_LOG.md"
+    archive_dir = tmp_path / "session-logs"
+    archive_dir.mkdir()
+    session_index = tmp_path / "session_index.json"
+    session_log.write_text(
+        """# Session Log
+
+## 2026-08-16 — Session: Current
+**Focus:** current work
+
+## 2026-08-15 — Session: Prior
+**Focus:** prior work
+
+## 2026-08-14 — Session: Earlier
+**Focus:** earlier work
+""",
+        encoding="utf-8",
+    )
+    (archive_dir / "2026-03.md").write_text(
+        """# SESSION_LOG Archive — 2026-03
+
+## 2026-03-31 — Session 106: Historical
+**Focus:** historical work
+""",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(session, "REPO_ROOT", tmp_path)
+    monkeypatch.setattr(session, "SESSION_LOG", session_log)
+    monkeypatch.setattr(session, "SESSION_ARCHIVE_DIR", archive_dir)
+    monkeypatch.setattr(session, "SESSION_ARCHIVE_MAX_BYTES", 140)
+    monkeypatch.setattr(session, "SESSION_INDEX", session_index)
+
+    assert session.cmd_compact(SimpleNamespace(keep_last=1, dry_run=False)) == 0
+
+    index = json.loads(session_index.read_text(encoding="utf-8"))
+    assert index["_meta"] == {
+        "total_sessions": 4,
+        "main_log_entries": 1,
+        "archived_entries": 3,
+        "last_compacted": date.today().strftime("%Y-%m-%d"),
+    }
+    assert {item["date"] for item in index["sessions"]} == {
+        "2026-03-31",
+        "2026-08-14",
+        "2026-08-15",
+        "2026-08-16",
+    }
+    august_archives = sorted(archive_dir.glob("2026-08*.md"))
+    assert [path.name for path in august_archives] == [
+        "2026-08-part-2.md",
+        "2026-08.md",
+    ]
+    assert all(path.stat().st_size <= 140 for path in august_archives)
+    august_index_paths = {
+        item["archive_file"]
+        for item in index["sessions"]
+        if item["date"].startswith("2026-08") and not item["in_main_log"]
+    }
+    assert august_index_paths == {
+        "session-logs/2026-08.md",
+        "session-logs/2026-08-part-2.md",
+    }
+
+
 def test_legacy_activity_log_uses_local_midnight_and_no_billing_estimate(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):

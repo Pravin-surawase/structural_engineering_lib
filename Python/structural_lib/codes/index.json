@@ -42,7 +42,7 @@
     {
       "name": "is456",
       "path": "is456/",
-      "file_count": 92,
+      "file_count": 104,
       "is_package": true
     }
   ],
@@ -50,5 +50,5 @@
   "public_api": [
     "is456"
   ],
-  "content_hash": "12cf1caa776de3f5"
+  "content_hash": "082631f0b0957b65"
 }
