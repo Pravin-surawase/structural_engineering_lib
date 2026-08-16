@@ -33,14 +33,18 @@ workflow remains
 - Older “ready to retire” wording in this plan is not a current classifier
   result. The current gate is complete identity-bound evidence followed by
   `RETIREMENT_READY_PENDING_APPROVAL` and separate exact-target approval.
+- Planning refresh on 2026-08-16: `origin/main = f56e1ec3`; the primary is now
+  nine commits behind with only `.codex/config.toml` dirty; GIT-7E PR #751 and
+  compact orchestration PR #752 are merged. The dated topology tables below
+  remain historical evidence until Phase 8 refreshes them read-only.
 
 ## Outcome first: the revised order
 
 The old list mixed completed recovery with future work. The current order is:
 
-1. **Preserve the diverged GIT-001 research lane.** Phases 1-7D are integrated;
-   the local research head now carries unique evidence relative to its remote,
-   so a future continuation must use a fresh current-main lane.
+1. **Complete GIT-001 Phase 8 from a fresh lane.** Phases 1-7E are integrated;
+   reconcile stale status text, verify adoption from recent exact-head task
+   receipts, and refresh preservation holds without mutating retained lanes.
 2. **Decide Excel planning ownership.** It has no unique commits and no PR, so
    one owner decision determines whether it remains active or may enter a
    separately evidenced retirement assessment.
@@ -50,7 +54,7 @@ The old list mixed completed recovery with future work. The current order is:
 4. **Keep eight unattached merged branches as future disposition candidates.**
    Their merge/reachability facts are refreshed, but owner, dependent-PR,
    retention, classifier, and exact-approval gates remain incomplete.
-5. **Handle the seven remaining dependency PRs as four coordinated tasks.** Do
+5. **Handle the seven remaining dependency PRs as five compatibility groups.** Do
    not merge old, behind Dependabot branches one by one.
 
 Column PMM preservation/recovery and the useful portion of PR #723 are complete.
@@ -315,10 +319,10 @@ session/task records are single-writer surfaces.
    worktree-bound runtime/state diagnostics.
 3. Refresh refs, inspect all worktrees read-only, and compare the result with
    this dated snapshot. Record drift; do not normalize it away.
-4. For authorized GIT-7E work, create exactly one fresh current-main write lane;
-   do not reuse the preserved GIT research lane.
-5. Keep GIT-7E to semantic live-guidance coverage and the durable read-only
-   handoff receipt. It does not refresh remotes or authorize cleanup.
+4. For GIT-001 Phase 8, create exactly one fresh current-main write lane; do
+   not reuse the preserved GIT research or completed GIT-7E lane.
+5. Keep Phase 8 to adoption evidence, status reconciliation, and refreshed
+   preservation holds. It does not authorize cleanup.
 6. Ask the owner the single Excel ownership question when disposition work is
    separately resumed:
    “Is the Excel planning task still active with a named next action?”
@@ -371,7 +375,7 @@ disposition. No single script answers the ownership and recoverability question.
 
 This plan is fulfilled when:
 
-- Phases 1-7D remain integrated and their preserved evidence is not reopened or
+- Phases 1-7E remain integrated and their preserved evidence is not reopened or
   reconciled without new authorization;
 - Excel has a named active owner/next action or an approved retirement receipt;
 - the three Alpha worktrees are either explicitly retained or safely retired

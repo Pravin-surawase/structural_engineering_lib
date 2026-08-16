@@ -66,18 +66,18 @@
     {
       "name": "india-2-next-session-publication-and-closeout-plan.md",
       "type": "documentation",
-      "size_lines": 326,
+      "size_lines": 273,
       "last_updated": "2026-08-16",
-      "description": "Combined-footing and strap-footing G0/A-D plus focused family acceptance are integrated within their separate written boundaries. Strap acceptance binds",
-      "content_hash": "5e30b42d13cf"
+      "description": "Combined-footing and strap-footing G0/A-D plus focused family acceptance are integrated within their recorded bounded cases. The next session starts with",
+      "content_hash": "ca15ab0a68c4"
     },
     {
       "name": "india-2-remaining-is456-elements-plan.md",
       "type": "documentation",
-      "size_lines": 385,
+      "size_lines": 392,
       "last_updated": "2026-08-16",
       "description": "INDIA-2 finishes a practical, explicitly limited set of IS 456 reinforced concrete elements that are still missing from the library.",
-      "content_hash": "d2b3332e344f"
+      "content_hash": "2a2f112cb71c"
     },
     {
       "name": "indian-code-completion-plan.md",
@@ -131,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 131,
+      "size_lines": 101,
       "last_updated": "2026-08-16",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-16",
-      "content_hash": "5633ec57d937"
+      "content_hash": "5c7a55e1721a"
     },
     {
       "name": "pre-release-checklist.md",
@@ -173,5 +173,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "d9ef455de3971ece"
+  "content_hash": "8e8d442d36895ec4"
 }

@@ -57,6 +57,11 @@ boundary, held with a written reason, or not implemented.
 
 ## 4. Recommended execution order
 
+Before resuming the element sequence, complete the separately bounded
+GIT-001 Phase 8 reconciliation, frontmatter checker/data repair, and Clause
+38.2 truth-hygiene packets defined by the current next-session plan. They repair
+cross-cutting execution truth and must not be mixed into a foundation G0.
+
 | Order | Program | Why it is placed here | State |
 |---:|---|---|---|
 | 1 | `INDIA-2-WALL` | First clause-bounded remaining element; established the new-family workflow | Complete within the written bounded case |
@@ -375,10 +380,12 @@ authorized programs.
 
 ## 9. Exact next action
 
-Stop after focused strap acceptance merges unchanged. When foundation work is
-separately resumed, begin only `INDIA-2-FOUNDATION-PILE-CAP-G0` from verified
-current `main`: search the existing surface and sources, freeze or hold one
-pile-reaction/cap-action model and independent benchmark, and write no
-calculation code before that decision. Keep raft, React, broad Python, and the
-30-check gate outside the pile-cap G0 packet. Follow the dedicated
+Stop after focused strap acceptance. The next session begins only
+`GIT-001-P8-RECONCILIATION`, followed by the two confirmed issue-repair packets
+in the dedicated
 [next-session and finish plan](india-2-next-session-publication-and-closeout-plan.md).
+When those packets are integrated and foundation work is separately resumed,
+begin `INDIA-2-FOUNDATION-PILE-CAP-G0` from verified current `main`: search the
+existing surface and sources, freeze or hold one pile-reaction/cap-action model
+and independent benchmark, and write no calculation code before that decision.
+Keep raft, React, broad Python, and the 30-check gate outside pile-cap G0.

@@ -1,6 +1,6 @@
 ---
-task: INDIA-2-NEXT-SESSION-PUBLICATION-AND-CLOSEOUT
-title: INDIA-2 Next Session and Finish Plan
+task: NEXT-SESSION-GIT-ISSUES-AND-INDIA-2
+title: Next Session Git Reconciliation, Issue Repairs, and INDIA-2 Finish Plan
 status: active
 owner: Next Main Agent
 created: 2026-08-16
@@ -8,318 +8,265 @@ last_updated: 2026-08-16
 doc_type: spec
 ---
 
-# INDIA-2 Next Session and Finish Plan
+# Next Session Git Reconciliation, Issue Repairs, and INDIA-2 Finish Plan
 
-## 1. Immediate objective and stop boundary
+## 1. Outcome and stop boundary
 
 Combined-footing and strap-footing G0/A-D plus focused family acceptance are
-integrated within their separate written boundaries. Strap acceptance binds
-the property-line two-footing model with equal uniform net pressure, a straight
-no-soil-contact strap, explicit service/factored actions, externally verified
-footing slabs, frozen and non-frozen replay, public truth, and retained holds.
-The next packet is the separate decision-only
-`INDIA-2-FOUNDATION-PILE-CAP-G0`, but strap acceptance stops before starting it.
+integrated within their recorded bounded cases. The next session starts with
+Git and confirmed issue reconciliation before any new foundation decision.
 
-Do not add automatic footing strength/sizing, pile-cap implementation, raft,
-broad Python, full 30-check, React, release, cleanup, or professional-approval
-work inside the completed strap sequence.
+This document is a plan only. Its publication does not authorize primary-main
+synchronization, discarding a local change, branch/worktree retirement, closing
+dependency PRs, pile-cap or raft implementation, release work, or professional
+approval. Stop after this planning packet merges.
 
-The complete remaining order is:
+Execute later work in this order, one fresh lane and one active writer at a
+time:
 
-1. `COMBINED-C` — typed public Python workflow.
-2. `COMBINED-D` — thin FastAPI transport and truthful capability publication.
-3. `COMBINED-ACCEPTANCE` — focused cumulative family acceptance, complete.
-4. `STRAP-G0` -> A -> B -> C -> D -> focused family acceptance, complete.
-5. Separate `PILE-CAP-G0` and `RAFT-G0` decisions, preserving any accepted
-   `HOLD` with a blocker and reactivation condition.
-6. Implement only owner-accepted later `GO` cases.
-7. `INDIA-2-TRUTH-HYGIENE` — resolve the two recorded clause-registry defects.
-8. `INDIA-2-CLOSEOUT` — broad Python, full 30-check, evidence index, and exact
-   integrated-tree reconciliation.
+1. `GIT-001-P8-RECONCILIATION` — reconcile the completed GIT-7E work, prove
+   current adoption, classify retained lanes, and obtain any required owner
+   decisions without cleanup.
+2. `DOC-FRONTMATTER-CONTRACT` — repair the JSON-mode exit-code defect and the
+   eight currently invalid frontmatter records.
+3. `INDIA-2-TRUTH-HYGIENE-38-2` — source-audit every live `38.2` consumer,
+   correct provenance, and change arithmetic only if an independently checked
+   benchmark proves an outcome defect.
+4. `INDIA-2-FOUNDATION-PILE-CAP-G0` — decision and benchmark only.
+5. Implement pile-cap A/B/C/D/acceptance only if G0 returns an owner-accepted
+   `GO`; otherwise record `HOLD` and its reactivation condition.
+6. `INDIA-2-FOUNDATION-RAFT-G0` — decision and benchmark only.
+7. Implement raft A/B/C/D/acceptance only if G0 returns an owner-accepted
+   `GO`; otherwise record `HOLD` and its reactivation condition.
+8. `INDIA-2-CLOSEOUT` — cumulative truth reconciliation, broad Python, the
+   full 30-check gate, independent final-tree audit, hosted checks, and merge.
+9. Only after INDIA-2 closes, resume the separately bounded dependency-major
+   compatibility packets.
 
-## 2. Verified inherited state
+## 2. Verified planning baseline
 
-At the focused strap-acceptance baseline:
+Live inspection for this plan established:
 
-- wall, staircase, deep-beam, and flat-slab/punching bounded families are
-  accepted;
-- combined- and strap-footing G0/A-D are integrated and focused-accepted within
-  their separate bounded cases;
-- generated truth after STRAP-D is `13 supported / 8 held`, and the bounded
-  combined- and strap-footing workflows are supported while alternate systems
-  remain held;
-- all 81 endpoints have direct tests;
-- COMBINED-D has 6 direct transport tests, 84 cumulative A-D tests, and a
-  339-test focused combined/public-contract selection;
-- architecture is `0/193`, imports are `0` broken across 222 Python files,
-  1,250 internal links are valid, source binding is true, and the quick gate is
-  `10/10`;
-- the corrected final B head was independently audited at
-  `948787bb56d28b8fbcca83aa94f1c68a26ec2eab`, tree
-  `66243e06608f9323c605f16b8ca96eaf93d04fa5`, including a non-frozen
-  `7200 x 3000 mm` symmetric case that returned `PASS`; and
-- PR #789 squash-merged that exact tree as
-  `f87c8a32aca7edc015f96f6e053f30c904ae683b`, with six applicable checks
-  passing and two correctly skipped; and
-- PR #790 squash-merged C as
-  `7b7b310a9310c04a65b1dcdfd4ef812c792bb8cb`, tree
-  `dd9ed4adf0b20de5d307689ecdf502801fad2d6e`; and
-- PR #791 squash-merged the independently audited D tree
-  `efba5971017b03e14e3b2f30fd40750f8fc68987` as
-  `079ca22b00744ca9b01f859be0b64333b5830fcb`, with seven hosted checks passing,
-  one correctly skipped, and none failing; and
-- PR #797 squash-merged STRAP-D as
-  `b75daa970b2976cbd5d51e9a951926a7946d5fa6`, exactly matching audited tree
-  `af2695a815bb0a71898d58e98a70109b7dd5c2b4`, after both hosted FastAPI root
-  causes were corrected and all required checks passed; and
-- public distribution permission is already recorded and must not be requested
-  again. No release, tag, package publication, branch deletion, or worktree
-  cleanup is authorized.
+- `origin/main = f56e1ec312902caf98e872c77ce8b71bdbc8440e`, the squash merge
+  of strap-family acceptance PR #798, with merged tree
+  `28698a28d96f3e5cbad26fd6964cf835cda6e1b4` equal to the audited candidate
+  tree;
+- Indian-code truth is `13 supported / 8 held`, with all 81 endpoints directly
+  tested; wall, staircase, deep-beam, flat-slab/punching, combined-footing, and
+  strap-footing are accepted only within their written cases;
+- the primary checkout remains at `f87c8a32`, nine commits behind
+  `origin/main`, with exactly one user-owned modification:
+  `.codex/config.toml` changes `model_verbosity = "low"` to `"medium"`;
+- retained `e54a` remains detached at `0fdb48ed`, with only
+  `docs/SESSION_LOG.md` dirty (`119` insertions, `7` deletions); current main
+  already contains the material GIT-7C1/GIT-7C2 facts, but ownership and
+  retirement authorization remain unresolved;
+- GIT-7E implementation PR #751 merged as `6bcbd9d3`, and compact audited
+  orchestration PR #752 merged as `96f193bd`; this planning packet reconciles
+  the stale parent-ledger/task wording, while Phase 8 must still verify current
+  adoption and any remaining dated disposition facts;
+- Clause `26.5.1.1` is no longer an open defect: STRAP-B corrected its metadata
+  to beam minimum tension reinforcement, added Clause `26.4`, regenerated the
+  manifest, and added semantic regression coverage;
+- the live clause database, beam decorators, result provenance, and manifest
+  still register `38.2` for three beam-flexure functions even though the prior
+  controlled-source review found the relevant identities under Clause `38.1`
+  and Annex G;
+- `scripts/check_docs.py --frontmatter --json` reports eight invalid records
+  but exits successfully; code inspection confirms JSON mode unconditionally
+  returns `0` before applying the invalid-count failure rule; and
+- seven old Dependabot PRs remain open. Their historical checks and stale bases
+  are not current merge authority.
 
-The next agent must recheck live `main`, PR integration, and source binding;
-these facts are receipts, not permission to assume remote freshness.
+Every fact above must be refreshed in the executing packet. A dated plan is not
+remote-freshness or mutation authority.
 
-Required evidence:
-
-- [combined G0 scope](../verification/india-2-foundation-combined-g0-scope-evidence.md)
-- [combined A analysis](../verification/india-2-foundation-combined-a-analysis-evidence.md)
-- [combined B strength](../verification/india-2-foundation-combined-b-strength-evidence.md)
-- [combined C public workflow](../verification/india-2-foundation-combined-c-public-workflow-evidence.md)
-- [combined D publication](../verification/india-2-foundation-combined-d-publication-evidence.md)
-- [combined focused family acceptance](../verification/india-2-foundation-combined-family-acceptance-evidence.md)
-- [strap G0 scope](../verification/india-2-foundation-strap-g0-scope-evidence.md)
-- [strap D publication](../verification/india-2-foundation-strap-d-publication-evidence.md)
-- [strap focused family acceptance](../verification/india-2-foundation-strap-family-acceptance-evidence.md)
-- [generated capability truth](../verification/indian-code-capability-coverage.json)
-- [INDIA-2 execution plan](india-2-remaining-is456-elements-plan.md)
-- [canonical Git workflow](../git-automation/git-workflow-single-source.md)
-
-## 3. Start commands and Git boundary
-
-Only when the owner resumes the next foundation decision, run from a fresh
-`codex/india-2-foundation-pile-cap-g0` worktree created from verified current
-`main`:
-
-```bash
-./run.sh session brief --agent reviewer
-./run.sh session start
-./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
-./scripts/python_runtime.sh --diagnose
-./scripts/python_runtime.sh scripts/generate_indian_code_manifest.py --check
-./run.sh parity
-```
-
-Require `source_bound=true`, a clean new lane, no unfinished operation, and a
-base equal to verified current `origin/main`. Preserve every retained sibling
-worktree. Never reset, clean, stash, delete, rebase, force-push, or repurpose a
-prior packet lane.
-
-At B closeout, read-only state reported the foreign retained worktree
-`/Users/pravinsurawase/.codex/worktrees/e54a/structural_engineering_lib` as
-detached with one dirty path. Its root cause and ownership are unconfirmed.
-Do not use, mutate, clean, or retire it during INDIA-2; classify it only in a
-separately authorized Git-governance task.
-
-Use one active writer. The parent normally implements and validates. Use at
-most one read-only independent auditor after an immutable candidate commit;
-do not delegate broad context or duplicate implementation.
-
-## 4. COMBINED-C exact packet
+## 3. Packet 1 — GIT-001 Phase 8 reconciliation
 
 ### Objective
 
-Expose the sole accepted A/B composition as one stable typed public Python
-workflow named `design_symmetric_combined_footing_is456` while leaving machine
-capability truth held until D.
+Verify that the reconciled GIT-7E status and operating model are actually used
+by recent combined/strap packets, then produce a current preservation/
+disposition record. This is inspection and documentation work, not cleanup.
 
-### Intended files
+### Required start
 
-- add `Python/structural_lib/services/combined_footing_api.py`;
-- export only through `Python/structural_lib/services/api.py`,
-  `Python/structural_lib/services/__init__.py`, and
-  `Python/structural_lib/__init__.py`; the backward `api.py` stub should inherit
-  exports and must not contain implementation;
-- add `Python/tests/integration/test_combined_footing_publication.py`;
-- update `docs/reference/api.md`, `docs/reference/api-stability.md`, maintained
-  API/export tests, folder indexes, session log, and C evidence.
+From a fresh worktree based on fetched `origin/main`:
 
-### Public contract
+```bash
+./run.sh session brief --agent ops
+./run.sh session start
+./scripts/python_runtime.sh --diagnose
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
+```
 
-Create immutable:
+Require `source_bound=true`, `READY_LOCAL`, no operation marker, and exact base
+equality with current `origin/main`.
 
-- `SymmetricCombinedFootingDesignInput`;
-- `SymmetricCombinedFootingDesignProvenance`;
-- `SymmetricCombinedFootingDesignResult`;
-- `SymmetricCombinedFootingDesignStatus`; and
-- a mapping builder only if transport construction needs it later.
+### Work and decisions
 
-The workflow must consume the A/B typed inputs without duplicating structural
-math. It must return the B action/strength result, supported case, held cases,
-schema/code/workflow/benchmark identities, all caller basis references, exact
-clause/source references, qualified-review true, and complete-engineering-
-approval false. `PASS` and valid in-domain `FAIL` remain results; unsupported
-input raises `CombinedFootingContractError`.
+1. Bind PR #751/#752 reviewed heads, merge commits, trees, required checks, and
+   current reachability. Verify the current “Phase 7 complete; Phase 8
+   adoption/closeout next” parent records, and reconcile only remaining dated
+   claims that change the current lifecycle outcome.
+2. Sample recent combined/strap receipts and exact-head audits to prove whether
+   `git_state.py`, source binding, immutable review, hosted checks, and
+   post-merge tree equivalence are working in ordinary packets. Record defects
+   only when they change the lifecycle outcome.
+3. Classify the primary config edit without touching it:
+   - **publish** — recover only the `medium` verbosity intent on a fresh
+     current-main lane and review it through a separate PR;
+   - **retain local-only** — keep the primary held and continue work in fresh
+     lanes; or
+   - **discard** — requires explicit owner approval immediately before the
+     destructive restoration action.
+4. Compare `e54a` by exact patch/blob identity with integrated main evidence.
+   Never merge its whole historical log, reset it, stash it, or remove it as a
+   shortcut. Retention may advance only with a named owner decision and a fresh
+   classifier receipt; deletion remains separate exact-target authorization.
+5. Refresh every retained worktree/branch read-only. Missing ownership,
+   retention, PR, or freshness evidence remains `UNKNOWN`/hold. Do not produce
+   a bulk-cleanup command.
 
-The frozen benchmark remains:
+### Acceptance
 
-- `6000 x 2500 x 850 mm`, `d = 750 mm`, two 500 mm square columns at
-  `x = 1000/5000 mm`, M30/Fe500;
-- `900/1350 kN` service/factored load at each column, `25/37.5 kN/m2`
-  distributed carrier, and `150 kN/m2` allowable gross pressure;
-- 16 mm longitudinal bars at 190 mm, 12 mm transverse bars at 110 mm,
-  50 mm cover, 20 mm aggregate, and 800 mm anchorage;
-- approved `250000 mm2` supporting area at each column and four 20 mm dowels
-  with 800 mm embedment into footing and column; and
-- aggregate `PASS`, review required, approval false.
+- no pre-existing branch, ref, worktree, dirty path, stash, GitHub setting,
+  issue, or PR is mutated;
+- GIT-001 status and phase ledger match merged reality;
+- adoption evidence is tied to exact recent receipts rather than prose;
+- each primary/e54a/other-lane decision is `RETAIN`, `UNKNOWN/HOLD`, or
+  `RETIREMENT_READY_PENDING_APPROVAL`; none grants deletion authority;
+- focused Git-governance tests, semantic guidance, receipt validation, links,
+  indexes, quick `10/10`, normal hooks, hosted checks, and exact-tree closeout
+  pass.
 
-### C acceptance
+## 4. Packet 2 — frontmatter checker and record repair
 
-- exact root/services/stub identity and `__all__` tests;
-- frozen serializable result, provenance, held cases, valid `FAIL`, and invalid
-  fail-closed tests;
-- capability manifest must remain 11/10 and combined footing held;
-- focused A/B/C, public API signature/export/docs, clause/manifest, Ruff,
-  mypy, architecture/import/link/index, quick 10/10, normal commit hooks,
-  immutable independent audit, and all applicable hosted PR checks pass;
-- no FastAPI, semantic-contract, capability promotion, React, broad Python, or
-  full 30-check mutation/run.
+### Confirmed root cause
 
-## 5. COMBINED-D exact packet
+`check_frontmatter()` correctly computes `invalid_frontmatter`, but its
+`json_output` branch prints the report and returns `0` unconditionally. The
+normal text branch applies `return 1 if invalid_frontmatter else 0`. This makes
+machine-readable validation say “passed” while returning eight invalid records.
 
-Start a new clean `codex/india-2-foundation-combined-d` lane from merged C.
-Recommended owner role: `api-developer`.
+The eight records are separate data defects:
 
-Publish only:
+- invalid status: `planning/is456-library-first-master-plan.md`,
+  `verification/india-2-foundation-combined-c-public-workflow-evidence.md`,
+  and wall/deep/flat family-acceptance evidence;
+- invalid `doc_type: verification`: strap A, B, and C evidence.
 
-- strict Pydantic request/response types in
-  `fastapi_app/models/combined_footing.py`;
-- thin router `fastapi_app/routers/combined_footing.py` at
-  `POST /api/v1/design/combined-footing/symmetric`;
-- router mounting/tag metadata and direct transport tests;
-- exact OpenAPI baseline update after independently reviewing the intended
-  new path/schema only;
-- capability declaration, public workflow, semantic fields/statuses, and
-  generated manifest promotion for the exact supported case; and
-- D publication evidence plus maintained docs/index/session records.
+The 60 legacy documents without lowercase frontmatter are reported separately
+and are not automatically in scope because current policy permits their legacy
+metadata/no-frontmatter forms. Expand scope only if a maintained gate proves a
+main-process failure.
 
-Do not reimplement calculations in Pydantic/router code. Map domain errors to
-the maintained safe error response. The capability claim must say exactly two
-identical square columns with equal concentric loads on one symmetric rigid
-rectangular constant-depth footing under caller-approved uniform pressure.
+### Fix and acceptance
 
-Expected truth after D is `12 supported / 9 held` and 80/80 directly tested
-endpoints, subject to live verification. React remains excluded and should be
-skipped, not represented as tested.
+1. Make JSON mode return the same pass/fail result as text mode without changing
+   its JSON payload.
+2. Add a direct regression proving invalid JSON-mode input exits nonzero and a
+   valid fixture exits zero.
+3. Give each of the eight records a schema-valid lifecycle/doc type that
+   preserves its narrative completion/acceptance meaning; do not rewrite
+   engineering evidence.
+4. Require live JSON output to report `invalid_frontmatter: 0`, text mode to
+   pass, focused checker tests, links/indexes, quick `10/10`, normal hooks, and
+   hosted documentation checks to pass.
 
-Run the D-focused service/router/OpenAPI/capability/semantic/manifest selection,
-architecture/import/link/index, quick gate, commit hooks, immutable audit, and
-hosted checks. Defer broad Python and full 30-check.
+## 5. Packet 3 — Clause 38.2 flexure truth hygiene
 
-## 6. COMBINED family acceptance — complete
+### Objective and non-goals
 
-The fresh acceptance-only lane starts from merged D and adds no feature
-behavior.
+Trace and correct the root cause rather than deleting a label. Do not mass
+replace `38.2`, copy protected prose, alter unrelated beam behavior, or infer
+that a metadata-only correction proves the flexural arithmetic.
 
-Re-run:
+### Required work
 
-- all combined A-D unit/integration/FastAPI tests;
-- frozen benchmark and at least one independent non-frozen symmetric case;
-- valid bearing, reinforcement, shear, punching, and transfer failures;
-- every topology/material/approval/supporting-area fail-closed boundary;
-- public export, JSON serialization, OpenAPI, capability, semantic, and
-  deterministic manifest checks;
-- architecture/import/link/index, quick, exact-head independent audit, and all
-  hosted checks.
+1. Recheck the controlled IS 456 base/amendment source and bind the exact
+   Clause 38.1 and Annex G identities used by each formula.
+2. Enumerate every live consumer: clause metadata, decorators,
+   `calculate_ast_required`, singly/doubly reinforced design, serialized
+   `sources_used`, tests, docs, and generated manifest records.
+3. Independently back-substitute required steel into the exact rectangular
+   stress-block equilibrium and compare the legacy `4.6` approximation with the
+   shared exact helper already used by slab/combined/strap work.
+4. If the difference can change a supported beam PASS/FAIL, fix the shared
+   arithmetic root cause with compatibility and benchmark evidence. If it
+   cannot, keep arithmetic unchanged and correct only unsupported identities.
+5. Add semantic tests that reject reintroduction of unsupported `38.2` metadata,
+   decorators, or public provenance. Regenerate the manifest once after the
+   executable truth freezes.
 
-Write one family acceptance receipt binding source, benchmark, C/D PRs,
-integrated tree, supported case, held cases, review boundary, and deferred broad
-gate. Do not add another topology or implementation during acceptance.
+### Acceptance
 
-## 7. Remaining foundation decisions
+- every changed formula/provenance identity is source-bound and independently
+  replayable;
+- no registration-only or unsupported clause contradiction remains;
+- public signatures and unit conventions remain stable unless a separately
+  recorded compatibility decision is required;
+- focused flexure, traceability, manifest, public-contract, architecture,
+  imports, quick `10/10`, normal hooks, immutable-head review, and hosted checks
+  pass.
 
-Combined and strap acceptance are complete. Start neither implementation nor
-source claims for the remaining foundation systems until their separate
-decision-only packets run in this order:
+## 6. Packets 4 onward — remaining foundation decisions
 
-1. `INDIA-2-FOUNDATION-PILE-CAP-G0`;
-2. `INDIA-2-FOUNDATION-RAFT-G0`.
+Run `PILE-CAP-G0` and then `RAFT-G0` as separate decision-only packets. Each
+must search existing code, bind controlled/authoritative sources, freeze one
+useful case and independent benchmark, enumerate companion-code boundaries and
+unsafe exclusions, and return `GO`, `REVISE`, or owner-accepted `HOLD` before
+calculation code.
 
-Each G0 must search existing code, bind controlled/authoritative sources,
-freeze one useful supported case and independent benchmark, list exclusions,
-and return `GO`, `REVISE`, or owner-approved `HOLD` before code. Do not reuse
-combined- or isolated-footing capability for a different analysis model.
+Pile-cap G0 must explicitly decide pile-reaction input/model, layout, nodal and
+bearing checks, anchorage, deep-region treatment, and companion-code
+dependencies. Raft G0 must decide soil-pressure input/model, strip/panel action
+extraction, settlement boundary, and whether a useful non-FEM case exists.
+Never reuse isolated/combined/strap capability for these different models.
 
-If a decision is `GO`, activate A/B/C/D/acceptance packets with the same
-analysis → strength → public Python → FastAPI/truth → family acceptance order.
-If `HOLD`, record the missing source/model/benchmark, retained public hold, and
-exact reactivation condition. An owner-approved hold closes the INDIA-2
-administrative obligation truthfully; it is not implementation.
+For a `GO`, use A analysis -> B strength -> C typed Python -> D FastAPI/truth ->
+focused family acceptance. For a `HOLD`, publish the blocker, retained truth,
+and exact reactivation condition; do not manufacture implementation to avoid a
+hold.
 
-STRAP-G0 resolved strap-beam soil contact and compatibility only for its frozen
-property-line model. High-risk distinctions still requiring later decisions
-are pile reaction/nodal/bearing and companion-code boundaries, plus raft soil-
-structure/FEM requirements. Do not guess them.
+## 7. INDIA-2 final boundary
 
-## 8. Recorded truth defects — required later packet
+Only after all accepted/held family decisions and issue packets are integrated:
 
-Do not mix these cross-cutting repairs into foundation-family packets. Create one bounded
-`INDIA-2-TRUTH-HYGIENE` packet after all family decisions and before the broad
-closeout:
+1. reconcile plans, task board, public docs, capability/semantic declarations,
+   generated manifest, and an evidence index for every accepted family;
+2. run the broad Python suite once with `./run.sh test`;
+3. run the canonical full repository gate once with `./run.sh check`;
+4. run complete FastAPI/public-contract and maintained packaging/OpenAPI checks
+   selected by the gate;
+5. independently audit the exact final head/tree, require all hosted checks
+   green, merge unchanged, and verify the integrated tree; and
+6. report local-work, CI-wait, closeout, and total elapsed time.
 
-- `clauses.json` currently labels `26.5.1.1` as minimum shear reinforcement,
-  but the controlled IS 456 source identifies it as beam tension
-  reinforcement. The origin of the stale metadata entry is unconfirmed.
-- the controlled source contains Clause 38.1 and Annex G-1.1 for the relevant
-  flexural solution, but the registry and legacy beam decorators retain a
-  `38.2` identity. COMBINED-B correctly avoids it; a broad migration/removal was
-  out of B scope. The historical reason for the fabricated identity is
-  unconfirmed.
+Using the cadence quoted by the owner: focused gates per packet, with the broad
+Python and 30-check gates only at the final INDIA-2 integration boundary unless
+a repository-wide failure forces them earlier.
 
-Trace every live `38.2` consumer before changing it. Correct exact metadata and
-decorators only where the controlled source supports the replacement, update
-traceability expectations, regenerate the manifest once, and prove zero
-registration-only/unknown contradictions. Do not use a mass textual replace.
+## 8. Later dependency program
 
-## 9. INDIA-2 final closeout
+Keep the seven current Dependabot PRs separate from INDIA-2. Refresh them as
+five compatibility groups rather than merging stale branches independently:
 
-Only after combined acceptance and every remaining foundation decision/GO
-packet is integrated:
+1. Python typing: #715 and #717 together;
+2. ESLint 10 toolchain: #683 and #713 together;
+3. React build major: #684, held until Vite/toolchain compatibility is proved;
+4. Node type/runtime policy: #714, held while runtime remains Node 24; and
+5. Framer Motion 13: #716 with focused live motion verification.
 
-1. reconcile the execution plan, completion waves, task board, next-session
-   brief, public API docs, capability declarations, semantic contract, and
-   generated manifest;
-2. build an INDIA-2 evidence index mapping every accepted family to source,
-   benchmark, public workflow/route, PR, checks, and integrated tree;
-3. run the broad Python suite once with `./run.sh test`;
-4. run the canonical 30-check repository gate once with `./run.sh check`;
-5. run complete FastAPI/public-contract tests and any closeout-only packaging
-   or OpenAPI gates selected by the maintained 30-check command;
-6. independently audit the exact final tree, require all hosted checks green,
-   and merge unchanged; and
-7. report total elapsed workflow time, including CI and closeout.
+Closing or superseding any old PR requires explicit owner approval. Each actual
+upgrade uses a fresh lane, focused compatibility hypothesis, owned lockfiles,
+complete affected-stack validation, exact-head hosted checks, and its own merge
+receipt.
 
-Do not claim whole-standard coverage, professional approval, stable release,
-package publication, tag/release authority, INDIA-3/4 completion, or
-engineering-use authorization.
+## 9. Required return format
 
-## 10. Efficiency and return format
-
-- Read this plan and the current family-acceptance evidence; do not reload large
-  historical logs.
-- Start with folder indexes and targeted `rg`; discover signatures instead of
-  guessing paths/names.
-- Run focused gates once per packet; broad gates only at final closeout unless
-  a confirmed repository-wide outcome-changing failure forces them earlier.
-- Using the cadence quoted by the owner: focused gates per packet, with the
-  broad Python and 30-check gates only at the final INDIA-2 integration
-  boundary unless a repository-wide failure forces them earlier.
-- Record every encountered material issue. If intentionally left out of scope,
-  record symptom/impact, confirmed root cause or `unconfirmed`, why it was not
-  changed, and the follow-up packet/reactivation condition.
-- Keep one writer and one immutable read-only audit; preserve every other lane.
-
-At each handoff return: packet/status, base/head/tree, source binding, changed
-paths, benchmark and unsafe results, focused test/gate counts, issues/root
-causes/resolutions including deferred items, capability/endpoint truth,
-review/release/cleanup boundaries, PR/check/merge receipts, and the exact next
-packet.
+For every packet report: task/status, base/head/tree, source binding, exact
+changed paths, focused counts, issues and confirmed/unconfirmed root causes,
+implemented correction and proof, retained holds, capability/endpoint truth,
+review/release/cleanup boundaries, PR/check/merge receipts, elapsed workflow
+time, and the one exact next packet.

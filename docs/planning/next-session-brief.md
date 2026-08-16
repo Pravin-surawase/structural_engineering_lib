@@ -4,127 +4,97 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Strap footing accepted within its bounded case; stop before pile-cap G0
-- Combined acceptance: PR #792 squash-merged as 8e039b112e38436fcae36326b46afa9c436fb970; tree=873aea4cdca8aa9633b30a7c9b74138e5a73a6ce
-- STRAP-G0: PR #793 squash-merged as 70cd2894485d88b72d22544ee18533733789d0f1; audited tree=60d5636265e157e723236909b1de7f582791b297
-- STRAP-A: PR #794 squash-merged as c410b28024e44e3e2670c8b359b69ae29165f2ae; audited tree=08899dbedd35e3d0b0e2c9ba2e78813d87be1f70
-- STRAP-B: PR #795 squash-merged as ec6a81b32b9fc2ae227d041ec19bb848a99ac3eb; audited tree=02f3a5c0bd0de0afbda6ca3ab128b40283efde5e
-- STRAP-C: PR #796 squash-merged as e3e4b2ae5d6559472c2e6595ce05d36887b32a1c; audited tree=40040d5433b38b6c322bb1f6a789cab1bc5e2872
-- STRAP-D: PR #797 squash-merged as b75daa970b2976cbd5d51e9a951926a7946d5fa6; audited tree=af2695a815bb0a71898d58e98a70109b7dd5c2b4
-- STRAP acceptance: frozen and non-frozen replay, G0-D truth, retained holds, and focused gates bound without widening scope
-- Next action: STOP; when separately resumed, begin only PILE-CAP-G0 decision
+- Focus: Git reconciliation and confirmed issue repairs before new foundation work
+- Baseline: origin/main f56e1ec312902caf98e872c77ce8b71bdbc8440e; strap acceptance PR #798 merged with audited tree equality
+- Truth: 13 supported / 8 held; 81/81 endpoints directly tested
+- Preserved primary: f87c8a32, nine behind, only .codex/config.toml dirty with low-to-medium verbosity intent
+- Preserved e54a: detached 0fdb48ed, only docs/SESSION_LOG.md dirty; no cleanup authorization
+- Git correction: GIT-7E PR #751 and orchestration PR #752 are merged; parent status is reconciled and Phase 8 must verify adoption/current disposition facts
+- Issue correction: Clause 26.5.1.1 metadata was already fixed in STRAP-B and is not future work
+- Confirmed issues: JSON frontmatter mode falsely exits zero; eight invalid records remain; live beam provenance still carries unsupported 38.2
+- Next action: begin only GIT-001-P8-RECONCILIATION in a fresh current-main lane; no cleanup
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-16
 
-| Release state | Target |
+| State | Boundary |
 |---|---|
-| **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
-| **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Stop after strap acceptance; only a later resumed task begins decision-only `INDIA-2-FOUNDATION-PILE-CAP-G0` |
+| **Current** | `v0.23.1a1` Alpha; bounded wall, stair, deep, flat/punching, combined-footing, and strap-footing families complete |
+| **Next** | Git Phase 8 reconciliation, then issue repairs |
+| **Later** | Decision-only pile-cap G0, raft G0, accepted GO packets, INDIA-2 broad closeout |
+| **Held** | Cleanup/deletion, release, React expansion, professional approval, dependency majors |
 
 ## Required Reading
 
-1. [Next-session publication and closeout plan](india-2-next-session-publication-and-closeout-plan.md)
-2. [INDIA-2 remaining-elements execution plan](india-2-remaining-is456-elements-plan.md)
-3. [STRAP focused family acceptance](../verification/india-2-foundation-strap-family-acceptance-evidence.md)
-4. [STRAP-D publication evidence](../verification/india-2-foundation-strap-d-publication-evidence.md)
-5. [STRAP-G0 scope decision](../verification/india-2-foundation-strap-g0-scope-evidence.md)
-6. [Combined focused family acceptance](../verification/india-2-foundation-combined-family-acceptance-evidence.md)
-7. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
-8. [Current task board](../TASKS.md)
-9. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+1. [Next-session Git/issues/INDIA-2 plan](india-2-next-session-publication-and-closeout-plan.md)
+2. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
+3. [GIT-001 index](../research/git-governance/GIT-001-README.md)
+4. [GIT-001 disposition plan](../research/git-governance/GIT-001-next-agent-disposition-plan.md)
+5. [INDIA-2 remaining-elements plan](india-2-remaining-is456-elements-plan.md)
+6. [Strap family acceptance](../verification/india-2-foundation-strap-family-acceptance-evidence.md)
+7. [Current task board](../TASKS.md)
 
-## Start Boundary
+## Exact start
 
-The historical INDIA-2A-D packets and their cumulative software gate are the
-completed `INDIA-2-STAIR` family. Do not reopen them, add another stair topology,
-add React, or begin release work without a new owner-approved scope.
-
-`INDIA-2-WALL`, `INDIA-2-STAIR`, `INDIA-2-DEEP`, `INDIA-2-FLAT`,
-`INDIA-2-FOUNDATION-COMBINED`, and `INDIA-2-FOUNDATION-STRAP` are accepted only
-within their recorded bounded cases. Do not reopen or expand those families
-during later foundation decisions.
+Create a fresh `codex/git-001-phase8-reconciliation` worktree from fetched,
+verified `origin/main`; do not use the dirty primary or retained `e54a` lane.
 
 ```bash
-./run.sh session brief --agent orchestrator
+./run.sh session brief --agent ops
 ./run.sh session start
 ./scripts/python_runtime.sh --diagnose
 ./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
-./scripts/python_runtime.sh scripts/generate_indian_code_manifest.py --check
 ```
 
-Require a clean fresh branch from verified current `origin/main` and
-`source_bound=true`. Preserve every unrelated worktree. Branch, remote-ref, or
-worktree cleanup remains a separate exact-target authorization.
-The foreign retained `e54a` worktree was last observed detached with one dirty
-path; its ownership/root cause are unconfirmed, and the next INDIA-2 packet
-must not use or mutate it.
+Require `source_bound=true`, `READY_LOCAL`, no operation marker, and an exact
+current-main base. Refresh GitHub PR evidence before making a current claim.
 
-## INDIA-2-FLAT acceptance result
+## Packet order
 
-[`india-2-flat-e-publication-evidence.md`](../verification/india-2-flat-e-publication-evidence.md)
-and [`india-2-flat-family-acceptance-evidence.md`](../verification/india-2-flat-family-acceptance-evidence.md)
-record the accepted regular interior direct-design and concrete-only punching
-workflow, exact public truth, independent benchmark, nested semantic contract,
-and focused gates. PR #785 integrated publication and PR #786 accepted the
-family. Unequal/exterior/drop/head/opening, patterned-load, moment-transfer,
-punching-reinforcement, equivalent-frame, and FEM cases remain held.
+1. `GIT-001-P8-RECONCILIATION`
+   - bind PR #751/#752 and verify the reconciled GIT-7E/task status;
+   - prove adoption using recent immutable-head receipts;
+   - classify primary/e54a/other lanes read-only;
+   - ask for explicit owner decisions where required;
+   - perform no synchronization, reset, stash, deletion, branch closure, or
+     worktree removal.
+2. `DOC-FRONTMATTER-CONTRACT`
+   - make JSON output return nonzero when invalid records exist;
+   - add direct regression coverage;
+   - repair exactly the eight currently invalid lifecycle/doc-type records;
+   - do not bulk-add frontmatter to 60 permitted legacy documents.
+3. `INDIA-2-TRUTH-HYGIENE-38-2`
+   - trace all live metadata/decorator/provenance/arithmetic consumers;
+   - rebind supported source identities;
+   - benchmark the legacy flexure approximation against exact equilibrium;
+   - change arithmetic only when main-process outcome evidence requires it.
+4. Decision-only `PILE-CAP-G0`, then any owner-accepted GO chain.
+5. Decision-only `RAFT-G0`, then any owner-accepted GO chain.
+6. `INDIA-2-CLOSEOUT` with broad Python and the full 30-check gate once.
+7. Post-INDIA-2 dependency-major compatibility packets only afterward.
 
-## INDIA-2-FOUNDATION-COMBINED G0/A-D result
+## Owner-decision boundaries
 
-[`india-2-foundation-combined-g0-scope-evidence.md`](../verification/india-2-foundation-combined-g0-scope-evidence.md)
-records GO for exactly two identical square columns with equal concentric loads
-on one symmetric rigid rectangular constant-depth footing under externally
-approved uniform pressure. Its independent benchmark covers equilibrium,
-bearing, longitudinal/transverse actions, flexure/detailing, one-way and
-two-way shear, bearing/dowels, and anchorage. General/asymmetric soil
-interaction, capacity/settlement calculation, and public capability remain
-held. [`india-2-foundation-combined-a-analysis-evidence.md`](../verification/india-2-foundation-combined-a-analysis-evidence.md)
-records the typed eligibility, service gross and factored gross/net pressure,
-resultant alignment, whole-width critical-section actions, transverse actions,
-equilibrium closure, and fail-closed contracts.
-[`india-2-foundation-combined-b-strength-evidence.md`](../verification/india-2-foundation-combined-b-strength-evidence.md)
-records flexure/minimum/provided steel, spacing/cover/anchorage, one-way shear,
-concrete-only punching, bearing/dowels, exact compression development, valid
-`FAIL`, unsupported fail-closed behavior, provenance correction, and review
-boundary. [`india-2-foundation-combined-c-public-workflow-evidence.md`](../verification/india-2-foundation-combined-c-public-workflow-evidence.md)
-records the canonical typed composition, immutable public types, executable
-benchmark, complete caller-basis provenance, retained holds, and public API
-docs. [`india-2-foundation-combined-d-publication-evidence.md`](../verification/india-2-foundation-combined-d-publication-evidence.md)
-records the strict nested transport, thin public route, exact OpenAPI drift,
-and capability/semantic/manifest promotion to one supported bounded workflow.
-[`india-2-foundation-combined-family-acceptance-evidence.md`](../verification/india-2-foundation-combined-family-acceptance-evidence.md)
-records the integrated G0/A-D chain, frozen and independent non-frozen
-benchmarks, valid failures, every maintained fail-closed boundary, truthful
-public surface, focused gates, and retained review/approval holds.
+- Primary `.codex/config.toml`: publish `medium` from a fresh lane, retain it
+  local-only, or explicitly authorize discard. No option is inferred.
+- `e54a`: retain until named ownership/retention evidence and an exact
+  classifier receipt exist. Even pending approval does not authorize deletion.
+- Closing dependency PRs, deleting branches/worktrees, release/tag/package
+  publication, and professional approval require separate authority.
 
-## Review and gate boundary
+## Gate cadence
 
-Each calculation packet requires focused tests, benchmarks, architecture and PR
-checks, plus the quick gate. The expensive full Python and 30-check gate runs
-once after the whole accepted INDIA-2 wave is integrated unless an
-outcome-changing repository-wide issue appears earlier.
+Using the cadence quoted by the owner: focused gates per packet, with the broad
+Python and 30-check gates only at the final INDIA-2 integration boundary unless
+a repository-wide failure forces them earlier.
 
-Using the accepted cadence: run focused gates for every packet, with broad
-Python and the full 30-check repository gate only at the final INDIA-2
-integration boundary unless a confirmed repository-wide failure forces them
-earlier.
+Each packet still requires focused tests, root-cause proof, architecture/import
+checks where relevant, quick `10/10`, normal hooks, exact-head review, hosted
+checks, merge-tree verification, and a session entry containing `Issues
+encountered` plus `Root causes and resolutions`.
 
-Flat-slab, combined-footing, and strap-footing acceptance are complete without
-expanding topology or adding React. Pile-cap and raft remain later G0 decisions.
-The two deferred clause-registry truth defects are recorded in the next-session
-plan and must not be mixed into foundation-family decisions.
+## Stop rule
 
-Cumulative qualified structural-engineering review belongs to INDIA-4 after the
-accepted INDIA-2 and INDIA-3 scope is frozen. Packet-level source and engineering
-checks still occur before each implementation GO. Software completion does not
-grant professional approval, stable-release authorization, engineering-use
-authorization, or cleanup authority.
-
-## Exact next action
-
-Stop after the strap acceptance packet merges unchanged. When the owner resumes
-foundation work, verify current `origin/main` and create a fresh decision-only
-pile-cap G0 lane. Do not begin pile-cap implementation in that decision packet.
-React, broad Python, and the 30-check gate remain outside family G0 work.
+The next session starts only GIT-001 Phase 8 reconciliation. Do not begin the
+frontmatter fix, Clause 38.2 repair, pile-cap, raft, dependency update, broad
+gate, or cleanup in the same packet.
