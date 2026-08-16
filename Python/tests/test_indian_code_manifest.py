@@ -141,6 +141,9 @@ def test_strap_footing_supported_truth_tracks_publication_chain() -> None:
     assert "india-2-foundation-strap-d-publication-evidence.md" in " ".join(
         strap["evidence"]
     )
+    assert "india-2-foundation-strap-family-acceptance-evidence.md" in " ".join(
+        strap["evidence"]
+    )
 
 
 def test_is456_and_is13920_registration_cannot_cross_match() -> None:

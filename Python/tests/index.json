@@ -2548,7 +2548,7 @@
     {
       "name": "test_indian_code_manifest.py",
       "type": "python",
-      "size_lines": 189,
+      "size_lines": 192,
       "last_updated": "2026-08-16",
       "description": "INDIA-0 truth-manifest and reporting contract tests.",
       "functions": [
@@ -2581,7 +2581,7 @@
         "REPO_ROOT",
         "SCRIPTS_ROOT"
       ],
-      "content_hash": "840a2edd11aa"
+      "content_hash": "819fe1971e7c"
     },
     {
       "name": "test_inputs.py",
@@ -4733,5 +4733,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "18bb1105736061d3"
+  "content_hash": "70fc10191d4fd4a3"
 }

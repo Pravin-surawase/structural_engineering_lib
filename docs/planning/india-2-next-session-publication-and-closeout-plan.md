@@ -12,27 +12,24 @@ doc_type: spec
 
 ## 1. Immediate objective and stop boundary
 
-COMBINED-C/D and focused family acceptance are integrated. STRAP-G0 returned
-GO for one source-bound property-line two-footing model with equal uniform net
-pressure, a straight no-soil-contact strap, explicit service/factored actions,
-and externally verified footing slabs. STRAP-A implements its bounded statics,
-bearing, clear-strap actions, and exact equilibrium; STRAP-B implements exact
-strap strength and detailing; STRAP-C publishes the typed Python composition;
-STRAP-D publishes the REST/capability/semantic/manifest truth. The next packet
-is focused strap family acceptance after D merges unchanged with required
-checks green.
+Combined-footing and strap-footing G0/A-D plus focused family acceptance are
+integrated within their separate written boundaries. Strap acceptance binds
+the property-line two-footing model with equal uniform net pressure, a straight
+no-soil-contact strap, explicit service/factored actions, externally verified
+footing slabs, frozen and non-frozen replay, public truth, and retained holds.
+The next packet is the separate decision-only
+`INDIA-2-FOUNDATION-PILE-CAP-G0`, but strap acceptance stops before starting it.
 
-Finish the bounded strap sequence A -> B -> C -> D -> focused acceptance, one
-fresh lane and focused gate at a time. Stop before pile-cap G0. Do not add
-automatic footing strength/sizing, raft, broad Python, full 30-check, React,
-release, cleanup, or professional-approval work inside the strap sequence.
+Do not add automatic footing strength/sizing, pile-cap implementation, raft,
+broad Python, full 30-check, React, release, cleanup, or professional-approval
+work inside the completed strap sequence.
 
 The complete remaining order is:
 
 1. `COMBINED-C` — typed public Python workflow.
 2. `COMBINED-D` — thin FastAPI transport and truthful capability publication.
 3. `COMBINED-ACCEPTANCE` — focused cumulative family acceptance, complete.
-4. `STRAP-G0` -> A -> B -> C -> D -> focused family acceptance.
+4. `STRAP-G0` -> A -> B -> C -> D -> focused family acceptance, complete.
 5. Separate `PILE-CAP-G0` and `RAFT-G0` decisions, preserving any accepted
    `HOLD` with a blocker and reactivation condition.
 6. Implement only owner-accepted later `GO` cases.
@@ -42,11 +39,12 @@ The complete remaining order is:
 
 ## 2. Verified inherited state
 
-At the merged COMBINED-D baseline:
+At the focused strap-acceptance baseline:
 
 - wall, staircase, deep-beam, and flat-slab/punching bounded families are
   accepted;
-- combined-footing G0/A-D are integrated within one symmetric two-column case;
+- combined- and strap-footing G0/A-D are integrated and focused-accepted within
+  their separate bounded cases;
 - generated truth after STRAP-D is `13 supported / 8 held`, and the bounded
   combined- and strap-footing workflows are supported while alternate systems
   remain held;
@@ -70,6 +68,10 @@ At the merged COMBINED-D baseline:
   `efba5971017b03e14e3b2f30fd40750f8fc68987` as
   `079ca22b00744ca9b01f859be0b64333b5830fcb`, with seven hosted checks passing,
   one correctly skipped, and none failing; and
+- PR #797 squash-merged STRAP-D as
+  `b75daa970b2976cbd5d51e9a951926a7946d5fa6`, exactly matching audited tree
+  `af2695a815bb0a71898d58e98a70109b7dd5c2b4`, after both hosted FastAPI root
+  causes were corrected and all required checks passed; and
 - public distribution permission is already recorded and must not be requested
   again. No release, tag, package publication, branch deletion, or worktree
   cleanup is authorized.
@@ -85,14 +87,18 @@ Required evidence:
 - [combined C public workflow](../verification/india-2-foundation-combined-c-public-workflow-evidence.md)
 - [combined D publication](../verification/india-2-foundation-combined-d-publication-evidence.md)
 - [combined focused family acceptance](../verification/india-2-foundation-combined-family-acceptance-evidence.md)
+- [strap G0 scope](../verification/india-2-foundation-strap-g0-scope-evidence.md)
+- [strap D publication](../verification/india-2-foundation-strap-d-publication-evidence.md)
+- [strap focused family acceptance](../verification/india-2-foundation-strap-family-acceptance-evidence.md)
 - [generated capability truth](../verification/indian-code-capability-coverage.json)
 - [INDIA-2 execution plan](india-2-remaining-is456-elements-plan.md)
 - [canonical Git workflow](../git-automation/git-workflow-single-source.md)
 
 ## 3. Start commands and Git boundary
 
-Run from a fresh `codex/india-2-foundation-combined-acceptance` worktree created
-from verified merged-D `main`:
+Only when the owner resumes the next foundation decision, run from a fresh
+`codex/india-2-foundation-pile-cap-g0` worktree created from verified current
+`main`:
 
 ```bash
 ./run.sh session brief --agent reviewer
@@ -231,9 +237,9 @@ gate. Do not add another topology or implementation during acceptance.
 
 ## 7. Remaining foundation decisions
 
-After combined acceptance, STRAP-G0 returned GO and activated its A/B/C/D/
-acceptance sequence. Finish that bounded sequence before starting the remaining
-decision-only packets in this order:
+Combined and strap acceptance are complete. Start neither implementation nor
+source claims for the remaining foundation systems until their separate
+decision-only packets run in this order:
 
 1. `INDIA-2-FOUNDATION-PILE-CAP-G0`;
 2. `INDIA-2-FOUNDATION-RAFT-G0`.
@@ -256,7 +262,7 @@ structure/FEM requirements. Do not guess them.
 
 ## 8. Recorded truth defects — required later packet
 
-Do not mix these cross-cutting repairs into COMBINED-C/D. Create one bounded
+Do not mix these cross-cutting repairs into foundation-family packets. Create one bounded
 `INDIA-2-TRUTH-HYGIENE` packet after all family decisions and before the broad
 closeout:
 
@@ -298,12 +304,15 @@ engineering-use authorization.
 
 ## 10. Efficiency and return format
 
-- Read this plan and the three combined evidence files; do not reload large
+- Read this plan and the current family-acceptance evidence; do not reload large
   historical logs.
 - Start with folder indexes and targeted `rg`; discover signatures instead of
   guessing paths/names.
 - Run focused gates once per packet; broad gates only at final closeout unless
   a confirmed repository-wide outcome-changing failure forces them earlier.
+- Using the cadence quoted by the owner: focused gates per packet, with the
+  broad Python and 30-check gates only at the final INDIA-2 integration
+  boundary unless a repository-wide failure forces them earlier.
 - Record every encountered material issue. If intentionally left out of scope,
   record symptom/impact, confirmed root cause or `unconfirmed`, why it was not
   changed, and the follow-up packet/reactivation condition.
