@@ -512,7 +512,9 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
         sub_files = [
             f
             for f in sub_files
-            if f.is_file() and not any(skip in f.parts for skip in SKIP_DIRS)
+            if f.is_file()
+            and not any(part.startswith(".") for part in f.relative_to(d).parts)
+            and not any(skip in f.parts for skip in SKIP_DIRS)
         ]
         sub_info["file_count"] = len(sub_files)
 

@@ -1063,6 +1063,28 @@ def test_generated_index_hash_ignores_filesystem_mtime(
     assert initial["content_hash"] == updated["content_hash"]
 
 
+def test_generated_index_hash_ignores_hidden_subfolder_artifacts(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    generator = importlib.import_module("scripts.generate_enhanced_index")
+    parent = tmp_path / "parent"
+    child = parent / "child"
+    child.mkdir(parents=True)
+    (child / "visible.md").write_text("# Visible\n", encoding="utf-8")
+    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
+
+    initial = generator.scan_folder_enhanced(parent)
+    (child / ".draft.md.swp").write_text("editor state\n", encoding="utf-8")
+    hidden_dir = child / ".editor"
+    hidden_dir.mkdir()
+    (hidden_dir / "state.json").write_text("{}\n", encoding="utf-8")
+    updated = generator.scan_folder_enhanced(parent)
+
+    assert initial["subfolders"][0]["file_count"] == 1
+    assert updated["subfolders"][0]["file_count"] == 1
+    assert initial["content_hash"] == updated["content_hash"]
+
+
 def test_index_generator_requires_opt_in_for_new_index_folder(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

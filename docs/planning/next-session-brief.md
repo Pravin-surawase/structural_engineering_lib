@@ -9,7 +9,7 @@
 - Cleanup: candidate set `POST-INDIA2-2499DF4ADE0DF704` completed 193/193 exact actions and recovered 8,388,911,104 bytes
 - Retained: dirty detached `e54a`, Excel, `gh-pages`, Dependabot/open-PR heads, and every non-candidate or evidence-incomplete lane remain retained or held
 - Maintenance: five stale count occurrences refreshed; session and task history compacted without loss; `_active` has no multi-session plans
-- Indexes: freshness ignores filesystem timestamps recursively; writes are affected-folder only; the existing Monday workflow audits all 32 indexes without writing
+- Indexes: freshness ignores filesystem timestamps and hidden local artifacts recursively; writes are affected-folder only; the existing Monday workflow audits all 32 indexes without writing
 - Truth: 13 supported / 8 held; 81/81 endpoints directly tested; pile-cap and raft remain `HELD / NOT_IMPLEMENTED`
 - Next action: owner-selected work only; INDIA-3, dependency, release, further cleanup, and professional approval require separate activation
 <!-- HANDOFF:END -->
@@ -52,8 +52,9 @@ equality with fetched `origin/main` before editing.
 2. PR #808 recorded exact cleanup execution and retained-lane postconditions.
 3. MAINT-010 refreshed generated truth, compacted history, archived superseded
    plans, and ran the overdue monthly evolution review without applying changes.
-4. The bounded index follow-up removed cross-worktree `mtime` drift, migrated
-   the 32 maintained hashes once, and added a weekly read-only freshness audit.
+4. The bounded index follow-up removed cross-worktree `mtime` and hidden local
+   artifact drift, migrated the maintained hashes, froze repository mutations
+   before PR creation, and added a weekly read-only freshness audit.
 5. No structural arithmetic, API/React behavior, dependency, release, INDIA-3,
    or professional-approval claim changed.
 
