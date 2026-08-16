@@ -5,6 +5,78 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FOUNDATION-COMBINED-G0 Scope Decision
+
+**Agent:** Codex (`structural-engineer`, sole writer; one bounded independent
+exact-head audit after the candidate is committed)
+
+**Branch:** `codex/india-2-foundation-combined-g0` from accepted flat-slab main
+at `3f82e7e26b6df60a7c18dff90aa9f4d00c42bcfe`
+
+**Git handoff receipt:** `docs/verification/india-2-foundation-combined-g0-git-handoff-receipt.json`
+
+**Focus:** Decide one source-bounded combined-footing case before calculation
+code and preserve every alternate foundation analysis model as held.
+
+### Summary
+
+- Returned GO for exactly two equal-load symmetric square columns on one rigid
+  rectangular constant-depth footing under caller-approved uniform pressure.
+- Froze an independent service-bearing, equilibrium, longitudinal/transverse
+  action, flexure, shear, punching, transfer, and anchorage benchmark before
+  product code.
+- Activated COMBINED-A through D plus focused family acceptance while keeping
+  the public capability held until implementation and publication pass.
+
+### Issues encountered
+
+- The first worktree command was configured to run inside the not-yet-created
+  target worktree, so command launch stopped before Git ran.
+- Controlled source PDF paths are intentionally absent from linked worktrees.
+  A relative source hash/read in this lane therefore failed.
+- The repository-bound Python environment does not contain `pypdf`, which was
+  needed only for bounded source inspection and not for product execution.
+- The first verification-index check was stale after the Git handoff receipt
+  was created later than the initial index generation.
+
+### Root causes and resolutions
+
+- Root cause: the shell working directory must exist before
+  `git worktree add` can create its target. Resolution: rerun the same bounded
+  worktree-add command from the verified primary checkout. Evidence: the new
+  lane binds to base `3f82e7e2`, reports `source_bound=true`, and began clean.
+  ⚠️ TERMINAL ISSUE: command launch used a not-yet-created worktree as cwd →
+  reran from the verified primary checkout.
+- Root cause: controlled PDFs are primary-checkout evidence rather than copied
+  linked-worktree artifacts. Resolution: use their canonical absolute primary-
+  checkout paths for hashes and read-only review without copying them into the
+  lane. Evidence: both controlled SHA-256 identities match the registered
+  evidence, and no PDF or page image appears in the Git diff.
+- Root cause: PDF tooling is a workspace artifact dependency, not a repository
+  runtime dependency. Resolution: use the bundled read-only PDF runtime and
+  Poppler located by the workspace dependency loader; do not mutate repository
+  dependencies. Evidence: the relevant Clause 34 pages and all three Amendment
+  6 pages were inspected, the amendment has no Clause 34 change, and the
+  product dependency files remain unchanged.
+- Root cause: the receipt is a new verification artifact and therefore changed
+  the child-folder hash after the earlier index generation. Resolution:
+  regenerate the verification index and then its parent docs index after the
+  receipt exists. Evidence: verification, planning, and parent-docs index
+  checks all pass with current hashes.
+
+### Validation
+
+- Independent replay of every frozen arithmetic value passed to absolute
+  tolerance `1e-9` (displayed reinforcement values `1e-6`).
+- Eleven deterministic manifest/API-manifest tests and the generated-manifest
+  check passed; truth remains 11 supported and 10 held families.
+- Architecture reported 0/186 violations, imports 0/623 broken, all 1,218
+  internal links valid, all touched indexes current, token efficiency PASS,
+  and the quick repository gate 10/10.
+- Broad Python and the full 30-check gate remain deferred to final INDIA-2
+  closeout; this decision-only packet exposed no repository-wide reason to run
+  them early.
+
 ## 2026-08-16 — Session: INDIA-2-FLAT Focused Family Acceptance
 
 **Agent:** Codex (`reviewer`, sole writer; one bounded independent exact-head

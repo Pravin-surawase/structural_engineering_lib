@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — INDIA-2-FLAT is accepted within its bounded regular-interior case; combined-footing G0 is next
+**Updated:** 2026-08-16 — Combined-footing G0 is GO for one symmetric rigid rectangular case; COMBINED-A is next
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| INDIA-2-FOUNDATION-COMBINED-G0 | Decide one bounded combined-footing analysis model, source set, benchmark, units, and fail-closed exclusions before code | Main Agent + structural engineer | 🚧 ACTIVE — decision-only; no calculation or capability claim before GO |
+| INDIA-2-FOUNDATION-COMBINED-A | Implement the G0-frozen typed geometry/action contract and rigid uniform-pressure action model | Main Agent + structural math | 🚧 NEXT — activate only after G0 exact-head review and merge; strength and public capability remain held |
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
 
 ## Up Next
@@ -159,6 +159,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-FOUNDATION-COMBINED-G0 | Froze one symmetric equal-load two-column rigid rectangular footing under caller-approved uniform pressure with a pre-implementation benchmark | Main Agent + structural engineer | ✅ GO — COMBINED-A-D activated; general/asymmetric soil interaction and public capability remain held |
 | INDIA-2-FLAT | Implemented and accepted one bounded regular-interior direct-design flat-slab and concrete-only punching workflow with public provenance | Main Agent + structural engineer | ✅ DONE — G0 and A-E integrated; 214-test focused family selection and independent hand benchmark pass; qualified review and excluded flat-slab systems remain held |
 | INDIA-2-FLAT-E | Published the typed Python composition, thin REST route, capability/semantic truth, deterministic manifest promotion, and publication evidence | Main Agent + API developer | ✅ INTEGRATED — PR #785 merged as `b04d8065`; supported case is 11/21 manifest truth and all 79 routes have direct tests |
 | INDIA-2-FLAT-D | Added centred square interior-column punching demand, concrete-only capacity, and both redesign boundaries | Main Agent + structural math | ✅ INTEGRATED — PR #784 merged as `d1884946`; frozen reaction/perimeter/stress/utilization and fail-closed cases pass |

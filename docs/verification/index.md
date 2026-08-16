@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-16
-**Files:** 85
+**Files:** 88
 
 ## Config Files
 
@@ -40,6 +40,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [india-2-flat-e-git-handoff-source-evidence.json](india-2-flat-e-git-handoff-source-evidence.json)
 - [india-2-flat-g0-git-handoff-receipt.json](india-2-flat-g0-git-handoff-receipt.json)
 - [india-2-flat-g0-git-handoff-source-evidence.json](india-2-flat-g0-git-handoff-source-evidence.json)
+- [india-2-foundation-combined-g0-git-handoff-receipt.json](india-2-foundation-combined-g0-git-handoff-receipt.json)
+- [india-2-foundation-combined-g0-git-handoff-source-evidence.json](india-2-foundation-combined-g0-git-handoff-source-evidence.json)
 - [india-2-plan-git-handoff-receipt.json](india-2-plan-git-handoff-receipt.json)
 - [india-2-plan-git-handoff-source-evidence.json](india-2-plan-git-handoff-source-evidence.json)
 - [india-2-wall-acceptance-git-handoff-receipt.json](india-2-wall-acceptance-git-handoff-receipt.json)
@@ -80,6 +82,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [india-2-flat-e-publication-evidence.md](india-2-flat-e-publication-evidence.md) |  | FLAT-E composes the integrated FLAT-A-D calculations into th | 93 |
 | [india-2-flat-family-acceptance-evidence.md](india-2-flat-family-acceptance-evidence.md) |  | exact integrated G0/A-E starting head was b04d80653484a8dc43 | 100 |
 | [india-2-flat-g0-scope-evidence.md](india-2-flat-g0-scope-evidence.md) |  | interior panel in an equal-span orthogonal grid, designed by | 215 |
+| [india-2-foundation-combined-g0-scope-evidence.md](india-2-foundation-combined-g0-scope-evidence.md) |  | square reinforced-concrete columns carrying equal concentric | 226 |
 | [india-2-wall-a-axial-kernel-evidence.md](india-2-wall-a-axial-kernel-evidence.md) |  | WALL-A implements the pure IS 456 layer for the accepted Cla | 83 |
 | [india-2-wall-b-reinforcement-evidence.md](india-2-wall-b-reinforcement-evidence.md) |  | WALL-B adds one pure IS 456 provided-reinforcement check to  | 82 |
 | [india-2-wall-c-public-workflow-evidence.md](india-2-wall-c-public-workflow-evidence.md) |  | WALL-C publishes one canonical typed Python function, design | 80 |

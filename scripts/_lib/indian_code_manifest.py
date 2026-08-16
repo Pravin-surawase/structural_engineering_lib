@@ -94,15 +94,19 @@ _IS456_EVIDENCE = {
         "docs/verification/india-2-flat-e-publication-evidence.md",
         "docs/verification/india-2-flat-family-acceptance-evidence.md",
     ),
+    "combined_footing": (
+        "docs/verification/india-2-foundation-combined-g0-scope-evidence.md",
+    ),
 }
 
 _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
     "IS456:2000": (
         {
             "family": "combined_footing",
-            "claim": "Combined-footing design is not implemented.",
+            "claim": "Combined-footing design remains held while the G0-frozen symmetric two-column rigid rectangular case is implemented.",
             "limitations": [
-                "A distinct soil-pressure and structural analysis model is required."
+                "Only one equal-load symmetric two-column rectangular footing under externally approved uniform pressure is activated; no public calculation workflow exists yet.",
+                "Unequal/eccentric loads, trapezoidal plans, variable pressure, settlement, elastic-line, Winkler, plate, and FEM analysis remain held.",
             ],
         },
         {
