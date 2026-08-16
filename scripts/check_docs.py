@@ -184,7 +184,7 @@ def check_frontmatter(add_missing: bool = False, json_output: bool = False) -> i
 
     if json_output:
         print(json.dumps(report, indent=2))
-        return 0
+        return 1 if report["invalid_frontmatter"] else 0
 
     print("\n📊 Front-Matter Report")
     print(f"{'=' * 40}")

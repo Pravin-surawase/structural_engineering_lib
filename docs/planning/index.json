@@ -66,10 +66,10 @@
     {
       "name": "india-2-next-session-publication-and-closeout-plan.md",
       "type": "documentation",
-      "size_lines": 477,
+      "size_lines": 485,
       "last_updated": "2026-08-16",
-      "description": "Combined-footing and strap-footing G0/A-D plus focused family acceptance are integrated within their recorded bounded cases. GIT-001 Phase 8 closes through",
-      "content_hash": "765b5a9d9d5d"
+      "description": "Combined-footing and strap-footing G0/A-D plus focused family acceptance are integrated within their recorded bounded cases. GIT-001 Phase 8 is integrated,",
+      "content_hash": "72ea3444a492"
     },
     {
       "name": "india-2-remaining-is456-elements-plan.md",
@@ -93,7 +93,7 @@
       "size_lines": 1507,
       "last_updated": "2026-08-16",
       "description": "The Python package is the product. FastAPI, React, command-line workflows, reports, ETABS adapters, and future integrations are consumers of that product.",
-      "content_hash": "a4fd1d2c1971"
+      "content_hash": "8f28361ce673"
     },
     {
       "name": "is456-solid-slabs-master-plan.md",
@@ -131,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 114,
+      "size_lines": 112,
       "last_updated": "2026-08-16",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-16",
-      "content_hash": "bb5a4603d46d"
+      "content_hash": "9bfc93ac9fd4"
     },
     {
       "name": "pre-release-checklist.md",
@@ -173,5 +173,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "d4d7cc0c27996f68"
+  "content_hash": "06431246243bc566"
 }

@@ -1,7 +1,7 @@
 ---
 task: LIB-IS456-V1
 title: IS 456 Library-First Completion and PyPI Master Plan
-status: completed
+status: archived
 owner: Main Agent and repository owner
 created: 2026-08-09
 last_updated: 2026-08-16
