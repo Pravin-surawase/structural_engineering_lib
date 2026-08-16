@@ -164,12 +164,28 @@ def test_public_result_is_frozen_and_deterministic() -> None:
         first.status = services_api.PropertyLineStrapFootingDesignStatus.FAIL  # type: ignore[misc]
 
 
-def test_capability_and_semantic_truth_remain_held_during_c() -> None:
-    assert all(
-        item.element != "strap_footing"
+def test_capability_and_semantic_truth_publish_the_exact_workflow_in_d() -> None:
+    capability = next(
+        item
         for item in services_api.get_supported_is456_capabilities()
+        if item.element == "strap_footing"
     )
-    assert all(
-        item.workflow != "design_property_line_strap_footing_is456"
+    contract = next(
+        item
         for item in services_api.get_supported_is456_semantic_contract().workflows
+        if item.workflow == "design_property_line_strap_footing_is456"
     )
+
+    assert capability.public_workflows == ("design_property_line_strap_footing_is456",)
+    assert "no-soil-contact strap" in capability.supported_case
+    assert contract.element == "strap_footing"
+    assert {field.canonical_name for field in contract.fields} >= {
+        "request.footing.analysis.geometry",
+        "request.footing.analysis.actions",
+        "request.footing.analysis.approvals",
+        "strength.flexure",
+        "strength.side_face",
+        "strength.shear",
+        "qualified_review_required",
+    }
+    assert contract.statuses[0].canonical_name == "status"

@@ -54,6 +54,7 @@ from fastapi_app.routers import (
     optimization,
     rebar,
     staircase,
+    strap_footing,
     streaming,
     wall,
     websocket,
@@ -85,6 +86,7 @@ boundary and qualified engineering review.
 - **Deep-Beam Design**: Bounded Clause 29 simply supported positive-reinforcement checks
 - **Flat-Slab Design**: Bounded regular interior direct-design and punching checks
 - **Combined-Footing Design**: Bounded symmetric two-column rigid-footing checks
+- **Strap-Footing Design**: Bounded property-line no-soil-contact strap checks
 - **Detailing**: Reinforcement layout, spacing, and development lengths
 - **Optimization**: Cost-optimized beam cross-section selection
 - **Smart Analysis**: AI-assisted design suggestions and insights
@@ -149,6 +151,10 @@ API_TAGS_METADATA = [
     {
         "name": "combined-footing",
         "description": "Bounded symmetric two-column combined-footing checks and maintained evidence.",
+    },
+    {
+        "name": "strap-footing",
+        "description": "Bounded property-line strap-footing checks and maintained evidence.",
     },
     {
         "name": "detailing",
@@ -551,6 +557,10 @@ app.include_router(
 )
 app.include_router(
     combined_footing.router,
+    prefix=API_V1_PREFIX,
+)
+app.include_router(
+    strap_footing.router,
     prefix=API_V1_PREFIX,
 )
 app.include_router(

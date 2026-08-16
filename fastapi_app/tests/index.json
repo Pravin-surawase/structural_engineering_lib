@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "Tests for the FastAPI backend endpoints, authentication, WebSocket, and streaming.",
   "last_updated": "2026-08-16",
-  "file_count": 42,
+  "file_count": 43,
   "files": [
     {
       "name": "README.md",
@@ -225,7 +225,7 @@
     {
       "name": "test_capabilities.py",
       "type": "python",
-      "size_lines": 56,
+      "size_lines": 65,
       "last_updated": "2026-08-16",
       "description": "Cross-surface tests for canonical capability discovery.",
       "functions": [
@@ -242,7 +242,7 @@
           ]
         }
       ],
-      "content_hash": "3c6071713670"
+      "content_hash": "93ae886e459c"
     },
     {
       "name": "test_catalog.py",
@@ -1792,6 +1792,37 @@
       "content_hash": "9a68a1ca9c84"
     },
     {
+      "name": "test_strap_footing.py",
+      "type": "python",
+      "size_lines": 154,
+      "last_updated": "2026-08-16",
+      "description": "Contract tests for the bounded property-line strap-footing FastAPI slice.",
+      "functions": [
+        {
+          "name": "test_strap_footing_benchmark_returns_typed_pass_with_provenance"
+        },
+        {
+          "name": "test_strap_footing_rejects_unknown_nonfinite_and_held_scope"
+        },
+        {
+          "name": "test_strap_footing_service_validation_uses_safe_error_envelope"
+        },
+        {
+          "name": "test_strap_footing_valid_inadequacy_remains_json_safe_fail"
+        },
+        {
+          "name": "test_strap_footing_openapi_exposes_typed_success_schema"
+        },
+        {
+          "name": "test_strap_footing_is_mounted_in_main_app",
+          "params": [
+            "client"
+          ]
+        }
+      ],
+      "content_hash": "9b8baac81246"
+    },
+    {
       "name": "test_streaming.py",
       "type": "python",
       "size_lines": 276,
@@ -1959,5 +1990,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "5e80329ac0b19fc8"
+  "content_hash": "96e2731d8ebc210c"
 }

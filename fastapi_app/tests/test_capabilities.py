@@ -42,6 +42,15 @@ def test_capability_route_matches_python_contract(client: TestClient):
         "design_symmetric_combined_footing_is456"
     ]
     assert "two identical square columns" in combined_footing["supported_case"]
+    strap_footing = next(
+        item
+        for item in body["data"]["capabilities"]
+        if item["element"] == "strap_footing"
+    )
+    assert strap_footing["public_workflows"] == [
+        "design_property_line_strap_footing_is456"
+    ]
+    assert "no-soil-contact strap" in strap_footing["supported_case"]
 
 
 def test_capability_route_has_a_typed_openapi_success_schema(client: TestClient):

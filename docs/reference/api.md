@@ -4317,7 +4317,7 @@ strength, provenance, held-case, review, and false-approval result.
 
 ---
 
-## 23. Property-Line Strap-Footing Workflow — Development Preview
+## 23. Property-Line Strap-Footing Workflow
 
 ```python
 from structural_lib import (
@@ -4362,7 +4362,11 @@ Public support types are `api.PropertyLineStrapFootingDesignInput`,
 returns `FAIL`; unsupported input fails closed. The result always requires
 qualified review and never grants complete engineering approval.
 
-FastAPI publication remains held until STRAP-D.
+**FastAPI Endpoint:** `POST /api/v1/design/strap-footing/property-line`
+
+The transport uses strict nested request models, delegates all engineering
+calculations to the Python service, and returns the same bounded action,
+strength, provenance, held-case, review, and false-approval result.
 
 ---
 

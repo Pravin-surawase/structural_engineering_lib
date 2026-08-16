@@ -3,7 +3,7 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 21,
+  "file_count": 22,
   "files": [
     {
       "name": "__init__.py",
@@ -962,6 +962,62 @@
       "content_hash": "e748e2b911e6"
     },
     {
+      "name": "strap_footing.py",
+      "type": "python",
+      "size_lines": 366,
+      "last_updated": "2026-08-16",
+      "description": "Transport models for the bounded property-line strap-footing workflow.",
+      "classes": [
+        {
+          "name": "StrapFootingGeometryRequest"
+        },
+        {
+          "name": "StrapFootingActionRequest"
+        },
+        {
+          "name": "StrapFootingApprovalRequest"
+        },
+        {
+          "name": "StrapFootingAnalysisRequest"
+        },
+        {
+          "name": "StrapFootingMaterialRequest"
+        },
+        {
+          "name": "StrapFootingReinforcementRequest"
+        },
+        {
+          "name": "StrapFootingDesignRequest"
+        },
+        {
+          "name": "PropertyLineStrapFootingRequest",
+          "description": "Explicit approved-basis inputs for the sole strap-footing case."
+        },
+        {
+          "name": "StrapFootingGeometryResponse"
+        },
+        {
+          "name": "StrapFootingLoadCaseResponse"
+        },
+        {
+          "name": "StrapFootingClearSpanActionResponse"
+        },
+        {
+          "name": "StrapFootingAnalysisResponse"
+        },
+        {
+          "name": "StrapFootingFlexureResponse"
+        },
+        {
+          "name": "StrapFootingSideFaceResponse"
+        },
+        {
+          "name": "StrapFootingShearResponse"
+        }
+      ],
+      "content_hash": "6fa00708bbcc"
+    },
+    {
       "name": "wall.py",
       "type": "python",
       "size_lines": 110,
@@ -1059,5 +1115,5 @@
     "DuctilityCheckRequest",
     "DuctilityCheckResponse"
   ],
-  "content_hash": "f3121c0e1442948a"
+  "content_hash": "ef262c421aeb8a5c"
 }

@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-16
-**Files:** 107
+**Files:** 117
 
 ## Config Files
 
@@ -53,6 +53,12 @@ Benchmark examples and verification packs for validating library calculations ag
 - [india-2-foundation-combined-d-git-handoff-source-evidence.json](india-2-foundation-combined-d-git-handoff-source-evidence.json)
 - [india-2-foundation-combined-g0-git-handoff-receipt.json](india-2-foundation-combined-g0-git-handoff-receipt.json)
 - [india-2-foundation-combined-g0-git-handoff-source-evidence.json](india-2-foundation-combined-g0-git-handoff-source-evidence.json)
+- [india-2-foundation-strap-a-git-handoff-receipt.json](india-2-foundation-strap-a-git-handoff-receipt.json)
+- [india-2-foundation-strap-a-git-handoff-source-evidence.json](india-2-foundation-strap-a-git-handoff-source-evidence.json)
+- [india-2-foundation-strap-b-git-handoff-receipt.json](india-2-foundation-strap-b-git-handoff-receipt.json)
+- [india-2-foundation-strap-b-git-handoff-source-evidence.json](india-2-foundation-strap-b-git-handoff-source-evidence.json)
+- [india-2-foundation-strap-c-git-handoff-receipt.json](india-2-foundation-strap-c-git-handoff-receipt.json)
+- [india-2-foundation-strap-c-git-handoff-source-evidence.json](india-2-foundation-strap-c-git-handoff-source-evidence.json)
 - [india-2-foundation-strap-g0-git-handoff-receipt.json](india-2-foundation-strap-g0-git-handoff-receipt.json)
 - [india-2-foundation-strap-g0-git-handoff-source-evidence.json](india-2-foundation-strap-g0-git-handoff-source-evidence.json)
 - [india-2-plan-git-handoff-receipt.json](india-2-plan-git-handoff-receipt.json)
@@ -101,6 +107,10 @@ Benchmark examples and verification packs for validating library calculations ag
 | [india-2-foundation-combined-d-publication-evidence.md](india-2-foundation-combined-d-publication-evidence.md) |  | POST /api/v1/design/combined-footing/symmetric is a thin typ | 92 |
 | [india-2-foundation-combined-family-acceptance-evidence.md](india-2-foundation-combined-family-acceptance-evidence.md) |  | The exact integrated G0/A-D starting head is 079ca22b00744ca | 176 |
 | [india-2-foundation-combined-g0-scope-evidence.md](india-2-foundation-combined-g0-scope-evidence.md) |  | square reinforced-concrete columns carrying equal concentric | 226 |
+| [india-2-foundation-strap-a-analysis-evidence.md](india-2-foundation-strap-a-analysis-evidence.md) |  | This packet implements only the G0-frozen two-footing proper | 56 |
+| [india-2-foundation-strap-b-strength-evidence.md](india-2-foundation-strap-b-strength-evidence.md) |  | This packet composes A actions with caller-supplied M20-M40  | 61 |
+| [india-2-foundation-strap-c-public-workflow-evidence.md](india-2-foundation-strap-c-public-workflow-evidence.md) |  | design_property_line_strap_footing_is456 is the sole canonic | 52 |
+| [india-2-foundation-strap-d-publication-evidence.md](india-2-foundation-strap-d-publication-evidence.md) |  | POST /api/v1/design/strap-footing/property-line is a thin ty | 94 |
 | [india-2-foundation-strap-g0-scope-evidence.md](india-2-foundation-strap-g0-scope-evidence.md) |  | rectangular constant-depth footings on soil, one exterior sq | 267 |
 | [india-2-wall-a-axial-kernel-evidence.md](india-2-wall-a-axial-kernel-evidence.md) |  | WALL-A implements the pure IS 456 layer for the accepted Cla | 83 |
 | [india-2-wall-b-reinforcement-evidence.md](india-2-wall-b-reinforcement-evidence.md) |  | WALL-B adds one pure IS 456 provided-reinforcement check to  | 82 |

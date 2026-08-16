@@ -121,7 +121,7 @@ def test_combined_footing_supported_truth_tracks_publication_chain() -> None:
     )
 
 
-def test_strap_footing_implemented_python_workflow_remains_held_until_d() -> None:
+def test_strap_footing_supported_truth_tracks_publication_chain() -> None:
     manifest = build_manifest()
     is456 = _standard(manifest, "IS456:2000")
     strap = next(
@@ -130,12 +130,15 @@ def test_strap_footing_implemented_python_workflow_remains_held_until_d() -> Non
         if item["family"] == "strap_footing"
     )
 
-    assert strap["scope_status"] == "HELD"
+    assert strap["scope_status"] == "SUPPORTED"
     assert strap["implementation_status"] == "IMPLEMENTED_BOUNDED"
     assert strap["workflows"] == ["design_property_line_strap_footing_is456"]
-    assert "not yet published" in strap["claim"]
-    assert "FastAPI transport" in " ".join(strap["limitations"])
+    assert "no-soil-contact strap" in strap["claim"]
+    assert "soil-structure interaction" in " ".join(strap["limitations"])
     assert "india-2-foundation-strap-c-public-workflow-evidence.md" in " ".join(
+        strap["evidence"]
+    )
+    assert "india-2-foundation-strap-d-publication-evidence.md" in " ".join(
         strap["evidence"]
     )
 
@@ -173,9 +176,9 @@ def test_parity_dashboard_consumes_declared_capability_families() -> None:
     report = _run_json("parity_dashboard.py", "--section", "capabilities", "--json")
     section = report["sections"][0]
     assert section["metric_kind"] == "DECLARED_CAPABILITY_FAMILY_COVERAGE"
-    assert section["supported"] == 12
-    assert section["held"] == 9
-    assert section["pct"] == 57
+    assert section["supported"] == 13
+    assert section["held"] == 8
+    assert section["pct"] == 62
     assert section["informational"] is True
     assert report["overall_pct"] is None
     assert "capability scope" in report["overall_scope"]

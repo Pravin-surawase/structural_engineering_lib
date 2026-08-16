@@ -48,7 +48,7 @@ Historical staircase task IDs, PRs, and evidence remain unchanged. The former
 | Clause 29 deep beams | Focused family acceptance complete after G0 and A-D integration | One simply supported positive-moment reinforcement check supported; alternate deep-beam systems held |
 | Flat slabs and column punching | Focused family acceptance complete after G0 and A-E integration | One regular interior direct-design and concrete-only punching workflow supported; alternate systems held |
 | Combined footing | Focused family acceptance complete | One symmetric equal-load two-column rigid rectangular workflow supported; alternate systems held |
-| Strap footing | G0 GO; calculation and publication not implemented | One property-line two-footing/equal-pressure/no-soil-contact strap model activated; footing slabs remain externally verified prerequisites |
+| Strap footing | G0-D published; focused family acceptance pending | One property-line two-footing/equal-pressure/no-soil-contact strap model supported; footing slabs remain externally verified prerequisites |
 | Pile cap | Not implemented | Separate foundation program |
 | Raft foundation | Not implemented | Separate foundation program |
 
@@ -63,7 +63,7 @@ boundary, held with a written reason, or not implemented.
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
 | 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | Complete within the written bounded case |
 | 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Complete within the written bounded case |
-| 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Combined footing accepted; strap G0 GO with A-D/acceptance pending; pile-cap and raft G0 decisions pending |
+| 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Combined footing accepted; strap G0-D published with acceptance pending; pile-cap and raft G0 decisions pending |
 | 5 | `INDIA-2-CLOSEOUT` | Reconcile truth, run final cumulative gates, and freeze the INDIA-2 evidence set | Pending |
 
 The provisional foundation order is combined footing, strap footing, pile cap,

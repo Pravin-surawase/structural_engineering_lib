@@ -284,6 +284,25 @@ _CAPABILITIES = (
         ),
         qualified_review_required=True,
     ),
+    IS456Capability(
+        element="strap_footing",
+        public_workflows=("design_property_line_strap_footing_is456",),
+        supported_case=(
+            "Exactly two separate rectangular constant-depth footings on soil "
+            "with one exterior square column eccentric toward the property line, "
+            "one centred interior square column, and one straight prismatic "
+            "no-soil-contact strap; equal uniform net pressure, common-factor "
+            "vertical actions, and caller-verified footing slabs, transfer, soil, "
+            "settlement, reinforcement, durability, and construction bases."
+        ),
+        held_cases=(
+            "Automatic footing sizing or slab, transfer, or connection design; unequal or nonuniform pressure; strap soil bearing; and alternate footing or column arrangements are excluded.",
+            "Column moments, lateral or seismic actions, uplift, reversal, patterned or independently factored actions, settlement and bearing-capacity calculation, and soil-structure interaction are excluded.",
+            "Deep, haunched, skewed, offset, crossed or multiple straps; torsion, prestress, openings, and coated, bundled, spliced or curtailed bars are excluded.",
+            "Pile caps, raft foundations, React publication, release, professional approval, and complete engineering approval are excluded.",
+        ),
+        qualified_review_required=True,
+    ),
 )
 
 
@@ -1189,6 +1208,118 @@ _SEMANTIC_CONTRACT = IS456SemanticContract(
                 "Only the declared equal-load symmetric two-column rigid rectangular constant-depth footing is supported.",
                 "The caller supplies approved soil, pressure, load, material, reinforcement, supporting-area, transfer, and review bases.",
                 "Unequal or eccentric loading, alternate topology, nonlinear soil response, automatic sizing, strap, pile-cap, raft, and professional approval remain held.",
+            ),
+        ),
+        IS456WorkflowContract(
+            workflow="design_property_line_strap_footing_is456",
+            element="strap_footing",
+            fields=(
+                _field(
+                    "request",
+                    "typed property-line strap-footing request",
+                    "PropertyLineStrapFootingDesignInput",
+                    True,
+                    "validated explicit input contract",
+                ),
+                _field(
+                    "status",
+                    "aggregate bearing, strength, and detailing disposition",
+                    "enumeration",
+                    True,
+                    "PASS or FAIL",
+                ),
+                _field(
+                    "request.footing.analysis.geometry",
+                    "separate-footing and isolated-strap geometry and eligibility",
+                    "StrapFootingGeometryInput",
+                    True,
+                    "explicit dimensions in mm and literal topology assertions",
+                ),
+                _field(
+                    "request.footing.analysis.actions",
+                    "approved service, factored, carrier, line-load, bearing, and pattern bases",
+                    "StrapFootingActionInput",
+                    True,
+                    "finite kN, kN/m, and kN/m2 quantities with literal approval assertions",
+                ),
+                _field(
+                    "request.footing.analysis.approvals",
+                    "external footing, transfer, supporting-area, and construction evidence",
+                    "StrapFootingApprovalInput",
+                    True,
+                    "literal approvals with non-blank references",
+                ),
+                _field(
+                    "request.footing.material",
+                    "strap concrete and reinforcement material basis",
+                    "StrapFootingMaterialInput",
+                    True,
+                    "supported N/mm2 grades and uncoated deformed bars",
+                ),
+                _field(
+                    "request.footing.reinforcement",
+                    "caller-provided strap bars, stirrups, anchorage, and cover",
+                    "StrapFootingReinforcementInput",
+                    True,
+                    "supported diameters, counts, finite positive mm quantities, and approvals",
+                ),
+                _field(
+                    "strength.actions",
+                    "equal-pressure reactions, bearing, equilibrium, and clear-strap actions",
+                    "StrapFootingAnalysisResult",
+                    True,
+                    "typed kN, kN m, kN/m, kN/m2, mm, and residual results",
+                ),
+                _field(
+                    "strength.flexure",
+                    "governing strap flexure, minimum steel, capacity, spacing, cover, and bilateral anchorage disposition",
+                    "StrapFootingFlexureResult",
+                    True,
+                    "typed required and provided mm2, mm, kN m, and boolean checks",
+                ),
+                _field(
+                    "strength.side_face",
+                    "deep-beam side-face reinforcement disposition when required",
+                    "StrapFootingSideFaceResult",
+                    True,
+                    "typed required and provided mm2, spacing, and boolean checks",
+                ),
+                _field(
+                    "strength.shear",
+                    "strap web shear and vertical-stirrup disposition",
+                    "StrapFootingShearResult",
+                    True,
+                    "typed demand, concrete and stirrup capacities, spacing, and boolean checks",
+                ),
+                _field(
+                    "qualified_review_required",
+                    "qualified review boundary",
+                    "boolean",
+                    True,
+                    "always true",
+                ),
+                _field(
+                    "complete_engineering_design_approved",
+                    "complete engineering approval",
+                    "boolean",
+                    True,
+                    "always false",
+                ),
+            ),
+            statuses=(
+                IS456StatusContract(
+                    "status",
+                    "PASS only when service bearing and every represented strap flexure, minimum and side-face steel, capacity, spacing, cover, bilateral anchorage, concrete shear, and stirrup comparison pass.",
+                    (
+                        "PASS is bounded software evidence, not professional design approval.",
+                        "Footing slabs, column-to-strap transfer, soil capacity, settlement, equal-pressure approval, and construction feasibility remain caller-verified prerequisites.",
+                    ),
+                ),
+            ),
+            limitations=(
+                "Only the declared two-footing property-line topology with one straight prismatic no-soil-contact strap is supported.",
+                "The caller supplies approved footing, transfer, soil, pressure, action, material, reinforcement, durability, construction, and review bases.",
+                "Alternate topology, strap soil bearing, torsion, nonlinear soil response, automatic footing or connection design, pile caps, rafts, and professional approval remain held.",
             ),
         ),
         IS456WorkflowContract(

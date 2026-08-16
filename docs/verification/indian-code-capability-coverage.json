@@ -29,10 +29,10 @@
     "Python/structural_lib/codes/is13920/**/*.py"
   ],
   "capability_summary": {
-    "supported_families": 12,
-    "held_families": 9,
+    "supported_families": 13,
+    "held_families": 8,
     "total_declared_families": 21,
-    "supported_pct": 57.1
+    "supported_pct": 61.9
   },
   "standards": [
     {
@@ -43,10 +43,10 @@
       "source_root": "Python/structural_lib/codes/is456",
       "status": "SUPPORTED_SUBSET",
       "capability_summary": {
-        "supported_families": 9,
-        "held_families": 3,
+        "supported_families": 10,
+        "held_families": 2,
         "total_declared_families": 12,
-        "supported_pct": 75.0
+        "supported_pct": 83.3
       },
       "capability_families": [
         {
@@ -274,20 +274,24 @@
         {
           "capability_id": "IS456:2000:strap_footing",
           "family": "strap_footing",
-          "scope_status": "HELD",
+          "scope_status": "SUPPORTED",
           "implementation_status": "IMPLEMENTED_BOUNDED",
-          "claim": "A bounded property-line strap-footing Python workflow exists but is not yet published as a supported capability.",
+          "claim": "Exactly two separate rectangular constant-depth footings on soil with one exterior square column eccentric toward the property line, one centred interior square column, and one straight prismatic no-soil-contact strap; equal uniform net pressure, common-factor vertical actions, and caller-verified footing slabs, transfer, soil, settlement, reinforcement, durability, and construction bases.",
           "workflows": [
             "design_property_line_strap_footing_is456"
           ],
           "limitations": [
-            "FastAPI transport, supported capability registration, and focused family acceptance remain pending."
+            "Automatic footing sizing or slab, transfer, or connection design; unequal or nonuniform pressure; strap soil bearing; and alternate footing or column arrangements are excluded.",
+            "Column moments, lateral or seismic actions, uplift, reversal, patterned or independently factored actions, settlement and bearing-capacity calculation, and soil-structure interaction are excluded.",
+            "Deep, haunched, skewed, offset, crossed or multiple straps; torsion, prestress, openings, and coated, bundled, spliced or curtailed bars are excluded.",
+            "Pile caps, raft foundations, React publication, release, professional approval, and complete engineering approval are excluded."
           ],
           "evidence": [
             "docs/verification/india-2-foundation-strap-g0-scope-evidence.md",
             "docs/verification/india-2-foundation-strap-a-analysis-evidence.md",
             "docs/verification/india-2-foundation-strap-b-strength-evidence.md",
-            "docs/verification/india-2-foundation-strap-c-public-workflow-evidence.md"
+            "docs/verification/india-2-foundation-strap-c-public-workflow-evidence.md",
+            "docs/verification/india-2-foundation-strap-d-publication-evidence.md"
           ],
           "qualified_review_required": true
         },

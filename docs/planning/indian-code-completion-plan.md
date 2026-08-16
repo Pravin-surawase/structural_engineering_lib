@@ -37,7 +37,7 @@ completed family inside the larger INDIA-2 wave.
 |---|---|---|
 | INDIA-0 — Truth baseline | One generated, standard-namespaced capability/coverage manifest; repaired coverage consumers; reconciled status ledgers | **Complete** |
 | INDIA-1 — Existing-family closure | Close or explicitly hold limitations for beam, rectangular column, isolated footing, and solid slab | **Complete** |
-| INDIA-2 — Remaining practical IS 456 elements | Separately verify wall, stair, deep-beam, flat-slab/punching, and distinct foundation-system packets | **In progress** — bounded wall, stair, deep-beam, flat-slab/punching, and combined-footing families accepted; strap G0 is GO with implementation pending; pile-cap and raft decisions remain pending |
+| INDIA-2 — Remaining practical IS 456 elements | Separately verify wall, stair, deep-beam, flat-slab/punching, and distinct foundation-system packets | **In progress** — bounded wall, stair, deep-beam, flat-slab/punching, and combined-footing families accepted; strap G0-D is published with focused acceptance pending; pile-cap and raft decisions remain pending |
 | INDIA-3 — Companion Indian codes | Complete the bounded IS 13920 surface, then add IS 875 inputs before IS 1893 equivalent-static actions and Indian combinations | **Planned** |
 | INDIA-4 — Final acceptance | Run cumulative engineering, cross-layer, repository, and artifact acceptance for the explicitly supported subset | **Planned** |
 
@@ -62,11 +62,11 @@ That document controls INDIA-2 execution within this parent wave.
 | `INDIA-2-DEEP` | IS 456 Clause 29 deep-beam program | **Complete within its bounded case.** One simply supported positive-moment workflow is accepted; alternate deep-beam systems remain held. |
 | `INDIA-2-FLAT` | Flat-slab and column-punching program | **Complete within its bounded case.** One regular interior direct-design and concrete-only punching workflow is accepted; alternate systems remain held. |
 | `INDIA-2-FOUNDATION-COMBINED` | Combined-footing program | **Complete within its bounded case.** One symmetric equal-load two-column rigid rectangular workflow is accepted; alternate systems remain held. |
-| `INDIA-2-FOUNDATION-STRAP` | Strap-footing program | **G0 GO; implementation held pending A-D and focused acceptance.** One property-line two-footing system with equal uniform pressure, a no-soil-contact strap, explicit actions, and externally verified footing slabs is frozen. |
+| `INDIA-2-FOUNDATION-STRAP` | Strap-footing program | **G0-D published; focused acceptance pending.** One property-line two-footing system with equal uniform pressure, a no-soil-contact strap, explicit actions, and externally verified footing slabs is supported. |
 | `INDIA-2-FOUNDATION-RAFT` | Raft-foundation program | **Held; distinct analysis model required.** |
 | `INDIA-2-FOUNDATION-PILE-CAP` | Pile-cap program | **Held; distinct analysis model required.** |
 
-The next packet is `INDIA-2-FOUNDATION-STRAP-A`. Combined footing is accepted
+The next packet is `INDIA-2-FOUNDATION-STRAP-ACCEPTANCE`. Combined footing is accepted
 without adding another topology; alternate combined-footing systems remain
 held. Strap G0 froze its own source-bound analysis model, benchmark, supported
 boundary, exclusions, and external-footing prerequisites; public support
