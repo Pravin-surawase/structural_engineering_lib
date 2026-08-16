@@ -964,7 +964,7 @@
     {
       "name": "strap_footing.py",
       "type": "python",
-      "size_lines": 366,
+      "size_lines": 367,
       "last_updated": "2026-08-16",
       "description": "Transport models for the bounded property-line strap-footing workflow.",
       "classes": [
@@ -1015,7 +1015,7 @@
           "name": "StrapFootingShearResponse"
         }
       ],
-      "content_hash": "6fa00708bbcc"
+      "content_hash": "ce240a277e79"
     },
     {
       "name": "wall.py",
@@ -1115,5 +1115,5 @@
     "DuctilityCheckRequest",
     "DuctilityCheckResponse"
   ],
-  "content_hash": "ef262c421aeb8a5c"
+  "content_hash": "7a79f4290bfd65f4"
 }

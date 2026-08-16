@@ -1078,10 +1078,10 @@
     {
       "name": "india-2-foundation-strap-d-publication-evidence.md",
       "type": "documentation",
-      "size_lines": 94,
+      "size_lines": 95,
       "last_updated": "2026-08-16",
       "description": "POST /api/v1/design/strap-footing/property-line is a thin typed transport over the canonical design_property_line_strap_footing_is456 service accepted",
-      "content_hash": "08ec13323475"
+      "content_hash": "ad70699f818c"
     },
     {
       "name": "india-2-foundation-strap-g0-git-handoff-receipt.json",
@@ -1424,5 +1424,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "0ec75ce520ca19d1"
+  "content_hash": "780582144eec2295"
 }

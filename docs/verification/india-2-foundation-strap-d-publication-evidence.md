@@ -82,9 +82,10 @@ Bandit pass. Architecture reports 0 violations across 200 files; circular-
 import analysis reports none across 181 files/147 modules; import validation
 reports 0 broken internal imports across 647 Python files and 2,054 internal
 imports. The three API contract checks pass. Independently reviewable OpenAPI
-drift is limited to one new path and 20 new strap-footing schemas; no existing
+drift is limited to one new path and 19 new strap-footing schemas; no existing
 path or schema changed. The deterministic snapshot contains 81 endpoints and
-360 schemas.
+359 schemas. The request/response echo uses an explicit validation-mode schema
+override so Pydantic 2.12 and 2.13 generate that same component identity.
 
 Using the accepted cadence: focused gates run for every packet, with the broad
 Python suite and full 30-check repository gate only at the final INDIA-2

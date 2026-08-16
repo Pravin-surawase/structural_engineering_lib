@@ -50,6 +50,6 @@
 | [optimization.py](optimization.py) | Cost Optimization Pydantic Models. | 9 | 0 | 298 |
 | [response.py](response.py) | Standardized API response wrappers. | 3 | 2 | 71 |
 | [staircase.py](staircase.py) | Transport models for the bounded straight-flight staircase w | 8 | 0 | 139 |
-| [strap_footing.py](strap_footing.py) | Transport models for the bounded property-line strap-footing | 15 | 0 | 366 |
+| [strap_footing.py](strap_footing.py) | Transport models for the bounded property-line strap-footing | 15 | 0 | 367 |
 | [wall.py](wall.py) | Transport models for the bounded braced-wall workflow. | 6 | 0 | 110 |
 | [workflows.py](workflows.py) | Typed models for the default-disabled bounded beam workflow  | 11 | 0 | 99 |

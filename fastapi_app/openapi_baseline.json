@@ -18752,7 +18752,7 @@
             "type": "string"
           },
           "footing": {
-            "$ref": "#/components/schemas/StrapFootingDesignRequest-Input"
+            "$ref": "#/components/schemas/StrapFootingDesignRequest"
           },
           "qualified_review_required": {
             "const": true,
@@ -21729,28 +21729,7 @@
         "title": "StrapFootingClearSpanActionResponse",
         "type": "object"
       },
-      "StrapFootingDesignRequest-Input": {
-        "additionalProperties": false,
-        "properties": {
-          "analysis": {
-            "$ref": "#/components/schemas/StrapFootingAnalysisRequest"
-          },
-          "material": {
-            "$ref": "#/components/schemas/StrapFootingMaterialRequest"
-          },
-          "reinforcement": {
-            "$ref": "#/components/schemas/StrapFootingReinforcementRequest"
-          }
-        },
-        "required": [
-          "analysis",
-          "material",
-          "reinforcement"
-        ],
-        "title": "StrapFootingDesignRequest",
-        "type": "object"
-      },
-      "StrapFootingDesignRequest-Output": {
+      "StrapFootingDesignRequest": {
         "additionalProperties": false,
         "properties": {
           "analysis": {
@@ -22839,7 +22818,7 @@
             "$ref": "#/components/schemas/StrapFootingFlexureResponse"
           },
           "input": {
-            "$ref": "#/components/schemas/StrapFootingDesignRequest-Output"
+            "$ref": "#/components/schemas/StrapFootingDesignRequest"
           },
           "limitations": {
             "items": {

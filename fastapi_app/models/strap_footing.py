@@ -23,6 +23,7 @@ class _StrictRequestModel(BaseModel):
         extra="forbid",
         allow_inf_nan=False,
         str_strip_whitespace=True,
+        json_schema_mode_override="validation",
     )
 
 

@@ -58,6 +58,9 @@ foundations, broad Python, and the full gate remain outside D.
 - After that collection defect was corrected, the hosted-equivalent local suite
   exposed `0.23.0` package metadata against the checkout's `0.23.1a1` source
   version in the shared editable environment.
+- The next hosted FastAPI run passed its complete test selection but rejected
+  the OpenAPI snapshot because Pydantic 2.12 emitted separate request-model
+  input/output components while hosted Pydantic 2.13 emitted one component.
 
 ### Root causes and resolutions
 
@@ -127,6 +130,17 @@ foundations, broad Python, and the full gate remain outside D.
   ⚠️ TERMINAL ISSUE: stale editable package metadata produced a local version
   mismatch -> refreshed the shared editable install from the current primary
   Python project and reran the complete hosted selection.
+- Root cause: the strap response intentionally echoes the validated design
+  input, so a request model carrying before-validators is referenced in both
+  validation and serialization modes. The repository's supported but broad
+  Pydantic range allowed 2.12 and 2.13 to choose different automatic component
+  suffixes for that dual use. Resolution: use Pydantic's supported
+  `json_schema_mode_override="validation"` on the strict request-model base,
+  which makes this shared schema mode explicit without weakening runtime
+  validation, and add a semantic regression assertion requiring the single
+  unsuffixed component. Evidence: the direct transport tests and exact
+  API/snapshot checks pass under both Pydantic 2.12.5 and 2.13.4 at the same
+  81-endpoint/359-schema artifact.
 
 ### Validation
 
@@ -136,9 +150,9 @@ foundations, broad Python, and the full gate remain outside D.
 - The full hosted FastAPI selection was run after the hosted collection failure
   forced that boundary earlier and passes 443 tests with 6 slow/performance
   tests deselected; broad Python and the full 30-check gate remain deferred.
-- OpenAPI drift is exactly one additive route and 20 additive schemas, with no
+- OpenAPI drift is exactly one additive route and 19 additive schemas, with no
   existing endpoint or schema changed; the snapshot is current at 81 endpoints
-  and 360 schemas. All three API contract/snapshot commands pass.
+  and 359 schemas. All three API contract/snapshot commands pass.
 - Architecture reports 0 violations across 200 files; circular-import analysis
   reports none across 181 files/147 modules; import validation reports 0 broken
   imports across 647 files, 4,389 imports, and 2,054 internal imports.

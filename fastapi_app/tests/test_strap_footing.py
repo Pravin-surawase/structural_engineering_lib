@@ -251,10 +251,14 @@ def test_strap_footing_valid_inadequacy_remains_json_safe_fail() -> None:
 def test_strap_footing_openapi_exposes_typed_success_schema() -> None:
     schema = _app().openapi()
     operation = schema["paths"]["/api/v1/design/strap-footing/property-line"]["post"]
+    component_names = set(schema["components"]["schemas"])
 
     assert operation["responses"]["200"]["content"]["application/json"]["schema"][
         "$ref"
     ].endswith("APIResponse_PropertyLineStrapFootingResponse_")
+    assert "StrapFootingDesignRequest" in component_names
+    assert "StrapFootingDesignRequest-Input" not in component_names
+    assert "StrapFootingDesignRequest-Output" not in component_names
     response_schema = schema["components"]["schemas"][
         "PropertyLineStrapFootingResponse"
     ]

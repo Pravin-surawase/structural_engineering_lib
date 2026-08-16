@@ -1794,7 +1794,7 @@
     {
       "name": "test_strap_footing.py",
       "type": "python",
-      "size_lines": 272,
+      "size_lines": 276,
       "last_updated": "2026-08-16",
       "description": "Contract tests for the bounded property-line strap-footing FastAPI slice.",
       "functions": [
@@ -1820,7 +1820,7 @@
           ]
         }
       ],
-      "content_hash": "3bf0fef69807"
+      "content_hash": "ff6861742183"
     },
     {
       "name": "test_streaming.py",
@@ -1990,5 +1990,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "cc59d1cb2874e6a0"
+  "content_hash": "fe2d9b578842cadb"
 }
