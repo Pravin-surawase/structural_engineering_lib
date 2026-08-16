@@ -16,10 +16,11 @@ Combined-footing and strap-footing G0/A-D plus focused family acceptance are
 integrated within their recorded bounded cases. The next session starts with
 Git and confirmed issue reconciliation before any new foundation decision.
 
-This document is a plan only. Its publication does not authorize primary-main
-synchronization, discarding a local change, branch/worktree retirement, closing
-dependency PRs, pile-cap or raft implementation, release work, or professional
-approval. Stop after this planning packet merges.
+This document is a plan only. Primary `main` was separately cleaned and
+fast-forwarded before this refresh. Publication does not authorize any further
+primary mutation, branch/worktree retirement, dependency-PR closure, pile-cap
+or raft implementation, release work, or professional approval. Stop after
+this planning packet merges.
 
 Execute later work in this order, one fresh lane and one active writer at a
 time:
@@ -47,16 +48,17 @@ time:
 
 Live inspection for this plan established:
 
-- `origin/main = f56e1ec312902caf98e872c77ce8b71bdbc8440e`, the squash merge
-  of strap-family acceptance PR #798, with merged tree
-  `28698a28d96f3e5cbad26fd6964cf835cda6e1b4` equal to the audited candidate
-  tree;
+- freshly fetched `origin/main = 339bad2128bc00b34a18827a8ac185ebcdb069fd`,
+  the squash merge of planning PR #799, with tree
+  `ecd7fe389409e4077afb37f17aee20fe5734cf0e`; strap-family acceptance PR #798
+  remains integrated immediately below it as `f56e1ec3`;
 - Indian-code truth is `13 supported / 8 held`, with all 81 endpoints directly
   tested; wall, staircase, deep-beam, flat-slab/punching, combined-footing, and
   strap-footing are accepted only within their written cases;
-- the primary checkout remains at `f87c8a32`, nine commits behind
-  `origin/main`, with exactly one user-owned modification:
-  `.codex/config.toml` changes `model_verbosity = "low"` to `"medium"`;
+- primary `main` is clean and exactly equal to fetched `origin/main` at
+  `339bad2128bc00b34a18827a8ac185ebcdb069fd`; the transient output-detail
+  preference was deliberately restored to the repository default
+  `model_verbosity = "low"` before synchronization;
 - retained `e54a` remains detached at `0fdb48ed`, with only
   `docs/SESSION_LOG.md` dirty (`119` insertions, `7` deletions); current main
   already contains the material GIT-7C1/GIT-7C2 facts, but ownership and
@@ -72,9 +74,20 @@ Live inspection for this plan established:
   still register `38.2` for three beam-flexure functions even though the prior
   controlled-source review found the relevant identities under Clause `38.1`
   and Annex G;
-- `scripts/check_docs.py --frontmatter --json` reports eight invalid records
-  but exits successfully; code inspection confirms JSON mode unconditionally
-  returns `0` before applying the invalid-count failure rule; and
+- `scripts/check_docs.py --frontmatter --json` currently reports 341 scanned
+  documents, 281 with frontmatter, 60 permitted legacy/no-frontmatter records,
+  and eight invalid records, but exits `0`; code inspection confirms JSON mode
+  returns before applying the invalid-count failure rule;
+- the controlled private source set currently retains IS 456:2000 through
+  Amendment 5 and Amendment 6 only. It contains no retained IS 2911/IS 2950
+  companion source and no accepted pile-cap or raft structural benchmark.
+  [Official BIS discovery](https://standardsbis.bsbedge.com/BIS_SearchStandard.aspx?Standard_Number=IS+2911&id=0)
+  confirms active IS 2911 concrete-pile parts and the
+  [IS 2950 (Part 1) preview](https://www.services.bis.gov.in/tmp/SR2950_1.pdf)
+  confirms the raft-design scope, while
+  [NPTEL pile-group material](https://archive.nptel.ac.in/content/storage2/courses/105101083/Slides/Module%205/Lecture%2027/10.html)
+  found so far covers geotechnical/group behavior rather than an accepted
+  structural pile-cap example; and
 - seven old Dependabot PRs remain open. Their historical checks and stale bases
   are not current merge authority.
 
@@ -113,20 +126,36 @@ equality with current `origin/main`.
    `git_state.py`, source binding, immutable review, hosted checks, and
    post-merge tree equivalence are working in ordinary packets. Record defects
    only when they change the lifecycle outcome.
-3. Classify the primary config edit without touching it:
-   - **publish** — recover only the `medium` verbosity intent on a fresh
-     current-main lane and review it through a separate PR;
-   - **retain local-only** — keep the primary held and continue work in fresh
-     lanes; or
-   - **discard** — requires explicit owner approval immediately before the
-     destructive restoration action.
+3. Verify, but do not mutate, the now-clean primary integration anchor. Record
+   exact equality with fetched `origin/main`. The resolved output-detail
+   preference is not a Phase 8 decision; reopen it only if a new dirty path is
+   observed.
 4. Compare `e54a` by exact patch/blob identity with integrated main evidence.
    Never merge its whole historical log, reset it, stash it, or remove it as a
    shortcut. Retention may advance only with a named owner decision and a fresh
    classifier receipt; deletion remains separate exact-target authorization.
-5. Refresh every retained worktree/branch read-only. Missing ownership,
+5. Run one read-only worktree census, then use the disposition classifier only
+   for lanes whose current evidence could change an outcome. Missing ownership,
    retention, PR, or freshness evidence remains `UNKNOWN`/hold. Do not produce
-   a bulk-cleanup command.
+   a bulk-cleanup command or repeat expensive per-lane analysis for unchanged
+   holds.
+6. Validate a small adoption sample rather than rereading every historical
+   packet: combined-family acceptance, STRAP-D, strap-family acceptance, and
+   planning PR #799. Bind each reviewed head, tree, merge, source binding,
+   hosted checks, and post-merge tree equivalence.
+
+The exact sample files are:
+
+- `docs/verification/india-2-foundation-combined-acceptance-git-handoff-receipt.json`;
+- `docs/verification/india-2-foundation-strap-d-git-handoff-receipt.json`;
+- `docs/verification/india-2-foundation-strap-acceptance-git-handoff-receipt.json`;
+  and
+- `docs/verification/next-session-git-issues-plan-git-handoff-receipt.json`.
+
+Use `docs/research/git-governance/GIT-001-phase-7E-task-git-handoff.json` and
+`GIT-001-phase-7E-semantic-handoff.md` for the earlier implementation and
+orchestration handoff. Refresh live GitHub facts; these stored receipts do not
+prove current remote state.
 
 ### Acceptance
 
@@ -139,6 +168,32 @@ equality with current `origin/main`.
 - focused Git-governance tests, semantic guidance, receipt validation, links,
   indexes, quick `10/10`, normal hooks, hosted checks, and exact-tree closeout
   pass.
+
+### Narrow command set
+
+Use the smallest maintained set and capture each output once:
+
+```bash
+./scripts/python_runtime.sh scripts/git_state.py --json --worktrees
+./scripts/python_runtime.sh -m pytest \
+  Python/tests/test_git_state.py \
+  Python/tests/test_git_handoff_receipt.py \
+  Python/tests/test_branch_disposition.py -q
+./scripts/python_runtime.sh scripts/git_handoff_receipt.py validate <receipt>
+./scripts/python_runtime.sh scripts/classify_branch_disposition.py \
+  --repo . --branch <exact-branch> --evidence <fresh-evidence.json> --json
+./run.sh check --quick
+```
+
+Run the maintained semantic Git-guidance checker directly:
+
+```bash
+./scripts/python_runtime.sh scripts/check_codex_git_workflow.py
+```
+
+If that path is absent in a later checkout, rediscover the replacement with
+`rg --files scripts | rg 'check.*git.*workflow'` and record the changed
+entrypoint instead of guessing or using an archived script.
 
 ## 4. Packet 2 — frontmatter checker and record repair
 
@@ -216,7 +271,8 @@ Run `PILE-CAP-G0` and then `RAFT-G0` as separate decision-only packets. Each
 must search existing code, bind controlled/authoritative sources, freeze one
 useful case and independent benchmark, enumerate companion-code boundaries and
 unsafe exclusions, and return `GO`, `REVISE`, or owner-accepted `HOLD` before
-calculation code.
+calculation code. A catalogue page or preview proves discovery/scope only; it
+does not replace a controlled implementation source.
 
 Pile-cap G0 must explicitly decide pile-reaction input/model, layout, nodal and
 bearing checks, anchorage, deep-region treatment, and companion-code
@@ -229,7 +285,148 @@ focused family acceptance. For a `HOLD`, publish the blocker, retained truth,
 and exact reactivation condition; do not manufacture implementation to avoid a
 hold.
 
-## 7. INDIA-2 final boundary
+### Pile-cap G0 candidate to investigate, not assume
+
+The smallest useful candidate is one constant-depth rectangular cap over two
+identical circular piles on a single axis, with one centred rectangular column,
+vertical compression only, symmetric caller-approved pile reactions, and
+explicit M30/Fe500 geometry/material inputs. G0 must choose and justify exactly
+one structural action model:
+
+- an IS 456 footing critical-section model; or
+- a separately source-bound deep-region/strut-and-tie model.
+
+Do not mix the two models or infer a strut-and-tie contract from the already
+supported deep-beam route. Pile axial capacity, pile-group efficiency,
+settlement, lateral/uplift/seismic action, negative skin friction, pile design,
+soil-pile interaction, reaction generation, eccentric/biaxial column action,
+three-or-more-pile layouts, multiple columns, battered piles, automatic sizing,
+FEM, React, release, and professional approval remain excluded.
+
+PILE-CAP-G0 may return `GO` only if it records:
+
+1. exact IS 456 and any companion-source edition/hash identities;
+2. the chosen action model and why the alternative is excluded;
+3. all caller-owned pile/geotechnical decisions and units;
+4. one frozen benchmark with independently replayed vertical and moment
+   equilibrium, tie/action demand, bearing, the chosen model's nodal or
+   critical-section result, anchorage result, and justified numeric tolerance;
+5. supported/fail/unsupported input matrices, including a fail-closed topology
+   discriminator;
+6. proposed A/B/C/D files and signatures without creating them; and
+7. capability wording that remains `HELD / NOT_IMPLEMENTED` until D.
+
+If the structural benchmark or model remains ambiguous, publish `REVISE` or
+`HOLD`. A structural-cap-only `GO` need not implement IS 2911 geotechnical
+design, but it must state that all pile reactions, capacity, group behavior,
+settlement, durability, and construction suitability are externally approved
+prerequisites.
+
+### Proposed pile-cap packet chain after an accepted GO
+
+- A: `codes/is456/pile_cap/models.py` and `analysis.py` for typed eligibility,
+  equilibrium, and the frozen action model only.
+- B: `strength.py` for the accepted cap-specific strength, bearing/nodal,
+  anchorage, and detailing checks; reuse exact generic helpers by identity, not
+  by copying formulas.
+- C: `services/pile_cap_api.py`, immutable public types, canonical exports, and
+  an executable benchmark.
+- D: strict FastAPI models/router, one route, exact OpenAPI update, capability
+  semantics, and manifest promotion.
+- Acceptance: one non-frozen independent replay, truthful valid failure,
+  fail-closed exclusions, exact-head audit, and no new behavior.
+
+### Raft G0 readiness boundary
+
+Do not start raft G0 until pile-cap is accepted or explicitly held. The
+candidate worth testing is a regular rectangular rigid raft under mainly
+vertical, regularly arranged column loads using one conventional non-FEM
+analysis and caller-approved soil-pressure/settlement bases. Current official
+BIS discovery identifies IS 2950 (Part 1) as the raft-design companion, but the
+repository does not retain that controlled source. Irregular geometry,
+basements, staged construction, flexible plate/Winkler/FEM interaction,
+automatic settlement, uplift, lateral/seismic response, and general load
+envelopes remain excluded. Missing controlled source or a reproducible useful
+benchmark means `HOLD`, not an improvised model.
+
+## 7. Next-agent execution card
+
+The next agent starts and finishes only `GIT-001-P8-RECONCILIATION`.
+
+### First 15 minutes
+
+1. Fetch `origin/main`; record the exact commit and tree.
+2. Create `codex/git-001-phase8-reconciliation` from that ref; never write on
+   primary or reuse a retained lane.
+3. Run the four required start commands in Section 3 and require
+   `source_bound=true` plus `READY_LOCAL`.
+4. Read only this plan, the compact next-session brief, the GIT-001 index and
+   disposition plan, and the four adoption-sample receipts. Do not read the
+   full 9,000-line session log unless one exact fact is missing.
+5. Capture one census and one remote/PR evidence timestamp. Build a short
+   anomaly list before opening individual lane histories.
+
+### Work loop
+
+1. Freeze the outcome-changing questions and exact paths before edits.
+2. Batch independent read-only commands, but keep all shared documents,
+   receipts, indexes, and Git operations under one writer.
+3. Update the Phase 8 evidence/status/session/brief once after facts stabilize.
+4. Generate maintained indexes once, after `--dry-run` or targeted discovery.
+5. Run focused tests while editing, one quick gate on the frozen candidate, one
+   content commit, only the required versioned-receipt follow-up, one push, and
+   one hosted-check cycle.
+6. Merge only the unchanged reviewed head; verify the squash tree and refreshed
+   `origin/main`; retain the lane unless deletion is separately authorized.
+
+### Stop and handoff
+
+Stop after Phase 8 merges. Name `DOC-FRONTMATTER-CONTRACT` as the sole next
+packet. Do not use remaining time to start its fix in the Phase 8 lane.
+
+## 8. Efficiency and speed controls
+
+- **One packet, one context:** use the compact brief and exact packet files;
+  avoid broad historical searches after the anomaly list is frozen.
+- **No subagent by default:** the next packet is mostly evidence reconciliation.
+  Do not spawn one unless the owner explicitly requests delegation; the parent
+  performs the review and never duplicates orientation or shared-file work.
+- **One candidate ceiling:** review the complete diff before commit. If audit
+  finds blockers, make one consolidated repair; a second rejection returns to
+  planning instead of repeated patch cycles.
+- **One generator pass:** freeze human-owned content first, then regenerate only
+  maintained touched indexes/manifests and immediately run their check mode.
+- **No speculative fixes:** record only issues that change the packet's main
+  outcome. Keep unrelated improvements out of the PR.
+- **Parallelize safe reads:** Git state, PR/check receipts, and targeted searches
+  can run together. Git writes, generated artifacts, task status, and session
+  records remain serialized.
+- **Do not rerun broad gates:** focused gates and hosted checks apply per packet;
+  broad Python and the 30-check gate remain for final INDIA-2 closeout unless a
+  confirmed repository-wide failure forces them earlier.
+- **Measure real elapsed time:** record orientation, local work, audit/repair,
+  CI wait, closeout, and total wall time separately. Use the evidence to shorten
+  the next packet rather than guessing where time went.
+
+Suggested planning budgets are guards, not promises: 10-15 minutes orientation,
+15-25 minutes evidence sampling, 15-25 minutes reconciliation/writing, then
+focused validation and hosted CI. Stop and re-plan if source acquisition,
+repository-wide mutation, or a second repair cycle breaks that boundary.
+
+## 9. Known root causes, guards, and reactivation rules
+
+| Finding | Root cause status | Outcome and guard |
+|---|---|---|
+| Primary output-detail drift | Confirmed and resolved | Codex persisted a project output-detail selection into tracked `.codex/config.toml`; keep repository `low`, verify primary clean, and do not publish personal preference drift |
+| Stale primary/config wording in this plan and brief | Confirmed and resolved here | PR #799 described the pre-cleanup snapshot; refresh current mutable facts at packet start and do not treat a planning receipt as live state |
+| JSON frontmatter exits zero with eight invalid records | Confirmed, open | Fix the early JSON return, add direct valid/invalid exit-code tests, and repair only the eight invalid records |
+| Live `38.2` identities | Origin and arithmetic impact unconfirmed | Source-audit every consumer and benchmark exact equilibrium before deciding metadata-only versus arithmetic repair |
+| Pydantic-version OpenAPI drift | Confirmed and already guarded | Preserve explicit schema mode and the cross-version regression in every future D packet |
+| Public-call wrapper mismatch | Confirmed and already guarded | Discover the maintained signature; construct the typed request wrapper before calling the service in acceptance replays |
+| Stale audit candidate identities | Confirmed and already guarded | Propagate final reviewed head/tree/merge to evidence, brief, and receipt together; tree equality, not PR prose, closes the packet |
+| Pile-cap/raft source and benchmark gap | Confirmed planning precondition | Acquire/record the controlled companion source and an independently replayable structural benchmark or publish `HOLD` with an exact reactivation condition |
+
+## 10. INDIA-2 final boundary
 
 Only after all accepted/held family decisions and issue packets are integrated:
 
@@ -247,7 +444,7 @@ Using the cadence quoted by the owner: focused gates per packet, with the broad
 Python and 30-check gates only at the final INDIA-2 integration boundary unless
 a repository-wide failure forces them earlier.
 
-## 8. Later dependency program
+## 11. Later dependency program
 
 Keep the seven current Dependabot PRs separate from INDIA-2. Refresh them as
 five compatibility groups rather than merging stale branches independently:
@@ -263,7 +460,7 @@ upgrade uses a fresh lane, focused compatibility hypothesis, owned lockfiles,
 complete affected-stack validation, exact-head hosted checks, and its own merge
 receipt.
 
-## 9. Required return format
+## 12. Required return format
 
 For every packet report: task/status, base/head/tree, source binding, exact
 changed paths, focused counts, issues and confirmed/unconfirmed root causes,

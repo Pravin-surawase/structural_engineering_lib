@@ -5,13 +5,14 @@
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
 - Focus: Git reconciliation and confirmed issue repairs before new foundation work
-- Baseline: origin/main f56e1ec312902caf98e872c77ce8b71bdbc8440e; strap acceptance PR #798 merged with audited tree equality
+- Baseline: fetched origin/main 339bad2128bc00b34a18827a8ac185ebcdb069fd; planning PR #799 merged, tree ecd7fe389409e4077afb37f17aee20fe5734cf0e
 - Truth: 13 supported / 8 held; 81/81 endpoints directly tested
-- Preserved primary: f87c8a32, nine behind, only .codex/config.toml dirty with low-to-medium verbosity intent
+- Primary: clean and synchronized at 339bad2128bc; repository output-detail default restored to low
 - Preserved e54a: detached 0fdb48ed, only docs/SESSION_LOG.md dirty; no cleanup authorization
 - Git correction: GIT-7E PR #751 and orchestration PR #752 are merged; parent status is reconciled and Phase 8 must verify adoption/current disposition facts
 - Issue correction: Clause 26.5.1.1 metadata was already fixed in STRAP-B and is not future work
 - Confirmed issues: JSON frontmatter mode falsely exits zero; eight invalid records remain; live beam provenance still carries unsupported 38.2
+- Foundation readiness: no retained IS 2911/IS 2950 companion source or accepted pile-cap/raft benchmark; G0 must acquire/bind evidence or HOLD
 - Next action: begin only GIT-001-P8-RECONCILIATION in a fresh current-main lane; no cleanup
 <!-- HANDOFF:END -->
 
@@ -37,7 +38,8 @@
 ## Exact start
 
 Create a fresh `codex/git-001-phase8-reconciliation` worktree from fetched,
-verified `origin/main`; do not use the dirty primary or retained `e54a` lane.
+verified `origin/main`; primary is the clean integration anchor, not a write
+lane, and retained `e54a` remains untouched.
 
 ```bash
 ./run.sh session brief --agent ops
@@ -53,8 +55,10 @@ current-main base. Refresh GitHub PR evidence before making a current claim.
 
 1. `GIT-001-P8-RECONCILIATION`
    - bind PR #751/#752 and verify the reconciled GIT-7E/task status;
-   - prove adoption using recent immutable-head receipts;
-   - classify primary/e54a/other lanes read-only;
+   - prove adoption by sampling combined acceptance, STRAP-D, strap acceptance,
+     and planning PR #799 receipts rather than rereading every packet;
+   - capture one worktree census, then classify only outcome-changing anomalies;
+   - verify primary clean/equal and preserve `e54a` read-only;
    - ask for explicit owner decisions where required;
    - perform no synchronization, reset, stash, deletion, branch closure, or
      worktree removal.
@@ -68,15 +72,17 @@ current-main base. Refresh GitHub PR evidence before making a current claim.
    - rebind supported source identities;
    - benchmark the legacy flexure approximation against exact equilibrium;
    - change arithmetic only when main-process outcome evidence requires it.
-4. Decision-only `PILE-CAP-G0`, then any owner-accepted GO chain.
+4. Decision-only `PILE-CAP-G0`: first test a centred axial two-pile cap and
+   choose one source-bound footing-critical-section or deep-region model; never
+   assume GO without a controlled source and independent benchmark.
 5. Decision-only `RAFT-G0`, then any owner-accepted GO chain.
 6. `INDIA-2-CLOSEOUT` with broad Python and the full 30-check gate once.
 7. Post-INDIA-2 dependency-major compatibility packets only afterward.
 
 ## Owner-decision boundaries
 
-- Primary `.codex/config.toml`: publish `medium` from a fresh lane, retain it
-  local-only, or explicitly authorize discard. No option is inferred.
+- Primary `main` is clean and current; do not write on it or revisit the
+  resolved output-detail preference unless new drift appears.
 - `e54a`: retain until named ownership/retention evidence and an exact
   classifier receipt exist. Even pending approval does not authorize deletion.
 - Closing dependency PRs, deleting branches/worktrees, release/tag/package
@@ -92,6 +98,20 @@ Each packet still requires focused tests, root-cause proof, architecture/import
 checks where relevant, quick `10/10`, normal hooks, exact-head review, hosted
 checks, merge-tree verification, and a session entry containing `Issues
 encountered` plus `Root causes and resolutions`.
+
+## Efficiency card
+
+- Read this brief and the linked plan first; do not read the full session log
+  unless one exact fact is missing.
+- Capture Git/worktree state once, build an anomaly list, and inspect only lanes
+  that could change disposition.
+- Keep one writer, one frozen candidate, one generator pass, one quick gate,
+  one content commit plus required receipt follow-up, one push, and one hosted-
+  check cycle.
+- Parallelize independent reads; serialize Git writes, receipts, shared docs,
+  and generated artifacts.
+- Record orientation, local work, audit/repair, CI wait, closeout, and total
+  elapsed time so the next packet can remove real overhead.
 
 ## Stop rule
 

@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — next session starts with Git Phase 8 and confirmed issue repairs before new foundation work
+**Updated:** 2026-08-16 — primary is clean at `339bad21`; next session starts with Git Phase 8 and confirmed issue repairs before new foundation work
 
 ---
 
@@ -133,10 +133,10 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| GIT-001-P8-RECONCILIATION | Verify GIT-7E adoption, reconcile current ledgers, and classify retained lanes without mutation | Main Agent + ops | one packet | P0 | ⏭️ NEXT — planning and inspection only; cleanup remains unauthorized |
+| GIT-001-P8-RECONCILIATION | Verify GIT-7E adoption, reconcile current ledgers, and classify retained lanes without mutation | Main Agent + ops | one packet | P0 | ⏭️ NEXT — primary is clean/current; sample recent receipts and inspect retained anomalies only; cleanup remains unauthorized |
 | DOC-FRONTMATTER-CONTRACT | Fix JSON-mode false success and the eight currently invalid frontmatter records | Main Agent + doc-master | one packet | P0 | ⏸ AFTER GIT P8 |
 | INDIA-2-TRUTH-HYGIENE-38-2 | Source-audit and correct live Clause 38.2 flexure metadata, decorators, provenance, and any benchmark-proven arithmetic defect | Main Agent + structural engineer | one bounded packet | P0 | ⏸ AFTER DOC CONTRACT |
-| INDIA-2-FOUNDATION-PILE-CAP-G0 | Decide one source-bound pile-cap case or retain an explicit hold before any implementation | Main Agent + structural engineer | decision only | P0 | ⏸ AFTER ISSUE REPAIRS — not started |
+| INDIA-2-FOUNDATION-PILE-CAP-G0 | Decide one source-bound pile-cap case or retain an explicit hold before any implementation | Main Agent + structural engineer | decision only | P0 | ⏸ AFTER ISSUE REPAIRS — investigate one centred axial two-pile cap; controlled companion source and benchmark remain prerequisites |
 | INDIA-2-FOUNDATION-RAFT-G0 | Decide one source-bound non-FEM raft case or retain an explicit hold before any implementation | Main Agent + structural engineer | decision only | P0 | ⏸ AFTER PILE-CAP DECISION — not started |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
