@@ -30,7 +30,7 @@
         "CREATE_OR_UPDATE_DRAFT_PR"
       ],
       "branch": "codex/india-2-foundation-strap-d",
-      "head_sha": "642dbe2ee15fe15567e0fcbf183d482a237d4880",
+      "head_sha": "a33801bb0a614cff2068b7dabeb409f50d2f2b77",
       "task_id": "INDIA-2-FOUNDATION-STRAP-D"
     }
   },
