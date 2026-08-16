@@ -64,6 +64,24 @@ def test_manifest_uses_closed_namespaced_statuses_without_unknowns() -> None:
     assert "UNKNOWN" not in render_manifest(manifest)
 
 
+def test_pile_cap_g0_hold_is_machine_visible() -> None:
+    manifest = build_manifest()
+    is456 = _standard(manifest, "IS456:2000")
+    pile_cap = next(
+        item for item in is456["capability_families"] if item["family"] == "pile_cap"
+    )
+
+    assert pile_cap["scope_status"] == "HELD"
+    assert pile_cap["implementation_status"] == "NOT_IMPLEMENTED"
+    assert pile_cap["workflows"] == []
+    assert any(
+        "controlled companion source" in item for item in pile_cap["limitations"]
+    )
+    assert pile_cap["evidence"] == [
+        "docs/verification/india-2-foundation-pile-cap-g0-hold-evidence.md"
+    ]
+
+
 def test_is456_supported_families_are_generated_from_runtime_registry() -> None:
     manifest = build_manifest()
     is456 = _standard(manifest, "IS456:2000")

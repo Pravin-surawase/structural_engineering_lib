@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — Clause 38.2 truth hygiene closes on merge; pile-cap G0 is the sole next packet
+**Updated:** 2026-08-16 — pile-cap G0 closes as HOLD on merge; raft G0 is the sole next packet
 
 ---
 
@@ -125,15 +125,14 @@
 
 ## Active
 
-No implementation packet is active after the Clause 38.2 candidate closes.
-Start only the decision packet below from refreshed `origin/main`.
+No implementation packet is active after the pile-cap G0 candidate closes.
+Start only the separate raft decision packet below from refreshed `origin/main`.
 
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2-FOUNDATION-PILE-CAP-G0 | Decide one source-bound pile-cap case or retain an explicit hold before any implementation | Main Agent + structural engineer | decision only | P0 | ⏭️ NEXT — investigate the frozen centred axial two-pile cap; missing controlled companion source or accepted structural benchmark means HOLD |
-| INDIA-2-FOUNDATION-RAFT-G0 | Decide one source-bound non-FEM raft case or retain an explicit hold before any implementation | Main Agent + structural engineer | decision only | P0 | ⏸ AFTER PILE-CAP DECISION — not started |
+| INDIA-2-FOUNDATION-RAFT-G0 | Decide one source-bound non-FEM raft case or retain an explicit hold before any implementation | Main Agent + structural engineer | decision only | P0 | ⏭️ NEXT — missing controlled IS 2950 source or accepted structural benchmark means HOLD |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
@@ -145,8 +144,11 @@ INDIA-0 through INDIA-4, and the dedicated
 defines the remaining family packets. INDIA-0 and INDIA-1 are complete. The
 historical INDIA-2A-D packets form the completed `INDIA-2-STAIR` family. Bounded
 wall, deep-beam, flat-slab/punching, combined-footing, and strap-footing
-families are accepted, but umbrella INDIA-2 remains in progress while pile-cap
-and raft G0 decisions remain pending. Clause 38.2 truth hygiene closes on merge
+families are accepted, but umbrella INDIA-2 remains in progress while raft G0
+and final cumulative closeout remain pending. Pile-cap G0 is complete as HOLD:
+the repository lacks both a controlled IS 2911 companion source and an accepted
+structural two-pile-cap benchmark, so no calculation implementation was
+authorized. Clause 38.2 truth hygiene closed
 with exact beam stress-block arithmetic and controlled Clause 38.1/Annex G
 provenance. Git/status reconciliation is complete with retained lanes explicitly
 held and no cleanup authority.
@@ -162,6 +164,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-FOUNDATION-PILE-CAP-G0 | Audited the frozen centred axial two-pile candidate, source inventory, structural-model boundary, and benchmark readiness | Main Agent + structural engineer | ⏸ HOLD ON MERGE — no controlled IS 2911 companion source or accepted replayable structural benchmark; no calculation files created; exact reactivation contract recorded |
 | INDIA-2-TRUTH-HYGIENE-38-2 | Rebound live beam-flexure provenance to controlled Clause 38.1/Annex G identities and replaced the false-safe rounded inverse with shared exact equilibrium | Main Agent + structural engineer | ✅ COMPLETE ON MERGE — 190 focused tests pass; supported discriminator changes false PASS to `E_FLEXURE_003`; public signatures and units are stable |
 | DOC-FRONTMATTER-CONTRACT | Made JSON frontmatter validation fail on invalid records, added direct valid/invalid report regressions, and repaired exactly eight invalid lifecycle/type records | Main Agent + doc-master | ✅ COMPLETE ON MERGE — live JSON/text modes pass with zero invalid and 60 permitted legacy records unchanged |
 | GIT-001-P8-RECONCILIATION | Verified GIT-7E adoption, corrected transition-versus-closeout receipt semantics, reconciled current ledgers, and refreshed preservation holds | Main Agent + ops | ✅ COMPLETE ON MERGE — primary/e54a retained; Excel and all other pre-existing lanes remain `UNKNOWN/HOLD`; no cleanup performed |

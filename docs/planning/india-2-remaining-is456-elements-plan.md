@@ -68,7 +68,7 @@ cross-cutting execution truth and must not be mixed into a foundation G0.
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
 | 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | Complete within the written bounded case |
 | 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Complete within the written bounded case |
-| 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Combined and strap footing accepted; pile-cap and raft G0 decisions pending |
+| 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Combined and strap footing accepted; pile-cap G0 completed as HOLD; raft G0 pending |
 | 5 | `INDIA-2-CLOSEOUT` | Reconcile truth, run final cumulative gates, and freeze the INDIA-2 evidence set | Pending |
 
 The provisional foundation order is combined footing, strap footing, pile cap,
@@ -380,12 +380,11 @@ authorized programs.
 
 ## 9. Exact next action
 
-Stop after focused strap acceptance. The next session begins only
-`GIT-001-P8-RECONCILIATION`, followed by the two confirmed issue-repair packets
-in the dedicated
-[next-session and finish plan](india-2-next-session-publication-and-closeout-plan.md).
-When those packets are integrated and foundation work is separately resumed,
-begin `INDIA-2-FOUNDATION-PILE-CAP-G0` from verified current `main`: search the
-existing surface and sources, freeze or hold one pile-reaction/cap-action model
-and independent benchmark, and write no calculation code before that decision.
-Keep raft, React, broad Python, and the 30-check gate outside pile-cap G0.
+Pile-cap G0 completed as `HOLD` because neither a controlled IS 2911 companion
+source nor an accepted replayable structural two-pile-cap benchmark is retained.
+The exact blocker and reactivation contract are in the
+[G0 decision evidence](../verification/india-2-foundation-pile-cap-g0-hold-evidence.md).
+After that unchanged decision packet merges, begin only decision-only
+`INDIA-2-FOUNDATION-RAFT-G0` from verified current `main`. Keep pile-cap and
+raft calculation code, React, broad Python, and the 30-check gate outside that
+G0 lane; the broad gates run once at final INDIA-2 closeout.

@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 132,
+  "file_count": 133,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -962,6 +962,14 @@
       "content_hash": "1f4ee33aff2e"
     },
     {
+      "name": "india-2-foundation-pile-cap-g0-hold-evidence.md",
+      "type": "documentation",
+      "size_lines": 176,
+      "last_updated": "2026-08-16",
+      "description": "implementation files. The frozen candidate remains one constant-depth rectangular reinforced-",
+      "content_hash": "1f0c1c3d968b"
+    },
+    {
       "name": "india-2-foundation-strap-a-analysis-evidence.md",
       "type": "documentation",
       "size_lines": 56,
@@ -1482,7 +1490,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "ee33e4a464a1"
+      "content_hash": "45619fb11b40"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -1601,5 +1609,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "55d9554c2d7ccb91"
+  "content_hash": "f4770adac9f4780d"
 }

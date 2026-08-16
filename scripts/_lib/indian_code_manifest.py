@@ -125,7 +125,11 @@ _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
             "family": "pile_cap",
             "claim": "Pile-cap design is not implemented.",
             "limitations": [
-                "Pile reactions and strut-and-tie behavior require a separate program."
+                "Pile reactions and strut-and-tie behavior require a separate program.",
+                "INDIA-2 pile-cap G0 is held until a controlled companion source and an independently replayable structural benchmark are bound.",
+            ],
+            "evidence": [
+                "docs/verification/india-2-foundation-pile-cap-g0-hold-evidence.md"
             ],
         },
     ),

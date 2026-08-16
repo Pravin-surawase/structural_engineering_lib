@@ -2548,7 +2548,7 @@
     {
       "name": "test_india_2_truth_hygiene_38_2.py",
       "type": "python",
-      "size_lines": 111,
+      "size_lines": 109,
       "last_updated": "2026-08-16",
       "description": "INDIA-2 Clause 38.2 truth-hygiene acceptance tests.",
       "functions": [
@@ -2572,12 +2572,12 @@
         "REPO_ROOT",
         "SCRIPTS_ROOT"
       ],
-      "content_hash": "0d4dec2e1d37"
+      "content_hash": "26c5f32ceb33"
     },
     {
       "name": "test_indian_code_manifest.py",
       "type": "python",
-      "size_lines": 192,
+      "size_lines": 210,
       "last_updated": "2026-08-16",
       "description": "INDIA-0 truth-manifest and reporting contract tests.",
       "functions": [
@@ -2586,6 +2586,9 @@
         },
         {
           "name": "test_manifest_uses_closed_namespaced_statuses_without_unknowns"
+        },
+        {
+          "name": "test_pile_cap_g0_hold_is_machine_visible"
         },
         {
           "name": "test_is456_supported_families_are_generated_from_runtime_registry"
@@ -2610,7 +2613,7 @@
         "REPO_ROOT",
         "SCRIPTS_ROOT"
       ],
-      "content_hash": "819fe1971e7c"
+      "content_hash": "312a855ffd52"
     },
     {
       "name": "test_inputs.py",
@@ -4762,5 +4765,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "cdd5609f5e3b2334"
+  "content_hash": "133df2dea77d8596"
 }

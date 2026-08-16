@@ -37,7 +37,7 @@ completed family inside the larger INDIA-2 wave.
 |---|---|---|
 | INDIA-0 — Truth baseline | One generated, standard-namespaced capability/coverage manifest; repaired coverage consumers; reconciled status ledgers | **Complete** |
 | INDIA-1 — Existing-family closure | Close or explicitly hold limitations for beam, rectangular column, isolated footing, and solid slab | **Complete** |
-| INDIA-2 — Remaining practical IS 456 elements | Separately verify wall, stair, deep-beam, flat-slab/punching, and distinct foundation-system packets | **In progress** — bounded wall, stair, deep-beam, flat-slab/punching, combined-footing, and strap-footing families accepted; pile-cap and raft decisions remain pending |
+| INDIA-2 — Remaining practical IS 456 elements | Separately verify wall, stair, deep-beam, flat-slab/punching, and distinct foundation-system packets | **In progress** — bounded wall, stair, deep-beam, flat-slab/punching, combined-footing, and strap-footing families accepted; pile-cap G0 completed as HOLD; raft decision and cumulative closeout remain pending |
 | INDIA-3 — Companion Indian codes | Complete the bounded IS 13920 surface, then add IS 875 inputs before IS 1893 equivalent-static actions and Indian combinations | **Planned** |
 | INDIA-4 — Final acceptance | Run cumulative engineering, cross-layer, repository, and artifact acceptance for the explicitly supported subset | **Planned** |
 
@@ -64,14 +64,15 @@ That document controls INDIA-2 execution within this parent wave.
 | `INDIA-2-FOUNDATION-COMBINED` | Combined-footing program | **Complete within its bounded case.** One symmetric equal-load two-column rigid rectangular workflow is accepted; alternate systems remain held. |
 | `INDIA-2-FOUNDATION-STRAP` | Strap-footing program | **Complete within its bounded case.** One property-line two-footing system with equal uniform pressure, a no-soil-contact strap, explicit actions, and externally verified footing slabs is accepted; alternate systems remain held. |
 | `INDIA-2-FOUNDATION-RAFT` | Raft-foundation program | **Held; distinct analysis model required.** |
-| `INDIA-2-FOUNDATION-PILE-CAP` | Pile-cap program | **Held; distinct analysis model required.** |
+| `INDIA-2-FOUNDATION-PILE-CAP` | Pile-cap program | **HOLD confirmed by G0.** No controlled IS 2911 companion source or accepted replayable structural benchmark is retained; no implementation was authorized. |
 
-The next foundation packet is the separate decision-only
-`INDIA-2-FOUNDATION-PILE-CAP-G0`; strap acceptance does not start it. Combined
-and strap footing are accepted without adding another topology; alternate
-systems remain held. Strap G0 froze its own source-bound analysis model,
-benchmark, supported boundary, exclusions, and external-footing prerequisites,
-and G0-D plus focused acceptance now close that bounded family. The dedicated
+Pile-cap G0 completed as `HOLD`; its
+[decision evidence](../verification/india-2-foundation-pile-cap-g0-hold-evidence.md)
+records the missing controlled companion source, missing structural benchmark,
+retained boundary, and exact reactivation contract without creating calculation
+files. The next foundation packet is decision-only
+`INDIA-2-FOUNDATION-RAFT-G0`. Combined and strap footing remain accepted only
+within their separate bounded topologies. The dedicated
 [next-session and finish plan](india-2-next-session-publication-and-closeout-plan.md)
 controls the remaining order through INDIA-2 closeout.
 

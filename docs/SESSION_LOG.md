@@ -5,6 +5,120 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2 Foundation Pile-Cap G0
+
+**Agent:** Codex (`structural-engineer`, sole writer)
+
+**Branch:** `codex/india-2-foundation-pile-cap-g0` from freshly fetched
+`origin/main = 1139e9ea06751c72b66098a575c1f5e327c56ef5`, tree
+`0abefcd0255157bd1444549f2066eb937f45e5a0`
+
+**Git handoff receipt:**
+`docs/verification/india-2-foundation-pile-cap-g0-git-handoff-receipt.json`
+
+**Focus:** Decide whether exactly one centred axial two-pile structural cap can
+be source-bound and independently benchmarked. Publish `HOLD` with exact
+reactivation conditions if either prerequisite is absent. Do not create
+calculation, service, API, React, release, cleanup, or retirement work.
+
+### Summary
+
+- Verified the exact fresh base, `source_bound=true`, `READY_LOCAL`, no Git
+  operation marker, and a clean one-writer linked worktree before editing.
+- Reconfirmed the controlled IS 456 source hashes and found no retained IS
+  2911 or other pile-cap companion source.
+- Searched existing code, tests, evidence, official BIS discovery surfaces,
+  and primary NPTEL material. No pile-cap implementation or accepted,
+  independently replayable structural two-pile-cap benchmark exists.
+- Returned `HOLD`: neither a footing critical-section analogy nor generalized
+  strut-and-tie model has enough authority to activate. No numeric design
+  result and no pile-cap calculation/publication file was created.
+- Made the hold machine-visible in the generated manifest with a direct
+  regression and reconciled the task board, both INDIA-2 plans, and the compact
+  brief to name decision-only raft G0 next.
+
+### Issues encountered
+
+- The required controlled IS 2911 companion source and structural two-pile-cap
+  benchmark were absent, so the candidate could not select or verify a
+  structural action model.
+- The linked worktree has no `private_sources/` directory because the retained
+  controlled sources are ignored and live only under the primary checkout.
+- ⚠️ TERMINAL ISSUE: the first source-inventory command used the worktree-local
+  `private_sources` path and failed; a later `shasum` glob also included
+  directories and reported them as invalid hash targets.
+- ⚠️ TERMINAL ISSUE: one multi-section documentation patch used a stale line-
+  wrapping context and applied nothing.
+- The first Black check found the added manifest regression needed mechanical
+  formatting.
+- The all-folder index generator also refreshed modification dates in unrelated
+  folders because linked-worktree file mtimes are current even when content is
+  unchanged.
+
+### Root causes and resolutions
+
+- Confirmed root cause: the repository-controlled source registry contains
+  only IS 456:2000 through Amendment 5 and Amendment 6; official IS 2911
+  catalogue/preview pages are discovery evidence, not controlled
+  implementation inputs. The benchmark search found pile-group/geotechnical
+  material and a course syllabus, not a complete structural cap example.
+  Resolution: publish `HOLD`, preserve `HELD / NOT_IMPLEMENTED`, and require an
+  authenticated controlled companion source plus a replayable benchmark before
+  reactivation. Evidence: the G0 decision record inventories the sources,
+  compares both candidate models, and states five exact reactivation gates.
+- Confirmed root cause: ignored controlled-source material is intentionally not
+  populated in linked worktrees. Resolution: inspect the primary checkout's
+  retained private-source registry by absolute path without mutation and hash
+  the two exact PDF paths. Evidence: SHA-256 values reproduce as
+  `964e270593392a0dea28b8c7c9ff1e0e730bbea912f8a903e8a86c7bb34d9264`
+  and `4fc24999d133d6197088d6998da4ac4020f08bfd24c7bbcf9c24e8aa1a388881`.
+- Confirmed root cause: the inventory/hash commands assumed worktree-local
+  ignored files and then used a directory-bearing wildcard. Resolution: use
+  the verified absolute primary registry and exact file targets. Evidence: the
+  corrected inventory and both hashes completed successfully.
+- Confirmed root cause: the failed patch copied a nearby sentence without its
+  exact preceding line wrap. Resolution: inspect the target ranges and apply
+  smaller exact-context hunks. Evidence: the plans now record pile-cap HOLD and
+  identify raft G0 as next; `git diff --check` passes.
+- Confirmed root cause: the new assertion exceeded the formatter's line width.
+  Resolution: run repository-bound Black once on the owned test. Evidence:
+  Black check and Ruff pass, and all nine manifest tests pass.
+- Confirmed root cause: the index generator derives per-file update dates from
+  filesystem mtimes, which are not stable content provenance in a newly
+  materialized linked worktree. Resolution: use exact reverse patches through
+  `apply_patch` to remove only generator-created unrelated diffs, retain the
+  five owned folder indexes and two previously stale content hashes exposed by
+  generation, then check each owned index directly. Evidence: the final diff
+  contains no unrelated agent, React, FastAPI, example, core, insight, report,
+  or visualization index, while all five owned index checks pass.
+
+### Validation
+
+- `./scripts/python_runtime.sh -m pytest Python/tests/test_indian_code_manifest.py -q`:
+  `9 passed`.
+- `./scripts/python_runtime.sh scripts/generate_indian_code_manifest.py --check`:
+  current; pile-cap is `HELD / NOT_IMPLEMENTED`, has no workflow, and cites the
+  G0 hold evidence.
+- `./scripts/python_runtime.sh scripts/check_docs.py --frontmatter --json`:
+  344 scanned, 284 with frontmatter, 60 permitted legacy records, zero invalid.
+- `./scripts/python_runtime.sh scripts/check_links.py`: 1,271 internal links,
+  zero broken.
+- `./run.sh efficiency check`: pass.
+- Black and Ruff on the two owned Python files: pass.
+- `./run.sh parity`: 13 supported / 8 held, 81/81 endpoints directly tested,
+  and 13/13 React hooks connected.
+- Direct checks for `Python/tests`, `docs`, `docs/planning`,
+  `docs/verification`, and `scripts` indexes: pass.
+- `./run.sh check --quick`: `10/10` pass.
+
+### Timing
+
+- Orientation/source and Git inspection: approximately 4 minutes.
+- Decision research and evidence drafting: approximately 3 minutes.
+- Repair and focused validation before candidate closeout: approximately 4
+  minutes.
+- Hosted CI wait, closeout, and total elapsed: record after merge.
+
 ## 2026-08-16 — Session: INDIA-2 Clause 38.2 Truth Hygiene
 
 **Agent:** Codex (`structural-engineer`, sole writer)
