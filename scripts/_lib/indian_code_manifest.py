@@ -108,6 +108,7 @@ _IS456_EVIDENCE = {
         "docs/verification/india-2-foundation-strap-b-strength-evidence.md",
         "docs/verification/india-2-foundation-strap-c-public-workflow-evidence.md",
         "docs/verification/india-2-foundation-strap-d-publication-evidence.md",
+        "docs/verification/india-2-foundation-strap-family-acceptance-evidence.md",
     ),
 }
 

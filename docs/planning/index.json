@@ -66,26 +66,26 @@
     {
       "name": "india-2-next-session-publication-and-closeout-plan.md",
       "type": "documentation",
-      "size_lines": 317,
+      "size_lines": 326,
       "last_updated": "2026-08-16",
-      "description": "COMBINED-C/D and focused family acceptance are integrated. STRAP-G0 returned GO for one source-bound property-line two-footing model with equal uniform net",
-      "content_hash": "c18acdd10cfb"
+      "description": "Combined-footing and strap-footing G0/A-D plus focused family acceptance are integrated within their separate written boundaries. Strap acceptance binds",
+      "content_hash": "5e30b42d13cf"
     },
     {
       "name": "india-2-remaining-is456-elements-plan.md",
       "type": "documentation",
-      "size_lines": 384,
+      "size_lines": 385,
       "last_updated": "2026-08-16",
       "description": "INDIA-2 finishes a practical, explicitly limited set of IS 456 reinforced concrete elements that are still missing from the library.",
-      "content_hash": "15f703ddbb6d"
+      "content_hash": "d2b3332e344f"
     },
     {
       "name": "indian-code-completion-plan.md",
       "type": "documentation",
-      "size_lines": 132,
+      "size_lines": 133,
       "last_updated": "2026-08-16",
       "description": "This is the canonical finish plan for the repository's Indian-code program. It defines the meaning and order of INDIA-0 through INDIA-4 without claiming",
-      "content_hash": "38ebc0063ac2"
+      "content_hash": "c4eab7f95bd9"
     },
     {
       "name": "is456-library-first-master-plan.md",
@@ -135,7 +135,7 @@
       "last_updated": "2026-08-16",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-16",
-      "content_hash": "954334376011"
+      "content_hash": "5633ec57d937"
     },
     {
       "name": "pre-release-checklist.md",
@@ -173,5 +173,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "123b3aed0e29708e"
+  "content_hash": "d9ef455de3971ece"
 }

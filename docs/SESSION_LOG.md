@@ -5,6 +5,82 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FOUNDATION-STRAP Focused Family Acceptance
+
+**Agent:** Codex (`reviewer`, sole writer; one bounded independent exact-head
+audit after the candidate is committed)
+
+**Branch:** `codex/india-2-foundation-strap-acceptance` from merged STRAP-D
+`b75daa970b2976cbd5d51e9a951926a7946d5fa6`, tree
+`af2695a815bb0a71898d58e98a70109b7dd5c2b4`
+
+**Git handoff receipt:** `docs/verification/india-2-foundation-strap-acceptance-git-handoff-receipt.json`
+
+**Focus:** Accept only the integrated bounded G0/A-D strap-footing family by
+replaying its frozen and independent non-frozen cases, reconciling public truth
+and evidence, and running focused gates. No calculation scope, pile-cap/raft,
+React, release, broad Python, or full 30-check work belongs to this packet.
+
+### Summary
+
+- Accepted the one property-line two-footing equal-pressure no-soil-contact
+  strap workflow without changing production calculations or transport.
+- Added a complete non-frozen replay fixture and executable exact-output
+  receipt covering geometry, actions, approvals, materials, reinforcement,
+  detailing, durability, and bilateral anchorage.
+- Bound focused acceptance into deterministic manifest evidence and advanced
+  current plans to the later decision-only pile-cap G0 boundary without
+  starting that packet.
+
+### Issues encountered
+
+- The first non-frozen replay command passed `case_id` as a separate keyword to
+  the public workflow and stopped before performing a calculation.
+- Current planning surfaces still named STRAP-D merge or strap acceptance as
+  the next packet after D had entered `main` unchanged.
+- Targeted index generation updated the maintained Python-test index, then
+  refused to create a new index in the unmaintained `scripts/_lib` folder.
+
+### Root causes and resolutions
+
+- Root cause: the replay call inferred a service signature instead of using
+  the maintained API discovery command; the typed request builder already owns
+  `case_id`, and the workflow accepts only that request object. Resolution:
+  discover the exact signature, pass the builder result as the sole argument,
+  and preserve the complete fixture. Evidence: the corrected replay returns
+  exact `PASS` action, flexure, side-face, and shear values with qualified
+  review true and complete engineering approval false.
+  ⚠️ TERMINAL ISSUE: guessed `case_id` workflow keyword was rejected -> used
+  `./run.sh find --api` and the discovered single-request signature.
+- Root cause: D could not truthfully close family acceptance or advance the
+  next action before its exact merged tree and this separate replay receipt
+  existed. Resolution: bind the acceptance evidence into the deterministic
+  manifest and reconcile the task board, finish plans, and next-session brief
+  to the later pile-cap G0 decision while stopping before it. Evidence: current
+  semantic searches, manifest generation/check, planning links, and focused
+  gates pass on the acceptance candidate.
+- Root cause: index maintenance was inferred from the touched script folder
+  instead of discovered from existing `index.json`/`index.md` files.
+  Resolution: retain the successful maintained Python-test index update and do
+  not create a new scripts subfolder index. Evidence: all existing touched
+  indexes and the repository scripts index check pass.
+  ⚠️ TERMINAL ISSUE: generator refused unmaintained `scripts/_lib` -> preserved
+  that boundary and regenerated only folders with existing maintained indexes.
+
+### Validation
+
+- All 85 cumulative strap G0/A-D tests and the 143-test focused strap/public-
+  contract selection pass; the committed non-frozen fixture independently
+  returns the exact accepted tuple.
+- Deterministic truth remains 13 supported / 8 held with 81/81 directly tested
+  endpoints. Architecture is 0/200; imports are 0 broken across 647 files,
+  4,387 imports, and 2,053 internal imports; all 1,279 links and touched indexes
+  pass. Focused formatting/types, source binding, efficiency, quick gate,
+  exact-head audit, and hosted checks are completed before merge.
+- Using the cadence quoted by the owner: focused gates per packet, with the
+  broad Python and 30-check gates only at the final INDIA-2 integration
+  boundary unless a repository-wide failure forces them earlier.
+
 ## 2026-08-16 — Session: INDIA-2-FOUNDATION-STRAP-D FastAPI and Truth Publication
 
 **Agent:** Codex (`api-developer`, sole writer; one bounded independent exact-

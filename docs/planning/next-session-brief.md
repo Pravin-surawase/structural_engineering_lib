@@ -4,14 +4,15 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Merge STRAP-D unchanged, then begin only focused strap acceptance
+- Focus: Strap footing accepted within its bounded case; stop before pile-cap G0
 - Combined acceptance: PR #792 squash-merged as 8e039b112e38436fcae36326b46afa9c436fb970; tree=873aea4cdca8aa9633b30a7c9b74138e5a73a6ce
 - STRAP-G0: PR #793 squash-merged as 70cd2894485d88b72d22544ee18533733789d0f1; audited tree=60d5636265e157e723236909b1de7f582791b297
 - STRAP-A: PR #794 squash-merged as c410b28024e44e3e2670c8b359b69ae29165f2ae; audited tree=08899dbedd35e3d0b0e2c9ba2e78813d87be1f70
 - STRAP-B: PR #795 squash-merged as ec6a81b32b9fc2ae227d041ec19bb848a99ac3eb; audited tree=02f3a5c0bd0de0afbda6ca3ab128b40283efde5e
 - STRAP-C: PR #796 squash-merged as e3e4b2ae5d6559472c2e6595ce05d36887b32a1c; audited tree=40040d5433b38b6c322bb1f6a789cab1bc5e2872
-- STRAP-D: strict REST and capability publication implemented; acceptance remains separate
-- Next action: START_STRAP_ACCEPTANCE_ONLY_AFTER_D_MERGE
+- STRAP-D: PR #797 squash-merged as b75daa970b2976cbd5d51e9a951926a7946d5fa6; audited tree=af2695a815bb0a71898d58e98a70109b7dd5c2b4
+- STRAP acceptance: frozen and non-frozen replay, G0-D truth, retained holds, and focused gates bound without widening scope
+- Next action: STOP; when separately resumed, begin only PILE-CAP-G0 decision
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-16
@@ -20,16 +21,16 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Begin focused `INDIA-2-FOUNDATION-STRAP-ACCEPTANCE` only after STRAP-D merges unchanged |
+| **Next** | Stop after strap acceptance; only a later resumed task begins decision-only `INDIA-2-FOUNDATION-PILE-CAP-G0` |
 
 ## Required Reading
 
 1. [Next-session publication and closeout plan](india-2-next-session-publication-and-closeout-plan.md)
 2. [INDIA-2 remaining-elements execution plan](india-2-remaining-is456-elements-plan.md)
-3. [STRAP-G0 scope decision](../verification/india-2-foundation-strap-g0-scope-evidence.md)
-4. [Combined focused family acceptance](../verification/india-2-foundation-combined-family-acceptance-evidence.md)
-5. [Combined D publication evidence](../verification/india-2-foundation-combined-d-publication-evidence.md)
-6. [Combined C public-workflow evidence](../verification/india-2-foundation-combined-c-public-workflow-evidence.md)
+3. [STRAP focused family acceptance](../verification/india-2-foundation-strap-family-acceptance-evidence.md)
+4. [STRAP-D publication evidence](../verification/india-2-foundation-strap-d-publication-evidence.md)
+5. [STRAP-G0 scope decision](../verification/india-2-foundation-strap-g0-scope-evidence.md)
+6. [Combined focused family acceptance](../verification/india-2-foundation-combined-family-acceptance-evidence.md)
 7. [Generated Indian-code manifest](../verification/indian-code-capability-coverage.json)
 8. [Current task board](../TASKS.md)
 9. [Canonical Git workflow](../git-automation/git-workflow-single-source.md)
@@ -40,9 +41,10 @@ The historical INDIA-2A-D packets and their cumulative software gate are the
 completed `INDIA-2-STAIR` family. Do not reopen them, add another stair topology,
 add React, or begin release work without a new owner-approved scope.
 
-`INDIA-2-WALL`, `INDIA-2-STAIR`, `INDIA-2-DEEP`, and `INDIA-2-FLAT` are
-accepted only within their recorded bounded cases. Do not reopen or expand
-those families while implementing the bounded strap-footing sequence.
+`INDIA-2-WALL`, `INDIA-2-STAIR`, `INDIA-2-DEEP`, `INDIA-2-FLAT`,
+`INDIA-2-FOUNDATION-COMBINED`, and `INDIA-2-FOUNDATION-STRAP` are accepted only
+within their recorded bounded cases. Do not reopen or expand those families
+during later foundation decisions.
 
 ```bash
 ./run.sh session brief --agent orchestrator
@@ -109,11 +111,10 @@ Python and the full 30-check repository gate only at the final INDIA-2
 integration boundary unless a confirmed repository-wide failure forces them
 earlier.
 
-Flat-slab acceptance is complete without expanding topology or adding React.
-Combined footing is accepted within the bounded case. Strap G0-D is published
-within its separate bounded model; pile-cap and raft remain later G0 decisions. The
-two deferred clause-registry truth defects are recorded in the next-session
-plan and must not be mixed into STRAP-A-D or strap acceptance.
+Flat-slab, combined-footing, and strap-footing acceptance are complete without
+expanding topology or adding React. Pile-cap and raft remain later G0 decisions.
+The two deferred clause-registry truth defects are recorded in the next-session
+plan and must not be mixed into foundation-family decisions.
 
 Cumulative qualified structural-engineering review belongs to INDIA-4 after the
 accepted INDIA-2 and INDIA-3 scope is frozen. Packet-level source and engineering
@@ -123,8 +124,7 @@ authorization, or cleanup authority.
 
 ## Exact next action
 
-After verifying STRAP-D merged unchanged into current `origin/main`, create a
-fresh acceptance-only lane. Independently replay the frozen and one non-frozen
-case, reconcile every G0-D surface, run the focused family/publication gates,
-and stop before pile-cap G0. React, broad Python, and the 30-check gate remain
-outside strap acceptance.
+Stop after the strap acceptance packet merges unchanged. When the owner resumes
+foundation work, verify current `origin/main` and create a fresh decision-only
+pile-cap G0 lane. Do not begin pile-cap implementation in that decision packet.
+React, broad Python, and the 30-check gate remain outside family G0 work.
