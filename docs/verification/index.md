@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-16
-**Files:** 138
+**Files:** 141
 
 ## Config Files
 
@@ -14,6 +14,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [git-001-phase-8-reconciliation-git-handoff-source-evidence.json](git-001-phase-8-reconciliation-git-handoff-source-evidence.json)
 - [git-primary-session-log-reconcile-handoff-receipt.json](git-primary-session-log-reconcile-handoff-receipt.json)
 - [git-primary-session-log-reconcile-handoff-source-evidence.json](git-primary-session-log-reconcile-handoff-source-evidence.json)
+- [india-2-closeout-git-handoff-receipt.json](india-2-closeout-git-handoff-receipt.json)
+- [india-2-closeout-git-handoff-source-evidence.json](india-2-closeout-git-handoff-source-evidence.json)
 - [india-2-cumulative-git-handoff-receipt.json](india-2-cumulative-git-handoff-receipt.json)
 - [india-2-cumulative-git-handoff-source-evidence.json](india-2-cumulative-git-handoff-source-evidence.json)
 - [india-2-deep-a-git-handoff-receipt.json](india-2-deep-a-git-handoff-receipt.json)
@@ -111,6 +113,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [india-2-deep-d-publication-evidence.md](india-2-deep-d-publication-evidence.md) |  | POST /api/v1/design/deep-beam/simply-supported is a thin typ | 73 |
 | [india-2-deep-family-acceptance-evidence.md](india-2-deep-family-acceptance-evidence.md) |  | exact integrated G0/A-D starting head was ce45e22032ea234f58 | 93 |
 | [india-2-deep-g0-scope-evidence.md](india-2-deep-g0-scope-evidence.md) |  | supported, solid rectangular, top-loaded deep beam without o | 166 |
+| [india-2-final-closeout-evidence.md](india-2-final-closeout-evidence.md) |  | families are accepted only for the cases recorded below: wal | 91 |
 | [india-2-flat-a-geometry-evidence.md](india-2-flat-a-geometry-evidence.md) |  | FLAT-A implements the typed pure-math foundation for the G0- | 92 |
 | [india-2-flat-b-moment-evidence.md](india-2-flat-b-moment-evidence.md) |  | FLAT-B adds only the gravity moment calculation approved by  | 80 |
 | [india-2-flat-c-reinforcement-evidence.md](india-2-flat-c-reinforcement-evidence.md) |  | FLAT-C consumes the FLAT-A/B panel and moment contracts and  | 85 |

@@ -1,0 +1,169 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T16:04:01Z",
+      "query_status": "OK",
+      "reference": "task:INDIA-2:user-request-continue-and-finish-india-2",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T16:04:01Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/india-2-closeout",
+      "head_sha": "778f0816e9dc887a61fc0f6851723cbb207b08d1",
+      "task_id": "INDIA-2-CLOSEOUT"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "16f85e7d6724c0ae0efc5fc19bae8db231b2a3fa4b0d99fcc63ba9f90fc7ac71",
+    "state": {
+      "branch": "codex/india-2-closeout",
+      "default_base": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "d28852156752ea6e44b0c9fbb67988088851bf3e",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 89.671,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-closeout",
+      "head_sha": "778f0816e9dc887a61fc0f6851723cbb207b08d1",
+      "hold_reasons": [
+        "changed paths: 1"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T16:04:35.925779+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-closeout",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 1,
+        "modified_paths": [],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/india-2-closeout-git-handoff-source-evidence.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "d28852156752ea6e44b0c9fbb67988088851bf3e",
+        "status": "ahead"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-closeout"
+    }
+  },
+  "local_state_receipt_hash": "sha256:16f85e7d6724c0ae0efc5fc19bae8db231b2a3fa4b0d99fcc63ba9f90fc7ac71",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T16:04:35.925961+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T16:04:01Z",
+    "owner": "Main Agent under user instruction to preserve retained Git lanes",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib",
+      "fastapi_app",
+      "react_app",
+      "private_sources",
+      "pyproject.toml",
+      "CHANGELOG.md"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "docs/verification/india-2-final-closeout-evidence.md",
+      "docs/verification/india-2-closeout-git-handoff-source-evidence.json",
+      "Python/tests/data/golden_vectors_is456.json",
+      "Python/tests/integration/test_tables_and_materials_additional.py",
+      "Python/tests/test_footing_api.py",
+      "Python/tests/test_footing_detailing.py"
+    ],
+    "shared_paths": [
+      "docs/reference/api-manifest.json",
+      "Python/tests/index.json",
+      "Python/tests/index.md",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/index.json",
+      "docs/index.md",
+      "docs/planning/index.json",
+      "docs/planning/index.md",
+      "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+      "docs/planning/india-2-remaining-is456-elements-plan.md",
+      "docs/planning/indian-code-completion-plan.md",
+      "docs/planning/next-session-brief.md",
+      "docs/reference/index.json",
+      "docs/verification/index.json",
+      "docs/verification/index.md"
+    ],
+    "task_id": "INDIA-2-CLOSEOUT"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

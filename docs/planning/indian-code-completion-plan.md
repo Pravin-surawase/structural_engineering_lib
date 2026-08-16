@@ -37,7 +37,7 @@ completed family inside the larger INDIA-2 wave.
 |---|---|---|
 | INDIA-0 — Truth baseline | One generated, standard-namespaced capability/coverage manifest; repaired coverage consumers; reconciled status ledgers | **Complete** |
 | INDIA-1 — Existing-family closure | Close or explicitly hold limitations for beam, rectangular column, isolated footing, and solid slab | **Complete** |
-| INDIA-2 — Remaining practical IS 456 elements | Separately verify wall, stair, deep-beam, flat-slab/punching, and distinct foundation-system packets | **In progress pending cumulative closeout** — bounded wall, stair, deep-beam, flat-slab/punching, combined-footing, and strap-footing families accepted; pile-cap and raft G0 completed as HOLD |
+| INDIA-2 — Remaining practical IS 456 elements | Separately verify wall, stair, deep-beam, flat-slab/punching, and distinct foundation-system packets | **Complete within the recorded accepted/held scope** — six bounded families accepted; pile-cap and raft remain held after G0; final evidence and cumulative gates are closed |
 | INDIA-3 — Companion Indian codes | Complete the bounded IS 13920 surface, then add IS 875 inputs before IS 1893 equivalent-static actions and Indian combinations | **Planned** |
 | INDIA-4 — Final acceptance | Run cumulative engineering, cross-layer, repository, and artifact acceptance for the explicitly supported subset | **Planned** |
 
@@ -75,9 +75,12 @@ files. Raft G0 also completed as `HOLD`; its
 records the missing controlled IS 2950 source, missing structural benchmark,
 retained rigid-raft candidate, and exact reactivation contract. Combined and
 strap footing remain accepted only within their separate bounded topologies.
-The next packet is `INDIA-2-CLOSEOUT`. The dedicated
+The [final INDIA-2 closeout evidence](../verification/india-2-final-closeout-evidence.md)
+binds the six accepted families, both foundation holds, cumulative gates, and
+the no-new-behavior boundary. The dedicated
 [next-session and finish plan](india-2-next-session-publication-and-closeout-plan.md)
-controls the remaining order through INDIA-2 closeout.
+is retained as the completed execution record. INDIA-3 is not activated by
+INDIA-2 closeout.
 
 ## 4. INDIA-3 companion-code order
 

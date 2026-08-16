@@ -2049,7 +2049,7 @@
     {
       "name": "test_footing_api.py",
       "type": "python",
-      "size_lines": 357,
+      "size_lines": 359,
       "last_updated": "2026-08-16",
       "description": "Focused contract tests for Phase B1 isolated-footing orchestration.",
       "functions": [
@@ -2097,7 +2097,7 @@
           ]
         }
       ],
-      "content_hash": "3b8e73105982"
+      "content_hash": "049f98ebfabf"
     },
     {
       "name": "test_footing_detailing.py",
@@ -2147,7 +2147,7 @@
           ]
         }
       ],
-      "content_hash": "579e20e1c4d6"
+      "content_hash": "29837bfd8f89"
     },
     {
       "name": "test_footing_load_transfer.py",
@@ -4768,5 +4768,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "a6c765695dc16a1f"
+  "content_hash": "ac036a6157c08725"
 }

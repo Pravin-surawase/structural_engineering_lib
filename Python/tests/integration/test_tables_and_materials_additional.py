@@ -159,10 +159,11 @@ def test_detailing_get_bond_stress_for_fck_above_max_grade_hits_no_break_path():
     assert ok > 0
 
 
-def test_flexure_calculate_ast_required_clamps_term2(monkeypatch):
-    # Cover the safety clamp term2>1.0 branch by stubbing Mu_lim high enough
-    # so the over-reinforced early return doesn't trigger.
-    # Note: After migration to codes/is456/beam/, we patch the actual source module
+def test_flexure_calculate_ast_required_rejects_outside_stress_block_domain(
+    monkeypatch,
+):
+    # Bypass the normal limiting-moment return so this test reaches the shared
+    # exact-equilibrium domain guard directly.
     from structural_lib import flexure
     from structural_lib.codes.is456.beam import flexure as flexure_source
 
@@ -170,8 +171,8 @@ def test_flexure_calculate_ast_required_clamps_term2(monkeypatch):
         flexure_source, "calculate_mu_lim", lambda *_args, **_kwargs: 1e12
     )
 
-    ast = flexure.calculate_ast_required(b=230, d=450, mu_knm=1e6, fck=20, fy=415)
-    assert ast > 0
+    with pytest.raises(ValueError, match="outside the rectangular stress-block domain"):
+        flexure.calculate_ast_required(b=230, d=450, mu_knm=1e6, fck=20, fy=415)
 
 
 def test_flexure_singly_reinforced_hits_max_steel_exceeded():

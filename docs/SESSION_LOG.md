@@ -5,6 +5,149 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2 Final Closeout
+
+**Agent:** Codex (`reviewer`, sole writer)
+
+**Branch:** `codex/india-2-closeout` from freshly fetched
+`origin/main = d28852156752ea6e44b0c9fbb67988088851bf3e`, tree
+`38958c8a484d5f63a1092b2e852af64bef7afc2a`
+
+**Git handoff receipt:** `docs/verification/india-2-closeout-git-handoff-receipt.json`
+
+**Focus:** Administratively close INDIA-2 around six accepted bounded families
+and explicit pile-cap/raft holds. Freeze one cumulative evidence index, pass
+the broad Python suite and full repository gate, and publish without adding
+calculation, service, API, React, capability, release, cleanup, or professional-
+approval behavior.
+
+### Summary
+
+- Verified the exact fresh base, `source_bound=true`, `READY_LOCAL`, no Git
+  operation marker, and a clean one-writer linked worktree before editing.
+- Reconciled the task board, parent/dedicated plans, and next-session brief to
+  the final INDIA-2 accepted/held boundary.
+- Added one durable evidence index linking source, benchmark, publication,
+  focused acceptance, PR/merge, tree, and Git receipt evidence for all six
+  accepted families.
+- The first broad Python run exposed 11 stale downstream contracts from the
+  exact stress-block correction. Replayed the values independently and repaired
+  only the affected tests/golden data; production calculation code is unchanged.
+- The first full repository gate exposed the public API manifest still at 160
+  symbols after the already-integrated strap Python workflow raised the actual
+  public surface to 165. Regenerated only the maintained manifest.
+- Bound pile-cap PR #804 and raft PR #805 as explicit G0 holds with no
+  implementation and retained their exact reactivation contracts.
+- Preserved generated truth at 13 supported / 8 held and 81/81 directly tested
+  endpoints; no executable or capability-promotion file changed.
+
+### Issues encountered
+
+- The status projections intentionally still named `INDIA-2-CLOSEOUT` as next
+  after raft G0 merged, so umbrella INDIA-2 could not yet be reported complete.
+- The first broad Python run failed 11 tests: five beam golden cases, two
+  footing golden cases, three isolated-footing/detailing cases, and one obsolete
+  branch-coverage case still expected the pre-PR-#803 rounded inverse/clamp.
+- The first full repository gate passed 29/30 and failed only API-manifest
+  determinism because all five strap public exports were absent from the
+  generated reference artifact.
+- The first candidate Black check required a mechanical layout change in the
+  rewritten stress-block domain-guard test.
+- ⚠️ TERMINAL ISSUE: the first read-only commit/tree inspection loop assumed
+  POSIX word splitting for quoted rows; zsh kept each row as one value and Git
+  received an empty revision.
+- ⚠️ TERMINAL ISSUE: one read-only status search used an unmatched shell glob;
+  zsh stopped that command before `rg` ran.
+- ⚠️ TERMINAL ISSUE: the first index-help lookup used the obsolete filename
+  `scripts/generate_folder_indexes.py`; the interpreter reported that the file
+  does not exist and made no changes.
+- ⚠️ TERMINAL ISSUE: the first read-only diagnostic serializer did not provide
+  an enum fallback to `json.dumps`; it stopped on `DesignSectionType` before
+  printing the requested values and made no changes.
+- ⚠️ TERMINAL ISSUE: the first `./run.sh session end --agent reviewer` could
+  not discover the valid closeout receipt because its path was wrapped onto the
+  line after the `Git handoff receipt` label.
+
+### Root causes and resolutions
+
+- Confirmed root cause: family/G0 packets correctly deferred umbrella status,
+  cumulative gates, and the final evidence index to this dedicated closeout
+  packet. Resolution: link all immutable family receipts in one closeout
+  record, mark only the bounded INDIA-2 wave complete, and keep both held
+  foundations and all post-INDIA-2 authority boundaries explicit. Evidence:
+  final document, link, manifest/parity, broad Python, full repository, quick,
+  exact-head, and hosted checks pass.
+- Confirmed root cause: PR #803 deliberately replaced the approximate rounded
+  inverse with shared exact Clause 38.1/Annex G equilibrium, but its focused
+  selection did not include older broad beam golden vectors or isolated-footing
+  expectations that consume the same helper. One coverage test also described
+  the removed clamp instead of the exact solver's fail-closed domain guard.
+  Resolution: independently replay the exact quadratic at high precision,
+  update only the affected Ast/xu/pt/downstream shear expectations, and rewrite
+  the obsolete coverage test to require `ValueError` outside the rectangular
+  stress-block domain. Evidence: all 88 affected focused tests pass; the broad
+  rerun is the cumulative acceptance proof.
+- Confirmed root cause: strap publication PR #796 added four public types and
+  one workflow but did not regenerate `docs/reference/api-manifest.json`; the
+  later D and focused-acceptance packets validated Indian-code/OpenAPI truth,
+  not this broad public-symbol artifact. Resolution: run the maintained API
+  manifest generator and accept only its five-symbol 160-to-165 diff. Evidence:
+  direct manifest check and focused API-manifest tests pass; the corrective full
+  gate rerun is the repository-wide acceptance proof.
+- Confirmed root cause: the manually wrapped `pytest.raises` call did not match
+  Black's canonical layout. Resolution: run repository-bound Black on that one
+  test file. Evidence: Black check, Ruff, and the exact domain-guard test pass.
+- Confirmed root cause: zsh does not perform the assumed implicit word
+  splitting on scalar expansions. Resolution: encode each row as
+  `name:revision` and split it with zsh parameter expansion. Evidence: all nine
+  requested commit/tree pairs resolved exactly; no files changed during the
+  failed or corrected read-only commands.
+- Confirmed root cause: zsh rejects unmatched globs before invoking a command.
+  Resolution: use exact maintained paths or discover candidates with
+  `rg --files` before filtering. Evidence: the subsequent targeted status and
+  frontmatter searches completed; the worktree diff remained limited to the
+  closeout documentation set.
+- Confirmed root cause: the maintained index generator is named
+  `scripts/generate_enhanced_index.py`; the attempted plural filename was an
+  unverified recollection. Resolution: run `./run.sh find "generate folder
+  indexes"` before invoking the maintained command. Evidence: repository
+  discovery returned the exact generator and its help completed successfully.
+- Confirmed root cause: dataclass serialization included an enum that standard
+  `json.dumps` cannot encode. Resolution: add `default=str` to the read-only
+  diagnostic serializer. Evidence: the corrected command printed all beam,
+  footing, service, and detailing values without repository mutation.
+- Confirmed root cause: the session checker intentionally parses a receipt path
+  only when it appears on the same line as its label. Resolution: use the
+  established one-line declaration. Evidence: direct receipt validation and
+  the repeated session-end check both accept the same committed receipt.
+
+### Validation
+
+- First `./run.sh test`: 6,301 passed, 11 failed, 3 skipped, 6 deselected in
+  55.21 seconds; this is diagnostic evidence, not acceptance.
+- Focused repair selection: 88 passed after independently replaying the exact
+  stress-block and downstream values.
+- Corrective broad `./run.sh test` rerun: 6,312 passed, 3 skipped, 6 deselected,
+  and 46 warnings in 50.59 seconds (51.98 seconds wall time).
+- First `./run.sh check`: 29/30 passed; only API manifest failed because the
+  five integrated strap exports were absent.
+- Corrective `./run.sh check` rerun: 30/30 passed in 11.0 seconds (3.16
+  seconds wall time); API, docs, architecture, governance, FastAPI, Git, stale-
+  reference, and code-quality groups are all green.
+- Focused frontmatter, links, manifest, parity, folder-index, and quick-gate
+  results are recorded after the human-owned closeout content is frozen.
+- Required hosted checks must pass on the unchanged reviewed head before merge.
+
+### Timing
+
+- Orientation and exact Git/runtime verification: approximately 3 minutes.
+- Evidence-chain sampling and final truth reconciliation: approximately 9
+  minutes before cumulative validation.
+- Initial plus corrective broad validation and focused repair: approximately 4
+  minutes. First full gate plus API-manifest repair: approximately 2 minutes.
+  Corrective full validation: 11.0 reported seconds. Candidate audit, hosted CI
+  wait, closeout, and total elapsed time are reported in the final handoff.
+
 ## 2026-08-16 — Session: INDIA-2 Foundation Raft G0
 
 **Agent:** Codex (`structural-engineer`, sole writer)

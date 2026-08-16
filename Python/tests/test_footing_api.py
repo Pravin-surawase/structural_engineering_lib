@@ -95,10 +95,10 @@ def test_review_benchmark_freezes_plan_structural_and_transfer_evidence():
     assert result.bearing.q_max_kPa == result.bearing.q_min_kPa == 200.0
     assert result.flexure is not None
     assert result.flexure.Mu_L_kNm == result.flexure.Mu_B_kNm == pytest.approx(192.0)
-    assert result.flexure.Ast_L_mm2 == pytest.approx(1_369.01)
-    assert result.flexure.pt_L_percent == pytest.approx(0.1711262)
+    assert result.flexure.Ast_L_mm2 == pytest.approx(1_368.9235171)
+    assert result.flexure.pt_L_percent == pytest.approx(0.1711154396)
     assert result.one_way_shear is not None
-    assert result.one_way_shear.utilization_ratio == pytest.approx(0.98429)
+    assert result.one_way_shear.utilization_ratio == pytest.approx(0.9843139475)
     assert result.punching is not None
     assert result.punching.utilization_ratio == pytest.approx(0.63)
     assert result.load_transfer.required_transfer_steel_area_mm2 == 800.0
@@ -168,10 +168,12 @@ def test_actual_provided_pt_closes_the_detailing_to_shear_acceptance_loop():
     assert result.one_way_shear is not None and result.one_way_shear.is_safe
     assert result.one_way_shear.utilization_ratio == pytest.approx(0.95648558)
     assert result.one_way_shear_screening is not None
-    assert result.one_way_shear_screening.utilization_ratio == pytest.approx(0.9842895)
+    assert result.one_way_shear_screening.utilization_ratio == pytest.approx(
+        0.9843139475
+    )
     assert result.screening_pt_passed_to_one_way_shear_percent == {
-        "L": pytest.approx(0.1711262355),
-        "B": pytest.approx(0.1711262355),
+        "L": pytest.approx(0.1711154396),
+        "B": pytest.approx(0.1711154396),
     }
     assert result.detailing is not None
     selected = {
