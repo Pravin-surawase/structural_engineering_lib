@@ -4,9 +4,9 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Accept the already published bounded deep-beam family using
-- Git receipt: docs/verification/india-2-deep-acceptance-git-handoff-receipt.json | sha256:eddbe6b86c0db11aa06cdbede629851a4ac5374ce16a48fd29af02f30aa8350b | HOLD
-- Git identity: codex/india-2-deep-acceptance@ce45e22032ea234f588ce88c601db5f6a42af166 | upstream=origin/main@ce45e22032ea234f588ce88c601db5f6a42af166 | base=origin/main@ce45e22032ea234f588ce88c601db5f6a42af166 | tree=dirty | operation=none
+- Focus: Decide one source-bound flat-slab/direct-design and column-punching
+- Git receipt: docs/verification/india-2-flat-g0-git-handoff-receipt.json | sha256:a450bf672bada20ce299f55963831ca94bc1a9952d29eecb6f0b7ccf7658bef7 | HOLD
+- Git identity: codex/india-2-flat-g0@f7eb91c3f2719dd04e5739e67572e9530b60ad3e | upstream=origin/main@f7eb91c3f2719dd04e5739e67572e9530b60ad3e | base=origin/main@f7eb91c3f2719dd04e5739e67572e9530b60ad3e | tree=dirty | operation=none
 - Hosted evidence: remote=NOT_CHECKED | PR=NOT_CHECKED#UNKNOWN | review=NOT_CHECKED | retention=OBSERVED
 - Next action: WAIT_FOR_EXACT_HEAD_AUDIT
 <!-- HANDOFF:END -->
@@ -17,7 +17,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Run decision-only `INDIA-2-FLAT-G0`; do not write calculation code before GO |
+| **Next** | Implement `INDIA-2-FLAT-A` from the frozen G0 topology without expanding scope |
 
 ## Required Reading
 
@@ -38,7 +38,7 @@ add React, or begin release work without a new owner-approved scope.
 braced empirical vertical-compression workflow. WALL-A-D are integrated and the
 focused family receipt is
 [`india-2-wall-family-acceptance-evidence.md`](../verification/india-2-wall-family-acceptance-evidence.md).
-Do not expand the accepted wall topology while beginning flat-slab G0.
+Do not expand the accepted wall topology while implementing flat-slab packets.
 
 ```bash
 ./run.sh session brief --agent orchestrator
@@ -85,6 +85,17 @@ Bearing and compression-nodal regions require a caller-supplied external verific
 continuous beams, openings, hanging action, negative moment, load generation,
 generalized strut-and-tie, nonlinear analysis, and FEM remain held.
 
+## INDIA-2-FLAT-G0 decision result
+
+[`india-2-flat-g0-scope-evidence.md`](../verification/india-2-flat-g0-scope-evidence.md)
+records GO for one equal-span square interior panel under identical uniform
+gravity loading, using the direct design method and one centred square-column
+punching check. The frozen hand benchmark covers eligibility, both directional
+moment distributions, flexure, straight-bar detailing, reviewed no-drop
+span/depth, and no-reinforcement punching. Unequal/exterior/drop/head/opening,
+patterned-load, moment-transfer, punching-reinforcement, equivalent-frame, and
+FEM cases remain held.
+
 ## Review and gate boundary
 
 Each calculation packet requires focused tests, benchmarks, architecture and PR
@@ -92,10 +103,10 @@ checks, plus the quick gate. The expensive full Python and 30-check gate runs
 once after the whole accepted INDIA-2 wave is integrated unless an
 outcome-changing repository-wide issue appears earlier.
 
-Deep-beam acceptance is complete. Begin `INDIA-2-FLAT-G0` next and keep it
-decision-only until its source, analysis model, bounded panel/punching case,
-benchmark, units, and exclusions return GO. Foundation programs remain later,
-separate G0 decisions.
+Deep-beam acceptance and flat-slab G0 are complete. Begin `INDIA-2-FLAT-A`
+with only typed geometry, direct-design eligibility, clear-span, and strip
+contracts for the frozen case. Foundation programs remain later, separate G0
+decisions.
 
 Cumulative qualified structural-engineering review belongs to INDIA-4 after the
 accepted INDIA-2 and INDIA-3 scope is frozen. Packet-level source and engineering

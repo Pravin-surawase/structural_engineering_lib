@@ -62,7 +62,7 @@ boundary, held with a written reason, or not implemented.
 | 1 | `INDIA-2-WALL` | First clause-bounded remaining element; established the new-family workflow | Complete within the written bounded case |
 | — | `INDIA-2-STAIR` | Already implemented and cumulatively gated | Complete |
 | 2 | `INDIA-2-DEEP` | Extends beam capability under its own geometry, action, and detailing boundary | Complete within the written bounded case |
-| 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | Planned |
+| 3 | `INDIA-2-FLAT` | Requires panel analysis/distribution plus column punching; broader than the existing solid-slab route | G0 complete; A-E activated |
 | 4 | Foundation extensions | Each uses a different analysis model and must be activated separately | Planned, order provisional |
 | 5 | `INDIA-2-CLOSEOUT` | Reconcile truth, run final cumulative gates, and freeze the INDIA-2 evidence set | Pending |
 
@@ -209,14 +209,16 @@ integrated D head is frozen in
 ### 6.4 INDIA-2-FLAT — Flat slab and column-punching program
 
 This is broader than the existing beam/wall-supported solid-slab workflow and
-must not reuse its capability claim. `INDIA-2-FLAT-G0` must choose one regular
+must not reuse its capability claim. `INDIA-2-FLAT-G0` chose one regular
 gravity-load panel system and one punching-check boundary before code begins.
 
-The initial case to investigate is a regular interior rectangular panel without
-openings or lateral moment transfer, subject to source, applicability, and
-benchmark confirmation.
+`INDIA-2-FLAT-G0` returned GO for one solid square interior panel in a minimum
+three-by-three equal-span orthogonal column grid. It uses the direct design
+method under identical uniform gravity loading and checks one centred square
+interior column for punching without drops, heads, openings, unbalanced moment
+transfer, or shear reinforcement.
 
-The decision must settle:
+The decision settled:
 
 - analysis method eligibility and required panel regularity;
 - column strip, middle strip, support, drop, and column-head assumptions;
@@ -226,20 +228,30 @@ The decision must settle:
   reinforcement boundaries;
 - flexure, serviceability, detailing, and benchmark tolerances.
 
-Initial exclusions are irregular grids, transfer slabs, significant openings,
-unbounded lateral-load participation, equivalent-frame/FEM automation,
-post-tensioning, progressive collapse, seismic diaphragm design, and cases
-outside the selected column/panel topology.
+The frozen benchmark uses 6000 mm equal spans, a 500 mm square column, 300 mm
+slab thickness, 260 mm conservative common effective depth, M30/Fe500,
+9 kN/m2 service dead load, 4 kN/m2 service live load, and 19.5 kN/m2 factored
+uniform load. It independently fixes total/directional/strip moments, flexural
+steel, straight-bar detailing, reviewed span/depth, and punching targets.
 
-Provisional packets:
+Initial exclusions are unequal-sided rectangular panels, irregular grids,
+exterior panels and edge/corner columns, drops or heads, transfer slabs,
+openings, point/line or patterned loading, moment transfer, punching
+reinforcement, equivalent-frame/FEM automation, post-tensioning, progressive
+collapse, seismic diaphragm design, and cases outside the selected topology.
 
-1. G0 scope/source/benchmark decision.
+Activated packets:
+
+1. G0 scope/source/benchmark decision — complete GO.
 2. A panel geometry, eligibility, and strip definitions.
 3. B bounded gravity analysis and moment distribution.
 4. C flexure, serviceability, and detailing checks.
 5. D column-punching checks and fail-closed boundaries.
 6. E typed public workflow, capability truth, and evidence.
 7. One focused family acceptance bundle after integration.
+
+The immutable decision record is
+[`india-2-flat-g0-scope-evidence.md`](../verification/india-2-flat-g0-scope-evidence.md).
 
 ### 6.5 Separate foundation programs
 
@@ -305,8 +317,9 @@ authorized programs.
 
 ## 9. Exact next action
 
-Run `INDIA-2-FLAT-G0` as a decision-only source, scope, analysis-model, and
-benchmark packet. Do not write flat-slab or punching calculation code unless
-that packet returns GO. The owner's 2026-08-16 request activates the remaining
-INDIA-2 families subject to each family's own G0 returning GO. No G0 may be
-bypassed, and a HOLD remains a truthful non-implementation outcome.
+Implement `INDIA-2-FLAT-A` next from the G0-frozen equal-span square interior
+case. Do not expand the topology while adding typed grid/panel/material/load,
+direct-design eligibility, clear-span, and strip contracts. The owner's
+2026-08-16 request activates the remaining INDIA-2 families subject to each
+family's own G0 returning GO. No G0 may be bypassed, and a HOLD remains a
+truthful non-implementation outcome.
