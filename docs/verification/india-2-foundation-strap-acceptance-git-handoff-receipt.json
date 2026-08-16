@@ -30,7 +30,7 @@
         "CREATE_OR_UPDATE_DRAFT_PR"
       ],
       "branch": "codex/india-2-foundation-strap-acceptance",
-      "head_sha": "781a68172ffe679417c6a688844b3b76ae375877",
+      "head_sha": "2f9f16e042d03a43b12f6596c6136d998e9595ad",
       "task_id": "INDIA-2-FOUNDATION-STRAP-ACCEPTANCE"
     }
   },
@@ -47,27 +47,27 @@
   },
   "local": {
     "authority": "scripts/git_state.py",
-    "receipt_sha256": "36a4d73fd899a6498bdee662d4ab9f194835ae0a9b1e445aadbacabffa0c169b",
+    "receipt_sha256": "3e5da2c40d6150a13e955095a5154915fe7030f0a57bdc01d7097c1351a75dff",
     "state": {
       "branch": "codex/india-2-foundation-strap-acceptance",
       "default_base": {
-        "ahead": 1,
+        "ahead": 3,
         "behind": 0,
         "ref": "origin/main",
         "sha": "b75daa970b2976cbd5d51e9a951926a7946d5fa6",
         "status": "ahead"
       },
       "derived_action": "HOLD_DIRTY",
-      "duration_ms": 88.721,
+      "duration_ms": 89.607,
       "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
       "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-foundation-strap-acceptance",
-      "head_sha": "781a68172ffe679417c6a688844b3b76ae375877",
+      "head_sha": "2f9f16e042d03a43b12f6596c6136d998e9595ad",
       "hold_reasons": [
         "changed paths: 1"
       ],
       "linked_worktree": true,
       "locks": [],
-      "observed_at_utc": "2026-08-16T11:54:33.444571+00:00",
+      "observed_at_utc": "2026-08-16T11:55:32.243931+00:00",
       "operation": "none",
       "operation_markers": [],
       "query_failures": [],
@@ -79,14 +79,14 @@
         "clean": false,
         "conflicted_paths": [],
         "dirty_count": 1,
-        "modified_paths": [],
-        "staged_paths": [],
-        "untracked_paths": [
+        "modified_paths": [
           "docs/verification/india-2-foundation-strap-acceptance-git-handoff-source-evidence.json"
-        ]
+        ],
+        "staged_paths": [],
+        "untracked_paths": []
       },
       "upstream": {
-        "ahead": 1,
+        "ahead": 3,
         "behind": 0,
         "ref": "origin/main",
         "sha": "b75daa970b2976cbd5d51e9a951926a7946d5fa6",
@@ -95,9 +95,9 @@
       "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-foundation-strap-acceptance"
     }
   },
-  "local_state_receipt_hash": "sha256:36a4d73fd899a6498bdee662d4ab9f194835ae0a9b1e445aadbacabffa0c169b",
+  "local_state_receipt_hash": "sha256:3e5da2c40d6150a13e955095a5154915fe7030f0a57bdc01d7097c1351a75dff",
   "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
-  "observed_at_utc": "2026-08-16T11:54:33.444751+00:00",
+  "observed_at_utc": "2026-08-16T11:55:32.244117+00:00",
   "pull_request": {
     "query_status": "UNKNOWN",
     "status": "NOT_CHECKED"

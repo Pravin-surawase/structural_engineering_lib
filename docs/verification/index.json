@@ -985,7 +985,7 @@
         "receipt_grants_authority",
         "receipt_kind"
       ],
-      "content_hash": "7b151e59831f"
+      "content_hash": "3e723a0521c7"
     },
     {
       "name": "india-2-foundation-strap-acceptance-git-handoff-source-evidence.json",
@@ -997,7 +997,7 @@
         "retention",
         "task_archive"
       ],
-      "content_hash": "570bff28ed54"
+      "content_hash": "3735b3419764"
     },
     {
       "name": "india-2-foundation-strap-acceptance-nonfrozen-replay.json",
@@ -1473,5 +1473,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "55fda3c531242b05"
+  "content_hash": "d55529c15a79db91"
 }

@@ -30,7 +30,7 @@
         "CREATE_OR_UPDATE_DRAFT_PR"
       ],
       "branch": "codex/india-2-foundation-strap-acceptance",
-      "head_sha": "781a68172ffe679417c6a688844b3b76ae375877",
+      "head_sha": "2f9f16e042d03a43b12f6596c6136d998e9595ad",
       "task_id": "INDIA-2-FOUNDATION-STRAP-ACCEPTANCE"
     }
   },
