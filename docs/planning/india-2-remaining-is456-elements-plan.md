@@ -299,7 +299,12 @@ concrete-only punching, and bearing/compression-dowel transfer over A. Valid
 inadequacy returns `FAIL`; unsupported input fails closed; review remains
 required. Evidence is in
 [`india-2-foundation-combined-b-strength-evidence.md`](../verification/india-2-foundation-combined-b-strength-evidence.md).
-Public Python workflow and capability promotion remain held for C/D.
+`INDIA-2-FOUNDATION-COMBINED-C` publishes the sole accepted composition as the
+typed `design_symmetric_combined_footing_is456` Python workflow with immutable
+input/provenance/result/status types, an executable benchmark, exact caller-
+basis and source traceability, and canonical exports. Evidence is in
+[`india-2-foundation-combined-c-public-workflow-evidence.md`](../verification/india-2-foundation-combined-c-public-workflow-evidence.md).
+FastAPI and capability/semantic promotion remain held for D.
 
 ## 7. Validation and Git cadence
 
@@ -350,11 +355,9 @@ authorized programs.
 
 ## 9. Exact next action
 
-Begin `INDIA-2-FOUNDATION-COMBINED-C` from verified current `main` only after
-B merges unchanged. Implement only the typed public Python workflow
-`design_symmetric_combined_footing_is456`, stable input/provenance/result/status
-types, executable benchmark, canonical root/services exports, API docs, and C
-evidence. Keep capability truth held; FastAPI, semantic/capability promotion,
-alternate foundations, React, broad Python, and the 30-check gate remain for
-later packets. Follow the dedicated
+Begin `INDIA-2-FOUNDATION-COMBINED-D` from verified current `main` only after
+C merges unchanged. Publish only the thin FastAPI transport and exact
+capability/semantic truth for the existing typed workflow. Keep alternate
+foundations, React, broad Python, and the 30-check gate for later packets.
+Follow the dedicated
 [next-session and finish plan](india-2-next-session-publication-and-closeout-plan.md).

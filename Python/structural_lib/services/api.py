@@ -125,6 +125,15 @@ from structural_lib.services.column_api import (  # noqa: F401
     min_eccentricity_is456,
     pm_interaction_curve_is456,
 )
+
+# ── Domain modules (beam, column, common) ──────────────────────────────
+from structural_lib.services.combined_footing_api import (  # noqa: F401
+    SymmetricCombinedFootingDesignInput,
+    SymmetricCombinedFootingDesignProvenance,
+    SymmetricCombinedFootingDesignResult,
+    SymmetricCombinedFootingDesignStatus,
+    design_symmetric_combined_footing_is456,
+)
 from structural_lib.services.common_api import (  # noqa: F401
     _require_is456_units,
     _validate_plausibility,
@@ -134,8 +143,6 @@ from structural_lib.services.common_api import (  # noqa: F401
     validate_design_results,
     validate_job_spec,
 )
-
-# ── Domain modules (beam, column, common) ──────────────────────────────
 from structural_lib.services.costing import CostProfile  # noqa: F401
 from structural_lib.services.deep_beam_api import (  # noqa: F401
     SimplySupportedDeepBeamDesignInput,
@@ -373,6 +380,12 @@ __all__ = [
     "FootingDepthCandidate",
     "FootingDirectionalReinforcementDemand",
     "FootingProvenance",
+    # Symmetric combined footing (bounded supported case)
+    "design_symmetric_combined_footing_is456",
+    "SymmetricCombinedFootingDesignInput",
+    "SymmetricCombinedFootingDesignProvenance",
+    "SymmetricCombinedFootingDesignResult",
+    "SymmetricCombinedFootingDesignStatus",
     # Solid slab design (bounded supported cases)
     "design_one_way_slab_is456",
     "design_complete_one_way_slab_is456",

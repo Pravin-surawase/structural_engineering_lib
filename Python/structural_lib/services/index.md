@@ -2,15 +2,23 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-16
-**Files:** 43
+**Files:** 44
+
+## Public API
+
+- `SymmetricCombinedFootingDesignInput`
+- `SymmetricCombinedFootingDesignProvenance`
+- `SymmetricCombinedFootingDesignResult`
+- `SymmetricCombinedFootingDesignStatus`
+- `design_symmetric_combined_footing_is456`
 
 ## Python Files
 
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
-| [__init__.py](__init__.py) | structural_lib.services — Auto-generated package. | 0 | 0 | 2 |
+| [__init__.py](__init__.py) | Application-layer public workflow exports. | 0 | 0 | 18 |
 | [adapters.py](adapters.py) | Adapters for converting various input formats to canonical m | 6 | 0 | 2006 |
-| [api.py](api.py) | Module:       api | 0 | 0 | 419 |
+| [api.py](api.py) | Module:       api | 0 | 0 | 432 |
 | [api_hub.py](api_hub.py) | Module:       api | 0 | 0 | 238 |
 | [api_results.py](api_results.py) | Module:       api_results | 8 | 0 | 507 |
 | [audit.py](audit.py) | Module:       audit | 3 | 3 | 595 |
@@ -22,6 +30,7 @@
 | [calculation_report.py](calculation_report.py) | Module:       calculation_report | 4 | 1 | 722 |
 | [capabilities.py](capabilities.py) | Discoverable supported-case registry for the IS 456 public l | 7 | 3 | 1667 |
 | [column_api.py](column_api.py) | Module:       column_api | 0 | 13 | 1534 |
+| [combined_footing_api.py](combined_footing_api.py) | Stable orchestration for the bounded symmetric combined-foot | 4 | 1 | 177 |
 | [common_api.py](common_api.py) | Module:       common_api | 0 | 5 | 721 |
 | [costing.py](costing.py) | Cost calculation utilities for structural elements. | 2 | 8 | 376 |
 | [dashboard.py](dashboard.py) | Insights module for dashboard aggregation and live code chec | 4 | 3 | 512 |

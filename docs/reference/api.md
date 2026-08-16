@@ -4261,6 +4261,59 @@ remain held.
 
 ---
 
+## 22. Symmetric Combined-Footing Workflow — Development Preview
+
+```python
+from structural_lib import (
+    SymmetricCombinedFootingDesignInput,
+    design_symmetric_combined_footing_is456,
+)
+from structural_lib.codes.is456.combined_footing import CombinedFootingDesignInput
+
+request = SymmetricCombinedFootingDesignInput(
+    case_id="COMBINED-01",
+    footing=CombinedFootingDesignInput(...),
+    qualified_review_required=True,
+)
+result = design_symmetric_combined_footing_is456(request)
+```
+
+```python
+def design_symmetric_combined_footing_is456(
+    request: SymmetricCombinedFootingDesignInput,
+) -> SymmetricCombinedFootingDesignResult
+```
+
+The service composes the existing typed rigid uniform-pressure action kernel
+and IS 456 strength/detailing checks without duplicating their structural math.
+`SymmetricCombinedFootingDesignProvenance` retains the schema, code edition,
+workflow, benchmark, exact clause and controlled-source identities, plus every
+caller basis for geometry, rigidity, loads, bearing/settlement, distributed-
+carrier cancellation, materials, detailing, supporting area, and dowel
+transfer. `SymmetricCombinedFootingDesignStatus` is `PASS` or `FAIL`; a valid
+inadequate provision remains a result, while unsupported input fails closed.
+
+The only accepted case is exactly two identical square columns with equal
+concentric axial loads on one symmetric rigid rectangular constant-depth
+footing on soil under an externally approved uniform pressure model. The
+caller supplies approved service/factored loads, soil/bearing/settlement and
+rigidity bases, reinforcement, supporting-area, and dowel evidence. Unequal or
+eccentric loads, property-line or trapezoidal geometry, flexible or variable
+soil pressure, soil capacity and settlement calculation, shear or punching
+reinforcement, automatic sizing, strap footings, pile caps, raft foundations,
+and professional approval remain held.
+
+Public support types are `api.SymmetricCombinedFootingDesignInput`,
+`api.SymmetricCombinedFootingDesignProvenance`,
+`api.SymmetricCombinedFootingDesignResult`, and
+`api.SymmetricCombinedFootingDesignStatus`. The result always requires
+qualified review and never grants complete engineering approval.
+
+There is no FastAPI endpoint in this packet. Capability and semantic-contract
+promotion remain held for COMBINED-D.
+
+---
+
 ## API Levels — Which Should I Use?
 
 structural_lib provides three API levels. Choose based on your use case:

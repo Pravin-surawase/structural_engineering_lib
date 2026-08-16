@@ -5,6 +5,126 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FOUNDATION-COMBINED-C Public Python Workflow
+
+**Agent:** Codex (`backend`, sole writer; one bounded independent exact-head
+audit after the candidate is committed)
+
+**Branch:** `codex/india-2-foundation-combined-c` from merged COMBINED-B main
+at `f87c8a32aca7edc015f96f6e053f30c904ae683b`
+
+**Git handoff receipt:** `docs/verification/india-2-foundation-combined-c-git-handoff-receipt.json`
+
+**Focus:** Publish only the typed Python workflow, stable public types,
+canonical exports, executable benchmark, API docs, and C evidence over the
+accepted A/B kernels. FastAPI and capability publication remain held.
+
+### Summary
+
+- Added `design_symmetric_combined_footing_is456` and immutable input,
+  provenance, result, and status contracts without duplicating structural
+  math.
+- Preserved every caller basis, exact inherited clause/source identity,
+  supported case, held cases, qualified-review requirement, and false complete-
+  approval boundary.
+- Kept capability truth at 11 supported / 10 held with no new endpoint,
+  semantic workflow, React surface, or release scope.
+
+### Issues encountered
+
+- Pre-implementation review found that the maintained B evidence, finish plan,
+  and next-session handoff still named the first held audit candidate instead
+  of the corrected final audited B head and tree.
+- Primary `main` changed from clean to one modified `.codex/config.toml` path
+  during orientation; the visible change is `model_verbosity = "low"` to
+  `"medium"`.
+- Two guessed orientation paths were wrong: `TASKS.md` is actually
+  `docs/TASKS.md`, and `Python/tests/integration/` has no maintained
+  `index.md`.
+- The first C benchmark assertion guessed a nonexistent
+  `net_factored_pressure_kn_per_m2` result field.
+- The public API manifest check correctly stopped after the five new public
+  symbols were exported.
+- The first mandatory session-end audit reported that C had no declared task-
+  to-Git handoff receipt.
+- The successor session-end audit still reported the newly linked receipt as
+  missing even though direct receipt validation passed.
+
+### Root causes and resolutions
+
+- Root cause: the B semantic repair and final handoff commits followed the
+  first implementation candidate, but the prose kept that earlier identity;
+  the closeout had no later post-merge reconciliation step, and embedding a
+  commit's own final SHA/tree in that same tree would be self-referential.
+  Resolution: C binds those B documents to final audited head `948787bb`, tree
+  `66243e06`, merge `f87c8a32`, and the exact hosted-check result while
+  explicitly labelling the historical JSON receipt as a pre-publication
+  `HOLD`. C's handoff uses a fail-closed `VERIFY_EXACT_HEAD_TREE_PR...` marker
+  instead of presenting a pre-commit candidate as final. Evidence: the B
+  branch chronology shows the implementation, handoff, truth repair, and final
+  handoff commits in order; local object comparison proves the B head and
+  squash merge share tree `66243e06`, and connected GitHub plus
+  `gh pr checks 789` prove merge/check state.
+- Root cause/ownership for the primary `.codex/config.toml` change:
+  `unconfirmed`; repository searches found no session-brief writer for that
+  setting. Resolution: preserve the primary checkout untouched and create C
+  from the exact verified `origin/main` commit in a separate worktree.
+  Evidence: C reports `READY_LOCAL`, `source_bound=true`, and base
+  `f87c8a32`; primary main and the foreign dirty/detached `e54a` lane remain
+  held and unmodified.
+- Root cause: generic path assumptions were used before exact discovery.
+  Resolution: use `rg --files` and the existing folder indexes; read
+  `docs/TASKS.md` directly and treat the integration folder as intentionally
+  unindexed. Evidence: required task/reference/service/combined-footing indexes
+  and files were then read successfully. ⚠️ TERMINAL ISSUE: guessed task and
+  integration-index paths failed → exact maintained paths were discovered with
+  `rg --files`.
+- Root cause: the test assertion shortened the explicit A result field name
+  without checking the dataclass contract. Resolution: use the maintained
+  `net_factored_structural_pressure_kn_per_m2` field. Evidence: all direct C
+  tests pass. ⚠️ TERMINAL ISSUE: initial C test failed on a guessed result
+  attribute → inspected `CombinedFootingActionResult` and used its exact name.
+- Root cause: canonical public exports changed while the generated API manifest
+  still represented the B baseline. Resolution: regenerate once with
+  `scripts/generate_api_manifest.py` and immediately rerun `--check`. Evidence:
+  the manifest adds only the four C types and one workflow, and its deterministic
+  check passes.
+- Root cause: the implementation packet had not yet created the canonical
+  fail-closed Git receipt or linked it from the newest session entry.
+  Resolution: create the receipt from `git_state.py` plus explicit user-
+  authorization, retention, and no-integration evidence; retain dirty/remote/
+  PR/review holds and `WAIT_FOR_EXACT_HEAD_AUDIT` rather than fabricating final
+  proof. Evidence: `git_handoff_receipt.py validate` and the successor session-
+  end audit accept the versioned receipt. The live exact head/tree/PR/check
+  state remains a separate closeout verification. ⚠️ TERMINAL ISSUE: initial
+  session end warned that the Git receipt was missing → created and validated
+  the maintained fail-closed receipt before commit.
+- Root cause: the session log wrapped the receipt path onto the line after the
+  `**Git handoff receipt:**` label, while `scripts/session.py` deliberately
+  discovers only a path on the same line as that label. Resolution: use the
+  established one-line receipt declaration without changing the validator.
+  Evidence: direct receipt validation remains valid and the successor
+  `./run.sh session end --agent backend` discovers the same versioned receipt.
+  ⚠️ TERMINAL ISSUE: session end reported a valid linked receipt as missing →
+  aligned the session entry with the maintained same-line discovery contract.
+
+### Validation
+
+- All 7 direct C tests, all 78 combined A/B/C tests, and the separate 213-test
+  API export, packaging, manifest, clause-traceability, and public-contract
+  selection pass, for 291 focused tests.
+- Public API documentation/symbol parity, the 160-symbol generated API
+  manifest, deterministic Indian-code manifest, focused Ruff, and focused mypy
+  pass. Capability remains 11 supported / 10 held with no C endpoint or
+  semantic workflow.
+- Architecture reports 0/191 violations, imports 0/632 broken, all 1,242
+  internal links are valid, touched indexes are current, source binding and
+  token efficiency pass, and the quick gate is 10/10. Exact-head audit and
+  hosted closeout follow the immutable commit.
+- Using the accepted cadence, focused gates run for every packet; broad Python
+  and the full 30-check gate remain deferred to the final INDIA-2 integration
+  boundary unless a confirmed repository-wide failure forces them earlier.
+
 ## 2026-08-16 — Session: INDIA-2-FOUNDATION-COMBINED-B Strength Composition
 
 **Agent:** Codex (`structural-math`, sole writer; one bounded independent
