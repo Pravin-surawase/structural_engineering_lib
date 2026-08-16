@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 64,
+  "file_count": 67,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -427,6 +427,44 @@
       "content_hash": "300737e95db2"
     },
     {
+      "name": "india-2-flat-g0-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "1b6054b7d09a"
+    },
+    {
+      "name": "india-2-flat-g0-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "b43d28be5a06"
+    },
+    {
+      "name": "india-2-flat-g0-scope-evidence.md",
+      "type": "documentation",
+      "size_lines": 215,
+      "last_updated": "2026-08-16",
+      "description": "interior panel in an equal-span orthogonal grid, designed by the direct design method for uniform gravity loading, with one centred square interior-column",
+      "content_hash": "6b3a77310a78"
+    },
+    {
       "name": "india-2-plan-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -640,7 +678,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "f241a505643e"
+      "content_hash": "a293d786c69f"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -729,5 +767,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "f3741ba72aa30d7e"
+  "content_hash": "c9ccca646b16fde1"
 }

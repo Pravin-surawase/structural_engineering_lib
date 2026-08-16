@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| INDIA-2-FLAT | Decide and, only after GO, implement one bounded flat-slab and column-punching workflow through focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 source, analysis-model, supported case, punching boundary, benchmark, units, and exclusions are next; no calculation code before GO |
+| INDIA-2-FLAT | Implement the G0-frozen equal-span square interior flat-slab and centred-column punching workflow through focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 returned GO; FLAT-A geometry, eligibility, clear-span, and strip contracts are next; unequal/exterior/drop/opening/moment-transfer cases remain held |
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
 
 ## Up Next
@@ -159,6 +159,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-FLAT-G0 | Froze one equal-span square interior flat-slab direct-design and centred square-column punching case with a pre-implementation hand benchmark | Main Agent + structural engineer | ✅ GO — FLAT-A-E owner-activated; unequal/exterior/drop/head/opening/patterned-load/moment-transfer and punching-reinforcement cases remain held |
 | INDIA-2-DEEP | Implemented and accepted one bounded simply supported Clause 29 positive-reinforcement workflow with public provenance | Main Agent + structural engineer | ✅ DONE — G0 and A-D integrated; 157-test focused family selection and independent hand benchmark pass; qualified review and excluded deep-beam systems remain held |
 | INDIA-2-DEEP-D | Added thin typed FastAPI transport, canonical deep-beam capability/semantic truth, deterministic manifest promotion, and publication evidence | Main Agent + API developer | ✅ COMPLETE — public bounded workflow is supported; React, release, and all held systems remain excluded |
 | INDIA-2-DEEP-C | Published one typed Python workflow composing geometry, action, positive tie, anchorage, side-face, provenance, and retained holds | Main Agent + backend | ✅ COMPLETE — canonical root/services API, executable hand benchmark, JSON-safe result, and public docs pass; capability remains held until DEEP-D |

@@ -5,6 +5,162 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FLAT-G0 Scope and Benchmark Decision
+
+**Agent:** Codex (`structural-engineer`, sole writer; one bounded read-only
+official-benchmark auditor)
+
+**Branch:** `codex/india-2-flat-g0` from accepted DEEP-family main at
+`f7eb91c3f2719dd04e5739e67572e9530b60ad3e`
+
+**Git handoff receipt:** `docs/verification/india-2-flat-g0-git-handoff-receipt.json`
+
+**Focus:** Decide one source-bound flat-slab/direct-design and column-punching
+case before any calculation implementation.
+
+### Summary
+
+- Returned GO for one equal-span square interior flat-slab panel under
+  identical uniform gravity loading, using the direct design method and one
+  centred square interior-column punching check.
+- Froze a pre-implementation hand benchmark covering applicability, clear
+  span, total and strip moments, flexure, minimum/provided straight bars,
+  reviewed no-drop span/depth, and no-reinforcement punching.
+- Kept deterministic capability truth held until FLAT-A-E implement and
+  publish the workflow; unequal/exterior/drop/head/opening, patterned-load,
+  moment-transfer, shear-reinforcement, equivalent-frame, and FEM systems
+  remain explicitly held.
+
+### Issues encountered
+
+- The controlled IS 456 PDFs were absent from the linked worktree, so a
+  relative `private_sources` search could not inspect the approved source.
+- The first folder-index command assumed a slab-local `index.md`, and the first
+  search included the nonexistent path `docs/planning/tasks-india.md`.
+- The project-bound Python runtime does not include `pdfplumber`, and the first
+  Amendment 6 visual lookup assumed zero-padded Poppler output names.
+- The accessible official NPTEL course and syllabus confirm a flat-slab design
+  lesson with an example but expose no reproducible numerical inputs or
+  outputs; they cannot serve as the numerical benchmark.
+- The first handoff-receipt validation used a named `--receipt` option although
+  the maintained command expects a positional receipt path.
+- The first index-generation call omitted its now-required owned-folder target
+  and displayed usage without updating indexes.
+- The first static-check pass found the edited manifest generator needed Black
+  formatting.
+- A guessed `scripts/check_imports.py` path did not exist, and an over-broad
+  all-folder index check surfaced pre-existing unrelated index mismatches.
+- Two session-end validations could not find the task receipt even after the
+  next-session handoff pointer was updated.
+- The final targeted verification-index check detected a hash mismatch after
+  the receipt was regenerated later than the prior index pass.
+
+### Root causes and resolutions
+
+- Root cause: approved source material is intentionally ignored and retained
+  only in the primary checkout, not copied into every linked lane. Resolution:
+  inspect it read-only through the exact absolute primary path, verify both
+  source hashes, and commit neither source nor rendered page artifacts. Proof:
+  all Clause 31/A5 pages and all three Amendment 6 pages were visually
+  inspected; Amendment 6 contains no flat-slab change.
+- Root cause: the slab package has no maintained folder index and the planning
+  task path was inferred rather than discovered. Resolution: use `rg --files`
+  and the maintained parent IS 456 indexes, then target `docs/TASKS.md` and the
+  dedicated INDIA-2 plan. Proof: the scoped source and status surfaces were
+  found without creating an unrequested slab index.
+- Root cause: document tooling belongs to the Codex bundled workspace runtime,
+  and short PDF renders use unpadded page suffixes. Resolution: load the
+  workspace dependency paths, use bundled `pdfplumber`/Poppler, enumerate the
+  actual render filenames, and inspect each required page. Proof: source text
+  and visual interpretation agree for the applicability, moment-distribution,
+  punching, spacing, and normalized Figure 16 boundaries.
+- Root cause: the official public NPTEL artifacts are catalogue/syllabus level,
+  not a published numerical worksheet. Resolution: use them only as an
+  instructional-scope cross-check and freeze an independently calculated,
+  pre-implementation benchmark from the controlled source, matching the
+  established wall/deep-family decision pattern. Proof: every documented
+  intermediate was replayed independently to absolute tolerance `1e-9`.
+- Root cause: the validation CLI exposes the receipt as a positional argument.
+  Resolution: inspect `validate --help` and rerun with the positional path;
+  validation reports the `INDIA-2-FLAT-G0` fail-closed receipt valid.
+- Root cause: index generation is intentionally target-bounded unless `--all`
+  is explicit. Resolution: regenerate only `docs/verification`,
+  `docs/planning`, and `docs`; each maintained JSON/Markdown pair updated.
+- Root cause: the two new manifest claim strings exceeded the formatter's
+  maintained layout. Resolution: run Black normally, then rerun Black, Ruff,
+  mypy, Bandit, manifest generation, and manifest tests; all pass.
+- Root cause: the import validator filename was inferred instead of discovered,
+  and `--all --check` expanded beyond the packet-owned documentation folders.
+  Resolution: `./run.sh find 'import validation'` identified
+  `scripts/validate_imports.py`, which passed 607 files with zero broken
+  imports. The same all-folder index check on clean primary `main` reproduced
+  unrelated stale hashes, so no foreign indexes were rewritten; targeted
+  checks for the three owned folders all pass.
+- Root cause: session-end receipt discovery requires the bold receipt label and
+  path on one line in the newest session entry; this entry had wrapped the path
+  onto the next line. The explicit session-handoff command correctly updated
+  the next-session pointer but could not change that parser contract.
+  Resolution: place the validated receipt path on the label line and rerun
+  closeout validation.
+- Root cause: the verification index was generated before the final receipt
+  content stabilized. Resolution: regenerate `docs/verification` after the
+  receipt and recheck all three packet-owned indexes.
+
+### Evidence
+
+- The frozen 6000 mm square-panel benchmark produces `Mo = 442.40625 kN m`,
+  exact negative/positive and column/middle-strip distributions, four
+  flexural-steel targets, a reviewed no-drop span/depth utilization of
+  `0.986193294`, and punching utilization `0.638212090`.
+- Complete visual source inspection covered consolidated PDF pages 54-62 and
+  every Amendment 6 page. No protected prose, figure, or source scan is added
+  to the repository.
+- Deterministic manifest generation preserves 10 supported and 11 held
+  families, with flat slab still `HELD`/`NOT_IMPLEMENTED`; its G0 evidence path
+  is pre-bound for future promotion but no workflow is advertised.
+- Six focused manifest tests, scoped Black/Ruff/mypy/Bandit, architecture
+  0/177, imports 0/607, 1,192 links, three touched index checks, token
+  efficiency, and quick gate 10/10 pass.
+- Broad Python and 30-check gates remain deferred to whole-INDIA-2 closeout;
+  no release, professional approval, or cleanup authority is implied.
+
+### Terminal issues
+
+- ⚠️ TERMINAL ISSUE: the first slab-index/search chain stopped because
+  `Python/structural_lib/codes/is456/slab/index.md` does not exist → used
+  `rg --files` and the maintained parent indexes without creating a new index.
+- ⚠️ TERMINAL ISSUE: relative `private_sources` discovery failed in the linked
+  worktree → used the read-only exact source path in the primary checkout and
+  verified that no controlled source or render entered Git state.
+- ⚠️ TERMINAL ISSUE: project Python raised `ModuleNotFoundError: pdfplumber` →
+  loaded the bundled workspace dependencies and completed source extraction
+  with the bundled Python runtime.
+- ⚠️ TERMINAL ISSUE: the first Amendment 6 image lookup expected `-001` while
+  Poppler emitted `-1` → enumerated exact render names and visually inspected
+  all three pages.
+- ⚠️ TERMINAL ISSUE: `git_handoff_receipt.py validate --receipt ...` rejected
+  the unsupported option → checked command help and the positional validation
+  passed.
+- ⚠️ TERMINAL ISSUE: `./run.sh generate indexes` without an owned-folder
+  target displayed usage and made no change → reran it separately for
+  `docs/verification`, `docs/planning`, and `docs`; all three completed.
+- ⚠️ TERMINAL ISSUE: Black initially reported the manifest generator would be
+  reformatted → applied maintained Black formatting and reran every scoped
+  static/manifest check successfully.
+- ⚠️ TERMINAL ISSUE: guessed `scripts/check_imports.py` was absent and the
+  all-folder index check reported unrelated stale hashes → discovered and
+  passed `scripts/validate_imports.py`, reproduced the unrelated hashes on
+  clean primary `main`, and passed targeted checks for all three owned folders.
+- ⚠️ TERMINAL ISSUE: two `session end` attempts reported a missing task receipt
+  although the receipt and durable handoff pointer validated → traced the
+  newest-session parser, kept the label and path on one line, and reran
+  closeout.
+- ⚠️ TERMINAL ISSUE: the final `docs/verification` index check found its hash
+  stale after receipt regeneration → regenerated that owned index last and
+  rechecked the verification, planning, and docs indexes.
+
+---
+
 ## 2026-08-16 — Session: INDIA-2-DEEP Focused Family Acceptance
 
 **Agent:** Codex (`orchestrator`, sole writer; one bounded read-only scope auditor)

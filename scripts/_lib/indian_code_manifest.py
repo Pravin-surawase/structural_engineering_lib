@@ -85,15 +85,17 @@ _IS456_EVIDENCE = {
         "docs/verification/india-2-deep-d-publication-evidence.md",
         "docs/verification/india-2-deep-family-acceptance-evidence.md",
     ),
+    "flat_slab": ("docs/verification/india-2-flat-g0-scope-evidence.md",),
 }
 
 _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
     "IS456:2000": (
         {
             "family": "flat_slab",
-            "claim": "Flat-slab and column-supported punching design are held.",
+            "claim": "Flat-slab and column-supported punching design remain held while the G0-frozen bounded case is implemented.",
             "limitations": [
-                "Column strips, drops, punching perimeters, openings, and moment transfer require a separate analysis program."
+                "Only one equal-span square interior direct-design panel and centred square-column punching case is activated; no public calculation workflow exists yet.",
+                "Unequal or exterior panels, drops, heads, openings, patterned loads, moment transfer, punching reinforcement, equivalent-frame analysis, and FEM remain held.",
             ],
         },
         {
