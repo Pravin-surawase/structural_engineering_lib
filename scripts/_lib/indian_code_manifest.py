@@ -92,6 +92,7 @@ _IS456_EVIDENCE = {
         "docs/verification/india-2-flat-c-reinforcement-evidence.md",
         "docs/verification/india-2-flat-d-punching-evidence.md",
         "docs/verification/india-2-flat-e-publication-evidence.md",
+        "docs/verification/india-2-flat-family-acceptance-evidence.md",
     ),
 }
 

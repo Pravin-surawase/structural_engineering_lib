@@ -37,7 +37,7 @@ completed family inside the larger INDIA-2 wave.
 |---|---|---|
 | INDIA-0 — Truth baseline | One generated, standard-namespaced capability/coverage manifest; repaired coverage consumers; reconciled status ledgers | **Complete** |
 | INDIA-1 — Existing-family closure | Close or explicitly hold limitations for beam, rectangular column, isolated footing, and solid slab | **Complete** |
-| INDIA-2 — Remaining practical IS 456 elements | Separately verify wall, stair, deep-beam, flat-slab/punching, and distinct foundation-system packets | **In progress** — bounded wall, stair, and deep-beam families accepted; flat slab/punching and foundations remain held pending their own G0 packets |
+| INDIA-2 — Remaining practical IS 456 elements | Separately verify wall, stair, deep-beam, flat-slab/punching, and distinct foundation-system packets | **In progress** — bounded wall, stair, deep-beam, and flat-slab/punching families accepted; distinct foundation programs remain pending their own G0 packets |
 | INDIA-3 — Companion Indian codes | Complete the bounded IS 13920 surface, then add IS 875 inputs before IS 1893 equivalent-static actions and Indian combinations | **Planned** |
 | INDIA-4 — Final acceptance | Run cumulative engineering, cross-layer, repository, and artifact acceptance for the explicitly supported subset | **Planned** |
 
@@ -60,15 +60,16 @@ That document controls INDIA-2 execution within this parent wave.
 | `INDIA-2-WALL` | IS 456 Clause 32 wall program | **Complete within its bounded case.** Alternate and seismic wall systems remain held. |
 | `INDIA-2-STAIR` | IS 456 Clause 33 longitudinal straight waist-slab flight with collinear landings | **Complete.** Historical `INDIA-2A`–`INDIA-2D` plus the cumulative gate are its evidence. Alternate stairs remain held. |
 | `INDIA-2-DEEP` | IS 456 Clause 29 deep-beam program | **Complete within its bounded case.** One simply supported positive-moment workflow is accepted; alternate deep-beam systems remain held. |
-| `INDIA-2-FLAT` | Flat-slab and column-punching program | **Next decision candidate.** No calculation implementation before its G0 source/scope/benchmark decision. |
-| `INDIA-2-FOUNDATION-COMBINED` | Combined-footing program | **Held; distinct analysis model required.** |
+| `INDIA-2-FLAT` | Flat-slab and column-punching program | **Complete within its bounded case.** One regular interior direct-design and concrete-only punching workflow is accepted; alternate systems remain held. |
+| `INDIA-2-FOUNDATION-COMBINED` | Combined-footing program | **Next decision candidate; distinct analysis model required.** |
 | `INDIA-2-FOUNDATION-STRAP` | Strap-footing program | **Held; distinct analysis model required.** |
 | `INDIA-2-FOUNDATION-RAFT` | Raft-foundation program | **Held; distinct analysis model required.** |
 | `INDIA-2-FOUNDATION-PILE-CAP` | Pile-cap program | **Held; distinct analysis model required.** |
 
-The next packet is `INDIA-2-FLAT-G0`. It must freeze one regular gravity-load
-panel and punching boundary, analysis-model eligibility, source set, benchmark,
-units, and exclusions before any calculation code is authorized.
+The next packet is `INDIA-2-FOUNDATION-COMBINED-G0`. It must freeze one
+combined-footing geometry and column/load arrangement, soil-pressure and
+rigidity model, source set, benchmark, units, and exclusions before any
+calculation code is authorized.
 
 ## 4. INDIA-3 companion-code order
 

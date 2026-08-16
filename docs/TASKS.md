@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — INDIA-2-DEEP is accepted within its bounded Clause 29 case; INDIA-2-FLAT-G0 is next
+**Updated:** 2026-08-16 — INDIA-2-FLAT is accepted within its bounded regular-interior case; combined-footing G0 is next
 
 ---
 
@@ -127,7 +127,7 @@
 
 | ID | Task | Owner | Status |
 |----|------|-------|--------|
-| INDIA-2-FLAT | Implement the G0-frozen equal-span square interior flat-slab and centred-column punching workflow through focused family acceptance | Main Agent + structural engineer | 🚧 ACTIVE — G0 and FLAT-A-D are integrated; FLAT-E publication candidate is under validation, followed by focused family acceptance; alternate cases remain held |
+| INDIA-2-FOUNDATION-COMBINED-G0 | Decide one bounded combined-footing analysis model, source set, benchmark, units, and fail-closed exclusions before code | Main Agent + structural engineer | 🚧 ACTIVE — decision-only; no calculation or capability claim before GO |
 | GIT-001 | Research and implement an evidence-backed Git operating model for human/AI work, recovery, and lifecycle governance | Main Agent + repository owner | 🚧 GIT-7E ACTIVE — fresh lane from verified `origin/main` `b91838f`; semantic live-guidance control and durable task-to-Git receipt in progress; all retirement targets remain held and no deletion is authorized |
 
 ## Up Next
@@ -144,9 +144,9 @@ INDIA-0 through INDIA-4, and the dedicated
 [INDIA-2 execution plan](planning/india-2-remaining-is456-elements-plan.md)
 defines the remaining family packets. INDIA-0 and INDIA-1 are complete. The
 historical INDIA-2A-D packets form the completed `INDIA-2-STAIR` family. Bounded
-wall and deep-beam families are also accepted, but umbrella INDIA-2 remains in
-progress while flat-slab/punching and distinct foundation-system packets remain
-held pending their own G0 decisions.
+wall, deep-beam, and flat-slab/punching families are accepted, but umbrella
+INDIA-2 remains in progress while distinct foundation-system packets remain
+pending their own G0 decisions.
 The v0.23.1a1 Alpha is published.
 UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
 3D inspection, versioned capability catalogue, curated renderer, bounded
@@ -159,6 +159,8 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-FLAT | Implemented and accepted one bounded regular-interior direct-design flat-slab and concrete-only punching workflow with public provenance | Main Agent + structural engineer | ✅ DONE — G0 and A-E integrated; 214-test focused family selection and independent hand benchmark pass; qualified review and excluded flat-slab systems remain held |
+| INDIA-2-FLAT-E | Published the typed Python composition, thin REST route, capability/semantic truth, deterministic manifest promotion, and publication evidence | Main Agent + API developer | ✅ INTEGRATED — PR #785 merged as `b04d8065`; supported case is 11/21 manifest truth and all 79 routes have direct tests |
 | INDIA-2-FLAT-D | Added centred square interior-column punching demand, concrete-only capacity, and both redesign boundaries | Main Agent + structural math | ✅ INTEGRATED — PR #784 merged as `d1884946`; frozen reaction/perimeter/stress/utilization and fail-closed cases pass |
 | INDIA-2-FLAT-C | Added bounded flexure, provided straight-bar checks, no-drop support-top extension, and reviewed span/depth comparison in both directions | Main Agent + structural math | ✅ COMPLETE — all frozen steel/detailing/serviceability values pass; direct deflection, crack width, punching, and public workflow remain held |
 | INDIA-2-FLAT-B | Added total static moment and bounded interior negative/positive and column/middle-strip distribution in both directions | Main Agent + structural math | ✅ COMPLETE — frozen moment values and conservation identities pass; capability remains held until FLAT-E |
