@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-16
-**Files:** 143
+**Files:** 146
 
 ## Config Files
 
@@ -91,6 +91,9 @@ Benchmark examples and verification packs for validating library calculations ag
 - [next-session-git-issues-plan-git-handoff-receipt.json](next-session-git-issues-plan-git-handoff-receipt.json)
 - [next-session-git-issues-plan-git-handoff-source-evidence.json](next-session-git-issues-plan-git-handoff-source-evidence.json)
 - [post-india2-cleanup-disposition-evidence.json](post-india2-cleanup-disposition-evidence.json)
+- [post-india2-cleanup-execution-git-handoff-receipt.json](post-india2-cleanup-execution-git-handoff-receipt.json)
+- [post-india2-cleanup-execution-git-handoff-source-evidence.json](post-india2-cleanup-execution-git-handoff-source-evidence.json)
+- [post-india2-cleanup-execution-receipt.json](post-india2-cleanup-execution-receipt.json)
 
 ## Documentation Files
 

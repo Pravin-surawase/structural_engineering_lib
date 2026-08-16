@@ -1,0 +1,157 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T17:20:00Z",
+      "query_status": "OK",
+      "reference": "task:CLEAN-001-POST-INDIA2:user-request-finish-carefully-and-decide-without-approval-prompts",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T17:20:00Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_NON_CANDIDATE_BRANCH",
+      "DELETE_NON_CANDIDATE_WORKTREE",
+      "DELETE_NON_CANDIDATE_REF",
+      "DISCARD_USER_CHANGE",
+      "CLOSE_PULL_REQUEST",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/post-india2-cleanup-execution",
+      "head_sha": "cbe10638fcba3f8919f8776462af34247b0604d0",
+      "task_id": "CLEAN-001-POST-INDIA2-PHASE-B"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "8cf5cbe8356ab81b12e7db4563d9eedfac2cf78e84f79540b22b7363dc7a2340",
+    "state": {
+      "branch": "codex/post-india2-cleanup-execution",
+      "default_base": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "cbe10638fcba3f8919f8776462af34247b0604d0",
+        "status": "equal"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 90.058,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-post-india2-cleanup-execution",
+      "head_sha": "cbe10638fcba3f8919f8776462af34247b0604d0",
+      "hold_reasons": [
+        "changed paths: 5"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T17:20:23.891495+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-cleanup-execution",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 5,
+        "modified_paths": [
+          "docs/SESSION_LOG.md",
+          "docs/verification/index.json",
+          "docs/verification/index.md"
+        ],
+        "staged_paths": [],
+        "untracked_paths": [
+          "docs/verification/post-india2-cleanup-execution-git-handoff-source-evidence.json",
+          "docs/verification/post-india2-cleanup-execution-receipt.json"
+        ]
+      },
+      "upstream": {
+        "ahead": 0,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "cbe10638fcba3f8919f8776462af34247b0604d0",
+        "status": "equal"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-post-india2-cleanup-execution"
+    }
+  },
+  "local_state_receipt_hash": "sha256:8cf5cbe8356ab81b12e7db4563d9eedfac2cf78e84f79540b22b7363dc7a2340",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T17:20:23.891648+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T17:20:00Z",
+    "owner": "Main Agent under owner instruction to preserve every non-candidate lane",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "Python/structural_lib",
+      "fastapi_app",
+      "react_app",
+      "private_sources",
+      "pyproject.toml",
+      "CHANGELOG.md"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "docs/verification/post-india2-cleanup-execution-receipt.json",
+      "docs/verification/post-india2-cleanup-execution-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "docs/SESSION_LOG.md",
+      "docs/verification/index.json",
+      "docs/verification/index.md"
+    ],
+    "task_id": "CLEAN-001-POST-INDIA2-PHASE-B"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}
