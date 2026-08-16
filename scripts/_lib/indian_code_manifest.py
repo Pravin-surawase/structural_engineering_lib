@@ -102,25 +102,17 @@ _IS456_EVIDENCE = {
         "docs/verification/india-2-foundation-combined-d-publication-evidence.md",
         "docs/verification/india-2-foundation-combined-family-acceptance-evidence.md",
     ),
+    "strap_footing": (
+        "docs/verification/india-2-foundation-strap-g0-scope-evidence.md",
+        "docs/verification/india-2-foundation-strap-a-analysis-evidence.md",
+        "docs/verification/india-2-foundation-strap-b-strength-evidence.md",
+        "docs/verification/india-2-foundation-strap-c-public-workflow-evidence.md",
+        "docs/verification/india-2-foundation-strap-d-publication-evidence.md",
+    ),
 }
 
 _HELD_FAMILIES: dict[str, tuple[dict[str, Any], ...]] = {
     "IS456:2000": (
-        {
-            "family": "strap_footing",
-            "implementation_status": "IMPLEMENTED_BOUNDED",
-            "claim": "A bounded property-line strap-footing Python workflow exists but is not yet published as a supported capability.",
-            "workflows": ["design_property_line_strap_footing_is456"],
-            "limitations": [
-                "FastAPI transport, supported capability registration, and focused family acceptance remain pending."
-            ],
-            "evidence": [
-                "docs/verification/india-2-foundation-strap-g0-scope-evidence.md",
-                "docs/verification/india-2-foundation-strap-a-analysis-evidence.md",
-                "docs/verification/india-2-foundation-strap-b-strength-evidence.md",
-                "docs/verification/india-2-foundation-strap-c-public-workflow-evidence.md",
-            ],
-        },
         {
             "family": "raft_foundation",
             "claim": "Raft-foundation design is not implemented.",

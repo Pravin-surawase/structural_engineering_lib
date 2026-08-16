@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "Benchmark examples and verification packs for validating library calculations against IS 456 standards.",
   "last_updated": "2026-08-16",
-  "file_count": 107,
+  "file_count": 119,
   "files": [
     {
       "name": "INDIA-0-git-handoff.json",
@@ -932,6 +932,158 @@
       "content_hash": "1f4ee33aff2e"
     },
     {
+      "name": "india-2-foundation-strap-a-analysis-evidence.md",
+      "type": "documentation",
+      "size_lines": 56,
+      "last_updated": "2026-08-16",
+      "description": "This packet implements only the G0-frozen two-footing property-line analysis: strict typed topology/action/approval inputs, reaction statics, equal uniform",
+      "content_hash": "5b631211d8f0"
+    },
+    {
+      "name": "india-2-foundation-strap-a-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "03fe51ffb26f"
+    },
+    {
+      "name": "india-2-foundation-strap-a-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "59c1dfcfea58"
+    },
+    {
+      "name": "india-2-foundation-strap-b-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "8dfb2ec2736d"
+    },
+    {
+      "name": "india-2-foundation-strap-b-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "cc9284e7cf90"
+    },
+    {
+      "name": "india-2-foundation-strap-b-strength-evidence.md",
+      "type": "documentation",
+      "size_lines": 61,
+      "last_updated": "2026-08-16",
+      "description": "This packet composes A actions with caller-supplied M20-M40 concrete, Fe415/ Fe500 uncoated deformed bars, longitudinal/side-face reinforcement, vertical",
+      "content_hash": "24f166c00a95"
+    },
+    {
+      "name": "india-2-foundation-strap-c-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "59a2024e26a0"
+    },
+    {
+      "name": "india-2-foundation-strap-c-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "e61e2da0b61d"
+    },
+    {
+      "name": "india-2-foundation-strap-c-public-workflow-evidence.md",
+      "type": "documentation",
+      "size_lines": 52,
+      "last_updated": "2026-08-16",
+      "description": "design_property_line_strap_footing_is456 is the sole canonical public Python composition over STRAP-A/B. It accepts one immutable case wrapper around the",
+      "content_hash": "d01514c18565"
+    },
+    {
+      "name": "india-2-foundation-strap-d-git-handoff-receipt.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "holds",
+        "integration",
+        "local",
+        "local_state_receipt_hash",
+        "mutation_policy",
+        "observed_at_utc",
+        "pull_request",
+        "receipt_grants_authority",
+        "receipt_kind"
+      ],
+      "content_hash": "8f6f0d304150"
+    },
+    {
+      "name": "india-2-foundation-strap-d-git-handoff-source-evidence.json",
+      "type": "config",
+      "last_updated": "2026-08-16",
+      "top_level_keys": [
+        "authorization",
+        "integration",
+        "retention",
+        "task_archive"
+      ],
+      "content_hash": "3281f5b39240"
+    },
+    {
+      "name": "india-2-foundation-strap-d-publication-evidence.md",
+      "type": "documentation",
+      "size_lines": 95,
+      "last_updated": "2026-08-16",
+      "description": "POST /api/v1/design/strap-footing/property-line is a thin typed transport over the canonical design_property_line_strap_footing_is456 service accepted",
+      "content_hash": "ad70699f818c"
+    },
+    {
       "name": "india-2-foundation-strap-g0-git-handoff-receipt.json",
       "type": "config",
       "last_updated": "2026-08-16",
@@ -1183,7 +1335,7 @@
         "capability_summary",
         "standards"
       ],
-      "content_hash": "4feaedd0431a"
+      "content_hash": "12ff6c0eae92"
     },
     {
       "name": "indian-code-truth-baseline.md",
@@ -1272,5 +1424,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "6f7f5aa5b18a4f4b"
+  "content_hash": "41a9adab86164104"
 }

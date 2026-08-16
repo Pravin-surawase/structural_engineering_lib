@@ -5,6 +5,165 @@
 
 ---
 
+## 2026-08-16 — Session: INDIA-2-FOUNDATION-STRAP-D FastAPI and Truth Publication
+
+**Agent:** Codex (`api-developer`, sole writer; one bounded independent exact-
+head audit after the candidate is committed)
+
+**Branch:** `codex/india-2-foundation-strap-d` from merged STRAP-C main at
+`e3e4b2ae5d6559472c2e6595ce05d36887b32a1c`
+
+**Git handoff receipt:** `docs/verification/india-2-foundation-strap-d-git-handoff-receipt.json`
+
+**Focus:** Publish only strict nested transport, one thin property-line strap-
+footing route, exact OpenAPI drift, and matching capability/semantic/manifest
+truth over the accepted C workflow. Structural math, React, alternate
+foundations, broad Python, and the full gate remain outside D.
+
+### Summary
+
+- Added `POST /api/v1/design/strap-footing/property-line` with strict nested
+  request and response models, safe contract-error mapping, typed OpenAPI, and
+  no duplicated structural arithmetic.
+- Promoted exactly one `strap_footing` workflow in the canonical capability,
+  semantic, and deterministic manifest truth while retaining every G0 hold.
+- Updated public documentation and next-action truth to focused strap family
+  acceptance, which remains a separate fresh packet before pile-cap G0.
+
+### Issues encountered
+
+- The first D onboarding sequence created the correct linked worktree but ran
+  its state, source-diagnostic, and session commands against the retained
+  primary checkout, reporting dirty behind `main` instead of the clean D lane.
+- The first combined create/register patch assumed router names `slab` and
+  `stream`; its anchor did not exist and the patch stopped atomically without
+  making changes.
+- The first manifest/parity tests observed the prior 12/9 committed artifact
+  after runtime registration had advanced to 13/8.
+- A requested parity section name `endpoints` did not exist; the maintained
+  section is named `api` and the endpoint-test total is reported by the main
+  parity view.
+- Focused mypy found that the new async route lacked an explicit return type.
+- A follow-up combined docs/index/mypy command was invoked from `Python/`, so
+  its root-relative `./scripts/python_runtime.sh` path did not exist and the
+  command stopped before any subcommand ran.
+- The first final touched-index check found the router index stale after the
+  route return-type correction; the corrected pass then exposed the FastAPI
+  test index stale from the earlier Black formatting change.
+- A final current-truth sweep found the task-board header still naming STRAP-D
+  as next after the detailed rows had advanced to focused acceptance.
+- Hosted FastAPI validation stopped during collection because the new transport
+  test imported its request fixture from the separately rooted Python test
+  package.
+- After that collection defect was corrected, the hosted-equivalent local suite
+  exposed `0.23.0` package metadata against the checkout's `0.23.1a1` source
+  version in the shared editable environment.
+- The next hosted FastAPI run passed its complete test selection but rejected
+  the OpenAPI snapshot because Pydantic 2.12 emitted separate request-model
+  input/output components while hosted Pydantic 2.13 emitted one component.
+
+### Root causes and resolutions
+
+- Root cause: the worktree-creation command retained the primary checkout as
+  its fixed tool working directory after `git worktree add`; shell process cwd
+  does not move to the new path automatically. Resolution: rerun every
+  onboarding command with the D worktree as the tool working directory before
+  any edit. Evidence: Git state reports clean `READY_LOCAL` at the exact C merge
+  base and runtime diagnosis reports `source_bound=true` under the D path.
+  ⚠️ TERMINAL ISSUE: onboarding ran in the retained primary checkout -> reran
+  with the explicit D worktree path and obtained trusted clean-lane evidence.
+- Root cause: the registration patch copied assumed neighboring router names
+  instead of the live `staircase`/`streaming` structure. Resolution: inspect
+  the exact import/export blocks and apply narrow anchors; the failed patch was
+  atomic. Evidence: router import identity, main-app mounting, Ruff, imports,
+  and direct REST tests pass.
+- Root cause: the deterministic manifest and parity dashboard intentionally
+  consume the committed generated artifact, which had not yet been regenerated
+  after the runtime registry edit. Resolution: add the D evidence first, run
+  the maintained manifest writer once, and immediately verify `--check` plus
+  parity. Evidence: generated truth is current at 13 supported / 8 held.
+- Root cause: the parity section name was inferred from its output concept
+  instead of discovered from the command's reported choices. Resolution: use
+  the reported `api` section and the maintained main parity command for endpoint
+  coverage. Evidence: the corrected parity commands complete without mutating
+  repository truth.
+  ⚠️ TERMINAL ISSUE: `--section endpoints` was rejected -> used the reported
+  `api` selector and main parity view.
+- Root cause: the initial endpoint signature followed the neighboring legacy
+  unannotated transport pattern, while D's focused mypy gate requires new code
+  to carry an explicit union of the success mapping and error response.
+  Resolution: annotate the async route as
+  `dict[str, object] | JSONResponse`. Evidence: focused mypy and the direct
+  success/422/FAIL response tests pass after the correction.
+- Root cause: the combined verification command mixed repository-root script
+  paths with a `Python/` tool working directory. Resolution: run the command
+  from the repository root and isolate only mypy in an explicit `cd Python`
+  subshell. Evidence: index generation, focused mypy, and the direct tests all
+  pass in the corrected invocation.
+  ⚠️ TERMINAL ISSUE: root-relative launcher was unavailable from `Python/` ->
+  ran from the repository root and scoped only mypy to `Python/`.
+- Root cause: the maintained router and test indexes were generated before the
+  mypy-driven endpoint signature and Black test-format changes updated their
+  file hashes. Resolution: regenerate both touched indexes after the last
+  executable edits and recheck every touched maintained index. Evidence: all
+  scoped index hash checks pass.
+- Root cause: the task-board update targeted its active and recently-done rows
+  but omitted the independent top-level `Updated` summary. Resolution: advance
+  that summary to focused strap acceptance and retain a targeted stale-text
+  search over every current planning source. Evidence: no current source says
+  STRAP-D is next or that its FastAPI publication remains held.
+- Root cause: `fastapi_app/tests/test_strap_footing.py` reused `_design_input`
+  from `Python/tests`, so it only collected when the repository root happened
+  to make that unrelated test package importable; the hosted FastAPI job uses
+  `fastapi_app` as its pytest root by design. Resolution: make the transport
+  test own a plain JSON benchmark payload, matching the existing FastAPI
+  contract-test pattern and removing the cross-suite test import. Evidence: all
+  6 direct transport tests and the exact hosted selection of 443 FastAPI tests
+  pass after the correction.
+- Root cause: the worktree-bound launcher correctly selected D source through
+  `PYTHONPATH`, but the shared primary virtual environment still carried the
+  pre-candidate `0.23.0` editable distribution metadata used by
+  `get_library_version()`. Resolution: reinstall the current primary
+  `Python/` project into that shared environment at `0.23.1a1`; no repository
+  file changed. Evidence: source diagnosis remains bound to D and the formerly
+  failing project-BOQ test passes within the 443-test FastAPI selection.
+  ⚠️ TERMINAL ISSUE: stale editable package metadata produced a local version
+  mismatch -> refreshed the shared editable install from the current primary
+  Python project and reran the complete hosted selection.
+- Root cause: the strap response intentionally echoes the validated design
+  input, so a request model carrying before-validators is referenced in both
+  validation and serialization modes. The repository's supported but broad
+  Pydantic range allowed 2.12 and 2.13 to choose different automatic component
+  suffixes for that dual use. Resolution: use Pydantic's supported
+  `json_schema_mode_override="validation"` on the strict request-model base,
+  which makes this shared schema mode explicit without weakening runtime
+  validation, and add a semantic regression assertion requiring the single
+  unsuffixed component. Evidence: the direct transport tests and exact
+  API/snapshot checks pass under both Pydantic 2.12.5 and 2.13.4 at the same
+  81-endpoint/359-schema artifact.
+
+### Validation
+
+- All 6 direct D transport tests, all 85 strap A-D analysis, strength, public-
+  workflow, and transport tests, and the 143-test focused strap/public-contract
+  selection pass.
+- The full hosted FastAPI selection was run after the hosted collection failure
+  forced that boundary earlier and passes 443 tests with 6 slow/performance
+  tests deselected; broad Python and the full 30-check gate remain deferred.
+- OpenAPI drift is exactly one additive route and 19 additive schemas, with no
+  existing endpoint or schema changed; the snapshot is current at 81 endpoints
+  and 359 schemas. All three API contract/snapshot commands pass.
+- Architecture reports 0 violations across 200 files; circular-import analysis
+  reports none across 181 files/147 modules; import validation reports 0 broken
+  imports across 647 files, 4,389 imports, and 2,054 internal imports.
+- Black, Ruff, focused mypy, Bandit, deterministic manifest, and parity pass at
+  13 supported / 8 held. Documentation, index, link, source-binding, efficiency,
+  quick-gate, exact-head audit, and hosted-check receipts are completed before
+  merge.
+- Using the cadence quoted by the owner: focused gates run per packet, with the
+  broad Python and 30-check gates only at the final INDIA-2 integration boundary
+  unless a repository-wide failure forces them earlier.
+
 ## 2026-08-16 — Session: INDIA-2-FOUNDATION-STRAP-C
 
 **Agent:** Codex (`backend`, sole writer; one bounded independent exact-head

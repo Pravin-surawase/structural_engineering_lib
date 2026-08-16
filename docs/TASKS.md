@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-16 — STRAP-C public Python complete; STRAP-D is next after merge
+**Updated:** 2026-08-16 — STRAP-D publication complete; focused strap acceptance is next after merge
 
 ---
 
@@ -133,7 +133,7 @@
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| INDIA-2-FOUNDATION-STRAP-D | Publish the strict FastAPI transport, OpenAPI contract, capability/semantic truth, and deterministic manifest promotion | Main Agent + API developer | focused REST-publication packet | P0 | 🚧 NEXT after STRAP-C merges unchanged; React remains excluded |
+| INDIA-2-FOUNDATION-STRAP-ACCEPTANCE | Independently replay the bounded family and reconcile G0-D public truth without widening scope | Main Agent + reviewer | focused family acceptance | P0 | 🚧 NEXT after STRAP-D merges unchanged; stop before pile-cap G0 |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
@@ -145,7 +145,7 @@ INDIA-0 through INDIA-4, and the dedicated
 defines the remaining family packets. INDIA-0 and INDIA-1 are complete. The
 historical INDIA-2A-D packets form the completed `INDIA-2-STAIR` family. Bounded
 wall, deep-beam, flat-slab/punching, and combined-footing families are accepted,
-but umbrella INDIA-2 remains in progress while strap A-D/acceptance and the
+but umbrella INDIA-2 remains in progress while strap acceptance and the
 pile-cap/raft G0 decisions remain pending.
 The v0.23.1a1 Alpha is published.
 UIX-001 P0-P15 is accepted: the revision-safe workbench, authoritative
@@ -159,6 +159,7 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| INDIA-2-FOUNDATION-STRAP-D | Published the strict nested FastAPI transport, exact OpenAPI contract, capability/semantic truth, and deterministic manifest promotion | Main Agent + API developer | ✅ COMPLETE — one bounded workflow is supported at 13/21 truth and all 81 routes have direct tests; focused family acceptance remains separate |
 | INDIA-2-FOUNDATION-STRAP-C | Published the typed property-line strap Python composition, immutable provenance/result/status types, mapping builder, canonical exports, executable benchmark, and public docs | Main Agent + backend | ✅ COMPLETE — public Python PASS/FAIL/fail-closed/provenance tests pass; capability remains held until D |
 | INDIA-2-FOUNDATION-STRAP-B | Implemented exact stress-block flexure, minimum/provided and side-face steel, Table 19/20 shear and vertical stirrups, spacing, cover, anchorage, and composed disposition | Main Agent + structural math | ✅ COMPLETE — frozen PASS, valid FAIL, exact-helper regression, and fail-closed boundaries pass; public composition/publication remain held |
 | INDIA-2-FOUNDATION-STRAP-A | Implemented typed strap geometry/action/approval contracts, equal-pressure/common-factor eligibility, reactions, bearing, clear-strap actions, and equilibrium | Main Agent + structural math | ✅ COMPLETE — frozen benchmark, source-equation reduction, valid bearing failure, and fail-closed boundaries pass; strength/publication remain held |

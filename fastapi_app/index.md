@@ -25,13 +25,13 @@ REST API + WebSocket bridge between the React frontend and the Python `structura
 | [auth.py](auth.py) | Authentication and Authorization Module. | 3 | 7 | 378 |
 | [config.py](config.py) | Application Configuration. | 1 | 2 | 124 |
 | [error_utils.py](error_utils.py) | Error sanitization utilities for API responses. | 0 | 3 | 74 |
-| [main.py](main.py) | FastAPI Application Entry Point. | 3 | 5 | 625 |
+| [main.py](main.py) | FastAPI Application Entry Point. | 3 | 5 | 635 |
 
 ## Subfolders
 
 | Folder | Files | Description |
 |--------|-------|-------------|
 | [examples/](examples/) | 4 |  |
-| [models/](models/) 📦 | 23 |  |
-| [routers/](routers/) 📦 | 26 |  |
-| [tests/](tests/) 📦 | 44 | Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin |
+| [models/](models/) 📦 | 24 |  |
+| [routers/](routers/) 📦 | 27 |  |
+| [tests/](tests/) 📦 | 45 | Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin |

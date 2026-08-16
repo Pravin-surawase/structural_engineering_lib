@@ -4,13 +4,14 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-16
-- Focus: Merge STRAP-C unchanged, then begin only STRAP-D REST publication
+- Focus: Merge STRAP-D unchanged, then begin only focused strap acceptance
 - Combined acceptance: PR #792 squash-merged as 8e039b112e38436fcae36326b46afa9c436fb970; tree=873aea4cdca8aa9633b30a7c9b74138e5a73a6ce
 - STRAP-G0: PR #793 squash-merged as 70cd2894485d88b72d22544ee18533733789d0f1; audited tree=60d5636265e157e723236909b1de7f582791b297
 - STRAP-A: PR #794 squash-merged as c410b28024e44e3e2670c8b359b69ae29165f2ae; audited tree=08899dbedd35e3d0b0e2c9ba2e78813d87be1f70
 - STRAP-B: PR #795 squash-merged as ec6a81b32b9fc2ae227d041ec19bb848a99ac3eb; audited tree=02f3a5c0bd0de0afbda6ca3ab128b40283efde5e
-- STRAP-C: typed public Python workflow/provenance implemented; FastAPI/capability remain held
-- Next action: START_STRAP_D_ONLY_AFTER_C_MERGE
+- STRAP-C: PR #796 squash-merged as e3e4b2ae5d6559472c2e6595ce05d36887b32a1c; audited tree=40040d5433b38b6c322bb1f6a789cab1bc5e2872
+- STRAP-D: strict REST and capability publication implemented; acceptance remains separate
+- Next action: START_STRAP_ACCEPTANCE_ONLY_AFTER_D_MERGE
 <!-- HANDOFF:END -->
 
 **Date:** 2026-08-16
@@ -19,7 +20,7 @@
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; INDIA-0, INDIA-1, and the INDIA-2-STAIR family are complete |
 | **Program** | Umbrella INDIA-2 remains in progress; INDIA-3 and INDIA-4 remain planned |
-| **Next** | Begin `INDIA-2-FOUNDATION-STRAP-D` only after STRAP-C merges unchanged |
+| **Next** | Begin focused `INDIA-2-FOUNDATION-STRAP-ACCEPTANCE` only after STRAP-D merges unchanged |
 
 ## Required Reading
 
@@ -109,8 +110,8 @@ integration boundary unless a confirmed repository-wide failure forces them
 earlier.
 
 Flat-slab acceptance is complete without expanding topology or adding React.
-Combined footing is accepted within the bounded case. Strap G0 is GO within
-its separate bounded model; pile-cap and raft remain later G0 decisions. The
+Combined footing is accepted within the bounded case. Strap G0-D is published
+within its separate bounded model; pile-cap and raft remain later G0 decisions. The
 two deferred clause-registry truth defects are recorded in the next-session
 plan and must not be mixed into STRAP-A-D or strap acceptance.
 
@@ -122,8 +123,8 @@ authorization, or cleanup authority.
 
 ## Exact next action
 
-After verifying STRAP-C merged unchanged into current `origin/main`, create a
-fresh STRAP-D lane. Publish only the strict nested FastAPI transport, exact
-OpenAPI drift, capability/semantic truth, deterministic manifest promotion,
-and publication evidence over C. React, broad Python, and the 30-check gate
-remain outside STRAP-D.
+After verifying STRAP-D merged unchanged into current `origin/main`, create a
+fresh acceptance-only lane. Independently replay the frozen and one non-frozen
+case, reconcile every G0-D surface, run the focused family/publication gates,
+and stop before pile-cap G0. React, broad Python, and the 30-check gate remain
+outside strap acceptance.

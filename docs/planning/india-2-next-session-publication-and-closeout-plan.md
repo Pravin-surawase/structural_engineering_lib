@@ -17,9 +17,10 @@ GO for one source-bound property-line two-footing model with equal uniform net
 pressure, a straight no-soil-contact strap, explicit service/factored actions,
 and externally verified footing slabs. STRAP-A implements its bounded statics,
 bearing, clear-strap actions, and exact equilibrium; STRAP-B implements exact
-strap strength and detailing; STRAP-C publishes the typed Python composition.
-The next packet is `INDIA-2-FOUNDATION-STRAP-D` after C merges unchanged with
-required checks green.
+strap strength and detailing; STRAP-C publishes the typed Python composition;
+STRAP-D publishes the REST/capability/semantic/manifest truth. The next packet
+is focused strap family acceptance after D merges unchanged with required
+checks green.
 
 Finish the bounded strap sequence A -> B -> C -> D -> focused acceptance, one
 fresh lane and focused gate at a time. Stop before pile-cap G0. Do not add
@@ -46,9 +47,10 @@ At the merged COMBINED-D baseline:
 - wall, staircase, deep-beam, and flat-slab/punching bounded families are
   accepted;
 - combined-footing G0/A-D are integrated within one symmetric two-column case;
-- generated truth is `12 supported / 9 held`, and the bounded combined-footing
-  workflow is supported while all alternate systems remain held;
-- all 80 endpoints have direct tests;
+- generated truth after STRAP-D is `13 supported / 8 held`, and the bounded
+  combined- and strap-footing workflows are supported while alternate systems
+  remain held;
+- all 81 endpoints have direct tests;
 - COMBINED-D has 6 direct transport tests, 84 cumulative A-D tests, and a
   339-test focused combined/public-contract selection;
 - architecture is `0/193`, imports are `0` broken across 222 Python files,

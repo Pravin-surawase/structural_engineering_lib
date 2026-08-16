@@ -2,7 +2,7 @@
 
 **Type:** Python Package
 **Last Updated:** 2026-08-16
-**Files:** 24
+**Files:** 25
 
 ## Public API
 
@@ -24,14 +24,14 @@
 - `optimization`
 - `rebar`
 - `staircase`
+- `strap_footing`
 - `streaming`
-- `wall`
 
 ## Python Files
 
 | File | Description | Classes | Functions | Lines |
 |------|-------------|---------|-----------|-------|
-| [__init__.py](__init__.py) | FastAPI Routers Package. | 0 | 0 | 56 |
+| [__init__.py](__init__.py) | FastAPI Routers Package. | 0 | 0 | 58 |
 | [analysis.py](analysis.py) | Smart Analysis Router. | 0 | 3 | 338 |
 | [capabilities.py](capabilities.py) | Public discovery route for the canonical supported IS 456 co | 0 | 1 | 23 |
 | [catalog.py](catalog.py) | Thin read-only transport for the canonical application workf | 0 | 1 | 51 |
@@ -51,6 +51,7 @@
 | [optimization.py](optimization.py) | Cost Optimization Router. | 0 | 3 | 331 |
 | [rebar.py](rebar.py) | Rebar Validation and Application Router. | 7 | 2 | 269 |
 | [staircase.py](staircase.py) | FastAPI transport for the bounded straight-flight staircase  | 0 | 1 | 66 |
+| [strap_footing.py](strap_footing.py) | FastAPI transport for the bounded property-line strap-footin | 0 | 1 | 72 |
 | [streaming.py](streaming.py) | Server-Sent Events (SSE) Router for Batch Processing. | 3 | 3 | 351 |
 | [wall.py](wall.py) | FastAPI transport for the bounded braced-wall service. | 0 | 1 | 117 |
 | [websocket.py](websocket.py) | WebSocket Router for Live Design Updates. | 3 | 3 | 428 |

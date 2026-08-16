@@ -1,0 +1,163 @@
+{
+  "authorization": {
+    "authority_source": {
+      "kind": "USER_DELEGATION",
+      "observed_at_utc": "2026-08-16T11:25:47Z",
+      "query_status": "OK",
+      "reference": "task:INDIA-2:user-request-finish-strap-footing",
+      "status": "OBSERVED"
+    },
+    "authorized_actions": [
+      "COMMIT_INTENDED_PATHS",
+      "PUSH_FEATURE_BRANCH",
+      "CREATE_OR_UPDATE_DRAFT_PR"
+    ],
+    "next_action": "WAIT_FOR_EXACT_HEAD_AUDIT",
+    "observed_at_utc": "2026-08-16T11:25:47Z",
+    "prohibited_actions": [
+      "MERGE_BEFORE_REQUIRED_CHECKS",
+      "DELETE_BRANCH",
+      "DELETE_WORKTREE",
+      "DELETE_REF",
+      "PUBLISH_RELEASE"
+    ],
+    "query_status": "OK",
+    "status": "OBSERVED",
+    "target_binding": {
+      "actions": [
+        "COMMIT_INTENDED_PATHS",
+        "PUSH_FEATURE_BRANCH",
+        "CREATE_OR_UPDATE_DRAFT_PR"
+      ],
+      "branch": "codex/india-2-foundation-strap-d",
+      "head_sha": "6eb270374a38425595212a61eddd756221b13ec4",
+      "task_id": "INDIA-2-FOUNDATION-STRAP-D"
+    }
+  },
+  "holds": [
+    "LOCAL_HOLD_DIRTY",
+    "PULL_REQUEST_NOT_CHECKED",
+    "REMOTE_NOT_CHECKED",
+    "REVIEW_NOT_CHECKED"
+  ],
+  "integration": {
+    "query_status": "UNKNOWN",
+    "reason_code": "NO_INTEGRATION_CLAIM_BEFORE_PR",
+    "status": "NOT_APPLICABLE"
+  },
+  "local": {
+    "authority": "scripts/git_state.py",
+    "receipt_sha256": "b97afd9e0814b26bd24ce271f8de3161dbca6530f22d46df4322799b2ac90196",
+    "state": {
+      "branch": "codex/india-2-foundation-strap-d",
+      "default_base": {
+        "ahead": 5,
+        "behind": 0,
+        "ref": "origin/main",
+        "sha": "e3e4b2ae5d6559472c2e6595ce05d36887b32a1c",
+        "status": "ahead"
+      },
+      "derived_action": "HOLD_DIRTY",
+      "duration_ms": 82.592,
+      "git_common_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git",
+      "git_dir": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib/.git/worktrees/structural_engineering_lib-india-2-foundation-strap-d",
+      "head_sha": "6eb270374a38425595212a61eddd756221b13ec4",
+      "hold_reasons": [
+        "changed paths: 1"
+      ],
+      "linked_worktree": true,
+      "locks": [],
+      "observed_at_utc": "2026-08-16T11:40:19.741719+00:00",
+      "operation": "none",
+      "operation_markers": [],
+      "query_failures": [],
+      "ready_local": false,
+      "remote_freshness": "NOT_CHECKED",
+      "repository_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-foundation-strap-d",
+      "schema_version": 1,
+      "tree": {
+        "clean": false,
+        "conflicted_paths": [],
+        "dirty_count": 1,
+        "modified_paths": [
+          "docs/verification/india-2-foundation-strap-d-git-handoff-source-evidence.json"
+        ],
+        "staged_paths": [],
+        "untracked_paths": []
+      },
+      "upstream": {
+        "ahead": 1,
+        "behind": 0,
+        "ref": "origin/codex/india-2-foundation-strap-d",
+        "sha": "b0d74397e6bc879158d941e9a09676a64356c6d7",
+        "status": "ahead"
+      },
+      "worktree_root": "/Users/pravinsurawase/VS_code_project/structural_engineering_lib-india-2-foundation-strap-d"
+    }
+  },
+  "local_state_receipt_hash": "sha256:b97afd9e0814b26bd24ce271f8de3161dbca6530f22d46df4322799b2ac90196",
+  "mutation_policy": "READ_ONLY_EVIDENCE_NO_GIT_OR_GITHUB_MUTATION",
+  "observed_at_utc": "2026-08-16T11:40:19.741865+00:00",
+  "pull_request": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "receipt_grants_authority": false,
+  "receipt_kind": "task_to_git_handoff",
+  "receipt_status": "HOLD",
+  "remote": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "retention": {
+    "decision": "RETAIN_FEATURE_BRANCH_AND_WORKTREE",
+    "holds": [],
+    "observed_at_utc": "2026-08-16T11:25:47Z",
+    "owner": "Main Agent under user instruction to preserve Git state",
+    "query_status": "OK",
+    "status": "OBSERVED"
+  },
+  "review": {
+    "query_status": "UNKNOWN",
+    "status": "NOT_CHECKED"
+  },
+  "schema_version": 1,
+  "task": {
+    "forbidden_paths": [
+      "react_app",
+      "private_sources",
+      "CHANGELOG.md",
+      "pyproject.toml"
+    ],
+    "integration_owner": "Main Agent",
+    "owned_paths": [
+      "fastapi_app/models/strap_footing.py",
+      "fastapi_app/routers/strap_footing.py",
+      "fastapi_app/tests/test_strap_footing.py",
+      "docs/verification/india-2-foundation-strap-d-publication-evidence.md",
+      "docs/verification/india-2-foundation-strap-d-git-handoff-source-evidence.json"
+    ],
+    "shared_paths": [
+      "Python/structural_lib/services/capabilities.py",
+      "Python/tests/integration/test_api_entrypoints_is456.py",
+      "Python/tests/integration/test_strap_footing_publication.py",
+      "Python/tests/test_indian_code_manifest.py",
+      "scripts/_lib/indian_code_manifest.py",
+      "docs/verification/indian-code-capability-coverage.json",
+      "fastapi_app/main.py",
+      "fastapi_app/routers/__init__.py",
+      "fastapi_app/tests/test_capabilities.py",
+      "fastapi_app/openapi_baseline.json",
+      "docs/reference/api.md",
+      "docs/SESSION_LOG.md",
+      "docs/TASKS.md",
+      "docs/planning/india-2-next-session-publication-and-closeout-plan.md",
+      "docs/planning/next-session-brief.md"
+    ],
+    "task_id": "INDIA-2-FOUNDATION-STRAP-D"
+  },
+  "task_archive": {
+    "is_git_retention_evidence": false,
+    "status": "NOT_CHECKED"
+  }
+}

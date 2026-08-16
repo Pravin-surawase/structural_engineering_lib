@@ -3,15 +3,15 @@
   "type": "python-package",
   "description": "",
   "last_updated": "2026-08-16",
-  "file_count": 24,
+  "file_count": 25,
   "files": [
     {
       "name": "__init__.py",
       "type": "python",
-      "size_lines": 56,
+      "size_lines": 58,
       "last_updated": "2026-08-16",
       "description": "FastAPI Routers Package.",
-      "content_hash": "be1e80ba46df"
+      "content_hash": "d1cf99f216ea"
     },
     {
       "name": "analysis.py",
@@ -842,6 +842,23 @@
       "content_hash": "c06975ad5779"
     },
     {
+      "name": "strap_footing.py",
+      "type": "python",
+      "size_lines": 72,
+      "last_updated": "2026-08-16",
+      "description": "FastAPI transport for the bounded property-line strap-footing service.",
+      "functions": [
+        {
+          "name": "design_property_line_strap_footing",
+          "description": "Validate transport input and delegate every calculation to the service.",
+          "params": [
+            "request"
+          ]
+        }
+      ],
+      "content_hash": "6a256f9b7d68"
+    },
+    {
       "name": "streaming.py",
       "type": "python",
       "size_lines": 351,
@@ -1025,8 +1042,8 @@
     "optimization",
     "rebar",
     "staircase",
-    "streaming",
-    "wall"
+    "strap_footing",
+    "streaming"
   ],
-  "content_hash": "417dd0e3270820df"
+  "content_hash": "e94c2631a1c99d1b"
 }

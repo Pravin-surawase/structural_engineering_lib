@@ -788,7 +788,7 @@
     {
       "name": "capabilities.py",
       "type": "python",
-      "size_lines": 1803,
+      "size_lines": 1934,
       "last_updated": "2026-08-16",
       "description": "Discoverable supported-case registry for the IS 456 public library.",
       "classes": [
@@ -847,7 +847,7 @@
         "_REPORT_IS_SAFE_ALIAS",
         "_SLAB_REVIEW_ALIAS"
       ],
-      "content_hash": "28dc0a1e926b"
+      "content_hash": "de07530b279f"
     },
     {
       "name": "column_api.py",
@@ -2879,5 +2879,5 @@
     "PropertyLineStrapFootingDesignStatus",
     "design_property_line_strap_footing_is456"
   ],
-  "content_hash": "7c26676d6b281a41"
+  "content_hash": "591dd575dbc0a9dd"
 }
