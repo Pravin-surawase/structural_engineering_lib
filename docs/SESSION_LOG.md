@@ -2706,6 +2706,10 @@ optimization, solver, release, and professional approval remain excluded.
   fixes, then rejected the candidate because mypy treated the seven new
   provenance fields as required constructor arguments and Bandit scanned three
   pre-existing silent invalid-member skips plus the `PASS` enum string.
+- Hosted PR Validation passed repository, documentation, React, and Python but
+  failed three FastAPI plausibility-validator tests whose direct
+  `SmartAnalysisRequest` construction omitted A2's now-required explicit
+  effective depth and span.
 
 ### Root causes and resolutions
 
@@ -2776,6 +2780,12 @@ optimization, solver, release, and professional approval remain excluded.
   member identity/reason, and annotate only the enum literal as non-credential
   `B105`. Changed-file Bandit reports no issues. The hook's Black and EOF edits
   were retained exactly.
+- Confirmed root cause: the three older tests exercised only the depth/width
+  validator and were outside the focused smart-route selection, so their setup
+  still relied on the removed hidden `D - 50` and `12D` assumptions. Resolution:
+  add realistic explicit `effective_depth` and `span_length` values without
+  changing the assertions or production model. The exact three failed tests are
+  the repair evidence; the unchanged hosted jobs are not rerun locally.
 
 ### Validation through content freeze
 

@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "generated": "2026-08-17T21:37:21.067508",
+  "generated": "2026-08-17T21:42:58.577266",
   "total_docs": 372,
   "docs": {
     "docs/SESSION_LOG.md": {
@@ -21,7 +21,7 @@
         "2026-08-16 \u2014 Session: Index Local-Artifact Determinism Repair",
         "2026-08-16 \u2014 Session: Post-INDIA-2 Index Determinism Repair"
       ],
-      "size_bytes": 166991
+      "size_bytes": 167701
     },
     "docs/README.md": {
       "title": "Docs Index (Start Here)",

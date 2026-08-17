@@ -1523,7 +1523,7 @@
     {
       "name": "test_plausibility_validators.py",
       "type": "python",
-      "size_lines": 761,
+      "size_lines": 767,
       "last_updated": "2026-08-17",
       "description": "Tests for cross-field plausibility validators (TASK-729).",
       "classes": [
@@ -1661,7 +1661,7 @@
           ]
         }
       ],
-      "content_hash": "3967e7381b9b"
+      "content_hash": "14dd5f02eb8b"
     },
     {
       "name": "test_public_documentation_contract.py",
@@ -2025,5 +2025,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "4a7ede821fc7d2dc"
+  "content_hash": "fcecff42e8ec885e"
 }

@@ -48,7 +48,7 @@ Tests for the FastAPI backend endpoints, authentication, WebSocket, and streamin
 | [test_load.py](test_load.py) | Load Tests for FastAPI Application. | 6 | 2 | 278 |
 | [test_maintenance_route_coverage.py](test_maintenance_route_coverage.py) | Direct contract coverage for routes identified by the MAINT- | 0 | 8 | 150 |
 | [test_optimization_pareto.py](test_optimization_pareto.py) | Tests for Pareto multi-objective beam optimization endpoint. | 1 | 0 | 158 |
-| [test_plausibility_validators.py](test_plausibility_validators.py) | Tests for cross-field plausibility validators (TASK-729). | 14 | 0 | 761 |
+| [test_plausibility_validators.py](test_plausibility_validators.py) | Tests for cross-field plausibility validators (TASK-729). | 14 | 0 | 767 |
 | [test_public_documentation_contract.py](test_public_documentation_contract.py) | Executable contracts for the public REST documentation. | 0 | 3 | 74 |
 | [test_security.py](test_security.py) | Security Tests for FastAPI Application. | 7 | 3 | 407 |
 | [test_staircase.py](test_staircase.py) | Contract tests for the straight-flight staircase FastAPI sli | 0 | 6 | 146 |
