@@ -34,8 +34,8 @@ from . import (
     beam_pipeline,
     detailing,
 )
-from .core.data_types import CrackWidthParams, DeflectionParams, ValidationReport
-from .services import api, dxf_export, excel_integration, job_runner, report
+from .core.data_types import CrackWidthParams, ValidationReport
+from .services import api, cli_design, dxf_export, job_runner, report
 
 
 def _fmt_cell(v: object) -> str:
@@ -122,8 +122,8 @@ def cmd_design(args: argparse.Namespace) -> int:
     """
     Run beam design from CSV/JSON input file.
 
-    Reads beam parameters from CSV or JSON, performs IS456 design calculations
-    using the canonical beam_pipeline, and outputs design results in JSON format.
+    Reads complete beam parameters through the strict project boundary and
+    outputs the retained versioned ``beams`` compatibility envelope.
     """
     input_path = Path(args.input)
 
@@ -135,16 +135,10 @@ def cmd_design(args: argparse.Namespace) -> int:
         # Load beam data
         print(f"Loading beam data from {input_path}...", file=sys.stderr)
 
-        if input_path.suffix.lower() == ".csv":
-            beams = excel_integration.load_beam_data_from_csv(str(input_path))
-        elif input_path.suffix.lower() == ".json":
-            beams = excel_integration.load_beam_data_from_json(str(input_path))
-        else:
-            _print_error(
-                f"Unsupported file format: {input_path.suffix}",
-                hint="Supported formats: .csv, .json",
-            )
-            return 1
+        intake = cli_design.load_cli_design_input_v1(
+            input_path, input_format=args.input_format
+        )
+        beams = intake.records
 
         print(f"Loaded {len(beams)} beam(s)", file=sys.stderr)
 
@@ -172,64 +166,13 @@ def cmd_design(args: argparse.Namespace) -> int:
                     file=sys.stderr,
                 )
 
-        # Process each beam using canonical pipeline
-        results: list[beam_pipeline.BeamDesignOutput] = []
-        for beam in beams:
-            print(f"  Processing {beam.story}/{beam.beam_id}...", file=sys.stderr)
-
-            # Calculate stirrup area (2-legged)
-            asv_mm2 = 3.14159 * (beam.stirrup_dia / 2) ** 2 * 2
-            deflection_params = None
-            if args.deflection:
-                deflection_params = cast(
-                    DeflectionParams,
-                    {
-                        "span_mm": beam.span,
-                        "d_mm": beam.d,
-                        "support_condition": args.support_condition,
-                    },
-                )
-
-            # Use canonical pipeline for design
-            result = beam_pipeline.design_single_beam(
-                units="IS456",
-                beam_id=beam.beam_id,
-                story=beam.story,
-                b_mm=beam.b,
-                D_mm=beam.D,
-                d_mm=beam.d,
-                span_mm=beam.span,
-                cover_mm=beam.cover,
-                fck_nmm2=beam.fck,
-                fy_nmm2=beam.fy,
-                mu_knm=beam.Mu,
-                vu_kn=beam.Vu,
-                case_id=f"{beam.story}_{beam.beam_id}",
-                d_dash_mm=beam.cover,
-                asv_mm2=asv_mm2,
-                include_detailing=True,
-                stirrup_dia_mm=beam.stirrup_dia,
-                stirrup_spacing_start_mm=beam.stirrup_spacing,
-                stirrup_spacing_mid_mm=beam.stirrup_spacing * 1.33,
-                stirrup_spacing_end_mm=beam.stirrup_spacing,
-                deflection_params=deflection_params,
-                crack_width_params=crack_width_params,
-            )
-
-            results.append(result)
-
-        # Build multi-beam output using canonical schema
-        output = beam_pipeline.MultiBeamOutput(
-            schema_version=beam_pipeline.SCHEMA_VERSION,
-            code="IS456",
-            units="IS456",
-            beams=results,
-            summary={
-                "total_beams": len(results),
-                "passed": sum(1 for r in results if r.is_ok),
-                "failed": sum(1 for r in results if not r.is_ok),
-            },
+        output = cli_design.design_cli_project_v1(
+            beams,
+            include_deflection=args.deflection,
+            support_condition=args.support_condition,
+            crack_width_params=crack_width_params,
         )
+        results = output.beams
 
         # Compute insights if requested
         insights_output = None
@@ -390,6 +333,10 @@ def cmd_design(args: argparse.Namespace) -> int:
         print(f"Design complete: {len(results)} beam(s) processed", file=sys.stderr)
         return 0
 
+    except cli_design.CLIDesignBlockedError as exc:
+        for issue in exc.issues:
+            _print_error(f"[{issue.code}] {issue.path}: {issue.message}")
+        return 2
     except beam_pipeline.UnitsValidationError as e:
         _print_error(f"Units error: {e}")
         return 1
@@ -1261,6 +1208,15 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     design_parser.add_argument(
         "input", help="Input CSV or JSON file with beam parameters"
+    )
+    design_parser.add_argument(
+        "--input-format",
+        default="generic",
+        choices=["generic", "auto", "etabs", "safe", "staad"],
+        help=(
+            "CSV adapter identity (default: generic). Use auto only when the "
+            "source format is expected to be uniquely detectable."
+        ),
     )
     design_parser.add_argument(
         "-o", "--output", help="Output JSON file (if omitted, prints to stdout)"

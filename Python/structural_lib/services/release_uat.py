@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import hashlib
+import io
 import json
 import math
 import sys
@@ -15,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 import structural_lib
+from structural_lib import __main__ as cli_main
 from structural_lib.core.data_types import FootingType
 from structural_lib.core.models import BeamForces
 from structural_lib.services import api
@@ -30,6 +33,9 @@ from structural_lib.services.imports import (
 )
 
 _MATRIX_RESOURCE = files("structural_lib").joinpath("data/release_negative_uat_v1.json")
+_ENTRYPOINT_RESOURCE = files("structural_lib").joinpath(
+    "data/advertised_entry_points_v1.json"
+)
 
 
 def _beam(**updates: Any) -> dict[str, Any]:
@@ -60,6 +66,128 @@ def _assert_blocked(payload: dict[str, Any]) -> dict[str, Any]:
 
 def _write(path: Path, text: str) -> None:
     path.write_text(text.strip() + "\n", encoding="utf-8")
+
+
+_CLI_HEADER = (
+    "BeamID,Story,b,D,eff_d,Span,Cover,fck,fy,Mu,Vu," "Stirrup_Dia,Stirrup_Spacing"
+)
+_CLI_VALID_ROW = "B1,S1,300,500,450,4000,40,25,500,150,80,8,150"
+
+
+def _capture_cli(argv: list[str]) -> tuple[int, str, str]:
+    stdout = io.StringIO()
+    stderr = io.StringIO()
+    with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+        return cli_main.main(argv), stdout.getvalue(), stderr.getvalue()
+
+
+def _assert_cli_blocked(
+    text: str, *, suffix: str = ".csv", extra: list[str] | None = None
+) -> dict[str, Any]:
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / f"input{suffix}"
+        _write(path, text)
+        rc, stdout, stderr = _capture_cli(["design", str(path), *(extra or [])])
+    assert rc != 0
+    assert stdout == ""
+    assert "Design complete" not in stderr
+    return {"return_code": rc, "stderr": stderr.splitlines()[-1]}
+
+
+def _case_cli_design_valid() -> dict[str, Any]:
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / "input.csv"
+        _write(path, f"{_CLI_HEADER}\n{_CLI_VALID_ROW}")
+        rc, stdout, stderr = _capture_cli(["design", str(path)])
+    payload = json.loads(stdout)
+    assert rc == 0 and payload["schema_version"] == 1
+    assert payload["summary"]["total_beams"] == 1
+    assert "Warning: Skipping row" not in stdout
+    return {
+        "beams": 1,
+        "diagnostics_stream": "stderr",
+        "stderr_lines": len(stderr.splitlines()),
+    }
+
+
+def _case_cli_design_malformed_only() -> dict[str, Any]:
+    return _assert_cli_blocked(
+        f"{_CLI_HEADER}\nB1,S1,BAD,500,450,4000,40,25,500,150,80,8,150"
+    )
+
+
+def _case_cli_design_mixed_validity() -> dict[str, Any]:
+    return _assert_cli_blocked(
+        f"{_CLI_HEADER}\n{_CLI_VALID_ROW}\n"
+        "B2,S1,BAD,500,450,4000,40,25,500,150,80,8,150"
+    )
+
+
+def _case_cli_design_empty() -> dict[str, Any]:
+    return _assert_cli_blocked(_CLI_HEADER)
+
+
+def _case_cli_design_missing_depth_basis() -> dict[str, Any]:
+    header = _CLI_HEADER.replace(",eff_d", "")
+    row = _CLI_VALID_ROW.replace(",450", "", 1)
+    return _assert_cli_blocked(f"{header}\n{row}")
+
+
+def _case_cli_design_non_finite() -> dict[str, Any]:
+    return _assert_cli_blocked(
+        '{"schema_version":"cli-beam-design-input/v1","beams":['
+        '{"beam_id":"B1","story":"S1","b":300,"D":500,"d":NaN,'
+        '"span":4000,"cover":40,"fck":25,"fy":500,"Mu":150,"Vu":80,'
+        '"stirrup_dia":8,"stirrup_spacing":150}]}',
+        suffix=".json",
+    )
+
+
+def _case_cli_design_unknown_field() -> dict[str, Any]:
+    return _assert_cli_blocked(f"{_CLI_HEADER},mystery\n{_CLI_VALID_ROW},value")
+
+
+def _case_cli_design_duplicate_identity() -> dict[str, Any]:
+    return _assert_cli_blocked(f"{_CLI_HEADER}\n{_CLI_VALID_ROW}\n{_CLI_VALID_ROW}")
+
+
+def _case_cli_design_ambiguous_format() -> dict[str, Any]:
+    return _assert_cli_blocked(
+        "Story,Label,b,D,eff_d,Span,Cover,fck,fy,Mu,Vu,"
+        "Stirrup_Dia,Stirrup_Spacing\n"
+        "S1,B1,300,500,450,4000,40,25,500,150,80,8,150",
+        extra=["--input-format", "auto"],
+    )
+
+
+def _case_cli_design_downstream_consumers() -> dict[str, Any]:
+    with tempfile.TemporaryDirectory() as directory:
+        root = Path(directory)
+        input_path = root / "input.csv"
+        design_path = root / "design.json"
+        bbs_path = root / "bbs.json"
+        detail_path = root / "detail.json"
+        _write(input_path, f"{_CLI_HEADER}\n{_CLI_VALID_ROW}")
+        commands = [
+            ["design", str(input_path), "-o", str(design_path)],
+            ["bbs", str(design_path), "-o", str(bbs_path)],
+            ["detail", str(design_path), "-o", str(detail_path)],
+        ]
+        for command in commands:
+            rc, _stdout, _stderr = _capture_cli(command)
+            assert rc == 0
+        from structural_lib.services import dxf_export
+
+        dxf_exercised = dxf_export.EZDXF_AVAILABLE
+        if dxf_exercised:
+            rc, _stdout, _stderr = _capture_cli(
+                ["dxf", str(design_path), "-o", str(root / "drawing.dxf")]
+            )
+            assert rc == 0
+        assert json.loads(design_path.read_text(encoding="utf-8"))["beams"]
+        assert json.loads(bbs_path.read_text(encoding="utf-8"))["items"]
+        assert json.loads(detail_path.read_text(encoding="utf-8"))["beams"]
+    return {"bbs": True, "detail": True, "dxf_exercised": dxf_exercised}
 
 
 def _case_complete_canonical_row() -> dict[str, Any]:
@@ -329,6 +457,45 @@ _HANDLERS: dict[str, Callable[[], dict[str, Any]]] = {
 }
 
 
+def _advertised_entry_points(matrix_case_ids: set[str]) -> dict[str, Any]:
+    inventory_bytes = _ENTRYPOINT_RESOURCE.read_bytes()
+    inventory = json.loads(inventory_bytes)
+    entries = inventory["entry_points"]
+    commands = [entry["command"] for entry in entries]
+    assert len(commands) == len(set(commands))
+
+    parser = cli_main._build_parser()
+    command_action = next(
+        action for action in parser._actions if action.dest == "command"
+    )
+    choices = command_action.choices
+    assert isinstance(choices, dict)
+    live_commands = set(choices)
+    assert set(commands) == live_commands, {
+        "missing_inventory_entries": sorted(live_commands - set(commands)),
+        "stale_inventory_entries": sorted(set(commands) - live_commands),
+    }
+    allowed_classifications = {
+        "calculation_entry",
+        "result_consumer",
+        "inspection",
+        "compatibility",
+        "deprecated",
+        "held",
+    }
+    for entry in entries:
+        assert entry["classification"] in allowed_classifications
+        assert entry["acceptance"]
+        if entry["id"] == "cli.design":
+            assert set(entry["acceptance"]).issubset(matrix_case_ids)
+    return {
+        "schema_version": inventory["schema_version"],
+        "sha256": hashlib.sha256(inventory_bytes).hexdigest(),
+        "entry_count": len(entries),
+        "entries": entries,
+    }
+
+
 def _public_examples() -> dict[str, Any]:
     beam = api.design_and_detail_beam_is456(
         units="IS456",
@@ -385,6 +552,8 @@ def run(*, require_installed_wheel: bool = False) -> dict[str, Any]:
 
     from structural_lib.services.evidence import get_library_content_identity
 
+    entry_points = _advertised_entry_points(set(ids))
+
     return {
         "schema_version": "exact-wheel-uat-receipt/v1",
         "status": "PASS",
@@ -395,6 +564,7 @@ def run(*, require_installed_wheel: bool = False) -> dict[str, Any]:
         "matrix_sha256": hashlib.sha256(matrix_bytes).hexdigest(),
         "case_count": len(results),
         "cases": results,
+        "advertised_entry_points": entry_points,
         "public_examples": _public_examples(),
         "qualified_review_required": True,
         "professional_approval": False,

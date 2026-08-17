@@ -150,6 +150,14 @@ print(f"Governing case: {report.governing_case_id}")
 
 ## CLI Usage
 
+The `design` command is fail-closed. CSV input must explicitly supply
+`BeamID,Story,b,D,eff_d,Span,Cover,fck,fy,Mu,Vu,Stirrup_Dia,Stirrup_Spacing`.
+Instead of `eff_d`, supply `tension_bar_diameter_mm` so effective depth can be
+derived from the explicit cover and stirrup diameter. JSON input uses the
+`cli-beam-design-input/v1` envelope. Unknown, duplicate, malformed, non-finite,
+empty, ambiguous, or mixed-validity input blocks the whole project without a
+partial result.
+
 ```bash
 python -m structural_lib design input.csv -o results.json        # Beam design
 python -m structural_lib bbs results.json -o bbs.csv             # Bar bending schedule

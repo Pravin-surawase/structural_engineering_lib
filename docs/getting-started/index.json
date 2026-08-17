@@ -52,7 +52,7 @@
       "size_lines": 159,
       "last_updated": "2026-08-17",
       "description": "This guide is written for engineers and students who are new to coding. Follow the steps exactly and you will get a working result. You have two ways to use this library:",
-      "content_hash": "38147b244386"
+      "content_hash": "3e7885112661"
     },
     {
       "name": "colab-workflow.md",
@@ -129,10 +129,10 @@
     {
       "name": "python-quickstart.md",
       "type": "documentation",
-      "size_lines": 202,
+      "size_lines": 203,
       "last_updated": "2026-08-17",
       "description": "This guide shows how to install, run, and verify the Python library with simple, copy/paste steps. No prior packaging experience required. > **📚 New to this?** See beginners-guide.md for comprehensive",
-      "content_hash": "e23161f7e1aa"
+      "content_hash": "947ef7beaf54"
     },
     {
       "name": "releases.md",
@@ -145,12 +145,12 @@
     {
       "name": "user-guide.md",
       "type": "documentation",
-      "size_lines": 223,
+      "size_lines": 226,
       "last_updated": "2026-08-17",
       "description": "This guide walks you through a complete beam design workflow from start to finish. For detailed installation help, see Beginner's Guide. bash",
-      "content_hash": "3c0ded3ae268"
+      "content_hash": "e455b19a754b"
     }
   ],
   "subfolders": [],
-  "content_hash": "8b906dc740377b3b"
+  "content_hash": "da2253c1c0b39eb2"
 }

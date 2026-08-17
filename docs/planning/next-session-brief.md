@@ -4,22 +4,21 @@
 
 <!-- HANDOFF:START -->
 - Date: 2026-08-17
-- Focus: LIB-PRO-002 Packets I-J advertised CLI and release-signal closure
-- Required ancestor: A-G merge `fe4ab025419b834c6d0f840e9492c0604ae74201` (PR #815); Packet I starts from exact fetched `origin/main` after this reviewed plan merges, and Packet J starts only after Packet I merges
-- Lane: `codex/lib-pro-002-usability-refresh`; documentation/evidence owner only; unrelated worktrees preserved
-- Accepted improvement: strict batch/import/HTTP/SSE/React, cross-element review truth, evidence identity, API classification, and the declared 19-case exact-wheel UAT pass the reproduced cases
-- New blocker: advertised `python -m structural_lib design` still skips malformed CSV rows, exits 0, and reports a partial PASS; the 19-case exact-wheel matrix omits the CLI
+- Focus: LIB-PRO-002 Packet I immutable closeout, then Packet J release-signal closure
+- Packet I base/lane: exact fetched `origin/main = b3a9c367de012982a8b9adefda0db60e2d762d7b`; `codex/lib-pro-002-i-cli`; unrelated worktrees preserved
+- Packet I candidate: strict CSV/JSON intake, whole-project pre-calculation blocking, retained versioned `beams` output, downstream compatibility, and a validated 12-command advertised-entrypoint inventory
+- Focused evidence: 150/150 CLI, Excel-edge, import, batch, and expanded 29-case release-UAT tests pass; valid stdout is JSON and blocked input writes no partial result
 - Hosted blocker: Weekly Verification run `31988837003` failed six full-suite governance/session tests because the scheduled workflow did not export the selected setup-python interpreter; the publish full-suite step has the same environment gap
 - Verdict blocker: pre-bump `release preflight 0.23.1a2` passed 6,387 Python tests, 446 FastAPI tests, and the React build but incorrectly printed `READY TO RELEASE` with no exact wheel while authorization remained `HOLD`
 - Release: HOLD; `docs/verification/release-publication-authorization.json` contains no exact version/tag/target authorization
 - Whole-building workflow: Packet H is not activated and component-only claims remain
-- Exact next action: merge this planning packet; implement and merge Packet I; then implement Packet J, run the cumulative broad/exact-wheel gates and a manually dispatched full hosted workflow, and merge only unchanged accepted heads
+- Exact next action: finish Packet I quick/hooks/immutable/hosted acceptance and unchanged-head merge; then create Packet J only from fetched post-I `origin/main`
 <!-- HANDOFF:END -->
 
 | State | Boundary |
 |---|---|
 | **Current** | `v0.23.1a1` Alpha; no stable, professional-approval, or whole-building claim |
-| **Next** | LIB-PRO-002-I then LIB-PRO-002-J; no release-candidate mutation or publication |
+| **Next** | Merge unchanged Packet I candidate, then LIB-PRO-002-J; no release-candidate mutation or publication |
 | **Held** | Publication, professional approval, Packet H, INDIA-3, dependency work, branch/worktree cleanup, and unrelated retained lanes |
 
 ## Required Reading
@@ -32,12 +31,12 @@
 
 ## Resume safely
 
-Start Packet I in fresh source-bound lane `codex/lib-pro-002-i-cli` from exact
-fetched `origin/main` after this reviewed plan merges. After Packet I's exact
-head is accepted, passes hosted checks, and merges, start Packet J in a second
-fresh lane `codex/lib-pro-002-j-release-signal` from the new exact
-`origin/main`. Never keep both packets as active writers. Do not mutate primary
-`main`, reuse historical candidate lanes, or clean unrelated worktrees.
+Packet I is implemented in source-bound lane `codex/lib-pro-002-i-cli` from
+exact base `b3a9c367…`. Accept and merge only its unchanged reviewed head after
+required hosted checks. Then start Packet J in fresh lane
+`codex/lib-pro-002-j-release-signal` from the new fetched `origin/main`. Never
+keep both packets as active writers. Do not mutate primary `main`, reuse
+historical candidate lanes, or clean unrelated worktrees.
 
 ```bash
 ./run.sh session brief --agent orchestrator

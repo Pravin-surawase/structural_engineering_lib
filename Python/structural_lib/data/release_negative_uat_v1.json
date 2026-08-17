@@ -19,6 +19,16 @@
     {"id": "column_missing_materials", "expected": "BLOCKED_NOT_EVALUATED"},
     {"id": "assumed_footing_basis", "expected": "HOLD"},
     {"id": "insufficient_footing_dowels", "expected": "FAIL"},
-    {"id": "safe_result_review_boundary", "expected": "PASS_REVIEW_REQUIRED"}
+    {"id": "safe_result_review_boundary", "expected": "PASS_REVIEW_REQUIRED"},
+    {"id": "cli_design_valid", "expected": "VALID_BEAMS_ENVELOPE"},
+    {"id": "cli_design_malformed_only", "expected": "BLOCKED_NO_OUTPUT"},
+    {"id": "cli_design_mixed_validity", "expected": "BLOCKED_NO_PARTIAL_PASS"},
+    {"id": "cli_design_empty", "expected": "BLOCKED_NO_OUTPUT"},
+    {"id": "cli_design_missing_depth_basis", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "cli_design_non_finite", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "cli_design_unknown_field", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "cli_design_duplicate_identity", "expected": "BLOCKED_NOT_EVALUATED"},
+    {"id": "cli_design_ambiguous_format", "expected": "BLOCKED_WITH_CANDIDATES"},
+    {"id": "cli_design_downstream_consumers", "expected": "VALID_CONSUMERS"}
   ]
 }

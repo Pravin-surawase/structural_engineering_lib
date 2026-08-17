@@ -14,6 +14,30 @@ import pytest
 
 from structural_lib import __main__ as cli_main
 
+_STRICT_CLI_HEADERS = [
+    "BeamID",
+    "Story",
+    "b",
+    "D",
+    "eff_d",
+    "Span",
+    "Cover",
+    "fck",
+    "fy",
+    "Mu",
+    "Vu",
+    "Stirrup_Dia",
+    "Stirrup_Spacing",
+]
+_STRICT_CLI_ROW = ["B1", "S1", 300, 500, 450, 4000, 40, 25, 500, 150, 80, 8, 150]
+
+
+def _write_cli_csv(path: Path, rows: list[list[object]], headers=None) -> None:
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(headers or _STRICT_CLI_HEADERS)
+        writer.writerows(rows)
+
 
 def test_capabilities_json_matches_python_contract(capsys):
     """CLI discovery must serialize the canonical Python document unchanged."""
@@ -38,17 +62,15 @@ def sample_csv_file(tmp_path):
                 "Story",
                 "b",
                 "D",
+                "eff_d",
                 "Span",
                 "Cover",
                 "fck",
                 "fy",
                 "Mu",
                 "Vu",
-                "Ast_req",
-                "Asc_req",
                 "Stirrup_Dia",
                 "Stirrup_Spacing",
-                "Status",
             ]
         )
         writer.writerow(
@@ -57,17 +79,15 @@ def sample_csv_file(tmp_path):
                 "Story1",
                 "300",
                 "500",
+                "460",
                 "4000",
                 "40",
                 "25",
                 "500",
                 "150",
                 "100",
-                "942.5",
-                "0",
                 "8",
                 "150",
-                "OK",
             ]
         )
         writer.writerow(
@@ -76,17 +96,15 @@ def sample_csv_file(tmp_path):
                 "Story1",
                 "300",
                 "450",
+                "410",
                 "3000",
                 "40",
                 "25",
                 "500",
                 "100",
                 "80",
-                "628.3",
-                "0",
                 "8",
                 "175",
-                "OK",
             ]
         )
 
@@ -99,6 +117,7 @@ def sample_json_beams_file(tmp_path):
     json_path = tmp_path / "beams.json"
 
     data = {
+        "schema_version": "cli-beam-design-input/v1",
         "beams": [
             {
                 "beam_id": "B1",
@@ -112,13 +131,10 @@ def sample_json_beams_file(tmp_path):
                 "fy": 500,
                 "Mu": 150,
                 "Vu": 100,
-                "Ast_req": 942.5,
-                "Asc_req": 0,
                 "stirrup_dia": 8,
                 "stirrup_spacing": 150,
-                "status": "OK",
             }
-        ]
+        ],
     }
 
     with json_path.open("w", encoding="utf-8") as f:
@@ -302,11 +318,8 @@ def test_design_units_conversion_boundary(tmp_path):
                 "fy",
                 "Mu",
                 "Vu",
-                "Ast_req",
-                "Asc_req",
                 "Stirrup_Dia",
                 "Stirrup_Spacing",
-                "Status",
             ]
         )
         writer.writerow(
@@ -322,11 +335,8 @@ def test_design_units_conversion_boundary(tmp_path):
                 "500",
                 "50",
                 "80",
-                "0",
-                "0",
                 "8",
                 "150",
-                "OK",
             ]
         )
 
@@ -341,6 +351,167 @@ def test_design_units_conversion_boundary(tmp_path):
     assert beam["loads"]["mu_knm"] == 50.0
     assert beam["loads"]["vu_kn"] == 80.0
     assert beam["shear"]["tau_v_nmm2"] == pytest.approx(1.0, rel=0.0, abs=1e-6)
+
+
+@pytest.mark.parametrize(
+    ("case_name", "headers", "rows", "expected_code"),
+    [
+        (
+            "malformed_only",
+            _STRICT_CLI_HEADERS,
+            [["B1", "S1", "BAD", 500, 450, 4000, 40, 25, 500, 150, 80, 8, 150]],
+            "import.malformed_number",
+        ),
+        (
+            "mixed_validity",
+            _STRICT_CLI_HEADERS,
+            [
+                _STRICT_CLI_ROW,
+                ["B2", "S1", "BAD", 500, 450, 4000, 40, 25, 500, 150, 80, 8, 150],
+            ],
+            "import.malformed_number",
+        ),
+        ("empty", _STRICT_CLI_HEADERS, [], "import.adapter_row_loss"),
+        (
+            "missing_depth_basis",
+            [header for header in _STRICT_CLI_HEADERS if header != "eff_d"],
+            [["B1", "S1", 300, 500, 4000, 40, 25, 500, 150, 80, 8, 150]],
+            "CLI_DESIGN_REQUIRED_DEPTH_BASIS",
+        ),
+        (
+            "unknown_field",
+            [*_STRICT_CLI_HEADERS, "mystery"],
+            [[*_STRICT_CLI_ROW, "value"]],
+            "CLI_DESIGN_UNKNOWN_FIELD",
+        ),
+        (
+            "duplicate_identity",
+            _STRICT_CLI_HEADERS,
+            [_STRICT_CLI_ROW, _STRICT_CLI_ROW],
+            "import.duplicate_record_id",
+        ),
+    ],
+)
+def test_design_blocked_csv_never_calculates_or_writes_partial_output(
+    case_name, headers, rows, expected_code, tmp_path, monkeypatch, capsys
+):
+    input_path = tmp_path / f"{case_name}.csv"
+    output_path = tmp_path / "result.json"
+    _write_cli_csv(input_path, rows, headers)
+    calls = 0
+
+    def forbidden_calculation(**_kwargs):
+        nonlocal calls
+        calls += 1
+        raise AssertionError("calculation must not run for blocked CLI input")
+
+    monkeypatch.setattr(
+        cli_main.cli_design.beam_pipeline,
+        "design_single_beam",
+        forbidden_calculation,
+    )
+
+    rc = cli_main.main(["design", str(input_path), "-o", str(output_path)])
+    captured = capsys.readouterr()
+
+    assert rc != 0
+    assert calls == 0
+    assert not output_path.exists()
+    assert captured.out == ""
+    assert expected_code in captured.err
+    assert "Design complete" not in captured.err
+
+
+def test_design_non_finite_json_blocks_before_calculation(
+    tmp_path, monkeypatch, capsys
+):
+    input_path = tmp_path / "nonfinite.json"
+    output_path = tmp_path / "result.json"
+    input_path.write_text(
+        '{"schema_version":"cli-beam-design-input/v1","beams":['
+        '{"beam_id":"B1","story":"S1","b":300,"D":500,"d":NaN,'
+        '"span":4000,"cover":40,"fck":25,"fy":500,"Mu":150,"Vu":80,'
+        '"stirrup_dia":8,"stirrup_spacing":150}]}',
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(
+        cli_main.cli_design.beam_pipeline,
+        "design_single_beam",
+        lambda **_kwargs: pytest.fail("calculation ran for non-finite input"),
+    )
+
+    rc = cli_main.main(["design", str(input_path), "-o", str(output_path)])
+    captured = capsys.readouterr()
+
+    assert rc != 0
+    assert not output_path.exists()
+    assert captured.out == ""
+    assert "CLI_DESIGN_MALFORMED_JSON" in captured.err
+
+
+def test_design_duplicate_json_key_is_rejected(tmp_path, capsys):
+    input_path = tmp_path / "duplicate-key.json"
+    input_path.write_text(
+        '{"schema_version":"cli-beam-design-input/v1","beams":[],' '"beams":[]}',
+        encoding="utf-8",
+    )
+
+    rc = cli_main.main(["design", str(input_path)])
+    captured = capsys.readouterr()
+
+    assert rc != 0
+    assert captured.out == ""
+    assert "CLI_DESIGN_DUPLICATE_JSON_KEY" in captured.err
+
+
+def test_design_auto_format_blocks_ambiguous_adapter(tmp_path, capsys):
+    input_path = tmp_path / "ambiguous.csv"
+    _write_cli_csv(
+        input_path,
+        [["S1", "B1", 300, 500, 450, 4000, 40, 25, 500, 150, 80, 8, 150]],
+        [
+            "Story",
+            "Label",
+            "b",
+            "D",
+            "eff_d",
+            "Span",
+            "Cover",
+            "fck",
+            "fy",
+            "Mu",
+            "Vu",
+            "Stirrup_Dia",
+            "Stirrup_Spacing",
+        ],
+    )
+
+    rc = cli_main.main(["design", str(input_path), "--input-format", "auto"])
+    captured = capsys.readouterr()
+
+    assert rc != 0
+    assert captured.out == ""
+    assert "import.ambiguous_format" in captured.err
+
+
+def test_design_complete_depth_basis_derives_effective_depth(tmp_path):
+    input_path = tmp_path / "derived-depth.csv"
+    output_path = tmp_path / "result.json"
+    headers = [header for header in _STRICT_CLI_HEADERS if header != "eff_d"] + [
+        "tension_bar_diameter_mm"
+    ]
+    _write_cli_csv(
+        input_path,
+        [["B1", "S1", 300, 500, 4000, 40, 25, 500, 150, 80, 8, 150, 20]],
+        headers,
+    )
+
+    rc = cli_main.main(["design", str(input_path), "-o", str(output_path)])
+
+    assert rc == 0
+    payload = json.loads(output_path.read_text(encoding="utf-8"))
+    assert payload["beams"][0]["geometry"]["d_mm"] == 442.0
 
 
 def test_design_with_deflection(sample_csv_file, tmp_path):
@@ -526,7 +697,7 @@ def test_design_unsupported_format(tmp_path):
 
     rc = cli_main.main(["design", str(bad_file), "-o", str(tmp_path / "output.json")])
 
-    assert rc == 1
+    assert rc == 2
 
 
 def test_design_stdout_output(sample_csv_file, capsys):
@@ -1091,6 +1262,18 @@ def test_full_workflow_csv_to_bbs(sample_csv_file, tmp_path):
     assert bbs_output.exists()
 
 
+def test_full_workflow_csv_to_detail(sample_csv_file, tmp_path):
+    """Retained detail consumer accepts the versioned design artifact."""
+    design_output = tmp_path / "design.json"
+    detail_output = tmp_path / "detail.json"
+
+    assert (
+        cli_main.main(["design", str(sample_csv_file), "-o", str(design_output)]) == 0
+    )
+    assert cli_main.main(["detail", str(design_output), "-o", str(detail_output)]) == 0
+    assert json.loads(detail_output.read_text(encoding="utf-8"))["beams"]
+
+
 def test_full_workflow_csv_to_dxf(sample_csv_file, tmp_path):
     """Test full workflow: CSV -> design -> DXF."""
     from structural_lib.services import dxf_export
@@ -1225,17 +1408,15 @@ def test_integration_multi_beam_workflow(tmp_path):
                 "Story",
                 "b",
                 "D",
+                "eff_d",
                 "Span",
                 "Cover",
                 "fck",
                 "fy",
                 "Mu",
                 "Vu",
-                "Ast_req",
-                "Asc_req",
                 "Stirrup_Dia",
                 "Stirrup_Spacing",
-                "Status",
             ]
         )
         # Small beam
@@ -1245,17 +1426,15 @@ def test_integration_multi_beam_workflow(tmp_path):
                 "GF",
                 "230",
                 "400",
+                "360",
                 "3000",
                 "40",
                 "25",
                 "500",
                 "80",
                 "50",
-                "500",
-                "0",
                 "8",
                 "150",
-                "OK",
             ]
         )
         # Medium beam
@@ -1265,17 +1444,15 @@ def test_integration_multi_beam_workflow(tmp_path):
                 "1F",
                 "300",
                 "500",
+                "460",
                 "4000",
                 "40",
                 "25",
                 "500",
                 "150",
                 "100",
-                "900",
-                "0",
                 "8",
                 "150",
-                "OK",
             ]
         )
         # Large beam
@@ -1285,17 +1462,15 @@ def test_integration_multi_beam_workflow(tmp_path):
                 "1F",
                 "400",
                 "700",
+                "650",
                 "6000",
                 "50",
                 "30",
                 "500",
                 "400",
                 "200",
-                "2500",
-                "500",
                 "10",
                 "100",
-                "OK",
             ]
         )
 

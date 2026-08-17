@@ -147,7 +147,8 @@ python3 -m structural_lib dxf results.json -o drawings.dxf --title-block --title
 # Run complete job from spec file
 python3 -m structural_lib job job.json -o ./output
 ```
-- Input columns: `BeamID, Story, b, D, Span, Cover, fck, fy, Mu, Vu, Ast_req, Stirrup_Dia, Stirrup_Spacing` (case-insensitive).
+- Required CSV input columns: `BeamID, Story, b, D, eff_d, Span, Cover, fck, fy, Mu, Vu, Stirrup_Dia, Stirrup_Spacing`. Replace `eff_d` with `tension_bar_diameter_mm` only when deriving effective depth from the explicit cover and stirrup diameter.
+- The command blocks the whole file on malformed, missing, non-finite, unknown, duplicate, ambiguous, or mixed-validity records. It never uses `Ast_req`, `Asc_req`, or `Status` as design inputs.
 - Outputs:
   - `results.json` — Design results with compliance status.
   - `schedule.csv` — Bar bending schedule per IS 2502.

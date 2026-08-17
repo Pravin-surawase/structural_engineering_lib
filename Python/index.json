@@ -2,24 +2,24 @@
   "folder": "Python",
   "type": "mixed",
   "description": "IS 456 RC Beam Design Library (Python package).",
-  "last_updated": "2026-08-12",
+  "last_updated": "2026-08-17",
   "file_count": 6,
   "files": [
     {
       "name": "README.md",
       "type": "documentation",
-      "size_lines": 242,
-      "last_updated": "2026-08-12",
+      "size_lines": 257,
+      "last_updated": "2026-08-17",
       "title": "structural-lib-is456",
       "description": "IS 456 RC Beam Design Library (Python package). > ⚠️ **Development Preview:** APIs may change until v1.0. For reproducible results, pin to a release tag.",
-      "content_hash": "e00b216ab32b"
+      "content_hash": "10ef3145a9ec"
     },
     {
       "name": "pyproject.toml",
       "type": "config",
       "last_updated": "2026-08-12",
       "description": ".TOML configuration file",
-      "content_hash": "ebcaf27a4dd7"
+      "content_hash": "cd17452c1e37"
     },
     {
       "name": "test_stats.json",
@@ -51,17 +51,17 @@
     {
       "name": "structural_lib",
       "path": "structural_lib/",
-      "file_count": 220,
+      "file_count": 275,
       "description": "> **Purpose:** IS 456:2000 RC beam design calculations",
       "is_package": true
     },
     {
       "name": "tests",
       "path": "tests/",
-      "file_count": 209,
+      "file_count": 259,
       "description": "This document describes the test taxonomy and structure for the structural_engineering_lib test suite.",
       "is_package": true
     }
   ],
-  "content_hash": "3e410cbb48ebe5ca"
+  "content_hash": "f46c99b91213432f"
 }

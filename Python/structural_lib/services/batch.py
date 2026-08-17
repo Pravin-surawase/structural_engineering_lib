@@ -31,6 +31,7 @@ __all__ = [
     "design_beams_iter",
     "design_project_beams_iter_v1",
     "design_project_beams_v1",
+    "validate_project_beam_batch_v1",
 ]
 
 
@@ -497,6 +498,16 @@ def design_project_beams_v1(
     """Validate the complete batch, then calculate only accepted unique members."""
 
     return _design_project_batch(list(beams), units=units)
+
+
+def validate_project_beam_batch_v1(
+    beams: Iterable[Mapping[str, Any] | ProjectBeamDesignInputV1],
+    *,
+    units: str = "IS456",
+) -> tuple[ProjectBeamInputValidationV1, ...]:
+    """Validate a complete project batch without calling calculation functions."""
+
+    return tuple(_prepare_validations(list(beams), units=units))
 
 
 def design_project_beams_iter_v1(
