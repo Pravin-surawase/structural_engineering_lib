@@ -221,7 +221,7 @@
     {
       "name": "test_building_gravity.py",
       "type": "python",
-      "size_lines": 81,
+      "size_lines": 271,
       "last_updated": "2026-08-17",
       "description": "REST semantic vectors for Building Gravity Workflow V1.",
       "functions": [
@@ -244,7 +244,7 @@
           ]
         }
       ],
-      "content_hash": "bfda4021424b"
+      "content_hash": "db16bab8dd61"
     },
     {
       "name": "test_bundled_sample_evidence.py",
@@ -2053,5 +2053,5 @@
   ],
   "subfolders": [],
   "has_init": true,
-  "content_hash": "e7accd20e0de2a8d"
+  "content_hash": "87fb0205b9dc49d6"
 }
