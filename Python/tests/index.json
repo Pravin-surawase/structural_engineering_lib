@@ -761,12 +761,15 @@
     {
       "name": "test_ci_workflow_contract.py",
       "type": "python",
-      "size_lines": 202,
+      "size_lines": 219,
       "last_updated": "2026-08-17",
       "description": "Regression tests for fail-closed PR workflow routing.",
       "functions": [
         {
           "name": "test_hosted_full_suites_bind_the_setup_python_interpreter"
+        },
+        {
+          "name": "test_weekly_benchmark_evidence_does_not_mutate_indexed_docs"
         },
         {
           "name": "test_changed_path_routes_cover_controls_docs_and_their_tests"
@@ -801,7 +804,7 @@
         "PUBLISH",
         "BASE_GATE_ENV"
       ],
-      "content_hash": "12e29bdc72bd"
+      "content_hash": "9a4fa1290484"
     },
     {
       "name": "test_clause_traceability.py",
@@ -4899,5 +4902,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "7f10d604e7ff15fc"
+  "content_hash": "9d7c0b9e3eea5779"
 }

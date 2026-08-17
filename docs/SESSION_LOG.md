@@ -12,7 +12,7 @@
 **Branch:** `codex/lib-pro-002-j-release-signal` from Packet I merge
 `origin/main = 0ba2f397aec267bc74a31281f9158189fde2749d`
 
-**Git handoff receipt:** `docs/verification/lib-pro-002-j-git-handoff-receipt.json`
+**Git handoff receipt:** `docs/verification/lib-pro-002-j-hosted-repair-git-handoff-receipt.json`
 
 **Focus:** Bind scheduled/tag full suites to the interpreter selected by
 `actions/setup-python`, replace the preflight's shared release-ready label with
@@ -69,6 +69,10 @@ steps 3 and 4 are reserved for the next session at the owner's request.
 - The first normal commit-hook run rejected the rewritten handoff because its
   `Required Reading` heading capitalization no longer matched the session
   checker's exact required contract. No commit was created.
+- Manual Weekly Verification run `31998565603` passed dependency, clean-wheel,
+  Docker, Python-coverage, and FastAPI work, then failed documentation drift;
+  React was skipped and the summary correctly failed. Required PR checks had
+  passed, so the Packet J head was not merged.
 - No Git, worktree, or Python interpreter-binding issue occurred in Packet J.
 
 ### Root causes and resolutions
@@ -101,7 +105,7 @@ steps 3 and 4 are reserved for the next session at the owner's request.
   authorization fixture passes and a mismatched Weekly head is rejected.
 - Confirmed root cause: the new verdict helper and summary branch exceeded
   Black's canonical wrapping shape. Resolution: run Black on the one reported
-  source file only. Evidence: the repeated 102-test selection, Black, Ruff, and
+  source file only. Evidence: the repeated 103-test selection, Black, Ruff, and
   `git diff --check` all pass.
 - Confirmed root cause: maintained index dates are still sourced from checkout
   filesystem mtime, while a newly materialized linked worktree assigns today's
@@ -129,6 +133,15 @@ steps 3 and 4 are reserved for the next session at the owner's request.
   performs an exact heading match. Resolution: restore the canonical heading
   without changing the handoff content. Evidence: the repeated session-doc and
   normal commit-hook checks pass.
+- Confirmed root cause: the scheduled/manual FastAPI benchmark saved its
+  transient report into tracked `docs/reference` before the workflow ran the
+  maintained index check. That outcome-changing write made
+  `docs/reference/index.json` and parent `docs/index.json` stale on the hosted
+  runner; it was unrelated to interpreter binding. Resolution: save and upload
+  the report from `$RUNNER_TEMP`, leaving the indexed checkout immutable, and
+  add a workflow regression forbidding the tracked path. Evidence: the focused
+  workflow/release selection and local canonical gates pass; an exact-head
+  Weekly rerun is required before merge.
 
 ### Validation through content freeze
 
@@ -137,8 +150,11 @@ steps 3 and 4 are reserved for the next session at the owner's request.
   was created from that exact commit.
 - Source binding: Packet J reported `source_bound=true`, `READY_LOCAL`, clean
   tree, no operation marker, and equality with fetched `origin/main`.
-- Focused Packet J selection: 102 workflow-contract, release-script, and release-
+- Focused Packet J selection: 103 workflow-contract, release-script, and release-
   environment tests passed.
+- Hosted-repair replay: the exact quick FastAPI benchmark saved a non-empty
+  report under a fresh temporary directory, after which all 32 maintained
+  indexes remained current; quick 10/10 and canonical 31/31 gates passed.
 - Consolidated repository boundary: quick gate 10/10; Python 6,406 passed, 3
   skipped, and 6 deselected; FastAPI 452 passed; React 267 passed across 48
   files; the full canonical gate passes after content freeze; normal commit

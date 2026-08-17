@@ -55,6 +55,23 @@ def test_hosted_full_suites_bind_the_setup_python_interpreter():
     assert expected in publication
 
 
+def test_weekly_benchmark_evidence_does_not_mutate_indexed_docs():
+    workflow = yaml.safe_load(NIGHTLY.read_text(encoding="utf-8"))
+    steps = workflow["jobs"]["full-verification"]["steps"]
+    benchmark = next(
+        step
+        for step in steps
+        if step["name"] == "FastAPI benchmark evidence (scheduled/manual lane)"
+    )
+    upload = next(
+        step for step in steps if step["name"] == "Upload API benchmark evidence"
+    )
+
+    assert '"$RUNNER_TEMP/fastapi-benchmark-report.json"' in benchmark["run"]
+    assert upload["with"]["path"] == "${{ runner.temp }}/fastapi-benchmark-report.json"
+    assert "docs/reference/fastapi-benchmark-report.json" not in benchmark["run"]
+
+
 def _pr_gate_script() -> str:
     steps = _workflow()["jobs"]["pr-gate"]["steps"]
     return next(

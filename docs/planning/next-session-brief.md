@@ -7,8 +7,8 @@
 - Focus: exact technical-acceptance artifact steps 3 and 4 after LIB-PRO-002 I-J
 - Integrated predecessor: Packet I merged through PR #819 at `0ba2f397aec267bc74a31281f9158189fde2749d`
 - Packet J outcome: hosted full suites bind the setup-python interpreter; preflight verdicts are mode-accurate and publication remains fail-closed
-- Git handoff receipt: `docs/verification/lib-pro-002-j-git-handoff-receipt.json`
-- Focused Packet J evidence: 102 workflow/release/environment tests pass
+- Git handoff receipt: `docs/verification/lib-pro-002-j-hosted-repair-git-handoff-receipt.json`
+- Focused Packet J evidence: 103 workflow/release/environment tests pass
 - Release state: `PUBLICATION_HOLD`; no version bump, tag, upload, GitHub Release, or professional approval exists
 - Whole-building workflow: Packet H remains inactive; component-only claims remain
 - Exact next action: perform release-preflight steps 3 and 4 only—build one temporary exact technical-acceptance wheel from synchronized `main`, then clean-install and verify that same artifact

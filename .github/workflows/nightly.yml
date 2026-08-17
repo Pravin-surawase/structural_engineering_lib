@@ -70,14 +70,14 @@ jobs:
       - name: FastAPI benchmark evidence (scheduled/manual lane)
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |
-          python scripts/benchmark_api.py --mode fastapi --quick --output json --save docs/reference/fastapi-benchmark-report.json
+          python scripts/benchmark_api.py --mode fastapi --quick --output json --save "$RUNNER_TEMP/fastapi-benchmark-report.json"
 
       - name: Upload API benchmark evidence
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v7
         with:
           name: fastapi-benchmark-lane-${{ github.run_id }}
-          path: docs/reference/fastapi-benchmark-report.json
+          path: ${{ runner.temp }}/fastapi-benchmark-report.json
 
       - name: Documentation and repository drift
         run: |
