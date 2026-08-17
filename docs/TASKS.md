@@ -128,7 +128,7 @@
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
 | LIB-PRO-002-I | Converge the advertised `design` CLI on lossless/strict intake, freeze its JSON/downstream compatibility contract, and add every advertised calculation entry point to exact-wheel negative UAT | backend + tester + release | M | P0 | ✅ SOFTWARE COMPLETE — merged through PR #819; 150 focused tests prove strict whole-project blocking, retained `beams` compatibility, and expanded 29-case/12-command UAT contracts |
-| LIB-PRO-002-J | Bind hosted full suites to the selected Python interpreter and replace warning-compatible `READY TO RELEASE` pre-bump output with mode-accurate candidate/publication verdicts | ops + tester + release | S | P0 | ✅ SOFTWARE COMPLETE — full hosted suites inherit setup-python; focused workflow/release contracts pass; only exact authorization after wheel/UAT/review/hosted evidence can yield `READY_TO_PUBLISH` |
+| LIB-PRO-002-J | Bind hosted full suites to the selected Python interpreter, converge release verdicts, and remove cyclic closeout/index rewrites | ops + tester + release | S | P0 | ✅ SOFTWARE COMPLETE — full hosted suites inherit setup-python; only exact authorization can yield `READY_TO_PUBLISH`; index dates are content-stable and session closeout has no hidden index writes |
 
 INDIA-2 remains administratively complete within its recorded accepted/held
 boundary. INDIA-3, dependency, release execution, further cleanup, and

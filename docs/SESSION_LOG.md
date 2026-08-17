@@ -12,7 +12,7 @@
 **Branch:** `codex/lib-pro-002-j-release-signal` from Packet I merge
 `origin/main = 0ba2f397aec267bc74a31281f9158189fde2749d`
 
-**Git handoff receipt:** `docs/verification/lib-pro-002-j-hosted-repair-git-handoff-receipt.json`
+**Git handoff receipt:** `docs/verification/lib-pro-002-j-closeout-determinism-git-handoff-receipt.json`
 
 **Focus:** Bind scheduled/tag full suites to the interpreter selected by
 `actions/setup-python`, replace the preflight's shared release-ready label with
@@ -41,6 +41,11 @@ steps 3 and 4 are reserved for the next session at the owner's request.
   one temporary technical-acceptance wheel from unchanged synchronized `main`;
   step 4 clean-installs and verifies that same hash. Neither step authorizes a
   new version or publication.
+- Maintained index dates now follow content identity instead of checkout mtime,
+  and no-op generation skips disk writes. Session preparation no longer hides
+  index generation or presents a pre-mutation Git snapshot as a final verdict;
+  logs/tasks/receipts freeze first, affected indexes refresh once, and the last
+  session check is read-only.
 
 ### Issues encountered
 
@@ -73,6 +78,26 @@ steps 3 and 4 are reserved for the next session at the owner's request.
   Docker, Python-coverage, and FastAPI work, then failed documentation drift;
   React was skipped and the summary correctly failed. Required PR checks had
   passed, so the Packet J head was not merged.
+- The previous index-determinism repair excluded `last_updated` from freshness
+  hashes but left every displayed file date sourced from filesystem mtime. A
+  fresh linked worktree therefore still rewrote many byte-level projections
+  even while `--check` correctly reported their content hashes current.
+- `session end --fix` silently invoked the index generator from the dirty-path
+  snapshot captured before its own handoff/task writes. It could therefore miss
+  newly changed folders, mutate indexes before all source docs froze, and print
+  a safe-closeout message from the earlier Git snapshot.
+- The first durable freeze wording placed the final read-only `session end`
+  before the candidate commit, but that command correctly treats intended
+  uncommitted changes as a failed closeout. Following the wording would make a
+  successful final verdict impossible.
+- Active handoff guidance still required every new candidate to record its PR
+  number inside `SESSION_LOG.md`, although the number normally does not exist
+  until after the first push. That requirement itself forced a status-only
+  post-PR rewrite and another index/CI cycle.
+- Independent read-only review rejected the first closeout repair because a
+  clean pre-mutation `session end --fix` could write the handoff and still exit
+  `0`. The text said preparation-only, but machine callers could still accept
+  the process status as final success.
 - No Git, worktree, or Python interpreter-binding issue occurred in Packet J.
 
 ### Root causes and resolutions
@@ -107,13 +132,41 @@ steps 3 and 4 are reserved for the next session at the owner's request.
   Black's canonical wrapping shape. Resolution: run Black on the one reported
   source file only. Evidence: the repeated 103-test selection, Black, Ruff, and
   `git diff --check` all pass.
-- Confirmed root cause: maintained index dates are still sourced from checkout
-  filesystem mtime, while a newly materialized linked worktree assigns today's
-  mtime to unchanged tracked files. Resolution: restore the ten generated
-  indexes to the exact Packet J base through patch edits, set only unchanged
-  tracked inputs to their last-commit times, then regenerate the five affected
-  folders once. Evidence: the final index diff retains only task files, their
-  hashes/counts, and the new receipt; unchanged historical dates do not move.
+- Confirmed root cause: the earlier hash repair treated `last_updated` as
+  observation-only but every analyzer still recomputed that field from
+  filesystem mtime, and writers always rewrote both projections. Resolution:
+  date new/changed entries at generation, preserve prior entry dates by raw-file
+  content hash and the folder date by deterministic projection hash, and skip
+  byte-identical writes. Evidence: regressions change both checkout mtime and
+  generation date yet retain byte-identical JSON/Markdown, while a content
+  change at the same mtime advances both dates and changes the hash.
+- Confirmed root cause: `session end --fix` mixed preparation, index mutation,
+  and final validation while relying on one pre-mutation Git snapshot.
+  Resolution: remove its index-generator call, label it preparation-only, make
+  the final safe verdict available only without `--fix`, and encode the exact
+  log/task/receipt -> one index refresh -> read-only validation order in agent
+  and contributor instructions. Evidence: the session regression observes the
+  canonical dirty paths, proves no generator subprocess is invoked, and proves
+  preparation mode cannot print `Safe to end session`.
+- Confirmed root cause: the freeze policy named the final repository write but
+  did not explicitly place the immutable local commit before the clean-tree
+  validation. Resolution: encode one unambiguous sequence everywhere:
+  freeze sources/receipt, refresh affected indexes, commit locally, run plain
+  `session end` read-only, then push unchanged. Evidence: the final command is
+  now evaluated only against a clean committed candidate, while every later
+  hosted/merge fact remains external.
+- Confirmed root cause: the older continuity rule treated a future GitHub PR
+  identifier as required versioned session content instead of external status.
+  Resolution: include a PR number only when it is already known before freeze;
+  never rewrite a candidate solely for a new PR number, hosted result, or merge
+  hash. Evidence: all active onboarding/closeout guidance and the retained
+  deprecated example now state the same no-rewrite boundary.
+- Confirmed root cause: `cmd_end` changed its human message for `--fix` but left
+  the shared `0 if all_passed else 1` return branch unchanged. Resolution: an
+  otherwise passing preparation exits distinct status `2`; only plain read-only
+  validation can exit `0`. Evidence: the new clean-state regression simulates a
+  successful handoff write, requires exit `2`, and forbids the final safe text;
+  the dirty preparation path continues to exit `1`.
 - Confirmed root cause: linked worktrees share Git objects but not ignored
   dependency directories, and `./run.sh test --react` intentionally executes
   the pinned test command without installing packages. Resolution: select the
@@ -150,8 +203,10 @@ steps 3 and 4 are reserved for the next session at the owner's request.
   was created from that exact commit.
 - Source binding: Packet J reported `source_bound=true`, `READY_LOCAL`, clean
   tree, no operation marker, and equality with fetched `origin/main`.
-- Focused Packet J selection: 103 workflow-contract, release-script, and release-
-  environment tests passed.
+- Focused Packet J release selection: 103 workflow-contract, release-script,
+  and release-environment tests passed before the closeout repair. The added
+  closeout/index regressions pass and are included in the final consolidated
+  focused replay.
 - Hosted-repair replay: the exact quick FastAPI benchmark saved a non-empty
   report under a fresh temporary directory, after which all 32 maintained
   indexes remained current; quick 10/10 and canonical 31/31 gates passed.
@@ -169,8 +224,9 @@ steps 3 and 4 are reserved for the next session at the owner's request.
   approximately 3 minutes.
 - Packet J safe-lane orientation, root-cause trace, implementation, and focused
   proof: approximately 15 minutes.
-- Documentation, cumulative gates, hosted acceptance, and merge closeout follow
-  this content freeze.
+- The cyclic closeout/index defect was accepted as an outcome-changing repair;
+  final focused, quick/canonical, exact-head hosted, and merge closeout follow
+  this new content freeze. No hosted/merge status-only repository write follows.
 
 ## 2026-08-17 — Session: LIB-PRO-002-I Advertised CLI Convergence
 

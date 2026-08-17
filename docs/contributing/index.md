@@ -3,7 +3,7 @@
 Guides for developers and maintainers of the structural engineering library.
 
 **Type:** Documentation
-**Last Updated:** 2026-08-16
+**Last Updated:** 2026-08-17
 **Files:** 24
 
 ## Documentation Files
@@ -20,7 +20,7 @@ Guides for developers and maintainers of the structural engineering library.
 | [development-guide.md](development-guide.md) |  | 1. Overview 2. Project Structure | 1523 |
 | [doc-template.md](doc-template.md) |  | Copy this header to new documentation files and fill in the  | 92 |
 | [docstring-style-guide.md](docstring-style-guide.md) |  | > **Purpose:** Standard docstring format for all Python modu | 377 |
-| [end-of-session-workflow.md](end-of-session-workflow.md) |  | > **Standard procedure for ALL agents when ending a session. | 498 |
+| [end-of-session-workflow.md](end-of-session-workflow.md) |  | > **Standard procedure for ALL agents when ending a session. | 514 |
 | [git-workflow-ai-agents.md](git-workflow-ai-agents.md) |  | The canonical workflow is git-workflow-single-source.md. | 29 |
 | [git-workflow-testing.md](git-workflow-testing.md) |  | > Historical test strategy for the retired wrapper layer. Do | 346 |
 | [github-workflow.md](github-workflow.md) |  | Codex owns the repository's Git and GitHub lifecycle. The ol | 55 |
@@ -29,7 +29,7 @@ Guides for developers and maintainers of the structural engineering library.
 | [lesson-incomplete-implementation.md](lesson-incomplete-implementation.md) |  | > Historical incident lesson. Wrapper commands below were re | 374 |
 | [naming-conventions.md](naming-conventions.md) |  | This document defines naming standards for files, modules, a | 77 |
 | [quickstart-checklist.md](quickstart-checklist.md) |  | Quick reference for common development tasks with step-by-st | 509 |
-| [repo-professionalism.md](repo-professionalism.md) |  | This doc does not replace existing rules. It links to the ca | 216 |
+| [repo-professionalism.md](repo-professionalism.md) |  | This doc does not replace existing rules. It links to the ca | 220 |
 | [session-issues.md](session-issues.md) |  | Purpose: capture recurring friction points and the fixes so  | 69 |
 | [solo-maintainer-operating-system.md](solo-maintainer-operating-system.md) |  | - Deterministic outputs, explicit units, stable contracts. - | 133 |
 | [testing-strategy.md](testing-strategy.md) |  | - Location: Python/tests/ - Runner: pytest | 283 |

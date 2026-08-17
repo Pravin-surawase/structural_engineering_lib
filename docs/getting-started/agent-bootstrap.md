@@ -463,7 +463,7 @@ cd react_app && npm run build                        # Build check
 ./run.sh release preflight --docker                  # Run preflight in Docker (2GB memory limit)
 
 # Session end
-./run.sh session end                                 # Wrap up (logs, sync, handoff)
+./run.sh session end                                 # Final read-only validation
 ```
 
 Run `./run.sh --help` or `./run.sh <command> --help` for full usage.
@@ -488,7 +488,14 @@ recovery, or rewrite history. Merge remains an explicit user-confirmation action
 **Commit format:** `type: description` (subject <=72 chars, no period at end)
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `ci`, `chore`
 
-**Session docs rule:** Update `SESSION_LOG.md` + `next-session-brief.md` in same PR. Log the **PR number** (not merge hash). One docs commit at end of session.
+**Session docs rule:** Update `SESSION_LOG.md` + `next-session-brief.md` in the
+same candidate when their state changes. Include a PR number only when it is
+already known before the freeze; never rewrite the candidate solely to add one.
+Finish every session/task/handoff/receipt write, generate affected indexes once
+as the final repository write, create the candidate commit, then run plain
+`session end` read-only before pushing. Keep later PR, hosted, and merge facts
+external so they cannot restart the candidate. Preparation-only
+`session end --fix` intentionally exits `2`, never final-success `0`.
 
 ### Session Workflow Checklist (MANDATORY)
 
@@ -498,14 +505,19 @@ START:  □ ./run.sh session context              ← quick orientation (brief +
         □ ./run.sh session usage --checkpoint start --task-id TASK-XXX --task "scope"
         □ ./run.sh preflight                     ← check branch, venv, ports, conflicts
 
-END:    □ Codex reviews the scoped diff and performs Git/GitHub closeout
+END:    □ Codex reviews the scoped diff
         □ ./run.sh session usage --checkpoint closeout --elapsed-min N --verification "gate"
-        □ ./run.sh session summary               ← auto-log to SESSION_LOG.md
-        □ ./run.sh session sync                  ← fix stale doc numbers
+        □ ./run.sh session summary --write       ← only if explicitly needed
+        □ ./run.sh session sync --fix            ← only if explicitly needed
         □ ./run.sh evolve --status              # P12 burn-in (remove after ~session 20) — OBSERVE only, do NOT run --fix
         □ Append to WORKLOG.md                   ← one line per change (MANDATORY)
         □ Update next-session-brief.md           ← what NEXT agent should do
         □ Update TASKS.md                        ← mark done, add new
+        □ Create pre-commit Git handoff receipt
+        □ Generate affected indexes once         ← FINAL repository write
+        □ Commit intended paths                  ← immutable local candidate
+        □ ./run.sh session end --agent <role>    ← read-only verdict
+        □ Push, hosted checks, merge              ← facts stay external
 ```
 
 > **Why mandatory?** Skipping session end has caused 10+ hours of wasted rework. SESSION_LOG.md is the project memory — gaps mean lost context.
@@ -703,7 +715,10 @@ and what's left. Write it to docs/planning/next-session-brief.md
 
 ### Key Principle
 
-The **next-session-brief.md** file is the single source of truth for resuming work. Every session end must update it. If context is lost, this file + TASKS.md + recent git log is enough to resume.
+The **next-session-brief.md** file is the single source of truth for resuming
+work. Update it when the handoff state changes, before the final index refresh;
+plain `session end` validates it without rewriting it. If context is lost, this
+file + TASKS.md + recent git log is enough to resume.
 
 ---
 

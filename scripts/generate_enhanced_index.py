@@ -42,7 +42,7 @@ import hashlib
 import json
 import re
 import sys
-from datetime import datetime
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -106,6 +106,73 @@ KEY_FOLDERS = [
 ]
 
 
+def _today_string() -> str:
+    """Return the content-observation date used for new or changed entries."""
+    return date.today().isoformat()
+
+
+def _load_previous_index(folder_path: Path) -> dict[str, Any] | None:
+    """Load the maintained projection used to preserve content-stable dates."""
+    index_path = folder_path / "index.json"
+    try:
+        previous = json.loads(index_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return previous if isinstance(previous, dict) else None
+
+
+def _is_iso_date(value: Any) -> bool:
+    if not isinstance(value, str):
+        return False
+    try:
+        date.fromisoformat(value)
+    except ValueError:
+        return False
+    return True
+
+
+def _preserve_unchanged_dates(
+    current: dict[str, Any], previous: dict[str, Any] | None
+) -> None:
+    """Keep display dates when the corresponding repository content is unchanged.
+
+    Maintained indexes are committed projections. A fresh checkout can assign new
+    filesystem mtimes to every file, so mtimes must never decide whether those
+    projections are rewritten. Raw file hashes bind entry dates; the deterministic
+    folder projection hash binds the top-level date.
+    """
+    if not previous:
+        return
+
+    previous_file_items = previous.get("files", [])
+    if not isinstance(previous_file_items, list):
+        previous_file_items = []
+    previous_files = {
+        item.get("name"): item
+        for item in previous_file_items
+        if isinstance(item, dict) and isinstance(item.get("name"), str)
+    }
+    for item in current.get("files", []):
+        if not isinstance(item, dict):
+            continue
+        prior = previous_files.get(item.get("name"))
+        if not isinstance(prior, dict):
+            continue
+        if (
+            item.get("content_hash")
+            and item.get("content_hash") == prior.get("content_hash")
+            and _is_iso_date(prior.get("last_updated"))
+        ):
+            item["last_updated"] = prior["last_updated"]
+
+    if (
+        current.get("content_hash")
+        and current.get("content_hash") == previous.get("content_hash")
+        and _is_iso_date(previous.get("last_updated"))
+    ):
+        current["last_updated"] = previous["last_updated"]
+
+
 def is_maintained_index_folder(folder: Path) -> bool:
     """Return whether live generation may update ``folder`` by default.
 
@@ -135,9 +202,7 @@ def analyze_python_file(file_path: Path) -> dict[str, Any]:
     try:
         content = file_path.read_text(encoding="utf-8")
         info["size_lines"] = len(content.split("\n"))
-        info["last_updated"] = datetime.fromtimestamp(
-            file_path.stat().st_mtime
-        ).strftime("%Y-%m-%d")
+        info["last_updated"] = _today_string()
     except (OSError, UnicodeDecodeError):
         return info
 
@@ -224,9 +289,7 @@ def analyze_ts_file(file_path: Path) -> dict[str, Any]:
     try:
         content = file_path.read_text(encoding="utf-8")
         info["size_lines"] = len(content.split("\n"))
-        info["last_updated"] = datetime.fromtimestamp(
-            file_path.stat().st_mtime
-        ).strftime("%Y-%m-%d")
+        info["last_updated"] = _today_string()
     except (OSError, UnicodeDecodeError):
         return info
 
@@ -280,9 +343,7 @@ def analyze_md_file(file_path: Path) -> dict[str, Any]:
     try:
         content = file_path.read_text(encoding="utf-8")
         info["size_lines"] = len(content.split("\n"))
-        info["last_updated"] = datetime.fromtimestamp(
-            file_path.stat().st_mtime
-        ).strftime("%Y-%m-%d")
+        info["last_updated"] = _today_string()
     except (OSError, UnicodeDecodeError):
         return info
 
@@ -328,9 +389,7 @@ def analyze_config_file(file_path: Path) -> dict[str, Any]:
     info: dict[str, Any] = {
         "name": file_path.name,
         "type": "config",
-        "last_updated": datetime.fromtimestamp(file_path.stat().st_mtime).strftime(
-            "%Y-%m-%d"
-        ),
+        "last_updated": _today_string(),
     }
 
     ext = file_path.suffix
@@ -375,9 +434,7 @@ def analyze_file(file_path: Path) -> dict[str, Any] | None:
             "name": file_path.name,
             "type": "stylesheet",
             "size_lines": len(file_path.read_text(encoding="utf-8").split("\n")),
-            "last_updated": datetime.fromtimestamp(file_path.stat().st_mtime).strftime(
-                "%Y-%m-%d"
-            ),
+            "last_updated": _today_string(),
         }
     else:
         return None
@@ -393,9 +450,7 @@ def analyze_shell_file(file_path: Path) -> dict[str, Any]:
     try:
         content = file_path.read_text(encoding="utf-8")
         info["size_lines"] = len(content.split("\n"))
-        info["last_updated"] = datetime.fromtimestamp(
-            file_path.stat().st_mtime
-        ).strftime("%Y-%m-%d")
+        info["last_updated"] = _today_string()
 
         # Extract description from comments
         for line in content.split("\n")[:10]:
@@ -430,6 +485,7 @@ def _without_observation_timestamps(value: Any) -> Any:
 def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
     """Scan folder and generate enhanced index data."""
     folder_rel = str(folder_path.relative_to(PROJECT_ROOT))
+    previous_index = _load_previous_index(folder_path)
 
     # Categorize files
     all_files = sorted(
@@ -481,7 +537,7 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
         "folder": folder_rel,
         "type": folder_type,
         "description": folder_description,
-        "last_updated": datetime.now().strftime("%Y-%m-%d"),
+        "last_updated": _today_string(),
         "file_count": len(all_files),
         "files": [],
         "subfolders": [],
@@ -569,9 +625,9 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
             except (OSError, UnicodeDecodeError):
                 pass
 
-    # Hash every deterministic projection written to the index. Observation
-    # timestamps come from filesystem mtimes, which can change across otherwise
-    # identical worktrees, so exclude them at every nesting level.
+    # Hash every deterministic projection written to the index. Display dates
+    # describe content changes but are not themselves repository content, so
+    # exclude them at every nesting level.
     hash_payload = _without_observation_timestamps(index)
     serialized_payload = json.dumps(
         hash_payload,
@@ -582,6 +638,7 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
     index["content_hash"] = hashlib.sha256(
         serialized_payload.encode("utf-8")
     ).hexdigest()[:16]
+    _preserve_unchanged_dates(index, previous_index)
 
     return index
 
@@ -589,13 +646,24 @@ def scan_folder_enhanced(folder_path: Path) -> dict[str, Any]:
 # ─── Output Generators ──────────────────────────────────────────
 
 
+def _write_projection(path: Path, content: str) -> bool:
+    """Write only a changed projection so no-op generation leaves mtimes alone."""
+    try:
+        if path.read_text(encoding="utf-8") == content:
+            return False
+    except OSError:
+        pass
+    path.write_text(content, encoding="utf-8")
+    return True
+
+
 def generate_json(index: dict, output_path: Path) -> None:
     """Generate index.json."""
     json_path = output_path / "index.json"
-    with open(json_path, "w", encoding="utf-8") as f:
-        json.dump(index, f, indent=2, ensure_ascii=False)
-        f.write("\n")
-    print(f"  ✅ {json_path.relative_to(PROJECT_ROOT)}")
+    content = json.dumps(index, indent=2, ensure_ascii=False) + "\n"
+    changed = _write_projection(json_path, content)
+    status = "✅ Updated" if changed else "⏭️  Unchanged"
+    print(f"  {status}: {json_path.relative_to(PROJECT_ROOT)}")
 
 
 def generate_markdown(index: dict, output_path: Path) -> None:
@@ -707,9 +775,9 @@ def generate_markdown(index: dict, output_path: Path) -> None:
         lines.append("")
 
     md_path = output_path / "index.md"
-    with open(md_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(lines))
-    print(f"  ✅ {md_path.relative_to(PROJECT_ROOT)}")
+    changed = _write_projection(md_path, "\n".join(lines))
+    status = "✅ Updated" if changed else "⏭️  Unchanged"
+    print(f"  {status}: {md_path.relative_to(PROJECT_ROOT)}")
 
 
 # ─── Main ───────────────────────────────────────────────────────

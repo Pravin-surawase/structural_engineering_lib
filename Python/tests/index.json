@@ -4010,7 +4010,7 @@
     {
       "name": "test_session_automation.py",
       "type": "python",
-      "size_lines": 1465,
+      "size_lines": 1547,
       "last_updated": "2026-08-17",
       "description": "Regression tests for maintenance session automation.",
       "functions": [
@@ -4094,6 +4094,20 @@
           ]
         },
         {
+          "name": "test_session_end_fix_never_writes_indexes_or_claims_final_closeout",
+          "params": [
+            "monkeypatch",
+            "capsys"
+          ]
+        },
+        {
+          "name": "test_session_end_fix_clean_preparation_cannot_exit_as_final_success",
+          "params": [
+            "monkeypatch",
+            "capsys"
+          ]
+        },
+        {
           "name": "test_session_end_query_failure_cannot_pass_or_print_clean",
           "params": [
             "monkeypatch",
@@ -4130,21 +4144,12 @@
           "params": [
             "heading"
           ]
-        },
-        {
-          "name": "test_task_brief_reports_lane_route_and_safe_workflow",
-          "params": [
-            "monkeypatch"
-          ]
-        },
-        {
-          "name": "test_run_task_brief_and_index_help_are_read_only"
         }
       ],
       "constants": [
         "REPO_ROOT"
       ],
-      "content_hash": "4b105414fbb8"
+      "content_hash": "64cc2d5900fd"
     },
     {
       "name": "test_session_store.py",
@@ -4902,5 +4907,5 @@
     }
   ],
   "has_init": true,
-  "content_hash": "9d7c0b9e3eea5779"
+  "content_hash": "5d7c5e2836f6c5a4"
 }

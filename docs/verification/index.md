@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-17
-**Files:** 171
+**Files:** 172
 
 ## Config Files
 
@@ -99,6 +99,7 @@ Benchmark examples and verification packs for validating library calculations ag
 - [lib-pro-002-g0-git-handoff-receipt.json](lib-pro-002-g0-git-handoff-receipt.json)
 - [lib-pro-002-g0-git-handoff-source-evidence.json](lib-pro-002-g0-git-handoff-source-evidence.json)
 - [lib-pro-002-i-git-handoff-receipt.json](lib-pro-002-i-git-handoff-receipt.json)
+- [lib-pro-002-j-closeout-determinism-git-handoff-receipt.json](lib-pro-002-j-closeout-determinism-git-handoff-receipt.json)
 - [lib-pro-002-j-git-handoff-receipt.json](lib-pro-002-j-git-handoff-receipt.json)
 - [lib-pro-002-j-hosted-repair-git-handoff-receipt.json](lib-pro-002-j-hosted-repair-git-handoff-receipt.json)
 - [lib-pro-002-post-fix-recheck-git-handoff-receipt.json](lib-pro-002-post-fix-recheck-git-handoff-receipt.json)

@@ -955,34 +955,6 @@ def get_changed_doc_folders(
     return "OBSERVED", sorted(doc_folders), "canonical dirty paths inspected"
 
 
-def update_folder_readmes(folders: list[Path], fix: bool = False) -> int:
-    if not fix:
-        return 0
-    gen_script = REPO_ROOT / "scripts" / "generate_enhanced_index.py"
-    if not gen_script.exists():
-        return 0
-    updated = 0
-    for folder in folders:
-        if not folder.exists():
-            continue
-        try:
-            md_files = list(folder.glob("*.md"))
-            if len(md_files) < 3:
-                continue
-            result = subprocess.run(
-                [_python_exe(), str(gen_script), str(folder)],
-                cwd=REPO_ROOT,
-                capture_output=True,
-                text=True,
-                timeout=30,
-            )
-            if result.returncode == 0:
-                updated += 1
-        except Exception:
-            pass
-    return updated
-
-
 def get_today_prs() -> list[str]:
     try:
         result = subprocess.run(
@@ -1085,8 +1057,8 @@ def cmd_end(args: argparse.Namespace) -> int:
         print(f"  ⚠️  {msg}")
     print()
 
-    # 7. README updates
-    print("📚 README Index Updates:")
+    # 7. Explicit generated-index freeze boundary
+    print("📚 Generated Documentation Index Freeze:")
     folder_status, changed_folders, folder_reason = get_changed_doc_folders(
         closeout_evidence
     )
@@ -1094,11 +1066,11 @@ def cmd_end(args: argparse.Namespace) -> int:
         print(f"  ⏭️  Doc-folder set UNKNOWN: {folder_reason}")
     elif changed_folders:
         print(f"  📂 {len(changed_folders)} folder(s) with changes detected")
-        updated = update_folder_readmes(changed_folders, fix=args.fix)
-        if args.fix and updated:
-            print(f"  ✅ Updated {updated} README file(s)")
-        elif not args.fix:
-            print("  ℹ️  Run with --fix to auto-update READMEs")
+        print(
+            "  ℹ️  Session end never generates indexes. Finish every log, "
+            "handoff, task, and receipt write first; then refresh the affected "
+            "indexes once as the final repository write."
+        )
     else:
         print("  ✅ No doc folders in canonical current changed paths")
     print()
@@ -1173,12 +1145,24 @@ def cmd_end(args: argparse.Namespace) -> int:
         print()
 
     print("=" * 60)
-    if all_passed:
+    if args.fix:
+        print("🟡 Preparation mode completed; this is not a final closeout verdict.")
+        print(
+            "   Review all writes, refresh affected indexes once, commit the "
+            "candidate, then rerun session end without --fix for read-only "
+            "validation."
+        )
+        if all_passed:
+            print("   Exit status 2: final read-only validation is still required.")
+    elif all_passed:
         print("✅ All checks passed! Safe to end session.")
     else:
         print("⚠️  Some issues found. Consider fixing before handoff.")
         if not args.fix:
-            print("   Run with --fix to auto-fix what's possible.")
+            print(
+                "   Use --fix only before the final index freeze to prepare "
+                "handoff/task files."
+            )
         print()
         print("💡 Tip: Collect diagnostics for troubleshooting:")
         print(
@@ -1188,6 +1172,8 @@ def cmd_end(args: argparse.Namespace) -> int:
     print("=" * 60)
     print()
 
+    if args.fix and all_passed:
+        return 2
     return 0 if all_passed else 1
 
 
@@ -2380,7 +2366,12 @@ def build_parser() -> argparse.ArgumentParser:
     # end
     p_end = sub.add_parser("end", help="End-of-session checks")
     p_end.add_argument(
-        "--fix", action="store_true", help="Auto-fix issues where possible"
+        "--fix",
+        action="store_true",
+        help=(
+            "Prepare handoff/task files before the final explicit index refresh; "
+            "never a final closeout verdict"
+        ),
     )
     p_end.add_argument(
         "--log-cost",

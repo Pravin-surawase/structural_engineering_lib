@@ -581,13 +581,15 @@ defaults for compatibility.
 
 ### J — Release signal convergence (`LIB-PRO-002-J`, S)
 
-**State:** software implementation complete; exact technical-acceptance artifact
-steps 3 and 4 remain separately held for the next session.
+**State:** software implementation and deterministic closeout repair complete;
+exact technical-acceptance artifact steps 3 and 4 remain separately held for
+the next session.
 
 **Depends on:** I.
 **Owns:** full-suite interpreter binding in scheduled/tag workflows,
 mode-specific release-preflight verdicts, workflow/release-script contract
-tests, and directly affected release guidance.
+tests, directly affected release guidance, and the closeout/index controls that
+must freeze the exact candidate without unrelated filesystem-date rewrites.
 **Deliver:** reuse the already-supported
 `STRUCTURAL_LIB_PYTHON="$(command -v python)"` contract in every hosted full-
 suite step that can recursively invoke repository launchers, including Weekly
@@ -596,13 +598,19 @@ an arbitrary system interpreter. Split pre-bump, exact-wheel, and final
 publication states: pre-bump may report only `READY_TO_PREPARE_CANDIDATE`;
 exact-wheel success reports `CANDIDATE_TECHNICALLY_READY` and explicit holds;
 only exact authorization after immutable review can report
-`READY_TO_PUBLISH`.
+`READY_TO_PUBLISH`. Maintained index display dates must advance only with
+content, repeated generation must be a byte-for-byte no-op, and session
+preparation must never hide index writes or claim the final read-only verdict.
 **Focused proof:** workflow-contract tests fail if a full suite lacks the
 interpreter binding; release-script tests cover every verdict/exit-code
 combination for missing wheel, failed UAT, absent review, `HOLD` authorization,
 wrong version/tag/target, and complete exact authorization. Run Weekly
 Verification by manual dispatch on the exact remote Packet J head and require
 the full Python, FastAPI, React, documentation, and summary jobs to pass.
+Cross-date/mtime regressions must prove the generated JSON and Markdown remain
+byte-identical for unchanged content, while a same-mtime content change advances
+the entry and folder dates. Session automation must prove `end --fix` invokes no
+index generator and cannot print the final safe-closeout claim.
 **Accept:** REL-CI-01 and REL-PREFLIGHT-01 close. After focused evidence freezes,
 run quick, hooks, broad Python, complete FastAPI/React, full canonical,
 packaging, protected-source, expanded exact-wheel UAT/public examples,

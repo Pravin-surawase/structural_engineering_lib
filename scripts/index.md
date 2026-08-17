@@ -80,7 +80,7 @@
 | [generate_beam_tool_manifest.py](generate_beam_tool_manifest.py) | Generate and byte-check the catalogue-derived beam tool mani | 0 | 4 | 64 |
 | [generate_client_sdks.py](generate_client_sdks.py) | Generate client SDKs from FastAPI OpenAPI specification. | 0 | 6 | 560 |
 | [generate_docs_index.py](generate_docs_index.py) | Generate machine-readable JSON index of documentation. | 0 | 7 | 246 |
-| [generate_enhanced_index.py](generate_enhanced_index.py) | Generate enhanced index.json + index.md for ANY folder type. | 0 | 11 | 879 |
+| [generate_enhanced_index.py](generate_enhanced_index.py) | Generate enhanced index.json + index.md for ANY folder type. | 0 | 11 | 947 |
 | [generate_error_docs.py](generate_error_docs.py) | Generate docs/reference/error-codes.md from core/errors.py. | 0 | 4 | 139 |
 | [generate_indian_code_manifest.py](generate_indian_code_manifest.py) | Generate or verify the INDIA-0 Indian-code truth manifest. | 0 | 1 | 43 |
 | [git_handoff_receipt.py](git_handoff_receipt.py) | Build and validate fail-closed task-to-Git handoff receipts. | 0 | 4 | 573 |
@@ -98,7 +98,7 @@
 | [release.py](release.py) | Unified release management CLI. | 0 | 11 | 2252 |
 | [safe_file_delete.py](safe_file_delete.py) | Safe file delete script with reference checking. | 0 | 5 | 355 |
 | [safe_file_move.py](safe_file_move.py) | Safe file move script with automatic link updates. | 0 | 6 | 500 |
-| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2521 |
+| [session.py](session.py) | Unified session management CLI. | 0 | 20 | 2512 |
 | [session_store.py](session_store.py) | JSON-based session state persistence for AI agent sessions. | 1 | 14 | 374 |
 | [skill_tiers.py](skill_tiers.py) | Skill tier classification and management for AI agents. | 1 | 11 | 485 |
 | [sync_numbers.py](sync_numbers.py) | Scan codebase and sync stale numbers across documentation fi | 2 | 11 | 502 |

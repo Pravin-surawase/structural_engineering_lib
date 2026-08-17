@@ -374,6 +374,7 @@ def _patch_cmd_end_dependencies(
     monkeypatch.setattr(session, "archive_completed_tasks", lambda fix=False: (0, 0))
     monkeypatch.setattr(session, "get_today_prs", list)
     args = SimpleNamespace(fix=False, git_receipt=None, log_cost=False, agent="ops")
+    args._subprocess_calls = subprocess_calls
     return authority_calls, args
 
 
@@ -391,6 +392,49 @@ def test_session_end_reuses_one_clean_authority_query_and_skips_unknown_doc_set(
     assert "Doc-folder set UNKNOWN" in output
     assert "no committed-diff path evidence" in output
     assert "No doc folder changes detected" not in output
+
+
+def test_session_end_fix_never_writes_indexes_or_claims_final_closeout(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    authority_calls, args = _patch_cmd_end_dependencies(
+        monkeypatch,
+        _closeout_state(
+            clean=False,
+            paths=["docs/SESSION_LOG.md", "docs/planning/next-session-brief.md"],
+        ),
+    )
+    args.fix = True
+    monkeypatch.setattr(session, "_do_handoff", lambda **_kwargs: (True, "prepared"))
+
+    assert session.cmd_end(args) == 1
+    output = capsys.readouterr().out
+    assert authority_calls == [["collect_repository_state"]]
+    assert "Session end never generates indexes" in output
+    assert "Preparation mode completed; this is not a final closeout verdict" in output
+    assert "Safe to end session" not in output
+    assert all(
+        "generate_enhanced_index.py" not in command
+        for call in args._subprocess_calls
+        for command in call
+    )
+
+
+def test_session_end_fix_clean_preparation_cannot_exit_as_final_success(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    authority_calls, args = _patch_cmd_end_dependencies(
+        monkeypatch, _closeout_state(clean=True)
+    )
+    args.fix = True
+    monkeypatch.setattr(session, "_do_handoff", lambda **_kwargs: (True, "prepared"))
+
+    assert session.cmd_end(args) == 2
+    output = capsys.readouterr().out
+    assert authority_calls == [["collect_repository_state"]]
+    assert "Preparation mode completed; this is not a final closeout verdict" in output
+    assert "Exit status 2: final read-only validation is still required" in output
+    assert "Safe to end session" not in output
 
 
 def test_session_end_query_failure_cannot_pass_or_print_clean(
@@ -1044,7 +1088,7 @@ def test_generated_index_hash_tracks_subfolder_projection(
     assert initial["content_hash"] != updated["content_hash"]
 
 
-def test_generated_index_hash_ignores_filesystem_mtime(
+def test_generated_index_projection_is_stable_across_checkout_mtime_and_date(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):
     generator = importlib.import_module("scripts.generate_enhanced_index")
@@ -1053,14 +1097,52 @@ def test_generated_index_hash_ignores_filesystem_mtime(
     source = folder / "sample.py"
     source.write_text("VALUE = 1\n", encoding="utf-8")
     monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
+    monkeypatch.setattr(generator, "_today_string", lambda: "2020-01-01")
 
     os.utime(source, (1_577_836_800, 1_577_836_800))
     initial = generator.scan_folder_enhanced(folder)
+    generator.generate_json(initial, folder)
+    generator.generate_markdown(initial, folder)
+    initial_json = (folder / "index.json").read_bytes()
+    initial_markdown = (folder / "index.md").read_bytes()
+
+    monkeypatch.setattr(generator, "_today_string", lambda: "2021-01-01")
     os.utime(source, (1_609_459_200, 1_609_459_200))
     updated = generator.scan_folder_enhanced(folder)
+    generator.generate_json(updated, folder)
+    generator.generate_markdown(updated, folder)
 
-    assert initial["files"][0]["last_updated"] != updated["files"][0]["last_updated"]
     assert initial["content_hash"] == updated["content_hash"]
+    assert updated["last_updated"] == "2020-01-01"
+    assert updated["files"][0]["last_updated"] == "2020-01-01"
+    assert (folder / "index.json").read_bytes() == initial_json
+    assert (folder / "index.md").read_bytes() == initial_markdown
+
+
+def test_generated_index_dates_advance_only_when_content_changes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    generator = importlib.import_module("scripts.generate_enhanced_index")
+    folder = tmp_path / "package"
+    folder.mkdir()
+    source = folder / "sample.py"
+    source.write_text("VALUE = 1\n", encoding="utf-8")
+    monkeypatch.setattr(generator, "PROJECT_ROOT", tmp_path)
+    monkeypatch.setattr(generator, "_today_string", lambda: "2020-01-01")
+
+    os.utime(source, (1_577_836_800, 1_577_836_800))
+    initial = generator.scan_folder_enhanced(folder)
+    generator.generate_json(initial, folder)
+    generator.generate_markdown(initial, folder)
+
+    source.write_text("VALUE = 2\n", encoding="utf-8")
+    os.utime(source, (1_577_836_800, 1_577_836_800))
+    monkeypatch.setattr(generator, "_today_string", lambda: "2021-01-01")
+    updated = generator.scan_folder_enhanced(folder)
+
+    assert initial["content_hash"] != updated["content_hash"]
+    assert updated["last_updated"] == "2021-01-01"
+    assert updated["files"][0]["last_updated"] == "2021-01-01"
 
 
 def test_generated_index_hash_ignores_hidden_subfolder_artifacts(
