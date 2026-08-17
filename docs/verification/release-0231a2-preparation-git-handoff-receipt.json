@@ -143,7 +143,8 @@
       "docs/reference/index.json",
       "docs/reference/index.md",
       "docs/verification/index.json",
-      "docs/verification/index.md"
+      "docs/verification/index.md",
+      "fastapi_app/index.json"
     ],
     "task_id": "RELEASE-0231A2-PREPARATION"
   },

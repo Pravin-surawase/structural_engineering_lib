@@ -2183,7 +2183,7 @@
         "receipt_grants_authority",
         "receipt_kind"
       ],
-      "content_hash": "c73dfda0aec8"
+      "content_hash": "c054fddfce70"
     },
     {
       "name": "release-artifact-evidence-template.md",
@@ -2230,5 +2230,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "13962387545e15f5"
+  "content_hash": "bb56ed5eb860103e"
 }

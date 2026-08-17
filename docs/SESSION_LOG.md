@@ -54,6 +54,12 @@ unauthorized.
   that deliberately do not contain those optional tag/metadata forms.
 - The first direct index-generator command guessed the retired
   `scripts/generate_folder_indexes.py` path and stopped before any write.
+- Exact-head Weekly Verification run `32006071604` passed the clean-wheel,
+  Python, FastAPI, benchmark, Docker, and dependency stages, then stopped in
+  documentation drift because `fastapi_app/index.json` was stale; React was
+  skipped after that failure.
+- The first repair closeout invocation passed two folder arguments to the
+  single-folder index command; argument parsing stopped before either write.
 
 ### Root causes and resolutions
 
@@ -83,6 +89,17 @@ unauthorized.
   and use only targeted dry-run/final refresh calls. Proof: the guessed command
   made no write; final affected-folder index checks pass. ⚠️ TERMINAL ISSUE:
   nonexistent direct generator path -> maintained targeted `run.sh` command.
+- Confirmed root cause: release preparation changed `fastapi_app/__init__.py`,
+  `fastapi_app/config.py`, and `fastapi_app/openapi_baseline.json`, but the
+  affected-folder index refresh omitted `fastapi_app`. Resolution: regenerate
+  only `fastapi_app/index.json`; do not rebuild or repeat wheel UAT because the
+  Python package tree and exact wheel are unchanged. Proof: the exact failing
+  command, `scripts/generate_enhanced_index.py --all --check`, reports all
+  32 maintained indexes current before the single repair commit is pushed.
+- Confirmed root cause: the maintained targeted generator accepts one optional
+  positional folder, not a folder list. Resolution: invoke it once for `docs`
+  and once for `docs/verification`; both targeted refreshes pass. ⚠️ TERMINAL
+  ISSUE: combined two-folder index refresh -> separate maintained invocations.
 
 ### Validation through local candidate freeze
 
