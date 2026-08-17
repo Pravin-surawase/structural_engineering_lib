@@ -3,7 +3,7 @@
   "type": "documentation",
   "description": "",
   "last_updated": "2026-08-17",
-  "file_count": 19,
+  "file_count": 20,
   "files": [
     {
       "name": "README.md",
@@ -37,6 +37,14 @@
       "last_updated": "2026-08-09",
       "description": "This record makes MAINT-003 reproducible. It separates confirmed vulnerabilities from transferred-environment residue and records every temporary exception.",
       "content_hash": "7870e2a5028a"
+    },
+    {
+      "name": "e1-excel-routine-workbench-v1-plan.md",
+      "type": "documentation",
+      "size_lines": 250,
+      "last_updated": "2026-08-17",
+      "description": "The next session starts Milestone M4, Packet E1, from merged Gravity Workflow V1 commit c127e4b2325fceb9adebf3d29d59e549f7ae4aa6 on the isolated branch",
+      "content_hash": "5a444e241877"
     },
     {
       "name": "etabs-killer-masterplan.md",
@@ -123,11 +131,11 @@
     {
       "name": "next-session-brief.md",
       "type": "documentation",
-      "size_lines": 68,
+      "size_lines": 98,
       "last_updated": "2026-08-17",
       "title": "Next Session Briefing",
       "description": "<!-- HANDOFF:START --> - Date: 2026-08-17",
-      "content_hash": "4875ea7e4f38"
+      "content_hash": "190c26d5bd76"
     },
     {
       "name": "pre-release-checklist.md",
@@ -166,5 +174,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "1f96da77bbc0f039"
+  "content_hash": "570b6a09f001b152"
 }

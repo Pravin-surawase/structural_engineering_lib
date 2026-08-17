@@ -3044,3 +3044,62 @@ remain excluded.
 - The consolidated focused, OpenAPI, index, quick, cumulative broad, hook,
   immutable-audit, push, and hosted-check results remain the closeout sequence
   for the frozen candidate.
+
+## 2026-08-17 — Session: E1 Excel Routine Workbench next-session freeze
+
+**Agent:** Codex (`orchestrator`, sole writer)
+
+**Branch:** `codex/e1-excel-routine-workbench`.
+
+**Focus:** Stop before M4 implementation and leave a durable, source-bound E1
+plan and next-session handoff on the exact merged B2 base. ETABS file/live work,
+write-back, optimization, release, and professional approval remain excluded.
+
+### Issues encountered
+
+- The first worktree-creation tool composition embedded shell `${name:?}`
+  expressions in a JavaScript template literal, so JavaScript parsed them as
+  incomplete interpolation before any shell command ran.
+- A dependency search passed an unmatched `Python/requirements*.txt` glob to
+  zsh, which rejected the command before the intended read-only search.
+- The inherited task board and next-session briefing still described the older
+  Alpha release/whole-building decision state even though A1, A2, B1, and B2
+  are merged and E1 is now the requested next packet.
+- The first two session handoff checks rejected the new briefing because its
+  `Required Reading` heading used sentence-case capitalization and its state
+  table used `Complete` where the parser requires the exact `Current` row.
+
+### Root causes and resolutions
+
+- Confirmed root cause: two interpreters were competing for the same `${...}`
+  syntax in the tool wrapper. Resolution: pass the command as a normal
+  JavaScript string so `${target_path:?}` reaches zsh unchanged; the isolated
+  worktree was then created at exact base `c127e4b2`. No partial Git mutation
+  occurred. ⚠️ TERMINAL ISSUE: JavaScript consumed shell parameter syntax ->
+  reran with a non-template command string.
+- Confirmed root cause: zsh uses `nomatch` for unmatched globs. Resolution:
+  enumerate maintained dependency manifests with `rg --files`, then search only
+  existing exact paths. ⚠️ TERMINAL ISSUE: unmatched dependency glob aborted a
+  read-only search -> used exact discovered files.
+- Confirmed root cause: the durable task/handoff records predated the integrated
+  master-plan execution. Resolution: add the exact E1 execution plan, replace
+  the next-session handoff, and minimally reconcile task state with PRs
+  #822-#825. No E1 production or test code was changed.
+- Confirmed root cause: the session parser matches the required handoff heading
+  and `Current`/`Next` state rows literally. Resolution: use those exact
+  contract labels; the failed handoff checks are the repair evidence.
+
+### Validation through content freeze
+
+- Source-bound isolated lane created from merged B2 commit
+  `c127e4b2325fceb9adebf3d29d59e549f7ae4aa6`; session start reported
+  `READY_LOCAL` and `Python source binding: current worktree`.
+- The E1 plan freezes the selected-table journey, workbook/table identities,
+  strict field and row-accounting rules, canonical status/passport/stale
+  behavior, implementation map, exact validation categories, Windows Excel
+  matrix cell, and G3 stop conditions.
+- Implementation remains intentionally unstarted. Only planning, task, session,
+  and handoff records changed; calculation, FastAPI, React, Excel, ETABS, and
+  broad repository suites are therefore unchanged and not rerun.
+
+**Git handoff receipt:** `docs/verification/e1-excel-routine-workbench-git-handoff-receipt.json`

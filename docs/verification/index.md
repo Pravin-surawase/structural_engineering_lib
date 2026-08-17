@@ -4,7 +4,7 @@ Benchmark examples and verification packs for validating library calculations ag
 
 **Type:** Documentation
 **Last Updated:** 2026-08-17
-**Files:** 182
+**Files:** 185
 
 ## Config Files
 
@@ -14,6 +14,8 @@ Benchmark examples and verification packs for validating library calculations ag
 - [a2-lossless-intake-git-handoff-receipt.json](a2-lossless-intake-git-handoff-receipt.json)
 - [a2-lossless-intake-git-handoff-source-evidence.json](a2-lossless-intake-git-handoff-source-evidence.json)
 - [alpha-0231a2-exact-candidate-review-receipt.json](alpha-0231a2-exact-candidate-review-receipt.json)
+- [e1-excel-routine-workbench-git-handoff-receipt.json](e1-excel-routine-workbench-git-handoff-receipt.json)
+- [e1-excel-routine-workbench-git-handoff-source-evidence.json](e1-excel-routine-workbench-git-handoff-source-evidence.json)
 - [exact-candidate-review-receipt-template.json](exact-candidate-review-receipt-template.json)
 - [footing-release-inclusion.json](footing-release-inclusion.json)
 - [git-001-phase-8-reconciliation-git-handoff-receipt.json](git-001-phase-8-reconciliation-git-handoff-receipt.json)
@@ -136,6 +138,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [alpha-0231-local-prepublication-rehearsal.md](alpha-0231-local-prepublication-rehearsal.md) | v0.23.1a1 Local Prepublication Rehearsal | not a CI artifact identity, tag, or publication approval | A | 72 |
 | [alpha-0231a2-local-prepublication-rehearsal.md](alpha-0231a2-local-prepublication-rehearsal.md) | v0.23.1a2 Local Prepublication Rehearsal | check receipt, exact-head Weekly Verification, independent r | 98 |
 | [b1-gravity-model-load-ledger-evidence.md](b1-gravity-model-load-ledger-evidence.md) |  | deterministic transfer ledger, and exact balance checks only | 96 |
+| [b2-gravity-workflow-v1-evidence.md](b2-gravity-workflow-v1-evidence.md) |  | This record covers the bounded B2 orchestration candidate bu | 113 |
 | [bundled-sample-boq-evidence.md](bundled-sample-boq-evidence.md) |  | This is the reproducible software record for the bundled ETA | 58 |
 | [column-pmm-benchmark.md](column-pmm-benchmark.md) |  | This record independently checks the experimental rectangula | 107 |
 | [examples.md](examples.md) |  | This document provides benchmark examples that engineers can | 1550 |
@@ -189,7 +192,7 @@ Benchmark examples and verification packs for validating library calculations ag
 | [insights-verification-pack.md](insights-verification-pack.md) |  | This pack provides benchmark test cases for the insights mod | 101 |
 | [is456-library-first-evidence.md](is456-library-first-evidence.md) | IS 456 Library-First Evidence and Claim  | | Source | SHA-256 | Pages | Use | |---|---|---:|---| | 169 |
 | [is456-slab-evidence.md](is456-slab-evidence.md) | IS 456 Solid Slab Source and Benchmark L | | ID | Identity | Permitted implementation use | State | |-- | 125 |
-| [lib-pro-002-e-evidence-identity.md](lib-pro-002-e-evidence-identity.md) | LIB-PRO-002-E evidence and source identi | The bounded design_beam_is456 strength route is bound to the | 28 |
+| [lib-pro-002-e-evidence-identity.md](lib-pro-002-e-evidence-identity.md) |  | The bounded design_beam_is456 strength route is bound to the | 37 |
 | [pack.md](pack.md) |  | This repo’s unit tests validate correctness and edge cases,  | 56 |
 | [post-india2-cleanup-authorization-proposal.md](post-india2-cleanup-authorization-proposal.md) |  | Exact candidate set POST-INDIA2-2499DF4ADE0DF704 contains ** | 162 |
 | [release-artifact-evidence-template.md](release-artifact-evidence-template.md) | Release Artifact Evidence Template | Complete this record from the CI run that built the exact ca | 45 |

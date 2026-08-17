@@ -2,7 +2,7 @@
 
 > **Single source of truth for active work.** Keep it short and current.
 
-**Updated:** 2026-08-17 — v0.23.1a2 is locally prepared and exact-wheel verified; target publication is authorized after refreshed hosted review
+**Updated:** 2026-08-17 — M2/M3 are merged through Gravity Workflow V1; E1 Excel Routine Workbench is frozen for the next session
 
 ---
 
@@ -142,11 +142,16 @@ complete, and the exact v0.23.1a2 local artifact now passes installed-package
 and advertised-command UAT. Publication is owner-authorized after refreshed
 immutable review and hosted evidence pass.
 
+The separately accepted integrated component/gravity program has completed A1,
+A2, B1, and B2 through PRs #822-#825. Building Gravity Workflow V1 is merged at
+`c127e4b2`. The next product packet is E1; ETABS file/live work and all
+write-back/nightly work remain outside E1.
+
 ## Up Next
 
 | ID | Task | Agent | Est | Priority | Status |
 |----|------|-------|-----|----------|--------|
-| LIB-PRO-002-H | Decide whether to activate a separately source-backed whole-building workflow planning program after Packets I-J | repository owner | decision gate | P2 | ⏸ NOT ACTIVATED — component-only claims remain; no whole-building implementation is authorized |
+| E1-EXCEL-ROUTINE-WORKBENCH | Implement one safe selected-table rectangular-beam Excel journey against the canonical result contract | Main Agent | L | P1 | ⏭ NEXT SESSION — [scope and validation frozen](planning/e1-excel-routine-workbench-v1-plan.md); no E1 code started; real Windows Excel evidence remains a mandatory G3 cell |
 | SPARK-001-G0 | Review the Spark master plan and accept, revise, or reject Wave 0 | repository owner | review gate | P1 | ⏸ OWNER REVIEW |
 
 ## Backlog
@@ -181,6 +186,10 @@ approval.
 
 | ID | Task | Agent | Status |
 |----|------|-------|--------|
+| B2-GRAVITY-WORKFLOW-V1 | Bound the B1 ledger to canonical components, calculation book, CLI, REST, and review UI | Main Agent | ✅ COMPLETE — PR #825 merged at `c127e4b2`; focused, broad, full, hosted, and exact-head gates pass |
+| B1-GRAVITY-MODEL-LOAD-LEDGER | Froze the deterministic building model, load actions, and reconciled ledger | Main Agent | ✅ COMPLETE — PR #824 merged at `cb49234f` |
+| A2-LOSSLESS-INTAKE-CALCULATION | Closed lossless intake, effective-depth, load, and ETABS file-adapter root causes | Main Agent | ✅ COMPLETE — PR #823 merged at `32daa013` |
+| A1-CANONICAL-TRUTH-TRANSPORT | Froze the canonical result, runtime identity, and maintained transport contract | Main Agent | ✅ COMPLETE — PR #822 merged at `a0458e19` |
 | LIB-PRO-002-I | Converged the advertised `design` CLI on lossless/strict intake and expanded exact-wheel negative UAT | backend + tester + release | ✅ SOFTWARE COMPLETE — merged through PR #819; strict whole-project blocking, retained downstream compatibility, and 29-case/12-command UAT contracts pass |
 | LIB-PRO-002-J | Bound hosted full suites to the selected interpreter and converged release/closeout signals | ops + tester + release | ✅ SOFTWARE COMPLETE — mode-accurate release verdicts, content-stable indexes, and read-only closeout are merged through PR #820 |
 | MAINT-010-POST-INDIA2 | Refreshed generated truth, compacted session/task history without loss, archived superseded plans, completed review-only evolution, and removed cross-worktree timestamp and hidden-local-artifact index drift | Main Agent + governance | ✅ COMPLETE ON MERGE — deterministic affected-folder indexes, weekly read-only audit, immutable closeout freeze, health, audit, parity, focused governance, quick/full, hosted, and exact-tree gates recorded |
