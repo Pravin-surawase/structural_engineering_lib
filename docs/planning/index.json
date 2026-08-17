@@ -153,7 +153,7 @@
       "last_updated": "2026-08-17",
       "title": "Pre-Release Input Safety and Professional Readiness Plan",
       "description": "fe4ab025419b834c6d0f840e9492c0604ae74201 after Packets A-G merged through PR #815",
-      "content_hash": "408a2d1c6bf2"
+      "content_hash": "09958672d44d"
     },
     {
       "name": "professional-library-remediation-plan.md",
@@ -182,5 +182,5 @@
     }
   ],
   "subfolders": [],
-  "content_hash": "82f07a057bbf0649"
+  "content_hash": "85ef4adb488c4201"
 }

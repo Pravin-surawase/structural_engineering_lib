@@ -112,6 +112,11 @@ behavior or authorizing publication/professional use.
   `rg` directly on `.github/workflows` produced the intended evidence.
 - The first I-J handoff draft duplicated detailed-plan history and commands,
   reached 200 lines, and failed the repository's 150-line brief gate.
+- Normal commit hooks accepted the plan but warned that the descriptive status
+  `In Progress — Packets I-J Planned` was outside the canonical metadata enum.
+- ⚠️ TERMINAL ISSUE: the first repair check guessed the nonexistent
+  `scripts/check_doc_metadata.py`; `./run.sh find "doc metadata"` resolved the
+  maintained command to `scripts/check_docs.py --metadata --strict`.
 
 ### Root causes and resolutions
 
@@ -164,6 +169,9 @@ behavior or authorizing publication/professional use.
   command blocks already owned by the detailed plan. Resolution: retain exact
   branches, I/J ownership, evidence, and stop rules while linking execution
   details to the plan; the brief is 141 lines and the brief-length gate passes.
+- Confirmed metadata root cause: a descriptive suffix was placed in the strict
+  `Status` field instead of plan prose. Resolution: restore canonical
+  `In Progress`; validate through the discovered consolidated metadata command.
 
 ### Limitations and handoff
 
